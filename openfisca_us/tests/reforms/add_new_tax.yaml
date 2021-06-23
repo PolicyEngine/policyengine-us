@@ -6,7 +6,7 @@
 # Note the `reforms: ` key in the below YAML blocks.
 
 - name: The new tax applies to car-holding people
-  reforms: openfisca_country_template.reforms.add_new_tax.add_new_tax
+  reforms: openfisca_us.reforms.add_new_tax.add_new_tax
   period: 2017-01
   input:
     salary: 2000
@@ -16,7 +16,7 @@
     new_tax: 400
 
 - name: The new tax does not apply otherwise
-  reforms: openfisca_country_template.reforms.add_new_tax.add_new_tax
+  reforms: openfisca_us.reforms.add_new_tax.add_new_tax
   period: 2017-01
   input:
     salary: 2000

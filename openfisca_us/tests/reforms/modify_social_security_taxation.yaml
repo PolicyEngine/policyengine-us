@@ -6,7 +6,7 @@
 # Note the `reforms: ` key in the below YAML blocks.
 
 - name: No social security contribution on small salaries
-  reforms: openfisca_country_template.reforms.modify_social_security_taxation.modify_social_security_taxation
+  reforms: openfisca_us.reforms.modify_social_security_taxation.modify_social_security_taxation
   period: 2017-01
   input:
     salary: 2000
@@ -14,7 +14,7 @@
     social_security_contribution: 0
 
 - name: Increased social security contribution on medium salaries
-  reforms: openfisca_country_template.reforms.modify_social_security_taxation.modify_social_security_taxation
+  reforms: openfisca_us.reforms.modify_social_security_taxation.modify_social_security_taxation
   period: 2017-01
   input:
     salary: 15000
@@ -22,7 +22,7 @@
     social_security_contribution: 1336
 
 - name: High social security contribution on high salaries
-  reforms: openfisca_country_template.reforms.modify_social_security_taxation.modify_social_security_taxation
+  reforms: openfisca_us.reforms.modify_social_security_taxation.modify_social_security_taxation
   period: 2017-01
   input:
     salary: 50000

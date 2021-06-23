@@ -1,37 +1,5 @@
-# OpenFisca Country-Template
+# OpenFisca US
 
-This repository helps you quickly bootstrap and use your own OpenFisca country package.
-
-**You should NOT fork it but [download a copy](https://github.com/openfisca/country-template/archive/master.zip) of it** and follow the bootstrapping instructions below.
-
-> Otherwise, you will have to clean up all tags when you deploy your own country package.
-
-
-## Bootstrapping your Country Package
-
-This set of instructions will create your own copy of this boilerplate directory and customise it to the country you want to work on. You will need to have [Git](https://git-scm.com) installed.
-
-1. [download a copy](https://github.com/openfisca/country-template/archive/master.zip) of this repository, unzip it and `cd` into it in a Terminal window.
-
-2. Create a new repository on your favourite git host (Github, Bitbucket, GitLab, etc) with the name openfisca-your_country_name. For example, `openfisca-france`.
-
-3. Set up the two following variables and execute the `bootstrap.sh` script to initialise the git repository and replace all references to `openfisca_country_template` with references to your new country package in the code base:
-
-```sh
-export COUNTRY_NAME=France  # set the name of your country here; you should keep all capitals, and replace any spaces in the name by underscores
-export REPOSITORY_URL=https://github.com/YOUR_ORGANISATION/OpenFisca-$COUNTRY_NAME  # set here the URL of the repository you created in step 2.
-./bootstrap.sh
-```
-
-4. Push your changes to your git host:
-
-```sh
-git push origin master
-```
-
-That's it, you're all set!
-
-## Writing the Legislation
 
 The country whose law is modelled here has a very simple tax and benefit system.
 
@@ -39,14 +7,14 @@ The country whose law is modelled here has a very simple tax and benefit system.
 - On the first of December, 2015, it introduced a basic income for all its citizens of age who have no income.
 - On the first of December, 2016, it removed the income condition, providing all its adult citizens with a basic income.
 
-These elements are described in different folders. All the modelling happens within the `openfisca_country_template` folder.
+These elements are described in different folders. All the modelling happens within the `openfisca_us` folder.
 
 - The rates are in the `parameters` folder.
 - The formulas are in the `variables` folder.
 - This country package comes also with *reforms* in the `reforms` folder. This is optional: your country may exist without defining any reform.
-    - In this country, there is [a reform project](./openfisca_country_template/reforms/modify_social_security_taxation.py) aiming to modify the social security taxation, deleting the first bracket, raising the intermediary ones and adding a new bracket with a higher tax rate of `40 %` for people earning more than `40000`. This reform project would apply starting from `2017-01-01`.
+    - In this country, there is [a reform project](./openfisca_us/reforms/modify_social_security_taxation.py) aiming to modify the social security taxation, deleting the first bracket, raising the intermediary ones and adding a new bracket with a higher tax rate of `40 %` for people earning more than `40000`. This reform project would apply starting from `2017-01-01`.
 
-The files that are outside from the `openfisca_country_template` folder are used to set up the development environment.
+The files that are outside from the `openfisca_us` folder are used to set up the development environment.
 
 ## Packaging your Country Package for Distribution
 
@@ -112,7 +80,7 @@ pip --version  # should print at least 9.0.
 Install the Country Package:
 
 ```sh
-pip install openfisca_country_template
+pip install openfisca_us
 ```
 
 :tada: This OpenFisca Country Package is now installed and ready!
@@ -153,8 +121,8 @@ pip --version  # should print at least 9.0.
 Clone this Country Package on your machine:
 
 ```sh
-git clone https://github.com/openfisca/openfisca-country-template.git
-cd openfisca-country-template
+git clone https://github.com/openfisca/openfisca-us.git
+cd openfisca-us
 pip install --editable .[dev]
 ```
 
@@ -199,10 +167,10 @@ This endpoint returns the [Open API specification](https://www.openapis.org/) of
 
 You can test your new Web API by sending it example JSON data located in the `situation_examples` folder.
 
-Substitute your package's country name for `openfisca_country_template` below:
+Substitute your package's country name for `openfisca_us` below:
 
 ```sh
 curl -X POST -H "Content-Type: application/json" \
-  -d @./openfisca_country_template/situation_examples/couple.json \
+  -d @./openfisca_us/situation_examples/couple.json \
   http://localhost:5000/calculate
 ```

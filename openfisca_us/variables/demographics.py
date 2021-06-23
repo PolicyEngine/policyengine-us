@@ -15,7 +15,7 @@ from openfisca_core.periods import ETERNITY, MONTH
 from openfisca_core.variables import Variable
 
 # Import the Entities specifically defined for this tax and benefit system
-from openfisca_country_template.entities import Person
+from openfisca_us.entities import Person
 
 
 # This variable is a pure input: it doesn't have a formula

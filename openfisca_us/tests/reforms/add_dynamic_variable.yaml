@@ -6,7 +6,7 @@
 # Note the `reforms: ` key in the below YAML blocks.
 
 - name: We will dinamically add new variable "goes_to_school" thanks to a reform
-  reforms: openfisca_country_template.reforms.add_dynamic_variable.add_dynamic_variable
+  reforms: openfisca_us.reforms.add_dynamic_variable.add_dynamic_variable
   period: 2017-01
   output:
     goes_to_school: true

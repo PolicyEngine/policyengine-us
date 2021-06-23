@@ -38,7 +38,7 @@ check-style:
 	pylint `git ls-files | grep "\.py$$"`
 
 test: clean check-syntax-errors check-style
-	openfisca test --country-package openfisca_country_template openfisca_country_template/tests
+	openfisca test --country-package openfisca_us openfisca_us/tests
 
 serve-local: build
-	openfisca serve --country-package openfisca_country_template
+	openfisca serve --country-package openfisca_us
