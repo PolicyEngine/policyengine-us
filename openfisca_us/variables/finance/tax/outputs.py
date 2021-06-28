@@ -89,4 +89,20 @@ class Taxes(Variable):
     definition_period = YEAR
 
     def formula(taxunit, period, parameters):
-        pass
+        income = taxunit("income", period)
+        MARS = taxunit("MARS", period)
+        brackets = parameters(period).tax.income.brackets
+        thresholds = [0] + [brackets.thresholds[str(i)][MARS] for i in range(1, 7)] + [infinity]
+        rates = [brackets.rates[str(i)][MARS] for i in range(1, 8)]
+        bracketed_amounts = [amount_between(income, lower, upper) for lower, upper in zip(thresholds[:-1], thresholds[1:])]
+        bracketed_tax_amounts = [rates[i] * bracketed_amounts[i] for i in range(7)]
+        tax_amount = sum(bracketed_tax_amounts)
+        return tax_amount
+
+class AfterTaxIncome(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+
+    def formula(taxunit, period, parameters):
+        return taxunit("income", period) - taxunit("Taxes", period)
