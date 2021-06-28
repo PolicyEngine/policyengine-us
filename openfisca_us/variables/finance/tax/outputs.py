@@ -72,7 +72,7 @@ class TaxInc(Variable):
 
     def formula(taxunit, period, parameters):
         # not accurate, for demo
-        return max_(0, taxunit("c00100", period) - taxunit("standard_deduction", period))
+        return max_(0, taxunit("earned", period) - taxunit("standard_deduction", period))
 
 class income(Variable):
     value_type = float
@@ -91,7 +91,7 @@ class Taxes(Variable):
     def formula(taxunit, period, parameters):
         income = taxunit("income", period)
         MARS = taxunit("MARS", period)
-        brackets = parameters(period).tax.income.brackets
+        brackets = parameters(period).tax.income.bracket
         thresholds = [0] + [brackets.thresholds[str(i)][MARS] for i in range(1, 7)] + [infinity]
         rates = [brackets.rates[str(i)][MARS] for i in range(1, 8)]
         bracketed_amounts = [amount_between(income, lower, upper) for lower, upper in zip(thresholds[:-1], thresholds[1:])]

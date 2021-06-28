@@ -59,7 +59,15 @@ class Microsimulation:
 
     def calc(self, variable, year=2019):
         values = self.simulation.calculate(variable, periods.period(year))
-        series = MicroSeries(values, weights=self.weights[year])
+        var_metadata = self.simulation.tax_benefit_system.variables[variable]
+        arr = self.simulation.calculate(variable, year)
+        if var_metadata.value_type == bool:
+            arr = arr >= 52
+        if var_metadata.value_type == float:
+            arr = arr.round(2)
+        if var_metadata.value_type == Enum:
+            arr = arr.decode_to_str()
+        series = MicroSeries(arr, weights=self.weights[year])
         return series
     
     def df(self, variables, year=2019):
