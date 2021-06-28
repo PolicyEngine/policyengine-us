@@ -38,7 +38,7 @@ TaxUnit = build_entity(
 
 Person = build_entity(
     key = "person",
-    plural = "persons",
+    plural = "people",
     label = "An individual person",
     doc = """
     Description of a person
