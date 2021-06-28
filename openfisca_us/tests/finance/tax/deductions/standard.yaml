@@ -1,0 +1,15 @@
+- name: Married, young
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    DSI: false
+    earned_income: 1000
+    age_head: 45
+    age_spouse: 44
+    MARS: JOINT
+    MIDR: false
+    blind_head: false
+    blind_spouse: false
+    c19700: 0
+  output:
+    standard_deduction: 24400

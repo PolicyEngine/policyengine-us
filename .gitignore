@@ -11,9 +11,13 @@ dist
 .pydevproject
 .settings
 .spyderproject
-.vscode
 
 # OS stuff
 
 .DS_Store
 *~
+
+# Python caches
+
+.pytest_cache
+**/__pycache__

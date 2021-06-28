@@ -4,9 +4,9 @@ from setuptools import find_packages, setup
 
 setup(
     name = "OpenFisca-US",
-    version = "3.12.8",
-    author = "OpenFisca Team",
-    author_email = "contact@openfisca.org",
+    version = "0.0.1",
+    author = "Nikhil Woodruff",
+    author_email = "nikhil.woodruff@ubicenter.org",
     classifiers = [
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
@@ -17,10 +17,10 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering :: Information Analysis",
         ],
-    description = "OpenFisca tax and benefit system for US",
+    description = "OpenFisca tax and benefit system for the US",
     keywords = "benefit microsimulation social tax",
     license = "http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url = "https://github.com/openfisca/country-template",
+    url = "https://github.com/nikhilwoodruff/openfisca-us",
     include_package_data = True,  # Will read MANIFEST.in
     data_files = [
         (
