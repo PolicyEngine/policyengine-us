@@ -3,11 +3,11 @@
 from setuptools import find_packages, setup
 
 setup(
-    name = "OpenFisca-US",
-    version = "0.0.1",
-    author = "Nikhil Woodruff",
-    author_email = "nikhil.woodruff@ubicenter.org",
-    classifiers = [
+    name="OpenFisca-US",
+    version="0.0.1",
+    author="Nikhil Woodruff",
+    author_email="nikhil.woodruff@ubicenter.org",
+    classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: POSIX",
@@ -16,22 +16,22 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering :: Information Analysis",
-        ],
-    description = "OpenFisca tax and benefit system for the US",
-    keywords = "benefit microsimulation social tax",
-    license = "http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url = "https://github.com/nikhilwoodruff/openfisca-us",
-    include_package_data = True,  # Will read MANIFEST.in
-    data_files = [
+    ],
+    description="OpenFisca tax and benefit system for the US",
+    keywords="benefit microsimulation social tax",
+    license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
+    url="https://github.com/nikhilwoodruff/openfisca-us",
+    include_package_data=True,  # Will read MANIFEST.in
+    data_files=[
         (
             "share/openfisca/openfisca-country-template",
             ["CHANGELOG.md", "LICENSE", "README.md"],
-            ),
-        ],
-    install_requires = [
+        ),
+    ],
+    install_requires=[
         "OpenFisca-Core[web-api] >= 35.0.0, < 36.0.0",
-        ],
-    extras_require = {
+    ],
+    extras_require={
         "dev": [
             "autopep8 >= 1.5.4, < 2.0.0",
             "flake8 >= 3.8.0, < 4.0.0",
@@ -48,7 +48,7 @@ setup(
             "flake8-use-fstring >= 1.1.0, < 2.0.0",
             "pylint >= 2.6.0, < 3.0.0",
             "pycodestyle >= 2.6.0, < 3.0.0",
-            ],
-        },
-    packages = find_packages(),
-    )
+        ],
+    },
+    packages=find_packages(),
+)

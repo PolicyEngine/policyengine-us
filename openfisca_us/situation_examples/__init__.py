@@ -13,4 +13,5 @@ def parse(file_name):
     with open(file_path, "r") as file:
         return json.loads(file.read())
 
+
 single_filer = parse("single_filer.json")

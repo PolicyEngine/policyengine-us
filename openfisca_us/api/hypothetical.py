@@ -3,6 +3,7 @@ import openfisca_us
 from openfisca_core.simulation_builder import SimulationBuilder
 from openfisca_core.periods import period
 
+
 class IndividualSim:
     def __init__(self, *reforms, year=2018):
         self.year = year

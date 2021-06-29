@@ -9,41 +9,36 @@ See https://openfisca.org/doc/key-concepts/person,_entities,_role.html
 from openfisca_core.entities import build_entity
 
 TaxUnit = build_entity(
-    key = "taxunit",
-    plural = "taxunits",
-    label = "The tax unit",
-    doc = """
+    key="taxunit",
+    plural="taxunits",
+    label="The tax unit",
+    doc="""
     Description of a tax unit
     """,
-    roles = [
+    roles=[
+        dict(key="head", label="Head", max=1, doc="The head filer"),
         dict(
-            key = "head",
-            label = "Head",
-            max = 1,
-            doc = "The head filer"
+            key="spouse",
+            label="Spouse",
+            max=1,
+            doc="The spouse if joint filing",
         ),
         dict(
-            key = "spouse",
-            label = "Spouse",
-            max = 1,
-            doc = "The spouse if joint filing"
+            key="dependent",
+            label="Dependent",
+            doc="Dependents in the tax unit",
         ),
-        dict(
-            key = "dependent",
-            label = "Dependent",
-            doc = "Dependents in the tax unit"
-        )
-    ]
+    ],
 )
 
 Person = build_entity(
-    key = "person",
-    plural = "people",
-    label = "An individual person",
-    doc = """
+    key="person",
+    plural="people",
+    label="An individual person",
+    doc="""
     Description of a person
     """,
-    is_person = True,
-    )
+    is_person=True,
+)
 
 entities = [TaxUnit, Person]

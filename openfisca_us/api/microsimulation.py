@@ -10,6 +10,7 @@ from microdf import MicroSeries
 
 MICRODATA = Path(__file__).parent.parent / "microdata"
 
+
 class Microsimulation:
     def __init__(self, *reforms):
         self.reforms = reforms
@@ -45,7 +46,9 @@ class Microsimulation:
         indices = np.arange(len(cps))
         taxunits = builder.declare_entity("taxunit", indices)
         persons = builder.declare_person_entity("person", indices)
-        builder.join_with_persons(taxunits, indices, np.array(["head"] * len(cps)))
+        builder.join_with_persons(
+            taxunits, indices, np.array(["head"] * len(cps))
+        )
 
         model = builder.build(self.system)
         input_periods = [periods.period(year) for year in range(2016, 2030)]
@@ -69,13 +72,13 @@ class Microsimulation:
             arr = arr.decode_to_str()
         series = MicroSeries(arr, weights=self.weights[year])
         return series
-    
+
     def df(self, variables, year=2019):
         df_dict = {}
         for var in variables:
             df_dict[var] = self.calc(var, year=year)
         return MicroDataFrame(df_dict, weights=self.weights[year])
-    
+
     def deriv(
         self,
         target="tax",
@@ -131,10 +134,7 @@ class Microsimulation:
             gradient = target_increase / bonus_increase
 
             return gradient
-        elif (
-            target_entity in ("taxunit",)
-            and wrt_entity == "person"
-        ):
+        elif target_entity in ("taxunit",) and wrt_entity == "person":
             # calculate the derivative for a group variable wrt a source variable, independent of other members in the group
             adult = True
             index_in_group = (

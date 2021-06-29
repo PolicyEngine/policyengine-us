@@ -27,7 +27,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         super().__init__(entities.entities)
 
         # We add to our tax and benefit system all the variables
-        self.add_variables_from_directory(os.path.join(COUNTRY_DIR, "variables"))
+        self.add_variables_from_directory(
+            os.path.join(COUNTRY_DIR, "variables")
+        )
 
         # We add to our tax and benefit system all the legislation parameters defined in the  parameters files
         param_path = os.path.join(COUNTRY_DIR, "parameters")
