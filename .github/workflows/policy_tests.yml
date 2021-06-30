@@ -44,9 +44,6 @@ jobs:
 
       - name: Install libyaml
         run: pip3 uninstall pyyaml && pip3 install pyyaml --no-cache-dir
-      
-      - name: Install OpenFisca-Core
-        run: pip3 install openfisca-core
 
       # Runs a single command using the runners shell
       - name: Install OpenFisca-US
