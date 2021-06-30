@@ -51,4 +51,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Test baseline systems
-        run: openfisca test tests/baseline
+        run: openfisca test openfisca_us/tests/baseline
