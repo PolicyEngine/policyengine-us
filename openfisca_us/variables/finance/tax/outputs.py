@@ -141,4 +141,4 @@ class AfterTaxIncome(Variable):
     definition_period = YEAR
 
     def formula(taxunit, period, parameters):
-        return taxunit("income", period) - taxunit("Taxes", period)
+        return taxunit("earned", period) - taxunit("Taxes", period)

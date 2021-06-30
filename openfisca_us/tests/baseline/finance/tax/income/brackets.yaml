@@ -1,0 +1,7 @@
+- name: Basic test
+  period: 2018
+  absolute_error_margin: 0
+  input:
+    c00100: 100000
+  output:
+    Taxes: 0
