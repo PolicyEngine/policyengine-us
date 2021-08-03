@@ -8,6 +8,16 @@ See https://openfisca.org/doc/key-concepts/person,_entities,_role.html
 
 from openfisca_core.entities import build_entity
 
+
+BenefitUnit = build_entity(
+    key="benefitunit",
+    plural="benefitunits",
+    label="The benefit unit",
+    doc="""
+    Description of a benefit unit
+    """,
+)
+
 TaxUnit = build_entity(
     key="taxunit",
     plural="taxunits",
@@ -41,4 +51,4 @@ Person = build_entity(
     is_person=True,
 )
 
-entities = [TaxUnit, Person]
+entities = [BenefitUnit, TaxUnit, Person]
