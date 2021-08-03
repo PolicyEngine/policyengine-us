@@ -22,6 +22,6 @@ class snap(Variable):
         # gross income
         # number of individuals
 
-        # Employment Status
+        # for later, Employment Status
 
         return standard
