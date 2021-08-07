@@ -2,15 +2,15 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 
 
-class family_id(Variable):
+class household_id(Variable):
     value_type = float
-    entity = Family
-    label = u"Unique reference for this family"
+    entity = Household
+    label = u"Unique reference for this household"
     definition_period = ETERNITY
 
 
-class person_family_id(Variable):
+class person_household_id(Variable):
     value_type = int
     entity = Person
-    label = u"Unique reference for the family of this person"
+    label = u"Unique reference for the household of this person"
     definition_period = ETERNITY

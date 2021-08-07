@@ -11,9 +11,9 @@ from openfisca_core.entities import build_entity
 TaxUnit = build_entity(
     key="taxunit",
     plural="taxunits",
-    label="The tax unit",
+    label="Tax Unit",
     doc="""
-    Description of a tax unit
+    A tax unit.
     """,
     roles=[
         dict(key="head", label="Head", max=1, doc="The head filer"),
@@ -31,14 +31,64 @@ TaxUnit = build_entity(
     ],
 )
 
+Household = build_entity(
+    key="household",
+    plural="households",
+    label="Household",
+    doc="""
+    A household.
+    """,
+    roles=[
+        dict(
+            key="head",
+            label="Head",
+            max=1,
+            doc="The reference person for the household",
+        ),
+        dict(
+            key="non_head",
+            label="Non-head",
+            doc="Any person other than the head-of-household",
+        ),
+    ],
+)
+
+Family = build_entity(
+    key="family",
+    plural="families",
+    label="Family",
+    doc="""
+    A family.
+    """,
+    roles=[
+        dict(
+            key="head",
+            label="Head",
+            max=1,
+            doc="The reference person for the family",
+        ),
+        dict(
+            key="spouse",
+            label="Spouse",
+            max=1,
+            doc="The spouse if joint filing",
+        ),
+        dict(
+            key="dependent",
+            label="Dependent",
+            doc="Dependents in the tax unit",
+        ),
+    ],
+)
+
 Person = build_entity(
     key="person",
     plural="people",
-    label="An individual person",
+    label="Person",
     doc="""
-    Description of a person
+    A person.
     """,
     is_person=True,
 )
 
-entities = [TaxUnit, Person]
+entities = [Household, TaxUnit, Family, Person]
