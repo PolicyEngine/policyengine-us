@@ -2,6 +2,7 @@ from microdf.generic import MicroDataFrame
 import numpy as np
 from openfisca_core import periods
 from openfisca_core.model_api import *
+from openfisca_data.datasets.us.cps.raw_cps import RawCPS
 import openfisca_us
 import pandas as pd
 from openfisca_core.simulation_builder import SimulationBuilder
@@ -31,6 +32,10 @@ class Microsimulation:
                 self.system = reform(self.system)
 
     def load_cps(self, year):
+        if year not in BaseCPS.years:
+            if year not in RawCPS.years:
+                RawCPS.generate(year)
+            BaseCPS.generate(year)
         self.system = openfisca_us.CountryTaxBenefitSystem()
         self.apply_reforms(
             (BaseCPS.input_reform_from_year(year), self.reforms)
