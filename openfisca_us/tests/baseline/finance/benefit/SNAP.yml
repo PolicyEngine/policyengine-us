@@ -1,0 +1,86 @@
+- name: Individual, $50k income
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        salary: 50000
+        age: 30
+    spm_units:
+      unit_1:
+        members: ["person_1"]
+  output:
+    snap: 0
+
+- name: Individual, $0 income
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        salary: 0
+        age: 30
+    spm_units:
+      unit_1:
+        members: ["person_1"]
+  output:
+    snap: 2448  # 204 * 12
+
+- name: CBPP family A  # TODO: can we add a source?
+  # https://www.cbpp.org/research/food-assistance/the-supplemental-nutrition-assistance-program-includes-earnings-incentives
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        earnings: 20784  # 1732 * 12
+        age: 30
+      person_2:
+        age: 30
+      person_3:
+        age: 30
+    spm_units:
+      unit_1:
+        members: ["person_1", "person_2", "person_3"]
+  output:
+    snap: 2988  # 249 * 12
+
+- name: CBPP family B  # TODO: can we add a source?
+  # https://www.cbpp.org/research/food-assistance/the-supplemental-nutrition-assistance-program-includes-earnings-incentives
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        social_security: 20784  # 1732 * 12
+        age: 30
+      person_2:
+        age: 30
+      person_3:
+        age: 30
+    spm_units:
+      unit_1:
+        members: ["person_1", "person_2", "person_3"]
+  output:
+    snap: 1116  # 93 * 12
+
+- name: CBPP family from guide  # TODO: can we add a source?
+  # https://www.cbpp.org/research/food-assistance/a-quick-guide-to-snap-eligibility-and-benefits
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        earnings: 15072  # 1256 (full time minimum wage @ $7.25) * 12)
+        dependent_care_costs: 924  # 77 * 12
+        shelter_costs: 11568  # 964 * 12
+        age: 30
+      person_2:
+        age: 10
+      person_3:
+        age: 12
+    spm_units:
+      unit_1:
+        members: ["person_1", "person_2", "person_3"]
+  output:
+    snap: 5784  # 482 * 12
