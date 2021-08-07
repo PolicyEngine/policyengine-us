@@ -40,7 +40,7 @@ class Microsimulation:
 
         builder.declare_person_entity("person", base_cps[f"person_id/{year}"])
 
-        for group_entity in ("family", "taxunit", "household"):
+        for group_entity in ("tax_unit", "family", "spm_unit", "household"):
             primary_keys = np.array(base_cps[f"{group_entity}_id/{year}"])
             group = builder.declare_entity(group_entity, primary_keys)
             foreign_keys = np.array(

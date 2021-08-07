@@ -1,17 +1,9 @@
-"""
-This file defines the entities needed by our legislation.
-
-Taxes and benefits can be calculated for different entities: persons, household, companies, etc.
-
-See https://openfisca.org/doc/key-concepts/person,_entities,_role.html
-"""
-
 from openfisca_core.entities import build_entity
 
 TaxUnit = build_entity(
-    key="taxunit",
-    plural="taxunits",
-    label="Tax Unit",
+    key="tax_unit",
+    plural="tax_units",
+    label="Tax unit",
     doc="""
     A tax unit.
     """,
@@ -56,6 +48,22 @@ Family = build_entity(
     ],
 )
 
+SPMUnit = build_entity(
+    key="spm_unit",
+    plural="spm_units",
+    label="SPM unit",
+    doc="""
+    An SPM unit.
+    """,
+    roles=[
+        dict(
+            key="member",
+            label="Member",
+            doc="A member of the group",
+        ),
+    ],
+)
+
 Person = build_entity(
     key="person",
     plural="people",
@@ -66,4 +74,4 @@ Person = build_entity(
     is_person=True,
 )
 
-entities = [Household, TaxUnit, Family, Person]
+entities = [Household, SPMUnit, Family, TaxUnit, Person]
