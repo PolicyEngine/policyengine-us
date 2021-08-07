@@ -9,6 +9,13 @@ class household_id(Variable):
     definition_period = ETERNITY
 
 
+class household_weight(Variable):
+    value_type = float
+    entity = Household
+    label = u"Household weight"
+    definition_period = YEAR
+
+
 class person_household_id(Variable):
     value_type = int
     entity = Person

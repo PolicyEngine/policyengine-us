@@ -9,8 +9,15 @@ class P_person_id(Variable):
     definition_period = ETERNITY
 
 
+class person_weight(Variable):
+    value_type = float
+    entity = Person
+    label = u"Person weight"
+    definition_period = YEAR
+
+
 class age(Variable):
     value_type = int
     entity = Person
-    label = u"Age of the person in years"
+    label = u"Age"
     definition_period = YEAR

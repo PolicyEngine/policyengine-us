@@ -16,17 +16,10 @@ TaxUnit = build_entity(
     A tax unit.
     """,
     roles=[
-        dict(key="head", label="Head", max=1, doc="The head filer"),
         dict(
-            key="spouse",
-            label="Spouse",
-            max=1,
-            doc="The spouse if joint filing",
-        ),
-        dict(
-            key="dependent",
-            label="Dependent",
-            doc="Dependents in the tax unit",
+            key="member",
+            label="Member",
+            doc="A member of the group",
         ),
     ],
 )
@@ -40,15 +33,9 @@ Household = build_entity(
     """,
     roles=[
         dict(
-            key="head",
-            label="Head",
-            max=1,
-            doc="The reference person for the household",
-        ),
-        dict(
-            key="non_head",
-            label="Non-head",
-            doc="Any person other than the head-of-household",
+            key="member",
+            label="Member",
+            doc="A member of the group",
         ),
     ],
 )
@@ -62,21 +49,9 @@ Family = build_entity(
     """,
     roles=[
         dict(
-            key="head",
-            label="Head",
-            max=1,
-            doc="The reference person for the family",
-        ),
-        dict(
-            key="spouse",
-            label="Spouse",
-            max=1,
-            doc="The spouse if joint filing",
-        ),
-        dict(
-            key="dependent",
-            label="Dependent",
-            doc="Dependents in the tax unit",
+            key="member",
+            label="Member",
+            doc="A member of the group",
         ),
     ],
 )

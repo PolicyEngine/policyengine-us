@@ -7,14 +7,15 @@ import pandas as pd
 from openfisca_core.simulation_builder import SimulationBuilder
 from pathlib import Path
 from microdf import MicroSeries
+from openfisca_data import BaseCPS
 
 MICRODATA = Path(__file__).parent.parent / "microdata"
 
 
 class Microsimulation:
-    def __init__(self, *reforms):
+    def __init__(self, *reforms, year=2020):
         self.reforms = reforms
-        self.load_cps()
+        self.load_cps(year)
         self.bonus_sims = {}
 
     def apply_reforms(self, reforms: list) -> None:
@@ -29,49 +30,59 @@ class Microsimulation:
             else:
                 self.system = reform(self.system)
 
-    def load_cps(self):
+    def load_cps(self, year):
         self.system = openfisca_us.CountryTaxBenefitSystem()
         self.apply_reforms(self.reforms)
         builder = SimulationBuilder()
         builder.create_entities(self.system)
 
-        cps = pd.read_csv(MICRODATA / "cps.csv")
-        weight_file = pd.read_csv(MICRODATA / "cps_weights.csv")
+        base_cps = BaseCPS.load(year)
 
-        self.weights = {}
-        for column in weight_file:
-            year = int(column[2:])
-            self.weights[year] = weight_file[column].values * 1e-2
+        builder.declare_person_entity("person", base_cps[f"person_id/{year}"])
 
-        indices = np.arange(len(cps))
-        taxunits = builder.declare_entity("taxunit", indices)
-        persons = builder.declare_person_entity("person", indices)
-        builder.join_with_persons(
-            taxunits, indices, np.array(["head"] * len(cps))
-        )
+        for group_entity in ("family", "taxunit", "household"):
+            primary_keys = np.array(base_cps[f"{group_entity}_id/{year}"])
+            group = builder.declare_entity(group_entity, primary_keys)
+            foreign_keys = np.array(
+                base_cps[f"person_{group_entity}_id/{year}"]
+            )
+            builder.join_with_persons(
+                group, foreign_keys, np.array(["member"] * len(foreign_keys))
+            )
 
         model = builder.build(self.system)
-        input_periods = [periods.period(year) for year in range(2016, 2030)]
 
-        for column in cps.columns:
-            if column in self.system.variables:
-                for input_period in input_periods:
-                    model.set_input(column, input_period, cps[column].values)
+        for variable in base_cps.keys():
+            if variable in self.system.variables:
+                for input_period in base_cps[variable].keys():
+                    model.set_input(
+                        variable,
+                        input_period,
+                        np.array(base_cps[variable][input_period]),
+                    )
 
         self.simulation = model
 
-    def calc(self, variable, year=2019):
-        values = self.simulation.calculate(variable, periods.period(year))
+    def calc(self, variable, period=2020, weighted=True):
         var_metadata = self.simulation.tax_benefit_system.variables[variable]
-        arr = self.simulation.calculate(variable, year)
+        entity_key = var_metadata.entity.key
+        arr = self.simulation.calculate(variable, period)
         if var_metadata.value_type == bool:
             arr = arr >= 52
         if var_metadata.value_type == float:
             arr = arr.round(2)
         if var_metadata.value_type == Enum:
             arr = arr.decode_to_str()
-        series = MicroSeries(arr, weights=self.weights[year])
-        return series
+        if weighted:
+            series = MicroSeries(
+                arr,
+                weights=self.calc(
+                    f"{entity_key}_weight", period=period, weighted=False
+                ),
+            )
+            return series
+        else:
+            return arr
 
     def df(self, variables, year=2019):
         df_dict = {}

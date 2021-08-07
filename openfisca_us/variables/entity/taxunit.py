@@ -9,6 +9,13 @@ class taxunit_id(Variable):
     definition_period = ETERNITY
 
 
+class taxunit_weight(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Tax unit weight"
+    definition_period = YEAR
+
+
 class person_taxunit_id(Variable):
     value_type = int
     entity = Person
