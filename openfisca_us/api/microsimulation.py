@@ -32,7 +32,9 @@ class Microsimulation:
 
     def load_cps(self, year):
         self.system = openfisca_us.CountryTaxBenefitSystem()
-        self.apply_reforms(self.reforms)
+        self.apply_reforms(
+            (BaseCPS.input_reform_from_year(year), self.reforms)
+        )
         builder = SimulationBuilder()
         builder.create_entities(self.system)
 
