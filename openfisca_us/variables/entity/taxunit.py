@@ -2,21 +2,21 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 
 
-class taxunit_id(Variable):
+class tax_unit_id(Variable):
     value_type = float
     entity = TaxUnit
     label = u"Unique reference for this tax unit"
     definition_period = ETERNITY
 
 
-class taxunit_weight(Variable):
+class tax_unit_weight(Variable):
     value_type = float
     entity = TaxUnit
     label = u"Tax unit weight"
     definition_period = YEAR
 
 
-class person_taxunit_id(Variable):
+class person_tax_unit_id(Variable):
     value_type = int
     entity = Person
     label = u"Unique reference for the tax unit of this person"
