@@ -2,7 +2,7 @@ name: Test that Jupyter-Book builds
 on: [push, pull_request]
 jobs:
   build:
-    if: github.repository == 'nikhilwoodruff/openfisca-us'
+    if: github.repository == 'ubicenter/openfisca-us'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
