@@ -1,15 +1,5 @@
 from openfisca_core.entities import build_entity
 
-
-BenefitUnit = build_entity(
-    key="benefitunit",
-    plural="benefitunits",
-    label="The benefit unit",
-    doc="""
-    Description of a benefit unit
-    """,
-)
-
 TaxUnit = build_entity(
     key="tax_unit",
     plural="tax_units",
