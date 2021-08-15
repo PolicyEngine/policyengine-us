@@ -49,3 +49,19 @@ class expected_food_contribution(Variable):
         # for later, Employment Status
 
         return standard
+
+
+class maximum_snap_benefit(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"Supplemental Nutrition Assistance Program, spm unit's max possible unit based on family size"
+    definition_period = YEAR
+
+    def formula(spm_unit, period, parameters):
+
+        max_by_household_size = parameters(
+            period
+        ).benefit.SNAP.amounts.household_size
+        number_of_people = spm_unit.nb_persons()
+
+        return max_by_household_size[number_of_people]
