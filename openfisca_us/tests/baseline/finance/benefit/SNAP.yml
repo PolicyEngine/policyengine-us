@@ -84,3 +84,48 @@
         members: ["person_1", "person_2", "person_3"]
   output:
     snap: 5784  # 482 * 12
+
+
+
+- name: Single person family, lowest possible benefit  # TODO: can we add a source?
+  # https://www.cbpp.org/research/food-assistance/a-quick-guide-to-snap-eligibility-and-benefits
+  period: 2019 #using minimum benefit number from 2019, see footnotes of article
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        earnings: 29785  # max allowable income in CA for SNAP following 20% base deduction(source: https://www.benefits.gov/benefit/2041)
+        dependent_care_costs: 0
+        shelter_costs: 11568  # 964 * 12 (numbers from CBPP example. less than half of income, so does not trigger excess shelter deduction)
+        medical_expenses: 0
+        age: 30
+    spm_units:
+      unit_1:
+        members: ["person_1"]
+  output:
+    expected_food_contribution: 1986 #rounded from (165.472 * 12)
+    snap: 468  # 39 * 12
+
+
+  name: Single person family, made eligible through deductions
+
+  period: 2019 
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        earnings: 35000  # max allowable income in CA for SNAP following 20% base deduction(source: https://www.benefits.gov/benefit/2041)
+        dependent_care_costs: 0
+        shelter_costs: 22000  # 964 * 12 (numbers from CBPP example. less than half of income, so does not trigger excess shelter deduction)
+        medical_expenses: 0 #be careful using this, CBPP notes the deduction is underutilized, links to this paper:https://www.cbpp.org/research/snaps-excess-medical-expense-deduction
+        age: 30
+    spm_units:
+      unit_1:
+        members: ["person_1"]
+    households: 
+      household_1:
+        members: ["person_1"]
+        state_fip:
+  output:
+    expected_food_contribution: 1986 #rounded from (165.472 * 12)
+    snap: 468  # 39 * 12
