@@ -142,3 +142,9 @@ class AfterTaxIncome(Variable):
 
     def formula(taxunit, period, parameters):
         return taxunit("earned", period) - taxunit("Taxes", period)
+
+
+class social_security(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
