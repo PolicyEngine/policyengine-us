@@ -29,10 +29,12 @@ setup(
         ),
     ],
     install_requires=[
-        "OpenFisca-Core[web-api] >= 35.0.0, < 36.0.0",
+        "OpenFisca-Core[web-api] >= 35.0.0",
+        "openfisca_data @ git+https://github.com/ubicenter/openfisca-data",
         "microdf @ git+https://github.com/PSLmodels/microdf",
         "pandas",
         "tqdm",
+        "requests",
     ],
     extras_require={
         "dev": [

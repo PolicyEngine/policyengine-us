@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   build-and-deploy:
-    if: github.repository == 'nikhilwoodruff/openfisca-us'
+    if: github.repository == 'ubicenter/openfisca-us'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

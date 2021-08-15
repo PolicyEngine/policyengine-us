@@ -1,11 +1,3 @@
-"""
-This file defines the entities needed by our legislation.
-
-Taxes and benefits can be calculated for different entities: persons, household, companies, etc.
-
-See https://openfisca.org/doc/key-concepts/person,_entities,_role.html
-"""
-
 from openfisca_core.entities import build_entity
 
 
@@ -19,24 +11,65 @@ BenefitUnit = build_entity(
 )
 
 TaxUnit = build_entity(
-    key="taxunit",
-    plural="taxunits",
-    label="The tax unit",
+    key="tax_unit",
+    plural="tax_units",
+    label="Tax unit",
     doc="""
-    Description of a tax unit
+    A tax unit.
     """,
     roles=[
-        dict(key="head", label="Head", max=1, doc="The head filer"),
         dict(
-            key="spouse",
-            label="Spouse",
-            max=1,
-            doc="The spouse if joint filing",
+            key="member",
+            label="Member",
+            doc="A member of the tax unit",
         ),
+    ],
+)
+
+Household = build_entity(
+    key="household",
+    plural="households",
+    label="Household",
+    doc="""
+    A household.
+    """,
+    roles=[
         dict(
-            key="dependent",
-            label="Dependent",
-            doc="Dependents in the tax unit",
+            key="member",
+            label="Member",
+            doc="A member of the household",
+        ),
+    ],
+)
+
+Family = build_entity(
+    key="family",
+    plural="families",
+    label="Family",
+    doc="""
+    A family.
+    """,
+    roles=[
+        dict(
+            key="member",
+            label="Member",
+            doc="A member of the family",
+        ),
+    ],
+)
+
+SPMUnit = build_entity(
+    key="spm_unit",
+    plural="spm_units",
+    label="SPM unit",
+    doc="""
+    An SPM unit.
+    """,
+    roles=[
+        dict(
+            key="member",
+            label="Member",
+            doc="A member of the SPM unit",
         ),
     ],
 )
@@ -44,11 +77,11 @@ TaxUnit = build_entity(
 Person = build_entity(
     key="person",
     plural="people",
-    label="An individual person",
+    label="Person",
     doc="""
-    Description of a person
+    A person.
     """,
     is_person=True,
 )
 
-entities = [BenefitUnit, TaxUnit, Person]
+entities = [Household, SPMUnit, Family, TaxUnit, Person]
