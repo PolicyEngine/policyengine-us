@@ -4,7 +4,7 @@
   input:
     people:
       person_1:
-        salary: 50000
+        earned: 50000
         age: 30
     spm_units:
       unit_1:
@@ -18,7 +18,7 @@
   input:
     people:
       person_1:
-        salary: 0
+        earned: 0
         age: 30
     spm_units:
       unit_1:
@@ -33,7 +33,7 @@
   input:
     people:
       person_1:
-        earnings: 20784  # 1732 * 12
+        earned: 20784  # 1732 * 12
         age: 30
       person_2:
         age: 30
@@ -71,7 +71,7 @@
   input:
     people:
       person_1:
-        earnings: 15072  # 1256 (full time minimum wage @ $7.25) * 12)
+        earned: 15072  # 1256 (full time minimum wage @ $7.25) * 12)
         dependent_care_costs: 924  # 77 * 12
         shelter_costs: 11568  # 964 * 12
         age: 30
@@ -94,7 +94,7 @@
   input:
     people:
       person_1:
-        earnings: 29785  # max allowable income in CA for SNAP following 20% base deduction(source: https://www.benefits.gov/benefit/2041)
+        earned: 29785  # max allowable income in CA for SNAP following 20% base deduction(source: https://www.benefits.gov/benefit/2041)
         dependent_care_costs: 0
         shelter_costs: 11568  # 964 * 12 (numbers from CBPP example. less than half of income, so does not trigger excess shelter deduction)
         medical_expenses: 0
@@ -114,7 +114,7 @@
   input:
     people:
       person_1:
-        earnings: 35000  # max allowable income in CA for SNAP following 20% base deduction(source: https://www.benefits.gov/benefit/2041)
+        earned: 35000  # max allowable income in CA for SNAP following 20% base deduction(source: https://www.benefits.gov/benefit/2041)
         dependent_care_costs: 0
         shelter_costs: 22000  # 964 * 12 (numbers from CBPP example. less than half of income, so does not trigger excess shelter deduction)
         medical_expenses: 0 #be careful using this, CBPP notes the deduction is underutilized, links to this paper:https://www.cbpp.org/research/snaps-excess-medical-expense-deduction
