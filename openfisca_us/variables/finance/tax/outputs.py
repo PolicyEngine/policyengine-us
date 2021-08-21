@@ -123,7 +123,7 @@ class Taxes(Variable):
             + [brackets.thresholds[str(i)][MARS] for i in range(1, 7)]
             + [infinity]
         )
-        rates = [brackets.rates[str(i)][MARS] for i in range(1, 8)]
+        rates = [brackets.rates[str(i)] for i in range(1, 8)]
         bracketed_amounts = [
             amount_between(income, lower, upper)
             for lower, upper in zip(thresholds[:-1], thresholds[1:])
