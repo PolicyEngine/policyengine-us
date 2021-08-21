@@ -1,15 +1,27 @@
-- name: Married, young
+- name: Test 1
   period: 2019
   absolute_error_margin: 0
   input:
     DSI: false
     earned: 1000
+    tax.deductions.standard.amount.filer.SINGLE: 6000
+    tax.deductions.standard.amount.filer.JOINT: 12000
+    tax.deductions.standard.amount.filer.SEPARATE: 6000
+    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.filer.WIDOW: 12000
     age_head: 45
     age_spouse: 44
+    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
+    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
+    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
+    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
     MARS: JOINT
     MIDR: false
     blind_head: false
     blind_spouse: false
     c19700: 0
+    tax.deductions.standard.charity.allow_nonitemizers: false
+    tax.deductions.standard.charity.nonitemizers_max: 0
   output:
-    standard_deduction: 24400
+    standard_deduction: 12000

@@ -55,5 +55,10 @@ setup(
             "pycodestyle >= 2.6.0, < 3.0.0",
         ],
     },
+    entry_points={
+        "console_scripts": [
+            "openfisca-us = openfisca_us.tools.cli:main",
+        ],
+    },
     packages=find_packages(),
 )
