@@ -1,3 +1,5 @@
+# Tests for the standard deduction. Each test includes overrides for the parameters
+
 - name: Married, young
   period: 2021
   absolute_error_margin: 0
@@ -32,6 +34,7 @@
         age: 44
   output:
     standard_deduction: 12000
+
 - name: Married, allow charity
   period: 2021
   absolute_error_margin: 0
@@ -66,6 +69,7 @@
         age: 44
   output:
     standard_deduction: 15800
+
 - name: Married, allow charity, over limit
   period: 2021
   absolute_error_margin: 0
@@ -100,6 +104,7 @@
         age: 66
   output:
     standard_deduction: 13500
+
 - name: Married, two old
   period: 2021
   absolute_error_margin: 0
@@ -134,6 +139,7 @@
         age: 67
   output:
     standard_deduction: 14400
+
 - name: Single 1
   period: 2021
   absolute_error_margin: 0
@@ -166,6 +172,7 @@
         age: 44
   output:
     standard_deduction: 6000
+
 - name: Single 2
   period: 2021
   absolute_error_margin: 0
@@ -198,6 +205,7 @@
         age: 44
   output:
     standard_deduction: 6000
+
 - name: Married, single
   period: 2021
   absolute_error_margin: 0
@@ -230,6 +238,7 @@
         age: 44
   output:
     standard_deduction: 0
+
 - name: Marrid, Single, dep, under earn
   period: 2021
   absolute_error_margin: 0
@@ -262,6 +271,7 @@
         age: 44
   output:
     standard_deduction: 1000
+
 - name: Married, Single, dep, over earn
   period: 2021
   absolute_error_margin: 0
