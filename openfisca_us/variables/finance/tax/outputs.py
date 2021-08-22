@@ -46,32 +46,6 @@ class standard_deduction(Variable):
         return standard
 
 
-class sey_p(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(taxunit, period, parameters):
-        return add(taxunit, period, "e00900p", "e02100p", "k1bx14p")
-
-
-class sey_s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(taxunit, period, parameters):
-        return add(taxunit, period, "e00900s", "e02100ps", "k1bx14s")
-
-
-class sey(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(taxunit, period, parameters):
-        return add(taxunit, period, "sey_p", "sey_s")
-
 
 class earned(Variable):
     value_type = float
@@ -108,6 +82,7 @@ class income(Variable):
         # not accurate, for demo
         return taxunit("TaxInc", period)
 
+# Placeholder until actual logic implemented
 
 class Taxes(Variable):
     value_type = float
@@ -142,6 +117,33 @@ class AfterTaxIncome(Variable):
 
     def formula(taxunit, period, parameters):
         return taxunit("earned", period) - taxunit("Taxes", period)
+
+# End of placeholder
+
+
+class sey_p(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "e00900p", "e02100p", "k1bx14p")
+
+
+class sey_s(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+
+    def formula(taxunit, period, parameters):
+        return add(taxunit, period, "e00900s", "e02100ps", "k1bx14s")
+
+
+class sey(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+
 
 
 class niit(Variable):
@@ -302,6 +304,9 @@ class sey(Variable):
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "sey_p", "sey_s")
 
 
 class standard(Variable):
