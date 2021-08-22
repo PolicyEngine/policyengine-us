@@ -49,19 +49,6 @@ class standard_deduction(Variable):
 # Placeholder until actual logic implemented
 
 
-class earned(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(taxunit, period, parameters):
-        return max_(
-            0,
-            add(taxunit, period, "e00200p", "e00200s", "sey")
-            - taxunit("c03260", period),
-        )
-
-
 class TaxInc(Variable):
     value_type = float
     entity = TaxUnit
@@ -138,13 +125,7 @@ class sey_s(Variable):
     definition_period = YEAR
 
     def formula(taxunit, period, parameters):
-        return add(taxunit, period, "e00900s", "e02100ps", "k1bx14s")
-
-
-class sey(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
+        return add(taxunit, period, "e00900s", "e02100s", "k1bx14s")
 
 
 class niit(Variable):
@@ -169,6 +150,13 @@ class earned(Variable):
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
 
+    def formula(taxunit, period):
+        return max_(
+            0,
+            add(taxunit, period, "e00200p", "e00200s", "sey")
+            - taxunit("c03260", period),
+        )
+
 
 class earned_p(Variable):
     value_type = float
@@ -177,6 +165,17 @@ class earned_p(Variable):
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        ALD = parameters(period).tax.ALD
+        adjustment = (
+            (1.0 - ALD.misc.self_emp_tax_adj)
+            * ALD.employer_share
+            * tax_unit("setax_p", period)
+        )
+        return max_(
+            0, add(tax_unit, period, "e00200p", "setax_p") - adjustment
+        )
 
 
 class earned_s(Variable):
@@ -187,6 +186,17 @@ class earned_s(Variable):
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
 
+    def formula(tax_unit, period, parameters):
+        ALD = parameters(period).tax.ALD
+        adjustment = (
+            (1.0 - ALD.misc.self_emp_tax_adj)
+            * ALD.employer_share
+            * tax_unit("setax_s", period)
+        )
+        return max_(
+            0, add(tax_unit, period, "e00200s", "setax_s") - adjustment
+        )
+
 
 class was_plus_sey_p(Variable):
     value_type = float
@@ -196,6 +206,13 @@ class was_plus_sey_p(Variable):
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit("gross_was_p", period) + max_(
+            0,
+            tax_unit("sey_p", period)
+            * tax_unit("sey_frac_for_extra_OASDI", period),
+        )
+
 
 class was_plus_sey_s(Variable):
     value_type = float
@@ -204,6 +221,13 @@ class was_plus_sey_s(Variable):
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("gross_was_s", period) + max_(
+            0,
+            tax_unit("sey_s", period)
+            * tax_unit("sey_frac_for_extra_OASDI", period),
+        )
 
 
 class eitc(Variable):
@@ -280,6 +304,9 @@ class payrolltax(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"""
+
+    def formula(tax_unit, period):
+        return add(tax_unit, period, "ptax_was", "setax", "extra_payrolltax")
 
 
 class refund(Variable):
@@ -372,6 +399,14 @@ class c03260(Variable):
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        ALD = parameters(period).tax.ALD
+        return (
+            (1.0 - ALD.misc.self_emp_tax_adj)
+            * ALD.misc.employer_share
+            * tax_unit("setax", period)
+        )
 
 
 class c04470(Variable):
@@ -857,6 +892,17 @@ class ptax_oasdi(Variable):
     definition_period = YEAR
     documentation = """Employee + employer OASDI FICA tax plus self-employment tax (excludes HI FICA so positive ptax_oasdi is less than ptax_was plus setax)"""
 
+    def formula(tax_unit, period):
+        return add(
+            tax_unit,
+            period,
+            "ptax_ss_was_p",
+            "ptax_ss_was_s",
+            "setax_ss_p",
+            "setax_ss_s",
+            "extra_payrolltax",
+        )
+
 
 class ptax_was(Variable):
     value_type = float
@@ -882,22 +928,8 @@ class setax(Variable):
     definition_period = YEAR
     documentation = """Self-employment tax"""
 
-    def formula(tax_unit, period, parameters):
-        FICA = parameters(period).tax.payroll.FICA
-        SS = FICA.social_security
-        MC = FICA.medicare
-        txearn_sey_p = min_(
-            max_(
-                0.0, tax_unit("sey_p", period) * tax_unit("sey_frac", period)
-            ),
-            SS.max_taxable_earnings - tax_unit("txearn_was_p", period),
-        )
-        txearn_sey_s = min_(
-            max_(
-                0.0, tax_unit("sey_s", period) * tax_unit("sey_frac", period)
-            ),
-            SS.max_taxable_earnings - tax_unit("txearn_was_s", period),
-        )
+    def formula(tax_unit, period):
+        return add(tax_unit, period, "setax_p", "setax_s")
 
 
 class ymod(Variable):

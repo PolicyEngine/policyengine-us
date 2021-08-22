@@ -36,7 +36,7 @@ class txearn_was_p(Variable):
         return min_(max_earnings, tax_unit("gross_was_p", period))
 
 
-class txearn_was_p(Variable):
+class txearn_was_s(Variable):
     value_type = float
     entity = TaxUnit
     label = u"Spouse taxable gross earnings for OASDI FICA"
@@ -126,7 +126,7 @@ class txearn_sey_p(Variable):
         return txearn_sey_p
 
 
-class txearn_sey_p(Variable):
+class txearn_sey_s(Variable):
     value_type = float
     entity = TaxUnit
     label = u"Spouse taxable self-employment income"
@@ -138,9 +138,9 @@ class txearn_sey_p(Variable):
         MC = FICA.medicare
         txearn_sey_p = min_(
             max_(
-                0.0, tax_unit("sey_p", period) * tax_unit("sey_frac", period)
+                0.0, tax_unit("sey_s", period) * tax_unit("sey_frac", period)
             ),
-            SS.max_taxable_earnings - tax_unit("txearn_was_p", period),
+            SS.max_taxable_earnings - tax_unit("txearn_was_s", period),
         )
         return txearn_sey_p
 
@@ -165,3 +165,80 @@ class setax_ss_s(Variable):
     def formula(tax_unit, period, parameters):
         rate = parameters(period).tax.payroll.FICA.social_security.tax_rate
         return rate * tax_unit("txearn_sey_s", period)
+
+
+class setax_mc_p(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Taxpayer SECA self-employment SS tax (Medicare)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        rate = parameters(period).tax.payroll.FICA.medicare.tax_rate
+        return rate * max_(
+            0, tax_unit("sey_p", period) * tax_unit("sey_frac", period)
+        )
+
+
+class setax_mc_s(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Spouse SECA self-employment SS tax (Medicare)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        rate = parameters(period).tax.payroll.FICA.medicare.tax_rate
+        return rate * max_(
+            0, tax_unit("sey_s", period) * tax_unit("sey_frac", period)
+        )
+
+
+class setax_p(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Taxpayer self-employment payroll tax"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "setax_ss_p", "setax_mc_p")
+
+
+class setax_s(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Spouse self-employment payroll tax"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "setax_ss_s", "setax_mc_s")
+
+
+class sey_frac_for_extra_OASDI(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Taxable fraction of self-employment income for extra OASDI payroll taxes"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        FICA = parameters(period).tax.payroll.FICA
+        sey_frac = 1.0 - 0.5 * FICA.social_security.tax_rate
+        return sey_frac
+
+
+class extra_payrolltax(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Extra payroll tax"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        SS = parameters(period).tax.payroll.FICA.social_security
+        extra_ss_income_p = max(
+            0.0, tax_unit("was_plus_sey_p", period) - SS.add_taxable_earnings
+        )
+        extra_ss_income_s = max(
+            0.0, tax_unit("was_plus_sey_s", period) - SS.add_taxable_earnings
+        )
+        return (
+            extra_ss_income_p * SS.tax_rate + extra_ss_income_s * SS.tax_rate
+        )
