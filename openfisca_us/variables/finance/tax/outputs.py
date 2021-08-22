@@ -13,8 +13,10 @@ class basic_standard_deduction(Variable):
         STD = parameters(period).tax.deductions.standard
         MARS = tax_unit("MARS", period)
         MIDR = tax_unit("MIDR", period)
+
         c15100_if_DSI = max_(
-            350 + tax_unit("earned", period), STD.amount.dependent
+            STD.amount.dependent_addition + tax_unit("earned", period),
+            STD.amount.dependent,
         )
         basic_if_DSI = min_(STD.amount.filer[MARS], c15100_if_DSI)
         basic_if_not_DSI = where(MIDR, 0, STD.amount.filer[MARS])
@@ -24,7 +26,7 @@ class basic_standard_deduction(Variable):
         return basic_stded
 
 
-class aged_blind_standard_deduction(Variable):
+class aged_blind_extra_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Aged and blind standard deduction"
@@ -37,10 +39,10 @@ class aged_blind_standard_deduction(Variable):
         num_extra_stded = (
             tax_unit("blind_head", period) * 1
             + tax_unit("blind_spouse", period) * 1
-            + (tax_unit("age_head", period) >= 65) * 1
+            + (tax_unit("age_head", period) >= STD.amount.age_threshold) * 1
             + (
                 (MARS == MARSType.JOINT)
-                & (tax_unit("age_spouse", period) >= 65)
+                & (tax_unit("age_spouse", period) >= STD.amount.age_threshold)
             )
             * 1
         )
@@ -55,17 +57,17 @@ class standard_deduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # calculate basic standard deduction
+        # Calculate basic standard deduction
         basic_stded = tax_unit("basic_standard_deduction", period)
         STD = parameters(period).tax.deductions.standard
         MARS = tax_unit("MARS", period)
         MIDR = tax_unit("MIDR", period)
         MARSType = MARS.possible_values
 
-        # calculate extra standard deduction for aged and blind
-        extra_stded = tax_unit("aged_blind_standard_deduction", period)
+        # Calculate extra standard deduction for aged and blind
+        extra_stded = tax_unit("aged_blind_extra_standard_deduction", period)
 
-        # calculate the total standard deduction
+        # Calculate the total standard deduction
         standard = basic_stded + extra_stded
         standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
         standard += STD.charity.allow_nonitemizers * min_(
