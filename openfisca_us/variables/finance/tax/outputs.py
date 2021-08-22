@@ -900,7 +900,6 @@ class setax(Variable):
         )
 
 
-
 class ymod(Variable):
     value_type = float
     entity = TaxUnit
