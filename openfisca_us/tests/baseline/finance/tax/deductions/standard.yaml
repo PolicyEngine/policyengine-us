@@ -34,6 +34,8 @@
         age: 44
   output:
     standard_deduction: 12000
+    basic_standard_deduction: 12000
+    aged_blind_extra_standard_deduction: 0
 
 - name: Married, allow charity
   period: 2021
@@ -69,6 +71,8 @@
         age: 44
   output:
     standard_deduction: 15800
+    basic_standard_deduction: 12000
+    aged_blind_extra_standard_deduction: 3600
 
 - name: Married, allow charity, over limit
   period: 2021
@@ -104,6 +108,8 @@
         age: 66
   output:
     standard_deduction: 13500
+    basic_standard_deduction: 12000
+    aged_blind_extra_standard_deduction: 1200
 
 - name: Married, two old
   period: 2021
@@ -139,6 +145,8 @@
         age: 67
   output:
     standard_deduction: 14400
+    basic_standard_deduction: 12000
+    aged_blind_extra_standard_deduction: 2400
 
 - name: Single 1
   period: 2021
@@ -172,6 +180,8 @@
         age: 44
   output:
     standard_deduction: 6000
+    basic_standard_deduction: 6000
+    aged_blind_extra_standard_deduction: 0
 
 - name: Single 2
   period: 2021
@@ -205,6 +215,8 @@
         age: 44
   output:
     standard_deduction: 6000
+    basic_standard_deduction: 6000
+    aged_blind_extra_standard_deduction: 0
 
 - name: Married, single
   period: 2021
@@ -238,6 +250,8 @@
         age: 44
   output:
     standard_deduction: 0
+    basic_standard_deduction: 0
+    aged_blind_extra_standard_deduction: 0
 
 - name: Marrid, Single, dep, under earn
   period: 2021
@@ -271,6 +285,8 @@
         age: 44
   output:
     standard_deduction: 1000
+    basic_standard_deduction: 1000
+    aged_blind_extra_standard_deduction: 0
 
 - name: Married, Single, dep, over earn
   period: 2021
@@ -304,3 +320,5 @@
         age: 44
   output:
     standard_deduction: 1350
+    basic_standard_deduction: 1350
+    aged_blind_extra_standard_deduction: 0
