@@ -16,12 +16,24 @@ class age_head(Variable):
     label = u"Age in years of the taxpayer"
     definition_period = YEAR
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit.max(
+            tax_unit.members("is_tax_unit_head", period)
+            * tax_unit.members("age", period)
+        )
+
 
 class age_spouse(Variable):
     value_type = int
     entity = TaxUnit
     label = u"Age in years of the spouse"
     definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.max(
+            tax_unit.members("is_tax_unit_spouse", period)
+            * tax_unit.members("age", period)
+        )
 
 
 class MIDR(Variable):
