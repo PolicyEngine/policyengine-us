@@ -1,6 +1,4 @@
-description: Maximum Monthly Gross Income by Household Size
-
-source: https://www.fns.usda.gov/snap/allotment/COLA; https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Income-Eligibility-Standards.pdf
+description: Maximum Monthly Gross Income by State and Household Size
 
 states:
 
@@ -1935,4 +1933,10 @@ states:
     8: 5496
 
     Additional: +558
+
+
+metadata:
+  unit: USD
+  reference: https://www.fns.usda.gov/snap/allotment/COLA; https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Income-Eligibility-Standards.pdf
+  period: month
 
