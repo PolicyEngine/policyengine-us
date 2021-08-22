@@ -46,6 +46,8 @@ class standard_deduction(Variable):
         return standard
 
 
+# Placeholder until actual logic implemented
+
 
 class earned(Variable):
     value_type = float
@@ -82,7 +84,6 @@ class income(Variable):
         # not accurate, for demo
         return taxunit("TaxInc", period)
 
-# Placeholder until actual logic implemented
 
 class Taxes(Variable):
     value_type = float
@@ -118,6 +119,7 @@ class AfterTaxIncome(Variable):
     def formula(taxunit, period, parameters):
         return taxunit("earned", period) - taxunit("Taxes", period)
 
+
 # End of placeholder
 
 
@@ -143,7 +145,6 @@ class sey(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-
 
 
 class niit(Variable):
@@ -863,12 +864,41 @@ class ptax_was(Variable):
     definition_period = YEAR
     documentation = """Employee + employer OASDI + HI FICA tax"""
 
+    def formula(tax_unit, period, parameters):
+        ptax_was = add(
+            tax_unit,
+            period,
+            "tax_ss_was_p",
+            "ptax_ss_was_s",
+            "ptax_mc_was_p",
+            "ptax_mc_was_s",
+        )
+        return ptax_was
+
 
 class setax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Self-employment tax"""
+
+    def formula(tax_unit, period, parameters):
+        FICA = parameters(period).tax.payroll.FICA
+        SS = FICA.social_security
+        MC = FICA.medicare
+        txearn_sey_p = min_(
+            max_(
+                0.0, tax_unit("sey_p", period) * tax_unit("sey_frac", period)
+            ),
+            SS.max_taxable_earnings - tax_unit("txearn_was_p", period),
+        )
+        txearn_sey_s = min_(
+            max_(
+                0.0, tax_unit("sey_s", period) * tax_unit("sey_frac", period)
+            ),
+            SS.max_taxable_earnings - tax_unit("txearn_was_s", period),
+        )
+
 
 
 class ymod(Variable):
