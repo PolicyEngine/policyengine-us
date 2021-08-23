@@ -77,6 +77,12 @@ class age_head(Variable):
     definition_period = YEAR
     documentation = """Age in years of taxpayer (i.e. primary adult)"""
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit.max(
+            tax_unit.members("is_tax_unit_head", period)
+            * tax_unit.members("age", period)
+        )
+
 
 class age_spouse(Variable):
     value_type = int
@@ -85,6 +91,12 @@ class age_spouse(Variable):
     documentation = (
         """Age in years of spouse (i.e. secondary adult if present)"""
     )
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.max(
+            tax_unit.members("is_tax_unit_spouse", period)
+            * tax_unit.members("age", period)
+        )
 
 
 class agi_bin(Variable):
@@ -102,7 +114,7 @@ class blind_head(Variable):
 
 
 class blind_spouse(Variable):
-    value_type = int
+    value_type = bool
     entity = TaxUnit
     definition_period = YEAR
     documentation = """1 if spouse is blind; otherwise 0"""
