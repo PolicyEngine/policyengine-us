@@ -18,6 +18,7 @@
 		 		"class ${1:name}(Variable):",
 				"	value_type = ${2:float}",
 				"	entity = ${3:TaxUnit}",
+				"	label = u\"${4:Label}\"",
 				"	definition_period = ${5:YEAR}",
 				"",
 				""
@@ -27,7 +28,7 @@
 	"OpenFisca-US Formula": {
 			"prefix": "form",
 			"body": [
-				"def formula(${1:taxunit}, period, parameters):",
+				"def formula(${1:tax_unit}, period, parameters):",
 				"	${2:pass}"
 			],
 			"description": "Insert a new OpenFisca Formula."
