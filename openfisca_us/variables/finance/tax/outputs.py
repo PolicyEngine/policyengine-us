@@ -64,7 +64,7 @@ class standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         # Calculate basic standard deduction
         basic_stded = tax_unit("basic_standard_deduction", period)
-        CHARITY = parameters(period).tax.deductions.itemized.charity
+        charity = parameters(period).tax.deductions.itemized.charity
         MARS = tax_unit("MARS", period)
         MIDR = tax_unit("MIDR", period)
         MARSType = MARS.possible_values
@@ -75,8 +75,8 @@ class standard_deduction(Variable):
         # Calculate the total standard deduction
         standard = basic_stded + extra_stded
         standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
-        standard += CHARITY.allow_nonitemizers * min_(
-            tax_unit("c19700", period), CHARITY.nonitemizers_max
+        standard += charity.allow_nonitemizers * min_(
+            tax_unit("c19700", period), charity.nonitemizers_max
         )
 
         return standard
