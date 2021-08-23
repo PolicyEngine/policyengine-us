@@ -10,6 +10,7 @@ TaxUnit = build_entity(
     roles=[
         dict(
             key="member",
+            plural="members",
             label="Member",
             doc="A member of the tax unit",
         ),
@@ -26,6 +27,7 @@ Household = build_entity(
     roles=[
         dict(
             key="member",
+            plural="members",
             label="Member",
             doc="A member of the household",
         ),
@@ -42,6 +44,7 @@ Family = build_entity(
     roles=[
         dict(
             key="member",
+            plural="members",
             label="Member",
             doc="A member of the family",
         ),
@@ -58,6 +61,7 @@ SPMUnit = build_entity(
     roles=[
         dict(
             key="member",
+            plural="members",
             label="Member",
             doc="A member of the SPM unit",
         ),
