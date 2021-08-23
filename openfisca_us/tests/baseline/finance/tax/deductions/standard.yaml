@@ -4,19 +4,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: false
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: false
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -41,19 +41,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 300
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 300
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -78,19 +78,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 300
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 300
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -115,19 +115,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -152,19 +152,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head]
@@ -187,19 +187,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head]
@@ -222,19 +222,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head]
@@ -257,19 +257,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head]
@@ -292,19 +292,19 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    tax.deductions.standard.amount.filer.SINGLE: 6000
-    tax.deductions.standard.amount.filer.JOINT: 12000
-    tax.deductions.standard.amount.filer.SEPARATE: 6000
-    tax.deductions.standard.amount.filer.HOUSEHOLD_HEAD: 12000
-    tax.deductions.standard.amount.filer.WIDOW: 12000
-    tax.deductions.standard.amount.aged_or_blind.SINGLE: 1500
-    tax.deductions.standard.amount.aged_or_blind.JOINT: 1200
-    tax.deductions.standard.amount.aged_or_blind.SEPARATE: 1500
-    tax.deductions.standard.amount.aged_or_blind.HOUSEHOLD_HEAD: 1500
-    tax.deductions.standard.amount.aged_or_blind.WIDOW: 1500
-    tax.deductions.standard.amount.dependent: 1000
-    tax.deductions.standard.charity.allow_nonitemizers: true
-    tax.deductions.standard.charity.nonitemizers_max: 0
+    tax.deductions.standard.amount.SINGLE: 6000
+    tax.deductions.standard.amount.JOINT: 12000
+    tax.deductions.standard.amount.SEPARATE: 6000
+    tax.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    tax.deductions.standard.amount.WIDOW: 12000
+    tax.deductions.standard.aged_or_blind.amount.SINGLE: 1500
+    tax.deductions.standard.aged_or_blind.amount.JOINT: 1200
+    tax.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
+    tax.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    tax.deductions.standard.aged_or_blind.amount.WIDOW: 1500
+    tax.deductions.standard.dependent.amount: 1000
+    tax.deductions.itemized.charity.allow_nonitemizers: true
+    tax.deductions.itemized.charity.nonitemizers_max: 0
     tax_units:
       tax_unit:
         members: [head]

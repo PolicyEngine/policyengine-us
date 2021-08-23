@@ -15,11 +15,12 @@ class basic_standard_deduction(Variable):
         MIDR = tax_unit("MIDR", period)
 
         c15100_if_DSI = max_(
-            STD.amount.dependent_addition + tax_unit("earned", period),
-            STD.amount.dependent,
+            STD.dependent.additional_earned_income
+            + tax_unit("earned", period),
+            STD.dependent.amount,
         )
-        basic_if_DSI = min_(STD.amount.filer[MARS], c15100_if_DSI)
-        basic_if_not_DSI = where(MIDR, 0, STD.amount.filer[MARS])
+        basic_if_DSI = min_(STD.amount[MARS], c15100_if_DSI)
+        basic_if_not_DSI = where(MIDR, 0, STD.amount[MARS])
         basic_stded = where(
             tax_unit("DSI", period), basic_if_DSI, basic_if_not_DSI
         )
@@ -39,14 +40,18 @@ class aged_blind_extra_standard_deduction(Variable):
         num_extra_stded = (
             tax_unit("blind_head", period) * 1
             + tax_unit("blind_spouse", period) * 1
-            + (tax_unit("age_head", period) >= STD.amount.age_threshold) * 1
+            + (tax_unit("age_head", period) >= STD.aged_or_blind.age_threshold)
+            * 1
             + (
                 (MARS == MARSType.JOINT)
-                & (tax_unit("age_spouse", period) >= STD.amount.age_threshold)
+                & (
+                    tax_unit("age_spouse", period)
+                    >= STD.aged_or_blind.age_threshold
+                )
             )
             * 1
         )
-        extra_stded = num_extra_stded * STD.amount.aged_or_blind[MARS]
+        extra_stded = num_extra_stded * STD.aged_or_blind.amount[MARS]
         return extra_stded
 
 
@@ -59,7 +64,7 @@ class standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         # Calculate basic standard deduction
         basic_stded = tax_unit("basic_standard_deduction", period)
-        STD = parameters(period).tax.deductions.standard
+        CHARITY = parameters(period).tax.deductions.itemized.charity
         MARS = tax_unit("MARS", period)
         MIDR = tax_unit("MIDR", period)
         MARSType = MARS.possible_values
@@ -70,8 +75,8 @@ class standard_deduction(Variable):
         # Calculate the total standard deduction
         standard = basic_stded + extra_stded
         standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
-        standard += STD.charity.allow_nonitemizers * min_(
-            tax_unit("c19700", period), STD.charity.nonitemizers_max
+        standard += CHARITY.allow_nonitemizers * min_(
+            tax_unit("c19700", period), CHARITY.nonitemizers_max
         )
 
         return standard
