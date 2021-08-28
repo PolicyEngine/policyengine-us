@@ -21,6 +21,8 @@ class snap(Variable):
         # net income
         # gross income
         # number of individuals
+        # poverty line
+        # net and gross income limits (multipliers)
 
         # for later, Employment Status
 
