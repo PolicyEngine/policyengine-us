@@ -2,21 +2,18 @@ from microdf.generic import MicroDataFrame
 import numpy as np
 from openfisca_core import periods
 from openfisca_core.model_api import *
-from openfisca_data.datasets.us.cps.raw_cps import RawCPS
+from openfisca_us_data import BaseCPS, RawCPS
 import openfisca_us
 import pandas as pd
 from openfisca_core.simulation_builder import SimulationBuilder
 from pathlib import Path
 from microdf import MicroSeries
-from openfisca_data import BaseCPS
-
-MICRODATA = Path(__file__).parent.parent / "microdata"
 
 
 class Microsimulation:
-    def __init__(self, *reforms, year=2020):
+    def __init__(self, *reforms, dataset=BaseCPS, year=2020):
         self.reforms = reforms
-        self.load_cps(year)
+        self.load_dataset(dataset, year)
         self.bonus_sims = {}
 
     def apply_reforms(self, reforms: list) -> None:
@@ -31,11 +28,7 @@ class Microsimulation:
             else:
                 self.system = reform(self.system)
 
-    def load_cps(self, year):
-        if year not in BaseCPS.years:
-            if year not in RawCPS.years:
-                RawCPS.generate(year)
-            BaseCPS.generate(year)
+    def load_dataset(self, dataset, year):
         self.system = openfisca_us.CountryTaxBenefitSystem()
         self.apply_reforms(
             (BaseCPS.input_reform_from_year(year), self.reforms)
