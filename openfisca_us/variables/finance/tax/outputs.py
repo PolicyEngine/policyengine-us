@@ -97,7 +97,7 @@ class sey_s(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "e00900s", "e02100ps", "k1bx14s")
+        return add(tax_unit, period, "e00900s", "e02100s", "k1bx14s")
 
 
 class sey(Variable):
