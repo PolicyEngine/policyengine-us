@@ -33,4 +33,17 @@
 			],
 			"description": "Insert a new OpenFisca Formula."
 		},
+	"Tax unit non-dependent sum": {
+			"prefix": "taxunit",
+			"body": [
+				"class filer_${1:name}(Variable):",
+				"	value_type = float",
+				"	entity = TaxUnit",
+				"	label = u\"${2:Label} for the tax unit (excluding dependents)\"",
+				"	definition_period = ${3:YEAR}",
+				"",
+				"	def formula(tax_unit, period, parameters):",
+				"		return tax_unit.sum(tax_unit.members(\"${1:name}\", period) * not_(tax_unit.members(\"is_tax_unit_dependent\", period)))",
+			]
+	}
 }
