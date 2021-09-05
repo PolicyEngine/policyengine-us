@@ -36,6 +36,7 @@ class ptax_ss_was(Variable):
         rate = parameters(period).tax.payroll.FICA.social_security.tax_rate
         return rate * person("txearn_was", period)
 
+
 class filer_ptax_ss_was(Variable):
     value_type = float
     entity = TaxUnit
@@ -43,7 +44,10 @@ class filer_ptax_ss_was(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("ptax_ss_was", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
+        return tax_unit.sum(
+            tax_unit.members("ptax_ss_was", period)
+            * not_(tax_unit.members("is_tax_unit_dependent", period))
+        )
 
 
 class ptax_mc_was(Variable):
@@ -56,6 +60,7 @@ class ptax_mc_was(Variable):
         rate = parameters(period).tax.payroll.FICA.medicare.tax_rate
         return rate * person("gross_was", period)
 
+
 class filer_ptax_mc_was(Variable):
     value_type = float
     entity = TaxUnit
@@ -63,7 +68,11 @@ class filer_ptax_mc_was(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("ptax_mc_was", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
+        return tax_unit.sum(
+            tax_unit.members("ptax_mc_was", period)
+            * not_(tax_unit.members("is_tax_unit_dependent", period))
+        )
+
 
 class sey_frac(Variable):
     value_type = float
@@ -78,6 +87,7 @@ class sey_frac(Variable):
         )
         return sey_frac
 
+
 class txearn_sey(Variable):
     value_type = float
     entity = Person
@@ -90,7 +100,8 @@ class txearn_sey(Variable):
         MC = FICA.medicare
         txearn_sey_p = min_(
             max_(
-                0.0, person("sey", period) * person.tax_unit("sey_frac", period)
+                0.0,
+                person("sey", period) * person.tax_unit("sey_frac", period),
             ),
             SS.max_taxable_earnings - person("txearn_was", period),
         )
@@ -111,11 +122,16 @@ class setax_ss(Variable):
 class filer_setax_ss(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"SECA self-employment SS tax for the tax unit (excluding dependents)"
+    label = (
+        u"SECA self-employment SS tax for the tax unit (excluding dependents)"
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("setax_ss", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
+        return tax_unit.sum(
+            tax_unit.members("setax_ss", period)
+            * not_(tax_unit.members("is_tax_unit_dependent", period))
+        )
 
 
 class setax_mc(Variable):
@@ -129,6 +145,7 @@ class setax_mc(Variable):
         return rate * max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
+
 
 class setax(Variable):
     value_type = float
@@ -161,6 +178,11 @@ class extra_payrolltax(Variable):
     def formula(tax_unit, period, parameters):
         SS = parameters(period).tax.payroll.FICA.social_security
         extra_ss_income = max_(
-            0.0, tax_unit.members("was_plus_sey", period) - SS.add_taxable_earnings
+            0.0,
+            tax_unit.members("was_plus_sey", period) - SS.add_taxable_earnings,
         )
-        return tax_unit.sum(extra_ss_income * not_(tax_unit.members("is_tax_unit_dependent", period)) * SS.tax_rate)
+        return tax_unit.sum(
+            extra_ss_income
+            * not_(tax_unit.members("is_tax_unit_dependent", period))
+            * SS.tax_rate
+        )

@@ -3,8 +3,6 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-
-
 class TaxInc(Variable):
     value_type = float
     entity = TaxUnit
@@ -14,8 +12,7 @@ class TaxInc(Variable):
         # not accurate, for demo
         return max_(
             0,
-            tax_unit("earned", period)
-            - tax_unit("standard", period),
+            tax_unit("earned", period) - tax_unit("standard", period),
         )
 
 
@@ -75,6 +72,7 @@ class sey(Variable):
     def formula(person, period, parameters):
         return add(person, period, "e00900", "e02100", "k1bx14")
 
+
 class filer_sey(Variable):
     value_type = float
     entity = TaxUnit
@@ -82,7 +80,10 @@ class filer_sey(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("sey", period) * tax_unit.members("is_tax_unit_dependent", period))
+        return tax_unit.sum(
+            tax_unit.members("sey", period)
+            * tax_unit.members("is_tax_unit_dependent", period)
+        )
 
 
 class niit(Variable):
@@ -98,6 +99,7 @@ class combined(Variable):
     definition_period = YEAR
     documentation = """Sum of iitax and payrolltax and lumpsum_tax"""
 
+
 class filer_earned(Variable):
     value_type = float
     entity = TaxUnit
@@ -107,7 +109,10 @@ class filer_earned(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("earned", period) * tax_unit.members("is_tax_unit_dependent", period))
+        return tax_unit.sum(
+            tax_unit.members("earned", period)
+            * tax_unit.members("is_tax_unit_dependent", period)
+        )
 
 
 class earned(Variable):
@@ -125,9 +130,7 @@ class earned(Variable):
             * ALD.employer_share
             * person("setax", period)
         )
-        return max_(
-            0, add(person, period, "e00200", "setax_") - adjustment
-        )
+        return max_(0, add(person, period, "e00200", "setax_") - adjustment)
 
 
 class was_plus_sey(Variable):
@@ -245,12 +248,13 @@ class filer_sey(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """sey for the tax unit (excluding dependents)"""
-    )
+    documentation = """sey for the tax unit (excluding dependents)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("sey", period) * tax_unit.members("is_tax_unit_dependent", period))
+        return tax_unit.sum(
+            tax_unit.members("sey", period)
+            * tax_unit.members("is_tax_unit_dependent", period)
+        )
 
 
 class basic_standard_deduction(Variable):
@@ -330,6 +334,7 @@ class standard(Variable):
         )
 
         return standard
+
 
 class surtax(Variable):
     value_type = float
@@ -904,6 +909,7 @@ class ptax_was(Variable):
         )
         return ptax_was
 
+
 class filer_setax(Variable):
     value_type = float
     entity = TaxUnit
@@ -911,7 +917,10 @@ class filer_setax(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("setax", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
+        return tax_unit.sum(
+            tax_unit.members("setax", period)
+            * not_(tax_unit.members("is_tax_unit_dependent", period))
+        )
 
 
 class ymod(Variable):
