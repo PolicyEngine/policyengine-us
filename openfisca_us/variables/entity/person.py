@@ -37,6 +37,15 @@ class is_tax_unit_spouse(Variable):
         # Use order of input (second)
         return person.tax_unit.members_position == 1
 
+class is_tax_unit_dependent(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is a dependent in the tax unit"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return not_(person("is_tax_unit_head", period) + person("is_tax_unit_spouse", period))
+
 
 class age(Variable):
     value_type = int
