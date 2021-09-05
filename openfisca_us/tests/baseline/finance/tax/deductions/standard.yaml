@@ -21,7 +21,7 @@
       tax_unit:
         members: [head, spouse]
         DSI: false
-        earned: 1000
+        filer_earned: 1000
         MARS: JOINT
         MIDR: false
         blind_head: false
@@ -33,7 +33,7 @@
       spouse:
         age: 44
   output:
-    standard_deduction: 12000
+    standard: 12000
     basic_standard_deduction: 12000
     aged_blind_extra_standard_deduction: 0
 
@@ -58,7 +58,7 @@
       tax_unit:
         members: [head, spouse]
         DSI: false
-        earned: 1000
+        filer_earned: 1000
         MARS: JOINT
         MIDR: false
         blind_head: true
@@ -70,7 +70,7 @@
       spouse:
         age: 44
   output:
-    standard_deduction: 15800
+    standard: 15800
     basic_standard_deduction: 12000
     aged_blind_extra_standard_deduction: 3600
 
@@ -95,7 +95,7 @@
       tax_unit:
         members: [head, spouse]
         DSI: false
-        earned: 1000
+        filer_earned: 1000
         MARS: JOINT
         MIDR: false
         blind_head: false
@@ -107,7 +107,7 @@
       spouse:
         age: 66
   output:
-    standard_deduction: 13500
+    standard: 13500
     basic_standard_deduction: 12000
     aged_blind_extra_standard_deduction: 1200
 
@@ -132,7 +132,7 @@
       tax_unit:
         members: [head, spouse]
         DSI: false
-        earned: 1000
+        filer_earned: 1000
         MARS: JOINT
         MIDR: false
         blind_head: false
@@ -144,7 +144,7 @@
       spouse:
         age: 67
   output:
-    standard_deduction: 14400
+    standard: 14400
     basic_standard_deduction: 12000
     aged_blind_extra_standard_deduction: 2400
 
@@ -169,7 +169,7 @@
       tax_unit:
         members: [head]
         DSI: false
-        earned: 1000
+        filer_earned: 1000
         MARS: SINGLE
         MIDR: false
         blind_head: false
@@ -179,7 +179,7 @@
       head:
         age: 44
   output:
-    standard_deduction: 6000
+    standard: 6000
     basic_standard_deduction: 6000
     aged_blind_extra_standard_deduction: 0
 
@@ -204,7 +204,7 @@
       tax_unit:
         members: [head]
         DSI: false
-        earned: 1200
+        filer_earned: 1200
         MARS: SINGLE
         MIDR: false
         blind_head: false
@@ -214,7 +214,7 @@
       head:
         age: 44
   output:
-    standard_deduction: 6000
+    standard: 6000
     basic_standard_deduction: 6000
     aged_blind_extra_standard_deduction: 0
 
@@ -239,7 +239,7 @@
       tax_unit:
         members: [head]
         DSI: false
-        earned: 1000
+        filer_earned: 1000
         MARS: SEPARATE
         MIDR: true
         blind_head: false
@@ -249,7 +249,7 @@
       head:
         age: 44
   output:
-    standard_deduction: 0
+    standard: 0
     basic_standard_deduction: 0
     aged_blind_extra_standard_deduction: 0
 
@@ -274,7 +274,7 @@
       tax_unit:
         members: [head]
         DSI: true
-        earned: 200
+        filer_earned: 200
         MARS: SEPARATE
         MIDR: false
         blind_head: false
@@ -284,7 +284,7 @@
       head:
         age: 44
   output:
-    standard_deduction: 1000
+    standard: 1000
     basic_standard_deduction: 1000
     aged_blind_extra_standard_deduction: 0
 
@@ -309,7 +309,7 @@
       tax_unit:
         members: [head]
         DSI: true
-        earned: 1000
+        filer_earned: 1000
         MARS: SEPARATE
         MIDR: false
         blind_head: false
@@ -319,6 +319,6 @@
       head:
         age: 44
   output:
-    standard_deduction: 1350
+    standard: 1350
     basic_standard_deduction: 1350
     aged_blind_extra_standard_deduction: 0

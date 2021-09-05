@@ -12,7 +12,7 @@ class TaxInc(Variable):
         # not accurate, for demo
         return max_(
             0,
-            tax_unit("earned", period) - tax_unit("standard", period),
+            tax_unit("filer_earned", period) - tax_unit("standard", period),
         )
 
 
@@ -127,10 +127,10 @@ class earned(Variable):
         ALD = parameters(period).tax.ALD
         adjustment = (
             (1.0 - ALD.misc.self_emp_tax_adj)
-            * ALD.employer_share
+            * ALD.misc.employer_share
             * person("setax", period)
         )
-        return max_(0, add(person, period, "e00200", "setax_") - adjustment)
+        return max_(0, add(person, period, "e00200", "setax") - adjustment)
 
 
 class was_plus_sey(Variable):
@@ -270,7 +270,7 @@ class basic_standard_deduction(Variable):
 
         c15100_if_DSI = max_(
             STD.dependent.additional_earned_income
-            + tax_unit("earned", period),
+            + tax_unit("filer_earned", period),
             STD.dependent.amount,
         )
         basic_if_DSI = min_(STD.amount[MARS], c15100_if_DSI)

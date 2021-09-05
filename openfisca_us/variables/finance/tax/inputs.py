@@ -630,12 +630,6 @@ class k1bx14(Variable):
         """Partner self-employment earnings/loss (included in e26270 total)"""
     )
 
-    def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("k1bx14", period)
-            * not_(tax_unit.members("is_tax_unit_dependent", period))
-        )
-
 
 class filer_k1bx14(Variable):
     value_type = float
