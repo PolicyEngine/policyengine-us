@@ -3,123 +3,6 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-class basic_standard_deduction(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Basic standard deduction"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        STD = parameters(period).tax.deductions.standard
-        MARS = tax_unit("MARS", period)
-        MIDR = tax_unit("MIDR", period)
-
-        c15100_if_DSI = max_(
-            STD.dependent.additional_earned_income
-            + tax_unit("earned", period),
-            STD.dependent.amount,
-        )
-        basic_if_DSI = min_(STD.amount[MARS], c15100_if_DSI)
-        basic_if_not_DSI = where(MIDR, 0, STD.amount[MARS])
-        basic_stded = where(
-            tax_unit("DSI", period), basic_if_DSI, basic_if_not_DSI
-        )
-        return basic_stded
-
-
-class aged_blind_extra_standard_deduction(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Aged and blind standard deduction"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        STD = parameters(period).tax.deductions.standard
-        MARS = tax_unit("MARS", period)
-        MARSType = MARS.possible_values
-        num_extra_stded = (
-            tax_unit("blind_head", period) * 1
-            + tax_unit("blind_spouse", period) * 1
-            + (tax_unit("age_head", period) >= STD.aged_or_blind.age_threshold)
-            * 1
-            + (
-                (MARS == MARSType.JOINT)
-                & (
-                    tax_unit("age_spouse", period)
-                    >= STD.aged_or_blind.age_threshold
-                )
-            )
-            * 1
-        )
-        extra_stded = num_extra_stded * STD.aged_or_blind.amount[MARS]
-        return extra_stded
-
-
-class standard_deduction(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = u"Standard deduction"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        # Calculate basic standard deduction
-        basic_stded = tax_unit("basic_standard_deduction", period)
-        charity = parameters(period).tax.deductions.itemized.charity
-        MARS = tax_unit("MARS", period)
-        MIDR = tax_unit("MIDR", period)
-        MARSType = MARS.possible_values
-
-        # Calculate extra standard deduction for aged and blind
-        extra_stded = tax_unit("aged_blind_extra_standard_deduction", period)
-
-        # Calculate the total standard deduction
-        standard = basic_stded + extra_stded
-        standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
-        standard += charity.allow_nonitemizers * min_(
-            tax_unit("c19700", period), charity.nonitemizers_max
-        )
-
-        return standard
-
-
-class sey_p(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "e00900p", "e02100p", "k1bx14p")
-
-
-class sey_s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "e00900s", "e02100ps", "k1bx14s")
-
-
-class sey(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "sey_p", "sey_s")
-
-
-class earned(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        return max_(
-            0,
-            add(tax_unit, period, "e00200p", "e00200s", "sey")
-            - tax_unit("c03260", period),
-        )
 
 
 class TaxInc(Variable):
@@ -132,7 +15,7 @@ class TaxInc(Variable):
         return max_(
             0,
             tax_unit("earned", period)
-            - tax_unit("standard_deduction", period),
+            - tax_unit("standard", period),
         )
 
 
@@ -184,22 +67,22 @@ class AfterTaxIncome(Variable):
 # End of placeholder
 
 
-class sey_p(Variable):
+class sey(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return add(person, period, "e00900", "e02100", "k1bx14")
+
+class filer_sey(Variable):
     value_type = float
     entity = TaxUnit
+    label = u"sey for the tax unit (excluding dependents)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "e00900p", "e02100p", "k1bx14p")
-
-
-class sey_s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(taxunit, period, parameters):
-        return add(taxunit, period, "e00900s", "e02100s", "k1bx14s")
+        return tax_unit.sum(tax_unit.members("sey", period) * tax_unit.members("is_tax_unit_dependent", period))
 
 
 class niit(Variable):
@@ -215,92 +98,51 @@ class combined(Variable):
     definition_period = YEAR
     documentation = """Sum of iitax and payrolltax and lumpsum_tax"""
 
+class filer_earned(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = (
+        """search taxcalc/calcfunctions.py for how calculated and used"""
+    )
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.sum(tax_unit.members("earned", period) * tax_unit.members("is_tax_unit_dependent", period))
+
 
 class earned(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
 
-    def formula(taxunit, period):
-        return max_(
-            0,
-            add(taxunit, period, "e00200p", "e00200s", "sey")
-            - taxunit("c03260", period),
-        )
-
-
-class earned_p(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
-
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         ALD = parameters(period).tax.ALD
         adjustment = (
             (1.0 - ALD.misc.self_emp_tax_adj)
             * ALD.employer_share
-            * tax_unit("setax_p", period)
+            * person("setax", period)
         )
         return max_(
-            0, add(tax_unit, period, "e00200p", "setax_p") - adjustment
+            0, add(person, period, "e00200", "setax_") - adjustment
         )
 
 
-class earned_s(Variable):
+class was_plus_sey(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
 
-    def formula(tax_unit, period, parameters):
-        ALD = parameters(period).tax.ALD
-        adjustment = (
-            (1.0 - ALD.misc.self_emp_tax_adj)
-            * ALD.employer_share
-            * tax_unit("setax_s", period)
-        )
-        return max_(
-            0, add(tax_unit, period, "e00200s", "setax_s") - adjustment
-        )
-
-
-class was_plus_sey_p(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit("gross_was_p", period) + max_(
+    def formula(person, period, parameters):
+        return person("gross_was", period) + max_(
             0,
-            tax_unit("sey_p", period)
-            * tax_unit("sey_frac_for_extra_OASDI", period),
-        )
-
-
-class was_plus_sey_s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit("gross_was_s", period) + max_(
-            0,
-            tax_unit("sey_s", period)
-            * tax_unit("sey_frac_for_extra_OASDI", period),
+            person("sey", period)
+            * person.tax_unit("sey_frac_for_extra_OASDI", period),
         )
 
 
@@ -399,24 +241,95 @@ class sep(Variable):
     )
 
 
-class sey(Variable):
+class filer_sey(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
+        """sey for the tax unit (excluding dependents)"""
     )
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "sey_p", "sey_s")
+        return tax_unit.sum(tax_unit.members("sey", period) * tax_unit.members("is_tax_unit_dependent", period))
+
+
+class basic_standard_deduction(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Basic standard deduction"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        STD = parameters(period).tax.deductions.standard
+        MARS = tax_unit("MARS", period)
+        MIDR = tax_unit("MIDR", period)
+
+        c15100_if_DSI = max_(
+            STD.dependent.additional_earned_income
+            + tax_unit("earned", period),
+            STD.dependent.amount,
+        )
+        basic_if_DSI = min_(STD.amount[MARS], c15100_if_DSI)
+        basic_if_not_DSI = where(MIDR, 0, STD.amount[MARS])
+        basic_stded = where(
+            tax_unit("DSI", period), basic_if_DSI, basic_if_not_DSI
+        )
+        return basic_stded
+
+
+class aged_blind_extra_standard_deduction(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Aged and blind standard deduction"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        STD = parameters(period).tax.deductions.standard
+        MARS = tax_unit("MARS", period)
+        MARSType = MARS.possible_values
+        num_extra_stded = (
+            tax_unit("blind_head", period) * 1
+            + tax_unit("blind_spouse", period) * 1
+            + (tax_unit("age_head", period) >= STD.aged_or_blind.age_threshold)
+            * 1
+            + (
+                (MARS == MARSType.JOINT)
+                & (
+                    tax_unit("age_spouse", period)
+                    >= STD.aged_or_blind.age_threshold
+                )
+            )
+            * 1
+        )
+        extra_stded = num_extra_stded * STD.aged_or_blind.amount[MARS]
+        return extra_stded
 
 
 class standard(Variable):
     value_type = float
     entity = TaxUnit
+    label = u"Standard deduction (zero for itemizers)"
     definition_period = YEAR
-    documentation = """Standard deduction (zero for itemizers)"""
 
+    def formula(tax_unit, period, parameters):
+        # Calculate basic standard deduction
+        basic_stded = tax_unit("basic_standard_deduction", period)
+        charity = parameters(period).tax.deductions.itemized.charity
+        MARS = tax_unit("MARS", period)
+        MIDR = tax_unit("MIDR", period)
+        MARSType = MARS.possible_values
+
+        # Calculate extra standard deduction for aged and blind
+        extra_stded = tax_unit("aged_blind_extra_standard_deduction", period)
+
+        # Calculate the total standard deduction
+        standard = basic_stded + extra_stded
+        standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
+        standard += charity.allow_nonitemizers * min_(
+            tax_unit("c19700", period), charity.nonitemizers_max
+        )
+
+        return standard
 
 class surtax(Variable):
     value_type = float
@@ -970,10 +883,8 @@ class ptax_oasdi(Variable):
         return add(
             tax_unit,
             period,
-            "ptax_ss_was_p",
-            "ptax_ss_was_s",
-            "setax_ss_p",
-            "setax_ss_s",
+            "filer_ptax_ss_was",
+            "filer_setax_ss",
             "extra_payrolltax",
         )
 
@@ -988,22 +899,19 @@ class ptax_was(Variable):
         ptax_was = add(
             tax_unit,
             period,
-            "tax_ss_was_p",
-            "ptax_ss_was_s",
-            "ptax_mc_was_p",
-            "ptax_mc_was_s",
+            "filer_ptax_ss_was",
+            "filter_ptax_mc_was",
         )
         return ptax_was
 
-
-class setax(Variable):
+class filer_setax(Variable):
     value_type = float
     entity = TaxUnit
+    label = u"Self-employment tax for the tax unit (excluding dependents)"
     definition_period = YEAR
-    documentation = """Self-employment tax"""
 
-    def formula(tax_unit, period):
-        return add(tax_unit, period, "setax_p", "setax_s")
+    def formula(tax_unit, period, parameters):
+        return tax_unit.sum(tax_unit.members("setax", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
 
 
 class ymod(Variable):

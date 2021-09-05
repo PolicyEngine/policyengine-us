@@ -36,6 +36,15 @@ class ptax_ss_was(Variable):
         rate = parameters(period).tax.payroll.FICA.social_security.tax_rate
         return rate * person("txearn_was", period)
 
+class filer_ptax_ss_was(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"OASDI payroll tax on wage income for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.sum(tax_unit.members("ptax_ss_was", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
+
 
 class ptax_mc_was(Variable):
     value_type = float
@@ -47,6 +56,14 @@ class ptax_mc_was(Variable):
         rate = parameters(period).tax.payroll.FICA.medicare.tax_rate
         return rate * person("gross_was", period)
 
+class filer_ptax_mc_was(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"HI payroll tax on wage income for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.sum(tax_unit.members("ptax_mc_was", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
 
 class sey_frac(Variable):
     value_type = float
@@ -60,7 +77,6 @@ class sey_frac(Variable):
             FICA.social_security.tax_rate + FICA.medicare.tax_rate
         )
         return sey_frac
-
 
 class txearn_sey(Variable):
     value_type = float
@@ -92,6 +108,16 @@ class setax_ss(Variable):
         return rate * person("txearn_sey", period)
 
 
+class filer_setax_ss(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"SECA self-employment SS tax for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.sum(tax_unit.members("setax_ss", period) * not_(tax_unit.members("is_tax_unit_dependent", period)))
+
+
 class setax_mc(Variable):
     value_type = float
     entity = Person
@@ -103,7 +129,6 @@ class setax_mc(Variable):
         return rate * max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
-
 
 class setax(Variable):
     value_type = float
