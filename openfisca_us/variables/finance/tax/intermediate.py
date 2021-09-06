@@ -44,10 +44,7 @@ class filer_ptax_ss_was(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("ptax_ss_was", period)
-            * not_(tax_unit.members("is_tax_unit_dependent", period))
-        )
+        return tax_unit_non_dep_sum("ptax_ss_was", period)
 
 
 class ptax_mc_was(Variable):
@@ -68,10 +65,7 @@ class filer_ptax_mc_was(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("ptax_mc_was", period)
-            * not_(tax_unit.members("is_tax_unit_dependent", period))
-        )
+        return tax_unit_non_dep_sum("ptax_mc_was", period)
 
 
 class sey_frac(Variable):
@@ -128,10 +122,7 @@ class filer_setax_ss(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("setax_ss", period)
-            * not_(tax_unit.members("is_tax_unit_dependent", period))
-        )
+        return tax_unit_non_dep_sum("setax_ss", period)
 
 
 class setax_mc(Variable):

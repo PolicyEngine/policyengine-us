@@ -80,10 +80,7 @@ class filer_sey(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("sey", period)
-            * tax_unit.members("is_tax_unit_dependent", period)
-        )
+        return tax_unit_non_dep_sum("sey", period)
 
 
 class niit(Variable):
@@ -109,10 +106,7 @@ class filer_earned(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("earned", period)
-            * tax_unit.members("is_tax_unit_dependent", period)
-        )
+        return tax_unit_non_dep_sum("earned", period)
 
 
 class earned(Variable):
@@ -251,10 +245,7 @@ class filer_sey(Variable):
     documentation = """sey for the tax unit (excluding dependents)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("sey", period)
-            * tax_unit.members("is_tax_unit_dependent", period)
-        )
+        return tax_unit_non_dep_sum("sey", period)
 
 
 class basic_standard_deduction(Variable):
@@ -917,10 +908,7 @@ class filer_setax(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(
-            tax_unit.members("setax", period)
-            * not_(tax_unit.members("is_tax_unit_dependent", period))
-        )
+        return tax_unit_non_dep_sum("setax", period)
 
 
 class ymod(Variable):

@@ -43,7 +43,7 @@
 				"	definition_period = ${3:YEAR}",
 				"",
 				"	def formula(tax_unit, period, parameters):",
-				"		return tax_unit.sum(tax_unit.members(\"${1:name}\", period) * not_(tax_unit.members(\"is_tax_unit_dependent\", period)))",
+				"		return tax_unit_non_dep_sum(${1:name}, period)",
 			]
 	}
 }
