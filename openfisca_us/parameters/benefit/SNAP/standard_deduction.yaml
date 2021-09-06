@@ -1,20 +1,4 @@
-description:
-- shelter_deduction: Maximum Monthly Shelter Deduction by State and Household Size
-- standard_deduction: Maximum Monthly Shelter Deduction by State and Household Size
-
-shelter_deduction:
-  non_disability_rate:
-    contiguous_US:
-      2021-01-01: 586
-    AK:
-      2021-01-01: 936
-    HI:
-      2021-01-01: 790
-    GU:
-      2021-01-01: 688
-    VI:
-      2021-01-01: 462
-
+description: Maximum Monthly Shelter Deduction by State and Household Size
 
 #NOTE: household sizes above 6 use the rate for a 6 member household in all states.   
 standard_deduction:
