@@ -80,7 +80,7 @@ class filer_sey(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("sey", period)
+        return tax_unit_non_dep_sum("sey", tax_unit, period)
 
 
 class niit(Variable):
@@ -106,7 +106,7 @@ class filer_earned(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("earned", period)
+        return tax_unit_non_dep_sum("earned", tax_unit, period)
 
 
 class earned(Variable):
@@ -245,7 +245,7 @@ class filer_sey(Variable):
     documentation = """sey for the tax unit (excluding dependents)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("sey", period)
+        return tax_unit_non_dep_sum("sey", tax_unit, period)
 
 
 class basic_standard_deduction(Variable):
@@ -282,22 +282,20 @@ class aged_blind_extra_standard_deduction(Variable):
         STD = parameters(period).tax.deductions.standard
         MARS = tax_unit("MARS", period)
         MARSType = MARS.possible_values
-        num_extra_stded = (
-            tax_unit("blind_head", period) * 1
-            + tax_unit("blind_spouse", period) * 1
-            + (tax_unit("age_head", period) >= STD.aged_or_blind.age_threshold)
-            * 1
-            + (
-                (MARS == MARSType.JOINT)
-                & (
-                    tax_unit("age_spouse", period)
-                    >= STD.aged_or_blind.age_threshold
-                )
+        blind_head = tax_unit("blind_head", period) * 1
+        blind_spouse = tax_unit("blind_spouse", period) * 1
+        aged_head = (
+            tax_unit("age_head", period) >= STD.aged_or_blind.age_threshold
+        ) * 1
+        aged_spouse = (
+            (MARS == MARSType.JOINT)
+            & (
+                tax_unit("age_spouse", period)
+                >= STD.aged_or_blind.age_threshold
             )
-            * 1
-        )
-        extra_stded = num_extra_stded * STD.aged_or_blind.amount[MARS]
-        return extra_stded
+        ) * 1
+        num_extra_stded = blind_head + blind_spouse + aged_head + aged_spouse
+        return num_extra_stded * STD.aged_or_blind.amount[MARS]
 
 
 class standard(Variable):
@@ -320,11 +318,9 @@ class standard(Variable):
         # Calculate the total standard deduction
         standard = basic_stded + extra_stded
         standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
-        standard += charity.allow_nonitemizers * min_(
+        return standard + charity.allow_nonitemizers * min_(
             tax_unit("c19700", period), charity.nonitemizers_max
         )
-
-        return standard
 
 
 class surtax(Variable):
@@ -908,7 +904,7 @@ class filer_setax(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("setax", period)
+        return tax_unit_non_dep_sum("setax", tax_unit, period)
 
 
 class ymod(Variable):

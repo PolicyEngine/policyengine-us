@@ -143,7 +143,7 @@ class filer_e00200(Variable):
     documentation = """Wages, salaries, and tips for filing unit (excluding dependents) net of pension contributions (pencon)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e00200", period)
+        return tax_unit_non_dep_sum("e00200", tax_unit, period)
 
 
 class pencon(Variable):
@@ -160,7 +160,7 @@ class filer_pencon(Variable):
     documentation = """Contributions to defined-contribution pension plans for filing unit (excluding dependents)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("pencon", period)
+        return tax_unit_non_dep_sum("pencon", tax_unit, period)
 
 
 class e00300(Variable):
@@ -219,7 +219,7 @@ class filer_e00900(Variable):
     documentation = """Sch C business net profit/loss for filing unit (excluding dependents)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e00900", period)
+        return tax_unit_non_dep_sum("e00900", tax_unit, period)
 
 
 class e01100(Variable):
@@ -280,7 +280,7 @@ class filer_e02100(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e02100", period)
+        return tax_unit_non_dep_sum("e02100", tax_unit, period)
 
 
 class e02300(Variable):
@@ -626,7 +626,7 @@ class filer_k1bx14(Variable):
     documentation = """Partner self-employment earnings/loss for tax unit (excluding dependents) (included in e26270 total)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("k1bx14", period)
+        return tax_unit_non_dep_sum("k1bx14", tax_unit, period)
 
 
 class mcaid_ben(Variable):

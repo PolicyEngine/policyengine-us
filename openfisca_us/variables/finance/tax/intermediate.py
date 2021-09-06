@@ -44,7 +44,7 @@ class filer_ptax_ss_was(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("ptax_ss_was", period)
+        return tax_unit_non_dep_sum("ptax_ss_was", tax_unit, period)
 
 
 class ptax_mc_was(Variable):
@@ -65,7 +65,7 @@ class filer_ptax_mc_was(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("ptax_mc_was", period)
+        return tax_unit_non_dep_sum("ptax_mc_was", tax_unit, period)
 
 
 class sey_frac(Variable):
@@ -76,10 +76,9 @@ class sey_frac(Variable):
 
     def formula(tax_unit, period, parameters):
         FICA = parameters(period).tax.payroll.FICA
-        sey_frac = 1.0 - 0.5 * (
+        return 1.0 - parameters(period).tax.ALD.misc.employer_share * (
             FICA.social_security.tax_rate + FICA.medicare.tax_rate
         )
-        return sey_frac
 
 
 class txearn_sey(Variable):
@@ -92,14 +91,13 @@ class txearn_sey(Variable):
         FICA = parameters(period).tax.payroll.FICA
         SS = FICA.social_security
         MC = FICA.medicare
-        txearn_sey_p = min_(
+        return min_(
             max_(
                 0.0,
                 person("sey", period) * person.tax_unit("sey_frac", period),
             ),
             SS.max_taxable_earnings - person("txearn_was", period),
         )
-        return txearn_sey_p
 
 
 class setax_ss(Variable):
@@ -122,7 +120,7 @@ class filer_setax_ss(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("setax_ss", period)
+        return tax_unit_non_dep_sum("setax_ss", tax_unit, period)
 
 
 class setax_mc(Variable):
@@ -156,8 +154,11 @@ class sey_frac_for_extra_OASDI(Variable):
 
     def formula(tax_unit, period, parameters):
         FICA = parameters(period).tax.payroll.FICA
-        sey_frac = 1.0 - 0.5 * FICA.social_security.tax_rate
-        return sey_frac
+        return (
+            1.0
+            - parameters(period).tax.ALD.misc.employer_share
+            * FICA.social_security.tax_rate
+        )
 
 
 class extra_payrolltax(Variable):
