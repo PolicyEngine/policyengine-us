@@ -129,41 +129,38 @@ class cmbtp(Variable):
 
 class e00200(Variable):
     value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Wages, salaries, and tips for filing unit net of pension contributions"""
-
-
-class e00200p(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Wages, salaries, and tips for taxpayer net of pension contributions (pencon_p)"""
-
-
-class e00200s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Wages, salaries, and tips for spouse net of pension contributions (pencon_s)"""
-
-
-class pencon_p(Variable):
-    value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
-        """Contributions to defined-contribution pension plans for taxpayer"""
+        """Wages, salaries, and tips net of pension contributions"""
     )
 
 
-class pencon_s(Variable):
+class filer_e00200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """Contributions to defined-contribution pension plans for spouse"""
-    )
+    documentation = """Wages, salaries, and tips for filing unit (excluding dependents) net of pension contributions (pencon)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e00200", tax_unit, period)
+
+
+class pencon(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    documentation = """Contributions to defined-contribution pension plans"""
+
+
+class filer_pencon(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = """Contributions to defined-contribution pension plans for filing unit (excluding dependents)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("pencon", tax_unit, period)
 
 
 class e00300(Variable):
@@ -210,23 +207,19 @@ class e00800(Variable):
 
 class e00900(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
-    documentation = """Sch C business net profit/loss for filing unit"""
+    documentation = """Sch C business net profit/loss"""
 
 
-class e00900p(Variable):
+class filer_e00900(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Sch C business net profit/loss for taxpayer"""
+    documentation = """Sch C business net profit/loss for filing unit (excluding dependents)"""
 
-
-class e00900s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch C business net profit/loss for spouse"""
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e00900", tax_unit, period)
 
 
 class e01100(Variable):
@@ -273,23 +266,21 @@ class e02000(Variable):
 
 class e02100(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
-    documentation = """Farm net income/loss for filing unit from Sch F"""
+    documentation = """Farm net income/loss from Sch F"""
 
 
-class e02100p(Variable):
+class filer_e02100(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Farm net income/loss for taxpayer"""
+    documentation = (
+        """Farm net income/loss for filing unit (excluding dependents)"""
+    )
 
-
-class e02100s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Farm net income/loss for spouse"""
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e02100", tax_unit, period)
 
 
 class e02300(Variable):
@@ -619,18 +610,23 @@ class data_source(Variable):
     documentation = """True if unit is created primarily from IRS-SOI PUF data; false if created primarily from CPS data (not used in tax-calculation logic)"""
 
 
-class k1bx14p(Variable):
+class k1bx14(Variable):
+    value_type = float
+    entity = Person
+    definition_period = YEAR
+    documentation = (
+        """Partner self-employment earnings/loss (included in e26270 total)"""
+    )
+
+
+class filer_k1bx14(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Partner self-employment earnings/loss for taxpayer (included in e26270 total)"""
+    documentation = """Partner self-employment earnings/loss for tax unit (excluding dependents) (included in e26270 total)"""
 
-
-class k1bx14s(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Partner self-employment earnings/loss for spouse (included in e26270 total)"""
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("k1bx14", tax_unit, period)
 
 
 class mcaid_ben(Variable):
