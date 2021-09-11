@@ -15,7 +15,33 @@ standard_deduction:
           2021-01-01: 212
         6:
           2021-01-01: 243
-      AK:
+      AK_urban:
+        1:
+          2021-01-01: 286 
+        2:
+          2021-01-01: 286
+        3:
+          2021-01-01: 286
+        4:
+          2021-01-01: 286
+        5:
+          2021-01-01: 286
+        6:
+          2021-01-01: 304
+      AK_rural_1:
+        1:
+          2021-01-01: 286 
+        2:
+          2021-01-01: 286
+        3:
+          2021-01-01: 286
+        4:
+          2021-01-01: 286
+        5:
+          2021-01-01: 286
+        6:
+          2021-01-01: 304    
+      AK_rural_2:
         1:
           2021-01-01: 286 
         2:
@@ -69,7 +95,7 @@ standard_deduction:
             2021-01-01: 487 
   
 metadata:
-  unit: USD
+  unit: currency-USD
   reference: 
   - title: USDA Cost of Living Adjustments
     href: https://www.fns.usda.gov/snap/allotment/COLA 
