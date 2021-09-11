@@ -1,0 +1,14 @@
+description: A taxpayer can only claim the dependent care deduction if their total income is below this level. The Trump 2016 campaign proposal was for 250000 single, 500000 joint, 250000 separate, 500000 head of household].
+SINGLE:
+  2013-01-01: 0
+JOINT:
+  2013-01-01: 0
+SEPARATE:
+  2013-01-01: 0
+HOUSEHOLD_HEAD:
+  2013-01-01: 0
+WIDOW:
+  2013-01-01: 0
+metadata:
+  unit: currency-USD
+  reference: http://taxcalc.pslmodels.org/guide/policy_params.html#ald-dependents-thd
