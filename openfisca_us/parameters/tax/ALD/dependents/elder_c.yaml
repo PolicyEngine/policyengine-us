@@ -2,5 +2,8 @@ description: "A taxpayer can take an above the line deduction up to this amount 
 values:
   2013-01-01: 0
 metadata:
-  unit: currency-USD
-  reference: http://taxcalc.pslmodels.org/guide/policy_params.html#ald-dependents-elder-c
+  unit: currency-USD  
+  period: year
+  reference:
+  - title: Tax-Calculator `ALD_Dependents_Elder_c` parameter documentation
+    href: http://taxcalc.pslmodels.org/guide/policy_params.html#ald-dependents-elder-c
