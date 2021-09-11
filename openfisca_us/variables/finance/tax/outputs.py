@@ -11,8 +11,7 @@ class TaxInc(Variable):
     def formula(tax_unit, period, parameters):
         # not accurate, for demo
         return max_(
-            0,
-            tax_unit("filer_earned", period) - tax_unit("standard", period),
+            0, tax_unit("filer_earned", period) - tax_unit("standard", period),
         )
 
 
@@ -889,10 +888,7 @@ class ptax_was(Variable):
 
     def formula(tax_unit, period, parameters):
         ptax_was = add(
-            tax_unit,
-            period,
-            "filer_ptax_ss_was",
-            "filter_ptax_mc_was",
+            tax_unit, period, "filer_ptax_ss_was", "filter_ptax_mc_was",
         )
         return ptax_was
 
@@ -944,3 +940,20 @@ class nontaxable_ubi(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Amount of UBI benefit excluded from AGI"""
+
+
+class DependentCare(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = """Dependent-care above-the-line deduction"""
+
+    def formula(tax_unit, period, parameters):
+        ALDdep = parameters(period).tax.ALD.dependents
+        MARS = tax_unit("MARS", period)
+        nu13 = tax_unit("nu13", period)
+        elderly_dependents = tax_unit("dependents", period)
+        max_child = nu13 * ALDdep.child_c
+        max_elderly = elderly_dependents * ALDdep.elder_c
+        max_ded = (1 - ALDdep.hc) * (max_child + max_elderly)
+        return where(tax_unit("earned", period) < ALDdep.thd[MARS], max_ded, 0)
