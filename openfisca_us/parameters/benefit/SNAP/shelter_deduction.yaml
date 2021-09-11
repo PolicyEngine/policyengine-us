@@ -4,8 +4,12 @@ shelter_deduction:
   non_disability_rate:
     contiguous_US:
       2021-01-01: 586
-    AK:
+    AK-Urban:
       2021-01-01: 936
+    AK-Rural 1:
+      2021-01-01: 936
+    AK-Rural 2:
+      2021-01-01: 936  
     HI:
       2021-01-01: 790
     GU:
@@ -14,7 +18,7 @@ shelter_deduction:
       2021-01-01: 462
 
 metadata:
-  unit: USD
+  unit: currency-USD
   reference: 
   - title: USDA Cost of Living Adjustments
     href: https://www.fns.usda.gov/snap/allotment/COLA 
