@@ -956,5 +956,5 @@ class DependentCare(Variable):
         max_child = nu13 * ALDdep.child_c
         max_elderly = elderly_dependents * ALDdep.elder_c
         max_ded = (1 - ALDdep.hc) * (max_child + max_elderly)
-        qualifies = tax_unit("earned", period) < ALDdep.thd[MARS]
+        qualifies = tax_unit("earned", period) <= ALDdep.thd[MARS]
         return qualifies * max_ded
