@@ -2,7 +2,7 @@ from microdf.generic import MicroDataFrame
 import numpy as np
 from openfisca_core import periods
 from openfisca_core.model_api import *
-from openfisca_us_data import BaseCPS, RawCPS
+from openfisca_us_data import CPS
 import openfisca_us
 import pandas as pd
 from openfisca_core.simulation_builder import SimulationBuilder
@@ -11,7 +11,7 @@ from microdf import MicroSeries
 
 
 class Microsimulation:
-    def __init__(self, *reforms, dataset=BaseCPS, year=2020):
+    def __init__(self, *reforms, dataset=CPS, year=2020):
         self.reforms = reforms
         self.load_dataset(dataset, year)
         self.bonus_sims = {}
@@ -30,36 +30,31 @@ class Microsimulation:
 
     def load_dataset(self, dataset, year):
         self.system = openfisca_us.CountryTaxBenefitSystem()
-        self.apply_reforms(
-            (BaseCPS.input_reform_from_year(year), self.reforms)
-        )
+        self.apply_reforms(self.reforms)
         builder = SimulationBuilder()
         builder.create_entities(self.system)
 
-        base_cps = BaseCPS.load(year)
+        data = dataset.load(year)
 
-        builder.declare_person_entity("person", base_cps[f"person_id/{year}"])
+        builder.declare_person_entity("person", data[f"person_id"])
 
         for group_entity in ("tax_unit", "family", "spm_unit", "household"):
-            primary_keys = np.array(base_cps[f"{group_entity}_id/{year}"])
+            primary_keys = np.array(data[f"{group_entity}_id"])
             group = builder.declare_entity(group_entity, primary_keys)
-            foreign_keys = np.array(
-                base_cps[f"person_{group_entity}_id/{year}"]
-            )
+            foreign_keys = np.array(data[f"person_{group_entity}_id"])
             builder.join_with_persons(
                 group, foreign_keys, np.array(["member"] * len(foreign_keys))
             )
 
         model = builder.build(self.system)
 
-        for variable in base_cps.keys():
+        for variable in data.keys():
             if variable in self.system.variables:
-                for input_period in base_cps[variable].keys():
-                    model.set_input(
-                        variable,
-                        input_period,
-                        np.array(base_cps[variable][input_period]),
-                    )
+                model.set_input(
+                    variable,
+                    year,
+                    np.array(data[variable]),
+                )
 
         self.simulation = model
 
