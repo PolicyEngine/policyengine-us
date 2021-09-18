@@ -200,7 +200,7 @@ class e00700(Variable):
 
 class e00800(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Alimony received"""
 
@@ -245,7 +245,7 @@ class e01400(Variable):
 
 class e01500(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Total pensions and annuities"""
 
@@ -285,14 +285,14 @@ class filer_e02100(Variable):
 
 class e02300(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Unemployment insurance benefits"""
 
 
 class e02400(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Total social security (OASDI) benefits"""
 
