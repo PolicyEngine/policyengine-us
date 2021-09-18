@@ -16,6 +16,41 @@ class person_weight(Variable):
     definition_period = YEAR
 
 
+class is_tax_unit_head(Variable):
+    value_type = bool
+    entity = Person
+    label = "Head of tax unit"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        # Use order of input (first)
+        return person.tax_unit.members_position == 0
+
+
+class is_tax_unit_spouse(Variable):
+    value_type = bool
+    entity = Person
+    label = "Spouse of tax unit"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        # Use order of input (second)
+        return person.tax_unit.members_position == 1
+
+
+class is_tax_unit_dependent(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is a dependent in the tax unit"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return not_(
+            person("is_tax_unit_head", period)
+            + person("is_tax_unit_spouse", period)
+        )
+
+
 class age(Variable):
     value_type = int
     entity = Person

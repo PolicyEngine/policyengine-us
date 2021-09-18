@@ -30,7 +30,7 @@ setup(
     ],
     install_requires=[
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "openfisca_data @ git+https://github.com/ubicenter/openfisca-data",
+        "openfisca_us_data @ git+https://github.com/ubicenter/openfisca-us-data",
         "microdf @ git+https://github.com/PSLmodels/microdf",
         "pandas",
         "tqdm",
@@ -53,6 +53,11 @@ setup(
             "flake8-use-fstring >= 1.1.0, < 2.0.0",
             "pylint >= 2.6.0, < 3.0.0",
             "pycodestyle >= 2.6.0, < 3.0.0",
+        ],
+    },
+    entry_points={
+        "console_scripts": [
+            "openfisca-us = openfisca_us.tools.cli:main",
         ],
     },
     packages=find_packages(),

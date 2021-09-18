@@ -11,4 +11,11 @@ def amount_between(x, lower, upper):
     return max_(min_(x, upper), lower) - lower
 
 
+def tax_unit_non_dep_sum(var, tax_unit, period):
+    return tax_unit.sum(
+        tax_unit.members(var, period)
+        * not_(tax_unit.members("is_tax_unit_dependent", period))
+    )
+
+
 infinity = np.inf
