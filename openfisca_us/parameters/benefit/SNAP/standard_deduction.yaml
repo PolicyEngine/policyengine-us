@@ -1,4 +1,4 @@
-description: Standard Deduction by State and Household Size
+description: SNAP Standard Deduction
 
 #NOTE: household sizes above 6 use the rate for a 6 member household in all states.   
 contiguous_US:
@@ -75,3 +75,6 @@ metadata:
   - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
     href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
   period: month
+  breakdown:
+  - State
+  - Household size
