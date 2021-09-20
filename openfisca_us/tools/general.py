@@ -7,6 +7,10 @@ def add(entity, period, *variables):
     return sum([entity(var, period) for var in variables])
 
 
+def aggr(entity, period, *variables):
+    return entity.sum(add(entity, period, *variables))
+
+
 def amount_between(x, lower, upper):
     return max_(min_(x, upper), lower) - lower
 

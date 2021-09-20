@@ -191,6 +191,16 @@ class e00650(Variable):
     documentation = """Qualified dividends included in ordinary dividends"""
 
 
+class filer_e00650(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Qualified dividends included in ordinary dividends for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e00650, tax_unit, period)
+
+
 class e00700(Variable):
     value_type = float
     entity = TaxUnit
@@ -288,6 +298,16 @@ class e02300(Variable):
     entity = Person
     definition_period = YEAR
     documentation = """Unemployment insurance benefits"""
+
+
+class filer_e02300(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = """Unemployment insurance benefits for filing unit (excluding dependents)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(tax_unit, period)
 
 
 class e02400(Variable):
@@ -504,9 +524,19 @@ class e24518(Variable):
 
 class e26270(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Sch E: Combined partnership and S-corporation net income/loss (includes k1bx14p and k1bx14s amounts and is included in e02000)"""
+
+
+class filer_e26270(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Label for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e26270, tax_unit, period)
 
 
 class e27200(Variable):
@@ -516,6 +546,16 @@ class e27200(Variable):
     documentation = (
         """Sch E: Farm rent net income or loss (included in e02000)"""
     )
+
+
+class filer_e27200(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Label for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e27200, tax_unit, period)
 
 
 class e32800(Variable):
@@ -776,10 +816,10 @@ class wic_ben(Variable):
 
 
 class PT_SSTB_income(Variable):
-    value_type = int
+    value_type = bool
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Value of one implies business income is from a specified service trade or business (SSTB); value of zero implies business income is from a qualified trade or business"""
+    documentation = """Whether business income is from a specified service trade or business (SSTB), rather than from a qualified trade or business"""
 
 
 class PT_binc_w2_wages(Variable):

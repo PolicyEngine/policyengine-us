@@ -178,3 +178,22 @@ class extra_payrolltax(Variable):
             * not_(tax_unit.members("is_tax_unit_dependent", period))
             * SS.tax_rate
         )
+
+
+class pre_qbid_taxinc(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Taxable income (pre-QBID)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        # Calculate UI excluded from taxable income
+        MARS = tax_unit("MARS", period)
+        UI = parameters(period).benefit.unemployment_insurance
+        UI_amount = tax_unit("filer_e02300", period)
+        AGI_over_UI = tax_unit("c00100", period) - UI_amount
+        return where(
+            AGI_over_UI <= UI.exemption.cutoff,
+            min_(UI_amount, UI.exemption.amount),
+            0,
+        )
