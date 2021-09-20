@@ -58,32 +58,72 @@ class Microsimulation:
 
         self.simulation = model
 
-    def calc(self, variable, period=2020, weighted=True):
+    def map_to(
+        self, arr: np.array, entity: str, target_entity: str, how: str = None
+    ):
+        entity_pop = self.simulation.populations[entity]
+        target_pop = self.simulation.populations[target_entity]
+        GROUP_ENTITIES = ("tax_unit", "family", "spm_unit", "household")
+        if entity == "person" and target_entity in GROUP_ENTITIES:
+            if how and how not in (
+                "sum",
+                "any",
+                "min",
+                "max",
+                "all",
+                "value_from_first_person",
+            ):
+                raise ValueError("Not a valid function.")
+            return target_pop.__getattribute__(how or "sum")(arr)
+        elif entity in GROUP_ENTITIES and target_entity == "person":
+            if not how:
+                return entity_pop.project(arr)
+            if how == "mean":
+                return entity_pop.project(arr / entity_pop.nb_persons())
+        elif entity == target_entity:
+            return arr
+        else:
+            return self.map_to(
+                self.map_to(arr, entity, "person", how="mean"),
+                "person",
+                target_entity,
+                how="sum",
+            )
+
+    def calc(
+        self, variable, map_to=None, how=None, period=2020, weighted=True
+    ):
         var_metadata = self.simulation.tax_benefit_system.variables[variable]
-        entity_key = var_metadata.entity.key
+        entity = var_metadata.entity.key
         arr = self.simulation.calculate(variable, period)
-        if var_metadata.value_type == bool:
-            arr = arr >= 52
         if var_metadata.value_type == float:
             arr = arr.round(2)
         if var_metadata.value_type == Enum:
             arr = arr.decode_to_str()
+        if map_to:
+            arr = self.map_to(arr, entity, map_to, how=how)
+            entity = map_to
         if weighted:
             series = MicroSeries(
                 arr,
                 weights=self.calc(
-                    f"{entity_key}_weight", period=period, weighted=False
+                    f"{entity}_weight", period=period, weighted=False
                 ),
             )
             return series
         else:
             return arr
 
-    def df(self, variables, year=2019):
+    def df(self, variables, period=2019):
         df_dict = {}
+        var_metadata = self.simulation.tax_benefit_system.variables[
+            variables[0]
+        ]
+        entity = var_metadata.entity.key
+        weights = self.calc(f"{entity}_weight", period=period, weighted=False)
         for var in variables:
-            df_dict[var] = self.calc(var, year=year)
-        return MicroDataFrame(df_dict, weights=self.weights[year])
+            df_dict[var] = self.calc(var, period=period)
+        return MicroDataFrame(df_dict, weights=weights)
 
     def deriv(
         self,

@@ -10,3 +10,9 @@ from openfisca_us.reforms.tools.parametric import (
     reform_from_file,
     set_parameter,
 )
+
+from openfisca_us.reforms.tools.structural import (
+    new_variable,
+    restructure,
+    abolish,
+)
