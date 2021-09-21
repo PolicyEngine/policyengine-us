@@ -96,6 +96,9 @@ class combined(Variable):
     definition_period = YEAR
     documentation = """Sum of iitax and payrolltax and lumpsum_tax"""
 
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "iitax", "payrolltax")
+
 
 class filer_earned(Variable):
     value_type = float
@@ -149,6 +152,9 @@ class eitc(Variable):
     definition_period = YEAR
     documentation = """Earned Income Credit"""
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit("c59660", period)
+
 
 class rptc(Variable):
     value_type = float
@@ -195,6 +201,9 @@ class iitax(Variable):
     definition_period = YEAR
     documentation = """Total federal individual income tax liability; appears as INCTAX variable in tc CLI minimal output"""
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit("c09200", period) - tax_unit("refund", period)
+
 
 class num(Variable):
     value_type = int
@@ -227,6 +236,23 @@ class refund(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Total refundable income tax credits"""
+
+    def formula(tax_unit, period, parameters):
+        CTC_refundable = parameters(
+            period
+        ).tax.credits.child_tax_credit.refundable
+        CTC_refund = tax_unit("c07220", period) * CTC_refundable
+        REFUND_COMPONENTS = (
+            "eitc",
+            "c11070",
+            "c10960",
+            "CDCC_refund",
+            "recovery_rebate_credit",
+            "personal_refundable_credit",
+            "ctc_new",
+            "rptc",
+        )
+        return add(tax_unit, period, REFUND_COMPONENTS) + CTC_refund
 
 
 class sep(Variable):
@@ -944,3 +970,15 @@ class nontaxable_ubi(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Amount of UBI benefit excluded from AGI"""
+
+
+class aftertax_income(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"After-tax income"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("expanded_income", period) - tax_unit(
+            "combined", period
+        )
