@@ -12,8 +12,9 @@ import os
 
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 
-from openfisca_us import entities
+from openfisca_us import reforms
 from openfisca_us.api import *
+from openfisca_us.entities import *
 from openfisca_us.situation_examples import single_filer
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +27,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
     def __init__(self):
         # We initialize our tax and benefit system with the general constructor
-        super().__init__(entities.entities)
+        super().__init__(entities)
 
         # We add to our tax and benefit system all the variables
         self.add_variables_from_directory(
