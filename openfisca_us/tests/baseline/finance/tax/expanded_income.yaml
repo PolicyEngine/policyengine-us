@@ -1,0 +1,34 @@
+- name: Basic expanded income test
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        e00200: 10000
+        pencon: 1000
+        e00300: 100
+        e00400: 200
+        e00600: 300
+        e00700: 400
+        e00800: 20
+        e00900: 500
+        e01100: 50
+        e01200: 250
+        e01400: 10
+        e01500: 20
+        e02000: 30
+        e02100: 40
+        p22250: 60
+        p23250: 70
+        cmbtp: 80
+      person2:
+        is_tax_unit_spouse: true
+        pencon: 500
+    tax_units:
+      taxunit:
+        members: [person1, person2]
+        ptax_was: 1500
+        benefit_value_total: 2000
+  output:
+    expanded_income: 16380

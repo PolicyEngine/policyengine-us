@@ -201,7 +201,6 @@ class expanded_income(Variable):
             "e00300",
             "e00400",
             "e00600",
-            "e00600",
             "e00700",
             "e00800",
             "e00900",
@@ -218,7 +217,7 @@ class expanded_income(Variable):
         filer_components = add(
             tax_unit,
             period,
-            [f"filer_{component}" for component in FILER_COMPONENTS],
+            *[f"filer_{component}" for component in FILER_COMPONENTS],
         )
         return (
             filer_components
@@ -1007,3 +1006,10 @@ class aftertax_income(Variable):
         expanded = tax_unit("expanded_income", period)
         combined = tax_unit("combined", period)
         return expanded - combined
+
+
+class benefit_value_total(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Total benefit value"
+    definition_period = YEAR
