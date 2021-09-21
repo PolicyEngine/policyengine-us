@@ -94,7 +94,7 @@ class combined(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Sum of iitax and payrolltax and lumpsum_tax"""
+    documentation = """Sum of iitax and payrolltax"""
 
     def formula(tax_unit, period, parameters):
         return add(tax_unit, period, "iitax", "payrolltax")
@@ -891,13 +891,6 @@ class invinc_ec_base(Variable):
     )
 
 
-class lumpsum_tax(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Lumpsum (or head) tax; appears as LSTAX variable in tc CLI minimal output"""
-
-
 class pre_c04600(Variable):
     value_type = float
     entity = TaxUnit
@@ -1011,6 +1004,6 @@ class aftertax_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("expanded_income", period) - tax_unit(
-            "combined", period
-        )
+        expanded = tax_unit("expanded_income", period)
+        combined = tax_unit("combined", period)
+        return expanded - combined
