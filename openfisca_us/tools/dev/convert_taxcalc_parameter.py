@@ -20,7 +20,7 @@ def year_to_date(year: int) -> str:
 
 
 def convert_param(param: dict) -> dict:
-    result = dict(description=param["title"], values={})
+    result = dict(description=param["title"])
     for value in param["value"]:
         date = year_to_date(value["year"])
         val = float(value["value"])
@@ -28,10 +28,10 @@ def convert_param(param: dict) -> dict:
             result["values"][date] = val
         else:
             mars = MARS_map[value["MARS"]]
-            if mars not in result["values"]:
-                result["values"][mars] = {date: val}
+            if mars not in result:
+                result[mars] = dict(values={date: val})
             else:
-                result["values"][mars][date] = val
+                result[mars]["values"][date] = val
     result["metadata"] = dict(
         unit="currency-USD",
     )

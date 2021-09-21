@@ -1,8 +1,8 @@
 description: Dollar gap between upper and lower threshold of pre-QBID taxable income
 metadata:
   unit: currency-USD
-values:
-  HEAD_OF_HOUSEHOLD:
+HEAD_OF_HOUSEHOLD:
+  values:
     2013-01-01: 1.0
     2014-01-01: 1.0
     2015-01-01: 1.0
@@ -11,7 +11,8 @@ values:
     2018-01-01: 50000.0
     2019-01-01: 50000.0
     2026-01-01: 1.0
-  JOINT:
+JOINT:
+  values:
     2013-01-01: 1.0
     2014-01-01: 1.0
     2015-01-01: 1.0
@@ -20,7 +21,8 @@ values:
     2018-01-01: 100000.0
     2019-01-01: 100000.0
     2026-01-01: 1.0
-  SEPARATE:
+SEPARATE:
+  values:
     2013-01-01: 1.0
     2014-01-01: 1.0
     2015-01-01: 1.0
@@ -29,7 +31,8 @@ values:
     2018-01-01: 50000.0
     2019-01-01: 50000.0
     2026-01-01: 1.0
-  SINGLE:
+SINGLE:
+  values:
     2013-01-01: 1.0
     2014-01-01: 1.0
     2015-01-01: 1.0
@@ -38,7 +41,8 @@ values:
     2018-01-01: 50000.0
     2019-01-01: 50000.0
     2026-01-01: 1.0
-  WIDOW:
+WIDOW:
+  values:
     2013-01-01: 1.0
     2014-01-01: 1.0
     2015-01-01: 1.0
