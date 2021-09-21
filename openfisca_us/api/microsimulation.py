@@ -114,7 +114,7 @@ class Microsimulation:
         else:
             return arr
 
-    def df(self, variables, period=2019):
+    def df(self, variables, period=2020):
         df_dict = {}
         var_metadata = self.simulation.tax_benefit_system.variables[
             variables[0]
