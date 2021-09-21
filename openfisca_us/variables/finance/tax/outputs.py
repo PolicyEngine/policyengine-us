@@ -76,7 +76,7 @@ class sey(Variable):
 class filer_sey(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"sey for the tax unit (excluding dependents)"
+    label = "sey for the tax unit (excluding dependents)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -193,6 +193,38 @@ class expanded_income(Variable):
     documentation = (
         """Broad income measure that includes benefit_value_total"""
     )
+
+    def formula(tax_unit, period, parameters):
+        FILER_COMPONENTS = (
+            "e00200",
+            "pencon",
+            "e00300",
+            "e00400",
+            "e00600",
+            "e00600",
+            "e00700",
+            "e00800",
+            "e00900",
+            "e01100",
+            "e01200",
+            "e01400",
+            "e01500",
+            "e02000",
+            "e02100",
+            "p22250",
+            "p23250",
+            "cmbtp",
+        )
+        filer_components = add(
+            tax_unit,
+            period,
+            [f"filer_{component}" for component in FILER_COMPONENTS],
+        )
+        return (
+            filer_components
+            + 0.5 * tax_unit("ptax_was", period)
+            + tax_unit("benefit_value_total", period)
+        )
 
 
 class iitax(Variable):
@@ -327,7 +359,7 @@ class aged_blind_extra_standard_deduction(Variable):
 class standard(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Standard deduction (zero for itemizers)"
+    label = "Standard deduction (zero for itemizers)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -926,7 +958,7 @@ class ptax_was(Variable):
 class filer_setax(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Self-employment tax for the tax unit (excluding dependents)"
+    label = "Self-employment tax for the tax unit (excluding dependents)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -975,7 +1007,7 @@ class nontaxable_ubi(Variable):
 class aftertax_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"After-tax income"
+    label = "After-tax income"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
