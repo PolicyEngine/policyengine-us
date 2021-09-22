@@ -76,7 +76,7 @@ class sey(Variable):
 class filer_sey(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"sey for the tax unit (excluding dependents)"
+    label = "sey for the tax unit (excluding dependents)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -94,7 +94,10 @@ class combined(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Sum of iitax and payrolltax and lumpsum_tax"""
+    documentation = """Sum of iitax and payrolltax"""
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "iitax", "payrolltax")
 
 
 class filer_earned(Variable):
@@ -149,6 +152,9 @@ class eitc(Variable):
     definition_period = YEAR
     documentation = """Earned Income Credit"""
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit("c59660", period)
+
 
 class rptc(Variable):
     value_type = float
@@ -188,12 +194,46 @@ class expanded_income(Variable):
         """Broad income measure that includes benefit_value_total"""
     )
 
+    def formula(tax_unit, period, parameters):
+        FILER_COMPONENTS = (
+            "e00200",
+            "pencon",
+            "e00300",
+            "e00400",
+            "e00600",
+            "e00700",
+            "e00800",
+            "e00900",
+            "e01100",
+            "e01200",
+            "e01400",
+            "e01500",
+            "e02000",
+            "e02100",
+            "p22250",
+            "p23250",
+            "cmbtp",
+        )
+        filer_components = add(
+            tax_unit,
+            period,
+            *[f"filer_{component}" for component in FILER_COMPONENTS],
+        )
+        return (
+            filer_components
+            + 0.5 * tax_unit("ptax_was", period)
+            + tax_unit("benefit_value_total", period)
+        )
+
 
 class iitax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Total federal individual income tax liability; appears as INCTAX variable in tc CLI minimal output"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("c09200", period) - tax_unit("refund", period)
 
 
 class num(Variable):
@@ -227,6 +267,23 @@ class refund(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Total refundable income tax credits"""
+
+    def formula(tax_unit, period, parameters):
+        CTC_refundable = parameters(
+            period
+        ).tax.credits.child_tax_credit.refundable
+        CTC_refund = tax_unit("c07220", period) * CTC_refundable
+        REFUND_COMPONENTS = (
+            "eitc",
+            "c11070",
+            "c10960",
+            "CDCC_refund",
+            "recovery_rebate_credit",
+            "personal_refundable_credit",
+            "ctc_new",
+            "rptc",
+        )
+        return add(tax_unit, period, REFUND_COMPONENTS) + CTC_refund
 
 
 class sep(Variable):
@@ -301,7 +358,7 @@ class aged_blind_extra_standard_deduction(Variable):
 class standard(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Standard deduction (zero for itemizers)"
+    label = "Standard deduction (zero for itemizers)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -911,13 +968,6 @@ class invinc_ec_base(Variable):
     )
 
 
-class lumpsum_tax(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Lumpsum (or head) tax; appears as LSTAX variable in tc CLI minimal output"""
-
-
 class pre_c04600(Variable):
     value_type = float
     entity = TaxUnit
@@ -978,7 +1028,7 @@ class ptax_was(Variable):
 class filer_setax(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Self-employment tax for the tax unit (excluding dependents)"
+    label = "Self-employment tax for the tax unit (excluding dependents)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -1022,3 +1072,22 @@ class nontaxable_ubi(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Amount of UBI benefit excluded from AGI"""
+
+
+class aftertax_income(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "After-tax income"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        expanded = tax_unit("expanded_income", period)
+        combined_tax = tax_unit("combined", period)
+        return expanded - combined_tax
+
+
+class benefit_value_total(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Total benefit value"
+    definition_period = YEAR
