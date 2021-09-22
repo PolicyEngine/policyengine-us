@@ -408,14 +408,92 @@ class qbided(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "QBI deduction"
     documentation = """Qualified Business Income (QBI) deduction"""
+
+    def formula(tax_unit, period, parameters):
+        MARS = tax_unit("MARS", period)
+        qbinc = max_(
+            0,
+            add(
+                tax_unit,
+                period,
+                "filer_e00900",
+                "filer_e26270",
+                "filer_e02100",
+                "filer_e27200",
+            ),
+        )
+        QBID = parameters(period.deductions.qualified_business_interest)
+        lower_threshold = QBID.threshold.lower[MARS]
+        upper_threshold = lower_threshold + QBID.threshold.gap[MARS]
+        pre_qbid_taxinc = tax_unit("pre_qbid_taxinc", period)
+        under_lower_threshold = pre_qbid_taxinc < lower_threshold
+        between_thresholds = ~under_lower_threshold & (
+            pre_qbid_taxinc < upper_threshold
+        )
+        above_upper_threshold = ~under_lower_threshold & ~between_thresholds
+        income_is_qualified = tax_unit("PT_SSTB_income", period)
+
+        # Wage/capital limitations
+        w_2_wages = tax_unit("PT_binc_w2_wages", period)
+        business_property = tax_unit("PT_ubia_property", period)
+        wage_cap = w_2_wages * QBID.cap.W_2_wages.rate
+        alt_cap = (
+            w_2_wages * QBID.cap.W_2_wages.alt_rate
+            + business_property * QBID.cap.business_property.rate
+        )
+        fraction_of_gap_passed = (
+            pre_qbid_taxinc - lower_threshold
+        ) / QBID.threshold.gap[MARS]
+        fraction_of_gap_unused = (
+            upper_threshold - pre_qbid_taxinc
+        ) / QBID.threshold.gap[MARS]
+
+        # Adjustments for qualified income under the upper threshold
+        QBI_between_threshold_multiplier = where(
+            income_is_qualified & between_thresholds,
+            fraction_of_gap_unused,
+            1.0,
+        )
+        max_qbid = (
+            qbinc * QBID.pass_through_rate * QBI_between_threshold_multiplier
+        )
+        full_cap = max_(wage_cap, alt_cap) * QBI_between_threshold_multiplier
+
+        # Adjustment for QBID where income is between the main thresholds
+        adjustment = fraction_of_gap_passed * (max_qbid - full_cap)
+
+        qbid = select(
+            (
+                under_lower_threshold,
+                between_thresholds,
+                above_upper_threshold,
+            ),
+            (
+                max_qbid,
+                max_qbid - adjustment,
+                where(income_is_qualified, 0, min_(max_qbid, full_cap)),
+            ),
+        )
+
+        # Apply taxable income cap
+        net_cg = add(tax_unit, period, "filer_e00650", "c0100")
+        taxinc_cap = QBID.pass_through_rate * max_(0, pre_qbid_taxinc - net_cg)
+        return min_(qbid, taxinc_cap)
 
 
 class c04800(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Taxable income"
     documentation = """Regular taxable income"""
+
+    def formula(tax_unit, period, parameters):
+        return max_(
+            0, tax_unit("pre_qbid_taxinc", period) - tax_unit("qbided", period)
+        )
 
 
 class c05200(Variable):
