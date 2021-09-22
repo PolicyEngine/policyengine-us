@@ -1004,8 +1004,8 @@ class aftertax_income(Variable):
 
     def formula(tax_unit, period, parameters):
         expanded = tax_unit("expanded_income", period)
-        combined = tax_unit("combined", period)
-        return expanded - combined
+        combined_tax = tax_unit("combined", period)
+        return expanded - combined_tax
 
 
 class benefit_value_total(Variable):
