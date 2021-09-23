@@ -19,3 +19,5 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
 
 
 infinity = np.inf
+select = np.select
+where = np.where
