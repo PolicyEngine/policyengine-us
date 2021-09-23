@@ -260,7 +260,19 @@ class payrolltax(Variable):
     documentation = """Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"""
 
     def formula(tax_unit, period):
-        return add(tax_unit, period, "ptax_was", "setax", "extra_payrolltax")
+        return add(
+            tax_unit, period, "ptax_was", "filer_setax", "extra_payrolltax"
+        )
+
+
+class employee_payrolltax(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Employee's share of payroll tax"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("payrolltax", period) * 0.5
 
 
 class refund(Variable):
@@ -943,7 +955,7 @@ class ptax_was(Variable):
             tax_unit,
             period,
             "filer_ptax_ss_was",
-            "filter_ptax_mc_was",
+            "filer_ptax_mc_was",
         )
         return ptax_was
 
