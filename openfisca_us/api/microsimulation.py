@@ -8,10 +8,12 @@ import pandas as pd
 from openfisca_core.simulation_builder import SimulationBuilder
 from pathlib import Path
 from microdf import MicroSeries
+import tables
 
 
 class Microsimulation:
     def __init__(self, *reforms, dataset=CPS, year=2020):
+        tables.file._open_files.close_all()
         self.reforms = reforms
         self.load_dataset(dataset, year)
         self.bonus_sims = {}
@@ -36,7 +38,7 @@ class Microsimulation:
 
         data = dataset.load(year)
 
-        builder.declare_person_entity("person", data[f"person_id"])
+        builder.declare_person_entity("person", np.array(data["person_id"]))
 
         for group_entity in ("tax_unit", "family", "spm_unit", "household"):
             primary_keys = np.array(data[f"{group_entity}_id"])
