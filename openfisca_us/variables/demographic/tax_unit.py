@@ -31,7 +31,6 @@ class MARSType(Enum):
     WIDOW = "Widow(er)"
 
 
-
 class is_tax_unit_head(Variable):
     value_type = bool
     entity = Person

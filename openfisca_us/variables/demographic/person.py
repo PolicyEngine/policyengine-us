@@ -16,7 +16,6 @@ class person_weight(Variable):
     definition_period = YEAR
 
 
-
 class age(Variable):
     value_type = int
     entity = Person
