@@ -9,6 +9,9 @@ class SPM_unit_total_income(Variable):
     label = u"SPM unit total income"
     definition_period = YEAR
 
+    def formula(spm_unit, period, parameters):
+        return spm_unit.sum(spm_unit.members("e00200", period))
+
 
 class SPM_unit_SNAP(Variable):
     value_type = float

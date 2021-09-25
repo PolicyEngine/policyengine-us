@@ -9,16 +9,23 @@ class IndividualSim:
         self.year = year
         self.reforms = reforms
         self.system = openfisca_us.CountryTaxBenefitSystem()
+        self.sim_builder = SimulationBuilder()
         self.entities = {var.key: var for var in self.system.entities}
         self.apply_reforms(self.reforms)
-        self.situation_data = {}
+        self.situation_data = {
+            entity: {}
+            for entity in (
+                "people",
+                "families",
+                "tax_units",
+                "households",
+                "spm_units",
+            )
+        }
         self.varying = False
         self.num_points = None
 
     def build(self):
-        self.sim_builder = SimulationBuilder()
-        self.system = openfisca_us.CountryTaxBenefitSystem()
-        self.apply_reforms(self.reforms)
         self.sim = self.sim_builder.build_from_entities(
             self.system, self.situation_data
         )
@@ -74,8 +81,11 @@ class IndividualSim:
     def add_person(self, **kwargs):
         self.add_data(entity="person", **kwargs)
 
-    def add_taxunit(self, **kwargs):
+    def add_tax_unit(self, **kwargs):
         self.add_data(entity="tax_unit", name="tax_unit", **kwargs)
+
+    def add_household(self, **kwargs):
+        self.add_data(entity="household", name="household", **kwargs)
 
     def get_entity(self, name):
         entity_type = [
@@ -178,7 +188,6 @@ class IndividualSim:
                 "min": min,
                 "max": max,
                 "period": period,
-                "index": index,
             }
         ]
         self.build()

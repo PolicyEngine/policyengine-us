@@ -21,3 +21,14 @@ class person_household_id(Variable):
     entity = Person
     label = u"Unique reference for the household of this person"
     definition_period = ETERNITY
+
+
+class is_household_head(Variable):
+    value_type = float
+    entity = Person
+    label = u"Head of household"
+    definition_period = ETERNITY
+
+    def formula(person, period, parameters):
+        # Use order of input (first)
+        return person.household.members_position == 0
