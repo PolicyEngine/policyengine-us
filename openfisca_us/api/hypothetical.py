@@ -5,13 +5,13 @@ from openfisca_core.periods import period
 
 
 class IndividualSim:
-    def __init__(self, *reforms, year=2018):
+    def __init__(self, *reforms, year=2020):
         self.year = year
         self.reforms = reforms
         self.system = openfisca_us.CountryTaxBenefitSystem()
         self.entities = {var.key: var for var in self.system.entities}
         self.apply_reforms(self.reforms)
-        self.situation_data = {"people": {}, "taxunits": {}}
+        self.situation_data = {}
         self.varying = False
         self.num_points = None
 
@@ -45,6 +45,8 @@ class IndividualSim:
     ):
         input_period = input_period or self.year
         entity_plural = self.entities[entity].plural
+        if entity_plural not in self.situation_data:
+            self.situation_data[entity_plural] = {}
         if name is None:
             name = (
                 entity + "_" + str(len(self.situation_data[entity_plural]) + 1)
@@ -68,13 +70,12 @@ class IndividualSim:
                 except:
                     data[var] = value
         self.situation_data[entity_plural][name] = data
-        self.build()
 
     def add_person(self, **kwargs):
         self.add_data(entity="person", **kwargs)
 
     def add_taxunit(self, **kwargs):
-        self.add_data(entity="taxunit", name="taxunit", **kwargs)
+        self.add_data(entity="tax_unit", name="tax_unit", **kwargs)
 
     def get_entity(self, name):
         entity_type = [
@@ -86,17 +87,17 @@ class IndividualSim:
 
     def get_group(self, entity, name):
         containing_entity = [
-            group
-            for group in self.situation_data[entity.plural]
-            if name == self.situation_data[entity.plural][group]["head"]
-            or name == self.situation_data[entity.plural][group]["spouse"]
-            or name in self.situation_data[entity.plural][group]["dependents"]
+            group for group in self.situation_data[entity.plural]
         ][0]
         return containing_entity
 
     def calc(self, var, period=None, target=None, index=None):
+        if not hasattr(self, "sim"):
+            self.build()
         period = period or self.year
         entity = self.sim_builder.get_variable_entity(var)
+        if entity.plural not in self.situation_data:
+            self.situation_data[entity.plural] = {}
         if target is not None:
             target_entity = self.get_entity(target)
             if target_entity.key != entity.key:
