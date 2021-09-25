@@ -36,7 +36,7 @@ class Microsimulation:
 
         data = dataset.load(year)
 
-        builder.declare_person_entity("person", data[f"person_id"])
+        builder.declare_person_entity("person", np.array(data["person_id"]))
 
         for group_entity in ("tax_unit", "family", "spm_unit", "household"):
             primary_keys = np.array(data[f"{group_entity}_id"])
