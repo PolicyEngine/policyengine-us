@@ -8,10 +8,12 @@ import pandas as pd
 from openfisca_core.simulation_builder import SimulationBuilder
 from pathlib import Path
 from microdf import MicroSeries
+import tables
 
 
 class Microsimulation:
     def __init__(self, *reforms, dataset=CPS, year=2020):
+        tables.file._open_files.close_all()
         self.reforms = reforms
         self.load_dataset(dataset, year)
         self.bonus_sims = {}
