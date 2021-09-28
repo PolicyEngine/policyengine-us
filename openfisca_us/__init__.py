@@ -13,7 +13,6 @@ import os
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 
 from openfisca_us import reforms
-from openfisca_us.api import *
 from openfisca_us.entities import *
 from openfisca_us.situation_examples import single_filer
 

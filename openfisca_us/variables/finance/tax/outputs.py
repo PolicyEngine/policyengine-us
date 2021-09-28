@@ -11,7 +11,8 @@ class TaxInc(Variable):
     def formula(tax_unit, period, parameters):
         # not accurate, for demo
         return max_(
-            0, tax_unit("filer_earned", period) - tax_unit("standard", period),
+            0,
+            tax_unit("filer_earned", period) - tax_unit("standard", period),
         )
 
 
@@ -1028,7 +1029,10 @@ class ptax_was(Variable):
 
     def formula(tax_unit, period, parameters):
         ptax_was = add(
-            tax_unit, period, "filer_ptax_ss_was", "filer_ptax_mc_was",
+            tax_unit,
+            period,
+            "filer_ptax_ss_was",
+            "filer_ptax_mc_was",
         )
         return ptax_was
 

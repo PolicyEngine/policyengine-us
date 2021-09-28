@@ -35,6 +35,7 @@ setup(
         "pandas",
         "tqdm",
         "requests",
+        "PolicyEngine-Core>=0.1.0",
     ],
     extras_require={
         "dev": [
@@ -56,7 +57,9 @@ setup(
         ],
     },
     entry_points={
-        "console_scripts": ["openfisca-us = openfisca_us.tools.cli:main",],
+        "console_scripts": [
+            "openfisca-us = openfisca_us.tools.cli:main",
+        ],
     },
     packages=find_packages(),
 )
