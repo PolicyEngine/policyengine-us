@@ -35,6 +35,7 @@ setup(
         "pandas",
         "tqdm",
         "requests",
+        "PolicyEngine-Core>=0.1.0",
     ],
     extras_require={
         "dev": [
