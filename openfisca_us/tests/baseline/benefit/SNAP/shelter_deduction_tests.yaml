@@ -1,0 +1,18 @@
+description: 
+
+- name: SNAP Shelter Deduction, family of 4, no elderly or disabled, just below max income for eligibility
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    earned: 2200
+    any_elderly: false
+    any_disabled: false
+    monthly_housing_cost: 1200
+  output:
+    shelter_deduction: 100
+
+  
+
+    
+
+
