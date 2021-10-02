@@ -1,6 +1,6 @@
 description: Maximum SNAP shelter deduction
 
-standard_max:
+amount:
   contiguous_US:
     2021-01-01: 586
   AK_urban:
@@ -16,21 +16,8 @@ standard_max:
   VI:
     2021-01-01: 462
 
-elderly_disability_max:
-  contiguous_US:
-    2021-01-01: 99_999
-  AK_urban:
-    2021-01-01: 99_999
-  AK_rural_1:
-    2021-01-01: 99_999
-  AK_rural_2:
-    2021-01-01: 99_999  
-  HI:
-    2021-01-01: 99_999
-  GU:
-    2021-01-01: 99_999
-  VI:
-    2021-01-01: 99_999
+elderly_or_disabled_exempt:
+  2021-01-01: true
   
 metadata:
   unit: currency-USD
