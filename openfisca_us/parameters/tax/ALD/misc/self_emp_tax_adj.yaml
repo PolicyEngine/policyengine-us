@@ -1,0 +1,6 @@
+description: Adjustment for self-employment tax haircut
+documentation: This decimal fraction, if greater than zero, reduces the employer equivalent portion of self-employment adjustment. The final adjustment amount would be (1-Haircut)*SelfEmploymentTaxAdjustment.
+values:
+  2013-01-01: 0
+metadata:
+  unit: /1

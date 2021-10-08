@@ -1,4 +1,6 @@
+all: test
 format:
+	autopep8 -r .
 	black . -l 79
-test: format
-	openfisca test -c openfisca_us openfisca_us/tests/baseline
+test:
+	openfisca-us test openfisca_us/tests

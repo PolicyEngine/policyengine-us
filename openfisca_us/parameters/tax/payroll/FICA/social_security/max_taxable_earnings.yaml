@@ -1,0 +1,12 @@
+description: Maximum taxable earnings (MTE) for Social Security
+documentation: Individual earnings below this amount are subjected to Social Security (OASDI) payroll tax. This parameter is indexed by the rate of growth in average wages, not by the price inflation rate.
+values:
+  2013-01-01: 113700
+  2014-01-01: 117000
+  2015-01-01: 118500
+  2016-01-01: 118500
+  2017-01-01: 127200
+  2018-01-01: 128400
+  2019-01-01: 132900
+metadata:
+  unit: currency-USD

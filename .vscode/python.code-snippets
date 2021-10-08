@@ -18,6 +18,7 @@
 		 		"class ${1:name}(Variable):",
 				"	value_type = ${2:float}",
 				"	entity = ${3:TaxUnit}",
+				"	label = u\"${4:Label}\"",
 				"	definition_period = ${5:YEAR}",
 				"",
 				""
@@ -27,9 +28,22 @@
 	"OpenFisca-US Formula": {
 			"prefix": "form",
 			"body": [
-				"def formula(${1:taxunit}, period, parameters):",
+				"def formula(${1:tax_unit}, period, parameters):",
 				"	${2:pass}"
 			],
 			"description": "Insert a new OpenFisca Formula."
 		},
+	"Tax unit non-dependent sum": {
+			"prefix": "taxunit",
+			"body": [
+				"class filer_${1:name}(Variable):",
+				"	value_type = float",
+				"	entity = TaxUnit",
+				"	label = u\"${2:Label} for the tax unit (excluding dependents)\"",
+				"	definition_period = ${3:YEAR}",
+				"",
+				"	def formula(tax_unit, period, parameters):",
+				"		return tax_unit_non_dep_sum(${1:name}, tax_unit, period)",
+			]
+	}
 }
