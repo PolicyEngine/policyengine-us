@@ -1,12 +1,12 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
-from openfisca_us.variables.entity.household import *
+from openfisca_us.variables.entity.spm_unit import *
 
 
 class snap_earnings_deduction(Variable):
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
@@ -21,7 +21,7 @@ class snap_earnings_deduction(Variable):
 
 class snap_standard_deduction(Variable):
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
@@ -40,7 +40,7 @@ class snap_standard_deduction(Variable):
 
 class snap_net_income_pre_shelter(Variable):
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
@@ -55,13 +55,13 @@ class snap_net_income_pre_shelter(Variable):
 
 class snap_shelter_deduction(Variable):
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
     def formula(spm_unit, period, parameters):
 
-        # check for member of household with disability/elderly status
+        # check for member of spm_unit with disability/elderly status
 
         max_shelter_deductions = parameters(
             period
@@ -100,7 +100,7 @@ class snap_shelter_deduction(Variable):
 
 class snap_net_income(Variable):
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
@@ -114,7 +114,7 @@ class snap_net_income(Variable):
 class snap_expected_contribution_towards_food(Variable):
 
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
@@ -123,21 +123,34 @@ class snap_expected_contribution_towards_food(Variable):
         return spm_unit(snap_net_income) * 0.3
 
 
-class snap_monthly_benefit(Variable):
+class snap_max_benefit(Variable):
 
     value_type = int
-    entity = household
+    entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
     def formula(spm_unit, period, parameters):
 
-        SNAP_max_monthly_benefits = parameters(period).benefits.SNAP.amount
+        # we still need to figure out 8+ family member calcs
+        SNAP_max_benefits = parameters(period).benefits.SNAP.amount.main
 
         state_group = spm_unit("state_group")
 
         household_size = spm_unit("household_size")
 
-        return SNAP_max_monthly_benefits[household_size][
-            state_group
-        ] - spm_unit(snap_expected_contribution_towards_food)
+        return SNAP_max_benefits[household_size][state_group] * 12
+
+
+class snap(Variable):
+
+    value_type = int
+    entity = spm_unit
+    definition_period = YEAR
+    documentation = ""
+
+    def formula(spm_unit, period, parameters):
+
+        return spm_unit("snap_max_benefit") - spm_unit(
+            "snap_expected_contribution_towards_food"
+        )
