@@ -20,10 +20,12 @@ amount:
     period: month
 
 elderly_or_disabled_exempt:
-  2021-01-01: true
+  values:
+    2021-01-01: true
   
 income_share_threshold:
-  2021-01-01: 0.5
+  values:
+    2021-01-01: 0.5
   metadata:
     unit: currency-USD 
   
