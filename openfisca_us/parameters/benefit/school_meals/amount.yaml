@@ -1,0 +1,56 @@
+description: Daily value of NSLP per child
+
+NSLP:
+  # Use the under-60% numbers.
+  contiguous_US:
+    paid:
+      2021-07-01: 0.35
+    reduced_price:
+      2021-07-01: 3.26
+    free:
+      2021-07-01: 3.66
+  AK:
+    paid:
+      2021-07-01: 0.57
+    reduced_price:
+      2021-07-01: 5.54
+    free:
+      2021-07-01: 5.94
+  HI:
+    paid:
+      2021-07-01: 0.41
+    reduced_price:
+      2021-07-01: 3.88
+    free:
+      2021-07-01: 4.28
+SBP:
+  # Use "Non-severe need"
+  contiguous_US:
+    paid:
+      2021-07-01: 0.33
+    reduced_price:
+      2021-07-01: 1.67
+    free:
+      2021-07-01: 1.97
+  AK:
+    paid:
+      2021-07-01: 0.50
+    reduced_price:
+      2021-07-01: 2.85
+    free:
+      2021-07-01: 3.15
+  HI:
+    paid:
+      2021-07-01: 0.38
+    reduced_price:
+      2021-07-01: 1.99
+    free:
+      2021-07-01: 2.29
+
+
+metadata:
+  unit: currency-USD
+  reference:
+  - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates
+    href: https://www.federalregister.gov/documents/2021/07/16/2021-15107/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+  period: day
