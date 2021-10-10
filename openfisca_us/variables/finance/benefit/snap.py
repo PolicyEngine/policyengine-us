@@ -16,7 +16,7 @@ class snap_earnings_deduction(Variable):
             period
         ).benefits.SNAP.earnings_deduction
 
-        return spm_unit(gross_income) * snap_earnings_deduction
+        return spm_unit("gross_income") * snap_earnings_deduction
 
 
 class snap_standard_deduction(Variable):
@@ -47,9 +47,9 @@ class snap_net_income_pre_shelter(Variable):
     def formula(spm_unit, period, parameters):
 
         return (
-            spm_unit(gross_income)
-            - spm_unit(snap_standard_deduction)
-            - spm_unit(snap_earnings_deduction)
+            spm_unit("gross_income")
+            - spm_unit("snap_standard_deduction")
+            - spm_unit("snap_earnings_deduction")
         )
 
 
@@ -63,39 +63,30 @@ class snap_shelter_deduction(Variable):
 
         # check for member of spm_unit with disability/elderly status
 
-        max_shelter_deductions = parameters(
+        p_shelter_deduction = parameters(
             period
         ).benefits.SNAP.shelter_deduction
 
-        if elderly_or_disabled == True:
+        # Calculate uncapped shelter deduction as housing costs in excess of
+        # income threshold
+        uncapped_ded = max_(
+            spm_unit("housing_cost")
+            - (
+                p_shelter_deduction.income_share_threshold
+                * spm_unit("snap_net_income_pre_shelter")
+            ),
+            0,
+        )
 
-            max_shelter_deductions = (
-                max_shelter_deductions.elderly_or_disabled_exempt
-            )
+        # Index maximum shelter deduction by state group.
+        state_group = spm_unit("state_group")
+        ded_cap = p_shelter_deduction.amount[state_group]
 
-            return spm_unit(housing_cost) - (
-                0.5 * spm_unit(snap_net_income_pre_shelter)
-            )
-
-        else:
-
-            state_group = spm_unit("state_group")
-
-            # note that the income used below must be SNAP net income - the other adjustments must come first
-
-            if spm_unit(housing_cost) > (
-                0.5 * spm_unit(snap_net_income_pre_shelter)
-            ):
-
-                return min(
-                    (
-                        (
-                            spm_unit(housing_cost)
-                            - (0.5 * spm_unit(snap_net_income_pre_shelter))
-                        ),
-                        max_shelter_deductions[state_group],
-                    )
-                )
+        has_elderly_disabled = spm_unit("has_elderly_disabled")
+        # Cap for all but elderly/disabled people.
+        return where_(
+            has_elderly_disabled, uncapped_ded, min_(uncapped, ded, ded_cap)
+        )
 
 
 class snap_net_income(Variable):
@@ -106,8 +97,8 @@ class snap_net_income(Variable):
 
     def formula(spm_unit, period, parameters):
 
-        return spm_unit(snap_net_income_pre_shelter) - spm_unit(
-            snap_shelter_deduction
+        return spm_unit("snap_net_income_pre_shelter") - spm_unit(
+            "snap_shelter_deduction"
         )
 
 
@@ -120,7 +111,7 @@ class snap_expected_contribution_towards_food(Variable):
 
     def formula(spm_unit, period, parameters):
 
-        return spm_unit(snap_net_income) * 0.3
+        return spm_unit("snap_net_income") * 0.3
 
 
 class snap_max_benefit(Variable):
