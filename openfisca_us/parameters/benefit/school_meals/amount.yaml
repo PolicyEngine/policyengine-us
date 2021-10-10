@@ -1,6 +1,6 @@
-description: Daily value of NSLP per child
+description: USDA reimbursement rates per meal per child.
 
-NSLP:
+NSLP:  # National School Lunch Program.
   # Use the under-60% numbers.
   contiguous_US:
     paid:
@@ -23,7 +23,7 @@ NSLP:
       2021-07-01: 3.88
     free:
       2021-07-01: 4.28
-SBP:
+SBP:  # School Breakfast Program.
   # Use "Non-severe need"
   contiguous_US:
     paid:
