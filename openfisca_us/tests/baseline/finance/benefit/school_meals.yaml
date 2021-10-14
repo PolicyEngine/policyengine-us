@@ -1,4 +1,21 @@
-- name: No income, one child, contiguous_US
+# Outline of test cases:
+  # 1 parent 1 child 
+  # 1 parent 2 children 
+  # 1 parent 3 children
+  # 2 parents 1 child
+  # 2 parents 2 children 
+  # 2 parents 3 children
+    # each with - US, HI, AK 
+    # No income, low income, income between 1.3 and 1.8 pl, high income
+  # 1 parent 4 children
+  # 2 parents 5 children
+    # each with four cases
+
+
+# 1 parent 1 child 
+# Contiguous_US, 1 parent, 1 child
+
+- name: No income, one parent, one child, contiguous_US
   period: 2021
   absolute_error_margin: 0
   input:
@@ -15,7 +32,43 @@
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
 
-- name: High income, one child, contiguous_US
+- name: Low income, one parent, one child, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 15000
+        state: CA
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97)
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, one child, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 20000
+        state: CA
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67)
+
+
+- name: High income, one parent, one child, contiguous_US
   period: 2021
   absolute_error_margin: 0
   input:
@@ -31,4 +84,1743 @@
         members: [parent,child]
   output:
     school_meal_subsidy: 180 * (0.35 + 0.33)
-  
+
+# Hawaii, 1 parent, 1 child
+
+- name: No income, one parent, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        state: HI
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Low income, one parent, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 17000
+        state: HI
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 22000
+        state: HI
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99)
+
+
+- name: High income, one parent, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 100000
+        state: HI
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38)
+
+
+# Alaska, 1 parent, 1 child
+
+- name: No income, one parent, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        state: AK
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15)
+
+
+- name: Low income, one parent, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 19000
+        state: AK
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15)
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 27000
+        state: AK
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85)
+
+
+- name: High income, one parent, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        gross_income: 100000
+        state: AK
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50)
+
+
+# 1 parent 2 children 
+# Contiguous US, 1 parent, 2 children
+
+- name: No income, one parent, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        state: CA
+      child1:
+        age: 13
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 2
+
+
+- name: Low income, one parent, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 50
+        gross_income: 20000
+        state: GA
+      child1:
+        age: 15
+      chid2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 30000
+        state: NY
+      child1:
+        age: 16
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 2
+
+
+- name: High income, one parent, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 36
+        gross_income: 100000
+        state: TX
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33) * 2
+
+
+# Hawaii, 1 parent, 2 children
+
+- name: No income, one parent, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 8  
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 2
+
+
+- name: Low income, one parent, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 25000
+        state: HI
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 45
+        gross_income: 40000
+        state: HI
+      child1:
+        age: 15
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child1, child2]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99) * 2
+
+
+- name: High income, one parent, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 100000
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38) * 2
+
+
+# Alaska, 1 parent, 2 children
+
+- name: No income, one parent, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        state: AK
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 2
+
+
+- name: Low income, one parent, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 30000
+        state: AK
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        gross_income: 40000
+        state: AK
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85) * 2
+
+
+- name: High income, one parent, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 100000
+        state: AK
+      child1:
+        age: 13
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 2
+
+
+# 1 parent 3 children 
+# Contiguous US, 1 parent, 3 children
+
+- name: No income, one parent, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        state: CA
+      child1:
+        age: 13
+      child2:
+        age: 10
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 3
+
+
+- name: Low income, one parent, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 50
+        gross_income: 25000
+        state: GA
+      child1:
+        age: 15
+      chid2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 40000
+        state: NY
+      child1:
+        age: 16
+      child2:
+        age: 8
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 3
+
+
+- name: High income, one parent, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 36
+        gross_income: 100000
+        state: TX
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33) * 3
+
+
+# Hawaii, 1 parent, 3 children
+
+- name: No income, one parent, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 8 
+      child3:
+        age: 6 
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 3
+
+
+- name: Low income, one parent, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 30000
+        state: HI
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 45
+        gross_income: 45000
+        state: HI
+      child1:
+        age: 15
+      child2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99) * 3
+
+
+- name: High income, 1 parent, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 100000
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38) * 3
+
+
+# Alaska, 1 parent, 3 children
+
+- name: No income, one parent, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        state: AK
+      child1:
+        age: 11
+      child2:
+        age: 9
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 3
+
+
+- name: Low income, one parent, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 38000
+        state: AK
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+        gross_income: 50000
+        state: AK
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85) * 3
+
+
+- name: High income, one parent, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 100000
+        state: AK
+      child1:
+        age: 13
+      child2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 3
+
+
+# 2 parent 1 child 
+# Contiguous US, 2 parents, 1 child
+
+- name: No income, two parents, one child, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        state: CA
+      parent2:
+        age: 40
+        state: CA
+      child:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97)
+
+
+- name: Low income, two parents, one child, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 50
+        gross_income: 10000
+        state: GA
+      parent2:
+        age: 50
+        gross_income: 15000
+        state: GA
+      child:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97)
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, one child, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 20000
+        state: NY
+      parent2:
+        age: 35
+        gross_income: 15000
+        state: NY
+      child:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67)
+
+
+- name: High income, two parents, one child, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 36
+        gross_income: 100000
+        state: TX
+      parent2:
+        age: 33
+        gross_income: 50000
+        state: TX
+      child:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33)
+
+
+# Hawaii, 2 parents, 1 child,
+
+- name: No income, two parents, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        state: HI
+      parent2:
+        age: 30
+        state: HI
+      child:
+        age: 10  
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Low income, two parents, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 13000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 15000
+        state: HI
+      child:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 45
+        gross_income: 20000
+        state: HI
+      parent2:
+        age: 45
+        gross_income: 20000
+        state: HI
+      child:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99)
+
+
+- name: High income, two parents, one child, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 50000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 100000
+        state: HI
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38)
+
+
+# Alaska, 2 parents, 1 child
+
+- name: No income, two parents, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        state: AK
+      parent2:
+        age: 35
+        state: AK
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15)
+
+- name: Low income, two parents, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 15000
+        state: AK
+      parent2:
+        age: 40
+        gross_income: 15000
+        state: AK
+      child:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15)
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        gross_income: 20000
+        state: AK
+      parent2:
+        age: 35
+        gross_income: 25000
+        state: AK
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85)
+
+
+- name: High income, two parents, one child, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 100000
+        state: AK
+      parent2:
+        age: 30
+        gross_income: 50000
+        state: AK
+      child:
+        age: 13
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50)
+
+
+# 2 parents 2 children 
+# Contiguous US, 2 parents, 2 children
+
+- name: No income, two parent, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        state: CA
+      parent2:
+        age: 40
+        state: CA
+      child1:
+        age: 13
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 2
+
+
+- name: Low income, two parents, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 50
+        gross_income: 15000
+        state: GA
+      parent2:
+        age: 50
+        gross_income: 15000
+        state: GA
+      child1:
+        age: 15
+      chid2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 30000
+        state: NY
+      parent2:
+        age: 40
+        gross_income: 10000
+        state: NY
+      child1:
+        age: 16
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 2
+
+
+- name: High income, two parents, two children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 36
+        gross_income: 100000
+        state: TX
+      parent2:
+        age: 36
+        gross_income: 50000
+        state: TX
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33) * 2
+
+
+# Hawaii, 2 parents, 2 children
+
+- name: No income, two parents, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        state: HI
+      parent2:
+        age: 40
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 8 
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 2
+
+
+- name: Low income, two parents, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 20000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 10000
+        state: HI
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 45
+        gross_income: 30000
+        state: HI
+      parent2:
+        age: 45
+        gross_income: 15000
+        state: HI
+      child1:
+        age: 15
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99) * 2
+
+
+- name: High income, two parents, two children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 100000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 70000
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38) * 2
+
+
+# Alaska, 2 parents, 2 children
+
+- name: No income, two parents, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        state: AK
+      parent2:
+        age: 35
+        state: AK
+      child1:
+        age: 11
+      child2:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 2
+
+
+- name: Low income, two parents, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 20000
+        state: AK
+      parent2:
+        age: 40
+        gross_income: 18000
+        state: AK
+      child1:
+        age: 12
+      child2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        gross_income: 30000
+        state: AK
+      parent2:
+        age: 35
+        gross_income: 20000
+        state: AK
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85) * 2
+
+
+- name: High income, two parents, two children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 100000
+        state: AK
+      parent2:
+        age: 40
+        gross_income: 100000
+        state: AK
+      child1:
+        age: 13
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 2
+
+
+# 2 parents 3 children 
+# Contiguous US, 2 parents, 3 children
+
+- name: No income, two parents, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        state: CA
+      parent2:
+        age: 40
+        state: CA
+      child1:
+        age: 13
+      child2:
+        age: 10
+      child3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 3
+
+
+- name: Low income, two parents, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 50
+        gross_income: 25000
+        state: GA
+      parent2:
+        age: 50
+        gross_income: 10000
+        state: GA
+      child1:
+        age: 15
+      chid2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 30000
+        state: NY
+      parent2:
+        age: 40
+        gross_income: 15000
+        state: NY
+      child1:
+        age: 16
+      child2:
+        age: 8
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 3
+
+
+- name: High income, two parents, three children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 36
+        gross_income: 100000
+        state: TX
+      parent2:
+        age: 36
+        gross_income: 100000
+        state: TX
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33) * 3
+
+
+# Hawaii, 1 parent, 3 children
+
+- name: No income, two parents, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        state: HI
+      parent2:
+        age: 40
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 8 
+      child3:
+        age: 6 
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 3
+
+
+- name: Low income, two parents, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 30000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 10000
+        state: HI
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 45
+        gross_income: 40000
+        state: HI
+      parent2:
+        age: 45
+        gross_income: 20000
+        state: HI
+      child1:
+        age: 15
+      child2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99) * 3
+
+
+- name: High income, two parents, three children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 100000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 100000
+        state: HI
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38) * 3
+
+
+# Alaska, 1 parent, 3 children
+
+- name: No income, two parents, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        state: AK
+      parent2:
+        age: 35
+        state: AK
+      child1:
+        age: 11
+      child2:
+        age: 9
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 3
+
+
+- name: Low income, two parents, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 40000
+        state: AK
+      parent2:
+        age: 40
+        state: AK
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        gross_income: 30000
+        state: AK
+      parent2:
+        age: 35
+        gross_income: 30000
+        state: AK
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85) * 3
+
+
+- name: High income, two parents, three children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+        gross_income: 100000
+        state: AK
+      parent2:
+        age: 35
+        gross_income: 100000
+        state: AK
+      child1:
+        age: 13
+      child2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 3
+
+
+# 1 parent, 4 children
+
+- name: No income, one parent, four children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        state: CA
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 7
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3,child4]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 4
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, four children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 60000
+        state: CA
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 7
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3,child4]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 4
+
+
+- name: Low income, one parent, four children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 45000
+        state: HI
+      child1:
+        age: 15
+      child2:
+        age: 9
+      child3:
+        age: 7
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3,child4]
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29) * 4
+
+
+- name: High income, one parent, four children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+        gross_income: 100000
+        state: AK
+      child1:
+        age: 10
+      child2:
+        age: 9
+      child3:
+        age: 7
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2,child3,child4]
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 4
+
+
+# 2 parents, 5 children
+
+- name: Low income, two parents, five children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 50000
+        state: CA
+      parent2:
+        age: 40
+        state: CA
+      child1:
+        age: 12
+      child2:
+        age: 10
+      child3:
+        age: 8
+      child4:
+        age: 7
+      child5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3,child4,child5]
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 5
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, four children, contiguous_US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 35000
+        state: NY
+      parent2:
+        age: 40
+        gross_income: 35000
+        state: NY
+      child1:
+        age: 13
+      child2:
+        age: 11
+      child3:
+        age: 9
+      child4:
+        age: 7
+      child5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3,child4,child5]
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 5
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, five children, Hawaii
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 40000
+        state: HI
+      parent2:
+        age: 40
+        gross_income: 40000
+        state: HI
+      child1:
+        age: 15
+      child2:
+        age: 12
+      child3:
+        age: 10
+      child4:
+        age: 7
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3,child4,child5]
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99) * 5
+
+
+- name: Low income, one parent, four children, Alaska
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+        gross_income: 40000
+        state: AK
+      parent2:
+        age: 40
+        gross_income: 20000
+        state: AK
+      child1:
+        age: 14
+      child2:
+        age: 12
+      child3:
+        age: 10
+      child4:
+        age: 8
+      child5:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2,child1,child2,child3,child4,child5]
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15) * 5
