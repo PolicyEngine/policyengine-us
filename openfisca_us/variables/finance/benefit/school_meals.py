@@ -19,14 +19,13 @@ class school_meal_subsidy(Variable):
         p_income_limit = p_school_meals.income_limit
         # Look up the free/reduced/full subsidy tier for each SPM unit by
         # poverty ratio.
-        tier = where_(
-            poverty_ratio < p_income_limit["free"],
-            "free",
-            where_(
-                poverty_ratio < p_income_limit["reduced_price"],
-                "reduced_price",
-                "paid",
-            ),
+        tier = select(
+            [
+                poverty_ratio < p_income_limit.free,
+                poverty_ratio < p_income_limit.reduced_price,
+                poverty_ratio >= p_income_limit.reduced_price,
+            ],
+            ["free", "reduced_price", "paid"],
         )
         p_amount = p_school_meals.amount
         # Get NSLP and SBP per child for each SPM unit.
