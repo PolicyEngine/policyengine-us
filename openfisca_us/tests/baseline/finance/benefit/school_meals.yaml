@@ -15,7 +15,7 @@
 # 1 parent 1 child 
 # Contiguous_US, 1 parent, 1 child
 
-- name: No income, one parent, one child, contiguous_US
+- name: No income, one parent, one child, contiguous_US, 2020
   period: 2020
   absolute_error_margin: 0
   input:
@@ -31,6 +31,8 @@
         poverty_ratio: 0 
   output:
     school_meal_subsidy: 180 * (3.51 + 1.89)
+
+- name: No income, one parent, one child, contiguous_US, 2021
   period: 2021
   absolute_error_margin: 0
   input:
