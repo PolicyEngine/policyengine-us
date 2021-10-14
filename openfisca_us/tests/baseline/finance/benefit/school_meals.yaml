@@ -16,6 +16,21 @@
 # Contiguous_US, 1 parent, 1 child
 
 - name: No income, one parent, one child, contiguous_US
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child]
+        spm_unit_state_group: CONTIGUOUS_US
+        poverty_ratio: 0 
+  output:
+    school_meal_subsidy: 180 * (3.51 + 1.89)
   period: 2021
   absolute_error_margin: 0
   input:
