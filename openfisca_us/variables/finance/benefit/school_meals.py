@@ -5,6 +5,7 @@ from openfisca_us.variables.demographic.spm_unit import *
 
 # add new variable for enum tier
 
+
 class school_meal_subsidy(Variable):
     value_type = float
     entity = SPMUnit
@@ -20,7 +21,6 @@ class school_meal_subsidy(Variable):
         p_income_limit = p_school_meals.income_limit
         # Look up the free/reduced/full subsidy tier for each SPM unit by
         # poverty ratio.
-<<<<<<< HEAD
         tier = select(
             [
                 poverty_ratio < p_income_limit.free,
@@ -28,16 +28,6 @@ class school_meal_subsidy(Variable):
                 poverty_ratio >= p_income_limit.reduced_price,
             ],
             ["free", "reduced_price", "paid"],
-=======
-        tier = where(
-            poverty_ratio < p_income_limit["free"],
-            "free",
-            where(
-                poverty_ratio < p_income_limit["reduced_price"],
-                "reduced_price",
-                "paid",
-            ),
->>>>>>> c1cb53ee77ec805884bece7e599f313b8262dbcf
         )
         p_amount = p_school_meals.amount
         # Get NSLP and SBP per child for each SPM unit.
