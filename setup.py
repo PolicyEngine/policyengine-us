@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.0.1",
+    version="0.0.2",
     author="Nikhil Woodruff",
     author_email="nikhil.woodruff@ubicenter.org",
     classifiers=[
@@ -30,8 +30,8 @@ setup(
     ],
     install_requires=[
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "openfisca_us_data @ git+https://github.com/PolicyEngine/openfisca-us-data",
-        "microdf @ git+https://github.com/PSLmodels/microdf",
+        "openfisca_us_data",
+        "microdf_python",
         "pandas",
         "tqdm",
         "requests",
