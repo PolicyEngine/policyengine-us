@@ -6,5 +6,5 @@ from openfisca_us_data import CPS
 
 class IndividualSim(GeneralIndividualSim):
     tax_benefit_system = CountryTaxBenefitSystem
-    entities = entities
+    entities = {entity.key: entity for entity in entities}
     default_dataset = CPS
