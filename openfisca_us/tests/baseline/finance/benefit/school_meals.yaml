@@ -28,6 +28,7 @@
       spm_unit:
         members: [parent,child]
         spm_unit_state_group: CONTIGUOUS_US
+        poverty_ratio: 0 
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
