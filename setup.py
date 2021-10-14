@@ -30,7 +30,7 @@ setup(
     ],
     install_requires=[
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "openfisca_us_data",
+        "openfisca_us_data @ git+https://github.com/PolicyEngine/openfisca-us-data",
         "microdf_python",
         "pandas",
         "tqdm",
