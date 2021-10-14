@@ -22,12 +22,12 @@
     people:
       parent:
         age: 30
-        state: CA
       child:
         age: 10
     spm_units:
       spm_unit:
         members: [parent,child]
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
