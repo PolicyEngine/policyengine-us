@@ -16,9 +16,11 @@
   absolute_error_margin: 0
   input:
     people:
-      person: {}
+      person1: {}
+      person2: {}
+      person3: {}
     spm_units:
       spm_unit:
-        members: [person]
+        members: [person1, person2, person3]
   output:
     spm_unit_poverty_guideline: 12_880 + 2 * 4_540
