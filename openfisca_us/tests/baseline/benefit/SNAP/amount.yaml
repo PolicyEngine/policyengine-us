@@ -1,0 +1,18 @@
+- name: family of 4, no disabilities, 15k income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    benefit.SNAP.
+    SPM_units:
+      SPM_unit:
+        number_of_individuals: 4
+        disabled_or_elderly_present: 0
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 44
+  output:
+    standard: 12000
+    basic_standard_deduction: 12000
+    aged_blind_extra_standard_deduction: 0

@@ -1,0 +1,10 @@
+- name: family of 4, no disabilities, 12k income/year
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    SPM_units:
+      SPM_unit:
+        number_of_individuals: 4
+        gross_monthly_income: 1000
+  output:
+    monthly_income_net_of_earnings_deduction:
