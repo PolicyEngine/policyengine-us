@@ -1,0 +1,19 @@
+description: CCDF eligibility by income and assets.
+
+initial_income:
+continuous_income:
+assets:
+  NY:
+    2021-01-01: 1e6
+  
+metadata:
+  unit: currency-USD
+  reference: 
+  - title: USDA Cost of Living Adjustments
+    href: https://www.fns.usda.gov/snap/allotment/COLA 
+  - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
+    href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+  period: month
+  breakdown:
+  - State
+  - Household size
