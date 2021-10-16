@@ -4,6 +4,7 @@
   input:
     people:
       person:
+        age: 30
     spm_units:
       spm_unit:
         members: [person]
@@ -16,7 +17,8 @@
   absolute_error_margin: 0
   input:
     people:
-      person
+      person:
+        age: 30
     spm_units:
       spm_unit:
         members: [person]
