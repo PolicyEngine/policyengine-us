@@ -5,7 +5,7 @@ from openfisca_us.variables.entity.spm_unit import *
 
 
 class snap_earnings_deduction(Variable):
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
@@ -16,11 +16,11 @@ class snap_earnings_deduction(Variable):
             period
         ).benefits.SNAP.earnings_deduction
 
-        return spm_unit("gross_income") * snap_earnings_deduction
+        return spm_unit("gross_income", period) * snap_earnings_deduction
 
 
 class snap_standard_deduction(Variable):
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
@@ -39,7 +39,7 @@ class snap_standard_deduction(Variable):
 
 
 class snap_net_income_pre_shelter(Variable):
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
@@ -47,14 +47,14 @@ class snap_net_income_pre_shelter(Variable):
     def formula(spm_unit, period, parameters):
 
         return (
-            spm_unit("gross_income")
-            - spm_unit("snap_standard_deduction")
-            - spm_unit("snap_earnings_deduction")
+            spm_unit("gross_income", period)
+            - spm_unit("snap_standard_deduction", period)
+            - spm_unit("snap_earnings_deduction", period)
         )
 
 
 class snap_shelter_deduction(Variable):
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
@@ -69,53 +69,57 @@ class snap_shelter_deduction(Variable):
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
         uncapped_ded = max_(
-            spm_unit("housing_cost")
+            spm_unit("housing_cost", period)
             - (
                 p_shelter_deduction.income_share_threshold
-                * spm_unit("snap_net_income_pre_shelter")
+                * spm_unit("snap_net_income_pre_shelter", period)
             ),
             0,
         )
 
         # Index maximum shelter deduction by state group.
-        state_group = spm_unit("state_group")
+        state_group = spm_unit("state_group", period)
         ded_cap = p_shelter_deduction.amount[state_group]
 
-        has_elderly_disabled = spm_unit("has_elderly_disabled")
+        has_elderly_disabled = spm_unit("has_elderly_disabled", period)
         # Cap for all but elderly/disabled people.
-        return where_(
-            has_elderly_disabled, uncapped_ded, min_(uncapped, ded, ded_cap)
+        return where(
+            has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
         )
 
 
 class snap_net_income(Variable):
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
     def formula(spm_unit, period, parameters):
 
-        return spm_unit("snap_net_income_pre_shelter") - spm_unit(
-            "snap_shelter_deduction"
+        return spm_unit("snap_net_income_pre_shelter", period) - spm_unit(
+            "snap_shelter_deduction", period
         )
 
 
 class snap_expected_contribution_towards_food(Variable):
 
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
     def formula(spm_unit, period, parameters):
         # TODO: Use the parameter
-        return spm_unit("snap_net_income") * 0.3
+
+        expected_food_contribution = parameters(
+            period
+        ).benefit.SNAP.expected_food_contribution
+        return spm_unit("snap_net_income", period) * expected_food_contribution
 
 
 class snap_max_benefit(Variable):
 
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
@@ -125,22 +129,22 @@ class snap_max_benefit(Variable):
         # TODO: Logic for families with >8 people
         SNAP_max_benefits = parameters(period).benefits.SNAP.amount.main
 
-        state_group = spm_unit("state_group")
+        state_group = spm_unit("spm_unit_state_group", period)
         # TODO: Use number_persons
-        household_size = spm_unit("household_size")
+        household_size = spm_unit.nb_persons()
 
         return SNAP_max_benefits[household_size][state_group] * 12
 
 
 class snap(Variable):
 
-    value_type = int
+    value_type = float
     entity = spm_unit
     definition_period = YEAR
     documentation = ""
 
     def formula(spm_unit, period, parameters):
         # TODO: Add gross and net income checks.
-        return spm_unit("snap_max_benefit") - spm_unit(
-            "snap_expected_contribution_towards_food"
+        return spm_unit("snap_max_benefit", period) - spm_unit(
+            "snap_expected_contribution_towards_food", period
         )
