@@ -1,10 +1,38 @@
-- name: family of 4, no disabilities, 12k income/year
+- name: family of 4, 12k income/year
   period: 2021
   absolute_error_margin: 0
   input:
+    people:
+      person_1:
+        gross_monthly_income: 500
+        age: 32
+      person_2:
+        gross_montlhy_income: 500
+        age: 34
+      person_3:
+        gross_monthly_income: 0
+        age: 0
+      person_4:
+        gross_monthly_income: 0
+        age: 1
     SPM_units:
       SPM_unit:
         number_of_individuals: 4
         gross_monthly_income: 1000
   output:
-    monthly_income_net_of_earnings_deduction:
+    monthly_income_net_of_earnings_deduction: 800
+
+- name: single_person
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        gross_monthly_income: 500
+        age: 32
+    SPM_units:
+      SPM_unit:
+        number_of_individuals: 4
+        gross_monthly_income: 1000
+  output:
+    monthly_income_net_of_earnings_deduction: 800
