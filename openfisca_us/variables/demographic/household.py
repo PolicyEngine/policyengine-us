@@ -35,8 +35,15 @@ class is_household_head(Variable):
         return person.household.members_position == 0
 
 
+class State(Enum):
+    AK = "Alaska"
+    CA = "California"
+
+
 class state_code(Variable):
-    value_type = str
+    value_type = Enum
+    possible_values = State
+    default_value = State.CA
     entity = Household
     label = u"State"
     definition_period = ETERNITY
