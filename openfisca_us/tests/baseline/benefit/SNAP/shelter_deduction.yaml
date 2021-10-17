@@ -1,0 +1,51 @@
+- name: family of 4, no member(s) with disabilities, income of 24k/year (Normal Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+    person_1:
+      monthly_income: 1000
+      age: 30
+    person_2:
+      monthly_income: 1000
+      age: 35
+    person_3:
+      monthly_income: 0
+      age: 17
+    person_4:
+      monthly_income: 0
+      age: 15
+    SPM_units:
+      unit_1:
+        members: [person_1, person_2, person_3, person_4]
+        shelter_cost: 1700
+  output:
+    shelter_deduction: 569
+
+- name: family of 4, member(s) with disabilities, income of 24k/year (Normal Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+    person_1:
+      monthly_income: 1000
+      disability: True
+      age: 30
+    person_2:
+      monthly_income: 1000
+      disability: False
+      age: 35
+    person_3:
+      monthly_income: 0
+      disability: False
+      age: 17
+    person_4:
+      monthly_income: 0
+      disability: False
+      age: 15
+    SPM_units:
+      unit_1:
+        members: [person_1, person_2, person_3, person_4]
+        shelter_cost: 1700
+  output:
+    shelter_deduction: 700

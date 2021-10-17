@@ -1,13 +1,28 @@
-- name: family of 4, no disabilities, 15k income
+TODO:
+1. extremes
+2. boundaries
+3. normal test cases
+4. tests from external sources, examples
+5. specific cases (disabled, pensioners, etc.)/ test each branch of a tree
+
+- name: family of 2, no disabilities, 12k income (Normal Test)
   period: 2021
   absolute_error_margin: 0
   input:
-    benefit.SNAP.
+    people:
+    person_1:
+      monthly_income: 1000
+      age: 30
+    person_2:
+      monthly_income: 0
+      age: 50
     SPM_units:
+      unit_1:
+        members: [person_1, person_2]
   output:
+    snap: 
 
-
-- name: Individual, $50k income
+- name: Individual, $50k income (Extreme Test)
   period: 2019
   absolute_error_margin: 0
   input:
@@ -17,11 +32,11 @@
         age: 30
     spm_units:
       unit_1:
-        members: ["person_1"]
+        members: [person_1]
   output:
     snap: 0
 
-- name: Individual, $0 income
+- name: Individual, $0 income (Extreme Test)
   period: 2019
   absolute_error_margin: 0
   input:
@@ -31,9 +46,9 @@
         age: 30
     spm_units:
       unit_1:
-        members: ["person_1"]
+        members: [person_1]
   output:
-    snap: 2448  # 204 * 12
+    snap: 204 * 12
 
 - name: CBPP family A  # TODO: can we add a source?
   # https://www.cbpp.org/research/food-assistance/the-supplemental-nutrition-assistance-program-includes-earnings-incentives
@@ -50,7 +65,7 @@
         age: 30
     spm_units:
       unit_1:
-        members: ["person_1", "person_2", "person_3"]
+        members: [person_1, person_2, person_3]
   output:
     snap: 2988  # 249 * 12
 
@@ -69,7 +84,7 @@
         age: 30
     spm_units:
       unit_1:
-        members: ["person_1", "person_2", "person_3"]
+        members: [person_1, person_2, person_3]
   output:
     snap: 1116  # 93 * 12
 
@@ -90,6 +105,6 @@
         age: 12
     spm_units:
       unit_1:
-        members: ["person_1", "person_2", "person_3"]
+        members: [person_1, person_2, person_3]
   output:
     snap: 5784  # 482 * 12
