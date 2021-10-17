@@ -1,4 +1,4 @@
-- name: family of 4, 12k income/year
+- name: family of 4, 12k income/year (Normal Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -20,9 +20,9 @@
         number_of_individuals: 4
         gross_monthly_income: 1000
   output:
-    monthly_income_net_of_earnings_deduction: 800
+    earnings_deduction: 200 * 12
 
-- name: single_person
+- name: single_person, 12k/year (Boundary Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -35,4 +35,5 @@
         number_of_individuals: 4
         gross_monthly_income: 1000
   output:
-    monthly_income_net_of_earnings_deduction: 800
+    earnings_deduction: 200
+
