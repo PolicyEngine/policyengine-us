@@ -18,7 +18,7 @@
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
 
-- name: Low income, one parent, one child, contiguous_US
+- name: Low income, one parent, one child, contiguous_US (defined as default)
   period: 2022
   absolute_error_margin: 0
   input:
@@ -30,7 +30,6 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        state_group: CONTIGUOUS_US
         poverty_ratio: 1.2
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)

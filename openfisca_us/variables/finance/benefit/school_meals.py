@@ -16,7 +16,7 @@ class school_meal_subsidy(Variable):
     def formula(spm_unit, period, parameters):
         # Get state and poverty ratio for SPM unit.
         state_group = spm_unit.value_from_first_person(
-            spm_unit.members.household("state_group", period)
+            spm_unit.members.household("state_group", period).decode_to_str()
         )
         poverty_ratio = spm_unit("poverty_ratio", period)
         # Get parameters.
