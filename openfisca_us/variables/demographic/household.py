@@ -32,3 +32,37 @@ class is_household_head(Variable):
     def formula(person, period, parameters):
         # Use order of input (first)
         return person.household.members_position == 0
+
+
+class state_code(Variable):
+    value_type = str
+    entity = Household
+    label = u"State"
+    definition_period = ETERNITY
+
+
+class StateGroup(Enum):
+    CONTIGUOUS_US = "Contiguous US"
+    AK = "Alaska"
+    HI = "Hawaii"
+    GU = "Guam"
+    PR = "Puerto Rico"
+    VI = "Virgin Islands"
+
+
+class state_group(Variable):
+    value_type = Enum
+    possible_values = StateGroup
+    default_value = StateGroup.CONTIGUOUS_US
+    entity = Household
+    label = u"State group"
+    definition_period = ETERNITY
+
+    def formula(household, period, parameters):
+        NON_CONTIGUOUS_STATES = ["AK", "HI", "PR", "VI", "GU"]
+        state_code = household.state_code
+        return where(
+            state_code.isin(NON_CONTIGUOUS_STATES),
+            StateGroup[state_code],
+            StateGroup.CONTIGUOUS_US,
+        )
