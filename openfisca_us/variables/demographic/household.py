@@ -1,5 +1,6 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
+import numpy as np
 
 
 class household_id(Variable):
@@ -60,9 +61,9 @@ class state_group(Variable):
 
     def formula(household, period, parameters):
         NON_CONTIGUOUS_STATES = ["AK", "HI", "PR", "VI", "GU"]
-        state_code = household.state_code
+        state_code = household("state_code", period)[0]
         return where(
-            state_code.isin(NON_CONTIGUOUS_STATES),
-            StateGroup[state_code],
-            StateGroup.CONTIGUOUS_US,
+            np.isin(state_code, NON_CONTIGUOUS_STATES),
+            state_code,
+            "CONTIGUOUS_US",
         )
