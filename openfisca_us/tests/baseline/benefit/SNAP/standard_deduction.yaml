@@ -21,7 +21,7 @@
         shelter_cost: 1700
         state_group: contiguous_US
   output:
-    standard_deduction: 181
+    standard_deduction: 181 * 12
 
 - name: family of 2, 12k income (Normal Test)
   period: 2021
