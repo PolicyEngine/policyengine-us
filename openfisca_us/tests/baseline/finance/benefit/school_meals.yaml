@@ -10,13 +10,15 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: CONTIGUOUS_US
-        poverty_ratio: 0 
+        poverty_ratio: 0
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
 
-- name: Low income, one parent, one child, contiguous_US
+- name: Low income, one parent, one child, contiguous_US (defined as default)
   period: 2022
   absolute_error_margin: 0
   input:
@@ -28,7 +30,6 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.2
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
@@ -46,8 +47,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.26 + 1.67)
 
@@ -64,8 +67,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 10
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (0.35 + 0.33)
 
@@ -81,8 +86,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: HI
         poverty_ratio: 0
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (4.28 + 2.29)
 
@@ -99,8 +106,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: HI
         poverty_ratio: 1.0
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (4.28 + 2.29)
 
@@ -117,8 +126,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: HI
         poverty_ratio: 1.5
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (3.88 + 1.99)
 
@@ -135,8 +146,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: HI
         poverty_ratio: 20
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (0.41 + 0.38)
 
@@ -153,8 +166,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: AK
         poverty_ratio: 0.8
+    households:
+      household:
+        state_group: AK
   output:
     school_meal_subsidy: 180 * (5.94 + 3.15)
 
@@ -171,8 +186,10 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_state_group: AK
         poverty_ratio: 1.4
+    households:
+      household:
+        state_group: AK
   output:
     school_meal_subsidy: 180 * (5.54 + 2.85)
 
@@ -191,8 +208,10 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.2
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97) * 2
 
@@ -211,8 +230,10 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_state_group: HI
         poverty_ratio: 1.7
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (3.88 + 1.99) * 2
 
@@ -231,8 +252,10 @@
     spm_units:
       spm_unit:
         members: [parent,child1,child2]
-        spm_unit_state_group: AK
         poverty_ratio: 15
+    households:
+      household:
+        state_group: AK
   output:
     school_meal_subsidy: 180 * (0.57 + 0.50) * 2
 
@@ -253,8 +276,10 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 15
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (0.35 + 0.33) * 3
 
@@ -275,8 +300,10 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        spm_unit_state_group: AK
         poverty_ratio: 1.6
+    households:
+      household:
+        state_group: AK
   output:
     school_meal_subsidy: 180 * (5.54 + 2.85) * 3
 
@@ -295,8 +322,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.26 + 1.67)
 
@@ -315,8 +344,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
-        spm_unit_state_group: HI
         poverty_ratio: 1.1
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (4.28 + 2.29)
 
@@ -337,8 +368,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
-        spm_unit_state_group: AK
         poverty_ratio: 1.4
+    households:
+      household:
+        state_group: AK
   output:
     school_meal_subsidy: 180 * (5.54 + 2.85) * 2
 
@@ -361,8 +394,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.2
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97) * 3
 
@@ -385,8 +420,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        spm_unit_state_group: HI
         poverty_ratio: 15
+    households:
+      household:
+        state_group: HI
   output:
     school_meal_subsidy: 180 * (0.41 + 0.38) * 3
 
@@ -409,8 +446,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        spm_unit_state_group: AK
         poverty_ratio: 20
+    households:
+      household:
+        state_group: AK
   output:
     school_meal_subsidy: 180 * (0.57 + 0.50) * 3
 
@@ -433,8 +472,10 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3, child4]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.26 + 1.67) * 4
 
@@ -461,8 +502,10 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4, child5]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.1
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97) * 5
 
@@ -479,7 +522,9 @@
     spm_units:
       spm_unit:
         members: [parent1,parent2]
-        spm_unit_state_group: CONTIGUOUS_US
         poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     school_meal_subsidy: 0

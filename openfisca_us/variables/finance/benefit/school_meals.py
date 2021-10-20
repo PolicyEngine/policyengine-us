@@ -2,6 +2,7 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.spm_unit import *
+from openfisca_us.variables.demographic.household import *
 
 # add new variable for enum tier
 
@@ -14,7 +15,9 @@ class school_meal_subsidy(Variable):
 
     def formula(spm_unit, period, parameters):
         # Get state and poverty ratio for SPM unit.
-        state_group = spm_unit("spm_unit_state_group", period)
+        state_group = spm_unit.value_from_first_person(
+            spm_unit.members.household("state_group", period).decode_to_str()
+        )
         poverty_ratio = spm_unit("poverty_ratio", period)
         # Get parameters.
         p_school_meals = parameters(period).benefit.school_meals
