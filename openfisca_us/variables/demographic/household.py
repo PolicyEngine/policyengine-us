@@ -161,4 +161,7 @@ class county_cluster(Variable):
     definition_period = ETERNITY
 
     def formula(household, period, parameters):
-        return 1
+        state_code = household("state_code", period).decode_to_str()
+        county = household("county", period).decode_to_str()
+        cluster_mapping = parameters(period).benefit.CCDF.county_cluster
+        return cluster_mapping[state_code][county]
