@@ -85,6 +85,34 @@ class ccdf_max_benefit_per_child(Variable):
     documentation = ""
 
 
+class ccdf_child_age(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = ""
+
+
+class ccdf_provider_type(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = ""
+
+
+class ccdf_duration_of_care(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = ""
+
+
+class ccdf_child_age(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = ""
+
+
 class ccdf_subsidy(Variable):
     value_type = float
     entity = SPMUnit

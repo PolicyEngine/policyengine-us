@@ -1,0 +1,47 @@
+description: CCDF benefit rate by county cluster, provider type, duration of care, and child age
+
+1:
+  DCC_SACC:
+    WEEKLY:
+      I:
+        2021-10-01: 364
+      T:
+        2021-10-01: 338
+      PS:
+        2021-10-01: 310
+      SA:
+        2021-10-01: 317
+    DAILY:
+      I:
+        2021-10-01: 65
+      T:
+        2021-10-01: 62
+      PS:
+        2021-10-01: 55
+      SA:
+        2021-10-01: 65
+    PART_DAY:
+      I:
+        2021-10-01: 43
+      T:
+        2021-10-01: 41
+      PS:
+        2021-10-01: 37
+      SA:
+        2021-10-01: 43
+    HOURLY:
+      I:
+        2021-10-01: 9.50
+      T:
+        2021-10-01: 11.00
+      PS:
+        2021-10-01: 10.00
+      SA:
+        2021-10-01: 8.00
+
+  
+metadata:
+  unit: currency-USD
+  reference: 
+  - title: Child Care Market Rate Survey
+    href: https://ocfs.ny.gov/main/reports/2019-Child-Care-Market-Rate-Survey.pdf
