@@ -134,3 +134,16 @@ class state_group(Variable):
             StateGroup.encode(state_code).decode(),
             StateGroup.CONTIGUOUS_US,
         )
+
+
+class County(Enum):
+    NEW_YORK = "New York"
+
+
+class county(Variable):
+    value_type = Enum
+    possible_values = County
+    default_value = County.NEW_YORK
+    entity = Household
+    label = u"County"
+    definition_period = ETERNITY
