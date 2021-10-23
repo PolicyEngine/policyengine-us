@@ -37,3 +37,17 @@
   output:
     earnings_deduction: 200 * 12
 
+- name: single_person, 100k/year (Extreme Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        gross_monthly_income: 8333
+        age: 32
+    SPM_units:
+      SPM_unit:
+        number_of_individuals: 4
+        gross_monthly_income: 8333
+  output:
+    earnings_deduction: 0 * 12
