@@ -1,25 +1,30 @@
+# looks up from standard_deduction.yaml based on state and family size
+# TODO: rename all files basically with snap in front
+#       add snap in front of variable names 
+#       multiply gross income by 12
+#       add household nesting for GU, VI, AK, HI, etc. non contiguous
+
 - name: family of 4, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
     people:
     person_1:
-      gross_monthly_income: 1000
+      snap_gross_income: 1000
       age: 30
     person_2:
-      gross_monthly_income: 1000
+      snap_gross_income: 1000
       age: 35
     person_3:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 17
     person_4:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 15
     SPM_units:
       unit_1:
         state_group: contiguous_us
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
   output:
     standard_deduction: 181 * 12
 
@@ -29,10 +34,10 @@
   input:
     people:
     person_1:
-      gross_monthly_income: 1000
+      snap_gross_income: 1000
       age: 30
     person_2:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 50
     SPM_units:
       unit_1:
@@ -47,31 +52,31 @@
   input:
     people:
     person_1:
-      gross_monthly_income: 1000
+      snap_gross_income: 1000
       age: 42
     person_2:
-      gross_monthly_income: 1000
+      snap_gross_income: 1000
       age: 40
     person_3:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 25
     person_4:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 26
     person_5:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 18
     person_6:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 65
     person_7:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 63
     person_8:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 15
     person_9:
-      gross_monthly_income: 0
+      snap_gross_income: 0
       age: 14
     SPM_units:
       unit_1:
@@ -82,12 +87,12 @@
     standard_deduction: 243 * 12
 
 - name: single person, 0 income (Extreme Test, Min)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
       person_1:
-        gross_monthly_income: 0
+        snap_gross_income: 0
         age: 30
     spm_units:
       unit_1:
@@ -97,12 +102,12 @@ period: 2021
     standard_deduction: 167 * 12
 
 - name: single person, 100k income (Extreme Test, Max)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
       person_1:
-        gross_monthly_income: 8333
+        snap_gross_income: 8333
         age: 30
     spm_units:
       unit_1:
@@ -112,12 +117,12 @@ period: 2021
     standard_deduction: 167 * 12
 
 - name: single person, 10k income, GU (State Group Test)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
@@ -127,12 +132,12 @@ period: 2021
     standard_deduction: 336 * 12
 
 - name: single person, 10k income, VI (State Group Test)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
@@ -142,12 +147,12 @@ period: 2021
     standard_deduction: 147 * 12
 
 - name: single person, 10k income, AK (State Group Test)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
@@ -157,16 +162,16 @@ period: 2021
     standard_deduction: 286 * 12
 
 - name: single person, 10k income, HI (State Group Test)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: HI
         members: [person_1]
   output:
-    standard_deduction: 236
+    standard_deduction: 236 * 12
