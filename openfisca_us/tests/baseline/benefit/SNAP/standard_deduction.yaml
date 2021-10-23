@@ -43,7 +43,45 @@
 
 
 
-- name: family of 9, no disabilities, 24k income (Additional Deduction Test)
+- name: family of 9, no disabilities, elderly individuals present, 24k income (Additional Deduction Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+    person_1:
+      monthly_income: 1000
+      age: 42
+    person_2:
+      monthly_income: 1000
+      age: 40
+    person_3:
+      monthly_income: 0
+      age: 25
+    person_4:
+      monthly_income: 0
+      age: 26
+    person_5:
+      monthly_income: 0
+      age: 18
+    person_6:
+      monthly_income: 0
+      age: 65
+    person_7:
+      monthly_income: 0
+      age: 63
+    person_8:
+      monthly_income: 0
+      age: 15
+    person_9:
+      monthly_income: 0
+      age: 14
+    SPM_units:
+      unit_1:
+        members: [person_1, person_2, person_3, person_4, person_5, person_6,
+                  person_7, person_8, person_9,]
+        state_group: contiguous_US
+  output:
+    standard_deduction: 
 
 - name: single person, no disabilities, 0 income (Extreme Test)
 
