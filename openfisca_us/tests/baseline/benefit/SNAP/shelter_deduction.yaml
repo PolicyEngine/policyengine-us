@@ -57,14 +57,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: GU
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, disabled members present, GU (State Group Test)
 period: 2021
@@ -72,7 +72,7 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
         disability: True
     spm_units:
@@ -80,7 +80,7 @@ period: 2021
         state_group: GU
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, VI (State Group Test)
 period: 2021
@@ -88,14 +88,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: VI
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, disabled members present, VI (State Group Test)
 period: 2021
@@ -103,7 +103,7 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
         disability: True
     spm_units:
@@ -111,7 +111,7 @@ period: 2021
         state_group: VI
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, AK (State Group Test)
 period: 2021
@@ -119,14 +119,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: AK
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, AK, disabled members present (State Group Test)
 period: 2021
@@ -134,7 +134,7 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
         disability: True
     spm_units:
@@ -142,7 +142,7 @@ period: 2021
         state_group: AK
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, HI (State Group Test)
 period: 2021
@@ -150,14 +150,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: HI
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:
 
 - name: single person, 10k income, HI (State Group Test)
 period: 2021
@@ -165,7 +165,7 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 4170
+        monthly_income: 833
         age: 30
         disability: True
     spm_units:
@@ -173,4 +173,4 @@ period: 2021
         state_group: HI
         members: [person_1]
   output:
-    standard_deduction: 167
+    shelter_deduction:

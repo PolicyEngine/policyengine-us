@@ -101,6 +101,130 @@ TODO:
   output:
     snap: 204 * 12
 
+- name: single person, 10k income, GU (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: GU
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, disabled members present, GU (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: GU
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, VI (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: VI
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, disabled members present, VI (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: VI
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, AK (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: AK
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, AK, disabled members present (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: AK
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, HI (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: HI
+        members: [person_1]
+  output:
+    snap:
+
+- name: single person, 10k income, HI (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: HI
+        members: [person_1]
+  output:
+    snap:
+
 #- name: CBPP family A  # TODO: can we add a source?
 #  # https://www.cbpp.org/research/food-assistance/the-supplemental-nutrition-assistance-program-includes-earnings-incentives
 #  period: 2019
