@@ -5,21 +5,20 @@
   input:
     people:
     person_1:
-      monthly_income: 1000
+      gross_monthly_income: 1000
       age: 30
     person_2:
-      monthly_income: 1000
+      gross_monthly_income: 1000
       age: 35
     person_3:
-      monthly_income: 0
+      gross_monthly_income: 0
       age: 17
     person_4:
-      monthly_income: 0
+      gross_monthly_income: 0
       age: 15
     SPM_units:
       unit_1:
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
         state_group: contiguous_US
   output:
     net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
@@ -31,27 +30,26 @@
   input:
     people:
     person_1:
-      monthly_income: 1000
+      gross_monthly_income: 1000
       disability: True
       age: 30
     person_2:
-      monthly_income: 1000
+      gross_monthly_income: 1000
       disability: False
       age: 35
     person_3:
-      monthly_income: 0
+      gross_monthly_income: 0
       disability: False
       age: 17
     person_4:
-      monthly_income: 0
+      gross_monthly_income: 0
       disability: False
       age: 15
     SPM_units:
       unit_1:
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
   output:
-    net_income_pre_shelter:
+    net_income_pre_shelter: (2000 - (2000 * 0.2) - 181)
 
 - name: single person, 10k income, GU (State Group Test)
 period: 2021
@@ -59,30 +57,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 833
+        gross_monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: GU
         members: [person_1]
   output:
-    net_income_pre_shelter:
-
-- name: single person, 10k income, disabled members present, GU (State Group Test)
-period: 2021
-  absolute_error_margin: 0
-  input:
-    people:
-      person_1:
-        monthly_income: 833
-        age: 30
-        disability: True
-    spm_units:
-      unit_1:
-        state_group: GU
-        members: [person_1]
-  output:
-    net_income_pre_shelter:
+    net_income_pre_shelter: (833 - (833 * 0.2) - 336)
 
 - name: single person, 10k income, VI (State Group Test)
 period: 2021
@@ -90,30 +72,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 833
+        gross_monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: VI
         members: [person_1]
   output:
-    net_income_pre_shelter:
-
-- name: single person, 10k income, disabled members present, VI (State Group Test)
-period: 2021
-  absolute_error_margin: 0
-  input:
-    people:
-      person_1:
-        monthly_income: 833
-        age: 30
-        disability: True
-    spm_units:
-      unit_1:
-        state_group: VI
-        members: [person_1]
-  output:
-    net_income_pre_shelter:
+    net_income_pre_shelter: (833 - (833 * 0.2) - 147)
 
 - name: single person, 10k income, AK (State Group Test)
 period: 2021
@@ -121,30 +87,14 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 833
+        gross_monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: AK
         members: [person_1]
   output:
-    net_income_pre_shelter:
-
-- name: single person, 10k income, AK, disabled members present (State Group Test)
-period: 2021
-  absolute_error_margin: 0
-  input:
-    people:
-      person_1:
-        monthly_income: 833
-        age: 30
-        disability: True
-    spm_units:
-      unit_1:
-        state_group: AK
-        members: [person_1]
-  output:
-    net_income_pre_shelter:
+    net_income_pre_shelter: (833 - (833 * 0.2) - 286)
 
 - name: single person, 10k income, HI (State Group Test)
 period: 2021
@@ -152,27 +102,11 @@ period: 2021
   input:
     people:
       person_1:
-        monthly_income: 833
+        gross_monthly_income: 833
         age: 30
     spm_units:
       unit_1:
         state_group: HI
         members: [person_1]
   output:
-    net_income_pre_shelter:
-
-- name: single person, 10k income, HI (State Group Test)
-period: 2021
-  absolute_error_margin: 0
-  input:
-    people:
-      person_1:
-        monthly_income: 833
-        age: 30
-        disability: True
-    spm_units:
-      unit_1:
-        state_group: HI
-        members: [person_1]
-  output:
-    net_income_pre_shelter:
+    net_income_pre_shelter: (833 - (833 * 0.2) - 236)
