@@ -147,3 +147,13 @@ class county(Variable):
     entity = Household
     label = u"County"
     definition_period = ETERNITY
+
+
+class county_cluster(Variable):
+    value_type = int
+    entity = Household
+    label = u"County Cluster for CCDF NY"
+    definition_period = ETERNITY
+
+    def formula(household, period, parameters):
+        return 1
