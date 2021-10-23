@@ -138,6 +138,11 @@ class state_group(Variable):
 
 class County(Enum):
     NEW_YORK = "New York"
+    NASSAU = "Nassau"
+    PUTNAM = "Putnam"
+    ALLEGANY = "Allegany"
+    COLUMBIA = "Columbia"
+    ALBANY = "Albany"
 
 
 class county(Variable):
