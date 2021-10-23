@@ -84,5 +84,15 @@
     standard_deduction: 
 
 - name: single person, no disabilities, 0 income (Extreme Test)
-
-- name: family of 12, 50k income (Extreme Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 4170
+        age: 30
+    spm_units:
+      unit_1:
+        members: [person_1]
+  output:
+    snap: 0
