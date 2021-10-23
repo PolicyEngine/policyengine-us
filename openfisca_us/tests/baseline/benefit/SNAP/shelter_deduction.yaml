@@ -1,3 +1,4 @@
+
 - name: family of 4, no member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
@@ -17,7 +18,7 @@
       age: 15
     SPM_units:
       unit_1:
-        members: [person_1, person_2, person_3, person_4]
+        members: [person_1, person_2, person_3, person_4]        
         shelter_cost: 1700
         state_group: contiguous_US
   output:
@@ -46,7 +47,7 @@
       age: 15
     SPM_units:
       unit_1:
-        members: [person_1, person_2, person_3, person_4]
+        members: [person_1, person_2, person_3, person_4]        
         shelter_cost: 1700
   output:
     shelter_deduction: (1700 - (1619 * 0.5))) * 12
@@ -62,11 +63,11 @@ period: 2021
     spm_units:
       unit_1:
         state_group: GU
-        members: [person_1]
+        members: [person_1]  
   output:
     shelter_deduction:
 
-- name: single person, 10k income, disabled members present, GU (State Group Test)
+- name: single person, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
 period: 2021
   absolute_error_margin: 0
   input:
@@ -78,7 +79,8 @@ period: 2021
     spm_units:
       unit_1:
         state_group: GU
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
 
@@ -93,11 +95,12 @@ period: 2021
     spm_units:
       unit_1:
         state_group: VI
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
 
-- name: single person, 10k income, disabled members present, VI (State Group Test)
+- name: single person, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
 period: 2021
   absolute_error_margin: 0
   input:
@@ -109,7 +112,8 @@ period: 2021
     spm_units:
       unit_1:
         state_group: VI
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
 
@@ -124,11 +128,12 @@ period: 2021
     spm_units:
       unit_1:
         state_group: AK
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
 
-- name: single person, 10k income, AK, disabled members present (State Group Test)
+- name: single person, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
 period: 2021
   absolute_error_margin: 0
   input:
@@ -140,11 +145,12 @@ period: 2021
     spm_units:
       unit_1:
         state_group: AK
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
 
-- name: single person, 10k income, HI (State Group Test)
+- name: single person, 10k income, member(s) with disabilities or age >60 present, HI (State Group Test)
 period: 2021
   absolute_error_margin: 0
   input:
@@ -155,11 +161,12 @@ period: 2021
     spm_units:
       unit_1:
         state_group: HI
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
 
-- name: single person, 10k income, HI (State Group Test)
+- name: single person, 10k income, disabled members present, HI (State Group Test)
 period: 2021
   absolute_error_margin: 0
   input:
@@ -171,6 +178,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: HI
-        members: [person_1]
+        shelter_cost: 650
+        members: [person_1]        
   output:
     shelter_deduction:
+
+
