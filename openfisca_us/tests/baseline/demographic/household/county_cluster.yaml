@@ -1,0 +1,47 @@
+- name: Nassau
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    county: NASSAU
+  output:
+    county_cluster: 1
+
+- name: Putnam
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    county: PUTNAM
+  output:
+    county_cluster: 1
+
+- name: Columbia
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    county: COLUMBIA
+  output:
+    county_cluster: 2
+
+- name: Allegany
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    county: ALLEGANY
+  output:
+    county_cluster: 3
+
+- name: Albany
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    county: ALBANY
+  output:
+    county_cluster: 4
+
+- name: New York
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    county: NEW_YORK
+  output:
+    county_cluster: 5
