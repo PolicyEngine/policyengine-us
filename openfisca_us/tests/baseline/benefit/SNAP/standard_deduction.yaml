@@ -1,4 +1,4 @@
-- name: family of 4, income of 24k/year (Normal test)
+- name: family of 4, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -24,7 +24,7 @@
   output:
     standard_deduction: 181 * 12
 
-- name: family of 2, 12k income (Normal Test)
+- name: family of 2, 12k income (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
