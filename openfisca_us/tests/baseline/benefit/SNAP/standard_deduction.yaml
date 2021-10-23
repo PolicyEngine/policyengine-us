@@ -1,4 +1,4 @@
-- name: family of 4, no member(s) with disabilities, income of 24k/year (Normal test)
+- name: family of 4, income of 24k/year (Normal test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -17,6 +17,7 @@
       age: 15
     SPM_units:
       unit_1:
+        state_group: contiguous_us
         members: [person_1, person_2, person_3, person_4]
         shelter_cost: 1700
         state_group: contiguous_US
@@ -36,14 +37,13 @@
       age: 50
     SPM_units:
       unit_1:
+        state_group: contiguous_us
         members: [person_1, person_2]
         state_group: contiguous_US
   output:
     standard_deduction: 
 
-
-
-- name: family of 9, no disabilities, elderly individuals present, 24k income (Additional Deduction Test)
+- name: family of 9, 24k income (Additional Deduction Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -77,13 +77,14 @@
       age: 14
     SPM_units:
       unit_1:
+        state_group: contiguous_us
         members: [person_1, person_2, person_3, person_4, person_5, person_6,
                   person_7, person_8, person_9,]
         state_group: contiguous_US
   output:
     standard_deduction: 
 
-- name: single person, no disabilities, 0 income (Extreme Test)
+- name: single person, 0 income (Extreme Test)
 period: 2021
   absolute_error_margin: 0
   input:
@@ -93,6 +94,67 @@ period: 2021
         age: 30
     spm_units:
       unit_1:
+        state_group: contiguous_us
         members: [person_1]
   output:
-    snap: 0
+    standard_deduction: 167
+
+- name: single person, 10k income, GU (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 4170
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: GU
+        members: [person_1]
+  output:
+    standard_deduction: 167
+
+- name: single person, 10k income, VI (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 4170
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: VI
+        members: [person_1]
+  output:
+    standard_deduction: 167
+
+- name: single person, 10k income, AK (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 4170
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: AK
+        members: [person_1]
+  output:
+    standard_deduction: 167
+
+- name: single person, 10k income, HI (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        monthly_income: 4170
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: HI
+        members: [person_1]
+  output:
+    standard_deduction: 167
