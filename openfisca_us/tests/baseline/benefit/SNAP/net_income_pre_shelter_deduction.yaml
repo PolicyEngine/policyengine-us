@@ -1,5 +1,5 @@
 
-- name: family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
+- name: family of 4, no member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -25,7 +25,7 @@
     net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
 
 
-- name: family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
+- name: family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
