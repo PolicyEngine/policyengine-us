@@ -3,7 +3,7 @@ format:
 	autopep8 -r .
 	black . -l 79
 install:
-	pip install -e .
+	pip install -e .[dev]
 test:
 	openfisca-us test openfisca_us/tests
 documentation:

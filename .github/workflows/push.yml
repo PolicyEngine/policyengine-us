@@ -23,10 +23,6 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
-      - name: Install Wheel and Pytest
-        run: pip3 install wheel setuptools pytest==5.4.3
-      - name: Install libyaml
-        run: pip3 uninstall pyyaml && pip3 install pyyaml --no-cache-dir
       - name: Install package
         run: make install
       - name: Run tests
@@ -51,6 +47,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
+      - name: Install package
+        run: make install
       - name: Build package
         run: make
       - name: Publish a Python distribution to PyPI
