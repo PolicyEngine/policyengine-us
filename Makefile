@@ -1,4 +1,4 @@
-all: test
+all: build
 format:
 	autopep8 -r .
 	black . -l 79
