@@ -1,0 +1,34 @@
+name: Pull request
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check formatting
+        uses: "lgeiger/black-action@master"
+        with:
+          args: ". -l 79 --check"
+  Test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install package
+        run: make install
+      - name: Run tests
+        run: make test
+      - name: Build package
+        run: make
+      - name: Test documentation builds
+        if: matrix.os == 'ubuntu-latest'
+        run: make documentation
