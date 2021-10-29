@@ -1,0 +1,26 @@
+- name: One-person SPM unit in 2021 in contiguous US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person: {}
+    spm_units:
+      spm_unit:
+        members: [person]
+  output:
+    spm_unit_poverty_guideline: 12_880
+
+
+- name: Three-person SPM unit in 2021 in contiguous US
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+  output:
+    spm_unit_poverty_guideline: 12_880 + 2 * 4_540
