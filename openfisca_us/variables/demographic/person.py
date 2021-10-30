@@ -43,3 +43,21 @@ class age_group(Variable):
             [age < 18, age < 65, age >= 65],
             [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
         )
+
+
+class ProviderType(Enum):
+    DCC_SACC = "Licenced/registered/permitted day care center; registered school-age child care"
+    FDC_GFDC = "Registered family day care homes; licensed group family day care"
+    LE_GC = "Legally exempt group child care programs"
+    LE_STD = "Informal child care standard rate"
+    LE_ENH = "Informal child care enhanced rate"
+
+
+class provider_type(Variable):
+    value_type = Enum
+    possible_values = ProviderType
+    default_value = ProviderType.DCC_SACC
+    entity = Person
+    label = u"ProviderType"
+    definition_period = YEAR
+    # DCC_SACC is most common among provider types
