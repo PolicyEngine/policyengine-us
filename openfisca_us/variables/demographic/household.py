@@ -211,7 +211,7 @@ class county(Variable):
     definition_period = ETERNITY
 
 
-class Provider_Type(Enum):
+class ProviderType(Enum):
     DCC_SACC = "Licenced/registered/permitted day care center; registered school-age child care"
     FDC_GFDC = (
         "Registered family day care homes; licensed group family day care"
@@ -223,8 +223,9 @@ class Provider_Type(Enum):
 
 class provider_type(Variable):
     value_type = Enum
-    possible_values = Provider_Type
-    default_value = Provider_Type.DCC_SACC
+    possible_values = ProviderType
+    default_value = ProviderType.DCC_SACC
     entity = Household
-    label = u"Provider_Type"
+    label = u"ProviderType"
     definition_period = YEAR
+    # DCC_SACC is most common among provider types
