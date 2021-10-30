@@ -209,3 +209,20 @@ class county(Variable):
     entity = Household
     label = u"County"
     definition_period = ETERNITY
+
+
+class Provider_Type(Enum):
+    DCC_SACC = "Licenced/registered/permitted day care center; registered school-age child care"
+    FDC_GFDC = "Registered family day care homes; licensed group family day care"
+    LE_GC = "Legally exempt group child care programs"
+    LE_STD = "Informal child care standard rate"
+    LE_ENH = "Informal child care enhanced rate"
+
+
+class provider_type(Variable):
+    value_type = Enum
+    possible_values = Provider_Type
+    default_value = Provider_Type.DCC_SACC
+    entity = Household
+    label = u"Provider_Type"
+    definition_period = ETERNITY
