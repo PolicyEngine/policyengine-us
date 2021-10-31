@@ -83,17 +83,36 @@ class ccdf_age_group(Variable):
 
     def formula(person, period, parameters):
         ccdf_age = person("ccdf_age", period)
-        ccdf_care_location = person(
-            "ccdf_care_location", period
-        ).decode_to_str()
+        ccdf_care_location = person("ccdf_care_location", period)
+        care_locations = ccdf_care_location.possible_values
         return select(
             [
-                (ccdf_age < 1.5 and ccdf_care_location == "CENTER_BASED")
-                or (ccdf_age < 2 and ccdf_care_location == "HOME_BASED"),
-                (ccdf_age < 2 and ccdf_care_location == "CENTER_BASED")
-                or (ccdf_age < 3 and ccdf_care_location == "HOME_BASED"),
+                (
+                    ccdf_age
+                    < 1.5 & ccdf_care_location
+                    == care_locations.CENTER_BASED
+                )
+                | (
+                    ccdf_age
+                    < 2 & ccdf_care_location
+                    == care_locations.HOME_BASED
+                ),
+                (
+                    ccdf_age
+                    < 2 & ccdf_care_location
+                    == care_locations.CENTER_BASED
+                )
+                | (
+                    ccdf_age
+                    < 3 & ccdf_care_location
+                    == care_locations.HOME_BASED
+                ),
                 ccdf_age < 6,
                 ccdf_age < 13,
             ],
             [CCDFAgeGroup.I, CCDFAgeGroup.T, CCDFAgeGroup.PS, CCDFAgeGroup.SA],
         )
+
+
+# Reference for CCDF age group
+# https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf
