@@ -60,10 +60,18 @@ class CCDFCareLocation(Enum):
 class ccdf_care_location(Variable):
     value_type = Enum
     possible_values = CCDFCareLocation
-    default_value = CCDFCareLocation.CENTER_BASED
+    default_value = CCDFCareLocation.HOME_BASED
     entity = Person
     label = u"CCDF care location"
     definition_period = YEAR
+
+    def formula(person, period, parameters):
+        provider_type_group = person("provider_type_group", period)
+        return where(
+            provider_type_group == "DCC_SACC",
+            CCDFCareLocation.CENTER_BASED,
+            CCDFCareLocation.HOME_BASED,
+        )
 
 
 class CCDFAgeGroup(Enum):
@@ -83,14 +91,21 @@ class ccdf_age_group(Variable):
 
     def formula(person, period, parameters):
         ccdf_age = person("ccdf_age", period)
-        care_location = person("ccdf_care_location", period)
-        care_locations = ccdf_care_location.possible_values
+        care_location = ccdf_care_location(person, period, parameters)
         return select(
             [
-                (ccdf_age < 1.5 & care_location == care_locations.CENTER_BASED)
-                | (ccdf_age < 2 & care_location == care_locations.HOME_BASED),
-                (ccdf_age < 2 & care_location == care_locations.CENTER_BASED)
-                | (ccdf_age < 3 & care_location == care_locations.HOME_BASED),
+                (
+                    ccdf_age
+                    < 1.5 & care_location
+                    == CCDFCareLocation.CENTER_BASED
+                )
+                | (
+                    ccdf_age < 2 & care_location == CCDFCareLocation.HOME_BASED
+                ),
+                (ccdf_age < 2 & care_location == CCDFCareLocation.CENTER_BASED)
+                | (
+                    ccdf_age < 3 & care_location == CCDFCareLocation.HOME_BASED
+                ),
                 ccdf_age < 6,
                 ccdf_age < 13,
             ],
