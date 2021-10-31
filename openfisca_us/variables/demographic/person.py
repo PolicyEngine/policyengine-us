@@ -43,3 +43,54 @@ class age_group(Variable):
             [age < 18, age < 65, age >= 65],
             [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
         )
+
+
+class ccdf_age(Variable):
+    value_type = float
+    entity = Person
+    label = u"CCDF age"
+    definition_period = YEAR
+
+
+class CCDFCareLocation(Enum):
+    CENTER_BASED = "Center-based"
+    HOME_BASED = "Home-based"
+
+
+class ccdf_care_location(Variable):
+    value_type = Enum
+    possible_values = CCDFCareLocation
+    default_values = CCDFCareLocation.CENTER_BASED
+    entity = Person
+    label = u"CCDF care location"
+    definition_period = YEAR
+
+
+class CCDFAgeGroup(Enum):
+    I = "Infant"
+    T = "Toddler"
+    PS = "Preschooler"
+    SA = "School age"
+
+
+class ccdf_age_group(Variable):
+    value_type = Enum
+    possible_values = CCDFAgeGroup
+    entity = Person
+    label = u"CCDF age group"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        ccdf_age = person("ccdf_age", period)
+        ccdf_care_location = person("ccdf_care_location", period)
+        return select(
+            [
+                (ccdf_age < 1.5 and ccdf_care_location == "CENTER_BASED")
+                or (ccdf_age < 2 and ccdf_care_location == "HOME_BASED"),
+                (ccdf_age < 2 and ccdf_care_location == "CENTER_BASED")
+                or (ccdf_age < 3 and ccdf_care_location == "HOME_BASED"),
+                ccdf_age < 6,
+                ccdf_age < 13,
+            ],
+            [CCDFAgeGroup.I, CCDFAgeGroup.T, CCDFAgeGroup.PS, CCDFAgeGroup.SA],
+        )
