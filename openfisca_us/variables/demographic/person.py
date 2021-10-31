@@ -60,7 +60,7 @@ class CCDFCareLocation(Enum):
 class ccdf_care_location(Variable):
     value_type = Enum
     possible_values = CCDFCareLocation
-    default_values = CCDFCareLocation.CENTER_BASED
+    default_value = CCDFCareLocation.CENTER_BASED
     entity = Person
     label = u"CCDF care location"
     definition_period = YEAR
