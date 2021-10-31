@@ -83,30 +83,14 @@ class ccdf_age_group(Variable):
 
     def formula(person, period, parameters):
         ccdf_age = person("ccdf_age", period)
-        ccdf_care_location = person("ccdf_care_location", period)
+        care_location = person("ccdf_care_location", period)
         care_locations = ccdf_care_location.possible_values
         return select(
             [
-                (
-                    ccdf_age
-                    < 1.5 & ccdf_care_location
-                    == care_locations.CENTER_BASED
-                )
-                | (
-                    ccdf_age
-                    < 2 & ccdf_care_location
-                    == care_locations.HOME_BASED
-                ),
-                (
-                    ccdf_age
-                    < 2 & ccdf_care_location
-                    == care_locations.CENTER_BASED
-                )
-                | (
-                    ccdf_age
-                    < 3 & ccdf_care_location
-                    == care_locations.HOME_BASED
-                ),
+                (ccdf_age < 1.5 & care_location == care_locations.CENTER_BASED)
+                | (ccdf_age < 2 & care_location == care_locations.HOME_BASED),
+                (ccdf_age < 2 & care_location == care_locations.CENTER_BASED)
+                | (ccdf_age < 3 & care_location == care_locations.HOME_BASED),
                 ccdf_age < 6,
                 ccdf_age < 13,
             ],
