@@ -76,7 +76,7 @@ class CCDFAgeGroup(Enum):
 class ccdf_age_group(Variable):
     value_type = Enum
     possible_values = CCDFAgeGroup
-    default_values = CCDFAgeGroup.I
+    default_value = CCDFAgeGroup.I
     entity = Person
     label = u"CCDF age group"
     definition_period = YEAR
