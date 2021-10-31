@@ -83,7 +83,9 @@ class ccdf_age_group(Variable):
 
     def formula(person, period, parameters):
         ccdf_age = person("ccdf_age", period)
-        ccdf_care_location = person("ccdf_care_location", period)
+        ccdf_care_location = person(
+            "ccdf_care_location", period
+        ).decode_to_str()
         return select(
             [
                 (ccdf_age < 1.5 and ccdf_care_location == "CENTER_BASED")
