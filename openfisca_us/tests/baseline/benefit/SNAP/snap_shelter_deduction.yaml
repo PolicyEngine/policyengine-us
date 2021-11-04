@@ -17,6 +17,7 @@
         age: 15
     SPM_units:
       unit_1:
+        state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]        
         shelter_cost: 1700      
   output:
@@ -45,6 +46,7 @@
       age: 15
     SPM_units:
       unit_1:
+        state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]        
         shelter_cost: 1700
   output:
@@ -77,8 +79,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: GU
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
@@ -93,8 +96,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: VI
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
@@ -110,8 +114,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: VI
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
@@ -126,8 +131,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: AK
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
@@ -143,8 +149,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: AK
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
@@ -159,8 +166,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: HI
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
@@ -176,8 +184,9 @@ period: 2021
     spm_units:
       unit_1:
         state_group: HI
+        members: [person_1]
         shelter_cost: 650
-        members: [person_1]        
+                
   output:
     shelter_deduction:
 
