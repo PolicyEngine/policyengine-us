@@ -1,40 +1,40 @@
 - name: Child age, 1, center-based care
   period: 2022
   input:
-    ccdf_age: 1
+    age: 1
     provider_type_group: DCC_SACC
   output:
     ccdf_age_group: I
 - name: Child age, 1.5, home-based care
   period: 2022
   input:
-    ccdf_age: 1.5
+    age: 1.5
     provider_type_group: FDC_GFDC
   output:
     ccdf_age_group: I
 - name: Child age, 1.5, center-based care
   period: 2022
   input:
-    ccdf_age: 1.5
+    age: 1.5
     provider_type_group: DCC_SACC
   output:
     ccdf_age_group: T
 - name: Child age, 2, home-based care
   period: 2022
   input:
-    ccdf_age: 2
+    age: 2
     provider_type_group: LE_STD
   output:
     ccdf_age_group: T
 - name: Child age, 3
   period: 2022
   input:
-    ccdf_age: 3
+    age: 3
   output:
     ccdf_age_group: PS
 - name: Child age, 10
   period: 2022
   input:
-    ccdf_age: 10
+    age: 10
   output:
     ccdf_age_group: SA
