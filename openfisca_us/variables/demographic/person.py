@@ -49,12 +49,11 @@ class is_ccdf_home_based(Variable):
     value_type = bool
     default_value = False
     entity = Person
-    label = u"is ccdf home based"
+    label = u"Whether CCDF care is home-based versus center-based"
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        provider_type_group = person("provider_type_group", period)
-        return provider_type_group != "DCC_SACC"
+        return person("provider_type_group", period) != "DCC_SACC"
 
 
 class CCDFAgeGroup(Enum):
@@ -72,26 +71,20 @@ class ccdf_age_group(Variable):
     label = u"CCDF age group"
     definition_period = YEAR
 
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
+
     def formula(person, period, parameters):
         age = person("age", period)
-        care_location_is_home_based = person(
-            "is_ccdf_home_based", period, parameters
-        )
+        home_based = person("home_based", period, parameters)
         return select(
             [
-                (age < 1.5 & ~care_location_is_home_based)
-                | (age < 2 & care_location_is_home_based),
-                (age < 2 & ~care_location_is_home_based)
-                | (age < 3 & care_location_is_home_based),
+                (age < 1.5 & ~home_based) | (age < 2 & home_based),
+                (age < 2 & ~home_based) | (age < 3 & home_based),
                 age < 6,
                 age < 13,
             ],
             [CCDFAgeGroup.I, CCDFAgeGroup.T, CCDFAgeGroup.PS, CCDFAgeGroup.SA],
         )
-
-
-# Reference for CCDF age group
-# https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf
 
 
 class ProviderTypeGroup(Enum):
