@@ -17,7 +17,7 @@ class person_weight(Variable):
 
 
 class age(Variable):
-    value_type = int
+    value_type = float
     entity = Person
     label = u"Age"
     definition_period = YEAR
@@ -45,33 +45,16 @@ class age_group(Variable):
         )
 
 
-class ccdf_age(Variable):
-    value_type = float
+class is_ccdf_home_based(Variable):
+    value_type = bool
+    default_value = False
     entity = Person
-    label = u"CCDF age"
-    definition_period = YEAR
-
-
-class CCDFCareLocation(Enum):
-    CENTER_BASED = "Center-based"
-    HOME_BASED = "Home-based"
-
-
-class ccdf_care_location(Variable):
-    value_type = Enum
-    possible_values = CCDFCareLocation
-    default_value = CCDFCareLocation.HOME_BASED
-    entity = Person
-    label = u"CCDF care location"
+    label = u"is ccdf home based"
     definition_period = YEAR
 
     def formula(person, period, parameters):
         provider_type_group = person("provider_type_group", period)
-        return where(
-            provider_type_group == "DCC_SACC",
-            CCDFCareLocation.CENTER_BASED,
-            CCDFCareLocation.HOME_BASED,
-        )
+        return provider_type_group != "DCC_SACC"
 
 
 class CCDFAgeGroup(Enum):
@@ -90,24 +73,18 @@ class ccdf_age_group(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ccdf_age = person("ccdf_age", period)
-        care_location = person("ccdf_care_location", period, parameters)
+        age = person("age", period)
+        care_location_is_home_based = person(
+            "is_ccdf_home_based", period, parameters
+        )
         return select(
             [
-                (
-                    ccdf_age
-                    < 1.5 & care_location
-                    == CCDFCareLocation.CENTER_BASED
-                )
-                | (
-                    ccdf_age < 2 & care_location == CCDFCareLocation.HOME_BASED
-                ),
-                (ccdf_age < 2 & care_location == CCDFCareLocation.CENTER_BASED)
-                | (
-                    ccdf_age < 3 & care_location == CCDFCareLocation.HOME_BASED
-                ),
-                ccdf_age < 6,
-                ccdf_age < 13,
+                (age < 1.5 & ~care_location_is_home_based)
+                | (age < 2 & care_location_is_home_based),
+                (age < 2 & ~care_location_is_home_based)
+                | (age < 3 & care_location_is_home_based),
+                age < 6,
+                age < 13,
             ],
             [CCDFAgeGroup.I, CCDFAgeGroup.T, CCDFAgeGroup.PS, CCDFAgeGroup.SA],
         )
@@ -115,6 +92,8 @@ class ccdf_age_group(Variable):
 
 # Reference for CCDF age group
 # https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf
+
+
 class ProviderTypeGroup(Enum):
     DCC_SACC = "Licenced/registered/permitted day care center; registered school-age child care"
     FDC_GFDC = (
