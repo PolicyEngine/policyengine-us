@@ -1,0 +1,530 @@
+- name: No income, one parent, one child, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 0
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97)
+
+
+- name: Low income, one parent, one child, contiguous_US (defined as default)
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 1.2
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97)
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, one child, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67)
+
+
+- name: High income, one parent, one child, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 10
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33)
+
+- name: No income, one parent, one child, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 0
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Low income, one parent, one child, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 1.0
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, one child, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 1.5
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99)
+
+
+- name: High income, one parent, one child, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 20
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38)
+
+
+- name: Low income, one parent, one child, Alaska
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 0.8
+    households:
+      household:
+        state_group: AK
+  output:
+    school_meal_subsidy: 180 * (5.94 + 3.15)
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, one child, Alaska
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        poverty_ratio: 1.4
+    households:
+      household:
+        state_group: AK
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85)
+
+
+- name: Low income, one parent, two children, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 50
+      child1:
+        age: 15
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        poverty_ratio: 1.2
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 2
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, two children, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 45
+      child1:
+        age: 15
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        poverty_ratio: 1.7
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (3.88 + 1.99) * 2
+
+
+- name: High income, one parent, two children, Alaska
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 13
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent,child1,child2]
+        poverty_ratio: 15
+    households:
+      household:
+        state_group: AK
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 2
+
+
+- name: High income, one parent, three children, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 36
+      child1:
+        age: 12
+      child2:
+        age: 8
+      child3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        poverty_ratio: 15
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (0.35 + 0.33) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, three children, Alaska
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        poverty_ratio: 1.6
+    households:
+      household:
+        state_group: AK
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, one child, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 35
+      child:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67)
+
+
+- name: Low income, two parents, one child, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 40
+      child:
+        age: 12
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        poverty_ratio: 1.1
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (4.28 + 2.29)
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, two children, Alaska
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 35
+      child1:
+        age: 10
+      child2:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        poverty_ratio: 1.4
+    households:
+      household:
+        state_group: AK
+  output:
+    school_meal_subsidy: 180 * (5.54 + 2.85) * 2
+
+
+- name: Low income, two parents, three children, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 50
+      parent2:
+        age: 50
+      child1:
+        age: 15
+      child2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        poverty_ratio: 1.2
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 3
+
+
+- name: High income, two parents, three children, Hawaii
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 40
+      child1:
+        age: 10
+      child2:
+        age: 7
+      child3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        poverty_ratio: 15
+    households:
+      household:
+        state_group: HI
+  output:
+    school_meal_subsidy: 180 * (0.41 + 0.38) * 3
+
+
+- name: High income, two parents, three children, Alaska
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 35
+      parent2:
+        age: 35
+      child1:
+        age: 13
+      child2:
+        age: 10
+      child3:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+        poverty_ratio: 20
+    households:
+      household:
+        state_group: AK
+  output:
+    school_meal_subsidy: 180 * (0.57 + 0.50) * 3
+
+
+- name: Income between 1.3 and 1.85 poverty line, one parent, four children, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 12
+      child2:
+        age: 9
+      child3:
+        age: 7
+      child4:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3, child4]
+        poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.26 + 1.67) * 4
+
+
+- name: Low income, two parents, five children, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 40
+      child1:
+        age: 12
+      child2:
+        age: 10
+      child3:
+        age: 8
+      child4:
+        age: 7
+      child5:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3, child4, child5]
+        poverty_ratio: 1.1
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 180 * (3.66 + 1.97) * 5
+
+
+- name: Income between 1.3 and 1.85 poverty line, two parents, 0 child, contiguous_US
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent1:
+        age: 40
+      parent2:
+        age: 33
+    spm_units:
+      spm_unit:
+        members: [parent1,parent2]
+        poverty_ratio: 1.8
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_subsidy: 0

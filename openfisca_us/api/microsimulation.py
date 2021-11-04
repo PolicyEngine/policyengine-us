@@ -1,4 +1,4 @@
-from policyengine_core import Microsimulation as GeneralMicrosimulation
+from openfisca_tools import Microsimulation as GeneralMicrosimulation
 from openfisca_us import CountryTaxBenefitSystem
 from openfisca_us.entities import entities
 from openfisca_us_data import CPS

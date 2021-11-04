@@ -1,0 +1,14 @@
+- name: California
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    state_code: CA
+  output:
+    state_group: CONTIGUOUS_US
+- name: Alaska
+  absolute_error_margin: 0
+  period: ETERNITY
+  input:
+    state_code: AK
+  output:
+    state_group: AK

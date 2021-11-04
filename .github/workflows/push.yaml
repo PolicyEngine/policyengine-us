@@ -1,0 +1,59 @@
+name: Push
+on:
+  push:
+    branches: [ master ]
+jobs:
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check formatting
+        uses: "lgeiger/black-action@master"
+        with:
+          args: ". -l 79 --check"
+  Test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install package
+        run: make install
+      - name: Run tests
+        run: make test
+      - name: Test documentation builds
+        if: matrix.os == 'ubuntu-latest'
+        run: make documentation
+      - name: Deploy documentation
+        if: matrix.os == 'ubuntu-latest'
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs/book/_build/html
+  Publish:
+    if: github.repository == 'PolicyEngine/openfisca-us'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Install package
+        run: make install
+      - name: Build package
+        run: make
+      - name: Publish a Python distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI }}
+          skip_existing: true
