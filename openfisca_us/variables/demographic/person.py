@@ -91,7 +91,7 @@ class ccdf_age_group(Variable):
 
     def formula(person, period, parameters):
         ccdf_age = person("ccdf_age", period)
-        care_location = ccdf_care_location(person, period, parameters)
+        care_location = person("ccdf_care_location", period, parameters)
         return select(
             [
                 (
