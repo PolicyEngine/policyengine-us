@@ -53,7 +53,9 @@ class is_ccdf_home_based(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        return person("provider_type_group", period) != "DCC_SACC"
+        return (
+            person("provider_type_group", period) != ProviderTypeGroup.DCC_SACC
+        )
 
 
 class CCDFAgeGroup(Enum):
