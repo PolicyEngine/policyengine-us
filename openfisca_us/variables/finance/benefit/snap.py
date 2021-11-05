@@ -3,6 +3,16 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
+class snap_gross_income(Variable):
+    value_type = float
+    entity = Person
+    definition_period = MONTH
+    label = "Gross income for the person"
+
+    def formula(persons, period, parameters):
+        return persons("snap_gross_income", period)
+
+
 class snap_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
