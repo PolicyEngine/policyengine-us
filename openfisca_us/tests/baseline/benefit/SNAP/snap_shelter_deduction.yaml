@@ -28,22 +28,22 @@
   absolute_error_margin: 0
   input:
     people:
-    person_1:
-      snap_gross_income: 1000
-      disability: True
-      age: 30
-    person_2:
-      snap_gross_income: 1000
-      disability: False
-      age: 35
-    person_3:
-      snap_gross_income: 0
-      disability: False
-      age: 17
-    person_4:
-      snap_gross_income: 0
-      disability: False
-      age: 15
+      person_1:
+        snap_gross_income: 1000
+        disability: True
+        age: 30
+      person_2:
+        snap_gross_income: 1000
+        disability: False
+        age: 35
+      person_3:
+        snap_gross_income: 0
+        disability: False
+        age: 17
+      person_4:
+        snap_gross_income: 0
+        disability: False
+        age: 15
     SPM_units:
       unit_1:
         state_group: contiguous_US

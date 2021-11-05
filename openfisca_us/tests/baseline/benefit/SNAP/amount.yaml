@@ -3,18 +3,18 @@
   absolute_error_margin: 0
   input:
     people:
-    person_1:
-      monthly_income: 1000
-      age: 30
-    person_2:
-      monthly_income: 1000
-      age: 35
-    person_3:
-      monthly_income: 0
-      age: 17
-    person_4:
-      monthly_income: 0
-      age: 15
+      person_1:
+        monthly_income: 1000
+        age: 30
+      person_2:
+        monthly_income: 1000
+        age: 35
+      person_3:
+        monthly_income: 0
+        age: 17
+      person_4:
+        monthly_income: 0
+        age: 15
     SPM_units:
       unit_1:
         members: [person_1, person_2, person_3, person_4]
@@ -28,18 +28,18 @@
   absolute_error_margin: 0
   input:
     people:
-    person_1:
-      monthly_income: 1000
-      age: 30
-    person_2:
-      monthly_income: 1000
-      age: 35
-    person_3:
-      monthly_income: 0
-      age: 17
-    person_4:
-      monthly_income: 0
-      age: 15
+      person_1:
+        monthly_income: 1000
+        age: 30
+      person_2:
+        monthly_income: 1000
+        age: 35
+      person_3:
+        monthly_income: 0
+        age: 17
+      person_4:
+        monthly_income: 0
+        age: 15
     SPM_units:
       unit_1:
         members: [person_1, person_2, person_3, person_4]
