@@ -51,7 +51,7 @@
 
 
 - name: single person, 10k income, GU (State Group Test)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
@@ -68,7 +68,7 @@ period: 2021
 
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
-period: 2021
+  period: 2021
   absolute_error_margin: 0
   input:
     people:
