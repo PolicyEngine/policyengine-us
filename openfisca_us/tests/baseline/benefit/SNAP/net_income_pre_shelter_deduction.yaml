@@ -4,16 +4,16 @@
   input:
     people:
         person_1:
-          gross_monthly_income: 1000
+          snap_gross_income: 1000
           age: 30
         person_2:
-          gross_monthly_income: 1000
+          snap_gross_income: 1000
           age: 35
         person_3:
-          gross_monthly_income: 0
+          snap_gross_income: 0
           age: 17
         person_4:
-          gross_monthly_income: 0
+          snap_gross_income: 0
           age: 15
     spm_units:
       unit_1:
@@ -29,19 +29,19 @@
   input:
     people:
       person_1:
-        gross_monthly_income: 1000
+        snap_gross_income: 1000
         disability: True
         age: 30
       person_2:
-        gross_monthly_income: 1000
+        snap_gross_income: 1000
         disability: False
         age: 35
       person_3:
-        gross_monthly_income: 0
+        snap_gross_income: 0
         disability: False
         age: 17
       person_4:
-        gross_monthly_income: 0
+        snap_gross_income: 0
         disability: False
         age: 15
     SPM_units:
@@ -57,7 +57,7 @@
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
@@ -73,7 +73,7 @@
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
@@ -89,7 +89,7 @@
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
@@ -105,7 +105,7 @@
   input:
     people:
       person_1:
-        gross_monthly_income: 833
+        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
