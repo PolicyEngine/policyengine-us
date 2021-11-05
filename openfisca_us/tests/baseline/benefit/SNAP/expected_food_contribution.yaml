@@ -22,7 +22,7 @@
         shelter_cost: 1700
         state_group: contiguous_US
   output:
-    expected_food_contribution: (1050 * 0.3) * 12
+    expected_food_contribution: ((1419 - 569) * 0.3) * 12
 
 
 - name: family of 4, member(s) with disabilities, income of 23k/year (standard test)
@@ -48,4 +48,145 @@
         shelter_cost: 1700
         state_group: contiguous_US
   output:
-    expected_food_contribution: (728.5 * 0.3) * 12
+    expected_food_contribution: ((1419 - (1700 - (1419 * 0.5))) * 0.3) * 12
+
+
+- name: single person, 10k income, GU (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: GU
+        members: [person_1] 
+        shelter_cost: 650 
+  output:
+    expected_food_contribution: 0
+
+
+- name: single person, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
+period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: GU
+        members: [person_1] 
+        shelter_cost: 650       
+  output:
+    expected_food_contribution: 0 
+
+
+- name: single person, 10k income, VI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: VI
+        members: [person_1] 
+        shelter_cost: 650      
+  output:
+    expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
+
+
+- name: single person, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: VI
+        members: [person_1] 
+        shelter_cost: 650      
+  output:
+    expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
+
+
+- name: single person, 10k income, AK (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: AK
+        members: [person_1] 
+        shelter_cost: 650        
+  output:
+    expected_food_contribution: 0
+
+
+- name: single person, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: AK
+        members: [person_1] 
+        shelter_cost: 650     
+  output:
+    expected_food_contribution: 0
+
+
+- name: single person, 10k income, member(s) with disabilities or age >60 present, HI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+    spm_units:
+      unit_1:
+        state_group: HI
+        members: [person_1] 
+        shelter_cost: 650    
+  output:
+    expected_food_contribution: 0
+
+
+- name: single person, 10k income, disabled members present, HI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        snap_gross_income: 833
+        age: 30
+        disability: True
+    spm_units:
+      unit_1:
+        state_group: HI
+        members: [person_1] 
+        shelter_cost: 650     
+  output:
+    expected_food_contribution: 0
+    
