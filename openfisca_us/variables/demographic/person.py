@@ -77,11 +77,11 @@ class ccdf_age_group(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        home_based = person("is_ccdf_home_based", period, parameters)
+        home_based = person("is_ccdf_home_based", period)
         return select(
             [
-                (age < 1.5 & ~home_based) | (age < 2 & home_based),
-                (age < 2 & ~home_based) | (age < 3 & home_based),
+                ((age < 1.5) & ~home_based) | ((age < 2) & home_based),
+                ((age < 2) & ~home_based) | ((age < 3) & home_based),
                 age < 6,
                 age < 13,
             ],
