@@ -30,7 +30,7 @@ TODO:
   output:
     snap: (837 - 315) * 12
 
-- name: family of 4, member(s) with disabilities, income of 23k/year (Standard Test)
+- name: family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -56,23 +56,6 @@ TODO:
     expected_food_contribution: (837 - 218.55) * 12
  
 
-- name: family of 2, no disabilities, 12k income (Standard Test)
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    people:
-    person_1:
-      monthly_income: 1000
-      age: 30
-    person_2:
-      monthly_income: 0
-      age: 50
-    SPM_units:
-      unit_1:
-        members: [person_1, person_2]
-  output:
-    snap: 
-
 - name: Individual, $50k income (Extreme Test)
   period: 2019
   absolute_error_margin: 0
@@ -85,7 +68,8 @@ TODO:
       unit_1:
         members: [person_1]
   output:
-    snap: 0
+    snap: 0 * 12
+
 
 - name: Individual, $0 income (Extreme Test)
   period: 2019
@@ -101,6 +85,7 @@ TODO:
   output:
     snap: 204 * 12
 
+
 - name: single person, 10k income, GU (State Group Test)
 period: 2021
   absolute_error_margin: 0
@@ -114,7 +99,8 @@ period: 2021
         state_group: GU
         members: [person_1]
   output:
-    snap:
+    snap: (300 - 0)
+
 
 - name: single person, 10k income, disabled members present, GU (State Group Test)
 period: 2021
@@ -130,7 +116,8 @@ period: 2021
         state_group: GU
         members: [person_1]
   output:
-    snap:
+    snap: (300 - 0) * 12
+
 
 - name: single person, 10k income, VI (State Group Test)
 period: 2021
@@ -145,7 +132,8 @@ period: 2021
         state_group: VI
         members: [person_1]
   output:
-    snap:
+    snap: (262 - 129.1) * 12
+
 
 - name: single person, 10k income, disabled members present, VI (State Group Test)
 period: 2021
@@ -161,7 +149,8 @@ period: 2021
         state_group: VI
         members: [person_1]
   output:
-    snap:
+    snap: (262 - 129.1) * 12
+
 
 - name: single person, 10k income, AK (State Group Test)
 period: 2021
@@ -173,10 +162,11 @@ period: 2021
         age: 30
     spm_units:
       unit_1:
-        state_group: AK
+        state_group: AK_urban
         members: [person_1]
   output:
-    snap:
+    snap: (320 - 0) * 12
+
 
 - name: single person, 10k income, AK, disabled members present (State Group Test)
 period: 2021
@@ -192,7 +182,8 @@ period: 2021
         state_group: AK
         members: [person_1]
   output:
-    snap:
+    snap: (320 - 0) * 12
+
 
 - name: single person, 10k income, HI (State Group Test)
 period: 2021
@@ -207,7 +198,8 @@ period: 2021
         state_group: HI
         members: [person_1]
   output:
-    snap:
+    snap: (375 - 0) * 12
+
 
 - name: single person, 10k income, HI (State Group Test)
 period: 2021
@@ -223,7 +215,8 @@ period: 2021
         state_group: HI
         members: [person_1]
   output:
-    snap:
+    snap: (375 - 0) * 12
+
 
 #- name: CBPP family A  # TODO: can we add a source?
 #  # https://www.cbpp.org/research/food-assistance/the-supplemental-nutrition-assistance-program-includes-earnings-incentives
