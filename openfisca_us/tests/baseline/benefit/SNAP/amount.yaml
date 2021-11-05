@@ -1,4 +1,4 @@
-- name: family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
+- name: 'family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)'
   period: 2021
   absolute_error_margin: 0
   input:
@@ -22,6 +22,7 @@
         state_group: contiguous_US
   output:
     snap: (837 - 315) * 12
+
 
 - name: family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2021
