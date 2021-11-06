@@ -13,19 +13,16 @@
   input:
     people:
     person_1:
-      snap_gross_income: 1000
       age: 30
     person_2:
-      snap_gross_income: 1000
       age: 35
     person_3:
-      snap_gross_income: 0
       age: 17
     person_4:
-      snap_gross_income: 0
       age: 15
     SPM_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 2000 * 12
         state_group: contiguous_us
         members: [person_1, person_2, person_3, person_4]
   output:
@@ -37,13 +34,12 @@
   input:
     people:
     person_1:
-      snap_gross_income: 1000
       age: 30
     person_2:
-      snap_gross_income: 0
       age: 50
     SPM_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 2000 * 12
         state_group: contiguous_us
         members: [person_1, person_2]
   output:
@@ -55,34 +51,26 @@
   input:
     people:
     person_1:
-      snap_gross_income: 1000
       age: 42
     person_2:
-      snap_gross_income: 1000
       age: 40
     person_3:
-      snap_gross_income: 0
       age: 25
     person_4:
-      snap_gross_income: 0
       age: 26
     person_5:
-      snap_gross_income: 0
       age: 18
     person_6:
-      snap_gross_income: 0
       age: 65
     person_7:
-      snap_gross_income: 0
       age: 63
     person_8:
-      snap_gross_income: 0
       age: 15
     person_9:
-      snap_gross_income: 0
       age: 14
     SPM_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: contiguous_us
         members: [person_1, person_2, person_3, person_4, person_5, person_6,
                   person_7, person_8, person_9,]
@@ -95,10 +83,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 0
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: contiguous_us
         members: [person_1]
   output:
@@ -110,10 +98,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 8333
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: contiguous_us
         members: [person_1]
   output:
@@ -125,10 +113,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: GU
         members: [person_1]
   output:
@@ -140,10 +128,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: VI
         members: [person_1]
   output:
@@ -155,10 +143,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: AK
         members: [person_1]
   output:
@@ -170,10 +158,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833
         state_group: HI
         members: [person_1]
   output:

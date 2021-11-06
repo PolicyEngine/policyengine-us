@@ -13,8 +13,8 @@
         age: 1
     spm_units:
       spm_unit:
-        number_of_individuals: 4
-        spm_gross_income: 1000
+        members: [person_1, person_2, person_3, person_4]
+        spm_gross_income: 1000 * 12
   output:
     earnings_deduction: (1000 * 0.2) * 12
 
@@ -27,8 +27,8 @@
         age: 32
     spm_units:
       spm_unit:
-        number_of_individuals: 4
-        spm_gross_income: 1000
+        members: [person_1, person_2, person_3, person_4]
+        spm_gross_income: 1000 * 12
   output:
     earnings_deduction: (1000 * 0.2) * 12
 
@@ -41,7 +41,7 @@
         age: 32
     spm_units:
       spm_unit:
-        number_of_individuals: 4
-        spm_gross_income: 8333
+        members: [person_1, person_2, person_3, person_4]
+        spm_gross_income: 8333 * 12
   output:
     earnings_deduction: (8333 * 0.2) * 12

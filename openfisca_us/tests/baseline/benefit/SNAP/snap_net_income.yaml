@@ -4,24 +4,21 @@
   input:
     people:
       person_1:
-        snap_gross_income: 1000
         age: 30
       person_2:
-        snap_gross_income: 1000
         age: 35
       person_3:
-        snap_gross_income: 0
         age: 17
       person_4:
-        snap_gross_income: 0
         age: 15
-    SPM_units:
-      unit_1:
+    spm_units:
+      spm_unit:
+        spm_gross_income: 2000 * 12
         state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
+        shelter_cost: 1700 * 12
   output:
-    net_income: (1419 - 569)
+    net_income: (1419 - 569) * 12
 
 
 - name: family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
@@ -30,24 +27,21 @@
   input:
     people:
       person_1:
-        snap_gross_income: 1000
         age: 30
       person_2:
-        snap_gross_income: 1000
         age: 35
       person_3:
-        snap_gross_income: 0
         age: 17
       person_4:
-        snap_gross_income: 0
         age: 15
-    SPM_units:
-      unit_1:
+    spm_units:
+      spm_unit:
+        spm_gross_income: 2000 * 12
         state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
+        shelter_cost: 1700 * 12
   output:
-    net_income: (1419 - (1700 - (1419 * 0.5)))
+    net_income: (1419 - (1700 - (1419 * 0.5))) * 12
 
 
 - name: single person, 10k income, GU (State Group Test)
@@ -56,15 +50,15 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: GU
-        members: [person_1] 
-        shelter_cost: 650 
+        members: [person_1]
+        shelter_cost: 650 * 12
   output:
-    net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0)
+    net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
 
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
@@ -73,16 +67,16 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: GU
         members: [person_1] 
-        shelter_cost: 650       
+        shelter_cost: 650 * 12       
   output:
-    net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0)
+    net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
 
 
 - name: single person, 10k income, VI (State Group Test)
@@ -91,15 +85,15 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: VI
         members: [person_1] 
-        shelter_cost: 650      
+        shelter_cost: 650 * 12      
   output:
-    net_income: ((519.4 - (650 - (519.4 * 0.5))))
+    net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
 
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
@@ -108,16 +102,16 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: VI
         members: [person_1] 
-        shelter_cost: 650      
+        shelter_cost: 650 * 12      
   output:
-    net_income: ((519.4 - (650 - (519.4 * 0.5))))
+    net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
 
 
 - name: single person, 10k income, AK (State Group Test)
@@ -126,15 +120,15 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: AK
         members: [person_1] 
-        shelter_cost: 650        
+        shelter_cost: 650 * 12        
   output:
-    net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0)
+    net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
 
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
@@ -143,16 +137,16 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: AK
         members: [person_1] 
-        shelter_cost: 650     
+        shelter_cost: 650 * 12     
   output:
-    net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0)
+    net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
 
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, HI (State Group Test)
@@ -161,15 +155,15 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: HI
         members: [person_1] 
-        shelter_cost: 650    
+        shelter_cost: 650 * 12    
   output:
-    net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0)
+    net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12
 
 
 - name: single person, 10k income, disabled members present, HI (State Group Test)
@@ -178,13 +172,13 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        spm_gross_income: 833 * 12
         state_group: HI
         members: [person_1] 
-        shelter_cost: 650     
+        shelter_cost: 650 * 12     
   output:
-    net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0)
+    net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12

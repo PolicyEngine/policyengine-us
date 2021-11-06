@@ -51,7 +51,7 @@
         age: 30
     spm_units:
       spm_unit:
-        snap_gross_income: 50000
+        snap_gross_income: 4166 * 12
         members: [person_1]
   output:
     snap: 0 * 12
@@ -66,7 +66,7 @@
         age: 30
     spm_units:
       spm_unit:
-        snap_gross_income: 0
+        snap_gross_income: 0 * 12
         members: [person_1]
   output:
     snap: 204 * 12
