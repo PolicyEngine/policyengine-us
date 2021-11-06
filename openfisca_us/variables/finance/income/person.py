@@ -11,5 +11,5 @@ class net_income(Variable):
 
     def formula(person, period, parameters):
         return person("is_spm_unit_head", period) * person.spm_unit(
-            "SPM_unit_net_income", period
+            "spm_unit_net_income", period
         )
