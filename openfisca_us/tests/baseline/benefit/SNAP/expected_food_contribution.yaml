@@ -4,22 +4,18 @@
   input:
     people:
       person_1:
-        snap_gross_income: 1000
         age: 30
       person_2:
-        snap_gross_income: 1000
         age: 35
       person_3:
-        snap_gross_income: 0
         age: 17
       person_4:
-        snap_gross_income: 0
         age: 15
-    SPM_units:
-      unit_1:
+    spm_units:
+      spm_unit:
+        snap_gross_income: 2000 * 12
         state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
   output:
     expected_food_contribution: ((1419 - 569) * 0.3) * 12
 
@@ -30,22 +26,18 @@
   input:
     people:
       person_1:
-        snap_gross_income: 1000
         age: 30
       person_2:
-        snap_gross_income: 1000
         age: 35
       person_3:
-        snap_gross_income: 0
         age: 17
       person_4:
-        snap_gross_income: 0
         age: 15
-    SPM_units:
-      unit_1:
+    spm_units:
+      spm_unit:
+        snap_gross_income: 2000 * 12
         state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
   output:
     expected_food_contribution: ((1419 - (1700 - (1419 * 0.5))) * 0.3) * 12
 
@@ -56,13 +48,12 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: GU
-        members: [person_1] 
-        shelter_cost: 650 
+        members: [person_1]  
   output:
     expected_food_contribution: 0
 
@@ -73,14 +64,13 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: GU
-        members: [person_1] 
-        shelter_cost: 650       
+        members: [person_1]        
   output:
     expected_food_contribution: 0 
 
@@ -91,13 +81,12 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: VI
-        members: [person_1] 
-        shelter_cost: 650      
+        members: [person_1]       
   output:
     expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
 
@@ -108,14 +97,13 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: VI
-        members: [person_1] 
-        shelter_cost: 650      
+        members: [person_1]       
   output:
     expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
 
@@ -126,13 +114,12 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: AK
-        members: [person_1] 
-        shelter_cost: 650        
+        members: [person_1]         
   output:
     expected_food_contribution: 0
 
@@ -143,14 +130,13 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: AK
-        members: [person_1] 
-        shelter_cost: 650     
+        members: [person_1]      
   output:
     expected_food_contribution: 0
 
@@ -161,13 +147,12 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: HI
-        members: [person_1] 
-        shelter_cost: 650    
+        members: [person_1]     
   output:
     expected_food_contribution: 0
 
@@ -178,13 +163,12 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
-      unit_1:
+      spm_unit:
+        snap_gross_income: 833
         state_group: HI
-        members: [person_1] 
-        shelter_cost: 650     
+        members: [person_1]      
   output:
     expected_food_contribution: 0
