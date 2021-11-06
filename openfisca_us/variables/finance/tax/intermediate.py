@@ -22,7 +22,7 @@ class txearn_was(Variable):
     def formula(person, period, parameters):
         max_earnings = parameters(
             period
-        ).tax.payroll.FICA.social_security.max_taxable_earnings
+        ).tax.payroll.fica.social_security.max_taxable_earnings
         return min_(max_earnings, person("gross_was", period))
 
 
@@ -33,7 +33,7 @@ class ptax_ss_was(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).tax.payroll.FICA.social_security.tax_rate
+        rate = parameters(period).tax.payroll.fica.social_security.tax_rate
         return rate * person("txearn_was", period)
 
 
@@ -54,7 +54,7 @@ class ptax_mc_was(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).tax.payroll.FICA.medicare.tax_rate
+        rate = parameters(period).tax.payroll.fica.medicare.tax_rate
         return rate * person("gross_was", period)
 
 
@@ -75,9 +75,9 @@ class sey_frac(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        FICA = parameters(period).tax.payroll.FICA
-        return 1.0 - parameters(period).tax.ALD.misc.employer_share * (
-            FICA.social_security.tax_rate + FICA.medicare.tax_rate
+        fica = parameters(period).tax.payroll.fica
+        return 1.0 - parameters(period).tax.ald.misc.employer_share * (
+            fica.social_security.tax_rate + fica.medicare.tax_rate
         )
 
 
@@ -88,15 +88,15 @@ class txearn_sey(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        FICA = parameters(period).tax.payroll.FICA
-        SS = FICA.social_security
-        MC = FICA.medicare
+        fica = parameters(period).tax.payroll.fica
+        ss = fica.social_security
+        mc = fica.medicare
         return min_(
             max_(
                 0.0,
                 person("sey", period) * person.tax_unit("sey_frac", period),
             ),
-            SS.max_taxable_earnings - person("txearn_was", period),
+            ss.max_taxable_earnings - person("txearn_was", period),
         )
 
 
@@ -107,7 +107,7 @@ class setax_ss(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).tax.payroll.FICA.social_security.tax_rate
+        rate = parameters(period).tax.payroll.fica.social_security.tax_rate
         return rate * person("txearn_sey", period)
 
 
@@ -130,7 +130,7 @@ class setax_mc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).tax.payroll.FICA.medicare.tax_rate
+        rate = parameters(period).tax.payroll.fica.medicare.tax_rate
         return rate * max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
@@ -153,11 +153,11 @@ class sey_frac_for_extra_OASDI(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        FICA = parameters(period).tax.payroll.FICA
+        fica = parameters(period).tax.payroll.fica
         return (
             1.0
-            - parameters(period).tax.ALD.misc.employer_share
-            * FICA.social_security.tax_rate
+            - parameters(period).tax.ald.misc.employer_share
+            * fica.social_security.tax_rate
         )
 
 
@@ -168,15 +168,15 @@ class extra_payrolltax(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        SS = parameters(period).tax.payroll.FICA.social_security
+        ss = parameters(period).tax.payroll.fica.social_security
         extra_ss_income = max_(
             0.0,
-            tax_unit.members("was_plus_sey", period) - SS.add_taxable_earnings,
+            tax_unit.members("was_plus_sey", period) - ss.add_taxable_earnings,
         )
         return tax_unit.sum(
             extra_ss_income
             * not_(tax_unit.members("is_tax_unit_dependent", period))
-            * SS.tax_rate
+            * ss.tax_rate
         )
 
 
@@ -188,12 +188,12 @@ class pre_qbid_taxinc(Variable):
 
     def formula(tax_unit, period, parameters):
         # Calculate UI excluded from taxable income
-        MARS = tax_unit("MARS", period)
-        UI = parameters(period).benefit.unemployment_insurance
-        UI_amount = tax_unit("filer_e02300", period)
-        AGI_over_UI = tax_unit("c00100", period) - UI_amount
+        mars = tax_unit("mars", period)
+        ui = parameters(period).benefit.unemployment_insurance
+        ui_amount = tax_unit("filer_e02300", period)
+        agi_over_ui = tax_unit("c00100", period) - ui_amount
         return where(
-            AGI_over_UI <= UI.exemption.cutoff,
-            min_(UI_amount, UI.exemption.amount),
+            agi_over_ui <= ui.exemption.cutoff,
+            min_(ui_amount, ui.exemption.amount),
             0,
         )
