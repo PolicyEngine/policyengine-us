@@ -28,16 +28,13 @@
   input:
     people:
       person_1:
-        disability: True
+        is_disabled_or_elderly_for_snap: True
         age: 30
       person_2:
-        disability: False
         age: 35
       person_3:
-        disability: False
         age: 17
       person_4:
-        disability: False
         age: 15
     spm_units:
       spm_unit:
