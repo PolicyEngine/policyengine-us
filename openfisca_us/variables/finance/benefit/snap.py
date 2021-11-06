@@ -133,7 +133,7 @@ class snap_max_benefit(Variable):
         # TODO: Logic for families with >8 people
         snap_max_benefits = parameters(period).benefit.snap.amount.main
 
-        state_group = spm_unit("spm_unit_state_group", period)
+        state_group = spm_unit.household("state_group", period)
         # TODO: Use number_persons
         household_size = spm_unit.nb_persons()
 
