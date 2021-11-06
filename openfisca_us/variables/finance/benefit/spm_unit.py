@@ -10,7 +10,7 @@ class poverty_ratio(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period):
-        return spm_unit("SPM_unit_net_income", period) / spm_unit(
+        return spm_unit("spm_unit_net_income", period) / spm_unit(
             "poverty_threshold", period
         )
 

@@ -6,7 +6,7 @@ from openfisca_us.tools.general import *
 class ccdf_county_cluster(Variable):
     value_type = int
     entity = Household
-    label = u"County Cluster for CCDF"
+    label = u"County cluster for CCDF"
     definition_period = ETERNITY
 
     def formula(household, period, parameters):
