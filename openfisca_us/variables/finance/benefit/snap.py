@@ -7,7 +7,7 @@ class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "Gross income for the SPM Unit"
+    label = "SPM unit's gross income for calculating SNAP eligibility"
 
 
 class snap_earnings_deduction(Variable):
