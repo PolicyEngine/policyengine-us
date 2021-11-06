@@ -42,7 +42,7 @@
         snap_gross_income: 2000 * 12
         members: [person_1, person_2, person_3, person_4]
   output:
-    net_income_pre_shelter: (2000 - (2000 * 0.2) - 181)
+    net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
 
 
 - name: single person, 10k income, GU (State Group Test)
@@ -58,7 +58,7 @@
         state_group: GU
         members: [person_1]
   output:
-    net_income_pre_shelter: (833 - (833 * 0.2) - 336)
+    net_income_pre_shelter: (833 - (833 * 0.2) - 336) * 12
 
 
 - name: single person, 10k income, VI (State Group Test)
@@ -74,7 +74,7 @@
         state_group: VI
         members: [person_1]
   output:
-    net_income_pre_shelter: (833 - (833 * 0.2) - 147)
+    net_income_pre_shelter: (833 - (833 * 0.2) - 147) * 12
 
 
 - name: single person, 10k income, AK (State Group Test)
@@ -90,7 +90,7 @@
         state_group: AK
         members: [person_1]
   output:
-    net_income_pre_shelter: (833 - (833 * 0.2) - 286)
+    net_income_pre_shelter: (833 - (833 * 0.2) - 286) * 12
 
 
 - name: single person, 10k income, HI (State Group Test)
@@ -106,4 +106,4 @@
         state_group: HI
         members: [person_1]
   output:
-    net_income_pre_shelter: (833 - (833 * 0.2) - 236)
+    net_income_pre_shelter: (833 - (833 * 0.2) - 236) * 12
