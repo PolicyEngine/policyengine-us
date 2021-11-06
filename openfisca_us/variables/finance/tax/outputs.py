@@ -360,7 +360,7 @@ class aged_blind_extra_standard_deduction(Variable):
             (mars == mars_type.JOINT)
             & (
                 tax_unit("age_spouse", period)
-                >= STD.aged_or_blind.age_threshold
+                >= std.aged_or_blind.age_threshold
             )
         ) * 1
         num_extra_stded = blind_head + blind_spouse + aged_head + aged_spouse
