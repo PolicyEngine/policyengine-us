@@ -17,7 +17,7 @@ class person_weight(Variable):
 
 
 class age(Variable):
-    value_type = int
+    value_type = float
     entity = Person
     label = u"Age"
     definition_period = YEAR
@@ -42,6 +42,55 @@ class age_group(Variable):
         return select(
             [age < 18, age < 65, age >= 65],
             [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
+        )
+
+
+class is_ccdf_home_based(Variable):
+    value_type = bool
+    default_value = False
+    entity = Person
+    label = u"Whether CCDF care is home-based versus center-based"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return (
+            person("provider_type_group", period) != ProviderTypeGroup.DCC_SACC
+        )
+
+
+class CCDFAgeGroup(Enum):
+    INFANT = "Infant"
+    TODDLER = "Toddler"
+    PRESCHOOLER = "Preschooler"
+    SCHOOL_AGE = "School age"
+
+
+class ccdf_age_group(Variable):
+    value_type = Enum
+    possible_values = CCDFAgeGroup
+    default_value = CCDFAgeGroup.INFANT
+    entity = Person
+    label = u"CCDF age group"
+    definition_period = YEAR
+
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
+
+    def formula(person, period, parameters):
+        age = person("age", period)
+        home_based = person("is_ccdf_home_based", period)
+        return select(
+            [
+                ((age < 1.5) & ~home_based) | ((age < 2) & home_based),
+                ((age < 2) & ~home_based) | ((age < 3) & home_based),
+                age < 6,
+                age < 13,
+            ],
+            [
+                CCDFAgeGroup.INFANT,
+                CCDFAgeGroup.TODDLER,
+                CCDFAgeGroup.PRESCHOOLER,
+                CCDFAgeGroup.SCHOOL_AGE,
+            ],
         )
 
 
