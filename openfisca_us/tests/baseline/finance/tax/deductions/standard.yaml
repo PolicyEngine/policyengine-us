@@ -20,10 +20,10 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        DSI: false
+        dsi: false
         filer_earned: 1000
-        MARS: JOINT
-        MIDR: false
+        mars: JOINT
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 0
@@ -57,10 +57,10 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        DSI: false
+        dsi: false
         filer_earned: 1000
-        MARS: JOINT
-        MIDR: false
+        mars: JOINT
+        midr: false
         blind_head: true
         blind_spouse: true
         c19700: 200
@@ -94,10 +94,10 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        DSI: false
+        dsi: false
         filer_earned: 1000
-        MARS: JOINT
-        MIDR: false
+        mars: JOINT
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 400
@@ -131,10 +131,10 @@
     tax_units:
       tax_unit:
         members: [head, spouse]
-        DSI: false
+        dsi: false
         filer_earned: 1000
-        MARS: JOINT
-        MIDR: false
+        mars: JOINT
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 0
@@ -168,10 +168,10 @@
     tax_units:
       tax_unit:
         members: [head]
-        DSI: false
+        dsi: false
         filer_earned: 1000
-        MARS: SINGLE
-        MIDR: false
+        mars: SINGLE
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 0
@@ -203,10 +203,10 @@
     tax_units:
       tax_unit:
         members: [head]
-        DSI: false
+        dsi: false
         filer_earned: 1200
-        MARS: SINGLE
-        MIDR: false
+        mars: SINGLE
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 0
@@ -238,10 +238,10 @@
     tax_units:
       tax_unit:
         members: [head]
-        DSI: false
+        dsi: false
         filer_earned: 1000
-        MARS: SEPARATE
-        MIDR: true
+        mars: SEPARATE
+        midr: true
         blind_head: false
         blind_spouse: false
         c19700: 0
@@ -273,10 +273,10 @@
     tax_units:
       tax_unit:
         members: [head]
-        DSI: true
+        dsi: true
         filer_earned: 200
-        MARS: SEPARATE
-        MIDR: false
+        mars: SEPARATE
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 0
@@ -308,10 +308,10 @@
     tax_units:
       tax_unit:
         members: [head]
-        DSI: true
+        dsi: true
         filer_earned: 1000
-        MARS: SEPARATE
-        MIDR: false
+        mars: SEPARATE
+        midr: false
         blind_head: false
         blind_spouse: false
         c19700: 0

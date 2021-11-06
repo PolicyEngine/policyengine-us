@@ -3,7 +3,7 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-class SPM_unit_total_income(Variable):
+class spm_unit_total_income(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit total income"
@@ -13,42 +13,42 @@ class SPM_unit_total_income(Variable):
         return spm_unit.sum(spm_unit.members("e00200", period))
 
 
-class SPM_unit_SNAP(Variable):
+class spm_unit_snap(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit SNAP subsidy"
     definition_period = YEAR
 
 
-class SPM_unit_capped_housing_subsidy(Variable):
+class spm_unit_capped_housing_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit capped housing subsidy"
     definition_period = YEAR
 
 
-class SPM_unit_school_lunch_subsidy(Variable):
+class spm_unit_school_lunch_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit school lunch subsidy"
     definition_period = YEAR
 
 
-class SPM_unit_energy_subsidy(Variable):
+class spm_unit_energy_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit school energy subsidy"
     definition_period = YEAR
 
 
-class SPM_unit_WIC(Variable):
+class spm_unit_wic(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit WIC subsidy"
     definition_period = YEAR
 
 
-class SPM_unit_net_income(Variable):
+class spm_unit_net_income(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit net income"
@@ -56,19 +56,19 @@ class SPM_unit_net_income(Variable):
 
     def formula(spm_unit, period, parameters):
         INCOME_COMPONENTS = [
-            "SPM_unit_total_income",
-            "SPM_unit_SNAP",
-            "SPM_unit_capped_housing_subsidy",
-            "SPM_unit_school_lunch_subsidy",
-            "SPM_unit_energy_subsidy",
-            "SPM_unit_WIC",
+            "spm_unit_total_income",
+            "spm_unit_snap",
+            "spm_unit_capped_housing_subsidy",
+            "spm_unit_school_lunch_subsidy",
+            "spm_unit_energy_subsidy",
+            "spm_unit_wic",
         ]
         EXPENSE_COMPONENTS = [
-            "SPM_unit_FICA",
-            "SPM_unit_federal_tax",
-            "SPM_unit_state_tax",
-            "SPM_unit_capped_work_childcare_expenses",
-            "SPM_unit_medical_expenses",
+            "spm_unit_fica",
+            "spm_unit_federal_tax",
+            "spm_unit_state_tax",
+            "spm_unit_capped_work_childcare_expenses",
+            "spm_unit_medical_expenses",
         ]
         income = add(spm_unit, period, *INCOME_COMPONENTS)
         expense = add(spm_unit, period, *EXPENSE_COMPONENTS)
@@ -89,6 +89,6 @@ class in_poverty(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("SPM_unit_net_income", period)
+        income = spm_unit("spm_unit_net_income", period)
         poverty_threshold = spm_unit("poverty_threshold", period)
         return income < poverty_threshold
