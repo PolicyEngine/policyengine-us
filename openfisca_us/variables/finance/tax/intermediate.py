@@ -145,7 +145,7 @@ class setax(Variable):
         return add(person, period, "setax_ss", "setax_mc")
 
 
-class sey_frac_for_extra_OASDI(Variable):
+class sey_frac_for_extra_oasdi(Variable):
     value_type = float
     entity = TaxUnit
     label = u"Taxable fraction of self-employment income for extra OASDI payroll taxes"
