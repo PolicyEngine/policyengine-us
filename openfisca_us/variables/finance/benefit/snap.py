@@ -13,7 +13,7 @@ class snap_earnings_deduction(Variable):
 
         snap_earnings_deduction = parameters(
             period
-        ).benefits.SNAP.earnings_deduction
+        ).benefits.snap.earnings_deduction
 
         return spm_unit("gross_income", period) * snap_earnings_deduction
 
@@ -28,11 +28,11 @@ class snap_standard_deduction(Variable):
 
         standard_deductions = parameters(
             period
-        ).benefits.SNAP.standard_deduction
+        ).benefits.snap.standard_deduction
 
-        state_group = SPMUnit("state_group")
+        state_group = spm_unit("state_group")
 
-        household_size = SPMUnit("household_size")
+        household_size = spm_unit("household_size")
 
         return standard_deductions[state_group][household_size] * 12
 
@@ -63,7 +63,7 @@ class snap_shelter_deduction(Variable):
         # check for member of spm_unit with disability/elderly status
         p_shelter_deduction = parameters(
             period
-        ).benefits.SNAP.shelter_deduction
+        ).benefits.snap.shelter_deduction
 
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
@@ -77,10 +77,10 @@ class snap_shelter_deduction(Variable):
         )
 
         # Index maximum shelter deduction by state group.
-        state_group = SPMUnit("state_group", period)
+        state_group = spm_unit("state_group", period)
         ded_cap = p_shelter_deduction.amount[state_group]
 
-        has_elderly_disabled = SPMUnit("has_elderly_disabled", period)
+        has_elderly_disabled = spm_unit("has_elderly_disabled", period)
         # Cap for all but elderly/disabled people.
         return where(
             has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
@@ -112,7 +112,7 @@ class snap_expected_contribution_towards_food(Variable):
 
         expected_food_contribution = parameters(
             period
-        ).benefit.SNAP.expected_food_contribution
+        ).benefit.snap.expected_food_contribution
         return spm_unit("snap_net_income", period) * expected_food_contribution
 
 
@@ -126,13 +126,13 @@ class snap_max_benefit(Variable):
     def formula(spm_unit, period, parameters):
 
         # TODO: Logic for families with >8 people
-        SNAP_max_benefits = parameters(period).benefits.SNAP.amount.main
+        snap_max_benefits = parameters(period).benefits.snap.amount.main
 
-        state_group = SPMUnit("spm_unit_state_group", period)
+        state_group = spm_unit("spm_unit_state_group", period)
         # TODO: Use number_persons
-        household_size = SPMUnit.nb_persons()
+        household_size = spm_unit.nb_persons()
 
-        return SNAP_max_benefits[household_size][state_group] * 12
+        return snap_max_benefits[household_size][state_group] * 12
 
 
 class snap(Variable):
