@@ -4,7 +4,7 @@ from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.tax_unit import MARSType
 
 
-class DSI(Variable):
+class dsi(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
@@ -13,7 +13,7 @@ class DSI(Variable):
     )
 
 
-class EIC(Variable):
+class eic(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
@@ -26,14 +26,14 @@ class EIC(Variable):
         )
 
 
-class FLPDYR(Variable):
+class flpdyr(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Calendar year for which taxes are calculated"""
 
 
-class MARS(Variable):
+class mars(Variable):
     value_type = Enum
     entity = TaxUnit
     possible_values = MARSType
@@ -48,7 +48,7 @@ class MARS(Variable):
         )
 
 
-class MIDR(Variable):
+class midr(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
@@ -57,14 +57,14 @@ class MIDR(Variable):
     )
 
 
-class RECID(Variable):
+class recid(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Unique numeric identifier for filing unit; appears as RECID variable in tc CLI minimal output"""
 
 
-class XTOT(Variable):
+class xtot(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
@@ -951,21 +951,21 @@ class wic_ben(Variable):
     documentation = """Imputed WIC benefits"""
 
 
-class PT_SSTB_income(Variable):
+class pt_sstb_income(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Whether business income is from a specified service trade or business (SSTB), rather than from a qualified trade or business"""
 
 
-class PT_binc_w2_wages(Variable):
+class pt_binc_w2_wages(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Filing unit's share of total W-2 wages paid by the pass-through business"""
 
 
-class PT_ubia_property(Variable):
+class pt_ubia_property(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR

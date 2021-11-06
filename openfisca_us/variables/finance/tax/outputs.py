@@ -3,7 +3,7 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-class TaxInc(Variable):
+class tax_inc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -23,21 +23,21 @@ class income(Variable):
 
     def formula(tax_unit, period, parameters):
         # not accurate, for demo
-        return tax_unit("TaxInc", period)
+        return tax_unit("tax_inc", period)
 
 
-class Taxes(Variable):
+class taxes(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("income", period)
-        MARS = tax_unit("MARS", period)
+        mars = tax_unit("mars", period)
         brackets = parameters(period).tax.income.bracket
         thresholds = (
             [0]
-            + [brackets.thresholds[str(i)][MARS] for i in range(1, 7)]
+            + [brackets.thresholds[str(i)][mars] for i in range(1, 7)]
             + [infinity]
         )
         rates = [brackets.rates[str(i)] for i in range(1, 8)]
@@ -52,7 +52,7 @@ class Taxes(Variable):
         return tax_amount
 
 
-class AfterTaxIncome(Variable):
+class after_tax_income(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -121,10 +121,10 @@ class earned(Variable):
     )
 
     def formula(person, period, parameters):
-        ALD = parameters(period).tax.ALD
+        ald = parameters(period).tax.ald
         adjustment = (
-            (1.0 - ALD.misc.self_emp_tax_adj)
-            * ALD.misc.employer_share
+            (1.0 - ald.misc.self_emp_tax_adj)
+            * ald.misc.employer_share
             * person("setax", period)
         )
         return max_(0, add(person, period, "e00200", "setax") - adjustment)
@@ -142,7 +142,7 @@ class was_plus_sey(Variable):
         return person("gross_was", period) + max_(
             0,
             person("sey", period)
-            * person.tax_unit("sey_frac_for_extra_OASDI", period),
+            * person.tax_unit("sey_frac_for_extra_oasdi", period),
         )
 
 
@@ -281,21 +281,21 @@ class refund(Variable):
     documentation = """Total refundable income tax credits"""
 
     def formula(tax_unit, period, parameters):
-        CTC_refundable = parameters(
+        ctc_refundable = parameters(
             period
         ).tax.credits.child_tax_credit.refundable
-        CTC_refund = tax_unit("c07220", period) * CTC_refundable
+        ctc_refund = tax_unit("c07220", period) * ctc_refundable
         REFUND_COMPONENTS = (
             "eitc",
             "c11070",
             "c10960",
-            "CDCC_refund",
+            "cdcc_refund",
             "recovery_rebate_credit",
             "personal_refundable_credit",
             "ctc_new",
             "rptc",
         )
-        return add(tax_unit, period, REFUND_COMPONENTS) + CTC_refund
+        return add(tax_unit, period, REFUND_COMPONENTS) + ctc_refund
 
 
 class sep(Variable):
@@ -324,19 +324,19 @@ class basic_standard_deduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        STD = parameters(period).tax.deductions.standard
-        MARS = tax_unit("MARS", period)
-        MIDR = tax_unit("MIDR", period)
+        std = parameters(period).tax.deductions.standard
+        mars = tax_unit("mars", period)
+        midr = tax_unit("midr", period)
 
-        c15100_if_DSI = max_(
-            STD.dependent.additional_earned_income
+        c15100_if_dsi = max_(
+            std.dependent.additional_earned_income
             + tax_unit("filer_earned", period),
-            STD.dependent.amount,
+            std.dependent.amount,
         )
-        basic_if_DSI = min_(STD.amount[MARS], c15100_if_DSI)
-        basic_if_not_DSI = where(MIDR, 0, STD.amount[MARS])
+        basic_if_dsi = min_(std.amount[mars], c15100_if_dsi)
+        basic_if_not_dsi = where(midr, 0, std.amount[mars])
         basic_stded = where(
-            tax_unit("DSI", period), basic_if_DSI, basic_if_not_DSI
+            tax_unit("dsi", period), basic_if_dsi, basic_if_not_dsi
         )
         return basic_stded
 
@@ -348,23 +348,23 @@ class aged_blind_extra_standard_deduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        STD = parameters(period).tax.deductions.standard
-        MARS = tax_unit("MARS", period)
-        MARSType = MARS.possible_values
+        std = parameters(period).tax.deductions.standard
+        mars = tax_unit("mars", period)
+        mars_type = mars.possible_values
         blind_head = tax_unit("blind_head", period) * 1
         blind_spouse = tax_unit("blind_spouse", period) * 1
         aged_head = (
-            tax_unit("age_head", period) >= STD.aged_or_blind.age_threshold
+            tax_unit("age_head", period) >= std.aged_or_blind.age_threshold
         ) * 1
         aged_spouse = (
-            (MARS == MARSType.JOINT)
+            (mars == mars_type.JOINT)
             & (
                 tax_unit("age_spouse", period)
-                >= STD.aged_or_blind.age_threshold
+                >= std.aged_or_blind.age_threshold
             )
         ) * 1
         num_extra_stded = blind_head + blind_spouse + aged_head + aged_spouse
-        return num_extra_stded * STD.aged_or_blind.amount[MARS]
+        return num_extra_stded * std.aged_or_blind.amount[mars]
 
 
 class standard(Variable):
@@ -377,16 +377,16 @@ class standard(Variable):
         # Calculate basic standard deduction
         basic_stded = tax_unit("basic_standard_deduction", period)
         charity = parameters(period).tax.deductions.itemized.charity
-        MARS = tax_unit("MARS", period)
-        MIDR = tax_unit("MIDR", period)
-        MARSType = MARS.possible_values
+        mars = tax_unit("mars", period)
+        midr = tax_unit("midr", period)
+        mars_type = mars.possible_values
 
         # Calculate extra standard deduction for aged and blind
         extra_stded = tax_unit("aged_blind_extra_standard_deduction", period)
 
         # Calculate the total standard deduction
         standard = basic_stded + extra_stded
-        standard = where((MARS == MARSType.SEPARATE) & MIDR, 0, standard)
+        standard = where((mars == mars_type.SEPARATE) & midr, 0, standard)
         return standard + charity.allow_nonitemizers * min_(
             tax_unit("c19700", period), charity.nonitemizers_max
         )
@@ -449,10 +449,10 @@ class c03260(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        ALD = parameters(period).tax.ALD
+        ald = parameters(period).tax.ald
         return (
-            (1.0 - ALD.misc.self_emp_tax_adj)
-            * ALD.misc.employer_share
+            (1.0 - ald.misc.self_emp_tax_adj)
+            * ald.misc.employer_share
             * tax_unit("setax", period)
         )
 
@@ -481,7 +481,7 @@ class qbided(Variable):
     documentation = """Qualified Business Income (QBI) deduction"""
 
     def formula(tax_unit, period, parameters):
-        MARS = tax_unit("MARS", period)
+        mars = tax_unit("mars", period)
         qbinc = max_(
             0,
             add(
@@ -493,47 +493,47 @@ class qbided(Variable):
                 "filer_e27200",
             ),
         )
-        QBID = parameters(period.deductions.qualified_business_interest)
-        lower_threshold = QBID.threshold.lower[MARS]
-        upper_threshold = lower_threshold + QBID.threshold.gap[MARS]
+        qbid = parameters(period.deductions.qualified_business_interest)
+        lower_threshold = qbid.threshold.lower[mars]
+        upper_threshold = lower_threshold + qbid.threshold.gap[mars]
         pre_qbid_taxinc = tax_unit("pre_qbid_taxinc", period)
         under_lower_threshold = pre_qbid_taxinc < lower_threshold
         between_thresholds = ~under_lower_threshold & (
             pre_qbid_taxinc < upper_threshold
         )
         above_upper_threshold = ~under_lower_threshold & ~between_thresholds
-        income_is_qualified = tax_unit("PT_SSTB_income", period)
+        income_is_qualified = tax_unit("pt_sstb__income", period)
 
         # Wage/capital limitations
-        w_2_wages = tax_unit("PT_binc_w2_wages", period)
-        business_property = tax_unit("PT_ubia_property", period)
-        wage_cap = w_2_wages * QBID.cap.W_2_wages.rate
+        w2_wages = tax_unit("pt_binc_w2_wages", period)
+        business_property = tax_unit("pt_ubia_property", period)
+        wage_cap = w2_wages * qbid.cap.w2_wages.rate
         alt_cap = (
-            w_2_wages * QBID.cap.W_2_wages.alt_rate
-            + business_property * QBID.cap.business_property.rate
+            w2_wages * qbid.cap.w2_wages.alt_rate
+            + business_property * qbid.cap.business_property.rate
         )
         fraction_of_gap_passed = (
             pre_qbid_taxinc - lower_threshold
-        ) / QBID.threshold.gap[MARS]
+        ) / qbid.threshold.gap[mars]
         fraction_of_gap_unused = (
             upper_threshold - pre_qbid_taxinc
-        ) / QBID.threshold.gap[MARS]
+        ) / qbid.threshold.gap[mars]
 
         # Adjustments for qualified income under the upper threshold
-        QBI_between_threshold_multiplier = where(
+        qbi_between_threshold_multiplier = where(
             income_is_qualified & between_thresholds,
             fraction_of_gap_unused,
             1.0,
         )
         max_qbid = (
-            qbinc * QBID.pass_through_rate * QBI_between_threshold_multiplier
+            qbinc * qbid.pass_through_rate * qbi_between_threshold_multiplier
         )
-        full_cap = max_(wage_cap, alt_cap) * QBI_between_threshold_multiplier
+        full_cap = max_(wage_cap, alt_cap) * qbi_between_threshold_multiplier
 
         # Adjustment for QBID where income is between the main thresholds
         adjustment = fraction_of_gap_passed * (max_qbid - full_cap)
 
-        qbid = select(
+        qbid_amount = select(
             (
                 under_lower_threshold,
                 between_thresholds,
@@ -548,8 +548,8 @@ class qbided(Variable):
 
         # Apply taxable income cap
         net_cg = add(tax_unit, period, "filer_e00650", "c0100")
-        taxinc_cap = QBID.pass_through_rate * max_(0, pre_qbid_taxinc - net_cg)
-        return min_(qbid, taxinc_cap)
+        taxinc_cap = qbid.pass_through_rate * max_(0, pre_qbid_taxinc - net_cg)
+        return min_(qbid_amount, taxinc_cap)
 
 
 class c04800(Variable):
@@ -602,7 +602,7 @@ class c07180(Variable):
     documentation = """Nonrefundable credit for child and dependent care expenses from Form 2441"""
 
 
-class CDCC_refund(Variable):
+class cdcc_refund(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR

@@ -34,8 +34,8 @@ class school_meal_subsidy(Variable):
         )
         p_amount = p_school_meals.amount
         # Get NSLP and SBP per child for each SPM unit.
-        nslp_per_child = p_amount.NSLP[state_group][tier]
-        sbp_per_child = p_amount.SBP[state_group][tier]
+        nslp_per_child = p_amount.nslp[state_group][tier]
+        sbp_per_child = p_amount.sbp[state_group][tier]
         # Add NSLP and SBP.
         school_meal_subsidy_per_child = nslp_per_child + sbp_per_child
         # Multiply by number of school days in the year and number of children.
