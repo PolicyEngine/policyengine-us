@@ -4,21 +4,17 @@
   input:
     people:
       person_1:
-        snap_gross_income: 1000
         age: 30
       person_2:
-        snap_gross_income: 1000
         age: 35
       person_3:
-        snap_gross_income: 0
         age: 17
       person_4:
-        snap_gross_income: 0
         age: 15
     spm_units:
       unit_1:
+        snap_gross_income: 2000 * 12
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
         state_group: contiguous_US
   output:
     snap: (837 - 315) * 12
@@ -30,21 +26,17 @@
   input:
     people:
       person_1:
-        snap_gross_income: 1000
         age: 30
       person_2:
-        snap_gross_income: 1000
         age: 35
       person_3:
-        snap_gross_income: 0
         age: 17
       person_4:
-        snap_gross_income: 0
         age: 15
     spm_units:
       unit_1:
+        snap_gross_income: 2000 * 12
         members: [person_1, person_2, person_3, person_4]
-        shelter_cost: 1700
         state_group: contiguous_US
   output:
     expected_food_contribution: (837 - 218.55) * 12
@@ -56,10 +48,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 50000
         age: 30
     spm_units:
       unit_1:
+        snap_gross_income: 50000
         members: [person_1]
   output:
     snap: 0 * 12
@@ -71,10 +63,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 0
         age: 30
     spm_units:
       unit_1:
+        snap_gross_income: 0
         members: [person_1]
   output:
     snap: 204 * 12
@@ -86,10 +78,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: GU
         members: [person_1]
   output:
@@ -102,11 +94,11 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: GU
         members: [person_1]
   output:
@@ -119,10 +111,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: VI
         members: [person_1]
   output:
@@ -135,11 +127,11 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: VI
         members: [person_1]
   output:
@@ -152,10 +144,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: AK_urban
         members: [person_1]
   output:
@@ -168,11 +160,11 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: AK
         members: [person_1]
   output:
@@ -185,10 +177,10 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: HI
         members: [person_1]
   output:
@@ -201,11 +193,11 @@
   input:
     people:
       person_1:
-        snap_gross_income: 833
         age: 30
         disability: True
     spm_units:
       unit_1:
+        snap_gross_income: 833 * 12
         state_group: HI
         members: [person_1]
   output:
