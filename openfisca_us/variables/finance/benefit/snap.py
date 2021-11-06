@@ -20,7 +20,7 @@ class snap_earnings_deduction(Variable):
 
         snap_earnings_deduction = parameters(
             period
-        ).benefits.snap.earnings_deduction
+        ).benefit.snap.earnings_deduction
 
         return spm_unit("gross_income", period) * snap_earnings_deduction
 
@@ -35,7 +35,7 @@ class snap_standard_deduction(Variable):
 
         standard_deductions = parameters(
             period
-        ).benefits.snap.standard_deduction
+        ).benefit.snap.standard_deduction
 
         state_group = spm_unit("state_group")
 
@@ -68,9 +68,7 @@ class snap_shelter_deduction(Variable):
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
         # check for member of spm_unit with disability/elderly status
-        p_shelter_deduction = parameters(
-            period
-        ).benefits.snap.shelter_deduction
+        p_shelter_deduction = parameters(period).benefit.snap.shelter_deduction
 
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
@@ -133,7 +131,7 @@ class snap_max_benefit(Variable):
     def formula(spm_unit, period, parameters):
 
         # TODO: Logic for families with >8 people
-        snap_max_benefits = parameters(period).benefits.snap.amount.main
+        snap_max_benefits = parameters(period).benefit.snap.amount.main
 
         state_group = spm_unit("spm_unit_state_group", period)
         # TODO: Use number_persons
