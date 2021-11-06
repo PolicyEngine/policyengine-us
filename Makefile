@@ -5,7 +5,8 @@ format:
 install:
 	pip install -e .[dev]
 test:
-	openfisca-us test openfisca_us/tests
+	openfisca-us test openfisca_us/tests/policy
+	pytest openfisca_us/tests/code_health
 documentation:
 	jb build docs/book
 build:
