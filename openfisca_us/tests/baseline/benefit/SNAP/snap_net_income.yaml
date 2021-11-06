@@ -14,9 +14,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 2000 * 12
-        state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]
         shelter_cost: 1700 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     net_income: (1419 - 569) * 12
 
@@ -37,9 +39,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 2000 * 12
-        state_group: contiguous_US
         members: [person_1, person_2, person_3, person_4]
         shelter_cost: 1700 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     net_income: (1419 - (1700 - (1419 * 0.5))) * 12
 
@@ -54,9 +58,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: GU
         members: [person_1]
         shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: GU
   output:
     net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
 
@@ -72,9 +78,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: GU
         members: [person_1] 
-        shelter_cost: 650 * 12       
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: GU
   output:
     net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
 
@@ -89,9 +97,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: VI
         members: [person_1] 
-        shelter_cost: 650 * 12      
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: VI
   output:
     net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
 
@@ -107,9 +117,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: VI
         members: [person_1] 
-        shelter_cost: 650 * 12      
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: VI
   output:
     net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
 
@@ -124,9 +136,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: AK
         members: [person_1] 
-        shelter_cost: 650 * 12        
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: AK       
   output:
     net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
 
@@ -142,9 +156,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: AK
         members: [person_1] 
-        shelter_cost: 650 * 12     
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: AK     
   output:
     net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
 
@@ -159,9 +175,11 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: HI
         members: [person_1] 
-        shelter_cost: 650 * 12    
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: HI   
   output:
     net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12
 
@@ -177,8 +195,10 @@
     spm_units:
       spm_unit:
         spm_gross_income: 833 * 12
-        state_group: HI
         members: [person_1] 
-        shelter_cost: 650 * 12     
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: HI   
   output:
     net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12
