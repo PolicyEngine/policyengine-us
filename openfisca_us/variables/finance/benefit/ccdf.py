@@ -11,5 +11,5 @@ class ccdf_county_cluster(Variable):
 
     def formula(household, period, parameters):
         county = household("county", period).decode_to_str()
-        cluster_mapping = parameters(period).benefit.CCDF.county_cluster
+        cluster_mapping = parameters(period).benefit.ccdf.county_cluster
         return cluster_mapping[county]
