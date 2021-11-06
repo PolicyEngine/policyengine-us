@@ -59,10 +59,10 @@ class is_ccdf_home_based(Variable):
 
 
 class CCDFAgeGroup(Enum):
-    I = "Infant"
-    T = "Toddler"
-    PS = "Preschooler"
-    SA = "School age"
+    INFANT = "Infant"
+    TODDLER = "Toddler"
+    PRESCHOOLER = "Preschooler"
+    SCHOOL_AGE = "School age"
 
 
 class ccdf_age_group(Variable):
