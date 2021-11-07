@@ -18,24 +18,6 @@ Household = build_entity(
     containing_entities=["spm_unit"],
 )
 
-Family = build_entity(
-    key="family",
-    plural="families",
-    label="Family",
-    doc="""
-    A family.
-    """,
-    roles=[
-        dict(
-            key="member",
-            plural="members",
-            label="Member",
-            doc="A member of the family",
-        ),
-    ],
-    containing_entities=["household"],
-)
-
 SPMUnit = build_entity(
     key="spm_unit",
     plural="spm_units",
@@ -51,7 +33,25 @@ SPMUnit = build_entity(
             doc="A member of the SPM unit",
         ),
     ],
-    containing_entities=["family", "household"],
+    containing_entities=["household"],
+)
+
+Family = build_entity(
+    key="family",
+    plural="families",
+    label="Family",
+    doc="""
+    A family.
+    """,
+    roles=[
+        dict(
+            key="member",
+            plural="members",
+            label="Member",
+            doc="A member of the family",
+        ),
+    ],
+    containing_entities=["spm_unit", "household"],
 )
 
 TaxUnit = build_entity(
