@@ -3,6 +3,13 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
+class snap_gross_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Gross income for the SPM Unit"
+
+
 class snap_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
