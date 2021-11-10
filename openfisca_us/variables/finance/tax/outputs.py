@@ -414,6 +414,9 @@ class c00100(Variable):
     definition_period = YEAR
     documentation = """Adjusted Gross Income (AGI)"""
 
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "ymod1", "c02500", "c02900")
+
 
 class c01000(Variable):
     value_type = float
@@ -466,11 +469,31 @@ class c04470(Variable):
     )
 
 
+class exemption_phaseout_start(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Exemption phaseout start"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return parameters(period).tax.income.exemption.phaseout.start[
+            tax_unit("mars", period)
+        ]
+
+
 class c04600(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Personal exemptions after phase-out"""
+
+    def formula(tax_unit, period, parameters):
+        phaseout = parameters(period).tax.income.exemption.phaseout
+        phaseout_start = tax_unit("exemption_phaseout_start", period)
+        line_5 = max_(0, tax_unit("c00100", period) - phaseout_start)
+        line_6 = line_5 / (2500 / tax_unit("sep", period))
+        line_7 = phaseout.rate * line_6
+        return tax_unit("pre_c04600", period) * (1 - line_7)
 
 
 class qbided(Variable):
@@ -985,6 +1008,12 @@ class pre_c04600(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Personal exemption before phase-out"""
+
+    def formula(tax_unit, period, parameters):
+        exemption = parameters(period).tax.income.personal_exemption
+        return where(
+            tax_unit("dsi", period), 0, tax_unit("xtot", period) * exemption
+        )
 
 
 class codtc_limited(Variable):

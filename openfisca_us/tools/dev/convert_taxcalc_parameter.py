@@ -3,7 +3,7 @@ import yaml
 import argparse
 
 TAXCALC_PARAM_FILE = (
-    "/home/nikhil/pslmodels/tax-calculator/taxcalc/policy_current_law.json"
+    "/home/nikhil/pslmodels/Tax-Calculator/taxcalc/policy_current_law.json"
 )
 
 MARS_map = {
@@ -20,7 +20,7 @@ def year_to_date(year: int) -> str:
 
 
 def convert_param(param: dict) -> dict:
-    result = dict(description=param["title"])
+    result = dict(description=param["title"], values={})
     for value in param["value"]:
         date = year_to_date(value["year"])
         val = float(value["value"])
