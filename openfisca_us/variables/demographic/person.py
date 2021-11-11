@@ -128,6 +128,13 @@ class ccdf_hours_per_day(Variable):
     definition_period = YEAR
 
 
+class ccdf_days_per_week(Variable):
+    value_type = float
+    entity = Person
+    label = u"CCDF days per week"
+    definition_period = YEAR
+
+
 class DurationOfCare(Enum):
     WEEKLY = "Weekly"
     DAILY = "Daily"
@@ -143,17 +150,16 @@ class duration_of_care(Variable):
     label = u"CCDF duration of care"
     definition_period = YEAR
 
-    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=5"
 
     def formula(person, period):
-        hours_per_week = person("ccdf_hours_per_week", period)
         hours_per_day = person("ccdf_hours_per_day", period)
+        days_per_week = person("ccdf_days_per_week", period)
+        hours_per_week = hours_per_day * days_per_week
         return select(
             [
                 hours_per_week >= 30,
-                (hours_per_week < 30)
-                & (hours_per_day >= 6)
-                & (hours_per_day < 12),
+                hours_per_day >= 6,
                 hours_per_day >= 3,
                 hours_per_day >= 0,
             ],
