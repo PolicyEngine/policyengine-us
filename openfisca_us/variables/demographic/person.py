@@ -117,14 +117,14 @@ class provider_type_group(Variable):
 class ccdf_hours_per_week(Variable):
     value_type = float
     entity = Person
-    label = u"Hours per week"
+    label = u"CCDF hours per week"
     definition_period = YEAR
 
 
 class ccdf_hours_per_day(Variable):
     value_type = float
     entity = Person
-    label = u"Hours per day"
+    label = u"CCDF hours per day"
     definition_period = YEAR
 
 
