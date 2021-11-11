@@ -143,6 +143,8 @@ class duration_of_care(Variable):
     label = u"CCDF duration of care"
     definition_period = YEAR
 
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
+
     def formula(person, period):
         hours_per_week = person("ccdf_hours_per_week", period)
         hours_per_day = person("ccdf_hours_per_day", period)
