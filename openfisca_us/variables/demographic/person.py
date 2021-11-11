@@ -112,3 +112,19 @@ class provider_type_group(Variable):
     entity = Person
     label = u"CCDF provider type group"
     definition_period = YEAR
+
+
+class DurationOfCare(Enum):
+    WEEKLY = "Weekly"
+    DAILY = "Daily"
+    PART_DAY = "Part-Day"
+    HOURLY = "Hourly"
+
+
+class duration_of_care(Variable):
+    value_type = Enum
+    possible_values = DurationOfCare
+    default_value = DurationOfCare.WEEKLY
+    entity = Person
+    label = u"CCDF duration of care"
+    definition_period = YEAR
