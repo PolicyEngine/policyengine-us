@@ -114,6 +114,20 @@ class provider_type_group(Variable):
     definition_period = YEAR
 
 
+class ccdf_hours_per_week(Variable):
+    value_type = float
+    entity = Person
+    label = u"Hours per week"
+    definition_period = YEAR
+
+
+class ccdf_hours_per_day(Variable):
+    value_type = float
+    entity = Person
+    label = u"Hours per day"
+    definition_period = YEAR
+
+
 class DurationOfCare(Enum):
     WEEKLY = "Weekly"
     DAILY = "Daily"
@@ -128,3 +142,21 @@ class duration_of_care(Variable):
     entity = Person
     label = u"CCDF duration of care"
     definition_period = YEAR
+
+    def formula(person, period):
+        hours_per_week = person("ccdf_hours_per_week", period)
+        hours_per_day = person("ccdf_hours_per_day", period)
+        return select(
+            [
+                hours_per_week >= 30,
+                ((hours_per_week < 30) & (hours_per_day >= 6)),
+                hours_per_day >= 3,
+                hours_per_day >= 0,
+            ],
+            [
+                DurationOfCare.WEEKLY,
+                DurationOfCare.DAILY,
+                DurationOfCare.PART_DAY,
+                DurationOfCare.HOURLY,
+            ],
+        )
