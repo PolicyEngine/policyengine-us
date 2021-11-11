@@ -149,7 +149,9 @@ class duration_of_care(Variable):
         return select(
             [
                 hours_per_week >= 30,
-                ((hours_per_week < 30) & (hours_per_day >= 6)),
+                (hours_per_week < 30)
+                & (hours_per_day >= 6)
+                & (hours_per_day < 12),
                 hours_per_day >= 3,
                 hours_per_day >= 0,
             ],
