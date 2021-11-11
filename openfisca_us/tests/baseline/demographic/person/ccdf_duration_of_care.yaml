@@ -1,0 +1,28 @@
+- name: Weekly rate
+  period: 2022
+  input:
+    ccdf_hours_per_week: 32
+    ccdf_hours_per_day: 7
+  output:
+    duration_of_care: WEEKLY
+- name: Daily rate
+  period: 2022
+  input:
+    ccdf_hours_per_week: 28
+    ccdf_hours_per_day: 7
+  output:
+    duration_of_care: DAILY
+- name: Part-day rate
+  period: 2022
+  input:
+    ccdf_hours_per_week: 25
+    ccdf_hours_per_day: 5
+  output:
+    duration_of_care: PART_DAY
+- name: Hourly rate
+  period: 2022
+  input:
+    ccdf_hours_per_week: 10
+    ccdf_hours_per_day: 2
+  output:
+    duration_of_care: PART_DAY
