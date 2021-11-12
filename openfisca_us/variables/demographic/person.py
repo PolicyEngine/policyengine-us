@@ -9,6 +9,14 @@ class person_id(Variable):
     definition_period = ETERNITY
 
 
+class people(Variable):
+    value_type = float
+    entity = Person
+    label = u"People represented"
+    definition_period = YEAR
+    default_value = 1.0
+
+
 class person_weight(Variable):
     value_type = float
     entity = Person
@@ -38,11 +46,45 @@ class age_group(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        age = person("age", period)
         return select(
-            [age < 18, age < 65, age >= 65],
+            [
+                person("is_child", period),
+                person("is_wa_adult", period),
+                person("is_senior", period),
+            ],
             [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
         )
+
+
+class is_child(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is a child"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person("age", period) < 18
+
+
+class is_wa_adult(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is a working-age adult"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        age = person("age", period)
+        return (age >= 18) & (age < 65)
+
+
+class is_senior(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is a senior citizen"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person("age", period) >= 65
 
 
 class is_ccdf_home_based(Variable):
