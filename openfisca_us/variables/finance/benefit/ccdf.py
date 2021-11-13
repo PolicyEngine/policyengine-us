@@ -24,10 +24,10 @@ class ccdf_market_rate(Variable):
     definition_period = ETERNITY
 
     def formula(person, period, parameters):
-        county_cluster = person(ccdf_county_cluster)
-        provider_type_group = person(provider_type_group)
-        child_age_group = person(ccdf_age_group)
-        duration_of_care = person(duration_of_care)
+        county_cluster = person(ccdf_county_cluster, period)
+        provider_type_group = person(provider_type_group, period)
+        child_age_group = person(ccdf_age_group, period)
+        duration_of_care = person(duration_of_care, period)
         market_rate_mapping = parameters(period).benifit.ccdf.amount
         return market_rate_mapping[county_cluster][provider_type_group][
             child_age_group
