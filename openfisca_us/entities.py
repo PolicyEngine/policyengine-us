@@ -15,6 +15,7 @@ TaxUnit = build_entity(
             doc="A member of the tax unit",
         ),
     ],
+    containing_entities=["family", "spm_unit", "household"],
 )
 
 Household = build_entity(
@@ -49,6 +50,7 @@ Family = build_entity(
             doc="A member of the family",
         ),
     ],
+    containing_entities=["spm_unit", "household"],
 )
 
 SPMUnit = build_entity(
@@ -66,6 +68,7 @@ SPMUnit = build_entity(
             doc="A member of the SPM unit",
         ),
     ],
+    containing_entities=["household"],
 )
 
 Person = build_entity(
