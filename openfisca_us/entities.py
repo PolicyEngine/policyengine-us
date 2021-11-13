@@ -1,22 +1,5 @@
 from openfisca_core.entities import build_entity
 
-TaxUnit = build_entity(
-    key="tax_unit",
-    plural="tax_units",
-    label="Tax unit",
-    doc="""
-    A tax unit.
-    """,
-    roles=[
-        dict(
-            key="member",
-            plural="members",
-            label="Member",
-            doc="A member of the tax unit",
-        ),
-    ],
-)
-
 Household = build_entity(
     key="household",
     plural="households",
@@ -30,23 +13,6 @@ Household = build_entity(
             plural="members",
             label="Member",
             doc="A member of the household",
-        ),
-    ],
-)
-
-Family = build_entity(
-    key="family",
-    plural="families",
-    label="Family",
-    doc="""
-    A family.
-    """,
-    roles=[
-        dict(
-            key="member",
-            plural="members",
-            label="Member",
-            doc="A member of the family",
         ),
     ],
 )
@@ -66,7 +32,45 @@ SPMUnit = build_entity(
             doc="A member of the SPM unit",
         ),
     ],
+    containing_entities=["household"],
 )
+
+Family = build_entity(
+    key="family",
+    plural="families",
+    label="Family",
+    doc="""
+    A family.
+    """,
+    roles=[
+        dict(
+            key="member",
+            plural="members",
+            label="Member",
+            doc="A member of the family",
+        ),
+    ],
+    containing_entities=["spm_unit", "household"],
+)
+
+TaxUnit = build_entity(
+    key="tax_unit",
+    plural="tax_units",
+    label="Tax unit",
+    doc="""
+    A tax unit.
+    """,
+    roles=[
+        dict(
+            key="member",
+            plural="members",
+            label="Member",
+            doc="A member of the tax unit",
+        ),
+    ],
+    containing_entities=["spm_unit", "family", "household"],
+)
+
 
 Person = build_entity(
     key="person",
