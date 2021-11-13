@@ -21,7 +21,6 @@
   output:
     snap: (837 - 315) * 12
 
-
 - name: family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
@@ -44,7 +43,6 @@
         state_group: CONTIGUOUS_US
   output:
     expected_food_contribution: (837 - 218.55) * 12
- 
 
 - name: Individual, $50k income (Extreme Test)
   period: 2019
@@ -63,7 +61,6 @@
   output:
     snap: 0 * 12
 
-
 - name: Individual, $0 income (Extreme Test)
   period: 2019
   absolute_error_margin: 0
@@ -81,7 +78,6 @@
   output:
     snap: 204 * 12
 
-
 - name: single person, 10k income, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -98,7 +94,6 @@
         state_group: GU
   output:
     snap: (300 - 0)
-
 
 - name: single person, 10k income, disabled members present, GU (State Group Test)
   period: 2021
@@ -118,7 +113,6 @@
   output:
     snap: (300 - 0) * 12
 
-
 - name: single person, 10k income, VI (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -135,7 +129,6 @@
         state_group: VI
   output:
     snap: (262 - 129.1) * 12
-
 
 - name: single person, 10k income, disabled members present, VI (State Group Test)
   period: 2021
@@ -155,7 +148,6 @@
   output:
     snap: (262 - 129.1) * 12
 
-
 - name: single person, 10k income, AK (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -172,7 +164,6 @@
         state_group: AK
   output:
     snap: (320 - 0) * 12
-
 
 - name: single person, 10k income, AK, disabled members present (State Group Test)
   period: 2021
@@ -192,7 +183,6 @@
   output:
     snap: (320 - 0) * 12
 
-
 - name: single person, 10k income, HI (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -209,7 +199,6 @@
         state_group: HI
   output:
     snap: (375 - 0) * 12
-
 
 - name: single person, 10k income, HI (State Group Test)
   period: 2021

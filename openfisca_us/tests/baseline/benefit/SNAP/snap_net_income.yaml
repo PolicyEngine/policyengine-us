@@ -22,7 +22,6 @@
   output:
     net_income: (1419 - 569) * 12
 
-
 - name: family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
@@ -48,7 +47,6 @@
   output:
     net_income: (1419 - (1700 - (1419 * 0.5))) * 12
 
-
 - name: single person, 10k income, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -66,7 +64,6 @@
         state_group: GU
   output:
     net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
-
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
   period: 2021
@@ -88,7 +85,6 @@
   output:
     net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
 
-
 - name: single person, 10k income, VI (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -106,7 +102,6 @@
         state_group: VI
   output:
     net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
-
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
   period: 2021
@@ -128,7 +123,6 @@
   output:
     net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
 
-
 - name: single person, 10k income, AK (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -146,7 +140,6 @@
         state_group: AK       
   output:
     net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
-
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
   period: 2021
@@ -167,7 +160,6 @@
   output:
     net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
 
-
 - name: single person, 10k income, no member(s) with disabilities or age >60 present, HI (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -185,7 +177,6 @@
         state_group: HI   
   output:
     net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12
-
 
 - name: single person, 10k income, disabled members present, HI (State Group Test)
   period: 2021

@@ -21,7 +21,6 @@
   output:
     expected_food_contribution: ((1419 - 569) * 0.3) * 12
 
-
 - name: family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
@@ -45,7 +44,6 @@
   output:
     expected_food_contribution: ((1419 - (1700 - (1419 * 0.5))) * 0.3) * 12
 
-
 - name: single person, 10k income, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -62,7 +60,6 @@
         state_group: GU  
   output:
     expected_food_contribution: (0 * 0.3) * 12
-
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
   period: 2021
@@ -82,7 +79,6 @@
   output:
     expected_food_contribution: (0 * 0.3) * 12 
 
-
 - name: single person, 10k income, VI (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -99,7 +95,6 @@
         state_group: VI  
   output:
     expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
-
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
   period: 2021
@@ -119,7 +114,6 @@
   output:
     expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
 
-
 - name: single person, 10k income, AK (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -136,7 +130,6 @@
         state_group: AK  
   output:
     expected_food_contribution: (0 * 0.3) * 12
-
 
 - name: single person, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
   period: 2021
@@ -156,7 +149,6 @@
   output:
     expected_food_contribution: (0 * 0.3) * 12
 
-
 - name: single person, 10k income, member(s) with disabilities or age >60 present, HI (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -173,7 +165,6 @@
         state_group: HI  
   output:
     expected_food_contribution: (0 * 0.3) * 12
-
 
 - name: single person, 10k income, disabled members present, HI (State Group Test)
   period: 2021

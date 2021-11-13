@@ -21,7 +21,6 @@
   output:
     net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
 
-
 - name: family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
@@ -46,7 +45,6 @@
   output:
     net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
 
-
 - name: single person, 10k income, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -63,7 +61,6 @@
         state_group: GU
   output:
     net_income_pre_shelter: (833 - (833 * 0.2) - 336) * 12
-
 
 - name: single person, 10k income, VI (State Group Test)
   period: 2021
@@ -82,7 +79,6 @@
   output:
     net_income_pre_shelter: (833 - (833 * 0.2) - 147) * 12
 
-
 - name: single person, 10k income, AK (State Group Test)
   period: 2021
   absolute_error_margin: 0
@@ -99,7 +95,6 @@
         state_group: AK
   output:
     net_income_pre_shelter: (833 - (833 * 0.2) - 286) * 12
-
 
 - name: single person, 10k income, HI (State Group Test)
   period: 2021
