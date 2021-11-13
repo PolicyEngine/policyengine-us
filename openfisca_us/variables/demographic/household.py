@@ -115,6 +115,7 @@ class StateGroup(Enum):
     HI = "Hawaii"
     GU = "Guam"
     PR = "Puerto Rico"
+    VI = "Virgin Islands"
     # Omit other territories for now.
 
 
