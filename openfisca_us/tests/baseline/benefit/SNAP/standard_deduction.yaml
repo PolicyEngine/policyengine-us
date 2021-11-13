@@ -1,4 +1,4 @@
-# looks up from standard_deduction.yaml based on state and family size
+# looks up from standard_deduction.yaml based on state and Family size
 # TODO: rename all files basically with snap in front
 #       add snap in front of variable names 
 #       multiply gross income by 12
@@ -7,7 +7,7 @@
 #       make sure items under metadata are indented properly for all files
 #       add household nesting for GU, VI, AK, HI, etc. non contiguous
 
-- name: family of 4, income of 24k/year (Standard Test)
+- name: Family of 4, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -30,7 +30,7 @@
   output:
     standard_deduction: 181 * 12
 
-- name: family of 2, 12k income (Standard Test)
+- name: Family of 2, 12k income (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -49,7 +49,7 @@
   output:
     standard_deduction: 167 * 12
 
-- name: family of 9, 24k income (Additional Deduction Test)
+- name: Family of 9, 24k income (Additional Deduction Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -83,7 +83,7 @@
   output:
     standard_deduction: 243 * 12
 
-- name: single person, 0 income (Extreme Test, Min)
+- name: Individual, 0 income (Extreme Test, Min)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -100,7 +100,7 @@
   output:
     standard_deduction: 167 * 12
 
-- name: single person, 100k income (Extreme Test, Max)
+- name: Individual, 100k income (Extreme Test, Max)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -117,7 +117,7 @@
   output:
     standard_deduction: 167 * 12
 
-- name: single person, 10k income, GU (State Group Test)
+- name: Individual, 10k income, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -134,7 +134,7 @@
   output:
     standard_deduction: 336 * 12
 
-- name: single person, 10k income, VI (State Group Test)
+- name: Individual, 10k income, VI (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -151,7 +151,7 @@
   output:
     standard_deduction: 147 * 12
 
-- name: single person, 10k income, AK (State Group Test)
+- name: Individual, 10k income, AK (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -168,7 +168,7 @@
   output:
     standard_deduction: 286 * 12
 
-- name: single person, 10k income, HI (State Group Test)
+- name: Individual, 10k income, HI (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -184,4 +184,3 @@
           state_group: HI  
   output:
     standard_deduction: 236 * 12
-    

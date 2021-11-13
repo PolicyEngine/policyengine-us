@@ -1,4 +1,4 @@
-- name: family of 4, 12k income/year (Normal Test)
+- name: Family of 4, 12k income/year (Normal Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -21,7 +21,7 @@
   output:
     earnings_deduction: (1000 * 0.2) * 12
 
-- name: single_person, 12k/year (Boundary Test)
+- name: Single Person, 12k/year (Boundary Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -38,7 +38,7 @@
   output:
     earnings_deduction: (1000 * 0.2) * 12
 
-- name: single_person, 100k/year (Extreme Test)
+- name: Single Person, 100k/year (Extreme Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -54,4 +54,3 @@
         state_group: CONTIGUOUS_US
   output:
     earnings_deduction: (8333 * 0.2) * 12
-    

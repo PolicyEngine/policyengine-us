@@ -1,4 +1,4 @@
-- name: 'family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)'
+- name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)'
   period: 2021
   absolute_error_margin: 0
   input:
@@ -21,7 +21,7 @@
   output:
     snap: (837 - 315) * 12
 
-- name: family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
+- name: Family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -78,7 +78,7 @@
   output:
     snap: 204 * 12
 
-- name: single person, 10k income, GU (State Group Test)
+- name: Individual, 10k income, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -95,7 +95,7 @@
   output:
     snap: (300 - 0)
 
-- name: single person, 10k income, disabled members present, GU (State Group Test)
+- name: Individual, 10k income, disabled members present, GU (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -113,7 +113,7 @@
   output:
     snap: (300 - 0) * 12
 
-- name: single person, 10k income, VI (State Group Test)
+- name: Individual, 10k income, VI (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -130,7 +130,7 @@
   output:
     snap: (262 - 129.1) * 12
 
-- name: single person, 10k income, disabled members present, VI (State Group Test)
+- name: Individual, 10k income, disabled members present, VI (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -148,7 +148,7 @@
   output:
     snap: (262 - 129.1) * 12
 
-- name: single person, 10k income, AK (State Group Test)
+- name: Individual, 10k income, AK (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -165,7 +165,7 @@
   output:
     snap: (320 - 0) * 12
 
-- name: single person, 10k income, AK, disabled members present (State Group Test)
+- name: Individual, 10k income, AK, disabled members present (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -183,7 +183,7 @@
   output:
     snap: (320 - 0) * 12
 
-- name: single person, 10k income, HI (State Group Test)
+- name: Individual, 10k income, HI (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
@@ -200,7 +200,7 @@
   output:
     snap: (375 - 0) * 12
 
-- name: single person, 10k income, HI (State Group Test)
+- name: Individual, 10k income, HI (State Group Test)
   period: 2021
   absolute_error_margin: 0
   input:
