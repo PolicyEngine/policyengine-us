@@ -2,6 +2,8 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
+from variables.demographic.person import ccdf_age_group, duration_of_care
+
 
 class ccdf_county_cluster(Variable):
     value_type = int
@@ -13,3 +15,21 @@ class ccdf_county_cluster(Variable):
         county = household("county", period).decode_to_str()
         cluster_mapping = parameters(period).benefit.ccdf.county_cluster
         return cluster_mapping[county]
+
+
+class ccdf_market_rate(Variable):
+    value_type = int
+    entity = Person
+    label = u"CCDf market rate"
+    definition_period = ETERNITY
+
+    def formula(person, period, parameters):
+        county_cluster = person(ccdf_county_cluster)
+        provider_type_group = person(provider_type_group)
+        child_age_group = person(ccdf_age_group)
+        duration_of_care = person(duration_of_care)
+        market_rate_mapping = parameters(period).benifit.ccdf.amount
+        return market_rate_mapping[county_cluster][provider_type_group][
+            child_age_group
+        ][duration_of_care]
+
