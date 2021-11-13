@@ -20,7 +20,7 @@ class ccdf_county_cluster(Variable):
 class ccdf_market_rate(Variable):
     value_type = int
     entity = Person
-    label = u"CCDf market rate"
+    label = u"CCDF market rate"
     definition_period = ETERNITY
 
     def formula(person, period, parameters):
