@@ -1,7 +1,7 @@
 - name: County Cluster 1, Provider Type DCC, Infant, Weekly
   period: 2022
   input:
-    county: NASSAU_NY
+    ccdf_county_cluster: 1
     provider_type_group: DCC_SACC
     ccdf_age_group: INFANT
     duration_of_care: WEEKLY
@@ -10,7 +10,7 @@
 - name: County Cluster 3, Provider Type FDC, Toddler, Daily
   period: 2022
   input:
-    county: ALLEGANY_NY
+    ccdf_county_cluster: 3
     provider_type_group: FDC_GFDC
     ccdf_age_group: TODDLER
     duration_of_care: DAILY
@@ -19,7 +19,7 @@
 - name: County Cluster 5, Provider Type LE_ENH, School-age, Hourly
   period: 2022
   input:
-    county: BRONX_NY
+    ccdf_county_cluster: 5
     provider_type_group: LE_ENH
     ccdf_age_group: SCHOOL_AGE
     duration_of_care: HOURLY
