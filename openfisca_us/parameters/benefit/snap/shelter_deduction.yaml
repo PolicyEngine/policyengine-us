@@ -1,0 +1,39 @@
+description: Maximum SNAP shelter deduction
+
+amount:
+  contiguous_US:
+    2021-01-01: 586
+  AK_urban:
+    2021-01-01: 936
+  AK_rural_1:
+    2021-01-01: 936
+  AK_rural_2:
+    2021-01-01: 936  
+  HI:
+    2021-01-01: 790
+  GU:
+    2021-01-01: 688
+  VI:
+    2021-01-01: 462
+  metadata:
+    unit: currency-USD
+    period: month
+
+elderly_or_disabled_exempt:
+  values:
+    2021-01-01: true
+  
+income_share_threshold:
+  values:
+    2021-01-01: 0.5
+  metadata:
+    unit: currency-USD 
+  
+metadata:
+  reference: 
+  - title: USDA Cost of Living Adjustments
+    href: https://www.fns.usda.gov/snap/allotment/COLA 
+  - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
+    href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+  - title: SNAP - Special Rules for the Elderly or Disabled
+    href: https://www.fns.usda.gov/snap/eligibility/elderly-disabled-special-rules
