@@ -1,8 +1,7 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
-
-from variables.demographic.person import ccdf_age_group, duration_of_care
+from openfisca_us.variables.demographic.person import *
 
 
 class ccdf_county_cluster(Variable):
