@@ -18,7 +18,7 @@ class ccdf_county_cluster(Variable):
 
 
 class ccdf_market_rate(Variable):
-    value_type = int
+    value_type = float
     entity = Person
     label = u"CCDF market rate"
     definition_period = ETERNITY
