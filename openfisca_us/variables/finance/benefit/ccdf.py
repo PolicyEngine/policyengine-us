@@ -31,4 +31,3 @@ class ccdf_market_rate(Variable):
         return market_rate_mapping[county_cluster][provider_type_group][
             child_age_group
         ][duration_of_care]
-
