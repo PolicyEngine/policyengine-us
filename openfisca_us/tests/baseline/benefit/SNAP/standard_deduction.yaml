@@ -1,0 +1,186 @@
+# looks up from standard_deduction.yaml based on state and Family size
+# TODO: rename all files basically with snap in front
+#       add snap in front of variable names 
+#       multiply gross income by 12
+#       rename income to gross income
+#       create snap gross income variable
+#       make sure items under metadata are indented properly for all files
+#       add household nesting for GU, VI, AK, HI, etc. non contiguous
+
+- name: Family of 4, income of 24k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+    person_1:
+      age: 30
+    person_2:
+      age: 35
+    person_3:
+      age: 17
+    person_4:
+      age: 15
+    SPM_units:
+      spm_unit:
+        spm_gross_income: 2000 * 12
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    standard_deduction: 181 * 12
+
+- name: Family of 2, 12k income (Standard Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+    person_1:
+      age: 30
+    person_2:
+      age: 50
+    SPM_units:
+      spm_unit:
+        spm_gross_income: 2000 * 12
+        members: [person_1, person_2]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    standard_deduction: 167 * 12
+
+- name: Family of 9, 24k income (Additional Deduction Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+    person_1:
+      age: 42
+    person_2:
+      age: 40
+    person_3:
+      age: 25
+    person_4:
+      age: 26
+    person_5:
+      age: 18
+    person_6:
+      age: 65
+    person_7:
+      age: 63
+    person_8:
+      age: 15
+    person_9:
+      age: 14
+    SPM_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1, person_2, person_3, person_4, person_5, person_6,
+                  person_7, person_8, person_9,]
+    households:
+        household:
+          state_group: CONTIGUOUS_US
+  output:
+    standard_deduction: 243 * 12
+
+- name: Individual, 0 income (Extreme Test, Min)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+      households:
+        household:
+          state_group: CONTIGUOUS_US
+  output:
+    standard_deduction: 167 * 12
+
+- name: Individual, 100k income (Extreme Test, Max)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+    households:
+        household:
+          state_group: CONTIGUOUS_US
+  output:
+    standard_deduction: 167 * 12
+
+- name: Individual, 10k income, GU (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+    households:
+        household:
+          state_group: GU
+  output:
+    standard_deduction: 336 * 12
+
+- name: Individual, 10k income, VI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+    households:
+      household:
+        state_group: VI
+  output:
+    standard_deduction: 147 * 12
+
+- name: Individual, 10k income, AK (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+    households:
+        household:
+          state_group: AK
+  output:
+    standard_deduction: 286 * 12
+
+- name: Individual, 10k income, HI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+    households:
+        household:
+          state_group: HI  
+  output:
+    standard_deduction: 236 * 12

@@ -15,7 +15,6 @@ Household = build_entity(
             doc="A member of the household",
         ),
     ],
-    containing_entities=["spm_unit"],
 )
 
 SPMUnit = build_entity(
