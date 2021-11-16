@@ -1004,24 +1004,17 @@ class invinc_ec_base(Variable):
     documentation = """Exclusion of investment income from AGI"""
 
     def formula(tax_unit, period, parameters):
-        # Limitatition on net short-term and
+        # Limitation on net short-term and
         # long-term capital losses
         limited_capital_gain = max_(
             -3000.0 / tax_unit("sep", period),
             add(tax_unit, period, "filer_p22250", "filer_p23250"),
         )
+        OTHER_INV_INCOME_VARS = ["e00300", "e00600", "e01100", "e01200"]
         other_inv_income = add(
             tax_unit,
             period,
-            *[
-                "filer_" + variable
-                for variable in (
-                    "e00300",
-                    "e00600",
-                    "e01100",
-                    "e01200",
-                )
-            ],
+            *["filer_" + variable for variable in OTHER_INV_INCOME_VARS],
         )
         return limited_capital_gain + other_inv_income
 
