@@ -435,44 +435,6 @@ class c02500(Variable):
     documentation = """Social security (OASDI) benefits included in AGI"""
 
 
-class ald_haircut_deductions(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "'Above the line' haircut deductions"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        misc_haircuts = parameters(period).tax.ald.misc
-        return sum(
-            [
-                (1 - haircut) * tax_unit("filer_" + variable, period)
-                for haircut, variable in (
-                    (misc_haircuts.student_loan, "e03210"),
-                    (misc_haircuts.early_withdrawal, "e03400"),
-                    (misc_haircuts.alimony.paid, "e03500"),
-                    (misc_haircuts.alimony.received, "e00800"),
-                    (misc_haircuts.educator_expenses, "e03220"),
-                    (misc_haircuts.tuition, "e03230"),
-                    (misc_haircuts.domestic_production, "e03240"),
-                    (misc_haircuts.hsa_deduction, "e03290"),
-                    (misc_haircuts.self_emp_health_insurance, "e03270"),
-                    (misc_haircuts.ira_contributions, "e03150"),
-                    (misc_haircuts.keogh_sep, "e03300"),
-                )
-            ]
-        )
-
-
-class ald_other_deductions(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "'Above the line' other deductions"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "c03260", "care_deduction")
-
-
 class c02900(Variable):
     value_type = float
     entity = TaxUnit
@@ -484,8 +446,26 @@ class c02900(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        return add(
-            tax_unit, period, "ald_haircut_deductions", "ald_other_deductions"
+        misc_haircuts = parameters(period).tax.ald.misc
+        return sum(
+            [
+                (1 - haircut) * tax_unit(variable, period)
+                for haircut, variable in (
+                    (misc_haircuts.c03260, "c03260"),
+                    (misc_haircuts.care_deduction, "care_deduction"),
+                    (misc_haircuts.student_loan, "filer_e03210"),
+                    (misc_haircuts.early_withdrawal, "filer_e03400"),
+                    (misc_haircuts.alimony.paid, "filer_e03500"),
+                    (misc_haircuts.alimony.received, "filer_e00800"),
+                    (misc_haircuts.educator_expenses, "filer_e03220"),
+                    (misc_haircuts.tuition, "filer_e03230"),
+                    (misc_haircuts.domestic_production, "filer_e03240"),
+                    (misc_haircuts.hsa_deduction, "filer_e03290"),
+                    (misc_haircuts.self_emp_health_insurance, "filer_e03270"),
+                    (misc_haircuts.ira_contributions, "filer_e03150"),
+                    (misc_haircuts.keogh_sep, "filer_e03300"),
+                )
+            ]
         )
 
 
