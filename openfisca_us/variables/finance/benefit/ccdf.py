@@ -86,14 +86,12 @@ class ccdf_subsidy(Variable):
     documentation = ""
 
     def formula(spm_unit, period, parameters):
-        # TODO: Split continuous from initial.
         continuous_eligible = spm_unit("ccdf_continuous_eligible", period)
-        max_benefit_per_child = spm_unit("ccdf_max_benefit_per_child", period)
+        total_market_rate = spm_unit.sum(
+            spm_unit.members("ccdf_market_rate", period)
+        )
         copay = spm_unit("ccdf_copay", period)
-        eligible_kids = spm_unit("children", period)
-        # Intermediate variables.
-        max_benefit = max_benefit_per_child * eligible_kids
-        return where(continuous_eligible, max_benefit - copay, 0)
+        return where(continuous_eligible, total_market_rate - copay, 0)
 
 
 class ccdf_county_cluster(Variable):
