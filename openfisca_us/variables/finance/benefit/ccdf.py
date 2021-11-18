@@ -1,8 +1,8 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
-<<<<<<< HEAD
 from openfisca_us.variables.demographic.spm_unit import *
+from openfisca_us.variables.demographic.person import *
 
 
 class ccdf_asset_eligible(Variable):
@@ -79,41 +79,6 @@ class ccdf_copay(Variable):
         return income_exceeding_fpl * p_income_share
 
 
-class ccdf_max_benefit_per_child(Variable):
-    value_type = float
-    entity = SPMUnit
-    definition_period = YEAR
-    documentation = ""
-
-
-class ccdf_child_age(Variable):
-    value_type = float
-    entity = SPMUnit
-    definition_period = YEAR
-    documentation = ""
-
-
-class ccdf_provider_type(Variable):
-    value_type = float
-    entity = SPMUnit
-    definition_period = YEAR
-    documentation = ""
-
-
-class ccdf_duration_of_care(Variable):
-    value_type = float
-    entity = SPMUnit
-    definition_period = YEAR
-    documentation = ""
-
-
-class ccdf_child_age(Variable):
-    value_type = float
-    entity = SPMUnit
-    definition_period = YEAR
-    documentation = ""
-
-
 class ccdf_subsidy(Variable):
     value_type = float
     entity = SPMUnit
@@ -129,9 +94,6 @@ class ccdf_subsidy(Variable):
         # Intermediate variables.
         max_benefit = max_benefit_per_child * eligible_kids
         return where(continuous_eligible, max_benefit - copay, 0)
-=======
-from openfisca_us.variables.demographic.person import *
->>>>>>> upstream/master
 
 
 class ccdf_county_cluster(Variable):
