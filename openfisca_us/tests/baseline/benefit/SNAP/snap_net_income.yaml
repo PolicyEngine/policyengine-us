@@ -1,0 +1,198 @@
+- name: Family of 4, no member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        spm_gross_income: 2000 * 12
+        members: [person_1, person_2, person_3, person_4]
+        shelter_cost: 1700 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    net_income: (1419 - 569) * 12
+
+- name: Family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        is_disabled_or_elderly_for_snap: True
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        spm_gross_income: 2000 * 12
+        members: [person_1, person_2, person_3, person_4]
+        shelter_cost: 1700 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    net_income: (1419 - (1700 - (1419 * 0.5))) * 12
+
+- name: Individual, 10k income, GU (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1]
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: GU
+  output:
+    net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
+
+- name: Individual, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+        is_disabled_or_elderly_for_snap: True
+        disability: True
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: GU
+  output:
+    net_income: max(((330.4 - ( 650 - (330.4 * 0.5)))), 0) * 12
+
+- name: Individual, 10k income, VI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: VI
+  output:
+    net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
+
+- name: Individual, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        is_disabled_or_elderly_for_snap: True
+        age: 30
+        disability: True
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: VI
+  output:
+    net_income: ((519.4 - (650 - (519.4 * 0.5)))) * 12
+
+- name: Individual, 10k income, AK (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: AK       
+  output:
+    net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
+
+- name: Individual, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+        is_disabled_or_elderly_for_snap: True
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: AK     
+  output:
+    net_income: max(((430.6 - (650 - (430.6 * 0.5)))), 0) * 12
+
+- name: Individual, 10k income, no member(s) with disabilities or age >60 present, HI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: HI   
+  output:
+    net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12
+
+- name: Individual, 10k income, disabled members present, HI (State Group Test)
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person_1:
+        age: 30
+        is_disabled_or_elderly_for_snap: True
+    spm_units:
+      spm_unit:
+        spm_gross_income: 833 * 12
+        members: [person_1] 
+        shelter_cost: 650 * 12
+    households:
+      household:
+        state_group: HI   
+  output:
+    net_income: max(((380.6 - (650 - (380.6 * 0.5)))), 0) * 12

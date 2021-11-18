@@ -2,12 +2,14 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
+# TODO: Add units where needed
+
 
 class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "Gross income for the SPM Unit"
+    label = "SPM unit's gross income for calculating SNAP eligibility"
 
 
 class snap_earnings_deduction(Variable):
@@ -20,7 +22,7 @@ class snap_earnings_deduction(Variable):
 
         snap_earnings_deduction = parameters(
             period
-        ).benefits.snap.earnings_deduction
+        ).benefit.snap.earnings_deduction
 
         return spm_unit("gross_income", period) * snap_earnings_deduction
 
@@ -35,7 +37,7 @@ class snap_standard_deduction(Variable):
 
         standard_deductions = parameters(
             period
-        ).benefits.snap.standard_deduction
+        ).benefit.snap.standard_deduction
 
         state_group = spm_unit("state_group")
 
@@ -68,9 +70,7 @@ class snap_shelter_deduction(Variable):
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
         # check for member of spm_unit with disability/elderly status
-        p_shelter_deduction = parameters(
-            period
-        ).benefits.snap.shelter_deduction
+        p_shelter_deduction = parameters(period).benefit.snap.shelter_deduction
 
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
@@ -133,9 +133,9 @@ class snap_max_benefit(Variable):
     def formula(spm_unit, period, parameters):
 
         # TODO: Logic for families with >8 people
-        snap_max_benefits = parameters(period).benefits.snap.amount.main
+        snap_max_benefits = parameters(period).benefit.snap.amount.main
 
-        state_group = spm_unit("spm_unit_state_group", period)
+        state_group = spm_unit.household("state_group", period)
         # TODO: Use number_persons
         household_size = spm_unit.nb_persons()
 
@@ -154,3 +154,11 @@ class snap(Variable):
         return spm_unit("snap_max_benefit", period) - spm_unit(
             "snap_expected_contribution_towards_food", period
         )
+
+
+class is_disabled_or_elderly_for_snap(Variable):
+
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
