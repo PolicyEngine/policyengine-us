@@ -156,9 +156,15 @@ class snap(Variable):
         )
 
 
-class is_disabled_or_elderly_for_snap(Variable):
-
+class usda_disabled(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+    documentation = "Indicates that a person is defined as disabled based on the USDA definition"
+
+
+class usda_elderly(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as elderly based on the USDA definition"
