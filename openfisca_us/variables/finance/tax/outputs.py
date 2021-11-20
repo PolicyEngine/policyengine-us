@@ -895,9 +895,14 @@ class c59660(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "EITC"
+    unit = "currency-USD"
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        
 
 
 class c62100(Variable):
