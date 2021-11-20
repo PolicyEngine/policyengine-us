@@ -667,7 +667,9 @@ class c05200(Variable):
             reg_adjusted_threshold = (
                 individual_income.bracket.thresholds[str(i)][mars] - reg_tbase
             )
-            reg_tax += individual_income.bracket.rates[str(i)] * amount_between(
+            reg_tax += individual_income.bracket.rates[
+                str(i)
+            ] * amount_between(
                 reg_taxinc, last_reg_adjusted_threshold, reg_adjusted_threshold
             )
             last_reg_adjusted_threshold = reg_adjusted_threshold
