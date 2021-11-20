@@ -439,9 +439,37 @@ class c02900(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "'Above the line' AGI deductions"
+    unit = USD
     documentation = (
         """Total of all 'above the line' income adjustments to get AGI"""
     )
+
+    def formula(tax_unit, period, parameters):
+        misc_haircuts = parameters(period).tax.ald.misc.haircut
+        BASE_HAIRCUT_VARS = ["c03260", "care_deduction"]
+        FILER_HAIRCUT_VARS = [
+            "e03210",
+            "e03400",
+            "e03500",
+            "e00800",
+            "e03220",
+            "e03230",
+            "e03240",
+            "e03290",
+            "e03270",
+            "e03150",
+            "e03300",
+        ]
+        haircut_vars = BASE_HAIRCUT_VARS + [
+            "filer_" + i for i in FILER_HAIRCUT_VARS
+        ]
+        return sum(
+            [
+                (1 - misc_haircuts[variable]) * tax_unit(variable, period)
+                for variable in haircut_vars
+            ]
+        )
 
 
 class c03260(Variable):

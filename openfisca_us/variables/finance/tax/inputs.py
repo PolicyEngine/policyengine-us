@@ -436,11 +436,33 @@ class e03150(Variable):
     documentation = """Total deductible IRA contributions"""
 
 
+class filer_e03150(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = (
+        u"Deductible IRA contributions for the tax unit (excluding dependents)"
+    )
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03150, tax_unit, period)
+
+
 class e03210(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Student loan interest"""
+
+
+class filer_e03210(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Student loan interest for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03210, tax_unit, period)
 
 
 class e03220(Variable):
@@ -450,11 +472,31 @@ class e03220(Variable):
     documentation = """Educator expenses"""
 
 
+class filer_e03220(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Educator expenses for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03220, tax_unit, period)
+
+
 class e03230(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Tuition and fees from Form 8917"""
+
+
+class filer_e03230(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Tuition for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03230, tax_unit, period)
 
 
 class e03240(Variable):
@@ -464,11 +506,31 @@ class e03240(Variable):
     documentation = """Domestic production activities from Form 8903"""
 
 
+class filer_e03240(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Domestic production activities for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03240, tax_unit, period)
+
+
 class e03270(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Self-employed health insurance deduction"""
+
+
+class filer_e03270(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Self-employed health insurance for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03270, tax_unit, period)
 
 
 class e03290(Variable):
@@ -478,11 +540,31 @@ class e03290(Variable):
     documentation = """Health savings account deduction from Form 8889"""
 
 
+class filer_e03290(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Health savings account deduction for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03290, tax_unit, period)
+
+
 class e03300(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Contributions to SEP, SIMPLE and qualified plans"""
+
+
+class filer_e03300(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"SEP, SIMPLE, etc. contributions for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03300, tax_unit, period)
 
 
 class e03400(Variable):
@@ -492,11 +574,31 @@ class e03400(Variable):
     documentation = """Penalty on early withdrawal of savings"""
 
 
+class filer_e03400(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Early savings withdrawal penalty for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03400, tax_unit, period)
+
+
 class e03500(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = """Alimony paid"""
+
+
+class filer_e03500(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Alimony paid for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum(e03500, tax_unit, period)
 
 
 class e07240(Variable):
