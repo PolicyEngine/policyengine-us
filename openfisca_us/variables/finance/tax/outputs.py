@@ -446,27 +446,24 @@ class c02900(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        misc_haircuts = parameters(period).tax.ald.misc
-        return sum(
-            [
-                (1 - haircut) * tax_unit(variable, period)
-                for haircut, variable in (
-                    (misc_haircuts.c03260, "c03260"),
-                    (misc_haircuts.care_deduction, "care_deduction"),
-                    (misc_haircuts.student_loan, "filer_e03210"),
-                    (misc_haircuts.early_withdrawal, "filer_e03400"),
-                    (misc_haircuts.alimony.paid, "filer_e03500"),
-                    (misc_haircuts.alimony.received, "filer_e00800"),
-                    (misc_haircuts.educator_expenses, "filer_e03220"),
-                    (misc_haircuts.tuition, "filer_e03230"),
-                    (misc_haircuts.domestic_production, "filer_e03240"),
-                    (misc_haircuts.hsa_deduction, "filer_e03290"),
-                    (misc_haircuts.self_emp_health_insurance, "filer_e03270"),
-                    (misc_haircuts.ira_contributions, "filer_e03150"),
-                    (misc_haircuts.keogh_sep, "filer_e03300"),
-                )
-            ]
-        )
+        misc_haircuts = parameters(period).tax.ald.misc.haircut
+        HAIRCUT_VARS = (
+            "c03260",
+            "care_deduction",
+        ) + tuple(["filer_" + name for name in (
+            "e03210",
+            "e03400",
+            "e03500",
+            "e00800",
+            "e03220",
+            "e03230",
+            "e03240",
+            "e03290",
+            "e03270",
+            "e03150",
+            "e03300",
+        )])
+        return sum([(1 - misc_haircuts[variable]) * tax_unit(variable, period) for variable in HAIRCUT_VARS])
 
 
 class c03260(Variable):
