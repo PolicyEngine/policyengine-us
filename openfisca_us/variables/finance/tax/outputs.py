@@ -901,9 +901,6 @@ class c59660(Variable):
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
 
-    def formula(tax_unit, period, parameters):
-        
-
 
 class c62100(Variable):
     value_type = float
