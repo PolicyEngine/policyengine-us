@@ -302,6 +302,7 @@ class sep(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
+    default_value = 1
     documentation = (
         """2 when MARS is 3 (married filing separately); otherwise 1"""
     )
@@ -438,9 +439,37 @@ class c02900(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "'Above the line' AGI deductions"
+    unit = USD
     documentation = (
         """Total of all 'above the line' income adjustments to get AGI"""
     )
+
+    def formula(tax_unit, period, parameters):
+        misc_haircuts = parameters(period).tax.ald.misc.haircut
+        BASE_HAIRCUT_VARS = ["c03260", "care_deduction"]
+        FILER_HAIRCUT_VARS = [
+            "e03210",
+            "e03400",
+            "e03500",
+            "e00800",
+            "e03220",
+            "e03230",
+            "e03240",
+            "e03290",
+            "e03270",
+            "e03150",
+            "e03300",
+        ]
+        haircut_vars = BASE_HAIRCUT_VARS + [
+            "filer_" + i for i in FILER_HAIRCUT_VARS
+        ]
+        return sum(
+            [
+                (1 - misc_haircuts[variable]) * tax_unit(variable, period)
+                for variable in haircut_vars
+            ]
+        )
 
 
 class c03260(Variable):
@@ -1019,9 +1048,24 @@ class invinc_ec_base(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    label = "AGI investment income exclusion"
+    unit = "currency-USD"
+    documentation = """Exclusion of investment income from AGI"""
+
+    def formula(tax_unit, period, parameters):
+        # Limitation on net short-term and
+        # long-term capital losses
+        limited_capital_gain = max_(
+            -3000.0 / tax_unit("sep", period),
+            add(tax_unit, period, "filer_p22250", "filer_p23250"),
+        )
+        OTHER_INV_INCOME_VARS = ["e00300", "e00600", "e01100", "e01200"]
+        other_inv_income = add(
+            tax_unit,
+            period,
+            *["filer_" + variable for variable in OTHER_INV_INCOME_VARS],
+        )
+        return limited_capital_gain + other_inv_income
 
 
 class pre_c04600(Variable):
