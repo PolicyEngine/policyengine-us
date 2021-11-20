@@ -240,7 +240,7 @@ class filer_e00650(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e00650, tax_unit, period)
+        return tax_unit_non_dep_sum("e00650", tax_unit, period)
 
 
 class e00700(Variable):
@@ -419,7 +419,7 @@ class filer_e02300(Variable):
     documentation = """Unemployment insurance benefits for filing unit (excluding dependents)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(tax_unit, period)
+        return tax_unit_non_dep_sum("e02300", tax_unit, period)
 
 
 class e02400(Variable):
@@ -431,7 +431,7 @@ class e02400(Variable):
 
 class e03150(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Total deductible IRA contributions"""
 
@@ -445,12 +445,12 @@ class filer_e03150(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03150, tax_unit, period)
+        return tax_unit_non_dep_sum("e03150", tax_unit, period)
 
 
 class e03210(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Student loan interest"""
 
@@ -462,12 +462,12 @@ class filer_e03210(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03210, tax_unit, period)
+        return tax_unit_non_dep_sum("e03210", tax_unit, period)
 
 
 class e03220(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Educator expenses"""
 
@@ -479,12 +479,12 @@ class filer_e03220(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03220, tax_unit, period)
+        return tax_unit_non_dep_sum("e03220", tax_unit, period)
 
 
 class e03230(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Tuition and fees from Form 8917"""
 
@@ -496,12 +496,12 @@ class filer_e03230(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03230, tax_unit, period)
+        return tax_unit_non_dep_sum("e03230", tax_unit, period)
 
 
 class e03240(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Domestic production activities from Form 8903"""
 
@@ -513,12 +513,12 @@ class filer_e03240(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03240, tax_unit, period)
+        return tax_unit_non_dep_sum("e03240", tax_unit, period)
 
 
 class e03270(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Self-employed health insurance deduction"""
 
@@ -530,12 +530,12 @@ class filer_e03270(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03270, tax_unit, period)
+        return tax_unit_non_dep_sum("e03270", tax_unit, period)
 
 
 class e03290(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Health savings account deduction from Form 8889"""
 
@@ -547,12 +547,12 @@ class filer_e03290(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03290, tax_unit, period)
+        return tax_unit_non_dep_sum("e03290", tax_unit, period)
 
 
 class e03300(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Contributions to SEP, SIMPLE and qualified plans"""
 
@@ -564,12 +564,12 @@ class filer_e03300(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03300, tax_unit, period)
+        return tax_unit_non_dep_sum("e03300", tax_unit, period)
 
 
 class e03400(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Penalty on early withdrawal of savings"""
 
@@ -581,12 +581,12 @@ class filer_e03400(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03400, tax_unit, period)
+        return tax_unit_non_dep_sum("e03400", tax_unit, period)
 
 
 class e03500(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Alimony paid"""
 
@@ -598,12 +598,12 @@ class filer_e03500(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e03500, tax_unit, period)
+        return tax_unit_non_dep_sum("e03500", tax_unit, period)
 
 
 class e07240(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
         """Retirement savings contributions credit from Form 8880"""
@@ -612,126 +612,126 @@ class e07240(Variable):
 
 class e07260(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Residential energy credit from Form 5695"""
 
 
 class e07300(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Foreign tax credit from Form 1116"""
 
 
 class e07400(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """General business credit from Form 3800"""
 
 
 class e07600(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Prior year minimum tax credit from Form 8801"""
 
 
 class e09700(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Recapture of Investment Credit"""
 
 
 class e09800(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Unreported payroll taxes from Form 4137 or 8919"""
 
 
 class e09900(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Penalty tax on qualified retirement plans"""
 
 
 class e11200(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Excess payroll (FICA/RRTA) tax withheld"""
 
 
 class e17500(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable medical and dental expenses.  WARNING: this variable is zero below the floor in PUF data."""
 
 
 class e18400(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable state and local income/sales taxes"""
 
 
 class e18500(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable real-estate taxes paid"""
 
 
 class e19200(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable interest paid"""
 
 
 class e19800(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable charitable giving: cash/check contributions.  WARNING: this variable is already capped in PUF data."""
 
 
 class e20100(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable charitable giving: other than cash/check contributions.  WARNING: this variable is already capped in PUF data."""
 
 
 class e20400(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable miscellaneous deductions.  WARNING: this variable is zero below the floor in PUF data."""
 
 
 class g20500(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Itemizable gross (before 10% AGI disregard) casualty or theft loss"""
 
 
 class e24515(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Sch D: Un-Recaptured Section 1250 Gain"""
 
 
 class e24518(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Sch D: 28% Rate Gain or Loss"""
 
@@ -750,12 +750,12 @@ class filer_e26270(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e26270, tax_unit, period)
+        return tax_unit_non_dep_sum("e26270", tax_unit, period)
 
 
 class e27200(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
         """Sch E: Farm rent net income or loss (included in e02000)"""
@@ -769,26 +769,26 @@ class filer_e27200(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(e27200, tax_unit, period)
+        return tax_unit_non_dep_sum("e27200", tax_unit, period)
 
 
 class e32800(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Child/dependent-care expenses for qualifying persons from Form 2441"""
 
 
 class e58990(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = """Investment income elected amount from Form 4952"""
 
 
 class e62900(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
         """Alternative Minimum Tax foreign tax credit from Form 6251"""
@@ -797,7 +797,7 @@ class e62900(Variable):
 
 class e87530(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     definition_period = YEAR
     documentation = (
         """Adjusted qualified lifetime learning expenses for all students"""
