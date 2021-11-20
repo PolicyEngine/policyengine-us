@@ -54,14 +54,12 @@ class snap_net_income_pre_shelter(Variable):
 
     def formula(spm_unit, period, parameters):
 
-        return max_(
-            (
-                spm_unit("gross_income", period)
-                - spm_unit("snap_standard_deduction", period)
-                - spm_unit("snap_earnings_deduction", period)
-            ),
-            0,
+        res = spm_unit("gross_income", period) - spm_unit(
+            "snap_standard_deduction", period
         )
+        -spm_unit("snap_earnings_deduction", period)
+
+        return max_(res, 0)
 
 
 class snap_shelter_deduction(Variable):
@@ -105,11 +103,10 @@ class snap_net_income(Variable):
 
     def formula(spm_unit, period, parameters):
 
-        return max_(
-            spm_unit("snap_net_income_pre_shelter", period)
-            - spm_unit("snap_shelter_deduction", period),
-            0,
-        )
+        res = spm_unit("snap_net_income_pre_shelter", period)
+        -spm_unit("snap_shelter_deduction", period)
+
+        return max_(res, 0)
 
 
 class snap_expected_contribution_towards_food(Variable):
@@ -156,9 +153,12 @@ class snap(Variable):
 
     def formula(spm_unit, period, parameters):
         # TODO: Add gross and net income checks.
-        return spm_unit("snap_max_benefit", period) - spm_unit(
+
+        res = spm_unit("snap_max_benefit", period) - spm_unit(
             "snap_expected_contribution_towards_food", period
         )
+
+        return res
 
 
 class is_disabled_or_elderly_for_snap(Variable):
