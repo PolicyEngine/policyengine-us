@@ -633,16 +633,19 @@ class c05200(Variable):
         e26270 = tax_unit("filer_e26270", period)
         e00200 = tax_unit("filer_e00200", period)
         pt_passive = pass_through.business_income.eligible_rate.passive * (
-            e00200
-            - e26270
+            e00200 - e26270
         )
         e00900 = tax_unit("e00900", period)
         pt_active_gross = e00900 + e26270
         if (pt_active_gross > 0) and pass_through.wages_active_income:
             pt_active_gross += e00200
-        pt_active = pass_through.business_income.eligible_rate.active * pt_active_gross
+        pt_active = (
+            pass_through.business_income.eligible_rate.active * pt_active_gross
+        )
         pt_active = min_(pt_active, e00900 + e26270)
-        pt_taxinc = max_(0, )
+        pt_taxinc = max_(
+            0,
+        )
 
 
 class c05700(Variable):
