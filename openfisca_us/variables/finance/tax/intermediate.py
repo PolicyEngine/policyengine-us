@@ -190,8 +190,9 @@ class pre_qbid_taxinc(Variable):
         ui = parameters(period).benefit.unemployment_insurance
         ui_amount = tax_unit("filer_e02300", period)
         agi_over_ui = tax_unit("c00100", period) - ui_amount
+        mars = tax_unit("mars", period)
         return where(
-            agi_over_ui <= ui.exemption.cutoff,
+            agi_over_ui <= ui.exemption.cutoff[mars],
             min_(ui_amount, ui.exemption.amount),
             0,
         )
