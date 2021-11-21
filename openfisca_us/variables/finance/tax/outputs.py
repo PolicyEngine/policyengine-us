@@ -649,8 +649,8 @@ class c05200(Variable):
         # Initialise regular and pass-through income tax to zero
         reg_tax = 0
         pt_tax = 0
-        last_reg_adjusted_threshold = 0
-        last_pt_adjusted_threshold = 0
+        last_reg_threshold = 0
+        last_pt_threshold = 0
         for i in range(1, 7):
             # Calculate rate applied to regular income up to the current
             # threshold (on income above the last threshold)
