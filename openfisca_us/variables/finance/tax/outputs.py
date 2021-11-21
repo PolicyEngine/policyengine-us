@@ -632,42 +632,52 @@ class c05200(Variable):
         individual_income = parameters(period).tax.income
         e26270 = tax_unit("filer_e26270", period)
         e00900 = tax_unit("filer_e00900", period)
+
+        # Determine pass-through and non-pass-through income
         pt_active_gross = e00900 + e26270
         pt_active = pt_active_gross
         pt_active = min_(pt_active, e00900 + e26270)
         pt_taxinc = max_(0, pt_active)
         taxable_income = tax_unit("c04800", period)
+
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
         pt_tbase = reg_taxinc
+
         mars = tax_unit("mars", period)
+
+        # Initialise regular and pass-through income tax to zero
         reg_tax = 0
         pt_tax = 0
-        last_reg_adjusted_threshold = 0
-        last_pt_adjusted_threshold = 0
+        last_reg_threshold = 0
+        last_pt_threshold = 0
         for i in range(1, 7):
+            # Calculate rate applied to regular income up to the current
+            # threshold (on income above the last threshold)
             reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
             reg_tax += individual_income.bracket.rates[
                 str(i)
-            ] * amount_between(
-                reg_taxinc, last_reg_adjusted_threshold, reg_threshold
-            )
-            last_reg_adjusted_threshold = reg_threshold
-            pt_adjusted_threshold = (
+            ] * amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
+            last_reg_threshold = reg_threshold
+
+            # Calculate rate applied to pass-through income on in the same
+            # way, but as treated as if stacked on top of regular income
+            # (which is not taxed again)
+            pt_threshold = (
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
                 - pt_tbase
             )
             pt_tax += individual_income.pass_through.bracket.rates[
                 str(i)
-            ] * amount_between(
-                pt_taxinc, last_pt_adjusted_threshold, pt_adjusted_threshold
-            )
-            last_pt_adjusted_threshold = pt_adjusted_threshold
+            ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
+            last_pt_threshold = pt_threshold
+
+        # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
-            reg_taxinc - last_reg_adjusted_threshold, 0
+            reg_taxinc - last_reg_threshold, 0
         )
         pt_tax += individual_income.pass_through.bracket.rates["7"] * max_(
-            pt_taxinc - last_pt_adjusted_threshold, 0
+            pt_taxinc - last_pt_threshold, 0
         )
         return reg_tax + pt_tax
 
@@ -939,13 +949,75 @@ class c23650(Variable):
     )
 
 
+class tax_unit_is_joint(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Joint-filing tax unit"
+    documentation = "Whether this tax unit is a joint filer."
+    definition_period = YEAR
+
+
 class c59660(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    label = "EITC"
+    unit = "currency-USD"
+    documentation = "The Earned Income Tax Credit eligible amount."
+
+    def formula(tax_unit, period, parameters):
+        eitc = parameters(period).tax.credits.eitc
+        earnings = tax_unit("filer_earned", period)
+        phased_in_amount = eitc.phasein_rate * earnings
+        highest_income_variable = max_(earnings, tax_unit("c00100", period))
+        is_joint = tax_unit("tax_unit_is_joint", period)
+        phaseout_start = (
+            eitc.phaseout.start + is_joint * eitc.phaseout.joint_bonus
+        )
+        amount_over_phaseout = max_(
+            0, highest_income_variable - phaseout_start
+        )
+        amount_with_phaseout = max_(
+            0, eitc.max - eitc.phaseout.rate * amount_over_phaseout
+        )
+        amount = min_(
+            phased_in_amount,
+            eitc.max,
+            amount_with_phaseout,
+        )
+        age_head = tax_unit("age_head", period)
+        age_spouse = tax_unit("age_spouse", period)
+        head_age_is_eligible = (
+            eitc.eligibility.age.min <= age_head <= eitc.eligibility.age.max
+        )
+        spouse_age_is_eligible = is_joint * (
+            eitc.eligibility.age.min <= age_spouse <= eitc.eligibility.age.max
+        )
+        inferred_eligibility = (
+            (age_head == 0)
+            | (age_spouse == 0)
+            | head_age_is_eligible
+            | spouse_age_is_eligible
+        )
+        investment_income = (
+            add(
+                tax_unit,
+                period,
+                "filer_e00400",
+                "filer_e00300",
+                "filer_e00600",
+            )
+            + max_(0, tax_unit("c01000", period))
+            + max_(
+                0,
+                tax_unit("filer_e02000", period)
+                - tax_unit("filer_e26270", period),
+            )
+        )
+        eligible = ((tax_unit("eic", period) > 0) | inferred_eligibility) & (
+            investment_income <= eitc.phaseout.max_investment_income
+        )
+        return eligible * amount
 
 
 class c62100(Variable):

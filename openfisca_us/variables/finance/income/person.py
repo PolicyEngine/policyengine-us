@@ -6,10 +6,7 @@ from openfisca_us.tools.general import *
 class net_income(Variable):
     value_type = float
     entity = Person
-    label = u"Net income"
+    label = "Net income"
+    unit = "currency-USD"
+    documentation = "Personal disposable income after taxes and transfers"
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        return person("is_spm_unit_head", period) * person.spm_unit(
-            "spm_unit_net_income", period
-        )
