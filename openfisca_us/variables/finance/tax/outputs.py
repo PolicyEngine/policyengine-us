@@ -423,9 +423,13 @@ class c01000(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    label = "Limitation on capital losses"
+    unit = "currency-USD"
+
+    def formula(tax_unit, period, parameters):
+        return max_(
+            (-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period)
+        )
 
 
 class c02500(Variable):
@@ -944,9 +948,12 @@ class c23650(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    label = "Net capital gains"
+    unit = "currency-USD"
+    documentation = "Net capital gains (long and short term) before exclusion"
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "filer_p23250", "filer_p22250")
 
 
 class tax_unit_is_joint(Variable):
@@ -1137,10 +1144,12 @@ class fstax(Variable):
 class invinc_agi_ec(Variable):
     value_type = float
     entity = TaxUnit
-    definition_period = YEAR
+    label = "Exclusion of investment income from AGI"
+    unit = "currency-USD"
     documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
+        "Always equal to zero (will be removed in a future version)"
     )
+    definition_period = YEAR
 
 
 class invinc_ec_base(Variable):
@@ -1244,18 +1253,71 @@ class ymod(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    label = "OASDI benefit tax variable"
+    documentation = "Variable that is used in OASDI benefit taxation logic"
+    unit = "currency-USD"
+
+    def formula(tax_unit, period, parameters):
+        ymod2 = (
+            tax_unit("filer_e00400", period)
+            + (0.5 * tax_unit("e02400", period))
+            - tax_unit("c02900", period)
+        )
+        ymod3 = add(
+            tax_unit, period, "filer_e03210", "filer_e03230", "filer_e03240"
+        )
+        return tax_unit("ymod1", period) + ymod2 + ymod3
 
 
 class ymod1(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    label = "AGI increase"
+    documentation = "Variable that is included in AGI"
+
+    def formula(tax_unit, period, parameters):
+        direct_inputs = add(
+            tax_unit,
+            period,
+            *[
+                "filer_" + variable
+                for variable in (
+                    "e00200",
+                    "e00700",
+                    "e00800",
+                    "e01400",
+                    "e01700",
+                    "e02100",
+                    "e02300",
+                )
+            ],
+        )
+        investment_income = (
+            add(
+                tax_unit,
+                period,
+                *[
+                    "filer_" + variable
+                    for variable in (
+                        "e00300",
+                        "e00600",
+                        "e01100",
+                        "e01200",
+                    )
+                ],
+            )
+            + tax_unit("c01000", period)
+        )
+        business_losses = add(tax_unit, period, "filer_e00900", "filer_e02000")
+        max_business_losses = parameters(
+            period
+        ).tax.ald.misc.max_business_losses[tax_unit("mars", period)]
+        return (
+            direct_inputs
+            + investment_income
+            - min_(business_losses, max_business_losses)
+        )
 
 
 class ubi(Variable):
