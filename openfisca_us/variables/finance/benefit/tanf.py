@@ -7,7 +7,6 @@ from openfisca_us.variables.demographic.spm_unit import *
 class tanf(Variable):
     value_type = float
     entity = SPMUnit
-    # actually calculated monthly, but for testing reasons
     definition_period = YEAR
     label = "Temporary Assistance for Needy Families"
     documentation = (
@@ -26,7 +25,6 @@ class tanf(Variable):
 class is_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    # actually calculated monthly, but for testing reasons
     definition_period = YEAR
     label = "Eligibility for Temporary Assistance for Needy Families"
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
@@ -35,7 +33,6 @@ class is_tanf_eligible(Variable):
 class tanf_amount_if_eligible(Variable):
     value_type = float
     entity = SPMUnit
-    # actually calculated monthly, but for testing reasons
     definition_period = YEAR
     label = (
         "Temporary Assistance for Needy Families amount if family is eligible"
