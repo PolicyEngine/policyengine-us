@@ -632,37 +632,47 @@ class c05200(Variable):
         individual_income = parameters(period).tax.income
         e26270 = tax_unit("filer_e26270", period)
         e00900 = tax_unit("filer_e00900", period)
+
+        # Determine pass-through and non-pass-through income
         pt_active_gross = e00900 + e26270
         pt_active = pt_active_gross
         pt_active = min_(pt_active, e00900 + e26270)
         pt_taxinc = max_(0, pt_active)
         taxable_income = tax_unit("c04800", period)
+
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
         pt_tbase = reg_taxinc
+
         mars = tax_unit("mars", period)
+
+        # Initialise regular and pass-through income tax to zero
         reg_tax = 0
         pt_tax = 0
         last_reg_adjusted_threshold = 0
         last_pt_adjusted_threshold = 0
         for i in range(1, 7):
+            # Calculate rate applied to regular income up to the current
+            # threshold (on income above the last threshold)
             reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
             reg_tax += individual_income.bracket.rates[
                 str(i)
-            ] * amount_between(
-                reg_taxinc, last_reg_adjusted_threshold, reg_threshold
-            )
-            last_reg_adjusted_threshold = reg_threshold
-            pt_adjusted_threshold = (
+            ] * amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
+            last_reg_threshold = reg_threshold
+
+            # Calculate rate applied to pass-through income on in the same
+            # way, but as treated as if stacked on top of regular income
+            # (which is not taxed again)
+            pt_threshold = (
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
                 - pt_tbase
             )
             pt_tax += individual_income.pass_through.bracket.rates[
                 str(i)
-            ] * amount_between(
-                pt_taxinc, last_pt_adjusted_threshold, pt_adjusted_threshold
-            )
-            last_pt_adjusted_threshold = pt_adjusted_threshold
+            ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
+            last_pt_threshold = pt_threshold
+
+        # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
             reg_taxinc - last_reg_adjusted_threshold, 0
         )
