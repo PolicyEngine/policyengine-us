@@ -958,10 +958,7 @@ class c59660(Variable):
     def formula(tax_unit, period, parameters):
         eitc = parameters(period).tax.credits.eitc
         earnings = tax_unit("filer_earned", period)
-        phased_in_amount = (
-            eitc.start_fraction * eitc.max
-            + (1 - eitc.start_fraction) * eitc.phasein_rate * earnings
-        )
+        phased_in_amount = eitc.phasein_rate * earnings
         highest_income_variable = max_(earnings, tax_unit("c00100", period))
         is_joint = tax_unit("tax_unit_is_joint", period)
         phaseout_start = (
