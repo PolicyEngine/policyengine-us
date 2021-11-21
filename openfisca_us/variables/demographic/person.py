@@ -86,11 +86,13 @@ class is_senior(Variable):
     def formula(person, period, parameters):
         return person("age", period) >= 65
 
+
 class is_citizen(Variable):
     value_type = bool
     entity = Person
     label = u"Is a U.S. citizen"
     definition_period = YEAR
+
 
 class is_ccdf_home_based(Variable):
     value_type = bool

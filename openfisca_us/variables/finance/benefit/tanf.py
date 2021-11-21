@@ -9,7 +9,9 @@ class tanf(Variable):
     entity = SPMUnit
     definition_period = MONTH
     label = "Temporary Assistance for Needy Families"
-    documentation = "Amount of Temporary Assistance for Needy Families benefit received."
+    documentation = (
+        "Amount of Temporary Assistance for Needy Families benefit received."
+    )
     unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
@@ -27,10 +29,13 @@ class is_tanf_eligible(Variable):
     label = "Eligibility for Temporary Assistance for Needy Families"
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
 
+
 class tanf_amount_if_eligible(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = MONTH
-    label = "Temporary Assistance for Needy Families amount if family is eligible"
+    label = (
+        "Temporary Assistance for Needy Families amount if family is eligible"
+    )
     documentation = "How much a family would receive if they were eligible for Temporary Assistance for Needy Families benefit."
     unit = "currency-USD"
