@@ -485,7 +485,7 @@ class c03260(Variable):
         return (
             (1.0 - ald.misc.self_emp_tax_adj)
             * ald.misc.employer_share
-            * tax_unit("setax", period)
+            * tax_unit.sum(tax_unit.members("setax", period))
         )
 
 
@@ -891,15 +891,78 @@ class c23650(Variable):
     )
 
 
+class tax_unit_is_joint(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Joint-filing tax unit"
+    documentation = "Whether this tax unit is a joint filer."
+    definition_period = YEAR
+
+
 class c59660(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     label = "EITC"
     unit = "currency-USD"
-    documentation = (
-        """search taxcalc/calcfunctions.py for how calculated and used"""
-    )
+    documentation = "The Earned Income Tax Credit eligible amount."
+
+    def formula(tax_unit, period, parameters):
+        eitc = parameters(period).tax.credits.eitc
+        earnings = tax_unit("filer_earned", period)
+        phased_in_amount = (
+            eitc.start_fraction * eitc.max
+            + (1 - eitc.start_fraction) * eitc.phasein_rate * earnings,
+        )
+        highest_income_variable = max_(earnings, tax_unit("c00100", period))
+        phaseout_start = (
+            eitc.phaseout.start
+            + tax_unit("tax_unit_is_joint", period) * eitc.phaseout.joint_bonus
+        )
+        amount_over_phaseout = max_(
+            0, highest_income_variable - phaseout_start
+        )
+        amount_with_phaseout = max_(
+            0, eitc.max - eitc.phaseout.rate * amount_over_phaseout
+        )
+        amount = min_(
+            phased_in_amount,
+            eitc.max,
+            amount_with_phaseout,
+        )
+        age_head = tax_unit("age_head", period)
+        age_spouse = tax_unit("age_spouse", period)
+        head_age_is_eligible = (
+            eitc.eligibility.age.min <= age_head <= eitc.eligibility.age.max
+        )
+        spouse_age_is_eligible = tax_unit("is_joint", period) * (
+            eitc.eligibility.age.min <= age_spouse <= eitc.eligibility.age.max
+        )
+        inferred_eligibility = (
+            (age_head == 0)
+            | (age_spouse == 0)
+            | head_age_is_eligible
+            | spouse_age_is_eligible
+        )
+        investment_income = (
+            add(
+                tax_unit,
+                period,
+                "filer_e00400",
+                "filer_e00300",
+                "filer_e00600",
+            )
+            + max_(0, tax_unit("c01000", period))
+            + max_(
+                0,
+                tax_unit("filer_e0200", period)
+                - tax_unit("filer_e26270", period),
+            )
+        )
+        eligible = ((tax_unit("eic", period) > 0) | inferred_eligibility) & (
+            investment_income <= eitc.phaseout.max_investment_income
+        )
+        return eligible * amount
 
 
 class c62100(Variable):
