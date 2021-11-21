@@ -980,12 +980,12 @@ class c59660(Variable):
         earnings = tax_unit("filer_earned", period)
         phased_in_amount = (
             eitc.start_fraction * eitc.max
-            + (1 - eitc.start_fraction) * eitc.phasein_rate * earnings,
+            + (1 - eitc.start_fraction) * eitc.phasein_rate * earnings
         )
         highest_income_variable = max_(earnings, tax_unit("c00100", period))
+        is_joint = tax_unit("tax_unit_is_joint", period)
         phaseout_start = (
-            eitc.phaseout.start
-            + tax_unit("tax_unit_is_joint", period) * eitc.phaseout.joint_bonus
+            eitc.phaseout.start + is_joint * eitc.phaseout.joint_bonus
         )
         amount_over_phaseout = max_(
             0, highest_income_variable - phaseout_start
@@ -1003,7 +1003,7 @@ class c59660(Variable):
         head_age_is_eligible = (
             eitc.eligibility.age.min <= age_head <= eitc.eligibility.age.max
         )
-        spouse_age_is_eligible = tax_unit("is_joint", period) * (
+        spouse_age_is_eligible = is_joint * (
             eitc.eligibility.age.min <= age_spouse <= eitc.eligibility.age.max
         )
         inferred_eligibility = (
@@ -1023,7 +1023,7 @@ class c59660(Variable):
             + max_(0, tax_unit("c01000", period))
             + max_(
                 0,
-                tax_unit("filer_e0200", period)
+                tax_unit("filer_e02000", period)
                 - tax_unit("filer_e26270", period),
             )
         )
