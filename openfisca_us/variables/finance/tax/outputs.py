@@ -630,49 +630,29 @@ class c05200(Variable):
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).tax.income
-        pass_through = individual_income.pass_through
         e26270 = tax_unit("filer_e26270", period)
-        e00200 = tax_unit("filer_e00200", period)
-        e02000 = tax_unit("filer_e02000", period)
-        pt_passive = pass_through.business_income.eligible_rate.passive * (
-            e02000 - e26270
-        )
         e00900 = tax_unit("filer_e00900", period)
         pt_active_gross = e00900 + e26270
-        if pass_through.wages_active_income:
-            pt_active_gross += where(pt_active_gross > 0, e00200, 0)
-        pt_active = (
-            pass_through.business_income.eligible_rate.active * pt_active_gross
-        )
+        pt_active = pt_active_gross
         pt_active = min_(pt_active, e00900 + e26270)
-        pt_taxinc = max_(
-            0,
-            pt_passive + pt_active,
-        )
+        pt_taxinc = max_(0, pt_active)
         taxable_income = tax_unit("c04800", period)
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
-        if pass_through.top_stacking:
-            reg_tbase = 0
-            pt_tbase = reg_taxinc
-        else:
-            reg_tbase = pt_taxinc
-            pt_tbase = 0
+        pt_tbase = reg_taxinc
         mars = tax_unit("mars", period)
         reg_tax = 0
         pt_tax = 0
         last_reg_adjusted_threshold = 0
         last_pt_adjusted_threshold = 0
         for i in range(1, 7):
-            reg_adjusted_threshold = (
-                individual_income.bracket.thresholds[str(i)][mars] - reg_tbase
-            )
+            reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
             reg_tax += individual_income.bracket.rates[
                 str(i)
             ] * amount_between(
-                reg_taxinc, last_reg_adjusted_threshold, reg_adjusted_threshold
+                reg_taxinc, last_reg_adjusted_threshold, reg_threshold
             )
-            last_reg_adjusted_threshold = reg_adjusted_threshold
+            last_reg_adjusted_threshold = reg_threshold
             pt_adjusted_threshold = (
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
                 - pt_tbase
