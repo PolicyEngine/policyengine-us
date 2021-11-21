@@ -38,6 +38,12 @@ class tanf_max_amount(Variable):
     documentation = "The maximum benefit amount a family could receive from Temporary Assistance for Needy Families given their state and family size."
     unit = "currency-USD"
 
+    def formula(spm_unit, period, parameters):
+        family_size = spm_unit("family_size", period)
+        state = spm_unit("state", period)
+        max_amount = parameters(period).hhs.tanf.max_amount
+        return max_amount[state][family_size]
+
 
 class tanf_countable_income(Variable):
     value_type = float
