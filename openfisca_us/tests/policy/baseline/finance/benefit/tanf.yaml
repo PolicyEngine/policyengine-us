@@ -2,10 +2,8 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    spm_units:
-      spm_unit:
-        is_tanf_eligible: true
-        tanf_amount_if_eligible: 200
+    is_tanf_eligible: true
+    tanf_amount_if_eligible: 200
   output:
     tanf: 200
 
@@ -13,9 +11,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    spm_units:
-      spm_unit:
-        is_tanf_eligible: false
-        tanf_amount_if_eligible: -100
+    is_tanf_eligible: false
+    tanf_amount_if_eligible: -100
   output:
     tanf: 0
