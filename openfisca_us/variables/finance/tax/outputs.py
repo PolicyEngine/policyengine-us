@@ -485,7 +485,7 @@ class c03260(Variable):
         return (
             (1.0 - ald.misc.self_emp_tax_adj)
             * ald.misc.employer_share
-            * tax_unit("setax", period)
+            * tax_unit.sum(tax_unit.members("setax", period))
         )
 
 
@@ -545,7 +545,7 @@ class qbided(Variable):
                 "filer_e27200",
             ),
         )
-        qbid = parameters(period.deductions.qualified_business_interest)
+        qbid = parameters(period).tax.deductions.qualified_business_interest
         lower_threshold = qbid.threshold.lower[mars]
         upper_threshold = lower_threshold + qbid.threshold.gap[mars]
         pre_qbid_taxinc = tax_unit("pre_qbid_taxinc", period)
@@ -554,7 +554,7 @@ class qbided(Variable):
             pre_qbid_taxinc < upper_threshold
         )
         above_upper_threshold = ~under_lower_threshold & ~between_thresholds
-        income_is_qualified = tax_unit("pt_sstb__income", period)
+        income_is_qualified = tax_unit("pt_sstb_income", period)
 
         # Wage/capital limitations
         w2_wages = tax_unit("pt_binc_w2_wages", period)
@@ -599,7 +599,7 @@ class qbided(Variable):
         )
 
         # Apply taxable income cap
-        net_cg = add(tax_unit, period, "filer_e00650", "c0100")
+        net_cg = add(tax_unit, period, "filer_e00650", "c01000")
         taxinc_cap = qbid.pass_through_rate * max_(0, pre_qbid_taxinc - net_cg)
         return min_(qbid_amount, taxinc_cap)
 
@@ -621,7 +621,55 @@ class c05200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Sch X,Y,Z tax"
+    unit = "currency-USD"
     documentation = """Tax amount from Sch X,Y,X tables"""
+
+    def formula(tax_unit, period, parameters):
+        # Separate non-negative taxable income into two non-negative components,
+        # doing this in a way so that the components add up to taxable income
+        # define pass-through income eligible for PT schedule
+        individual_income = parameters(period).tax.income
+        e26270 = tax_unit("filer_e26270", period)
+        e00900 = tax_unit("filer_e00900", period)
+        pt_active_gross = e00900 + e26270
+        pt_active = pt_active_gross
+        pt_active = min_(pt_active, e00900 + e26270)
+        pt_taxinc = max_(0, pt_active)
+        taxable_income = tax_unit("c04800", period)
+        pt_taxinc = min_(pt_taxinc, taxable_income)
+        reg_taxinc = max_(0, taxable_income - pt_taxinc)
+        pt_tbase = reg_taxinc
+        mars = tax_unit("mars", period)
+        reg_tax = 0
+        pt_tax = 0
+        last_reg_adjusted_threshold = 0
+        last_pt_adjusted_threshold = 0
+        for i in range(1, 7):
+            reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
+            reg_tax += individual_income.bracket.rates[
+                str(i)
+            ] * amount_between(
+                reg_taxinc, last_reg_adjusted_threshold, reg_threshold
+            )
+            last_reg_adjusted_threshold = reg_threshold
+            pt_adjusted_threshold = (
+                individual_income.pass_through.bracket.thresholds[str(i)][mars]
+                - pt_tbase
+            )
+            pt_tax += individual_income.pass_through.bracket.rates[
+                str(i)
+            ] * amount_between(
+                pt_taxinc, last_pt_adjusted_threshold, pt_adjusted_threshold
+            )
+            last_pt_adjusted_threshold = pt_adjusted_threshold
+        reg_tax += individual_income.bracket.rates["7"] * max_(
+            reg_taxinc - last_reg_adjusted_threshold, 0
+        )
+        pt_tax += individual_income.pass_through.bracket.rates["7"] * max_(
+            pt_taxinc - last_pt_adjusted_threshold, 0
+        )
+        return reg_tax + pt_tax
 
 
 class c05700(Variable):
