@@ -948,7 +948,22 @@ class c20500(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Casualty deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Net casualty or theft loss deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        casualty = parameters(period).tax.deductions.itemized.casualty
+        return (
+            max_(
+                0,
+                (
+                    tax_unit("g20500_capped", period)
+                    - casualty.floor * tax_unit("posagi", period)
+                ),
+            )
+            * (1 - casualty.haircut)
+        )
 
 
 class g20500_capped(Variable):
