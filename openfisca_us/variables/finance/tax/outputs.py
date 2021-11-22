@@ -1289,7 +1289,7 @@ class ymod1(Variable):
         direct_inputs = add(
             tax_unit,
             period,
-            *["filer_" + variable for variable in DIRECT_INPUT_COLS],
+            *["filer_" + variable for variable in DIRECT_INPUTS],
         )
         INVESTMENT_INCOME_SOURCES = (
             "e00300",
