@@ -977,7 +977,22 @@ class c20800(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Miscellaneous deductions"
+    unit = "currency-USD"
     documentation = """Sch A: Net limited miscellaneous deductions deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        misc = parameters(period).tax.deductions.itemized.misc
+        return (
+            max_(
+                0,
+                (
+                    tax_unit("e20400_capped", period)
+                    - misc.floor * tax_unit("posagi", period)
+                ),
+            )
+            * (1 - misc.haircut)
+        )
 
 
 class e20400_capped(Variable):
