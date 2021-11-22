@@ -39,8 +39,8 @@ class tanf_max_amount(Variable):
     unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
-        family_size = spm_unit("family_size", period)
-        state = spm_unit("state", period)
+        family_size = spm_unit.nb_persons()
+        state = spm_unit.household("state_code", period)
         max_amount = parameters(period).hhs.tanf.max_amount
         return max_amount[state][family_size]
 
