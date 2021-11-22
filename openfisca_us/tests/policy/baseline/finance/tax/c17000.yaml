@@ -1,0 +1,14 @@
+- name: Defaults to zero
+  period: 2020
+  absolute_error_margin: 0
+  input: {}
+  output:
+    c17000: 0
+- name: Caps to zero when negative
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    e17500: 1
+    c17750: 2
+  output:
+    c17000: 0
