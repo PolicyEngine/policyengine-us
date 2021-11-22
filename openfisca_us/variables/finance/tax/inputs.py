@@ -682,6 +682,7 @@ class e17500(Variable):
     definition_period = YEAR
     documentation = """Itemizable medical and dental expenses.  WARNING: this variable is zero below the floor in PUF data."""
 
+
 class filer_e17500(Variable):
     value_type = float
     entity = TaxUnit
@@ -697,6 +698,7 @@ class e18400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = """Itemizable state and local income/sales taxes"""
+
 
 class filer_e18400(Variable):
     value_type = float
@@ -714,6 +716,7 @@ class e18500(Variable):
     definition_period = YEAR
     documentation = """Itemizable real-estate taxes paid"""
 
+
 class filer_e18500(Variable):
     value_type = float
     entity = TaxUnit
@@ -729,6 +732,7 @@ class e19200(Variable):
     entity = Person
     definition_period = YEAR
     documentation = """Itemizable interest paid"""
+
 
 class filer_e19200(Variable):
     value_type = float
@@ -746,6 +750,7 @@ class e19800(Variable):
     definition_period = YEAR
     documentation = """Itemizable charitable giving: cash/check contributions.  WARNING: this variable is already capped in PUF data."""
 
+
 class filer_e19800(Variable):
     value_type = float
     entity = TaxUnit
@@ -755,26 +760,32 @@ class filer_e19800(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e19800", tax_unit, period)
 
+
 class e20100(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = """Itemizable charitable giving: other than cash/check contributions.  WARNING: this variable is already capped in PUF data."""
 
+
 class filer_e20100(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized non-cash charity for the tax unit (excluding dependents)"
+    label = (
+        u"Itemized non-cash charity for the tax unit (excluding dependents)"
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e20100", tax_unit, period)
+
 
 class e20400(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = """Itemizable miscellaneous deductions.  WARNING: this variable is zero below the floor in PUF data."""
+
 
 class filer_e20400(Variable):
     value_type = float
@@ -785,11 +796,13 @@ class filer_e20400(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e20400", tax_unit, period)
 
+
 class g20500(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = """Itemizable gross (before 10% AGI disregard) casualty or theft loss"""
+
 
 class filer_g20500(Variable):
     value_type = float
