@@ -893,7 +893,12 @@ class c19200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Interest deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Interest deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("e19200_capped", period)
 
 
 class e19200_capped(Variable):
