@@ -1277,21 +1277,25 @@ class ymod1(Variable):
     documentation = "Variable that is included in AGI"
 
     def formula(tax_unit, period, parameters):
+        DIRECT_INPUTS = (
+            "e00200",
+            "e00700",
+            "e00800",
+            "e01400",
+            "e01700",
+            "e02100",
+            "e02300",
+        )
         direct_inputs = add(
             tax_unit,
             period,
-            *[
-                "filer_" + variable
-                for variable in (
-                    "e00200",
-                    "e00700",
-                    "e00800",
-                    "e01400",
-                    "e01700",
-                    "e02100",
-                    "e02300",
-                )
-            ],
+            *["filer_" + variable for variable in DIRECT_INPUT_COLS],
+        )
+        INVESTMENT_INCOME_SOURCES = (
+            "e00300",
+            "e00600",
+            "e01100",
+            "e01200",
         )
         investment_income = (
             add(
@@ -1299,12 +1303,7 @@ class ymod1(Variable):
                 period,
                 *[
                     "filer_" + variable
-                    for variable in (
-                        "e00300",
-                        "e00600",
-                        "e01100",
-                        "e01200",
-                    )
+                    for variable in INVESTMENT_INCOME_SOURCES
                 ],
             )
             + tax_unit("c01000", period)
