@@ -834,7 +834,7 @@ class c17000(Variable):
 
     def formula(tax_unit, period, parameters):
         medical = parameters(period).tax.deductions.itemized.medical
-        has_aged = (tax_unit("age_head", period) >= 65) | (tax_unit("is_joint", period) & (tax_unit("age_spouse", period) >= 65))
+        has_aged = (tax_unit("age_head", period) >= 65) | (tax_unit("tax_unit_is_joint", period) & (tax_unit("age_spouse", period) >= 65))
         medical_floor_ratio = medical.floor.base + has_aged * medical.floor.aged_addition
         medical_floor = medical_floor_ratio * max_(tax_unit("c00100", period), 0)
         return max_(
@@ -856,7 +856,16 @@ class c18300(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "SALT deduction"
+    unit = "currency-USD"
     documentation = """Sch A: State and local taxes plus real estate taxes deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        c18400 = max_(tax_unit("e18400_capped", period), 0)
+        c18500 = tax_unit("e18500_capped", period)
+        salt = parameters(period).tax.deductions.itemized.salt_and_real_estate
+        cap = salt.cap[tax_unit("mars", period)]
+        return min_(c18400 + c18500, cap)
 
 
 class e18400_capped(Variable):
