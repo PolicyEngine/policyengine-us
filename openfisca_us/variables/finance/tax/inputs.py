@@ -371,6 +371,16 @@ class e01700(Variable):
     documentation = """Taxable pensions and annuities"""
 
 
+class filer_e01700(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Taxable pensions and annuities for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e01700", tax_unit, period)
+
+
 class e02000(Variable):
     value_type = float
     entity = Person
