@@ -912,7 +912,22 @@ class c19700(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Charitable deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Charity contributions deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        charity = parameters(period).tax.deductions.itemized.charity
+        posagi = tax_unit("posagi", period)
+        lim30 = min_(
+            charity.ceiling.non_cash * posagi,
+            tax_unit("e20100_capped", period),
+        )
+        c19700 = min_(
+            charity.ceiling.all * posagi,
+            lim30 + tax_unit("e19800_capped", period),
+        )
+        return max_(c19700, 0)
 
 
 class e19800_capped(Variable):
