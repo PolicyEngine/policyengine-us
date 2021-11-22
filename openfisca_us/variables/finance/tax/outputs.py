@@ -856,17 +856,8 @@ class c17000(Variable):
         )
         return max_(
             0,
-            tax_unit("e17500_capped", period) - medical_floor,
+            tax_unit("filer_e17500", period) - medical_floor,
         )
-
-
-class e17500_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        """Sch A: Medical expenses, capped as a decimal fraction of AGI"""
-    )
 
 
 class c18300(Variable):
@@ -878,25 +869,11 @@ class c18300(Variable):
     documentation = """Sch A: State and local taxes plus real estate taxes deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
-        c18400 = max_(tax_unit("e18400_capped", period), 0)
-        c18500 = tax_unit("e18500_capped", period)
+        c18400 = max_(tax_unit("filer_e18400", period), 0)
+        c18500 = tax_unit("filer_e18500", period)
         salt = parameters(period).tax.deductions.itemized.salt_and_real_estate
         cap = salt.cap[tax_unit("mars", period)]
         return min_(c18400 + c18500, cap)
-
-
-class e18400_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: State and local income taxes deductible, capped as a decimal fraction of AGI"""
-
-
-class e18500_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: State and local real estate taxes deductible, capped as a decimal fraction of AGI"""
 
 
 class c19200(Variable):
@@ -908,14 +885,7 @@ class c19200(Variable):
     documentation = """Sch A: Interest deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("e19200_capped", period)
-
-
-class e19200_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: Interest deduction deductible, capped as a decimal fraction of AGI"""
+        return tax_unit("filer_e19200", period)
 
 
 class c19700(Variable):
@@ -931,27 +901,13 @@ class c19700(Variable):
         posagi = tax_unit("posagi", period)
         lim30 = min_(
             charity.ceiling.non_cash * posagi,
-            tax_unit("e20100_capped", period),
+            tax_unit("filer_e20100", period),
         )
         c19700 = min_(
             charity.ceiling.all * posagi,
-            lim30 + tax_unit("e19800_capped", period),
+            lim30 + tax_unit("filer_e19800", period),
         )
         return max_(c19700, 0)
-
-
-class e19800_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: Charity cash contributions deductible, capped as a decimal fraction of AGI"""
-
-
-class e20100_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: Charity noncash contributions deductible, capped as a decimal fraction of AGI"""
 
 
 class c20500(Variable):
@@ -965,15 +921,8 @@ class c20500(Variable):
     def formula(tax_unit, period, parameters):
         casualty = parameters(period).tax.deductions.itemized.casualty
         floor = casualty.floor * tax_unit("posagi", period)
-        deduction = max_(0, tax_unit("g20500_capped", period) - floor)
+        deduction = max_(0, tax_unit("filer_g20500", period) - floor)
         return deduction * (1 - casualty.haircut)
-
-
-class g20500_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: Gross casualty or theft loss deductible, capped as a decimal fraction of AGI"""
 
 
 class c20800(Variable):
@@ -987,15 +936,8 @@ class c20800(Variable):
     def formula(tax_unit, period, parameters):
         misc = parameters(period).tax.deductions.itemized.misc
         floor = misc.floor * tax_unit("posagi", period)
-        deduction = max_(0, tax_unit("e20400_capped", period) - floor)
+        deduction = max_(0, tax_unit("filer_e20400", period) - floor)
         return deduction * (1 - misc.haircut)
-
-
-class e20400_capped(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = """Sch A: Gross miscellaneous deductions deductible, capped as a decimal fraction of AGI"""
 
 
 class c21040(Variable):
