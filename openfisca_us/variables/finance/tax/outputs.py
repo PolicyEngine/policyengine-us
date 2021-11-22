@@ -1,3 +1,4 @@
+from numpy import floor
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
@@ -497,9 +498,14 @@ class c04470(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Itemized deductions after phase-out"
+    unit = "currency-USD"
     documentation = (
         """Itemized deductions after phase-out (zero for non-itemizers)"""
     )
+
+    def formula(tax_unit, period, parameters):
+        return max_(0, tax_unit("c21060", period) - tax_unit("c21040", period))
 
 
 class exemption_phaseout_start(Variable):
@@ -832,7 +838,26 @@ class c17000(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Medical expense deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Medical expenses deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        medical = parameters(period).tax.deductions.itemized.medical
+        has_aged = (tax_unit("age_head", period) >= 65) | (
+            tax_unit("tax_unit_is_joint", period)
+            & (tax_unit("age_spouse", period) >= 65)
+        )
+        medical_floor_ratio = (
+            medical.floor.base + has_aged * medical.floor.aged_addition
+        )
+        medical_floor = medical_floor_ratio * max_(
+            tax_unit("c00100", period), 0
+        )
+        return max_(
+            0,
+            tax_unit("e17500_capped", period) - medical_floor,
+        )
 
 
 class e17500_capped(Variable):
@@ -848,7 +873,16 @@ class c18300(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "SALT deduction"
+    unit = "currency-USD"
     documentation = """Sch A: State and local taxes plus real estate taxes deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        c18400 = max_(tax_unit("e18400_capped", period), 0)
+        c18500 = tax_unit("e18500_capped", period)
+        salt = parameters(period).tax.deductions.itemized.salt_and_real_estate
+        cap = salt.cap[tax_unit("mars", period)]
+        return min_(c18400 + c18500, cap)
 
 
 class e18400_capped(Variable):
@@ -869,7 +903,12 @@ class c19200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Interest deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Interest deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("e19200_capped", period)
 
 
 class e19200_capped(Variable):
@@ -883,7 +922,22 @@ class c19700(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Charitable deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Charity contributions deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        charity = parameters(period).tax.deductions.itemized.charity
+        posagi = tax_unit("posagi", period)
+        lim30 = min_(
+            charity.ceiling.non_cash * posagi,
+            tax_unit("e20100_capped", period),
+        )
+        c19700 = min_(
+            charity.ceiling.all * posagi,
+            lim30 + tax_unit("e19800_capped", period),
+        )
+        return max_(c19700, 0)
 
 
 class e19800_capped(Variable):
@@ -904,7 +958,15 @@ class c20500(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Casualty deduction"
+    unit = "currency-USD"
     documentation = """Sch A: Net casualty or theft loss deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        casualty = parameters(period).tax.deductions.itemized.casualty
+        floor = casualty.floor * tax_unit("posagi", period)
+        deduction = max_(0, tax_unit("g20500_capped", period) - floor)
+        return deduction * (1 - casualty.haircut)
 
 
 class g20500_capped(Variable):
@@ -918,7 +980,15 @@ class c20800(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Miscellaneous deductions"
+    unit = "currency-USD"
     documentation = """Sch A: Net limited miscellaneous deductions deducted (component of pre-limitation c21060 total)"""
+
+    def formula(tax_unit, period, parameters):
+        misc = parameters(period).tax.deductions.itemized.misc
+        floor = misc.floor * tax_unit("posagi", period)
+        deduction = max_(0, tax_unit("e20400_capped", period) - floor)
+        return deduction * (1 - misc.haircut)
 
 
 class e20400_capped(Variable):
@@ -932,16 +1002,50 @@ class c21040(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Phased-out itemized deductions"
+    unit = "currency-USD"
     documentation = """Itemized deductions that are phased out"""
+
+    def formula(tax_unit, period, parameters):
+        nonlimited = add(tax_unit, period, "c17000", "c20500")
+        phaseout = parameters(period).tax.deductions.itemized.phaseout
+        mars = tax_unit("mars", period)
+        c21060 = tax_unit("c21060", period)
+        phaseout_amount_cap = phaseout.cap * max_(0, c21060 - nonlimited)
+        uncapped_phaseout = max_(
+            0,
+            (
+                (tax_unit("posagi", period) - phaseout.start[mars])
+                * phaseout.rate
+            ),
+        )
+        return min_(
+            uncapped_phaseout,
+            phaseout_amount_cap,
+        )
 
 
 class c21060(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Gross itemized deductions"
+    unit = "currency-USD"
     documentation = (
         """Itemized deductions before phase-out (zero for non-itemizers)"""
     )
+
+    def formula(tax_unit, period, parameters):
+        return add(
+            tax_unit,
+            period,
+            "c17000",
+            "c18300",
+            "c19200",
+            "c19700",
+            "c20500",
+            "c20800",
+        )
 
 
 class c23650(Variable):
