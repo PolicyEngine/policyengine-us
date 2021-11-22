@@ -1030,14 +1030,11 @@ class c59660(Variable):
         amount_over_phaseout = max_(
             0, highest_income_variable - phaseout_start
         )
-        amount_with_phaseout = max_(
+        max_with_phaseout = max_(
             0, eitc.max - eitc.phaseout.rate * amount_over_phaseout
         )
-        amount = min_(
-            phased_in_amount,
-            eitc.max,
-            amount_with_phaseout,
-        )
+        amount_with_phasein = min_(phased_in_amount, eitc.max)
+        amount = min_(amount_with_phasein, max_with_phaseout)
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         head_age_is_eligible = (
