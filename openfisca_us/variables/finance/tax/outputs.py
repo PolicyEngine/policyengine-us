@@ -296,7 +296,7 @@ class refund(Variable):
             "ctc_new",
             "rptc",
         )
-        return add(tax_unit, period, REFUND_COMPONENTS) + ctc_refund
+        return add(tax_unit, period, *REFUND_COMPONENTS) + ctc_refund
 
 
 class sep(Variable):
