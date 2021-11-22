@@ -834,9 +834,16 @@ class c17000(Variable):
 
     def formula(tax_unit, period, parameters):
         medical = parameters(period).tax.deductions.itemized.medical
-        has_aged = (tax_unit("age_head", period) >= 65) | (tax_unit("tax_unit_is_joint", period) & (tax_unit("age_spouse", period) >= 65))
-        medical_floor_ratio = medical.floor.base + has_aged * medical.floor.aged_addition
-        medical_floor = medical_floor_ratio * max_(tax_unit("c00100", period), 0)
+        has_aged = (tax_unit("age_head", period) >= 65) | (
+            tax_unit("tax_unit_is_joint", period)
+            & (tax_unit("age_spouse", period) >= 65)
+        )
+        medical_floor_ratio = (
+            medical.floor.base + has_aged * medical.floor.aged_addition
+        )
+        medical_floor = medical_floor_ratio * max_(
+            tax_unit("c00100", period), 0
+        )
         return max_(
             0,
             tax_unit("e17500_capped", period) - medical_floor,
