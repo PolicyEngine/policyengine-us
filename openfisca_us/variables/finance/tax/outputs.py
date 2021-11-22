@@ -1,3 +1,4 @@
+from numpy import floor
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
@@ -959,16 +960,9 @@ class c20500(Variable):
 
     def formula(tax_unit, period, parameters):
         casualty = parameters(period).tax.deductions.itemized.casualty
-        return (
-            max_(
-                0,
-                (
-                    tax_unit("g20500_capped", period)
-                    - casualty.floor * tax_unit("posagi", period)
-                ),
-            )
-            * (1 - casualty.haircut)
-        )
+        floor = casualty.floor * tax_unit("posagi", period)
+        deduction = max_(0, tax_unit("g20500_capped", period) - floor)
+        return deduction * (1 - casualty.haircut)
 
 
 class g20500_capped(Variable):
@@ -988,16 +982,9 @@ class c20800(Variable):
 
     def formula(tax_unit, period, parameters):
         misc = parameters(period).tax.deductions.itemized.misc
-        return (
-            max_(
-                0,
-                (
-                    tax_unit("e20400_capped", period)
-                    - misc.floor * tax_unit("posagi", period)
-                ),
-            )
-            * (1 - misc.haircut)
-        )
+        floor = misc.floor * tax_unit("posagi", period)
+        deduction = max_(0, tax_unit("e20400_capped", period) - floor)
+        return deduction * (1 - misc.haircut)
 
 
 class e20400_capped(Variable):
