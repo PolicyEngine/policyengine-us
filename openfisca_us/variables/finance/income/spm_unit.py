@@ -72,20 +72,20 @@ class spm_unit_net_income(Variable):
         return income - expense
 
 
-class poverty_threshold(Variable):
+class spm_unit_spm_threshold(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"Poverty threshold"
+    label = u"SPM unit's SPM poverty threshold"
     definition_period = YEAR
 
 
-class in_poverty(Variable):
+class spm_unit_is_in_spm_poverty(Variable):
     value_type = bool
     entity = SPMUnit
-    label = u"In poverty"
+    label = u"SPM unit in SPM poverty"
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
         income = spm_unit("spm_unit_net_income", period)
-        poverty_threshold = spm_unit("poverty_threshold", period)
+        poverty_threshold = spm_unit("spm_unit_spm_threshold", period)
         return income < poverty_threshold
