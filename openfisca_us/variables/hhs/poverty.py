@@ -14,7 +14,7 @@ class spm_unit_poverty_guideline(Variable):
         state_group = spm_unit.value_from_first_person(
             spm_unit.members.household("state_group", period).decode_to_str()
         )
-        p_fpg = parameters(period).poverty.fpg
+        p_fpg = parameters(period).hhs.fpg
         p1 = p_fpg.first_person[state_group]
         pn = p_fpg.additional_person[state_group]
         return p1 + pn * (n - 1)
