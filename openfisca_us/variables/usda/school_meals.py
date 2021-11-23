@@ -20,7 +20,7 @@ class school_meal_subsidy(Variable):
         )
         poverty_ratio = spm_unit("poverty_ratio", period)
         # Get parameters.
-        p_school_meals = parameters(period).benefit.school_meals
+        p_school_meals = parameters(period).usda.school_meals
         p_income_limit = p_school_meals.income_limit
         # Look up the free/reduced/full subsidy tier for each SPM unit by
         # poverty ratio.
