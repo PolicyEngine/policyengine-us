@@ -39,8 +39,9 @@ class school_meal_subsidy(Variable):
         # Add NSLP and SBP.
         school_meal_subsidy_per_child = nslp_per_child + sbp_per_child
         # Multiply by number of school days in the year and number of children.
+        children = spm_unit.sum(spm_unit.members("age", period) < 18)
         return (
             school_meal_subsidy_per_child
-            * spm_unit("children", period)
+            * children
             * p_school_meals.school_days
         )
