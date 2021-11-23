@@ -31,3 +31,65 @@ class ccdf_market_rate(Variable):
         return market_rate_mapping[county_cluster][provider_type_group][
             child_age_group
         ][duration_of_care]
+
+
+class is_ccdf_asset_eligible(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = u"Asset eligibility for CCDF"
+
+
+class is_ccdf_age_eligible(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = u"Age eligibility for CCDF"
+
+
+class is_enrolled_in_ccdf(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = u"CCDF enrollment status"
+
+
+class is_ccdf_initial_income_eligible(Variable):
+    value_type = bool
+    entity = Person
+    default_value = True
+    definition_period = YEAR
+    label = u"Initial income eligibility for CCDF"
+
+
+class is_ccdf_continuous_income_eligible(Variable):
+    value_type = bool
+    entity = Person
+    default_value = True
+    definition_period = YEAR
+    label = u"Continuous income eligibility for CCDF"
+
+
+class is_ccdf_eligible(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = u"Eligibility for CCDF"
+
+    def formula(person, period, parameters):
+        asset_eligible = person("is_ccdf_asset_eligible", period)
+        age_eligible = person("is_ccdf_age_eligible", period)
+        enrolled = person("is_enrolled_in_ccdf", period)
+        initial_income_eligible = person(
+            "is_ccdf_initial_income_eligible", period
+        )
+        continuous_income_eligible = person(
+            "is_ccdf_continuous_income_eligible", period
+        )
+        return (
+            asset_eligible
+            & age_eligible
+            & where(
+                enrolled, continuous_income_eligible, initial_income_eligible
+            )
+        )
