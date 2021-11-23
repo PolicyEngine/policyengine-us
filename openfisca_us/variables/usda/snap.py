@@ -22,7 +22,7 @@ class snap_earnings_deduction(Variable):
 
         snap_earnings_deduction = parameters(
             period
-        ).benefit.snap.earnings_deduction
+        ).usda.snap.earnings_deduction
 
         return spm_unit("gross_income", period) * snap_earnings_deduction
 
@@ -37,7 +37,7 @@ class snap_standard_deduction(Variable):
 
         standard_deductions = parameters(
             period
-        ).benefit.snap.standard_deduction
+        ).usda.snap.standard_deduction
 
         state_group = spm_unit("state_group")
 
@@ -70,7 +70,7 @@ class snap_shelter_deduction(Variable):
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
         # check for member of spm_unit with disability/elderly status
-        p_shelter_deduction = parameters(period).benefit.snap.shelter_deduction
+        p_shelter_deduction = parameters(period).usda.snap.shelter_deduction
 
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
@@ -119,7 +119,7 @@ class snap_expected_contribution_towards_food(Variable):
 
         expected_food_contribution = parameters(
             period
-        ).benefit.snap.expected_food_contribution
+        ).usda.snap.expected_food_contribution
         return spm_unit("snap_net_income", period) * expected_food_contribution
 
 
@@ -133,7 +133,7 @@ class snap_max_benefit(Variable):
     def formula(spm_unit, period, parameters):
 
         # TODO: Logic for families with >8 people
-        snap_max_benefits = parameters(period).benefit.snap.amount.main
+        snap_max_benefits = parameters(period).usda.snap.amount.main
 
         state_group = spm_unit.household("state_group", period)
         # TODO: Use number_persons
