@@ -3,10 +3,10 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-class spm_unit_poverty_guideline(Variable):
+class spm_unit_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"Federal poverty guideline for the SPM unit"
+    label = u"SPM unit's federal poverty guideline"
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
