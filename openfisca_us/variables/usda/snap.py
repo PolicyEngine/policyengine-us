@@ -35,9 +35,7 @@ class snap_standard_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
 
-        standard_deductions = parameters(
-            period
-        ).usda.snap.standard_deduction
+        standard_deductions = parameters(period).usda.snap.standard_deduction
 
         state_group = spm_unit("state_group")
 
