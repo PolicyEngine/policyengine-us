@@ -64,7 +64,6 @@ class school_meal_subsidy(Variable):
         state_group = spm_unit.value_from_first_person(
             spm_unit.members.household("state_group", period).decode_to_str()
         )
-        poverty_ratio = spm_unit("spm_unit_school_meal_fpg_ratio", period)
         # Get parameters.
         p_school_meals = parameters(period).usda.school_meals
         tier = spm_unit("spm_unit_school_meal_tier", period)
