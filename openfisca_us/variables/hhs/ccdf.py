@@ -8,7 +8,7 @@ class ccdf_county_cluster(Variable):
     value_type = int
     entity = Household
     label = u"County cluster for CCDF"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(household, period, parameters):
         county = household("county", period).decode_to_str()
@@ -20,7 +20,7 @@ class ccdf_market_rate(Variable):
     value_type = float
     entity = Person
     label = u"CCDF market rate"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(person, period, parameters):
         county_cluster = person.household("ccdf_county_cluster", period)
@@ -29,5 +29,5 @@ class ccdf_market_rate(Variable):
         duration_of_care = person("duration_of_care", period)
         market_rate_mapping = parameters(period).hhs.ccdf.amount
         return market_rate_mapping[county_cluster][provider_type_group][
-            child_age_group
-        ][duration_of_care]
+            duration_of_care
+        ][child_age_group]
