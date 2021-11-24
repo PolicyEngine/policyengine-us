@@ -48,7 +48,7 @@
         members: [parent, child]
     households:
       household:
-        state_group: IL
+        state_code: IL
   output:
     tanf_max_amount: 435
 
@@ -67,7 +67,7 @@
         members: [parent, child]
     households:
       household:
-        state_group: IL
+        state_code: IL
   output:
     tanf_amount_if_eligible: 435 - 150
 
@@ -90,6 +90,6 @@
         members: [parent1, parent2, child1, child2]
     households:
       household:
-        state_group: IL
+        state_code: IL
   output:
     tanf_amount_if_eligible: 662 - 550
