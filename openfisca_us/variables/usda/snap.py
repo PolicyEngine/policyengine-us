@@ -24,7 +24,7 @@ class snap_earnings_deduction(Variable):
             period
         ).usda.snap.earnings_deduction
 
-        return spm_unit("gross_income", period) * snap_earnings_deduction
+        return spm_unit("snap_gross_income", period) * snap_earnings_deduction
 
 
 class snap_standard_deduction(Variable):
@@ -37,9 +37,9 @@ class snap_standard_deduction(Variable):
 
         standard_deductions = parameters(period).usda.snap.standard_deduction
 
-        state_group = spm_unit("state_group")
+        state_group = spm_unit.household("state_group_str", period)
 
-        household_size = spm_unit("household_size")
+        household_size = spm_unit.nb_persons()
 
         return standard_deductions[state_group][household_size] * 12
 
@@ -53,10 +53,18 @@ class snap_net_income_pre_shelter(Variable):
     def formula(spm_unit, period, parameters):
 
         return (
-            spm_unit("gross_income", period)
+            spm_unit("snap_gross_income", period)
             - spm_unit("snap_standard_deduction", period)
             - spm_unit("snap_earnings_deduction", period)
         )
+
+
+class housing_cost(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = "Housing cost"
+    unit = "currency-USD"
+    definition_period = YEAR
 
 
 class snap_shelter_deduction(Variable):
@@ -82,7 +90,7 @@ class snap_shelter_deduction(Variable):
         )
 
         # Index maximum shelter deduction by state group.
-        state_group = spm_unit("state_group", period)
+        state_group = spm_unit.household("state_group_str", period)
         ded_cap = p_shelter_deduction.amount[state_group]
 
         has_elderly_disabled = spm_unit("has_elderly_disabled", period)
@@ -90,6 +98,14 @@ class snap_shelter_deduction(Variable):
         return where(
             has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
         )
+
+
+class has_elderly_disabled(Variable):
+    value_type = bool
+    entity = SPMUnit
+    label = "Has elderly disabled"
+    documentation = "Whether the SPM unit has elderly disabled people"
+    definition_period = YEAR
 
 
 class snap_net_income(Variable):
@@ -132,11 +148,10 @@ class snap_max_benefit(Variable):
 
         # TODO: Logic for families with >8 people
         snap_max_benefits = parameters(period).usda.snap.amount.main
-
-        state_group = spm_unit.household("state_group", period)
+        state_group = spm_unit.household("state_group_str", period)
         household_size = spm_unit.nb_persons()
 
-        return snap_max_benefits[household_size][state_group] * 12
+        return snap_max_benefits[state_group][household_size] * 12
 
 
 class snap(Variable):
