@@ -1,7 +1,7 @@
 description:  Maximum SNAP benefit by geography and household size
 
 main:
-  contiguous_US:
+  CONTIGUOUS_US:
     1:
       2021-01-01: 204 
     2:
@@ -18,7 +18,7 @@ main:
       2021-01-01: 1071
     8:
       2021-01-01: 1224
-  AK_urban:        
+  AK_URBAN:        
     1:
       2021-01-01: 251 
     2:
@@ -35,7 +35,7 @@ main:
       2021-01-01: 1319
     8:
       2021-01-01: 1508
-  AK_rural_1:
+  AK_RURAL_1:
     1:
       2021-01-01: 320 
     2:
@@ -52,7 +52,7 @@ main:
       2021-01-01: 1682
     8:
       2021-01-01: 1923
-  AK_rural_2:
+  AK_RURAL_2:
     1:
       2021-01-01: 390
     2:
@@ -122,13 +122,13 @@ main:
       2021-01-01: 1574
 
 additional:
-  contiguous_US:
+  CONTIGUOUS_US:
     2021-01-01: 153
-  AK_urban:
+  AK_URBAN:
     2021-01-01: 189
-  AK_rural_1:
+  AK_RURAL_1:
     2021-01-01: 240 
-  AK_rural_2:
+  AK_RURAL_2:
     2021-01-01: 293
   HI:
     2021-01-01: 558
