@@ -5,6 +5,25 @@ from openfisca_us.tools.general import *
 # TODO: Add units where needed
 
 
+class snap_minimum_benefit(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Minimum benefit for SNAP"
+
+    def formula(spm_unit, period, parameters):
+
+        # TODO: add number of persons? Need a way to prevent households
+        # with more than 2 people from
+
+        snap = parameters(period).benefit.snap
+        state_group = spm_unit("state_group")
+        relevant_1_person_max = snap.max_benefit[state_group][1]
+        household_size = spm_unit.nb_persons()
+
+        return relevant_1_person_max * snap.minimum_benefit[household_size]
+
+
 class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
