@@ -134,7 +134,6 @@ class snap_max_benefit(Variable):
         snap_max_benefits = parameters(period).usda.snap.amount.main
 
         state_group = spm_unit.household("state_group", period)
-        # TODO: Use number_persons
         household_size = spm_unit.nb_persons()
 
         return snap_max_benefits[household_size][state_group] * 12
