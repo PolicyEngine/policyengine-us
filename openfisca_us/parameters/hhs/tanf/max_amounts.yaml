@@ -1,20 +1,20 @@
 description: Payment levels for TANF benefit calculations.
-IL:  
-  1: 
+IL:
+  1:
     2021-10-01: 322
   2:
     2021-10-01: 435
-  3: 
+  3:
     2021-10-01: 549
-  4: 
+  4:
     2021-10-01: 662
-  5: 
+  5:
     2021-10-01: 776
-  6: 
+  6:
     2021-10-01: 890
-  7: 
+  7:
     2021-10-01: 1003
-  8: 
+  8:
     2021-10-01: 1116
   9:
     2021-10-01: 1230
@@ -38,10 +38,13 @@ IL:
     2021-10-01: 2252
 metadata:
   unit: currency-USD
-  reference: 
-  - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25-03-05: Table of Monthly Allowances"
-    href: https://www.dhs.state.il.us/page.aspx?item=12673
+  reference:
+    - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25-03-05: Table of Monthly Allowances"
+      href: https://www.dhs.state.il.us/page.aspx?item=12673
+      date: 2021-10-01
+    - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25: Manual Attachments [Find date next to WAG 25-03-05]"
+      href: https://www.dhs.state.il.us/page.aspx?item=12661
   period: month
   breakdown:
-  - State
-  - Household size
+    - State
+    - Household size

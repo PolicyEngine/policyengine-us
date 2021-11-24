@@ -33,3 +33,63 @@
     tanf_countable_income: 1500
   output:
     tanf_amount_if_eligible: 0
+
+- name: "TANF: Family of two in Illinois; max TANF amount"
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 46
+      child:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        state_group: IL
+  output:
+    tanf_max_amount: 435
+
+- name: "TANF: Family of two in Illinois applying for TANF"
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    tanf_countable_income: 150
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        state_group: IL
+  output:
+    tanf_amount_if_eligible: 435 - 150
+
+- name: "TANF: Family of four in Illinois applying for TANF"
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    tanf_countable_income: 550
+    people:
+      parent1:
+        age: 30
+      parent2:
+        age: 45
+      child1:
+        age: 10
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        state_group: IL
+  output:
+    tanf_amount_if_eligible: 662 - 550
