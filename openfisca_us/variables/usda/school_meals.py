@@ -4,8 +4,6 @@ from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.spm_unit import *
 from openfisca_us.variables.demographic.household import *
 
-# add new variable for enum tier
-
 
 class spm_unit_school_meal_countable_income(Variable):
     value_type = float
