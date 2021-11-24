@@ -10,7 +10,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 0
+        spm_unit_school_meal_fpg_ratio: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -30,7 +30,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 1.2
+        spm_unit_school_meal_fpg_ratio: 1.2
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
@@ -47,7 +47,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 1.8
+        spm_unit_school_meal_fpg_ratio: 1.8
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -67,7 +67,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 10
+        spm_unit_school_meal_fpg_ratio: 10
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -86,7 +86,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 0
+        spm_unit_school_meal_fpg_ratio: 0
     households:
       household:
         state_group: HI
@@ -106,7 +106,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 1.0
+        spm_unit_school_meal_fpg_ratio: 1.0
     households:
       household:
         state_group: HI
@@ -126,7 +126,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 1.5
+        spm_unit_school_meal_fpg_ratio: 1.5
     households:
       household:
         state_group: HI
@@ -146,7 +146,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 20
+        spm_unit_school_meal_fpg_ratio: 20
     households:
       household:
         state_group: HI
@@ -166,7 +166,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 0.8
+        spm_unit_school_meal_fpg_ratio: 0.8
     households:
       household:
         state_group: AK
@@ -186,7 +186,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        poverty_ratio: 1.4
+        spm_unit_school_meal_fpg_ratio: 1.4
     households:
       household:
         state_group: AK
@@ -208,7 +208,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        poverty_ratio: 1.2
+        spm_unit_school_meal_fpg_ratio: 1.2
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -230,7 +230,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        poverty_ratio: 1.7
+        spm_unit_school_meal_fpg_ratio: 1.7
     households:
       household:
         state_group: HI
@@ -252,7 +252,7 @@
     spm_units:
       spm_unit:
         members: [parent,child1,child2]
-        poverty_ratio: 15
+        spm_unit_school_meal_fpg_ratio: 15
     households:
       household:
         state_group: AK
@@ -276,7 +276,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        poverty_ratio: 15
+        spm_unit_school_meal_fpg_ratio: 15
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -300,7 +300,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        poverty_ratio: 1.6
+        spm_unit_school_meal_fpg_ratio: 1.6
     households:
       household:
         state_group: AK
@@ -322,7 +322,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
-        poverty_ratio: 1.8
+        spm_unit_school_meal_fpg_ratio: 1.8
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -344,7 +344,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
-        poverty_ratio: 1.1
+        spm_unit_school_meal_fpg_ratio: 1.1
     households:
       household:
         state_group: HI
@@ -368,7 +368,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
-        poverty_ratio: 1.4
+        spm_unit_school_meal_fpg_ratio: 1.4
     households:
       household:
         state_group: AK
@@ -394,7 +394,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        poverty_ratio: 1.2
+        spm_unit_school_meal_fpg_ratio: 1.2
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -420,7 +420,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        poverty_ratio: 15
+        spm_unit_school_meal_fpg_ratio: 15
     households:
       household:
         state_group: HI
@@ -446,7 +446,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        poverty_ratio: 20
+        spm_unit_school_meal_fpg_ratio: 20
     households:
       household:
         state_group: AK
@@ -472,7 +472,7 @@
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3, child4]
-        poverty_ratio: 1.8
+        spm_unit_school_meal_fpg_ratio: 1.8
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -502,7 +502,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4, child5]
-        poverty_ratio: 1.1
+        spm_unit_school_meal_fpg_ratio: 1.1
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -522,7 +522,7 @@
     spm_units:
       spm_unit:
         members: [parent1,parent2]
-        poverty_ratio: 1.8
+        spm_unit_school_meal_fpg_ratio: 1.8
     households:
       household:
         state_group: CONTIGUOUS_US

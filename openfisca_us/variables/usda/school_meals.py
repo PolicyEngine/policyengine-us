@@ -7,6 +7,25 @@ from openfisca_us.variables.demographic.household import *
 # add new variable for enum tier
 
 
+class spm_unit_school_meal_countable_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = "SPM unit's countable income for school meal program"
+
+
+class spm_unit_school_meal_fpg_ratio(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = "SPM unit's federal poverty ratio for school meal program"
+
+    def formula(spm_unit, period, parameters):
+        return spm_unit(
+            "spm_unit_school_meal_countable_income", period
+        ) / spm_unit("spm_unit_fpg", period)
+
+
 class school_meal_subsidy(Variable):
     value_type = float
     entity = SPMUnit
@@ -18,7 +37,7 @@ class school_meal_subsidy(Variable):
         state_group = spm_unit.value_from_first_person(
             spm_unit.members.household("state_group", period).decode_to_str()
         )
-        poverty_ratio = spm_unit("poverty_ratio", period)
+        poverty_ratio = spm_unit("spm_unit_school_meal_fpg_ratio", period)
         # Get parameters.
         p_school_meals = parameters(period).usda.school_meals
         p_income_limit = p_school_meals.income_limit
