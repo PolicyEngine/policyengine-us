@@ -1,44 +1,14 @@
-description:  Minimum SNAP Benefit by Geography and Household Size
+description:  Minimum SNAP Benefit as a Fraction of Max Benefit by Household Size
 
 
-contiguous_US:
-  1:
-    2021-01-01: snap.amount.main.contiguous_US.1 * 0.08 
-  2:
-    2021-01-01: snap.amount.main.contiguous_US.1 * 0.08
-AK_urban:        
-  1:
-    2021-01-01: snap.amount.main.AK_urban.1 * 0.08
-  2:
-    2021-01-01: snap.amount.main.AK_urban.1 * 0.08
-AK_rural_1:
-  1:
-    2021-01-01: snap.amount.main.AK_rural_1.1 * 0.08
-  2:
-    2021-01-01: snap.amount.main.AK_rural_1.1 * 0.08
-AK_rural_2:
-  1:
-    2021-01-01: snap.amount.main.AK_rural_2.1 * 0.08
-  2:
-    2021-01-01: snap.amount.main.AK_rural_2.1 * 0.08
-HI:
-  1:
-    2021-01-01: snap.amount.main.HI.1 * 0.08
-  2:
-    2021-01-01: snap.amount.main.HI.1 * 0.08
-GU:
-  1:
-    2021-01-01: snap.amount.main.HI.1 * 0.08
-  2:
-    2021-01-01: snap.amount.main.HI.1 * 0.08
-VI:
-  1:
-    2021-01-01: snap.amount.main.1 * 0.08
-  2:
-    2021-01-01: snap.amount.main.1 * 0.08
+1:
+  2021-01-01: 0.08 
+2:
+  2021-01-01: 0.08
+
 
 metadata:
-  unit: currency-USD
+  unit: /1 
   reference:
   - title: '7 CFR § 273.10 - Determining household eligibility and benefit levels.'
     href: https://www.law.cornell.edu/cfr/text/7/273.10
