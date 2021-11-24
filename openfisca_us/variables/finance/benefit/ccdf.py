@@ -57,7 +57,6 @@ class is_enrolled_in_ccdf(Variable):
 class is_ccdf_initial_income_eligible(Variable):
     value_type = bool
     entity = Person
-    default_value = True
     definition_period = YEAR
     label = u"Initial income eligibility for CCDF"
 
@@ -65,7 +64,6 @@ class is_ccdf_initial_income_eligible(Variable):
 class is_ccdf_continuous_income_eligible(Variable):
     value_type = bool
     entity = Person
-    default_value = True
     definition_period = YEAR
     label = u"Continuous income eligibility for CCDF"
 
