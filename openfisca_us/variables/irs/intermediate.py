@@ -187,7 +187,7 @@ class pre_qbid_taxinc(Variable):
 
     def formula(tax_unit, period, parameters):
         # Calculate UI excluded from taxable income
-        ui = parameters(period).benefit.unemployment_insurance
+        ui = parameters(period).tax.unemployment_insurance
         ui_amount = tax_unit("filer_e02300", period)
         agi_over_ui = tax_unit("c00100", period) - ui_amount
         mars = tax_unit("mars", period)
