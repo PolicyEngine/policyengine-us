@@ -26,6 +26,37 @@ class spm_unit_school_meal_fpg_ratio(Variable):
         ) / spm_unit("spm_unit_fpg", period)
 
 
+
+class SchoolMealTier(Enum):
+    FREE = "Free"
+    REDUCED = "Reduced price"
+    FULL = "Full"
+
+
+class spm_unit_school_meal_tier(Variable):
+    value_type = Enum
+    possible_values = SchoolMealTier
+    default_value = SchoolMealTier.FULL
+    entity = SPMUnit
+    definition_period = YEAR
+    documentation = "SPM unit's school meal program tier"
+
+    def formula(spm_unit, period, parameters):
+        fpg_ratio = spm_unit("spm_unit_school_meal_fpg_ratio", period)
+        p_income_limit = parameters(period).usda.school_meals.income_limit
+        return select(
+            [
+                fpg_ratio <= p_income_limit.FREE,
+                fpg_ratio <= p_income_limit.REDUCED,
+                True
+            ],
+            [
+                SchoolMealTier.FREE,
+                SchoolMealTier.REDUCED,
+                SchoolMealTier.FULL
+            ]
+        )
+
 class school_meal_subsidy(Variable):
     value_type = float
     entity = SPMUnit
@@ -40,17 +71,7 @@ class school_meal_subsidy(Variable):
         poverty_ratio = spm_unit("spm_unit_school_meal_fpg_ratio", period)
         # Get parameters.
         p_school_meals = parameters(period).usda.school_meals
-        p_income_limit = p_school_meals.income_limit
-        # Look up the free/reduced/full subsidy tier for each SPM unit by
-        # poverty ratio.
-        tier = select(
-            [
-                poverty_ratio < p_income_limit.free,
-                poverty_ratio < p_income_limit.reduced_price,
-                poverty_ratio >= p_income_limit.reduced_price,
-            ],
-            ["free", "reduced_price", "paid"],
-        )
+        tier = spm_unit("spm_unit_school_meal_tier")
         p_amount = p_school_meals.amount
         # Get NSLP and SBP per child for each SPM unit.
         nslp_per_child = p_amount.nslp[state_group][tier]
