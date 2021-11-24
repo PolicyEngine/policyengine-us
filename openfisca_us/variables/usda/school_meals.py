@@ -67,7 +67,7 @@ class school_meal_subsidy(Variable):
         poverty_ratio = spm_unit("spm_unit_school_meal_fpg_ratio", period)
         # Get parameters.
         p_school_meals = parameters(period).usda.school_meals
-        tier = spm_unit("spm_unit_school_meal_tier")
+        tier = spm_unit("spm_unit_school_meal_tier", period)
         p_amount = p_school_meals.amount
         # Get NSLP and SBP per child for each SPM unit.
         nslp_per_child = p_amount.nslp[state_group][tier]
