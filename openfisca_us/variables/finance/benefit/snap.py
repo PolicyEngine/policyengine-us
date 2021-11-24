@@ -168,3 +168,59 @@ class is_usda_elderly(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Indicates that a person is defined as elderly based on the USDA definition"
+
+
+class federal_disability_or_blindess_receipt(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the federal disability or blindness receipt"
+
+
+class state_disability_or_blindess_receipt(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the state disability or blindness receipt"
+
+
+class gov_agency_permanent_disability(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the gov agency permanent disability"
+
+
+class railroad_retirment_and_medicare(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the railroad retirment and medicare"
+
+
+class ssi_disabled(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the ssi disabled"
+
+
+class permanently_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the permanently disabled veteran"
+
+
+class surviving_spouse_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the surviving spouse of disabled veteran"
+
+
+class surviving_child_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the surviving child of disabled veteran"
