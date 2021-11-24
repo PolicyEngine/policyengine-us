@@ -29,13 +29,13 @@ class spm_unit_school_meal_fpg_ratio(Variable):
 class SchoolMealTier(Enum):
     FREE = "Free"
     REDUCED = "Reduced price"
-    FULL = "Full"
+    PAID = "Paid"
 
 
 class spm_unit_school_meal_tier(Variable):
     value_type = Enum
     possible_values = SchoolMealTier
-    default_value = SchoolMealTier.FULL
+    default_value = SchoolMealTier.PAID
     entity = SPMUnit
     definition_period = YEAR
     documentation = "SPM unit's school meal program tier"
@@ -49,7 +49,7 @@ class spm_unit_school_meal_tier(Variable):
                 fpg_ratio <= p_income_limit.REDUCED,
                 True,
             ],
-            [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.FULL],
+            [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.PAID],
         )
 
 
