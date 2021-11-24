@@ -26,7 +26,6 @@ class spm_unit_school_meal_fpg_ratio(Variable):
         ) / spm_unit("spm_unit_fpg", period)
 
 
-
 class SchoolMealTier(Enum):
     FREE = "Free"
     REDUCED = "Reduced price"
@@ -48,14 +47,11 @@ class spm_unit_school_meal_tier(Variable):
             [
                 fpg_ratio <= p_income_limit.FREE,
                 fpg_ratio <= p_income_limit.REDUCED,
-                True
+                True,
             ],
-            [
-                SchoolMealTier.FREE,
-                SchoolMealTier.REDUCED,
-                SchoolMealTier.FULL
-            ]
+            [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.FULL],
         )
+
 
 class school_meal_subsidy(Variable):
     value_type = float
