@@ -1,7 +1,9 @@
-- name: Child age, 11
+- name: Child age, 12
   period: 2022
   input:
     age: 11
+    household:
+      state_code: NY
   output:
     is_ccdf_age_eligible: True
 
@@ -9,5 +11,7 @@
   period: 2022
   input:
     age: 13
+    household:
+      state_code: NY
   output:
     is_ccdf_age_eligible: False
