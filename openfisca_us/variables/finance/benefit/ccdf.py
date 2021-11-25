@@ -46,6 +46,9 @@ class is_ccdf_age_eligible(Variable):
     definition_period = YEAR
     label = u"Age eligibility for CCDF"
 
+    def formula(person, period):
+        return person("age", period) < 13
+
 
 class is_enrolled_in_ccdf(Variable):
     value_type = bool
