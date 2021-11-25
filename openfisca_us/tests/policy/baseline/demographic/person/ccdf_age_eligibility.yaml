@@ -1,7 +1,9 @@
 - name: Child age, 12
   period: 2022
   input:
-    age: 12
+    people:
+      child:
+        age: 12
     household:
       state_code: NY
   output:
@@ -10,7 +12,9 @@
 - name: Child age, 13
   period: 2022
   input:
-    age: 13
+    people:
+      child:
+        age: 13
     household:
       state_code: NY
   output:
