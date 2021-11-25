@@ -4,8 +4,9 @@
     people:
       child:
         age: 12
-    household:
-      state_code: NY
+    households:
+      household:
+        state_code: NY
   output:
     is_ccdf_age_eligible: True
 
@@ -15,7 +16,8 @@
     people:
       child:
         age: 13
-    household:
-      state_code: NY
+    households:
+      household:
+        state_code: NY
   output:
     is_ccdf_age_eligible: False
