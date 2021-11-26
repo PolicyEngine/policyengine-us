@@ -1,23 +1,13 @@
 - name: Child age, 12
   period: 2022
   input:
-    people:
-      child:
-        age: 12
-    households:
-      household:
-        state_code: NY
+    age: 12
   output:
     is_ccdf_age_eligible: True
 
 - name: Child age, 13
   period: 2022
   input:
-    people:
-      child:
-        age: 13
-    households:
-      household:
-        state_code: NY
+    age: 13
   output:
-    is_ccdf_age_eligible: False
+    is_ccdf_age_eligible: True
