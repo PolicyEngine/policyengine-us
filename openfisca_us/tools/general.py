@@ -2,6 +2,8 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 import numpy as np
 
+USD = "currency-USD"
+
 
 def add(entity, period, *variables):
     return sum([entity(var, period) for var in variables])

@@ -1,17 +1,24 @@
-Thanks for contributing to OpenFisca ! Please remove this line, as well as, for each line below, the cases which are not relevant to your contribution :)
+Thanks for contributing! Please remove any top-level sections that do not apply to your changes.
 
-* Tax and benefit system evolution. | Technical improvement. | Crash fix. | Minor change.
-* Impacted periods: all. | until DD/MM/YYYY. | from DD/MM/YYYY.
-* Impacted areas: `path/to/file/containing/impacted/variables`
-* Details:
-  - New feature or new behaviour description
-  - Cases for which an error was noticed
+# New variable
 
-- - - -
+- [ ] Label field added
+- [ ] Documentation field added
+- [ ] Unit field added
+- [ ] Default value field added if relevant
+- [ ] Variable name follows conventions
+- [ ] Unit test(s) added
+- [ ] Integration test(s) added if relevant
 
-These changes _(remove lines which are not relevant to your contribution)_:
+## What's changed
 
-- Impact the OpenFisca-US public API (for instance renaming or removing a variable)
-- Add a new feature (for instance adding a variable)
-- Fix or improve an already existing calculation.
-- Change non-functional parts of this repository (for instance editing the README)
+Description of the changes here.
+
+# Bug fix
+
+- [ ] Regression test added
+- [ ] Regression test passing
+
+## What this fixes and how it's fixed
+
+Description of how this fix works goes here.
