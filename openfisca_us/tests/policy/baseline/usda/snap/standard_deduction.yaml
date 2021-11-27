@@ -12,14 +12,14 @@
   absolute_error_margin: 0.01
   input:
     people:
-    person_1:
-      age: 30
-    person_2:
-      age: 35
-    person_3:
-      age: 17
-    person_4:
-      age: 15
+      person_1:
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
     spm_units:
       spm_unit:
         snap_gross_income: 2000 * 12
@@ -35,10 +35,10 @@
   absolute_error_margin: 0.01
   input:
     people:
-    person_1:
-      age: 30
-    person_2:
-      age: 50
+      person_1:
+        age: 30
+      person_2:
+        age: 50
     spm_units:
       spm_unit:
         snap_gross_income: 2000 * 12
@@ -54,24 +54,24 @@
   absolute_error_margin: 0.01
   input:
     people:
-    person_1:
-      age: 42
-    person_2:
-      age: 40
-    person_3:
-      age: 25
-    person_4:
-      age: 26
-    person_5:
-      age: 18
-    person_6:
-      age: 65
-    person_7:
-      age: 63
-    person_8:
-      age: 15
-    person_9:
-      age: 14
+      person_1:
+        age: 42
+      person_2:
+        age: 40
+      person_3:
+        age: 25
+      person_4:
+        age: 26
+      person_5:
+        age: 18
+      person_6:
+        age: 65
+      person_7:
+        age: 63
+      person_8:
+        age: 15
+      person_9:
+        age: 14
     spm_units:
       spm_unit:
         snap_gross_income: 833 * 12
