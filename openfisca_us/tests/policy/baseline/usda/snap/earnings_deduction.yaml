@@ -1,0 +1,56 @@
+- name: Family of 4, 12k income/year (Normal Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 32
+      person_2:
+        age: 34
+      person_3:
+        age: 0
+      person_4:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+        snap_gross_income: 1000 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap_earnings_deduction: (1000 * 0.2) * 12
+
+- name: Single Person, 12k/year (Boundary Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 32
+    spm_units:
+      spm_unit:
+        members: [person_1]
+        snap_gross_income: 1000 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap_earnings_deduction: (1000 * 0.2) * 12
+
+- name: Single Person, 100k/year (Extreme Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 32
+    spm_units:
+      spm_unit:
+        members: [person_1]
+        snap_gross_income: 8333 * 12
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap_earnings_deduction: (8333 * 0.2) * 12
