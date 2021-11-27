@@ -2,6 +2,7 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.person import *
+from openfisca_us.variables.demographic.household import *
 
 
 class ccdf_county_cluster(Variable):
@@ -45,6 +46,11 @@ class is_ccdf_age_eligible(Variable):
     entity = Person
     definition_period = YEAR
     label = u"Age eligibility for CCDF"
+
+    def formula(person, period, parameters):
+        age = person("age", period)
+        age_limit = parameters(period).hhs.ccdf.age_limit
+        return age < age_limit
 
 
 class is_enrolled_in_ccdf(Variable):
