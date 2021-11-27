@@ -19,7 +19,7 @@
       household:
         state_group: CONTIGUOUS_US  
   output:
-    expected_food_contribution: ((1419 - 569) * 0.3) * 12
+    snap_expected_contribution_towards_food: ((1419 - 569) * 0.3) * 12
 
 - name: Family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2021
@@ -42,7 +42,7 @@
       household:
         state_group: CONTIGUOUS_US  
   output:
-    expected_food_contribution: ((1419 - (1700 - (1419 * 0.5))) * 0.3) * 12
+    snap_expected_contribution_towards_food: ((1419 - (1700 - (1419 * 0.5))) * 0.3) * 12
 
 - name: Individual, 10k income, GU (State Group Test)
   period: 2021
@@ -59,7 +59,7 @@
       household:
         state_group: GU  
   output:
-    expected_food_contribution: (0 * 0.3) * 12
+    snap_expected_contribution_towards_food: (0 * 0.3) * 12
 
 - name: Individual, 10k income, member(s) with disabilities or age >60 present, GU (State Group Test)
   period: 2021
@@ -77,7 +77,7 @@
       household:
         state_group: GU  
   output:
-    expected_food_contribution: (0 * 0.3) * 12 
+    snap_expected_contribution_towards_food: (0 * 0.3) * 12 
 
 - name: Individual, 10k income, VI (State Group Test)
   period: 2021
@@ -94,7 +94,7 @@
       household:
         state_group: VI  
   output:
-    expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
+    snap_expected_contribution_towards_food: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
 
 - name: Individual, 10k income, member(s) with disabilities or age >60 present, VI (State Group Test)
   period: 2021
@@ -112,7 +112,7 @@
       household:
         state_group: VI  
   output:
-    expected_food_contribution: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
+    snap_expected_contribution_towards_food: (((519.4 - (650 - (519.4 * 0.5)))) * 0.3) * 12
 
 - name: Individual, 10k income, AK (State Group Test)
   period: 2021
@@ -129,7 +129,7 @@
       household:
         state_group: AK  
   output:
-    expected_food_contribution: (0 * 0.3) * 12
+    snap_expected_contribution_towards_food: (0 * 0.3) * 12
 
 - name: Individual, 10k income, member(s) with disabilities or age >60 present, AK (State Group Test)
   period: 2021
@@ -147,7 +147,7 @@
       household:
         state_group: AK  
   output:
-    expected_food_contribution: (0 * 0.3) * 12
+    snap_expected_contribution_towards_food: (0 * 0.3) * 12
 
 - name: Individual, 10k income, member(s) with disabilities or age >60 present, HI (State Group Test)
   period: 2021
@@ -164,7 +164,7 @@
       household:
         state_group: HI  
   output:
-    expected_food_contribution: (0 * 0.3) * 12
+    snap_expected_contribution_towards_food: (0 * 0.3) * 12
 
 - name: Individual, 10k income, disabled members present, HI (State Group Test)
   period: 2021
@@ -182,4 +182,4 @@
       household:
         state_group: HI  
   output:
-    expected_food_contribution: (0 * 0.3) * 12
+    snap_expected_contribution_towards_food: (0 * 0.3) * 12

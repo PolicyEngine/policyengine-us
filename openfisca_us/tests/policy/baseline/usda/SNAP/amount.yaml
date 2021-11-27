@@ -36,6 +36,7 @@
     people:
       person_1:
         age: 30
+        is_disabled_or_elderly_for_snap: true
       person_2:
         age: 35
       person_3:
@@ -50,7 +51,7 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    expected_food_contribution: (837 - 218.55) * 12
+    snap_expected_contribution_towards_food: (837 - 218.55) * 12
 
 - name: Individual, $50k income (Extreme Test)
   period: 2019
