@@ -19,7 +19,7 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    earnings_deduction: (1000 * 0.2) * 12
+    snap_earnings_deduction: (1000 * 0.2) * 12
 
 - name: Single Person, 12k/year (Boundary Test)
   period: 2021
@@ -36,7 +36,7 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    earnings_deduction: (1000 * 0.2) * 12
+    snap_earnings_deduction: (1000 * 0.2) * 12
 
 - name: Single Person, 100k/year (Extreme Test)
   period: 2021
@@ -53,4 +53,4 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    earnings_deduction: (8333 * 0.2) * 12
+    snap_earnings_deduction: (8333 * 0.2) * 12
