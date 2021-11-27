@@ -43,7 +43,7 @@ class is_ccdf_asset_eligible(Variable):
     def formula(spm_unit, period, parameters):
         assets = spm_unit("spm_unit_assets", period)
         p_asset_limit = parameters(period).hhs.ccdf.asset_limit
-        return where(period < 2015, True, assets <= p_asset_limit)
+        return assets <= p_asset_limit
 
 
 class is_ccdf_age_eligible(Variable):
