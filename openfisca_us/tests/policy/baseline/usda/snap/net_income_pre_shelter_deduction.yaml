@@ -1,6 +1,6 @@
 - name: Family of 4, no member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
         person_1:
@@ -23,7 +23,7 @@
 
 - name: Family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -47,7 +47,7 @@
 
 - name: Individual, 10k income, GU (State Group Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -64,7 +64,7 @@
 
 - name: Individual, 10k income, VI (State Group Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -81,7 +81,7 @@
 
 - name: Individual, 10k income, AK (State Group Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -98,7 +98,7 @@
 
 - name: Individual, 10k income, HI (State Group Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:

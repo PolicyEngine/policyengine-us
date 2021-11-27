@@ -1,6 +1,6 @@
 - name: "TANF: Eligible and has benefit"
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     is_tanf_eligible: true
     tanf_amount_if_eligible: 200
@@ -9,7 +9,7 @@
 
 - name: "TANF: Ineligible and does not receive benefit"
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     is_tanf_eligible: false
     tanf_amount_if_eligible: -100
@@ -18,7 +18,7 @@
 
 - name: "TANF: Has given maximum benefit amount and has smaller countable income"
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     tanf_max_amount: 1000
     tanf_countable_income: 750
@@ -27,7 +27,7 @@
 
 - name: "TANF: Has given maximum benefit amount and has larger countable income"
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     tanf_max_amount: 1000
     tanf_countable_income: 1500

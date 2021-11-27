@@ -1,6 +1,6 @@
 - name: Family of 4, 12k income/year (Normal Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -23,7 +23,7 @@
 
 - name: Single Person, 12k/year (Boundary Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -40,7 +40,7 @@
 
 - name: Single Person, 100k/year (Extreme Test)
   period: 2021
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     people:
       person_1:
