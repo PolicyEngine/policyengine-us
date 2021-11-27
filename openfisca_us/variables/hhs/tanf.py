@@ -52,7 +52,7 @@ class tanf_max_amount(Variable):
         family_size = spm_unit.nb_persons().astype(str)
         state = spm_unit.household("state_code_str", period)
         max_amount = parameters(period).hhs.tanf.max_amount
-        return max_amount[state][family_size]
+        return max_amount[state][family_size] * 12
 
 
 class tanf_countable_income(Variable):
