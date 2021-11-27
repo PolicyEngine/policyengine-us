@@ -36,9 +36,14 @@ class ccdf_market_rate(Variable):
 
 class is_ccdf_asset_eligible(Variable):
     value_type = bool
-    entity = Person
+    entity = SPMUnit
     definition_period = YEAR
     label = u"Asset eligibility for CCDF"
+
+    def formula(spm_unit, period, parameters):
+        assets = spm_unit("spm_unit_assets", period)
+        p_asset_limit = parameters(period).hhs.ccdf.asset_limit
+        return assets <= p_asset_limit
 
 
 class is_ccdf_age_eligible(Variable):
@@ -81,7 +86,7 @@ class is_ccdf_eligible(Variable):
     label = u"Eligibility for CCDF"
 
     def formula(person, period, parameters):
-        asset_eligible = person("is_ccdf_asset_eligible", period)
+        asset_eligible = person.spm_unit("is_ccdf_asset_eligible", period)
         age_eligible = person("is_ccdf_age_eligible", period)
         enrolled = person("is_enrolled_in_ccdf", period)
         initial_income_eligible = person(
