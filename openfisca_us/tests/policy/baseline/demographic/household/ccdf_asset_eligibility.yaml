@@ -1,13 +1,13 @@
 - name: Family asset, 1,000,000
   period: 2022
   input:
-    asset: 1_000_000
+    assets: 1_000_000
   output:
     is_ccdf_asset_eligible: True
 
 - name: Family asset, 1,000,001
   period: 2022
   input:
-    asset: 1_000_000
+    assets: 1_000_000
   output:
     is_ccdf_asset_eligible: False

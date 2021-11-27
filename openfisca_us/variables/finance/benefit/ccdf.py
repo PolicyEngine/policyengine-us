@@ -41,9 +41,9 @@ class is_ccdf_asset_eligible(Variable):
     label = u"Asset eligibility for CCDF"
 
     def formula(spm_unit, period, parameters):
-        asset = spm_unit("asset", period)
+        assets = spm_unit("spm_unit_assets", period)
         p_asset_limit = parameters(period).hhs.ccdf.asset_limit
-        return asset <= p_asset_limit
+        return assets <= p_asset_limit
 
 
 class is_ccdf_age_eligible(Variable):
