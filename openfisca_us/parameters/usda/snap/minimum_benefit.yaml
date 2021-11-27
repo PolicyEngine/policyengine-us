@@ -1,9 +1,13 @@
 description:  Minimum SNAP Benefit as a Fraction of Max Benefit by Household Size
 
-1:
-  2021-01-01: 0.08 
-2:
-  2021-01-01: 0.08
+rate:
+  1:
+    2021-01-01: 0.08 
+  2:
+    2021-01-01: 0.08
+
+maximum_houshold_size:
+  2021-01-01: 2
 
 metadata:
   unit: /1 
