@@ -75,4 +75,4 @@ class tanf_amount_if_eligible(Variable):
     def formula(spm_unit, period, parameters):
         max_amount = spm_unit("tanf_max_amount", period)
         countable_income = spm_unit("tanf_countable_income", period)
-        return max_(0, max_amount - countable_income)
+        return max_(0, max_amount - (0.25 * countable_income))
