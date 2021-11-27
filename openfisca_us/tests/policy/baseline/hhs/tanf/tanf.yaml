@@ -56,7 +56,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    tanf_countable_income: 150
     people:
       parent:
         age: 30
@@ -65,6 +64,7 @@
     spm_units:
       spm_unit:
         members: [parent, child]
+        tanf_countable_income: 150
     households:
       household:
         state_code: IL
@@ -75,7 +75,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    tanf_countable_income: 550
     people:
       parent1:
         age: 30
@@ -88,6 +87,7 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
+        tanf_countable_income: 550
     households:
       household:
         state_code: IL
