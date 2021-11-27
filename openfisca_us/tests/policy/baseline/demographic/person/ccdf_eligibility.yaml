@@ -1,0 +1,65 @@
+- name: Asset eligible, age eligible, not enrolled, initial income eligible, continuous income eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: True
+    is_ccdf_age_eligible: True
+    is_enrolled_in_ccdf: False
+    is_ccdf_initial_income_eligible: True
+    is_ccdf_continuous_income_eligible: True
+  output:
+    is_ccdf_eligible: True
+
+- name: Asset eligible, age eligible, not enrolled, initial income not eligible, continuous income eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: True
+    is_ccdf_age_eligible: True
+    is_enrolled_in_ccdf: False
+    is_ccdf_initial_income_eligible: False
+    is_ccdf_continuous_income_eligible: True
+  output:
+    is_ccdf_eligible: False
+
+- name: Asset eligible, age eligible, enrolled, intial income eligible, continuous income eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: True
+    is_ccdf_age_eligible: True
+    is_enrolled_in_ccdf: True
+    is_ccdf_initial_income_eligible: True
+    is_ccdf_continuous_income_eligible: True
+  output:
+    is_ccdf_eligible: True
+
+- name: Asset eligible, age eligible, enrolled, intial income eligible, continuous income not eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: True
+    is_ccdf_age_eligible: True
+    is_enrolled_in_ccdf: True
+    is_ccdf_initial_income_eligible: True
+    is_ccdf_continuous_income_eligible: False
+  output:
+    is_ccdf_eligible: False
+
+- name: Asset not eligible, age eligible, not enrolled, initial income eligible, continuous income eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: False
+    is_ccdf_age_eligible: True
+    is_enrolled_in_ccdf: False
+    is_ccdf_initial_income_eligible: True
+    is_ccdf_continuous_income_eligible: True
+  output:
+    is_ccdf_eligible: False
+
+- name: Asset eligible, age not eligible, not enrolled, initial income eligible, continuous income eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: True
+    is_ccdf_age_eligible: False
+    is_enrolled_in_ccdf: False
+    is_ccdf_initial_income_eligible: True
+    is_ccdf_continuous_income_eligible: True
+  output:
+    is_ccdf_eligible: False

@@ -1,0 +1,20 @@
+- name: Defaults to 0
+  period: 2020
+  absolute_error_margin: 0.01
+  input: {}
+  output:
+    c18300: 0
+- name: Uncapped before 2018
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    filer_e18400: 20_000
+  output:
+    c18300: 20_000
+- name: Capped after 2018
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    filer_e18400: 20_000
+  output:
+    c18300: 10_000

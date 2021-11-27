@@ -1,0 +1,24 @@
+- name: Household net income defaults to 0
+  period: 2021
+  input:
+    people:
+      person: {}
+    households:
+      household:
+        members: person
+  output:
+    household_net_income: 0
+
+- name: Household net income sums net incomes
+  period: 2021
+  input:
+    people:
+      person_1:
+        net_income: 1
+      person_2:
+        net_income: 1
+    households:
+      household:
+        members: [person_1, person_2]
+  output:
+    household_net_income: 2

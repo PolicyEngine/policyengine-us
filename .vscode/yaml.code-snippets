@@ -28,7 +28,7 @@
 		"prefix": "test",
 		"body": [
 			"- name: ${1:Name}",
-			"  period: 2020-01-01",
+			"  period: 2020",
 			"  absolute_error_margin: ${2:0}",
 			"  input:",
 			"    ${3:variable values here}",

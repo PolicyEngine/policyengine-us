@@ -1,0 +1,7 @@
+- name: Individual income tax runs
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    e00200: 0
+  output:
+    c05200: 0
