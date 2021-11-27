@@ -50,7 +50,7 @@
       household:
         state_code: IL
   output:
-    tanf_max_amount: 435
+    tanf_max_amount: 435 * 12
 
 - name: "TANF: Family of two in Illinois applying for TANF"
   period: 2022
@@ -64,12 +64,12 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        tanf_countable_income: 150
+        tanf_countable_income: 3500
     households:
       household:
         state_code: IL
   output:
-    tanf_amount_if_eligible: 435 - (0.25 * 150)
+    tanf_amount_if_eligible: (435 * 12) - 3500
 
 - name: "TANF: Family of four in Illinois applying for TANF"
   period: 2022
@@ -87,9 +87,9 @@
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
-        tanf_countable_income: 550
+        tanf_countable_income: 4500
     households:
       household:
         state_code: IL
   output:
-    tanf_amount_if_eligible: 662 - (0.25 * 550)
+    tanf_amount_if_eligible: (662 * 12) - 4500
