@@ -830,6 +830,7 @@ class e24515(Variable):
     definition_period = YEAR
     documentation = """Sch D: Un-Recaptured Section 1250 Gain"""
 
+
 class filer_e24515(Variable):
     value_type = float
     entity = TaxUnit
@@ -839,11 +840,13 @@ class filer_e24515(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e24515", tax_unit, period)
 
+
 class e24518(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = """Sch D: 28% Rate Gain or Loss"""
+
 
 class filer_e24518(Variable):
     value_type = float
@@ -853,6 +856,7 @@ class filer_e24518(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e24518", tax_unit, period)
+
 
 class e26270(Variable):
     value_type = float
@@ -902,6 +906,16 @@ class e58990(Variable):
     entity = Person
     definition_period = YEAR
     documentation = """Investment income elected amount from Form 4952"""
+
+
+class filer_e58990(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Investment income (Form 3952) for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e58990", tax_unit, period)
 
 
 class e62900(Variable):
