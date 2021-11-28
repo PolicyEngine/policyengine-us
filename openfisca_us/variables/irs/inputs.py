@@ -439,6 +439,16 @@ class e02400(Variable):
     documentation = """Total social security (OASDI) benefits"""
 
 
+class filer_e02400(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Social security benefits for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e02400", tax_unit, period)
+
+
 class e03150(Variable):
     value_type = float
     entity = Person
