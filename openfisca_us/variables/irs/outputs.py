@@ -1,4 +1,3 @@
-from numpy import floor
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
@@ -256,12 +255,19 @@ class othertaxes(Variable):
 class payrolltax(Variable):
     value_type = float
     entity = TaxUnit
+    label = "Payroll tax"
     definition_period = YEAR
+    unit = "currency-USD"
     documentation = """Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"""
 
     def formula(tax_unit, period):
         return add(
-            tax_unit, period, "ptax_was", "filer_setax", "extra_payrolltax"
+            tax_unit,
+            period,
+            "ptax_was",
+            "ptax_amc",
+            "filer_setax",
+            "extra_payrolltax",
         )
 
 
@@ -1245,9 +1251,25 @@ class ptax_amc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Additional Medicare Tax"
+    unit = "currency-USD"
     documentation = (
         """Additional Medicare Tax from Form 8959 (included in payrolltax)"""
     )
+
+    def formula(tax_unit, period, parameters):
+        fica = parameters(period).irs.payroll.fica
+        positive_sey = max_(0, tax_unit("filer_sey", period))
+        combined_rate = fica.medicare.rate + fica.social_security.rate
+        line8 = positive_sey * (1 - 0.5 * combined_rate)
+        mars = tax_unit("mars", period)
+        e00200 = tax_unit("filer_e00200", period)
+        exclusion = fica.medicare.additional.exclusion[mars]
+        earnings_over_exclusion = e00200 - exclusion
+        line11 = max_(0, -earnings_over_exclusion)
+        return fica.medicare.additional.rate * max_(
+            0, earnings_over_exclusion
+        ) + max_(0, line8 - line11)
 
 
 class ptax_oasdi(Variable):

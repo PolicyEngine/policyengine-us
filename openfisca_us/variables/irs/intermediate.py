@@ -33,7 +33,7 @@ class ptax_ss_was(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.social_security.tax_rate
+        rate = parameters(period).irs.payroll.fica.social_security.rate
         return rate * person("txearn_was", period)
 
 
@@ -54,7 +54,7 @@ class ptax_mc_was(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.medicare.tax_rate
+        rate = parameters(period).irs.payroll.fica.medicare.rate
         return rate * person("gross_was", period)
 
 
@@ -77,7 +77,7 @@ class sey_frac(Variable):
     def formula(tax_unit, period, parameters):
         fica = parameters(period).irs.payroll.fica
         return 1.0 - parameters(period).irs.ald.misc.employer_share * (
-            fica.social_security.tax_rate + fica.medicare.tax_rate
+            fica.social_security.rate + fica.medicare.rate
         )
 
 
@@ -106,7 +106,7 @@ class setax_ss(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.social_security.tax_rate
+        rate = parameters(period).irs.payroll.fica.social_security.rate
         return rate * person("txearn_sey", period)
 
 
@@ -129,7 +129,7 @@ class setax_mc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.medicare.tax_rate
+        rate = parameters(period).irs.payroll.fica.medicare.rate
         return rate * max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
@@ -156,7 +156,7 @@ class sey_frac_for_extra_oasdi(Variable):
         return (
             1.0
             - parameters(period).irs.ald.misc.employer_share
-            * fica.social_security.tax_rate
+            * fica.social_security.rate
         )
 
 
@@ -175,7 +175,7 @@ class extra_payrolltax(Variable):
         return tax_unit.sum(
             extra_ss_income
             * not_(tax_unit.members("is_tax_unit_dependent", period))
-            * ss.tax_rate
+            * ss.rate
         )
 
 
