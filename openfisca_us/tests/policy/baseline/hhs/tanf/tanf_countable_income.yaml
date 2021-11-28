@@ -1,0 +1,56 @@
+- name: "Calculating countable income in Illinois from gross income"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 46
+      child:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf_gross_income: 100
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_countable_income: 25
+
+- name: "Calculating countable income in Illinois from no gross income"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 32
+      child:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf_gross_income: 0
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_countable_income: 0
+
+- name: "Calculating countable income in Illinois from negative gross income"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+      child:
+        age: 18
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf_gross_income: -500
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_countable_income: 0
