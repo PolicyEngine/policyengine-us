@@ -3,67 +3,6 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-class tax_inc(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        # not accurate, for demo
-        return max_(
-            0,
-            tax_unit("filer_earned", period) - tax_unit("standard", period),
-        )
-
-
-class income(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        # not accurate, for demo
-        return tax_unit("tax_inc", period)
-
-
-class taxes(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        income = tax_unit("income", period)
-        mars = tax_unit("mars", period)
-        brackets = parameters(period).irs.income.bracket
-        thresholds = (
-            [0]
-            + [brackets.thresholds[str(i)][mars] for i in range(1, 7)]
-            + [infinity]
-        )
-        rates = [brackets.rates[str(i)] for i in range(1, 8)]
-        bracketed_amounts = [
-            amount_between(income, lower, upper)
-            for lower, upper in zip(thresholds[:-1], thresholds[1:])
-        ]
-        bracketed_tax_amounts = [
-            rates[i] * bracketed_amounts[i] for i in range(7)
-        ]
-        tax_amount = sum(bracketed_tax_amounts)
-        return tax_amount
-
-
-class after_tax_income(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-
-    def formula(taxunit, period, parameters):
-        return taxunit("earned", period) - taxunit("Taxes", period)
-
-
-# End of placeholder
-
-
 class sey(Variable):
     value_type = float
     entity = Person
@@ -1232,9 +1171,11 @@ class pre_c04600(Variable):
     documentation = """Personal exemption before phase-out"""
 
     def formula(tax_unit, period, parameters):
-        exemption = parameters(period).irs.income.personal_exemption
+        exemption = parameters(period).irs.income.exemption
         return where(
-            tax_unit("dsi", period), 0, tax_unit("xtot", period) * exemption
+            tax_unit("dsi", period),
+            0,
+            tax_unit("xtot", period) * exemption.amount,
         )
 
 
@@ -1325,7 +1266,7 @@ class ymod(Variable):
     def formula(tax_unit, period, parameters):
         ymod2 = (
             tax_unit("filer_e00400", period)
-            + (0.5 * tax_unit("e02400", period))
+            + (0.5 * tax_unit("filer_e02400", period))
             - tax_unit("c02900", period)
         )
         ymod3 = add(
