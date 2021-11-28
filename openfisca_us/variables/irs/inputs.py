@@ -830,6 +830,14 @@ class e24515(Variable):
     definition_period = YEAR
     documentation = """Sch D: Un-Recaptured Section 1250 Gain"""
 
+class filer_e24515(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Un-recaptured Section 1250 Gain for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e24515", tax_unit, period)
 
 class e24518(Variable):
     value_type = float
@@ -837,6 +845,14 @@ class e24518(Variable):
     definition_period = YEAR
     documentation = """Sch D: 28% Rate Gain or Loss"""
 
+class filer_e24518(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Sch D Rate Gain or Loss for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e24518", tax_unit, period)
 
 class e26270(Variable):
     value_type = float
