@@ -175,3 +175,12 @@ class is_disabled_or_elderly_for_snap(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+
+
+class is_homeless_for_snap(Variable):
+
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
+    label = "Indicates that a person is defined as homeless based on the SNAP definition"
