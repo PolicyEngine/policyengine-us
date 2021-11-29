@@ -759,7 +759,7 @@ class c09600(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Alternative Minimum Tax"
-    unit = "currency-GBP"
+    unit = "currency-USD"
     documentation = """Alternative Minimum Tax (AMT) liability"""
 
     def formula(tax_unit, period, parameters):
@@ -802,7 +802,7 @@ class c09600(Variable):
                 "filer_e24515",
             ]
         ]
-        form_6251_part_iii_requred = np.any(
+        form_6251_part_iii_required = np.any(
             [
                 variable > 0
                 for variable in [
@@ -852,7 +852,7 @@ class c09600(Variable):
         )
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
-        line31 = where(form_6251_part_iii_requred, line64, line3163)
+        line31 = where(form_6251_part_iii_required, line64, line3163)
         e07300 = tax_unit("filer_e07300", period)
 
         # Form 6251, Part II bottom
