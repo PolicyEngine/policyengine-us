@@ -1,0 +1,59 @@
+- name: Family of 4, income of 24k/year (Standard Test), all members homeless
+  period: 2021
+  absolute_error_margin: 0.00
+  input:
+    people:
+      person_1:
+        age: 30
+        is_homeless_for_snap: True
+      person_2:
+        age: 35
+        is_homeless_for_snap: True
+      person_3:
+        age: 17
+        is_homeless_for_snap: True
+      person_4:
+        age: 15
+        is_homeless_for_snap: True
+    spm_units:
+      spm_unit:
+        has_all_persons_homeless_for_snap: True
+        snap_gross_income: 2000 * 12
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output: 
+    snap_homeless_shelter_deduction: 143
+
+- name: Family of 4, income of 24k/year (Standard Test), 2 members homeless
+  period: 2021
+  absolute_error_margin: 0.00
+  input:
+    people:
+      person_1:
+        age: 30
+        is_homeless_for_snap: True
+      person_2:
+        age: 35
+        is_homeless_for_snap: False
+      person_3:
+        age: 17
+        is_homeless_for_snap: True
+      person_4:
+        age: 15
+        is_homeless_for_snap: False
+    spm_units:
+      spm_unit1:
+        has_all_persons_homeless_for_snap: True
+        snap_gross_income: 2000 * 12
+        members: [person_1, person_3]
+      spm_unit2:
+        has_all_persons_homeless_for_snap: True
+        snap_gross_income: 2000 * 12
+        members: [person_2, person_4]        
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap_homeless_shelter_deduction: 0

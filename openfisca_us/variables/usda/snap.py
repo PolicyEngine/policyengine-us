@@ -177,6 +177,32 @@ class is_disabled_or_elderly_for_snap(Variable):
     documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
 
 
+class snap_homeless_shelter_deduction(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Homeless shelter deduction"
+    documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
+
+    def formula(spm_unit, period, parameters):
+
+        return where(
+            has_all_persons_homeless_for_snap,
+            parameters(period).usda.snap.homeless_shelter_deduction.amount,
+            0,
+        )
+
+
+class has_all_persons_homeless_for_snap(Variable):
+
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Has all persons defined as homeless per SNAP definition"
+    documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
+    label = "Indicates that a household is defined as homeless based on the SNAP definition"
+
+
 class is_homeless_for_snap(Variable):
 
     value_type = bool
@@ -185,6 +211,4 @@ class is_homeless_for_snap(Variable):
     documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
     label = "Indicates that a person is defined as homeless based on the SNAP definition"
 
-    def formula(person, period, parameters):
-
-        #NOTE: Homeless defs might be determined at the state agency level
+    # NOTE: Homeless defs might be determined at the state agency level
