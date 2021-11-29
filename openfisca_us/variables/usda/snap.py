@@ -168,9 +168,3 @@ class snap(Variable):
             "snap_expected_contribution_towards_food", period
         )
 
-
-class is_usda_elderly(Variable):
-    value_type = bool
-    entity = Person
-    definition_period = YEAR
-    documentation = "Is elderly per USDA guidelines"
