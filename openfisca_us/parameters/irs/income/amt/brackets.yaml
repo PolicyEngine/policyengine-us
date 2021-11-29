@@ -1,0 +1,23 @@
+rates:
+  metadata:
+    unit: /1
+  1:
+    values:
+      2013-01-01: 0.26
+  2:
+    values:
+      2013-01-01: 0.02
+thresholds:
+  description: AMT brackets (upper thresholds)
+  metadata:
+    unit: currency-USD
+    period: year
+  1:
+    values:
+      2013-01-01: 179_500.0
+      2014-01-01: 182_500.0
+      2015-01-01: 185_400.0
+      2016-01-01: 186_300.0
+      2017-01-01: 187_800.0
+      2018-01-01: 191_100.0
+      2019-01-01: 194_800.0
