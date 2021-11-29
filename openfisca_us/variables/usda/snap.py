@@ -167,10 +167,3 @@ class snap(Variable):
         return spm_unit("snap_max_benefit", period) - spm_unit(
             "snap_expected_contribution_towards_food", period
         )
-
-
-class is_usda_elderly(Variable):
-    value_type = bool
-    entity = Person
-    definition_period = YEAR
-    documentation = "Indicates whether person is disabled per USDA definition"
