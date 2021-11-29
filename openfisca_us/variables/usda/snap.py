@@ -184,3 +184,7 @@ class is_homeless_for_snap(Variable):
     definition_period = YEAR
     documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
     label = "Indicates that a person is defined as homeless based on the SNAP definition"
+
+    def formula(person, period, parameters):
+
+        #NOTE: Homeless defs might be determined at the state agency level
