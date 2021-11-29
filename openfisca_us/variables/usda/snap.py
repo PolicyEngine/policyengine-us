@@ -174,4 +174,3 @@ class snap(Variable):
         return spm_unit("snap_max_benefit", period) - spm_unit(
             "snap_expected_contribution_towards_food", period
         )
-
