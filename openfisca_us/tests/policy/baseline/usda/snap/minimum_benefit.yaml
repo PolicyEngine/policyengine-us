@@ -1,4 +1,4 @@
-- name: Family of 2, max income (Standard Test)
+- name: Family of 2, max gross income (Standard Test)
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -18,11 +18,15 @@
     snap: 16 * 12
 
 #notes:
-#1868 is max gross income eligibility. if we assume all income
-#is earned income, the standard and earnings deduction
-#are sufficient to satisfy max net income eligibility.
-#for simplicity, we are also assuming that there is no housing 
-#cost over 50% of (snap_gross_income-(earnings_deductions+standard_deduction))
+#1868 is max gross income eligibility for 2.
+#if we assume all income is earned income, 
+#the standard and earnings deduction
+#are sufficient to satisfy max net income 
+#eligibility.
+#for simplicity, we are also assuming that there
+#is no housing cost over 50% of:
+# (snap_gross_income) - 
+# (earnings_deductions+standard_deduction)
 
 #following through the calculation, you eventually get 
 #snap_max_benefit[2] - expected_contribution_towards_food
@@ -32,3 +36,33 @@
 #max benefit of 16 dollars (not calculated from our benefit amount, but
 #rather cited from: 
 #https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Minimum-Allotments_0.pdf) 
+
+- name: Family of 3, max income (Standard Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 50
+      person_3:
+        age: 35
+    spm_units:
+      spm_unit:
+        snap_gross_income: 2353 * 12
+        members: [person_1, person_2, person_3]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap: 20.38
+
+#following through this example would give you a 
+#benefit of 20.38 per month. There is 
+#no minimum benefit for housholds over 2. 
+
+#this assumes all income is earned income -
+#if this were not the case it seems this 
+#family would have a negative benefit amount,
+#and have de facto no eligibility
