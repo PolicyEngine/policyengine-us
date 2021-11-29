@@ -645,6 +645,7 @@ class c05800(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Total income tax liability before credits"
+    unit = "currency-USD"
     documentation = """Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"""
 
     def formula(tax_unit, period, parameters):
