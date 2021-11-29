@@ -101,12 +101,11 @@ class snap_shelter_deduction(Variable):
         )
 
 
-class has_usda_disabled(Variable):
+class has_elderly_disabled(Variable):
     value_type = bool
     entity = SPMUnit
-    documentation = (
-        "Whether the SPM unit includes disabled people per UDSA definition"
-    )
+    label = "Has elderly disabled"
+    documentation = "Whether the SPM unit has elderly disabled people"
     definition_period = YEAR
 
 
