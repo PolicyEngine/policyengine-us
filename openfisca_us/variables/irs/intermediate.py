@@ -1,3 +1,4 @@
+from numpy import ceil
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_us.tools.general import *
@@ -208,3 +209,82 @@ class posagi(Variable):
 
     def formula(tax_unit, period, parameters):
         return max_(tax_unit("c00100", period), 0)
+
+
+class c33200(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Credit for child and dependent care expenses"
+    unit = "currency-USD"
+    documentation = "From form 2441, before refundability checks"
+    definition_period = YEAR
+    unit = "currency-USD"
+
+    def formula(tax_unit, period, parameters):
+        cdcc = parameters(period).irs.credits.child_and_dep_care
+        max_credit = min_(tax_unit("f2441", period), 2) * cdcc.max
+        c32800 = max_(0, min_(tax_unit("filer_e32800", period), max_credit))
+        mars = tax_unit("mars", period)
+        is_head = tax_unit.members("is_tax_unit_head", period)
+        earnings = tax_unit.members("earned", period)
+        is_spouse = tax_unit.members("is_tax_unit_spouse", period)
+        lowest_earnings = where(
+            mars == mars.possible_values.JOINT,
+            min_(
+                tax_unit.sum(is_head * earnings),
+                tax_unit.sum(is_spouse * earnings),
+            ),
+            tax_unit.sum(is_head * earnings),
+        )
+        c33000 = max_(0, min_(c32800, lowest_earnings))
+        c00100 = tax_unit("c00100", period)
+        tratio = ceil(
+            max_(((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0)
+        )
+        exact = tax_unit("exact", period)
+        crate = where(
+            exact,
+            max_(
+                cdcc.phaseout.min,
+                cdcc.phaseout.max
+                - min_(
+                    cdcc.phaseout.max - cdcc.phaseout.min,
+                    tratio,
+                ),
+            ),
+            max_(
+                cdcc.phaseout.min,
+                cdcc.phaseout.max
+                - max(
+                    ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate),
+                    0,
+                ),
+            ),
+        )
+        tratio2 = ceil(
+            max_(
+                ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate), 0
+            )
+        )
+        crate_if_over_second_threshold = where(
+            exact,
+            max_(0, cdcc.phaseout.min - min_(cdcc.phaseout.min, tratio2)),
+            max_(
+                0,
+                cdcc.phaseout.min
+                - max_(
+                    (
+                        (c00100 - cdcc.phaseout.second_start)
+                        * cdcc.phaseout.rate
+                    ),
+                    0,
+                ),
+            ),
+        )
+        crate = where(
+            c00100 > cdcc.phaseout.second_start,
+            crate_if_over_second_threshold,
+            crate,
+        )
+
+        return c33000 * 0.01 * crate
