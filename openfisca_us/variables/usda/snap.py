@@ -22,9 +22,9 @@ class snap_earnings_deduction(Variable):
 
         snap_earnings_deduction = parameters(
             period
-        ).usda.snap.earnings_deduction
+        ).benefit.snap.earnings_deduction
 
-        return spm_unit("snap_gross_income", period) * snap_earnings_deduction
+        return spm_unit("gross_income", period) * snap_earnings_deduction
 
 
 class snap_standard_deduction(Variable):
@@ -35,14 +35,15 @@ class snap_standard_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
 
-        standard_deductions = parameters(period).usda.snap.standard_deduction
+        standard_deductions = parameters(
+            period
+        ).benefit.snap.standard_deduction
 
-        state_group = spm_unit.household("state_group_str", period)
-        # Households with more than 6 people have a 6-person households's
-        # standard deduction.
-        capped_household_size = min_(spm_unit.nb_persons(), 6)
+        state_group = spm_unit("state_group")
 
-        return standard_deductions[state_group][capped_household_size] * 12
+        household_size = spm_unit("household_size")
+
+        return standard_deductions[state_group][household_size] * 12
 
 
 class snap_net_income_pre_shelter(Variable):
@@ -54,7 +55,7 @@ class snap_net_income_pre_shelter(Variable):
     def formula(spm_unit, period, parameters):
 
         return (
-            spm_unit("snap_gross_income", period)
+            spm_unit("gross_income", period)
             - spm_unit("snap_standard_deduction", period)
             - spm_unit("snap_earnings_deduction", period)
         )
@@ -77,7 +78,7 @@ class snap_shelter_deduction(Variable):
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
         # check for member of spm_unit with disability/elderly status
-        p_shelter_deduction = parameters(period).usda.snap.shelter_deduction
+        p_shelter_deduction = parameters(period).benefit.snap.shelter_deduction
 
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
@@ -91,7 +92,7 @@ class snap_shelter_deduction(Variable):
         )
 
         # Index maximum shelter deduction by state group.
-        state_group = spm_unit.household("state_group_str", period)
+        state_group = spm_unit("state_group", period)
         ded_cap = p_shelter_deduction.amount[state_group]
 
         has_elderly_disabled = spm_unit("has_elderly_disabled", period)
@@ -134,7 +135,7 @@ class snap_expected_contribution_towards_food(Variable):
 
         expected_food_contribution = parameters(
             period
-        ).usda.snap.expected_food_contribution
+        ).benefit.snap.expected_food_contribution
         return spm_unit("snap_net_income", period) * expected_food_contribution
 
 
@@ -148,11 +149,13 @@ class snap_max_benefit(Variable):
     def formula(spm_unit, period, parameters):
 
         # TODO: Logic for families with >8 people
-        snap_max_benefits = parameters(period).usda.snap.amount.main
-        state_group = spm_unit.household("state_group_str", period)
+        snap_max_benefits = parameters(period).benefit.snap.amount.main
+
+        state_group = spm_unit.household("state_group", period)
+        # TODO: Use number_persons
         household_size = spm_unit.nb_persons()
 
-        return snap_max_benefits[state_group][household_size] * 12
+        return snap_max_benefits[household_size][state_group] * 12
 
 
 class snap(Variable):
@@ -169,9 +172,71 @@ class snap(Variable):
         )
 
 
-class is_disabled_or_elderly_for_snap(Variable):
-
+class is_usda_disabled(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+    documentation = "Indicates that a person is defined as disabled based on the USDA definition"
+
+
+class is_usda_elderly(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as elderly based on the USDA definition"
+
+
+class federal_disability_or_blindess_receipt(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the federal disability or blindness receipt"
+
+
+class state_disability_or_blindess_receipt(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the state disability or blindness receipt"
+
+
+class gov_agency_permanent_disability(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the gov agency permanent disability"
+
+
+class railroad_retirment_and_medicare(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the railroad retirment and medicare"
+
+
+class ssi_disabled(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the ssi disabled"
+
+
+class permanently_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the permanently disabled veteran"
+
+
+class surviving_spouse_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the surviving spouse of disabled veteran"
+
+
+class surviving_child_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled based on the surviving child of disabled veteran"

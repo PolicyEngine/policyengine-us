@@ -1,0 +1,32 @@
+description: USDA Definitions for Elderly and Disabled Individuals
+
+elderly:
+  age:
+    2021-01-01: 60
+  metadata:
+    unit: years
+    
+disabled:
+  federal_disability_or_blindess_receipt: 
+    2021-01-01: True 
+  state_disability_or_blindess_receipt: 
+    2021-01-01: True
+  gov_agency_permanent_disability: 
+    2021-01-01: True
+  railroad_retirment_and_medicare: 
+    2021-01-01: True
+  ssi_disabled: 
+    2021-01-01: True
+  permanently_disabled_veteran: 
+    2021-01-01: True
+  surviving_spouse_of_disabled_veteran: 
+    2021-01-01: True
+  surviving_child_of_disabled_veteran: 
+    2021-01-01: True
+  metadata:
+    unit: program participation
+ 
+metadata: 
+  reference:
+      - title: 'SNAP Special Rules for the Elderly or Disabled'
+        href: https://www.fns.usda.gov/snap/eligibility/elderly-disabled-special-rules#Who%20is%20elderly?
