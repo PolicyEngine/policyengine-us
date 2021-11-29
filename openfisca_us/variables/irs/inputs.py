@@ -39,7 +39,7 @@ class mars(Variable):
     possible_values = MARSType
     default_value = MARSType.SINGLE
     definition_period = YEAR
-    label = "MARS Status for the tax unit"
+    label = "Marital status for the tax unit"
 
     def formula(tax_unit, period, parameters):
         has_spouse = tax_unit.max(
