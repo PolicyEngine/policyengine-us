@@ -218,7 +218,6 @@ class c33200(Variable):
     unit = "currency-USD"
     documentation = "From form 2441, before refundability checks"
     definition_period = YEAR
-    unit = "currency-USD"
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.child_and_dep_care
@@ -287,4 +286,4 @@ class c33200(Variable):
             crate,
         )
 
-        return c33000 * 0.01 * crate
+        return c33000 * crate
