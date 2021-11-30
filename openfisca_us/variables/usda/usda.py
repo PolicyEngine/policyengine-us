@@ -11,5 +11,5 @@ class is_usda_elderly(Variable):
     label = ""
 
     def formula(person, period, parameters):
-        min_age = parameters(period).usda.elderly_age
+        min_age = parameters(period).usda.elderly.age
         return person("age", period) >= min_age
