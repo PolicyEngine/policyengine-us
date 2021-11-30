@@ -86,7 +86,7 @@ class is_ccdf_smi_eligible(Variable):
     label = u"SMI eligibility for CCDF"
 
 
-class is_ccdf_reason_for_care_eligible(Variale):
+class is_ccdf_reason_for_care_eligible(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
