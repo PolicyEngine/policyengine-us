@@ -184,31 +184,10 @@ class snap_homeless_shelter_deduction(Variable):
     label = "Homeless shelter deduction"
     documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
 
-    def formula(spm_unit, period, parameters):
+    def formula(household, period, parameters):
 
         return where(
-            has_all_persons_homeless_for_snap,
+            household("is_homeless", period),
             parameters(period).usda.snap.homeless_shelter_deduction.amount,
             0,
         )
-
-
-class has_all_persons_homeless_for_snap(Variable):
-
-    value_type = bool
-    entity = SPMUnit
-    definition_period = YEAR
-    label = "Has all persons defined as homeless per SNAP definition"
-    documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
-    label = "Indicates that a household is defined as homeless based on the SNAP definition"
-
-
-class is_homeless_for_snap(Variable):
-
-    value_type = bool
-    entity = Person
-    definition_period = YEAR
-    documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
-    label = "Indicates that a person is defined as homeless based on the SNAP definition"
-
-    # NOTE: Homeless defs might be determined at the state agency level
