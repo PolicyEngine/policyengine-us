@@ -5,17 +5,6 @@ values:
   metadata:
     unit: currency-USD
 
-eligibility:
-  has_all_persons_homeless_for_snap:
-    2021-01-01: True
-  metadata:
-    unit: bool
-
-#NOTE:
-#A State agency may provide a standard homeless shelter
-#deduction of $143 a month to households in which all members 
-#are homeless individuals but are not receiving free shelter throughout the month. 
-
 metadata:
   reference:
   - title: '7 CFR § 273.9 - Income and deductions.'
