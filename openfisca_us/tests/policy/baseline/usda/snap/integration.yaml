@@ -1,0 +1,29 @@
+- name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        snap_gross_income: 2000 * 12
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap: 3_051.6  # 8160 - 5108.4.
+    snap_max_benefit: 8_160  # 12 * $680 (parameter for family of 4 in contiguous US).
+    snap_expected_contribution_towards_food: 5108.4  # 17028 * 0.3 (flat parameter).
+    snap_net_income: 17_028  # 17028 - 0.
+    snap_net_income_pre_shelter: 17_028  # 24000 - 2172 - 4800.
+    snap_shelter_deduction: 0  # No shelter costs reported.
+    snap_standard_deduction: 2_172  # 181 (parameter for family of 4 in contiguous US) * 12.
+    snap_earnings_deduction: 4_800  # 2000 * 0.2 (flat 20% parameter) * 12.
