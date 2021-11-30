@@ -10,6 +10,6 @@ class is_usda_elderly(Variable):
     documentation = "Is elderly per USDA guidelines"
     label = ""
 
-    def formula(persons, period, parameters):
+    def formula(person, period, parameters):
         min_age = parameters(period).usda.elderly_age
         return person("age", period) >= min_age
