@@ -1,6 +1,7 @@
 - name: Family of 4, income of 24k/year (Standard Test), homeless
   period: 2021
   absolute_error_margin: 0.00
+  input:
     households:
       household:
         is_homeless: True
@@ -10,6 +11,7 @@
 - name: Family of 4, income of 24k/year (Standard Test), not homeless
   period: 2021
   absolute_error_margin: 0.00
+  input:  
     households:
       household:
         is_homeless: False
