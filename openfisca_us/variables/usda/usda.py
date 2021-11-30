@@ -12,4 +12,4 @@ class is_usda_elderly(Variable):
 
     def formula(persons, period, parameters):
         min_age = parameters(period).usda.elderly.values.age
-        return persons.members("age", period) >= min_age
+        return person("age", period) >= min_age
