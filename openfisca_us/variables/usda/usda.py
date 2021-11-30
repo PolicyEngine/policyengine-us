@@ -11,6 +11,6 @@ class is_usda_disabled(Variable):
     label = ""
 
     def formula(persons, period, parameters):
-        disabled_status = parameters.usda.disabled.values
+        disabled_programs = parameters(period).usda.disabled_programs
 
         return
