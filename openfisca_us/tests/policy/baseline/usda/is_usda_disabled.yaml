@@ -1,9 +1,9 @@
-- name: Individual, receives Federal Disability/Blindness Aid
+- name: SSI disabled people are USDA disabled
   period: 2021
   input:
     people:
         person_1:
-          federal_disability_or_blindness_receipt: True
+          is_ssi_disabled: True
   output:
     is_usda_disabled: True
 
@@ -12,6 +12,6 @@
   input:
     people:
         person_1:
-          federal_disability_or_blindness_receipt: False
+          is_ssi_disabled: False
   output:
     is_usda_disabled: False
