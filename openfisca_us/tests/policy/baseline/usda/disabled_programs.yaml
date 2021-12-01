@@ -1,27 +1,17 @@
-- name: Individual, receieves Federal Disability/Blindness Aid
+- name: Individual, receives Federal Disability/Blindness Aid
   period: 2021
-  absolute_error_margin: 0.01
   input:
     people:
         person_1:
           federal_disability_or_blindness_receipt: True
-          age: 30
-    households:
-      household:
-        state_group: CONTIGUOUS_US
   output:
     is_usda_disabled: True
 
-- name: Individual, does not receieve Federal Disability/Blindness Aid
+- name: Individual, does not receive Federal Disability/Blindness Aid
   period: 2021
-  absolute_error_margin: 0.01
   input:
     people:
         person_1:
           federal_disability_or_blindness_receipt: False
-          age: 30
-    households:
-      household:
-        state_group: CONTIGUOUS_US
   output:
     is_usda_disabled: False

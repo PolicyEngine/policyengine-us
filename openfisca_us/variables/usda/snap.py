@@ -9,14 +9,18 @@ class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "SPM unit's gross income for calculating SNAP eligibility"
+    documentation = "SPM unit's gross income for calculating SNAP eligibility"
+    label = "SNAP Gross Income"
 
 
 class snap_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "SPM unit's earnings deduction for calculating SNAP benefit amount"
+    )
+    label = "SNAP Earnings Deduction"
 
     def formula(spm_unit, period, parameters):
 
@@ -32,13 +36,17 @@ class is_disabled_or_elderly_for_snap(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+    label = "Is disabled or elderly for SNAP"
 
 
 class snap_standard_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "SPM unit's standard deduction for calculating SNAP benefit amount"
+    )
+    label = "SNAP Standard Deduction"
 
     def formula(spm_unit, period, parameters):
 
@@ -56,7 +64,8 @@ class snap_net_income_pre_shelter(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "SPM unit's net income before shelter deduction, needed as intermediate to calculate shelter deduction"
+    label = "SNAP Net Income Pre-Shelter"
 
     def formula(spm_unit, period, parameters):
 
@@ -79,7 +88,8 @@ class snap_shelter_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "SPM Unit's excess shelter deduction"
+    label = "SNAP Shelter Deduction"
 
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
@@ -113,6 +123,7 @@ class has_elderly_disabled(Variable):
     entity = SPMUnit
     label = "Has elderly disabled"
     documentation = "Whether the SPM unit has elderly disabled people"
+    label = "Elderly or Disabled Person Present"
     definition_period = YEAR
 
 
@@ -120,7 +131,8 @@ class snap_net_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "SPM unit's net income after all deductions"
+    label = "SNAP Net Income"
 
     def formula(spm_unit, period, parameters):
 
@@ -130,11 +142,11 @@ class snap_net_income(Variable):
 
 
 class snap_expected_contribution_towards_food(Variable):
-
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Expected food contribution for SPM unit"
+    label = "SNAP Expected Food Contribution"
 
     def formula(spm_unit, period, parameters):
         # TODO: Use the parameter
@@ -150,7 +162,8 @@ class snap_max_benefit(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Maximum benefit for SPM unit, based on the state group and household size."
+    label = "SNAP Maximum Benefit"
 
     def formula(spm_unit, period, parameters):
 
@@ -163,11 +176,11 @@ class snap_max_benefit(Variable):
 
 
 class snap(Variable):
-
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "SNAP benefit amount for SPM unit"
+    label = "SNAP Benefit Amount"
 
     def formula(spm_unit, period, parameters):
         # TODO: Add gross and net income checks.
@@ -180,53 +193,69 @@ class federal_disability_or_blindness_receipt(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = "Indicates whether a person has federal disability or blindness receipt"
+    label = "Federal Disability or Blindness Receipt"
 
 
 class state_disability_or_blindness_receipt(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "Indicates whether a person has state disability or blindness receipt"
+    )
+    label = "State Disability or Blindness Receipt"
 
 
 class gov_agency_permanent_disability(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "Indicates whether a person has permanent disability from a gov agency"
+    )
+    label = "Gov Agency Permanent Disability"
 
 
 class railroad_retirement_and_medicare(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = "Indicates whether a person has railroad retirement or medicare receipt"
+    label = "Railroad Retirement and Medicare"
 
 
 class ssi_disabled(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = "Indicates whether a person is SSI disabled"
+    label = "SSI Disabled"
 
 
 class permanently_disabled_veteran(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "Indicates whether a person is a permanently disabled veteran"
+    )
+    label = "Permanently Disabled Veteran"
 
 
 class surviving_spouse_of_disabled_veteran(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = "Indicates whether a person is a surviving spouse of a disabled veteran"
+    label = "Surviving Spouse of Disabled Veteran"
 
 
 class surviving_child_of_disabled_veteran(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "Indicates whether a person is a surviving child of a disabled veteran"
+    )
+    label = "Surviving Child of Disabled Veteran"
