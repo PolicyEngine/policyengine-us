@@ -227,7 +227,6 @@ class county(Variable):
 
 
 class is_homeless(Variable):
-
     value_type = bool
     entity = Household
     definition_period = YEAR
