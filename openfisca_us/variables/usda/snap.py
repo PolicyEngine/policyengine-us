@@ -174,3 +174,59 @@ class snap(Variable):
         return spm_unit("snap_max_benefit", period) - spm_unit(
             "snap_expected_contribution_towards_food", period
         )
+
+
+class federal_disability_or_blindness_receipt(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class state_disability_or_blindness_receipt(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class gov_agency_permanent_disability(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class railroad_retirement_and_medicare(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class ssi_disabled(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class permanently_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class surviving_spouse_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
+
+
+class surviving_child_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = ""
