@@ -13,4 +13,4 @@ class is_usda_disabled(Variable):
     def formula(person, period, parameters):
         disabled_programs = parameters(period).usda.disabled_programs
 
-        return where(any_([person(program, period) for program in disabled_programs])), 1, 0)
+        return where(np.any([person(program, period) for program in disabled_programs])), 1, 0)
