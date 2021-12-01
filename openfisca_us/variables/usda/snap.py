@@ -191,4 +191,3 @@ class snap_homeless_shelter_deduction(Variable):
             is_homeless
             * parameters(period).usda.snap.homeless_shelter_deduction
         )
-
