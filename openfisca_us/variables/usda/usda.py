@@ -10,7 +10,7 @@ class is_usda_disabled(Variable):
     documentation = "Indicates whether person is disabled per USDA definition, see https://www.law.cornell.edu/uscode/text/7/2014"
     label = "USDA disabled status"
 
-    def formula(persons, period, parameters):
+    def formula(person, period, parameters):
         disabled_programs = parameters(period).usda.disabled_programs
 
-        return ()
+        return person("disabled_program", period)
