@@ -5,9 +5,6 @@
     people:
       person_1:
         age: 60
-    households:
-      household:
-        state_group: CONTIGUOUS_US
   output:
     is_usda_elderly: True
 
@@ -18,8 +15,5 @@
     people:
       person_1:
         age: 59
-    households:
-      household:
-        state_group: CONTIGUOUS_US
   output:
     is_usda_elderly: False
