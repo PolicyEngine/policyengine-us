@@ -184,9 +184,9 @@ class snap_homeless_shelter_deduction(Variable):
     label = "Homeless shelter deduction"
     documentation = "https://www.law.cornell.edu/cfr/text/7/273.9"
 
-    def formula(household, period, parameters):
+    def formula(spm_unit, period, parameters):
 
-        is_homeless = SPMUnit.household("is_homeless", period)
+        is_homeless = spm_unit.household("is_homeless", period)
         return (
             is_homeless
             * parameters(period).usda.snap.homeless_shelter_deduction
