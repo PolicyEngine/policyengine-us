@@ -645,6 +645,16 @@ class e07300(Variable):
     documentation = """Foreign tax credit from Form 1116"""
 
 
+class filer_e07300(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Foreign tax credit (Form 1116) for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e07300", tax_unit, period)
+
+
 class e07400(Variable):
     value_type = float
     entity = Person
@@ -880,6 +890,16 @@ class e32800(Variable):
     entity = Person
     definition_period = YEAR
     documentation = """Child/dependent-care expenses for qualifying persons from Form 2441"""
+
+
+class filer_e32800(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Child/dependent-care expenses for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e32800", tax_unit, period)
 
 
 class e58990(Variable):
