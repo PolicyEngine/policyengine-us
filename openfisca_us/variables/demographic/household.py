@@ -232,4 +232,4 @@ class is_homeless(Variable):
     entity = Household
     definition_period = YEAR
     documentation = "Whether all members are homeless individuals and are not receiving free shelter throughout the month"
-    label = ""
+    label = "Is homeless"
