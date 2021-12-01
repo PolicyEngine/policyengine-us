@@ -182,7 +182,8 @@ class snap_homeless_shelter_deduction(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "Homeless shelter deduction"
-    documentation = "Homeless shelter deduction per https://www.law.cornell.edu/cfr/text/7/273.9"
+    documentation = "Homeless shelter deduction"
+    reference = "https://www.law.cornell.edu/cfr/text/7/273.9"
 
     def formula(spm_unit, period, parameters):
 
