@@ -1,4 +1,4 @@
-- name: Family of 4, income of 24k/year (Standard Test), homeless
+- name: Individual, homeless
   period: 2021
   absolute_error_margin: 0.00
   input:
@@ -11,7 +11,7 @@
   output: 
     snap_homeless_shelter_deduction: 143 * 12
 
-- name: Family of 4, income of 24k/year (Standard Test), not homeless
+- name: Individual, not homeless
   period: 2021
   absolute_error_margin: 0.00
   input:
