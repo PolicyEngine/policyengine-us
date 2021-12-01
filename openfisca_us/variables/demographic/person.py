@@ -219,3 +219,31 @@ class duration_of_care(Variable):
                 DurationOfCare.HOURLY,
             ],
         )
+
+
+class permanently_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = (
+        "Indicates whether a person is a permanently disabled veteran"
+    )
+    label = "Permanently Disabled Veteran"
+
+
+class surviving_spouse_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates whether a person is a surviving spouse of a disabled veteran"
+    label = "Surviving Spouse of Disabled Veteran"
+
+
+class surviving_child_of_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = (
+        "Indicates whether a person is a surviving child of a disabled veteran"
+    )
+    label = "Surviving Child of Disabled Veteran"
