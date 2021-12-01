@@ -7,7 +7,7 @@ class is_usda_disabled(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = "Indicates whether person is disabled per USDA definition"
+    documentation = "Indicates whether person is disabled per USDA definition, see https://www.law.cornell.edu/uscode/text/7/2014"
     label = "USDA disabled status"
 
     def formula(persons, period, parameters):
