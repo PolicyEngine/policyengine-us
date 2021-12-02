@@ -108,7 +108,7 @@ class is_ccdf_eligible(Variable):
         )
 
         return (
-            & asset_eligible
+            asset_eligible
             & age_eligible
             & income_eligible
             & reason_for_care_eligible
