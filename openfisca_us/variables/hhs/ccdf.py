@@ -3,6 +3,7 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.person import *
 from openfisca_us.variables.demographic.household import *
+from openfisca_us.variables.expense.person import *
 
 
 class ccdf_county_cluster(Variable):
@@ -162,16 +163,6 @@ class ccdf_age_group(Variable):
                 CCDFAgeGroup.SCHOOL_AGE,
             ],
         )
-
-
-class ProviderTypeGroup(Enum):
-    DCC_SACC = "Licenced/registered/permitted day care center; registered school-age child care"
-    FDC_GFDC = (
-        "Registered family day care homes; licensed group family day care"
-    )
-    LE_GC = "Legally exempt group child care programs"
-    LE_STD = "Informal child care standard rate"
-    LE_ENH = "Informal child care enhanced rate"
 
 
 class DurationOfCare(Enum):
