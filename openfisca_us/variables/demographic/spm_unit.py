@@ -39,3 +39,10 @@ class spm_unit_assets(Variable):
     entity = SPMUnit
     label = u"SPM unit assets"
     definition_period = YEAR
+
+
+class income_to_spm_ratio(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"Income to SPM ratio"
+    definition_period = YEAR
