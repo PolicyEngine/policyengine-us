@@ -3,6 +3,7 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.person import *
 from openfisca_us.variables.demographic.household import *
+from openfisca_us.variables.expense.person import *
 
 
 class ccdf_county_cluster(Variable):
@@ -112,4 +113,90 @@ class is_ccdf_eligible(Variable):
             & age_eligible
             & income_eligible
             & reason_for_care_eligible
+        )
+
+
+class is_ccdf_home_based(Variable):
+    value_type = bool
+    default_value = False
+    entity = Person
+    label = u"Whether CCDF care is home-based versus center-based"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return (
+            person("provider_type_group", period) != ProviderTypeGroup.DCC_SACC
+        )
+
+
+class CCDFAgeGroup(Enum):
+    INFANT = "Infant"
+    TODDLER = "Toddler"
+    PRESCHOOLER = "Preschooler"
+    SCHOOL_AGE = "School age"
+
+
+class ccdf_age_group(Variable):
+    value_type = Enum
+    possible_values = CCDFAgeGroup
+    default_value = CCDFAgeGroup.INFANT
+    entity = Person
+    label = u"CCDF age group"
+    definition_period = YEAR
+
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
+
+    def formula(person, period, parameters):
+        age = person("age", period)
+        home_based = person("is_ccdf_home_based", period)
+        return select(
+            [
+                ((age < 1.5) & ~home_based) | ((age < 2) & home_based),
+                ((age < 2) & ~home_based) | ((age < 3) & home_based),
+                age < 6,
+                age < 13,
+            ],
+            [
+                CCDFAgeGroup.INFANT,
+                CCDFAgeGroup.TODDLER,
+                CCDFAgeGroup.PRESCHOOLER,
+                CCDFAgeGroup.SCHOOL_AGE,
+            ],
+        )
+
+
+class DurationOfCare(Enum):
+    WEEKLY = "Weekly"
+    DAILY = "Daily"
+    PART_DAY = "Part-Day"
+    HOURLY = "Hourly"
+
+
+class duration_of_care(Variable):
+    value_type = Enum
+    possible_values = DurationOfCare
+    default_value = DurationOfCare.WEEKLY
+    entity = Person
+    label = u"Child care duration of care"
+    definition_period = YEAR
+
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=5"
+
+    def formula(person, period):
+        hours_per_day = person("childcare_hours_per_day", period)
+        days_per_week = person("childcare_days_per_week", period)
+        hours_per_week = hours_per_day * days_per_week
+        return select(
+            [
+                hours_per_week >= 30,
+                hours_per_day >= 6,
+                hours_per_day >= 3,
+                True,
+            ],
+            [
+                DurationOfCare.WEEKLY,
+                DurationOfCare.DAILY,
+                DurationOfCare.PART_DAY,
+                DurationOfCare.HOURLY,
+            ],
         )
