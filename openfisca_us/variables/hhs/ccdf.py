@@ -85,6 +85,11 @@ class is_ccdf_income_eligible(Variable):
     definition_period = YEAR
     label = u"Income eligibility for CCDF"
 
+    def formula(spm_unit, period, parameters):
+        income_to_spm_ratio = spm_unit("income_to_spm_ratio", period)
+        p_ratio_limit = parameters(period).hhs.ccdf.income_limit
+        return income_to_spm_ratio <= p_ratio_limit
+
 
 class is_ccdf_reason_for_care_eligible(Variable):
     value_type = bool
