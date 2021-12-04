@@ -32,3 +32,17 @@ class is_spm_unit_head(Variable):
     def formula(person, period, parameters):
         # Use order of input (first)
         return person.spm_unit.members_position == 0
+
+
+class spm_unit_assets(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"SPM unit assets"
+    definition_period = YEAR
+
+
+class ccdf_income_to_smi_ratio(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"Income to SMI ratio"
+    definition_period = YEAR

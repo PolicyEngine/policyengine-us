@@ -30,6 +30,16 @@ class is_tanf_eligible(Variable):
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
 
 
+# Quick fix, should be fixed by resolving https://github.com/openfisca/openfisca-core/issues/1085
+class state_code_str(Variable):
+    value_type = str
+    entity = Household
+    definition_period = ETERNITY
+
+    def formula(household, period):
+        return household("state_code", period).decode_to_str()
+
+
 class tanf_max_amount(Variable):
     value_type = int
     entity = SPMUnit
@@ -37,6 +47,12 @@ class tanf_max_amount(Variable):
     label = "TANF maximum benefit"
     documentation = "The maximum benefit amount a family could receive from Temporary Assistance for Needy Families given their state and family size."
     unit = "currency-USD"
+
+    def formula(spm_unit, period, parameters):
+        family_size = spm_unit.nb_persons().astype(str)
+        state = spm_unit.household("state_code_str", period)
+        max_amount = parameters(period).hhs.tanf.max_amount
+        return max_amount[state][family_size] * 12
 
 
 class tanf_countable_income(Variable):
