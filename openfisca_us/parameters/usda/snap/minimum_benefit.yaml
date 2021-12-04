@@ -1,16 +1,18 @@
-description:  Minimum SNAP Benefit as a Fraction of Max Benefit by Household Size
+description: Minimum SNAP benefit as a fraction of maximum benefit
 
 rate:
-  1:
+  value:
     2021-01-01: 0.08 
-  2:
-    2021-01-01: 0.08
+  metadata:
+    unit: /1
 
-maximum_houshold_size:
-  2021-01-01: 2
+maximum_household_size:
+  value:
+    2021-01-01: 2
+  metadata:
+    unit: persons
 
 metadata:
-  unit: /1 
   reference:
   - title: '7 CFR § 273.10 - Determining household eligibility and benefit levels.'
     href: https://www.law.cornell.edu/cfr/text/7/273.10

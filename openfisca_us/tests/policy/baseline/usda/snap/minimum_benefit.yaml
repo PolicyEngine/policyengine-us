@@ -1,4 +1,4 @@
-- name: Family of 2, max gross income (Standard Test)
+- name: Family of 2
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -9,13 +9,13 @@
         age: 50
     spm_units:
       spm_unit:
-        snap_gross_income: 1868 * 12
         members: [person_1, person_2]
     households:
       household:
         state_group: CONTIGUOUS_US
+        members: [person_1, person_2]
   output:
-    snap: 16 * 12
+    snap_minimum_benefit: 204 * 0.08 * 12
 
 #notes:
 #1868 is max gross income eligibility for 2.
@@ -37,7 +37,7 @@
 #rather cited from: 
 #https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Minimum-Allotments_0.pdf) 
 
-- name: Family of 3, max income (Standard Test)
+- name: Family of 3
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -48,15 +48,8 @@
         age: 50
       person_3:
         age: 35
-    spm_units:
-      spm_unit:
-        snap_gross_income: 2353 * 12
-        members: [person_1, person_2, person_3]
-    households:
-      household:
-        state_group: CONTIGUOUS_US
   output:
-    snap: 20.38
+    snap_minimum_benefit: 0
 
 #following through this example would give you a 
 #benefit of 20.38 per month. There is 
