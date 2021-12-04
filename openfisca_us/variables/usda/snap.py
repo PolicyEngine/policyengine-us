@@ -9,18 +9,16 @@ class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "SPM unit's gross income for calculating SNAP eligibility"
-    label = "SNAP Gross Income"
+    documentation = "Gross income for calculating SNAP eligibility"
+    label = "SNAP gross income"
 
 
 class snap_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = (
-        "SPM unit's earnings deduction for calculating SNAP benefit amount"
-    )
-    label = "SNAP Earnings Deduction"
+    documentation = "Earnings deduction for calculating SNAP benefit amount"
+    label = "SNAP earnings deduction"
 
     def formula(spm_unit, period, parameters):
 
@@ -43,10 +41,8 @@ class snap_standard_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = (
-        "SPM unit's standard deduction for calculating SNAP benefit amount"
-    )
-    label = "SNAP Standard Deduction"
+    documentation = "Standard deduction for calculating SNAP benefit amount"
+    label = "SNAP standard deduction"
 
     def formula(spm_unit, period, parameters):
 
@@ -64,8 +60,8 @@ class snap_net_income_pre_shelter(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "SPM unit's net income before shelter deduction, needed as intermediate to calculate shelter deduction"
-    label = "SNAP Net Income Pre-Shelter"
+    documentation = "Net income before shelter deduction, needed as intermediate to calculate shelter deduction"
+    label = "SNAP net income pre-shelter"
 
     def formula(spm_unit, period, parameters):
 
@@ -88,8 +84,10 @@ class snap_shelter_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "SPM Unit's excess shelter deduction"
-    label = "SNAP Shelter Deduction"
+    documentation = (
+        "Excess shelter deduction for calculating SNAP benefit amount"
+    )
+    label = "SNAP shelter deduction"
 
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
@@ -122,8 +120,10 @@ class has_elderly_disabled(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Has elderly disabled"
-    documentation = "Whether the SPM unit has elderly disabled people"
-    label = "Elderly or Disabled Person Present"
+    documentation = (
+        "Whether elderly or disabled people, per USDA definitions, are present"
+    )
+    label = "Elderly or disabled person present"
     definition_period = YEAR
 
 
@@ -131,8 +131,8 @@ class snap_net_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "SPM unit's net income after all deductions"
-    label = "SNAP Net Income"
+    documentation = "Final net income, after all deductions"
+    label = "SNAP net income"
 
     def formula(spm_unit, period, parameters):
 
@@ -145,8 +145,8 @@ class snap_expected_contribution_towards_food(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "Expected food contribution for SPM unit"
-    label = "SNAP Expected Food Contribution"
+    documentation = "Expected food contribution from SNAP net income"
+    label = "SNAP expected good contribution"
 
     def formula(spm_unit, period, parameters):
         # TODO: Use the parameter
@@ -163,7 +163,7 @@ class snap_max_benefit(Variable):
     entity = SPMUnit
     definition_period = YEAR
     documentation = "Maximum benefit for SPM unit, based on the state group and household size."
-    label = "SNAP Maximum Benefit"
+    label = "SNAP maximum benefit"
 
     def formula(spm_unit, period, parameters):
 
@@ -179,8 +179,8 @@ class snap(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "SNAP benefit amount for SPM unit"
-    label = "SNAP Benefit Amount"
+    documentation = "Final SNAP benefit amount, equal to net income minus food contribution"
+    label = "SNAP benefit amount"
 
     def formula(spm_unit, period, parameters):
         # TODO: Add gross and net income checks.

@@ -228,7 +228,7 @@ class permanently_disabled_veteran(Variable):
     documentation = (
         "Indicates whether a person is a permanently disabled veteran"
     )
-    label = "Permanently Disabled Veteran"
+    label = "Permanently disabled veteran"
 
 
 class surviving_spouse_of_disabled_veteran(Variable):
@@ -236,7 +236,7 @@ class surviving_spouse_of_disabled_veteran(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Indicates whether a person is a surviving spouse of a disabled veteran"
-    label = "Surviving Spouse of Disabled Veteran"
+    label = "Surviving spouse of disabled veteran"
 
 
 class surviving_child_of_disabled_veteran(Variable):
@@ -246,4 +246,4 @@ class surviving_child_of_disabled_veteran(Variable):
     documentation = (
         "Indicates whether a person is a surviving child of a disabled veteran"
     )
-    label = "Surviving Child of Disabled Veteran"
+    label = "Surviving child of disabled veteran"
