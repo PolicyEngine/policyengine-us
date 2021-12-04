@@ -94,7 +94,7 @@ class is_citizen(Variable):
     definition_period = YEAR
 
 
-class permanently_disabled_veteran(Variable):
+class is_permanently_disabled_veteran(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
@@ -104,7 +104,7 @@ class permanently_disabled_veteran(Variable):
     label = "Permanently disabled veteran"
 
 
-class surviving_spouse_of_disabled_veteran(Variable):
+class is_surviving_spouse_of_disabled_veteran(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
@@ -112,7 +112,7 @@ class surviving_spouse_of_disabled_veteran(Variable):
     label = "Surviving spouse of disabled veteran"
 
 
-class surviving_child_of_disabled_veteran(Variable):
+class is_surviving_child_of_disabled_veteran(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
