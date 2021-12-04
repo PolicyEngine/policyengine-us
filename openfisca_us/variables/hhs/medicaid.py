@@ -19,12 +19,14 @@ class medicaid_person_type(Variable):
     default_value = MedicaidPersonType.ADULT_WITHOUT_DEPENDENT
     entity = Person
     definition_period = YEAR
+    label = "Medicaid person type"
     documentation = "Person type for Medicaid"
 
 
 class medicaid_income_threshold(Variable):
     value_type = float
     entity = Person
+    definition_period = YEAR
     label = "Medicaid FPL threshold"
     documentation = "Maximum income as a percentage of the federal poverty line to qualify for Medicaid"
 
