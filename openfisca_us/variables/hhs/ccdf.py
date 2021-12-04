@@ -86,9 +86,9 @@ class is_ccdf_income_eligible(Variable):
     label = u"Income eligibility for CCDF"
 
     def formula(spm_unit, period, parameters):
-        income_to_spm_ratio = spm_unit("income_to_spm_ratio", period)
-        p_ratio_limit = parameters(period).hhs.ccdf.income_limit
-        return income_to_spm_ratio <= p_ratio_limit
+        income_to_smi_ratio = spm_unit("ccdf_income_to_smi_ratio", period)
+        p_ratio_limit = parameters(period).hhs.ccdf.income_limit_smi
+        return income_to_smi_ratio <= p_ratio_limit
 
 
 class is_ccdf_reason_for_care_eligible(Variable):

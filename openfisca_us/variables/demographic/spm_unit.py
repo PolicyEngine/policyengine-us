@@ -41,8 +41,8 @@ class spm_unit_assets(Variable):
     definition_period = YEAR
 
 
-class income_to_spm_ratio(Variable):
+class ccdf_income_to_smi_ratio(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"Income to SPM ratio"
+    label = u"Income to SMI ratio"
     definition_period = YEAR
