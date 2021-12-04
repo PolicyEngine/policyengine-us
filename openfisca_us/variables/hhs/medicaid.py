@@ -4,6 +4,7 @@ from openfisca_us.tools.general import *
 from openfisca_us.variables.demographic.person import *
 from openfisca_us.variables.demographic.household import *
 
+
 class MedicaidPersonType(Enum):
     ADULT_WITHOUT_DEPENDENT = "Adult without dependent"
     ADULT_WITH_DEPENDENT = "Adult with dependent"
@@ -27,14 +28,12 @@ class medicaid_income_threshold(Variable):
     label = "Medicaid FPL threshold"
     documentation = "Maximum income as a percentage of the federal poverty line to qualify for Medicaid"
 
-        # Get state
-        # Get person type
-        # Get parameter
-        # Return indexed parameter
+    # Get state
+    # Get person type
+    # Get parameter
+    # Return indexed parameter
     def formula(person, period, parameters):
         state_code = person("state_code_str", period)
         person_type = person("medicaid_person_type", period)
         income_threshold = parameters(period).hhs.medicaid
         return income_threshold[state_code][person_type]
-    
-    
