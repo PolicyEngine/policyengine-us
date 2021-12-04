@@ -171,8 +171,6 @@ class snap_expected_contribution_towards_food(Variable):
     label = "SNAP expected good contribution"
 
     def formula(spm_unit, period, parameters):
-        # TODO: Use the parameter
-
         expected_food_contribution = parameters(
             period
         ).usda.snap.expected_food_contribution
@@ -180,7 +178,6 @@ class snap_expected_contribution_towards_food(Variable):
 
 
 class snap_max_benefit(Variable):
-
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
@@ -211,7 +208,7 @@ class snap(Variable):
                 spm_unit("snap_max_benefit", period)
                 - spm_unit("snap_expected_contribution_towards_food", period)
             ),
-            0 + snap_minimum_benefit,
+            0,
         )
 
 
