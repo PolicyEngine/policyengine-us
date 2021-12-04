@@ -12,16 +12,19 @@ class snap_minimum_benefit(Variable):
     label = "Minimum benefit for SNAP"
 
     def formula(spm_unit, period, parameters):
-
-        # TODO: add number of persons? Need a way to prevent households
-        # with more than 2 people from
-
-        snap = parameters(period).benefit.snap
-        state_group = spm_unit("state_group")
-        relevant_1_person_max = snap.max_benefit[state_group][1]
+        min_benefit = parameters(period).benefit.snap.minimum_benefit
         household_size = spm_unit.nb_persons()
-
-        return relevant_1_person_max * snap.minimum_benefit[household_size]
+        snap_max_benefits = parameters(period).usda.snap.amount.main
+        state_group = spm_unit.household("state_group_str", period)
+        relevant_max_benefit = snap_max_benefits[state_group][
+            min_benefit.relevant_max_benefit_household_size
+        ]
+        min_share_of_max = where(
+            household_size <= min_benefit.maximum_household_size,
+            min_benefit.rate,
+            0,
+        )
+        return relevant_max_benefit * min_share_of_max
 
 
 class snap_gross_income(Variable):
@@ -203,8 +206,12 @@ class snap(Variable):
 
     def formula(spm_unit, period, parameters):
         # TODO: Add gross and net income checks.
-        return spm_unit("snap_max_benefit", period) - spm_unit(
-            "snap_expected_contribution_towards_food", period
+        return max_(
+            (
+                spm_unit("snap_max_benefit", period)
+                - spm_unit("snap_expected_contribution_towards_food", period)
+            ),
+            0 + snap_minimum_benefit,
         )
 
 
