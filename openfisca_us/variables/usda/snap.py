@@ -27,6 +27,13 @@ class snap_earnings_deduction(Variable):
         return spm_unit("snap_gross_income", period) * snap_earnings_deduction
 
 
+class is_disabled_or_elderly_for_snap(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+
+
 class snap_standard_deduction(Variable):
     value_type = float
     entity = SPMUnit
@@ -175,3 +182,20 @@ class is_disabled_or_elderly_for_snap(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+
+
+class snap_homeless_shelter_deduction(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Homeless shelter deduction"
+    documentation = "Homeless shelter deduction"
+    reference = "https://www.law.cornell.edu/cfr/text/7/273.9"
+
+    def formula(spm_unit, period, parameters):
+
+        is_homeless = spm_unit.household("is_homeless", period)
+        return (
+            is_homeless
+            * parameters(period).usda.snap.homeless_shelter_deduction
+        ) * 12
