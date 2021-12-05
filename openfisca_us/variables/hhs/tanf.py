@@ -32,7 +32,7 @@ class is_tanf_eligible(Variable):
     def formula(spm_unit, period, parameters):
         children_0_17 = spm_unit.sum(spm_unit.members("is_child", period))
         school_enrolled_18_year_olds = spm_unit.sum(
-            (spm_unit.members("is_school_enrolled", period))
+            (spm_unit.members("is_in_school", period))
             & (spm_unit.members("age", period) == 18)
         )
         pregnant_people = spm_unit.sum(spm_unit.members("is_pregnant", period))
@@ -73,24 +73,6 @@ class tanf_countable_income(Variable):
     label = "TANF countable income"
     documentation = "Countable income for calculating Temporary Assistance for Needy Families benefit."
     unit = "currency-USD"
-
-    def formula(spm_unit, period, parameters):
-        gross_income = spm_unit("tanf_gross_income", period)
-        state = spm_unit.household("state_code_str", period)
-        earned_income_deduction = parameters(
-            period
-        ).hhs.tanf.earned_income_deduction[state]
-        return gross_income * (1 - earned_income_deduction)
-
-
-class tanf_gross_income(Variable):
-    value_type = float
-    entity = SPMUnit
-    definition_period = YEAR
-    label = "TANF gross income"
-    documentation = "Gross income for calculating Temporary Assistance for Needy Families benefit."
-    unit = "currency-USD"
-
 
 class tanf_amount_if_eligible(Variable):
     value_type = float
