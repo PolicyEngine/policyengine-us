@@ -30,3 +30,57 @@
     is_in_school: true
   output:
     is_tanf_eligible: true
+
+- name: "Is eligible for TANF due to family with ineligible adult and eligible pregnant person"
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    is_tanf_eligible: true
+
+- name: "Is ineligible for TANF due to family with two ineligible adults"
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 56
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    is_tanf_eligible: false
+
+- name: "Is eligible for TANF due to family with ineligible adult and eligible child"
+  input:
+    people:
+      father:
+        age: 38
+      child:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [father, child]
+  output:
+    is_tanf_eligible: true
+
+- name: "Is eligible for TANF due to family with eligible child and eligible pregnant person"
+  input:
+    people:
+      mother:
+        age: 30
+        is_pregnant: true
+      child:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    is_tanf_eligible: true
