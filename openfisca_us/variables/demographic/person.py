@@ -92,3 +92,15 @@ class is_citizen(Variable):
     entity = Person
     label = u"Is a U.S. citizen"
     definition_period = YEAR
+
+class is_pregnant(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is pregnant"
+    definition_period = YEAR
+
+class is_in_school(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is currently in an education institution"
+    definition_period = YEAR
