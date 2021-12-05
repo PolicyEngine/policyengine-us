@@ -74,6 +74,7 @@ class tanf_countable_income(Variable):
     documentation = "Countable income for calculating Temporary Assistance for Needy Families benefit."
     unit = "currency-USD"
 
+
 class tanf_amount_if_eligible(Variable):
     value_type = float
     entity = SPMUnit
