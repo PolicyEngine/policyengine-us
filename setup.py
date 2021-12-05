@@ -50,7 +50,9 @@ setup(
     },
     python_requires=">=3.7,<3.8",
     entry_points={
-        "console_scripts": ["openfisca-us = openfisca_us.tools.cli:main",],
+        "console_scripts": [
+            "openfisca-us = openfisca_us.tools.cli:main",
+        ],
     },
     packages=find_packages(),
 )
