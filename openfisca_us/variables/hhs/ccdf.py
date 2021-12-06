@@ -92,11 +92,30 @@ class is_ccdf_income_eligible(Variable):
         return income_to_smi_ratio <= p_ratio_limit
 
 
+class meets_ccdf_activity_test(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = u"Activity test for CCDF"
+
+
 class is_ccdf_reason_for_care_eligible(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
     label = u"Reason-for-care eligibility for CCDF"
+
+    def formula(person, period):
+        parent_meets_ccdf_activity_test = person.spm_unit(
+            "meets_ccdf_activity_test", period
+        )
+        child_is_receiving_or_needs_protective_services = person(
+            "is_receiving_or_needs_protective_services", period
+        )
+        return (
+            parent_meets_ccdf_activity_test
+            | child_is_receiving_or_needs_protective_services
+        )
 
 
 class is_ccdf_eligible(Variable):
