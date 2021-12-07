@@ -134,5 +134,6 @@ def main():
     paths = [os.path.abspath(path) for path in args.path]
     sys.exit(run_tests(tax_benefit_system, paths, options))
 
+
 if __name__ == "__main__":
     main()
