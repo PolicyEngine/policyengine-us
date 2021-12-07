@@ -109,12 +109,12 @@ class is_ccdf_reason_for_care_eligible(Variable):
         parent_meets_ccdf_activity_test = person.spm_unit(
             "meets_ccdf_activity_test", period
         )
-        child_is_receiving_or_needs_protective_services = person(
-            "is_receiving_or_needs_protective_services", period
+        child_receives_or_needs_protective_services = person(
+            "receives_or_needs_protective_services", period
         )
         return (
             parent_meets_ccdf_activity_test
-            | child_is_receiving_or_needs_protective_services
+            | child_receives_or_needs_protective_services
         )
 
 

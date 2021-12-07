@@ -122,7 +122,7 @@ class is_surviving_child_of_disabled_veteran(Variable):
     label = "Surviving child of disabled veteran"
 
 
-class is_receiving_or_needs_protective_services(Variable):
+class receives_or_needs_protective_services(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
