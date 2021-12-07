@@ -94,128 +94,43 @@ class is_citizen(Variable):
     definition_period = YEAR
 
 
-class is_ccdf_home_based(Variable):
+class is_pregnant(Variable):
     value_type = bool
-    default_value = False
     entity = Person
-    label = u"Whether CCDF care is home-based versus center-based"
+    label = u"Is pregnant"
     definition_period = YEAR
 
-    def formula(person, period, parameters):
-        return (
-            person("provider_type_group", period) != ProviderTypeGroup.DCC_SACC
-        )
 
-
-class CCDFAgeGroup(Enum):
-    INFANT = "Infant"
-    TODDLER = "Toddler"
-    PRESCHOOLER = "Preschooler"
-    SCHOOL_AGE = "School age"
-
-
-class ccdf_age_group(Variable):
-    value_type = Enum
-    possible_values = CCDFAgeGroup
-    default_value = CCDFAgeGroup.INFANT
+class is_in_school(Variable):
+    value_type = bool
     entity = Person
-    label = u"CCDF age group"
+    label = u"Is currently in an education institution"
     definition_period = YEAR
 
-    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
 
-    def formula(person, period, parameters):
-        age = person("age", period)
-        home_based = person("is_ccdf_home_based", period)
-        return select(
-            [
-                ((age < 1.5) & ~home_based) | ((age < 2) & home_based),
-                ((age < 2) & ~home_based) | ((age < 3) & home_based),
-                age < 6,
-                age < 13,
-            ],
-            [
-                CCDFAgeGroup.INFANT,
-                CCDFAgeGroup.TODDLER,
-                CCDFAgeGroup.PRESCHOOLER,
-                CCDFAgeGroup.SCHOOL_AGE,
-            ],
-        )
-
-
-class ProviderTypeGroup(Enum):
-    DCC_SACC = "Licenced/registered/permitted day care center; registered school-age child care"
-    FDC_GFDC = (
-        "Registered family day care homes; licensed group family day care"
+class is_permanently_disabled_veteran(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = (
+        "Indicates whether a person is a permanently disabled veteran"
     )
-    LE_GC = "Legally exempt group child care programs"
-    LE_STD = "Informal child care standard rate"
-    LE_ENH = "Informal child care enhanced rate"
+    label = "Permanently disabled veteran"
 
 
-class provider_type_group(Variable):
-    value_type = Enum
-    possible_values = ProviderTypeGroup
-    # DCC_SACC is most common among provider types
-    default_value = ProviderTypeGroup.DCC_SACC
+class is_surviving_spouse_of_disabled_veteran(Variable):
+    value_type = bool
     entity = Person
-    label = u"CCDF provider type group"
     definition_period = YEAR
+    documentation = "Indicates whether a person is a surviving spouse of a disabled veteran"
+    label = "Surviving spouse of disabled veteran"
 
 
-class childcare_hours_per_week(Variable):
-    value_type = float
+class is_surviving_child_of_disabled_veteran(Variable):
+    value_type = bool
     entity = Person
-    label = u"Child care hours per week"
     definition_period = YEAR
-
-
-class childcare_hours_per_day(Variable):
-    value_type = float
-    entity = Person
-    label = u"Child care hours per day"
-    definition_period = YEAR
-
-
-class childcare_days_per_week(Variable):
-    value_type = float
-    entity = Person
-    label = u"Child care days per week"
-    definition_period = YEAR
-
-
-class DurationOfCare(Enum):
-    WEEKLY = "Weekly"
-    DAILY = "Daily"
-    PART_DAY = "Part-Day"
-    HOURLY = "Hourly"
-
-
-class duration_of_care(Variable):
-    value_type = Enum
-    possible_values = DurationOfCare
-    default_value = DurationOfCare.WEEKLY
-    entity = Person
-    label = u"Child care duration of care"
-    definition_period = YEAR
-
-    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=5"
-
-    def formula(person, period):
-        hours_per_day = person("childcare_hours_per_day", period)
-        days_per_week = person("childcare_days_per_week", period)
-        hours_per_week = hours_per_day * days_per_week
-        return select(
-            [
-                hours_per_week >= 30,
-                hours_per_day >= 6,
-                hours_per_day >= 3,
-                True,
-            ],
-            [
-                DurationOfCare.WEEKLY,
-                DurationOfCare.DAILY,
-                DurationOfCare.PART_DAY,
-                DurationOfCare.HOURLY,
-            ],
-        )
+    documentation = (
+        "Indicates whether a person is a surviving child of a disabled veteran"
+    )
+    label = "Surviving child of disabled veteran"

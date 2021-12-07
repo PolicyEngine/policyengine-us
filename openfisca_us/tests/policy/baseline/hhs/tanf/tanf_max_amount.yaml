@@ -1,0 +1,17 @@
+- name: "TANF: Family of two in Illinois; max TANF amount"
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 46
+      child:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_max_amount: 435 * 12
