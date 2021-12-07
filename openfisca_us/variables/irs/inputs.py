@@ -39,13 +39,14 @@ class mars(Variable):
     possible_values = MARSType
     default_value = MARSType.SINGLE
     definition_period = YEAR
-    label = "MARS Status for the tax unit"
+    label = "Marital status for the tax unit"
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.max(
+        has_spouse = tax_unit.max(
             tax_unit.members("is_tax_unit_spouse", period)
-            * tax_unit.members("age", period)
+            * (tax_unit.members("age", period) > 0)
         )
+        return where(has_spouse, MARSType.JOINT, MARSType.SINGLE)
 
 
 class midr(Variable):
@@ -644,6 +645,16 @@ class e07300(Variable):
     documentation = """Foreign tax credit from Form 1116"""
 
 
+class filer_e07300(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Foreign tax credit (Form 1116) for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e07300", tax_unit, period)
+
+
 class e07400(Variable):
     value_type = float
     entity = Person
@@ -879,6 +890,16 @@ class e32800(Variable):
     entity = Person
     definition_period = YEAR
     documentation = """Child/dependent-care expenses for qualifying persons from Form 2441"""
+
+
+class filer_e32800(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"Child/dependent-care expenses for the tax unit (excluding dependents)"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e32800", tax_unit, period)
 
 
 class e58990(Variable):

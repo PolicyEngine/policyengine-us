@@ -9,14 +9,16 @@ class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "SPM unit's gross income for calculating SNAP eligibility"
+    documentation = "Gross income for calculating SNAP eligibility"
+    label = "SNAP gross income"
 
 
 class snap_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Earnings deduction for calculating SNAP benefit amount"
+    label = "SNAP earnings deduction"
 
     def formula(spm_unit, period, parameters):
 
@@ -27,11 +29,20 @@ class snap_earnings_deduction(Variable):
         return spm_unit("snap_gross_income", period) * snap_earnings_deduction
 
 
+class is_disabled_or_elderly_for_snap(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+    label = "Is disabled or elderly for SNAP"
+
+
 class snap_standard_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Standard deduction for calculating SNAP benefit amount"
+    label = "SNAP standard deduction"
 
     def formula(spm_unit, period, parameters):
 
@@ -49,7 +60,8 @@ class snap_net_income_pre_shelter(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Net income before shelter deduction, needed as intermediate to calculate shelter deduction"
+    label = "SNAP net income pre-shelter"
 
     def formula(spm_unit, period, parameters):
 
@@ -72,7 +84,10 @@ class snap_shelter_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = (
+        "Excess shelter deduction for calculating SNAP benefit amount"
+    )
+    label = "SNAP shelter deduction"
 
     def formula(spm_unit, period, parameters):
         # TODO: MUltiply params by 12.
@@ -105,7 +120,10 @@ class has_elderly_disabled(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Has elderly disabled"
-    documentation = "Whether the SPM unit has elderly disabled people"
+    documentation = (
+        "Whether elderly or disabled people, per USDA definitions, are present"
+    )
+    label = "Elderly or disabled person present"
     definition_period = YEAR
 
 
@@ -113,7 +131,8 @@ class snap_net_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Final net income, after all deductions"
+    label = "SNAP net income"
 
     def formula(spm_unit, period, parameters):
 
@@ -123,11 +142,11 @@ class snap_net_income(Variable):
 
 
 class snap_expected_contribution_towards_food(Variable):
-
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Expected food contribution from SNAP net income"
+    label = "SNAP expected good contribution"
 
     def formula(spm_unit, period, parameters):
         # TODO: Use the parameter
@@ -143,7 +162,8 @@ class snap_max_benefit(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Maximum benefit for SPM unit, based on the state group and household size."
+    label = "SNAP maximum benefit"
 
     def formula(spm_unit, period, parameters):
 
@@ -156,11 +176,11 @@ class snap_max_benefit(Variable):
 
 
 class snap(Variable):
-
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    documentation = "Final SNAP benefit amount, equal to net income minus food contribution"
+    label = "SNAP benefit amount"
 
     def formula(spm_unit, period, parameters):
         # TODO: Add gross and net income checks.
@@ -175,3 +195,20 @@ class is_disabled_or_elderly_for_snap(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
+
+
+class snap_homeless_shelter_deduction(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Homeless shelter deduction"
+    documentation = "Homeless shelter deduction"
+    reference = "https://www.law.cornell.edu/cfr/text/7/273.9"
+
+    def formula(spm_unit, period, parameters):
+
+        is_homeless = spm_unit.household("is_homeless", period)
+        return (
+            is_homeless
+            * parameters(period).usda.snap.homeless_shelter_deduction
+        ) * 12
