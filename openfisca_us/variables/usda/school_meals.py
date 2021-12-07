@@ -55,7 +55,9 @@ class school_meal_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = ""
+    label = "School meal subsidy"
+    unit = "currency-GBP"
+    documentation = "Total school meal subsidy entitlement"
 
     def formula(spm_unit, period, parameters):
         # Get state group and tier (based on poverty ratio) for SPM unit.

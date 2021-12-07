@@ -1,0 +1,97 @@
+- name: "Is eligible for TANF due to children under 18"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 17
+  output:
+    is_tanf_eligible: true
+
+- name: "Is not eligible for TANF"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 18
+  output:
+    is_tanf_eligible: false
+
+- name: "Is eligible for TANF due to pregnancy"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_pregnant: true
+  output:
+    is_tanf_eligible: true
+
+- name: "Is eligible for TANF due to being an 18-year-old in school"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age: 18
+    is_in_school: true
+  output:
+    is_tanf_eligible: true
+
+- name: "Is eligible for TANF due to family with ineligible adult and eligible pregnant person"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 29
+        is_pregnant: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: IL
+  output:
+    is_tanf_eligible: true
+
+- name: "Is ineligible for TANF due to family with two ineligible adults"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 56
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    is_tanf_eligible: false
+
+- name: "Is eligible for TANF due to family with ineligible adult and eligible child"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      father:
+        age: 38
+      child:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [father, child]
+  output:
+    is_tanf_eligible: true
+
+- name: "Is eligible for TANF due to family with eligible child and eligible pregnant person"
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 30
+        is_pregnant: true
+      child:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    is_tanf_eligible: true
