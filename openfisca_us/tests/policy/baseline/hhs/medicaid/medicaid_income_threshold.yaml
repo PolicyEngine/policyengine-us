@@ -33,7 +33,7 @@
         state_code_str: CA
         members: [person]
   output:
-    medicaid_income_threshold: 2.66
+    medicaid_income_threshold: 1.38
 - name: California child between 1-5 years of age
   period: 2022
   input:
@@ -45,7 +45,7 @@
         state_code_str: CA
         members: [person]
   output:
-    medicaid_income_threshold: 2.66
+    medicaid_income_threshold: 1.38
 - name: California child between 6-18 years of age
   period: 2022
   input:
@@ -57,5 +57,4 @@
         state_code_str: CA
         members: [person]
   output:
-    medicaid_income_threshold: 2.66
-
+    medicaid_income_threshold: 1.38

@@ -30,12 +30,9 @@ class medicaid_income_threshold(Variable):
     label = "Medicaid FPL threshold"
     documentation = "Maximum income as a percentage of the federal poverty line to qualify for Medicaid"
 
-    # Get state
-    # Get person type
-    # Get parameter
-    # Return indexed parameter
+
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)
         person_type = person("medicaid_person_type", period)
-        income_threshold = parameters(period).hhs.medicaid
+        income_threshold = parameters(period).hhs.medicaid.income_limit
         return income_threshold[state_code][person_type]
