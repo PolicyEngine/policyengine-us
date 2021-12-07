@@ -15,9 +15,6 @@
       spm_unit:
         snap_gross_income: 2000 * 12
         members: [person_1, person_2, person_3, person_4]
-    households:
-      household:
-        state_group: CONTIGUOUS_US
   output:
     snap: 3_051.6  # 8160 - 5108.4.
     snap_max_benefit: 8_160  # 12 * $680 (parameter for family of 4 in contiguous US).
@@ -27,3 +24,37 @@
     snap_shelter_deduction: 0  # No shelter costs reported.
     snap_standard_deduction: 2_172  # 181 (parameter for family of 4 in contiguous US) * 12.
     snap_earnings_deduction: 4_800  # 2000 * 0.2 (flat 20% parameter) * 12.
+
+#From: https://www.cbpp.org/research/food-assistance/a-quick-guide-to-snap-eligibility-and-benefits
+- name: Family of 3, CBPP Example
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+      child_1:
+        age: 17
+      child_2:
+        age: 17
+    spm_units:
+      spm_unit:
+        snap_gross_income: 1256 * 12
+        members: [parent, child_1, child_2]
+        childcare_costs: 78 * 12
+        housing_cost:  992 
+  output:
+    # Step 2.
+    snap_standard_deduction: 177 * 12
+    snap_earnings_deduction: (1256 * 0.2) * 12
+    snap_childcare_deduction: 78 * 12
+    snap_net_income_pre_shelter: 750 * 12
+    # Step 3. Excess Shelter Deduction Calc 
+    snap_shelter_deduction: 597 * 12 
+    # Step 4.
+    snap_net_income: 153 * 12
+    # Step 5.
+    snap_expected_contribution_towards_food: (153 * 12) * 0.3
+    # Step 6.
+    snap_max_benefit: 658 * 12
+    snap: 612 * 12
