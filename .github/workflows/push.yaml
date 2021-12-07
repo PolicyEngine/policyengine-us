@@ -27,6 +27,7 @@ jobs:
         run: make install
       - name: Run tests
         run: make test
+      - uses: codecov/codecov-action@v2
       - name: Test documentation builds
         if: matrix.os == 'ubuntu-latest'
         run: make documentation

@@ -46,6 +46,7 @@ setup(
             "pytest",
             "setuptools",
             "jupyter-book",
+            "coverage",
         ],
     },
     python_requires=">=3.7,<3.8",
