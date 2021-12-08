@@ -104,7 +104,7 @@ class is_ccdf_reason_for_care_eligible(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    documentation = "Indicates whether child qualifies for ccdf based on parents meeting activity test or that he/she receives or needs protective services"
+    documentation = "Indicates whether child qualifies for CCDF based on parents meeting activity test or that he/she receives or needs protective services"
     label = u"Reason-for-care eligibility for CCDF"
 
     def formula(person, period):
