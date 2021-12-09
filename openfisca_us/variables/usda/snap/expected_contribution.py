@@ -7,6 +7,7 @@ class snap_expected_contribution_towards_food(Variable):
     definition_period = YEAR
     documentation = "Expected food contribution from SNAP net income"
     label = "SNAP expected food contribution"
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         expected_food_contribution = parameters(

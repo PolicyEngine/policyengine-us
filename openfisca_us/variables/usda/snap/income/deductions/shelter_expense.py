@@ -10,6 +10,7 @@ class snap_shelter_deduction(Variable):
     )
     label = "SNAP shelter deduction"
     reference = ("United States Code, Title 7, Section 2014(d)(6)",)
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         # TODO: Multiply params by 12.
@@ -70,6 +71,7 @@ class snap_homeless_shelter_deduction(Variable):
         "https://www.law.cornell.edu/cfr/text/7/273.9",
         "United States Code, Title 7, Section 2014(d)(6)(D)",
     )
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         is_homeless = spm_unit.household("is_homeless", period)

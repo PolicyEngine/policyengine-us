@@ -7,6 +7,7 @@ class snap_max_benefit(Variable):
     definition_period = YEAR
     documentation = "Maximum benefit for SPM unit, based on the state group and household size."
     label = "SNAP maximum benefit"
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         # TODO: Logic for families with >8 people

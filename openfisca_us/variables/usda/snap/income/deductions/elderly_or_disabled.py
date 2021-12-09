@@ -12,7 +12,6 @@ class is_disabled_or_elderly_for_snap(Variable):
 class has_elderly_disabled(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "Has elderly disabled"
     documentation = (
         "Whether elderly or disabled people, per USDA definitions, are present"
     )
