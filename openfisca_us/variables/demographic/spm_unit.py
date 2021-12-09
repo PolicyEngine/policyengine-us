@@ -53,3 +53,8 @@ class ccdf_income_to_smi_ratio(Variable):
     entity = SPMUnit
     label = u"Income to SMI ratio"
     definition_period = YEAR
+
+    def formula(spm_unit, period, parameters):
+        income = spm_unit("spm_unit_income", period)
+        smi = spm_unit("hhs_smi", period)
+        return income / smi
