@@ -22,7 +22,7 @@ class snap_net_income(Variable):
     label = "SNAP net income"
     unit = "currency-USD"
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period):
         gross_income = spm_unit("snap_gross_income", period)
         deductions = spm_unit("snap_deductions", period)
-        return gross_income - deductions
+        return max_(0, gross_income - deductions)
