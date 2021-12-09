@@ -11,16 +11,5 @@ class snap_deductions(Variable):
     reference = "United States Code, Title 7, Section 2014(e)"
 
     def formula(spm_unit, period, parameters):
-        return sum(
-            [
-                spm_unit(variable, period)
-                for variable in [
-                    "snap_standard_deduction",
-                    "snap_earnings_deduction",
-                    "snap_dependent_care_deduction",
-                    "snap_child_support_deduction",
-                    "snap_medical_expense_deduction",
-                    "snap_shelter_deduction",
-                ]
-            ]
-        )
+        snap_deductions = parameters(period).usda.snap.deductions
+        return add(spm_unit, period, *snap_deductions.allowed)
