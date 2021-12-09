@@ -9,7 +9,7 @@ class snap_shelter_deduction(Variable):
         "Excess shelter deduction for calculating SNAP benefit amount"
     )
     label = "SNAP shelter deduction"
-    reference = ("United States Code, Title 7, Section 2014(d)(6)",)
+    reference = ("United States Code, Title 7, Section 2014(e)(6)",)
     unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
@@ -54,7 +54,7 @@ class snap_net_income_pre_shelter(Variable):
     documentation = "SNAP net income before the shelter deduction, needed as intermediate to calculate shelter deduction"
     label = "SNAP net income (pre-shelter)"
     unit = "currency-USD"
-    reference = "United States Code, Title 7, Section 2014(d)(6)(A)"
+    reference = "United States Code, Title 7, Section 2014(e)(6)(A)"
 
     def formula(spm_unit, period):
         return max_(
@@ -73,7 +73,7 @@ class snap_homeless_shelter_deduction(Variable):
     documentation = "Homeless shelter deduction"
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.9",
-        "United States Code, Title 7, Section 2014(d)(6)(D)",
+        "United States Code, Title 7, Section 2014(e)(6)(D)",
     )
     unit = "currency-USD"
 
