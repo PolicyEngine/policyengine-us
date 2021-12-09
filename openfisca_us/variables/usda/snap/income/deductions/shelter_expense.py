@@ -40,7 +40,11 @@ class snap_shelter_deduction(Variable):
         homeless_shelter_deduction = spm_unit(
             "snap_homeless_shelter_deduction", period
         )
-        return homeless_shelter_deduction + non_homeless_shelter_deduction
+        return where(
+            spm_unit("is_homeless"),
+            homeless_shelter_deduction,
+            non_homeless_shelter_deduction,
+        )
 
 
 class snap_net_income_pre_shelter(Variable):
