@@ -1,9 +1,4 @@
 from openfisca_core.model_api import *
-from openfisca_us.entities import *
-from openfisca_us.tools.general import *
-from openfisca_us.variables.demographic.person import *
-from openfisca_us.variables.demographic.household import *
-from openfisca_us.variables.expense.person import *
 
 
 class ccdf_county_cluster(Variable):
