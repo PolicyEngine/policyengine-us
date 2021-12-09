@@ -13,7 +13,5 @@ class snap_standard_deduction(Variable):
     def formula(spm_unit, period, parameters):
         standard_deductions = parameters(period).usda.snap.standard_deduction
         state_group = spm_unit.household("state_group_str", period)
-        # Households with more than 6 people have a 6-person households's
-        # standard deduction.
         capped_household_size = min_(spm_unit.nb_persons(), 6)
         return standard_deductions[state_group][capped_household_size] * 12
