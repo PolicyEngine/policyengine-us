@@ -15,4 +15,4 @@ class snap(Variable):
         expected_contribution = spm_unit(
             "snap_expected_contribution_towards_food", period
         )
-        return max_benefit - expected_contribution
+        return max_(0, max_benefit - expected_contribution)
