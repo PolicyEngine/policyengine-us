@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class snap_gross_income(Variable):
     value_type = float
     entity = SPMUnit
@@ -10,6 +11,7 @@ class snap_gross_income(Variable):
 
     def formula(spm_unit, period):
         return spm_unit.sum(spm_unit.members("market_income", period))
+
 
 class snap_net_income(Variable):
     value_type = float

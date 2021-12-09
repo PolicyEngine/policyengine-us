@@ -11,5 +11,7 @@ class snap(Variable):
 
     def formula(spm_unit, period):
         max_benefit = spm_unit("snap_max_benefit", period)
-        expected_contribution = spm_unit("snap_expected_contribution_towards_food", period)
+        expected_contribution = spm_unit(
+            "snap_expected_contribution_towards_food", period
+        )
         return max_benefit - expected_contribution

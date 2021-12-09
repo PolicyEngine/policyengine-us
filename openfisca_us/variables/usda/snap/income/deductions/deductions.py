@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class snap_deductions(Variable):
     value_type = float
     entity = SPMUnit
@@ -10,14 +11,20 @@ class snap_deductions(Variable):
     reference = "United States Code, Title 7, Section 2014(e)"
 
     def formula(spm_unit, period, parameters):
-        return sum([spm_unit(variable, period) for variable in [
-            "snap_standard_deduction",
-            "snap_earnings_deduction",
-            "snap_dependent_care_deduction",
-            "snap_child_support_deduction",
-            "snap_medical_expense_deduction",
-            "snap_shelter_deduction",
-        ]])
+        return sum(
+            [
+                spm_unit(variable, period)
+                for variable in [
+                    "snap_standard_deduction",
+                    "snap_earnings_deduction",
+                    "snap_dependent_care_deduction",
+                    "snap_child_support_deduction",
+                    "snap_medical_expense_deduction",
+                    "snap_shelter_deduction",
+                ]
+            ]
+        )
+
 
 class snap_earnings_deduction(Variable):
     value_type = float
@@ -29,10 +36,9 @@ class snap_earnings_deduction(Variable):
     reference = "United States Code, Title 7, Section 2014(e)(2)"
 
     def formula(spm_unit, period, parameters):
-        deduction_rate = parameters(
-            period
-        ).usda.snap.earnings_deduction
+        deduction_rate = parameters(period).usda.snap.earnings_deduction
         return spm_unit("snap_gross_income", period) * deduction_rate
+
 
 class snap_dependent_care_deduction(Variable):
     value_type = float
@@ -43,21 +49,27 @@ class snap_dependent_care_deduction(Variable):
     definition_period = YEAR
     reference = "United States Code, Title 7, Section 2014(e)(3)"
 
+
 class snap_child_support_deduction(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP child support payment deduction"
     unit = "currency-USD"
-    documentation = "Deduction from SNAP gross income for child support payments"
+    documentation = (
+        "Deduction from SNAP gross income for child support payments"
+    )
     definition_period = YEAR
     reference = "United States Code, Title 7, Section 2014(e)(4)"
+
 
 class snap_medical_expense_deduction(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP excess medical expense deduction"
     unit = "currency-USD"
-    documentation = "Deduction from SNAP gross income for excess medical expenses"
+    documentation = (
+        "Deduction from SNAP gross income for excess medical expenses"
+    )
     definition_period = YEAR
     reference = "United States Code, Title 7, Section 2014(e)(5)"
 
@@ -66,7 +78,9 @@ class snap_shelter_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "Excess shelter deduction for calculating SNAP benefit amount"
+    documentation = (
+        "Excess shelter deduction for calculating SNAP benefit amount"
+    )
     label = "SNAP shelter deduction"
 
     def formula(spm_unit, period, parameters):
@@ -94,6 +108,7 @@ class snap_shelter_deduction(Variable):
         return where(
             has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
         )
+
 
 class snap_homeless_shelter_deduction(Variable):
     value_type = float

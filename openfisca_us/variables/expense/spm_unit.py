@@ -40,6 +40,7 @@ class spm_unit_medical_expenses(Variable):
     label = u"SPM unit medical expenses"
     definition_period = YEAR
 
+
 class housing_cost(Variable):
     value_type = float
     entity = SPMUnit

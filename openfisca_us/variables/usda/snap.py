@@ -3,8 +3,6 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 
 
-
-
 class is_disabled_or_elderly_for_snap(Variable):
     value_type = bool
     entity = Person
@@ -29,6 +27,7 @@ class snap_net_income_pre_shelter(Variable):
             0,
         )
 
+
 class has_elderly_disabled(Variable):
     value_type = bool
     entity = SPMUnit
@@ -38,6 +37,7 @@ class has_elderly_disabled(Variable):
     )
     label = "Elderly or disabled person present"
     definition_period = YEAR
+
 
 class snap_expected_contribution_towards_food(Variable):
     value_type = float
@@ -69,11 +69,9 @@ class snap_max_benefit(Variable):
         return snap_max_benefits[state_group][household_size] * 12
 
 
-
 class is_disabled_or_elderly_for_snap(Variable):
 
     value_type = bool
     entity = Person
     definition_period = YEAR
     documentation = "Indicates that a person is defined as disabled or elderly based on the USDA definition"
-
