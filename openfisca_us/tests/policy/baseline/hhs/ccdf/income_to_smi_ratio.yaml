@@ -1,0 +1,8 @@
+- name: Income less than 85% of SMI, household size 4, State NY
+  period: 2022
+  input:
+    spm_unit_income: 85_000
+    household_size: 4
+    state_code: NY
+  output:
+    income_to_smi_ratio: 85_000/104_972
