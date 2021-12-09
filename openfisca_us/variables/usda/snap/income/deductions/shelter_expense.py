@@ -72,7 +72,7 @@ class snap_homeless_shelter_deduction(Variable):
     label = "Homeless shelter deduction"
     documentation = "Homeless shelter deduction"
     reference = (
-        "https://www.law.cornell.edu/cfr/text/7/273.9",
+        "https://www.law.cornell.edu/cfr/text/7/273.9#d_6_i",
         "United States Code, Title 7, Section 2014(d)(6)(D)",
     )
     unit = "currency-USD"
