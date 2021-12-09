@@ -10,4 +10,4 @@ class snap_medical_expense_deduction(Variable):
         "Deduction from SNAP gross income for excess medical expenses"
     )
     definition_period = YEAR
-    reference = "United States Code, Title 7, Section 2014(e)(5)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_5"

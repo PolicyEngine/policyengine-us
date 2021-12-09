@@ -8,7 +8,7 @@ class snap_standard_deduction(Variable):
     documentation = "Standard deduction for calculating SNAP benefit amount"
     label = "SNAP standard deduction"
     unit = "currency-USD"
-    reference = "United States Code, Title 7, Section 2014(e)(1)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_1"
 
     def formula(spm_unit, period, parameters):
         standard_deductions = parameters(period).usda.snap.standard_deduction

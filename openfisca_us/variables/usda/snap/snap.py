@@ -7,7 +7,7 @@ class snap(Variable):
     definition_period = YEAR
     documentation = "Final SNAP benefit amount, equal to net income minus food contribution"
     label = "SNAP benefit entitlement"
-    reference = "United States Code, Title 7, Section 2017(a)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = "currency-USD"
 
     def formula(spm_unit, period):

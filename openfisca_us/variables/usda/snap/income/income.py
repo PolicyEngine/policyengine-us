@@ -7,7 +7,7 @@ class snap_gross_income(Variable):
     definition_period = YEAR
     label = "SNAP gross income"
     documentation = "Gross income for calculating SNAP eligibility"
-    reference = "United States Code, Title 7, Section 2014(d)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#d"
     unit = "currency-USD"
 
     def formula(spm_unit, period):

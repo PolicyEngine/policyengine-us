@@ -54,7 +54,7 @@ class snap_net_income_pre_shelter(Variable):
     documentation = "SNAP net income before the shelter deduction, needed as intermediate to calculate shelter deduction"
     label = "SNAP net income (pre-shelter)"
     unit = "currency-USD"
-    reference = "United States Code, Title 7, Section 2014(e)(6)(A)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_6_A"
 
     def formula(spm_unit, period):
         return max_(

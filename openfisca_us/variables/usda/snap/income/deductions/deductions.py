@@ -8,7 +8,7 @@ class snap_deductions(Variable):
     unit = "currency-USD"
     documentation = "Deductions made from gross income for SNAP benefits"
     definition_period = YEAR
-    reference = "United States Code, Title 7, Section 2014(e)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e"
 
     def formula(spm_unit, period, parameters):
         snap_deductions = parameters(period).usda.snap.deductions

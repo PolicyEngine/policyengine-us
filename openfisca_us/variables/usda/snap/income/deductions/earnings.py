@@ -8,7 +8,7 @@ class snap_earnings_deduction(Variable):
     documentation = "Earnings deduction for calculating SNAP benefit amount"
     label = "SNAP earnings deduction"
     unit = "currency-USD"
-    reference = "United States Code, Title 7, Section 2014(e)(2)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_2"
 
     def formula(spm_unit, period, parameters):
         deduction_rate = parameters(period).usda.snap.earnings_deduction

@@ -10,4 +10,4 @@ class snap_child_support_deduction(Variable):
         "Deduction from SNAP gross income for child support payments"
     )
     definition_period = YEAR
-    reference = "United States Code, Title 7, Section 2014(e)(4)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_4"

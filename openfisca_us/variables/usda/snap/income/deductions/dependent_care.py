@@ -8,4 +8,4 @@ class snap_dependent_care_deduction(Variable):
     unit = "currency-USD"
     documentation = "Deduction from SNAP gross income for dependent care"
     definition_period = YEAR
-    reference = "United States Code, Title 7, Section 2014(e)(3)"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_3"
