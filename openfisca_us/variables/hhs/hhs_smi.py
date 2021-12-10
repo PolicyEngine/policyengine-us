@@ -1,5 +1,7 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
+from openfisca_us.tools.general import *
+from openfisca_us.variables.demographic.spm_unit import *
 
 
 class hhs_smi(Variable):

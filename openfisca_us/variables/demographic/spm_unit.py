@@ -42,7 +42,7 @@ class spm_unit_assets(Variable):
 
 
 class spm_unit_size(Variable):
-    value_type = float
+    value_type = int
     entity = SPMUnit
     label = u"SPM unit size"
     definition_period = YEAR
