@@ -27,7 +27,28 @@ class niit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Net Investment Income Tax"
+    unit = "currency-GBP"
     documentation = """Net Investment Income Tax from Form 8960"""
+
+    def formula(tax_unit, period, parameters):
+        nii = max_(
+            0,
+            add(
+                tax_unit,
+                period,
+                *[
+                    "filer_e00300",
+                    "filer_e00600",
+                    "c01000",
+                    "filer_e02000",
+                ],
+            ),
+        )
+        niit = parameters(period).irs.investment.net_inv_inc_tax
+        threshold = niit.threshold[tax_unit("mars", period)]
+        base = min_(nii, max_(0, tax_unit("c00100", period) - threshold))
+        return niit.rate * base
 
 
 class combined(Variable):
@@ -1317,14 +1338,15 @@ class ymod1(Variable):
             )
             + tax_unit("c01000", period)
         )
-        business_losses = add(tax_unit, period, "filer_e00900", "filer_e02000")
+        business_income = add(tax_unit, period, "filer_e00900", "filer_e02000")
         max_business_losses = parameters(
             period
         ).irs.ald.misc.max_business_losses[tax_unit("mars", period)]
+        business_income_losses_capped = max_(
+            business_income, -max_business_losses
+        )
         return (
-            direct_inputs
-            + investment_income
-            - min_(business_losses, max_business_losses)
+            direct_inputs + investment_income + business_income_losses_capped
         )
 
 
