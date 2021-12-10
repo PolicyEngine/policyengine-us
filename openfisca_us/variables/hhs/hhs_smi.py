@@ -4,11 +4,12 @@ from openfisca_core.model_api import *
 class hhs_smi(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"HHS SMI"
+    label = u"State Median Income (DHHS)"
+    documentation = u"SPM unit's median income as defined by the Department of Health and Human Services, based on their state and size"
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        household_size = spm_unit.household("household_size", period)
+        size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code", period)
         four_person_smi = parameters(period).hhs.smi.amount[state]
         adjustment_mapping = parameters(
@@ -19,18 +20,10 @@ class hhs_smi(Variable):
             second_to_sixth_person
         ]
         seven_or_more_additional_rate = adjustment_mapping[additional_person]
-
-        return where(
-            household_size < 7,
-            four_person_smi
-            * (
-                first_person_rate
-                + second_to_sixth_additional_rate * (household_size - 1)
-            ),
-            four_person_smi
-            * (
-                first_person_rate
-                + second_to_sixth_additional_rate * 5
-                + seven_or_more_additional_rate * (household_size - 6)
-            ),
+        size_adjustment = (
+            first_person_rate
+            + second_to_sixth_additional_rate * (min_(size, 6) - 1)
+            + seven_or_more_additional_rate * max_(size - 6, 0)
         )
+
+        return four_person_smi * size_adjustment

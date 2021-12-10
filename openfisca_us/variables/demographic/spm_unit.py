@@ -48,6 +48,13 @@ class spm_unit_income(Variable):
     definition_period = YEAR
 
 
+class spm_unit_size(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"SPM unit size"
+    definition_period = YEAR
+
+
 class ccdf_income_to_smi_ratio(Variable):
     value_type = float
     entity = SPMUnit
