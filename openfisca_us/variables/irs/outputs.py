@@ -222,13 +222,16 @@ class payrolltax(Variable):
     documentation = """Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"""
 
     def formula(tax_unit, period):
-        return add(
-            tax_unit,
-            period,
+        COMPONENTS = [
             "ptax_was",
             "ptax_amc",
             "filer_setax",
             "extra_payrolltax",
+        ]
+        return add(
+            tax_unit,
+            period,
+            *COMPONENTS
         )
 
 
@@ -1253,11 +1256,11 @@ class ptax_amc(Variable):
         mars = tax_unit("mars", period)
         e00200 = tax_unit("filer_e00200", period)
         exclusion = fica.medicare.additional.exclusion[mars]
-        earnings_over_exclusion = e00200 - exclusion
-        line11 = max_(0, -earnings_over_exclusion)
-        return fica.medicare.additional.rate * max_(
-            0, earnings_over_exclusion
-        ) + max_(0, line8 - line11)
+        earnings_over_exclusion = max_(0, e00200 - exclusion)
+        line11 = max_(0, exclusion - e00200)
+        rate = fica.medicare.additional.rate
+        base = earnings_over_exclusion + max_(0, line8 - line11)
+        return rate * base
 
 
 class ptax_oasdi(Variable):
