@@ -229,13 +229,13 @@ parser = ArgumentParser(description="Utility to run taxcalc on a single tax unit
 for variable in TAXCALC_INPUT_VARIABLES:
     parser.add_argument('--' + variable, required=variable in TAXCALC_REQUIRED_INPUTS)
 parser.add_argument('--output', nargs='+', default=TAXCALC_OUTPUT_VARIABLES)
-parser.add_argument("--year", type=int, default=2019, help="Year to run taxcalc on")
+parser.add_argument("--year", type=int, default=2020)
 args = parser.parse_args()
 
 output_dir = Path("./taxcalc_output")
 output_dir.mkdir(exist_ok=True)
 pd.DataFrame({variable: [getattr(args, variable)] for variable in TAXCALC_INPUT_VARIABLES if getattr(args, variable) is not None}).to_csv("taxcalc_output/input.csv", index=False)
-process = subprocess.Popen(f"tc ./taxcalc_output/input.csv {args.year} --dump --outdir taxcalc_output", shell=True, stdout=subprocess.PIPE)
+process = subprocess.Popen(f"tc ./taxcalc_output/input.csv {args.year} --dump --outdir ./taxcalc_output", shell=True, stdout=subprocess.PIPE)
 process.wait()
 result = pd.read_csv(output_dir / f"input-{args.year % 100}-#-#-#.csv")
 output = {}
