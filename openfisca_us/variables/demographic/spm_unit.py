@@ -41,27 +41,12 @@ class spm_unit_assets(Variable):
     definition_period = YEAR
 
 
-class spm_unit_income(Variable):
-    value_type = float
-    entity = SPMUnit
-    label = u"Income"
-    definition_period = YEAR
-
-
 class spm_unit_size(Variable):
     value_type = float
     entity = SPMUnit
     label = u"SPM unit size"
     definition_period = YEAR
-
-
-class ccdf_income_to_smi_ratio(Variable):
-    value_type = float
-    entity = SPMUnit
-    label = u"Income to SMI ratio"
-    definition_period = YEAR
+    documentation = "Number of people in the Supplemental Poverty Measure unit"
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("spm_unit_income", period)
-        smi = spm_unit("hhs_smi", period)
-        return income / smi
+        return spm_unit.nb_persons()

@@ -1,5 +1,9 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
+from openfisca_us.tools.general import *
+from openfisca_us.variables.demographic.person import *
+from openfisca_us.variables.demographic.household import *
+from openfisca_us.variables.expense.person import *
 
 
 class ccdf_county_cluster(Variable):
@@ -60,6 +64,25 @@ class is_enrolled_in_ccdf(Variable):
     entity = Person
     definition_period = YEAR
     label = u"CCDF enrollment status"
+
+
+class ccdf_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"Income"
+    definition_period = YEAR
+
+
+class ccdf_income_to_smi_ratio(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = u"Income to SMI ratio"
+    definition_period = YEAR
+
+    def formula(spm_unit, period, parameters):
+        income = spm_unit("ccdf_income", period)
+        smi = spm_unit("hhs_smi", period)
+        return income / smi
 
 
 class is_ccdf_initial_income_eligible(Variable):
