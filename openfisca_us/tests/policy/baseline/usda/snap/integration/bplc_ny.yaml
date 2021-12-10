@@ -1,0 +1,23 @@
+- name: Family of 1, no member(s) with disabilities, income of 0k/year (Standard Test)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 0 * 12
+        members: [person_1]
+    households:
+      household:
+        state_code_str: NY
+        region_str: NY_NYC
+  output:
+    snap_net_income: 0 
+    snap_earnings_deduction: 0  # 2000 * 0.2 (flat 20% parameter) * 12.
+    snap_standard_deduction: 177*12  # 177 (parameter for family of 1 in contiguous US) * 12.
+    snap_sua: 852*12
+    snap_shelter_deduction: 0  # No shelter costs reported.
+    snap_max_benefit: 250*12
+    snap: 250*12  
