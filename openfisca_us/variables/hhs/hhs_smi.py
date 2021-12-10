@@ -1,4 +1,5 @@
 from openfisca_core.model_api import *
+from openfisca_us.entities import *
 
 
 class hhs_smi(Variable):
