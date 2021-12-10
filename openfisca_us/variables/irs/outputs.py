@@ -1338,14 +1338,15 @@ class ymod1(Variable):
             )
             + tax_unit("c01000", period)
         )
-        business_losses = add(tax_unit, period, "filer_e00900", "filer_e02000")
+        business_income = add(tax_unit, period, "filer_e00900", "filer_e02000")
         max_business_losses = parameters(
             period
         ).irs.ald.misc.max_business_losses[tax_unit("mars", period)]
+        business_income_losses_capped = max_(business_income, -max_business_losses)
         return (
             direct_inputs
             + investment_income
-            - min_(business_losses, max_business_losses)
+            + business_income_losses_capped
         )
 
 
