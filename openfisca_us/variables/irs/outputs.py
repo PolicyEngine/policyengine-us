@@ -228,11 +228,7 @@ class payrolltax(Variable):
             "filer_setax",
             "extra_payrolltax",
         ]
-        return add(
-            tax_unit,
-            period,
-            *COMPONENTS
-        )
+        return add(tax_unit, period, *COMPONENTS)
 
 
 class employee_payrolltax(Variable):
