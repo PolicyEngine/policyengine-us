@@ -1,0 +1,7 @@
+- name: SNAP net income subtracts deductions
+  period: 2020
+  input:
+    snap_gross_income: 2
+    snap_deductions: 1
+  output:
+    snap_net_income: 1

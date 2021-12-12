@@ -94,6 +94,20 @@ class is_citizen(Variable):
     definition_period = YEAR
 
 
+class is_pregnant(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is pregnant"
+    definition_period = YEAR
+
+
+class is_in_school(Variable):
+    value_type = bool
+    entity = Person
+    label = u"Is currently in an education institution"
+    definition_period = YEAR
+
+
 class is_permanently_disabled_veteran(Variable):
     value_type = bool
     entity = Person
@@ -120,3 +134,10 @@ class is_surviving_child_of_disabled_veteran(Variable):
         "Indicates whether a person is a surviving child of a disabled veteran"
     )
     label = "Surviving child of disabled veteran"
+
+
+class receives_or_needs_protective_services(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = "Child receiving or needs protective services"
