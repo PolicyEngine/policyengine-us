@@ -24,4 +24,4 @@ class snap_minimum_benefit(Variable):
             min_benefit.rate,
             0,
         )
-        return (relevant_max_benefit * min_share_of_max) * 12
+        return relevant_max_benefit * min_share_of_max
