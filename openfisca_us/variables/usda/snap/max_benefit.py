@@ -15,4 +15,4 @@ class snap_max_benefit(Variable):
         state_group = spm_unit.household("state_group_str", period)
         household_size = spm_unit.nb_persons()
 
-        return snap_max_benefits[state_group][household_size]
+        return snap_max_benefits[state_group][household_size] * 12
