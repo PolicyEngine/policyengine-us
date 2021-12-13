@@ -1,13 +1,14 @@
 from openfisca_us.model_api import *
 
 
-class snap_expected_contribution_towards_food(Variable):
+class snap_expected_contribution(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
     documentation = "Expected food contribution from SNAP net income"
     label = "SNAP expected food contribution"
     unit = "currency-USD"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
 
     def formula(spm_unit, period, parameters):
         expected_food_contribution = parameters(
