@@ -14,9 +14,8 @@ class snap(Variable):
         # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which also
         # defines state powers to modify the rules.
         eligible = spm_unit("is_snap_eligible", period)
-        max_benefit = max_(
-            spm_unit("snap_max_benefit", period),
-            spm_unit("snap_min_benefit", period),
-        )
         expected_contribution = spm_unit("snap_expected_contribution", period)
-        return eligible * max_(0, max_benefit - expected_contribution)
+        return eligible * max_(
+            spm_unit("snap_min_benefit", period),
+            spm_unit("snap_max_benefit", period) - expected_contribution,
+        )
