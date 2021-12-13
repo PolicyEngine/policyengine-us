@@ -36,7 +36,7 @@ class snap_shelter_deduction(Variable):
         # Cap for all but elderly/disabled people.
         non_homeless_shelter_deduction = where(
             has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
-        )
+        ) + spm_unit("snap_utility_allowance", period)
         homeless_shelter_deduction = spm_unit(
             "snap_homeless_shelter_deduction", period
         )
@@ -83,3 +83,90 @@ class snap_homeless_shelter_deduction(Variable):
             is_homeless
             * parameters(period).usda.snap.homeless_shelter_deduction
         ) * 12
+
+
+class SNAPUTtilityAllowanceType(Enum):
+    SUA = "Standard Utility Allowance"
+    LUA = "Limited Utility Allowance"
+    TUA = "Telephone Utility Allowance"
+    NONE = "None"
+
+
+class has_heating_cooling_expense(Variable):
+    value_type = bool
+    entity = Household
+    label = "Has heating/cooling costs"
+    documentation = "Whether the household has heating/cooling costs"
+    definition_period = YEAR
+
+
+class has_telephone_expense(Variable):
+    value_type = bool
+    entity = Household
+    label = "Has telephone costs"
+    documentation = "Whether the household has telephone (or equivalent) costs"
+    definition_period = YEAR
+
+
+class has_other_utility_expense(Variable):
+    value_type = bool
+    entity = Household
+    label = "Has other utility expenses"
+    documentation = "Whether the household has utility bills other than heating and telephone"
+    definition_period = YEAR
+
+
+class snap_utility_allowance_type(Variable):
+    value_type = Enum
+    possible_values = SNAPUTtilityAllowanceType
+    entity = SPMUnit
+    label = "SNAP utility allowance eligibility"
+    default_value = SNAPUTtilityAllowanceType.NONE
+    documentation = (
+        "The type of utility allowance that is eligible for the SPM unit"
+    )
+    definition_period = YEAR
+
+    def formula(spm_unit, period, parameters):
+        return select(
+            [
+                spm_unit.household("has_heating_cooling_expense", period),
+                spm_unit.household("has_other_utility_expense", period),
+                spm_unit.household("has_telephone_expense", period),
+                True,
+            ],
+            [
+                SNAPUTtilityAllowanceType.SUA,
+                SNAPUTtilityAllowanceType.LUA,
+                SNAPUTtilityAllowanceType.TUA,
+                SNAPUTtilityAllowanceType.NONE,
+            ],
+        )
+
+
+class snap_utility_allowance(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = "Standard Utility Allowance"
+    unit = "currency-USD"
+    documentation = "The regular utility allowance deduction for SNAP"
+    definition_period = YEAR
+
+    def formula(spm_unit, period, parameters):
+        utility = parameters(period).usda.snap.deductions.utility
+        allowance_type = spm_unit("snap_utility_allowance_type", period)
+        state = spm_unit.household("state_code_str", period)
+        return select(
+            [
+                allowance_type == SNAPUTtilityAllowanceType.SUA,
+                allowance_type == SNAPUTtilityAllowanceType.LUA,
+                allowance_type == SNAPUTtilityAllowanceType.TUA,
+                True,
+            ],
+            [
+                utility.sua[state],
+                utility.lua[state],
+                utility.tua[state],
+                0,
+            ],
+        )
