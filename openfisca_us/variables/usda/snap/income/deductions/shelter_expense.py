@@ -85,7 +85,7 @@ class snap_homeless_shelter_deduction(Variable):
         ) * 12
 
 
-class SNAPUTtilityAllowanceType(Enum):
+class SNAPUttilityAllowanceType(Enum):
     SUA = "Standard Utility Allowance"
     LUA = "Limited Utility Allowance"
     TUA = "Telephone Utility Allowance"
@@ -112,16 +112,16 @@ class has_other_utility_expense(Variable):
     value_type = bool
     entity = Household
     label = "Has other utility expenses"
-    documentation = "Whether the household has utility bills other than heating and telephone"
+    documentation = "Whether the household has utility bills other than heating/cooling and telephone"
     definition_period = YEAR
 
 
 class snap_utility_allowance_type(Variable):
     value_type = Enum
-    possible_values = SNAPUTtilityAllowanceType
+    possible_values = SNAPUttilityAllowanceType
     entity = SPMUnit
     label = "SNAP utility allowance eligibility"
-    default_value = SNAPUTtilityAllowanceType.NONE
+    default_value = SNAPUttilityAllowanceType.NONE
     documentation = (
         "The type of utility allowance that is eligible for the SPM unit"
     )
@@ -136,10 +136,10 @@ class snap_utility_allowance_type(Variable):
                 True,
             ],
             [
-                SNAPUTtilityAllowanceType.SUA,
-                SNAPUTtilityAllowanceType.LUA,
-                SNAPUTtilityAllowanceType.TUA,
-                SNAPUTtilityAllowanceType.NONE,
+                SNAPUttilityAllowanceType.SUA,
+                SNAPUttilityAllowanceType.LUA,
+                SNAPUttilityAllowanceType.TUA,
+                SNAPUttilityAllowanceType.NONE,
             ],
         )
 
@@ -158,9 +158,9 @@ class snap_utility_allowance(Variable):
         state = spm_unit.household("state_code_str", period)
         return select(
             [
-                allowance_type == SNAPUTtilityAllowanceType.SUA,
-                allowance_type == SNAPUTtilityAllowanceType.LUA,
-                allowance_type == SNAPUTtilityAllowanceType.TUA,
+                allowance_type == SNAPUttilityAllowanceType.SUA,
+                allowance_type == SNAPUttilityAllowanceType.LUA,
+                allowance_type == SNAPUttilityAllowanceType.TUA,
                 True,
             ],
             [
