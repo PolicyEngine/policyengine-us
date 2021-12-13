@@ -27,7 +27,28 @@ class niit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Net Investment Income Tax"
+    unit = "currency-GBP"
     documentation = """Net Investment Income Tax from Form 8960"""
+
+    def formula(tax_unit, period, parameters):
+        nii = max_(
+            0,
+            add(
+                tax_unit,
+                period,
+                *[
+                    "filer_e00300",
+                    "filer_e00600",
+                    "c01000",
+                    "filer_e02000",
+                ],
+            ),
+        )
+        niit = parameters(period).irs.investment.net_inv_inc_tax
+        threshold = niit.threshold[tax_unit("mars", period)]
+        base = min_(nii, max_(0, tax_unit("c00100", period) - threshold))
+        return niit.rate * base
 
 
 class combined(Variable):
@@ -195,13 +216,19 @@ class othertaxes(Variable):
 class payrolltax(Variable):
     value_type = float
     entity = TaxUnit
+    label = "Payroll tax"
     definition_period = YEAR
+    unit = "currency-USD"
     documentation = """Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"""
 
     def formula(tax_unit, period):
-        return add(
-            tax_unit, period, "ptax_was", "filer_setax", "extra_payrolltax"
-        )
+        COMPONENTS = [
+            "ptax_was",
+            "ptax_amc",
+            "filer_setax",
+            "extra_payrolltax",
+        ]
+        return add(tax_unit, period, *COMPONENTS)
 
 
 class employee_payrolltax(Variable):
@@ -1410,9 +1437,25 @@ class ptax_amc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Additional Medicare Tax"
+    unit = "currency-USD"
     documentation = (
         """Additional Medicare Tax from Form 8959 (included in payrolltax)"""
     )
+
+    def formula(tax_unit, period, parameters):
+        fica = parameters(period).irs.payroll.fica
+        positive_sey = max_(0, tax_unit("filer_sey", period))
+        combined_rate = fica.medicare.rate + fica.social_security.rate
+        line8 = positive_sey * (1 - 0.5 * combined_rate)
+        mars = tax_unit("mars", period)
+        e00200 = tax_unit("filer_e00200", period)
+        exclusion = fica.medicare.additional.exclusion[mars]
+        earnings_over_exclusion = max_(0, e00200 - exclusion)
+        line11 = max_(0, exclusion - e00200)
+        rate = fica.medicare.additional.rate
+        base = earnings_over_exclusion + max_(0, line8 - line11)
+        return rate * base
 
 
 class ptax_oasdi(Variable):
@@ -1516,14 +1559,15 @@ class ymod1(Variable):
             )
             + tax_unit("c01000", period)
         )
-        business_losses = add(tax_unit, period, "filer_e00900", "filer_e02000")
+        business_income = add(tax_unit, period, "filer_e00900", "filer_e02000")
         max_business_losses = parameters(
             period
         ).irs.ald.misc.max_business_losses[tax_unit("mars", period)]
+        business_income_losses_capped = max_(
+            business_income, -max_business_losses
+        )
         return (
-            direct_inputs
-            + investment_income
-            - min_(business_losses, max_business_losses)
+            direct_inputs + investment_income + business_income_losses_capped
         )
 
 

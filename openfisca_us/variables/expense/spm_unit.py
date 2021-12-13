@@ -39,3 +39,12 @@ class spm_unit_medical_expenses(Variable):
     entity = SPMUnit
     label = u"SPM unit medical expenses"
     definition_period = YEAR
+
+
+class housing_cost(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = "Housing cost"
+    documentation = "Housing cost for this SPM unit"
+    unit = "currency-USD"
+    definition_period = YEAR
