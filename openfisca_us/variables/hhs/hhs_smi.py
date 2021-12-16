@@ -13,7 +13,7 @@ class hhs_smi(Variable):
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period)
-        state = spm_unit.household("state_code", period).decode_to_str()
+        state = spm_unit.household("state_code", period)
         four_person_smi = parameters(period).hhs.smi.amount[state]
         adjustment_mapping = parameters(
             period
