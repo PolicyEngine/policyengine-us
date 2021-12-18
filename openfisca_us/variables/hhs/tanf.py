@@ -77,7 +77,9 @@ class tanf_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         tanf_gross_income = spm_unit("tanf_total_gross_income", period)
         state = spm_unit.household("state_code_str", period)
-        earned_income_deduction = parameters(period).hhs.tanf.earned_income_deduction
+        earned_income_deduction = parameters(
+            period
+        ).hhs.tanf.earned_income_deduction
         return tanf_gross_income * (1 - earned_income_deduction[state])
 
 
