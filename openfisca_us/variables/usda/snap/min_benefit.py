@@ -14,9 +14,12 @@ class snap_minimum_benefit(Variable):
         # Calculate the relevant maximum benefit, defined as the maximum
         # benefit for a household of a certain size in their state.
         state_group = spm_unit.household("state_group_str", period)
-        relevant_max_benefit = snap.amount.main[state_group][
-            str(min_benefit.relevant_max_benefit_household_size)
-        ]
+        relevant_max_benefit = (
+            snap.amount.main[state_group][
+                str(min_benefit.relevant_max_benefit_household_size)
+            ]
+            * 12
+        )
         # Minimum benefits only apply to households up to a certain size.
         household_size = spm_unit.nb_persons()
         min_share_of_max = where(
