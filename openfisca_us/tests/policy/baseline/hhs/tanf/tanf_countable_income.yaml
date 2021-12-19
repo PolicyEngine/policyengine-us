@@ -2,24 +2,18 @@
   period: 2022
   absolute_error_margin: 0
   input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
     spm_units:
       spm_unit:
+        members: [parent, child]
         tanf_total_gross_income: 3500
     households:
       household:
+        members: [parent, child]
         state_code: IL
   output:
     tanf_countable_income: 3500 / 4
-
-- name: "TANF: Calculating countable income from total gross income: $866 gross income"
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    spm_units:
-      spm_unit:
-        tanf_total_gross_income: 866
-    households:
-      household:
-        state_code: IL
-  output:
-    tanf_countable_income: 866 / 4
