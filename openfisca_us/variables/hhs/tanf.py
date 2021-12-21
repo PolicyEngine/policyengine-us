@@ -84,13 +84,13 @@ class tanf_countable_income(Variable):
 
 
 class tanf_total_gross_income(Variable):
-    # will include both gross earned and unearned income: read https://www.dhs.state.il.us/page.aspx?item=15814
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
     label = "TANF gross income"
     documentation = "Gross income for calculating Temporary Assistance for Needy Families benefit. Includes both gross earned and unearned income."
     unit = "currency-USD"
+    reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
 
 
 class tanf_amount_if_eligible(Variable):
