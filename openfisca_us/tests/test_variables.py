@@ -19,7 +19,7 @@ EXEMPTIONS = (
     "tanf_max_amount",
     "tanf",
     "tanf_amount_if_eligible",
-    "tanf_countable_income"
+    "tanf_countable_income",
 )
 
 
