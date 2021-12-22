@@ -12,7 +12,7 @@ class tanf(Variable):
     documentation = (
         "Amount of Temporary Assistance for Needy Families benefit received."
     )
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         # Obtain eligibility.
@@ -22,12 +22,28 @@ class tanf(Variable):
         return where(eligible, amount_if_eligible, 0)
 
 
-class is_tanf_eligible(Variable):
+class continuous_tanf_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = "Eligibility for TANF"
-    documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
+    label = "Continued Economic Eligibility for TANF"
+    documentation = "Whether the familiy meets the economic requirements for the Temporary Assistance for Needy Families program after being approved."
+
+
+class initial_tanf_eligibility(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Initial Economic Eligibility for TANF"
+    documentation = "Whether the familiy meets the economic requirements for the Temporary Assistance for Needy Families program on application."
+
+
+class family_tanf_eligible(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Family Member Eligibility for TANF"
+    documentation = "Whether the family meets family member requirements for the Temporary Assistance for Needy Families program."
 
     def formula(spm_unit, period, parameters):
         children_0_17 = spm_unit.sum(spm_unit.members("is_child", period))
@@ -39,6 +55,29 @@ class is_tanf_eligible(Variable):
         return (
             children_0_17 + school_enrolled_18_year_olds + pregnant_people
         ) > 0
+
+
+class is_tanf_enrolled(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Current Enrollement in TANF"
+    documentation = "Whether the familiy is currently enrolled in the Temporary Assistance for Needy Families program."
+
+
+class is_tanf_eligible(Variable):
+    value_type = bool
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Eligibility for TANF"
+    documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
+
+    def formula(spm_unit, period, parameters):
+        return family_tanf_eligible and where(
+            is_tanf_enrolled,
+            continuous_tanf_eligibility,
+            initial_tanf_eligibility,
+        )
 
 
 # Quick fix, should be fixed by resolving https://github.com/openfisca/openfisca-core/issues/1085
@@ -57,7 +96,7 @@ class tanf_max_amount(Variable):
     definition_period = YEAR
     label = "TANF maximum benefit"
     documentation = "The maximum benefit amount a family could receive from Temporary Assistance for Needy Families given their state and family size."
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         family_size = spm_unit.nb_persons().astype(str)
@@ -72,7 +111,7 @@ class tanf_countable_income(Variable):
     definition_period = YEAR
     label = "TANF countable income"
     documentation = "Countable income for calculating Temporary Assistance for Needy Families benefit."
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         tanf_gross_income = spm_unit("tanf_total_gross_income", period)
@@ -89,7 +128,7 @@ class tanf_total_gross_income(Variable):
     definition_period = YEAR
     label = "TANF gross income"
     documentation = "Gross income for calculating Temporary Assistance for Needy Families benefit. Includes both gross earned and unearned income."
-    unit = "currency-USD"
+    unit = USD
     reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
 
 
@@ -99,7 +138,7 @@ class tanf_amount_if_eligible(Variable):
     definition_period = YEAR
     label = "TANF amount if family is eligible"
     documentation = "How much a family would receive if they were eligible for Temporary Assistance for Needy Families benefit."
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         max_amount = spm_unit("tanf_max_amount", period)
