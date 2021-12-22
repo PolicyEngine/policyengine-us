@@ -1,0 +1,15 @@
+- name: Family with no qualifications is ineligible
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_lifeline_eligible: false
+  output:
+    is_ebb_eligible: false
+
+- name: Family with Lifeline eligibility is eligible
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_lifeline_eligible: true
+  output:
+    is_ebb_eligible: false
