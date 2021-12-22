@@ -8,6 +8,7 @@ class spm_unit_total_income(Variable):
     entity = SPMUnit
     label = u"SPM unit total income"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_snap(Variable):
@@ -15,6 +16,7 @@ class spm_unit_snap(Variable):
     entity = SPMUnit
     label = u"SPM unit SNAP subsidy"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_capped_housing_subsidy(Variable):
@@ -22,6 +24,7 @@ class spm_unit_capped_housing_subsidy(Variable):
     entity = SPMUnit
     label = u"SPM unit capped housing subsidy"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_school_lunch_subsidy(Variable):
@@ -29,6 +32,7 @@ class spm_unit_school_lunch_subsidy(Variable):
     entity = SPMUnit
     label = u"SPM unit school lunch subsidy"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_energy_subsidy(Variable):
@@ -36,6 +40,7 @@ class spm_unit_energy_subsidy(Variable):
     entity = SPMUnit
     label = u"SPM unit school energy subsidy"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_wic(Variable):
@@ -43,6 +48,7 @@ class spm_unit_wic(Variable):
     entity = SPMUnit
     label = u"SPM unit WIC subsidy"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_net_income(Variable):
@@ -50,6 +56,7 @@ class spm_unit_net_income(Variable):
     entity = SPMUnit
     label = u"SPM unit net income"
     definition_period = YEAR
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         INCOME_COMPONENTS = [
@@ -77,6 +84,7 @@ class spm_unit_spm_threshold(Variable):
     entity = SPMUnit
     label = u"SPM unit's SPM poverty threshold"
     definition_period = YEAR
+    unit = "currency-USD"
 
 
 class spm_unit_is_in_spm_poverty(Variable):
