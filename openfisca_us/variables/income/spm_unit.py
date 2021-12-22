@@ -89,3 +89,11 @@ class spm_unit_is_in_spm_poverty(Variable):
         income = spm_unit("spm_unit_net_income", period)
         poverty_threshold = spm_unit("spm_unit_spm_threshold", period)
         return income < poverty_threshold
+
+
+class experienced_covid_income_loss(Variable):
+    value_type = bool
+    entity = SPMUnit
+    label = "Experienced Covid income loss"
+    description = "Whether the SPM unit experienced a loss of income due to COVID-19 since February 2020"
+    definition_period = YEAR
