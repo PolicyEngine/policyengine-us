@@ -28,7 +28,7 @@ class niit(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Net Investment Income Tax"
-    unit = "currency-GBP"
+    unit = "currency-USD"
     documentation = """Net Investment Income Tax from Form 8960"""
 
     def formula(tax_unit, period, parameters):
