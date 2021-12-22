@@ -10,5 +10,4 @@ class is_ebb_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).fcc.ebb.categorical_eligibility
-
         return np.any([spm_unit(program, period) for program in programs])
