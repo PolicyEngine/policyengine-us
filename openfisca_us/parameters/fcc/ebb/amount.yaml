@@ -1,0 +1,13 @@
+description: Maximum monthly Emergency Broadband Benefit (EBB) amount for tribal and non-tribal lands
+true:
+  2021-05-12: 75
+false:
+  2021-05-12: 50
+breakdown: is_on_tribal_land
+unit: currency-USD
+period: year
+reference:
+  - name: H.R. 133 - Consolidated Appropriations Act, 2021
+    href: https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf#page=950
+  - name: FCC announces start date of Emergency Broadband Benefit program
+    href: https://docs.fcc.gov/public/attachments/DOC-372014A1.pdf
