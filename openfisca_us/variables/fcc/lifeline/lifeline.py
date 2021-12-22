@@ -7,6 +7,7 @@ class lifeline(Variable):
     label = "Lifeline benefit amount"
     documentation = "Amount of Lifeline phone and broadband benefit"
     definition_period = YEAR
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         max_amount = parameters(period).fcc.lifeline.amount * 12

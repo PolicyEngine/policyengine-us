@@ -7,6 +7,7 @@ class fcc_fpg_ratio(Variable):
     label = "SPM unit's federal poverty ratio as defined by the FCC"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/47/54.400#f"
+    unit = "ratio"
 
     def formula(spm_unit, period, parameters):
         income = spm_unit.sum(spm_unit.members("irs_gross_income", period))
