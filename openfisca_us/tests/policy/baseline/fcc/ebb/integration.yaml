@@ -1,15 +1,14 @@
-- name: Family with no income is eligible
-  period: 2022
-  absolute_error_margin: 0.01
-  output:
-    ebb: 50 * 12
-
-- name: Family with high income is not eligible
+- name: Family with a Pell Grant and $100/mo broadband costs gets $50/mo
   period: 2022
   absolute_error_margin: 0.01
   input:
-    spm_units:
-      spm_unit:
-        fcc_income: 20_000
+    pell_grant: 100
+    broadband_cost: 100 * 12
+  output:
+    ebb: 50 * 12
+
+- name: Family with no eligibility flags gets $0
+  period: 2022
+  absolute_error_margin: 0.01
   output:
     ebb: 0 * 12
