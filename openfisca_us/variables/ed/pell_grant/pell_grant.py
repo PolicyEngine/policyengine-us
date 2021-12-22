@@ -5,6 +5,6 @@ class pell_grant(Variable):
     value_type = float
     entity = SPMUnit
     label = "Pell Grant amount"
-    description = "SPM unit's Pell Grant educational subsidy"
+    documentation = "SPM unit's Pell Grant educational subsidy"
     definition_period = YEAR
     unit = "currency-USD"

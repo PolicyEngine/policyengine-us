@@ -5,7 +5,7 @@ class ebb(Variable):
     value_type = float
     entity = SPMUnit
     label = "Emergency Broadband Benefit amount"
-    description = "Emergency Broadband Benefit amount"
+    documentation = "Emergency Broadband Benefit amount"
     definition_period = YEAR
     unit = "currency-USD"
 
