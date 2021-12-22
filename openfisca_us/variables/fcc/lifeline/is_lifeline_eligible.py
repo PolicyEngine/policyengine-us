@@ -14,8 +14,7 @@ class is_lifeline_eligible(Variable):
         categorically_eligible = np.any(
             [spm_unit(program, period) for program in programs]
         )
-        fpg_eligible = (
-            spm_unit("fcc_fpg_ratio")
-            <= parameters(period).fcc.lifeline.fpl_threshold
-        )
+        fpg_ratio = spm_unit("fcc_fpg_ratio")
+        fpg_threshold = parameters(period).fcc.lifeline.fpg_threshold
+        fpg_eligible = fpg_ratio <= fpg_threshold
         return categorically_eligible | fpg_eligible
