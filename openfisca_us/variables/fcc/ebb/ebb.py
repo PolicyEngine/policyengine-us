@@ -11,5 +11,5 @@ class ebb(Variable):
         eligible = spm_unit("is_ebb_eligible", period)
         broadband_cost = spm_unit("broadband_cost", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
-        amount = parameters(period).fcc.ebb.amount
-        return where(eligible, min_(broadband_cost, amount[tribal]), 0) * 12
+        amount = parameters(period).fcc.ebb.amount[tribal] * 12
+        return where(eligible, min_(broadband_cost, amount), 0)

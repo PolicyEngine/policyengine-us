@@ -48,3 +48,11 @@ class housing_cost(Variable):
     documentation = "Housing cost for this SPM unit"
     unit = "currency-USD"
     definition_period = YEAR
+
+class broadband_cost(Variable):
+    value_type = float
+    entity = SPMUnit
+    label = "Broadband cost"
+    documentation = "Broadband cost for this SPM unit"
+    unit = "currency-USD"
+    definition_period = YEAR
