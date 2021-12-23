@@ -3,9 +3,7 @@
   input:
     ccdf_income: 85_000
     spm_unit_size: 4
-    households:
-      household:
-        state_code: NY
+    state_code_str: NY
   output:
     ccdf_income_to_smi_ratio: 85_000 / 104_972
 
@@ -14,9 +12,7 @@
   input:
     ccdf_income: 85_000
     spm_unit_size: 1
-    households:
-      household:
-        state_code: NY
+    state_code_str: NY
   output:
     ccdf_income_to_smi_ratio: 0.52 * 85_000 / 104_972
 
@@ -25,9 +21,7 @@
   input:
     ccdf_income: 100_000
     spm_unit_size: 6
-    households:
-      household:
-        state_code: NY
+    state_code_str: NY
   output:
     ccdf_income_to_smi_ratio: 1.32 * 100_000 / 104_972
 
@@ -36,8 +30,6 @@
   input:
     ccdf_income: 100_000
     spm_unit_size: 7
-    households:
-      household:
-        state_code: NY
+    state_code_str: NY
   output:
     ccdf_income_to_smi_ratio: 1.35 * 100_000 / 104_972
