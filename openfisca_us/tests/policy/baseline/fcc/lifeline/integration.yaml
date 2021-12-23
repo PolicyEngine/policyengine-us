@@ -1,0 +1,9 @@
+- name: Individual who doesn't get SNAP but is below the poverty line and has phone cost can get full Lifeline benefit.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    phone_cost: 20 * 12
+    snap: 0
+    irs_gross_income: 10_000 # Below the poverty line for one person.
+  output:
+    lifeline: 9.25 * 12
