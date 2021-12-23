@@ -14,7 +14,7 @@
     spm_unit_size: 1
     state_code_str: NY
   output:
-    ccdf_income_to_smi_ratio: 0.52 * 85_000 / 104_972
+    ccdf_income_to_smi_ratio: 85_000 / (0.52 * 104_972)
 
 - name: Household size 6, State NY
   period: 2022
@@ -23,7 +23,7 @@
     spm_unit_size: 6
     state_code_str: NY
   output:
-    ccdf_income_to_smi_ratio: 1.32 * 100_000 / 104_972
+    ccdf_income_to_smi_ratio: 100_000 / (1.32 * 104_972)
 
 - name: Household size 7, State NY
   period: 2022
@@ -32,4 +32,4 @@
     spm_unit_size: 7
     state_code_str: NY
   output:
-    ccdf_income_to_smi_ratio: 1.35 * 100_000 / 104_972
+    ccdf_income_to_smi_ratio: 100_000 / (104_972 * 1.35)
