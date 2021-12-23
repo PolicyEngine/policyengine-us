@@ -41,16 +41,6 @@ class is_tanf_eligible(Variable):
         ) > 0
 
 
-# Quick fix, should be fixed by resolving https://github.com/openfisca/openfisca-core/issues/1085
-class state_code_str(Variable):
-    value_type = str
-    entity = Household
-    definition_period = ETERNITY
-
-    def formula(household, period):
-        return household("state_code", period).decode_to_str()
-
-
 class tanf_max_amount(Variable):
     value_type = int
     entity = SPMUnit
