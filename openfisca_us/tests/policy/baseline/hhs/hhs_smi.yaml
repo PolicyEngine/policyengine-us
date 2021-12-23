@@ -1,0 +1,39 @@
+- name: Household size 4, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 85_000
+    spm_unit_size: 4
+    state_code_str: NY
+  output:
+    hhs_smi: 104_972
+
+- name: Household size 1, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 85_000
+    spm_unit_size: 1
+    state_code_str: NY
+  output:
+    hhs_smi: 80.52 * 104_972
+
+- name: Household size 6, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 100_000
+    spm_unit_size: 6
+    state_code_str: NY
+  output:
+    hhs_smi: 1.32 * 104_972
+
+- name: Household size 7, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 100_000
+    spm_unit_size: 7
+    state_code_str: NY
+  output:
+    hhs_smi: 104_972 * 1.35
