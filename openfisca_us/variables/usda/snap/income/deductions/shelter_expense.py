@@ -26,8 +26,7 @@ class snap_shelter_deduction(Variable):
                     shelter_deduction.income_share_threshold
                     * spm_unit("snap_net_income_pre_shelter", period)
                 )
-            )
-            * 12,
+            ),
             0,
         )
 
@@ -45,8 +44,8 @@ class snap_shelter_deduction(Variable):
         )
         return where(
             spm_unit.household("is_homeless", period),
-            homeless_shelter_deduction,
-            non_homeless_shelter_deduction,
+            homeless_shelter_deduction * 12,
+            non_homeless_shelter_deduction * 12,
         )
 
 
