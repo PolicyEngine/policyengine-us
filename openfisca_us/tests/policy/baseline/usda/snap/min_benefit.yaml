@@ -31,6 +31,12 @@
         age: 50
       person_3:
         age: 35
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
   output:
     # Ineligible as a family of 3.
     snap_minimum_benefit: 0
