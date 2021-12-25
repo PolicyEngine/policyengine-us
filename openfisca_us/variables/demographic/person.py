@@ -29,6 +29,7 @@ class age(Variable):
     entity = Person
     label = u"Age"
     definition_period = YEAR
+    default_value = 18
 
 
 class AgeGroup(Enum):

@@ -74,6 +74,24 @@ class tanf_countable_income(Variable):
     documentation = "Countable income for calculating Temporary Assistance for Needy Families benefit."
     unit = "currency-USD"
 
+    def formula(spm_unit, period, parameters):
+        tanf_gross_income = spm_unit("tanf_total_gross_income", period)
+        state = spm_unit.household("state_code_str", period)
+        earned_income_deduction = parameters(
+            period
+        ).hhs.tanf.earned_income_deduction
+        return tanf_gross_income * (1 - earned_income_deduction[state])
+
+
+class tanf_total_gross_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "TANF gross income"
+    documentation = "Gross income for calculating Temporary Assistance for Needy Families benefit. Includes both gross earned and unearned income."
+    unit = "currency-USD"
+    reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
+
 
 class tanf_amount_if_eligible(Variable):
     value_type = float

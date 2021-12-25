@@ -11,13 +11,8 @@ class is_usda_disabled(Variable):
     label = "USDA disabled status"
 
     def formula(person, period, parameters):
-        disabled_programs = parameters(period).usda.disabled_programs
-
-        return where(
-            np.any([person(program, period) for program in disabled_programs]),
-            1,
-            0,
-        )
+        programs = parameters(period).usda.disabled_programs
+        return np.any([person(program, period) for program in programs])
 
 
 class is_usda_elderly(Variable):
