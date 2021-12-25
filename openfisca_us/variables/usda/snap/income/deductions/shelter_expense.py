@@ -20,10 +20,12 @@ class snap_shelter_deduction(Variable):
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
         uncapped_ded = max_(
-            spm_unit("housing_cost", period)
-            - (
-                shelter_deduction.income_share_threshold
-                * spm_unit("snap_net_income_pre_shelter", period)
+            (
+                spm_unit("housing_cost", period)
+                - (
+                    shelter_deduction.income_share_threshold
+                    * spm_unit("snap_net_income_pre_shelter", period)
+                )
             )
             * 12,
             0,
