@@ -162,7 +162,7 @@ class snap(Variable):
     definition_period = YEAR
     documentation = ""
 
-    def formula(spm_unit, period, parameters):
+    def formula(spm_unit, period):
         # TODO: Add gross and net income checks.
         return spm_unit("snap_max_benefit", period) - spm_unit(
             "snap_expected_contribution_towards_food", period
