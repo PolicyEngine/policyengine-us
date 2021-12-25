@@ -1,0 +1,21 @@
+description: Program participation that entitles a household to the Lifeline program
+values:
+  2016-12-01:
+    - medicaid
+    - snap
+    - ssi
+    # Also not implemented:
+    # - Federal Public Housing Assistance
+    # - Veterans and Survivors Pension Benefit
+    # - Tribal programs:
+    #   - Bureau of Indian Affairs general assistance
+    #   - Tribally administered Temporary Assistance for Needy Families
+    #   - Head Start (only those households meeting its income qualifying standard)
+    #   - Food Distribution Program on Indian Reservations
+metadata:
+  period: month
+  reference:
+    - title: 47 CFR § 54.409 - Consumer qualification for Lifeline.
+      href: https://www.law.cornell.edu/cfr/text/47/54.409
+    - title: Lifeline Program for Low-Income Consumers # Specifies 2016-12-01 start date.
+      href: https://www.fcc.gov/general/lifeline-program-low-income-consumers
