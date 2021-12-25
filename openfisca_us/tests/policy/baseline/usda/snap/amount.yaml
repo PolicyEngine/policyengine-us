@@ -49,7 +49,7 @@
         snap_earnings_deduction: (2000 * 0.2) * 12
         snap_standard_deduction: 181 * 12
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
-        snap_shelter_deduction: 586 * 12
+        snap_shelter_deduction: (1700 - (1419 * 0.5)) * 12
         housing_cost: 1700 * 12
         has_elderly_disabled: False
         members: [person_1, person_2, person_3, person_4]
