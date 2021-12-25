@@ -24,7 +24,8 @@ class snap_shelter_deduction(Variable):
             - (
                 shelter_deduction.income_share_threshold
                 * spm_unit("snap_net_income_pre_shelter", period)
-            ),
+            )
+            * 12,
             0,
         )
 
@@ -163,10 +164,5 @@ class snap_utility_allowance(Variable):
                 allowance_type == SNAPUttilityAllowanceType.TUA,
                 True,
             ],
-            [
-                utility.sua[state],
-                utility.lua[state],
-                utility.tua[state],
-                0,
-            ],
+            [utility.sua[state], utility.lua[state], utility.tua[state], 0,],
         )
