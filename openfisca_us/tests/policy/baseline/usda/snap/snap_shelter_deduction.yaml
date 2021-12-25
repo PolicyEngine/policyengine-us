@@ -21,7 +21,7 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    shelter_deduction: 586 * 12
+    snap_shelter_deduction: 586 * 12
 
 - name: family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
   period: 2021
@@ -46,4 +46,4 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    shelter_deduction: (1700 - (1419 * 0.5)) * 12
+    snap_shelter_deduction: (1700 - (1419 * 0.5)) * 12
