@@ -14,8 +14,8 @@
     spm_units:
       spm_unit:
         snap_gross_income: 2000 * 12
-        earnings_deduction: (2000 * 0.2) * 12
-        standard_deduction: 181 * 12
+        snap_earnings_deduction: (2000 * 0.2) * 12
+        snap_standard_deduction: 181 * 12
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
         snap_shelter_deduction: 586 * 12
         housing_cost: 1700 * 12
@@ -45,8 +45,8 @@
     spm_units:
       spm_unit:
         snap_gross_income: 2000 * 12
-        earnings_deduction: (2000 * 0.2) * 12
-        standard_deduction: 181 * 12
+        snap_earnings_deduction: (2000 * 0.2) * 12
+        snap_standard_deduction: 181 * 12
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
         snap_shelter_deduction: 586 * 12
         housing_cost: 1700 * 12
