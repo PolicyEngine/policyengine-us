@@ -18,12 +18,10 @@ class snap_shelter_deduction(Variable):
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
         uncapped_ded = max_(
-            (
-                spm_unit("housing_cost", period)
-                - (
-                    shelter_deduction.income_share_threshold
-                    * spm_unit("snap_net_income_pre_shelter", period)
-                )
+            spm_unit("housing_cost", period)
+            - (
+                shelter_deduction.income_share_threshold
+                * spm_unit("snap_net_income_pre_shelter", period)
             ),
             0,
         )
@@ -38,11 +36,11 @@ class snap_shelter_deduction(Variable):
             where(
                 has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
             )
-            + spm_unit("snap_utility_allowance", period) * 12
-        )
+            + spm_unit("snap_utility_allowance", period)
+        ) * 12
         homeless_shelter_deduction = (
-            spm_unit("snap_homeless_shelter_deduction", period) * 12
-        )
+            spm_unit("snap_homeless_shelter_deduction", period)
+        ) * 12
         return where(
             spm_unit.household("is_homeless", period),
             homeless_shelter_deduction,
