@@ -22,7 +22,7 @@
         has_elderly_disabled: False
         members: [person_1, person_2, person_3, person_4]
         snap_net_income: 833 * 12
-        expected_contribution: (833 * 0.3) * 12
+        snap_expected_contribution: (833 * 0.3) * 12
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -54,9 +54,9 @@
         has_elderly_disabled: False
         members: [person_1, person_2, person_3, person_4]
         snap_net_income: 428.5 * 12
-        expected_contribution: (428.5 * 0.3) * 12
+        snap_expected_contribution: (428.5 * 0.3) * 12
     households:
       household:
         state_group: CONTIGUOUS_US
   output:
-    expected_food_contribution: (680 - 128.4) * 12
+    snap: (680 - 128.4) * 12
