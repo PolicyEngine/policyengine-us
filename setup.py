@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.2.0",
+    version="0.3.0",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -20,7 +20,7 @@ setup(
     description="OpenFisca tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url="https://github.com/nikhilwoodruff/openfisca-us",
+    url="https://github.com/PolicyEngine/openfisca-us",
     include_package_data=True,  # Will read MANIFEST.in
     data_files=[
         (
