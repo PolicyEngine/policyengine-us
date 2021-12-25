@@ -224,3 +224,19 @@ class county(Variable):
     entity = Household
     label = u"County"
     definition_period = ETERNITY
+
+
+class is_homeless(Variable):
+    value_type = bool
+    entity = Household
+    definition_period = YEAR
+    documentation = "Whether all members are homeless individuals and are not receiving free shelter throughout the month"
+    label = "Is homeless"
+
+
+class is_on_tribal_land(Variable):
+    value_type = bool
+    entity = Household
+    definition_period = ETERNITY
+    label = "Is on tribal land"
+    documentation = "Whether the household is on tribal land"

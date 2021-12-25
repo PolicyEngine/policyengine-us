@@ -29,6 +29,17 @@ class is_tanf_eligible(Variable):
     label = "Eligibility for TANF"
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
 
+    def formula(spm_unit, period, parameters):
+        children_0_17 = spm_unit.sum(spm_unit.members("is_child", period))
+        school_enrolled_18_year_olds = spm_unit.sum(
+            (spm_unit.members("is_in_school", period))
+            & (spm_unit.members("age", period) == 18)
+        )
+        pregnant_people = spm_unit.sum(spm_unit.members("is_pregnant", period))
+        return (
+            children_0_17 + school_enrolled_18_year_olds + pregnant_people
+        ) > 0
+
 
 # Quick fix, should be fixed by resolving https://github.com/openfisca/openfisca-core/issues/1085
 class state_code_str(Variable):
@@ -62,6 +73,24 @@ class tanf_countable_income(Variable):
     label = "TANF countable income"
     documentation = "Countable income for calculating Temporary Assistance for Needy Families benefit."
     unit = "currency-USD"
+
+    def formula(spm_unit, period, parameters):
+        tanf_gross_income = spm_unit("tanf_total_gross_income", period)
+        state = spm_unit.household("state_code_str", period)
+        earned_income_deduction = parameters(
+            period
+        ).hhs.tanf.earned_income_deduction
+        return tanf_gross_income * (1 - earned_income_deduction[state])
+
+
+class tanf_total_gross_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "TANF gross income"
+    documentation = "Gross income for calculating Temporary Assistance for Needy Families benefit. Includes both gross earned and unearned income."
+    unit = "currency-USD"
+    reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
 
 
 class tanf_amount_if_eligible(Variable):
