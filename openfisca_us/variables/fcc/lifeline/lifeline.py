@@ -8,7 +8,7 @@ class lifeline(Variable):
     documentation = "Amount of Lifeline phone and broadband benefit"
     definition_period = YEAR
     unit = "currency-USD"
-
+reference = "https://www.law.cornell.edu/cfr/text/47/54.403"
     def formula(spm_unit, period, parameters):
         max_amount = parameters(period).fcc.lifeline.amount * 12
         phone_broadband_cost = add(
