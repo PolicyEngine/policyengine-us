@@ -7,7 +7,3 @@
 ## 0.3.0
 
 * Add Lifeline benefit
-
-## 0.3.1
-
-* Add automated tests for semantic versioning
