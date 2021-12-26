@@ -163,5 +163,10 @@ class snap_utility_allowance(Variable):
                 allowance_type == SNAPUttilityAllowanceType.TUA,
                 True,
             ],
-            [utility.sua[state], utility.lua[state], utility.tua[state], 0,],
+            [
+                utility.sua[state],
+                utility.lua[state],
+                utility.tua[state],
+                0,
+            ],
         )

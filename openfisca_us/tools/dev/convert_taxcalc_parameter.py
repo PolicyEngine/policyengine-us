@@ -32,7 +32,9 @@ def convert_param(param: dict) -> dict:
                 result[mars] = dict(values={date: val})
             else:
                 result[mars]["values"][date] = val
-    result["metadata"] = dict(unit="currency-USD",)
+    result["metadata"] = dict(
+        unit="currency-USD",
+    )
     return yaml.dump(result).replace("'", "")
 
 
