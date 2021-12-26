@@ -34,7 +34,7 @@ class snap_shelter_deduction(Variable):
         # Cap for all but elderly/disabled people.
         non_homeless_shelter_deduction = where(
             has_elderly_disabled,
-            uncapped_ded * 12,
+            uncapped_ded,
             min_(uncapped_ded * 12, ded_cap * 12),
         ) + spm_unit("snap_utility_allowance", period)
         homeless_shelter_deduction = (
