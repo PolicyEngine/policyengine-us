@@ -36,11 +36,11 @@ class snap_shelter_deduction(Variable):
             where(
                 has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
             )
-            + spm_unit("snap_utility_allowance", period) * 12
-        )
+            + spm_unit("snap_utility_allowance", period)
+        ) * 12
         homeless_shelter_deduction = (
-            spm_unit("snap_homeless_shelter_deduction", period) * 12
-        )
+            spm_unit("snap_homeless_shelter_deduction", period)
+        ) * 12
         return where(
             spm_unit.household("is_homeless", period),
             homeless_shelter_deduction,
