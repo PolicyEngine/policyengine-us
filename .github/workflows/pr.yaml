@@ -11,6 +11,39 @@ jobs:
         uses: "lgeiger/black-action@master"
         with:
           args: ". -l 79 --check"
+  Check version:
+    runs-on: ubuntu-latest
+    needs: [ test-core, test-country-template, test-extension-template, check-numpy, test-docs, lint-files ] # Last job to run
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all the tags
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Check version number has been properly updated
+        run: "${GITHUB_WORKSPACE}/.github/is-version-number-acceptable.sh"
+  # GitHub Actions does not have a halt job option, to stop from deploying if no functional changes were found.
+  # We build a separate job to substitute the halt option.
+  # The `deploy` job is dependent on the output of the `check-for-functional-changes`job.
+  Check for functional changes:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' # Only triggered for the `master` branch
+    needs: [ check-version ]
+    outputs:
+      status: ${{ steps.stop-early.outputs.status }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Fetch all the tags
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - id: stop-early
+        run: if "${GITHUB_WORKSPACE}/.github/has-functional-changes.sh" ; then echo "::set-output name=status::success" ; fi # The `check-for-functional-changes` job should always succeed regardless of the `has-functional-changes` script's exit code. Consequently, we do not use that exit code to trigger deploy, but rather a dedicated output variable `status`, to avoid a job failure if the exit code is different from 0. Conversely, if the job fails the entire workflow would be marked as `failed` which is disturbing for contributors.
+
   Test:
     runs-on: ${{ matrix.os }}
     strategy:
