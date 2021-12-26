@@ -53,19 +53,6 @@ class is_person_demographic_tanf_eligible(Variable):
         return child_0_17 | school_enrolled_18_year_old | pregnant
 
 
-class is_demographic_tanf_eligible(Variable):
-    value_type = bool
-    entity = SPMUnit
-    definition_period = YEAR
-    label = "Eligibility for TANF based on family composition"
-    documentation = "Whether the family meets demographic requirements for the Temporary Assistance for Needy Families program."
-
-    def formula(spm_unit, period, parameters):
-        return spm_unit.any(
-            spm_unit.members("is_person_demographic_tanf_eligible", period)
-        )
-
-
 class is_tanf_enrolled(Variable):
     value_type = bool
     entity = SPMUnit
@@ -82,12 +69,14 @@ class is_tanf_eligible(Variable):
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
 
     def formula(spm_unit, period, parameters):
+        demographic_eligible = spm_unit.any(
+            spm_unit.members("is_person_demographic_tanf_eligible", period)
+        )
         economic_eligible = where(
             spm_unit("is_tanf_enrolled", period),
             spm_unit("continuous_tanf_eligibility", period),
             spm_unit("initial_tanf_eligibility", period),
         )
-        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         return demographic_eligible & economic_eligible
 
 
