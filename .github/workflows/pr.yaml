@@ -11,7 +11,8 @@ jobs:
         uses: "lgeiger/black-action@master"
         with:
           args: ". -l 79 --check"
-  Check version:
+  check-version:
+    name: Check version
     runs-on: ubuntu-latest
     needs: [ test-core, test-country-template, test-extension-template, check-numpy, test-docs, lint-files ] # Last job to run
     steps:
@@ -27,7 +28,8 @@ jobs:
   # GitHub Actions does not have a halt job option, to stop from deploying if no functional changes were found.
   # We build a separate job to substitute the halt option.
   # The `deploy` job is dependent on the output of the `check-for-functional-changes`job.
-  Check for functional changes:
+  check-for-functional-changes:
+    name: Check for functional changes
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' # Only triggered for the `master` branch
     needs: [ check-version ]
