@@ -14,7 +14,6 @@ jobs:
   check-version:
     name: Check version
     runs-on: ubuntu-latest
-    needs: [ test-core, test-country-template, test-extension-template, check-numpy, test-docs, lint-files ] # Last job to run
     steps:
       - uses: actions/checkout@v2
         with:
