@@ -46,4 +46,4 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_shelter_deduction: (1700 - (1419 * 0.5))
+    snap_shelter_deduction: (1700 - (1419 * 0.5)) * 12
