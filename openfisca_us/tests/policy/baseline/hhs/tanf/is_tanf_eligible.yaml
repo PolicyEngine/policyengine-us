@@ -1,0 +1,79 @@
+- name: "TANF: Initial application, and is eligible economically and demographically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: true
+    is_tanf_enrolled: false
+    continuous_tanf_eligibility: true
+    initial_tanf_eligibility: true
+  output:
+    is_tanf_eligible: true
+
+- name: "TANF: Initial application, and is not eligible economically nor demographically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: false
+    is_tanf_enrolled: false
+    continuous_tanf_eligibility: false
+    initial_tanf_eligibility: false
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Initial application, is eligible economically, but not demographically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: false
+    is_tanf_enrolled: false
+    continuous_tanf_eligibility: true
+    initial_tanf_eligibility: true
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Initial application, is eligible demographically, but not economically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: true
+    is_tanf_enrolled: false
+    continuous_tanf_eligibility: false
+    initial_tanf_eligibility: false
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Continued application, and is eligible economically and demographically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: true
+    is_tanf_enrolled: true
+    continuous_tanf_eligibility: true
+    initial_tanf_eligibility: true
+  output:
+    is_tanf_eligible: true
+
+- name: "TANF: Continued application, and is not eligible economically nor demographically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: false
+    is_tanf_enrolled: true
+    continuous_tanf_eligibility: false
+    initial_tanf_eligibility: false
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Continued application, is eligible economically, but not demographically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: false
+    is_tanf_enrolled: true
+    continuous_tanf_eligibility: true
+    initial_tanf_eligibility: true
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Continued application, is eligible demographically, but not economically"
+  period: 2022
+  input:
+    is_demographic_tanf_eligible: true
+    is_tanf_enrolled: true
+    continuous_tanf_eligibility: false
+    initial_tanf_eligibility: false
+  output:
+    is_tanf_eligible: false

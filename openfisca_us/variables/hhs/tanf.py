@@ -38,23 +38,32 @@ class initial_tanf_eligibility(Variable):
     documentation = "Whether the familiy meets the economic requirements for the Temporary Assistance for Needy Families program on application."
 
 
-class family_tanf_eligible(Variable):
+class is_person_demographic_tanf_eligible(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = "Person-level eligiblity for TANF based on age, pregnancy, etc."
+    documentation = "Whether a person in a family applying for the Temporary Assistance for Needy Families program meets demographic requirements."
+
+    def formula(person, period, parameters):
+        child_0_17 = person("is_child", period)
+        is_18 = person("age", period) == 18
+        school_enrolled_18_year_old = person("is_in_school", period) & is_18
+        pregnant = person("is_pregnant", period)
+        return child_0_17 | school_enrolled_18_year_old | pregnant
+
+
+class is_demographic_tanf_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = "Family Member Eligibility for TANF"
-    documentation = "Whether the family meets family member requirements for the Temporary Assistance for Needy Families program."
+    label = "Eligibility for TANF based on family composition"
+    documentation = "Whether the family meets demographic requirements for the Temporary Assistance for Needy Families program."
 
     def formula(spm_unit, period, parameters):
-        children_0_17 = spm_unit.sum(spm_unit.members("is_child", period))
-        school_enrolled_18_year_olds = spm_unit.sum(
-            (spm_unit.members("is_in_school", period))
-            & (spm_unit.members("age", period) == 18)
+        return spm_unit.any(
+            spm_unit.members("is_person_demographic_tanf_eligible", period)
         )
-        pregnant_people = spm_unit.sum(spm_unit.members("is_pregnant", period))
-        return (
-            children_0_17 + school_enrolled_18_year_olds + pregnant_people
-        ) > 0
 
 
 class is_tanf_enrolled(Variable):
@@ -73,11 +82,13 @@ class is_tanf_eligible(Variable):
     documentation = "Whether the family is eligible for Temporary Assistance for Needy Families benefit."
 
     def formula(spm_unit, period, parameters):
-        return family_tanf_eligible and where(
-            is_tanf_enrolled,
-            continuous_tanf_eligibility,
-            initial_tanf_eligibility,
+        economic_eligible = where(
+            spm_unit("is_tanf_enrolled", period),
+            spm_unit("continuous_tanf_eligibility", period),
+            spm_unit("initial_tanf_eligibility", period),
         )
+        demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
+        return demographic_eligible & economic_eligible
 
 
 # Quick fix, should be fixed by resolving https://github.com/openfisca/openfisca-core/issues/1085

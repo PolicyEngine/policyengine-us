@@ -246,17 +246,13 @@ class c33200(Variable):
             max_(
                 cdcc.phaseout.min,
                 cdcc.phaseout.max
-                - min_(
-                    cdcc.phaseout.max - cdcc.phaseout.min,
-                    tratio,
-                ),
+                - min_(cdcc.phaseout.max - cdcc.phaseout.min, tratio,),
             ),
             max_(
                 cdcc.phaseout.min,
                 cdcc.phaseout.max
                 - max(
-                    ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate),
-                    0,
+                    ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0,
                 ),
             ),
         )

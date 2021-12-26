@@ -37,12 +37,7 @@ class niit(Variable):
             add(
                 tax_unit,
                 period,
-                *[
-                    "filer_e00300",
-                    "filer_e00600",
-                    "c01000",
-                    "filer_e02000",
-                ],
+                *["filer_e00300", "filer_e00600", "c01000", "filer_e02000",],
             ),
         )
         niit = parameters(period).irs.investment.net_inv_inc_tax
@@ -845,10 +840,7 @@ class c17000(Variable):
         medical_floor = medical_floor_ratio * max_(
             tax_unit("c00100", period), 0
         )
-        return max_(
-            0,
-            tax_unit("filer_e17500", period) - medical_floor,
-        )
+        return max_(0, tax_unit("filer_e17500", period) - medical_floor,)
 
 
 class c18300(Variable):
@@ -952,10 +944,7 @@ class c21040(Variable):
                 * phaseout.rate
             ),
         )
-        return min_(
-            uncapped_phaseout,
-            phaseout_amount_cap,
-        )
+        return min_(uncapped_phaseout, phaseout_amount_cap,)
 
 
 class c21060(Variable):
@@ -1283,10 +1272,7 @@ class ptax_was(Variable):
 
     def formula(tax_unit, period, parameters):
         ptax_was = add(
-            tax_unit,
-            period,
-            "filer_ptax_ss_was",
-            "filer_ptax_mc_was",
+            tax_unit, period, "filer_ptax_ss_was", "filer_ptax_mc_was",
         )
         return ptax_was
 
@@ -1349,17 +1335,11 @@ class ymod1(Variable):
             "e01100",
             "e01200",
         )
-        investment_income = (
-            add(
-                tax_unit,
-                period,
-                *[
-                    "filer_" + variable
-                    for variable in INVESTMENT_INCOME_SOURCES
-                ],
-            )
-            + tax_unit("c01000", period)
-        )
+        investment_income = add(
+            tax_unit,
+            period,
+            *["filer_" + variable for variable in INVESTMENT_INCOME_SOURCES],
+        ) + tax_unit("c01000", period)
         business_income = add(tax_unit, period, "filer_e00900", "filer_e02000")
         max_business_losses = parameters(
             period
