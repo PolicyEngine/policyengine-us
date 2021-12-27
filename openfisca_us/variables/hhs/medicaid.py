@@ -1,9 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.entities import *
-from openfisca_us.tools.general import *
-from openfisca_us.variables.demographic.person import *
-from openfisca_us.variables.demographic.household import *
-
 
 class MedicaidPersonType(Enum):
     ADULT_WITHOUT_DEPENDENT = "Adult without dependent"
@@ -21,7 +16,7 @@ class medicaid_person_type(Variable):
     definition_period = YEAR
     label = "Medicaid person type"
     documentation = "Person type for Medicaid"
-
+        
 
 class medicaid_income_threshold(Variable):
     value_type = float
