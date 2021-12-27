@@ -8,7 +8,7 @@ class is_snap_eligible(Variable):
     unit = "currency-USD"
     documentation = "Whether this SPM unit is eligible for SNAP benefits"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
+    reference = "https://www.law.cornell.edu/uscode/text/7/2017#a; https://www.law.cornell.edu/uscode/text/7/2014#c"
     default_value = True
 
     def formula(spm_unit, period, parameters):
