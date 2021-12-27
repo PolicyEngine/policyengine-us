@@ -16,3 +16,7 @@
 
 * Broke down TANF eligibility into demographic and financial variables, with financial separated by current enrollment in program
 * Specified demographic TANF eligibility per IL rules
+
+### 0.5.0
+
+* Added Medicaid Tests + Income Threshold Formula for California 
