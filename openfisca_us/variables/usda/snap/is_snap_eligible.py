@@ -22,9 +22,7 @@ class is_snap_eligible(Variable):
         gross_income = spm_unit("snap_gross_income", period)
         net_income = spm_unit("snap_net_income", period)
 
-        has_elderly_disabled = spm_unit.household(
-            "has_elderly_disabled", period
-        )
+        has_elderly_disabled = spm_unit("has_elderly_disabled", period)
 
         meets_net_income_limit = net_income < net_limit
         meets_gross_income_limit = gross_income < gross_limit
