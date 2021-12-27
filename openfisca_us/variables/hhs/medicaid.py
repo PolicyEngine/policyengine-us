@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class MedicaidPersonType(Enum):
     ADULT_WITHOUT_DEPENDENT = "Adult without dependent"
     ADULT_WITH_DEPENDENT = "Adult with dependent"
@@ -16,7 +17,7 @@ class medicaid_person_type(Variable):
     definition_period = YEAR
     label = "Medicaid person type"
     documentation = "Person type for Medicaid"
-        
+
 
 class medicaid_income_threshold(Variable):
     value_type = float
