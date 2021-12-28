@@ -1199,7 +1199,6 @@ class c62100(Variable):
             )
             * (mars == mars.possible_values.SEPARATE)
         )
-        print(separate_addition)
         return c62100 + separate_addition
 
 
