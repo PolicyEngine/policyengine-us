@@ -37,3 +37,8 @@
 ### 0.9.0
 
 * Added Social Security taxation logic
+
+### 0.10.0
+
+* Added income-to-SMI variable, parameters and tests
+
