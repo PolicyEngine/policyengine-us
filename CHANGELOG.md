@@ -25,3 +25,7 @@
 
 * Added Alternative Minimum Tax (AMT) income and liability logic
 * Added development tools for auto-generating unit tests for Tax-Calculator functions
+
+## 0.7.0
+
+* Added Gains Tax (capital gains treatment) logic and parameters
