@@ -64,7 +64,12 @@ def generate_input_values(
         Dict[str, float]: The generated values.
     """
     if not DEBUG_MODE:
-        cps_tax_unit = cps[(cps[output_names] != 0).min(axis=1)].sample(n=1)
+        try:
+            cps_tax_unit = cps[(cps[output_names] != 0).min(axis=1)].sample(
+                n=1
+            )
+        except:
+            cps_tax_unit = cps.sample(n=1)
     result = {}
     for input_ in inputs:
         try:
@@ -113,6 +118,7 @@ def attempt_generate_all_nonzero_unit_test(
 ) -> Tuple[dict, Callable[[dict], Tuple[float]], Tuple[float]]:
     for _ in range(1_000):
         kwargs, fn_, result = generate_unit_test(fn_name)
+        # This function often needs manually modifying depending on the function
         if all([i != 0 for i in result]):
             return kwargs, fn_, result
 
@@ -140,7 +146,10 @@ def generate_yaml_test_dict(fn_name: str, name: str = None):
 def generate_yaml_tests(fn_name: str, n: int = 10) -> str:
     return yaml.dump(
         [
-            generate_yaml_test_dict(fn_name, name=f"{fn_name} unit test {i}")
+            generate_yaml_test_dict(
+                fn_name,
+                name=f"{fn_name} unit test {i + 1} (from generate_taxcalc_unit_tests.py)",
+            )
             for i in range(n)
         ],
         sort_keys=False,
@@ -231,7 +240,7 @@ if __name__ == "__main__":
     else:
         # An example of debugging a unit test
         debug_test_yaml(
-            "SSBenefits",
-            "openfisca_us/tests/policy/baseline/calcfunctions/ssbenefits.yaml",
-            0,
+            "GainsTax",
+            "openfisca_us/tests/policy/baseline/calcfunctions/gainstax.yaml",
+            2,
         )
