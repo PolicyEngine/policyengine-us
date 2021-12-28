@@ -35,7 +35,9 @@ def convert_param(param: dict) -> dict:
     result["metadata"] = dict(
         unit="currency-USD",
     )
-    return yaml.dump(result).replace("'", "")
+    if result["values"] == {}:
+        del result["values"]
+    return yaml.dump(result, sort_keys=False).replace("'", "")
 
 
 if __name__ == "__main__":

@@ -1,97 +1,76 @@
-- name: "Is eligible for TANF due to children under 18"
+- name: "Default SPM unit is ineligible because economic eligibility defaults to false"
   period: 2022
-  absolute_error_margin: 0.01
-  input:
-    age: 17
-  output:
-    is_tanf_eligible: true
-
-- name: "Is not eligible for TANF"
-  period: 2022
-  absolute_error_margin: 0.01
-  input:
-    age: 18
   output:
     is_tanf_eligible: false
 
-- name: "Is eligible for TANF due to pregnancy"
+- name: "TANF: Unit test: two people, continued application, is eligible economically and demographically"
   period: 2022
-  absolute_error_margin: 0.01
-  input:
-    is_pregnant: true
-  output:
-    is_tanf_eligible: true
-
-- name: "Is eligible for TANF due to being an 18-year-old in school"
-  period: 2022
-  absolute_error_margin: 0.01
-  input:
-    age: 18
-    is_in_school: true
-  output:
-    is_tanf_eligible: true
-
-- name: "Is eligible for TANF due to family with ineligible adult and eligible pregnant person"
-  period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age: 30
+        is_person_demographic_tanf_eligible: false
       person2:
-        age: 29
-        is_pregnant: true
+        is_person_demographic_tanf_eligible: true
     spm_units:
       spm_unit:
         members: [person1, person2]
-    households:
-      household:
-        state_code: IL
+        is_tanf_enrolled: true
+        continuous_tanf_eligibility: true
+        initial_tanf_eligibility: false
   output:
     is_tanf_eligible: true
 
-- name: "Is ineligible for TANF due to family with two ineligible adults"
+- name: "TANF: Unit test: two people, continued application, is not eligible demographically"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age: 30
+        is_person_demographic_tanf_eligible: false
       person2:
-        age: 56
+        is_person_demographic_tanf_eligible: false
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: true
+        continuous_tanf_eligibility: false
+        initial_tanf_eligibility: false
   output:
     is_tanf_eligible: false
 
-- name: "Is eligible for TANF due to family with ineligible adult and eligible child"
+- name: "TANF: Unit test: three people, initial application, is not eligible economically"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      father:
-        age: 38
-      child:
-        age: 11
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+      person3:
+        is_person_demographic_tanf_eligible: false
     spm_units:
       spm_unit:
-        members: [father, child]
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        continuous_tanf_eligibility: false
+        initial_tanf_eligibility: false
   output:
-    is_tanf_eligible: true
+    is_tanf_eligible: false
 
-- name: "Is eligible for TANF due to family with eligible child and eligible pregnant person"
+- name: "TANF: Unit test: three people, initial application, is not eligible economically or demographically"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      mother:
-        age: 30
-        is_pregnant: true
-      child:
-        age: 7
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: false
+      person3:
+        is_person_demographic_tanf_eligible: false
     spm_units:
       spm_unit:
-        members: [mother, child]
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        continuous_tanf_eligibility: false
+        initial_tanf_eligibility: false
   output:
-    is_tanf_eligible: true
+    is_tanf_eligible: false

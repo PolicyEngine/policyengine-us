@@ -1,0 +1,8 @@
+- name: Test components are added
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    taxbc: 1
+    c09600: 1
+  output:
+    c05800: 2
