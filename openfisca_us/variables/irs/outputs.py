@@ -533,6 +533,15 @@ class c02500(Variable):
         under_second_threshold = ymod < upper_threshold
 
         e02400 = tax_unit("filer_e02400", period)
+
+        amount_if_under_second_threshold = ss.rate.lower * min_(
+            ymod - lower_threshold, e02400
+        )
+        amount_if_over_second_threshold = min_(
+            ss.rate.upper * (ymod - upper_threshold)
+            + ss.rate.lower * min_(e02400, upper_threshold - lower_threshold),
+            ss.rate.upper * e02400,
+        )
         return select(
             [
                 under_first_threshold,
@@ -541,13 +550,8 @@ class c02500(Variable):
             ],
             [
                 0,
-                ss.rate.lower * min_(ymod - lower_threshold, e02400),
-                min_(
-                    ss.rate.upper * (ymod - upper_threshold)
-                    + ss.rate.lower
-                    * min_(e02400, upper_threshold - lower_threshold),
-                    ss.rate.upper * e02400,
-                ),
+                amount_if_under_second_threshold,
+                amount_if_over_second_threshold,
             ],
         )
 
