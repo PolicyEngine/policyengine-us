@@ -219,16 +219,17 @@ class hasqdivltcg(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        INCOME_SOURCES = [
+            "c01000",
+            "c23650",
+            "filer_p23250",
+            "filer_e01100",
+            "filer_e00650",
+        ]
         return np.any(
             [
                 tax_unit(income_source, period) > 0
-                for income_source in [
-                    "c01000",
-                    "c23650",
-                    "filer_p23250",
-                    "filer_e01100",
-                    "filer_e00650",
-                ]
+                for income_source in INCOME_SOURCES
             ]
         )
 
