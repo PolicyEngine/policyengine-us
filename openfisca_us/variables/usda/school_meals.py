@@ -56,7 +56,7 @@ class school_meal_subsidy(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "School meal subsidy"
-    unit = "currency-GBP"
+    unit = "currency-USD"
     documentation = "Total school meal subsidy entitlement"
 
     def formula(spm_unit, period, parameters):

@@ -11,6 +11,19 @@ jobs:
         uses: "lgeiger/black-action@master"
         with:
           args: ". -l 79 --check"
+  check-version:
+    name: Check version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Check version number has been properly updated
+        run: ".github/is-version-number-acceptable.sh"
   Test:
     runs-on: ${{ matrix.os }}
     strategy:

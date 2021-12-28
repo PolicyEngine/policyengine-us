@@ -29,6 +29,7 @@ class age(Variable):
     entity = Person
     label = u"Age"
     definition_period = YEAR
+    default_value = 18
 
 
 class AgeGroup(Enum):
@@ -134,3 +135,10 @@ class is_surviving_child_of_disabled_veteran(Variable):
         "Indicates whether a person is a surviving child of a disabled veteran"
     )
     label = "Surviving child of disabled veteran"
+
+
+class receives_or_needs_protective_services(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = "Child receiving or needs protective services"
