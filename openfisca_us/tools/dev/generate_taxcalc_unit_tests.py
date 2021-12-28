@@ -43,7 +43,7 @@ def get_outputs(fn: Callable) -> Tuple:
 
 policy = Policy()
 TEST_YEAR = 2019
-DEBUG_MODE = False
+DEBUG_MODE = True
 TAXCALC_CPS_CSV_FILE = "~/PSLmodels/Tax-Calculator/cps.csv"
 cps = pd.read_csv(TAXCALC_CPS_CSV_FILE, nrows=1 if DEBUG_MODE else None)
 policy.set_year(TEST_YEAR)
@@ -101,7 +101,10 @@ def generate_unit_test(
     fn = CALCFUNCTIONS[fn_name]
 
     def fn_(inputs):
-        return fn(**inputs)
+        result = fn(**inputs)
+        if not isinstance(result, tuple):
+            result = (result,)
+        return result
 
     kwargs = generate_input_values(
         get_inputs(fn), get_outputs(fn), overrides=input_overrides

@@ -33,3 +33,7 @@
 ### 0.8.0
 
 * Added minimum benefit logic for SNAP
+
+### 0.9.0
+
+* Added Social Security taxation logic
