@@ -20,3 +20,8 @@
 ### 0.5.0
 
 * Added Medicaid Tests + Income Threshold Formula for California 
+
+### 0.6.0
+
+* Added Alternative Minimum Tax (AMT) income and liability logic
+* Added development tools for auto-generating unit tests for Tax-Calculator functions
