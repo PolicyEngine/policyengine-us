@@ -109,6 +109,17 @@ class state_code(Variable):
     definition_period = ETERNITY
 
 
+class state_code_str(Variable):
+    value_type = str
+    entity = Household
+    label = "State code (string)"
+    documentation = "State code variable, stored as a string"
+    definition_period = YEAR
+
+    def formula(household, period, parameters):
+        return household("state_code", period).decode_to_str()
+
+
 class StateGroup(Enum):
     CONTIGUOUS_US = "Contiguous US"
     AK = "Alaska"
@@ -141,7 +152,6 @@ class state_group_str(Variable):
     value_type = str
     entity = Household
     label = "State group (string)"
-    unit = "currency-USD"
     documentation = "State group variable, stored as a string"
     definition_period = YEAR
 
