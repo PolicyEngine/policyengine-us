@@ -383,7 +383,7 @@ class taxbc(Variable):
         dwks16 = min_(capital_gains.thresholds["1"][mars], dwks1)
         dwks17 = min_(tax_unit("dwks14", period), dwks16)
 
-        dwks20 = dwks16 + dwks17
+        dwks20 = dwks16 - dwks17
         lowest_rate_tax = capital_gains.rates["1"] * dwks20
         # Break in worksheet lines
         dwks13 = tax_unit("dwks13", period)
@@ -409,7 +409,7 @@ class taxbc(Variable):
         dwks37 = max_(0, dwks33 - dwks36)
         dwks38 = 0.25 * dwks37
         # Break in worksheet lines
-        dwks39 = dwks19 + dwks20 + dwks31 + dwks37 + dwks38
+        dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
         dwks40 = dwks1 - dwks39
         dwks41 = 0.28 * dwks40
 
@@ -452,14 +452,18 @@ class taxbc(Variable):
             # Calculate rate applied to pass-through income on in the same
             # way, but as treated as if stacked on top of regular income
             # (which is not taxed again)
-            pt_threshold = (
+            pt_threshold = max(
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
-                - pt_tbase
+                - pt_tbase,
+                0,
             )
             pt_tax += individual_income.pass_through.bracket.rates[
                 str(i)
             ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
             last_pt_threshold = pt_threshold
+            print(
+                f"i={i}, reg_threshold={reg_threshold}, last_reg_threshold={last_reg_threshold}, reg_tax={reg_tax}, pt_threshold={pt_threshold}, last_pt_threshold={last_pt_threshold}, pt_tax={pt_tax}"
+            )
 
         # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
@@ -480,6 +484,7 @@ class taxbc(Variable):
                 lowest_rate_tax,
             ]
         )
+        print("\n".join([f"{k}: {v}" for k, v in locals().items()]))
         c05200 = tax_unit("c05200", period)
         dwks44 = c05200
         dwks45 = min_(dwks43, dwks44)
