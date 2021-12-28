@@ -461,9 +461,6 @@ class taxbc(Variable):
                 str(i)
             ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
             last_pt_threshold = pt_threshold
-            print(
-                f"i={i}, reg_threshold={reg_threshold}, last_reg_threshold={last_reg_threshold}, reg_tax={reg_tax}, pt_threshold={pt_threshold}, last_pt_threshold={last_pt_threshold}, pt_tax={pt_tax}"
-            )
 
         # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
@@ -484,7 +481,6 @@ class taxbc(Variable):
                 lowest_rate_tax,
             ]
         )
-        print("\n".join([f"{k}: {v}" for k, v in locals().items()]))
         c05200 = tax_unit("c05200", period)
         dwks44 = c05200
         dwks45 = min_(dwks43, dwks44)
