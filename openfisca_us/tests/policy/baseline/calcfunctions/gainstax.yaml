@@ -1,4 +1,5 @@
-- name: GainsTax unit test 0
+# Tests generated from tools/dev/generate_taxcalc_unit_tests.py
+- name: GainsTax unit test 0 (from)
   period: 2019
   absolute_error_margin: 1
   input:
@@ -258,4 +259,3 @@
     dwks19: 2779.0
     c05700: 0.0
     taxbc: 277.90000000000003
-

@@ -219,6 +219,7 @@ class hasqdivltcg(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        # Negatives cannot offset other income sources
         INCOME_SOURCES = [
             "c01000",
             "c23650",

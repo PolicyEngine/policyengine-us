@@ -143,7 +143,7 @@ def generate_yaml_test_dict(fn_name: str, name: str = None):
 def generate_yaml_tests(fn_name: str, n: int = 10) -> str:
     return yaml.dump(
         [
-            generate_yaml_test_dict(fn_name, name=f"{fn_name} unit test {i}")
+            generate_yaml_test_dict(fn_name, name=f"{fn_name} unit test {i + 1} (from generate_taxcalc_unit_tests.py)")
             for i in range(n)
         ],
         sort_keys=False,
