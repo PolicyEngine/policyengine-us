@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.7.0",
+    version="0.8.0",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -51,9 +51,7 @@ setup(
     },
     python_requires=">=3.7,<3.8",
     entry_points={
-        "console_scripts": [
-            "openfisca-us = openfisca_us.tools.cli:main",
-        ],
+        "console_scripts": ["openfisca-us = openfisca_us.tools.cli:main"],
     },
     packages=find_packages(),
 )

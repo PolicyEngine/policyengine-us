@@ -29,3 +29,7 @@
 ## 0.7.0
 
 * Added Gains Tax (capital gains treatment) logic and parameters
+
+### 0.8.0
+
+* Added minimum benefit logic for SNAP

@@ -1,0 +1,42 @@
+- name: Family of 2
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 50
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    # Eligible as a family of 2.
+    # $204/mo is the maximum SNAP benefit for 1-person households in the
+    # contiguous US.
+    snap_minimum_benefit: 204 * 0.08 * 12
+
+
+- name: Family of 3
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 50
+      person_3:
+        age: 35
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    # Ineligible as a family of 3.
+    snap_minimum_benefit: 0
