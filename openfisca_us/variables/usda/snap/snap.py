@@ -11,8 +11,11 @@ class snap(Variable):
     unit = "currency-USD"
 
     def formula(spm_unit, period):
-        max_benefit = spm_unit("snap_max_benefit", period)
-        expected_contribution = spm_unit(
-            "snap_expected_contribution_towards_food", period
+        # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which also
+        # defines state powers to modify the rules.
+        eligible = spm_unit("is_snap_eligible", period)
+        expected_contribution = spm_unit("snap_expected_contribution", period)
+        return eligible * max_(
+            spm_unit("snap_min_benefit", period),
+            spm_unit("snap_max_benefit", period) - expected_contribution,
         )
-        return max_(0, max_benefit - expected_contribution)

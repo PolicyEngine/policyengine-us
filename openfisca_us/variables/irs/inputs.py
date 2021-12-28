@@ -648,7 +648,8 @@ class e07300(Variable):
 class filer_e07300(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Foreign tax credit (Form 1116) for the tax unit (excluding dependents)"
+    label = u"Foreign tax credit (Form 1114) for the tax unit (excluding dependents)"
+    unit = "currency-USD"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -845,7 +846,8 @@ class e24515(Variable):
 class filer_e24515(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Un-recaptured Section 1250 Gain for the tax unit (excluding dependents)"
+    label = u"Section 1250 Gain (un-recaptured) for the tax unit (excluding dependents)"
+    unit = "currency-USD"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -946,6 +948,17 @@ class e62900(Variable):
     documentation = (
         """Alternative Minimum Tax foreign tax credit from Form 6251"""
     )
+
+
+class filer_e62900(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = u"AMT foreign tax credit (Form 6251) for the tax unit (excluding dependents)"
+    unit = "currency-USD"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit_non_dep_sum("e62900", tax_unit, period)
 
 
 class e87530(Variable):

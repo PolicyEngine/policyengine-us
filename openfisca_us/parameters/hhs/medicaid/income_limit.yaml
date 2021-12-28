@@ -1,0 +1,19 @@
+description: Medicaid income limit as a percentage of the federal poverty guideline.
+CA:  
+  ADULT_WITHOUT_DEPENDENT:
+    2021-01-01: 1.38
+  ADULT_WITH_DEPENDENT:
+    2021-01-01: 1.38
+  CHILD_AGE_0:
+    2021-01-01: 1.38
+  CHILD_AGE_1_5:
+    2021-01-01: 1.38
+  CHILD_AGE_6_18:
+    2021-01-01: 1.38
+
+metadata:
+  unit: /1
+  reference: 
+    title: California Medicaid Eligibility
+    href: https://www.dhcs.ca.gov/services/medi-cal/Pages/DoYouQualifyForMedi-Cal.aspx
+  period: year
