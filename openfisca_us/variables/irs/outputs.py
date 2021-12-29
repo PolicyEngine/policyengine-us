@@ -500,6 +500,9 @@ class c00100(Variable):
         return add(tax_unit, period, "ymod1", "c02500", "c02900")
 
 
+adjusted_gross_income = variable_alias("adjusted_gross_income", c00100)
+
+
 class c01000(Variable):
     value_type = float
     entity = TaxUnit
@@ -1267,6 +1270,10 @@ class tax_unit_is_joint(Variable):
     label = "Joint-filing tax unit"
     documentation = "Whether this tax unit is a joint filer."
     definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        mars = tax_unit("mars", period)
+        return mars == mars.possible_values.JOINT
 
 
 class c59660(Variable):

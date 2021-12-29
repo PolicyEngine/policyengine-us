@@ -35,3 +35,13 @@ def sum_contained_tax_units(var, population, period):
 infinity = np.inf
 select = np.select
 where = np.where
+
+
+def variable_alias(name: str, variable_cls: type) -> type:
+    """
+    Copy a variable class and return a new class.
+    """
+    new_variable_cls = type(
+        name, variable_cls.__bases__, dict(variable_cls.__dict__)
+    )
+    return new_variable_cls
