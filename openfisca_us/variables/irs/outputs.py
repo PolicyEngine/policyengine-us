@@ -875,10 +875,10 @@ class cdcc_refund(Variable):
             return 0
 
 
-class is_retired_on_total_disability(Variable):
+class retired_on_total_disability(Variable):
     value_type = bool
     entity = Person
-    label = "Is retired on total disability"
+    label = "Retired on total disability"
     documentation = "Whether this individual has retired on disability, and was permanently and totally disabled when they retired"
     definition_period = YEAR
 
@@ -905,9 +905,8 @@ class qualifies_for_elderly_or_disabled_credit(Variable):
 
     def formula(person, period, parameters):
         elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
-        return person("age", period) >= elderly_disabled.age | person(
-            "is_retired_on_total_disability", period
-        )
+        is_elderly = person("age", period) >= elderly_disabled.age
+        return is_elderly | person("retired_on_total_disability", period)
 
 
 class total_disability_payments(Variable):
@@ -933,10 +932,9 @@ class section_22_income(Variable):
         elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
         # Calculate initial amount
         mars = tax_unit("mars", period)
+        person = tax_unit.members
         num_qualifying_individuals = tax_unit.sum(
-            tax_unit.members(
-                "qualifies_for_elderly_or_disabled_credit", period
-            )
+            person("qualifies_for_elderly_or_disabled_credit", period)
         )
         initial_amount = select(
             [
@@ -955,22 +953,20 @@ class section_22_income(Variable):
 
         # Limitations on under-65s
 
-        is_over_age = tax_unit.members("age", period) >= elderly_disabled.age
-        num_over_age = tax_unit.sum(is_over_age)
-        is_joint = mars == mars.possible_values.JOINT
-        disability_income = tax_unit.members(
-            "total_disability_payments", period
-        )
+        is_elderly = person("age", period) >= elderly_disabled.age
+        num_elderly = tax_unit.sum(is_elderly)
+        disability_income = person("total_disability_payments", period)
+        non_elderly_disability_income = disability_income * ~is_elderly
 
         cap = (
-            num_over_age * elderly_disabled.amount.one_qualified
-            + tax_unit.sum(~is_over_age * disability_income)
+            num_elderly * elderly_disabled.amount.one_qualified
+            + non_elderly_disability_income
         )
 
         capped_amount = min_(initial_amount, cap)
-        non_taxable_pensions = tax_unit("filer_e01500", period) - tax_unit(
-            "filer_e01700", period
-        )
+        total_pensions = tax_unit("filer_e01500", period)
+        taxable_pensions = tax_unit("filer_e01700", period)
+        non_taxable_pensions = total_pensions - taxable_pensions
         capped_reduced_amount = capped_amount - non_taxable_pensions
         agi = tax_unit("c00100", period)
 
