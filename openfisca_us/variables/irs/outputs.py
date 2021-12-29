@@ -898,6 +898,14 @@ class c07230(Variable):
     definition_period = YEAR
     documentation = """Education tax credits non-refundable amount from Form 8863 (includes c87668)"""
 
+    def formula(tax_unit, period, parameters):
+        return add(
+            tax_unit,
+            period,
+            "non_refundable_american_opportunity_credit",
+            "lifetime_learning_credit",
+        )
+
 
 class c07240(Variable):
     value_type = float
@@ -1087,6 +1095,9 @@ class c10960(Variable):
     documentation = (
         """American Opportunity Credit refundable amount from Form 8863"""
     )
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("refundable_american_opportunity_credit", period)
 
 
 class c11070(Variable):
@@ -1391,6 +1402,9 @@ class c87668(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """American Opportunity Credit non-refundable amount from Form 8863 (included in c07230)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("non_refundable_american_opportunity_credit", period)
 
 
 class care_deduction(Variable):
