@@ -954,7 +954,8 @@ class section_22_income(Variable):
         # Limitations on under-65s
 
         is_elderly = person("age", period) >= elderly_disabled.age
-        num_elderly = tax_unit.sum(is_elderly)
+        is_dependent = person("is_tax_unit_dependent", period)
+        num_elderly = tax_unit.sum(is_elderly & ~is_dependent)
         disability_income = person("total_disability_payments", period)
         non_elderly_disability_income = disability_income * ~is_elderly
 
