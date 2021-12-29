@@ -1,17 +1,17 @@
 description: Value of the maximum American Opportunity Credit, as a marginal rate schedule on tuition expenses
 brackets:
   - threshold:
-      2010-01-01: 0
+      2009-01-01: 0
     rate:
-      2010-01-01: 1
+      2009-01-01: 1
   - threshold:
-      2010-01-01: 2_000
+      2009-01-01: 2_000
     rate:
-      2010-01-01: 0.25
+      2009-01-01: 0.25
   - threshold:
-      2010-01-01: 4_000
+      2009-01-01: 4_000
     rate:
-      2010-01-01: 0
+      2009-01-01: 0
 metadata:
   type: marginal_rate
   rate_unit: /1
