@@ -1,0 +1,9 @@
+- name: Single filer, small earnings, young
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    age_head: 25
+    mars: SINGLE
+    e00200: 2_000
+  output:
+    c09600: 0
