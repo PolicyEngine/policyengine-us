@@ -55,4 +55,3 @@ class is_medicaid_eligible(Variable):
         )
         economic_eligible = where(spm_unit(medicaid_income_threshold, period),)
         return demographic_eligible | economic_eligible
-

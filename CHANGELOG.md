@@ -20,3 +20,7 @@
 ### 0.5.0
 
 * Added Medicaid Tests + Income Threshold Formula for California 
+
+### 0.10.0
+
+* Added Demographic Medicaid Eligibility 
