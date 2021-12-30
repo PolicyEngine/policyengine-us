@@ -74,7 +74,7 @@ class is_eligible_for_american_opportunity_credit(Variable):
         return person.tax_unit("e87521", period) > 0
 
 
-class education_credit_phaseout_percentage(Variable):
+class education_credit_phaseout(Variable):
     value_type = float
     entity = TaxUnit
     label = "Education credit phase-out"
