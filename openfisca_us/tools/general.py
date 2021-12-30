@@ -41,6 +41,4 @@ def variable_alias(name: str, variable_cls: type) -> type:
     """
     Copy a variable class and return a new class.
     """
-    return type(
-        name, variable_cls.__bases__, dict(variable_cls.__dict__)
-    )
+    return type(name, variable_cls.__bases__, dict(variable_cls.__dict__))
