@@ -88,13 +88,13 @@ class education_credit_phaseout(Variable):
         is_joint = tax_unit("tax_unit_is_joint", period)
         phaseout_start = where(
             is_joint,
-            education.phaseout.start.single,
             education.phaseout.start.joint,
+            education.phaseout.start.single,
         )
         phaseout_length = where(
             is_joint,
-            education.phaseout.length.single,
             education.phaseout.length.joint,
+            education.phaseout.length.single,
         )
         excess_agi = max(0, agi - phaseout_start)
         return min_(1, excess_agi / phaseout_length)
