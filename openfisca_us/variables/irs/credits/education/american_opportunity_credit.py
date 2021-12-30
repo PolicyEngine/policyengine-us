@@ -13,25 +13,17 @@ class american_opportunity_credit(Variable):
     def formula(tax_unit, period, parameters):
         education = parameters(period).irs.credits.education
         aoc = education.american_opportunity_credit
-        is_eligible = tax_unit.members(
+        person = tax_unit.members
+        is_eligible = person(
             "is_eligible_for_american_opportunity_credit", period
         )
         tuition_expenses = (
-            tax_unit.members("qualified_tuition_expenses", period)
-            * is_eligible
+            person("qualified_tuition_expenses", period) * is_eligible
         )
         maximum_amount_per_student = aoc.amount.calc(tuition_expenses)
         maximum_amount = tax_unit.sum(maximum_amount_per_student)
-        agi = tax_unit("adjusted_gross_income", period)
-        is_joint = tax_unit("tax_unit_is_joint", period)
-        phaseout_start = where(
-            is_joint,
-            education.phaseout.start.single,
-            education.phaseout.start.joint,
-        )
-        excess_agi = max(0, agi - phaseout_start)
-        percentage_reduction = excess_agi / maximum_amount
-        return max_(0, maximum_amount * (1 - percentage_reduction))
+        phaseout = tax_unit("education_credit_phaseout", period)
+        return max_(0, maximum_amount * (1 - phaseout))
 
 
 class refundable_american_opportunity_credit(Variable):
@@ -80,3 +72,29 @@ class is_eligible_for_american_opportunity_credit(Variable):
     def formula(person, period):
         # If the person's filing unit has a claim from Form 8863, use that to determine eligibility.
         return person.tax_unit("e87521", period) > 0
+
+
+class education_credit_phaseout_percentage(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Education credit phase-out"
+    unit = "/1"
+    documentation = "Percentage of the American Opportunity and Lifetime Learning credits which are phased out"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        education = parameters(period).irs.credits.education
+        agi = tax_unit("adjusted_gross_income", period)
+        is_joint = tax_unit("tax_unit_is_joint", period)
+        phaseout_start = where(
+            is_joint,
+            education.phaseout.start.single,
+            education.phaseout.start.joint,
+        )
+        phaseout_length = where(
+            is_joint,
+            education.phaseout.length.single,
+            education.phaseout.length.joint,
+        )
+        excess_agi = max(0, agi - phaseout_start)
+        return min_(1, excess_agi / phaseout_length)
