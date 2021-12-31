@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Demographic Medicaid Eligibility + Test
+* Formula for Medicaid person type, based on age and dependents.
+* Variable for whether a person meets their Medicaid income eligibility requirement.
 
 ## [0.12.0] - 2021-12-30
 
