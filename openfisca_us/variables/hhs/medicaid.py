@@ -1,7 +1,3 @@
-from openfisca_us.model_api import *
-from openfisca_us.variables.demographic.spm_unit import spm_unit_assets
-
-
 class MedicaidPersonType(Enum):
     ADULT_WITHOUT_DEPENDENT = "Adult without dependent"
     ADULT_WITH_DEPENDENT = "Adult with dependent"
@@ -52,14 +48,12 @@ class medicaid_income_threshold(Variable):
         return income_threshold[state_code][person_type]
 
 
-class is_medicaid_eligible(Variable):
+class meets_medicaid_income_threshold(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "Eligibility for Medicaid"
-    documentation = (
-        "Whether the person is eligible for Medicaid health benefit."
-    )
+    label = "Meets Medicaid income threshold"
+    documentation = "Whether the person meets the Medicaid income threshold given their state, age, and family structure."
 
     # def formula(spm_unit, period, parameters):
     #     demographic_eligible = spm_unit.any(
