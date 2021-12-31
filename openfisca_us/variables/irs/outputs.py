@@ -878,11 +878,124 @@ class cdcc_refund(Variable):
             return 0
 
 
+class retired_on_total_disability(Variable):
+    value_type = bool
+    entity = Person
+    label = "Retired on total disability"
+    documentation = "Whether this individual has retired on disability, and was permanently and totally disabled when they retired"
+    definition_period = YEAR
+
+    # Definition from 26 U.S. Code § 22 - Credit for the elderly and the permanently
+    # and totally disabled:
+
+    # An individual is permanently and totally disabled if he is unable to engage
+    # in any substantial gainful activity by reason of any medically determinable
+    # physical or mental impairment which can be expected to result in death or
+    # which has lasted or can be expected to last for a continuous period of not
+    # less than 12 months. An individual shall not be considered to be permanently
+    # and totally disabled unless he furnishes proof of the existence thereof in
+    # such form and manner, and at such times, as the Secretary may require.
+
+
+class qualifies_for_elderly_or_disabled_credit(Variable):
+    value_type = bool
+    entity = Person
+    label = "Qualifies for elderly or disabled credit"
+    documentation = (
+        "Whether this tax unit qualifies for the elderly or disabled credit"
+    )
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
+        is_elderly = person("age", period) >= elderly_disabled.age
+        return is_elderly | person("retired_on_total_disability", period)
+
+
+class total_disability_payments(Variable):
+    value_type = float
+    entity = Person
+    label = "Disability (total) payments"
+    unit = "currency-USD"
+    documentation = "Wages (or payments in lieu thereof) paid to an individual for permanent and total disability"
+    definition_period = YEAR
+
+
+class section_22_income(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Section 22 income"
+    unit = "currency-USD"
+    documentation = (
+        "Income upon which the elderly or disabled credit is applied"
+    )
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
+        # Calculate initial amount
+        mars = tax_unit("mars", period)
+        person = tax_unit.members
+        num_qualifying_individuals = tax_unit.sum(
+            person("qualifies_for_elderly_or_disabled_credit", period)
+        )
+        initial_amount = select(
+            [
+                num_qualifying_individuals == 1,
+                num_qualifying_individuals == 2,
+                mars == mars.possible_values.SEPARATE,
+                True,
+            ],
+            [
+                elderly_disabled.amount.one_qualified,
+                elderly_disabled.amount.two_qualified,
+                elderly_disabled.amount.separate,
+                0,
+            ],
+        )
+
+        # Limitations on under-65s
+
+        is_elderly = person("age", period) >= elderly_disabled.age
+        is_dependent = person("is_tax_unit_dependent", period)
+        num_elderly = tax_unit.sum(is_elderly & ~is_dependent)
+        disability_income = person("total_disability_payments", period)
+        non_elderly_disability_income = disability_income * ~is_elderly
+
+        cap = (
+            num_elderly * elderly_disabled.amount.one_qualified
+            + non_elderly_disability_income
+        )
+
+        capped_amount = min_(initial_amount, cap)
+        total_pensions = tax_unit("filer_e01500", period)
+        taxable_pensions = tax_unit("filer_e01700", period)
+        non_taxable_pensions = total_pensions - taxable_pensions
+        capped_reduced_amount = capped_amount - non_taxable_pensions
+        agi = tax_unit("c00100", period)
+
+        amount_over_phaseout = max_(
+            0, agi - elderly_disabled.phaseout.threshold[mars]
+        )
+        phaseout_reduction = (
+            elderly_disabled.phaseout.rate * amount_over_phaseout
+        )
+
+        return max_(0, capped_reduced_amount - phaseout_reduction)
+
+
 class c07200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = """Schedule R credit for the elderly and the disabled"""
+    label = "Elderly or disabled credit"
+    documentation = "Schedule R credit for the elderly and the disabled"
+    unit = "currency-GBP"
+    reference = "https://www.law.cornell.edu/uscode/text/26/22"
+
+    def formula(tax_unit, period, parameters):
+        elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
+        return elderly_disabled.rate * tax_unit("section_22_income", period)
 
 
 class c07220(Variable):
