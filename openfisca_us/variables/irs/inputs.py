@@ -965,9 +965,15 @@ class e87530(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    label = "Qualified tuition expenses"
     documentation = (
-        """Adjusted qualified lifetime learning expenses for all students"""
+        "Adjusted qualified lifetime learning expenses for all students"
     )
+
+
+qualified_tuition_expenses = variable_alias(
+    "qualified_tuition_expenses", e87530
+)
 
 
 class elderly_dependents(Variable):
