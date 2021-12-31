@@ -14,6 +14,10 @@ Thanks for contributing! Please remove any top-level sections that do not apply 
 
 Description of the changes here.
 
+## Issues fixed
+
+Link any issues this PR closes here.
+
 # Bug fix
 
 - [ ] Regression test added
@@ -21,4 +25,4 @@ Description of the changes here.
 
 ## What this fixes and how it's fixed
 
-Description of how this fix works goes here.
+Description of how this fix works goes here. Link any issues this PR fixes.
