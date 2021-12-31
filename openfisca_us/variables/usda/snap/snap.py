@@ -16,6 +16,6 @@ class snap(Variable):
         eligible = spm_unit("is_snap_eligible", period)
         expected_contribution = spm_unit("snap_expected_contribution", period)
         return eligible * max_(
-            spm_unit("snap_min_benefit", period),
+            spm_unit("snap_minimum_benefit", period),
             spm_unit("snap_max_benefit", period) - expected_contribution,
         )

@@ -375,6 +375,120 @@ class taxbc(Variable):
     definition_period = YEAR
     documentation = """Regular tax on regular taxable income before credits"""
 
+    def formula(tax_unit, period, parameters):
+        capital_gains = parameters(period).irs.capital_gains.brackets
+        mars = tax_unit("mars", period)
+        dwks1 = tax_unit("c04800", period)
+
+        dwks16 = min_(capital_gains.thresholds["1"][mars], dwks1)
+        dwks17 = min_(tax_unit("dwks14", period), dwks16)
+
+        dwks20 = dwks16 - dwks17
+        lowest_rate_tax = capital_gains.rates["1"] * dwks20
+        # Break in worksheet lines
+        dwks13 = tax_unit("dwks13", period)
+        dwks21 = min_(dwks1, dwks13)
+        dwks22 = dwks20
+        dwks23 = max_(0, dwks21 - dwks22)
+        dwks25 = min_(capital_gains.thresholds["2"][mars], dwks1)
+        dwks19 = tax_unit("dwks19", period)
+        dwks26 = min_(dwks19, dwks20)
+        dwks27 = max_(0, dwks25 - dwks26)
+        dwks28 = min_(dwks23, dwks27)
+        dwks29 = capital_gains.rates["2"] * dwks28
+        dwks30 = dwks22 + dwks28
+        dwks31 = dwks21 - dwks30
+        dwks32 = capital_gains.rates["3"] * dwks31
+        # Break in worksheet lines
+        dwks33 = min_(
+            tax_unit("dwks9", period), tax_unit("filer_e24515", period)
+        )
+        dwks10 = tax_unit("dwks10", period)
+        dwks34 = dwks10 + dwks19
+        dwks36 = max_(0, dwks34 - dwks1)
+        dwks37 = max_(0, dwks33 - dwks36)
+        dwks38 = 0.25 * dwks37
+        # Break in worksheet lines
+        dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
+        dwks40 = dwks1 - dwks39
+        dwks41 = 0.28 * dwks40
+
+        # SchXYZ call in Tax-Calculator
+
+        # Separate non-negative taxable income into two non-negative components,
+        # doing this in a way so that the components add up to taxable income
+        # define pass-through income eligible for PT schedule
+        individual_income = parameters(period).irs.income
+        e26270 = tax_unit("filer_e26270", period)
+        e00900 = tax_unit("filer_e00900", period)
+
+        # Determine pass-through and non-pass-through income
+        pt_active_gross = e00900 + e26270
+        pt_active = pt_active_gross
+        pt_active = min_(pt_active, e00900 + e26270)
+        pt_taxinc = max_(0, pt_active)
+        taxable_income = dwks19
+
+        pt_taxinc = min_(pt_taxinc, taxable_income)
+        reg_taxinc = max_(0, taxable_income - pt_taxinc)
+        pt_tbase = reg_taxinc
+
+        mars = tax_unit("mars", period)
+
+        # Initialise regular and pass-through income tax to zero
+        reg_tax = 0
+        pt_tax = 0
+        last_reg_threshold = 0
+        last_pt_threshold = 0
+        for i in range(1, 7):
+            # Calculate rate applied to regular income up to the current
+            # threshold (on income above the last threshold)
+            reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
+            reg_tax += individual_income.bracket.rates[
+                str(i)
+            ] * amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
+            last_reg_threshold = reg_threshold
+
+            # Calculate rate applied to pass-through income on in the same
+            # way, but as treated as if stacked on top of regular income
+            # (which is not taxed again)
+            pt_threshold = max(
+                individual_income.pass_through.bracket.thresholds[str(i)][mars]
+                - pt_tbase,
+                0,
+            )
+            pt_tax += individual_income.pass_through.bracket.rates[
+                str(i)
+            ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
+            last_pt_threshold = pt_threshold
+
+        # Calculate regular and pass-through tax above the last threshold
+        reg_tax += individual_income.bracket.rates["7"] * max_(
+            reg_taxinc - last_reg_threshold, 0
+        )
+        pt_tax += individual_income.pass_through.bracket.rates["7"] * max_(
+            pt_taxinc - last_pt_threshold, 0
+        )
+
+        dwks42 = reg_tax + pt_tax
+        dwks43 = sum(
+            [
+                dwks29,
+                dwks32,
+                dwks38,
+                dwks41,
+                dwks42,
+                lowest_rate_tax,
+            ]
+        )
+        c05200 = tax_unit("c05200", period)
+        dwks44 = c05200
+        dwks45 = min_(dwks43, dwks44)
+
+        hasqdivltcg = tax_unit("hasqdivltcg", period)
+
+        return where(hasqdivltcg, dwks45, c05200)
+
 
 class c00100(Variable):
     value_type = float
@@ -403,7 +517,43 @@ class c02500(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Taxable social security benefits"
     documentation = """Social security (OASDI) benefits included in AGI"""
+    unit = "currency-GBP"
+
+    def formula(tax_unit, period, parameters):
+        ss = parameters(period).irs.social_security.taxability
+        ymod = tax_unit("ymod", period)
+        mars = tax_unit("mars", period)
+
+        lower_threshold = ss.threshold.lower[mars]
+        upper_threshold = ss.threshold.upper[mars]
+
+        under_first_threshold = ymod < lower_threshold
+        under_second_threshold = ymod < upper_threshold
+
+        e02400 = tax_unit("filer_e02400", period)
+
+        amount_if_under_second_threshold = ss.rate.lower * min_(
+            ymod - lower_threshold, e02400
+        )
+        amount_if_over_second_threshold = min_(
+            ss.rate.upper * (ymod - upper_threshold)
+            + ss.rate.lower * min_(e02400, upper_threshold - lower_threshold),
+            ss.rate.upper * e02400,
+        )
+        return select(
+            [
+                under_first_threshold,
+                under_second_threshold,
+                True,
+            ],
+            [
+                0,
+                amount_if_under_second_threshold,
+                amount_if_over_second_threshold,
+            ],
+        )
 
 
 class c02900(Variable):
@@ -671,7 +821,12 @@ class c05800(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Total income tax liability before credits"
+    unit = "currency-USD"
     documentation = """Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"""
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, "taxbc", "c09600")
 
 
 class c07100(Variable):
@@ -806,7 +961,120 @@ class c09600(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Alternative Minimum Tax"
+    unit = "currency-USD"
     documentation = """Alternative Minimum Tax (AMT) liability"""
+
+    def formula(tax_unit, period, parameters):
+        c62100 = tax_unit("c62100", period)
+        # Form 6251, Part II top
+        amt = parameters(period).irs.income.amt
+        phaseout = amt.exemption.phaseout
+        mars = tax_unit("mars", period)
+        line29 = max_(
+            0,
+            (
+                amt.exemption.amount[mars]
+                - phaseout.rate * max_(0, c62100 - phaseout.start[mars])
+            ),
+        )
+        age_head = tax_unit("age_head", period)
+        child = amt.exemption.child
+        young_head = (age_head != 0) & (age_head < child.max_age)
+        no_or_young_spouse = tax_unit("age_spouse", period) < child.max_age
+        line29 = where(
+            young_head | no_or_young_spouse,
+            min_(line29, tax_unit("filer_earned", period) + child.amount),
+            line29,
+        )
+        line30 = max_(0, c62100 - line29)
+        brackets = amt.brackets
+        amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
+            "sep", period
+        )
+        line3163 = brackets.rates["1"] * line30 + brackets.rates["2"] * max_(
+            0, amount_over_threshold
+        )
+        dwks10, dwks13, dwks14, dwks19, e24515 = [
+            tax_unit(variable, period)
+            for variable in [
+                "dwks10",
+                "dwks13",
+                "dwks14",
+                "dwks19",
+                "filer_e24515",
+            ]
+        ]
+        form_6251_part_iii_required = np.any(
+            [
+                variable > 0
+                for variable in [
+                    dwks10,
+                    dwks13,
+                    dwks14,
+                    dwks19,
+                    e24515,
+                ]
+            ]
+        )
+
+        # Complete Form 6251, Part III
+
+        line37 = dwks13
+        line38 = e24515
+        line39 = min_(line37 + line38, dwks10)
+        line40 = min_(line30, line39)
+        line41 = max_(0, line30 - line40)
+        amount_over_threshold = max_(
+            0, line41 - amt.brackets.thresholds["1"] / tax_unit("sep", period)
+        )
+        line42 = (
+            amt.brackets.rates["1"] * line41
+            + amt.brackets.rates["2"] * amount_over_threshold
+        )
+        line44 = dwks14
+        cg = amt.capital_gains.brackets
+        line45 = max_(0, cg.thresholds["1"][mars] - line44)
+        line46 = min_(line30, line37)
+        line47 = min_(line45, line46)
+        cgtax1 = line47 * cg.rates["1"]
+        line48 = line46 - line47
+        line51 = dwks19
+        line52 = line45 + line51
+        line53 = max_(0, cg.thresholds["2"][mars] - line52)
+        line54 = min_(line48, line53)
+        cgtax2 = line54 * cg.rates["2"]
+        line56 = line47 + line54
+        line57 = where(line41 == line56, 0, line46 - line56)
+        linex2 = where(line41 == line56, 0, max_(0, line54 - line48))
+        cgtax3 = line57 * cg.rates["3"]
+        line61 = where(
+            line38 == 0,
+            0,
+            0.25 * max_(0, (line30 - line41 - line56 - line57 - linex2)),
+        )
+        line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
+        line64 = min_(line3163, line62)
+        line31 = where(form_6251_part_iii_required, line64, line3163)
+        e07300 = tax_unit("filer_e07300", period)
+
+        # Form 6251, Part II bottom
+        line32 = where(
+            tax_unit("f6251", period), tax_unit("filer_e62900", period), e07300
+        )
+        line33 = line31 - line32
+        return max_(
+            0,
+            line33
+            - max_(
+                0,
+                (
+                    tax_unit("taxbc", period)
+                    - e07300
+                    - tax_unit("c05700", period)
+                ),
+            ),
+        )
 
 
 class c10960(Variable):
@@ -1065,7 +1333,50 @@ class c62100(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "AMT taxable income"
+    unit = "currency-USD"
     documentation = """Alternative Minimum Tax (AMT) taxable income"""
+
+    def formula(tax_unit, period, parameters):
+        # Form 6251, Part I
+        c00100 = tax_unit("c00100", period)
+        e00700 = tax_unit("filer_e00700", period)
+        c62100_if_no_standard = (
+            c00100
+            - e00700
+            - tax_unit("c04470", period)
+            + max_(
+                0,
+                min_(
+                    tax_unit("c17000", period),
+                    0.025 * c00100,
+                ),
+            )
+            + tax_unit("c18300", period)
+            + tax_unit("c20800", period)
+            - tax_unit("c21040", period)
+        )
+        c62100 = where(
+            tax_unit("standard", period) == 0,
+            c62100_if_no_standard,
+            c00100 - e00700,
+        ) + tax_unit(
+            "filer_cmbtp", period
+        )  # add income not in AGI but considered income for AMT
+        amt = parameters(period).irs.income.amt
+        mars = tax_unit("mars", period)
+        separate_addition = (
+            max_(
+                0,
+                min_(
+                    amt.exemption.amount[mars],
+                    amt.exemption.phaseout.rate
+                    * (c62100 - amt.exemption.separate_limit),
+                ),
+            )
+            * (mars == mars.possible_values.SEPARATE)
+        )
+        return c62100 + separate_addition
 
 
 class c87668(Variable):
@@ -1130,40 +1441,126 @@ class charity_credit(Variable):
     documentation = """Credit for charitable giving"""
 
 
+class dwks6(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "DWKS6"
+    unit = "currency-USD"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        dwks2 = tax_unit("filer_e00650", period)
+        dwks3 = tax_unit("filer_e58990", period)
+        # dwks4 always assumed to be zero
+        dwks5 = max_(0, dwks3)
+        return max_(0, dwks2 - dwks5)
+
+
+class dwks9(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "DWKS9"
+    unit = "currency-USD"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        p23250 = tax_unit("filer_p23250", period)
+        c23650 = tax_unit("c23650", period)
+        dwks7 = min_(p23250, c23650)  # SchD lines 15 and 16, respectively
+        # dwks8 = min(dwks3, dwks4)
+        # dwks9 = max(0., dwks7 - dwks8)
+        # BELOW TWO STATEMENTS ARE UNCLEAR IN LIGHT OF dwks9=... COMMENT
+        e01100 = tax_unit("filer_e01100", period)
+        c24510 = where(e01100 > 0, e01100, max_(0, dwks7) + e01100)
+        return max_(0, c24510 - min_(0, tax_unit("filer_e58990", period)))
+
+
 class dwks10(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "DWKS10"
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        dwks10_if_gains = add(tax_unit, period, "dwks6", "dwks9")
+        dwks10_if_no_gains = (
+            max_(
+                0,
+                min_(
+                    tax_unit("filer_p23250", period),
+                    tax_unit("c23650", period),
+                ),
+            )
+            + tax_unit("filer_e01100", period)
+        )
+        return where(
+            tax_unit("hasqdivltcg", period),
+            dwks10_if_gains,
+            dwks10_if_no_gains,
+        )
 
 
 class dwks13(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "DWKS13"
+    unit = "currency-USD"
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        dwks1 = tax_unit("c04800", period)
+        e24515 = tax_unit("filer_e24515", period)
+        dwks11 = e24515 + tax_unit(
+            "filer_e24518", period
+        )  # Sch D lines 18 and 19, respectively
+        dwks9 = tax_unit("dwks9", period)
+        dwks12 = min_(dwks9, dwks11)
+        dwks10 = tax_unit("dwks10", period)
+        return (dwks10 - dwks12) * tax_unit("hasqdivltcg", period)
 
 
 class dwks14(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "DWKS14"
+    unit = "currency-USD"
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        dwks1 = tax_unit("c04800", period)
+        dwks13 = tax_unit("dwks13", period)
+        return max_(0, dwks1 - dwks13) * tax_unit("hasqdivltcg", period)
 
 
 class dwks19(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "DWKS14"
+    unit = "currency-USD"
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
+
+    def formula(tax_unit, period, parameters):
+        dwks14 = tax_unit("dwks14", period)
+        capital_gains = parameters(period).irs.capital_gains.brackets
+        mars = tax_unit("mars", period)
+        dwks1 = tax_unit("c04800", period)
+        dwks16 = min_(capital_gains.thresholds["1"][mars], dwks1)
+        dwks17 = min_(dwks14, dwks16)
+        dwks10 = tax_unit("dwks10", period)
+        dwks18 = max_(0, dwks1 - dwks10)
+        return max_(dwks17, dwks18) * tax_unit("hasqdivltcg", period)
 
 
 class fstax(Variable):
