@@ -43,6 +43,7 @@ class medicaid_income_threshold(Variable):
     definition_period = YEAR
     label = "Medicaid FPL threshold"
     documentation = "Maximum income as a percentage of the federal poverty line to qualify for Medicaid"
+    unit = "percent"
 
     def formula(person, period, parameters):
         state_code = person.household("state_code_str", period)
@@ -70,16 +71,12 @@ class meets_medicaid_income_threshold(Variable):
     label = "Meets Medicaid income threshold"
     documentation = "Whether the person meets the Medicaid income threshold given their state, age, and family structure."
 
-    # def formula(spm_unit, period, parameters):
-    # Three inputs:
-    # 1. Medicaid income
-    # 2. FPG
-    # 3. Medicaid income threshold
-    # demographic_eligible = spm_unit.any(
-    #     spm_unit_assets.members("medicaid_person_type", period)
-    # )
-    # economic_eligible = where(spm_unit(medicaid_income_threshold, period),)
-    # return demographic_eligible | economic_eligible
+    def formula(person, period, parameters):
+        income = person.spm_unit("medicaid_gross_income", period)
+        fpg = person.spm_unit("spm_unit_fpg", period)
+        fpg_income_threshold = person("medicaid_income_threshold", period)
+        income_share_of_fpg = income / fpg
+        return income_share_of_fpg <= fpg_income_threshold
 
 
 class medicaid(Variable):
