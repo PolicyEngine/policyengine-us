@@ -500,6 +500,9 @@ class c00100(Variable):
         return add(tax_unit, period, "ymod1", "c02500", "c02900")
 
 
+adjusted_gross_income = variable_alias("adjusted_gross_income", c00100)
+
+
 class c01000(Variable):
     value_type = float
     entity = TaxUnit
@@ -1008,6 +1011,14 @@ class c07230(Variable):
     definition_period = YEAR
     documentation = """Education tax credits non-refundable amount from Form 8863 (includes c87668)"""
 
+    def formula(tax_unit, period, parameters):
+        return add(
+            tax_unit,
+            period,
+            "non_refundable_american_opportunity_credit",
+            "lifetime_learning_credit",
+        )
+
 
 class c07240(Variable):
     value_type = float
@@ -1198,6 +1209,9 @@ class c10960(Variable):
         """American Opportunity Credit refundable amount from Form 8863"""
     )
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit("refundable_american_opportunity_credit", period)
+
 
 class c11070(Variable):
     value_type = float
@@ -1381,6 +1395,10 @@ class tax_unit_is_joint(Variable):
     documentation = "Whether this tax unit is a joint filer."
     definition_period = YEAR
 
+    def formula(tax_unit, period, parameters):
+        mars = tax_unit("mars", period)
+        return mars == mars.possible_values.JOINT
+
 
 class c59660(Variable):
     value_type = float
@@ -1497,6 +1515,9 @@ class c87668(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = """American Opportunity Credit non-refundable amount from Form 8863 (included in c07230)"""
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("non_refundable_american_opportunity_credit", period)
 
 
 class care_deduction(Variable):
