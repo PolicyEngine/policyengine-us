@@ -20,10 +20,22 @@ class medicaid_person_type(Variable):
     documentation = "Person type for Medicaid"
 
     def formula(person, period, parameters):
-        over_65 = person("age", period) >= 65
-        pregnant = person("is_pregnant", period)
-        disabled = person("is_disabled", period)
-        return disabled | over_65 | pregnant
+        # Get the person's age.
+        age = person("age", period)
+        # Get the existence of dependents, as defined by people 18 or younger.
+        has_dependents = person.spm_unit.any(
+            person.spm_unit.members("age", period) < 19
+        )
+        return select(
+            [age == 0, age < 6, age < 19, has_dependents, True],
+            [
+                MedicaidPersonType.CHILD_AGE_0,
+                MedicaidPersonType.CHILD_AGE_1_5,
+                MedicaidPersonType.CHILD_AGE_6_18,
+                MedicaidPersonType.ADULT_WITH_DEPENDENT,
+                MedicaidPersonType.ADULT_WITHOUT_DEPENDENT,
+            ],
+        )
 
 
 class medicaid_income_threshold(Variable):
@@ -41,17 +53,17 @@ class medicaid_income_threshold(Variable):
 
 
 class is_medicaid_eligible(Variable):
-    value_type: bool
-    entity = SPMUnit
+    value_type = bool
+    entity = Person
     definition_period = YEAR
     label = "Eligibility for Medicaid"
     documentation = (
         "Whether the person is eligible for Medicaid health benefit."
     )
 
-    def formula(spm_unit, period, parameters):
-        demographic_eligible = spm_unit.any(
-            spm_unit_assets.members("medicaid_person_type", period)
-        )
-        economic_eligible = where(spm_unit(medicaid_income_threshold, period),)
-        return demographic_eligible | economic_eligible
+    # def formula(spm_unit, period, parameters):
+    #     demographic_eligible = spm_unit.any(
+    #         spm_unit_assets.members("medicaid_person_type", period)
+    #     )
+    #     economic_eligible = where(spm_unit(medicaid_income_threshold, period),)
+    #     return demographic_eligible | economic_eligible
