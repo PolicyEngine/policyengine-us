@@ -51,6 +51,18 @@ class medicaid_income_threshold(Variable):
         return income_threshold[state_code][person_type]
 
 
+class medicaid_gross_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Medicaid gross income"
+    documentation = "Gross income for calculating Medicaid eligibility"
+    unit = "currency-USD"
+
+    def formula(spm_unit, period):
+        return spm_unit.sum(spm_unit.members("market_income", period))
+
+
 class meets_medicaid_income_threshold(Variable):
     value_type = bool
     entity = Person
@@ -59,11 +71,15 @@ class meets_medicaid_income_threshold(Variable):
     documentation = "Whether the person meets the Medicaid income threshold given their state, age, and family structure."
 
     # def formula(spm_unit, period, parameters):
-    #     demographic_eligible = spm_unit.any(
-    #         spm_unit_assets.members("medicaid_person_type", period)
-    #     )
-    #     economic_eligible = where(spm_unit(medicaid_income_threshold, period),)
-    #     return demographic_eligible | economic_eligible
+    # Three inputs:
+    # 1. Medicaid income
+    # 2. FPG
+    # 3. Medicaid income threshold
+    # demographic_eligible = spm_unit.any(
+    #     spm_unit_assets.members("medicaid_person_type", period)
+    # )
+    # economic_eligible = where(spm_unit(medicaid_income_threshold, period),)
+    # return demographic_eligible | economic_eligible
 
 
 class medicaid(Variable):
