@@ -8,7 +8,7 @@
         age: 42  # Not in the example.
       mrs_j:
         age: 35  # Not in the example.
-        tanf_gross_income: 1_000 * 12
+        market_income: 1_000 * 12
       child1:
         age: 14  # Not in the example.
       # NB: Example says 2 children, but calculation only shows payment level for 3.
@@ -16,6 +16,7 @@
       spm_unit:
         members: [mr_j, mrs_j, child1]
         ssi: 1_000 * 12  # Example doesn't provide number.
+        is_tanf_enrolled: false
     households:
       household:
         state_code: IL
@@ -32,7 +33,7 @@
     people:
       ms_p:
         age: 42 # Not in the example.
-        tanf_gross_income: 860 * 12
+        market_income: 860 * 12
       child_1:
         age: 14  # Not in the example.
       child_2:
@@ -41,7 +42,8 @@
         age: 1  # Not in the example.
     spm_units:
       spm_unit:
-        members: [ms_p, child1, child2, child3]
+        members: [ms_p, child_1, child_2, child_3]
+        is_tanf_enrolled: false
     households:
       household:
         state_code: IL

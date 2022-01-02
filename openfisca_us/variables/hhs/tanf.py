@@ -37,6 +37,12 @@ class initial_tanf_eligibility(Variable):
     label = "Initial Economic Eligibility for TANF"
     documentation = "Whether the familiy meets the economic requirements for the Temporary Assistance for Needy Families program on application."
 
+    def formula(spm_unit, period, parameters):
+        ied = spm_unit('tanf_initial_employment_deduction', period)
+        earned_income = spm_unit('tanf_gross_earned_income', period)
+        net_earned_income = earned_income - ied
+        payment_level = spm_unit('tanf_max_amount', period)
+        return net_earned_income <= payment_level
 
 class is_person_demographic_tanf_eligible(Variable):
     value_type = bool
@@ -119,12 +125,12 @@ class tanf_countable_income(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        tanf_gross_income = spm_unit("tanf_total_gross_income", period)
+        earned_income = spm_unit("tanf_gross_earned_income", period)
         state = spm_unit.household("state_code_str", period)
         earned_income_deduction = parameters(
             period
         ).hhs.tanf.earned_income_deduction
-        return tanf_gross_income * (1 - earned_income_deduction[state])
+        return earned_income * (1 - earned_income_deduction[state])
 
 
 class tanf_total_gross_income(Variable):
@@ -136,6 +142,33 @@ class tanf_total_gross_income(Variable):
     unit = USD
     reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
 
+    def formula(spm_unit, period, parameters):
+        return add(spm_unit, period, "tanf_gross_earned_income", "tanf_gross_unearned_income")
+
+class tanf_gross_earned_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "TANF gross earned income"
+    documentation = "Gross earned income for calculating Temporary Assistance for Needy Families benefit."
+    unit = USD
+    reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
+
+    def formula(spm_unit, period, parameters):
+        return spm_unit.sum(spm_unit.members("market_income", period))
+
+
+class tanf_gross_unearned_income(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "TANF gross unearned income"
+    documentation = "Gross unearned income for calculating Temporary Assistance for Needy Families benefit."
+    unit = USD
+    reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
+
+    def formula(spm_unit, period, parameters):
+        return add(spm_unit, period, "ssi")
 
 class tanf_amount_if_eligible(Variable):
     value_type = float

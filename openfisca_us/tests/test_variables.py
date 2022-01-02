@@ -18,6 +18,10 @@ EXEMPTIONS = (
     "tanf",
     "tanf_amount_if_eligible",
     "tanf_countable_income",
+    "tanf_initial_employment_deduction",
+    "initial_tanf_eligibility",
+    "continuous_tanf_eligibility",
+    "is_tanf_eligible",
 )
 
 
