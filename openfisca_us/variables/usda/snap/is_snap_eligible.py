@@ -8,12 +8,16 @@ class is_snap_eligible(Variable):
     unit = "currency-USD"
     documentation = "Whether this SPM unit is eligible for SNAP benefits"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/7/2017#a; https://www.law.cornell.edu/uscode/text/7/2014#c"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/7/2017#a",
+        "https://www.law.cornell.edu/uscode/text/7/2014#c",
+    )
 
     def formula(spm_unit, period, parameters):
         income_limits = parameters(period).usda.snap.income_limits
-        net_income_limit = income_limits.net * 12
-        gross_income_limit = income_limits.gross.standard * 12
+        fpg = spm_unit("spm_unit_fpg", period)
+        net_income_limit = income_limits.net * fpg
+        gross_income_limit = income_limits.gross.standard * fpg
         # Get income pre- and post-deductions.
         gross_income = spm_unit("snap_gross_income", period)
         net_income = spm_unit("snap_net_income", period)
