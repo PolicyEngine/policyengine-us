@@ -8,6 +8,7 @@ class spm_unit_fpg(Variable):
     entity = SPMUnit
     label = u"SPM unit's federal poverty guideline"
     definition_period = YEAR
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         n = spm_unit.nb_persons()

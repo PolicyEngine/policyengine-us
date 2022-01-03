@@ -1,0 +1,28 @@
+start:
+  description: Phaseout start for both the American Opportunity Credit and Lifetime Learning Credit on AGI
+  single:
+    values:
+      2010-01-01: 80_000
+    metadata:
+      unit: currency-USD
+  joint:
+    values:
+      2010-01-01: 160_000
+    metadata:
+      unit: currency-USD
+length:
+  description: Length of the phaseout for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero)
+  single:
+    values:
+      2010-01-01: 10_000
+    metadata:
+      unit: currency-USD
+  joint:
+    values:
+      2010-01-01: 20_000
+    metadata:
+      unit: currency-USD
+metadata:
+  reference:
+    - title: 26 U.S. Code § 25A(d)(1)
+      url: https://www.law.cornell.edu/uscode/text/26/25A#d_1

@@ -6,9 +6,7 @@ system = CountryTaxBenefitSystem()
 builder = SimulationBuilder()
 
 DEFAULT_SITUATION = {
-    "people": {
-        "person": {},
-    },
+    "people": {"person": {}},
     "tax_units": {"tax_unit": {"members": ["person"]}},
     "families": {"family": {"members": ["person"]}},
     "spm_units": {"spm_units": {"members": ["person"]}},

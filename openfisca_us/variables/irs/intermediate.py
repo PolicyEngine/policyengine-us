@@ -211,6 +211,30 @@ class posagi(Variable):
         return max_(tax_unit("c00100", period), 0)
 
 
+class hasqdivltcg(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Has qualified dividends or long-term capital gains"
+    documentation = "Whether this tax unit has qualified dividend income, or long-term capital gains income"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        # Negatives cannot offset other income sources
+        INCOME_SOURCES = [
+            "c01000",
+            "c23650",
+            "filer_p23250",
+            "filer_e01100",
+            "filer_e00650",
+        ]
+        return np.any(
+            [
+                tax_unit(income_source, period) > 0
+                for income_source in INCOME_SOURCES
+            ]
+        )
+
+
 class c33200(Variable):
     value_type = float
     entity = TaxUnit
