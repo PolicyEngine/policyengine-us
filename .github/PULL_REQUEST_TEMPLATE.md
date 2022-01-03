@@ -9,14 +9,11 @@ Thanks for contributing! Please remove any top-level sections that do not apply 
 - [ ] Variable name follows conventions
 - [ ] Unit test(s) added
 - [ ] Integration test(s) added if relevant
+- [ ] Issues this PR fixes linked
 
 ## What's changed
 
 Description of the changes here.
-
-## Issues fixed
-
-Link any issues this PR closes here.
 
 # Bug fix
 
