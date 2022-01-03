@@ -252,20 +252,23 @@ class spm_unit_total_childcare_market_rate(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = u"SPM unit total childcare market rate"
+    unit = "currency-USD"
 
 
 class spm_unit_total_ccdf_copay(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = u"SPM unit total ccdf copay"
+    label = u"SPM unit total CCDF copay"
+    unit = "currency-USD"
 
 
 class spm_unit_ccdf_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = u"SPM unit ccdf subsidy"
+    label = u"SPM unit CCDF subsidy"
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         total_market_rate = spm_unit(
