@@ -168,7 +168,7 @@ class tanf_gross_unearned_income(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
 
     def formula(spm_unit, period, parameters):
-        return add(spm_unit, period, "ssi")
+        return spm_unit("ssi", period)
 
 class tanf_amount_if_eligible(Variable):
     value_type = float
