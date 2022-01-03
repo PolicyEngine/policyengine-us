@@ -1,0 +1,26 @@
+- name: "Default SPM unit is eligible because they have no income and assets"
+  period: 2022
+  output:
+    is_tanf_non_cash_eligible: false
+
+- name: "California SPM unit with income 190% of FPL is eligible"
+  period: 2022
+  input:
+    snap_income_fpg_ratio: 1.9
+  output:
+    is_tanf_non_cash_eligible: true
+
+- name: "California SPM unit with income 205% of FPL is ineligible"
+  period: 2022
+  input:
+    snap_income_fpg_ratio: 2.05
+  output:
+    is_tanf_non_cash_eligible: false
+
+- name: "California SPM unit with assets of $1 million and income 199% of FPL are eligible"
+  period: 2022
+  input:
+    snap_income_fpg_ratio: 1.99
+    snap_assets: 1_000_000
+  output:
+    is_tanf_non_cash_eligible: true
