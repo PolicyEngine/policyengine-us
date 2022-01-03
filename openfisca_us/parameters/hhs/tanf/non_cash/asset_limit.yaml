@@ -1,18 +1,23 @@
 description: Asset limit for TANF non-cash benefit used for SNAP BBCE, by state.
 
 AL:
+  # In Alabama, households with seniors or people with disabilities and gross income under 200 percent of poverty
+  # do not face an asset limit. Those over 200 percent of poverty are not categorically eligible and do face a $3,500 asset
+  # limit.
+  # This is not yet modeled.
+  # Other states with this rule are marked with a *.
   2021-07-01: Inf
-# Alaska is not in the list, indicating it has not elected to BBCE.
-# Non-BBCE states are entered as negative infinity asset limit.
 AK:
+  # Alaska is not in the list, indicating it has not elected to BBCE.
+  # Non-BBCE states are entered as negative infinity asset limit.
   2021-07-01: -Inf
 AZ:
   2021-07-01: Inf
 AR:
   2021-07-01: -Inf # Non-BBCE.
-CA:
+CA: # *
   2021-07-01: Inf
-CO:
+CO: # *
   2021-07-01: -Inf # Non-BBCE.
 CT:
   2021-07-01: Inf
@@ -20,9 +25,9 @@ DE:
   2021-07-01: Inf
 DC:
   2021-07-01: Inf
-FL:
+FL: # *
   2021-07-01: Inf
-GA:
+GA: # *
   2021-07-01: Inf
 GU:
   2021-07-01: Inf
@@ -30,7 +35,7 @@ HI:
   2021-07-01: Inf
 ID:
   2021-07-01: 5_000
-IL:
+IL: # *
   2021-07-01: Inf
 IN:
   2021-07-01: 5_000
@@ -38,7 +43,7 @@ IA:
   2021-07-01: Inf
 KS:
   2021-07-01: -Inf # Non-BBCE.
-KY:
+KY: # *
   2021-07-01: Inf
 LA:
   2021-07-01: Inf
@@ -46,7 +51,7 @@ ME:
   2021-07-01: Inf
 MD:
   2021-07-01: Inf
-MA:
+MA: # *
   2021-07-01: Inf
 MI:
   2021-07-01: 15_000
@@ -57,7 +62,7 @@ MS:
 MT:
   2021-07-01: Inf
 NE:
-  2021-07-01: 25_000
+  2021-07-01: 25_000 # For liquid assets (not modeled).
 NV:
   2021-07-01: Inf
 NH:
@@ -68,38 +73,38 @@ NJ:
   2021-07-01: Inf
 NM:
   2021-07-01: Inf
-NY:
-  # Only for households with dependent care expenses or earned income.
+NY: # *
+  # Only for households with dependent care expenses or earned income (not currently implemented).
   2021-07-01: Inf
 NC:
   2021-07-01: Inf
 ND:
   2021-07-01: Inf
-OH:
+OH: # *
   2021-07-01: Inf
 OK:
   2021-07-01: Inf
 OR:
   2021-07-01: Inf
-PA:
+PA: # *
   2021-07-01: Inf
-RI:
+RI: # *
   2021-07-01: Inf
-SC:
+SC: # *
   2021-07-01: Inf
 TX:
-  2021-07-01: 5_000
+  2021-07-01: 5_000 # Excludes 1 vehicle up to $15,000 & includes excess vehicle value (not modeled).
 UT:
   2021-07-01: -Inf # Non-BBCE.
 VT:
   2021-07-01: Inf
-VI:
+VI: # *
   2021-07-01: Inf
 VA:
   2021-07-01: Inf
 WA:
   2021-07-01: Inf
-WV:
+WV: # *
   2021-07-01: Inf
 WI:
   2021-07-01: Inf
