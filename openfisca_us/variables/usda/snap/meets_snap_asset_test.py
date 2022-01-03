@@ -1,21 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class snap_assets(Variable):
-    value_type = float
-    entity = SPMUnit
-    label = "SNAP assets"
-    unit = USD
-    documentation = "Financial resources used to decide SNAP eligibility"
-    definition_period = YEAR
-
-
 class meets_snap_asset_test(Variable):
     value_type = bool
     entity = SPMUnit
     label = "Meets SNAP asset test"
     unit = USD
-    documentation = "Whether the SPM unit's financial resources are within the allowable limit"
+    documentation = "Whether the SPM unit's financial resources are within SNAP's allowable limit"
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
