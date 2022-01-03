@@ -12,14 +12,16 @@ class is_snap_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         income_limits = parameters(period).usda.snap.income_limits
+        net_income_limit = income_limits.net * 12
+        gross_income_limit = income_limits.gross.standard * 12
         # Get income pre- and post-deductions.
         gross_income = spm_unit("snap_gross_income", period)
         net_income = spm_unit("snap_net_income", period)
         # Households with elderly and disabled people are exempt from the
         # gross income test.
         has_elderly_disabled = spm_unit("has_elderly_disabled", period)
-        meets_net_income_limit = net_income < income_limits.net
-        meets_gross_income_limit = gross_income < income_limits.gross.standard
+        meets_net_income_limit = net_income < net_income_limit
+        meets_gross_income_limit = gross_income < gross_income_limit
         exempt_from_gross_income_limit = has_elderly_disabled
         return meets_net_income_limit & (
             meets_gross_income_limit | exempt_from_gross_income_limit
