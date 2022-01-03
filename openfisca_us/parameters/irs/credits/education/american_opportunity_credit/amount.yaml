@@ -1,0 +1,21 @@
+description: Value of the maximum American Opportunity Credit, as a marginal rate schedule on tuition expenses
+brackets:
+  - threshold:
+      2009-01-01: 0
+    rate:
+      2009-01-01: 1
+  - threshold:
+      2009-01-01: 2_000
+    rate:
+      2009-01-01: 0.25
+  - threshold:
+      2009-01-01: 4_000
+    rate:
+      2009-01-01: 0
+metadata:
+  type: marginal_rate
+  rate_unit: /1
+  threshold_unit: currency-USD
+  reference:
+    - title: 26 U.S. Code § 25A(b)(1)
+      url: https://www.law.cornell.edu/uscode/text/26/25A#b_1

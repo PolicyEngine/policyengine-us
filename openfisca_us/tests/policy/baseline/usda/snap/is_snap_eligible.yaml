@@ -1,0 +1,49 @@
+- name: Family of 4, disqualified by gross income
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+        snap_gross_income: 20000 * 12
+        snap_net_income: 100 * 12
+    households:
+      household:
+        members: [person_1, person_2, person_3, person_4]
+        state_group: CONTIGUOUS_US
+  output:
+    is_snap_eligible: False
+
+- name: Family of 4, disqualified by net income
+  period: 2021
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+        snap_gross_income: 100 * 12
+        snap_net_income: 10000 * 12
+    households:
+      household:
+        members: [person_1, person_2, person_3, person_4]
+        state_group: CONTIGUOUS_US
+  output:
+    is_snap_eligible: False

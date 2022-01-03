@@ -13,8 +13,6 @@ class snap_shelter_deduction(Variable):
     unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
-        # TODO: Multiply params by 12.
-        # check for member of spm_unit with disability/elderly status
         shelter_deduction = parameters(period).usda.snap.shelter_deduction
 
         # Calculate uncapped shelter deduction as housing costs in excess of
@@ -34,12 +32,17 @@ class snap_shelter_deduction(Variable):
 
         has_elderly_disabled = spm_unit("has_elderly_disabled", period)
         # Cap for all but elderly/disabled people.
-        non_homeless_shelter_deduction = where(
-            has_elderly_disabled, uncapped_ded, min_(uncapped_ded, ded_cap)
-        ) + spm_unit("snap_utility_allowance", period)
-        homeless_shelter_deduction = spm_unit(
-            "snap_homeless_shelter_deduction", period
+        non_homeless_shelter_deduction = (
+            where(
+                has_elderly_disabled,
+                uncapped_ded,
+                12 * min_(uncapped_ded, ded_cap),
+            )
+            + spm_unit("snap_utility_allowance", period)
         )
+        homeless_shelter_deduction = (
+            spm_unit("snap_homeless_shelter_deduction", period)
+        ) * 12
         return where(
             spm_unit.household("is_homeless", period),
             homeless_shelter_deduction,
@@ -163,10 +166,5 @@ class snap_utility_allowance(Variable):
                 allowance_type == SNAPUttilityAllowanceType.TUA,
                 True,
             ],
-            [
-                utility.sua[state],
-                utility.lua[state],
-                utility.tua[state],
-                0,
-            ],
+            [utility.sua[state], utility.lua[state], utility.tua[state], 0],
         )
