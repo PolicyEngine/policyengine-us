@@ -27,6 +27,9 @@ class is_snap_eligible(Variable):
         meets_net_income_limit = net_income < net_income_limit
         meets_gross_income_limit = gross_income < gross_income_limit
         exempt_from_gross_income_limit = has_elderly_disabled
-        return meets_net_income_limit & (
-            meets_gross_income_limit | exempt_from_gross_income_limit
+        meets_asset_test = spm_unit("meets_snap_asset_test", period)
+        return (
+            meets_asset_test
+            & meets_net_income_limit
+            & (meets_gross_income_limit | exempt_from_gross_income_limit)
         )
