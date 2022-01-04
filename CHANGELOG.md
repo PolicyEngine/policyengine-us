@@ -9,7 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Categorical eligibility for SNAP.
+* Categorical eligibility for SNAP, including broad-based categorical eligibility via low-cost TANF programs that effectively extend SNAP's asset and income limits.
+
+### Changed
+
+* Refactored SNAP code.
 
 ## [0.16.0] - 2022-01-03
 
