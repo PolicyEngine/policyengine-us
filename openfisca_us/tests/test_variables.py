@@ -18,15 +18,6 @@ EXEMPTIONS = (
     "tanf",
     "tanf_amount_if_eligible",
     "tanf_countable_income",
-    # TANF provides categorical eligibility for SNAP.
-    "meets_snap_categorical_eligibility",
-    "snap",
-    "is_snap_eligible",
-    # SNAP in turn provides categorical eligibility for EBB and Lifeline.
-    "is_ebb_eligible",
-    "ebb",
-    "is_lifeline_eligible",
-    "lifeline",
 )
 
 
