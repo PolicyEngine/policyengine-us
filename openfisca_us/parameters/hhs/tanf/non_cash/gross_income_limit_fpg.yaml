@@ -3,17 +3,17 @@ description: Gross income limit as a percent of the poverty line for TANF non-ca
 AL:
   2021-07-01: 1.3
 # Alaska is not in the list, indicating it has not elected to BBCE.
-# Non-BBCE states are entered as negative infinity asset limit.
+# Non-BBCE states are entered as negative .infinity asset limit.
 AK:
-  2021-07-01: -Inf
+  2021-07-01: -.inf
 AZ:
   2021-07-01: 1.85
 AR:
-  2021-07-01: -Inf # Non-BBCE.
+  2021-07-01: -.inf # Non-BBCE.
 CA:
   2021-07-01: 2
 CO:
-  2021-07-01: -Inf # Non-BBCE.
+  2021-07-01: -.inf # Non-BBCE.
 CT:
   2021-07-01: 1.85
 DE:
@@ -37,7 +37,7 @@ IN:
 IA:
   2021-07-01: 1.6
 KS:
-  2021-07-01: -Inf # Non-BBCE.
+  2021-07-01: -.inf # Non-BBCE.
 KY:
   2021-07-01: 2
 LA:
@@ -53,7 +53,7 @@ MI:
 MN:
   2021-07-01: 1.65
 MS:
-  2021-07-01: -Inf # Non-BBCE.
+  2021-07-01: -.inf # Non-BBCE.
 MT:
   2021-07-01: 2
 NE:
@@ -91,7 +91,7 @@ SC:
 TX:
   2021-07-01: 1.65
 UT:
-  2021-07-01: -Inf # Non-BBCE.
+  2021-07-01: -.inf # Non-BBCE.
 VT:
   2021-07-01: 1.85
 VI:
@@ -105,7 +105,7 @@ WV:
 WI:
   2021-07-01: 2
 WY:
-  2021-07-01: -Inf # Non-BBCE.
+  2021-07-01: -.inf # Non-BBCE.
 
 metadata:
   unit: /1
