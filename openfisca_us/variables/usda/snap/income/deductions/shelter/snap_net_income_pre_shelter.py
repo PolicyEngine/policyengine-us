@@ -11,9 +11,7 @@ class snap_net_income_pre_shelter(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_6_A"
 
     def formula(spm_unit, period):
-        return max_(
-            spm_unit("snap_gross_income", period)
-            - spm_unit("snap_standard_deduction", period)
-            - spm_unit("snap_earnings_deduction", period),
-            0,
-        )
+        income = spm_unit("snap_gross_income", period)
+        DEDUCTIONS = ("snap_standard_deduction", "snap_earnings_deduction")
+        deductions = add(spm_unit, period, *DEDUCTIONS)
+        return max_(income - deductions, 0)
