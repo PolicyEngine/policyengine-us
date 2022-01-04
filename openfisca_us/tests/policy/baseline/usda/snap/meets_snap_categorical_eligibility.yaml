@@ -1,20 +1,34 @@
-- name: Default is ineligible because no TANF or SSI.
+- name: Default is eligible because they meet California's BBCE income and asset limits.
+  period: 2022
+  absolute_error_margin: 0.01
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: Without TANF non-cash eligibility, not eligible.
   period: 2022
   absolute_error_margin: 0.01
   input:
-    tanf: 0
+    is_tanf_non_cash_eligible: false
   output:
     meets_snap_categorical_eligibility: false
 
-- name: SSI is eligible.
+- name: SSI creates eligibility.
   period: 2022
   absolute_error_margin: 0.01
   input:
-    tanf: 0
+    is_tanf_non_cash_eligible: false
     ssi: 1
   output:
     meets_snap_categorical_eligibility: true
 
+- name: SSDI does not creates eligibility.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_tanf_non_cash_eligible: false
+    ssdi: 1
+  output:
+    meets_snap_categorical_eligibility: false
 # # Test temporarily disabled until we implement TANF in CA and add TANF as a SNAP CE program.
 # - name: TANF is eligible.
 #   period: 2021
@@ -23,20 +37,3 @@
 #     tanf: 1
 #   output:
 #     meets_snap_categorical_eligibility: true
-
-- name: TANF non-cash benefit (BBCE) is eligible.
-  period: 2022
-  absolute_error_margin: 0.01
-  input:
-    tanf: 0
-    is_tanf_non_cash_eligible: true
-  output:
-    meets_snap_categorical_eligibility: true
-
-- name: SSDI doesn't provide eligibility.
-  period: 2022
-  absolute_error_margin: 0.01
-  input:
-    ssdi: 1
-  output:
-    meets_snap_categorical_eligibility: false
