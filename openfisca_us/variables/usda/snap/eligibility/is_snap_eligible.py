@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class is_snap_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = SPMUnit
     label = "SNAP eligible"
     documentation = "Whether this SPM unit is eligible for SNAP benefits"
