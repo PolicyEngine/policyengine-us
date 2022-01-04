@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class meets_snap_categorical_eligibility(Variable):
-    value_type = float
+    value_type = bool
     entity = SPMUnit
     label = "SNAP categorical eligibility"
     documentation = "Whether this SPM unit is eligible for SNAP benefits via participation in other programs"
