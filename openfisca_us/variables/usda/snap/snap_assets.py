@@ -5,6 +5,6 @@ class snap_assets(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    documentation = "Countable assets for SNAP limits."
+    documentation = "Countable assets for SNAP limits"
     label = "SNAP assets"
     unit = "currency-USD"

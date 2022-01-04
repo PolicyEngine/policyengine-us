@@ -24,12 +24,16 @@ class is_snap_eligible(Variable):
         # Households with elderly and disabled people are exempt from the
         # gross income test.
         has_elderly_disabled = spm_unit("has_elderly_disabled", period)
-        meets_net_income_limit = net_income < net_income_limit
-        meets_gross_income_limit = gross_income < gross_income_limit
+        meets_net_income_test = net_income < net_income_limit
+        meets_gross_income_test = gross_income < gross_income_limit
         exempt_from_gross_income_limit = has_elderly_disabled
         meets_asset_test = spm_unit("meets_snap_asset_test", period)
-        return (
-            meets_asset_test
-            & meets_net_income_limit
-            & (meets_gross_income_limit | exempt_from_gross_income_limit)
+        meets_normal_gross_income_test = (
+            meets_gross_income_test | exempt_from_gross_income_limit
+        )
+        # Broad based categorical eligibility overrides asset and gross income
+        # tests.
+        bbce = spm_unit("is_tanf_non_cash_eligible", period)
+        return meets_net_income_test & (
+            bbce | (meets_asset_test & meets_normal_gross_income_test)
         )
