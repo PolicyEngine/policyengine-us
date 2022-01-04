@@ -5,7 +5,6 @@ class is_snap_eligible(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP eligible"
-    unit = "currency-USD"
     documentation = "Whether this SPM unit is eligible for SNAP benefits"
     definition_period = YEAR
     reference = (
@@ -28,12 +27,14 @@ class is_snap_eligible(Variable):
         meets_gross_income_test = gross_income < gross_income_limit
         exempt_from_gross_income_limit = has_elderly_disabled
         meets_asset_test = spm_unit("meets_snap_asset_test", period)
-        meets_normal_gross_income_test = (
+        meets_gross_income_test = (
             meets_gross_income_test | exempt_from_gross_income_limit
         )
-        # Broad based categorical eligibility overrides asset and gross income
-        # tests.
-        bbce = spm_unit("is_tanf_non_cash_eligible", period)
-        return meets_net_income_test & (
-            bbce | (meets_asset_test & meets_normal_gross_income_test)
+        normal_eligibility = (
+            meets_net_income_test & meets_asset_test & meets_gross_income_test
         )
+        # Categorical eligibility (SSI, TANF, and BBCE TANF) overrides tests.
+        categorical_eligibility = spm_unit(
+            "meets_snap_categorical_eligibility", period
+        )
+        return normal_eligibility | categorical_eligibility

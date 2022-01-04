@@ -1,0 +1,41 @@
+- name: Default is ineligible because no TANF or SSI.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    tanf: 0
+  output:
+    meets_snap_categorical_eligibility: false
+
+- name: SSI is eligible.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    tanf: 0
+    ssi: 1
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: TANF is eligible.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    tanf: 1
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: TANF non-cash benefit (BBCE) is eligible.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    tanf: 0
+    is_tanf_non_cash_eligible: true
+  output:
+    meets_snap_categorical_eligibility: true
+
+- name: SSDI doesn't provide eligibility.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    ssdi: 1
+  output:
+    meets_snap_categorical_eligibility: false
