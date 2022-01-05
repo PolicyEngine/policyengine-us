@@ -1,5 +1,5 @@
 - name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
-  period: 2021
+  period: 2022
   absolute_error_margin: 0.1
   input:
     people:
@@ -24,12 +24,12 @@
         snap_net_income: 833 * 12
     households:
       household:
-        state_group: CONTIGUOUS_US  
+        state_group: CONTIGUOUS_US
   output:
     snap_expected_contribution: (833 * 0.3) * 12
 
 - name: Family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
-  period: 2021
+  period: 2022
   absolute_error_margin: 0.1
   input:
     people:
@@ -55,6 +55,6 @@
         snap_net_income: 428.5 * 12
     households:
       household:
-        state_group: CONTIGUOUS_US  
+        state_group: CONTIGUOUS_US
   output:
     snap_expected_contribution: (428.5 * 0.3) * 12

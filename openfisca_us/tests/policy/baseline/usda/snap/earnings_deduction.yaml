@@ -1,5 +1,5 @@
 - name: Family of 4, 12k income/year (Normal Test)
-  period: 2021
+  period: 2022
   absolute_error_margin: 0.01
   input:
     people:
@@ -39,7 +39,7 @@
     snap_earnings_deduction: (1000 * 0.2) * 12
 
 - name: Single Person, 100k/year (Extreme Test)
-  period: 2021
+  period: 2022
   absolute_error_margin: 0.01
   input:
     people:

@@ -1,0 +1,12 @@
+- name: "Default SPM unit meets California's asset test"
+  period: 2022
+  output:
+    meets_tanf_non_cash_asset_test: true
+
+- name: "Texas asset test is $15,000"
+  period: 2022
+  input:
+    state_code_str: TX
+    snap_assets: 16_000
+  output:
+    meets_tanf_non_cash_asset_test: false
