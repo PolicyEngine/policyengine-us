@@ -30,7 +30,7 @@ class snap_shelter_deduction(Variable):
         state_group = spm_unit.household("state_group_str", period)
         ded_cap = shelter_deduction.amount[state_group]
 
-        has_elderly_disabled = spm_unit("has_elderly_disabled", period)
+        has_elderly_disabled = spm_unit("has_usda_elderly_disabled", period)
         # Cap for all but elderly/disabled people.
         non_homeless_shelter_deduction = (
             where(

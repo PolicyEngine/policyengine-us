@@ -15,7 +15,7 @@
       spm_unit:
         snap_gross_income: 2000 * 12
         housing_cost: 1700 * 12
-        has_elderly_disabled: False
+        has_usda_elderly_disabled: False
         members: [person_1, person_2, person_3, person_4]
     households:
       household:
@@ -40,7 +40,7 @@
       spm_unit:
         snap_gross_income: 2000 * 12
         housing_cost: 1700 * 12
-        has_elderly_disabled: True
+        has_usda_elderly_disabled: True
         members: [person_1, person_2, person_3, person_4]
     households:
       household:
