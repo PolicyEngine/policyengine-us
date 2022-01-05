@@ -2,9 +2,7 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    people:
-      person_1:
-        age: 60
+    age: 60
   output:
     is_usda_elderly: True
 
@@ -12,8 +10,6 @@
   period: 2021
   absolute_error_margin: 0.01
   input:
-    people:
-      person_1:
-        age: 59
+    age: 59
   output:
     is_usda_elderly: False
