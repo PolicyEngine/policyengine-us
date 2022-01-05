@@ -79,6 +79,47 @@ class meets_medicaid_income_threshold(Variable):
         return income_share_of_fpg <= fpg_income_threshold
 
 
+class pregnancy_medicaid_eligible(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = "Eligible for Pregnancy-Related Medicaid"
+    documentation = "Whether the woman and unborn child/children qualify for Pregnancy Medicaid."
+
+    def formula(person, period, parameters):
+        income = person.spm_unit("medicaid_gross_income", period)
+        fpg = person.spm_unit("spm_unit_fpg", period)
+        fpg_income_threshold = person("medicaid_income_threshold", period)
+        # fpg_2_income_threshold = person(2.13, period)
+        pregnant = person("is_pregnant", period)
+        child_0 = person("age", period) == 0
+        income_share_of_fpg = income / fpg
+        return (
+            (income_share_of_fpg > fpg_income_threshold)
+            & (income_share_of_fpg <= 2.13)
+            & (pregnant | child_0)
+        )
+
+
+""" class medicaid_access_program_eligible(Variable):
+    value_type = bool
+    entity = Person
+    definition_period = YEAR
+    label = "Eligible for MCAP"
+    documentation = (
+        "Whether the person is Medicaid Access Program Eligible"
+    )
+    def formula(person, period, parameters):
+        income = person.spm_unit("medicaid_gross_income", period)
+        fpg = person.spm_unit("spm_unit_fpg", period)
+        fpg_income_threshold = person("medicaid_income_threshold", period)
+        pregnant = person("is_pregnant", period)
+        income_share_of_fpg = income / fpg
+        return ( ((income_share_of_fpg <= 3.22) & (income_share_of_fpg > 2.13) & pregnant)
+        )
+ """
+
+
 class medicaid(Variable):
     value_type = float
     entity = SPMUnit

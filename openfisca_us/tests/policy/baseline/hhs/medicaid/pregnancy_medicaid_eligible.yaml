@@ -1,0 +1,67 @@
+- name: Not pregnant 
+  period: 2022
+  input:
+    is_pregnant: False
+  output:
+    pregnancy_medicaid_eligible: False
+- name: Family of 3 eligible for Medicaid but not Pregnancy Medicaid, income at 135% of FPL
+  period: 2022
+  input: 
+    people:
+      parent1:
+        is_pregnant: True
+      parent2:
+        market_income: 12_880 * 1.35 # family income must be above 1.38 FPL to qualify for Pregnancy Medicaid
+      child:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    pregnancy_medicaid_eligible: [False, False, False]
+- name: Family of 3 not eligible for Pregnancy Medicaid but eligible for MCAP, income at 220% of FPL 
+  period: 2022
+  input:
+    people:
+      parent1:
+        is_pregnant: True
+      parent2:
+        market_income: 12_880 * 2.2 # family income must be less than 2.13 FPL to qualify for Pregnancy Medicaid
+      child:
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+  output:
+    pregnancy_medicaid_eligible: [False, False, False]
+- name: Family of 2 eligible for Pregnancy Medicaid, income at 140% of FPL 
+  period: 2022
+  input:
+    people:
+      parent:
+        is_pregnant: True
+        market_income: 12_880 * 1.4 
+      child: 
+        age: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    pregnancy_medicaid_eligible: [True, True]
+- name: Family of four eligible for Pregnancy Medicaid, income at 140% of FPL 
+  period: 2022
+  input:
+    people:
+      parent1:
+        is_pregnant: True
+      parent2:
+        market_income: 12_880 * 1.4
+      child1: 
+        age: 0
+      child2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+  output:
+    pregnancy_medicaid_eligible: [True, False, True, False]
