@@ -3,7 +3,6 @@ description: Program participation that qualify families for SNAP via categorica
 values:
   2009-01-01:
     - ssi
-    # - tanf # Temporarily disabled until we implement TANF in California.
     - is_tanf_non_cash_eligible
 
 metadata:

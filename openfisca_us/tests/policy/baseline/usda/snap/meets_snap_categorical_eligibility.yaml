@@ -29,11 +29,3 @@
     ssdi: 1
   output:
     meets_snap_categorical_eligibility: false
-# # Test temporarily disabled until we implement TANF in CA and add TANF as a SNAP CE program.
-# - name: TANF is eligible.
-#   period: 2021
-#   absolute_error_margin: 0.01
-#   input:
-#     tanf: 1
-#   output:
-#     meets_snap_categorical_eligibility: true
