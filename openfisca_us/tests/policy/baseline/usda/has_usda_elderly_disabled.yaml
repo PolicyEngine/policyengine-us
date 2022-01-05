@@ -1,0 +1,68 @@
+- name: Default person has no elderly or disabled people
+  period: 2021
+  absolute_error_margin: 0.01
+  output:
+    has_usda_elderly_disabled: False
+
+- name: Individual, is USDA elderly but not disabled
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_usda_elderly: True
+    is_usda_disabled: False
+  output:
+    has_usda_elderly_disabled: True
+
+- name: Individual, is USDA disabled but not elderly
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    is_usda_elderly: False
+    is_usda_disabled: True
+  output:
+    has_usda_elderly_disabled: True
+
+- name: Family with nobody elderly or disabled
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      p1:
+        is_usda_disabled: False
+      p2:
+        is_usda_elderly: False
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_usda_elderly_disabled: False
+
+- name: Family with one person elderly or disabled
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      p1:
+        is_usda_disabled: True
+      p2:
+        is_usda_elderly: False
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_usda_elderly_disabled: True
+
+- name: Family with all elderly or disabled
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      p1:
+        is_usda_disabled: True
+      p2:
+        is_usda_elderly: True
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    has_usda_elderly_disabled: True
