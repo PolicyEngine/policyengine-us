@@ -254,6 +254,9 @@ class spm_unit_total_childcare_market_rate(Variable):
     label = u"SPM unit total childcare market rate"
     unit = "currency-USD"
 
+    def formula(spm_unit, period, parameters):
+        return spm_unit.sum(spm_unit.members("ccdf_market_rate", period))
+
 
 class spm_unit_total_ccdf_copay(Variable):
     value_type = float
