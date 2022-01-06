@@ -23,17 +23,6 @@ class person_spm_unit_id(Variable):
     definition_period = ETERNITY
 
 
-class is_spm_unit_head(Variable):
-    value_type = bool
-    entity = Person
-    label = u"SPM unit head"
-    definition_period = ETERNITY
-
-    def formula(person, period, parameters):
-        # Use order of input (first)
-        return person.spm_unit.members_position == 0
-
-
 class spm_unit_assets(Variable):
     value_type = float
     entity = SPMUnit

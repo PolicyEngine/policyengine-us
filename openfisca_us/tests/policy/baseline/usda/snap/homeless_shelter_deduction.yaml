@@ -7,7 +7,7 @@
         age: 50
     households:
       household:
-        is_homeless: True
+        is_homeless: true
   output:
     snap_homeless_shelter_deduction: 143 * 12
 
@@ -20,6 +20,6 @@
         age: 50
     households:
       household:
-        is_homeless: False
+        is_homeless: false
   output:
     snap_homeless_shelter_deduction: 0 * 12

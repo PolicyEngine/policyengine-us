@@ -3,11 +3,11 @@
   input:
     age: 12
   output:
-    is_ccdf_age_eligible: True
+    is_ccdf_age_eligible: true
 
 - name: Child age, 13
   period: 2022
   input:
     age: 13
   output:
-    is_ccdf_age_eligible: False
+    is_ccdf_age_eligible: false

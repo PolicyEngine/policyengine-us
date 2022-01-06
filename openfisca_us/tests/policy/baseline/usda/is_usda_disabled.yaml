@@ -1,26 +1,20 @@
 - name: People without any disability flags are not USDA disabled
   period: 2021
   input:
-    people:
-        person_1:
-          age: 30
+    age: 30
   output:
-    is_usda_disabled: False
+    is_usda_disabled: false
 
 - name: SSI disabled people are USDA disabled
   period: 2021
   input:
-    people:
-        person_1:
-          is_ssi_disabled: True
+    is_ssi_disabled: true
   output:
-    is_usda_disabled: True
-  
+    is_usda_disabled: true
+
 - name: People receiving SSDI are USDA disabled
   period: 2021
   input:
-    people:
-        person_1:
-          ssdi: 100
+    ssdi: 100
   output:
-    is_usda_disabled: True
+    is_usda_disabled: true
