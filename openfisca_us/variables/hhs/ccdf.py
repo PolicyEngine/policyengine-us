@@ -30,9 +30,23 @@ class ccdf_market_rate(Variable):
         child_age_group = person("ccdf_age_group", period)
         duration_of_care = person("duration_of_care", period)
         market_rate_mapping = parameters(period).hhs.ccdf.amount
-        return market_rate_mapping[county_cluster][provider_type_group][
-            duration_of_care
-        ][child_age_group]
+        rate_per_period = market_rate_mapping[county_cluster][
+            provider_type_group
+        ][duration_of_care][child_age_group]
+        # Multiply by the appropriate factor to get to annual.
+        hours_per_day = person("childcare_hours_per_day", period)
+        days_per_week = person("childcare_days_per_week", period)
+        hours_per_week = hours_per_day * days_per_week
+        periods_per_week = select(
+            [
+                duration_of_care == DurationOfCare.WEEKLY,
+                duration_of_care == DurationOfCare.DAILY,
+                duration_of_care == DurationOfCare.PART_DAY,
+                duration_of_care == DurationOfCare.HOURLY,
+            ],
+            [1, days_per_week, days_per_week, hours_per_week],
+        )
+        return rate_per_period * periods_per_week * 52
 
 
 class is_ccdf_asset_eligible(Variable):
