@@ -2,25 +2,25 @@
   period: 2021
   absolute_error_margin: 0.01
   output:
-    has_usda_elderly_disabled: False
+    has_usda_elderly_disabled: false
 
 - name: Individual, is USDA elderly but not disabled
   period: 2021
   absolute_error_margin: 0.01
   input:
-    is_usda_elderly: True
-    is_usda_disabled: False
+    is_usda_elderly: true
+    is_usda_disabled: false
   output:
-    has_usda_elderly_disabled: True
+    has_usda_elderly_disabled: true
 
 - name: Individual, is USDA disabled but not elderly
   period: 2021
   absolute_error_margin: 0.01
   input:
-    is_usda_elderly: False
-    is_usda_disabled: True
+    is_usda_elderly: false
+    is_usda_disabled: true
   output:
-    has_usda_elderly_disabled: True
+    has_usda_elderly_disabled: true
 
 - name: Family with nobody elderly or disabled
   period: 2021
@@ -28,14 +28,14 @@
   input:
     people:
       p1:
-        is_usda_disabled: False
+        is_usda_disabled: false
       p2:
-        is_usda_elderly: False
+        is_usda_elderly: false
     spm_units:
       spm_unit:
         members: [p1, p2]
   output:
-    has_usda_elderly_disabled: False
+    has_usda_elderly_disabled: false
 
 - name: Family with one person elderly or disabled
   period: 2021
@@ -43,14 +43,14 @@
   input:
     people:
       p1:
-        is_usda_disabled: True
+        is_usda_disabled: true
       p2:
-        is_usda_elderly: False
+        is_usda_elderly: false
     spm_units:
       spm_unit:
         members: [p1, p2]
   output:
-    has_usda_elderly_disabled: True
+    has_usda_elderly_disabled: true
 
 - name: Family with all elderly or disabled
   period: 2021
@@ -58,11 +58,11 @@
   input:
     people:
       p1:
-        is_usda_disabled: True
+        is_usda_disabled: true
       p2:
-        is_usda_elderly: True
+        is_usda_elderly: true
     spm_units:
       spm_unit:
         members: [p1, p2]
   output:
-    has_usda_elderly_disabled: True
+    has_usda_elderly_disabled: true

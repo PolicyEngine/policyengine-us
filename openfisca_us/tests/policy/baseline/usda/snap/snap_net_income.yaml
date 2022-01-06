@@ -19,7 +19,7 @@
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
         snap_shelter_deduction: 586 * 12
         housing_cost: 1700 * 12
-        has_usda_elderly_disabled: False
+        has_usda_elderly_disabled: false
         members: [person_1, person_2, person_3, person_4]
     households:
       household:
@@ -33,7 +33,7 @@
   input:
     people:
       person_1:
-        is_usda_disabled: True
+        is_usda_disabled: true
         age: 30
       person_2:
         age: 35
@@ -47,7 +47,7 @@
         snap_earnings_deduction: (2000 * 0.2) * 12
         snap_standard_deduction: 181 * 12
         housing_cost: 1700 * 12
-        has_usda_elderly_disabled: True
+        has_usda_elderly_disabled: true
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
         snap_shelter_deduction: (1700 - (1419 * 0.5)) * 12
         members: [person_1, person_2, person_3, person_4]

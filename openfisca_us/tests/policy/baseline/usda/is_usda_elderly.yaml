@@ -4,7 +4,7 @@
   input:
     age: 60
   output:
-    is_usda_elderly: True
+    is_usda_elderly: true
 
 - name: Individual, is not USDA elderly
   period: 2021
@@ -12,4 +12,4 @@
   input:
     age: 59
   output:
-    is_usda_elderly: False
+    is_usda_elderly: false
