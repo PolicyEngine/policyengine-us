@@ -1,0 +1,27 @@
+- name: 1 Infant in DCC/SACC provider, Nassau county, NY state, Weekly rate
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        ccdf_market_rate: 18_928
+    spm_units:
+      spm_unit:
+        members: [child]
+  output:
+    spm_unit_total_childcare_market_rate: 18_928
+
+- name: 1 Infant in DCC/SACC provider, 1 Toddler in DFC/GFDC provider, Orange county, NY state, Daily rates with 3 days/week for both children
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child1:
+        ccdf_market_rate: 9_204
+      child2:
+        ccdf_market_rate: 7_020
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+  output:
+    spm_unit_total_childcare_market_rate: 16_224
