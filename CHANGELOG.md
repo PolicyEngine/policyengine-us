@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * Total child care market rate.
+## [0.17.1] - 2022-01-06
+
+### Changed
+
+* Use USDA elderly and disabled definitions in SNAP calculations.
 
 ## [0.17.0] - 2022-01-04
 
