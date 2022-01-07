@@ -6,7 +6,7 @@
     ccdf_age_group: INFANT
     duration_of_care: WEEKLY
   output:
-    ccdf_market_rate: 364
+    ccdf_market_rate: 364 * 52
 - name: County Cluster 2, Provider type LE_GC, Preschooler, Part-day
   period: 2022
   input:
@@ -14,8 +14,9 @@
     provider_type_group: LE_GC
     ccdf_age_group: PRESCHOOLER
     duration_of_care: PART_DAY
+    childcare_days_per_week: 5
   output:
-    ccdf_market_rate: 26
+    ccdf_market_rate: 26 * 5 * 52
 - name: County Cluster 3, Provider type FDC, Toddler, Daily
   period: 2022
   input:
@@ -23,8 +24,9 @@
     provider_type_group: FDC_GFDC
     ccdf_age_group: TODDLER
     duration_of_care: DAILY
+    childcare_days_per_week: 2
   output:
-    ccdf_market_rate: 35
+    ccdf_market_rate: 35 * 2 * 52
 - name: County Cluster 4, Provider type LE_STD, Infant, Weekly
   period: 2022
   input:
@@ -33,7 +35,7 @@
     ccdf_age_group: INFANT
     duration_of_care: WEEKLY
   output:
-    ccdf_market_rate: 146
+    ccdf_market_rate: 146 * 52
 - name: County Cluster 5, Provider type LE_ENH, School-age, Hourly
   period: 2022
   input:
@@ -41,5 +43,7 @@
     provider_type_group: LE_ENH
     ccdf_age_group: SCHOOL_AGE
     duration_of_care: HOURLY
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 2
   output:
-    ccdf_market_rate: 10.50
+    ccdf_market_rate: 10.50 * 2 * 2 * 52
