@@ -8,7 +8,6 @@ class is_tax_unit_dependent(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        return not_(
-            person("is_tax_unit_head", period)
-            + person("is_tax_unit_spouse", period)
-        )
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        return ~head & ~spouse
