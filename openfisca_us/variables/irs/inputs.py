@@ -40,11 +40,11 @@ class mars(Variable):
     label = "Marital status for the tax unit"
 
     def formula(tax_unit, period, parameters):
-        has_spouse = tax_unit.max(
-            tax_unit.members("is_tax_unit_spouse", period)
-            * (tax_unit.members("age", period) > 0)
-        )
-        return where(has_spouse, MARSType.JOINT, MARSType.SINGLE)
+        person = tax_unit.members
+        spouse_with_age = person("is_tax_unit_spouse", period)
+        has_age = person("age", period) > 0
+        has_spouse_with_age = tax_unit.any(spouse_with_age & has_age)
+        return where(has_spouse_with_age, MARSType.JOINT, MARSType.SINGLE)
 
 
 class midr(Variable):
