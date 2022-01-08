@@ -6,3 +6,4 @@ class childcare_days_per_week(Variable):
     entity = Person
     label = u"Child care days per week"
     definition_period = YEAR
+    unit = "day"
