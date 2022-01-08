@@ -285,8 +285,8 @@ class spm_unit_total_ccdf_copay(Variable):
         # Get family income and federal poverty line
         income = spm_unit("ccdf_income", period)
         fpl = spm_unit("spm_unit_fpg", period)
-        # Get copay percent parameter by county
-        county = spm_unit.household("county").decode_to_str()
+        # Get county and copay percent parameter by county
+        county = spm_unit.household("county", period).decode_to_str()
         p_copay_percent = parameters(period).hhs.ccdf.copay_percent[county]
         income_exceeding_fpl = max_(income - fpl, 0)
         # There is a minimum family fee of $1 per week
