@@ -4,5 +4,5 @@ from openfisca_us.model_api import *
 class household_weight(Variable):
     value_type = float
     entity = Household
-    label = u"Household weight"
+    label = "Household weight"
     definition_period = YEAR

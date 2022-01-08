@@ -16,11 +16,11 @@ class state_group(Variable):
     possible_values = StateGroup
     default_value = StateGroup.CONTIGUOUS_US
     entity = Household
-    label = u"State group"
+    label = "State group"
     definition_period = ETERNITY
 
     def formula(household, period, parameters):
-        NON_CONTIGUOUS_STATES = ("AK", "HI", "GU", "PR", "VI")
+        NON_CONTIGUOUS_STATES = ("AK", "HI", "G", "PR", "VI")
         state_code = household("state_code", period).decode_to_str()
         return where(
             np.isin(state_code, NON_CONTIGUOUS_STATES),

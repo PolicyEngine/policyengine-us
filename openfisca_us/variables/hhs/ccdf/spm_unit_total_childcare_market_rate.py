@@ -5,7 +5,7 @@ class spm_unit_total_childcare_market_rate(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = u"SPM unit total childcare market rate"
+    label = "SPM unit total childcare market rate"
     unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):

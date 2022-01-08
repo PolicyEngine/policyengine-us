@@ -12,7 +12,7 @@ class age_group(Variable):
     possible_values = AgeGroup
     default_value = AgeGroup.WORKING_AGE
     entity = Person
-    label = u"Age group"
+    label = "Age group"
     definition_period = YEAR
 
     def formula(person, period, parameters):
