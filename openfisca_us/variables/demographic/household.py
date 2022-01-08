@@ -24,17 +24,6 @@ class person_household_id(Variable):
     definition_period = ETERNITY
 
 
-class is_household_head(Variable):
-    value_type = float
-    entity = Person
-    label = u"Head of household"
-    definition_period = ETERNITY
-
-    def formula(person, period, parameters):
-        # Use order of input (first)
-        return person.household.members_position == 0
-
-
 class State(Enum):
     # Source: https://gist.github.com/rogerallen/1583593#gistcomment-3699885
     # 50 states and DC.
