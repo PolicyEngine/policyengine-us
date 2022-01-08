@@ -118,6 +118,7 @@ class cmbtp(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Estimate of income on (AMT) Form 6251 but not in AGI"
+    unit = USD
 
 
 class filer_cmbtp(Variable):
@@ -125,6 +126,7 @@ class filer_cmbtp(Variable):
     entity = TaxUnit
     label = "Income on Form 6251 not in AGI for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("cmbtp", tax_unit, period)
@@ -135,6 +137,7 @@ class e00200(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Wages, salaries, and tips net of pension contributions"
+    unit = USD
 
 
 class filer_e00200(Variable):
@@ -142,6 +145,7 @@ class filer_e00200(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Wages, salaries, and tips for filing unit (excluding dependents) net of pension contributions (pencon)"
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00200", tax_unit, period)
@@ -152,6 +156,7 @@ class pencon(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Contributions to defined-contribution pension plans"
+    unit = USD
 
 
 class filer_pencon(Variable):
@@ -159,6 +164,7 @@ class filer_pencon(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Contributions to defined-contribution pension plans for filing unit (excluding dependents)"
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("pencon", tax_unit, period)
@@ -169,6 +175,7 @@ class e00300(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Taxable interest income"
+    unit = USD
 
 
 class filer_e00300(Variable):
@@ -176,6 +183,7 @@ class filer_e00300(Variable):
     entity = TaxUnit
     label = "Taxable interest income for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00300", tax_unit, period)
@@ -186,6 +194,7 @@ class e00400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Tax-exempt interest income"
+    unit = USD
 
 
 class filer_e00400(Variable):
@@ -195,6 +204,7 @@ class filer_e00400(Variable):
         "Tax-exempt interest income for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00400", tax_unit, period)
@@ -205,6 +215,7 @@ class e00600(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Ordinary dividends included in AGI"
+    unit = USD
 
 
 class filer_e00600(Variable):
@@ -212,6 +223,7 @@ class filer_e00600(Variable):
     entity = TaxUnit
     label = "Ordinary dividends for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00600", tax_unit, period)
@@ -222,6 +234,7 @@ class e00650(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Qualified dividends included in ordinary dividends"
+    unit = USD
 
 
 class filer_e00650(Variable):
@@ -229,6 +242,7 @@ class filer_e00650(Variable):
     entity = TaxUnit
     label = "Qualified dividends included in ordinary dividends for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00650", tax_unit, period)
@@ -239,6 +253,7 @@ class e00700(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Taxable refunds of state and local income taxes"
+    unit = USD
 
 
 class filer_e00700(Variable):
@@ -246,6 +261,7 @@ class filer_e00700(Variable):
     entity = TaxUnit
     label = "Taxable refunds of state/local taxes for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00700", tax_unit, period)
@@ -256,6 +272,7 @@ class e00800(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Alimony received"
+    unit = USD
 
 
 class filer_e00800(Variable):
@@ -263,6 +280,7 @@ class filer_e00800(Variable):
     entity = TaxUnit
     label = "Alimony for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00800", tax_unit, period)
@@ -273,6 +291,7 @@ class e00900(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Sch C business net profit/loss"
+    unit = USD
 
 
 class filer_e00900(Variable):
@@ -282,6 +301,7 @@ class filer_e00900(Variable):
     documentation = (
         "Sch C business net profit/loss for filing unit (excluding dependents)"
     )
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00900", tax_unit, period)
@@ -292,6 +312,7 @@ class e01100(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Capital gain distributions not reported on Sch D"
+    unit = USD
 
 
 class filer_e01100(Variable):
@@ -299,6 +320,7 @@ class filer_e01100(Variable):
     entity = TaxUnit
     label = "Capital gains not reported on Sch D for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01100", tax_unit, period)
@@ -309,6 +331,7 @@ class e01200(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Other net gain/loss from Form 4797"
+    unit = USD
 
 
 class filer_e01200(Variable):
@@ -316,6 +339,7 @@ class filer_e01200(Variable):
     entity = TaxUnit
     label = "Other net gain/loss for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01200", tax_unit, period)
@@ -326,6 +350,7 @@ class e01400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Taxable IRA distributions"
+    unit = USD
 
 
 class filer_e01400(Variable):
@@ -333,6 +358,7 @@ class filer_e01400(Variable):
     entity = TaxUnit
     label = "Taxable IRA distributions for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01400", tax_unit, period)
@@ -343,6 +369,7 @@ class e01500(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Total pensions and annuities"
+    unit = USD
 
 
 class filer_e01500(Variable):
@@ -350,6 +377,7 @@ class filer_e01500(Variable):
     entity = TaxUnit
     label = "Pensions and annuities for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01500", tax_unit, period)
@@ -360,6 +388,7 @@ class e01700(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Taxable pensions and annuities"
+    unit = USD
 
 
 class filer_e01700(Variable):
@@ -367,6 +396,7 @@ class filer_e01700(Variable):
     entity = TaxUnit
     label = "Taxable pensions and annuities for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01700", tax_unit, period)
@@ -377,6 +407,7 @@ class e02000(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Sch E total rental, royalty, partnership, S-corporation, etc, income/loss (includes e26270 and e27200)"
+    unit = USD
 
 
 class filer_e02000(Variable):
@@ -384,6 +415,7 @@ class filer_e02000(Variable):
     entity = TaxUnit
     label = "Rentals, royalties etc. for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e02000", tax_unit, period)
@@ -394,6 +426,7 @@ class e02100(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Farm net income/loss from Sch F"
+    unit = USD
 
 
 class filer_e02100(Variable):
@@ -401,6 +434,7 @@ class filer_e02100(Variable):
     entity = TaxUnit
     label = "Farm net income/loss for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e02100", tax_unit, period)
@@ -411,6 +445,7 @@ class e02300(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Unemployment insurance benefits"
+    unit = USD
 
 
 class filer_e02300(Variable):
@@ -418,6 +453,7 @@ class filer_e02300(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Unemployment insurance benefits for filing unit (excluding dependents)"
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e02300", tax_unit, period)
@@ -428,6 +464,7 @@ class e02400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Total social security (OASDI) benefits"
+    unit = USD
 
 
 class filer_e02400(Variable):
@@ -435,6 +472,7 @@ class filer_e02400(Variable):
     entity = TaxUnit
     label = "Social security benefits for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e02400", tax_unit, period)
@@ -445,6 +483,7 @@ class e03150(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Total deductible IRA contributions"
+    unit = USD
 
 
 class filer_e03150(Variable):
@@ -454,6 +493,7 @@ class filer_e03150(Variable):
         "Deductible IRA contributions for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03150", tax_unit, period)
@@ -464,6 +504,7 @@ class e03210(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Student loan interest"
+    unit = USD
 
 
 class filer_e03210(Variable):
@@ -471,6 +512,7 @@ class filer_e03210(Variable):
     entity = TaxUnit
     label = "Student loan interest for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03210", tax_unit, period)
@@ -481,6 +523,7 @@ class e03220(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Educator expenses"
+    unit = USD
 
 
 class filer_e03220(Variable):
@@ -488,6 +531,7 @@ class filer_e03220(Variable):
     entity = TaxUnit
     label = "Educator expenses for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03220", tax_unit, period)
@@ -498,6 +542,7 @@ class e03230(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Tuition and fees from Form 8917"
+    unit = USD
 
 
 class filer_e03230(Variable):
@@ -505,6 +550,7 @@ class filer_e03230(Variable):
     entity = TaxUnit
     label = "Tuition for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03230", tax_unit, period)
@@ -515,6 +561,7 @@ class e03240(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Domestic production activities from Form 8903"
+    unit = USD
 
 
 class filer_e03240(Variable):
@@ -522,6 +569,7 @@ class filer_e03240(Variable):
     entity = TaxUnit
     label = "Domestic production activities for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03240", tax_unit, period)
@@ -532,6 +580,7 @@ class e03270(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Self-employed health insurance deduction"
+    unit = USD
 
 
 class filer_e03270(Variable):
@@ -539,6 +588,7 @@ class filer_e03270(Variable):
     entity = TaxUnit
     label = "Self-employed health insurance for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03270", tax_unit, period)
@@ -549,6 +599,7 @@ class e03290(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Health savings account deduction from Form 8889"
+    unit = USD
 
 
 class filer_e03290(Variable):
@@ -556,6 +607,7 @@ class filer_e03290(Variable):
     entity = TaxUnit
     label = "Health savings account deduction for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03290", tax_unit, period)
@@ -566,6 +618,7 @@ class e03300(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Contributions to SEP, SIMPLE and qualified plans"
+    unit = USD
 
 
 class filer_e03300(Variable):
@@ -573,6 +626,7 @@ class filer_e03300(Variable):
     entity = TaxUnit
     label = "SEP, SIMPLE, etc. contributions for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03300", tax_unit, period)
@@ -583,6 +637,7 @@ class e03400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Penalty on early withdrawal of savings"
+    unit = USD
 
 
 class filer_e03400(Variable):
@@ -590,6 +645,7 @@ class filer_e03400(Variable):
     entity = TaxUnit
     label = "Early savings withdrawal penalty for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03400", tax_unit, period)
@@ -600,6 +656,7 @@ class e03500(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Alimony paid"
+    unit = USD
 
 
 class filer_e03500(Variable):
@@ -607,6 +664,7 @@ class filer_e03500(Variable):
     entity = TaxUnit
     label = "Alimony paid for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e03500", tax_unit, period)
@@ -617,6 +675,7 @@ class e07240(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Retirement savings contributions credit from Form 8880"
+    unit = USD
 
 
 class e07260(Variable):
@@ -624,6 +683,7 @@ class e07260(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Residential energy credit from Form 5695"
+    unit = USD
 
 
 class e07300(Variable):
@@ -631,14 +691,15 @@ class e07300(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Foreign tax credit from Form 1116"
+    unit = USD
 
 
 class filer_e07300(Variable):
     value_type = float
     entity = TaxUnit
     label = "Foreign tax credit (Form 1114) for the tax unit (excluding dependents)"
-    unit = "currency-USD"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e07300", tax_unit, period)
@@ -649,6 +710,7 @@ class e07400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "General business credit from Form 3800"
+    unit = USD
 
 
 class e07600(Variable):
@@ -656,6 +718,7 @@ class e07600(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Prior year minimum tax credit from Form 8801"
+    unit = USD
 
 
 class e09700(Variable):
@@ -663,6 +726,7 @@ class e09700(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Recapture of Investment Credit"
+    unit = USD
 
 
 class e09800(Variable):
@@ -670,6 +734,7 @@ class e09800(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Unreported payroll taxes from Form 4137 or 8919"
+    unit = USD
 
 
 class e09900(Variable):
@@ -677,6 +742,7 @@ class e09900(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Penalty tax on qualified retirement plans"
+    unit = USD
 
 
 class e11200(Variable):
@@ -684,6 +750,7 @@ class e11200(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Excess payroll (FICA/RRTA) tax withheld"
+    unit = USD
 
 
 class e17500(Variable):
@@ -691,6 +758,7 @@ class e17500(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable medical and dental expenses.  WARNING: this variable is zero below the floor in PUF data."
+    unit = USD
 
 
 class filer_e17500(Variable):
@@ -698,6 +766,7 @@ class filer_e17500(Variable):
     entity = TaxUnit
     label = "Itemized medical and dental expenses for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e17500", tax_unit, period)
@@ -708,6 +777,7 @@ class e18400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable state and local income/sales taxes"
+    unit = USD
 
 
 class filer_e18400(Variable):
@@ -715,6 +785,7 @@ class filer_e18400(Variable):
     entity = TaxUnit
     label = "Itemized SALT for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e18400", tax_unit, period)
@@ -725,6 +796,7 @@ class e18500(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable real-estate taxes paid"
+    unit = USD
 
 
 class filer_e18500(Variable):
@@ -732,6 +804,7 @@ class filer_e18500(Variable):
     entity = TaxUnit
     label = "Itemized real estate for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e18500", tax_unit, period)
@@ -742,6 +815,7 @@ class e19200(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable interest paid"
+    unit = USD
 
 
 class filer_e19200(Variable):
@@ -749,6 +823,7 @@ class filer_e19200(Variable):
     entity = TaxUnit
     label = "Itemizable interest paid for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e19200", tax_unit, period)
@@ -759,6 +834,7 @@ class e19800(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable charitable giving: cash/check contributions.  WARNING: this variable is already capped in PUF data."
+    unit = USD
 
 
 class filer_e19800(Variable):
@@ -766,6 +842,7 @@ class filer_e19800(Variable):
     entity = TaxUnit
     label = "Itemized charity for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e19800", tax_unit, period)
@@ -776,6 +853,7 @@ class e20100(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable charitable giving: other than cash/check contributions.  WARNING: this variable is already capped in PUF data."
+    unit = USD
 
 
 class filer_e20100(Variable):
@@ -783,6 +861,7 @@ class filer_e20100(Variable):
     entity = TaxUnit
     label = "Itemized non-cash charity for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e20100", tax_unit, period)
@@ -793,6 +872,7 @@ class e20400(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Itemizable miscellaneous deductions.  WARNING: this variable is zero below the floor in PUF data."
+    unit = USD
 
 
 class filer_e20400(Variable):
@@ -800,6 +880,7 @@ class filer_e20400(Variable):
     entity = TaxUnit
     label = "Itemized misc. for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e20400", tax_unit, period)
@@ -812,6 +893,7 @@ class g20500(Variable):
     documentation = (
         "Itemizable gross (before 10% AGI disregard) casualty or theft loss"
     )
+    unit = USD
 
 
 class filer_g20500(Variable):
@@ -819,6 +901,7 @@ class filer_g20500(Variable):
     entity = TaxUnit
     label = "Itemized casualty loss for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("g20500", tax_unit, period)
@@ -829,13 +912,14 @@ class e24515(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Sch D: Un-Recaptured Section 1250 Gain"
+    unit = USD
 
 
 class filer_e24515(Variable):
     value_type = float
     entity = TaxUnit
     label = "Section 1250 Gain (un-recaptured) for the tax unit (excluding dependents)"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -847,6 +931,7 @@ class e24518(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Sch D: 28% Rate Gain or Loss"
+    unit = USD
 
 
 class filer_e24518(Variable):
@@ -854,6 +939,7 @@ class filer_e24518(Variable):
     entity = TaxUnit
     label = "Sch D Rate Gain or Loss for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e24518", tax_unit, period)
@@ -863,6 +949,7 @@ class e26270(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = USD
     documentation = "Sch E: Combined partnership and S-corporation net income/loss (includes k1bx14p and k1bx14s amounts and is included in e02000)"
 
 
@@ -871,6 +958,7 @@ class filer_e26270(Variable):
     entity = TaxUnit
     label = "Label for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e26270", tax_unit, period)
@@ -880,6 +968,7 @@ class e27200(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = USD
     documentation = "Sch E: Farm rent net income or loss (included in e02000)"
 
 
@@ -888,6 +977,7 @@ class filer_e27200(Variable):
     entity = TaxUnit
     label = "Label for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e27200", tax_unit, period)
@@ -897,6 +987,7 @@ class e32800(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = USD
     documentation = (
         "Child/dependent-care expenses for qualifying persons from Form 2441"
     )
@@ -909,6 +1000,7 @@ class filer_e32800(Variable):
         "Child/dependent-care expenses for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e32800", tax_unit, period)
@@ -918,6 +1010,7 @@ class e58990(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = USD
     documentation = "Investment income elected amount from Form 4952"
 
 
@@ -928,6 +1021,7 @@ class filer_e58990(Variable):
         "Investment income (Form 3952) for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e58990", tax_unit, period)
@@ -937,6 +1031,7 @@ class e62900(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    unit = USD
     documentation = "Alternative Minimum Tax foreign tax credit from Form 6251"
 
 
@@ -944,7 +1039,7 @@ class filer_e62900(Variable):
     value_type = float
     entity = TaxUnit
     label = "AMT foreign tax credit (Form 6251) for the tax unit (excluding dependents)"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -959,6 +1054,7 @@ class e87530(Variable):
     documentation = (
         "Adjusted qualified lifetime learning expenses for all students"
     )
+    unit = USD
 
 
 qualified_tuition_expenses = variable_alias(
@@ -970,14 +1066,14 @@ class elderly_dependents(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "number of dependents age 65+ in filing unit excluding taxpayer and spouse"
+    documentation = "Number of dependents age 65+ in filing unit excluding taxpayer and spouse"
 
 
 class f2441(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "number of child/dependent-care qualifying persons"
+    documentation = "Number of child/dependent-care qualifying persons"
 
 
 class f6251(Variable):
@@ -1033,6 +1129,7 @@ class k1bx14(Variable):
     documentation = (
         "Partner self-employment earnings/loss (included in e26270 total)"
     )
+    unit = USD
 
 
 class filer_k1bx14(Variable):
@@ -1040,6 +1137,7 @@ class filer_k1bx14(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Partner self-employment earnings/loss for tax unit (excluding dependents) (included in e26270 total)"
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("k1bx14", tax_unit, period)
@@ -1050,6 +1148,7 @@ class mcaid_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed Medicaid benefits expressed as the actuarial value of Medicaid health insurance"
+    unit = USD
 
 
 class mcare_ben(Variable):
@@ -1057,6 +1156,7 @@ class mcare_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed Medicare benefits expressed as the actuarial value of Medicare health insurance"
+    unit = USD
 
 
 class n24(Variable):
@@ -1113,6 +1213,7 @@ class p08000(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Other tax credits (but not including Sch R credit)"
+    unit = USD
 
 
 class p22250(Variable):
@@ -1120,6 +1221,7 @@ class p22250(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Sch D: Net short-term capital gains/losses"
+    unit = USD
 
 
 class filer_p22250(Variable):
@@ -1129,6 +1231,7 @@ class filer_p22250(Variable):
         "Net short-term capital gains for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("p22250", tax_unit, period)
@@ -1139,6 +1242,7 @@ class p23250(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Sch D: Net long-term capital gains/losses"
+    unit = USD
 
 
 class filer_p23250(Variable):
@@ -1148,6 +1252,7 @@ class filer_p23250(Variable):
         "Net long-term capital gains for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("p23250", tax_unit, period)
@@ -1158,6 +1263,7 @@ class e87521(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Total tentative AmOppCredit amount for all students"
+    unit = USD
 
 
 class s006(Variable):
@@ -1172,6 +1278,7 @@ class snap_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed SNAP benefits"
+    unit = USD
 
 
 class housing_ben(Variable):
@@ -1179,6 +1286,7 @@ class housing_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed housing benefits"
+    unit = USD
 
 
 class ssi_ben(Variable):
@@ -1186,6 +1294,7 @@ class ssi_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed SSI benefits"
+    unit = USD
 
 
 class tanf_ben(Variable):
@@ -1193,6 +1302,7 @@ class tanf_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed TANF benefits"
+    unit = USD
 
 
 class vet_ben(Variable):
@@ -1200,6 +1310,7 @@ class vet_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed Veteran's benefits"
+    unit = USD
 
 
 class wic_ben(Variable):
@@ -1207,6 +1318,7 @@ class wic_ben(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Imputed WIC benefits"
+    unit = USD
 
 
 class pt_sstb_income(Variable):
@@ -1221,6 +1333,7 @@ class pt_binc_w2_wages(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Filing unit's share of total W-2 wages paid by the pass-through business"
+    unit = "/1"
 
 
 class pt_ubia_property(Variable):
@@ -1228,3 +1341,4 @@ class pt_ubia_property(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Filing unit's share of total business property owned by the pass-through business"
+    unit = "/1"
