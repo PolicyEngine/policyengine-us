@@ -1143,22 +1143,6 @@ class filer_k1bx14(Variable):
         return tax_unit_non_dep_sum("k1bx14", tax_unit, period)
 
 
-class mcaid_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed Medicaid benefits expressed as the actuarial value of Medicaid health insurance"
-    unit = USD
-
-
-class mcare_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed Medicare benefits expressed as the actuarial value of Medicare health insurance"
-    unit = USD
-
-
 class n24(Variable):
     value_type = int
     entity = TaxUnit
@@ -1199,13 +1183,6 @@ class n21(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Number of people 21 years old or older in the filing unit"
-
-
-class other_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Non-imputed benefits"
 
 
 class p08000(Variable):
@@ -1271,54 +1248,6 @@ class s006(Variable):
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Filing unit sampling weight; appears as WEIGHT variable in tc CLI minimal output"
-
-
-class snap_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed SNAP benefits"
-    unit = USD
-
-
-class housing_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed housing benefits"
-    unit = USD
-
-
-class ssi_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed SSI benefits"
-    unit = USD
-
-
-class tanf_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed TANF benefits"
-    unit = USD
-
-
-class vet_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed Veteran's benefits"
-    unit = USD
-
-
-class wic_ben(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Imputed WIC benefits"
-    unit = USD
 
 
 class pt_sstb_income(Variable):
