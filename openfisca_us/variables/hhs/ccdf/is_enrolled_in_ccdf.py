@@ -5,4 +5,4 @@ class is_enrolled_in_ccdf(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = u"CCDF enrollment status"
+    label = "CCDF enrollment status"

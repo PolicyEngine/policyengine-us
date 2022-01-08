@@ -73,5 +73,5 @@ class county(Variable):
     possible_values = County
     default_value = County.NEW_YORK_NY
     entity = Household
-    label = u"County"
+    label = "County"
     definition_period = ETERNITY

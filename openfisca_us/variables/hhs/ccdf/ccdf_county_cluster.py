@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class ccdf_county_cluster(Variable):
     value_type = int
     entity = Household
-    label = u"County cluster for CCDF"
+    label = "County cluster for CCDF"
     definition_period = YEAR
 
     def formula(household, period, parameters):

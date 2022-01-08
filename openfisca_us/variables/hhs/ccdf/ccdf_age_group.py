@@ -13,7 +13,7 @@ class ccdf_age_group(Variable):
     possible_values = CCDFAgeGroup
     default_value = CCDFAgeGroup.INFANT
     entity = Person
-    label = u"CCDF age group"
+    label = "CCDF age group"
     definition_period = YEAR
 
     reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"

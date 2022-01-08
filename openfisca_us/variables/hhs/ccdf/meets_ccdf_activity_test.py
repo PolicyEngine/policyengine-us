@@ -6,4 +6,4 @@ class meets_ccdf_activity_test(Variable):
     entity = SPMUnit
     definition_period = YEAR
     documentation = "Indicates whether parent or parents meet activity test (working/in job training/in educational program)"
-    label = u"Activity test for CCDF"
+    label = "Activity test for CCDF"

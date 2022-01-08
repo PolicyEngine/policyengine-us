@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class ccdf_income_to_smi_ratio(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"Income to SMI ratio"
+    label = "Income to SMI ratio"
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):

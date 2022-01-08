@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class spm_unit_is_in_spm_poverty(Variable):
     value_type = bool
     entity = SPMUnit
-    label = u"SPM unit in SPM poverty"
+    label = "SPM unit in SPM poverty"
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):

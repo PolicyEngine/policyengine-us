@@ -4,8 +4,8 @@ from openfisca_us.model_api import *
 class hhs_smi(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"State Median Income (HHS)"
-    documentation = u"SPM unit's median income as defined by the Department of Health and Human Services, based on their state and size"
+    label = "State Median Income (HHS)"
+    documentation = "SPM unit's median income as defined by the Department of Health and Human Services, based on their state and size"
     definition_period = YEAR
     unit = "currency-USD"
 

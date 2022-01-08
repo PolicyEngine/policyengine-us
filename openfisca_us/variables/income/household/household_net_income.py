@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class household_net_income(Variable):
     value_type = float
     entity = Household
-    label = u"Household net income"
+    label = "Household net income"
     definition_period = YEAR
     unit = "currency-USD"
 
