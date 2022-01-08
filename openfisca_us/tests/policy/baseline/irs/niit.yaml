@@ -9,6 +9,7 @@
     mars: SINGLE
   output:
     niit: 0
+
 - name: Rental income just under threshold
   period: 2019
   absolute_error_margin: 0
@@ -20,6 +21,7 @@
     mars: SINGLE
   output:
     niit: 0
+
 - name: Rental income just above threshold
   period: 2019
   absolute_error_margin: 0
@@ -32,6 +34,7 @@
     mars: SINGLE
   output:
     niit: 190
+
 - name: Rental income just above threshold
   period: 2019
   absolute_error_margin: 0

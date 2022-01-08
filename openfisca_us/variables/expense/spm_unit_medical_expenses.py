@@ -6,4 +6,4 @@ class spm_unit_medical_expenses(Variable):
     entity = SPMUnit
     label = u"SPM unit medical expenses"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

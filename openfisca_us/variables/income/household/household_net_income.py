@@ -6,7 +6,7 @@ class household_net_income(Variable):
     entity = Household
     label = u"Household net income"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(household, period, parameters):
         return household.sum(household.members("net_income", period))

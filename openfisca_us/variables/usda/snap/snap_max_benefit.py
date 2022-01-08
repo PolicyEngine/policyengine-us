@@ -7,7 +7,7 @@ class snap_max_benefit(Variable):
     definition_period = YEAR
     documentation = "Maximum benefit for SPM unit, based on the state group and household size."
     label = "SNAP maximum benefit"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         snap_max_benefits = parameters(period).usda.snap.amount.main

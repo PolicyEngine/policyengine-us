@@ -5,6 +5,7 @@
     childcare_provider_type_group: DCC_SACC
   output:
     ccdf_age_group: INFANT
+
 - name: Child age, 1.5, home-based care
   period: 2022
   input:
@@ -12,6 +13,7 @@
     childcare_provider_type_group: FDC_GFDC
   output:
     ccdf_age_group: INFANT
+
 - name: Child age, 1.5, center-based care
   period: 2022
   input:
@@ -19,6 +21,7 @@
     childcare_provider_type_group: DCC_SACC
   output:
     ccdf_age_group: TODDLER
+
 - name: Child age, 2, home-based care
   period: 2022
   input:
@@ -26,12 +29,14 @@
     childcare_provider_type_group: LE_STD
   output:
     ccdf_age_group: TODDLER
+
 - name: Child age, 3
   period: 2022
   input:
     age: 3
   output:
     ccdf_age_group: PRESCHOOLER
+
 - name: Child age, 10
   period: 2022
   input:

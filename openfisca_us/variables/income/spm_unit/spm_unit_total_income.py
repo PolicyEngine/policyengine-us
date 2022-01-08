@@ -6,4 +6,4 @@ class spm_unit_total_income(Variable):
     entity = SPMUnit
     label = u"SPM unit total income"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
