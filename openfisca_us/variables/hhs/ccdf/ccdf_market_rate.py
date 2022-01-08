@@ -10,7 +10,7 @@ class ccdf_market_rate(Variable):
 
     def formula(person, period, parameters):
         county_cluster = person.household("ccdf_county_cluster", period)
-        provider_type_group = person("provider_type_group", period)
+        provider_type_group = person("childcare_provider_type_group", period)
         child_age_group = person("ccdf_age_group", period)
         duration_of_care = person("ccdf_duration_of_care", period)
         durations_of_care = duration_of_care.possible_values

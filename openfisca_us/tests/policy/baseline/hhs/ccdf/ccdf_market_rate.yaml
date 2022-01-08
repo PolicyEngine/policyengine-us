@@ -2,7 +2,7 @@
   period: 2022
   input:
     ccdf_county_cluster: 1
-    provider_type_group: DCC_SACC
+    childcare_provider_type_group: DCC_SACC
     ccdf_age_group: INFANT
     ccdf_duration_of_care: WEEKLY
   output:
@@ -11,7 +11,7 @@
   period: 2022
   input:
     ccdf_county_cluster: 2
-    provider_type_group: LE_GC
+    childcare_provider_type_group: LE_GC
     ccdf_age_group: PRESCHOOLER
     ccdf_duration_of_care: PART_DAY
     childcare_days_per_week: 5
@@ -21,7 +21,7 @@
   period: 2022
   input:
     ccdf_county_cluster: 3
-    provider_type_group: FDC_GFDC
+    childcare_provider_type_group: FDC_GFDC
     ccdf_age_group: TODDLER
     ccdf_duration_of_care: DAILY
     childcare_days_per_week: 2
@@ -31,7 +31,7 @@
   period: 2022
   input:
     ccdf_county_cluster: 4
-    provider_type_group: LE_STD
+    childcare_provider_type_group: LE_STD
     ccdf_age_group: INFANT
     ccdf_duration_of_care: WEEKLY
   output:
@@ -40,7 +40,7 @@
   period: 2022
   input:
     ccdf_county_cluster: 5
-    provider_type_group: LE_ENH
+    childcare_provider_type_group: LE_ENH
     ccdf_age_group: SCHOOL_AGE
     ccdf_duration_of_care: HOURLY
     childcare_hours_per_day: 2
