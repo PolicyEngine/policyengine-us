@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class tanf_max_amount(Variable):
-    value_type = int
+    value_type = float
     entity = SPMUnit
     definition_period = YEAR
     label = "TANF maximum benefit"
