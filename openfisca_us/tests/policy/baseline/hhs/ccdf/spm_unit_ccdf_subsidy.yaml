@@ -1,0 +1,7 @@
+- name: 1 child in DCC/SACC provider, Columbia county, NY state, family income $50,000, family size 3 
+  period: 2022
+  input:
+    spm_unit_total_childcare_market_rate: 18_928
+    spm_unit_total_ccdf_copay: 2_867
+  output:
+    spm_unit_ccdf_subsidy: 16_061

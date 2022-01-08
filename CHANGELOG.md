@@ -5,6 +5,63 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), 
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.1] - 2022-01-07
+
+### Added
+
+* Formulas for `childcare_hours_per_week` and `spm_unit_size`.
+* Unit tests and units for some variables.
+
+### Changed
+
+* Reorganized variables.
+
+## [0.19.0] - 2022-01-06
+
+### Added
+
+* Update child care market rate to annual.
+
+## [0.18.0] - 2022-01-05
+
+### Added
+
+* Total child care market rate.
+
+## [0.17.1] - 2022-01-06
+
+### Changed
+
+* Use USDA elderly and disabled definitions in SNAP calculations.
+
+## [0.17.0] - 2022-01-04
+
+### Added
+
+* Categorical eligibility for SNAP, including broad-based categorical eligibility via low-cost TANF programs that effectively extend SNAP's asset and income limits.
+
+### Changed
+
+* Refactored SNAP code.
+
+## [0.16.0] - 2022-01-03
+
+### Added
+
+* CCDF subsidy top-level logic
+
+## [0.15.0] - 2022-01-03
+
+### Added
+
+* Federal SNAP asset tests logic
+
+## [0.14.0] - 2022-01-03
+
+### Added
+
+* SNAP eligibility based on federal net and gross income limits.
+* Unit and integration tests for SNAP variables.
 
 ## [0.13.0] - 2021-12-31
 

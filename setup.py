@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.13.0",
+    version="0.19.1",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -35,7 +35,7 @@ setup(
         "pandas",
         "tqdm",
         "requests",
-        "OpenFisca-Tools",
+        "OpenFisca-Tools>=0.1.9",
         "pyyaml",
     ],
     extras_require={

@@ -1,7 +1,4 @@
-from openfisca_core.model_api import *
-from openfisca_us.entities import *
-from openfisca_us.tools.general import *
-from openfisca_us.variables.demographic.spm_unit import *
+from openfisca_us.model_api import *
 
 
 class hhs_smi(Variable):
@@ -10,6 +7,7 @@ class hhs_smi(Variable):
     label = u"State Median Income (HHS)"
     documentation = u"SPM unit's median income as defined by the Department of Health and Human Services, based on their state and size"
     definition_period = YEAR
+    unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period)
@@ -28,5 +26,4 @@ class hhs_smi(Variable):
             + second_to_sixth_additional_rate * (min_(size, 6) - 1)
             + seven_or_more_additional_rate * max_(size - 6, 0)
         )
-
         return four_person_smi * size_adjustment

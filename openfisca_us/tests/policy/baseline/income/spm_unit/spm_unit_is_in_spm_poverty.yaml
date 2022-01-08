@@ -1,0 +1,15 @@
+- name: Income less than poverty means in poverty.
+  period: 2021
+  input:
+    spm_unit_net_income: 10_000
+    spm_unit_spm_threshold: 10_001
+  output:
+    spm_unit_is_in_spm_poverty: true
+
+- name: Income equal to poverty threshold means not in poverty.
+  period: 2021
+  input:
+    spm_unit_net_income: 10_001
+    spm_unit_spm_threshold: 10_001
+  output:
+    spm_unit_is_in_spm_poverty: false

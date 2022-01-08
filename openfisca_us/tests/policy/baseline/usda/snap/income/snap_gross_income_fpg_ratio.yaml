@@ -1,0 +1,7 @@
+- name: Gross income FPG ratio
+  period: 2020
+  input:
+    snap_gross_income: 15_000
+    spm_unit_fpg: 10_000
+  output:
+    snap_gross_income_fpg_ratio: 1.5

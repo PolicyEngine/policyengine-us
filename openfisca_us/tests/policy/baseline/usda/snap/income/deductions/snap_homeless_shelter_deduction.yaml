@@ -1,0 +1,25 @@
+- name: Individual, homeless
+  period: 2022
+  absolute_error_margin: 0.00
+  input:
+    people:
+      person_1:
+        age: 50
+    households:
+      household:
+        is_homeless: true
+  output:
+    snap_homeless_shelter_deduction: 143 * 12
+
+- name: Individual, not homeless
+  period: 2022
+  absolute_error_margin: 0.00
+  input:
+    people:
+      person_1:
+        age: 50
+    households:
+      household:
+        is_homeless: false
+  output:
+    snap_homeless_shelter_deduction: 0 * 12
