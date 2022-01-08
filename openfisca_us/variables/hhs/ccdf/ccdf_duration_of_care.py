@@ -1,17 +1,17 @@
 from openfisca_us.model_api import *
 
 
-class DurationOfCare(Enum):
+class CCDFDurationOfCare(Enum):
     WEEKLY = "Weekly"
     DAILY = "Daily"
     PART_DAY = "Part-Day"
     HOURLY = "Hourly"
 
 
-class duration_of_care(Variable):
+class ccdf_duration_of_care(Variable):
     value_type = Enum
-    possible_values = DurationOfCare
-    default_value = DurationOfCare.WEEKLY
+    possible_values = CCDFDurationOfCare
+    default_value = CCDFDurationOfCare.WEEKLY
     entity = Person
     label = u"Child care duration of care"
     definition_period = YEAR
@@ -30,9 +30,9 @@ class duration_of_care(Variable):
                 True,
             ],
             [
-                DurationOfCare.WEEKLY,
-                DurationOfCare.DAILY,
-                DurationOfCare.PART_DAY,
-                DurationOfCare.HOURLY,
+                CCDFDurationOfCare.WEEKLY,
+                CCDFDurationOfCare.DAILY,
+                CCDFDurationOfCare.PART_DAY,
+                CCDFDurationOfCare.HOURLY,
             ],
         )
