@@ -5,7 +5,7 @@ class spm_unit_ccdf_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = u"SPM unit CCDF subsidy"
+    label = "SPM unit CCDF subsidy"
     unit = "currency-USD"
 
     def formula(spm_unit, period, parameters):

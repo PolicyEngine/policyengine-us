@@ -7,7 +7,7 @@ from openfisca_us.tools.general import *
 class gross_was(Variable):
     value_type = float
     entity = Person
-    label = u"Gross wage and salary"
+    label = "Gross wage and salary"
     definition_period = YEAR
 
     def formula(person, period):
@@ -17,7 +17,7 @@ class gross_was(Variable):
 class txearn_was(Variable):
     value_type = float
     entity = Person
-    label = u"Taxable gross earnings for OASDI FICA"
+    label = "Taxable gross earnings for OASDI FICA"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -30,7 +30,7 @@ class txearn_was(Variable):
 class ptax_ss_was(Variable):
     value_type = float
     entity = Person
-    label = u"OASDI payroll tax on wage income"
+    label = "OASDI payroll tax on wage income"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -41,7 +41,7 @@ class ptax_ss_was(Variable):
 class filer_ptax_ss_was(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"OASDI payroll tax on wage income for the tax unit (excluding dependents)"
+    label = "OASDI payroll tax on wage income for the tax unit (excluding dependents)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -51,7 +51,7 @@ class filer_ptax_ss_was(Variable):
 class ptax_mc_was(Variable):
     value_type = float
     entity = Person
-    label = u"HI payroll tax on wage income"
+    label = "HI payroll tax on wage income"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -62,7 +62,9 @@ class ptax_mc_was(Variable):
 class filer_ptax_mc_was(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"HI payroll tax on wage income for the tax unit (excluding dependents)"
+    label = (
+        "HI payroll tax on wage income for the tax unit (excluding dependents)"
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -72,7 +74,7 @@ class filer_ptax_mc_was(Variable):
 class sey_frac(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable fraction of self-employment income"
+    label = "Taxable fraction of self-employment income"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -85,7 +87,7 @@ class sey_frac(Variable):
 class txearn_sey(Variable):
     value_type = float
     entity = Person
-    label = u"Taxable self-employment income"
+    label = "Taxable self-employment income"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -103,7 +105,7 @@ class txearn_sey(Variable):
 class setax_ss(Variable):
     value_type = float
     entity = Person
-    label = u"SECA self-employment SS tax"
+    label = "SECA self-employment SS tax"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -115,7 +117,7 @@ class filer_setax_ss(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"SECA self-employment SS tax for the tax unit (excluding dependents)"
+        "SECA self-employment SS tax for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
 
@@ -126,7 +128,7 @@ class filer_setax_ss(Variable):
 class setax_mc(Variable):
     value_type = float
     entity = Person
-    label = u"SECA self-employment SS tax (Medicare)"
+    label = "SECA self-employment SS tax (Medicare)"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -139,7 +141,7 @@ class setax_mc(Variable):
 class setax(Variable):
     value_type = float
     entity = Person
-    label = u"Self-employment payroll tax"
+    label = "Self-employment payroll tax"
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -149,7 +151,7 @@ class setax(Variable):
 class sey_frac_for_extra_oasdi(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable fraction of self-employment income for extra OASDI payroll taxes"
+    label = "Taxable fraction of self-employment income for extra OASDI payroll taxes"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -164,7 +166,7 @@ class sey_frac_for_extra_oasdi(Variable):
 class extra_payrolltax(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Extra payroll tax"
+    label = "Extra payroll tax"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -183,7 +185,7 @@ class extra_payrolltax(Variable):
 class pre_qbid_taxinc(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable income (pre-QBID)"
+    label = "Taxable income (pre-QBID)"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

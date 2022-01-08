@@ -17,5 +17,5 @@ class childcare_provider_type_group(Variable):
     # DCC_SACC is most common among provider types
     default_value = ChildcareProviderTypeGroup.DCC_SACC
     entity = Person
-    label = u"Childcare provider type group"
+    label = "Childcare provider type group"
     definition_period = YEAR
