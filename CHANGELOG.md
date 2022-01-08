@@ -11,6 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add CCDF copay formula.
 
+## [0.19.1] - 2022-01-07
+
+### Added
+
+* Formulas for `childcare_hours_per_week` and `spm_unit_size`.
+* Unit tests and units for some variables.
+
+### Changed
+
+* Reorganized variables.
+
 ## [0.19.0] - 2022-01-06
 
 ### Added
