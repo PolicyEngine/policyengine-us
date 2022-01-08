@@ -6,4 +6,4 @@ class spm_unit_spm_threshold(Variable):
     entity = SPMUnit
     label = "SPM unit's SPM poverty threshold"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

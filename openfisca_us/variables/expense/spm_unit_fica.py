@@ -6,7 +6,7 @@ class spm_unit_fica(Variable):
     entity = SPMUnit
     label = "SPM unit total FICA"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         return sum_contained_tax_units("employee_payrolltax", spm_unit, period)

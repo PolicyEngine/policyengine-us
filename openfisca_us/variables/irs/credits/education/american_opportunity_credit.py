@@ -5,7 +5,7 @@ class american_opportunity_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "American Opportunity Credit"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Total value of the American Opportunity Credit"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#b"
@@ -30,7 +30,7 @@ class refundable_american_opportunity_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Refundable American Opportunity Credit"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "Value of the refundable portion of the American Opportunity Credit"
     )
@@ -50,7 +50,7 @@ class non_refundable_american_opportunity_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Non-refundable American Opportunity Credit"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Value of the non-refundable portion of the American Opportunity Credit"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"

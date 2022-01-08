@@ -7,7 +7,7 @@ class medicaid_gross_income(Variable):
     definition_period = YEAR
     label = "Medicaid gross income"
     documentation = "Gross income for calculating Medicaid eligibility"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period):
         return spm_unit.sum(spm_unit.members("market_income", period))

@@ -7,4 +7,4 @@ class snap_assets(Variable):
     definition_period = YEAR
     documentation = "Countable assets for SNAP limits"
     label = "SNAP assets"
-    unit = "currency-USD"
+    unit = USD

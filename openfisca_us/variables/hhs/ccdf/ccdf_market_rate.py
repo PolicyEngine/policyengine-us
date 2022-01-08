@@ -6,7 +6,7 @@ class ccdf_market_rate(Variable):
     entity = Person
     label = "CCDF market rate"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(person, period, parameters):
         county_cluster = person.household("ccdf_county_cluster", period)

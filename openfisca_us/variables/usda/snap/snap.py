@@ -8,7 +8,7 @@ class snap(Variable):
     documentation = "Final SNAP benefit amount, equal to net income minus food contribution"
     label = "SNAP benefit entitlement"
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period):
         # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which also

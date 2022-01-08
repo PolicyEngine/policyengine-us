@@ -6,4 +6,4 @@ class spm_unit_total_ccdf_copay(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "SPM unit total CCDF copay"
-    unit = "currency-USD"
+    unit = USD

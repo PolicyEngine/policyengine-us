@@ -26,7 +26,7 @@ class niit(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Net Investment Income Tax"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Net Investment Income Tax from Form 8960"""
 
     def formula(tax_unit, period, parameters):
@@ -216,7 +216,7 @@ class payrolltax(Variable):
     entity = TaxUnit
     label = "Payroll tax"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
     documentation = """Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"""
 
     def formula(tax_unit, period):
@@ -506,7 +506,7 @@ class c01000(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Limitation on capital losses"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return max_(
@@ -616,7 +616,7 @@ class c04470(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Itemized deductions after phase-out"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         """Itemized deductions after phase-out (zero for non-itemizers)"""
     )
@@ -749,7 +749,7 @@ class c05200(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Sch X,Y,Z tax"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Tax amount from Sch X,Y,X tables"""
 
     def formula(tax_unit, period, parameters):
@@ -823,7 +823,7 @@ class c05800(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Total income tax liability before credits"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"""
 
     def formula(tax_unit, period, parameters):
@@ -842,7 +842,7 @@ class c07180(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Form 221 Nonrefundable Credit"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Nonrefundable credit for child and dependent care expenses from Form 2441"""
 
     def formula(tax_unit, period, parameters):
@@ -865,7 +865,7 @@ class cdcc_refund(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Form 2441 Refundable Credit"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Refundable credit for child and dependent care expenses from Form 2441"""
 
     def formula(tax_unit, period, parameters):
@@ -914,7 +914,7 @@ class total_disability_payments(Variable):
     value_type = float
     entity = Person
     label = "Disability (total) payments"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Wages (or payments in lieu thereof) paid to an individual for permanent and total disability"
     definition_period = YEAR
 
@@ -923,7 +923,7 @@ class section_22_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Section 22 income"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "Income upon which the elderly or disabled credit is applied"
     )
@@ -1084,7 +1084,7 @@ class c09600(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Alternative Minimum Tax"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Alternative Minimum Tax (AMT) liability"""
 
     def formula(tax_unit, period, parameters):
@@ -1223,7 +1223,7 @@ class c17000(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Medical expense deduction"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Sch A: Medical expenses deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
@@ -1249,7 +1249,7 @@ class c18300(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "SALT deduction"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Sch A: State and local taxes plus real estate taxes deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
@@ -1265,7 +1265,7 @@ class c19200(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Interest deduction"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Sch A: Interest deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
@@ -1277,7 +1277,7 @@ class c19700(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Charitable deduction"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Sch A: Charity contributions deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
@@ -1299,7 +1299,7 @@ class c20500(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Casualty deduction"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Sch A: Net casualty or theft loss deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
@@ -1314,7 +1314,7 @@ class c20800(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Miscellaneous deductions"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Sch A: Net limited miscellaneous deductions deducted (component of pre-limitation c21060 total)"""
 
     def formula(tax_unit, period, parameters):
@@ -1329,7 +1329,7 @@ class c21040(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Phased-out itemized deductions"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Itemized deductions that are phased out"""
 
     def formula(tax_unit, period, parameters):
@@ -1356,7 +1356,7 @@ class c21060(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Gross itemized deductions"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         """Itemized deductions before phase-out (zero for non-itemizers)"""
     )
@@ -1379,7 +1379,7 @@ class c23650(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Net capital gains"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Net capital gains (long and short term) before exclusion"
 
     def formula(tax_unit, period, parameters):
@@ -1403,7 +1403,7 @@ class c59660(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "EITC"
-    unit = "currency-USD"
+    unit = USD
     documentation = "The Earned Income Tax Credit eligible amount."
 
     def formula(tax_unit, period, parameters):
@@ -1463,7 +1463,7 @@ class c62100(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "AMT taxable income"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Alternative Minimum Tax (AMT) taxable income"""
 
     def formula(tax_unit, period, parameters):
@@ -1577,7 +1577,7 @@ class dwks6(Variable):
     value_type = float
     entity = TaxUnit
     label = "DWKS6"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -1592,7 +1592,7 @@ class dwks9(Variable):
     value_type = float
     entity = TaxUnit
     label = "DWKS9"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -1640,7 +1640,7 @@ class dwks13(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "DWKS13"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
@@ -1662,7 +1662,7 @@ class dwks14(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "DWKS14"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
@@ -1678,7 +1678,7 @@ class dwks19(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "DWKS14"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         """search taxcalc/calcfunctions.py for how calculated and used"""
     )
@@ -1708,7 +1708,7 @@ class invinc_agi_ec(Variable):
     value_type = float
     entity = TaxUnit
     label = "Exclusion of investment income from AGI"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "Always equal to zero (will be removed in a future version)"
     )
@@ -1720,7 +1720,7 @@ class invinc_ec_base(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "AGI investment income exclusion"
-    unit = "currency-USD"
+    unit = USD
     documentation = """Exclusion of investment income from AGI"""
 
     def formula(tax_unit, period, parameters):
@@ -1768,7 +1768,7 @@ class ptax_amc(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Additional Medicare Tax"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         """Additional Medicare Tax from Form 8959 (included in payrolltax)"""
     )
@@ -1836,7 +1836,7 @@ class ymod(Variable):
     definition_period = YEAR
     label = "OASDI benefit tax variable"
     documentation = "Variable that is used in OASDI benefit taxation logic"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         ymod2 = (

@@ -203,7 +203,7 @@ class posagi(Variable):
     value_type = float
     entity = TaxUnit
     label = "Positive AGI"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Negative AGI values capped at zero"
     definition_period = YEAR
 
@@ -239,7 +239,7 @@ class c33200(Variable):
     value_type = float
     entity = TaxUnit
     label = "Credit for child and dependent care expenses"
-    unit = "currency-USD"
+    unit = USD
     documentation = "From form 2441, before refundability checks"
     definition_period = YEAR
 

@@ -6,4 +6,4 @@ class spm_unit_assets(Variable):
     entity = SPMUnit
     label = "SPM unit assets"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

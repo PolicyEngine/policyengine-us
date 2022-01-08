@@ -7,4 +7,4 @@ class pell_grant(Variable):
     label = "Pell Grant amount"
     documentation = "SPM unit's Pell Grant educational subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

@@ -6,7 +6,7 @@ class spm_unit_net_income(Variable):
     entity = SPMUnit
     label = "SPM unit net income"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         INCOME_COMPONENTS = [
