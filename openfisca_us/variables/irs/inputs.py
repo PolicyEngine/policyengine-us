@@ -17,12 +17,6 @@ class eic(Variable):
     definition_period = YEAR
     documentation = "Number of EIC qualifying children (range: 0 to 3)"
 
-    def formula(tax_unit, period, parameters):
-        return tax_unit.max(
-            tax_unit.members("is_tax_unit_head", period)
-            * tax_unit.members("age", period)
-        )
-
 
 class flpdyr(Variable):
     value_type = int
