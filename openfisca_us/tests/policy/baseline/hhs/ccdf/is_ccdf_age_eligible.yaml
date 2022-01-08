@@ -1,0 +1,13 @@
+- name: Child age, 12
+  period: 2022
+  input:
+    age: 12
+  output:
+    is_ccdf_age_eligible: true
+
+- name: Child age, 13
+  period: 2022
+  input:
+    age: 13
+  output:
+    is_ccdf_age_eligible: false

@@ -1,6 +1,4 @@
-from openfisca_core.model_api import *
-from openfisca_us.entities import *
-from openfisca_us.tools.general import *
+from openfisca_us.model_api import *
 
 
 class ssdi(Variable):
@@ -9,3 +7,4 @@ class ssdi(Variable):
     definition_period = YEAR
     documentation = "Social Security Disability Insurance amount"
     label = "Social Security Disability Insurance"
+    unit = "currency-USD"

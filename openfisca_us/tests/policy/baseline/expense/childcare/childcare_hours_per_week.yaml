@@ -1,0 +1,12 @@
+- name: Default will be zero
+  period: 2022
+  output:
+    childcare_hours_per_week: 0
+
+- name: Otherwise multiplies hours per day by days per week.
+  period: 2022
+  input:
+    childcare_hours_per_day: 6
+    childcare_days_per_week: 5
+  output:
+    childcare_hours_per_week: 30

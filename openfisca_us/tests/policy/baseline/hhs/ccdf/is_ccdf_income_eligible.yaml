@@ -1,0 +1,27 @@
+- name: Income 85% of SMI, 2022
+  period: 2022
+  input:
+    ccdf_income_to_smi_ratio: 0.85
+  output:
+    is_ccdf_income_eligible: true
+
+- name: Income 86% of SMI, 2015
+  period: 2015
+  input:
+    ccdf_income_to_smi_ratio: 0.86
+  output:
+    is_ccdf_income_eligible: false
+
+- name: Income 76% of SMI, 2014
+  period: 2014
+  input:
+    ccdf_income_to_smi_ratio: 0.76
+  output:
+    is_ccdf_income_eligible: false
+
+- name: Income 75% of SMI, 2010
+  period: 2010
+  input:
+    ccdf_income_to_smi_ratio: 0.75
+  output:
+    is_ccdf_income_eligible: true

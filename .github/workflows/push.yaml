@@ -49,7 +49,7 @@ jobs:
         with:
           python-version: 3.7
       - name: Publish a git tag
-        run: ".github/publish-git-tag.sh"
+        run: ".github/publish-git-tag.sh || true"
       - name: Install package
         run: make install
       - name: Build package
