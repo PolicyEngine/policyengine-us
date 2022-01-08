@@ -1,7 +1,5 @@
+from openfisca_us.model_api import *
 from numpy import ceil
-from openfisca_core.model_api import *
-from openfisca_us.entities import *
-from openfisca_us.tools.general import *
 
 
 class sey(Variable):
