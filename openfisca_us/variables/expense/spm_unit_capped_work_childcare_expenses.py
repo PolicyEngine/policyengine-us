@@ -6,4 +6,4 @@ class spm_unit_capped_work_childcare_expenses(Variable):
     entity = SPMUnit
     label = "SPM unit work and childcare expenses"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

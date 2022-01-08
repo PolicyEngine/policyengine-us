@@ -6,4 +6,4 @@ class spm_unit_energy_subsidy(Variable):
     entity = SPMUnit
     label = "SPM unit school energy subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

@@ -6,4 +6,4 @@ class spm_unit_wic(Variable):
     entity = SPMUnit
     label = "SPM unit WIC subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

@@ -6,5 +6,5 @@ class broadband_cost(Variable):
     entity = SPMUnit
     label = "Broadband cost"
     documentation = "Broadband cost for this SPM unit"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

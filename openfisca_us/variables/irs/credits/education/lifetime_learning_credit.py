@@ -5,7 +5,7 @@ class lifetime_learning_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Lifetime Learning Credit"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Value of the non-refundable Lifetime Learning Credit"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"

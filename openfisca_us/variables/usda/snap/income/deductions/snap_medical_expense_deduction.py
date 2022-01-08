@@ -5,7 +5,7 @@ class snap_medical_expense_deduction(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP excess medical expense deduction"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "Deduction from SNAP gross income for excess medical expenses"
     )

@@ -6,7 +6,7 @@ class spm_unit_ccdf_subsidy(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "SPM unit CCDF subsidy"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         total_market_rate = spm_unit(

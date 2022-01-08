@@ -7,7 +7,7 @@ class ebb(Variable):
     label = "Emergency Broadband Benefit amount"
     documentation = "Emergency Broadband Benefit amount"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         eligible = spm_unit("is_ebb_eligible", period)

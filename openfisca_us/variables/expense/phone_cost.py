@@ -6,5 +6,5 @@ class phone_cost(Variable):
     entity = SPMUnit
     label = "Phone cost"
     documentation = "Phone line cost for this SPM unit"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

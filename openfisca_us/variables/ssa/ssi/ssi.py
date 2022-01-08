@@ -7,4 +7,4 @@ class ssi(Variable):
     definition_period = YEAR
     documentation = "Supplemental Security Income amount"
     label = "Supplemental Security Income"
-    unit = "currency-USD"
+    unit = USD

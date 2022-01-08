@@ -6,4 +6,4 @@ class spm_unit_state_tax(Variable):
     entity = SPMUnit
     label = "SPM unit state tax"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

@@ -6,4 +6,4 @@ class spm_unit_school_lunch_subsidy(Variable):
     entity = SPMUnit
     label = "SPM unit school lunch subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
