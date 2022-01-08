@@ -279,6 +279,19 @@ class spm_unit_total_ccdf_copay(Variable):
     label = u"SPM unit total CCDF copay"
     unit = "currency-USD"
 
+    reference = "https://www.ocfs.ny.gov/programs/childcare/stateplan/assets/2022-plan/FFY2022-2024-CCDF-Plan.pdf#page=107"
+
+    def formula(spm_unit, period, parameters):
+        # Get family income and federal poverty line
+        income = spm_unit("ccdf_income", period)
+        fpl = spm_unit("spm_unit_fpg", period)
+        # Get copay percent parameter by county
+        county = spm_unit.household("county").decode_to_str()
+        p_copay_percent = parameters(period).hhs.ccdf.copay_percent[county]
+        income_exceeding_fpl = max_(income - fpl, 0)
+        # There is a minimum family fee of $1 per week
+        return max_(income_exceeding_fpl * p_copay_percent, 52)
+
 
 class spm_unit_ccdf_subsidy(Variable):
     value_type = float
