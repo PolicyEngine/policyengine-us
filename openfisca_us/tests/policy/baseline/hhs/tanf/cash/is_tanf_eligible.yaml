@@ -1,5 +1,7 @@
 - name: "Default SPM unit is ineligible because economic eligibility defaults to false"
   period: 2022
+  input:
+    state_code: IL
   output:
     is_tanf_eligible: false
 
@@ -17,6 +19,9 @@
         is_tanf_enrolled: true
         continuous_tanf_eligibility: true
         initial_tanf_eligibility: false
+    households:
+      household:
+        state_code: IL
   output:
     is_tanf_eligible: true
 
@@ -34,6 +39,9 @@
         is_tanf_enrolled: true
         continuous_tanf_eligibility: false
         initial_tanf_eligibility: false
+    households:
+      household:
+        state_code: IL
   output:
     is_tanf_eligible: false
 
@@ -53,6 +61,9 @@
         is_tanf_enrolled: false
         continuous_tanf_eligibility: false
         initial_tanf_eligibility: false
+    households:
+      household:
+        state_code: IL
   output:
     is_tanf_eligible: false
 
@@ -72,5 +83,8 @@
         is_tanf_enrolled: false
         continuous_tanf_eligibility: false
         initial_tanf_eligibility: false
+    households:
+      household:
+        state_code: IL
   output:
     is_tanf_eligible: false
