@@ -7,7 +7,7 @@ class lifeline(Variable):
     label = "Lifeline benefit amount"
     documentation = "Amount of Lifeline phone and broadband benefit"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
     reference = "https://www.law.cornell.edu/cfr/text/47/54.403"
 
     def formula(spm_unit, period, parameters):

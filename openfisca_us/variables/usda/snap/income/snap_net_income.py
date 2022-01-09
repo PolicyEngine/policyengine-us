@@ -7,7 +7,7 @@ class snap_net_income(Variable):
     definition_period = YEAR
     documentation = "Final net income, after all deductions"
     label = "SNAP net income"
-    unit = "currency-USD"
+    unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/7/2014"
 
     def formula(spm_unit, period):

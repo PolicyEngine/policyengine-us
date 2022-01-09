@@ -7,4 +7,4 @@ class ssdi(Variable):
     definition_period = YEAR
     documentation = "Social Security Disability Insurance amount"
     label = "Social Security Disability Insurance"
-    unit = "currency-USD"
+    unit = USD

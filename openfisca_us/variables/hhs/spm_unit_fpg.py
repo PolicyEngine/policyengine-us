@@ -4,9 +4,9 @@ from openfisca_us.model_api import *
 class spm_unit_fpg(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"SPM unit's federal poverty guideline"
+    label = "SPM unit's federal poverty guideline"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         n = spm_unit.nb_persons()

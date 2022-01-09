@@ -5,4 +5,4 @@ class is_ccdf_initial_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR
-    label = u"Initial income eligibility for CCDF"
+    label = "Initial income eligibility for CCDF"

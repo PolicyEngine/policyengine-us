@@ -10,7 +10,7 @@ class snap_shelter_deduction(Variable):
     )
     label = "SNAP shelter deduction"
     reference = ("United States Code, Title 7, Section 2014(e)(6)",)
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         shelter_deduction = parameters(period).usda.snap.shelter_deduction

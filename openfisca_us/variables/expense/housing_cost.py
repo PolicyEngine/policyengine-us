@@ -6,5 +6,5 @@ class housing_cost(Variable):
     entity = SPMUnit
     label = "Housing cost"
     documentation = "Housing cost for this SPM unit"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

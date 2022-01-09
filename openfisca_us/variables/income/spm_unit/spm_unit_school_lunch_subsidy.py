@@ -4,6 +4,6 @@ from openfisca_us.model_api import *
 class spm_unit_school_lunch_subsidy(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"SPM unit school lunch subsidy"
+    label = "SPM unit school lunch subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

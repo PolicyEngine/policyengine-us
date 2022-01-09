@@ -4,5 +4,5 @@ from openfisca_us.model_api import *
 class is_in_school(Variable):
     value_type = bool
     entity = Person
-    label = u"Is currently in an education institution"
+    label = "Is currently in an education institution"
     definition_period = YEAR

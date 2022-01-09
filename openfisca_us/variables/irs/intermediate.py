@@ -1,14 +1,13 @@
+from openfisca_us.model_api import *
 from numpy import ceil
-from openfisca_core.model_api import *
-from openfisca_us.entities import *
-from openfisca_us.tools.general import *
 
 
 class gross_was(Variable):
     value_type = float
     entity = Person
-    label = u"Gross wage and salary"
+    label = "Gross wage and salary"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period):
         return add(person, period, "e00200", "pencon")
@@ -17,8 +16,9 @@ class gross_was(Variable):
 class txearn_was(Variable):
     value_type = float
     entity = Person
-    label = u"Taxable gross earnings for OASDI FICA"
+    label = "Taxable gross earnings for OASDI FICA"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         max_earnings = parameters(
@@ -30,8 +30,9 @@ class txearn_was(Variable):
 class ptax_ss_was(Variable):
     value_type = float
     entity = Person
-    label = u"OASDI payroll tax on wage income"
+    label = "OASDI payroll tax on wage income"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         rate = parameters(period).irs.payroll.fica.social_security.rate
@@ -41,8 +42,9 @@ class ptax_ss_was(Variable):
 class filer_ptax_ss_was(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"OASDI payroll tax on wage income for the tax unit (excluding dependents)"
+    label = "OASDI payroll tax on wage income for the tax unit (excluding dependents)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("ptax_ss_was", tax_unit, period)
@@ -51,8 +53,9 @@ class filer_ptax_ss_was(Variable):
 class ptax_mc_was(Variable):
     value_type = float
     entity = Person
-    label = u"HI payroll tax on wage income"
+    label = "HI payroll tax on wage income"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         rate = parameters(period).irs.payroll.fica.medicare.rate
@@ -62,8 +65,11 @@ class ptax_mc_was(Variable):
 class filer_ptax_mc_was(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"HI payroll tax on wage income for the tax unit (excluding dependents)"
+    label = (
+        "HI payroll tax on wage income for the tax unit (excluding dependents)"
+    )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("ptax_mc_was", tax_unit, period)
@@ -72,8 +78,9 @@ class filer_ptax_mc_was(Variable):
 class sey_frac(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable fraction of self-employment income"
+    label = "Taxable fraction of self-employment income"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         fica = parameters(period).irs.payroll.fica
@@ -85,8 +92,9 @@ class sey_frac(Variable):
 class txearn_sey(Variable):
     value_type = float
     entity = Person
-    label = u"Taxable self-employment income"
+    label = "Taxable self-employment income"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         fica = parameters(period).irs.payroll.fica
@@ -103,8 +111,9 @@ class txearn_sey(Variable):
 class setax_ss(Variable):
     value_type = float
     entity = Person
-    label = u"SECA self-employment SS tax"
+    label = "SECA self-employment SS tax"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         rate = parameters(period).irs.payroll.fica.social_security.rate
@@ -115,9 +124,10 @@ class filer_setax_ss(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"SECA self-employment SS tax for the tax unit (excluding dependents)"
+        "SECA self-employment SS tax for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("setax_ss", tax_unit, period)
@@ -126,8 +136,9 @@ class filer_setax_ss(Variable):
 class setax_mc(Variable):
     value_type = float
     entity = Person
-    label = u"SECA self-employment SS tax (Medicare)"
+    label = "SECA self-employment SS tax (Medicare)"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         rate = parameters(period).irs.payroll.fica.medicare.rate
@@ -139,8 +150,9 @@ class setax_mc(Variable):
 class setax(Variable):
     value_type = float
     entity = Person
-    label = u"Self-employment payroll tax"
+    label = "Self-employment payroll tax"
     definition_period = YEAR
+    unit = USD
 
     def formula(person, period, parameters):
         return add(person, period, "setax_ss", "setax_mc")
@@ -149,8 +161,9 @@ class setax(Variable):
 class sey_frac_for_extra_oasdi(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable fraction of self-employment income for extra OASDI payroll taxes"
+    label = "Taxable fraction of self-employment income for extra OASDI payroll taxes"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         fica = parameters(period).irs.payroll.fica
@@ -164,8 +177,9 @@ class sey_frac_for_extra_oasdi(Variable):
 class extra_payrolltax(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Extra payroll tax"
+    label = "Extra payroll tax"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         ss = parameters(period).irs.payroll.fica.social_security
@@ -183,8 +197,9 @@ class extra_payrolltax(Variable):
 class pre_qbid_taxinc(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable income (pre-QBID)"
+    label = "Taxable income (pre-QBID)"
     definition_period = YEAR
+    unit = USD
 
     def formula(tax_unit, period, parameters):
         # Calculate UI excluded from taxable income
@@ -203,7 +218,7 @@ class posagi(Variable):
     value_type = float
     entity = TaxUnit
     label = "Positive AGI"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Negative AGI values capped at zero"
     definition_period = YEAR
 
@@ -239,7 +254,7 @@ class c33200(Variable):
     value_type = float
     entity = TaxUnit
     label = "Credit for child and dependent care expenses"
-    unit = "currency-USD"
+    unit = USD
     documentation = "From form 2441, before refundability checks"
     definition_period = YEAR
 

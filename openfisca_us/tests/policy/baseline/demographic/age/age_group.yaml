@@ -5,6 +5,7 @@
     age: 12
   output:
     age_group: CHILD
+
 - name: Child age, 17
   period: 2020
   absolute_error_margin: 0.01
@@ -12,6 +13,7 @@
     age: 17
   output:
     age_group: CHILD
+
 - name: Adult age, 18
   period: 2020
   absolute_error_margin: 0.01
@@ -19,6 +21,7 @@
     age: 18
   output:
     age_group: WORKING_AGE
+
 - name: Adult age, 64
   period: 2020
   absolute_error_margin: 0.01
@@ -26,6 +29,7 @@
     age: 64
   output:
     age_group: WORKING_AGE
+
 - name: Senior age, 65
   period: 2020
   absolute_error_margin: 0.01

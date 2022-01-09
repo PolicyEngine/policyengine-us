@@ -7,7 +7,7 @@ class snap_standard_deduction(Variable):
     definition_period = YEAR
     documentation = "Standard deduction for calculating SNAP benefit amount"
     label = "SNAP standard deduction"
-    unit = "currency-USD"
+    unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_1"
 
     def formula(spm_unit, period, parameters):

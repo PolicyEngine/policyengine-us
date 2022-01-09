@@ -4,9 +4,9 @@ from openfisca_us.model_api import *
 class ccdf_market_rate(Variable):
     value_type = float
     entity = Person
-    label = u"CCDF market rate"
+    label = "CCDF market rate"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(person, period, parameters):
         county_cluster = person.household("ccdf_county_cluster", period)

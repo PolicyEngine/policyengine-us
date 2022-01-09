@@ -12,6 +12,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Formula for initial TANF eligibility.
 * Two new variables: `tanf_gross_earned_income` and `tanf_gross_unearned_income`.
 
+## [0.19.3] - 2022-01-08
+
+### Changed
+
+* Adds one line between tests in yaml files.
+* Use consistent imports in variable Python files.
+
+### Added
+
+* Units to all tax variables.
+
+### Removed
+
+* C-TAM benefit variables in tax Python files.
+* Erroneous formula for `eic` variable.
+
+## [0.19.2] - 2022-01-08
+
+### Changed
+
+* Removes the `u` prefix from all variable label strings.
+
 ## [0.19.1] - 2022-01-07
 
 ### Added

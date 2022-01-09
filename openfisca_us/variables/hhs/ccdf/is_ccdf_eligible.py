@@ -5,7 +5,7 @@ class is_ccdf_eligible(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = u"Eligibility for CCDF"
+    label = "Eligibility for CCDF"
 
     def formula(person, period, parameters):
         asset_eligible = person.spm_unit("is_ccdf_asset_eligible", period)

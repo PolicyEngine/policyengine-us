@@ -4,9 +4,9 @@ from openfisca_us.model_api import *
 class spm_unit_net_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"SPM unit net income"
+    label = "SPM unit net income"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         INCOME_COMPONENTS = [

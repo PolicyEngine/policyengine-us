@@ -2,12 +2,14 @@
   period: 2021
   output:
     meets_medicaid_income_threshold: true
+
 - name: Someone with income at 140% of the poverty level
   period: 2021
   input:
     market_income: 12_880 * 1.4 # Poverty line for one-person household is $12,880.
   output:
     meets_medicaid_income_threshold: false
+
 - name: Family of four with income at 135% of the poverty level
   period: 2021
   input:

@@ -58,7 +58,7 @@ class State(Enum):
     # Territories.
     GU = "Guam"
     MP = "Northern Mariana Islands"
-    PW = "Palau"
+    PW = "Pala"
     PR = "Puerto Rico"
     VI = "Virgin Islands"
     AA = "Armed Forces Americas (Except Canada)"
@@ -71,5 +71,5 @@ class state_code(Variable):
     possible_values = State
     default_value = State.CA
     entity = Household
-    label = u"State"
+    label = "State"
     definition_period = ETERNITY
