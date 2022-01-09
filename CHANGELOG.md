@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Formula for initial TANF eligibility.
 * Two new variables: `tanf_gross_earned_income` and `tanf_gross_unearned_income`.
+* Variable & parameter for `initial_employment_deduction`.
+* Integration tests for TANF cash aid from TANF IL website.
+
+### Changed
+
+* `tanf_countable_income` now includes unearned income and earned income deduction.
 
 ## [0.19.3] - 2022-01-08
 
