@@ -2,12 +2,30 @@ description: SNAP income limits as a percentage of poverty line
 
 gross:
   standard:
-    2005-01-01: 1.3
+    description: SNAP standard gross income limit as a percentage of the poverty line.
+    values:
+      2005-01-01: 1.3
+    metadata:
+      label: SNAP gross income limit (standard)
+      name: snap_gross_income_limit_standard
+      unit: /1
   elderly_disabled:
-    2005-01-01: 1.65
+    description: SNAP income limit for households with elderly or disabled people as a percentage of the poverty line.
+    values:
+      2005-01-01: 1.65
+    metadata:
+      label: SNAP gross income limit (elderly or disabled)
+      name: snap_gross_income_limit_elderly_disabled
+      unit: /1
 net:
-  2005-01-01: 1
-
+  standard:
+    description: SNAP standard net income limit as a percentage of the poverty line.
+    values:
+      2005-01-01: 1
+    metadata:
+      label: SNAP net income limit (standard)
+      name: snap_net_income_limit_standard
+      unit: /1
 metadata:
   unit: /1
   reference:
