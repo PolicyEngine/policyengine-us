@@ -7,4 +7,4 @@ class medicaid(Variable):
     definition_period = YEAR
     documentation = "Estimated benefit amount from Medicaid"
     label = "Medicaid benefit"
-    unit = "currency-USD"
+    unit = USD

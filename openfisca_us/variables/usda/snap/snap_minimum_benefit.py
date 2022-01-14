@@ -6,7 +6,7 @@ class snap_minimum_benefit(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "Minimum benefit for SNAP"
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         # Parameters for the minimum benefit.

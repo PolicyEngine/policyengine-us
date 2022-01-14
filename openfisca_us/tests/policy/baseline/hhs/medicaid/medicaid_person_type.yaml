@@ -4,6 +4,7 @@
     age: 19
   output:
     medicaid_person_type: ADULT_WITHOUT_DEPENDENT
+
 - name: Two adults with no dependents
   period: 2022
   input:
@@ -17,6 +18,7 @@
         members: [p1, p2]
   output:
     medicaid_person_type: [ADULT_WITHOUT_DEPENDENT, ADULT_WITHOUT_DEPENDENT]
+
 - name: Adult with dependent
   period: 2022
   input:
@@ -30,6 +32,7 @@
         members: [p1, p2]
   output:
     medicaid_person_type: [ADULT_WITH_DEPENDENT, CHILD_AGE_6_18]
+
 - name: Adult with dependent
   period: 2022
   input:
@@ -46,4 +49,5 @@
       spm_unit:
         members: [parent1, parent2, child, infant]
   output:
-    medicaid_person_type: [ADULT_WITH_DEPENDENT, ADULT_WITH_DEPENDENT, CHILD_AGE_1_5, CHILD_AGE_0]
+    medicaid_person_type:
+      [ADULT_WITH_DEPENDENT, ADULT_WITH_DEPENDENT, CHILD_AGE_1_5, CHILD_AGE_0]

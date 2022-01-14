@@ -6,4 +6,4 @@ class spm_unit_capped_housing_subsidy(Variable):
     entity = SPMUnit
     label = u"SPM unit capped housing subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

@@ -6,4 +6,4 @@ class spm_unit_snap(Variable):
     entity = SPMUnit
     label = u"SPM unit SNAP subsidy"
     definition_period = YEAR
-    unit = "currency-USD"
+    unit = USD

@@ -6,6 +6,7 @@
     qualified_tuition_expenses: 1_000
   output:
     american_opportunity_credit: 0
+
 - name: Eligible, under first threshold of expenses
   period: 2020
   absolute_error_margin: 0
@@ -14,6 +15,7 @@
     qualified_tuition_expenses: 1_000
   output:
     american_opportunity_credit: 1_000
+
 - name: Over phaseout, no entitlement
   period: 2020
   absolute_error_margin: 0

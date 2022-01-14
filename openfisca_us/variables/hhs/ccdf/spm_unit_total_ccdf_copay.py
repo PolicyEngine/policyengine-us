@@ -5,8 +5,8 @@ class spm_unit_total_ccdf_copay(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = u"SPM unit total CCDF copay"
-    unit = "currency-USD"
+    label = "SPM unit total CCDF copay"
+    unit = USD
     reference = "https://www.ocfs.ny.gov/programs/childcare/stateplan/assets/2022-plan/FFY2022-2024-CCDF-Plan.pdf#page=107"
 
     def formula(spm_unit, period, parameters):

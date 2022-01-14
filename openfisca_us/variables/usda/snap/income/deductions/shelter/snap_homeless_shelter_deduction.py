@@ -11,7 +11,7 @@ class snap_homeless_shelter_deduction(Variable):
         "https://www.law.cornell.edu/cfr/text/7/273.9#d_6_i",
         "United States Code, Title 7, Section 2014(e)(6)(D)",
     )
-    unit = "currency-USD"
+    unit = USD
 
     def formula(spm_unit, period, parameters):
         is_homeless = spm_unit.household("is_homeless", period)
