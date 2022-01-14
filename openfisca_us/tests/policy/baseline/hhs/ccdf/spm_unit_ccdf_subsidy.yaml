@@ -5,6 +5,7 @@
     people:
       child:
         ccdf_market_rate: 21_112
+        is_ccdf_eligible: TRUE
     spm_units:
       spm_unit:
         members: [child]
@@ -19,8 +20,10 @@
     people:
       child1:
         ccdf_market_rate: 10_140
+        is_ccdf_eligible: TRUE
       child2:
         ccdf_market_rate: 9_360
+        is_ccdf_eligible: TRUE
     spm_units:
       spm_unit:
         members: [child1, child2]
