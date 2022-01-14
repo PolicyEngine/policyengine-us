@@ -20,7 +20,7 @@ class state_group(Variable):
     definition_period = ETERNITY
 
     def formula(household, period, parameters):
-        NON_CONTIGUOUS_STATES = ("AK", "HI", "G", "PR", "VI")
+        NON_CONTIGUOUS_STATES = ("AK", "HI", "GU", "PR", "VI")
         state_code = household("state_code", period).decode_to_str()
         return where(
             np.isin(state_code, NON_CONTIGUOUS_STATES),
