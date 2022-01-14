@@ -1,18 +1,20 @@
-- name: 1 child in DCC/SACC provider, Nassau county, NY state, family income $50,000, family size 3 
+- name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3 
   period: 2022
+  absolute_error_margin: 0.01
   input:
     people:
       child:
-        ccdf_market_rate: 18_928
+        ccdf_market_rate: 21_112
     spm_units:
       spm_unit:
         members: [child]
-        spm_unit_total_ccdf_copay: 2_867
+        spm_unit_total_ccdf_copay: 2_804
   output:
-    spm_unit_ccdf_subsidy: 16_061
+    spm_unit_ccdf_subsidy: 18_308
 
 - name: 1 Infant in DCC/SACC provider, 1 Toddler in FDC/GFDC provider, Nassau county, NY state, Daily rates with 3 days/week for both children, family income $60,000, family size 4
   period: 2022
+  absolute_error_margin: 0.01
   input:
     people:
       child1:
