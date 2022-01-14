@@ -6,7 +6,7 @@ class snap(Variable):
     entity = SPMUnit
     definition_period = YEAR
     documentation = "Final SNAP benefit amount, equal to net income minus food contribution"
-    label = "SNAP benefit entitlement"
+    label = "SNAP"
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = USD
 
