@@ -124,7 +124,7 @@ class filer_setax_ss(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"SECA self-employment SS tax for the tax unit (excluding dependents)"
+        "SECA self-employment SS tax for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
     unit = USD

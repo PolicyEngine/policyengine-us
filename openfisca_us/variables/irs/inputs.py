@@ -201,7 +201,7 @@ class filer_e00400(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"Tax-exempt interest income for the tax unit (excluding dependents)"
+        "Tax-exempt interest income for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
     unit = USD
@@ -356,9 +356,7 @@ class e01400(Variable):
 class filer_e01400(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        u"Taxable IRA distributions for the tax unit (excluding dependents)"
-    )
+    label = "Taxable IRA distributions for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -492,7 +490,7 @@ class filer_e03150(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"Deductible IRA contributions for the tax unit (excluding dependents)"
+        "Deductible IRA contributions for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
     unit = USD
@@ -861,9 +859,7 @@ class e20100(Variable):
 class filer_e20100(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        u"Itemized non-cash charity for the tax unit (excluding dependents)"
-    )
+    label = "Itemized non-cash charity for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -1209,7 +1205,7 @@ class filer_p22250(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"Net short-term capital gains for the tax unit (excluding dependents)"
+        "Net short-term capital gains for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
     unit = USD
@@ -1230,7 +1226,7 @@ class filer_p23250(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        u"Net long-term capital gains for the tax unit (excluding dependents)"
+        "Net long-term capital gains for the tax unit (excluding dependents)"
     )
     definition_period = YEAR
     unit = USD
