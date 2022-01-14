@@ -16,7 +16,7 @@ class state_group(Variable):
     possible_values = StateGroup
     default_value = StateGroup.CONTIGUOUS_US
     entity = Household
-    label = u"State group"
+    label = "State group"
     definition_period = ETERNITY
 
     def formula(household, period, parameters):

@@ -124,7 +124,7 @@ class cmbtp(Variable):
 class filer_cmbtp(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Income on Form 6251 not in AGI for the tax unit (excluding dependents)"
+    label = "Income on Form 6251 not in AGI for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -181,7 +181,7 @@ class e00300(Variable):
 class filer_e00300(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable interest income for the tax unit (excluding dependents)"
+    label = "Taxable interest income for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -221,7 +221,7 @@ class e00600(Variable):
 class filer_e00600(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Ordinary dividends for the tax unit (excluding dependents)"
+    label = "Ordinary dividends for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -240,7 +240,7 @@ class e00650(Variable):
 class filer_e00650(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Qualified dividends included in ordinary dividends for the tax unit (excluding dependents)"
+    label = "Qualified dividends included in ordinary dividends for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -259,7 +259,7 @@ class e00700(Variable):
 class filer_e00700(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable refunds of state/local taxes for the tax unit (excluding dependents)"
+    label = "Taxable refunds of state/local taxes for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -278,7 +278,7 @@ class e00800(Variable):
 class filer_e00800(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Alimony for the tax unit (excluding dependents)"
+    label = "Alimony for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -318,7 +318,7 @@ class e01100(Variable):
 class filer_e01100(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Capital gains not reported on Sch D for the tax unit (excluding dependents)"
+    label = "Capital gains not reported on Sch D for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -337,7 +337,7 @@ class e01200(Variable):
 class filer_e01200(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Other net gain/loss for the tax unit (excluding dependents)"
+    label = "Other net gain/loss for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -377,7 +377,7 @@ class e01500(Variable):
 class filer_e01500(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Pensions and annuities for the tax unit (excluding dependents)"
+    label = "Pensions and annuities for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -396,7 +396,7 @@ class e01700(Variable):
 class filer_e01700(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Taxable pensions and annuities for the tax unit (excluding dependents)"
+    label = "Taxable pensions and annuities for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -415,7 +415,7 @@ class e02000(Variable):
 class filer_e02000(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Rentals, royalties etc. for the tax unit (excluding dependents)"
+    label = "Rentals, royalties etc. for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -434,7 +434,7 @@ class e02100(Variable):
 class filer_e02100(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Farm net income/loss for the tax unit (excluding dependents)"
+    label = "Farm net income/loss for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -472,7 +472,7 @@ class e02400(Variable):
 class filer_e02400(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Social security benefits for the tax unit (excluding dependents)"
+    label = "Social security benefits for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -512,7 +512,7 @@ class e03210(Variable):
 class filer_e03210(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Student loan interest for the tax unit (excluding dependents)"
+    label = "Student loan interest for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -531,7 +531,7 @@ class e03220(Variable):
 class filer_e03220(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Educator expenses for the tax unit (excluding dependents)"
+    label = "Educator expenses for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -550,7 +550,7 @@ class e03230(Variable):
 class filer_e03230(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Tuition for the tax unit (excluding dependents)"
+    label = "Tuition for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -569,7 +569,7 @@ class e03240(Variable):
 class filer_e03240(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Domestic production activities for the tax unit (excluding dependents)"
+    label = "Domestic production activities for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -588,7 +588,7 @@ class e03270(Variable):
 class filer_e03270(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Self-employed health insurance for the tax unit (excluding dependents)"
+    label = "Self-employed health insurance for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -607,7 +607,7 @@ class e03290(Variable):
 class filer_e03290(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Health savings account deduction for the tax unit (excluding dependents)"
+    label = "Health savings account deduction for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -626,7 +626,7 @@ class e03300(Variable):
 class filer_e03300(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"SEP, SIMPLE, etc. contributions for the tax unit (excluding dependents)"
+    label = "SEP, SIMPLE, etc. contributions for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -645,7 +645,7 @@ class e03400(Variable):
 class filer_e03400(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Early savings withdrawal penalty for the tax unit (excluding dependents)"
+    label = "Early savings withdrawal penalty for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -664,7 +664,7 @@ class e03500(Variable):
 class filer_e03500(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Alimony paid for the tax unit (excluding dependents)"
+    label = "Alimony paid for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -766,7 +766,7 @@ class e17500(Variable):
 class filer_e17500(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized medical and dental expenses for the tax unit (excluding dependents)"
+    label = "Itemized medical and dental expenses for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -785,7 +785,7 @@ class e18400(Variable):
 class filer_e18400(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized SALT for the tax unit (excluding dependents)"
+    label = "Itemized SALT for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -804,7 +804,7 @@ class e18500(Variable):
 class filer_e18500(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized real estate for the tax unit (excluding dependents)"
+    label = "Itemized real estate for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -823,7 +823,7 @@ class e19200(Variable):
 class filer_e19200(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemizable interest paid for the tax unit (excluding dependents)"
+    label = "Itemizable interest paid for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -842,7 +842,7 @@ class e19800(Variable):
 class filer_e19800(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized charity for the tax unit (excluding dependents)"
+    label = "Itemized charity for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -882,7 +882,7 @@ class e20400(Variable):
 class filer_e20400(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized misc. for the tax unit (excluding dependents)"
+    label = "Itemized misc. for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -903,7 +903,7 @@ class g20500(Variable):
 class filer_g20500(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Itemized casualty loss for the tax unit (excluding dependents)"
+    label = "Itemized casualty loss for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -941,7 +941,7 @@ class e24518(Variable):
 class filer_e24518(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Sch D Rate Gain or Loss for the tax unit (excluding dependents)"
+    label = "Sch D Rate Gain or Loss for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -960,7 +960,7 @@ class e26270(Variable):
 class filer_e26270(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Label for the tax unit (excluding dependents)"
+    label = "Label for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -979,7 +979,7 @@ class e27200(Variable):
 class filer_e27200(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Label for the tax unit (excluding dependents)"
+    label = "Label for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
@@ -1000,7 +1000,9 @@ class e32800(Variable):
 class filer_e32800(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Child/dependent-care expenses for the tax unit (excluding dependents)"
+    label = (
+        "Child/dependent-care expenses for the tax unit (excluding dependents)"
+    )
     definition_period = YEAR
     unit = USD
 
@@ -1019,7 +1021,9 @@ class e58990(Variable):
 class filer_e58990(Variable):
     value_type = float
     entity = TaxUnit
-    label = u"Investment income (Form 3952) for the tax unit (excluding dependents)"
+    label = (
+        "Investment income (Form 3952) for the tax unit (excluding dependents)"
+    )
     definition_period = YEAR
     unit = USD
 

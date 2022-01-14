@@ -71,5 +71,5 @@ class state_code(Variable):
     possible_values = State
     default_value = State.CA
     entity = Household
-    label = u"State"
+    label = "State"
     definition_period = ETERNITY

@@ -13,7 +13,7 @@ class ccdf_duration_of_care(Variable):
     possible_values = CCDFDurationOfCare
     default_value = CCDFDurationOfCare.WEEKLY
     entity = Person
-    label = u"Child care duration of care"
+    label = "Child care duration of care"
     definition_period = YEAR
 
     reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf#page=5"

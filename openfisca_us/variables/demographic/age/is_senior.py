@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class is_senior(Variable):
     value_type = bool
     entity = Person
-    label = u"Is a senior"
+    label = "Is a senior"
     definition_period = YEAR
 
     def formula(person, period, parameters):

@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class spm_unit_fica(Variable):
     value_type = float
     entity = SPMUnit
-    label = u"SPM unit total FICA"
+    label = "SPM unit total FICA"
     definition_period = YEAR
     unit = USD
 
