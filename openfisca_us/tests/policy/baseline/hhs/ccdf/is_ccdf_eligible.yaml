@@ -1,0 +1,49 @@
+- name: Asset eligible, age eligible, income eligible, reason-for-care eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: true
+    is_ccdf_age_eligible: true
+    is_ccdf_income_eligible: true
+    is_ccdf_reason_for_care_eligible: true
+  output:
+    is_ccdf_eligible: true
+
+- name: Asset not eligible, age eligible, income eligible, reason-for-care eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: false
+    is_ccdf_age_eligible: true
+    is_ccdf_income_eligible: true
+    is_ccdf_reason_for_care_eligible: true
+  output:
+    is_ccdf_eligible: false
+
+- name: Asset eligible, age not eligible, income eligible, reason-for-care eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: true
+    is_ccdf_age_eligible: false
+    is_ccdf_income_eligible: true
+    is_ccdf_reason_for_care_eligible: true
+  output:
+    is_ccdf_eligible: false
+
+- name: Asset eligible, age eligible, income not eligible, reason-for-care eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: true
+    is_ccdf_age_eligible: true
+    is_ccdf_income_eligible: false
+    is_ccdf_reason_for_care_eligible: true
+  output:
+    is_ccdf_eligible: false
+
+- name: Asset eligible, age eligible, income eligible, reason-for-care not eligible
+  period: 2022
+  input:
+    is_ccdf_asset_eligible: true
+    is_ccdf_age_eligible: true
+    is_ccdf_income_eligible: true
+    is_ccdf_reason_for_care_eligible: false
+  output:
+    is_ccdf_eligible: false

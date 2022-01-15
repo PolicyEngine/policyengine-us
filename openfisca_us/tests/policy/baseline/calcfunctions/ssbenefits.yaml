@@ -1,0 +1,99 @@
+- name: SSBenefits unit test 0
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: SINGLE
+    ymod: 38323
+    e02400: 3411
+  output:
+    c02500: 2899.35
+
+- name: SSBenefits unit test 1
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: JOINT
+    ymod: 54598
+    e02400: 38818
+  output:
+    c02500: 15008.3
+
+- name: SSBenefits unit test 2
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: JOINT
+    ymod: 132696
+    e02400: 18518
+  output:
+    c02500: 15740.3
+
+- name: SSBenefits unit test 3
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: JOINT
+    ymod: 84124
+    e02400: 10514
+  output:
+    c02500: 8936.9
+
+- name: SSBenefits unit test 4
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: SINGLE
+    ymod: 26098
+    e02400: 18705
+  output:
+    c02500: 549.0
+
+- name: SSBenefits unit test 5
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: JOINT
+    ymod: 33518
+    e02400: 49667
+  output:
+    c02500: 759.0
+
+- name: SSBenefits unit test 6
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: JOINT
+    ymod: 125013
+    e02400: 52791
+  output:
+    c02500: 44872.35
+
+- name: SSBenefits unit test 7
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: SINGLE
+    ymod: 25533
+    e02400: 16874
+  output:
+    c02500: 266.5
+
+- name: SSBenefits unit test 8
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: JOINT
+    ymod: 51058
+    e02400: 34044
+  output:
+    c02500: 11999.3
+
+- name: SSBenefits unit test 9
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    mars: SINGLE
+    ymod: 66787
+    e02400: 17894
+  output:
+    c02500: 15209.9

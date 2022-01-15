@@ -1,0 +1,11 @@
+- name: Deductions are added
+  period: 2020
+  input:
+    snap_standard_deduction: 1
+    snap_earnings_deduction: 1
+    snap_dependent_care_deduction: 1
+    snap_child_support_deduction: 1
+    snap_medical_expense_deduction: 1
+    snap_shelter_deduction: 1
+  output:
+    snap_deductions: 6

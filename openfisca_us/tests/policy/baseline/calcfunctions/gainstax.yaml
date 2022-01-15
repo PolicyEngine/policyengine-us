@@ -1,0 +1,270 @@
+# Tests generated from tools/dev/generate_taxcalc_unit_tests.py
+- name: GainsTax unit test 0 (from)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 0
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 318
+    e58990: 0
+    e00200: 38567
+    e24515: 0
+    e24518: 0
+    mars: SINGLE
+    c04800: 25174
+    c05200: 3322
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 318.0
+    dwks13: 318.0
+    dwks14: 24856.0
+    dwks19: 24856.0
+    c05700: 0.0
+    taxbc: 2788.7200000000003
+
+- name: GainsTax unit test 1
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 560
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 4075
+    e58990: 0
+    e00200: 0
+    e24515: 0
+    e24518: 0
+    mars: SINGLE
+    c04800: 14350
+    c05200: 1698
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 4635.0
+    dwks13: 4635.0
+    dwks14: 9715.0
+    dwks19: 9715.0
+    c05700: 0.0
+    taxbc: 971.8
+
+- name: GainsTax unit test 2
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 1265
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 141060
+    e24515: 0
+    e24518: 0
+    mars: JOINT
+    c04800: 118583
+    c05200: 21358
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 1265.0
+    dwks13: 1265.0
+    dwks14: 117318.0
+    dwks19: 117318.0
+    c05700: 0.0
+    taxbc: 17716.71
+
+- name: GainsTax unit test 3
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 168
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 69638
+    e24515: 0
+    e24518: 0
+    mars: SINGLE
+    c04800: 45233
+    c05200: 7164
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 168.0
+    dwks13: 168.0
+    dwks14: 45065.0
+    dwks19: 45065.0
+    c05700: 0.0
+    taxbc: 5798.0
+
+- name: GainsTax unit test 4
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 44472
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 260020
+    e24515: 0
+    e24518: 0
+    mars: JOINT
+    c04800: 233923
+    c05200: 53099
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 44472.0
+    dwks13: 44472.0
+    dwks14: 189451.0
+    dwks19: 189451.0
+    c05700: 0.0
+    taxbc: 40488.04
+
+- name: GainsTax unit test 5
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 69
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 116449
+    e24515: 0
+    e24518: 0
+    mars: JOINT
+    c04800: 82435
+    c05200: 12321
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 69.0
+    dwks13: 69.0
+    dwks14: 82366.0
+    dwks19: 82366.0
+    c05700: 0.0
+    taxbc: 9847.87
+
+- name: GainsTax unit test 6
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 229
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 0
+    e24515: 0
+    e24518: 0
+    mars: SINGLE
+    c04800: 0
+    c05200: 0
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 229.0
+    dwks13: 229.0
+    dwks14: 0.0
+    dwks19: 0.0
+    c05700: 0.0
+    taxbc: 0.0
+
+- name: GainsTax unit test 7
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 20428
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 23921
+    e24515: 0
+    e24518: 0
+    mars: SINGLE
+    c04800: 33782
+    c05200: 4613
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 20428.0
+    dwks13: 20428.0
+    dwks14: 13354.0
+    dwks19: 13354.0
+    c05700: 0.0
+    taxbc: 1408.48
+
+- name: GainsTax unit test 8
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 1877
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 1282
+    e58990: 0
+    e00200: 0
+    e24515: 0
+    e24518: 0
+    mars: JOINT
+    c04800: 0
+    c05200: 0
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 3159.0
+    dwks13: 3159.0
+    dwks14: 0.0
+    dwks19: 0.0
+    c05700: 0.0
+    taxbc: 0.0
+
+- name: GainsTax unit test 9
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e00650: 3
+    c01000: 0
+    c23650: 0
+    p23250: 0
+    e01100: 0
+    e58990: 0
+    e00200: 0
+    e24515: 0
+    e24518: 0
+    mars: SINGLE
+    c04800: 2782
+    c05200: 278
+    e00900: 0
+    e26270: 0
+    e02000: 0
+  output:
+    dwks10: 3.0
+    dwks13: 3.0
+    dwks14: 2779.0
+    dwks19: 2779.0
+    c05700: 0.0
+    taxbc: 277.90000000000003

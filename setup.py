@@ -4,9 +4,9 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.1.1",
+    version="0.21.0",
     author="Nikhil Woodruff",
-    author_email="nikhil.woodruff@ubicenter.org",
+    author_email="nikhil@policyengine.org",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
@@ -20,7 +20,7 @@ setup(
     description="OpenFisca tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url="https://github.com/nikhilwoodruff/openfisca-us",
+    url="https://github.com/PolicyEngine/openfisca-us",
     include_package_data=True,  # Will read MANIFEST.in
     data_files=[
         (
@@ -35,7 +35,7 @@ setup(
         "pandas",
         "tqdm",
         "requests",
-        "OpenFisca-Tools",
+        "OpenFisca-Tools>=0.1.9",
         "pyyaml",
     ],
     extras_require={
@@ -46,12 +46,10 @@ setup(
             "pytest",
             "setuptools",
             "jupyter-book",
+            "coverage",
         ],
     },
-    entry_points={
-        "console_scripts": [
-            "openfisca-us = openfisca_us.tools.cli:main",
-        ],
-    },
+    python_requires=">=3.7,<3.8",
+    entry_points={},
     packages=find_packages(),
 )

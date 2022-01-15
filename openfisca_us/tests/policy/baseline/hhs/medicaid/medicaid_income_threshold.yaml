@@ -1,0 +1,64 @@
+- name: California adult with no dependents
+  period: 2022
+  input:
+    people:
+      person:
+        medicaid_person_type: ADULT_WITHOUT_DEPENDENT
+    households:
+      household:
+        state_code_str: CA
+        members: [person]
+  output:
+    medicaid_income_threshold: 1.38
+
+- name: California adult with dependents
+  period: 2022
+  input:
+    people:
+      person:
+        medicaid_person_type: ADULT_WITH_DEPENDENT
+    households:
+      household:
+        state_code_str: CA
+        members: [person]
+  output:
+    medicaid_income_threshold: 1.38
+
+- name: Californian child age 0
+  period: 2022
+  input:
+    people:
+      person:
+        medicaid_person_type: CHILD_AGE_0
+    households:
+      household:
+        state_code_str: CA
+        members: [person]
+  output:
+    medicaid_income_threshold: 1.38
+
+- name: California child between 1-5 years of age
+  period: 2022
+  input:
+    people:
+      person:
+        medicaid_person_type: CHILD_AGE_1_5
+    households:
+      household:
+        state_code_str: CA
+        members: [person]
+  output:
+    medicaid_income_threshold: 1.38
+
+- name: California child between 6-18 years of age
+  period: 2022
+  input:
+    people:
+      person:
+        medicaid_person_type: CHILD_AGE_6_18
+    households:
+      household:
+        state_code_str: CA
+        members: [person]
+  output:
+    medicaid_income_threshold: 1.38

@@ -1,0 +1,17 @@
+- name: Earnings too low
+  period: 2019
+  input:
+    mars: SINGLE
+    filer_sey: 1_000
+    e00200: 10_000
+  output:
+    ptax_amc: 0
+
+- name: Earnings high enough to pay the Additional Medicare Tax
+  period: 2019
+  input:
+    mars: SINGLE
+    filer_sey: 100_000
+    e00200: 1_000_000
+  output:
+    ptax_amc: 8031.15

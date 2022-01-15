@@ -1,0 +1,15 @@
+- name: No qualifying individuals, no credits
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    age: 44
+  output:
+    c07200: 0
+
+- name: One elderly individual, basic credit
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    age: 66
+  output:
+    c07200: 750

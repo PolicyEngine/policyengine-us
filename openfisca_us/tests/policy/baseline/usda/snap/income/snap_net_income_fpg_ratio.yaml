@@ -1,0 +1,7 @@
+- name: Net income FPG ratio
+  period: 2020
+  input:
+    snap_net_income: 15_000
+    spm_unit_fpg: 10_000
+  output:
+    snap_net_income_fpg_ratio: 1.5

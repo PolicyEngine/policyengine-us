@@ -1,0 +1,23 @@
+- name: Parents meet activity test, child doesn't receive or need protective services
+  period: 2022
+  input:
+    meets_ccdf_activity_test: true
+    receives_or_needs_protective_services: false
+  output:
+    is_ccdf_reason_for_care_eligible: true
+
+- name: Parents do not meet activity test, child doesn't receive or need protective services
+  period: 2022
+  input:
+    meets_ccdf_activity_test: false
+    receives_or_needs_protective_services: false
+  output:
+    is_ccdf_reason_for_care_eligible: false
+
+- name: Parents do not meet activity test, child receives or needs protective services
+  period: 2022
+  input:
+    meets_ccdf_activity_test: false
+    receives_or_needs_protective_services: true
+  output:
+    is_ccdf_reason_for_care_eligible: true

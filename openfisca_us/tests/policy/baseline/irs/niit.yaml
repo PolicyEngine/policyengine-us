@@ -1,0 +1,49 @@
+- name: No tax for no income
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    filer_e00300: 0
+    filer_e00600: 0
+    c01000: 0
+    filer_e02000: 0
+    mars: SINGLE
+  output:
+    niit: 0
+
+- name: Rental income just under threshold
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    filer_e00300: 0
+    filer_e00600: 0
+    c01000: 0
+    filer_e02000: 199_000
+    mars: SINGLE
+  output:
+    niit: 0
+
+- name: Rental income just above threshold
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    filer_e00300: 0
+    filer_e00600: 0
+    c01000: 0
+    c00100: 205_000
+    filer_e02000: 205_000
+    mars: SINGLE
+  output:
+    niit: 190
+
+- name: Rental income just above threshold
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    filer_e00300: 0
+    filer_e00600: 0
+    c01000: 0
+    c00100: 900_000
+    filer_e02000: 900_000
+    mars: SINGLE
+  output:
+    niit: 26_600

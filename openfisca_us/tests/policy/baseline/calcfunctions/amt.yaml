@@ -1,0 +1,329 @@
+- name: AMT unit test 0
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 0
+    standard: 6200
+    f6251: 0
+    c00100: 20310
+    c18300: 0
+    taxbc: 1070
+    c04470: 0
+    c17000: 0
+    c20800: 0
+    c21040: 0
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 0
+    dwks14: 0
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 0
+    age_head: 13
+    age_spouse: 0
+    earned: 0
+    cmbtp: 0
+  output:
+    c62100: 20310.0
+    c09600: 4210.6
+    c05800: 5280.6
+
+- name: AMT unit test 1
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 0
+    standard: 6200
+    f6251: 0
+    c00100: 20310
+    c18300: 0
+    taxbc: 1070
+    c04470: 0
+    c17000: 0
+    c20800: 0
+    c21040: 0
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 0
+    dwks14: 0
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 0
+    age_head: 13
+    age_spouse: 0
+    earned: 0
+    cmbtp: 0
+  output:
+    c62100: 20310.0
+    c09600: 4210.6
+    c05800: 5280.6
+
+- name: AMT unit test 2
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 3592
+    standard: 1000
+    f6251: 0
+    c00100: 17071
+    c18300: 0
+    taxbc: 1418
+    c04470: 0
+    c17000: 0
+    c20800: 0
+    c21040: 0
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 12479
+    dwks14: 12479
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 3592
+    age_head: 16
+    age_spouse: 0
+    earned: 0
+    cmbtp: 0
+  output:
+    c62100: 17071.0
+    c09600: 2086.54
+    c05800: 3504.54
+
+- name: AMT unit test 3
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 909730
+    standard: 0
+    f6251: 0
+    c00100: 977574
+    c18300: 3922
+    taxbc: 177220
+    c04470: 1991
+    c17000: 0
+    c20800: 0
+    c21040: 7966
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 65852
+    dwks14: 65852
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 909730
+    age_head: 44
+    age_spouse: 0
+    earned: 67685
+    cmbtp: 0
+  output:
+    c62100: 971539.0
+    c09600: 2361.4400000000023
+    c05800: 179581.44
+
+- name: AMT unit test 4
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 0
+    standard: 6200
+    f6251: 0
+    c00100: 15227
+    c18300: 0
+    taxbc: 507
+    c04470: 0
+    c17000: 0
+    c20800: 0
+    c21040: 0
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 0
+    dwks14: 0
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 0
+    age_head: 17
+    age_spouse: 0
+    earned: 0
+    cmbtp: 0
+  output:
+    c62100: 15227.0
+    c09600: 3452.02
+    c05800: 3959.02
+
+- name: AMT unit test 5
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 1675310
+    standard: 0
+    f6251: 0
+    c00100: 1858855
+    c18300: 20572
+    taxbc: 353283
+    c04470: 20350
+    c17000: 0
+    c20800: 0
+    c21040: 46614
+    e24515: 0
+    mars: JOINT
+    sep: 1
+    dwks19: 163194
+    dwks14: 163194
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 1675310
+    age_head: 40
+    age_spouse: 40
+    earned: 142238
+    cmbtp: 0
+  output:
+    c62100: 1812463.0
+    c09600: 1155.9799999999814
+    c05800: 354438.98
+
+- name: AMT unit test 6
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 0
+    standard: 0
+    f6251: 0
+    c00100: 15410
+    c18300: 844
+    taxbc: 526
+    c04470: 6194
+    c17000: 0
+    c20800: 0
+    c21040: 0
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 0
+    dwks14: 0
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 0
+    age_head: 13
+    age_spouse: 0
+    earned: 0
+    cmbtp: 0
+  output:
+    c62100: 10060.0
+    c09600: 2089.6
+    c05800: 2615.6
+
+- name: AMT unit test 7
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 1675310
+    standard: 0
+    f6251: 0
+    c00100: 1858855
+    c18300: 20572
+    taxbc: 353283
+    c04470: 20350
+    c17000: 0
+    c20800: 0
+    c21040: 46614
+    e24515: 0
+    mars: JOINT
+    sep: 1
+    dwks19: 163194
+    dwks14: 163194
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 1675310
+    age_head: 40
+    age_spouse: 40
+    earned: 142238
+    cmbtp: 0
+  output:
+    c62100: 1812463.0
+    c09600: 1155.9799999999814
+    c05800: 354438.98
+
+- name: AMT unit test 8
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 0
+    standard: 0
+    f6251: 0
+    c00100: 24723
+    c18300: 1012
+    taxbc: 1444
+    c04470: 8117
+    c17000: 0
+    c20800: 0
+    c21040: 0
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 0
+    dwks14: 0
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 0
+    age_head: 6
+    age_spouse: 0
+    earned: 0
+    cmbtp: 0
+  output:
+    c62100: 17618.0
+    c09600: 3136.6800000000003
+    c05800: 4580.68
+
+- name: AMT unit test 9
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    e07300: 0
+    dwks13: 830501
+    standard: 0
+    f6251: 0
+    c00100: 895821
+    c18300: 6713
+    taxbc: 159427
+    c04470: 5958
+    c17000: 0
+    c20800: 0
+    c21040: 19248
+    e24515: 0
+    mars: SINGLE
+    sep: 1
+    dwks19: 59361
+    dwks14: 59361
+    c05700: 0
+    e62900: 0
+    e00700: 0
+    dwks10: 830501
+    age_head: 59
+    age_spouse: 0
+    earned: 63661
+    cmbtp: 0
+  output:
+    c62100: 877328.0
+    c09600: 88.77000000001863
+    c05800: 159515.77000000002

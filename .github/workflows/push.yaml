@@ -27,6 +27,7 @@ jobs:
         run: make install
       - name: Run tests
         run: make test
+      - uses: codecov/codecov-action@v2
       - name: Test documentation builds
         if: matrix.os == 'ubuntu-latest'
         run: make documentation
@@ -47,6 +48,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
+      - name: Publish a git tag
+        run: ".github/publish-git-tag.sh || true"
       - name: Install package
         run: make install
       - name: Build package

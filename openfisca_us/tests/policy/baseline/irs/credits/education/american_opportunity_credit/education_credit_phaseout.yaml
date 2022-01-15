@@ -1,0 +1,32 @@
+- name: No AGI, no phaseout
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 0
+  output:
+    education_credit_phaseout: 0
+
+- name: AGI just over threshold, small phaseout
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 81_000
+  output:
+    education_credit_phaseout: 0.1
+
+- name: AGI fully over end of phaseout
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 90_000
+  output:
+    education_credit_phaseout: 1
+
+- name: Joint filer mid-way through phaseout
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    adjusted_gross_income: 170_000
+    tax_unit_is_joint: true
+  output:
+    education_credit_phaseout: 0.5
