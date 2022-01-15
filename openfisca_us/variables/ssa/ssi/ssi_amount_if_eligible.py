@@ -8,3 +8,5 @@ class ssi_amount_if_eligible(Variable):
     documentation = (
         "Supplemental Security Income amount if someone is eligible"
     )
+    label = "SSI amount if eligible"
+    unit = USD

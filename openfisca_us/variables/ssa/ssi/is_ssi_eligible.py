@@ -6,3 +6,4 @@ class is_ssi_eligible(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Eligibility for Supplemental Security Income"
+    label = "SSI eligibility"
