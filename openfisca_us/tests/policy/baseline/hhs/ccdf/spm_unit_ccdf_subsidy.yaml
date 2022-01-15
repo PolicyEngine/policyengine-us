@@ -30,3 +30,18 @@
         spm_unit_total_ccdf_copay: 6_850
   output:
     spm_unit_ccdf_subsidy: 12_650
+
+- name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3, family asset above $1,000,000
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        ccdf_market_rate: 21_112
+        is_ccdf_eligible: FALSE
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_total_ccdf_copay: 2_804
+  output:
+    spm_unit_ccdf_subsidy: 0
