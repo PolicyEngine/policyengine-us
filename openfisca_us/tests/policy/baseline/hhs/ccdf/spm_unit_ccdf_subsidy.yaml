@@ -45,3 +45,18 @@
         spm_unit_total_ccdf_copay: 2_804
   output:
     spm_unit_ccdf_subsidy: 0
+
+- name: copay exceeding market rate
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        ccdf_market_rate: 18_500
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_total_ccdf_copay: 20_000
+  output:
+    spm_unit_ccdf_subsidy: 0
