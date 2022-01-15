@@ -214,5 +214,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+[0.23.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.22.0...0.23.0
+[0.22.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.21.0...0.22.0
+[0.21.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.20.2...0.21.0
+[0.20.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.20.1...0.20.2
+[0.20.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.20.0...0.20.1
+[0.20.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.19.3...0.20.0
+[0.19.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.19.2...0.19.3
+[0.19.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.19.1...0.19.2
+[0.19.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.19.0...0.19.1
+[0.19.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.18.0...0.19.0
+[0.18.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.17.1...0.18.0
+[0.17.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.17.0...0.17.1
+[0.17.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.16.0...0.17.0
+[0.16.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.15.2...0.16.0
+[0.15.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.15.1...0.15.2
+[0.15.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.15.0...0.15.1
+[0.15.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.14.0...0.15.0
+[0.14.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.13.0...0.14.0
+[0.13.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.12.0...0.13.0
+[0.12.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.11.0...0.12.0
+[0.11.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.10.0...0.11.0
+[0.10.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.9.0...0.10.0
+[0.9.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.8.0...0.9.0
+[0.8.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.7.0...0.8.0
+[0.7.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.6.0...0.7.0
+[0.6.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.5.0...0.6.0
+[0.5.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.4.0...0.5.0
+[0.4.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.3.1...0.4.0
 [0.3.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.3.0...0.3.1
 [0.3.0]: https://github.com/PolicyEngine/openfisca-us/releases/tag/0.3.0
