@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), 
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
+## [0.23.1] - 2022-01-15
+
+### Fixed
+
+* Added links to version tag diffs in changelog.
+
 ## [0.23.0] - 2022-01-15
 
 ### Fixed
@@ -214,6 +220,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+[0.23.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.0...0.23.1
 [0.23.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.22.0...0.23.0
 [0.22.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.21.0...0.22.0
 [0.21.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.20.2...0.21.0
