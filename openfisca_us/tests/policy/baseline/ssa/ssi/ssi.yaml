@@ -2,10 +2,8 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    people:
-      person:
-        is_ssi_eligible: true
-        ssi_amount_if_eligible: 100
+    is_ssi_eligible: true
+    ssi_amount_if_eligible: 100
   output:
     ssi: 100
 
@@ -13,9 +11,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    people:
-      person:
-        is_ssi_eligible: false
-        ssi_amount_if_eligible: 100
+    is_ssi_eligible: false
+    ssi_amount_if_eligible: 100
   output:
     ssi: 0
