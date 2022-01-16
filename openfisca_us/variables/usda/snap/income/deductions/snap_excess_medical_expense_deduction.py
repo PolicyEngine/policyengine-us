@@ -21,4 +21,5 @@ class snap_excess_medical_expense_deduction(Variable):
         moop = person("medical_out_of_pocket_expenses", period)
         elderly_disabled_moop = spm_unit.sum(moop * (elderly | disabled))
         p = parameters(period).usda.snap.deductions.excess_medical_expense
-        return max_(elderly_disabled_moop - p.threshold, 0)
+        threshold = p.threshold * 12
+        return max_(elderly_disabled_moop - threshold, 0)
