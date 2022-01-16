@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * SNAP excess medical deduction logic.
 
+## Changed
+
+* Reorganized SNAP deduction parameters.
+
 ## [0.23.1] - 2022-01-15
 
 ### Fixed
