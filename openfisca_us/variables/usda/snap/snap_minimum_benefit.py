@@ -22,10 +22,6 @@ class snap_minimum_benefit(Variable):
             * 12
         )
         # Minimum benefits only apply to households up to a certain size.
-        household_size = spm_unit.nb_persons()
-        min_share_of_max = where(
-            household_size <= min_benefit.maximum_household_size,
-            min_benefit.rate,
-            0,
-        )
-        return relevant_max_benefit * min_share_of_max
+        size = spm_unit("spm_unit_size", period)
+        eligible = size <= min_benefit.maximum_household_size
+        return eligible * min_benefit.rate * relevant_max_benefit
