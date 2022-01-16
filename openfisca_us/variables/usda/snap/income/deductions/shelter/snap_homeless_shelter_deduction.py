@@ -15,5 +15,5 @@ class snap_homeless_shelter_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
         is_homeless = spm_unit.household("is_homeless", period)
-        deduction = parameters(period).usda.snap.homeless_shelter_deduction
+        deduction = parameters(period).usda.snap.deductions.shelter.homeless
         return (is_homeless * deduction) * 12

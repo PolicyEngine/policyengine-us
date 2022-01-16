@@ -11,7 +11,7 @@ class snap_standard_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_1"
 
     def formula(spm_unit, period, parameters):
-        standard_deductions = parameters(period).usda.snap.standard_deduction
+        standard_deductions = parameters(period).usda.snap.deductions.standard
         state_group = spm_unit.household("state_group_str", period)
         capped_household_size = min_(spm_unit.nb_persons(), 6)
         return standard_deductions[state_group][capped_household_size] * 12

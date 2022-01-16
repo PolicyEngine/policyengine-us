@@ -13,7 +13,7 @@ class snap_shelter_deduction(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        shelter_deduction = parameters(period).usda.snap.shelter_deduction
+        shelter_deduction = parameters(period).usda.snap.deductions.shelter
 
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold
@@ -28,7 +28,7 @@ class snap_shelter_deduction(Variable):
 
         # Index maximum shelter deduction by state group.
         state_group = spm_unit.household("state_group_str", period)
-        ded_cap = shelter_deduction.amount[state_group]
+        ded_cap = shelter_deduction.cap[state_group]
 
         has_elderly_disabled = spm_unit("has_usda_elderly_disabled", period)
         # Cap for all but elderly/disabled people.

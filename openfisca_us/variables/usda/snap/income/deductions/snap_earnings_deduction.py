@@ -11,5 +11,5 @@ class snap_earnings_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_2"
 
     def formula(spm_unit, period, parameters):
-        deduction_rate = parameters(period).usda.snap.earnings_deduction
+        deduction_rate = parameters(period).usda.snap.deductions.earnings
         return spm_unit("snap_gross_income", period) * deduction_rate
