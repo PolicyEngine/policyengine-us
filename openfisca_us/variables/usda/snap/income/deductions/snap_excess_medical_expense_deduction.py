@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class snap_medical_expense_deduction(Variable):
+class snap_excess_medical_expense_deduction(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP excess medical expense deduction"
