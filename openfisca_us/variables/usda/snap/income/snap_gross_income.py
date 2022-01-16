@@ -11,4 +11,6 @@ class snap_gross_income(Variable):
     unit = USD
 
     def formula(spm_unit, period):
-        return spm_unit.sum(spm_unit.members("market_income", period))
+        return add(
+            spm_unit, period, "snap_earned_income", "snap_unearned_income"
+        )
