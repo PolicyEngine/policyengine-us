@@ -14,7 +14,7 @@
   period: 2022
   input:
     is_usda_disabled: true
-    out_of_pocket_medical_expenses: 35 * 12
+    medical_out_of_pocket_expenses: 35 * 12
   output:
     snap_excess_medical_expense_deduction: 0
 
@@ -22,7 +22,7 @@
   period: 2022
   input:
     is_usda_disabled: true
-    out_of_pocket_medical_expenses: 35.01 * 12
+    medical_out_of_pocket_expenses: 35.01 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 120 * 12
@@ -32,7 +32,7 @@
   input:
     is_usda_disabled: true
     is_usda_elderly: true
-    out_of_pocket_medical_expenses: 155 * 12
+    medical_out_of_pocket_expenses: 155 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: 120 * 12
@@ -41,7 +41,7 @@
   period: 2022
   input:
     is_usda_elderly: true
-    out_of_pocket_medical_expenses: 156 * 12
+    medical_out_of_pocket_expenses: 156 * 12
     state_code_str: CA
   output:
     snap_excess_medical_expense_deduction: (156 - 35) * 12
@@ -53,7 +53,7 @@
       elderly:
         is_usda_elderly: true
       young:
-        out_of_pocket_medical_expenses: 100 * 12
+        medical_out_of_pocket_expenses: 100 * 12
     spm_units:
       spm_unit:
         members: [elderly, young]
