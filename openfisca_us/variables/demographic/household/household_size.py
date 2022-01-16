@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class HouseholdSize(Enum):
     ONE = 1
     TWO = 2
@@ -21,6 +22,7 @@ class HouseholdSize(Enum):
     EIGHTEEN = 18
     NINETEEN = 19
     TWENTY = 20
+
 
 class household_size(Variable):
     value_type = Enum

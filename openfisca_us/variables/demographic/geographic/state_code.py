@@ -65,6 +65,7 @@ class State(Enum):
     AE = "Armed Forces Africa/Canada/Europe/Middle East"
     AP = "Armed Forces Pacific"
 
+
 class StateCode(Enum):
     AL = "AL"
     AK = "AK"
@@ -138,6 +139,7 @@ class state_code(Variable):
     def formula(household, period, parameters):
         return StateCode.encode(household("state", period).decode_to_str())
 
+
 class state(Variable):
     value_type = Enum
     possible_values = State
@@ -145,5 +147,3 @@ class state(Variable):
     entity = Household
     label = "State"
     definition_period = ETERNITY
-
-

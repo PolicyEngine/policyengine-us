@@ -25,6 +25,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         param_path = os.path.join(COUNTRY_DIR, "parameters")
         self.load_parameters(param_path)
 
-        self.parameters = homogenize_parameter_structures(self.parameters, self.variables)
+        self.parameters = homogenize_parameter_structures(
+            self.parameters, self.variables
+        )
 
         # We define which variable, parameter and simulation example will be used in the OpenAPI specification
