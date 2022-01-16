@@ -4,6 +4,7 @@
     snap_excess_shelter_expense_deduction: 0
 
 - name: Otherwise 20% of earned income.
+  period: 2022
   input:
     snap_earned_income: 10_000
   output:
