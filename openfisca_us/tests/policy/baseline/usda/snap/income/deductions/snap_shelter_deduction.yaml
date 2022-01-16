@@ -17,10 +17,11 @@
   input:
     snap_net_income_pre_shelter: 6_000
     housing_cost: 6_000
+    snap_utility_allowance: 0
   output:
     snap_shelter_deduction: 3_000 # Uncapped since less than 597 * 12 = $7,164.
 
-- name: Caps at $597 per month.
+- name: Caps at $597 per month in contiguous US.
   period: 2022
   input:
     housing_cost: 600 * 12

@@ -24,7 +24,7 @@ class snap_shelter_deduction(Variable):
         uncapped_ded = max_(housing_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
         state_group = spm_unit.household("state_group_str", period)
-        ded_cap = p.cap[state_group]
+        ded_cap = p.cap[state_group] * 12
         capped_ded = min_(uncapped_ded, ded_cap)
         has_elderly_disabled = spm_unit("has_usda_elderly_disabled", period)
         # Cap for all but elderly/disabled people and add utility allowance.
@@ -32,8 +32,8 @@ class snap_shelter_deduction(Variable):
             has_elderly_disabled, uncapped_ded, capped_ded
         ) + spm_unit("snap_utility_allowance", period)
         # Homeless shelter deduction is flat and has no utility component.
-        return 12 * where(
+        return where(
             spm_unit.household("is_homeless", period),
-            p.homeless,
+            p.homeless * 12,
             non_homeless_shelter_deduction,
         )
