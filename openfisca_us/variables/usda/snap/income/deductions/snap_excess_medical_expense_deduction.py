@@ -22,4 +22,10 @@ class snap_excess_medical_expense_deduction(Variable):
         elderly_disabled_moop = spm_unit.sum(moop * (elderly | disabled))
         p = parameters(period).usda.snap.deductions.excess_medical_expense
         threshold = p.threshold * 12
-        return max_(elderly_disabled_moop - threshold, 0)
+        excess = max_(elderly_disabled_moop - threshold, 0)
+        # Calculate standard medical deduction (SMD).
+        state = spm_unit.household("state_code_str", period)
+        standard = p.standard[state] * 12
+        standard_claimable = where(excess > 0, standard, 0)
+        # Return the greater of SMD and normal deduction.
+        return max_(excess, standard_claimable)
