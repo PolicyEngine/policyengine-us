@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class snap_shelter_deduction(Variable):
+class snap_excess_shelter_expense_deduction(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
@@ -13,7 +13,7 @@ class snap_shelter_deduction(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).usda.snap.deductions.shelter
+        p = parameters(period).usda.snap.deductions.excess_shelter_expense
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold.
         net_income_pre_shelter = spm_unit(
