@@ -1,4 +1,4 @@
-description: Maximum SNAP benefit by geography and household size
+description: Maximum SNAP allotment by state group and household size.
 
 main:
   CONTIGUOUS_US:
@@ -38,152 +38,200 @@ main:
     1:
       2020-10-01: 251
       2021-01-01: 289
+      2021-10-01: 322
     2:
       2020-10-01: 460
       2021-01-01: 530
+      2021-10-01: 591
     3:
       2020-10-01: 659
       2021-01-01: 758
+      2021-10-01: 846
     4:
       2020-10-01: 837
       2021-01-01: 963
+      2021-10-01: 1074
     5:
       2020-10-01: 995
       2021-01-01: 1_114
+      2021-10-01: 1276
     6:
       2020-10-01: 1194
       2021-01-01: 1373
+      2021-10-01: 1531
     7:
       2020-10-01: 1319
       2021-01-01: 1517
+      2021-10-01: 1692
     8:
       2020-10-01: 1508
       2021-01-01: 1734
+      2021-10-01: 1934
   AK_RURAL_1:
     1:
       2020-10-01: 320
       2021-01-01: 368
+      2021-10-01: 411
     2:
       2020-10-01: 587
       2021-01-01: 675
+      2021-10-01: 753
     3:
       2020-10-01: 841
       2021-01-01: 967
+      2021-10-01: 1079
     4:
       2020-10-01: 1068
       2021-01-01: 1228
+      2021-10-01: 1370
     5:
       2020-10-01: 1268
       2021-01-01: 1459
+      2021-10-01: 1627
     6:
       2020-10-01: 1522
       2021-01-01: 1751
+      2021-10-01: 1952
     7:
       2020-10-01: 1682
       2021-01-01: 1935
+      2021-10-01: 2158
     8:
       2020-10-01: 1923
       2021-01-01: 2211
+      2021-10-01: 2466
   AK_RURAL_2:
     1:
       2020-10-01: 390
       2021-01-01: 448
+      2021-10-01: 500
     2:
       2020-10-01: 715
       2021-01-01: 822
+      2021-10-01: 917
     3:
       2020-10-01: 1024
       2021-01-01: 1177
+      2021-10-01: 1313
     4:
       2020-10-01: 1300
       2021-01-01: 1495
+      2021-10-01: 1667
     5:
       2020-10-01: 1544
       2021-01-01: 1776
+      2021-10-01: 1980
     6:
       2020-10-01: 1853
       2021-01-01: 2131
+      2021-10-01: 2376
     7:
       2020-10-01: 2048
       2021-01-01: 2355
+      2021-10-01: 2626
     8:
       2020-10-01: 2340
       2021-01-01: 2692
+      2021-10-01: 3002
   GU:
     1:
       2020-10-01: 300
       2021-01-01: 345
+      2021-10-01: 369
     2:
       2020-10-01: 551
       2021-01-01: 634
+      2021-10-01: 677
     3:
       2020-10-01: 789
       2021-01-01: 908
+      2021-10-01: 969
     4:
       2020-10-01: 1002
       2021-01-01: 1153
+      2021-10-01: 1231
     5:
       2020-10-01: 1190
       2021-01-01: 1369
+      2021-10-01: 1462
     6:
       2020-10-01: 1428
       2021-01-01: 1643
+      2021-10-01: 1754
     7:
       2020-10-01: 1579
       2021-01-01: 1816
+      2021-10-01: 1939
     8:
       2020-10-01: 1804
       2021-01-01: 2075
+      2021-10-01: 2216
   HI:
     1:
       2020-10-01: 375
       2021-01-01: 432
+      2021-10-01: 472
     2:
       2020-10-01: 688
       2021-01-01: 792
+      2021-10-01: 865
     3:
       2020-10-01: 986
       2021-01-01: 1134
+      2021-10-01: 1239
     4:
       2020-10-01: 1252
       2021-01-01: 1440
+      2021-10-01: 1573
     5:
       2020-10-01: 1487
       2021-01-01: 1710
+      2021-10-01: 1868
     6:
       2020-10-01: 1784
       2021-01-01: 2052
+      2021-10-01: 2242
     7:
       2020-10-01: 1972
       2021-01-01: 2268
+      2021-10-01: 2478
     8:
       2020-10-01: 2254
       2021-01-01: 2592
+      2021-10-01: 2832
   VI:
     1:
       2020-10-01: 262
       2021-01-01: 301
+      2021-10-01: 322
     2:
       2020-10-01: 481
       2021-01-01: 553
+      2021-10-01: 590
     3:
       2020-10-01: 688
       2021-01-01: 792
+      2021-10-01: 845
     4:
       2020-10-01: 874
       2021-01-01: 1005
+      2021-10-01: 1074
     5:
       2020-10-01: 1038
       2021-01-01: 1194
+      2021-10-01: 1275
     6:
       2020-10-01: 1246
       2021-01-01: 1433
+      2021-10-01: 1530
     7:
       2020-10-01: 1377
       2021-01-01: 1584
+      2021-10-01: 1691
     8:
       2020-10-01: 1574
       2021-01-01: 1810
+      2021-10-01: 1933
 
 additional:
   CONTIGUOUS_US:
@@ -193,35 +241,47 @@ additional:
   AK_URBAN:
     2020-10-01: 189
     2021-01-01: 217
+    2021-10-01: 242
   AK_RURAL_1:
     2020-10-01: 240
     2021-01-01: 276
+    2021-10-01: 308
   AK_RURAL_2:
     2020-10-01: 293
     2021-01-01: 337
+    2021-10-01: 375
   GU:
     2020-10-01: 226
     2021-01-01: 259
+    2021-10-01: 277
   HI:
     2020-10-01: 558
     2021-01-01: 324
+    2021-10-01: 354
   VI:
     2020-10-01: 197
     2021-01-01: 226
+    2021-10-01: 242
 
 metadata:
   unit: currency-USD
   reference:
-    # Effective 2021-10-01.
-    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Income Eligibility Standards
-      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf#page=2
-    # Effective 2021-01-01, scheduled to end 2021-06-30.
-    # Special amounts signed in Consolidated Appropriations Act, 2021, at 115% of June 2020 value of Thrifty Food Plan.
-    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
-      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-COVID-Maximum-Allotments-Deductions.pdf
     # Effective 2020-10-01.
     - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Income Eligibility Standards
       href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+    # Effective 2021-01-01, scheduled to end 2021-06-30.
+    # Special amounts signed in Consolidated Appropriations Act, 2021, at 115% of June 2020 value of Thrifty Food Plan.
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions [CAA]
+      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-COVID-Maximum-Allotments-Deductions.pdf
+    # Effective 2021-01-01 through 2021-09-30.
+    # The American Rescue Plan Act extended the increases created in the Consolidated Appropriations Act.
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions [ARPA]
+      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-COVID%20ARPA-Maximum-Allotments-Deductions.pdf
+    # Effective 2021-10-01.
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Income Eligibility Standards
+      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf#page=2
+    # Links to all the above.
     - title: USDA Cost of Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/COLA
   period: month
+  breakdown: state_group
