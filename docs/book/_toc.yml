@@ -3,5 +3,7 @@
 
 format: jb-book
 root: index
-chapters:
-  - file: programs/snap
+parts:
+  - caption: Programs
+    chapters:
+      - file: programs/snap
