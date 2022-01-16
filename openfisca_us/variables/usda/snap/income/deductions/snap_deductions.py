@@ -12,4 +12,4 @@ class snap_deductions(Variable):
 
     def formula(spm_unit, period, parameters):
         snap_deductions = parameters(period).usda.snap.income.deductions
-        return add(spm_unit, period, *snap_deductions.allowed)
+        return add(spm_unit, period, snap_deductions.allowed)

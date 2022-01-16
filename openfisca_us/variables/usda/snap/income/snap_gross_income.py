@@ -12,5 +12,5 @@ class snap_gross_income(Variable):
 
     def formula(spm_unit, period):
         return add(
-            spm_unit, period, "snap_earned_income", "snap_unearned_income"
+            spm_unit, period, ["snap_earned_income", "snap_unearned_income"]
         )

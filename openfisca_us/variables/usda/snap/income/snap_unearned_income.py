@@ -12,4 +12,4 @@ class snap_unearned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         sources = parameters(period).usda.snap.income.sources.unearned
-        return aggr(spm_unit, period, *sources)
+        return aggr(spm_unit, period, sources)
