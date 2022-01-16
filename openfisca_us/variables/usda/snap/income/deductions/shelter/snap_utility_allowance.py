@@ -10,7 +10,7 @@ class snap_utility_allowance(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        utility = parameters(period).usda.snap.deductions.utility
+        utility = parameters(period).usda.snap.income.deductions.utility
         allowance_type = spm_unit("snap_utility_allowance_type", period)
         allowance_types = allowance_type.possible_values
         state = spm_unit.household("state_code_str", period)

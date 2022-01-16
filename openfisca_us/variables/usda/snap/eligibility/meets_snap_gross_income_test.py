@@ -13,7 +13,7 @@ class meets_snap_gross_income_test(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        income_limits = parameters(period).usda.snap.income_limits
+        income_limits = parameters(period).usda.snap.income.limit
         fpg = spm_unit("spm_unit_fpg", period)
         gross_income_limit = income_limits.gross.standard * fpg
         # Get income pre- and post-deductions.
