@@ -27,3 +27,21 @@
     snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
     snap_standard_deduction: 2_172 # 181 (parameter for family of 4 in contiguous US) * 12.
     snap_earned_income_deduction: 4_800 # 2000 * 0.2 (flat 20% parameter) * 12.
+
+- name: Single person in CA at 200% of FPL gets minimum benefit via BBCE.
+  period: 2022
+  input:
+    # Use 2021 FPL since 2022 technically takes effect on 2022-01-12.
+    employment_income: 12_880 * 2
+    state_code_str: CA
+  output:
+    # Minimum benefit is 8% of a one-person's maximum benefit.
+    snap: 250 * 0.08 * 12
+
+- name: Single person in CA at 200% of FPL + $1 is ineligible.
+  period: 2022
+  input:
+    employment_income: 12_880 * 2 + 1
+    state_code_str: CA
+  output:
+    snap: 0
