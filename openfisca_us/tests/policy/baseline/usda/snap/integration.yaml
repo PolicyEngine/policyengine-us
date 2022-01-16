@@ -19,8 +19,8 @@
       household:
         state_code_str: CA
   output:
-    snap: 3_051.6 # 8160 - 5108.4.
-    snap_max_benefit: 8_160 # 12 * $680 (parameter for family of 4 in contiguous US).
+    snap: 4_911.6 # 10_020 - 5108.4.
+    snap_max_benefit: 10_020 # 12 * $835 (parameter for family of 4 in contiguous US).
     snap_expected_contribution: 5_108.4 # 17028 * 0.3 (flat parameter).
     snap_net_income: 17_028 # 17028 - 0.
     snap_net_income_pre_shelter: 17_028 # 24000 - 2172 - 4800.
