@@ -1,6 +1,5 @@
 - name: "TANF: Eligible and has benefit"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     is_tanf_eligible: true
     tanf_amount_if_eligible: 200
@@ -9,7 +8,6 @@
 
 - name: "TANF: Ineligible and does not receive benefit"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     is_tanf_eligible: false
     tanf_amount_if_eligible: -100

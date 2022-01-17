@@ -1,6 +1,6 @@
 - name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:
@@ -30,7 +30,7 @@
 
 - name: Family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:

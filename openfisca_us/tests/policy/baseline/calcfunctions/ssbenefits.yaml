@@ -1,6 +1,5 @@
 - name: SSBenefits unit test 0
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: SINGLE
     ymod: 38323
@@ -10,7 +9,6 @@
 
 - name: SSBenefits unit test 1
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: JOINT
     ymod: 54598
@@ -20,7 +18,7 @@
 
 - name: SSBenefits unit test 2
   period: 2019
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   input:
     mars: JOINT
     ymod: 132696
@@ -30,7 +28,6 @@
 
 - name: SSBenefits unit test 3
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: JOINT
     ymod: 84124
@@ -40,7 +37,6 @@
 
 - name: SSBenefits unit test 4
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: SINGLE
     ymod: 26098
@@ -50,7 +46,6 @@
 
 - name: SSBenefits unit test 5
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: JOINT
     ymod: 33518
@@ -60,7 +55,6 @@
 
 - name: SSBenefits unit test 6
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: JOINT
     ymod: 125013
@@ -70,7 +64,6 @@
 
 - name: SSBenefits unit test 7
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: SINGLE
     ymod: 25533
@@ -80,7 +73,6 @@
 
 - name: SSBenefits unit test 8
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: JOINT
     ymod: 51058
@@ -90,7 +82,6 @@
 
 - name: SSBenefits unit test 9
   period: 2019
-  absolute_error_margin: 1
   input:
     mars: SINGLE
     ymod: 66787

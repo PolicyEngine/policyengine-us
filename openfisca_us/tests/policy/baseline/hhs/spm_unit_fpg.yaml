@@ -1,6 +1,5 @@
 - name: One-person SPM unit in 2021 in contiguous US
   period: 2021
-  absolute_error_margin: 0.01
   input:
     spm_unit_size: 1
   output:
@@ -8,7 +7,6 @@
 
 - name: Three-person SPM unit in 2021 in contiguous US
   period: 2021
-  absolute_error_margin: 0.01
   input:
     spm_unit_size: 3
   output:
