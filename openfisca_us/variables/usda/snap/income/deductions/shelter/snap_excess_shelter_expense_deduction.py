@@ -21,7 +21,7 @@ class snap_excess_shelter_expense_deduction(Variable):
         net_income_pre_shelter = spm_unit(
             "snap_net_income_pre_shelter", period
         )
-        subtracted_income = p.income_share_threshold * net_income_pre_shelter
+        subtracted_income = p.income_share_disregard * net_income_pre_shelter
         housing_cost = spm_unit("housing_cost", period)
         uncapped_ded = max_(housing_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
