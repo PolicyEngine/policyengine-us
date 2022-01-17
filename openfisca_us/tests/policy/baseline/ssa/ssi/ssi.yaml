@@ -1,6 +1,5 @@
 - name: "SSI: Eligible and has benefit"
   period: 2022
-  absolute_error_margin: 0
   input:
     is_ssi_eligible: true
     ssi_amount_if_eligible: 100
@@ -9,7 +8,6 @@
 
 - name: "SSI: Ineligible and has benefit"
   period: 2022
-  absolute_error_margin: 0
   input:
     is_ssi_eligible: false
     ssi_amount_if_eligible: 100

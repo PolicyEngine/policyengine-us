@@ -1,0 +1,13 @@
+- name: Defaults to zero
+  period: 2020
+  output:
+    ptax_oasdi: 0
+
+- name: Sums payroll tax, self-employment tax, and extra payroll tax
+  period: 2020
+  input:
+    filer_ptax_ss_was: 1
+    filer_setax_ss: 1
+    extra_payrolltax: 1
+  output:
+    ptax_oasdi: 3

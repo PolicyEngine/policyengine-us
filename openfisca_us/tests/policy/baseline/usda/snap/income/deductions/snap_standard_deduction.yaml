@@ -1,6 +1,5 @@
 - name: Family of 4, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -23,7 +22,6 @@
 
 - name: Family of 2, 12k income (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -42,7 +40,6 @@
 
 - name: Family of 9, 24k income (Additional Deduction Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -86,7 +83,6 @@
 
 - name: Individual, 0 income (Extreme Test, Min)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -103,7 +99,6 @@
 
 - name: Individual, 100k income (Extreme Test, Max)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -120,7 +115,6 @@
 
 - name: Individual, 10k income, GU (State Group Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -137,7 +131,6 @@
 
 - name: Individual, 10k income, VI (State Group Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -154,7 +147,6 @@
 
 - name: Individual, 10k income, AK (State Group Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:
@@ -171,7 +163,6 @@
 
 - name: Individual, 10k income, HI (State Group Test)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       person_1:

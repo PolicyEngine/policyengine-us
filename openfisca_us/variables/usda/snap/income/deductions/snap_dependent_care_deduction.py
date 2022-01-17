@@ -9,3 +9,6 @@ class snap_dependent_care_deduction(Variable):
     documentation = "Deduction from SNAP gross income for dependent care"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_3"
+
+    def formula(spm_unit, period, parameters):
+        return spm_unit("childcare_expenses", period)

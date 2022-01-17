@@ -1,11 +1,11 @@
 - name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:
         age: 30
-        market_income: 2_000 * 12
+        employment_income: 2_000 * 12
       person_2:
         age: 35
       person_3:
@@ -18,13 +18,30 @@
     households:
       household:
         state_code_str: CA
-        state_group: CONTIGUOUS_US
   output:
-    snap: 3_051.6 # 8160 - 5108.4.
-    snap_max_benefit: 8_160 # 12 * $680 (parameter for family of 4 in contiguous US).
+    snap: 4_911.6 # 10_020 - 5108.4.
+    snap_max_allotment: 10_020 # 12 * $835 (parameter for family of 4 in contiguous US).
     snap_expected_contribution: 5_108.4 # 17028 * 0.3 (flat parameter).
     snap_net_income: 17_028 # 17028 - 0.
     snap_net_income_pre_shelter: 17_028 # 24000 - 2172 - 4800.
-    snap_shelter_deduction: 0 # No shelter costs reported.
+    snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
     snap_standard_deduction: 2_172 # 181 (parameter for family of 4 in contiguous US) * 12.
-    snap_earnings_deduction: 4_800 # 2000 * 0.2 (flat 20% parameter) * 12.
+    snap_earned_income_deduction: 4_800 # 2000 * 0.2 (flat 20% parameter) * 12.
+
+- name: Single person in CA at 200% of FPL gets minimum benefit via BBCE.
+  period: 2022
+  input:
+    # Use 2021 FPL since 2022 technically takes effect on 2022-01-12.
+    employment_income: 12_880 * 2
+    state_code_str: CA
+  output:
+    # Minimum benefit is 8% of a one-person's maximum benefit.
+    snap: 250 * 0.08 * 12
+
+- name: Single person in CA at 200% of FPL + $1 is ineligible.
+  period: 2022
+  input:
+    employment_income: 12_880 * 2 + 1
+    state_code_str: CA
+  output:
+    snap: 0

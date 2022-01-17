@@ -1,0 +1,10 @@
+from openfisca_us.model_api import *
+
+
+class employment_income(Variable):
+    value_type = float
+    entity = Person
+    label = "Employment income"
+    unit = USD
+    documentation = "Employment income"
+    definition_period = YEAR

@@ -2,7 +2,6 @@
 
 - name: Married, young
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -39,7 +38,6 @@
 
 - name: Married, allow charity
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -76,7 +74,6 @@
 
 - name: Married, allow charity, over limit
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -113,7 +110,6 @@
 
 - name: Married, two old
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -150,7 +146,6 @@
 
 - name: Single 1
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -185,7 +180,6 @@
 
 - name: Single 2
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -220,7 +214,6 @@
 
 - name: Married, single
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -255,7 +248,6 @@
 
 - name: Married, Single, dep, under earn
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
@@ -290,7 +282,6 @@
 
 - name: Married, Single, dep, over earn
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
