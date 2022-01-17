@@ -16,5 +16,7 @@ class ctc_percent_reduction(Variable):
         mars = tax_unit("mars", period)
         excess = max_(0, agi - ctc.phaseout.threshold[mars])
         reduction = excess * ctc.phaseout.rate
-        maximum_ctc = add(tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"])
+        maximum_ctc = add(
+            tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"]
+        )
         return min_(reduction / maximum_ctc, 1)

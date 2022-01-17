@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class is_ctc_adult_eligible(Variable):
     value_type = bool
     entity = Person

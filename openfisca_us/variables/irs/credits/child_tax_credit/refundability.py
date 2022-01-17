@@ -21,11 +21,7 @@ class ctc_reducible_income_tax(Variable):
             "retirement_savings_credit",
             "elderly_disabled_credit",
         ]
-        credits = add(
-            tax_unit,
-            period,
-            *OTHER_CREDITS
-        )
+        credits = add(tax_unit, period, *OTHER_CREDITS)
         return max_(tax_liability - credits, 0)
 
 
@@ -86,7 +82,9 @@ class nonrefundable_ctc_unclaimable(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        maximum_ctc = add(tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"])
+        maximum_ctc = add(
+            tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"]
+        )
         percent_reduction = tax_unit("ctc_percent_reduction", period)
         ctc_if_fully_refundable = maximum_ctc * (1 - percent_reduction)
         return ctc_if_fully_refundable - tax_unit("child_tax_credit", period)
