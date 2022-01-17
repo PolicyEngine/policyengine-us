@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* SNAP excess medical deduction logic.
+* Logic for SNAP excess medical deduction and dependent care deduction.
 * Limit SNAP earned income deduction to earned income.
 * Jupyter Book documentation on SNAP.
 * Updated SNAP parameters.
