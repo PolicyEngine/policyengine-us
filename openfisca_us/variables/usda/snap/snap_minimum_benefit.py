@@ -16,7 +16,7 @@ class snap_minimum_benefit(Variable):
         # benefit for a household of a certain size in their state.
         state_group = spm_unit.household("state_group_str", period)
         relevant_max_benefit = (
-            snap.amount.main[state_group][
+            snap.max_allotment.main[state_group][
                 str(min_benefit.relevant_max_benefit_household_size)
             ]
             * 12

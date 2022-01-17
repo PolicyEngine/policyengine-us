@@ -10,7 +10,7 @@ class snap_max_benefit(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        snap_max_benefits = parameters(period).usda.snap.amount.main
+        snap_max_benefits = parameters(period).usda.snap.max_allotment.main
         state_group = spm_unit.household("state_group_str", period)
         household_size = spm_unit("spm_unit_size", period)
         return snap_max_benefits[state_group][household_size] * 12
