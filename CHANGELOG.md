@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Changed
 
 * Add metadata for variables and parameters used in SNAP calculations.
+* Renames two parameters involved in SNAP deductions from `threshold` to `disregard`.
 
 ## [0.24.0] - 2022-01-17
 
