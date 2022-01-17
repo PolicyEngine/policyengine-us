@@ -5,15 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0), 
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
-## [0.24.0] - 2022-01-16
+## [0.24.0] - 2022-01-17
 
 ### Added
 
 * SNAP excess medical deduction logic.
+* Limit SNAP earned income deduction to earned income.
+* Jupyter Book documentation on SNAP.
+* Updated SNAP parameters.
+* Empty variables for calculating SNAP: `employment_income`, `self_employment_income`, `dividend_income`, `interest_income`, `childcare_expenses`, and `medical_out_of_pocket_expenses`.
 
 ## Changed
 
-* Reorganized SNAP deduction parameters.
+* Significant refactoring of SNAP code.
+* Use openfisca-tools for `add` and `aggr` functions, and pass lists of variables to these function.
+* Rename min/max SNAP benefit parameters and variables to use `allotment`.
 
 ## [0.23.1] - 2022-01-15
 
