@@ -15,7 +15,7 @@ class snap(Variable):
         # defines state powers to modify the rules.
         eligible = spm_unit("is_snap_eligible", period)
         expected_contribution = spm_unit("snap_expected_contribution", period)
-        max_benefit = spm_unit("snap_max_benefit", period)
+        max_benefit = spm_unit("snap_max_allotment", period)
         normal_benefit = max_benefit - expected_contribution
         min_benefit = spm_unit("snap_minimum_benefit", period)
         amount_if_eligible = max_(min_benefit, normal_benefit)
