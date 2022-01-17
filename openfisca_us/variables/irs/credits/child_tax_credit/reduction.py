@@ -1,0 +1,21 @@
+from openfisca_us.model_api import *
+
+
+class ctc_percent_reduction(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "CTC reduction"
+    definition_period = YEAR
+    unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/26/24#b"
+
+    def formula(tax_unit, period, parameters):
+        ctc = parameters(period).irs.credits.child_tax_credit
+        agi = tax_unit("adjusted_gross_income", period)
+        mars = tax_unit("mars", period)
+        excess = max_(0, agi - ctc.phaseout.threshold[mars])
+        reduction = excess * ctc.phaseout.rate
+        maximum_ctc = tax_unit("ctc_child_maximum", period) + tax_unit(
+            "ctc_adult_maximum", period
+        )
+        return min_(reduction / maximum_ctc, 1)
