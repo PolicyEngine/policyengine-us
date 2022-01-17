@@ -13,17 +13,18 @@ class ctc_reducible_income_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         tax_liability = tax_unit("income_tax_before_credits", period)
+        OTHER_CREDITS = [
+            "residential_energy_credit",
+            "foreign_tax_credit",
+            "child_dependent_care_expense_credit",
+            "education_tax_credits",
+            "retirement_savings_credit",
+            "elderly_disabled_credit",
+        ]
         credits = add(
             tax_unit,
             period,
-            *[
-                "residential_energy_credit",
-                "foreign_tax_credit",
-                "child_dependent_care_expense_credit",
-                "education_tax_credits",
-                "retirement_savings_credit",
-                "elderly_disabled_credit",
-            ]
+            *OTHER_CREDITS
         )
         return max_(tax_liability - credits, 0)
 
@@ -31,7 +32,7 @@ class ctc_reducible_income_tax(Variable):
 class ctc_child(Variable):
     value_type = float
     entity = TaxUnit
-    label = "CTC for non-adult dependents"
+    label = "CTC for child dependents"
     unit = "currency-USD"
     definition_period = YEAR
 
@@ -50,7 +51,7 @@ class ctc_child(Variable):
 class ctc_adult(Variable):
     value_type = float
     entity = TaxUnit
-    label = "CTC for children"
+    label = "CTC for adult dependents"
     unit = "currency-USD"
     definition_period = YEAR
 
@@ -61,6 +62,9 @@ class ctc_adult(Variable):
         reducible_liability = max_(
             0,
             tax_unit("ctc_reducible_income_tax", period)
+            # The child CTC may be refundable, but it still
+            # reduces income tax liability (takes up non-refundable
+            # space).
             - tax_unit("ctc_child", period),
         )
         entitlement = max_amount * (1 - percent_reduction)
@@ -82,9 +86,7 @@ class nonrefundable_ctc_unclaimable(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        maximum_ctc = tax_unit("ctc_child_maximum", period) + tax_unit(
-            "ctc_adult_maximum", period
-        )
+        maximum_ctc = add(tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"])
         percent_reduction = tax_unit("ctc_percent_reduction", period)
         ctc_if_fully_refundable = maximum_ctc * (1 - percent_reduction)
         return ctc_if_fully_refundable - tax_unit("child_tax_credit", period)

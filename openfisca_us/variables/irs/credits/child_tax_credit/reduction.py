@@ -4,9 +4,10 @@ from openfisca_us.model_api import *
 class ctc_percent_reduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "CTC reduction"
+    label = "CTC percent reduction"
+    documentation = "Used to reduce the CTC adult and child amounts by the same percentage."
     definition_period = YEAR
-    unit = USD
+    unit = PERCENT
     reference = "https://www.law.cornell.edu/uscode/text/26/24#b"
 
     def formula(tax_unit, period, parameters):
@@ -15,7 +16,5 @@ class ctc_percent_reduction(Variable):
         mars = tax_unit("mars", period)
         excess = max_(0, agi - ctc.phaseout.threshold[mars])
         reduction = excess * ctc.phaseout.rate
-        maximum_ctc = tax_unit("ctc_child_maximum", period) + tax_unit(
-            "ctc_adult_maximum", period
-        )
+        maximum_ctc = add(tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"])
         return min_(reduction / maximum_ctc, 1)

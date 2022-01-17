@@ -36,6 +36,8 @@ infinity = np.inf
 select = np.select
 where = np.where
 
+PERCENT = "/1"
+
 
 def variable_alias(name: str, variable_cls: type) -> type:
     """
