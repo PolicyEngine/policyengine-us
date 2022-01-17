@@ -1,0 +1,241 @@
+- name: ChildDepTaxCredit unit test 1 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: HOUSEHOLD_HEAD
+    c00100: 31202
+    XTOT: 5
+    num: 1
+    c05800: 235
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 1
+    n1820: 0
+  output:
+    c07220: 216.92307692307693
+    odc: 18.076923076923066
+    codtc_limited: 6265.0
+- name: ChildDepTaxCredit unit test 2 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 1
+    mars: HOUSEHOLD_HEAD
+    c00100: 36796
+    XTOT: 3
+    num: 1
+    c05800: 954
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 1
+    n1820: 1
+  output:
+    c07220: 763.2
+    odc: 190.79999999999995
+    codtc_limited: 1546.0
+- name: ChildDepTaxCredit unit test 3 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: HOUSEHOLD_HEAD
+    c00100: 45628
+    XTOT: 5
+    num: 1
+    c05800: 1869
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 1
+    n1820: 1
+  output:
+    c07220: 1725.2307692307693
+    odc: 143.76923076923072
+    codtc_limited: 4631.0
+- name: ChildDepTaxCredit unit test 4 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 1
+    mars: JOINT
+    c00100: 33110
+    XTOT: 4
+    num: 2
+    c05800: 491
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 2
+    n1820: 1
+  output:
+    c07220: 392.8
+    odc: 98.19999999999999
+    codtc_limited: 2009.0
+- name: ChildDepTaxCredit unit test 5 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 5
+    mars: JOINT
+    c00100: 54894
+    XTOT: 8
+    num: 2
+    c05800: 433
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 2
+    n1820: 0
+  output:
+    c07220: 412.3809523809524
+    odc: 20.619047619047592
+    codtc_limited: 10067.0
+- name: ChildDepTaxCredit unit test 6 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: JOINT
+    c00100: 49719
+    XTOT: 6
+    num: 2
+    c05800: 778
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 2
+    n1820: 0
+  output:
+    c07220: 718.1538461538462
+    odc: 59.84615384615381
+    codtc_limited: 5722.0
+- name: ChildDepTaxCredit unit test 7 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: JOINT
+    c00100: 71049
+    XTOT: 6
+    num: 2
+    c05800: 3116
+    e07260: 0
+    e07300: 0
+    c07180: 128
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 1
+    n21: 2
+    n1820: 0
+  output:
+    c07220: 2758.153846153846
+    odc: 229.8461538461538
+    codtc_limited: 3512.0
+- name: ChildDepTaxCredit unit test 8 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: JOINT
+    c00100: 62328
+    XTOT: 6
+    num: 2
+    c05800: 2981
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 2
+    n1820: 1
+  output:
+    c07220: 2751.6923076923076
+    odc: 229.30769230769238
+    codtc_limited: 3519.0
+- name: ChildDepTaxCredit unit test 9 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: JOINT
+    c00100: 41116
+    XTOT: 7
+    num: 2
+    c05800: 106
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 1
+    n21: 2
+    n1820: 1
+  output:
+    c07220: 90.85714285714286
+    odc: 15.142857142857139
+    codtc_limited: 6894.0
+- name: ChildDepTaxCredit unit test 10 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 1
+  input:
+    n24: 3
+    mars: HOUSEHOLD_HEAD
+    c00100: 45628
+    XTOT: 5
+    num: 1
+    c05800: 1869
+    e07260: 0
+    e07300: 0
+    c07180: 0
+    c07230: 0
+    e07240: 0
+    c07200: 0
+    exact: 0
+    nu06: 0
+    n21: 1
+    n1820: 1
+  output:
+    c07220: 1725.2307692307693
+    odc: 143.76923076923072
+    codtc_limited: 4631.0
+
