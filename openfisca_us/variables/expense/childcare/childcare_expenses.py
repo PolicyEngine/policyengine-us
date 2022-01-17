@@ -6,3 +6,4 @@ class childcare_expenses(Variable):
     entity = SPMUnit
     label = "Child care expenses"
     definition_period = YEAR
+    unit = USD
