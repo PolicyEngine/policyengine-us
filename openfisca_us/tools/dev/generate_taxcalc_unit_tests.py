@@ -158,6 +158,7 @@ def generate_yaml_tests(fn_name: str, n: int = 10) -> str:
 
 RENAMES = {
     "MARS": "mars",
+    "XTOT": "xtot",
 }
 
 VALUE_RENAMES = {
