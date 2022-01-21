@@ -1,6 +1,5 @@
 - name: AMT unit test 0
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 0
@@ -33,7 +32,6 @@
 
 - name: AMT unit test 1
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 0
@@ -66,7 +64,6 @@
 
 - name: AMT unit test 2
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 3592
@@ -99,7 +96,6 @@
 
 - name: AMT unit test 3
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 909730
@@ -132,7 +128,6 @@
 
 - name: AMT unit test 4
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 0
@@ -165,7 +160,6 @@
 
 - name: AMT unit test 5
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 1675310
@@ -198,7 +192,6 @@
 
 - name: AMT unit test 6
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 0
@@ -231,7 +224,6 @@
 
 - name: AMT unit test 7
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 1675310
@@ -263,8 +255,8 @@
     c05800: 354438.98
 
 - name: AMT unit test 8
+  absolute_error_margin: 0.01
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 0
@@ -297,7 +289,6 @@
 
 - name: AMT unit test 9
   period: 2019
-  absolute_error_margin: 1
   input:
     e07300: 0
     dwks13: 830501

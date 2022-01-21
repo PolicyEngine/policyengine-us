@@ -1,6 +1,5 @@
 - name: "TANF: Has given maximum benefit amount and has smaller countable income"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     tanf_max_amount: 1000
     tanf_countable_income: 750
@@ -9,7 +8,6 @@
 
 - name: "TANF: Has given maximum benefit amount and has larger countable income"
   period: 2022
-  absolute_error_margin: 0.01
   input:
     tanf_max_amount: 1000
     tanf_countable_income: 1500
@@ -18,7 +16,6 @@
 
 - name: "TANF: Family of two in Illinois applying for TANF"
   period: 2022
-  absolute_error_margin: 0
   input:
     people:
       parent:
@@ -37,7 +34,6 @@
 
 - name: "TANF: Family of four in Illinois applying for TANF"
   period: 2022
-  absolute_error_margin: 0
   input:
     people:
       parent1:

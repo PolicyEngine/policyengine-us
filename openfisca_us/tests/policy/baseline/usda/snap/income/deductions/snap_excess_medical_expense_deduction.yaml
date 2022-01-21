@@ -1,0 +1,65 @@
+- name: Default is zero, since default medical expenses are zero.
+  period: 2022
+  output:
+    snap_excess_medical_expense_deduction: 0
+
+- name: Elderly person with no medical expenses gets zero.
+  period: 2022
+  input:
+    is_usda_elderly: true
+  output:
+    snap_excess_medical_expense_deduction: 0
+
+- name: Disabled person with $35 medical expenses gets $0.
+  period: 2022
+  input:
+    is_usda_disabled: true
+    medical_out_of_pocket_expenses: 35 * 12
+  output:
+    snap_excess_medical_expense_deduction: 0
+
+- name: Disabled person in California with $35.01 medical expenses gets the standard medical expense deduction.
+  period: 2022
+  input:
+    is_usda_disabled: true
+    medical_out_of_pocket_expenses: 35.01 * 12
+    state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: 120 * 12
+
+- name: Elderly/disabled person in California with $155 medical expenses gets the standard medical expense deduction.
+  period: 2022
+  input:
+    is_usda_disabled: true
+    is_usda_elderly: true
+    medical_out_of_pocket_expenses: 155 * 12
+    state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: 120 * 12
+
+- name: Elderly person in California with $156 medical expenses takes the normal deduction.
+  period: 2022
+  input:
+    is_usda_elderly: true
+    medical_out_of_pocket_expenses: 156 * 12
+    state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: (156 - 35) * 12
+
+- name: Expenses must be for the elderly/disabled person.
+  period: 2022
+  input:
+    people:
+      elderly:
+        is_usda_elderly: true
+      young:
+        medical_out_of_pocket_expenses: 100 * 12
+    spm_units:
+      spm_unit:
+        members: [elderly, young]
+    households:
+      household:
+        members: [elderly, young]
+        state_code_str: CA
+  output:
+    snap_excess_medical_expense_deduction: 0

@@ -1,6 +1,5 @@
 - name: Not eligible, no credit
   period: 2020
-  absolute_error_margin: 0
   input:
     is_eligible_for_american_opportunity_credit: false
     qualified_tuition_expenses: 1_000
@@ -9,7 +8,6 @@
 
 - name: Eligible, under first threshold of expenses
   period: 2020
-  absolute_error_margin: 0
   input:
     is_eligible_for_american_opportunity_credit: true
     qualified_tuition_expenses: 1_000
@@ -18,7 +16,6 @@
 
 - name: Over phaseout, no entitlement
   period: 2020
-  absolute_error_margin: 0
   input:
     qualified_tuition_expenses: 1_000
     adjusted_gross_income: 90_000

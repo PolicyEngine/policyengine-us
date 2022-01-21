@@ -1,6 +1,6 @@
 - name: Household size 4, State NY
   period: 2022
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.01 # Floating point issue.
   input:
     ccdf_income: 85_000
     hhs_smi: 104_972

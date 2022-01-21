@@ -10,7 +10,7 @@ class gross_was(Variable):
     unit = USD
 
     def formula(person, period):
-        return add(person, period, "e00200", "pencon")
+        return add(person, period, ["e00200", "pencon"])
 
 
 class txearn_was(Variable):
@@ -155,7 +155,7 @@ class setax(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        return add(person, period, "setax_ss", "setax_mc")
+        return add(person, period, ["setax_ss", "setax_mc"])
 
 
 class sey_frac_for_extra_oasdi(Variable):

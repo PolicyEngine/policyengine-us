@@ -1,7 +1,6 @@
 # Tests generated from tools/dev/generate_taxcalc_unit_tests.py
 - name: GainsTax unit test 0 (from)
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 0
     c01000: 0
@@ -28,7 +27,6 @@
 
 - name: GainsTax unit test 1
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 560
     c01000: 0
@@ -55,7 +53,6 @@
 
 - name: GainsTax unit test 2
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 1265
     c01000: 0
@@ -82,7 +79,6 @@
 
 - name: GainsTax unit test 3
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 168
     c01000: 0
@@ -109,7 +105,6 @@
 
 - name: GainsTax unit test 4
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 44472
     c01000: 0
@@ -136,7 +131,6 @@
 
 - name: GainsTax unit test 5
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 69
     c01000: 0
@@ -163,7 +157,6 @@
 
 - name: GainsTax unit test 6
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 229
     c01000: 0
@@ -190,7 +183,6 @@
 
 - name: GainsTax unit test 7
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 20428
     c01000: 0
@@ -217,7 +209,6 @@
 
 - name: GainsTax unit test 8
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 1877
     c01000: 0
@@ -244,7 +235,6 @@
 
 - name: GainsTax unit test 9
   period: 2019
-  absolute_error_margin: 1
   input:
     e00650: 3
     c01000: 0

@@ -1,6 +1,5 @@
 - name: No spouse
   period: 2019
-  absolute_error_margin: 0
   input:
     is_tax_unit_spouse: false
   output:
@@ -8,7 +7,6 @@
 
 - name: Two people, no spouse
   period: 2019
-  absolute_error_margin: 0
   input:
     people:
       p1:
@@ -23,7 +21,6 @@
 
 - name: Two people, one spouse.
   period: 2019
-  absolute_error_margin: 0
   input:
     people:
       p1:
