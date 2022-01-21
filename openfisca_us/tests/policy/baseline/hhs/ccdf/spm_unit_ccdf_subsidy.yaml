@@ -1,6 +1,5 @@
-- name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3 
+- name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       child:
@@ -15,7 +14,6 @@
 
 - name: 1 Infant in DCC/SACC provider, 1 Toddler in FDC/GFDC provider, Nassau county, NY state, Daily rates with 3 days/week for both children, family income $60,000, family size 4
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       child1:
@@ -33,7 +31,6 @@
 
 - name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3, family asset above $1,000,000
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       child:
@@ -48,7 +45,6 @@
 
 - name: copay exceeding market rate
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
       child:

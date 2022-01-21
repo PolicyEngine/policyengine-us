@@ -9,7 +9,7 @@ class sey(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        return add(person, period, "e00900", "e02100", "k1bx14")
+        return add(person, period, ["e00900", "e02100", "k1bx14"])
 
 
 class filer_sey(Variable):
@@ -32,19 +32,13 @@ class niit(Variable):
     documentation = "Net Investment Income Tax from Form 8960"
 
     def formula(tax_unit, period, parameters):
-        nii = max_(
-            0,
-            add(
-                tax_unit,
-                period,
-                *[
-                    "filer_e00300",
-                    "filer_e00600",
-                    "c01000",
-                    "filer_e02000",
-                ],
-            ),
-        )
+        NII_ELEMENTS = [
+            "filer_e00300",
+            "filer_e00600",
+            "c01000",
+            "filer_e02000",
+        ]
+        nii = max_(0, add(tax_unit, period, NII_ELEMENTS))
         niit = parameters(period).irs.investment.net_inv_inc_tax
         threshold = niit.threshold[tax_unit("mars", period)]
         base = min_(nii, max_(0, tax_unit("c00100", period) - threshold))
@@ -59,7 +53,7 @@ class combined(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "iitax", "payrolltax")
+        return add(tax_unit, period, ["iitax", "payrolltax"])
 
 
 class filer_earned(Variable):
@@ -91,7 +85,7 @@ class earned(Variable):
             * ald.misc.employer_share
             * person("setax", period)
         )
-        return max_(0, add(person, period, "e00200", "setax") - adjustment)
+        return max_(0, add(person, period, ["e00200", "setax"]) - adjustment)
 
 
 class was_plus_sey(Variable):
@@ -163,7 +157,7 @@ class expanded_income(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        FILER_COMPONENTS = (
+        FILER_COMPONENTS = [
             "e00200",
             "pencon",
             "e00300",
@@ -181,11 +175,11 @@ class expanded_income(Variable):
             "p22250",
             "p23250",
             "cmbtp",
-        )
+        ]
         filer_components = add(
             tax_unit,
             period,
-            *[f"filer_{component}" for component in FILER_COMPONENTS],
+            [f"filer_{component}" for component in FILER_COMPONENTS],
         )
         return (
             filer_components
@@ -236,7 +230,7 @@ class payrolltax(Variable):
             "filer_setax",
             "extra_payrolltax",
         ]
-        return add(tax_unit, period, *COMPONENTS)
+        return add(tax_unit, period, COMPONENTS)
 
 
 class employee_payrolltax(Variable):
@@ -262,7 +256,7 @@ class refund(Variable):
             period
         ).irs.credits.child_tax_credit.refundable
         ctc_refund = tax_unit("c07220", period) * ctc_refundable
-        REFUND_COMPONENTS = (
+        REFUND_COMPONENTS = [
             "eitc",
             "c11070",
             "c10960",
@@ -271,8 +265,8 @@ class refund(Variable):
             "personal_refundable_credit",
             "ctc_new",
             "rptc",
-        )
-        return add(tax_unit, period, *REFUND_COMPONENTS) + ctc_refund
+        ]
+        return add(tax_unit, period, REFUND_COMPONENTS) + ctc_refund
 
 
 class sep(Variable):
@@ -509,7 +503,7 @@ class c00100(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "ymod1", "c02500", "c02900")
+        return add(tax_unit, period, ["ymod1", "c02500", "c02900"])
 
 
 adjusted_gross_income = variable_alias("adjusted_gross_income", c00100)
@@ -679,17 +673,13 @@ class qbided(Variable):
 
     def formula(tax_unit, period, parameters):
         mars = tax_unit("mars", period)
-        qbinc = max_(
-            0,
-            add(
-                tax_unit,
-                period,
-                "filer_e00900",
-                "filer_e26270",
-                "filer_e02100",
-                "filer_e27200",
-            ),
-        )
+        QBINC_ELEMENTS = [
+            "filer_e00900",
+            "filer_e26270",
+            "filer_e02100",
+            "filer_e27200",
+        ]
+        qbinc = max_(0, add(tax_unit, period, QBINC_ELEMENTS))
         qbid = parameters(period).irs.deductions.qualified_business_interest
         lower_threshold = qbid.threshold.lower[mars]
         upper_threshold = lower_threshold + qbid.threshold.gap[mars]
@@ -744,7 +734,7 @@ class qbided(Variable):
         )
 
         # Apply taxable income cap
-        net_cg = add(tax_unit, period, "filer_e00650", "c01000")
+        net_cg = add(tax_unit, period, ["filer_e00650", "c01000"])
         taxinc_cap = qbid.pass_through_rate * max_(0, pre_qbid_taxinc - net_cg)
         return min_(qbid_amount, taxinc_cap)
 
@@ -847,7 +837,7 @@ class c05800(Variable):
     documentation = "Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "taxbc", "c09600")
+        return add(tax_unit, period, ["taxbc", "c09600"])
 
 
 income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)
@@ -1037,12 +1027,11 @@ class c07230(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(
-            tax_unit,
-            period,
+        ELEMENTS = [
             "non_refundable_american_opportunity_credit",
             "lifetime_learning_credit",
-        )
+        ]
+        return add(tax_unit, period, ELEMENTS)
 
 
 education_tax_credits = variable_alias("education_tax_credits", c07230)
@@ -1374,7 +1363,7 @@ class c21040(Variable):
     documentation = "Itemized deductions that are phased out"
 
     def formula(tax_unit, period, parameters):
-        nonlimited = add(tax_unit, period, "c17000", "c20500")
+        nonlimited = add(tax_unit, period, ["c17000", "c20500"])
         phaseout = parameters(period).irs.deductions.itemized.phaseout
         mars = tax_unit("mars", period)
         c21060 = tax_unit("c21060", period)
@@ -1403,16 +1392,8 @@ class c21060(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        return add(
-            tax_unit,
-            period,
-            "c17000",
-            "c18300",
-            "c19200",
-            "c19700",
-            "c20500",
-            "c20800",
-        )
+        ELEMENTS = ["c17000", "c18300", "c19200", "c19700", "c20500", "c20800"]
+        return add(tax_unit, period, ELEMENTS)
 
 
 class c23650(Variable):
@@ -1424,7 +1405,7 @@ class c23650(Variable):
     documentation = "Net capital gains (long and short term) before exclusion"
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, "filer_p23250", "filer_p22250")
+        return add(tax_unit, period, ["filer_p23250", "filer_p22250"])
 
 
 class tax_unit_is_joint(Variable):
@@ -1478,14 +1459,13 @@ class c59660(Variable):
             | head_age_is_eligible
             | spouse_age_is_eligible
         )
+        INVESTMENT_INCOME_ELEMENTS = [
+            "filer_e00400",
+            "filer_e00300",
+            "filer_e00600",
+        ]
         investment_income = (
-            add(
-                tax_unit,
-                period,
-                "filer_e00400",
-                "filer_e00300",
-                "filer_e00600",
-            )
+            add(tax_unit, period, INVESTMENT_INCOME_ELEMENTS)
             + max_(0, tax_unit("c01000", period))
             + max_(
                 0,
@@ -1658,7 +1638,7 @@ class dwks10(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        dwks10_if_gains = add(tax_unit, period, "dwks6", "dwks9")
+        dwks10_if_gains = add(tax_unit, period, ["dwks6", "dwks9"])
         dwks10_if_no_gains = (
             max_(
                 0,
@@ -1770,13 +1750,13 @@ class invinc_ec_base(Variable):
         # long-term capital losses
         limited_capital_gain = max_(
             -3000.0 / tax_unit("sep", period),
-            add(tax_unit, period, "filer_p22250", "filer_p23250"),
+            add(tax_unit, period, ["filer_p22250", "filer_p23250"]),
         )
         OTHER_INV_INCOME_VARS = ["e00300", "e00600", "e01100", "e01200"]
         other_inv_income = add(
             tax_unit,
             period,
-            *["filer_" + variable for variable in OTHER_INV_INCOME_VARS],
+            ["filer_" + variable for variable in OTHER_INV_INCOME_VARS],
         )
         return limited_capital_gain + other_inv_income
 
@@ -1830,13 +1810,8 @@ class ptax_oasdi(Variable):
     unit = USD
 
     def formula(tax_unit, period):
-        return add(
-            tax_unit,
-            period,
-            "filer_ptax_ss_was",
-            "filer_setax_ss",
-            "extra_payrolltax",
-        )
+        ELEMENTS = ["filer_ptax_ss_was", "filer_setax_ss", "extra_payrolltax"]
+        return add(tax_unit, period, ELEMENTS)
 
 
 class ptax_was(Variable):
@@ -1847,12 +1822,8 @@ class ptax_was(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(
-            tax_unit,
-            period,
-            "filer_ptax_ss_was",
-            "filer_ptax_mc_was",
-        )
+        ELEMENTS = ["filer_ptax_ss_was", "filer_ptax_mc_was"]
+        return add(tax_unit, period, ELEMENTS)
 
 
 class filer_setax(Variable):
@@ -1880,9 +1851,8 @@ class ymod(Variable):
             + (0.5 * tax_unit("filer_e02400", period))
             - tax_unit("c02900", period)
         )
-        ymod3 = add(
-            tax_unit, period, "filer_e03210", "filer_e03230", "filer_e03240"
-        )
+        YMOD3_ELEMENTS = ["filer_e03210", "filer_e03230", "filer_e03240"]
+        ymod3 = add(tax_unit, period, YMOD3_ELEMENTS)
         return tax_unit("ymod1", period) + ymod2 + ymod3
 
 
@@ -1895,7 +1865,7 @@ class ymod1(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        DIRECT_INPUTS = (
+        DIRECT_INPUTS = [
             "e00200",
             "e00700",
             "e00800",
@@ -1903,30 +1873,26 @@ class ymod1(Variable):
             "e01700",
             "e02100",
             "e02300",
-        )
+        ]
         direct_inputs = add(
             tax_unit,
             period,
-            *["filer_" + variable for variable in DIRECT_INPUTS],
+            ["filer_" + variable for variable in DIRECT_INPUTS],
         )
-        INVESTMENT_INCOME_SOURCES = (
+        INVESTMENT_INCOME_SOURCES = [
             "e00300",
             "e00600",
             "e01100",
             "e01200",
-        )
-        investment_income = (
-            add(
-                tax_unit,
-                period,
-                *[
-                    "filer_" + variable
-                    for variable in INVESTMENT_INCOME_SOURCES
-                ],
-            )
-            + tax_unit("c01000", period)
-        )
-        business_income = add(tax_unit, period, "filer_e00900", "filer_e02000")
+        ]
+        investment_income_sources = [
+            "filer_" + variable for variable in INVESTMENT_INCOME_SOURCES
+        ]
+        investment_income = add(
+            tax_unit, period, investment_income_sources
+        ) + tax_unit("c01000", period)
+        BUSINESS_INCOME_SOURCES = ["filer_e00900", "filer_e02000"]
+        business_income = add(tax_unit, period, BUSINESS_INCOME_SOURCES)
         max_business_losses = parameters(
             period
         ).irs.ald.misc.max_business_losses[tax_unit("mars", period)]

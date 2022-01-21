@@ -129,7 +129,7 @@ def generate_yaml_test_dict(fn_name: str, name: str = None):
     test_dict = dict(
         name=f"Unit test for {fn_name}" if name is None else name,
         period=2019,
-        absolute_error_margin=1,
+        absolute_error_margin=0.01,
         input={
             rename_variable(x): translate_value(x, y)
             for x, y in kwargs.items()

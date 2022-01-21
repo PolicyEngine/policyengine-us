@@ -24,6 +24,6 @@ class spm_unit_net_income(Variable):
             "spm_unit_capped_work_childcare_expenses",
             "spm_unit_medical_expenses",
         ]
-        income = add(spm_unit, period, *INCOME_COMPONENTS)
-        expense = add(spm_unit, period, *EXPENSE_COMPONENTS)
+        income = add(spm_unit, period, INCOME_COMPONENTS)
+        expense = add(spm_unit, period, EXPENSE_COMPONENTS)
         return income - expense
