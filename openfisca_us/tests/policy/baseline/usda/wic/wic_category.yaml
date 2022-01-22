@@ -8,9 +8,9 @@
 - name: Parent - postpartum eligible
   period: 2022
   input:
-    persons:
+    people:
       mother:
-        female: true
+        is_mother: true
         age: 29
       child:
         age: .3
@@ -23,8 +23,9 @@
 - name: Parent - breastfeeding eligible
   period: 2022
   input:
-    persons:
+    people:
       mother:
+        is_mother: true
         age: 34
       child:
         age: .9
@@ -37,9 +38,10 @@
 - name: A pregnant mother also breastfeeding is categorized as pregnant
   period: 2022
   input:
-    persons:
+    people:
       mother:
         is_pregnant: true
+        is_mother: true
         age: 34
       child:
         age: .95

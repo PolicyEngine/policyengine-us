@@ -19,7 +19,6 @@ class is_wic_eligible(Variable):
         nutritional_risk = person("is_wic_at_nutritional_risk", period)
         return (
             (wic_category != wic_categories.NONE)
-            & meets_income_test
-            & meets_categorical_test
+            & (meets_income_test | meets_categorical_test)
             & nutritional_risk
         )
