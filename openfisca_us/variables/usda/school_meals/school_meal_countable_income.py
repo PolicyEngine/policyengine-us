@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class spm_unit_school_meal_countable_income(Variable):
+class school_meal_countable_income(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR

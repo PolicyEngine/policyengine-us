@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class spm_unit_school_meal_fpg_ratio(Variable):
+class school_meal_fpg_ratio(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
@@ -9,5 +9,5 @@ class spm_unit_school_meal_fpg_ratio(Variable):
     unit = "/1"
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit("spm_unit_school_meal_countable_income", period)
+        income = spm_unit("school_meal_countable_income", period)
         return income / spm_unit("spm_unit_fpg", period)
