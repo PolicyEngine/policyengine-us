@@ -19,4 +19,9 @@ class ctc_percent_reduction(Variable):
         maximum_ctc = add(
             tax_unit, period, ["ctc_child_maximum", "ctc_adult_maximum"]
         )
-        return min_(reduction / maximum_ctc, 1)
+        uncapped_percentage = where(
+            maximum_ctc != 0,
+            reduction / where(maximum_ctc == 0, 1, maximum_ctc),
+            0,
+        )
+        return min_(uncapped_percentage, 1)

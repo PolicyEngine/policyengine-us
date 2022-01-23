@@ -457,7 +457,7 @@ class taxbc(Variable):
             # Calculate rate applied to pass-through income on in the same
             # way, but as treated as if stacked on top of regular income
             # (which is not taxed again)
-            pt_threshold = max(
+            pt_threshold = max_(
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
                 - pt_tbase,
                 0,
@@ -978,7 +978,9 @@ class section_22_income(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         num_elderly = tax_unit.sum(is_elderly & ~is_dependent)
         disability_income = person("total_disability_payments", period)
-        non_elderly_disability_income = disability_income * ~is_elderly
+        non_elderly_disability_income = tax_unit.sum(
+            disability_income * ~is_elderly
+        )
 
         cap = (
             num_elderly * elderly_disabled.amount.one_qualified

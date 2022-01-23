@@ -3,7 +3,7 @@ tax:
     standard:
       amount:
         aged_or_blind:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2019-01-01: 1650
             2018-01-01: 1600
           JOINT:
@@ -22,7 +22,7 @@ tax:
           2019-01-01: 1100
           2018-01-01: 1050
         filer:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2019-01-01: 18350
             2018-01-01: 18000
           JOINT:
@@ -50,7 +50,7 @@ tax:
     bracket:
       rates:
         1:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.1
           JOINT:
             2018-01-01: 0.1
@@ -61,7 +61,7 @@ tax:
           WIDOW:
             2018-01-01: 0.1
         2:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.12
           JOINT:
             2018-01-01: 0.12
@@ -72,7 +72,7 @@ tax:
           WIDOW:
             2018-01-01: 0.12
         3:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.22
           JOINT:
             2018-01-01: 0.22
@@ -83,7 +83,7 @@ tax:
           WIDOW:
             2018-01-01: 0.22
         4:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.24
           JOINT:
             2018-01-01: 0.24
@@ -94,7 +94,7 @@ tax:
           WIDOW:
             2018-01-01: 0.24
         5:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.32
           JOINT:
             2018-01-01: 0.32
@@ -105,7 +105,7 @@ tax:
           WIDOW:
             2018-01-01: 0.32
         6:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.35
           JOINT:
             2018-01-01: 0.35
@@ -116,7 +116,7 @@ tax:
           WIDOW:
             2018-01-01: 0.35
         7:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 0.37
           JOINT:
             2018-01-01: 0.37
@@ -128,7 +128,7 @@ tax:
             2018-01-01: 0.37
       thresholds:
         1:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 13600
           JOINT:
             2018-01-01: 19050
@@ -139,7 +139,7 @@ tax:
           WIDOW:
             2018-01-01: 19050
         2:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 51800
           JOINT:
             2018-01-01: 77400
@@ -150,7 +150,7 @@ tax:
           WIDOW:
             2018-01-01: 77400
         3:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 82500
           JOINT:
             2018-01-01: 165000
@@ -161,7 +161,7 @@ tax:
           WIDOW:
             2018-01-01: 165000
         4:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 157500
           JOINT:
             2018-01-01: 315000
@@ -172,7 +172,7 @@ tax:
           WIDOW:
             2018-01-01: 315000
         5:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 200000
           JOINT:
             2018-01-01: 400000
@@ -183,7 +183,7 @@ tax:
           WIDOW:
             2018-01-01: 400000
         6:
-          HOUSEHOLD_HEAD:
+          HEAD_OF_HOUSEHOLD:
             2018-01-01: 500000
           JOINT:
             2018-01-01: 600000

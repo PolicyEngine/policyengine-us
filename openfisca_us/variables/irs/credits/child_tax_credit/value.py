@@ -12,6 +12,3 @@ class child_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         return add(tax_unit, period, ["ctc_child", "ctc_adult"])
-
-
-c07220 = variable_alias("c07220", child_tax_credit)

@@ -21,8 +21,29 @@ class ctc_reducible_income_tax(Variable):
             "retirement_savings_credit",
             "elderly_disabled_credit",
         ]
-        credits = add(tax_unit, period, *OTHER_CREDITS)
+        credits = add(tax_unit, period, OTHER_CREDITS)
         return max_(tax_liability - credits, 0)
+
+
+class ctc_max_refundable_amount(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "CTC maximum refundable amount"
+    unit = "currency-USD"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        ctc = parameters(period).irs.credits.child_tax_credit
+        child_max = tax_unit("ctc_child_maximum", period)
+        adult_max = tax_unit("ctc_adult_maximum", period)
+        max_ctc = child_max + adult_max
+        percent_reduction = tax_unit("ctc_percent_reduction", period)
+        reducible_liability = tax_unit("ctc_reducible_income_tax", period)
+        max_entitlement = max_ctc * (1 - percent_reduction)
+        if ctc.refundable:
+            return max_entitlement
+        else:
+            return min_(max_entitlement, reducible_liability)
 
 
 class ctc_child(Variable):
@@ -33,15 +54,13 @@ class ctc_child(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        ctc = parameters(period).irs.credits.child_tax_credit
-        max_amount = tax_unit("ctc_child_maximum", period)
-        percent_reduction = tax_unit("ctc_percent_reduction", period)
-        reducible_liability = tax_unit("ctc_reducible_income_tax", period)
-        entitlement = max_amount * (1 - percent_reduction)
-        if ctc.refundable:
-            return entitlement
-        else:
-            return min_(entitlement, reducible_liability)
+        child_max = tax_unit("ctc_child_maximum", period)
+        adult_max = tax_unit("ctc_adult_maximum", period)
+        max_refundable_ctc = tax_unit("ctc_max_refundable_amount", period)
+        return child_max / (child_max + adult_max) * max_refundable_ctc
+
+
+c07220 = variable_alias("c07220", ctc_child)
 
 
 class ctc_adult(Variable):
@@ -52,22 +71,10 @@ class ctc_adult(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        ctc = parameters(period).irs.credits.child_tax_credit
-        max_amount = tax_unit("ctc_adult_maximum", period)
-        percent_reduction = tax_unit("ctc_percent_reduction", period)
-        reducible_liability = max_(
-            0,
-            tax_unit("ctc_reducible_income_tax", period)
-            # The child CTC may be refundable, but it still
-            # reduces income tax liability (takes up non-refundable
-            # space).
-            - tax_unit("ctc_child", period),
-        )
-        entitlement = max_amount * (1 - percent_reduction)
-        if ctc.refundable:
-            return entitlement
-        else:
-            return min_(entitlement, reducible_liability)
+        child_max = tax_unit("ctc_child_maximum", period)
+        adult_max = tax_unit("ctc_adult_maximum", period)
+        max_refundable_ctc = tax_unit("ctc_max_refundable_amount", period)
+        return adult_max / (child_max + adult_max) * max_refundable_ctc
 
 
 odc = variable_alias("odc", ctc_adult)
