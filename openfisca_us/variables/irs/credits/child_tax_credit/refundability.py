@@ -83,7 +83,7 @@ class nonrefundable_ctc_unclaimable(Variable):
 
     def formula(tax_unit, period, parameters):
         maximum_ctc = add(
-            tax_unit, period, *["ctc_child_maximum", "ctc_adult_maximum"]
+            tax_unit, period, ["ctc_child_maximum", "ctc_adult_maximum"]
         )
         percent_reduction = tax_unit("ctc_percent_reduction", period)
         ctc_if_fully_refundable = maximum_ctc * (1 - percent_reduction)

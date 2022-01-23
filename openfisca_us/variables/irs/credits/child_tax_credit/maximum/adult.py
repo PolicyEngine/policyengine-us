@@ -11,5 +11,5 @@ class ctc_adult_maximum(Variable):
 
     def formula(tax_unit, period, parameters):
         ctc = parameters(period).irs.credits.child_tax_credit
-        dependents = tax_unit.members("ctc_eligible_dependents", period)
+        dependents = tax_unit("ctc_eligible_dependents", period)
         return ctc.amount.adult_dependent * dependents
