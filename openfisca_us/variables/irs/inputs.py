@@ -672,42 +672,40 @@ class filer_e03500(Variable):
 
 class e07240(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     definition_period = YEAR
     documentation = "Retirement savings contributions credit from Form 8880"
     unit = USD
 
 
+retirement_savings_credit = variable_alias("retirement_savings_credit", e07240)
+
+
 class e07260(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     definition_period = YEAR
     documentation = "Residential energy credit from Form 5695"
     unit = USD
 
 
+residential_energy_credit = variable_alias("residential_energy_credit", e07260)
+
+
 class e07300(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     definition_period = YEAR
     documentation = "Foreign tax credit from Form 1116"
     unit = USD
 
 
-class filer_e07300(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Foreign tax credit (Form 1114) for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e07300", tax_unit, period)
+foreign_tax_credit = variable_alias("foreign_tax_credit", e07300)
 
 
 class e07400(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     definition_period = YEAR
     documentation = "General business credit from Form 3800"
     unit = USD
@@ -715,7 +713,7 @@ class e07400(Variable):
 
 class e07600(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     definition_period = YEAR
     documentation = "Prior year minimum tax credit from Form 8801"
     unit = USD
@@ -723,7 +721,7 @@ class e07600(Variable):
 
 class e09700(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     definition_period = YEAR
     documentation = "Recapture of Investment Credit"
     unit = USD

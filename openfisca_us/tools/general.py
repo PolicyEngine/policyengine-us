@@ -25,9 +25,19 @@ infinity = np.inf
 select = np.select
 where = np.where
 
+PERCENT = "/1"
+
 
 def variable_alias(name: str, variable_cls: type) -> type:
     """
     Copy a variable class and return a new class.
     """
-    return type(name, variable_cls.__bases__, dict(variable_cls.__dict__))
+    class_dict = dict(variable_cls.__dict__)
+    class_dict["formula"] = lambda entity, period: entity(
+        variable_cls.__name__, period
+    )
+    return type(
+        name,
+        variable_cls.__bases__,
+        class_dict,
+    )

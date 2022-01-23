@@ -1,0 +1,513 @@
+- name: ChildDepTaxCredit unit test 1 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_6_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_6_1
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 44498.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 839.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 1.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 774.4615384615385
+    odc: 64.53846153846155
+    codtc_limited: 5661.0
+- name: ChildDepTaxCredit unit test 2 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_3:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - child_under_17_over_6_3
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 53341.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 1712.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 0.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 1580.3076923076924
+    odc: 131.69230769230762
+    codtc_limited: 4788.0
+- name: ChildDepTaxCredit unit test 3 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_6_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_6_1
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 45762.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 966.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 11.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 1.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 881.5384615384615
+    odc: 73.46153846153845
+    codtc_limited: 5545.0
+- name: ChildDepTaxCredit unit test 4 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_3:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - child_under_17_over_6_3
+        - adult_dependent_1
+        - primary
+        n24: 3.0
+        mars: HEAD_OF_HOUSEHOLD
+        c00100: 31202.0
+        xtot: 5.0
+        num: 1.0
+        c05800: 235.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 0.0
+        n21: 1.0
+        n1820: 0.0
+  output:
+    c07220: 216.92307692307693
+    odc: 18.076923076923066
+    codtc_limited: 6265.0
+- name: ChildDepTaxCredit unit test 5 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_3:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - child_under_17_over_6_3
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 49719.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 778.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 0.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 718.1538461538462
+    odc: 59.84615384615381
+    codtc_limited: 5722.0
+- name: ChildDepTaxCredit unit test 6 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_6_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_6_1
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 71049.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 3116.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 128.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 1.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 2758.153846153846
+    odc: 229.8461538461538
+    codtc_limited: 3512.0
+- name: ChildDepTaxCredit unit test 7 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_3:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - child_under_17_over_6_3
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 49719.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 778.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 0.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 718.1538461538462
+    odc: 59.84615384615381
+    codtc_limited: 5722.0
+- name: ChildDepTaxCredit unit test 8 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_6_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_6_1
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 3.0
+        mars: JOINT
+        c00100: 38530.0
+        xtot: 6.0
+        num: 2.0
+        c05800: 30.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 1.0
+        n21: 2.0
+        n1820: 1.0
+  output:
+    c07220: 27.692307692307693
+    odc: 2.3076923076923066
+    codtc_limited: 6470.0
+- name: ChildDepTaxCredit unit test 9 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_17_over_6_1
+        - adult_dependent_1
+        - primary
+        n24: 1.0
+        mars: HEAD_OF_HOUSEHOLD
+        c00100: 36796.0
+        xtot: 3.0
+        num: 1.0
+        c05800: 954.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 0.0
+        n21: 1.0
+        n1820: 1.0
+  output:
+    c07220: 763.2
+    odc: 190.79999999999995
+    codtc_limited: 1546.0
+- name: ChildDepTaxCredit unit test 10 (from generate_taxcalc_unit_tests.py)
+  period: 2019
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child_under_6_1:
+        age: 5
+        is_tax_unit_dependent: true
+      child_under_17_over_6_1:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_2:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_3:
+        age: 16
+        is_tax_unit_dependent: true
+      child_under_17_over_6_4:
+        age: 16
+        is_tax_unit_dependent: true
+      adult_dependent_1:
+        age: 18
+        is_tax_unit_dependent: true
+      primary:
+        age: 18
+        is_tax_unit_dependent: false
+      spouse:
+        age: 18
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members:
+        - child_under_6_1
+        - child_under_17_over_6_1
+        - child_under_17_over_6_2
+        - child_under_17_over_6_3
+        - child_under_17_over_6_4
+        - adult_dependent_1
+        - primary
+        - spouse
+        n24: 5.0
+        mars: JOINT
+        c00100: 44136.0
+        xtot: 8.0
+        num: 2.0
+        c05800: 13.0
+        e07260: 0.0
+        e07300: 0.0
+        c07180: 0.0
+        c07230: 0.0
+        e07240: 0.0
+        c07200: 0.0
+        exact: 0.0
+        nu06: 1.0
+        n21: 2.0
+        n1820: 0.0
+  output:
+    c07220: 12.380952380952381
+    odc: 0.6190476190476186
+    codtc_limited: 10487.0
+

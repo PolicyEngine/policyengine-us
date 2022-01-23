@@ -2,6 +2,7 @@ all: build
 format:
 	autopep8 -r .
 	black . -l 79
+	linecheck . --fix
 install:
 	pip install -e .[dev]
 test:

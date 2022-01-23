@@ -1,0 +1,13 @@
+description: Maximum nonrefundable child tax credit per child
+values:
+  2013-01-01: 1000.0
+  2018-01-01: 2000.0
+  2026-01-01: 1000.0
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_max
+  label: CTC maximum amount
+  reference: 
+    - title: U.S.C 26 U.S. Code § 24(a)
+      href: https://www.law.cornell.edu/uscode/text/26/24#a
