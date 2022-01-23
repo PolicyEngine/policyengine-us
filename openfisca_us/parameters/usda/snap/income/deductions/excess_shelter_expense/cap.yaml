@@ -1,6 +1,6 @@
 description: Maximum SNAP shelter deduction
 
-CONTIGUOUS_US:
+Contiguous US:
   1996-08-22: 247
   1997-01-01: 250
   1998-10-01: 275
@@ -9,7 +9,7 @@ CONTIGUOUS_US:
   # Subsequent: Updated based on CPI-U.
   2020-10-01: 586
   2021-10-01: 597
-AK_URBAN:
+Alaska (urban):
   1996-08-22: 429
   1997-01-01: 434
   1998-10-01: 478
@@ -18,7 +18,7 @@ AK_URBAN:
   # Subsequent: Updated based on CPI-U.
   2020-01-01: 936
   2021-10-01: 954
-AK_RURAL_1:
+Alaska (rural 1):
   1996-08-22: 429
   1997-01-01: 434
   1998-10-01: 478
@@ -27,7 +27,7 @@ AK_RURAL_1:
   # Subsequent: Updated based on CPI-U.
   2020-10-01: 936
   2021-10-01: 954
-AK_RURAL_2:
+Alaska (rural 2):
   1996-08-22: 429
   1997-01-01: 434
   1998-10-01: 478
@@ -36,7 +36,7 @@ AK_RURAL_2:
   # Subsequent: Updated based on CPI-U.
   2020-10-01: 936
   2021-10-01: 954
-HI:
+Hawaii:
   1996-08-22: 353
   1997-01-01: 357
   1998-10-01: 393
@@ -45,7 +45,7 @@ HI:
   # Subsequent: Updated based on CPI-U.
   2020-10-01: 790
   2021-10-01: 805
-GU:
+Guam:
   1996-08-22: 300
   1997-01-01: 304
   1998-10-01: 334
@@ -54,7 +54,7 @@ GU:
   # Subsequent: Updated based on CPI-U.
   2020-10-01: 688
   2021-10-01: 701
-VI:
+Virgin Islands:
   1996-08-22: 182
   1997-01-01: 184
   1998-10-01: 203
@@ -77,4 +77,4 @@ metadata:
     - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Income Eligibility Standards
       href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf#page=2
   breakdown:
-    - state_group
+    - snap_region
