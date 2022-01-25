@@ -10,6 +10,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 0
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -28,6 +29,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 1.2
+        snap: 0
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
@@ -59,6 +61,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 10
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -77,6 +80,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 0
+        snap: 0
     households:
       household:
         state_group: HI
@@ -95,6 +99,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 1.0
+        snap: 0
     households:
       household:
         state_group: HI
@@ -113,6 +118,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 1.5
+        snap: 0
     households:
       household:
         state_group: HI
@@ -131,6 +137,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 20
+        snap: 0
     households:
       household:
         state_group: HI
@@ -149,6 +156,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 0.8
+        snap: 0
     households:
       household:
         state_group: AK
@@ -167,6 +175,7 @@
       spm_unit:
         members: [parent, child]
         school_meal_fpg_ratio: 1.4
+        snap: 0
     households:
       household:
         state_group: AK
@@ -187,6 +196,7 @@
       spm_unit:
         members: [parent, child1, child2]
         school_meal_fpg_ratio: 1.2
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -207,6 +217,7 @@
       spm_unit:
         members: [parent, child1, child2]
         school_meal_fpg_ratio: 1.7
+        snap: 0
     households:
       household:
         state_group: HI
@@ -227,6 +238,7 @@
       spm_unit:
         members: [parent, child1, child2]
         school_meal_fpg_ratio: 15
+        snap: 0
     households:
       household:
         state_group: AK
@@ -249,6 +261,7 @@
       spm_unit:
         members: [parent, child1, child2, child3]
         school_meal_fpg_ratio: 15
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -271,6 +284,7 @@
       spm_unit:
         members: [parent, child1, child2, child3]
         school_meal_fpg_ratio: 1.6
+        snap: 0
     households:
       household:
         state_group: AK
@@ -291,6 +305,7 @@
       spm_unit:
         members: [parent1, parent2, child]
         school_meal_fpg_ratio: 1.8
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -311,6 +326,7 @@
       spm_unit:
         members: [parent1, parent2, child]
         school_meal_fpg_ratio: 1.1
+        snap: 0
     households:
       household:
         state_group: HI
@@ -333,6 +349,7 @@
       spm_unit:
         members: [parent1, parent2, child1, child2]
         school_meal_fpg_ratio: 1.4
+        snap: 0
     households:
       household:
         state_group: AK
@@ -381,6 +398,7 @@
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
         school_meal_fpg_ratio: 15
+        snap: 0
     households:
       household:
         state_group: HI
@@ -405,6 +423,7 @@
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
         school_meal_fpg_ratio: 20
+        snap: 0
     households:
       household:
         state_group: AK
@@ -429,6 +448,7 @@
       spm_unit:
         members: [parent, child1, child2, child3, child4]
         school_meal_fpg_ratio: 1.8
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -457,6 +477,7 @@
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4, child5]
         school_meal_fpg_ratio: 1.1
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -475,6 +496,7 @@
       spm_unit:
         members: [parent1, parent2]
         school_meal_fpg_ratio: 1.8
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US

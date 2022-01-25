@@ -1,0 +1,13 @@
+- name: SNAP provides categorical eligibility.
+  period: 2022
+  input:
+      snap: 1
+  output:
+      meets_school_meal_categorical_eligibility: true
+
+- name: Without SNAP, no categorical eligibility.
+  period: 2022
+  input:
+      snap: 0
+  output:
+      meets_school_meal_categorical_eligibility: false
