@@ -4,26 +4,33 @@ from openfisca_us.model_api import *
 class spm_unit_net_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "SPM unit net income"
+    label = "Net income"
     definition_period = YEAR
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        INCOME_COMPONENTS = [
-            "spm_unit_total_income",
-            "snap",
-            "spm_unit_capped_housing_subsidy",
-            "spm_unit_school_lunch_subsidy",
-            "spm_unit_energy_subsidy",
-            "spm_unit_wic",
+        PERSONAL_INCOME_COMPONENTS = [
+            "employment_income",
+            "self_employment_income",
+            "dividend_income",
+            "interest_income",
+            "ssdi",
         ]
-        EXPENSE_COMPONENTS = [
+        SPMU_INCOME_COMPONENTS = [
+            "snap",
+            "school_meal_subsidy",
+            "wic",
+            "ssi",
+            "tanf",
+        ]
+        SPMU_EXPENSE_COMPONENTS = [
             "spm_unit_fica",
             "spm_unit_federal_tax",
             "spm_unit_state_tax",
             "spm_unit_capped_work_childcare_expenses",
             "spm_unit_medical_expenses",
         ]
-        income = add(spm_unit, period, INCOME_COMPONENTS)
-        expense = add(spm_unit, period, EXPENSE_COMPONENTS)
-        return income - expense
+        personal_income = aggr(spm_unit, period, PERSONAL_INCOME_COMPONENTS)
+        spmu_income = add(spm_unit, period, SPMU_INCOME_COMPONENTS)
+        spmu_expense = add(spm_unit, period, SPMU_EXPENSE_COMPONENTS)
+        return personal_income + spmu_income - spmu_expense
