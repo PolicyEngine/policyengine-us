@@ -12,4 +12,5 @@ class child_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        maximum_amount = tax_unit.sum(person("ctc_individual_maximum", period))
+        maximum_amount = tax_unit("ctc_maximum", period)
+        reduction = tax_unit("ctc_reduction", period)

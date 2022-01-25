@@ -49,3 +49,14 @@ class ctc_individual_maximum(Variable):
     formula_2022 = formula_2018
 
     formula_2026 = formula
+
+class ctc_maximum(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Maximum CTC"
+    unit = "currency-USD"
+    documentation = "Maximum value of the Child Tax Credit, before phaseout."
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit.sum(tax_unit.members("ctc_individual_maximum", period))
