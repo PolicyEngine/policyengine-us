@@ -10,4 +10,5 @@ class school_meal_countable_income(Variable):
     documentation = "SPM unit's countable income for school meal program"
 
     def formula(spm_unit, period, parameters):
-        return spm_unit.sum(spm_unit.members("market_income", period))
+        sources = parameters(period).usda.school_meals.income.sources
+        return aggr(spm_unit, period, sources)
