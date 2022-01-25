@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 * Count school meal subsidies by school enrollment rather than age.
+* Remove `spm_unit_` prefix from school meal variables.
 
 ## [0.25.0] - 2022-01-17
 
