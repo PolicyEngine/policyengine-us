@@ -457,7 +457,7 @@ class taxbc(Variable):
             # Calculate rate applied to pass-through income on in the same
             # way, but as treated as if stacked on top of regular income
             # (which is not taxed again)
-            pt_threshold = max(
+            pt_threshold = max_(
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
                 - pt_tbase,
                 0,
@@ -840,6 +840,9 @@ class c05800(Variable):
         return add(tax_unit, period, ["taxbc", "c09600"])
 
 
+income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)
+
+
 class c07100(Variable):
     value_type = float
     entity = TaxUnit
@@ -866,11 +869,15 @@ class c07180(Variable):
             return min_(
                 max_(
                     0,
-                    tax_unit("c05800", period)
-                    - tax_unit("filer_e07300", period),
+                    tax_unit("c05800", period) - tax_unit("e07300", period),
                 ),
                 tax_unit("c33200", period),
             )
+
+
+child_dependent_care_expense_credit = variable_alias(
+    "child_dependent_care_expense_credit", c07180
+)
 
 
 class cdcc_refund(Variable):
@@ -971,7 +978,9 @@ class section_22_income(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         num_elderly = tax_unit.sum(is_elderly & ~is_dependent)
         disability_income = person("total_disability_payments", period)
-        non_elderly_disability_income = disability_income * ~is_elderly
+        non_elderly_disability_income = tax_unit.sum(
+            disability_income * ~is_elderly
+        )
 
         cap = (
             num_elderly * elderly_disabled.amount.one_qualified
@@ -1009,11 +1018,7 @@ class c07200(Variable):
         return elderly_disabled.rate * tax_unit("section_22_income", period)
 
 
-class c07220(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Child tax credit (adjusted) from Form 8812"
+elderly_disabled_credit = variable_alias("elderly_disabled_credit", c07200)
 
 
 class c07230(Variable):
@@ -1029,6 +1034,9 @@ class c07230(Variable):
             "lifetime_learning_credit",
         ]
         return add(tax_unit, period, ELEMENTS)
+
+
+education_tax_credits = variable_alias("education_tax_credits", c07230)
 
 
 class c07240(Variable):
@@ -1198,7 +1206,7 @@ class c09600(Variable):
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
-        e07300 = tax_unit("filer_e07300", period)
+        e07300 = tax_unit("e07300", period)
 
         # Form 6251, Part II bottom
         line32 = where(
@@ -1553,14 +1561,6 @@ class ctc_new(Variable):
     unit = USD
 
 
-class odc(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Other Dependent Credit"
-    unit = USD
-
-
 class personal_refundable_credit(Variable):
     value_type = float
     entity = TaxUnit
@@ -1777,16 +1777,6 @@ class pre_c04600(Variable):
             0,
             tax_unit("xtot", period) * exemption.amount,
         )
-
-
-class codtc_limited(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-    unit = USD
 
 
 class ptax_amc(Variable):
