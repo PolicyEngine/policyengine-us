@@ -2,10 +2,9 @@
   period: 2022
   input:
       people:
-          parent:
-              age: 30
+          parent: {}
           child:
-              age: 10
+              is_in_school: true
       spm_units:
           spm_unit:
               members: [parent, child]

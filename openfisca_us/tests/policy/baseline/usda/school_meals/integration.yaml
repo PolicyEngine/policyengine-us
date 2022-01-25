@@ -2,10 +2,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -21,10 +20,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -37,10 +35,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -53,10 +50,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -72,10 +68,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 35
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -91,10 +86,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -110,10 +104,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -129,10 +122,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -148,10 +140,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -167,10 +158,9 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
@@ -186,12 +176,11 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 50
+      parent: {}
       child1:
-        age: 15
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
@@ -207,12 +196,11 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 45
+      parent: {}
       child1:
-        age: 15
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
@@ -228,12 +216,11 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 40
+      parent: {}
       child1:
-        age: 13
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
@@ -249,14 +236,13 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 36
+      parent: {}
       child1:
-        age: 12
+        is_in_school: true
       child2:
-        age: 8
+        is_in_school: true
       child3:
-        age: 6
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
@@ -272,14 +258,13 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 35
+      parent: {}
       child1:
-        age: 10
+        is_in_school: true
       child2:
-        age: 7
+        is_in_school: true
       child3:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
@@ -295,12 +280,10 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 35
+      parent1: {}
+      parent2: {}
       child:
-        age: 16
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
@@ -316,12 +299,10 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 40
+      parent1: {}
+      parent2: {}
       child:
-        age: 12
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
@@ -337,14 +318,12 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 35
-      parent2:
-        age: 35
+      parent1: {}
+      parent2: {}
       child1:
-        age: 10
+        is_in_school: true
       child2:
-        age: 7
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
@@ -360,16 +339,14 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 50
-      parent2:
-        age: 50
+      parent1: {}
+      parent2: {}
       child1:
-        age: 15
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
       child3:
-        age: 7
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
@@ -384,16 +361,14 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 40
+      parent1: {}
+      parent2: {}
       child1:
-        age: 10
+        is_in_school: true
       child2:
-        age: 7
+        is_in_school: true
       child3:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
@@ -409,16 +384,14 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 35
-      parent2:
-        age: 35
+      parent1: {}
+      parent2: {}
       child1:
-        age: 13
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
       child3:
-        age: 7
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
@@ -434,16 +407,15 @@
   period: 2022
   input:
     people:
-      parent:
-        age: 40
+      parent: {}
       child1:
-        age: 12
+        is_in_school: true
       child2:
-        age: 9
+        is_in_school: true
       child3:
-        age: 7
+        is_in_school: true
       child4:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3, child4]
@@ -459,20 +431,18 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 40
+      parent1: {}
+      parent2: {}
       child1:
-        age: 12
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
       child3:
-        age: 8
+        is_in_school: true
       child4:
-        age: 7
+        is_in_school: true
       child5:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4, child5]
@@ -488,10 +458,8 @@
   period: 2022
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 33
+      parent1: {}
+      parent2: {}
     spm_units:
       spm_unit:
         members: [parent1, parent2]
