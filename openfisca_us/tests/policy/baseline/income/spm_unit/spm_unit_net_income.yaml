@@ -1,23 +1,8 @@
-- name: SPM unit net income is income minus expenses.
+- name: SPM unit net income is market income plus benefits minus taxes.
   period: 2021
   input:
-    # Person-level income.
-    employment_income: 1
-    self_employment_income: 2
-    dividend_income: 3
-    interest_income: 4
-    ssdi: 5
-    # SPM unit-level income.
-    snap: 6
-    school_meal_subsidy: 7
-    wic: 8
-    ssi: 9
-    tanf: 10
-    # Expense components.
-    spm_unit_fica: 11
-    spm_unit_federal_tax: 12
-    spm_unit_state_tax: 13
-    spm_unit_capped_work_childcare_expenses: 14
-    spm_unit_medical_expenses: 15
+    spm_unit_market_income: 3
+    spm_unit_benefits: 2
+    spm_unit_taxes: 1
   output:
-    spm_unit_net_income: (1 + 2 + 3 + 4 + 5) + (6 + 7 + 8 + 9 + 10) - (11 + 12 + 13 + 14 + 15)
+    spm_unit_net_income: 3 + 2 - 1
