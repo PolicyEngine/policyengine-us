@@ -1,0 +1,7 @@
+- name: FPG ratio is countable income divided by FPG.
+  period: 2022
+  input:
+      school_meal_countable_income: 1
+      spm_unit_fpg: 2
+  output:
+      school_meal_fpg_ratio: 0.5
