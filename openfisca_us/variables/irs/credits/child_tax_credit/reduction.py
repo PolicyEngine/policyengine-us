@@ -1,5 +1,5 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.irs.credits.child_tax_credit.maximum import ctc_individual_maximum
+from openfisca_us.variables.irs.credits.child_tax_credit.maximum import ctc_child_individual_maximum, ctc_adult_individual_maximum
 from openfisca_us.parameters import default_parameters
 
 
@@ -39,7 +39,10 @@ class ctc_reduction(Variable):
         no_arpa_ctc.child.young.increase.update(value=0, period=period)
         no_arpa_ctc.child.amount.update(value=old_ctc.child.amount, period=period)
 
-        ctc_without_arpa = tax_unit.sum(ctc_individual_maximum.formula_2018(tax_unit.members, period, no_arpa_parameters))
+        ctc_without_arpa = tax_unit.sum(
+            ctc_child_individual_maximum.formula(tax_unit.members, period, no_arpa_parameters)
+            + ctc_adult_individual_maximum.formula_2018(tax_unit.members, period, no_arpa_parameters)
+        )
 
         arpa_increase = maximum_ctc - ctc_without_arpa
 

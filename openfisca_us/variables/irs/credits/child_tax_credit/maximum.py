@@ -1,5 +1,62 @@
 from openfisca_us.model_api import *
 
+class ctc_child_individual_maximum(Variable):
+    value_type = float
+    entity = Person
+    label = "CTC maximum amount (child)"
+    unit = "currency-USD"
+    documentation = "The CTC entitlement in respect of this person as a child."
+    definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/24#a",
+        "https://www.law.cornell.edu/uscode/text/26/24#h",
+        "https://www.law.cornell.edu/uscode/text/26/24#i",
+    )
+
+    def formula(person, period, parameters):
+        ctc = parameters(period).irs.credits.child_tax_credit
+        age = person("age", period)
+        is_child = age <= ctc.child.max_age
+        return is_child * ctc.child.amount
+
+    def formula_2021(person, period, parameters):
+        ctc = parameters(period).irs.credits.child_tax_credit
+        age = person("age", period)
+        is_child = age <= ctc.child.max_age
+        is_young_child = age <= ctc.child.young.max_age
+        return (
+            is_young_child * ctc.child.young.increase
+            + is_child * ctc.child.amount
+        )
+
+    formula_2022 = formula
+
+class ctc_adult_individual_maximum(Variable):
+    value_type = float
+    entity = Person
+    label = "CTC maximum amount (adult dependent)"
+    unit = "currency-USD"
+    documentation = "The CTC entitlement in respect of this person as an adult dependent."
+    definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/24#a",
+        "https://www.law.cornell.edu/uscode/text/26/24#h",
+        "https://www.law.cornell.edu/uscode/text/26/24#i",
+    )
+
+    def formula_2018(person, period, parameters):
+        ctc = parameters(period).irs.credits.child_tax_credit
+        age = person("age", period)
+        is_dependent = person("is_tax_unit_dependent", period)
+        is_child = age <= ctc.child.max_age
+        is_adult_dependent = ~is_child & is_dependent
+        return (
+            is_adult_dependent * ctc.adult_dependent_amount
+        )
+
+    formula_2022 = formula_2018
+
+    formula_2026 = None
 
 class ctc_individual_maximum(Variable):
     value_type = float
@@ -17,36 +74,13 @@ class ctc_individual_maximum(Variable):
     )
 
     def formula(person, period, parameters):
-        ctc = parameters(period).irs.credits.child_tax_credit
-        age = person("age", period)
-        is_child = age <= ctc.child.max_age
-        return is_child * ctc.child.amount
+        return person("ctc_child_individual_maximum", period)
 
     def formula_2018(person, period, parameters):
-        ctc = parameters(period).irs.credits.child_tax_credit
-        age = person("age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_child = age <= ctc.child.max_age
-        is_adult_dependent = ~is_child & is_dependent
-        return (
-            is_child * ctc.child.amount
-            + is_adult_dependent * ctc.adult_dependent_amount
-        )
-
-    def formula_2021(person, period, parameters):
-        ctc = parameters(period).irs.credits.child_tax_credit
-        age = person("age", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        is_child = age <= ctc.child.max_age
-        is_young_child = age <= ctc.child.young.max_age
-        is_adult_dependent = ~is_child & is_dependent
-        return (
-            is_young_child * ctc.child.young.increase
-            + is_child * ctc.child.amount
-            + is_adult_dependent * ctc.adult_dependent_amount
-        )
-
-    formula_2022 = formula_2018
+        return add(person, period, [
+            "ctc_child_individual_maximum",
+            "ctc_adult_individual_maximum",
+        ])
 
     formula_2026 = formula
 
@@ -59,4 +93,4 @@ class ctc_maximum(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("ctc_individual_maximum", period))
+        return aggr(tax_unit, period, ["ctc_individual_maximum"])

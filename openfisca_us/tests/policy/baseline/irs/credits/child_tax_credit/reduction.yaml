@@ -6,6 +6,7 @@
         age: 4
       parent:
         age: 21
+        is_tax_unit_dependent: false
     tax_units:
       tax_unit:
         members: [child, parent]
@@ -20,9 +21,10 @@
         age: 4
       parent:
         age: 21
+        is_tax_unit_dependent: false
     tax_units:
       tax_unit:
         members: [child, parent]
         adjusted_gross_income: 220_000
   output:
-    ctc_reduction: 1_000
+    ctc_reduction: 2_600
