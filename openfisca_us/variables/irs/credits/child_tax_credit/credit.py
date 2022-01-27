@@ -14,3 +14,4 @@ class child_tax_credit(Variable):
         person = tax_unit.members
         maximum_amount = tax_unit("ctc_maximum", period)
         reduction = tax_unit("ctc_reduction", period)
+        return maximum_amount - reduction

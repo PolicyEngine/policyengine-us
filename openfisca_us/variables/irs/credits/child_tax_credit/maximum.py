@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class ctc_child_individual_maximum(Variable):
     value_type = float
     entity = Person
@@ -31,12 +32,15 @@ class ctc_child_individual_maximum(Variable):
 
     formula_2022 = formula
 
+
 class ctc_adult_individual_maximum(Variable):
     value_type = float
     entity = Person
     label = "CTC maximum amount (adult dependent)"
     unit = "currency-USD"
-    documentation = "The CTC entitlement in respect of this person as an adult dependent."
+    documentation = (
+        "The CTC entitlement in respect of this person as an adult dependent."
+    )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/24#a",
@@ -50,13 +54,12 @@ class ctc_adult_individual_maximum(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         is_child = age <= ctc.child.max_age
         is_adult_dependent = ~is_child & is_dependent
-        return (
-            is_adult_dependent * ctc.adult_dependent_amount
-        )
+        return is_adult_dependent * ctc.adult_dependent_amount
 
     formula_2022 = formula_2018
 
     formula_2026 = None
+
 
 class ctc_individual_maximum(Variable):
     value_type = float
@@ -77,12 +80,17 @@ class ctc_individual_maximum(Variable):
         return person("ctc_child_individual_maximum", period)
 
     def formula_2018(person, period, parameters):
-        return add(person, period, [
-            "ctc_child_individual_maximum",
-            "ctc_adult_individual_maximum",
-        ])
+        return add(
+            person,
+            period,
+            [
+                "ctc_child_individual_maximum",
+                "ctc_adult_individual_maximum",
+            ],
+        )
 
     formula_2026 = formula
+
 
 class ctc_maximum(Variable):
     value_type = float

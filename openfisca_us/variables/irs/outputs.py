@@ -88,6 +88,9 @@ class earned(Variable):
         return max_(0, add(person, period, ["e00200", "setax"]) - adjustment)
 
 
+earned_income = variable_alias("earned_income", earned)
+
+
 class was_plus_sey(Variable):
     value_type = float
     entity = Person
@@ -255,7 +258,7 @@ class refund(Variable):
         ctc_refundable = parameters(
             period
         ).irs.credits.child_tax_credit.refundable
-        ctc_refund = tax_unit("c07220", period) * ctc_refundable
+        ctc_refund = tax_unit("refundable_ctc", period)
         REFUND_COMPONENTS = [
             "eitc",
             "c11070",

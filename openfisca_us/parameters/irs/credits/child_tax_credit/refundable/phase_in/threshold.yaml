@@ -1,0 +1,12 @@
+description: Additional Child Tax Credit income threshold
+values:
+  2013-01-01: 3_000.0
+  2018-01-01: 2_500.0
+  2026-01-01: 3_000.0
+metadata:
+  unit: currency-USD
+  name: ctc_refundable_phase_in_threshold
+  label: CTC refundable phase-in threshold
+  reference:
+    - title: Tax-Calculator
+      href: https://github.com/PSLmodels/Tax-Calculator/blob/6ab24023ed1b661a6dfdd4ce60301838c49536b1/taxcalc/policy_current_law.json#L14333

@@ -1,5 +1,8 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.irs.credits.child_tax_credit.maximum import ctc_child_individual_maximum, ctc_adult_individual_maximum
+from openfisca_us.variables.irs.credits.child_tax_credit.maximum import (
+    ctc_child_individual_maximum,
+    ctc_adult_individual_maximum,
+)
 from openfisca_us.parameters import default_parameters
 
 
@@ -31,22 +34,34 @@ class ctc_reduction(Variable):
         maximum_ctc = tax_unit("ctc_maximum", period)
         original_phaseout = min_(reduction, maximum_ctc)
 
-        income_over_arpa_threshold = max_(0, income - ctc.phaseout.arpa.threshold[mars])
-        arpa_phaseout_max_reduction = ctc.phaseout.arpa.rate * income_over_arpa_threshold
+        income_over_arpa_threshold = max_(
+            0, income - ctc.phaseout.arpa.threshold[mars]
+        )
+        arpa_phaseout_max_reduction = (
+            ctc.phaseout.arpa.rate * income_over_arpa_threshold
+        )
         no_arpa_parameters = default_parameters.clone()
         old_ctc = parameters(period.last_year).irs.credits.child_tax_credit
         no_arpa_ctc = no_arpa_parameters.irs.credits.child_tax_credit
         no_arpa_ctc.child.young.increase.update(value=0, period=period)
-        no_arpa_ctc.child.amount.update(value=old_ctc.child.amount, period=period)
+        no_arpa_ctc.child.amount.update(
+            value=old_ctc.child.amount, period=period
+        )
 
         ctc_without_arpa = tax_unit.sum(
-            ctc_child_individual_maximum.formula(tax_unit.members, period, no_arpa_parameters)
-            + ctc_adult_individual_maximum.formula_2018(tax_unit.members, period, no_arpa_parameters)
+            ctc_child_individual_maximum.formula(
+                tax_unit.members, period, no_arpa_parameters
+            )
+            + ctc_adult_individual_maximum.formula_2018(
+                tax_unit.members, period, no_arpa_parameters
+            )
         )
 
         arpa_increase = maximum_ctc - ctc_without_arpa
 
-        arpa_phaseout_range = ctc.phaseout.threshold[mars] - ctc.phaseout.arpa.threshold[mars]
+        arpa_phaseout_range = (
+            ctc.phaseout.threshold[mars] - ctc.phaseout.arpa.threshold[mars]
+        )
 
         arpa_reduction_max = min_(
             arpa_increase,
@@ -56,7 +71,5 @@ class ctc_reduction(Variable):
         arpa_reduction = min_(arpa_phaseout_max_reduction, arpa_reduction_max)
 
         return original_phaseout + arpa_reduction
-    
-    formula_2022 = formula
-    
 
+    formula_2022 = formula
