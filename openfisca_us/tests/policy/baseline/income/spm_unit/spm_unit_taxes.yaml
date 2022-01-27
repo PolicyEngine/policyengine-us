@@ -1,0 +1,8 @@
+- name: SPM unit taxes sum tax sources.
+  period: 2021
+  input:
+    spm_unit_fica: 1
+    spm_unit_federal_tax: 2
+    spm_unit_state_tax: 3
+  output:
+    spm_unit_taxes: 1 + 2 + 3
