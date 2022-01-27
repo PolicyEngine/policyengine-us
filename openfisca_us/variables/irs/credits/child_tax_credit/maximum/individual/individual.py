@@ -1,7 +1,6 @@
 from openfisca_us.model_api import *
 
 
-
 class ctc_individual_maximum(Variable):
     value_type = float
     entity = Person
@@ -31,4 +30,3 @@ class ctc_individual_maximum(Variable):
         )
 
     formula_2026 = formula
-

@@ -1,6 +1,10 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.irs.credits.child_tax_credit.maximum.individual.child import ctc_child_individual_maximum
-from openfisca_us.variables.irs.credits.child_tax_credit.maximum.individual.adult import ctc_adult_individual_maximum
+from openfisca_us.variables.irs.credits.child_tax_credit.maximum.individual.child import (
+    ctc_child_individual_maximum,
+)
+from openfisca_us.variables.irs.credits.child_tax_credit.maximum.individual.adult import (
+    ctc_adult_individual_maximum,
+)
 from openfisca_us.parameters import default_parameters
 
 
