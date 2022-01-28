@@ -127,6 +127,11 @@ class rptc(Variable):
     unit = USD
 
 
+refundable_payroll_tax_credit = variable_alias(
+    "refundable_payroll_tax_credit", rptc
+)
+
+
 class rptc_p(Variable):
     value_type = float
     entity = TaxUnit
@@ -255,21 +260,8 @@ class refund(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        ctc_refundable = parameters(
-            period
-        ).irs.credits.child_tax_credit.refundable
-        ctc_refund = tax_unit("refundable_ctc", period)
-        REFUND_COMPONENTS = [
-            "eitc",
-            "c11070",
-            "c10960",
-            "cdcc_refund",
-            "recovery_rebate_credit",
-            "personal_refundable_credit",
-            "ctc_new",
-            "rptc",
-        ]
-        return add(tax_unit, period, REFUND_COMPONENTS) + ctc_refund
+        credits = parameters(period).irs.credits.refundable
+        return add(tax_unit, period, credits)
 
 
 class sep(Variable):
@@ -855,6 +847,10 @@ class c07100(Variable):
     )
     unit = USD
 
+    def formula(tax_unit, period, parameters):
+        credits = parameters(period).irs.credits.non_refundable
+        return add(tax_unit, period, credits)
+
 
 class c07180(Variable):
     value_type = float
@@ -1109,6 +1105,11 @@ class c09200(Variable):
     unit = USD
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
+    def formula(tax_unit, period, parameters):
+        tax_net_nonrefundable_credits = max_(
+            0, tax_unit("c05800", period) - tax_unit("c07100", period)
+        )
+
 
 class c09600(Variable):
     value_type = float
@@ -1249,6 +1250,9 @@ class c11070(Variable):
     definition_period = YEAR
     documentation = "Child tax credit (refunded) from Form 8812"
     unit = USD
+
+
+ctc_refund = variable_alias("ctc_refund", c11070)
 
 
 class c17000(Variable):
@@ -1565,14 +1569,6 @@ class ctc_new(Variable):
     unit = USD
 
 
-class personal_refundable_credit(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Personal refundable credit"
-    unit = USD
-
-
 class recovery_rebate_credit(Variable):
     value_type = float
     entity = TaxUnit
@@ -1580,14 +1576,6 @@ class recovery_rebate_credit(Variable):
     documentation = (
         "Recovery Rebate Credit, from American Rescue Plan Act of 2021"
     )
-    unit = USD
-
-
-class personal_nonrefundable_credit(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Personal nonrefundable credit"
     unit = USD
 
 

@@ -44,7 +44,7 @@ class ctc_limiting_tax_liability(Variable):
             [
                 tax_unit(credit, period)
                 for credit in non_refundable_credits
-                if credit != "child_tax_credit"
+                if credit != "non_refundable_ctc"
             ]
         )
         return tax_unit("income_tax_before_credits", period) - total_credits
