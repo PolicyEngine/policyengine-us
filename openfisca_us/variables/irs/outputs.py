@@ -49,11 +49,15 @@ class combined(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Sum of iitax and payrolltax"
+    label = "Taxes"
+    documentation = "Total federal income and payroll tax liability."
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["iitax", "payrolltax"])
+        return add(tax_unit, period, ["iitax", "employee_payrolltax"])
+
+
+tax = variable_alias("tax", combined)
 
 
 class filer_earned(Variable):
@@ -201,10 +205,14 @@ class iitax(Variable):
     entity = TaxUnit
     definition_period = YEAR
     unit = USD
-    documentation = "Total federal individual income tax liability; appears as INCTAX variable in tc CLI minimal output"
+    label = "Federal income tax"
+    documentation = "Total federal individual income tax liability."
 
     def formula(tax_unit, period, parameters):
         return tax_unit("c09200", period) - tax_unit("refund", period)
+
+
+federal_income_tax = variable_alias("federal_income_tax", iitax)
 
 
 class num(Variable):
@@ -229,7 +237,7 @@ class payrolltax(Variable):
     label = "Payroll tax"
     definition_period = YEAR
     unit = USD
-    documentation = "Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"
+    documentation = "Total (employee + employer) payroll tax liability."
 
     def formula(tax_unit, period):
         COMPONENTS = [
@@ -244,7 +252,8 @@ class payrolltax(Variable):
 class employee_payrolltax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Employee's share of payroll tax"
+    label = "Employee's payroll tax"
+    documentation = "Share of payroll tax liability paid by the employee."
     definition_period = YEAR
     unit = USD
 
