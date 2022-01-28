@@ -213,10 +213,13 @@ class pre_qbid_taxinc(Variable):
             min_(ui_amount, ui.exemption.amount),
             0,
         )
-        maximum_deduction = max_(tax_unit("c04470", period), tax_unit("standard", period))
+        maximum_deduction = max_(
+            tax_unit("c04470", period), tax_unit("standard", period)
+        )
         personal_exemptions = tax_unit("c04600", period)
-        return max_(0, agi - maximum_deduction - personal_exemptions - ui_excluded)
-
+        return max_(
+            0, agi - maximum_deduction - personal_exemptions - ui_excluded
+        )
 
 
 class posagi(Variable):
