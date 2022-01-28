@@ -21,7 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add SNAP emergency allotment logic and values for California.
 
-## [0.26.0] - 2022-01-17
+## [0.26.0] - 2022-01-25
+
+### Added
+
+* Categorical eligibility to school meal subsidies.
+* Documentation notebook on school meal subsidies.
+* Parameterized income sources for school meal subsidies.
 
 ### Changed
 
@@ -272,6 +278,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+[0.27.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.26.0...0.27.0
+[0.26.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.25.0...0.26.0
+[0.25.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.24.1...0.25.0
+[0.24.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.24.0...0.24.1
 [0.24.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.1...0.24.0
 [0.23.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.0...0.23.1
 [0.23.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.22.0...0.23.0
