@@ -205,13 +205,18 @@ class pre_qbid_taxinc(Variable):
         # Calculate UI excluded from taxable income
         ui = parameters(period).irs.unemployment_insurance
         ui_amount = tax_unit("filer_e02300", period)
-        agi_over_ui = tax_unit("c00100", period) - ui_amount
+        agi = tax_unit("c00100", period)
+        agi_over_ui = agi - ui_amount
         mars = tax_unit("mars", period)
-        return where(
+        ui_excluded = where(
             agi_over_ui <= ui.exemption.cutoff[mars],
             min_(ui_amount, ui.exemption.amount),
             0,
         )
+        maximum_deduction = max_(tax_unit("c04470", period), tax_unit("standard", period))
+        personal_exemptions = tax_unit("c04600", period)
+        return max_(0, agi - maximum_deduction - personal_exemptions - ui_excluded)
+
 
 
 class posagi(Variable):
