@@ -11,8 +11,8 @@ class is_tax_unit_spouse(Variable):
         # Establish basic conditions
         is_adult = person("age", period) >= 18
         is_not_head = ~person("is_tax_unit_head", period)
-
+        eligible = is_adult * is_not_head
         # Of those who meet the criteria, select the first person defined
-        rank = person.tax_unit.members_position * is_adult * is_not_head
+        rank = person.tax_unit.members_position * eligible
         highest_rank = person.tax_unit.sum(rank)
-        return rank == highest_rank
+        return eligible & (rank == highest_rank)
