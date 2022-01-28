@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [0.27.0] - 2022-01-28
+
+### Added
+
+* Add SNAP emergency allotment logic and values for California.
+
+## [0.26.0] - 2022-01-17
+
+### Changed
+
 * Count school meal subsidies by school enrollment rather than age.
 * Remove `spm_unit_` prefix from school meal variables.
 
