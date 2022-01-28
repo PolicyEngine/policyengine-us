@@ -1453,10 +1453,12 @@ class c59660(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         head_age_is_eligible = (
-            eitc.eligibility.age.min <= age_head <= eitc.eligibility.age.max
+            (eitc.eligibility.age.min <= age_head)
+            & (age_head <= eitc.eligibility.age.max)
         )
         spouse_age_is_eligible = is_joint * (
-            eitc.eligibility.age.min <= age_spouse <= eitc.eligibility.age.max
+            (eitc.eligibility.age.min <= age_spouse)
+            & (age_spouse <= eitc.eligibility.age.max)
         )
         inferred_eligibility = (
             (age_head == 0)
