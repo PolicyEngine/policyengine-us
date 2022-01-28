@@ -87,7 +87,7 @@ class refundable_ctc(Variable):
         return min_(capped_phase_in, maximum_refundable_ctc)
 
     def formula_2021(tax_unit, period, parameters):
-        return tax_unit("ctc_refundable_individual_maximum", period)
+        return aggr(tax_unit, period, ["ctc_refundable_individual_maximum"])
 
     formula_2022 = formula
 

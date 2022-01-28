@@ -11,7 +11,6 @@ class child_tax_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/24#a"
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         maximum_amount = tax_unit("ctc_maximum", period)
         reduction = tax_unit("ctc_reduction", period)
         return maximum_amount - reduction
