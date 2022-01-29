@@ -1,0 +1,10 @@
+-name: WIC Unit Test
+period: 2018
+input:
+  people:
+    person_1:
+      wic_value: 2
+    person_2:
+      wic_value: 2
+  output:
+    wic_value: 4
