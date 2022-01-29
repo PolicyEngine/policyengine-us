@@ -1,0 +1,35 @@
+- name: Pregnant in 2018 is straight from the document.
+  period: 2018
+  input:
+    wic_category: PREGNANT
+  output:
+    wic_value: 37.33
+
+- name: Breastfeeding in 2018 is straight from the document.
+  period: 2018
+  input:
+    wic_category: BREASTFEEDING
+  output:
+    wic_value: 37.76
+
+- name: Postpartum non-breastfeeding in 2018 is straight from the document.
+  period: 2018
+  input:
+    wic_category: POSTPARTUM
+  output:
+    wic_value: 30.72
+
+- name: Infant in 2018 is straight from the document.
+  period: 2018
+  input:
+    wic_category: INFANT
+  output:
+    wic_value: 138.64
+
+
+- name: Child in 2018 is straight from the document.
+  period: 2018
+  input:
+    wic_category: CHILD
+  output:
+    wic_value: 31.78
