@@ -11,13 +11,3 @@
         members: [person_1, person_2]
   output:
     wic: 4
-
-- name: Pregnant person integration test
-  period: 2018
-  input:
-    employment_income: 1_000 * 12
-    is_pregnant: true
-    is_wic_at_nutritional_risk: true
-  output:
-    wic: 37.33 * 12
-

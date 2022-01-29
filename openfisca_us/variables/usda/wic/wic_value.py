@@ -12,4 +12,4 @@ class wic_value(Variable):
     def formula(person, period, parameters):
         values = parameters(period).usda.wic.value
         category = person("wic_category", period)
-        return values[category]
+        return values[category] * 12
