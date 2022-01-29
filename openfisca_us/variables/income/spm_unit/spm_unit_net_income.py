@@ -15,7 +15,7 @@ class spm_unit_net_income(Variable):
             "spm_unit_capped_housing_subsidy",
             "spm_unit_school_lunch_subsidy",
             "spm_unit_energy_subsidy",
-            "spm_unit_wic",
+            "wic",
         ]
         EXPENSE_COMPONENTS = [
             "spm_unit_fica",
