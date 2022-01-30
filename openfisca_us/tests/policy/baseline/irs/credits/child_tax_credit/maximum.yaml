@@ -1,0 +1,23 @@
+- name: CTC maximum amount, pre-TCJA
+  period: 2017
+  input:
+    age: [4, 16, 17]
+    is_tax_unit_dependent: [true, true, true]
+  output:
+    ctc_individual_maximum: [1_000, 1_000, 0]
+
+- name: CTC maximum amount, post-TCJA, pre-ARPA
+  period: 2018
+  input:
+    age: [4, 16, 17]
+    is_tax_unit_dependent: [true, true, true]
+  output:
+    ctc_individual_maximum: [2_000, 2_000, 500]
+
+- name: CTC maximum amount, post-ARPA
+  period: 2021
+  input:
+    age: [4, 16, 17, 18]
+    is_tax_unit_dependent: [true, true, true, true]
+  output:
+    ctc_individual_maximum: [3_600, 3_000, 3_000, 500]

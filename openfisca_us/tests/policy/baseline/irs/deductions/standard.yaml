@@ -101,8 +101,10 @@
     people:
       head:
         age: 44
+        is_tax_unit_head: true
       spouse:
         age: 66
+        is_tax_unit_spouse: true
   output:
     standard: 13500
     basic_standard_deduction: 12000

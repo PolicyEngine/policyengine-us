@@ -5,262 +5,274 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
+## [0.27.0] - 2022-01-28
+
+### Added
+
+- Child Tax Credit (and historical policy).
+- Non-refundable and refundable credit handling in tax logic.
+- Metadata for education credits and the EITC.
+
+### Fixed
+
+- Bugs in head/spouse detection and nonrefundable credits.
+
 ## [0.26.0] - 2022-01-25
 
 ### Added
 
-* Categorical eligibility to school meal subsidies.
-* Documentation notebook on school meal subsidies.
-* Parameterized income sources for school meal subsidies.
+- Categorical eligibility to school meal subsidies.
+- Documentation notebook on school meal subsidies.
+- Parameterized income sources for school meal subsidies.
 
 ### Changed
 
-* Count school meal subsidies by school enrollment rather than age.
-* Remove `spm_unit_` prefix from school meal variables.
+- Count school meal subsidies by school enrollment rather than age.
+- Remove `spm_unit_` prefix from school meal variables.
 
 ## [0.25.0] - 2022-01-17
 
 ### Added
 
-* Child Tax Credit (including adult dependents) parameters, logic and tests.
+- Child Tax Credit (including adult dependents) parameters, logic and tests.
 
 ## [0.24.1] - 2022-01-17
 
 ### Changed
 
-* Add metadata for variables and parameters used in SNAP calculations.
-* Renames two parameters involved in SNAP deductions from `threshold` to `disregard`.
+- Add metadata for variables and parameters used in SNAP calculations.
+- Renames two parameters involved in SNAP deductions from `threshold` to `disregard`.
 
 ## [0.24.0] - 2022-01-17
 
 ### Added
 
-* Logic for SNAP excess medical deduction and dependent care deduction.
-* Limit SNAP earned income deduction to earned income.
-* Jupyter Book documentation on SNAP.
-* Updated SNAP parameters.
-* Empty variables for calculating SNAP: `employment_income`, `self_employment_income`, `dividend_income`, `interest_income`, `childcare_expenses`, and `medical_out_of_pocket_expenses`.
+- Logic for SNAP excess medical deduction and dependent care deduction.
+- Limit SNAP earned income deduction to earned income.
+- Jupyter Book documentation on SNAP.
+- Updated SNAP parameters.
+- Empty variables for calculating SNAP: `employment_income`, `self_employment_income`, `dividend_income`, `interest_income`, `childcare_expenses`, and `medical_out_of_pocket_expenses`.
 
 ### Changed
 
-* Significant refactoring of SNAP code.
-* Use openfisca-tools for `add` and `aggr` functions, and pass lists of variables to these function.
-* Rename min/max SNAP benefit parameters and variables to use `allotment`.
+- Significant refactoring of SNAP code.
+- Use openfisca-tools for `add` and `aggr` functions, and pass lists of variables to these function.
+- Rename min/max SNAP benefit parameters and variables to use `allotment`.
 
 ## [0.23.1] - 2022-01-15
 
 ### Fixed
 
-* Added links to version tag diffs in changelog.
+- Added links to version tag diffs in changelog.
 
 ## [0.23.0] - 2022-01-15
 
 ### Fixed
 
-* Update CCDF subsidy formula.
+- Update CCDF subsidy formula.
 
 ## [0.22.0] - 2022-01-14
 
 ### Added
 
-* Formula for SSI based on eligibility and amount if eligible.
+- Formula for SSI based on eligibility and amount if eligible.
 
 ## [0.21.0] - 2022-01-14
 
 ### Added
 
-* Add CCDF copay formula.
+- Add CCDF copay formula.
 
 ## [0.20.2] - 2022-01-14
 
 ### Fixed
 
-* Parameter misname in SNAP formula.
+- Parameter misname in SNAP formula.
 
 ### Added
 
-* Metadata for SNAP eligibility parameters.
+- Metadata for SNAP eligibility parameters.
 
 ## [0.20.1] - 2022-01-12
 
 ### Fixed
 
-* Test runner failed to test string values.
+- Test runner failed to test string values.
 
 ## [0.20.0] - 2022-01-09
 
 ### Added
 
-* Formula for initial TANF eligibility.
-* Two new variables: `tanf_gross_earned_income` and `tanf_gross_unearned_income`.
-* Variable & parameter for `initial_employment_deduction`.
-* Integration tests for TANF cash aid from TANF IL website.
+- Formula for initial TANF eligibility.
+- Two new variables: `tanf_gross_earned_income` and `tanf_gross_unearned_income`.
+- Variable & parameter for `initial_employment_deduction`.
+- Integration tests for TANF cash aid from TANF IL website.
 
 ### Changed
 
-* `tanf_countable_income` now includes unearned income and earned income deduction.
+- `tanf_countable_income` now includes unearned income and earned income deduction.
 
 ## [0.19.3] - 2022-01-08
 
 ### Changed
 
-* Adds one line between tests in yaml files.
-* Use consistent imports in variable Python files.
+- Adds one line between tests in yaml files.
+- Use consistent imports in variable Python files.
 
 ### Added
 
-* Units to all tax variables.
+- Units to all tax variables.
 
 ### Removed
 
-* C-TAM benefit variables in tax Python files.
-* Erroneous formula for `eic` variable.
+- C-TAM benefit variables in tax Python files.
+- Erroneous formula for `eic` variable.
 
 ## [0.19.2] - 2022-01-08
 
 ### Changed
 
-* Removes the `u` prefix from all variable label strings.
+- Removes the `u` prefix from all variable label strings.
 
 ## [0.19.1] - 2022-01-07
 
 ### Added
 
-* Formulas for `childcare_hours_per_week` and `spm_unit_size`.
-* Unit tests and units for some variables.
+- Formulas for `childcare_hours_per_week` and `spm_unit_size`.
+- Unit tests and units for some variables.
 
 ### Changed
 
-* Reorganized variables.
+- Reorganized variables.
 
 ## [0.19.0] - 2022-01-06
 
 ### Added
 
-* Update child care market rate to annual.
+- Update child care market rate to annual.
 
 ## [0.18.0] - 2022-01-05
 
 ### Added
 
-* Total child care market rate.
+- Total child care market rate.
 
 ## [0.17.1] - 2022-01-06
 
 ### Changed
 
-* Use USDA elderly and disabled definitions in SNAP calculations.
+- Use USDA elderly and disabled definitions in SNAP calculations.
 
 ## [0.17.0] - 2022-01-04
 
 ### Added
 
-* Categorical eligibility for SNAP, including broad-based categorical eligibility via low-cost TANF programs that effectively extend SNAP's asset and income limits.
+- Categorical eligibility for SNAP, including broad-based categorical eligibility via low-cost TANF programs that effectively extend SNAP's asset and income limits.
 
 ### Changed
 
-* Refactored SNAP code.
+- Refactored SNAP code.
 
 ## [0.16.0] - 2022-01-03
 
 ### Added
 
-* CCDF subsidy top-level logic
+- CCDF subsidy top-level logic
 
 ## [0.15.0] - 2022-01-03
 
 ### Added
 
-* Federal SNAP asset tests logic
+- Federal SNAP asset tests logic
 
 ## [0.14.0] - 2022-01-03
 
 ### Added
 
-* SNAP eligibility based on federal net and gross income limits.
-* Unit and integration tests for SNAP variables.
+- SNAP eligibility based on federal net and gross income limits.
+- Unit and integration tests for SNAP variables.
 
 ## [0.13.0] - 2021-12-31
 
 ### Added
 
-* Formula for Medicaid person type, based on age and dependents.
-* Variable for whether a person meets their Medicaid income eligibility requirement.
+- Formula for Medicaid person type, based on age and dependents.
+- Variable for whether a person meets their Medicaid income eligibility requirement.
 
 ## [0.12.0] - 2021-12-30
 
 ### Added
 
-* Elderly and Disabled (tax) Credit.
+- Elderly and Disabled (tax) Credit.
 
 ## [0.11.0] - 2021-12-30
 
 ### Added
 
-* American Opportunity (tax) Credit.
-* Lifetime Learning (tax) Credit.
+- American Opportunity (tax) Credit.
+- Lifetime Learning (tax) Credit.
 
 ## [0.10.0] - 2021-12-28
 
 ### Added
 
-* Income-to-SMI (state median income) ratio.
+- Income-to-SMI (state median income) ratio.
 
 ## [0.9.0] - 2021-12-28
 
 ### Added
 
-* Social Security taxation logic.
+- Social Security taxation logic.
 
 ## [0.8.0] - 2021-12-28
 
 ### Added
 
-* Minimum benefit logic for SNAP.
+- Minimum benefit logic for SNAP.
 
 ## [0.7.0] - 2021-12-28
 
 ### Added
 
-* Gains Tax (capital gains treatment) logic and parameters.
+- Gains Tax (capital gains treatment) logic and parameters.
 
 ## [0.6.0] - 2021-12-28
 
 ### Added
 
-* Alternative Minimum Tax (AMT) income and liability logic.
-* Development tools for auto-generating unit tests for Tax-Calculator functions.
+- Alternative Minimum Tax (AMT) income and liability logic.
+- Development tools for auto-generating unit tests for Tax-Calculator functions.
 
 ## [0.5.0] -
 
 ### Added
 
-* Medicaid income thresholds for California.
+- Medicaid income thresholds for California.
 
 ## [0.4.0] - 2021-12-26
 
 ### Added
 
-* TANF eligibility, broken down into demographic and financial variables, with financial separated by current enrollment in program.
-* Demographic TANF eligibility per IL rules.
+- TANF eligibility, broken down into demographic and financial variables, with financial separated by current enrollment in program.
+- Demographic TANF eligibility per IL rules.
 
 ## [0.3.1] - 2021-12-25
 
 ### Added
 
-* Automated tests.
+- Automated tests.
 
 ## [0.3.0] - 2021-12-25
 
 ### Added
 
-* Lifeline benefit.
+- Lifeline benefit.
 
 ## 0.0.1 - 2021-06-28
 
 ### Added
 
-* First prototype version with a standard deduction variable.
+- First prototype version with a standard deduction variable.
 
 [0.24.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.1...0.24.0
 [0.23.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.0...0.23.1

@@ -49,11 +49,15 @@ class combined(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Sum of iitax and payrolltax"
+    label = "Taxes"
+    documentation = "Total federal income and payroll tax liability."
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["iitax", "payrolltax"])
+        return add(tax_unit, period, ["iitax", "employee_payrolltax"])
+
+
+tax = variable_alias("tax", combined)
 
 
 class filer_earned(Variable):
@@ -86,6 +90,9 @@ class earned(Variable):
             * person("setax", period)
         )
         return max_(0, add(person, period, ["e00200", "setax"]) - adjustment)
+
+
+earned_income = variable_alias("earned_income", earned)
 
 
 class was_plus_sey(Variable):
@@ -122,6 +129,11 @@ class rptc(Variable):
     definition_period = YEAR
     documentation = "Refundable Payroll Tax Credit for filing unit"
     unit = USD
+
+
+refundable_payroll_tax_credit = variable_alias(
+    "refundable_payroll_tax_credit", rptc
+)
 
 
 class rptc_p(Variable):
@@ -193,10 +205,14 @@ class iitax(Variable):
     entity = TaxUnit
     definition_period = YEAR
     unit = USD
-    documentation = "Total federal individual income tax liability; appears as INCTAX variable in tc CLI minimal output"
+    label = "Federal income tax"
+    documentation = "Total federal individual income tax liability."
 
     def formula(tax_unit, period, parameters):
         return tax_unit("c09200", period) - tax_unit("refund", period)
+
+
+federal_income_tax = variable_alias("federal_income_tax", iitax)
 
 
 class num(Variable):
@@ -221,7 +237,7 @@ class payrolltax(Variable):
     label = "Payroll tax"
     definition_period = YEAR
     unit = USD
-    documentation = "Total (employee + employer) payroll tax liability; appears as PAYTAX variable in tc CLI minimal output (payrolltax = ptax_was + setax + ptax_amc)"
+    documentation = "Total (employee + employer) payroll tax liability."
 
     def formula(tax_unit, period):
         COMPONENTS = [
@@ -236,7 +252,8 @@ class payrolltax(Variable):
 class employee_payrolltax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Employee's share of payroll tax"
+    label = "Employee's payroll tax"
+    documentation = "Share of payroll tax liability paid by the employee."
     definition_period = YEAR
     unit = USD
 
@@ -252,21 +269,8 @@ class refund(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        ctc_refundable = parameters(
-            period
-        ).irs.credits.child_tax_credit.refundable
-        ctc_refund = tax_unit("c07220", period) * ctc_refundable
-        REFUND_COMPONENTS = [
-            "eitc",
-            "c11070",
-            "c10960",
-            "cdcc_refund",
-            "recovery_rebate_credit",
-            "personal_refundable_credit",
-            "ctc_new",
-            "rptc",
-        ]
-        return add(tax_unit, period, REFUND_COMPONENTS) + ctc_refund
+        credits = parameters(period).irs.credits.refundable
+        return add(tax_unit, period, credits)
 
 
 class sep(Variable):
@@ -852,6 +856,10 @@ class c07100(Variable):
     )
     unit = USD
 
+    def formula(tax_unit, period, parameters):
+        credits = parameters(period).irs.credits.non_refundable
+        return add(tax_unit, period, credits)
+
 
 class c07180(Variable):
     value_type = float
@@ -1106,6 +1114,11 @@ class c09200(Variable):
     unit = USD
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
+    def formula(tax_unit, period, parameters):
+        tax_net_nonrefundable_credits = max_(
+            0, tax_unit("c05800", period) - tax_unit("c07100", period)
+        )
+
 
 class c09600(Variable):
     value_type = float
@@ -1246,6 +1259,9 @@ class c11070(Variable):
     definition_period = YEAR
     documentation = "Child tax credit (refunded) from Form 8812"
     unit = USD
+
+
+ctc_refund = variable_alias("ctc_refund", c11070)
 
 
 class c17000(Variable):
@@ -1449,11 +1465,12 @@ class c59660(Variable):
         amount = min_(amount_with_phasein, max_with_phaseout)
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        head_age_is_eligible = (
-            eitc.eligibility.age.min <= age_head <= eitc.eligibility.age.max
+        head_age_is_eligible = (eitc.eligibility.age.min <= age_head) & (
+            age_head <= eitc.eligibility.age.max
         )
         spouse_age_is_eligible = is_joint * (
-            eitc.eligibility.age.min <= age_spouse <= eitc.eligibility.age.max
+            (eitc.eligibility.age.min <= age_spouse)
+            & (age_spouse <= eitc.eligibility.age.max)
         )
         inferred_eligibility = (
             (age_head == 0)
@@ -1561,14 +1578,6 @@ class ctc_new(Variable):
     unit = USD
 
 
-class personal_refundable_credit(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Personal refundable credit"
-    unit = USD
-
-
 class recovery_rebate_credit(Variable):
     value_type = float
     entity = TaxUnit
@@ -1576,14 +1585,6 @@ class recovery_rebate_credit(Variable):
     documentation = (
         "Recovery Rebate Credit, from American Rescue Plan Act of 2021"
     )
-    unit = USD
-
-
-class personal_nonrefundable_credit(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Personal nonrefundable credit"
     unit = USD
 
 
