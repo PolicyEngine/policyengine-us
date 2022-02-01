@@ -139,8 +139,8 @@ class e00200(Variable):
     documentation = "Wages, salaries, and tips net of pension contributions"
     unit = USD
 
-    def formula(tax_unit, period, parameters):
-        return tax_unit("employment_income", period)
+    def formula(person, period, parameters):
+        return person("employment_income", period)
 
 
 class filer_e00200(Variable):

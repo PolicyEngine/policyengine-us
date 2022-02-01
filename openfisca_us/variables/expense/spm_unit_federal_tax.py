@@ -7,3 +7,6 @@ class spm_unit_federal_tax(Variable):
     label = "SPM unit federal tax"
     definition_period = YEAR
     unit = USD
+
+    def formula(spm_unit, period, parameters):
+        return sum_contained_tax_units("federal_income_tax", spm_unit, period)
