@@ -1579,17 +1579,14 @@ class c62100(Variable):
         )  # add income not in AGI but considered income for AMT
         amt = parameters(period).irs.income.amt
         mars = tax_unit("mars", period)
-        separate_addition = (
-            max_(
-                0,
-                min_(
-                    amt.exemption.amount[mars],
-                    amt.exemption.phaseout.rate
-                    * (c62100 - amt.exemption.separate_limit),
-                ),
-            )
-            * (mars == mars.possible_values.SEPARATE)
-        )
+        separate_addition = max_(
+            0,
+            min_(
+                amt.exemption.amount[mars],
+                amt.exemption.phaseout.rate
+                * (c62100 - amt.exemption.separate_limit),
+            ),
+        ) * (mars == mars.possible_values.SEPARATE)
         return c62100 + separate_addition
 
 
@@ -1688,16 +1685,13 @@ class dwks10(Variable):
 
     def formula(tax_unit, period, parameters):
         dwks10_if_gains = add(tax_unit, period, ["dwks6", "dwks9"])
-        dwks10_if_no_gains = (
-            max_(
-                0,
-                min_(
-                    tax_unit("filer_p23250", period),
-                    tax_unit("c23650", period),
-                ),
-            )
-            + tax_unit("filer_e01100", period)
-        )
+        dwks10_if_no_gains = max_(
+            0,
+            min_(
+                tax_unit("filer_p23250", period),
+                tax_unit("c23650", period),
+            ),
+        ) + tax_unit("filer_e01100", period)
         return where(
             tax_unit("hasqdivltcg", period),
             dwks10_if_gains,
