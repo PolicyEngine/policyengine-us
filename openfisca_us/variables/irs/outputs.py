@@ -77,6 +77,7 @@ class earned(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
+    label = "Earned income"
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
     )
@@ -116,6 +117,7 @@ class eitc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Earned Income Tax Credit"
     documentation = "Earned Income Credit"
     unit = USD
 
@@ -127,6 +129,7 @@ class rptc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Refundable Payroll Tax Credit"
     documentation = "Refundable Payroll Tax Credit for filing unit"
     unit = USD
 
@@ -165,6 +168,7 @@ class expanded_income(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Expanded income"
     documentation = "Broad income measure that includes benefit_value_total"
     unit = USD
 
@@ -209,10 +213,10 @@ class iitax(Variable):
     documentation = "Total federal individual income tax liability."
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("c09200", period) - tax_unit("refund", period)
+        return tax_unit("income_tax_before_refundable_credits", period) - tax_unit("income_tax_refundable_credits", period)
 
 
-federal_income_tax = variable_alias("federal_income_tax", iitax)
+income_tax = variable_alias("income_tax", iitax)
 
 
 class num(Variable):
@@ -261,10 +265,11 @@ class employee_payrolltax(Variable):
         return tax_unit("payrolltax", period) * 0.5
 
 
-class refund(Variable):
+class income_tax_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Income tax refundable credits"
     documentation = "Total refundable income tax credits"
     unit = USD
 
@@ -381,6 +386,7 @@ class taxbc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Regular tax before credits"
     documentation = "Regular tax on regular taxable income before credits"
     unit = USD
 
@@ -453,9 +459,10 @@ class taxbc(Variable):
             # Calculate rate applied to regular income up to the current
             # threshold (on income above the last threshold)
             reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
+            amount_in_bracket = amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
             reg_tax += individual_income.bracket.rates[
                 str(i)
-            ] * amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
+            ] * amount_in_bracket
             last_reg_threshold = reg_threshold
 
             # Calculate rate applied to pass-through income on in the same
@@ -471,6 +478,7 @@ class taxbc(Variable):
             ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
             last_pt_threshold = pt_threshold
 
+
         # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
             reg_taxinc - last_reg_threshold, 0
@@ -480,6 +488,7 @@ class taxbc(Variable):
         )
 
         dwks42 = reg_tax + pt_tax
+
         dwks43 = sum(
             [
                 dwks29,
@@ -490,7 +499,7 @@ class taxbc(Variable):
                 lowest_rate_tax,
             ]
         )
-        c05200 = tax_unit("c05200", period)
+        c05200 = tax_unit("income_tax_main_rates", period)
         dwks44 = c05200
         dwks45 = min_(dwks43, dwks44)
 
@@ -498,12 +507,14 @@ class taxbc(Variable):
 
         return where(hasqdivltcg, dwks45, c05200)
 
+regular_tax_before_credits = variable_alias("regular_tax_before_credits", taxbc)
 
 class c00100(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Adjusted Gross Income (AGI)"
+    label = "AGI"
+    documentation = "Adjusted Gross Income"
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -756,14 +767,16 @@ class c04800(Variable):
             0, tax_unit("pre_qbid_taxinc", period) - tax_unit("qbided", period)
         )
 
+taxable_income = variable_alias("taxable_income", c04800)
+
 
 class c05200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Sch X,Y,Z tax"
+    label = "Income tax main rates"
     unit = USD
-    documentation = "Tax amount from Sch X,Y,X tables"
+    documentation = "Tax amount from Sch X,Y,Z tables"
 
     def formula(tax_unit, period, parameters):
         # Separate non-negative taxable income into two non-negative components,
@@ -821,6 +834,7 @@ class c05200(Variable):
         )
         return reg_tax + pt_tax
 
+income_tax_main_rates = variable_alias("income_tax_main_rates", c05200)
 
 class c05700(Variable):
     value_type = float
@@ -836,12 +850,12 @@ class c05800(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Income tax liability before credits"
+    label = "Income tax before credits"
     unit = USD
     documentation = "Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["taxbc", "c09600"])
+        return add(tax_unit, period, ["regular_tax_before_credits", "alternative_minimum_tax"])
 
 
 income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)
@@ -851,7 +865,7 @@ class c07100(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Income tax refundable credits"
+    label = "Income tax non-refundable credits"
     documentation = (
         "Total non-refundable credits used to reduce positive tax liability"
     )
@@ -861,12 +875,13 @@ class c07100(Variable):
         credits = parameters(period).irs.credits.non_refundable
         return add(tax_unit, period, credits)
 
+income_tax_non_refundable_credits = variable_alias("income_tax_non_refundable_credits", c07100)
 
 class c07180(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Form 221 Nonrefundable Credit"
+    label = "Child/dependent care credit"
     unit = USD
     documentation = "Nonrefundable credit for child and dependent care expenses from Form 2441"
 
@@ -893,7 +908,7 @@ class cdcc_refund(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Form 2441 Refundable Credit"
+    label = "Child/dependent care refundable credit"
     unit = USD
     documentation = "Refundable credit for child and dependent care expenses from Form 2441"
 
@@ -1117,7 +1132,9 @@ class c09200(Variable):
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
-        return max_(0, tax_unit("c05800", period) - tax_unit("c07100", period))
+        return max_(0, tax_unit("income_tax_before_credits", period) - tax_unit("income_tax_non_refundable_credits", period))
+
+income_tax_before_refundable_credits = variable_alias("income_tax_before_refundable_credits", c09200)
 
 
 class c09600(Variable):
@@ -1239,6 +1256,7 @@ class c09600(Variable):
             ),
         )
 
+alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)
 
 class c10960(Variable):
     value_type = float
@@ -1582,6 +1600,7 @@ class recovery_rebate_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Recovery Rebate Credit"
     documentation = (
         "Recovery Rebate Credit, from American Rescue Plan Act of 2021"
     )
