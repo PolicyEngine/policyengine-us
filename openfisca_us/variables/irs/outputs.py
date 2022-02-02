@@ -213,7 +213,9 @@ class iitax(Variable):
     documentation = "Total federal individual income tax liability."
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("income_tax_before_refundable_credits", period) - tax_unit("income_tax_refundable_credits", period)
+        return tax_unit(
+            "income_tax_before_refundable_credits", period
+        ) - tax_unit("income_tax_refundable_credits", period)
 
 
 income_tax = variable_alias("income_tax", iitax)
@@ -459,10 +461,12 @@ class taxbc(Variable):
             # Calculate rate applied to regular income up to the current
             # threshold (on income above the last threshold)
             reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
-            amount_in_bracket = amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
-            reg_tax += individual_income.bracket.rates[
-                str(i)
-            ] * amount_in_bracket
+            amount_in_bracket = amount_between(
+                reg_taxinc, last_reg_threshold, reg_threshold
+            )
+            reg_tax += (
+                individual_income.bracket.rates[str(i)] * amount_in_bracket
+            )
             last_reg_threshold = reg_threshold
 
             # Calculate rate applied to pass-through income on in the same
@@ -477,7 +481,6 @@ class taxbc(Variable):
                 str(i)
             ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
             last_pt_threshold = pt_threshold
-
 
         # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
@@ -507,7 +510,11 @@ class taxbc(Variable):
 
         return where(hasqdivltcg, dwks45, c05200)
 
-regular_tax_before_credits = variable_alias("regular_tax_before_credits", taxbc)
+
+regular_tax_before_credits = variable_alias(
+    "regular_tax_before_credits", taxbc
+)
+
 
 class c00100(Variable):
     value_type = float
@@ -767,6 +774,7 @@ class c04800(Variable):
             0, tax_unit("pre_qbid_taxinc", period) - tax_unit("qbided", period)
         )
 
+
 taxable_income = variable_alias("taxable_income", c04800)
 
 
@@ -834,7 +842,9 @@ class c05200(Variable):
         )
         return reg_tax + pt_tax
 
+
 income_tax_main_rates = variable_alias("income_tax_main_rates", c05200)
+
 
 class c05700(Variable):
     value_type = float
@@ -855,7 +865,11 @@ class c05800(Variable):
     documentation = "Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["regular_tax_before_credits", "alternative_minimum_tax"])
+        return add(
+            tax_unit,
+            period,
+            ["regular_tax_before_credits", "alternative_minimum_tax"],
+        )
 
 
 income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)
@@ -875,7 +889,11 @@ class c07100(Variable):
         credits = parameters(period).irs.credits.non_refundable
         return add(tax_unit, period, credits)
 
-income_tax_non_refundable_credits = variable_alias("income_tax_non_refundable_credits", c07100)
+
+income_tax_non_refundable_credits = variable_alias(
+    "income_tax_non_refundable_credits", c07100
+)
+
 
 class c07180(Variable):
     value_type = float
@@ -1132,9 +1150,16 @@ class c09200(Variable):
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
-        return max_(0, tax_unit("income_tax_before_credits", period) - tax_unit("income_tax_non_refundable_credits", period))
+        return max_(
+            0,
+            tax_unit("income_tax_before_credits", period)
+            - tax_unit("income_tax_non_refundable_credits", period),
+        )
 
-income_tax_before_refundable_credits = variable_alias("income_tax_before_refundable_credits", c09200)
+
+income_tax_before_refundable_credits = variable_alias(
+    "income_tax_before_refundable_credits", c09200
+)
 
 
 class c09600(Variable):
@@ -1256,7 +1281,9 @@ class c09600(Variable):
             ),
         )
 
+
 alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)
+
 
 class c10960(Variable):
     value_type = float
