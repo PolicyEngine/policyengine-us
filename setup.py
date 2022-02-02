@@ -47,6 +47,7 @@ setup(
             "setuptools",
             "jupyter-book",
             "coverage",
+            "plotly",
         ],
     },
     python_requires=">=3.7,<3.8",
