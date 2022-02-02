@@ -836,7 +836,7 @@ class c05800(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Total income tax liability before credits"
+    label = "Income tax liability before credits"
     unit = USD
     documentation = "Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"
 
@@ -851,6 +851,7 @@ class c07100(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    label = "Income tax refundable credits"
     documentation = (
         "Total non-refundable credits used to reduce positive tax liability"
     )
@@ -1112,6 +1113,7 @@ class c09200(Variable):
     entity = TaxUnit
     definition_period = YEAR
     unit = USD
+    label = "Income tax before refundable credits"
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
