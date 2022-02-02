@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Metadata and variable aliases for key tax variables.
+- Employment, self-employment, interest and dividend income as inputs to tax logic.
 
 ## [0.27.0] - 2022-01-28
 
