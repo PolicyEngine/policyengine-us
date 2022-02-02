@@ -45,7 +45,7 @@ setup(
             "wheel",
             "pytest",
             "setuptools",
-            "jupyter-book>=0.12.2",
+            "jupyter-book",
             "coverage",
         ],
     },
