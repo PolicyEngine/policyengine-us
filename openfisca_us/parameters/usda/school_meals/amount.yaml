@@ -1,6 +1,6 @@
 description: USDA reimbursement rates per meal per child.
 
-nslp:  # National School Lunch Program.
+nslp: # National School Lunch Program.
   # Use the under-60% numbers.
   CONTIGUOUS_US:
     PAID:
@@ -32,7 +32,7 @@ nslp:  # National School Lunch Program.
     FREE:
       2020-07-01: 4.11
       2021-07-01: 4.28
-sbp:  # School Breakfast Program.
+sbp: # School Breakfast Program.
   # Use "Non-severe need"
   CONTIGUOUS_US:
     PAID:
@@ -65,12 +65,11 @@ sbp:  # School Breakfast Program.
       2020-07-01: 2.21
       2021-07-01: 2.29
 
-
 metadata:
   unit: currency-USD
   reference:
-  - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2020
-    href: https://www.federalregister.gov/documents/2020/07/22/2020-15764/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
-  - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2021
-    href: https://www.federalregister.gov/documents/2021/07/16/2021-15107/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2020
+      href: https://www.federalregister.gov/documents/2020/07/22/2020-15764/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2021
+      href: https://www.federalregister.gov/documents/2021/07/16/2021-15107/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
   period: day

@@ -12,7 +12,7 @@ class school_meal_subsidy(Variable):
     def formula(spm_unit, period, parameters):
         # Get state group and tier (based on poverty ratio) for SPM unit.
         state_group = spm_unit.household("state_group_str", period)
-        tier = spm_unit("spm_unit_school_meal_tier", period).decode_to_str()
+        tier = spm_unit("school_meal_tier", period).decode_to_str()
         # Get parameters.
         p_school_meals = parameters(period).usda.school_meals
         p_amount = p_school_meals.amount
@@ -21,8 +21,9 @@ class school_meal_subsidy(Variable):
         sbp_per_child = p_amount.sbp[state_group][tier]
         # Add NSLP and SBP.
         school_meal_subsidy_per_child = nslp_per_child + sbp_per_child
-        # Multiply by number of school days in the year and number of children.
-        children = spm_unit.sum(spm_unit.members("age", period) < 18)
+        # Multiply by number of school days in the year and number of children
+        # in school.
+        children = spm_unit.sum(spm_unit.members("is_in_school", period))
         return (
             school_meal_subsidy_per_child
             * children

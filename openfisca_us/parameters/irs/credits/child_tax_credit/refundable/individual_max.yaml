@@ -1,0 +1,11 @@
+description: Maximum refundable amount of the CTC for qualifying children.
+values:
+  2018-01-01: 1_400
+metadata:
+  unit: currency-USD
+  period: year
+  name: CTC_refundable_child_max
+  label: Child tax credit refundable maximum amount
+  reference:
+    - title: 26 U.S. Code § 24(h)(5)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_5_A

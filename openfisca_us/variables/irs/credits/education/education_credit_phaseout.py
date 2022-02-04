@@ -23,5 +23,5 @@ class education_credit_phaseout(Variable):
             education.phaseout.length.joint,
             education.phaseout.length.single,
         )
-        excess_agi = max(0, agi - phaseout_start)
+        excess_agi = max_(0, agi - phaseout_start)
         return min_(1, excess_agi / phaseout_length)
