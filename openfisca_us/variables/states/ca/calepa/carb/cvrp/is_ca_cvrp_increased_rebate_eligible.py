@@ -13,7 +13,6 @@ class ca_cvrp_increased_rebate(Variable):
         # Use school meal FPG ratio.
         fpg_ratio = person.spm_unit("school_meal_fpg_ratio", period)
         p = parameters(period).states.ca.calepa.carb.cvrp.increased_rebate
-        claims_normal_rebate = person("ca_cvrp_normal_rebate", period) > 0
         income_eligible = fpg_ratio <= p.fpl_limit
         categorically_eligible = np.any(
             [
@@ -22,6 +21,4 @@ class ca_cvrp_increased_rebate(Variable):
             ],
             axis=0,
         )
-        eligible = income_eligible | categorically_eligible
-        # Must also claim the normal rebate.
-        return (eligible & claims_normal_rebate) * p.amount
+        return income_eligible | categorically_eligible

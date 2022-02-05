@@ -16,5 +16,4 @@ class ca_cvrp_normal_rebate(Variable):
         agi = person.tax_unit("c00100", period)
         mars = person.tax_unit("mars", period)
         caps = parameters(period).states.ca.calepa.carb.cvrp.income_cap
-        eligible = agi <= caps[mars]
-        return eligible * person("ca_cvrp_vehicle_rebate_amount", period)
+        return agi <= caps[mars]
