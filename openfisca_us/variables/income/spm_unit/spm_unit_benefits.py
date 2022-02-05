@@ -11,6 +11,7 @@ class spm_unit_benefits(Variable):
     def formula(spm_unit, period, parameters):
         PERSON_COMPONENTS = [
             "ssdi",
+            "wic",
         ]
         SPMU_COMPONENTS = [
             "snap",

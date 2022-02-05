@@ -3,9 +3,10 @@
   input:
     # Person-level.
     ssdi: 1
+    wic: 2
     # SPM unit-level.
-    snap: 2
-    school_meal_subsidy: 3
-    ssi: 4
+    snap: 3
+    school_meal_subsidy: 4
+    ssi: 5
   output:
-    spm_unit_benefits: 1 + 2 + 3 + 4
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5
