@@ -1,20 +1,20 @@
 - name: Free school meal tier is eligible
   period: 2022
   input:
-    spm_unit_school_meal_tier: FREE
+    school_meal_tier: FREE
   output:
     meets_wic_income_test: true
 
 - name: Reduced school meal tier is eligible
   period: 2022
   input:
-    spm_unit_school_meal_tier: REDUCED
+    school_meal_tier: REDUCED
   output:
     meets_wic_income_test: true
 
 - name: Paid school meal tier is not eligible
   period: 2022
   input:
-    spm_unit_school_meal_tier: PAID
+    school_meal_tier: PAID
   output:
     meets_wic_income_test: false

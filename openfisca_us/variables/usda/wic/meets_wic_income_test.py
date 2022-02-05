@@ -11,6 +11,6 @@ class meets_wic_income_test(Variable):
 
     def formula(spm_unit, period, parameters):
         # Free or reduced are eligible.
-        school_meal_tier = spm_unit("spm_unit_school_meal_tier", period)
+        school_meal_tier = spm_unit("school_meal_tier", period)
         school_meal_tiers = school_meal_tier.possible_values
         return school_meal_tier != school_meal_tiers.PAID
