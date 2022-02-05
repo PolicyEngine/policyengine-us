@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
+## [0.28.0] - 2022-02-04
+
+### Added
+
+- WIC parameters and program rules.
+
 ## [0.27.1] - 2022-02-02
 
 ### Added
@@ -281,6 +287,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
+[0.28.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.1...0.28.0
 [0.24.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.1...0.24.0
 [0.23.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.23.0...0.23.1
 [0.23.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.22.0...0.23.0
