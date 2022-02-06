@@ -21,7 +21,7 @@ class snap(Variable):
         allotment_if_eligible = max_(min_allotment, normal_allotment)
         # Calculate emergency allotment, which provides all eligible households the maximum.
         ea = parameters(period).usda.snap.emergency_allotment
-        state = spm_unit("state", period)
+        state = spm_unit.household("state_code_str", period)
         ea_in_effect = ea.in_effect[state]
         ea_minimum = ea.minimum[state]
         ea_amount_if_in_effect = max_(
