@@ -1,13 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class ca_cvrp_increased_rebate(Variable):
-    value_type = float
+class is_ca_cvrp_increased_rebate_eligible(Variable):
+    value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "CVRP increased rebate"
-    unit = USD
-    documentation = "Increased rebate for low- and middle-income participants in California's Clean Vehicle Rebate Project (CVRP)"
+    label = "Eligible for CVRP increased rebate"
+    documentation = "Eligible for increased rebate for low- and middle-income participants in California's Clean Vehicle Rebate Project (CVRP)"
 
     def formula(person, period, parameters):
         # Use school meal FPG ratio.

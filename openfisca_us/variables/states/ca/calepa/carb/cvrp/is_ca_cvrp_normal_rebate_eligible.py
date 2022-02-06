@@ -1,15 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class ca_cvrp_normal_rebate(Variable):
-    value_type = float
+class is_ca_cvrp_normal_rebate_eligible(Variable):
+    value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "CVRP normal rebate"
-    unit = USD
-    documentation = (
-        "California Clean Vehicle Rebate Project (CVRP) normal rebate"
-    )
+    label = "Eligible for CVRP normal rebate"
+    documentation = "Eligible for California Clean Vehicle Rebate Project (CVRP) normal rebate"
 
     def formula(person, period, parameters):
         # AGI must be less than the threshold.
