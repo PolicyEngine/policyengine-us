@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * SNAP emergency allotments for California.
 * SNAP unearned income example in JupyterBook docs.
 
+## [0.27.2] - 2022-02-06
+
+### Added
+
+* Added formula for TANF variable `continuous_tanf_eligibility`
+* Added integration test for continuous TANF eligibility to `integration.yaml`
+
 ## [0.27.1] - 2022-02-02
 
 ### Added
