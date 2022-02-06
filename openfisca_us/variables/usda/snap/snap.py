@@ -23,7 +23,7 @@ class snap(Variable):
         ea = parameters(period).usda.snap.emergency_allotment
         state = spm_unit.household("state_code_str", period)
         ea_in_effect = ea.in_effect[state]
-        ea_minimum = ea.minimum[state]
+        ea_minimum = ea.minimum[state] * 12
         ea_amount_if_in_effect = max_(
             ea_minimum, max_allotment - allotment_if_eligible
         )

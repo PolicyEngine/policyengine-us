@@ -6,7 +6,7 @@
     snap_max_allotment: 3
     snap_min_allotment: 1
   output:
-    snap: 2
+    snap: 2 + 95 * 12
 
 - name: SNAP-ineligible returns zero.
   period: 2022
@@ -18,7 +18,7 @@
   output:
     snap: 0
 
-- name: SNAP-eligible with no minimum and max < contribution returns zero.
+- name: SNAP-eligible with no minimum and max < contribution normally returns zero, instead returns $95/mo due to emergency allotment.
   period: 2022
   input:
     is_snap_eligible: true
@@ -26,9 +26,9 @@
     snap_max_allotment: 1
     snap_min_allotment: 0
   output:
-    snap: 0
+    snap: 95 * 12
 
-- name: SNAP-eligible with max < contribution returns minimum.
+- name: SNAP-eligible with max < contribution returns minimum plus emergency allotment.
   period: 2022
   input:
     is_snap_eligible: true
@@ -36,4 +36,4 @@
     snap_max_allotment: 1
     snap_min_allotment: 1
   output:
-    snap: 1
+    snap: 1 + 95 * 12
