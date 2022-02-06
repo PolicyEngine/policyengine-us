@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * SNAP emergency allotments for California.
+* SNAP unearned income example in JupyterBook docs.
 
 ## [0.27.1] - 2022-02-02
 
