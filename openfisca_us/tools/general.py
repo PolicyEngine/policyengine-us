@@ -1,20 +1,9 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
+from openfisca_tools.model_api import *
 import numpy as np
 
 USD = "currency-USD"
-
-
-def add(entity, period, *variables):
-    return sum([entity(var, period) for var in variables])
-
-
-def aggr(entity, period, *variables):
-    return entity.sum(add(entity, period, *variables))
-
-
-def amount_between(x, lower, upper):
-    return max_(min_(x, upper), lower) - lower
 
 
 def tax_unit_non_dep_sum(var, tax_unit, period):
@@ -36,9 +25,19 @@ infinity = np.inf
 select = np.select
 where = np.where
 
+PERCENT = "/1"
+
 
 def variable_alias(name: str, variable_cls: type) -> type:
     """
     Copy a variable class and return a new class.
     """
-    return type(name, variable_cls.__bases__, dict(variable_cls.__dict__))
+    class_dict = dict(variable_cls.__dict__)
+    class_dict["formula"] = lambda entity, period: entity(
+        variable_cls.__name__, period
+    )
+    return type(
+        name,
+        variable_cls.__bases__,
+        class_dict,
+    )

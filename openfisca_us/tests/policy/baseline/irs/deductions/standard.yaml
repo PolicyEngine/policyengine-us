@@ -2,17 +2,16 @@
 
 - name: Married, young
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: false
@@ -39,17 +38,16 @@
 
 - name: Married, allow charity
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -76,17 +74,16 @@
 
 - name: Married, allow charity, over limit
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -104,8 +101,10 @@
     people:
       head:
         age: 44
+        is_tax_unit_head: true
       spouse:
         age: 66
+        is_tax_unit_spouse: true
   output:
     standard: 13500
     basic_standard_deduction: 12000
@@ -113,17 +112,16 @@
 
 - name: Married, two old
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -150,17 +148,16 @@
 
 - name: Single 1
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -185,17 +182,16 @@
 
 - name: Single 2
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -220,17 +216,16 @@
 
 - name: Married, single
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -255,17 +250,16 @@
 
 - name: Married, Single, dep, under earn
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true
@@ -290,17 +284,16 @@
 
 - name: Married, Single, dep, over earn
   period: 2021
-  absolute_error_margin: 0.01
   input:
     irs.deductions.standard.amount.SINGLE: 6000
     irs.deductions.standard.amount.JOINT: 12000
     irs.deductions.standard.amount.SEPARATE: 6000
-    irs.deductions.standard.amount.HOUSEHOLD_HEAD: 12000
+    irs.deductions.standard.amount.HEAD_OF_HOUSEHOLD: 12000
     irs.deductions.standard.amount.WIDOW: 12000
     irs.deductions.standard.aged_or_blind.amount.SINGLE: 1500
     irs.deductions.standard.aged_or_blind.amount.JOINT: 1200
     irs.deductions.standard.aged_or_blind.amount.SEPARATE: 1500
-    irs.deductions.standard.aged_or_blind.amount.HOUSEHOLD_HEAD: 1500
+    irs.deductions.standard.aged_or_blind.amount.HEAD_OF_HOUSEHOLD: 1500
     irs.deductions.standard.aged_or_blind.amount.WIDOW: 1500
     irs.deductions.standard.dependent.amount: 1000
     irs.deductions.itemized.charity.allow_nonitemizers: true

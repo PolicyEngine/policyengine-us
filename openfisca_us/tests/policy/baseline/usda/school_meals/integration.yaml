@@ -1,16 +1,15 @@
 - name: No income, one parent, one child, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 0
+        school_meal_fpg_ratio: 0
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -19,52 +18,46 @@
 
 - name: Low income, one parent, one child, contiguous_US (defined as default)
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 1.2
+        school_meal_fpg_ratio: 1.2
+        snap: 0
   output:
     school_meal_subsidy: 180 * (3.66 + 1.97)
 
-- name: Income between 1.3 and 1.85 poverty line, one parent, one child, contiguous_US
+- name: Income between 1.3 and 1.85 poverty line, no SNAP, one parent, one child, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 1.8
-    households:
-      household:
-        state_group: CONTIGUOUS_US
+        school_meal_fpg_ratio: 1.8
+        snap: 0
   output:
     school_meal_subsidy: 180 * (3.26 + 1.67)
 
 - name: High income, one parent, one child, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 10
+        school_meal_fpg_ratio: 10
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -73,17 +66,16 @@
 
 - name: No income, one parent, one child, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 35
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 0
+        school_meal_fpg_ratio: 0
+        snap: 0
     households:
       household:
         state_group: HI
@@ -92,17 +84,16 @@
 
 - name: Low income, one parent, one child, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 1.0
+        school_meal_fpg_ratio: 1.0
+        snap: 0
     households:
       household:
         state_group: HI
@@ -111,17 +102,16 @@
 
 - name: Income between 1.3 and 1.85 poverty line, one parent, one child, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 1.5
+        school_meal_fpg_ratio: 1.5
+        snap: 0
     households:
       household:
         state_group: HI
@@ -130,17 +120,16 @@
 
 - name: High income, one parent, one child, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 20
+        school_meal_fpg_ratio: 20
+        snap: 0
     households:
       household:
         state_group: HI
@@ -149,17 +138,16 @@
 
 - name: Low income, one parent, one child, Alaska
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 0.8
+        school_meal_fpg_ratio: 0.8
+        snap: 0
     households:
       household:
         state_group: AK
@@ -168,17 +156,16 @@
 
 - name: Income between 1.3 and 1.85 poverty line, one parent, one child, Alaska
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 30
+      parent: {}
       child:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child]
-        spm_unit_school_meal_fpg_ratio: 1.4
+        school_meal_fpg_ratio: 1.4
+        snap: 0
     households:
       household:
         state_group: AK
@@ -187,19 +174,18 @@
 
 - name: Low income, one parent, two children, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 50
+      parent: {}
       child1:
-        age: 15
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_school_meal_fpg_ratio: 1.2
+        school_meal_fpg_ratio: 1.2
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -208,19 +194,18 @@
 
 - name: Income between 1.3 and 1.85 poverty line, one parent, two children, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 45
+      parent: {}
       child1:
-        age: 15
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_school_meal_fpg_ratio: 1.7
+        school_meal_fpg_ratio: 1.7
+        snap: 0
     households:
       household:
         state_group: HI
@@ -229,19 +214,18 @@
 
 - name: High income, one parent, two children, Alaska
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 40
+      parent: {}
       child1:
-        age: 13
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2]
-        spm_unit_school_meal_fpg_ratio: 15
+        school_meal_fpg_ratio: 15
+        snap: 0
     households:
       household:
         state_group: AK
@@ -250,21 +234,20 @@
 
 - name: High income, one parent, three children, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 36
+      parent: {}
       child1:
-        age: 12
+        is_in_school: true
       child2:
-        age: 8
+        is_in_school: true
       child3:
-        age: 6
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        spm_unit_school_meal_fpg_ratio: 15
+        school_meal_fpg_ratio: 15
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -273,21 +256,20 @@
 
 - name: Income between 1.3 and 1.85 poverty line, one parent, three children, Alaska
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 35
+      parent: {}
       child1:
-        age: 10
+        is_in_school: true
       child2:
-        age: 7
+        is_in_school: true
       child3:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3]
-        spm_unit_school_meal_fpg_ratio: 1.6
+        school_meal_fpg_ratio: 1.6
+        snap: 0
     households:
       household:
         state_group: AK
@@ -296,19 +278,17 @@
 
 - name: Income between 1.3 and 1.85 poverty line, two parents, one child, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 35
+      parent1: {}
+      parent2: {}
       child:
-        age: 16
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
-        spm_unit_school_meal_fpg_ratio: 1.8
+        school_meal_fpg_ratio: 1.8
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -317,19 +297,17 @@
 
 - name: Low income, two parents, one child, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 40
+      parent1: {}
+      parent2: {}
       child:
-        age: 12
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child]
-        spm_unit_school_meal_fpg_ratio: 1.1
+        school_meal_fpg_ratio: 1.1
+        snap: 0
     households:
       household:
         state_group: HI
@@ -338,21 +316,19 @@
 
 - name: Income between 1.3 and 1.85 poverty line, two parents, two children, Alaska
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 35
-      parent2:
-        age: 35
+      parent1: {}
+      parent2: {}
       child1:
-        age: 10
+        is_in_school: true
       child2:
-        age: 7
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2]
-        spm_unit_school_meal_fpg_ratio: 1.4
+        school_meal_fpg_ratio: 1.4
+        snap: 0
     households:
       household:
         state_group: AK
@@ -361,23 +337,20 @@
 
 - name: Low income, two parents, three children, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 50
-      parent2:
-        age: 50
+      parent1: {}
+      parent2: {}
       child1:
-        age: 15
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
       child3:
-        age: 7
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        spm_unit_school_meal_fpg_ratio: 1.2
+        school_meal_fpg_ratio: 1.2
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -386,23 +359,21 @@
 
 - name: High income, two parents, three children, Hawaii
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 40
+      parent1: {}
+      parent2: {}
       child1:
-        age: 10
+        is_in_school: true
       child2:
-        age: 7
+        is_in_school: true
       child3:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        spm_unit_school_meal_fpg_ratio: 15
+        school_meal_fpg_ratio: 15
+        snap: 0
     households:
       household:
         state_group: HI
@@ -411,23 +382,21 @@
 
 - name: High income, two parents, three children, Alaska
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 35
-      parent2:
-        age: 35
+      parent1: {}
+      parent2: {}
       child1:
-        age: 13
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
       child3:
-        age: 7
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3]
-        spm_unit_school_meal_fpg_ratio: 20
+        school_meal_fpg_ratio: 20
+        snap: 0
     households:
       household:
         state_group: AK
@@ -436,23 +405,22 @@
 
 - name: Income between 1.3 and 1.85 poverty line, one parent, four children, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent:
-        age: 40
+      parent: {}
       child1:
-        age: 12
+        is_in_school: true
       child2:
-        age: 9
+        is_in_school: true
       child3:
-        age: 7
+        is_in_school: true
       child4:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent, child1, child2, child3, child4]
-        spm_unit_school_meal_fpg_ratio: 1.8
+        school_meal_fpg_ratio: 1.8
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -461,27 +429,25 @@
 
 - name: Low income, two parents, five children, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 40
+      parent1: {}
+      parent2: {}
       child1:
-        age: 12
+        is_in_school: true
       child2:
-        age: 10
+        is_in_school: true
       child3:
-        age: 8
+        is_in_school: true
       child4:
-        age: 7
+        is_in_school: true
       child5:
-        age: 5
+        is_in_school: true
     spm_units:
       spm_unit:
         members: [parent1, parent2, child1, child2, child3, child4, child5]
-        spm_unit_school_meal_fpg_ratio: 1.1
+        school_meal_fpg_ratio: 1.1
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US
@@ -490,17 +456,15 @@
 
 - name: Income between 1.3 and 1.85 poverty line, two parents, 0 child, contiguous_US
   period: 2022
-  absolute_error_margin: 0.01
   input:
     people:
-      parent1:
-        age: 40
-      parent2:
-        age: 33
+      parent1: {}
+      parent2: {}
     spm_units:
       spm_unit:
         members: [parent1, parent2]
-        spm_unit_school_meal_fpg_ratio: 1.8
+        school_meal_fpg_ratio: 1.8
+        snap: 0
     households:
       household:
         state_group: CONTIGUOUS_US

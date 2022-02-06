@@ -3,3 +3,8 @@
 
 format: jb-book
 root: index
+parts:
+  - caption: Programs
+    chapters:
+      - file: programs/snap
+      - file: programs/school_meals

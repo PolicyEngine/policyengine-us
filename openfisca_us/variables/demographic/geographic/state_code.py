@@ -58,7 +58,7 @@ class State(Enum):
     # Territories.
     GU = "Guam"
     MP = "Northern Mariana Islands"
-    PW = "Pala"
+    PW = "Palau"
     PR = "Puerto Rico"
     VI = "Virgin Islands"
     AA = "Armed Forces Americas (Except Canada)"
