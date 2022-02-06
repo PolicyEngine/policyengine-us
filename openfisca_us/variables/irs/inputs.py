@@ -139,6 +139,9 @@ class e00200(Variable):
     documentation = "Wages, salaries, and tips net of pension contributions"
     unit = USD
 
+    def formula(person, period, parameters):
+        return person("employment_income", period)
+
 
 class filer_e00200(Variable):
     value_type = float
@@ -176,6 +179,9 @@ class e00300(Variable):
     definition_period = YEAR
     documentation = "Taxable interest income"
     unit = USD
+
+    def formula(person, period, parameters):
+        return person("interest_income", period)
 
 
 class filer_e00300(Variable):
@@ -216,6 +222,9 @@ class e00600(Variable):
     definition_period = YEAR
     documentation = "Ordinary dividends included in AGI"
     unit = USD
+
+    def formula(person, period, parameters):
+        return person("dividend_income", period)
 
 
 class filer_e00600(Variable):
@@ -292,6 +301,9 @@ class e00900(Variable):
     definition_period = YEAR
     documentation = "Sch C business net profit/loss"
     unit = USD
+
+    def formula(person, period, parameters):
+        return person("self_employment_income", period)
 
 
 class filer_e00900(Variable):

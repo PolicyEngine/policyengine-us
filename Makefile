@@ -5,6 +5,7 @@ format:
 	linecheck . --fix
 install:
 	pip install -e .[dev]
+	pip install --upgrade jupyter-book
 test:
 	pytest openfisca_us/tests/ --maxfail=0
 	coverage run --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline

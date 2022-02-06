@@ -1,0 +1,19 @@
+description: Non-refundable tax credits.
+values:
+  2013-01-01:
+    - child_dependent_care_expense_credit
+    - elderly_disabled_credit
+    # Adoption expense credit
+    - non_refundable_ctc
+    # Home mortgage credit
+    - american_opportunity_credit
+    - lifetime_learning_credit
+    - retirement_savings_credit
+    - residential_energy_credit
+metadata:
+  unit: currency-USD
+  name: non_refundable_tax_credits
+  label: Non-refundable tax credits
+  reference:
+    - title: 26 U.S. Code Subpart A - Nonrefundable Personal Credits
+      href: https://www.law.cornell.edu/uscode/text/26/subtitle-A/chapter-1/subchapter-A/part-IV/subpart-A
