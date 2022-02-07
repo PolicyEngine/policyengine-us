@@ -1,0 +1,39 @@
+- name: SNAP eligible household with (max - contribution) > min.
+  period: 2022
+  input:
+    is_snap_eligible: true
+    snap_expected_contribution: 1
+    snap_max_allotment: 3
+    snap_min_allotment: 1
+  output:
+    snap_normal_allotment: 2
+
+- name: SNAP-ineligible returns zero.
+  period: 2022
+  input:
+    is_snap_eligible: false
+    snap_expected_contribution: 1
+    snap_max_allotment: 3
+    snap_min_allotment: 1
+  output:
+    snap_normal_allotment: 0
+
+- name: SNAP-eligible with no minimum and max < contribution normally returns zero.
+  period: 2022
+  input:
+    is_snap_eligible: true
+    snap_expected_contribution: 2
+    snap_max_allotment: 1
+    snap_min_allotment: 0
+  output:
+    snap_normal_allotment: 0
+
+- name: SNAP-eligible with max < contribution returns minimum.
+  period: 2022
+  input:
+    is_snap_eligible: true
+    snap_expected_contribution: 4
+    snap_max_allotment: 1
+    snap_min_allotment: 1
+  output:
+    snap_normal_allotment: 1

@@ -1,0 +1,7 @@
+- name: Total SNAP sums normal and emergency allotments.
+  period: 2022
+  input:
+    snap_normal_allotment: 1
+    snap_emergency_allotment: 2
+  output:
+    snap: 3
