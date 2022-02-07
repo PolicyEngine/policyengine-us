@@ -8,9 +8,9 @@ class fcc_fpg_ratio(Variable):
     documentation = "SPM unit's ratio of IRS gross income to their federal poverty guideline"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/47/54.400#f"
-    unit = "ratio"
+    unit = "/1"
 
     def formula(spm_unit, period, parameters):
-        income = spm_unit.sum(spm_unit.members("irs_gross_income", period))
+        income = aggr(spm_unit, period, ["irs_gross_income"])
         fpg = spm_unit("spm_unit_fpg", period)
         return income / fpg
