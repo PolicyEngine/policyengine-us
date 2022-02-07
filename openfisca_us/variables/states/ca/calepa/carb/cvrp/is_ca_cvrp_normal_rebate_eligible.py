@@ -7,6 +7,7 @@ class is_ca_cvrp_normal_rebate_eligible(Variable):
     definition_period = YEAR
     label = "Eligible for CVRP normal rebate"
     documentation = "Eligible for California Clean Vehicle Rebate Project (CVRP) normal rebate"
+    reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
 
     def formula(person, period, parameters):
         # AGI must be less than the threshold.

@@ -10,6 +10,7 @@ class ca_cvrp(Variable):
     documentation = (
         "Total California Clean Vehicle Rebate Project (CVRP) benefit"
     )
+    reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
 
     def formula(person, period, parameters):
         # Calculate normal rebate.
