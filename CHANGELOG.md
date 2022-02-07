@@ -301,13 +301,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
-<<<<<<< HEAD
-[0.28.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.1...0.28.0
+[0.29.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.28.0...0.29.0
+[0.28.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.2...0.28.0
+[0.27.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.1...0.27.2
 [0.27.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.0...0.27.1
-=======
-
->>>>>>> 6048c2cd197195ba7dd514835a494a2e75820cd4
-
 [0.27.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.26.0...0.27.0
 [0.26.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.25.0...0.26.0
 [0.25.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.24.1...0.25.0
