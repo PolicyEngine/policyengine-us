@@ -5,11 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
-## [0.28.0] - 2022-02-06
+## [0.29.0] - 2022-02-07
 
 ### Added
 
 * California Clean Vehicle Rebate Project.
+
+## [0.28.0] - 2022-02-06
+
+### Added
+
+* SNAP emergency allotments for California.
+* SNAP unearned income example in JupyterBook docs.
 
 ## [0.27.2] - 2022-02-06
 
@@ -294,8 +301,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+<<<<<<< HEAD
 [0.28.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.1...0.28.0
 [0.27.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.0...0.27.1
+=======
+
+>>>>>>> 6048c2cd197195ba7dd514835a494a2e75820cd4
+
 [0.27.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.26.0...0.27.0
 [0.26.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.25.0...0.26.0
 [0.25.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.24.1...0.25.0
