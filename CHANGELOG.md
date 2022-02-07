@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * PolicyEngine metadata and notebook for Lifeline program.
+* Formula for `irs_gross_income`, which Lifeline uses to calculate income-based eligibility.
 
 ## [0.29.0] - 2022-02-07
 
@@ -307,6 +308,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+[0.29.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.29.0...0.29.1
 [0.29.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.28.0...0.29.0
 [0.28.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.2...0.28.0
 [0.27.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.1...0.27.2
