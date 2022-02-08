@@ -14,3 +14,6 @@ class earned_income_tax_credit(Variable):
         maximum = tax_unit("eitc_maximum", period)
         reduction = tax_unit("eitc_reduction", period)
         return eligible * (maximum - reduction)
+
+
+c59660 = variable_alias("c59660", earned_income_tax_credit)
