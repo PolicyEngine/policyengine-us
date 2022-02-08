@@ -42,7 +42,8 @@
 - name: Single person in CA at 200% of FPL + $1 is ineligible.
   period: 2022
   input:
-    employment_income: 12_880 * 2 + 1
+    employment_income: 12_880 * 2
+    gi_cash_assistance: 1
     state_code_str: CA
   output:
     snap: 0
