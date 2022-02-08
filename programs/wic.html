@@ -300,10 +300,7 @@ The Food and Nutrition Service (FNS), a division of the United States Department
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 
 <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
-    <span class="n">is_pregnant</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">is_wic_at_nutritional_risk</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">is_pregnant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="nb">round</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;wic&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span>
 </pre></div>
@@ -332,7 +329,7 @@ The Food and Nutrition Service (FNS), a division of the United States Department
 <span class="ne">--&gt; </span><span class="mi">299</span>             <span class="k">raise</span> <span class="n">VariableNotFoundError</span><span class="p">(</span><span class="n">variable_name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">300</span>         <span class="k">return</span> <span class="n">found</span>
 
-<span class="ne">VariableNotFoundError</span>: You tried to calculate or to set a value for variable &#39;is_wic_at_nutritional_risk&#39;, but it was not found in the loaded tax and benefit system (openfisca-us@0.30.1).
+<span class="ne">VariableNotFoundError</span>: You tried to calculate or to set a value for variable &#39;is_wic_at_nutritional_risk&#39;, but it was not found in the loaded tax and benefit system (openfisca-us@0.30.2).
 <span class="n">Are</span> <span class="n">you</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">spelled</span> <span class="s1">&#39;is_wic_at_nutritional_risk&#39;</span> correctly<span class="o">?</span>
 <span class="n">If</span> <span class="n">this</span> <span class="n">code</span> <span class="n">used</span> <span class="n">to</span> <span class="n">work</span> <span class="ow">and</span> <span class="n">suddenly</span> <span class="n">does</span> <span class="ow">not</span><span class="p">,</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">most</span> <span class="n">probably</span> <span class="n">linked</span> <span class="n">to</span> <span class="n">an</span> <span class="n">update</span> <span class="n">of</span> <span class="n">the</span> <span class="n">tax</span> <span class="ow">and</span> <span class="n">benefit</span> <span class="n">system</span><span class="o">.</span>
 <span class="n">Look</span> <span class="n">at</span> <span class="n">its</span> <span class="n">changelog</span> <span class="n">to</span> <span class="n">learn</span> <span class="n">about</span> <span class="n">renames</span> <span class="ow">and</span> <span class="n">removals</span> <span class="ow">and</span> <span class="n">update</span> <span class="n">your</span> <span class="n">code</span><span class="o">.</span> <span class="n">If</span> <span class="n">it</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">official</span> <span class="n">package</span><span class="p">,</span>
@@ -341,10 +338,10 @@ The Food and Nutrition Service (FNS), a division of the United States Department
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">SituationParsingError</span><span class="g g-Whitespace">                     </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_1992</span><span class="o">/</span><span class="mf">200679985.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> 
-<span class="ne">---&gt; </span><span class="mi">11</span> <span class="nb">round</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;wic&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span>
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_2009</span><span class="o">/</span><span class="mf">92953721.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">is_pregnant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="nb">round</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;wic&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span>
 
 <span class="nn">/opt/hostedtoolcache/Python/3.7.12/x64/lib/python3.7/site-packages/openfisca_tools/hypothetical.py</span> in <span class="ni">calc</span><span class="nt">(self, var, period, target, index)</span>
 <span class="g g-Whitespace">    </span><span class="mi">159</span>         <span class="s2">&quot;&quot;&quot;</span>
@@ -381,7 +378,7 @@ The Food and Nutrition Service (FNS), a division of the United States Department
 <span class="g g-Whitespace">    </span><span class="mi">359</span><span class="s2"> </span>
 <span class="g g-Whitespace">    </span><span class="mi">360</span><span class="s2">             instance_index = self.get_ids(entity.plural).index(instance_id)</span>
 
-<span class="ne">SituationParsingError</span>: {&#39;people&#39;: {&#39;person_1&#39;: {&#39;is_wic_at_nutritional_risk&#39;: &quot;You tried to calculate or to set a value for variable &#39;is_wic_at_nutritional_risk&#39;, but it was not found in the loaded tax and benefit system (openfisca-us@0.30.1). Are you sure you spelled &#39;is_wic_at_nutritional_risk&#39; correctly? If this code used to work and suddenly does not, this is most probably linked to an update of the tax and benefit system. Look at its changelog to learn about renames and removals and update your code. If it is an official package, it is probably available on &lt;https://github.com/openfisca/openfisca-us/blob/master/CHANGELOG.md&gt;.&quot;}}}
+<span class="ne">SituationParsingError</span>: {&#39;people&#39;: {&#39;person_1&#39;: {&#39;is_wic_at_nutritional_risk&#39;: &quot;You tried to calculate or to set a value for variable &#39;is_wic_at_nutritional_risk&#39;, but it was not found in the loaded tax and benefit system (openfisca-us@0.30.2). Are you sure you spelled &#39;is_wic_at_nutritional_risk&#39; correctly? If this code used to work and suddenly does not, this is most probably linked to an update of the tax and benefit system. Look at its changelog to learn about renames and removals and update your code. If it is an official package, it is probably available on &lt;https://github.com/openfisca/openfisca-us/blob/master/CHANGELOG.md&gt;.&quot;}}}
 </pre></div>
 </div>
 </div>
@@ -391,15 +388,11 @@ The Food and Nutrition Service (FNS), a division of the United States Department
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
 <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
     <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span>
-    <span class="n">employment_income</span><span class="o">=</span><span class="mi">000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span> 
-    <span class="n">is_mother</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="n">is_wic_at_nutritional_risk</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">employment_income</span><span class="o">=</span><span class="mi">000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="n">is_mother</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;infant&quot;</span><span class="p">,</span>
-    <span class="n">age</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-    <span class="n">is_wic_at_nutritional_risk</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;infant&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">sim</span><span class="o">.</span><span class="n">add_family</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;family&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;infant&quot;</span><span class="p">])</span>
 <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;infant&quot;</span><span class="p">])</span>
@@ -465,7 +458,9 @@ The person also experiences a cliff (infinite marginal tax rate) when they hit 2
     <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span> <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span> <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">)</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
