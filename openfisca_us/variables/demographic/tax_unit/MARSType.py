@@ -5,5 +5,5 @@ class MARSType(Enum):
     SINGLE = "Single"
     JOINT = "Joint"
     SEPARATE = "Separate"
-    HOUSEHOLD_HEAD = "Head of household"
+    HEAD_OF_HOUSEHOLD = "Head of household"
     WIDOW = "Widow(er)"

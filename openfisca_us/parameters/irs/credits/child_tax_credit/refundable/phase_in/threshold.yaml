@@ -1,0 +1,15 @@
+description: Additional Child Tax Credit income threshold
+values:
+  2013-01-01: 3_000
+  2018-01-01: 2_500
+  2026-01-01: 3_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_refundable_phase_in_threshold
+  label: CTC refundable phase-in threshold
+  reference:
+    - title: 26 U.S. Code § 24(d)(1)(B)(i)
+      href: https://www.law.cornell.edu/uscode/text/26/24#d_1_B_i
+    - title: 26 U.S. Code § 24(h)(6)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_6

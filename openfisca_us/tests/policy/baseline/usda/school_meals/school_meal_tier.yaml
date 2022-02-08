@@ -1,0 +1,31 @@
+- name: Categorical eligibility assigns to free tier, regardless of income.
+  period: 2022
+  input:
+      meets_school_meal_categorical_eligibility: true
+      school_meal_fpg_ratio: 3
+  output:
+      school_meal_tier: FREE
+
+- name: Income below 130% of FPG assigns to free tier.
+  period: 2022
+  input:
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1
+  output:
+      school_meal_tier: FREE
+
+- name: Between 130% and 185% of FPG provides reduced tier.
+  period: 2022
+  input:
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: REDUCED
+
+- name: 185% of FPL and above is paid.
+  period: 2022
+  input:
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 2
+  output:
+      school_meal_tier: PAID

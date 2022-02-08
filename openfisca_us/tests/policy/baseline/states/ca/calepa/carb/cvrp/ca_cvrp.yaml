@@ -1,0 +1,35 @@
+- name: Eligible for increased amount.
+  period: 2022
+  input:
+    ca_cvrp_vehicle_rebate_amount: 4_500
+    is_ca_cvrp_normal_rebate_eligible: true
+    is_ca_cvrp_increased_rebate_eligible: true
+  output:
+    ca_cvrp: 7_000
+
+- name: Didn't purchase an eligible vehicle.
+  period: 2022
+  input:
+    ca_cvrp_vehicle_rebate_amount: 0
+    is_ca_cvrp_normal_rebate_eligible: true
+    is_ca_cvrp_increased_rebate_eligible: true
+  output:
+    ca_cvrp: 0
+
+- name: Ineligible.
+  period: 2022
+  input:
+    ca_cvrp_vehicle_rebate_amount: 2_000
+    is_ca_cvrp_normal_rebate_eligible: false
+    is_ca_cvrp_increased_rebate_eligible: false
+  output:
+    ca_cvrp: 0
+
+- name: Ineligible for increased amount.
+  period: 2022
+  input:
+    ca_cvrp_vehicle_rebate_amount: 2_000
+    is_ca_cvrp_normal_rebate_eligible: true
+    is_ca_cvrp_increased_rebate_eligible: false
+  output:
+    ca_cvrp: 2_000

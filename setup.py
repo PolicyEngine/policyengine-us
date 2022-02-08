@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.24.2",
+    version="0.30.1",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -14,7 +14,6 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
     description="OpenFisca tax and benefit system for the US",
@@ -47,9 +46,14 @@ setup(
             "setuptools",
             "jupyter-book",
             "coverage",
+            "plotly",
         ],
     },
     python_requires=">=3.7,<3.8",
-    entry_points={},
+    entry_points={
+        "console_scripts": [
+            "openfisca-us = openfisca_us.tools.cli:main",
+        ],
+    },
     packages=find_packages(),
 )

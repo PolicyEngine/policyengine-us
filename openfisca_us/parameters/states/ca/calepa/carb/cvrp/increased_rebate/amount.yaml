@@ -1,0 +1,11 @@
+description: Amount of the increased rebate for low- and moderate-income participants in California's Clean Vehicle Rebate Project, based on the date of purchase.
+metadata:
+  unit: currency-USD
+  name: ca_cvrp_increased_rebate
+  label: Amount of increased California CVRP rebate
+values:
+  2016-01-01: 2_000
+  2019-12-03: 2_500
+reference:
+  - name: CVRP Info | Eligibility & Requirements
+    href: https://cleanvehiclerebate.org/en/eligibility-guidelines

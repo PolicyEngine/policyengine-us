@@ -47,5 +47,14 @@
 				"	def formula(tax_unit, period, parameters):",
 				"		return tax_unit_non_dep_sum(\"${1:name}\", tax_unit, period)",
 			]
-	}
+		},
+	"OpenFisca-US module": {
+		"prefix": "file",
+		"body": [
+			"from openfisca_us.model_api import *",
+			"",
+			"",
+			"$0"
+		]
+	},
 }
