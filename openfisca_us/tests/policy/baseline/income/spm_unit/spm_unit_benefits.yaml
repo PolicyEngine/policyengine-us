@@ -3,10 +3,11 @@
   input:
     # Person-level.
     ssdi: 1
+    ca_cvrp: 6
     # SPM unit-level.
     snap: 2
     school_meal_subsidy: 3
     ssi: 4
     lifeline: 5
   output:
-    spm_unit_benefits: 1 + 2 + 3 + 4 + 5
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 6
