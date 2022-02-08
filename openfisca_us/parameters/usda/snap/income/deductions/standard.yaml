@@ -1,7 +1,7 @@
 description: SNAP standard deduction
 
 # NOTE: household sizes above 6 use the rate for a 6 member household in all states.
-CONTIGUOUS_US:
+Contiguous US:
   1:
     2021-01-01: 167
     2022-10-01: 177
@@ -20,7 +20,7 @@ CONTIGUOUS_US:
   6:
     2021-01-01: 243
     2022-10-01: 246
-AK:
+Alaska:
   1:
     2021-01-01: 286
   2:
@@ -33,7 +33,7 @@ AK:
     2021-01-01: 286
   6:
     2021-01-01: 304
-HI:
+Hawaii:
   1:
     2021-01-01: 236
   2:
@@ -46,7 +46,7 @@ HI:
     2021-01-01: 244
   6:
     2021-01-01: 280
-VI:
+Virgin Islands:
   1:
     2021-01-01: 147
   2:
@@ -59,7 +59,7 @@ VI:
     2021-01-01: 212
   6:
     2021-01-01: 243
-GU:
+Guam:
   1:
     2021-01-01: 336
   2:
@@ -84,5 +84,5 @@ metadata:
       href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
   period: month
   breakdown:
-    - state_code
+    - state_group
     - household_size
