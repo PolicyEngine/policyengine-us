@@ -19,7 +19,7 @@ class eitc_eligible(Variable):
         inv_income_sources = eitc.eligibility.counted_inv_income
         investment_income = (
             aggr(tax_unit, period, inv_income_sources)
-            + max_(0, tax_unit("adjusted_gross_income", period))
+            + max_(0, tax_unit("c01000", period))
             + max_(
                 0,
                 tax_unit("filer_rental_income", period)
@@ -27,7 +27,7 @@ class eitc_eligible(Variable):
             )
         )
         inv_income_disqualified = (
-            investment_income <= eitc.phaseout.max_investment_income
+            investment_income > eitc.phaseout.max_investment_income
         )
         eligible = has_child | tax_unit.any(meets_age_requirements)
         return eligible & ~inv_income_disqualified
