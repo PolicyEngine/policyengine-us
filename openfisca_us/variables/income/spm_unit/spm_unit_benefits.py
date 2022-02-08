@@ -12,6 +12,7 @@ class spm_unit_benefits(Variable):
         PERSON_COMPONENTS = [
             "ssdi",
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
+            "gi_cash_assistance",
         ]
         SPMU_COMPONENTS = [
             "snap",

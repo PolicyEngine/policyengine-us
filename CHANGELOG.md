@@ -5,12 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
-## [0.29.1] - 2022-02-07
+## [0.30.1] - 2022-02-08
 
 ### Added
 
 * PolicyEngine metadata and notebook for Lifeline program.
 * Formula for `irs_gross_income`, which Lifeline uses to calculate income-based eligibility.
+
+## [0.30.0] - 2022-02-07
+
+### Added
+
+* Guaranteed income / cash assistance pilot income variable. This counts as unearned income for SNAP, uncounted for taxes and other benefits.
 
 ## [0.29.0] - 2022-02-07
 
@@ -308,7 +314,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
-[0.29.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.29.0...0.29.1
+[0.30.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.30.0...0.30.1
+[0.30.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.29.0...0.30.0
 [0.29.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.28.0...0.29.0
 [0.28.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.2...0.28.0
 [0.27.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.27.1...0.27.2
