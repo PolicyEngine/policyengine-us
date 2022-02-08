@@ -1,14 +1,57 @@
-description: Earned income credit phaseout start AGI.
+description: The EITC phase-out start.
+brackets:
+  - threshold:
+      values:
+        1995-01-01: 0
+      metadata:
+        unit: child
+    amount:
+      values:
+        2019-01-01: 8_650
+        2021-01-01: 11_610
+        2022-01-01: 8_931
+      metadata:
+        unit: currency-USD
+  - threshold:
+      values:
+        1995-01-01: 1
+      metadata:
+        unit: child
+    amount:
+      values:
+        2019-01-01: 19_030
+        2021-01-01: 19_460
+        2022-01-01: 19_650
+      metadata:
+        unit: currency-USD
+  - threshold:
+      values:
+        1995-01-01: 2
+      metadata:
+        unit: child
+    amount:
+      values:
+        2019-01-01: 19_030
+        2021-01-01: 19_460
+        2022-01-01: 19_650
+      metadata:
+        unit: currency-USD
+  - threshold:
+      values:
+        1995-01-01: 3
+      metadata:
+        unit: child
+    amount:
+      values:
+        2019-01-01: 19_030
+        2021-01-01: 19_460
+        2022-01-01: 19_650
+      metadata:
+        unit: currency-USD
 metadata:
-  unit: currency-USD
-  period: year
-  name: eitc_phase_out_start
-  label: EITC phase-out start
-values:
-  2013-01-01: 17_530.0
-  2014-01-01: 17_830.0
-  2015-01-01: 18_150.0
-  2016-01-01: 18_190.0
-  2017-01-01: 18_340.0
-  2018-01-01: 18_660.0
-  2019-01-01: 19_030.0
+  type: single_amount
+  reference:
+    - title: Tax-Calculator
+      href: https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/policy_current_law.json
+    - title: EITC Tables | IRS
+      href: https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/earned-income-and-earned-income-tax-credit-eitc-tables#EITC%20Tables
