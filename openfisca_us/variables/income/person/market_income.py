@@ -15,5 +15,6 @@ class market_income(Variable):
             "self_employment_income",
             "dividend_income",
             "interest_income",
+            "gi_cash_assistance",
         ]
         return add(person, period, COMPONENTS)

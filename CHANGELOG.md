@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 * WIC program.
+* Guaranteed income / cash assistance to market income.
 
 ## [0.30.3] - 2022-02-08
 
