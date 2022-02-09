@@ -1,7 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.demographic.person.is_breastfeeding import (
-    is_breastfeeding,
-)
 
 
 class WICCategory(Enum):
