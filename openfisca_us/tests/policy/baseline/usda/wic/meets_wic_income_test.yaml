@@ -1,0 +1,15 @@
+- name: Up to 185% of the poverty line (reduced school meal limit) is eligible.
+  period: 2022
+  input:
+    wic_fpg: 1
+    school_meal_countable_income: 1.85
+  output:
+    meets_wic_income_test: true
+
+- name: Above 185% of the poverty line (reduced school meal limit) is ineligible.
+  period: 2022
+  input:
+    wic_fpg: 1
+    school_meal_countable_income: 1.86
+  output:
+    meets_wic_income_test: false

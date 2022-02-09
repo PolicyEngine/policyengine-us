@@ -1,14 +1,15 @@
 - name: SPM unit benefits sum person- and SPM unit-level benefits.
   period: 2021
   input:
-      # Person-level.
-      ssdi: 1
-      ca_cvrp: 6
-      gi_cash_assistance: 7
-      # SPM unit-level.
-      snap: 2
-      school_meal_subsidy: 3
-      ssi: 4
-      lifeline: 5
+    # Person-level.
+    ssdi: 1
+    ca_cvrp: 6
+    gi_cash_assistance: 7
+    wic: 8
+    # SPM unit-level.
+    snap: 2
+    school_meal_subsidy: 3
+    ssi: 4
+    lifeline: 5
   output:
-      spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 6 + 7
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8

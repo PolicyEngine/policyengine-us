@@ -1,0 +1,13 @@
+description: Program participation that qualifies families for WIC.
+
+values:
+  2009-09-01:
+    - snap # Supplemental Nutrition Assistance Program.
+    # - tanf # Temporary Assistance to Needy Families. Currently only available in IL.
+    - medicaid # Also CHIP.
+
+metadata:
+  unit: program
+  reference:
+    - title: 42 U.S. Code § 1786 - Special supplemental nutrition program for women, infants, and children
+      href: https://www.law.cornell.edu/uscode/text/42/1786#d_2_A
