@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-* Included guaranteed income / cash assistance in market income.
+* Include guaranteed income / cash assistance in market income.
 
 ## [0.31.0] - 2022-02-09
 
