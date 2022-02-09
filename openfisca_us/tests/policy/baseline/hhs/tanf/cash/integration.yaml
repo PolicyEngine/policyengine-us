@@ -48,5 +48,33 @@
   output:
     tanf_initial_employment_deduction: 442 * 12
     tanf_max_amount: 662 * 12
-    tanf_countable_income: 215 * 12 # Subtracting 3/4 earned income deduction of $645.
-    tanf: 447 * 12 # 662 - 215.
+    tanf_countable_income: 215 * 12  # Subtracting 3/4 earned income deduction of $645.
+    tanf: 447 * 12  # 662 - 215.
+
+# These examples are not in the IL TANF website.
+
+- name: "Example 3: Two-parent one-child family with $1,000 monthly income plus SSI already in the program."
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      mr_j:
+        age: 42  # Not in the example.
+      mrs_j:
+        age: 35  # Not in the example.
+        market_income: 1_000 * 12
+      child1:
+        age: 14  # Not in the example.
+      # NB: Example says 2 children, but calculation only shows payment level for 3.
+    spm_units:
+      spm_unit:
+        members: [mr_j, mrs_j, child1]
+        ssi: 1_000 * 12  # Example doesn't provide number.
+        is_tanf_enrolled: true
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_initial_employment_deduction: 366 * 12
+    tanf_max_amount: 549 * 12
+    tanf: 0

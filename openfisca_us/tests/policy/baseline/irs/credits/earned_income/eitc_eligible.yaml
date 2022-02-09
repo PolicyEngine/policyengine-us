@@ -1,0 +1,25 @@
+- name: No children and under 25, not eligible.
+  period: 2022
+  input:
+    age: 24
+  output:
+    eitc_eligible: false
+- name: No children and over 25, eligible.
+  period: 2022
+  input:
+    age: 25
+  output:
+    eitc_eligible: true
+- name: Children and under 25, eligible.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 24
+      child:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    eitc_eligible: true

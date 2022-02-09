@@ -18,8 +18,9 @@
         self_employment_income: 10_000
       p2:
         dividend_income: 20_000
+        gi_cash_assistance: 500
     spm_units:
       spm_unit:
         members: [p1, p2]
   output:
-    school_meal_countable_income: 30_000
+    school_meal_countable_income: 30_500

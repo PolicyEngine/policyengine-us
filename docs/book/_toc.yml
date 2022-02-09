@@ -1,10 +1,9 @@
-# Table of contents
-# Learn more at https://jupyterbook.org/customize/toc.html
-
 format: jb-book
 root: index
 parts:
   - caption: Programs
     chapters:
-      - file: programs/snap
-      - file: programs/school_meals
+      - file: programs/fcc/lifeline
+      - file: programs/usda/snap
+      - file: programs/usda/school_meals
+      - file: programs/states/ca/calepa/carb/cvrp

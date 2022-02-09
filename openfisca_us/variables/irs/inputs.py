@@ -195,6 +195,9 @@ class filer_e00300(Variable):
         return tax_unit_non_dep_sum("e00300", tax_unit, period)
 
 
+taxable_interest = variable_alias("taxable_interest", e00300)
+
+
 class e00400(Variable):
     value_type = float
     entity = Person
@@ -214,6 +217,9 @@ class filer_e00400(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00400", tax_unit, period)
+
+
+tax_exempt_interest = variable_alias("tax_exempt_interest", e00400)
 
 
 class e00600(Variable):
@@ -431,6 +437,9 @@ class filer_e02000(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e02000", tax_unit, period)
+
+
+filer_rental_income = variable_alias("filer_rental_income", filer_e02000)
 
 
 class e02100(Variable):
@@ -966,12 +975,17 @@ class e26270(Variable):
 class filer_e26270(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Label for the tax unit (excluding dependents)"
+    label = "Partnership/S-corp income for the tax unit (excluding dependents)"
     definition_period = YEAR
     unit = USD
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e26270", tax_unit, period)
+
+
+filer_partnership_s_corp_income = variable_alias(
+    "filer_partnership_s_corp_income", filer_e26270
+)
 
 
 class e27200(Variable):

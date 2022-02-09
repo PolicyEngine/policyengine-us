@@ -1,7 +1,49 @@
-description: Earned income credit phaseout rate.
+description: Earned income credit phase-in rate.
 metadata:
-  unit: /1
-  name: eitc_phase_out_rate
-  label: EITC phase-out rate
-values:
-  2013-01-01: 0.2106
+  type: single_amount
+  reference:
+    - title: 26 U.S. Code § 32 - Earned income
+      href: https://www.law.cornell.edu/uscode/text/26/32#b_1
+brackets:
+  - threshold:
+      values:
+        1995-01-01: 0
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.0765
+        2021-01-01: 0.153
+        2022-01-01: 0.0765
+      metadata:
+        unit: /1
+  - threshold:
+      values:
+        1995-01-01: 1
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.1598
+      metadata:
+        unit: /1
+  - threshold:
+      values:
+        1995-01-01: 2
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.2106
+      metadata:
+        unit: /1
+  - threshold:
+      values:
+        1995-01-01: 3
+      metadata:
+        unit: child
+    amount:
+      values:
+        1995-01-01: 0.2106
+      metadata:
+        unit: /1
