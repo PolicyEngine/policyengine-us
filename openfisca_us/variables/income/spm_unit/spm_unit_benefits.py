@@ -13,7 +13,6 @@ class spm_unit_benefits(Variable):
             "ssdi",
             "wic",
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
-            "gi_cash_assistance",
         ]
         SPMU_COMPONENTS = [
             "snap",
