@@ -10,7 +10,12 @@ class meets_wic_income_test(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_i"
 
     def formula(spm_unit, period, parameters):
-        # Free or reduced are eligible.
-        school_meal_tier = spm_unit("school_meal_tier", period)
-        school_meal_tiers = school_meal_tier.possible_values
-        return school_meal_tier != school_meal_tiers.PAID
+        # Must be below the school meal reduced price tier.
+        # We can't use school_meal_tier, because pregnant women have an
+        # additional person for defining the poverty line
+        # (for WIC but not school meals).
+        income = spm_unit("school_meal_countable_income", period)
+        adj_fpg = spm_unit("wic_fpg", period)
+        limit = parameters(period).usda.school_meals.income.limit.REDUCED
+        income_fpg_ratio = income / adj_fpg
+        return income_fpg_ratio <= limit

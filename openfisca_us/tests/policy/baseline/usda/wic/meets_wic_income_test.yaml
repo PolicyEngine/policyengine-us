@@ -1,20 +1,15 @@
-- name: Free school meal tier is eligible
+- name: Up to 185% of the poverty line (reduced school meal limit) is eligible.
   period: 2022
   input:
-    school_meal_tier: FREE
+    wic_fpg: 1
+    school_meal_countable_income: 1.85
   output:
     meets_wic_income_test: true
 
-- name: Reduced school meal tier is eligible
+- name: Above 185% of the poverty line (reduced school meal limit) is ineligible.
   period: 2022
   input:
-    school_meal_tier: REDUCED
-  output:
-    meets_wic_income_test: true
-
-- name: Paid school meal tier is not eligible
-  period: 2022
-  input:
-    school_meal_tier: PAID
+    wic_fpg: 1
+    school_meal_countable_income: 1.86
   output:
     meets_wic_income_test: false
