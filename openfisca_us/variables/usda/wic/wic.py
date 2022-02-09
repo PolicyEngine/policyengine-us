@@ -6,7 +6,7 @@ class wic(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Benefit value for the Special Supplemental Nutrition Program for Women, Infants and Children (WIC)"
-    label = "WIC benefit value"
+    label = "WIC"
     reference = (
         "https://fns-prod.azureedge.net/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf#page=2",
         "https://www.law.cornell.edu/cfr/text/7/246.7",
