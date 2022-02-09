@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class lifeline(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Lifeline benefit amount"
+    label = "Lifeline"
     documentation = "Amount of Lifeline phone and broadband benefit"
     definition_period = YEAR
     unit = USD
