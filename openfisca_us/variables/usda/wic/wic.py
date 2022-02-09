@@ -11,6 +11,7 @@ class wic(Variable):
         "https://fns-prod.azureedge.net/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf#page=2",
         "https://www.law.cornell.edu/cfr/text/7/246.7",
     )
+    unit = USD
 
     def formula(person, period, parameters):
         meets_income_test = person.spm_unit("meets_wic_income_test", period)
