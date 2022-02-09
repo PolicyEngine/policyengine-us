@@ -1,0 +1,13 @@
+- name: SNAP entitles to WIC.
+  period: 2022
+  input:
+    snap: 1
+  output:
+    meets_wic_categorical_eligibility: true
+
+- name: Without SNAP, no WIC categorical eligibility.
+  period: 2022
+  input:
+    snap: 0
+  output:
+    meets_wic_categorical_eligibility: false
