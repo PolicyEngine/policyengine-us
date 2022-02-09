@@ -1,4 +1,7 @@
 from openfisca_us.model_api import *
+from openfisca_us.variables.demographic.person.is_breastfeeding import (
+    is_breastfeeding,
+)
 
 
 class WICCategory(Enum):
@@ -23,6 +26,7 @@ class wic_category(Variable):
     def formula(person, period, parameters):
         pregnant = person("is_pregnant", period)
         mother = person("is_mother", period)
+        breastfeeding = person("is_breastfeeding", period)
         age = person("age", period)
         # Categorize mothers based on the minimum age of children in the SPM unit.
         min_age_family = person.family.min(
@@ -30,17 +34,23 @@ class wic_category(Variable):
         )
         return select(
             [
+                # Pregnant.
                 pregnant,
-                mother & (min_age_family < 0.5),  # Postpartum
-                mother & (min_age_family < 1),  # Breastfeeding
-                age < 1,  # Infant
-                age < 5,  # Child
-                True,  # None
+                # Breastfeeding.
+                mother & breastfeeding & (min_age_family < 1),
+                # Postpartum.
+                mother & (min_age_family < 0.5),
+                # Infant.
+                age < 1,
+                # Child.
+                age < 5,
+                # None.
+                True,
             ],
             [
                 WICCategory.PREGNANT,
-                WICCategory.POSTPARTUM,
                 WICCategory.BREASTFEEDING,
+                WICCategory.POSTPARTUM,
                 WICCategory.INFANT,
                 WICCategory.CHILD,
                 WICCategory.NONE,
