@@ -2,7 +2,7 @@ description: USDA reimbursement rates per meal per child.
 
 nslp: # National School Lunch Program.
   # Use the under-60% numbers.
-  Contiguous US:
+  CONTIGUOUS_US:
     PAID:
       2020-07-01: 0.33
       2021-07-01: 0.35
@@ -34,7 +34,7 @@ nslp: # National School Lunch Program.
       2021-07-01: 4.28
 sbp: # School Breakfast Program.
   # Use "Non-severe need"
-  Contiguous US:
+  CONTIGUOUS_US:
     PAID:
       2020-07-01: 0.32
       2021-07-01: 0.33
