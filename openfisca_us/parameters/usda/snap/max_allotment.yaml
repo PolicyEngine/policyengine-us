@@ -4,7 +4,7 @@ main:
   metadata:
     breakdown:
       - snap_region
-      - household_size
+      - range(1, 9)
   CONTIGUOUS_US:
     1:
       2020-10-01: 204
