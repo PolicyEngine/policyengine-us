@@ -1,7 +1,7 @@
 description: SNAP standard deduction
 
 # NOTE: household sizes above 6 use the rate for a 6 member household in all states.
-Contiguous US:
+CONTIGUOUS_US:
   1:
     2021-01-01: 167
     2022-10-01: 177
@@ -20,7 +20,7 @@ Contiguous US:
   6:
     2021-01-01: 243
     2022-10-01: 246
-Alaska:
+AK:
   1:
     2021-01-01: 286
   2:
@@ -33,7 +33,7 @@ Alaska:
     2021-01-01: 286
   6:
     2021-01-01: 304
-Hawaii:
+HI:
   1:
     2021-01-01: 236
   2:
@@ -46,7 +46,7 @@ Hawaii:
     2021-01-01: 244
   6:
     2021-01-01: 280
-Virgin Islands:
+VI:
   1:
     2021-01-01: 147
   2:
@@ -59,7 +59,7 @@ Virgin Islands:
     2021-01-01: 212
   6:
     2021-01-01: 243
-Guam:
+GU:
   1:
     2021-01-01: 336
   2:
@@ -85,4 +85,4 @@ metadata:
   period: month
   breakdown:
     - state_group
-    - household_size
+    - range(1, 7)
