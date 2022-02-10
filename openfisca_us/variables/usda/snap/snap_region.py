@@ -1,5 +1,5 @@
-import pandas as pd
 from openfisca_us.model_api import *
+import pandas as pd
 
 
 class SNAPRegion(Enum):

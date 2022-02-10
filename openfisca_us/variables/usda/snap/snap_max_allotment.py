@@ -13,4 +13,4 @@ class snap_max_allotment(Variable):
         max_allotments = parameters(period).usda.snap.max_allotment.main
         snap_region = spm_unit.household("snap_region_str", period)
         household_size = spm_unit("spm_unit_size", period)
-        return max_allotments[state_group][household_size] * 12
+        return max_allotments[snap_region][household_size] * 12
