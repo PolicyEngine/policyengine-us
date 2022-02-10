@@ -17,7 +17,7 @@ class snap_min_allotment(Variable):
         min_allotment = snap.min_allotment
         # Calculate the relevant maximum benefit, defined as the maximum
         # benefit for a household of a certain size in their state.
-        state_group = spm_unit.household("snap_region_str", period)
+        snap_region = spm_unit.household("snap_region_str", period)
         relevant_max_allotment = (
             snap.max_allotment.main[state_group][
                 str(min_allotment.relevant_max_allotment_household_size)
