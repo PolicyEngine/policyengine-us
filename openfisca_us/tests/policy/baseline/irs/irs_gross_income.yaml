@@ -1,0 +1,9 @@
+- name: IRS gross income sums income sources.
+  period: 2022
+  input:
+    employment_income: 1
+    self_employment_income: 2
+    dividend_income: 3
+    interest_income: 4
+  output:
+    irs_gross_income: 1 + 2 + 3 + 4
