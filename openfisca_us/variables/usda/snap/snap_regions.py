@@ -46,6 +46,4 @@ class snap_region_str(Variable):
     definition_period = YEAR
 
     def formula(household, period):
-        return [
-            enum.value for enum in household("snap_region", period).decode()
-        ]
+        return household("snap_region", period).decode_to_str()

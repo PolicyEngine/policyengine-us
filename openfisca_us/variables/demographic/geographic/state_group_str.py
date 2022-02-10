@@ -9,6 +9,4 @@ class state_group_str(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        return [
-            enum.value for enum in household("state_group", period).decode()
-        ]
+        return household("state_group", period).decode_to_str()
