@@ -44,5 +44,5 @@ metadata:
       date: 2021-10-01
   period: month
   breakdown:
-    - State
-    - Household size
+    - state_code
+    - range(1, 19)

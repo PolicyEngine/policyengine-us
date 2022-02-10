@@ -1,6 +1,10 @@
 description: Maximum SNAP allotment by state group and household size.
 
 main:
+  metadata:
+    breakdown:
+      - snap_region
+      - range(1, 9)
   CONTIGUOUS_US:
     1:
       2020-10-01: 204
@@ -234,6 +238,8 @@ main:
       2021-10-01: 1_933
 
 additional:
+  metadata:
+    breakdown: snap_region
   CONTIGUOUS_US:
     2020-10-01: 153
     2021-01-01: 176
@@ -284,4 +290,3 @@ metadata:
     - title: USDA Cost of Living Adjustments
       href: https://www.fns.usda.gov/snap/allotment/COLA
   period: month
-  breakdown: state_group

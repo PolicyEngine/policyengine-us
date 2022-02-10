@@ -1,6 +1,7 @@
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 from openfisca_us.entities import *
 from openfisca_us.situation_examples import single_filer
+from openfisca_tools import homogenize_parameter_structures
 import os
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -23,5 +24,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # We add to our tax and benefit system all the legislation parameters defined in the  parameters files
         param_path = os.path.join(COUNTRY_DIR, "parameters")
         self.load_parameters(param_path)
+
+        self.parameters = homogenize_parameter_structures(
+            self.parameters, self.variables
+        )
 
         # We define which variable, parameter and simulation example will be used in the OpenAPI specification

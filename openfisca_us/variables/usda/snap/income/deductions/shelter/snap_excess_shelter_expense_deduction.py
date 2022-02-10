@@ -25,7 +25,7 @@ class snap_excess_shelter_expense_deduction(Variable):
         housing_cost = spm_unit("housing_cost", period)
         uncapped_ded = max_(housing_cost - subtracted_income, 0)
         # Calculate capped deduction based on state group parameter.
-        state_group = spm_unit.household("state_group_str", period)
+        state_group = spm_unit.household("snap_region_str", period)
         ded_cap = p.cap[state_group] * 12
         capped_ded = min_(uncapped_ded, ded_cap)
         has_elderly_disabled = spm_unit("has_usda_elderly_disabled", period)
