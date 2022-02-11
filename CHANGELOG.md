@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Chained CPI-U (monthly and August-only) parameters.
+- Metadata for SNAP max allotment.
 
 ## [0.32.4] - 2022-01-17
 
