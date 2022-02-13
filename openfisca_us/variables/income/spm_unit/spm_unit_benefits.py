@@ -19,6 +19,8 @@ class spm_unit_benefits(Variable):
             "school_meal_subsidy",
             "ssi",
             "lifeline",
+            "acp",
+            "ebb",
             # "tanf", # Exclude until defined for California.
         ]
         person_components = aggr(spm_unit, period, PERSON_COMPONENTS)
