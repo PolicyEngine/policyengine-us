@@ -1,0 +1,16 @@
+description: Program eligibility or participation that entitles a household to the Affordable Connectivity Program (ACP)
+values:
+  2022-01-01:
+    - snap
+    - medicaid
+    - ssi
+    - wic
+    - lifeline
+    # Also Federal Public Housing Assistance.
+    - school_meal_subsidy # Free and reduced.
+    - pell_grant
+metadata:
+  period: month
+  reference:
+    - name: Affordable Connectivity Program
+      href: https://www.fcc.gov/acp

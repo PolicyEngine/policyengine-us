@@ -1,0 +1,13 @@
+description: Maximum monthly Affordable Connectivity Program (ACP) amount for tribal and non-tribal lands
+true:
+  2022-01-01: 75
+false:
+  2022-01-01: 30
+metadata:
+  unit: currency-USD
+  period: month
+  reference:
+    - name: Affordable Connectivity Program
+      href: https://www.fcc.gov/acp
+  breakdown:
+    - is_on_tribal_land
