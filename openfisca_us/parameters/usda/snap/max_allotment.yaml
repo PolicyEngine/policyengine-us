@@ -1,10 +1,14 @@
 description: Maximum SNAP allotment by state group and household size.
-
 main:
+  description: Maximum SNAP allotment by SNAP region and household size.
   metadata:
     breakdown:
       - snap_region
       - range(1, 9)
+    unit: currency-USD
+    period: month
+    name: snap_max_allotment_main
+    label: SNAP max allotment
   CONTIGUOUS_US:
     1:
       2020-10-01: 204
