@@ -13,3 +13,19 @@
     broadband_cost: 70 * 12
   output:
     acp: 70 * 12
+
+- name: High-income family gets $0, even if they are eligible for full-price school meals.
+  period: 2022
+  input:
+    people:
+      parent:
+        employment_income: 100_000
+      child:
+        age: 10
+        is_in_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        broadband_cost: 1
+  output:
+    acp: 0
