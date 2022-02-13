@@ -11,7 +11,7 @@ class is_acp_eligible(Variable):
     def formula(spm_unit, period, parameters):
         programs = parameters(period).fcc.acp.categorical_eligibility
         categorically_eligible = np.any(
-            [spm_unit(program, period) for program in programs], axis=0
+            [aggr(spm_unit, period, [program]) for program in programs], axis=0
         )
         fpg_ratio = spm_unit("fcc_fpg_ratio", period)
         fpg_limit = parameters(period).fcc.acp.fpg_limit
