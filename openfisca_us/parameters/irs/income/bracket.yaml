@@ -23,9 +23,9 @@ thresholds:
         uprating:
           parameter: irs.uprating
           rounding:
-            type: upwards
-            interval: 50
-            start_instant: 2017-01-01
+            type: nearest
+            interval: 25
+            start_instant: 2018-01-01
     JOINT:
       2018-01-01: 19050
     SEPARATE:
