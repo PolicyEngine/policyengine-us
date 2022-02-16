@@ -1,5 +1,6 @@
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 from openfisca_us.entities import *
+from openfisca_us.parameters.irs.uprating import set_irs_uprating_parameter
 from openfisca_us.situation_examples import single_filer
 from openfisca_tools import homogenize_parameter_structures, uprate_parameters
 import os
@@ -28,6 +29,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = homogenize_parameter_structures(
             self.parameters, self.variables
         )
+
+        self.parameters = set_irs_uprating_parameter(self.parameters)
 
         self.parameters = uprate_parameters(self.parameters)
 

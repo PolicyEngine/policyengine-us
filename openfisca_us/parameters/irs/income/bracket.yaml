@@ -21,10 +21,11 @@ thresholds:
         2018-01-01: 9525
       metadata:
         uprating:
-          parameter: bls.cpi.modified.c_cpi_u_aug
+          parameter: irs.uprating
           rounding:
             type: upwards
             interval: 50
+            start_instant: 2017-01-01
     JOINT:
       2018-01-01: 19050
     SEPARATE:
