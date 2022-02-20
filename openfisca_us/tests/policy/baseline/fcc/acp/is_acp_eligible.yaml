@@ -18,7 +18,7 @@
   output:
     is_acp_eligible: true
 
-- name: Family with no qualifications but income at or below 200% of FPG is eligible
+- name: Family with WIC is eligible if income is above 200% of FPG
   period: 2022
   input:
     lifeline: 0

@@ -1,13 +1,15 @@
-- name: FPG ratio is countable income divided by FPG.
+- name: Free tier gets no subsidy.
   period: 2022
   input:
-      people:
-          parent: {}
-          child:
-              is_in_school: true
-      spm_units:
-          spm_unit:
-              members: [parent, child]
-              school_meal_tier: FREE
+    school_meal_tier: FREE
+    school_meal_net_subsidy: 1
   output:
-      free_school_meals: (3.66 + 1.97) * 180
+    reduced_price_school_meals: 0
+
+- name: Reduced price tier gets subsidy.
+  period: 2022
+  input:
+    school_meal_tier: REDUCED
+    school_meal_net_subsidy: 1
+  output:
+    reduced_price_school_meals: 1
