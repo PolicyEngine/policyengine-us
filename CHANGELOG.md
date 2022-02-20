@@ -5,11 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
-## [0.33.0] - 2022-02-13
+## [0.33.0] - 2022-02-20
 
 ### Added
 
 * Affordable Connectivity Program.
+
+### Changed
+
+* Split school meal subsidies into free and reduced-price.
+
+## [0.32.6] - 2022-02-16
+
+### Changed
+
+* OpenFisca-Tools constraint widened to the current major version.
+
+## [0.32.5] - 2022-02-13
+
+### Added
+
+* Chained CPI-U (monthly and August-only) parameters.
+* Metadata for SNAP max allotment.
 
 ## [0.32.4] - 2022-02-10
 
@@ -372,7 +389,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
-[0.33.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.4...0.33.0
+[0.33.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.6...0.33.0
+[0.32.6]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.5...0.32.6
+[0.32.5]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.4...0.32.5
 [0.32.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.3...0.32.4
 [0.32.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.2...0.32.3
 [0.32.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.1...0.32.2

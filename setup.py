@@ -33,7 +33,7 @@ setup(
         "pandas",
         "tqdm",
         "requests",
-        "OpenFisca-Tools>=0.3.0,<0.4.0",
+        "OpenFisca-Tools>=0.3.0,<1.0.0",
         "pyyaml",
     ],
     extras_require={
