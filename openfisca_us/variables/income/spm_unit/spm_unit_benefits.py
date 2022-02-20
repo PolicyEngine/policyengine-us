@@ -16,7 +16,8 @@ class spm_unit_benefits(Variable):
         ]
         SPMU_COMPONENTS = [
             "snap",
-            "school_meal_subsidy",
+            "free_school_meals",
+            "reduced_price_school_meals",
             "ssi",
             "lifeline",
             "acp",
