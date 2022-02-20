@@ -14,7 +14,7 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    school_meal_subsidy: 180 * (3.66 + 1.97)
+    free_school_meals: 180 * (3.66 + 1.97)
 
 - name: Low income, one parent, one child, contiguous_US (defined as default)
   period: 2022
@@ -29,7 +29,7 @@
         school_meal_fpg_ratio: 1.2
         snap: 0
   output:
-    school_meal_subsidy: 180 * (3.66 + 1.97)
+    free_school_meals: 180 * (3.66 + 1.97)
 
 - name: Income between 1.3 and 1.85 poverty line, no SNAP, one parent, one child, contiguous_US
   period: 2022
@@ -44,7 +44,7 @@
         school_meal_fpg_ratio: 1.8
         snap: 0
   output:
-    school_meal_subsidy: 180 * (3.26 + 1.67)
+    free_school_meals: 180 * (3.26 + 1.67)
 
 - name: High income, one parent, one child, contiguous_US
   period: 2022
@@ -62,7 +62,7 @@
       household:
         state_group: CONTIGUOUS_US
   output:
-    school_meal_subsidy: 180 * (0.35 + 0.33)
+    free_school_meals: 0
 
 - name: No income, one parent, one child, Hawaii
   period: 2022
@@ -116,7 +116,7 @@
       household:
         state_group: HI
   output:
-    school_meal_subsidy: 180 * (3.88 + 1.99)
+    reduced_price_school_meals: 180 * (3.88 + 1.99)
 
 - name: High income, one parent, one child, Hawaii
   period: 2022
@@ -152,7 +152,7 @@
       household:
         state_group: AK
   output:
-    school_meal_subsidy: 180 * (5.94 + 3.15)
+    free_school_meals: 180 * (5.94 + 3.15)
 
 - name: Income between 1.3 and 1.85 poverty line, one parent, one child, Alaska
   period: 2022
@@ -170,7 +170,7 @@
       household:
         state_group: AK
   output:
-    school_meal_subsidy: 180 * (5.54 + 2.85)
+    free_school_meals: 180 * (5.54 + 2.85)
 
 - name: Low income, one parent, two children, contiguous_US
   period: 2022

@@ -5,9 +5,9 @@ class school_meal_subsidy(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "School meal subsidy"
+    label = "Free and reduced price school meals"
     unit = USD
-    documentation = "Total school meal subsidy entitlement"
+    documentation = "Value of free and reduced price school meal subsidies"
 
     def formula(spm_unit, period, parameters):
         # Get state group and tier (based on poverty ratio) for SPM unit.
@@ -19,13 +19,15 @@ class school_meal_subsidy(Variable):
         # Get NSLP and SBP per child for each SPM unit.
         nslp_per_child = p_amount.nslp[state_group][tier]
         sbp_per_child = p_amount.sbp[state_group][tier]
-        # Add NSLP and SBP.
-        school_meal_subsidy_per_child = nslp_per_child + sbp_per_child
+        # Subtract subsidies that would be paid to full-price children.
+        net_daily_subsidy_per_child = (
+            nslp_per_child
+            + sbp_per_child
+            - spm_unit("school_meal_paid_subsidy", period)
+        )
         # Multiply by number of school days in the year and number of children
         # in school.
-        children = spm_unit.sum(spm_unit.members("is_in_school", period))
+        children = add(spm_unit, period, ["is_in_school"])
         return (
-            school_meal_subsidy_per_child
-            * children
-            * p_school_meals.school_days
+            net_daily_subsidy_per_child * children * p_school_meals.school_days
         )
