@@ -28,3 +28,30 @@
     wic: 1
   output:
     is_acp_eligible: true
+
+- name: Family with SNAP is eligible if income is above 200% of FPG, due to Lifeline categorical eligibility
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 1
+    ebb: 0
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Family with Lifeline is eligible if income is above 200% of FPG
+  period: 2022
+  input:
+    lifeline: 1
+    snap: 0
+    ebb: 0
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Family with EBB is ineligible
+  period: 2022
+  input:
+    ebb: 1
+  output:
+    is_acp_eligible: false
