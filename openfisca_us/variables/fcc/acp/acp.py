@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class acp(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Affordable Connectivity Program amount"
+    label = "Affordable Connectivity Program"
     documentation = "Affordable Connectivity Program amount"
     definition_period = YEAR
     unit = USD
