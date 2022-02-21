@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Child Tax Credit names renamed to `ctc`.
+- Child and Dependent Care Credit names renamed to `cdcc`.
+
+### Fixed
+
+- EITC maximum age in 2021 changed from 125 to infinity.
 
 ## [0.33.0] - 2022-02-21
 
