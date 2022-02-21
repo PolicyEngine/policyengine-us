@@ -14,6 +14,7 @@ class acp(Variable):
         eligible = spm_unit("is_acp_eligible", period)
         broadband_cost = spm_unit("broadband_cost", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
-        max_amount = parameters(period).fcc.acp.amount[tribal] * 12
+        amounts = parameters(period).fcc.acp.amount
+        max_amount = where(tribal, amounts.tribal, amounts.standard) * 12
         amount_if_eligible = min_(max_amount, broadband_cost)
         return where(eligible, amount_if_eligible, 0)

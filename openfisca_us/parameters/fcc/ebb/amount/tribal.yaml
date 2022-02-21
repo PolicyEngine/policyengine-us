@@ -1,0 +1,15 @@
+description: Maximum monthly Emergency Broadband Benefit (EBB) amount for Tribal lands
+values:
+  2021-05-12: 75
+  # Affordable Connectivity Program replaces EBB after 60-day transition period.
+  2022-03-01: 0
+metadata:
+  unit: currency-USD
+  period: month
+  reference:
+    - name: H.R. 133 - Consolidated Appropriations Act, 2021
+      href: https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf#page=950
+    - name: FCC announces start date of Emergency Broadband Benefit program
+      href: https://docs.fcc.gov/public/attachments/DOC-372014A1.pdf
+    - name: WCB Issues Guidance for Transition to Affordable Connectivity Program
+      href: https://www.fcc.gov/document/wcb-issues-guidance-transition-affordable-connectivity-program
