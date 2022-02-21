@@ -26,3 +26,13 @@
     phone_cost: 5 * 12
   output:
     lifeline: 8 * 12
+
+- name: Household on rural Tribal land gets a larger amount.
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 40 * 12
+    is_rural: true
+    is_on_tribal_land: true
+  output:
+    lifeline: (9.25 + 25) * 12
