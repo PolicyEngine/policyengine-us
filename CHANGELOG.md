@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Code coverage badge to README.md.
 - Reminder for pull requests to run `make format && make documentation`.
+- CPI-uprated values for WIC average payments.
 
 ### Changed
 
