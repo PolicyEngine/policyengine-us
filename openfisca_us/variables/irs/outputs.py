@@ -905,9 +905,7 @@ class c07180(Variable):
             )
 
 
-cdcc = variable_alias(
-    "cdcc", c07180
-)
+cdcc = variable_alias("cdcc", c07180)
 
 
 class cdcc_refund(Variable):

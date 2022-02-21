@@ -103,6 +103,4 @@ class non_refundable_ctc(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("ctc", period) - tax_unit(
-            "refundable_ctc", period
-        )
+        return tax_unit("ctc", period) - tax_unit("refundable_ctc", period)
