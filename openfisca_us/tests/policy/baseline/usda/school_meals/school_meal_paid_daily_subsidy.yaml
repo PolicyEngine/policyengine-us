@@ -1,0 +1,4 @@
+- name: Default is contiguous US, with $0.35 NSLP and $0.33 SBP.
+  period: 2022
+  output:
+    school_meal_paid_daily_subsidy: 0.35 + 0.33
