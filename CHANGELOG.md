@@ -27,30 +27,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * OpenFisca-Tools constraint widened to the current major version.
 
-<<<<<<< HEAD
-
 ## [0.32.5] - 2022-02-13
-
-=======
-
-## [0.32.5] - 2022-02-18
-
->>>>>>> 1ea312b19dc285cb88959954503228a3485fbad0
 
 ### Added
 
 * Chained CPI-U (monthly and August-only) parameters.
 * Metadata for SNAP max allotment.
 
-<<<<<<< HEAD
-
 ## [0.32.4] - 2022-02-10
-
-=======
-
-## [0.32.4] - 2022-02-17
-
->>>>>>> 1ea312b19dc285cb88959954503228a3485fbad0
 
 ### Added
 
