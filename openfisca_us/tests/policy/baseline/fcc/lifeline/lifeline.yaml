@@ -36,3 +36,12 @@
     is_on_tribal_land: true
   output:
     lifeline: (9.25 + 25) * 12
+
+- name: Household with ACP covering most of broadband costs.
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    broadband_cost: 35 * 12
+    acp: 30 * 12
+  output:
+    lifeline: 5 * 12

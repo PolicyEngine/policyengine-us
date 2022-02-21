@@ -25,6 +25,10 @@ class lifeline(Variable):
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]
         )
-        amount_if_eligible = min_(phone_broadband_cost, max_amount)
+        # Subtract Affordable Connectivity Program and Emergency Broadband
+        # Benefit.
+        acp_ebb = add(spm_unit, period, ["acp", "ebb"])
+        net_phone_broadband_cost = phone_broadband_cost - acp_ebb
+        amount_if_eligible = min_(net_phone_broadband_cost, max_amount)
         eligible = spm_unit("is_lifeline_eligible", period)
         return eligible * amount_if_eligible
