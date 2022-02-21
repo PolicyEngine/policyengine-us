@@ -8,7 +8,7 @@ class acp(Variable):
     documentation = "Affordable Connectivity Program amount"
     definition_period = YEAR
     unit = USD
-    reference = "https://www.fcc.gov/acp"
+    reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
 
     def formula(spm_unit, period, parameters):
         eligible = spm_unit("is_acp_eligible", period)

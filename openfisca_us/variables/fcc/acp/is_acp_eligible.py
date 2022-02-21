@@ -7,6 +7,8 @@ class is_acp_eligible(Variable):
     label = "Eligible for Affordable Connectivity Program"
     documentation = "Eligible for Affordable Connectivity Program"
     definition_period = YEAR
+    # 47 U.S.C §1752(a)(6).
+    reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).fcc.acp.categorical_eligibility
