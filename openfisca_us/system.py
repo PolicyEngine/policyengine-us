@@ -1,7 +1,8 @@
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 from openfisca_us.entities import *
+from openfisca_us.parameters.irs.uprating import set_irs_uprating_parameter
 from openfisca_us.situation_examples import single_filer
-from openfisca_tools import homogenize_parameter_structures
+from openfisca_tools import homogenize_parameter_structures, uprate_parameters
 import os
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,5 +29,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = homogenize_parameter_structures(
             self.parameters, self.variables
         )
+
+        self.parameters = set_irs_uprating_parameter(self.parameters)
+
+        self.parameters = uprate_parameters(self.parameters)
 
         # We define which variable, parameter and simulation example will be used in the OpenAPI specification

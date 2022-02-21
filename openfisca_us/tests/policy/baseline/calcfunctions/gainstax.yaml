@@ -52,6 +52,7 @@
     taxbc: 971.8
 
 - name: GainsTax unit test 2
+  absolute_error_margin: 200
   period: 2019
   input:
     e00650: 1265
@@ -78,6 +79,7 @@
     taxbc: 17716.71
 
 - name: GainsTax unit test 3
+  absolute_error_margin: 10
   period: 2019
   input:
     e00650: 168
@@ -104,6 +106,7 @@
     taxbc: 5798.0
 
 - name: GainsTax unit test 4
+  absolute_error_margin: 10
   period: 2019
   input:
     e00650: 44472
@@ -130,6 +133,7 @@
     taxbc: 40488.04
 
 - name: GainsTax unit test 5
+  absolute_error_margin: 10
   period: 2019
   input:
     e00650: 69
@@ -156,6 +160,7 @@
     taxbc: 9847.87
 
 - name: GainsTax unit test 6
+  absolute_error_margin: 10
   period: 2019
   input:
     e00650: 229
@@ -183,6 +188,7 @@
 
 - name: GainsTax unit test 7
   period: 2019
+  absolute_error_margin: 10
   input:
     e00650: 20428
     c01000: 0
@@ -209,6 +215,7 @@
 
 - name: GainsTax unit test 8
   period: 2019
+  absolute_error_margin: 10
   input:
     e00650: 1877
     c01000: 0
@@ -235,6 +242,7 @@
 
 - name: GainsTax unit test 9
   period: 2019
+  absolute_error_margin: 10
   input:
     e00650: 3
     c01000: 0
