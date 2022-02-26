@@ -1,0 +1,12 @@
+description: Monthly maximum Federal SSI payment amounts for an eligible individual with an eligible spouse.
+
+values:
+  2021-01-01: 1_191
+  2022-01-01: 1_261
+metadata:
+  label: Monthly maximum Federal SSI payment amounts for an eligible individual with an eligible spouse
+  name: ssi_amount_couple
+  unit: currency-USD
+  reference:
+    - title: SSI Federal Payment Amounts
+      href: https://www.ssa.gov/oact/cola/SSIamts.html
