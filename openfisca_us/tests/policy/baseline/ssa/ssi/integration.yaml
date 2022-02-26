@@ -1,0 +1,34 @@
+- name: Individual with no income.
+  period: 2022
+  input:
+    age: 65
+  output:
+    ssi: 794 * 12
+
+- name: Individual - Disabled
+  period: 2022
+  input:
+    age: 40
+    is_ssi_disabled: True
+  output:
+    ssi: 100
+
+- name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
+  period: 2022
+  input:
+    is_ssi_eligible: true
+    ssdi: 300 * 12
+  output:
+    ssi_countable_income: 280 * 12
+    ssi_benefit_rate: 794 * 12
+    ssi: 514 * 12
+
+- name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
+  period: 2022
+  input:
+    is_ssi_eligible: true
+    employment_income: 317 * 12
+  output:
+    ssi_countable_income: 116 * 12
+    ssi_benefit_rate: 794 * 12
+    ssi: 678 * 12
