@@ -14,7 +14,7 @@
     ssi: 100
 
 - name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
-  period: 2022
+  period: 2021
   input:
     is_ssi_eligible: true
     ssdi: 300 * 12
@@ -24,7 +24,7 @@
     ssi: 514 * 12
 
 - name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
-  period: 2022
+  period: 2021
   input:
     is_ssi_eligible: true
     employment_income: 317 * 12
