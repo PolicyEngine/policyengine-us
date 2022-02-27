@@ -11,5 +11,5 @@ class free_school_meals(Variable):
 
     def formula(spm_unit, period, parameters):
         tier = spm_unit("school_meal_tier", period)
-        is_free = (tier == tier.possible_values.FREE)
+        is_free = tier == tier.possible_values.FREE
         return is_free * spm_unit("school_meal_net_subsidy", period)
