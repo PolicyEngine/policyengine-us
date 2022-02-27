@@ -12,7 +12,7 @@ class acp(Variable):
 
     def formula(spm_unit, period, parameters):
         eligible = spm_unit("is_acp_eligible", period)
-        broadband_cost = spm_unit("broadband_cost", period)
+        broadband_cost = spm_unit("broadband_cost_after_lifeline", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
         amounts = parameters(period).fcc.acp.amount
         max_amount = where(tribal, amounts.tribal, amounts.standard) * 12
