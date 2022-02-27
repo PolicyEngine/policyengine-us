@@ -5,7 +5,7 @@ class ca_cvrp(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    label = "CVRP"
+    label = "California Clean Vehicle Rebate Project"
     unit = USD
     documentation = (
         "Total California Clean Vehicle Rebate Project (CVRP) benefit"
