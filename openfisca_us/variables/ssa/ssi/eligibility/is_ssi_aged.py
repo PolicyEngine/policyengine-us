@@ -9,4 +9,4 @@ class is_ssi_aged(Variable):
     label = "SSI aged"
 
     def formula(person, period, parameters):
-        return person.age >= parameters(period).ssi.aged_threshold
+        return person.age >= parameters(period).ssa.ssi.aged_threshold

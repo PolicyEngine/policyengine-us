@@ -1,12 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class ssi_deemed_income(Variable):
+class is_ssi_couple(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    documentation = "Supplemental Security Income countable income"
+    documentation = (
+        "Supplemental Security Income couple with both spouses eligible"
+    )
     label = "Supplemental Security Income countable income"
     unit = USD
-
-    def formula(person, period, parameters):
