@@ -2,14 +2,6 @@
   period: 2022
   input:
     is_ssi_eligible: true
-    ssi_amount_if_eligible: 100
+    ssi_countable_income: 100
   output:
-    ssi: 100
-
-- name: "SSI: Ineligible and has benefit"
-  period: 2022
-  input:
-    is_ssi_eligible: false
-    ssi_amount_if_eligible: 100
-  output:
-    ssi: 0
+    ssi: 841 - 100

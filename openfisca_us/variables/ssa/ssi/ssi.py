@@ -16,8 +16,7 @@ class ssi(Variable):
         amounts = parameters(period).ssi.amount
         amount = where(is_spouse_eligible, amounts.couple, amounts.individual)
         countable_income = person("ssi_countable_income", period)
-        return (
-            eligible
-            * max_(amount - countable_income, 0)
-            / where(is_spouse_eligible, 2, 1)
-        )
+        amount_if_eligible = max_(amount - countable_income, 0)
+        # Split with spouse if receiving as a couple.
+        amount_if_eligible /= where(is_spouse_eligible, 2, 1)
+        return eligible * amount_if_eligible
