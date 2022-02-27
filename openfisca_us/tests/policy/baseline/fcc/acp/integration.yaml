@@ -2,7 +2,7 @@
   period: 2022
   input:
     pell_grant: 100
-    broadband_cost: 100 * 12
+    broadband_cost_after_lifeline: 100 * 12
   output:
     acp: 30 * 12
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     is_on_tribal_land: true
-    broadband_cost: 70 * 12
+    broadband_cost_after_lifeline: 70 * 12
   output:
     acp: 70 * 12
 
@@ -26,6 +26,6 @@
     spm_units:
       spm_unit:
         members: [parent, child]
-        broadband_cost: 1
+        broadband_cost_after_lifeline: 1
   output:
     acp: 0
