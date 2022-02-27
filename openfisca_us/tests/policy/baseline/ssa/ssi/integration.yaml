@@ -17,7 +17,7 @@
   period: 2021
   input:
     is_ssi_eligible: true
-    ssdi: 300 * 12
+    social_security: 300 * 12
   output:
     ssi_countable_income: 280 * 12
     ssi_benefit_rate: 794 * 12
