@@ -8,3 +8,7 @@ class ssi_unearned_income(Variable):
     documentation = "Supplemental Security Income unearned income"
     label = "SSI unearned income"
     unit = USD
+
+    def formula(person, period, parameters):
+        sources = parameters(period).ssa.ssi.income.sources.unearned
+        return add(person, period, sources)
