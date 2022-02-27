@@ -10,6 +10,6 @@ class reduced_price_school_meals(Variable):
     documentation = "Value of reduced price school meals"
 
     def formula(spm_unit, period, parameters):
-        tier = spm_unit("school_meal_tier", period).decode_to_str()
-        is_reduced_price = tier == "REDUCED"
+        tier = spm_unit("school_meal_tier", period)
+        is_reduced_price = tier == tier.possible_values.REDUCED
         return is_reduced_price * spm_unit("school_meal_net_subsidy", period)
