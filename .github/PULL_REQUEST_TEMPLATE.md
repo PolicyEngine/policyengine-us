@@ -1,5 +1,7 @@
 Thanks for contributing! Please remove any top-level sections that do not apply to your changes.
 
+- [ ] `make format && make documentation` has been run.
+
 # New variable
 
 - [ ] Label field added

@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class child_tax_credit(Variable):
+class ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Child Tax Credit"
