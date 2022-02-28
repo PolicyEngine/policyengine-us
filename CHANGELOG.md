@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
-## [0.33.1] - 2022-02-21
+## [0.35.3] - 2022-02-21
 
 ### Added
 
@@ -22,6 +22,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - EITC maximum age in 2021 changed from 125 to infinity.
 
+## [0.35.2] - 2022-02-27
+
+### Fixed
+
+- Subtract Lifeline from broadband cost before calculating ACP and EBB.
+
+## [0.35.1] - 2022-02-21
+
+### Changed
+
+- Edited labels for ACP and SNAP normal allotment.
+
+## [0.35.0] - 2022-02-21
+
+### Added
+
+- Rural Tribal supplement for Lifeline.
+
+### Changed
+
+- Restructure ACP and EBB Tribal amounts to work with PolicyEngine.
+
+## [0.34.0] - 2022-02-21
+
+### Added
+
+- Affordable Connectivity Program.
+
+### Changed
+
+- Split school meal subsidies into free and reduced-price.
+
 ## [0.33.0] - 2022-02-21
 
 ### Added
@@ -34,14 +66,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - OpenFisca-Tools constraint widened to the current major version.
 
-## [0.32.5] - 2022-02-18
+## [0.32.5] - 2022-02-13
 
 ### Added
 
 - Chained CPI-U (monthly and August-only) parameters.
 - Metadata for SNAP max allotment.
 
-## [0.32.4] - 2022-02-17
+## [0.32.4] - 2022-02-10
 
 ### Added
 
@@ -402,6 +434,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
+[0.35.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.1...0.35.2
+[0.35.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.0...0.35.1
+[0.35.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.34.0...0.35.0
+[0.34.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.33.0...0.34.0
+[0.33.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.6...0.33.0
+[0.32.6]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.5...0.32.6
+[0.32.5]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.4...0.32.5
+[0.32.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.3...0.32.4
 [0.32.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.2...0.32.3
 [0.32.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.1...0.32.2
 [0.32.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.32.0...0.32.1
