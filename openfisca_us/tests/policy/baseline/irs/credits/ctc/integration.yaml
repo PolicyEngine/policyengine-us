@@ -1,0 +1,8 @@
+- name: CTC sums maximum minus credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    ctc_maximum: 1
+    ctc_reduction: 0.5
+  output:
+    ctc: 0.5
