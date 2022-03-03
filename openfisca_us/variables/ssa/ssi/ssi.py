@@ -12,12 +12,12 @@ class ssi(Variable):
     def formula(person, period, parameters):
         abd = person("is_ssi_aged_blind_disabled", period)
         countable_resources = person("ssi_countable_resources", period)
-        p_ssi = parameters(period).ssa.ssi
+        ssi = parameters(period).ssa.ssi
         # Only individual is modeled currently.
-        resource_limit = p_ssi.eligibility.resources.limit.individual
+        resource_limit = ssi.eligibility.resources.limit.individual
         meets_resource_test = countable_resources <= resource_limit
         # Calculate amount.
-        amount = parameters(period).ssi.amount.individual
+        amount = ssi.amount.individual
         countable_income = person("ssi_countable_income", period)
         amount_if_eligible = max_(amount - countable_income, 0)
         return abd * meets_resource_test * amount_if_eligible
