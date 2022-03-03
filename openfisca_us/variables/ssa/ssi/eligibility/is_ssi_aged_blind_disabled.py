@@ -9,6 +9,6 @@ class is_ssi_aged_blind_disabled(Variable):
     label = "SSI aged, blind, or disabled"
 
     def formula(person, period, parameters):
-        return any_(
-            person, period, ["is_ssi_aged", "is_blind", "is_ssi_disabled"]
-        )
+        aged_threshold = parameters(period).ssa.ssi.eligibility.aged_threshold
+        aged = person("age", period) >= aged_threshold
+        return any_(person, period, ["is_blind", "is_ssi_disabled"]) | aged

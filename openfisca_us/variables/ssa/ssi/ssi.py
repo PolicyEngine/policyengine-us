@@ -17,7 +17,7 @@ class ssi(Variable):
         resource_limit = ssi.eligibility.resources.limit.individual
         meets_resource_test = countable_resources <= resource_limit
         # Calculate amount.
-        amount = ssi.amount.individual
+        amount = ssi.amount.individual * 12
         countable_income = person("ssi_countable_income", period)
         amount_if_eligible = max_(amount - countable_income, 0)
         return abd * meets_resource_test * amount_if_eligible
