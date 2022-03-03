@@ -1,9 +1,9 @@
 # WIC requires each of the following:
 # - Either meeting the income test or categorical eligibility,
-# - Meeting a demographic test (pregnancy, age, parental status), and 
+# - Meeting a demographic test (pregnancy, age, parental status), and
 # - Being assessed to be at nutritional risk.
 - name: Income-eligible and at nutritional risk.
-  period: 2022
+  period: 2018
   input:
     wic_category_str: PREGNANT
     meets_wic_income_test: true
@@ -33,7 +33,7 @@
     wic: 0 # Ineligible.
 
 - name: At nutritional risk and categorically eligible.
-  period: 2022
+  period: 2018
   input:
     wic_category_str: POSTPARTUM
     meets_wic_income_test: false

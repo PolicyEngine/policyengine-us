@@ -892,7 +892,7 @@ class c07180(Variable):
     documentation = "Nonrefundable credit for child and dependent care expenses from Form 2441"
 
     def formula(tax_unit, period, parameters):
-        cdcc = parameters(period).irs.credits.child_and_dep_care
+        cdcc = parameters(period).irs.credits.cdcc
         if cdcc.refundable:
             return 0
         else:
@@ -905,9 +905,7 @@ class c07180(Variable):
             )
 
 
-child_dependent_care_expense_credit = variable_alias(
-    "child_dependent_care_expense_credit", c07180
-)
+cdcc = variable_alias("cdcc", c07180)
 
 
 class cdcc_refund(Variable):
@@ -919,7 +917,7 @@ class cdcc_refund(Variable):
     documentation = "Refundable credit for child and dependent care expenses from Form 2441"
 
     def formula(tax_unit, period, parameters):
-        cdcc = parameters(period).irs.credits.child_and_dep_care
+        cdcc = parameters(period).irs.credits.cdcc
         if cdcc.refundable:
             return tax_unit("c33200", period)
         else:
