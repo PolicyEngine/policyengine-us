@@ -1,0 +1,25 @@
+- name: Default value is zero.
+  period: 2022
+  output:
+    hud_annual_income: 0
+
+- name: Otherwise sums components.
+  period: 2022
+  input:
+    market_income: 1
+  output:
+    hud_annual_income: 1
+
+- name: Default value is zero.
+  period: 2022
+  input:
+    people:
+      p1:
+        market_income: 1
+      p2:
+        market_income: 2
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    hud_annual_income: 3
