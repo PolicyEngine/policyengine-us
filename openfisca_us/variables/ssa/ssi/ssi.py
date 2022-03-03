@@ -11,12 +11,13 @@ class ssi(Variable):
 
     def formula(person, period, parameters):
         abd = person("is_ssi_aged_blind_disabled", period)
-        # If the spouse is aged, blind, or disabled, calculate as a couple.
-        spouse_abd = person("is_spouse_ssi_aged_blind_disabled", period)
-        amounts = parameters(period).ssi.amount
-        amount = where(spouse_abd, amounts.couple, amounts.individual)
+        countable_resources = person("ssi_countable_resources", period)
+        p_ssi = parameters(period).ssa.ssi
+        # Only individual is modeled currently.
+        resource_limit = p_ssi.eligibility.resources.limit.individual
+        meets_resource_test = countable_resources <= resource_limit
+        # Calculate amount.
+        amount = parameters(period).ssi.amount.individual
         countable_income = person("ssi_countable_income", period)
         amount_if_eligible = max_(amount - countable_income, 0)
-        # Split with spouse if receiving as a couple.
-        amount_if_eligible /= where(is_spouse_eligible, 2, 1)
-        return eligible * amount_if_eligible
+        return abd * meets_resource_test * amount_if_eligible

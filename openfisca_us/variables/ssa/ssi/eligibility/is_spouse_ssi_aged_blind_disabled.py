@@ -17,10 +17,10 @@ class is_spouse_ssi_eligible(Variable):
             "is_ssi_aged_blind_disabled", period
         )
         # Each family should have at most two married people.
-        married_eligible_family_members = family.sum(
+        married_abd_family_members = family.sum(
             married_family_members & abd_family_members
         )
         self_married_abd = and_(
             person, period, ["is_ssi_aged_blind_disabled", "is_married"]
         )
-        return self_married_abd & (married_eligible_family_members > 1)
+        return self_married_abd & (married_abd_family_members > 1)
