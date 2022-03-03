@@ -8,3 +8,4 @@ class ssi_deemed_income(Variable):
     documentation = "Supplemental Security Income deemed income"
     label = "SSI deemed income"
     unit = USD
+    reference = "https://ncler.acl.gov/NCLER/media/NCLER/documents/SSI-Deeming-Chapter-Summary.pdf"

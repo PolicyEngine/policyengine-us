@@ -10,11 +10,11 @@ class ssi(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        eligible = person("is_ssi_eligible", period)
-        # If the spouse is eligible, calculate as a couple.
-        is_spouse_eligible = person("is_spouse_ssi_eligible", period)
+        abd = person("is_ssi_aged_blind_disabled", period)
+        # If the spouse is aged, blind, or disabled, calculate as a couple.
+        spouse_abd = person("is_spouse_ssi_aged_blind_disabled", period)
         amounts = parameters(period).ssi.amount
-        amount = where(is_spouse_eligible, amounts.couple, amounts.individual)
+        amount = where(spouse_abd, amounts.couple, amounts.individual)
         countable_income = person("ssi_countable_income", period)
         amount_if_eligible = max_(amount - countable_income, 0)
         # Split with spouse if receiving as a couple.
