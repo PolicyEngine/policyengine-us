@@ -6,5 +6,5 @@ class social_security_disability(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Social Security disability benefits (SSDI)"
-    label = "Social Security disability"
+    label = "Social Security disability benefits"
     unit = USD
