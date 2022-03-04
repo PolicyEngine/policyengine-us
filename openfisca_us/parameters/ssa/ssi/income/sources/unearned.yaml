@@ -1,4 +1,4 @@
-description: Income sources that count as unearned income for SNAP
+description: Income sources that count as unearned income for Supplemental Security Income
 
 values:
   2009-01-01:
@@ -6,7 +6,7 @@ values:
     - interest_income
     - gi_cash_assistance
     - social_security
-    - ssi
+    # Also TANF, pensions, annuities, workers/unemployment benefits, etc.
 
 metadata:
   reference:

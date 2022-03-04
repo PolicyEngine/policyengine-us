@@ -1,0 +1,9 @@
+- name: Social Security sums dependent, disability, retirement, and survivors benefits
+  period: 2022
+  input:
+    social_security_dependents: 1
+    social_security_disability: 2
+    social_security_retirement: 3
+    social_security_survivors: 4
+  output:
+    social_security: 1 + 2 + 3 + 4
