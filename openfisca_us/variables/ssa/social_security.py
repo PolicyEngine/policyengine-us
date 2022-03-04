@@ -6,7 +6,7 @@ class social_security(Variable):
     entity = Person
     definition_period = YEAR
     documentation = "Social Security benefits, not including SSI"
-    label = "Social Security benefits"
+    label = "Social Security"
     unit = USD
 
     def formula(person, period, parameters):
