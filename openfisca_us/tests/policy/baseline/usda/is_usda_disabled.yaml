@@ -15,6 +15,6 @@
 - name: People receiving SSDI are USDA disabled
   period: 2021
   input:
-    ssdi: 100
+    social_security_disability: 100
   output:
     is_usda_disabled: true

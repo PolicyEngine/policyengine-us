@@ -1,8 +1,8 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.irs.credits.child_tax_credit.maximum.individual.child import (
+from openfisca_us.variables.irs.credits.ctc.maximum.individual.child import (
     ctc_child_individual_maximum,
 )
-from openfisca_us.variables.irs.credits.child_tax_credit.maximum.individual.adult import (
+from openfisca_us.variables.irs.credits.ctc.maximum.individual.adult import (
     ctc_adult_individual_maximum,
 )
 from openfisca_us.parameters import default_parameters
@@ -18,7 +18,7 @@ class ctc_reduction(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("adjusted_gross_income", period)
-        ctc = parameters(period).irs.credits.child_tax_credit
+        ctc = parameters(period).irs.credits.ctc
         mars = tax_unit("mars", period)
         income_over_threshold = max_(0, income - ctc.phaseout.threshold[mars])
         reduction = ctc.phaseout.rate * income_over_threshold
@@ -32,7 +32,7 @@ class ctc_reduction(Variable):
         # applying before and only to the increase in the maximum CTC under ARPA.
 
         income = tax_unit("adjusted_gross_income", period)
-        ctc = parameters(period).irs.credits.child_tax_credit
+        ctc = parameters(period).irs.credits.ctc
         mars = tax_unit("mars", period)
         income_over_threshold = max_(0, income - ctc.phaseout.threshold[mars])
         reduction = ctc.phaseout.rate * income_over_threshold
@@ -52,8 +52,8 @@ class ctc_reduction(Variable):
         # Calculate the increase - do this by finding the original CTC if
         # ARPA had not applied - this year's variables, last year's parameters.
         no_arpa_parameters = default_parameters.clone()
-        old_ctc = parameters(period.last_year).irs.credits.child_tax_credit
-        no_arpa_ctc = no_arpa_parameters.irs.credits.child_tax_credit
+        old_ctc = parameters(period.last_year).irs.credits.ctc
+        no_arpa_ctc = no_arpa_parameters.irs.credits.ctc
         no_arpa_ctc.child.young.increase.update(value=0, period=period)
         no_arpa_ctc.child.amount.update(
             value=old_ctc.child.amount, period=period

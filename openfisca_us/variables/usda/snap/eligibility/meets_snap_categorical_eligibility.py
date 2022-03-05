@@ -11,6 +11,4 @@ class meets_snap_categorical_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).usda.snap.categorical_eligibility
-        return np.any(
-            [spm_unit(program, period) for program in programs], axis=0
-        )
+        return add(spm_unit, period, programs) > 0

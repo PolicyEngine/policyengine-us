@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
+## [0.36.1] - 2022-03-04
+
+### Changed
+
+* Adjust variable labels for consistency.
+
+## [0.36.0] - 2022-03-04
+
+### Added
+
+* Supplemental Security Income for individuals.
+* Social Security input variables, counted as unearned income for several programs.
+
+## [0.35.3] - 2022-02-28
+
+### Added
+
+* Code coverage badge to README.md.
+* Reminder for pull requests to run `make format && make documentation`.
+* CPI-uprated values for WIC average payments.
+
+### Changed
+
+* Child Tax Credit names renamed to `ctc`.
+* Child and Dependent Care Credit names renamed to `cdcc`.
+
+### Fixed
+
+* EITC maximum age in 2021 changed from 125 to infinity.
+
 ## [0.35.2] - 2022-02-27
 
 ### Fixed
@@ -417,6 +447,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+[0.36.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.36.0...0.36.1
+[0.36.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.3...0.36.0
+[0.35.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.2...0.35.3
 [0.35.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.1...0.35.2
 [0.35.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.0...0.35.1
 [0.35.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.34.0...0.35.0

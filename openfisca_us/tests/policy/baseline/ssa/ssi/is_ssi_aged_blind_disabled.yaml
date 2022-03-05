@@ -1,0 +1,27 @@
+- name: 65-year-olds are aged.
+  period: 2022
+  input:
+    age: 65
+  output:
+    is_ssi_aged_blind_disabled: true
+
+- name: 64-year-olds are not aged.
+  period: 2022
+  input:
+    age: 64
+  output:
+    is_ssi_aged_blind_disabled: false
+
+- name: Disabled counts.
+  period: 2022
+  input:
+    is_ssi_disabled: true
+  output:
+    is_ssi_aged_blind_disabled: true
+
+- name: Blind counts.
+  period: 2022
+  input:
+    is_blind: true
+  output:
+    is_ssi_aged_blind_disabled: true

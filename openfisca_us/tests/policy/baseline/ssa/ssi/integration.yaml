@@ -1,0 +1,32 @@
+- name: Elderly individual with no income.
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi: 841 * 12
+
+- name: Disabled individual with no income
+  period: 2022
+  input:
+    age: 40
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi: 841 * 12
+
+- name: Example A from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only UNEARNED INCOME"
+  period: 2021
+  input:
+    is_ssi_aged_blind_disabled: true
+    social_security: 300 * 12
+  output:
+    ssi_countable_income: 280 * 12
+    ssi: 514 * 12 # 794 - 280
+
+- name: Example B from SSA SSI page (https://www.ssa.gov/ssi/text-income-ussi.htm) "SSI Federal Benefit with only EARNED INCOME"
+  period: 2021
+  input:
+    is_ssi_aged_blind_disabled: true
+    employment_income: 317 * 12
+  output:
+    ssi_countable_income: 116 * 12
+    ssi: 678 * 12 # 794 - 116

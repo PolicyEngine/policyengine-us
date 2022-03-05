@@ -1,0 +1,15 @@
+description: SSI resource limit for individuals.
+
+values:
+  1985-01-01: 1_600
+  1986-01-01: 1_700
+  1987-01-01: 1_800
+  1988-01-01: 1_900
+  1989-01-01: 2_000
+metadata:
+  label: SSI resource limit for individuals
+  name: ssi_resource_limit_individual
+  unit: currency-USD
+  reference:
+    - title: 20 CFR § 416.1205 - Limitation on resources.
+      href: https://www.law.cornell.edu/cfr/text/20/416.1205#c

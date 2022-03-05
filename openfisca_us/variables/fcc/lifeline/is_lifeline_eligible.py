@@ -11,9 +11,7 @@ class is_lifeline_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).fcc.lifeline.categorical_eligibility
-        categorically_eligible = np.any(
-            [spm_unit(program, period) for program in programs], axis=0
-        )
+        categorically_eligible = add(spm_unit, period, programs) > 0
         fpg_ratio = spm_unit("fcc_fpg_ratio", period)
         fpg_limit = parameters(period).fcc.lifeline.fpg_limit
         fpg_eligible = fpg_ratio <= fpg_limit

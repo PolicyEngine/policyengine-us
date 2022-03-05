@@ -10,7 +10,8 @@ class spm_unit_benefits(Variable):
 
     def formula(spm_unit, period, parameters):
         PERSON_COMPONENTS = [
-            "ssdi",
+            "social_security",
+            "ssi",
             "wic",
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
         ]
@@ -18,7 +19,6 @@ class spm_unit_benefits(Variable):
             "snap",
             "free_school_meals",
             "reduced_price_school_meals",
-            "ssi",
             "lifeline",
             "acp",
             "ebb",

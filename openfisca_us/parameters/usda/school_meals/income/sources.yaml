@@ -7,8 +7,11 @@ values:
     - dividend_income
     - interest_income
     - gi_cash_assistance
+    - social_security
+    - ssi
+    # Also TANF, pensions, annuities, etc.
 
 metadata:
   reference:
-    - title: United States Code, Title 7, Subsection 273.9(b)(1)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_1
+    - title: United States Code, Title 7, Subsection 273.9(b)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#b

@@ -3,15 +3,21 @@ from openfisca_us.model_api import *
 
 class ssi(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     definition_period = YEAR
-    documentation = "Supplemental Security Income amount"
+    documentation = "Supplemental Security Income"
     label = "Supplemental Security Income"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
-        # Obtain eligibility.
-        eligible = spm_unit("is_ssi_eligible", period)
-        # Obtain amount they would receive if they were eligible.
-        amount_if_eligible = spm_unit("ssi_amount_if_eligible", period)
-        return where(eligible, amount_if_eligible, 0)
+    def formula(person, period, parameters):
+        abd = person("is_ssi_aged_blind_disabled", period)
+        countable_resources = person("ssi_countable_resources", period)
+        ssi = parameters(period).ssa.ssi
+        # Only individual is modeled currently.
+        resource_limit = ssi.eligibility.resources.limit.individual
+        meets_resource_test = countable_resources <= resource_limit
+        # Calculate amount.
+        amount = ssi.amount.individual * 12
+        countable_income = person("ssi_countable_income", period)
+        amount_if_eligible = max_(amount - countable_income, 0)
+        return abd * meets_resource_test * amount_if_eligible

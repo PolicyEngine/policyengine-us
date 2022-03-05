@@ -267,7 +267,7 @@ class c33200(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        cdcc = parameters(period).irs.credits.child_and_dep_care
+        cdcc = parameters(period).irs.credits.cdcc
         max_credit = min_(tax_unit("f2441", period), 2) * cdcc.max
         c32800 = max_(0, min_(tax_unit("filer_e32800", period), max_credit))
         mars = tax_unit("mars", period)

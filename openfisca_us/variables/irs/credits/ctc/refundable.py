@@ -19,7 +19,7 @@ class ctc_refundable_individual_maximum(Variable):
 
     def formula_2018(person, period, parameters):
         amount = person("ctc_individual_maximum", period)
-        ctc = parameters(period).irs.credits.child_tax_credit
+        ctc = parameters(period).irs.credits.ctc
         return min_(amount, ctc.refundable.individual_max)
 
     def formula_2021(person, period, parameters):
@@ -63,11 +63,11 @@ class refundable_ctc(Variable):
         person = tax_unit.members
         maximum_refundable_ctc = min_(
             tax_unit.sum(person("ctc_refundable_individual_maximum", period)),
-            tax_unit("child_tax_credit", period),
+            tax_unit("ctc", period),
         )
 
         liability = tax_unit("ctc_limiting_tax_liability", period)
-        ctc = parameters(period).irs.credits.child_tax_credit
+        ctc = parameters(period).irs.credits.ctc
         earnings_over_threshold = max_(
             0,
             tax_unit.sum(person("earned_income", period))
@@ -103,6 +103,4 @@ class non_refundable_ctc(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("child_tax_credit", period) - tax_unit(
-            "refundable_ctc", period
-        )
+        return tax_unit("ctc", period) - tax_unit("refundable_ctc", period)
