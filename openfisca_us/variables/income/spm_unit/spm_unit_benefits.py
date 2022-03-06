@@ -10,15 +10,18 @@ class spm_unit_benefits(Variable):
 
     def formula(spm_unit, period, parameters):
         PERSON_COMPONENTS = [
-            "ssdi",
+            "social_security",
+            "ssi",
             "wic",
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
         ]
         SPMU_COMPONENTS = [
             "snap",
-            "school_meal_subsidy",
-            "ssi",
+            "free_school_meals",
+            "reduced_price_school_meals",
             "lifeline",
+            "acp",
+            "ebb",
             # "tanf", # Exclude until defined for California.
         ]
         person_components = aggr(spm_unit, period, PERSON_COMPONENTS)

@@ -2,13 +2,16 @@
   period: 2021
   input:
     # Person-level.
-    ssdi: 1
+    social_security: 1
     ca_cvrp: 6
     wic: 7
     # SPM unit-level.
     snap: 2
-    school_meal_subsidy: 3
+    free_school_meals: 3
+    reduced_price_school_meals: 10
     ssi: 4
     lifeline: 5
+    acp: 8
+    ebb: 9
   output:
-    spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 6 + 7
+    spm_unit_benefits: 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10

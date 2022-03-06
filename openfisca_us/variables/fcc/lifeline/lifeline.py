@@ -13,7 +13,15 @@ class lifeline(Variable):
     def formula(spm_unit, period, parameters):
         # NB: Only one Lifeline benefit is available per SPM unit, per:
         # https://www.law.cornell.edu/cfr/text/47/54.409#c
-        max_amount = parameters(period).fcc.lifeline.amount * 12
+        amounts = parameters(period).fcc.lifeline.amount
+        household = spm_unit.household
+        is_rural_tribal = and_(
+            household, period, ["is_rural", "is_on_tribal_land"]
+        )
+        max_amount = (
+            amounts.standard
+            + is_rural_tribal * amounts.rural_tribal_supplement
+        ) * 12
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]
         )

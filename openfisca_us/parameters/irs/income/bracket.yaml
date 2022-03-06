@@ -17,99 +17,279 @@ rates:
 thresholds:
   1:
     SINGLE:
-      2018-01-01: 9525
-      2019-01-01: 9700
+      values:
+        2018-01-01: 9525
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     JOINT:
-      2018-01-01: 19050
-      2019-01-01: 19400
+      values:
+        2018-01-01: 19050
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     SEPARATE:
-      2018-01-01: 9525
-      2019-01-01: 9700
+      values:
+        2018-01-01: 9525
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     HEAD_OF_HOUSEHOLD:
-      2018-01-01: 13600
-      2019-01-01: 13850
+      values:
+        2018-01-01: 13600
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     WIDOW:
-      2018-01-01: 19050
-      2019-01-01: 19400
+      values:
+        2018-01-01: 19050
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
   2:
     SINGLE:
-      2018-01-01: 38700
-      2019-01-01: 39475
+      values:
+        2018-01-01: 38700
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     JOINT:
-      2018-01-01: 77400
-      2019-01-01: 78950
+      values:
+        2018-01-01: 77400
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     SEPARATE:
-      2018-01-01: 38700
-      2019-01-01: 39475
+      values:
+        2018-01-01: 38700
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     HEAD_OF_HOUSEHOLD:
-      2018-01-01: 51800
-      2019-01-01: 52850
+      values:
+        2018-01-01: 51800
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     WIDOW:
-      2018-01-01: 77400
-      2019-01-01: 78950
+      values:
+        2018-01-01: 77400
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
   3:
     SINGLE:
-      2018-01-01: 82500
-      2019-01-01: 84200
+      values:
+        2018-01-01: 82500
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     JOINT:
-      2018-01-01: 165000
-      2019-01-01: 168400
+      values:
+        2018-01-01: 165000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     SEPARATE:
-      2018-01-01: 82500
-      2019-01-01: 84200
+      values:
+        2018-01-01: 82500
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     HEAD_OF_HOUSEHOLD:
-      2018-01-01: 82500
-      2019-01-01: 84200
+      values:
+        2018-01-01: 82500
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     WIDOW:
-      2018-01-01: 165000
-      2019-01-01: 168400
+      values:
+        2018-01-01: 165000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
   4:
     SINGLE:
-      2018-01-01: 157500
-      2019-01-01: 160725
+      values:
+        2018-01-01: 157500
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     JOINT:
-      2018-01-01: 315000
-      2019-01-01: 321450
+      values:
+        2018-01-01: 315000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     SEPARATE:
-      2018-01-01: 157500
-      2019-01-01: 160725
+      values:
+        2018-01-01: 157500
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     HEAD_OF_HOUSEHOLD:
-      2018-01-01: 157500
-      2019-01-01: 160700
+      values:
+        2018-01-01: 157500
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     WIDOW:
-      2018-01-01: 315000
-      2019-01-01: 321450
+      values:
+        2018-01-01: 315000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
   5:
     SINGLE:
-      2018-01-01: 200000
-      2019-01-01: 204100
+      values:
+        2018-01-01: 200000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     JOINT:
-      2018-01-01: 400000
-      2019-01-01: 408200
+      values:
+        2018-01-01: 400000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     SEPARATE:
-      2018-01-01: 200000
-      2019-01-01: 204100
+      values:
+        2018-01-01: 200000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     HEAD_OF_HOUSEHOLD:
-      2018-01-01: 200000
-      2019-01-01: 204100
+      values:
+        2018-01-01: 200000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     WIDOW:
-      2018-01-01: 400000
-      2019-01-01: 408200
+      values:
+        2018-01-01: 400000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
   6:
     SINGLE:
-      2018-01-01: 500000
-      2019-01-01: 510300
+      values:
+        2018-01-01: 500000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     JOINT:
-      2018-01-01: 600000
-      2019-01-01: 612350
+      values:
+        2018-01-01: 600000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     SEPARATE:
-      2018-01-01: 300000
-      2019-01-01: 306175
+      values:
+        2018-01-01: 300000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 25
     HEAD_OF_HOUSEHOLD:
-      2018-01-01: 500000
-      2019-01-01: 510300
+      values:
+        2018-01-01: 500000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
     WIDOW:
-      2018-01-01: 600000
-      2019-01-01: 612350
+      values:
+        2018-01-01: 600000
+      metadata:
+        uprating:
+          parameter: irs.uprating
+          rounding:
+            type: nearest
+            interval: 50
 metadata:
   unit: /1

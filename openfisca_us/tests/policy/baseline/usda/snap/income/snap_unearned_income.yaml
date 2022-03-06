@@ -9,12 +9,15 @@
     people:
       person_1:
         dividend_income: 1
-        interest_income: 1
+        interest_income: 2
       person_2:
-        employment_income: 1
-        interest_income: 1
+        employment_income: 3
+        interest_income: 4
+        social_security: 5
+        ssi: 6
+        gi_cash_assistance: 7
     spm_units:
       spm_unit:
         members: [person_1, person_2]
   output:
-    snap_unearned_income: 3
+    snap_unearned_income: 1 + 2 + 4 + 5 + 6 + 7

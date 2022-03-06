@@ -1,0 +1,15 @@
+- name: Free tier gets their subsidy.
+  period: 2022
+  input:
+    school_meal_tier: FREE
+    school_meal_net_subsidy: 1
+  output:
+    free_school_meals: 1
+
+- name: Reduced price tier gets no subsidy.
+  period: 2022
+  input:
+    school_meal_tier: REDUCED
+    school_meal_net_subsidy: 1
+  output:
+    free_school_meals: 0

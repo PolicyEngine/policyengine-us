@@ -6,7 +6,7 @@ class snap_normal_allotment(Variable):
     entity = SPMUnit
     definition_period = YEAR
     documentation = "Normal SNAP benefit amount, equal to net income minus food contribution"
-    label = "Normal SNAP"
+    label = "SNAP normal allotment"
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = USD
 
