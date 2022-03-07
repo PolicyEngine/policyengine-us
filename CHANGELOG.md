@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
+## [0.37.1] - 2022-03-07
+
+### Changed
+
+* Point `e02400` to `social_security` (for PolicyEngine).
+
 ## [0.37.0] - 2022-03-05
 
 ### Added
@@ -453,6 +459,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First prototype version with a standard deduction variable.
 
+[0.37.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.0...0.37.1
 [0.37.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.36.1...0.37.0
 [0.36.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.36.0...0.36.1
 [0.36.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.35.3...0.36.0
