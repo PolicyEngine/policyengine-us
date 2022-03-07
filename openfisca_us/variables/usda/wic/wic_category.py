@@ -26,9 +26,7 @@ class wic_category(Variable):
         breastfeeding = person("is_breastfeeding", period)
         age = person("age", period)
         # Categorize mothers based on the minimum age of children in the SPM unit.
-        min_age_family = person.family.min(
-            person.family.members("age", period)
-        )
+        min_age_family = person.family.min(age)
         return select(
             *zip(
                 (pregnant, WICCategory.PREGNANT),
