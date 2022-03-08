@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
+## [0.37.3] - 2022-03-08
+
+### Changed
+
+- `is_married` moved from person-level to family-level, with a formula added.
+
 ## [0.37.2] - 2022-03-07
 
 ### Added
@@ -469,6 +475,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
+[0.37.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.3...0.37.2
 [0.37.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.2...0.37.1
 [0.37.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.0...0.37.1
 [0.37.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.36.1...0.37.0
