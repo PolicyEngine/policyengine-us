@@ -41,6 +41,9 @@ class mars(Variable):
         return where(has_spouse_with_age, MARSType.JOINT, MARSType.SINGLE)
 
 
+marital_status = variable_alias("marital_status", mars)
+
+
 class midr(Variable):
     value_type = bool
     entity = TaxUnit
