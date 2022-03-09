@@ -812,9 +812,10 @@ class c05200(Variable):
             # Calculate rate applied to pass-through income on in the same
             # way, but as treated as if stacked on top of regular income
             # (which is not taxed again)
-            pt_threshold = (
+            pt_threshold = max_(
+                0,
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
-                - pt_tbase
+                - pt_tbase,
             )
             pt_tax += individual_income.pass_through.bracket.rates[
                 str(i)
