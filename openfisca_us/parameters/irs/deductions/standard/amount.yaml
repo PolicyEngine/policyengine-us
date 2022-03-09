@@ -2,17 +2,27 @@ description: Standard deduction amount for different tax units
 SINGLE:
   2018-01-01: 12000
   2019-01-01: 12200
+  2022-01-01: 12_950
 JOINT:
   2018-01-01: 24000
   2019-01-01: 24400
+  2022-01-01: 25_900
 SEPARATE:
   2018-01-01: 12000
   2019-01-01: 12200
+  2022-01-01: 12_950
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 18000
   2019-01-01: 18350
+  2022-01-01: 19_400
 WIDOW:
   2018-01-01: 24000
   2019-01-01: 24400
+  2022-01-01: 25_900
 metadata:
   unit: currency-USD
+  label: Standard deduction
+  propagate_metadata_to_children: true
+  reference:
+    - title: IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=14

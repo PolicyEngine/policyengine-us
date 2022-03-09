@@ -1,4 +1,5 @@
 description: The maximum EITC amount.
+
 brackets:
   - threshold:
       values:
@@ -10,7 +11,7 @@ brackets:
         2019-01-01: 529
         2020-01-01: 538
         2021-01-01: 1_502
-        2022-01-01: 546
+        2022-01-01: 560
       metadata:
         unit: currency-USD
   - threshold:
@@ -23,7 +24,7 @@ brackets:
         2019-01-01: 3_526
         2020-01-01: 3_584
         2021-01-01: 3_618
-        2022-01-01: 3_641
+        2022-01-01: 3_733
       metadata:
         unit: currency-USD
   - threshold:
@@ -36,7 +37,7 @@ brackets:
         2019-01-01: 5_828
         2020-01-01: 5_920
         2021-01-01: 5_980
-        2022-01-01: 6_018
+        2022-01-01: 6_164
       metadata:
         unit: currency-USD
   - threshold:
@@ -49,12 +50,17 @@ brackets:
         2019-01-01: 6_557
         2020-01-01: 6_660
         2021-01-01: 6_728
-        2022-01-01: 6_770
+        2022-01-01: 6_935
       metadata:
         unit: currency-USD
 metadata:
   type: single_amount
+  threshold_unit: child
+  rate_unit: currency-USD
+  propagate_metadata_to_children: true
   reference:
+    - title: IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
     - title: Tax-Calculator
       href: https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/policy_current_law.json
     - title: EITC Tables | IRS
