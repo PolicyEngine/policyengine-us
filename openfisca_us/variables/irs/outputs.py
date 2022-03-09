@@ -789,19 +789,6 @@ class c05200(Variable):
         pt_taxinc = max_(0, pt_active)
         taxable_income = tax_unit("c04800", period)
 
-        #reg_tax = 0
-        #mars = tax_unit("mars", period)
-        #last_threshold = 0
-        #for i in range(1, 7):
-        #    threshold = individual_income.bracket.thresholds[str(i)][mars]
-        #    reg_tax += individual_income.bracket.rates[
-        #        str(i)
-        #    ] * amount_between(taxable_income, last_threshold, threshold)
-        #    last_threshold = threshold
-
-        #return reg_tax
-        ###
-
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
         pt_tbase = reg_taxinc
@@ -828,7 +815,7 @@ class c05200(Variable):
             pt_threshold = max_(
                 0,
                 individual_income.pass_through.bracket.thresholds[str(i)][mars]
-                - pt_tbase
+                - pt_tbase,
             )
             pt_tax += individual_income.pass_through.bracket.rates[
                 str(i)
