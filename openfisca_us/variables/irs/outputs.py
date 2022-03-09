@@ -822,8 +822,6 @@ class c05200(Variable):
             ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
             last_pt_threshold = pt_threshold
 
-            print(reg_tax, pt_tax)
-
         # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
             reg_taxinc - last_reg_threshold, 0
