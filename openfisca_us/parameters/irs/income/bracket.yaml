@@ -1,5 +1,12 @@
-description: Income tax rates and brackets for tax units
+description: Income tax rates and brackets for tax units.
 rates:
+  description: Income tax rate by tax bracket.
+  metadata:
+    unit: /1
+    propagate_metadata_to_children: true
+    breakdown:
+      - range(1, 8)
+    label: Individual income tax rates
   1:
     2018-01-01: 0.1
   2:
@@ -15,8 +22,13 @@ rates:
   7:
     2018-01-01: 0.37
 thresholds:
+  description: The upper threshold for each income tax bracket, for each tax filer type.
   metadata:
     unit: currency-USD
+    label: Individual income tax rate thresholds
+    breakdown:
+      - range(1, 7)
+      - mars
     period: year
     propagate_metadata_to_children: true
     reference:
