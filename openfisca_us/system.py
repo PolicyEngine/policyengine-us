@@ -2,7 +2,11 @@ from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 from openfisca_us.entities import *
 from openfisca_us.parameters.irs.uprating import set_irs_uprating_parameter
 from openfisca_us.situation_examples import single_filer
-from openfisca_tools import homogenize_parameter_structures, uprate_parameters, propagate_parameter_metadata
+from openfisca_tools import (
+    homogenize_parameter_structures,
+    uprate_parameters,
+    propagate_parameter_metadata,
+)
 import os
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
