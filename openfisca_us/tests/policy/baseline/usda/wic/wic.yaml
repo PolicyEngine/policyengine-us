@@ -51,3 +51,14 @@
     is_wic_at_nutritional_risk: true
   output:
     wic: 0 # Ineligible.
+
+- name: At nutritional risk and categorically eligible, check uprating.
+  period: 2022
+  input:
+    wic_category_str: BREASTFEEDING
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: true
+  output:
+    # Multiply by ratio of 2022-01 to 2018-01 chained CPI-U.
+    wic: 37.76 * 12 * 157.581 / 140.239
