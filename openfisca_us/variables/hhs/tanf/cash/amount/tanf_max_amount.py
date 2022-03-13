@@ -10,7 +10,7 @@ class tanf_max_amount(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        family_size = spm_unit("spm_unit_size", period).astype(str)
+        household_size = spm_unit("spm_unit_size", period).astype(str)
         state = spm_unit.household("state_code_str", period)
-        max_amount = parameters(period).hhs.tanf.cash.max_amount
-        return max_amount[state][family_size] * 12
+        max_amount = parameters(period).hhs.tanf.cash.eligibility.continuous.income.limits
+        return max_amount[state][household_size] * 12

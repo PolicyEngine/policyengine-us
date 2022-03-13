@@ -14,10 +14,10 @@ class tanf_countable_income(Variable):
         state = spm_unit.household("state_code_str", period)
         earnings_deductions = parameters(
             period
-        ).hhs.tanf.cash.income.deductions.earnings
-        flat_earnings_deduction = earnings_deductions.flat[state]
+        ).hhs.tanf.cash.amount.countable_income.deductions.earnings
+        household_earnings_deduction = earnings_deductions.household[state]
         percent_earnings_deduction = earnings_deductions.percent[state]
-        countable_earned_income -= flat_earnings_deduction
+        countable_earned_income -= household_earnings_deduction
         countable_earned_income -= (
             countable_earned_income * percent_earnings_deduction
         )
