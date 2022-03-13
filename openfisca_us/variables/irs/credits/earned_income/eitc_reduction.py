@@ -21,5 +21,7 @@ class eitc_reduction(Variable):
             eitc.phaseout.start.calc(num_children)
             + is_joint * eitc.phaseout.joint_bonus
         )
-        uncapped_reduction = max_(0, highest_income_variable - phaseout_start)
+        phaseout_rate = eitc.phaseout.rate.calc(num_children)
+        phaseout_region = max_(0, highest_income_variable - phaseout_start)
+        uncapped_reduction = phaseout_rate * phaseout_region
         return min_(uncapped_reduction, tax_unit("eitc_maximum", period))

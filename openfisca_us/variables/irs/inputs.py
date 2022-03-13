@@ -41,6 +41,9 @@ class mars(Variable):
         return where(has_spouse_with_age, MARSType.JOINT, MARSType.SINGLE)
 
 
+marital_status = variable_alias("marital_status", mars)
+
+
 class midr(Variable):
     value_type = bool
     entity = TaxUnit
@@ -486,6 +489,9 @@ class e02400(Variable):
     definition_period = YEAR
     documentation = "Total social security (OASDI) benefits"
     unit = USD
+
+    def formula(person, period, parameters):
+        return person("social_security", period)
 
 
 class filer_e02400(Variable):
