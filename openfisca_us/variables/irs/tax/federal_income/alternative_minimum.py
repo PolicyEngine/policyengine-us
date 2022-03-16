@@ -48,6 +48,9 @@ class c62100(Variable):
         return c62100 + separate_addition
 
 
+amt_income = variable_alias("amt_income", c62100)
+
+
 class c09600(Variable):
     value_type = float
     entity = TaxUnit
