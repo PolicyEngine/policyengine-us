@@ -414,3 +414,7 @@
       - Tax folder re-organised to improve modularity.
     fixed:
       - A bug in AMT calculations.
+- bump: patch
+  changes:
+    fixed:
+      - Push action on GitHub correctly publishes.
