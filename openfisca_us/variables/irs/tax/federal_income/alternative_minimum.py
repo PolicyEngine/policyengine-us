@@ -77,7 +77,7 @@ class c09600(Variable):
         young_head = (age_head != 0) & (age_head < child.max_age)
         no_or_young_spouse = tax_unit("age_spouse", period) < child.max_age
         line29 = where(
-            young_head | no_or_young_spouse,
+            young_head & no_or_young_spouse,
             min_(line29, tax_unit("filer_earned", period) + child.amount),
             line29,
         )
