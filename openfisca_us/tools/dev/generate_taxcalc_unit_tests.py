@@ -9,7 +9,7 @@ import ast
 import yaml
 import argparse
 
-from openfisca_us.variables.irs.income.income import nu06
+from openfisca_us.variables.irs.income.sources import nu06
 
 np.random.seed(int(time()))
 variables = CountryTaxBenefitSystem().variables
