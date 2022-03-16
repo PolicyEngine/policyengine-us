@@ -91,3 +91,11 @@ class blind_spouse(Variable):
     definition_period = YEAR
     label = "Tax unit spouse is blind"
     documentation = "1 if spouse is blind; otherwise 0"
+
+
+class num(Variable):
+    value_type = int
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = "2 when MARS is 2 (married filing jointly); otherwise 1"
+    unit = USD

@@ -27,3 +27,20 @@ class pre_qbid_taxinc(Variable):
         return max_(
             0, agi - maximum_deduction - personal_exemptions - ui_excluded
         )
+
+
+class c04800(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Taxable income"
+    documentation = "Regular taxable income"
+    unit = USD
+
+    def formula(tax_unit, period, parameters):
+        return max_(
+            0, tax_unit("pre_qbid_taxinc", period) - tax_unit("qbided", period)
+        )
+
+
+taxable_income = variable_alias("taxable_income", c04800)
