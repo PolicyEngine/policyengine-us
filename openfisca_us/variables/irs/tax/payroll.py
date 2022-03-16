@@ -1,5 +1,83 @@
 from openfisca_us.model_api import *
-from numpy import ceil
+
+
+class payrolltax(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Payroll tax"
+    definition_period = YEAR
+    unit = USD
+    documentation = "Total (employee + employer) payroll tax liability."
+
+    def formula(tax_unit, period):
+        COMPONENTS = [
+            "ptax_was",
+            "ptax_amc",
+            "filer_setax",
+            "extra_payrolltax",
+        ]
+        return add(tax_unit, period, COMPONENTS)
+
+
+class employee_payrolltax(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Employee's payroll tax"
+    documentation = "Share of payroll tax liability paid by the employee."
+    definition_period = YEAR
+    unit = USD
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("payrolltax", period) * 0.5
+
+
+class ptax_amc(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Additional Medicare Tax"
+    unit = USD
+    documentation = (
+        "Additional Medicare Tax from Form 8959 (included in payrolltax)"
+    )
+
+    def formula(tax_unit, period, parameters):
+        fica = parameters(period).irs.payroll.fica
+        positive_sey = max_(0, tax_unit("filer_sey", period))
+        combined_rate = fica.medicare.rate + fica.social_security.rate
+        line8 = positive_sey * (1 - 0.5 * combined_rate)
+        mars = tax_unit("mars", period)
+        e00200 = tax_unit("filer_e00200", period)
+        exclusion = fica.medicare.additional.exclusion[mars]
+        earnings_over_exclusion = max_(0, e00200 - exclusion)
+        line11 = max_(0, exclusion - e00200)
+        rate = fica.medicare.additional.rate
+        base = earnings_over_exclusion + max_(0, line8 - line11)
+        return rate * base
+
+
+class ptax_oasdi(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = "Employee + employer OASDI FICA tax plus self-employment tax (excludes HI FICA so positive ptax_oasdi is less than ptax_was plus setax)"
+    unit = USD
+
+    def formula(tax_unit, period):
+        ELEMENTS = ["filer_ptax_ss_was", "filer_setax_ss", "extra_payrolltax"]
+        return add(tax_unit, period, ELEMENTS)
+
+
+class ptax_was(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    documentation = "Employee + employer OASDI + HI FICA tax"
+    unit = USD
+
+    def formula(tax_unit, period, parameters):
+        ELEMENTS = ["filer_ptax_ss_was", "filer_ptax_mc_was"]
+        return add(tax_unit, period, ELEMENTS)
 
 
 class gross_was(Variable):
@@ -194,143 +272,22 @@ class extra_payrolltax(Variable):
         )
 
 
-class pre_qbid_taxinc(Variable):
+class social_security_taxes(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Taxable income (pre-QBID)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        # Calculate UI excluded from taxable income
-        ui = parameters(period).irs.unemployment_insurance
-        ui_amount = tax_unit("filer_e02300", period)
-        agi = tax_unit("c00100", period)
-        agi_over_ui = agi - ui_amount
-        mars = tax_unit("mars", period)
-        ui_excluded = where(
-            agi_over_ui <= ui.exemption.cutoff[mars],
-            min_(ui_amount, ui.exemption.amount),
-            0,
-        )
-        maximum_deduction = max_(
-            tax_unit("c04470", period), tax_unit("standard", period)
-        )
-        personal_exemptions = tax_unit("c04600", period)
-        return max_(
-            0, agi - maximum_deduction - personal_exemptions - ui_excluded
-        )
-
-
-class posagi(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Positive AGI"
-    unit = USD
-    documentation = "Negative AGI values capped at zero"
+    label = "Social security taxes"
+    unit = "currency-USD"
+    documentation = "Total employee-side social security taxes"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return max_(tax_unit("c00100", period), 0)
-
-
-class hasqdivltcg(Variable):
-    value_type = bool
-    entity = TaxUnit
-    label = "Has qualified dividends or long-term capital gains"
-    documentation = "Whether this tax unit has qualified dividend income, or long-term capital gains income"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        # Negatives cannot offset other income sources
-        INCOME_SOURCES = [
-            "c01000",
-            "c23650",
-            "filer_p23250",
-            "filer_e01100",
-            "filer_e00650",
-        ]
-        return np.any(
-            [
-                tax_unit(income_source, period) > 0
-                for income_source in INCOME_SOURCES
-            ]
+        employee_payroll_tax = 0.5 * tax_unit("ptax_was", period)
+        self_employed_tax = tax_unit("c03260", period)
+        unreported_payroll_tax = aggr(tax_unit, period, ["e09800"])
+        excess_payroll_tax_withheld = aggr(tax_unit, period, ["e11200"])
+        return (
+            employee_payroll_tax
+            + self_employed_tax
+            + unreported_payroll_tax
+            - excess_payroll_tax_withheld
         )
-
-
-class c33200(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Credit for child and dependent care expenses"
-    unit = USD
-    documentation = "From form 2441, before refundability checks"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        cdcc = parameters(period).irs.credits.cdcc
-        max_credit = min_(tax_unit("f2441", period), 2) * cdcc.max
-        c32800 = max_(0, min_(tax_unit("filer_e32800", period), max_credit))
-        mars = tax_unit("mars", period)
-        is_head = tax_unit.members("is_tax_unit_head", period)
-        earnings = tax_unit.members("earned", period)
-        is_spouse = tax_unit.members("is_tax_unit_spouse", period)
-        lowest_earnings = where(
-            mars == mars.possible_values.JOINT,
-            min_(
-                tax_unit.sum(is_head * earnings),
-                tax_unit.sum(is_spouse * earnings),
-            ),
-            tax_unit.sum(is_head * earnings),
-        )
-        c33000 = max_(0, min_(c32800, lowest_earnings))
-        c00100 = tax_unit("c00100", period)
-        tratio = ceil(
-            max_(((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0)
-        )
-        exact = tax_unit("exact", period)
-        crate = where(
-            exact,
-            max_(
-                cdcc.phaseout.min,
-                cdcc.phaseout.max
-                - min_(
-                    cdcc.phaseout.max - cdcc.phaseout.min,
-                    tratio,
-                ),
-            ),
-            max_(
-                cdcc.phaseout.min,
-                cdcc.phaseout.max
-                - max_(
-                    ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate),
-                    0,
-                ),
-            ),
-        )
-        tratio2 = ceil(
-            max_(
-                ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate), 0
-            )
-        )
-        crate_if_over_second_threshold = where(
-            exact,
-            max_(0, cdcc.phaseout.min - min_(cdcc.phaseout.min, tratio2)),
-            max_(
-                0,
-                cdcc.phaseout.min
-                - max_(
-                    (
-                        (c00100 - cdcc.phaseout.second_start)
-                        * cdcc.phaseout.rate
-                    ),
-                    0,
-                ),
-            ),
-        )
-        crate = where(
-            c00100 > cdcc.phaseout.second_start,
-            crate_if_over_second_threshold,
-            crate,
-        )
-
-        return c33000 * crate

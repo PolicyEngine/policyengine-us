@@ -14,3 +14,6 @@ class non_refundable_american_opportunity_credit(Variable):
         total = tax_unit("american_opportunity_credit", period)
         refundable = tax_unit("refundable_american_opportunity_credit", period)
         return total - refundable
+
+
+c87668 = variable_alias("c87668", non_refundable_american_opportunity_credit)

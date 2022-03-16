@@ -1,126 +1,12 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.demographic.tax_unit.MARSType import MARSType
-
-
-class dsi(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "True if claimed as dependent on another return; otherwise false"
-    )
-
-
-class eic(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Number of EIC qualifying children (range: 0 to 3)"
-
-
-class flpdyr(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Calendar year for which taxes are calculated"
-
-
-class mars(Variable):
-    value_type = Enum
-    entity = TaxUnit
-    possible_values = MARSType
-    default_value = MARSType.SINGLE
-    definition_period = YEAR
-    label = "Marital status for the tax unit"
-
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        spouse_with_age = person("is_tax_unit_spouse", period)
-        has_age = person("age", period) > 0
-        has_spouse_with_age = tax_unit.any(spouse_with_age & has_age)
-        return where(has_spouse_with_age, MARSType.JOINT, MARSType.SINGLE)
-
-
-marital_status = variable_alias("marital_status", mars)
-
-
-class midr(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "True if separately filing spouse itemizes; otherwise false"
-    )
-
-
-class recid(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Unique numeric identifier for filing unit; appears as RECID variable in tc CLI minimal output"
-
-
-class xtot(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Total number of exemptions for filing unit"
-
-
-class age_head(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Age in years of taxpayer (i.e. primary adult)"
-    unit = "year"
-
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        return tax_unit.max(age * head)
-
-
-class age_spouse(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Age in years of spouse (i.e. secondary adult if present)"
-    unit = "year"
-
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        age = person("age", period)
-        spouse = person("is_tax_unit_spouse", period)
-        return tax_unit.max(age * spouse)
-
-
-class agi_bin(Variable):
-    value_type = int
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Historical AGI category used in data extrapolation"
-
-
-class blind_head(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "True if taxpayer is blind; otherwise False"
-
-
-class blind_spouse(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "1 if spouse is blind; otherwise 0"
 
 
 class cmbtp(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    documentation = "Estimate of income on (AMT) Form 6251 but not in AGI"
+    label = "AMT income not included in AGI"
+    documentation = "Estimate of income considered for AMT but not AGI"
     unit = USD
 
 
@@ -697,55 +583,6 @@ class filer_e03500(Variable):
         return tax_unit_non_dep_sum("e03500", tax_unit, period)
 
 
-class e07240(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Retirement savings contributions credit from Form 8880"
-    unit = USD
-
-
-retirement_savings_credit = variable_alias("retirement_savings_credit", e07240)
-
-
-class e07260(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Residential energy credit from Form 5695"
-    unit = USD
-
-
-residential_energy_credit = variable_alias("residential_energy_credit", e07260)
-
-
-class e07300(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Foreign tax credit from Form 1116"
-    unit = USD
-
-
-foreign_tax_credit = variable_alias("foreign_tax_credit", e07300)
-
-
-class e07400(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "General business credit from Form 3800"
-    unit = USD
-
-
-class e07600(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Prior year minimum tax credit from Form 8801"
-    unit = USD
-
-
 class e09700(Variable):
     value_type = float
     entity = TaxUnit
@@ -1301,3 +1138,39 @@ class pt_ubia_property(Variable):
     definition_period = YEAR
     documentation = "Filing unit's share of total business property owned by the pass-through business"
     unit = "/1"
+
+
+class hasqdivltcg(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Has qualified dividends or long-term capital gains"
+    documentation = "Whether this tax unit has qualified dividend income, or long-term capital gains income"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        # Negatives cannot offset other income sources
+        INCOME_SOURCES = [
+            "c01000",
+            "c23650",
+            "filer_p23250",
+            "filer_e01100",
+            "filer_e00650",
+        ]
+        return np.any(
+            [
+                tax_unit(income_source, period) > 0
+                for income_source in INCOME_SOURCES
+            ]
+        )
+
+
+class c23650(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Net capital gains"
+    unit = USD
+    documentation = "Net capital gains (long and short term) before exclusion"
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, ["filer_p23250", "filer_p22250"])
