@@ -10,7 +10,6 @@ class social_security_taxes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         employee_payroll_tax = 0.5 * tax_unit("ptax_was", period)
         self_employed_tax = tax_unit("c03260", period)
         unreported_payroll_tax = aggr(tax_unit, period, ["e09800"])
