@@ -1140,7 +1140,6 @@ class pt_ubia_property(Variable):
     unit = "/1"
 
 
-
 class hasqdivltcg(Variable):
     value_type = bool
     entity = TaxUnit

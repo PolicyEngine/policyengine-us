@@ -1,7 +1,6 @@
 from openfisca_us.model_api import *
 
 
-
 class pre_qbid_taxinc(Variable):
     value_type = float
     entity = TaxUnit
@@ -28,4 +27,3 @@ class pre_qbid_taxinc(Variable):
         return max_(
             0, agi - maximum_deduction - personal_exemptions - ui_excluded
         )
-

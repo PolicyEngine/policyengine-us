@@ -27,8 +27,6 @@ class c07180(Variable):
 cdcc = variable_alias("cdcc", c07180)
 
 
-
-
 class c33200(Variable):
     value_type = float
     entity = TaxUnit
@@ -105,6 +103,7 @@ class c33200(Variable):
         )
 
         return c33000 * crate
+
 
 class cdcc_refund(Variable):
     value_type = float

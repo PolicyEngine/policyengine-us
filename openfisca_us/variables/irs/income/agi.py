@@ -1,8 +1,6 @@
 from openfisca_us.model_api import *
 
 
-
-
 class posagi(Variable):
     value_type = float
     entity = TaxUnit
