@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.37.7] - 2022-03-16 20:29:58
+## [0.37.9] - 2022-03-16 21:22:44
+
+### Fixed
+
+- Push action on GitHub correctly publishes.
+
+## [0.37.8] - 2022-03-16 21:22:44
 
 ### Changed
 
@@ -14,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - A bug in AMT calculations.
+
+## [0.37.7] - 2022-03-16 20:29:58
+
+### Fixed
+
+- Push action on GitHub correctly publishes.
 
 ## [0.37.6] - 2022-03-13 00:00:00
 
@@ -516,6 +528,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.37.9]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.8...0.37.9
+[0.37.8]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.7...0.37.8
 [0.37.7]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.6...0.37.7
 [0.37.6]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.5...0.37.6
 [0.37.5]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.4...0.37.5
