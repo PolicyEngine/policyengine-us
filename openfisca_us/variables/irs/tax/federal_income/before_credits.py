@@ -200,3 +200,22 @@ class taxbc(Variable):
 regular_tax_before_credits = variable_alias(
     "regular_tax_before_credits", taxbc
 )
+
+
+class c05800(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Income tax before credits"
+    unit = USD
+    documentation = "Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"
+
+    def formula(tax_unit, period, parameters):
+        return add(
+            tax_unit,
+            period,
+            ["regular_tax_before_credits", "alternative_minimum_tax"],
+        )
+
+
+income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)

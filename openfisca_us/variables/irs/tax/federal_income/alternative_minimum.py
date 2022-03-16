@@ -1,6 +1,53 @@
 from openfisca_us.model_api import *
 
 
+class c62100(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "AMT taxable income"
+    unit = USD
+    documentation = "Alternative Minimum Tax (AMT) taxable income"
+
+    def formula(tax_unit, period, parameters):
+        # Form 6251, Part I
+        c00100 = tax_unit("c00100", period)
+        e00700 = tax_unit("filer_e00700", period)
+        c62100_if_no_standard = (
+            c00100
+            - e00700
+            - tax_unit("c04470", period)
+            + max_(
+                0,
+                min_(
+                    tax_unit("c17000", period),
+                    0.025 * c00100,
+                ),
+            )
+            + tax_unit("c18300", period)
+            + tax_unit("c20800", period)
+            - tax_unit("c21040", period)
+        )
+        c62100 = where(
+            tax_unit("standard", period) == 0,
+            c62100_if_no_standard,
+            c00100 - e00700,
+        ) + tax_unit(
+            "filer_cmbtp", period
+        )  # add income not in AGI but considered income for AMT
+        amt = parameters(period).irs.income.amt
+        mars = tax_unit("mars", period)
+        separate_addition = max_(
+            0,
+            min_(
+                amt.exemption.amount[mars],
+                amt.exemption.phaseout.rate
+                * (c62100 - amt.exemption.separate_limit),
+            ),
+        ) * (mars == mars.possible_values.SEPARATE)
+        return c62100 + separate_addition
+
+
 class c09600(Variable):
     value_type = float
     entity = TaxUnit

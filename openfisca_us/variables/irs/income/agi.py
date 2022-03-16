@@ -13,6 +13,41 @@ class posagi(Variable):
         return max_(tax_unit("c00100", period), 0)
 
 
+class invinc_agi_ec(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Exclusion of investment income from AGI"
+    unit = USD
+    documentation = (
+        "Always equal to zero (will be removed in a future version)"
+    )
+    definition_period = YEAR
+
+
+class invinc_ec_base(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "AGI investment income exclusion"
+    unit = USD
+    documentation = "Exclusion of investment income from AGI"
+
+    def formula(tax_unit, period, parameters):
+        # Limitation on net short-term and
+        # long-term capital losses
+        limited_capital_gain = max_(
+            -3000.0 / tax_unit("sep", period),
+            add(tax_unit, period, ["filer_p22250", "filer_p23250"]),
+        )
+        OTHER_INV_INCOME_VARS = ["e00300", "e00600", "e01100", "e01200"]
+        other_inv_income = add(
+            tax_unit,
+            period,
+            ["filer_" + variable for variable in OTHER_INV_INCOME_VARS],
+        )
+        return limited_capital_gain + other_inv_income
+
+
 class ymod(Variable):
     value_type = float
     entity = TaxUnit

@@ -1,17 +1,25 @@
 from openfisca_us.model_api import *
 
 
-class income_tax_refundable_credits(Variable):
+class c09200(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Income tax refundable credits"
-    documentation = "Total refundable income tax credits"
     unit = USD
+    label = "Income tax before refundable credits"
+    documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
-        credits = parameters(period).irs.credits.refundable
-        return add(tax_unit, period, credits)
+        return max_(
+            0,
+            tax_unit("income_tax_before_credits", period)
+            - tax_unit("income_tax_non_refundable_credits", period),
+        )
+
+
+income_tax_before_refundable_credits = variable_alias(
+    "income_tax_before_refundable_credits", c09200
+)
 
 
 class iitax(Variable):

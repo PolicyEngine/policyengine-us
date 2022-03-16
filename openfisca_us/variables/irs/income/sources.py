@@ -1162,3 +1162,15 @@ class hasqdivltcg(Variable):
                 for income_source in INCOME_SOURCES
             ]
         )
+
+
+class c23650(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Net capital gains"
+    unit = USD
+    documentation = "Net capital gains (long and short term) before exclusion"
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, ["filer_p23250", "filer_p22250"])
