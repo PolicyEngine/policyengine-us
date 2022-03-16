@@ -1,7 +1,7 @@
 name: Pull request
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 jobs:
   Lint:
     runs-on: ubuntu-latest
@@ -18,10 +18,16 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
+      - name: Build changelog
+        run: pip install yaml-changelog && make changelog
+      - name: Preview changelog update
+        run: ".github/get-changelog-diff.sh"
       - name: Check version number has been properly updated
         run: ".github/is-version-number-acceptable.sh"
   Test:
