@@ -1138,3 +1138,28 @@ class pt_ubia_property(Variable):
     definition_period = YEAR
     documentation = "Filing unit's share of total business property owned by the pass-through business"
     unit = "/1"
+
+
+
+class hasqdivltcg(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Has qualified dividends or long-term capital gains"
+    documentation = "Whether this tax unit has qualified dividend income, or long-term capital gains income"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        # Negatives cannot offset other income sources
+        INCOME_SOURCES = [
+            "c01000",
+            "c23650",
+            "filer_p23250",
+            "filer_e01100",
+            "filer_e00650",
+        ]
+        return np.any(
+            [
+                tax_unit(income_source, period) > 0
+                for income_source in INCOME_SOURCES
+            ]
+        )

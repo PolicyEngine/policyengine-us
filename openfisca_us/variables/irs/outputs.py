@@ -225,36 +225,6 @@ class othertaxes(Variable):
     unit = USD
 
 
-class payrolltax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Payroll tax"
-    definition_period = YEAR
-    unit = USD
-    documentation = "Total (employee + employer) payroll tax liability."
-
-    def formula(tax_unit, period):
-        COMPONENTS = [
-            "ptax_was",
-            "ptax_amc",
-            "filer_setax",
-            "extra_payrolltax",
-        ]
-        return add(tax_unit, period, COMPONENTS)
-
-
-class employee_payrolltax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Employee's payroll tax"
-    documentation = "Share of payroll tax liability paid by the employee."
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit("payrolltax", period) * 0.5
-
-
 class income_tax_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
@@ -1562,54 +1532,6 @@ class pre_c04600(Variable):
             tax_unit("xtot", period) * exemption.amount,
         )
 
-
-class ptax_amc(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Additional Medicare Tax"
-    unit = USD
-    documentation = (
-        "Additional Medicare Tax from Form 8959 (included in payrolltax)"
-    )
-
-    def formula(tax_unit, period, parameters):
-        fica = parameters(period).irs.payroll.fica
-        positive_sey = max_(0, tax_unit("filer_sey", period))
-        combined_rate = fica.medicare.rate + fica.social_security.rate
-        line8 = positive_sey * (1 - 0.5 * combined_rate)
-        mars = tax_unit("mars", period)
-        e00200 = tax_unit("filer_e00200", period)
-        exclusion = fica.medicare.additional.exclusion[mars]
-        earnings_over_exclusion = max_(0, e00200 - exclusion)
-        line11 = max_(0, exclusion - e00200)
-        rate = fica.medicare.additional.rate
-        base = earnings_over_exclusion + max_(0, line8 - line11)
-        return rate * base
-
-
-class ptax_oasdi(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Employee + employer OASDI FICA tax plus self-employment tax (excludes HI FICA so positive ptax_oasdi is less than ptax_was plus setax)"
-    unit = USD
-
-    def formula(tax_unit, period):
-        ELEMENTS = ["filer_ptax_ss_was", "filer_setax_ss", "extra_payrolltax"]
-        return add(tax_unit, period, ELEMENTS)
-
-
-class ptax_was(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "Employee + employer OASDI + HI FICA tax"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        ELEMENTS = ["filer_ptax_ss_was", "filer_ptax_mc_was"]
-        return add(tax_unit, period, ELEMENTS)
 
 
 class filer_setax(Variable):
