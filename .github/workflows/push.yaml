@@ -41,7 +41,7 @@ jobs:
           add: "."
           committer_name: Github Actions[bot]
           author_name: Github Actions[bot]
-          message: Update PolicyEngine
+          message: Update OpenFisca-US
   Test:
     runs-on: ${{ matrix.os }}
     if: |
