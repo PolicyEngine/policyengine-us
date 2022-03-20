@@ -1,4 +1,6 @@
-- name: "TANF: Calculating countable income from total gross income: $3500 gross income"
+# TODO: Update tests here. Should have an assortment of combinations of flat, percentage, etc. income deductions.
+
+- name: "IL TANF: Calculating countable income from total gross income: $3500 gross income"
   period: 2022
   input:
     people:
@@ -14,4 +16,23 @@
       household:
         state_code: IL
   output:
+    # This suggests a 75% deduction, which Illinois does.
     tanf_countable_income: 3500 / 4
+- name: "CA TANF: Calculating countable income from total gross income: $3500 gross income"
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf_gross_earned_income: 3500
+    households:
+      household:
+        state_code: CA
+  output:
+    # This suggests a $550 household deduction and a 50% deduction, which California does.
+    tanf_countable_income: (3500 - 550) / 2

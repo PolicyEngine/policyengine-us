@@ -1,0 +1,13 @@
+description: Initial employment deduction for TANF benefit calculations.
+CA:
+  2021-06-01: 90
+metadata:
+  unit: currency-USD
+  period: month
+  reference:
+    # TODO: find better governmental source from California TANF law
+    - title: "CALWORKS FACT SHEET"
+      href: https://ehsd.org/benefits/calworks-cash-aid/calworks-fact-sheet/
+      date: 2021-10-01
+  breakdown:
+    - state_code
