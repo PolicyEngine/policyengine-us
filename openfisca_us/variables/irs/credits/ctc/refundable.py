@@ -104,3 +104,6 @@ class non_refundable_ctc(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit("ctc", period) - tax_unit("refundable_ctc", period)
+
+
+c11070 = variable_alias("c11070", refundable_ctc)

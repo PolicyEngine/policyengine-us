@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.37.6",
+    version="0.37.7",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -46,6 +46,7 @@ setup(
             "jupyter-book",
             "coverage",
             "plotly",
+            "yaml-changelog>=0.1.6",
         ],
     },
     python_requires=">=3.7,<3.8",
