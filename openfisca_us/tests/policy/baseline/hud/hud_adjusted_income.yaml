@@ -1,3 +1,8 @@
+# TODOs:
+# - Tests involving is_hud_elderly_disabled_family
+# - Tests involving childcare_expenses
+# - Tests involving medical_out_of_pocket_expenses (which only applies to elderly/disabled families)
+
 - name: Default value is zero.
   period: 2022
   output:
@@ -33,3 +38,4 @@
         members: [parent, dependent]
   output:
     hud_adjusted_income: 9_520
+

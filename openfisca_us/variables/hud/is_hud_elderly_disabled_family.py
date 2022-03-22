@@ -1,34 +1,28 @@
 from openfisca_us.model_api import *
 
 
-class hud_adjusted_income(Variable):
-    value_type = float
+class is_hud_elderly_disabled_family(Variable):
+    value_type = bool
     entity = SPMUnit
-    label = "HUD adjusted income"
+    label = "HUD elderly or disabled family"
     unit = USD
-    documentation = "Adjusted income for HUD programs"
+    documentation = "Whether an SPM unit is deemed elderly or disabled for HUD purposes"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
 
     def formula(spm_unit, period, parameters):
-        # Extract annual income.
-        income = spm_unit('hud_annual_income', period)
-        # Count dependents - children only for now.
-        child_count = aggr(spm_unit, period, ["is_child"])
-        # Identify if elderly or disabled.
-        elderly_disabled = # TODO
-        # Extract childcare expenses.
-        # "Any reasonable child care expenses necessary to enable a member of
-        # the family to be employed or to further his or her education."
-        childcare_expenses = spm_unit("childcare_expenses", period)
-        # TODO: Attendant care (save for later)
-        # Medical expenses for elderly/disabled families.
-        moop = aggr(spm_unit, period, ["medical_out_of_pocket_expenses"])
-        moop_ded = moop * elderly_disabled
-        # Get parameters.
-        ded = parameters(period).hud.adjusted_income.deductions
-        dependent_ded = ded.dependent.amount * child_count
-        elderly_disabled_ded = ded.elderly_disabled.amount * elderly_disabled
-        # Calculate and return adjusted income.
-        return income - dependent_ded - elderly_disabled_ded - childcare_expenses - moop_ded
-        
+        hud = parameters(period).hud
+        person = spm_unit.members
+        elderly = person("age", period) >= hud.elderly_age_threshold
+        disabled = person("is_disabled", period)
+        adult = person("is_adult", period)
+        elderly_disabled_adult = (elderly | disabled) & adult
+        # Simplify to having any elderly or disabled adults.
+        # Actual rule only applies to head of household or spouse.
+        return spm_unit.any(elderly_disabled_adult)
+    income
+            - dependent_ded
+            - elderly_disabled_ded
+            - childcare_expenses
+            - moop_ded
+        )
