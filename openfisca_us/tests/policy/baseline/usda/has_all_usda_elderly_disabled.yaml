@@ -1,0 +1,22 @@
+- name: Default person has no elderly or disabled people
+  period: 2021
+  output:
+    has_all_usda_elderly_disabled: false
+
+- name: Individual, is USDA elderly but not disabled
+  period: 2021
+  input:
+    is_usda_elderly: true
+    is_usda_disabled: false
+  output:
+    has_all_usda_elderly_disabled: true
+
+- name: Individual, is USDA disabled but not elderly
+  period: 2021
+  input:
+    people:
+      disabled:
+        is_usda_disabled: true
+      young: {}
+  output:
+    has_all_usda_elderly_disabled: false

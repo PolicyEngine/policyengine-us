@@ -1,0 +1,18 @@
+- name: Default household has no elderly or disabled people.
+  period: 2022
+  output:
+    is_tanf_non_cash_hheod: false
+
+- name: Household with all elderly or disabled people will be true.
+  period: 2022
+  input:
+    has_all_usda_elderly_disabled: true
+  output:
+    is_tanf_non_cash_hheod: true
+
+- name: California requires {TODO any,all} members to be elderly or disabled.
+  period: 2022
+  input:
+    has_all_usda_elderly_disabled: true
+  output:
+    is_tanf_non_cash_hheod: true
