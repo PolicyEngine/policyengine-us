@@ -11,6 +11,7 @@ class eitc_maximum(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        # TODO: Is this capturing all the child requirements?
         num_children = tax_unit.sum(person("is_child", period))
         eitc = parameters(period).irs.credits.eitc
         maximum = eitc.max.calc(num_children)
