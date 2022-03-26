@@ -21,9 +21,8 @@ class txearn_was(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        max_earnings = parameters(
-            period
-        ).irs.payroll.fica.social_security.max_taxable_earnings
+        irs = parameters(period).irs
+        max_earnings = irs.payroll.fica.social_security.max_taxable_earnings
         return min_(max_earnings, person("gross_was", period))
 
 
@@ -83,8 +82,9 @@ class sey_frac(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        fica = parameters(period).irs.payroll.fica
-        return 1.0 - parameters(period).irs.ald.misc.employer_share * (
+        irs = parameters(period).irs
+        fica = irs.payroll.fica
+        return 1.0 - irs.ald.misc.employer_share * (
             fica.social_security.rate + fica.medicare.rate
         )
 
@@ -166,12 +166,9 @@ class sey_frac_for_extra_oasdi(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        fica = parameters(period).irs.payroll.fica
-        return (
-            1.0
-            - parameters(period).irs.ald.misc.employer_share
-            * fica.social_security.rate
-        )
+        irs = parameters(period).irs
+        fica_rate = irs.payroll.fica.social_security.rate
+        return 1.0 - irs.ald.misc.employer_share * fica_rate
 
 
 class extra_payrolltax(Variable):
