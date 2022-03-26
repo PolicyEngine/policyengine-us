@@ -1285,10 +1285,12 @@ class c17000(Variable):
     documentation = "Sch A: Medical expenses deducted (component of pre-limitation c21060 total)"
 
     def formula(tax_unit, period, parameters):
-        medical = parameters(period).irs.deductions.itemized.medical
-        has_aged = (tax_unit("age_head", period) >= 65) | (
+        irs = parameters(period).irs
+        medical = irs.deductions.itemized.medical
+        aged_threshold = irs.credits.elderly_or_disabled.age
+        has_aged = (tax_unit("age_head", period) >= aged_threshold) | (
             tax_unit("tax_unit_is_joint", period)
-            & (tax_unit("age_spouse", period) >= 65)
+            & (tax_unit("age_spouse", period) >= aged_threshold)
         )
         medical_floor_ratio = (
             medical.floor.base + has_aged * medical.floor.aged_addition
