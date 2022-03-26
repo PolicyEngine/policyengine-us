@@ -319,14 +319,14 @@ class aged_blind_extra_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         std = parameters(period).irs.deductions.standard
         mars = tax_unit("mars", period)
-        mars_type = mars.possible_values
         blind_head = tax_unit("blind_head", period) * 1
         blind_spouse = tax_unit("blind_spouse", period) * 1
         aged_head = (
             tax_unit("age_head", period) >= std.aged_or_blind.age_threshold
         ) * 1
+        joint = mars == mars.possible_values.JOINT
         aged_spouse = (
-            (mars == mars_type.JOINT)
+            joint
             & (
                 tax_unit("age_spouse", period)
                 >= std.aged_or_blind.age_threshold
@@ -349,17 +349,15 @@ class standard(Variable):
         charity = parameters(period).irs.deductions.itemized.charity
         mars = tax_unit("mars", period)
         midr = tax_unit("midr", period)
-        mars_type = mars.possible_values
-
         # Calculate extra standard deduction for aged and blind
         extra_stded = tax_unit("aged_blind_extra_standard_deduction", period)
-
         # Calculate the total standard deduction
-        standard = basic_stded + extra_stded
-        standard = where((mars == mars_type.SEPARATE) & midr, 0, standard)
-        return standard + charity.allow_nonitemizers * min_(
+        separate = mars == mars.possible_values.SEPARATE
+        standard = where(separate & midr, 0, basic_stded + extra_stded)
+        charity_extra = charity.allow_nonitemizers * min_(
             tax_unit("c19700", period), charity.nonitemizers_max
         )
+        return standard + charity_extra
 
 
 class surtax(Variable):
@@ -437,8 +435,6 @@ class taxbc(Variable):
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
         pt_tbase = reg_taxinc
-
-        mars = tax_unit("mars", period)
 
         # Initialise regular and pass-through income tax to zero
         reg_tax = 0
@@ -897,13 +893,8 @@ class c07180(Variable):
         if cdcc.refundable:
             return 0
         else:
-            return min_(
-                max_(
-                    0,
-                    tax_unit("c05800", period) - tax_unit("e07300", period),
-                ),
-                tax_unit("c33200", period),
-            )
+            diff = tax_unit("c05800", period) - tax_unit("e07300", period)
+            return min_(max_(0, diff), tax_unit("c33200", period))
 
 
 cdcc = variable_alias("cdcc", c07180)
@@ -919,10 +910,7 @@ class cdcc_refund(Variable):
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc
-        if cdcc.refundable:
-            return tax_unit("c33200", period)
-        else:
-            return 0
+        return cdcc.refundable * tax_unit("c33200", period)
 
 
 class retired_on_total_disability(Variable):
@@ -1255,18 +1243,10 @@ class c09600(Variable):
             tax_unit("f6251", period), tax_unit("filer_e62900", period), e07300
         )
         line33 = line31 - line32
-        return max_(
-            0,
-            line33
-            - max_(
-                0,
-                (
-                    tax_unit("taxbc", period)
-                    - e07300
-                    - tax_unit("c05700", period)
-                ),
-            ),
+        taxbc_minus_e07300_c05700 = (
+            tax_unit("taxbc", period) - e07300 - tax_unit("c05700", period)
         )
+        return max_(0, line33 - max_(0, taxbc_minus_e07300_c05700))
 
 
 alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)
@@ -1313,13 +1293,10 @@ class c17000(Variable):
         medical_floor_ratio = (
             medical.floor.base + has_aged * medical.floor.aged_addition
         )
-        medical_floor = medical_floor_ratio * max_(
-            tax_unit("c00100", period), 0
-        )
-        return max_(
-            0,
-            tax_unit("filer_e17500", period) - medical_floor,
-        )
+        c00100_nonneg = max_(tax_unit("c00100", period), 0)
+        medical_floor = medical_floor_ratio * c00100_nonneg
+        e17500_minus_floor = tax_unit("filer_e17500", period) - medical_floor
+        return max_(0, e17500_minus_floor)
 
 
 class c18300(Variable):
