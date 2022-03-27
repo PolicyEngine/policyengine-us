@@ -10,7 +10,7 @@ class tanf_countable_income(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        earned_income = spm_unit("tanf_gross_earned_income", period)
+        countable_earned_income = spm_unit("tanf_gross_earned_income", period)
         state = spm_unit.household("state_code_str", period)
         earnings_deductions = parameters(
             period
