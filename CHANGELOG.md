@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.37.10] - 2022-03-27 09:41:05
+## [0.38.0] - 2022-03-27 18:49:02
 
 ### Changed
 
@@ -535,6 +535,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.38.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.9...0.38.0
 [0.37.9]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.8...0.37.9
 [0.37.8]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.7...0.37.8
 [0.37.7]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.6...0.37.7
