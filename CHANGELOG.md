@@ -526,8 +526,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
-
-
 [0.37.9]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.8...0.37.9
 [0.37.8]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.7...0.37.8
 [0.37.7]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.6...0.37.7
@@ -598,4 +596,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.0.1...0.1.0
-

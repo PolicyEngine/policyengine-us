@@ -14,7 +14,7 @@ class is_tanf_eligible(Variable):
         )
         economic_eligible = where(
             spm_unit("is_tanf_enrolled", period),
-            spm_unit("continuous_tanf_eligibility", period),
-            spm_unit("initial_tanf_eligibility", period),
+            spm_unit("is_tanf_continuous_eligible", period),
+            spm_unit("is_tanf_initial_eligible", period),
         )
         return demographic_eligible & economic_eligible

@@ -1,0 +1,77 @@
+description: Payment levels for TANF benefit calculations.
+CA:  # Non-exempt only for now, Region 1 only
+  1:
+    2019-10-01: 550
+  2:
+    2019-10-01: 696
+  3:
+    2019-10-01: 878
+  4:
+    2019-10-01: 1_060
+  5:
+    2019-10-01: 1_242
+  6:
+    2019-10-01: 1_424
+  7:
+    2019-10-01: 1_606
+  8:
+    2019-10-01: 1_788
+  9:
+    2019-10-01: 1_970
+  10:
+    2019-10-01: 2_152
+  metadata:  
+    reference:
+      - title: "ARTICLE 6. Computation and Payment of Aid Grants [11450 - 11469.3], 11450.023."
+        href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11450.023.
+        date: 2019-10-01
+IL:
+  1:
+    2021-10-01: 322
+  2:
+    2021-10-01: 435
+  3:
+    2021-10-01: 549
+  4:
+    2021-10-01: 662
+  5:
+    2021-10-01: 776
+  6:
+    2021-10-01: 890
+  7:
+    2021-10-01: 1003
+  8:
+    2021-10-01: 1116
+  9:
+    2021-10-01: 1230
+  10:
+    2021-10-01: 1343
+  11:
+    2021-10-01: 1457
+  12:
+    2021-10-01: 1571
+  13:
+    2021-10-01: 1684
+  14:
+    2021-10-01: 1797
+  15:
+    2021-10-01: 1911
+  16:
+    2021-10-01: 2024
+  17:
+    2021-10-01: 2138
+  18:
+    2021-10-01: 2252
+  metadata:  
+    reference:
+      - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25-03-05: Table of Monthly Allowances"
+        href: https://www.dhs.state.il.us/page.aspx?item=12673
+        date: 2021-10-01
+      - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25: Manual Attachments [Find date next to WAG 25-03-05]"
+        href: https://www.dhs.state.il.us/page.aspx?item=12661
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - state_code
+    - range(1, 19)

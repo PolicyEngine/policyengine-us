@@ -17,8 +17,8 @@
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: true
-        continuous_tanf_eligibility: true
-        initial_tanf_eligibility: false
+        is_tanf_continuous_eligible: true
+        is_tanf_initial_eligible: false
     households:
       household:
         state_code: IL
@@ -37,8 +37,8 @@
       spm_unit:
         members: [person1, person2]
         is_tanf_enrolled: true
-        continuous_tanf_eligibility: false
-        initial_tanf_eligibility: false
+        is_tanf_continuous_eligible: false
+        is_tanf_initial_eligible: false
     households:
       household:
         state_code: IL
@@ -59,8 +59,8 @@
       spm_unit:
         members: [person1, person2, person3]
         is_tanf_enrolled: false
-        continuous_tanf_eligibility: false
-        initial_tanf_eligibility: false
+        is_tanf_continuous_eligible: false
+        is_tanf_initial_eligible: false
     households:
       household:
         state_code: IL
@@ -81,8 +81,8 @@
       spm_unit:
         members: [person1, person2, person3]
         is_tanf_enrolled: false
-        continuous_tanf_eligibility: false
-        initial_tanf_eligibility: false
+        is_tanf_continuous_eligible: false
+        is_tanf_initial_eligible: false
     households:
       household:
         state_code: IL

@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class initial_tanf_eligibility(Variable):
+class is_tanf_initial_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     definition_period = YEAR

@@ -10,12 +10,17 @@ class tanf_countable_income(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        earned_income = spm_unit("tanf_gross_earned_income", period)
+        countable_earned_income = spm_unit("tanf_gross_earned_income", period)
         state = spm_unit.household("state_code_str", period)
-        earned_income_deduction = parameters(
+        earnings_deductions = parameters(
             period
-        ).hhs.tanf.cash.earned_income_deduction[state]
-        countable_earned_income = earned_income * (1 - earned_income_deduction)
+        ).hhs.tanf.cash.amount.countable_income.deductions.earnings
+        household_earnings_deduction = earnings_deductions.household[state]
+        percent_earnings_deduction = earnings_deductions.percent[state]
+        countable_earned_income -= household_earnings_deduction
+        countable_earned_income -= (
+            countable_earned_income * percent_earnings_deduction
+        )
         # No deduction for unearned income.
         unearned_income = spm_unit("tanf_gross_unearned_income", period)
         return countable_earned_income + unearned_income
