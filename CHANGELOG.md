@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.37.10] - 2022-03-27 09:41:05
+
+### Changed
+
+- Added multiple parameters for California's TANF system.
+- Refactored the TANF structure for easier implementation of other state TANF programs.
+
 ## [0.37.9] - 2022-03-16 21:22:44
 
 ### Fixed
