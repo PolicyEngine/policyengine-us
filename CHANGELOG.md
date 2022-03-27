@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.38.0] - 2022-03-27 18:49:02
+
+### Changed
+
+- Added multiple parameters for California's TANF system.
+- Refactored the TANF structure for easier implementation of other state TANF programs.
+
 ## [0.37.9] - 2022-03-16 21:22:44
 
 ### Fixed
@@ -526,6 +533,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
+
+
+[0.38.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.9...0.38.0
 [0.37.9]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.8...0.37.9
 [0.37.8]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.7...0.37.8
 [0.37.7]: https://github.com/PolicyEngine/openfisca-us/compare/0.37.6...0.37.7
@@ -596,3 +606,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.0.1...0.1.0
+
