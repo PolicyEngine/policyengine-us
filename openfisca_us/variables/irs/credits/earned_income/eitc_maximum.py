@@ -10,12 +10,10 @@ class eitc_maximum(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        # TODO: Is this capturing all the child requirements?
-        num_children = tax_unit.sum(person("is_child", period))
+        child_count = aggr(tax_unit, period, ["is_eitc_qualifying_child"])
         eitc = parameters(period).irs.credits.eitc
-        maximum = eitc.max.calc(num_children)
-        phased_in_rate = eitc.phase_in_rate.calc(num_children)
+        maximum = eitc.max.calc(child_count)
+        phased_in_rate = eitc.phase_in_rate.calc(child_count)
         earned_income = tax_unit("filer_earned", period)
         phased_in_amount = earned_income * phased_in_rate
         return min_(maximum, phased_in_amount)

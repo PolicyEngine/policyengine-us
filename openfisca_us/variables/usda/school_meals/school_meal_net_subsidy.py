@@ -18,7 +18,7 @@ class school_meal_net_subsidy(Variable):
         # Multiply by number of school days in the year and number of children
         # in school.
         p_school_meals = parameters(period).usda.school_meals
-        children = add(spm_unit, period, ["is_in_school"])
+        children = add(spm_unit, period, ["is_in_k12_school"])
         return (
             net_daily_subsidy_per_child * children * p_school_meals.school_days
         )

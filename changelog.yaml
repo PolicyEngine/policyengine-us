@@ -425,3 +425,26 @@
     fixed:
     - Push action on GitHub correctly publishes.
   date: 2022-03-16 21:22:44
+- bump: minor
+  changes:
+    changed:
+    - Added multiple parameters for California's TANF system.
+    - Refactored the TANF structure for easier implementation of other state TANF
+      programs.
+  date: 2022-03-27 18:49:02
+- bump: patch
+  changes:
+    added:
+    - Page on TANF to documentation.
+  date: 2022-03-28 10:40:42
+- bump: patch
+  changes:
+    fixed:
+    - Versioning action didn't update `setup.py`.
+  date: 2022-03-28 10:55:27
+- bump: minor
+  changes:
+    changed:
+    - Added `is_eitc_qualifying_child` variable to improve EITC child logic.
+    - Split `is_in_school` into `is_in_k12_school` and `is_full_time_student`.
+  date: 2022-03-28 11:34:53

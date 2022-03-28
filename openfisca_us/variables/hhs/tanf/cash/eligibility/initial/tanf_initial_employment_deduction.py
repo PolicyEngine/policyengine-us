@@ -12,5 +12,11 @@ class tanf_initial_employment_deduction(Variable):
     def formula(spm_unit, period, parameters):
         family_size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code_str", period)
-        ied = parameters(period).hhs.tanf.cash.initial_employment_deduction
-        return ied[state][family_size] * 12
+        ied = parameters(
+            period
+        ).hhs.tanf.cash.eligibility.initial.deductions.employment
+        per_earner = ied.earner[state]
+        per_household = ied.household[state][family_size]
+        earners = spm_unit.members("market_income", period) > 0
+        earner_count = spm_unit.sum(earners)
+        return (per_household + (per_earner * earner_count)) * 12

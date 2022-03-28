@@ -1,0 +1,10 @@
+description: Maximum age for non-student dependents to qualify as children for the EITC.
+metadata:
+  unit: year
+  name: eitc_qualifying_child_max_age_non_student
+  label: Maximum age for non-students to qualify as EITC children
+  reference:
+    - title: 26 U.S. Code § 152 - Dependent defined
+      href: https://www.law.cornell.edu/uscode/text/26/152#c_3_A_i
+values:
+  2018-01-01: 18
