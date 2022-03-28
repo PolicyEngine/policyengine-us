@@ -26,7 +26,7 @@
   input:
     is_tax_unit_dependent: true
     age: 23
-    is_in_school: true
+    is_full_time_student: true
   output:
     is_eitc_qualifying_child: true
 
@@ -35,7 +35,7 @@
   input:
     is_tax_unit_dependent: true
     age: 24
-    is_in_school: true
+    is_full_time_student: true
   output:
     is_eitc_qualifying_child: false
 
