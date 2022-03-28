@@ -9,4 +9,11 @@ class is_eitc_qualifying_child(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/152#c"
 
     def formula(person, period, parameters):
-        
+        dependent = person("is_tax_unit_dependent", period)
+        disabled = person("is_permanently_and_totally_disabled", period)
+        age = person("age", period)
+        student = person("is_in_school", period)
+        max_ages = parameters(period).irs.credits.eitc.qualifying_child.max_age
+        max_age = where(student, max_ages.student, max_ages.non_student)
+        age_qualifies = age < max_age
+        return dependent & (age_qualifies | disabled)
