@@ -437,6 +437,11 @@
     added:
     - Page on TANF to documentation.
   date: 2022-03-28 10:40:42
+- bump: patch
+  changes:
+    fixed:
+    - Versioning action didn't update `setup.py`.
+  date: 2022-03-28 10:55:27
 - bump: minor
   changes:
     changed:
