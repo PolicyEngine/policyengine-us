@@ -12,6 +12,6 @@ class is_person_demographic_tanf_eligible(Variable):
         child_0_17 = person("is_child", period)
         is_18 = person("age", period) == 18
         full_time_student = person("is_full_time_student", period)
-        school_enrolled_18_year_old = is_full_time_student & is_18
+        school_enrolled_18_year_old = full_time_student & is_18
         pregnant = person("is_pregnant", period)
         return child_0_17 | school_enrolled_18_year_old | pregnant
