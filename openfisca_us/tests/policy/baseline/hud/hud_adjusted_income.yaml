@@ -1,0 +1,40 @@
+# TODOs:
+# - Tests involving is_hud_elderly_disabled_family
+# - Tests involving childcare_expenses
+# - Tests involving medical_out_of_pocket_expenses (which only applies to elderly/disabled families)
+
+- name: Default value is zero.
+  period: 2022
+  output:
+    hud_adjusted_income: 0
+
+- name: Single person with no disabilities will have no deductions.
+  period: 2022
+  input:
+    hud_annual_income: 10_000
+    age: 30
+  output:
+    hud_adjusted_income: 10_000
+
+- name: Single elderly person with no disabilities will have deductions.
+  period: 2022
+  input:
+    hud_annual_income: 10_000
+    age: 62
+  output:
+    hud_adjusted_income: 9_600
+
+- name: Single person with one dependent will have deductions.
+  period: 2022
+  input:
+    hud_annual_income: 10_000
+    people: 
+      parent: 
+        age: 42
+      dependent: 
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [parent, dependent]
+  output:
+    hud_adjusted_income: 9_520
