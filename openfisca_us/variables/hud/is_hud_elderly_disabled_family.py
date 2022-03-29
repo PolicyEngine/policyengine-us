@@ -15,7 +15,7 @@ class is_hud_elderly_disabled_family(Variable):
         person = spm_unit.members
         elderly = person("age", period) >= hud.elderly_age_threshold
         disabled = person("is_disabled", period)
-        adult = person("is_adult", period)
+        child = person("is_child", period)
         elderly_disabled_adult = (elderly | disabled) & adult
         # Simplify to having any elderly or disabled adults.
         # Actual rule only applies to head of household or spouse.
