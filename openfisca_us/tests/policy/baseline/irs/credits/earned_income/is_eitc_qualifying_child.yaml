@@ -1,0 +1,49 @@
+- name: Must be a dependent.
+  period: 2022
+  input:
+    is_tax_unit_dependent: false
+  output:
+    is_eitc_qualifying_child: false
+
+- name: 18-year-old dependent qualifies.
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    age: 18
+  output:
+    is_eitc_qualifying_child: true
+
+- name: 19-year-old dependent doesn't qualify.
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    age: 19
+  output:
+    is_eitc_qualifying_child: false
+
+- name: 23-year-old dependent student qualifies.
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    age: 23
+    is_full_time_student: true
+  output:
+    is_eitc_qualifying_child: true
+
+- name: 24-year-old dependent student doesn't qualify.
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    age: 24
+    is_full_time_student: true
+  output:
+    is_eitc_qualifying_child: false
+
+- name: Permanently and totally disabled children count regardless of age.
+  period: 2022
+  input:
+    is_tax_unit_dependent: true
+    age: 24
+    is_permanently_and_totally_disabled: true
+  output:
+    is_eitc_qualifying_child: true
