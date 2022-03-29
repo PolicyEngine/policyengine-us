@@ -20,9 +20,3 @@ class is_hud_elderly_disabled_family(Variable):
         # Simplify to having any elderly or disabled adults.
         # Actual rule only applies to head of household or spouse.
         return spm_unit.any(elderly_disabled_adult)
-    income
-            - dependent_ded
-            - elderly_disabled_ded
-            - childcare_expenses
-            - moop_ded
-        )
