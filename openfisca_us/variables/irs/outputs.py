@@ -481,14 +481,7 @@ class taxbc(Variable):
         dwks42 = reg_tax + pt_tax
 
         dwks43 = sum(
-            [
-                dwks29,
-                dwks32,
-                dwks38,
-                dwks41,
-                dwks42,
-                lowest_rate_tax,
-            ]
+            [dwks29, dwks32, dwks38, dwks41, dwks42, lowest_rate_tax,]
         )
         c05200 = tax_unit("income_tax_main_rates", period)
         dwks44 = c05200
@@ -562,11 +555,7 @@ class c02500(Variable):
             ss.rate.upper * e02400,
         )
         return select(
-            [
-                under_first_threshold,
-                under_second_threshold,
-                True,
-            ],
+            [under_first_threshold, under_second_threshold, True,],
             [
                 0,
                 amount_if_under_second_threshold,
@@ -898,8 +887,7 @@ class c07180(Variable):
         else:
             return min_(
                 max_(
-                    0,
-                    tax_unit("c05800", period) - tax_unit("e07300", period),
+                    0, tax_unit("c05800", period) - tax_unit("e07300", period),
                 ),
                 tax_unit("c33200", period),
             )
@@ -1199,13 +1187,7 @@ class c09600(Variable):
         form_6251_part_iii_required = np.any(
             [
                 variable > 0
-                for variable in [
-                    dwks10,
-                    dwks13,
-                    dwks14,
-                    dwks19,
-                    e24515,
-                ]
+                for variable in [dwks10, dwks13, dwks14, dwks19, e24515,]
             ]
         )
 
@@ -1315,10 +1297,7 @@ class c17000(Variable):
         medical_floor = medical_floor_ratio * max_(
             tax_unit("c00100", period), 0
         )
-        return max_(
-            0,
-            tax_unit("filer_e17500", period) - medical_floor,
-        )
+        return max_(0, tax_unit("filer_e17500", period) - medical_floor,)
 
 
 class c18300(Variable):
@@ -1424,10 +1403,7 @@ class c21040(Variable):
                 * phaseout.rate
             ),
         )
-        return min_(
-            uncapped_phaseout,
-            phaseout_amount_cap,
-        )
+        return min_(uncapped_phaseout, phaseout_amount_cap,)
 
 
 class c21060(Variable):
@@ -1485,13 +1461,7 @@ class c62100(Variable):
             c00100
             - e00700
             - tax_unit("c04470", period)
-            + max_(
-                0,
-                min_(
-                    tax_unit("c17000", period),
-                    0.025 * c00100,
-                ),
-            )
+            + max_(0, min_(tax_unit("c17000", period), 0.025 * c00100,),)
             + tax_unit("c18300", period)
             + tax_unit("c20800", period)
             - tax_unit("c21040", period)
@@ -1614,8 +1584,7 @@ class dwks10(Variable):
         dwks10_if_no_gains = max_(
             0,
             min_(
-                tax_unit("filer_p23250", period),
-                tax_unit("c23650", period),
+                tax_unit("filer_p23250", period), tax_unit("c23650", period),
             ),
         ) + tax_unit("filer_e01100", period)
         return where(
