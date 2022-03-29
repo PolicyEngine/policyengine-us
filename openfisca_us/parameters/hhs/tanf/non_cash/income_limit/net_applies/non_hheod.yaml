@@ -1,116 +1,96 @@
-description: Gross income limit as a percent of the poverty line for TANF non-cash benefit used for SNAP BBCE, by state.
-
+description: Whether the SNAP net income limit applies to non-elderly/disabled households seeking BBCE.
+# Non-BBCE states skipped.
 AL:
-  2021-07-01: 1.3
-AK:
-  # Alaska is not in the list, indicating it has not elected to BBCE.
-  # Non-BBCE states are entered as negative .infinity asset limit.
-  2021-07-01: -.inf
+  2021-07-01: false
 AZ:
-  2021-07-01: 1.85
-AR:
-  2021-07-01: -.inf # Non-BBCE.
+  2021-07-01: false
 CA:
-  2021-07-01: 2
+  2021-07-01: true
 CO:
-  2021-07-01: -.inf # Non-BBCE.
+  2021-07-01: false
 CT:
-  2021-07-01: 1.85
-DE:
-  2021-07-01: 2
+  2021-07-01: false
 DC:
-  2021-07-01: 2
+  2021-07-01: false
+DE:
+  2021-07-01: false
 FL:
-  2021-07-01: 2
+  2021-07-01: false
 GA:
-  2021-07-01: 1.3
+  2021-07-01: false
 GU:
-  2021-07-01: 1.65
+  2021-07-01: false
 HI:
-  2021-07-01: 2
-ID:
-  2021-07-01: 1.3
-IL:
-  2021-07-01: 1.65
-IN:
-  2021-07-01: 1.3
+  2021-07-01: false
 IA:
-  2021-07-01: 1.6
-KS:
-  2021-07-01: -.inf # Non-BBCE.
+  2021-07-01: false
+ID:
+  2021-07-01: false
+IL:
+  2021-07-01: false
+IN:
+  2021-07-01: true
 KY:
-  2021-07-01: 2
+  2021-07-01: false
 LA:
-  2021-07-01: 1.3
-ME:
-  2021-07-01: 1.85
-MD:
-  2021-07-01: 2
+  2021-07-01: true
 MA:
-  2021-07-01: 2
+  2021-07-01: false
+MD:
+  2021-07-01: false
+ME:
+  2021-07-01: false
 MI:
-  2021-07-01: 2
+  2021-07-01: false
 MN:
-  2021-07-01: 1.65
-MS:
-  2021-07-01: -.inf # Non-BBCE.
+  2021-07-01: false
 MT:
-  2021-07-01: 2
-NE:
-  2021-07-01: 1.3
-NV:
-  2021-07-01: 2
-NH:
-  # Only households with at least one dependent child and a specified relative to that child.
-  # (Not currently modeled.)
-  2021-07-01: 1.85
-NJ:
-  2021-07-01: 1.85
-NM:
-  2021-07-01: 1.65
-NY:
-  # 150% for those with earned income.
-  # 200% for those with dependent care expenses, not currently entered.
-  2021-07-01: 1.5
+  2021-07-01: false
 NC:
-  2021-07-01: 2
+  2021-07-01: false
 ND:
-  2021-07-01: 2
+  2021-07-01: true
+NE:
+  2021-07-01: false
+NH:
+  2021-07-01: false
+NJ:
+  2021-07-01: false
+NM:
+  2021-07-01: false
+NV:
+  2021-07-01: false
+NY:
+  2021-07-01: false
 OH:
-  2021-07-01: 1.3
+  2021-07-01: false
 OK:
-  2021-07-01: 1.3
+  2021-07-01: false
 OR:
-  2021-07-01: 1.85
+  2021-07-01: false
 PA:
-  2021-07-01: 1.6
+  2021-07-01: false
 RI:
-  2021-07-01: 1.85
+  2021-07-01: true
 SC:
-  2021-07-01: 1.3
+  2021-07-01: false
 TX:
-  2021-07-01: 1.65
-UT:
-  2021-07-01: -.inf # Non-BBCE.
-VT:
-  2021-07-01: 1.85
-VI:
-  2021-07-01: 1.75
+  2021-07-01: false
 VA:
-  2021-07-01: 2
+  2021-07-01: false
+VI:
+  2021-07-01: false
+VT:
+  2021-07-01: false
 WA:
-  2021-07-01: 2
-WV:
-  2021-07-01: 2
+  2021-07-01: false
 WI:
-  2021-07-01: 2
-WY:
-  2021-07-01: -.inf # Non-BBCE.
+  2021-07-01: false
+WV:
+  2021-07-01: false
 
 metadata:
-  unit: /1
   reference:
-    - title: "USDA: Broad-based Categorical Eligibility"
-      href: https://fns-prod.azureedge.net/sites/default/files/resource-files/BBCE%20States%20Chart%20(July%202021).pdf
-      date: 2021-07-01
+    - title: SNAP Screener SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
   breakdown: state_code

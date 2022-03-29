@@ -10,9 +10,9 @@
   output:
     is_tanf_non_cash_hheod: true
 
-- name: California requires {TODO any,all} members to be elderly or disabled.
+- name: California doesn't use HHEOD, but by default having any satisfies the requirement.
   period: 2022
   input:
-    has_all_usda_elderly_disabled: true
+    has_any_usda_elderly_disabled: true
   output:
     is_tanf_non_cash_hheod: true

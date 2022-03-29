@@ -1,106 +1,32 @@
 description: Requires all members in household to be elderly or disabled for the household to be classified as elderly or disabled for non-cash TANF benefit; otherwise any.
-
-# Non-BBCE states are omitted. They default to false, but it will not be calculated.
+# States without BBCE elderly/disabled rules skipped.
 AL:
-  2021-07-01: false
-AZ:
-  2021-07-01: .inf
-CA:
-  2021-07-01: .inf
-CT:
-  2021-07-01: .inf
-DE:
-  2021-07-01: .inf
-DC:
-  2021-07-01: .inf
-FL:
-  2021-07-01: .inf
+  2021-07-01: true
 GA:
-  2021-07-01: .inf
-GU:
-  2021-07-01: .inf
-HI:
-  2021-07-01: .inf
-ID:
-  2021-07-01: 5_000
+  2021-07-01: true
 IL:
-  2021-07-01: .inf
+  2021-07-01: false
 IN:
-  2021-07-01: 5_000
-IA:
-  2021-07-01: .inf
-KY:
-  2021-07-01: .inf
+  2021-07-01: false
 LA:
-  2021-07-01: .inf
-ME:
-  2021-07-01: .inf
-MD:
-  2021-07-01: .inf
-MA: # *
-  2021-07-01: .inf
-MI:
-  2021-07-01: 15_000
-MN:
-  2021-07-01: .inf
-MS:
-  2021-07-01: -.inf # Non-BBCE.
-MT:
-  2021-07-01: .inf
+  2021-07-01: false
 NE:
-  2021-07-01: 25_000 # For liquid assets (not modeled).
-NV:
-  2021-07-01: .inf
-NH:
-  # Only households with at least one dependent child and a specified relative to that child.
-  # (Not currently modeled.)
-  2021-07-01: .inf
-NJ:
-  2021-07-01: .inf
-NM:
-  2021-07-01: .inf
-NY: # *
-  # Only for households with dependent care expenses or earned income (not currently implemented).
-  2021-07-01: .inf
-NC:
-  2021-07-01: .inf
-ND:
-  2021-07-01: .inf
-OH: # *
-  2021-07-01: .inf
+  2021-07-01: false
+OH:
+  2021-07-01: false
 OK:
-  2021-07-01: .inf
-OR:
-  2021-07-01: .inf
-PA: # *
-  2021-07-01: .inf
-RI: # *
-  2021-07-01: .inf
-SC: # *
-  2021-07-01: .inf
-TX:
-  2021-07-01: 5_000 # Excludes 1 vehicle up to $15,000 & includes excess vehicle value (not modeled).
-UT:
-  2021-07-01: -.inf # Non-BBCE.
-VT:
-  2021-07-01: .inf
-VI: # *
-  2021-07-01: .inf
-VA:
-  2021-07-01: .inf
-WA:
-  2021-07-01: .inf
-WV: # *
-  2021-07-01: .inf
-WI:
-  2021-07-01: .inf
-WY:
-  2021-07-01: -.inf # Non-BBCE.
+  2021-07-01: false
+PA:
+  2021-07-01: false
+RI:
+  2021-07-01: false
+SC:
+  2021-07-01: true
+VI:
+  2021-07-01: false
 
 metadata:
-  unit: currency-USD
   reference:
-    - title: "USDA: Broad-based Categorical Eligibility"
-      href: https://fns-prod.azureedge.net/sites/default/files/resource-files/BBCE%20States%20Chart%20(July%202021).pdf
-      date: 2021-07-01
+    - title: SNAP Screener SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
   breakdown: state_code
