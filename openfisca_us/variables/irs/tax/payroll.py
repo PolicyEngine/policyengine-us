@@ -162,9 +162,8 @@ class sey_frac(Variable):
     def formula(tax_unit, period, parameters):
         irs = parameters(period).irs
         fica = irs.payroll.fica
-        return 1.0 - irs.ald.misc.employer_share * (
-            fica.social_security.rate + fica.medicare.rate
-        )
+        combined_fica_rate = fica.social_security.rate + fica.medicare.rate
+        return 1.0 - irs.ald.misc.employer_share * combined_fica_rate
 
 
 class txearn_sey(Variable):
