@@ -21,6 +21,6 @@ class meets_tanf_non_cash_net_income_test(Variable):
             hheod, hheod_net_limit_applies, non_hheod_net_limit_applies
         )
         net_income = spm_unit("snap_net_income_fpg_ratio", period)
-        net_limit = parameters(period).usda.snap.income.limit.net.standard
+        net_limit = parameters(period).usda.snap.income.limit.net
         # Either the net limit doesn't apply or they pass it.
         return ~net_limit_applies | (net_income <= net_limit)

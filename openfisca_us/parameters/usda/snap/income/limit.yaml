@@ -18,14 +18,13 @@ gross:
       name: snap_gross_income_limit_elderly_disabled
       unit: /1
 net:
-  standard:
-    description: SNAP standard net income limit as a percentage of the poverty line.
-    values:
-      2005-01-01: 1
-    metadata:
-      label: SNAP net income limit (standard)
-      name: snap_net_income_limit_standard
-      unit: /1
+  description: SNAP standard net income limit as a percentage of the poverty line.
+  values:
+    2005-01-01: 1
+  metadata:
+    label: SNAP net income limit (standard)
+    name: snap_net_income_limit_standard
+    unit: /1
 metadata:
   unit: /1
   reference:
