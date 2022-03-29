@@ -13,7 +13,7 @@ class meets_tanf_non_cash_net_income_test(Variable):
         # All limits and incomes here expressed as % of FPG.
         limits = parameters(period).hhs.tanf.non_cash.income_limit
         hheod = spm_unit("is_tanf_non_cash_hheod", period)
-        hheod_net_limit_applies = limits.net_applies.hheod[state]
+        hheod_net_limit_applies = limits.net_applies.hheod[state].astype(bool)
         non_hheod_net_limit_applies = limits.net_applies.non_hheod[state]
         net_limit_applies = where(
             hheod, hheod_net_limit_applies, non_hheod_net_limit_applies
