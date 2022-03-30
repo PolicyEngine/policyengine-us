@@ -450,5 +450,8 @@
   date: 2022-03-28 11:34:53
 - bump: minor
   changes:
-    changed:
-      - Modeled net income limits for SNAP BBCE (TANF) program.
+    added:
+      - Net income limits for SNAP BBCE (TANF) program.
+      - Legislative references for SNAP income limits.
+    removed:
+      - 165% SNAP gross income limit for separate elderly and disabled households (unused).
