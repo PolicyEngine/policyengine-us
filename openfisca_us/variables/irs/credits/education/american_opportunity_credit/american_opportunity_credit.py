@@ -23,4 +23,6 @@ class american_opportunity_credit(Variable):
         maximum_amount_per_student = aoc.amount.calc(tuition_expenses)
         maximum_amount = tax_unit.sum(maximum_amount_per_student)
         phaseout = tax_unit("education_credit_phaseout", period)
+        if aoc.abolition:
+            return 0
         return max_(0, maximum_amount * (1 - phaseout))
