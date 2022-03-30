@@ -27,14 +27,14 @@
 - name: Single person with one dependent will have deductions.
   period: 2022
   input:
-    hud_annual_income: 10_000
-    people: 
-      parent: 
+    people:
+      parent:
         age: 42
-      dependent: 
+      dependent:
         age: 16
     spm_units:
       spm_unit:
         members: [parent, dependent]
+        hud_annual_income: 10_000
   output:
     hud_adjusted_income: 9_520
