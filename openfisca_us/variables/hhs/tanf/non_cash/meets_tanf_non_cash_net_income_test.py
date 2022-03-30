@@ -9,17 +9,15 @@ class meets_tanf_non_cash_net_income_test(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
+        # Determine if the net income limit applies to the household.
+        applies = parameters(period).hhs.tanf.non_cash.income_limit.net_applies
         state = spm_unit.household("state_code_str", period)
-        # All limits and incomes here expressed as % of FPG.
-        limits = parameters(period).hhs.tanf.non_cash.income_limit
+        # Varies depending on if the household has elderly and disabled people.
         hheod = spm_unit("is_tanf_non_cash_hheod", period)
-        hheod_net_limit_applies = limits.net_applies.hheod[state].astype(bool)
-        non_hheod_net_limit_applies = limits.net_applies.non_hheod[
-            state
-        ].astype(bool)
         net_limit_applies = where(
-            hheod, hheod_net_limit_applies, non_hheod_net_limit_applies
-        )
+            hheod, applies.hheod[state], applies.non_hheod[state]
+        ).astype(bool)
+        # All limits and incomes here expressed as % of FPG.
         net_income = spm_unit("snap_net_income_fpg_ratio", period)
         net_limit = parameters(period).usda.snap.income.limit.net
         # Either the net limit doesn't apply or they pass it.

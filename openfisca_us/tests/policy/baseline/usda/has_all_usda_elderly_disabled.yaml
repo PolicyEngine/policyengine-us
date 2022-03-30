@@ -11,12 +11,15 @@
   output:
     has_all_usda_elderly_disabled: true
 
-- name: Individual, is USDA disabled but not elderly
+- name: Two members, one disabled, the other neither elderly nor disabled
   period: 2021
   input:
     people:
       disabled:
         is_usda_disabled: true
       young: {}
+    spm_units:
+      spm_unit:
+        members: [disabled, young]
   output:
     has_all_usda_elderly_disabled: false
