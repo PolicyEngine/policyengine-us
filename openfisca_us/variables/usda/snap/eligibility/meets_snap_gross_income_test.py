@@ -18,4 +18,4 @@ class meets_snap_gross_income_test(Variable):
         # Households with elderly and disabled people are exempt from the
         # gross income test.
         has_elderly_disabled = spm_unit("has_usda_elderly_disabled", period)
-        return has_elderly_disabled | (income < limit)
+        return has_elderly_disabled | (income <= limit)
