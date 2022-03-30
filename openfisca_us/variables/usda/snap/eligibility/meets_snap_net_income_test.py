@@ -14,7 +14,5 @@ class meets_snap_net_income_test(Variable):
 
     def formula(spm_unit, period, parameters):
         net_income_limit_fpg = parameters(period).usda.snap.income.limit.net
-        fpg = spm_unit("spm_unit_fpg", period)
-        net_income_limit = net_income_limit_fpg * fpg
-        net_income = spm_unit("snap_net_income", period)
-        return net_income <= net_income_limit * fpg
+        net_income_fpg = spm_unit("snap_net_income_fpg_ratio", period)
+        return net_income_fpg <= net_income_limit_fpg
