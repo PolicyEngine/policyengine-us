@@ -12,7 +12,7 @@ class c07180(Variable):
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc
-        if cdcc.refundable:
+        if cdcc.refundable or cdcc.abolition:
             return 0
         else:
             return min_(
@@ -53,8 +53,8 @@ class c33200(Variable):
         )
         c33000 = max_(0, min_(c32800, lowest_earnings))
         c00100 = tax_unit("c00100", period)
-        tratio = ceil(
-            max_(((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0)
+        tratio = 0.01 * max_(
+            ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0
         )
         exact = tax_unit("exact", period)
         crate = where(
@@ -69,32 +69,17 @@ class c33200(Variable):
             ),
             max_(
                 cdcc.phaseout.min,
-                cdcc.phaseout.max
-                - max_(
-                    ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate),
-                    0,
-                ),
+                cdcc.phaseout.max - tratio,
             ),
         )
-        tratio2 = ceil(
-            max_(
-                ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate), 0
-            )
+        tratio2 = max_(
+            ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate / 1e2),
+            0,
         )
         crate_if_over_second_threshold = where(
             exact,
             max_(0, cdcc.phaseout.min - min_(cdcc.phaseout.min, tratio2)),
-            max_(
-                0,
-                cdcc.phaseout.min
-                - max_(
-                    (
-                        (c00100 - cdcc.phaseout.second_start)
-                        * cdcc.phaseout.rate
-                    ),
-                    0,
-                ),
-            ),
+            max_(0, cdcc.phaseout.min - tratio),
         )
         crate = where(
             c00100 > cdcc.phaseout.second_start,
@@ -115,7 +100,7 @@ class cdcc_refund(Variable):
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc
-        if cdcc.refundable:
+        if cdcc.refundable and not cdcc.abolition:
             return tax_unit("c33200", period)
         else:
             return 0
