@@ -17,15 +17,15 @@
   output:
     is_hud_elderly_disabled_family: false
 
-name: A one-person disabled but non-elderly family. 
+- name: A one-person disabled but non-elderly family.
   period: 2022
   input:
     age: 48
     is_disabled: true
   output:
-    is_hud_elderly_disabled_family: true  
+    is_hud_elderly_disabled_family: true
 
-name: A one-person elderly but non-disabled family. 
+- name: A one-person elderly but non-disabled family.
   period: 2022
   input:
     age: 64
@@ -33,23 +33,23 @@ name: A one-person elderly but non-disabled family.
   output:
     is_hud_elderly_disabled_family: true
 
-name: A one-person non-disabled and non-elderly family. 
+- name: A one-person non-disabled and non-elderly family.
   period: 2022
   input:
     age: 32
     is_disabled: false
   output:
-    is_hud_elderly_disabled_family: false 
+    is_hud_elderly_disabled_family: false
 
-name: A one-person disabled and elderly family. 
+- name: A one-person disabled and elderly family.
   period: 2022
   input:
     age: 70
     is_disabled: true
   output:
-    is_hud_elderly_disabled_family: true 
+    is_hud_elderly_disabled_family: true
 
-name: Two-person family with disabled child.
+- name: Two-person family with disabled child.
   period: 2022
   input:
     people:
