@@ -458,11 +458,12 @@
   date: 2022-03-30 01:17:38
 - bump: minor
   changes:
-    fixed:
-      - A bug where the CDCC would phase down too quickly.
     added:
       - CDCC parameters for eligibility and metadata.
+    fixed:
+      - A bug where the CDCC would phase down too quickly.
+  date: 2022-03-30 11:46:11
 - bump: patch
   changes:
     added:
-      - Parameter metadata for tax credits and payroll tax.
+      - Parameter metadata for tax credits and payroll taxes.
