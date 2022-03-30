@@ -11,8 +11,8 @@ class snap_normal_allotment(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which also
-        # defines state powers to modify the rules.
+        # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which
+        # also defines state powers to modify the rules.
         eligible = spm_unit("is_snap_eligible", period)
         expected_contribution = spm_unit("snap_expected_contribution", period)
         max_allotment = spm_unit("snap_max_allotment", period)

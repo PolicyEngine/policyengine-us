@@ -13,14 +13,10 @@ class is_snap_eligible(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        meets_net_income_test = spm_unit("meets_snap_net_income_test", period)
-        meets_gross_income_test = spm_unit(
-            "meets_snap_gross_income_test", period
-        )
-        meets_asset_test = spm_unit("meets_snap_asset_test", period)
-        normal_eligibility = (
-            meets_net_income_test & meets_asset_test & meets_gross_income_test
-        )
+        net = spm_unit("meets_snap_net_income_test", period)
+        gross = spm_unit("meets_snap_gross_income_test", period)
+        asset = spm_unit("meets_snap_asset_test", period)
+        normal_eligibility = net & gross & asset
         # Categorical eligibility (SSI, TANF, and BBCE TANF) overrides tests.
         categorical_eligibility = spm_unit(
             "meets_snap_categorical_eligibility", period

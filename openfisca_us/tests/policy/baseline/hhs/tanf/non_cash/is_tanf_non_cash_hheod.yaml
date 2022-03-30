@@ -1,0 +1,11 @@
+- name: Default household has no elderly or disabled people.
+  period: 2022
+  output:
+    is_tanf_non_cash_hheod: false
+
+- name: California doesn't use HHEOD, but by default having any satisfies the requirement.
+  period: 2022
+  input:
+    has_usda_elderly_disabled: true
+  output:
+    is_tanf_non_cash_hheod: true

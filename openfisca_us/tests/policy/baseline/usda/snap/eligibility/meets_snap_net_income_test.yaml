@@ -1,0 +1,18 @@
+- name: No income, passes test
+  period: 2022
+  output:
+    meets_snap_net_income_test: true
+
+- name: Income up to 100% meets test
+  period: 2022
+  input:
+    snap_net_income_fpg_ratio: 1
+  output:
+    meets_snap_net_income_test: true
+
+- name: Income above 100% fails test
+  period: 2022
+  input:
+    snap_net_income_fpg_ratio: 1.01
+  output:
+    meets_snap_net_income_test: false
