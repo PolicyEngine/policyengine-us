@@ -28,16 +28,14 @@
     snap_standard_deduction: 2_172 # 181 (parameter for family of 4 in contiguous US) * 12.
     snap_earned_income_deduction: 4_800 # 2000 * 0.2 (flat 20% parameter) * 12.
 
-- name: Single person in CA at 200% of FPL gets minimum benefit via BBCE.
+- name: Single person in CA at 200% of FPL meets BBCE gross income test but fails BBCE net income test.
   period: 2022
   input:
     # Use 2021 FPL since 2022 technically takes effect on 2022-01-12.
     employment_income: 12_880 * 2
     state_code_str: CA
   output:
-    # Minimum benefit is normally 8% of a one-person's maximum benefit.
-    # Instead they get the maximum due to emergency allotments.
-    snap: 250 * 12
+    snap: 0
 
 - name: Single person in CA at 200% of FPL + $1 is ineligible.
   period: 2022

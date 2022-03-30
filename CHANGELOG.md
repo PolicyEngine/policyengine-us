@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.40.0] - 2022-03-30 01:17:38
+
+### Added
+
+- Net income limits for SNAP BBCE (TANF) program.
+- Legislative references for SNAP income limits.
+
 ## [0.39.0] - 2022-03-28 11:34:53
 
 ### Changed
@@ -554,6 +561,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.40.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.39.0...0.40.0
 [0.39.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.38.2...0.39.0
 [0.38.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.38.1...0.38.2
 [0.38.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.38.0...0.38.1

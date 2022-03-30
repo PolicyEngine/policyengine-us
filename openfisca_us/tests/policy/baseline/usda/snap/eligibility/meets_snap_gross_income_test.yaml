@@ -1,0 +1,26 @@
+- name: No income, passes test
+  period: 2022
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Income up to 130% meets test
+  period: 2022
+  input:
+    snap_gross_income_fpg_ratio: 1.3
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Income above 130% fails test
+  period: 2022
+  input:
+    snap_gross_income_fpg_ratio: 1.31
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Households with elderly or disabled members are exempt.
+  period: 2022
+  input:
+    snap_gross_income_fpg_ratio: 1.31
+    has_usda_elderly_disabled: true
+  output:
+    meets_snap_gross_income_test: true
