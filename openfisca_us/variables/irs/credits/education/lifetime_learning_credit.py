@@ -23,4 +23,6 @@ class lifetime_learning_credit(Variable):
         capped_expenses = min_(llc.expense_limit, eligible_expenses)
         maximum_amount = llc.rate * capped_expenses
         phaseout = tax_unit("education_credit_phaseout", period)
+        if llc.abolition:
+            return 0
         return max_(0, maximum_amount * (1 - phaseout))
