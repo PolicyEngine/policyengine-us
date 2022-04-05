@@ -1,4 +1,4 @@
-description: The Additional Medicare Tax rate is applied for earnings above an exclusion.
+description: Employee earnings exclusion above which the Additional Medicare Tax is levied
 SINGLE:
   2013-01-01: 200_000
 JOINT:
@@ -11,8 +11,8 @@ WIDOW:
   2013-01-01: 200_000
 metadata:
   unit: currency-USD
-  name: additional_medicare_rate_exclusion
-  label: Additional Medicare Tax rate exclusion
+  name: employee_additional_medicare_rate_exclusion
+  label: Employee additional Medicare Tax rate exclusion
   reference:
     title: 26 U.S. Code § 3101 - Rate of tax
     href: https://www.law.cornell.edu/uscode/text/26/3101#b_2
