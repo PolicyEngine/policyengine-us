@@ -3,4 +3,6 @@ documentation: Social Security FICA rate, including both employer and employee.
 values:
   2013-01-01: 0.124
 metadata:
-  unit: currency-USD
+  unit: /1
+  name: social_security_tax_rate
+  label: FICA Social Security tax rate

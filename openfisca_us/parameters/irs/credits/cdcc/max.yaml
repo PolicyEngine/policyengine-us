@@ -1,6 +1,9 @@
-description: Maximum child & dependent care expenses per dependent
+description: Maximum child and dependent care expenses per dependent.
 metadata:
   unit: currency-USD
+  name: cdcc_max_expense
+  label: Maximum care expenses per dependent for CDCC.
+  period: year
 values:
   2013-01-01: 3_000.0
   2021-01-01: 8_000.0

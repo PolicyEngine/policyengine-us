@@ -859,6 +859,11 @@ class e32800(Variable):
         "Child/dependent-care expenses for qualifying persons from Form 2441"
     )
 
+    def formula(person, period, parameters):
+        is_tax_unit_head = person("is_tax_unit_head", period)
+        spm_unit_childcare = person.spm_unit("childcare_expenses", period)
+        return is_tax_unit_head * spm_unit_childcare
+
 
 class filer_e32800(Variable):
     value_type = float
@@ -936,11 +941,47 @@ class elderly_dependents(Variable):
     documentation = "Number of dependents age 65+ in filing unit excluding taxpayer and spouse"
 
 
+class incapable_of_self_care(Variable):
+    value_type = bool
+    entity = Person
+    label = "Incapable of self-care"
+    documentation = "Whether this person is physically or mentally incapable of caring for themselves."
+    definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/21"
+
+
+class cdcc_qualified_dependent(Variable):
+    value_type = bool
+    entity = Person
+    label = "Qualifying dependent for CDCC"
+    documentation = "Whether this person qualifies as a dependent for the child and dependent care credit."
+    definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/21"
+
+    def formula(person, period, parameters):
+        cdcc = parameters(period).irs.credits.cdcc
+        meets_age_criteria = person("age", period) < cdcc.eligibility.child_age
+        incapable_of_self_care = person("incapable_of_self_care", period)
+        is_dependent = person("is_tax_unit_dependent", period)
+        is_spouse = person("is_tax_unit_spouse", period)
+        dependent_or_spouse = is_dependent | is_spouse
+        return meets_age_criteria | (
+            dependent_or_spouse & incapable_of_self_care
+        )
+
+
 class f2441(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Number of child/dependent-care qualifying persons"
+
+    def formula(tax_unit, period, parameters):
+        gross_num_eligible = tax_unit.sum(
+            tax_unit.members("cdcc_qualified_dependent", period)
+        )
+        cdcc = parameters(period).irs.credits.cdcc
+        return min_(gross_num_eligible, cdcc.eligibility.max)
 
 
 class f6251(Variable):

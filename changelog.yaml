@@ -459,4 +459,21 @@
 - bump: minor
   changes:
     added:
-      - HUD adjusted income and dependent variables and logic.
+    - CDCC parameters for eligibility and metadata.
+    fixed:
+    - A bug where the CDCC would phase down too quickly.
+  date: 2022-03-30 11:46:11
+- bump: patch
+  changes:
+    added:
+    - Parameter metadata for tax credits and payroll taxes.
+  date: 2022-03-30 13:12:44
+- bump: patch
+  changes:
+    added:
+    - Added full-time college student variable.
+  date: 2022-03-30 18:53:00
+- bump: minor
+  changes:
+    added:
+    - HUD adjusted income and dependent variables and logic.

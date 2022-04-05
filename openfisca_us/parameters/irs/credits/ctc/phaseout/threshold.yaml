@@ -54,6 +54,8 @@ metadata:
   period: year
   name: ctc_phaseout_threshold
   label: CTC phaseout threshold
+  breakdown:
+    - mars
   reference:
     - title: Tax-Calculator
       href: https://github.com/PSLmodels/Tax-Calculator/blob/6ab24023ed1b661a6dfdd4ce60301838c49536b1/taxcalc/policy_current_law.json#L14333
