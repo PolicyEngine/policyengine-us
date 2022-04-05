@@ -103,46 +103,6 @@ class exact(Variable):
     )
 
 
-class expanded_income(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Expanded income"
-    documentation = "Broad income measure that includes benefit_value_total"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        FILER_COMPONENTS = [
-            "e00200",
-            "pencon",
-            "e00300",
-            "e00400",
-            "e00600",
-            "e00700",
-            "e00800",
-            "e00900",
-            "e01100",
-            "e01200",
-            "e01400",
-            "e01500",
-            "e02000",
-            "e02100",
-            "p22250",
-            "p23250",
-            "cmbtp",
-        ]
-        filer_components = add(
-            tax_unit,
-            period,
-            [f"filer_{component}" for component in FILER_COMPONENTS],
-        )
-        return (
-            filer_components
-            + 0.5 * tax_unit("ptax_was", period)
-            + tax_unit("benefit_value_total", period)
-        )
-
-
 class othertaxes(Variable):
     value_type = float
     entity = TaxUnit
@@ -157,17 +117,6 @@ class sep(Variable):
     definition_period = YEAR
     default_value = 1
     documentation = "2 when MARS is 3 (married filing separately); otherwise 1"
-
-
-class filer_sey(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "sey for the tax unit (excluding dependents)"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("sey", tax_unit, period)
 
 
 class surtax(Variable):
@@ -350,19 +299,6 @@ class filer_setax(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("setax", tax_unit, period)
-
-
-class aftertax_income(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "After-tax income"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        expanded = tax_unit("expanded_income", period)
-        combined_tax = tax_unit("combined", period)
-        return expanded - combined_tax
 
 
 class benefit_value_total(Variable):
