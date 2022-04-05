@@ -9,5 +9,5 @@ class employee_medicare_tax(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.medicare.employee.main.rate
+        rate = parameters(period).irs.payroll.medicare.rate.employee
         return rate * person("payroll_tax_gross_wages", period)

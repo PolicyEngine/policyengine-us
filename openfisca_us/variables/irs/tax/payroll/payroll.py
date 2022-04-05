@@ -1,63 +1,6 @@
 from openfisca_us.model_api import *
 
 
-class payrolltax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Payroll tax"
-    definition_period = YEAR
-    unit = USD
-    documentation = "Total (employee + employer) payroll tax liability."
-
-    def formula(tax_unit, period):
-        COMPONENTS = [
-            "ptax_was",
-            "ptax_amc",
-            "filer_setax",
-        ]
-        return add(tax_unit, period, COMPONENTS)
-
-
-class employee_payrolltax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Employee's payroll tax"
-    documentation = "Share of payroll tax liability paid by the employee."
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit("payrolltax", period) * 0.5
-
-
-class ptax_amc(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Additional Medicare Tax"
-    unit = USD
-    documentation = (
-        "Additional Medicare Tax from Form 8959 (included in payrolltax)"
-    )
-
-    def formula(tax_unit, period, parameters):
-        payroll = parameters(period).irs.payroll
-        positive_sey = max_(0, tax_unit("filer_sey", period))
-        combined_rate = (
-            payroll.medicare.employee.main.rate
-            + payroll.social_security.employee.rate
-        )
-        line8 = positive_sey * (1 - combined_rate)
-        mars = tax_unit("mars", period)
-        e00200 = tax_unit("filer_e00200", period)
-        exclusion = payroll.medicare.additional.exclusion[mars]
-        earnings_over_exclusion = max_(0, e00200 - exclusion)
-        line11 = max_(0, exclusion - e00200)
-        rate = payroll.medicare.additional.rate
-        base = earnings_over_exclusion + max_(0, line8 - line11)
-        return rate * base
-
-
 class ptax_oasdi(Variable):
     value_type = float
     entity = TaxUnit
