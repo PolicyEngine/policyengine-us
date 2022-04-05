@@ -61,10 +61,10 @@ class earned(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        ald = parameters(period).irs.ald
+        misc = parameters(period).irs.ald.misc
         adjustment = (
-            (1.0 - ald.misc.self_emp_tax_adj)
-            * ald.misc.employer_share
+            (1 - misc.self_emp_tax_adj)
+            * misc.employer_share
             * person("setax", period)
         )
         return max_(0, add(person, period, ["e00200", "setax"]) - adjustment)
@@ -255,17 +255,6 @@ class fstax(Variable):
         "search taxcalc/calcfunctions.py for how calculated and used"
     )
     unit = USD
-
-
-class filer_setax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Self-employment tax for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("setax", tax_unit, period)
 
 
 class benefit_value_total(Variable):
