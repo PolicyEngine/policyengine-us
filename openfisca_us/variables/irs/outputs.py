@@ -94,15 +94,6 @@ class was_plus_sey(Variable):
         return wages + extra_taxable_self_employment_income
 
 
-class exact(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-
-
 class othertaxes(Variable):
     value_type = float
     entity = TaxUnit
