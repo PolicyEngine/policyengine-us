@@ -43,8 +43,11 @@ class ptax_amc(Variable):
     def formula(tax_unit, period, parameters):
         fica = parameters(period).irs.payroll.fica
         positive_sey = max_(0, tax_unit("filer_sey", period))
-        combined_rate = fica.medicare.rate + fica.social_security.rate
-        line8 = positive_sey * (1 - 0.5 * combined_rate)
+        combined_rate = (
+            fica.medicare.employee.main.rate
+            + fica.social_security.employee.rate
+        )
+        line8 = positive_sey * (1 - combined_rate)
         mars = tax_unit("mars", period)
         e00200 = tax_unit("filer_e00200", period)
         exclusion = fica.medicare.additional.exclusion[mars]
@@ -71,7 +74,7 @@ class ptax_was(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Employee + employer OASDI + HI FICA tax"
+    documentation = "Employee-side OASDI + HI FICA tax"
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -106,12 +109,14 @@ class txearn_was(Variable):
 class ptax_ss_was(Variable):
     value_type = float
     entity = Person
-    label = "OASDI payroll tax on wage income"
+    label = "Employee-side OASDI payroll tax on wage income"
     definition_period = YEAR
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.social_security.rate
+        rate = parameters(
+            period
+        ).irs.payroll.fica.social_security.employee.rate
         return rate * person("txearn_was", period)
 
 
@@ -129,12 +134,12 @@ class filer_ptax_ss_was(Variable):
 class ptax_mc_was(Variable):
     value_type = float
     entity = Person
-    label = "HI payroll tax on wage income"
+    label = "Employee-side health insurance payroll tax on wage income"
     definition_period = YEAR
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.medicare.rate
+        rate = parameters(period).irs.payroll.fica.medicare.employee.main.rate
         return rate * person("gross_was", period)
 
 
@@ -160,8 +165,11 @@ class sey_frac(Variable):
 
     def formula(tax_unit, period, parameters):
         irs = parameters(period).irs
-        fica = irs.payroll.fica
-        combined_fica_rate = fica.social_security.rate + fica.medicare.rate
+        ss = irs.payroll.fica.social_security
+        ss_combined_rate = ss.employee.rate + ss.employer.rate
+        mc = irs.payroll.fica.medicare
+        mc_combined_rate = mc.employee.main.rate + mc.employer.rate
+        combined_fica_rate = ss_combined_rate + mc_combined_rate
         return 1.0 - irs.ald.misc.employer_share * combined_fica_rate
 
 
@@ -191,7 +199,8 @@ class setax_ss(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.social_security.rate
+        ss = parameters(period).irs.payroll.fica.social_security
+        rate = ss.employee.rate + ss.employer.rate
         return rate * person("txearn_sey", period)
 
 
@@ -216,7 +225,8 @@ class setax_mc(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.fica.medicare.rate
+        mc = parameters(period).irs.payroll.fica.medicare
+        rate = mc.employee.main.rate + mc.employer.rate
         base = max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
@@ -243,7 +253,8 @@ class sey_frac_for_extra_oasdi(Variable):
 
     def formula(tax_unit, period, parameters):
         irs = parameters(period).irs
-        fica_rate = irs.payroll.fica.social_security.rate
+        ss = irs.payroll.fica.social_security
+        fica_rate = ss.employee.rate + ss.employer.rate
         return 1.0 - irs.ald.misc.employer_share * fica_rate
 
 
@@ -256,7 +267,7 @@ class social_security_taxes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        employee_payroll_tax = 0.5 * tax_unit("ptax_was", period)
+        employee_payroll_tax = tax_unit("ptax_was", period)
         self_employed_tax = tax_unit("c03260", period)
         unreported_payroll_tax = aggr(tax_unit, period, ["e09800"])
         excess_payroll_tax_withheld = aggr(tax_unit, period, ["e11200"])
