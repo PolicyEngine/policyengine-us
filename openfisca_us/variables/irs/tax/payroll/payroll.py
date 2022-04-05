@@ -50,23 +50,6 @@ class filer_ptax_mc_was(Variable):
         return tax_unit_non_dep_sum("ptax_mc_was", tax_unit, period)
 
 
-class sey_frac(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Taxable fraction of self-employment income"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        irs = parameters(period).irs
-        ss = irs.payroll.fica.social_security
-        ss_combined_rate = ss.employee.rate + ss.employer.rate
-        mc = irs.payroll.fica.medicare
-        mc_combined_rate = mc.employee.main.rate + mc.employer.rate
-        combined_fica_rate = ss_combined_rate + mc_combined_rate
-        return 1.0 - irs.ald.misc.employer_share * combined_fica_rate
-
-
 class txearn_sey(Variable):
     value_type = float
     entity = Person
@@ -108,42 +91,3 @@ class filer_setax_ss(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("setax_ss", tax_unit, period)
-
-
-class setax_mc(Variable):
-    value_type = float
-    entity = Person
-    label = "SECA self-employment SS tax (Medicare)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(person, period, parameters):
-        se = parameters(period).irs.payroll.medicare.self_employment
-        base = max_(
-            0, person("sey", period) * person.tax_unit("sey_frac", period)
-        )
-        return se.main.rate * base
-
-
-class setax(Variable):
-    value_type = float
-    entity = Person
-    label = "Self-employment payroll tax"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(person, period, parameters):
-        return add(person, period, ["setax_ss", "setax_mc"])
-
-
-class sey_frac_for_extra_oasdi(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Taxable fraction of self-employment income for extra OASDI payroll taxes"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        irs = parameters(period).irs
-        rate = irs.payroll.social_security.self_employment.rate
-        return 1.0 - irs.ald.misc.employer_share * rate

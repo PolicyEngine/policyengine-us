@@ -83,11 +83,15 @@ class was_plus_sey(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        return person("gross_was", period) + max_(
-            0,
-            person("sey", period)
-            * person.tax_unit("sey_frac_for_extra_oasdi", period),
+        irs = parameters(period).irs
+        rate = irs.payroll.social_security.self_employment.rate
+        sey_frac_for_extra_oasdi = 1.0 - irs.ald.misc.employer_share * rate
+        wages = person("payroll_tax_gross_wages", period)
+        nonnegative_self_employment_income = max_(0, person("sey", period))
+        extra_taxable_self_employment_income = (
+            nonnegative_self_employment_income * sey_frac_for_extra_oasdi
         )
+        return wages + extra_taxable_self_employment_income
 
 
 class exact(Variable):
