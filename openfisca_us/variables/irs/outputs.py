@@ -122,12 +122,9 @@ class c03260(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        ald = parameters(period).irs.ald
-        return (
-            (1.0 - ald.misc.self_emp_tax_adj)
-            * ald.misc.employer_share
-            * tax_unit.sum(tax_unit.members("setax", period))
-        )
+        misc = parameters(period).irs.ald.misc
+        setax = aggr(tax_unit, period, ["setax"])
+        return (1 - misc.self_emp_tax_adj) * misc.employer_share * setax
 
 
 class c05700(Variable):
