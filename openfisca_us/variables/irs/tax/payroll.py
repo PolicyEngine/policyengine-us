@@ -173,8 +173,7 @@ class txearn_sey(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        fica = parameters(period).irs.payroll.fica
-        ss = fica.social_security
+        ss = parameters(period).irs.payroll.fica.social_security
         return min_(
             max_(
                 0.0,
@@ -218,9 +217,10 @@ class setax_mc(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).irs.payroll.fica.medicare.rate
-        return rate * max_(
+        base = max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
+        return rate * base
 
 
 class setax(Variable):
