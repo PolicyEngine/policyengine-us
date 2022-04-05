@@ -12,7 +12,6 @@
   period: 2022
   input:
     hud_annual_income: 10_000
-    age: 30
   output:
     hud_adjusted_income: 10_000
 
@@ -28,7 +27,6 @@
   period: 2022
   input:
     hud_annual_income: 10_000
-    age: 30
     is_disabled: true
   output:
     hud_adjusted_income: 9_600
@@ -36,51 +34,51 @@
 - name: Single person with one dependent will have deductions.
   period: 2022
   input:
-    hud_annual_income: 10_000
-    people: 
-      parent: 
+    people:
+      parent:
         age: 42
-      dependent: 
+      dependent:
         age: 16
     spm_units:
       spm_unit:
         members: [parent, dependent]
+        hud_annual_income: 10_000
   output:
     hud_adjusted_income: 9_520
 
 - name: Single person with two dependents will have deductions.
   period: 2022
   input:
-    hud_annual_income: 10_000
-    people: 
-      parent: 
+    people:
+      parent:
         age: 42
-      dependent: 
+      dependent:
         age: 16
-      dependent2: 
+      dependent2:
         age: 14
     spm_units:
       spm_unit:
         members: [parent, dependent, dependent2]
+        hud_annual_income: 10_000
   output:
     hud_adjusted_income: 9_040
 
 - name: Single person with three dependents will have deductions.
   period: 2022
   input:
-    hud_annual_income: 10_000
-    people: 
-      parent: 
+    people:
+      parent:
         age: 42
-      dependent: 
+      dependent:
         age: 16
-      dependent2: 
+      dependent2:
         age: 14
       dependent3:
         age: 12
     spm_units:
       spm_unit:
         members: [parent, dependent, dependent2, dependent3]
+        hud_annual_income: 10_000
   output:
     hud_adjusted_income: 8_560
 
@@ -88,26 +86,41 @@
   period: 2022
   input:
     hud_annual_income: 10_000
-    age: 34
     childcare_expenses: 300
   output:
     hud_adjusted_income: 9_700
 
-- name: Single elderly person with medical expenses will have deductions.
+- name: Single elderly person with medical expenses will have elderly-disabled deduction and medical expense deduction.
   period: 2022
   input:
     hud_annual_income: 10_000
     age: 70
     medical_out_of_pocket_expenses: 300
   output:
-    hud_adjusted_income: 9_700
+    hud_adjusted_income: 9_600 # $10,000 - $400 elderly/disabled - $300 medical expense deduction
 
-- name: Single disabled person with medical expenses will have deductions.
+- name: Single disabled person with medical expenses will have elderly/disabled + medical expense deductions, to the extent that expenses exceed 3% annual income.
   period: 2022
   input:
     hud_annual_income: 10_000
-    age: 34
     is_disabled: true
-    medical_out_of_pocket_expenses: 300
+    medical_out_of_pocket_expenses: 301
   output:
-    hud_adjusted_income: 9_700
+    hud_adjusted_income: 9_599
+
+- name: Single disabled person with large medical expenses will have elderly/disabled + medical expense deductions. Adjusted income is capped at zero.
+  period: 2022
+  input:
+    hud_annual_income: 10_000
+    is_disabled: true
+    medical_out_of_pocket_expenses: 20_000
+  output:
+    hud_adjusted_income: 0
+
+- name: Single person with no disabilites with medical expenses does not have medical expense deductions.
+  period: 2022
+  input:
+    hud_annual_income: 10_000
+    medical_out_of_pocket_expenses: 20_000
+  output:
+    hud_adjusted_income: 10_000

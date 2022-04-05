@@ -23,17 +23,21 @@ class hud_adjusted_income(Variable):
         childcare_expenses = spm_unit("childcare_expenses", period)
         # TODO: Attendant care (save for later)
         # Medical expenses for elderly/disabled families.
-        moop = aggr(spm_unit, period, ["medical_out_of_pocket_expenses"])
-        moop_ded = moop * elderly_disabled
-        # Get parameters.
         ded = parameters(period).hud.adjusted_income.deductions
+        moop = aggr(spm_unit, period, ["medical_out_of_pocket_expenses"])
+        # Only expenses beyond a percent of income are deductible.
+        moop_threshold = ded.moop.threshold * income
+        moop_deductible = max_(0, moop - moop_threshold)
+        moop_ded = moop_deductible * elderly_disabled
+        # Add dependent and elderly disabled deductions.
         dependent_ded = ded.dependent.amount * child_count
         elderly_disabled_ded = ded.elderly_disabled.amount * elderly_disabled
-        # Calculate and return adjusted income.
-        return (
+        # Calculate and return adjusted income, non-negative.
+        return max_(
             income
             - dependent_ded
             - elderly_disabled_ded
             - childcare_expenses
-            - moop_ded
+            - moop_ded,
+            0,
         )
