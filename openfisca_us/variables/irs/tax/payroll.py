@@ -14,7 +14,6 @@ class payrolltax(Variable):
             "ptax_was",
             "ptax_amc",
             "filer_setax",
-            "extra_payrolltax",
         ]
         return add(tax_unit, period, COMPONENTS)
 
@@ -64,7 +63,7 @@ class ptax_oasdi(Variable):
     unit = USD
 
     def formula(tax_unit, period):
-        ELEMENTS = ["filer_ptax_ss_was", "filer_setax_ss", "extra_payrolltax"]
+        ELEMENTS = ["filer_ptax_ss_was", "filer_setax_ss"]
         return add(tax_unit, period, ELEMENTS)
 
 
@@ -246,26 +245,6 @@ class sey_frac_for_extra_oasdi(Variable):
         irs = parameters(period).irs
         fica_rate = irs.payroll.fica.social_security.rate
         return 1.0 - irs.ald.misc.employer_share * fica_rate
-
-
-class extra_payrolltax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Extra payroll tax"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        ss = parameters(period).irs.payroll.fica.social_security
-        extra_ss_income = max_(
-            0.0,
-            tax_unit.members("was_plus_sey", period) - ss.add_taxable_earnings,
-        )
-        return tax_unit.sum(
-            extra_ss_income
-            * not_(tax_unit.members("is_tax_unit_dependent", period))
-            * ss.rate
-        )
 
 
 class social_security_taxes(Variable):
