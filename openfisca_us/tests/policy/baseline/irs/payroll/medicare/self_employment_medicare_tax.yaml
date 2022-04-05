@@ -1,0 +1,12 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    self_employment_medicare_tax: 0
+
+- name: Otherwise 2.9% of sey * sey_frac (payroll-taxable self-employment income).
+  period: 2022
+  input:
+    sey: 100_000
+    sey_frac: 1
+  output:
+    self_employment_medicare_tax: 2_900

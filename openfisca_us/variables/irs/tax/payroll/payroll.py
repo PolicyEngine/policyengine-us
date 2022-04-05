@@ -82,53 +82,6 @@ class ptax_was(Variable):
         return add(tax_unit, period, ELEMENTS)
 
 
-class gross_was(Variable):
-    value_type = float
-    entity = Person
-    label = "Gross wage and salary"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(person, period):
-        return add(person, period, ["e00200", "pencon"])
-
-
-class txearn_was(Variable):
-    value_type = float
-    entity = Person
-    label = "Taxable gross earnings for OASDI FICA"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(person, period, parameters):
-        irs = parameters(period).irs
-        max_earnings = irs.payroll.social_security.max_taxable_earnings
-        return min_(max_earnings, person("gross_was", period))
-
-
-class ptax_ss_was(Variable):
-    value_type = float
-    entity = Person
-    label = "Employee-side OASDI payroll tax on wage income"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.social_security.employee.rate
-        return rate * person("txearn_was", period)
-
-
-class filer_ptax_ss_was(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "OASDI payroll tax on wage income for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("ptax_ss_was", tax_unit, period)
-
-
 class ptax_mc_was(Variable):
     value_type = float
     entity = Person
@@ -251,24 +204,3 @@ class sey_frac_for_extra_oasdi(Variable):
         irs = parameters(period).irs
         rate = irs.payroll.social_security.self_employment.rate
         return 1.0 - irs.ald.misc.employer_share * rate
-
-
-class social_security_taxes(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Social security taxes"
-    unit = "currency-USD"
-    documentation = "Total employee-side social security taxes"
-    definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        employee_payroll_tax = tax_unit("ptax_was", period)
-        self_employed_tax = tax_unit("c03260", period)
-        unreported_payroll_tax = aggr(tax_unit, period, ["e09800"])
-        excess_payroll_tax_withheld = aggr(tax_unit, period, ["e11200"])
-        return (
-            employee_payroll_tax
-            + self_employed_tax
-            + unreported_payroll_tax
-            - excess_payroll_tax_withheld
-        )

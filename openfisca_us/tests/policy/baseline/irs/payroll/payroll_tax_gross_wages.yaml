@@ -1,0 +1,7 @@
+- name: payroll_tax_gross_wages = e00200 + pencon
+  period: 2022
+  input:
+    e00200: 1
+    pencon: 1
+  output:
+    payroll_tax_gross_wages: 2
