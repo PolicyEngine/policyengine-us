@@ -41,19 +41,19 @@ class ptax_amc(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        fica = parameters(period).irs.payroll.fica
+        payroll = parameters(period).irs.payroll
         positive_sey = max_(0, tax_unit("filer_sey", period))
         combined_rate = (
-            fica.medicare.employee.main.rate
-            + fica.social_security.employee.rate
+            payroll.medicare.employee.main.rate
+            + payroll.social_security.employee.rate
         )
         line8 = positive_sey * (1 - combined_rate)
         mars = tax_unit("mars", period)
         e00200 = tax_unit("filer_e00200", period)
-        exclusion = fica.medicare.additional.exclusion[mars]
+        exclusion = payroll.medicare.additional.exclusion[mars]
         earnings_over_exclusion = max_(0, e00200 - exclusion)
         line11 = max_(0, exclusion - e00200)
-        rate = fica.medicare.additional.rate
+        rate = payroll.medicare.additional.rate
         base = earnings_over_exclusion + max_(0, line8 - line11)
         return rate * base
 
@@ -102,7 +102,7 @@ class txearn_was(Variable):
 
     def formula(person, period, parameters):
         irs = parameters(period).irs
-        max_earnings = irs.payroll.fica.social_security.max_taxable_earnings
+        max_earnings = irs.payroll.social_security.max_taxable_earnings
         return min_(max_earnings, person("gross_was", period))
 
 
@@ -114,9 +114,7 @@ class ptax_ss_was(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(
-            period
-        ).irs.payroll.fica.social_security.employee.rate
+        rate = parameters(period).irs.payroll.social_security.employee.rate
         return rate * person("txearn_was", period)
 
 
@@ -199,9 +197,8 @@ class setax_ss(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        ss = parameters(period).irs.payroll.fica.social_security
-        rate = ss.employee.rate + ss.employer.rate
-        return rate * person("txearn_sey", period)
+        se = parameters(period).irs.payroll.social_security.self_employment
+        return se.rate * person("txearn_sey", period)
 
 
 class filer_setax_ss(Variable):
@@ -225,12 +222,11 @@ class setax_mc(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        mc = parameters(period).irs.payroll.fica.medicare
-        rate = mc.employee.main.rate + mc.employer.rate
+        se = parameters(period).irs.payroll.medicare.self_employment
         base = max_(
             0, person("sey", period) * person.tax_unit("sey_frac", period)
         )
-        return rate * base
+        return se.main.rate * base
 
 
 class setax(Variable):
@@ -253,9 +249,8 @@ class sey_frac_for_extra_oasdi(Variable):
 
     def formula(tax_unit, period, parameters):
         irs = parameters(period).irs
-        ss = irs.payroll.fica.social_security
-        fica_rate = ss.employee.rate + ss.employer.rate
-        return 1.0 - irs.ald.misc.employer_share * fica_rate
+        rate = irs.payroll.social_security.self_employment.rate
+        return 1.0 - irs.ald.misc.employer_share * rate
 
 
 class social_security_taxes(Variable):
