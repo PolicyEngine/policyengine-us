@@ -31,7 +31,16 @@ class combined(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["iitax", "employee_payrolltax"])
+        TAX_UNIT_COMPONENTS = ["iitax", "additional_medicare_tax"]
+        PERSON_COMPONENTS = [
+            "self_employment_medicare_tax",
+            "self_employment_social_security_tax",
+            "employee_medicare_tax",
+            "employee_social_security_tax",
+        ]
+        tax_unit_components = add(tax_unit, period, TAX_UNIT_COMPONENTS)
+        person_components = aggr(tax_unit, period, PERSON_COMPONENTS)
+        return tax_unit_components + person_components
 
 
 tax = variable_alias("tax", combined)
@@ -65,9 +74,13 @@ class earned(Variable):
         adjustment = (
             (1 - misc.self_emp_tax_adj)
             * misc.employer_share
-            * person("setax", period)
+            * person("self_employment_tax", period)
         )
-        return max_(0, add(person, period, ["e00200", "setax"]) - adjustment)
+        return max_(
+            0,
+            add(person, period, ["e00200", "self_employment_tax"])
+            - adjustment,
+        )
 
 
 earned_income = variable_alias("earned_income", earned)
@@ -123,7 +136,7 @@ class c03260(Variable):
 
     def formula(tax_unit, period, parameters):
         misc = parameters(period).irs.ald.misc
-        setax = aggr(tax_unit, period, ["setax"])
+        setax = aggr(tax_unit, period, ["self_employment_tax"])
         return (1 - misc.self_emp_tax_adj) * misc.employer_share * setax
 
 

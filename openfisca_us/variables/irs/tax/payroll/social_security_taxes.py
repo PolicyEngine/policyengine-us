@@ -16,7 +16,10 @@ class social_security_taxes(Variable):
             "e09800",  # Unreported payroll tax.
         ]
         PERSON_VARIABLES_SUBTRACT = ["e11200"]  # Excess payroll tax withheld.
-        TAX_UNIT_VARIABLES = ["c03260"]  # Self-employed tax.
+        TAX_UNIT_VARIABLES = [
+            "c03260",  # Deductible portion of the self-employed tax.
+            "additional_medicare_tax",
+        ]
         return (
             aggr(tax_unit, period, PERSON_VARIABLES)
             + add(tax_unit, period, TAX_UNIT_VARIABLES)

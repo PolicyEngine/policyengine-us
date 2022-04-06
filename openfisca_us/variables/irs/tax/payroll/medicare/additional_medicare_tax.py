@@ -15,8 +15,8 @@ class additional_medicare_tax(Variable):
         payroll = parameters(period).irs.payroll
         positive_sey = max_(0, tax_unit("filer_sey", period))
         combined_rate = (
-            payroll.medicare.employee.main.rate
-            + payroll.social_security.employee.rate
+            payroll.medicare.rate.employee
+            + payroll.social_security.rate.employee
         )
         line8 = positive_sey * (1 - combined_rate)
         mars = tax_unit("mars", period)
