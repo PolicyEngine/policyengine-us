@@ -8,5 +8,4 @@ class payroll_tax_gross_wages(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period):
-        return add(person, period, ["e00200", "pencon"])
+    formula = sum_of_variables(["e00200", "pencon"])

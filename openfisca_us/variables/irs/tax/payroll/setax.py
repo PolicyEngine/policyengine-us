@@ -8,9 +8,6 @@ class setax(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
-        ELEMENTS = [
-            "self_employment_social_security_tax",
-            "self_employment_medicare_tax",
-        ]
-        return add(person, period, ELEMENTS)
+    formula = sum_of_variables(
+        ["self_employment_social_security_tax", "self_employment_medicare_tax"]
+    )
