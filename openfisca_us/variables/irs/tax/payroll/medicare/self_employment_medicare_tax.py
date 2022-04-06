@@ -10,7 +10,4 @@ class self_employment_medicare_tax(Variable):
 
     def formula(person, period, parameters):
         rate = parameters(period).irs.payroll.medicare.rate.self_employment
-        base = max_(
-            0, person("sey", period) * person.tax_unit("sey_frac", period)
-        )
-        return rate * base
+        return rate * person("payroll_taxable_self_employment_income", period)
