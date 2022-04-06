@@ -1,9 +1,0 @@
-- name: SPM unit taxes sum tax sources.
-  period: 2021
-  input:
-    spm_unit_payroll_tax: 1
-    spm_unit_federal_tax: 2
-    spm_unit_state_tax: 3
-    spm_unit_self_employment_tax: 4
-  output:
-    spm_unit_taxes: 1 + 2 + 3 + 4

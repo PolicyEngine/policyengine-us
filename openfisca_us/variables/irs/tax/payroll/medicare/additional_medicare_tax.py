@@ -12,18 +12,10 @@ class additional_medicare_tax(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        payroll = parameters(period).irs.payroll
-        positive_sey = max_(0, tax_unit("filer_sey", period))
-        combined_rate = (
-            payroll.medicare.rate.employee
-            + payroll.social_security.rate.employee
-        )
-        line8 = positive_sey * (1 - combined_rate)
-        mars = tax_unit("mars", period)
-        e00200 = tax_unit("filer_e00200", period)
-        exclusion = payroll.medicare.additional.exclusion[mars]
-        earnings_over_exclusion = max_(0, e00200 - exclusion)
-        line11 = max_(0, exclusion - e00200)
-        rate = payroll.medicare.additional.rate
-        base = earnings_over_exclusion + max_(0, line8 - line11)
-        return rate * base
+        amc = parameters(period).irs.payroll.medicare.additional
+        # Wage and self-employment income are taxed the same.
+        ELEMENTS = ["filer_e00200", "taxable_self_employment_income"]
+        wages_plus_se = add(tax_unit, period, ELEMENTS)
+        exclusion = amc.exclusion[tax_unit("mars", period)]
+        base = max_(0, wages_plus_se - exclusion)
+        return amc.rate * base
