@@ -9,7 +9,5 @@ class self_employment_social_security_tax(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(
-            period
-        ).irs.payroll.social_security.rate.self_employment
+        rate = parameters(period).irs.self_employment.social_security_rate
         return rate * person("payroll_taxable_self_employment_income", period)

@@ -11,14 +11,9 @@ class payroll_taxable_self_employment_income(Variable):
 
     def formula(person, period, parameters):
         irs = parameters(period).irs
-        payroll = irs.payroll
-        combined_rate = (
-            payroll.social_security.rate.self_employment
-            + payroll.medicare.rate.self_employment
-        )
+        se = irs.self_employment
+        combined_rate = se.social_security_rate + se.medicare_rate
         deduction_rate = irs.ald.misc.employer_share * combined_rate
         net_se = person("sey", period) * (1 - deduction_rate)
         # Exclude net self-employment income below the reporting threshold.
-        return where(
-            net_se < payroll.self_employment_net_earnings_exemption, 0, net_se
-        )
+        return where(net_se < se.net_earnings_exemption, 0, net_se)
