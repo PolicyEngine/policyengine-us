@@ -1,0 +1,25 @@
+- name: Default person has no elderly or disabled people
+  period: 2021
+  output:
+    has_all_usda_elderly_disabled: false
+
+- name: Individual, is USDA elderly but not disabled
+  period: 2021
+  input:
+    is_usda_elderly: true
+    is_usda_disabled: false
+  output:
+    has_all_usda_elderly_disabled: true
+
+- name: Two members, one disabled, the other neither elderly nor disabled
+  period: 2021
+  input:
+    people:
+      disabled:
+        is_usda_disabled: true
+      young: {}
+    spm_units:
+      spm_unit:
+        members: [disabled, young]
+  output:
+    has_all_usda_elderly_disabled: false

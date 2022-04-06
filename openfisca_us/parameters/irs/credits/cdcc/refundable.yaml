@@ -1,6 +1,8 @@
-description: Child & dependent care credit refundable indicator
+description: Whether the child and dependent care credit is refundable.
 metadata:
   unit: bool
+  name: cdcc_refundable
+  label: CDCC refundability
 values:
   2013-01-01: false
   2021-01-01: true

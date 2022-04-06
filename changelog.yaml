@@ -448,7 +448,37 @@
     - Added `is_eitc_qualifying_child` variable to improve EITC child logic.
     - Split `is_in_school` into `is_in_k12_school` and `is_full_time_student`.
   date: 2022-03-28 11:34:53
+- bump: minor
+  changes:
+    added:
+    - Net income limits for SNAP BBCE (TANF) program.
+    - Legislative references for SNAP income limits.
+    removed:
+    - 165% SNAP gross income limit for separate elderly and disabled households (unused).
+  date: 2022-03-30 01:17:38
+- bump: minor
+  changes:
+    added:
+    - CDCC parameters for eligibility and metadata.
+    fixed:
+    - A bug where the CDCC would phase down too quickly.
+  date: 2022-03-30 11:46:11
+- bump: patch
+  changes:
+    added:
+    - Parameter metadata for tax credits and payroll taxes.
+  date: 2022-03-30 13:12:44
+- bump: patch
+  changes:
+    added:
+    - Added full-time college student variable.
+  date: 2022-03-30 18:53:00
+- bump: minor
+  changes:
+    added:
+    - HUD adjusted income and dependent variables and logic.
+  date: 2022-04-05 19:04:10
 - bump: patch
   changes:
     fixed:
-    - Fixed a small error in parameter `hhs.tanf.cash.amount.max`.
+    - Point TANF parameter to state instead of region.

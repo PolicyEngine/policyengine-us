@@ -1,0 +1,65 @@
+- name: Default will be false, since default disabled is false and default age is less than 62.
+  period: 2022
+  output:
+    is_hud_elderly_disabled_family: false
+
+- name: One-person elderly household.
+  period: 2022
+  input:
+    age: 62
+  output:
+    is_hud_elderly_disabled_family: true
+
+- name: One-person non-elderly household.
+  period: 2022
+  input:
+    age: 61
+  output:
+    is_hud_elderly_disabled_family: false
+
+- name: A one-person disabled but non-elderly family.
+  period: 2022
+  input:
+    age: 48
+    is_disabled: true
+  output:
+    is_hud_elderly_disabled_family: true
+
+- name: A one-person elderly but non-disabled family.
+  period: 2022
+  input:
+    age: 64
+    is_disabled: false
+  output:
+    is_hud_elderly_disabled_family: true
+
+- name: A one-person non-disabled and non-elderly family.
+  period: 2022
+  input:
+    age: 32
+    is_disabled: false
+  output:
+    is_hud_elderly_disabled_family: false
+
+- name: A one-person disabled and elderly family.
+  period: 2022
+  input:
+    age: 70
+    is_disabled: true
+  output:
+    is_hud_elderly_disabled_family: true
+
+- name: Two-person family with disabled child.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 45
+      dependent:
+        age: 12
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent, dependent]
+  output:
+    is_hud_elderly_disabled_family: false
