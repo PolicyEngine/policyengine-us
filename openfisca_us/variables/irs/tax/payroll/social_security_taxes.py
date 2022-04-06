@@ -10,13 +10,15 @@ class social_security_taxes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        employee_payroll_tax = tax_unit("ptax_was", period)
-        self_employed_tax = tax_unit("c03260", period)
-        unreported_payroll_tax = aggr(tax_unit, period, ["e09800"])
-        excess_payroll_tax_withheld = aggr(tax_unit, period, ["e11200"])
+        PERSON_VARIABLES = [
+            "employee_social_security_tax",
+            "employee_medicare_tax",
+            "e09800",  # Unreported payroll tax.
+        ]
+        PERSON_VARIABLES_SUBTRACT = ["e11200"]  # Excess payroll tax withheld.
+        TAX_UNIT_VARIABLES = ["c03260"]  # Self-employed tax.
         return (
-            employee_payroll_tax
-            + self_employed_tax
-            + unreported_payroll_tax
-            - excess_payroll_tax_withheld
+            aggr(tax_unit, period, PERSON_VARIABLES)
+            + add(tax_unit, period, TAX_UNIT_VARIABLES)
+            - aggr(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
         )

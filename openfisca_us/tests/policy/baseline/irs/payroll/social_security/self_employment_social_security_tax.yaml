@@ -6,6 +6,6 @@
 - name: Otherwise 12.4% of payroll-taxable self-employment income.
   period: 2022
   input:
-    txearn_sey: 100_000
+    social_security_taxable_self_employment_income: 100_000
   output:
     self_employment_social_security_tax: 12_400
