@@ -2,8 +2,8 @@
   period: 2019
   input:
     mars: SINGLE
-    filer_sey: 1_000
-    e00200: 10_000
+    taxable_self_employment_income: 1_000
+    filer_e00200: 10_000
   output:
     additional_medicare_tax: 0
 
@@ -11,7 +11,7 @@
   period: 2019
   input:
     mars: SINGLE
-    filer_sey: 100_000
-    e00200: 1_000_000
+    taxable_self_employment_income: 100_000
+    filer_e00200: 1_000_000
   output:
-    additional_medicare_tax: 8_031.15
+    additional_medicare_tax: 8_100 # (1.1M - 200k) * 0.9%
