@@ -60,24 +60,20 @@ class refundable_ctc(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         maximum_refundable_ctc = min_(
-            tax_unit.sum(person("ctc_refundable_individual_maximum", period)),
+            aggr(tax_unit, period, ["ctc_refundable_individual_maximum"]),
             tax_unit("ctc", period),
         )
 
         liability = tax_unit("ctc_limiting_tax_liability", period)
         ctc = parameters(period).irs.credits.ctc
+        earnings = aggr(tax_unit, period, ["earned_income"])
         earnings_over_threshold = max_(
-            0,
-            tax_unit.sum(person("earned_income", period))
-            - ctc.refundable.phase_in.threshold,
+            0, earnings - ctc.refundable.phase_in.threshold
         )
         relevant_earnings = (
             earnings_over_threshold * ctc.refundable.phase_in.rate
         )
-
-        eitc = tax_unit("eitc", period)
         # Compute "social security taxes" as defined in the US Code for the ACTC.
         # This includes OASDI and Medicare payroll taxes, as well as half
         # of self-employment taxes.
@@ -96,6 +92,7 @@ class refundable_ctc(Variable):
             + add(tax_unit, period, TAX_UNIT_VARIABLES)
             - aggr(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
         )
+        eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
 
         phased_in_amount = max_(relevant_earnings, social_security_excess)
