@@ -34,6 +34,13 @@ setup(
         "requests",
         "OpenFisca-Tools>=0.3.0,<1.0.0",
         "pyyaml",
+        "pandas",
+        "pathlib",
+        "tables",
+        "h5py",
+        "synthimpute",
+        "pytest",
+        "pytest-dependency",
     ],
     extras_require={
         "dev": [
