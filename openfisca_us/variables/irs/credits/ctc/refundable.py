@@ -78,7 +78,24 @@ class refundable_ctc(Variable):
         )
 
         eitc = tax_unit("eitc", period)
-        social_security_tax = tax_unit("social_security_taxes", period)
+        # Compute "social security taxes" as defined in the US Code for the ACTC.
+        # This includes OASDI and Medicare payroll taxes, as well as half
+        # of self-employment taxes.
+        PERSON_VARIABLES = [
+            "employee_social_security_tax",
+            "employee_medicare_tax",
+            "e09800",  # Unreported payroll tax.
+        ]
+        PERSON_VARIABLES_SUBTRACT = ["e11200"]  # Excess payroll tax withheld.
+        TAX_UNIT_VARIABLES = [
+            "c03260",  # Deductible portion of the self-employed tax.
+            "additional_medicare_tax",
+        ]
+        social_security_tax = (
+            aggr(tax_unit, period, PERSON_VARIABLES)
+            + add(tax_unit, period, TAX_UNIT_VARIABLES)
+            - aggr(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
+        )
         social_security_excess = max_(0, social_security_tax - eitc)
 
         phased_in_amount = max_(relevant_earnings, social_security_excess)
