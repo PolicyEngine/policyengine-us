@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class payroll_taxable_self_employment_income(Variable):
+class taxable_self_employment_income(Variable):
     value_type = float
     entity = Person
     label = "Taxable self-employment income"

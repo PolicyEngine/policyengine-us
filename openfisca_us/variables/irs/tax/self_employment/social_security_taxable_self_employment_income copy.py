@@ -12,6 +12,6 @@ class social_security_taxable_self_employment_income(Variable):
         ss_cap = parameters(period).irs.payroll.social_security.cap
         # Deduct SS payroll taxable wages and salaries.
         return min_(
-            person("payroll_taxable_self_employment_income", period),
+            person("taxable_self_employment_income", period),
             ss_cap - person("taxable_earnings_for_social_security", period),
         )

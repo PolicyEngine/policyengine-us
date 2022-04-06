@@ -1,10 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class setax(Variable):
+class self_employment_tax(Variable):
     value_type = float
     entity = Person
-    label = "Self-employment payroll tax"
+    label = "Self-employment tax"
     definition_period = YEAR
     unit = USD
 
