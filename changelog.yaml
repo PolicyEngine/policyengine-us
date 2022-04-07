@@ -478,6 +478,11 @@
     added:
       - HUD adjusted income and dependent variables and logic.
   date: 2022-04-05 19:04:10
+- bump: patch
+  changes:
+    fixed:
+      - Point TANF parameter to state instead of region.
+  date: 2022-04-06 10:35:14
 - bump: minor
   changes:
     added:
@@ -487,6 +492,7 @@
       - Unit tests and legislative references for payroll and self-employment tax variables.
     changed:
       - Reorganized payroll and self-employment tax parameters and variables.
+      - Replaced large parameters with infinity and made number formatting consistent.
     removed:
       - Reform-only `social_security.add_taxable_earnings` parameter.
       - Unused `exact` variable.
