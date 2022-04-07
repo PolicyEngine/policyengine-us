@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.43.0] - 2022-04-07 06:08:18
+
+### Added
+
+- More recent Social Security payroll tax cap parameter values.
+- Separate parameters for employer payroll taxes and self-employment taxes.
+- Parameter for self-employment net earnings disregard.
+- Unit tests and legislative references for payroll and self-employment tax variables.
+
+### Changed
+
+- Reorganized payroll and self-employment tax parameters and variables.
+- Replaced large parameters with infinity and made number formatting consistent.
+
 ## [0.42.1] - 2022-04-06 10:35:14
 
 ### Fixed
@@ -595,6 +609,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.43.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.42.1...0.43.0
 [0.42.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.42.0...0.42.1
 [0.42.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.41.2...0.42.0
 [0.41.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.41.1...0.41.2
