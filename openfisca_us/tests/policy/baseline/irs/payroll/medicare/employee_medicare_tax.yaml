@@ -1,0 +1,11 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    employee_medicare_tax: 0
+
+- name: Otherwise 1.45% of payroll_tax_gross_wages.
+  period: 2022
+  input:
+    payroll_tax_gross_wages: 100_000
+  output:
+    employee_medicare_tax: 1_450

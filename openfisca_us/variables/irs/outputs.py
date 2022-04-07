@@ -31,7 +31,16 @@ class combined(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["iitax", "employee_payrolltax"])
+        TAX_UNIT_COMPONENTS = ["iitax", "additional_medicare_tax"]
+        PERSON_COMPONENTS = [
+            "self_employment_medicare_tax",
+            "self_employment_social_security_tax",
+            "employee_medicare_tax",
+            "employee_social_security_tax",
+        ]
+        tax_unit_components = add(tax_unit, period, TAX_UNIT_COMPONENTS)
+        person_components = aggr(tax_unit, period, PERSON_COMPONENTS)
+        return tax_unit_components + person_components
 
 
 tax = variable_alias("tax", combined)
@@ -61,82 +70,20 @@ class earned(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        ald = parameters(period).irs.ald
+        misc = parameters(period).irs.ald.misc
         adjustment = (
-            (1.0 - ald.misc.self_emp_tax_adj)
-            * ald.misc.employer_share
-            * person("setax", period)
+            (1 - misc.self_emp_tax_adj)
+            * misc.employer_share
+            * person("self_employment_tax", period)
         )
-        return max_(0, add(person, period, ["e00200", "setax"]) - adjustment)
+        return max_(
+            0,
+            add(person, period, ["e00200", "self_employment_tax"])
+            - adjustment,
+        )
 
 
 earned_income = variable_alias("earned_income", earned)
-
-
-class was_plus_sey(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-    unit = USD
-
-    def formula(person, period, parameters):
-        return person("gross_was", period) + max_(
-            0,
-            person("sey", period)
-            * person.tax_unit("sey_frac_for_extra_oasdi", period),
-        )
-
-
-class exact(Variable):
-    value_type = bool
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-
-
-class expanded_income(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Expanded income"
-    documentation = "Broad income measure that includes benefit_value_total"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        FILER_COMPONENTS = [
-            "e00200",
-            "pencon",
-            "e00300",
-            "e00400",
-            "e00600",
-            "e00700",
-            "e00800",
-            "e00900",
-            "e01100",
-            "e01200",
-            "e01400",
-            "e01500",
-            "e02000",
-            "e02100",
-            "p22250",
-            "p23250",
-            "cmbtp",
-        ]
-        filer_components = add(
-            tax_unit,
-            period,
-            [f"filer_{component}" for component in FILER_COMPONENTS],
-        )
-        return (
-            filer_components
-            + 0.5 * tax_unit("ptax_was", period)
-            + tax_unit("benefit_value_total", period)
-        )
 
 
 class othertaxes(Variable):
@@ -153,17 +100,6 @@ class sep(Variable):
     definition_period = YEAR
     default_value = 1
     documentation = "2 when MARS is 3 (married filing separately); otherwise 1"
-
-
-class filer_sey(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = "sey for the tax unit (excluding dependents)"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("sey", tax_unit, period)
 
 
 class surtax(Variable):
@@ -199,12 +135,9 @@ class c03260(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        ald = parameters(period).irs.ald
-        return (
-            (1.0 - ald.misc.self_emp_tax_adj)
-            * ald.misc.employer_share
-            * tax_unit.sum(tax_unit.members("setax", period))
-        )
+        misc = parameters(period).irs.ald.misc
+        setax = aggr(tax_unit, period, ["self_employment_tax"])
+        return (1 - misc.self_emp_tax_adj) * misc.employer_share * setax
 
 
 class c05700(Variable):
@@ -335,30 +268,6 @@ class fstax(Variable):
         "search taxcalc/calcfunctions.py for how calculated and used"
     )
     unit = USD
-
-
-class filer_setax(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Self-employment tax for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("setax", tax_unit, period)
-
-
-class aftertax_income(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "After-tax income"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        expanded = tax_unit("expanded_income", period)
-        combined_tax = tax_unit("combined", period)
-        return expanded - combined_tax
 
 
 class benefit_value_total(Variable):

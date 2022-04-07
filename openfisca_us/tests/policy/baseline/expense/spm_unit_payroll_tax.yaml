@@ -1,7 +1,7 @@
 - name: Default will be zero
   period: 2022
   output:
-    spm_unit_fica: 0
+    spm_unit_payroll_tax: 0
 
 - name: Otherwise sums from tax units in the SPM unit
   period: 2022
@@ -16,12 +16,12 @@
     tax_units:
       t1:
         members: [p1, p2]
-        employee_payrolltax: 2
+        employee_payroll_tax: 2
       t2:
         members: [p3]
-        employee_payrolltax: 4
+        employee_payroll_tax: 4
     spm_units:
       spm_unit:
         members: [p1, p2, p3]
   output:
-    spm_unit_fica: 6
+    spm_unit_payroll_tax: 6
