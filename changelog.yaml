@@ -486,4 +486,19 @@
 - bump: minor
   changes:
     added:
+    - More recent Social Security payroll tax cap parameter values.
+    - Separate parameters for employer payroll taxes and self-employment taxes.
+    - Parameter for self-employment net earnings disregard.
+    - Unit tests and legislative references for payroll and self-employment tax variables.
+    changed:
+    - Reorganized payroll and self-employment tax parameters and variables.
+    - Replaced large parameters with infinity and made number formatting consistent.
+    removed:
+    - Reform-only `social_security.add_taxable_earnings` parameter.
+    - Unused `exact` variable.
+    - Variable for `social_security_taxes` (moved logic to `refundable_child_tax_credit`).
+  date: 2022-04-07 06:08:18
+- bump: minor
+  changes:
+    added:
       - Microdata now handled entirely within OpenFisca-US.

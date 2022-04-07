@@ -15,13 +15,11 @@ class c21040(Variable):
         mars = tax_unit("mars", period)
         c21060 = tax_unit("c21060", period)
         phaseout_amount_cap = phaseout.cap * max_(0, c21060 - nonlimited)
-        uncapped_phaseout = max_(
-            0,
-            (
-                (tax_unit("posagi", period) - phaseout.start[mars])
-                * phaseout.rate
-            ),
+        uncapped_phaseout = (
+            max_(0, tax_unit("posagi", period) - phaseout.start[mars])
+            * phaseout.rate
         )
+
         return min_(
             uncapped_phaseout,
             phaseout_amount_cap,

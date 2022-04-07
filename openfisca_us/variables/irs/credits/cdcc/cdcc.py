@@ -56,30 +56,20 @@ class c33200(Variable):
         tratio = 0.01 * max_(
             ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0
         )
-        exact = tax_unit("exact", period)
-        crate = where(
-            exact,
-            max_(
-                cdcc.phaseout.min,
-                cdcc.phaseout.max
-                - min_(
-                    cdcc.phaseout.max - cdcc.phaseout.min,
-                    tratio,
-                ),
-            ),
-            max_(
-                cdcc.phaseout.min,
-                cdcc.phaseout.max - tratio,
+        crate = max_(
+            cdcc.phaseout.min,
+            cdcc.phaseout.max
+            - min_(
+                cdcc.phaseout.max - cdcc.phaseout.min,
+                tratio,
             ),
         )
         tratio2 = max_(
             ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate / 1e2),
             0,
         )
-        crate_if_over_second_threshold = where(
-            exact,
-            max_(0, cdcc.phaseout.min - min_(cdcc.phaseout.min, tratio2)),
-            max_(0, cdcc.phaseout.min - tratio),
+        crate_if_over_second_threshold = max_(
+            0, cdcc.phaseout.min - min_(cdcc.phaseout.min, tratio2)
         )
         crate = where(
             c00100 > cdcc.phaseout.second_start,

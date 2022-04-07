@@ -1,0 +1,11 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    self_employment_medicare_tax: 0
+
+- name: Otherwise 2.9% of taxable self-employment income
+  period: 2022
+  input:
+    taxable_self_employment_income: 100_000
+  output:
+    self_employment_medicare_tax: 2_900
