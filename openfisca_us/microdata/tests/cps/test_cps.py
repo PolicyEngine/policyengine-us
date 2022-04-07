@@ -18,7 +18,9 @@ VARIABLES = (
     "e01500",
     "e00800",
 )
-with open(REPO.parent / "microdata" / "tests" / "cps" / "taxcalc_cps.yml", "r") as f:
+with open(
+    REPO.parent / "microdata" / "tests" / "cps" / "taxcalc_cps.yml", "r"
+) as f:
     tc = yaml.safe_load(f)
 sims = {}
 
