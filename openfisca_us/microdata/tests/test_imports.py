@@ -1,5 +1,5 @@
 def test_import():
-    import microdata
+    import openfisca_us.microdata
 
 
 def test_RawCPS_import():

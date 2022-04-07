@@ -8,7 +8,7 @@ install:
 	pip install --upgrade jupyter-book
 test:
 	pytest openfisca_us/tests/ --maxfail=0
-	pytest openfisca_us_data/tests/
+	pytest openfisca_us/microdata/tests/
 	coverage run --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline
 	coverage xml -i
 documentation:
