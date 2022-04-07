@@ -52,7 +52,7 @@ def _get_taxcalc_aggregates(
         pd.read_csv(file, compression="gzip")
         for file in (cps_csv, cps_weights_csv)
     ]
-    aggregates = pd.DataFrame(
+    return pd.DataFrame(
         {
             year: [
                 (cps[column] * weights[f"WT{year}"]).sum() for column in cps
@@ -60,4 +60,3 @@ def _get_taxcalc_aggregates(
             for year in CPS_YEARS
         }
     )
-    return aggregates

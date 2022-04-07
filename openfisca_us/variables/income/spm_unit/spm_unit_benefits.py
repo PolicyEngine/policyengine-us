@@ -8,8 +8,8 @@ class spm_unit_benefits(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
-        BENEFITS = [
+    formula = sum_of_variables(
+        [
             "social_security",
             "ssi",
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
@@ -22,4 +22,4 @@ class spm_unit_benefits(Variable):
             "ebb",
             # "tanf", # Exclude until defined for California.
         ]
-        return add(spm_unit, period, BENEFITS)
+    )

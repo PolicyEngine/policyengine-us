@@ -29,14 +29,14 @@ class ACS:
             raw_data[entity] for entity in ("person", "spm_unit", "household")
         ]
 
-        add_ID_variables(acs, person, spm_unit, household)
-        add_SPM_variables(acs, spm_unit)
+        add_id_variables(acs, person, spm_unit, household)
+        add_spm_variables(acs, spm_unit)
 
         raw_data.close()
         acs.close()
 
 
-def add_ID_variables(
+def add_id_variables(
     acs: h5py.File,
     person: DataFrame,
     spm_unit: DataFrame,
@@ -68,6 +68,6 @@ def add_ID_variables(
     acs["person_weight"] = person.WT
 
 
-def add_SPM_variables(acs: h5py.File, spm_unit: DataFrame):
-    acs["SPM_unit_net_income"] = spm_unit.SPM_RESOURCES
-    acs["poverty_threshold"] = spm_unit.SPM_POVTHRESHOLD
+def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
+    acs["spm_unit_net_income"] = spm_unit.SPM_RESOURCES
+    acs["spm_unit_spm_threshold"] = spm_unit.SPM_POVTHRESHOLD
