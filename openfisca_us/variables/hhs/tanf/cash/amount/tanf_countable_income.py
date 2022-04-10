@@ -23,4 +23,4 @@ class tanf_countable_income(Variable):
         )
         # No deduction for unearned income.
         unearned_income = spm_unit("tanf_gross_unearned_income", period)
-        return countable_earned_income + unearned_income
+        return max_(countable_earned_income + unearned_income, 0)
