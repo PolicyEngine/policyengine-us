@@ -1,7 +1,7 @@
 from openfisca_tools import Microsimulation as GeneralMicrosimulation
 from openfisca_us import CountryTaxBenefitSystem
 from openfisca_us.entities import entities
-from openfisca_us.microdata import CPS
+from openfisca_us.data import CPS
 
 
 class Microsimulation(GeneralMicrosimulation):

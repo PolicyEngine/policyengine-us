@@ -59,7 +59,7 @@ setup(
     entry_points={
         "console_scripts": [
             "openfisca-us = openfisca_us.tools.cli:main",
-            "openfisca-us-data = openfisca_us.microdata.cli:main",
+            "openfisca-us-data = openfisca_us.data.cli:cli",
         ],
     },
     packages=find_packages(),
