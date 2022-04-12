@@ -502,3 +502,8 @@
   changes:
     fixed:
       - Refundable CTC formula works properly when phase-in rate increased (comments added).
+- bump: minor
+  changes:
+    added:
+      - Capped non-refundable credits variable.
+      - Shortened labels for tax variables.

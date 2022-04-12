@@ -10,10 +10,8 @@ class c09200(Variable):
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
-        return max_(
-            0,
-            tax_unit("income_tax_before_credits", period)
-            - tax_unit("income_tax_non_refundable_credits", period),
+        return tax_unit("income_tax_before_credits", period) - tax_unit(
+            "income_tax_capped_non_refundable_credits", period
         )
 
 
