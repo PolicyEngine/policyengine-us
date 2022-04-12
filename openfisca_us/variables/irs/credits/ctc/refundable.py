@@ -121,11 +121,6 @@ class refundable_ctc(Variable):
             ctc_capped_by_increased_tax - ctc_capped_by_tax
         )
 
-        print(f"tax_increase: {tax_increase}")
-        print(f"limiting_tax: {limiting_tax}")
-        print(f"relevant_earnings: {relevant_earnings}")
-        print(f"social_security_excess: {social_security_excess}")
-
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
     def formula_2021(tax_unit, period, parameters):
