@@ -12,8 +12,6 @@ class RawCPS(PublicDataset):
     label = "Raw CPS"
     folder_path = OPENFISCA_US_MICRODATA_FOLDER
 
-    url_by_year = {2020: "https://some_url.org"}
-
     def generate(self, year: int):
         """Generates the raw CPS dataset.
 
@@ -26,14 +24,14 @@ class RawCPS(PublicDataset):
         file_year = int(year) + 1
         file_year_code = str(file_year)[-2:]
 
-        cps_url_by_year = {
+        CPS_URL_BY_YEAR = {
             2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip"
         }
 
-        if year not in cps_url_by_year:
+        if year not in CPS_URL_BY_YEAR:
             raise ValueError(f"No raw CPS data URL known for year {year}.")
 
-        url = cps_url_by_year[year]
+        url = CPS_URL_BY_YEAR[year]
 
         response = requests.get(url, stream=True)
         total_size_in_bytes = int(
@@ -79,7 +77,7 @@ class RawCPS(PublicDataset):
                     ]
                     storage["household"] = household
                 storage["tax_unit"] = RawCPS._create_tax_unit_table(person)
-                storage["spm_unit"] = RawCPS._create_SPM_unit_table(person)
+                storage["spm_unit"] = RawCPS._create_spm_unit_table(person)
         except Exception as e:
             self.remove(year)
             raise ValueError(
@@ -105,7 +103,7 @@ class RawCPS(PublicDataset):
         return person[TAX_UNIT_COLUMNS].groupby(person.TAX_ID).sum()
 
     @staticmethod
-    def _create_SPM_unit_table(person: pd.DataFrame) -> pd.DataFrame:
+    def _create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
         SPM_UNIT_COLUMNS = [
             "ACTC",
             "CAPHOUSESUB",

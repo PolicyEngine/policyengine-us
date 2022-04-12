@@ -42,16 +42,16 @@ class CPS(PublicDataset):
             )
         ]
 
-        add_ID_variables(cps, person, tax_unit, family, spm_unit, household)
+        add_id_variables(cps, person, tax_unit, family, spm_unit, household)
         add_personal_variables(cps, person)
         add_personal_income_variables(cps, person)
-        add_SPM_variables(cps, spm_unit)
+        add_spm_variables(cps, spm_unit)
 
         raw_data.close()
         cps.close()
 
 
-def add_ID_variables(
+def add_id_variables(
     cps: h5py.File,
     person: DataFrame,
     tax_unit: DataFrame,
@@ -109,6 +109,13 @@ def add_personal_variables(cps: h5py.File, person: DataFrame):
         cps (h5py.File): The CPS dataset file.
         person (DataFrame): The CPS person table.
     """
+
+    # The CPS edits age as follows:
+    # 0-79 => 0-79
+    # 80-84  => 80
+    # 85+ => 85
+    # We assign the 80 ages randomly between 80 and 85
+    # to avoid unrealistically bunching at 80
     cps["age"] = np.where(
         person.A_AGE.between(80, 85),
         80 + 5 * np.random.rand(len(person)),
@@ -137,7 +144,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["e00800"] = (person.OI_OFF == 20) * person.OI_VAL
 
 
-def add_SPM_variables(cps: h5py.File, spm_unit: DataFrame):
+def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
     SPM_RENAMES = dict(
         spm_unit_total_income="SPM_TOTVAL",
         snap="SPM_SNAPSUB",
