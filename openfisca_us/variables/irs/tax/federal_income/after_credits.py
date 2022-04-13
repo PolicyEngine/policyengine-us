@@ -10,9 +10,11 @@ class c09200(Variable):
     documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("income_tax_before_credits", period) - tax_unit(
+        income_tax_bc = tax_unit("income_tax_before_credits", period)
+        capped_credits = tax_unit(
             "income_tax_capped_non_refundable_credits", period
         )
+        return income_tax_bc - capped_credits
 
 
 income_tax_before_refundable_credits = variable_alias(

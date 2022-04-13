@@ -25,7 +25,7 @@ class income_tax_capped_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Non-refundable tax credits"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Capped value of non-refundable tax credits"
     definition_period = YEAR
 
