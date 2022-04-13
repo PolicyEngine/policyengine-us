@@ -11,6 +11,7 @@ class RawCPS(PublicDataset):
     name = "raw_cps"
     label = "Raw CPS"
     folder_path = OPENFISCA_US_MICRODATA_FOLDER
+    is_openfisca_compatible = False
 
     def generate(self, year: int):
         """Generates the raw CPS dataset.
