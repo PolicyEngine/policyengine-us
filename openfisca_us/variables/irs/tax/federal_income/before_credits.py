@@ -208,7 +208,7 @@ class c05800(Variable):
     definition_period = YEAR
     label = "Income tax before credits"
     unit = USD
-    documentation = "Total (regular + AMT) income tax liability before credits (equals taxbc plus c09600)"
+    documentation = "Total (regular + AMT) income tax liability before credits"
 
     def formula(tax_unit, period, parameters):
         return add(
