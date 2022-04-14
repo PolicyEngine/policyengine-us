@@ -28,13 +28,19 @@ setup(
     ],
     install_requires=[
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "openfisca_us_data >= 0.1.2",
         "microdf_python",
         "pandas",
         "tqdm",
         "requests",
-        "OpenFisca-Tools>=0.3.0,<1.0.0",
+        "OpenFisca-Tools>=0.8.0,<1.0.0",
         "pyyaml",
+        "pandas",
+        "pathlib",
+        "tables",
+        "h5py",
+        "synthimpute",
+        "pytest",
+        "pytest-dependency",
     ],
     extras_require={
         "dev": [
@@ -53,6 +59,7 @@ setup(
     entry_points={
         "console_scripts": [
             "openfisca-us = openfisca_us.tools.cli:main",
+            "openfisca-us-data = openfisca_us.data.cli:cli",
         ],
     },
     packages=find_packages(),
