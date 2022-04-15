@@ -13,6 +13,7 @@ class is_tax_unit_spouse(Variable):
         is_not_head = ~person("is_tax_unit_head", period)
         eligible = is_adult * is_not_head
         # Of those who meet the criteria, select the first person defined
-        rank = person.tax_unit.members_position * eligible
-        first_rank = person.tax_unit.min(rank)
+        tax_unit = person.tax_unit
+        rank = where(eligible, tax_unit.members_position, inf)
+        first_rank = tax_unit.min(rank)
         return eligible & (rank == first_rank)

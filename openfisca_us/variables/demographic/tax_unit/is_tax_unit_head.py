@@ -12,6 +12,7 @@ class is_tax_unit_head(Variable):
         eligible = person("age", period) >= 18
 
         # Of those who meet the criteria, select the first person defined
-        rank = person.tax_unit.members_position * eligible
-        first_rank = person.tax_unit.min(rank)
+        tax_unit = person.tax_unit
+        rank = where(eligible, tax_unit.members_position, inf)
+        first_rank = tax_unit.min(rank)
         return eligible & (rank == first_rank)
