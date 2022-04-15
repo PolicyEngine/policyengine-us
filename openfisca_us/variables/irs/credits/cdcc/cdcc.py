@@ -14,13 +14,11 @@ class c07180(Variable):
         if cdcc.refundable or cdcc.abolition:
             return 0
         else:
-            return min_(
-                max_(
-                    0,
-                    tax_unit("c05800", period) - tax_unit("e07300", period),
-                ),
-                tax_unit("c33200", period),
-            )
+            c05800 = tax_unit("c05800", period)
+            e07300 = tax_unit("e07300", period)
+            c33200 = tax_unit("c33200", period)
+            c05800_minus_e07300_capped = max_(c05800 - e07300, 0)
+            return min_(c05800_minus_e07300_capped, c33200)
 
 
 cdcc = variable_alias("cdcc", c07180)
@@ -44,13 +42,12 @@ class c33200(Variable):
         is_head = person("is_tax_unit_head", period)
         earnings = person("earned", period)
         is_spouse = person("is_tax_unit_spouse", period)
+        head_earnings = tax_unit.sum(is_head * earnings)
+        spouse_earnings = tax_unit.sum(is_spouse * earnings)
         lowest_earnings = where(
             mars == mars.possible_values.JOINT,
-            min_(
-                tax_unit.sum(is_head * earnings),
-                tax_unit.sum(is_spouse * earnings),
-            ),
-            tax_unit.sum(is_head * earnings),
+            min_(head_earnings, spouse_earnings),
+            head_earnings,
         )
         c33000 = max_(0, min_(c32800, lowest_earnings))
         c00100 = tax_unit("c00100", period)
