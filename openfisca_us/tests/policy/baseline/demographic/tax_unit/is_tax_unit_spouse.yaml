@@ -31,4 +31,4 @@
       tax_unit:
         members: [child, head, spouse, other_dep]
   output:
-    is_tax_unit_head: [false, false, true, false]
+    is_tax_unit_spouse: [false, false, true, false]
