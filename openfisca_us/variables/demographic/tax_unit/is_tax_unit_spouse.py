@@ -8,10 +8,10 @@ class is_tax_unit_spouse(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # Establish basic conditions.
-        is_adult = person("age", period) >= 18
-        is_not_head = ~person("is_tax_unit_head", period)
-        eligible = is_adult * is_not_head
+        # Only non-head adults can be spouses.
+        adult = ~person("is_child", period)
+        head = person("is_tax_unit_head", period)
+        eligible = adult & ~head
         # Of those who meet the criteria, select the first person defined.
         tax_unit = person.tax_unit
         # NB: tax_unit.members_position is actually person-level.
