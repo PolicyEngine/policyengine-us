@@ -8,6 +8,7 @@ class cdcc_refund(Variable):
     label = "Child/dependent care refundable credit"
     unit = USD
     documentation = "Refundable credit for child and dependent care expenses from Form 2441"
+    reference = "https://www.law.cornell.edu/uscode/text/26/21#g_1"
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc

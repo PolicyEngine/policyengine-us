@@ -8,6 +8,7 @@ class c33200(Variable):
     unit = USD
     documentation = "From form 2441, before refundability checks"
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/21"
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc
