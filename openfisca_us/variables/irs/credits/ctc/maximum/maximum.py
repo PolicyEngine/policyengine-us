@@ -5,7 +5,7 @@ class ctc_maximum(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maximum CTC"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Maximum value of the Child Tax Credit, before phaseout."
     definition_period = YEAR
 

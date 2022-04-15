@@ -5,7 +5,7 @@ class ctc_individual_maximum(Variable):
     value_type = float
     entity = Person
     label = "CTC individual amount maximum"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "The Child Tax Credit entitlement in respect of this person."
     )
