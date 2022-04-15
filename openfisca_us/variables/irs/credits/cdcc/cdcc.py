@@ -37,7 +37,8 @@ class c33200(Variable):
 
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc
-        max_credit = min_(tax_unit("f2441", period), 2) * cdcc.max
+        eligible_deps = min_(tax_unit("f2441", period), cdcc.eligibility.max)
+        max_credit = eligible_deps * cdcc.max
         c32800 = max_(0, min_(tax_unit("filer_e32800", period), max_credit))
         mars = tax_unit("mars", period)
         is_head = tax_unit.members("is_tax_unit_head", period)
