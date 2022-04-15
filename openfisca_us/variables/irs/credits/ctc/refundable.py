@@ -5,7 +5,7 @@ class ctc_refundable_individual_maximum(Variable):
     value_type = float
     entity = Person
     label = "Maximum refundable CTC"
-    unit = "currency-USD"
+    unit = USD
     documentation = "The maximum refundable CTC for this person."
     definition_period = YEAR
     reference = (
@@ -34,7 +34,7 @@ class ctc_limiting_tax_liability(Variable):
     value_type = float
     entity = TaxUnit
     label = "CTC-limiting tax liability"
-    unit = "currency-USD"
+    unit = USD
     documentation = "The tax liability used to determine the maximum amount of the non-refundable CTC."
     definition_period = YEAR
 
@@ -54,7 +54,7 @@ class refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Refundable CTC"
-    unit = "currency-USD"
+    unit = USD
     documentation = "The portion of the Child Tax Credit that is refundable."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
@@ -133,7 +133,7 @@ class non_refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Non-refundable CTC"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "The portion of the Child Tax Credit that is not refundable."
     )

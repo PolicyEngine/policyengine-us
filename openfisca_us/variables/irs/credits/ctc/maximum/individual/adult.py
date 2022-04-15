@@ -5,7 +5,7 @@ class ctc_adult_individual_maximum(Variable):
     value_type = float
     entity = Person
     label = "CTC maximum amount (adult dependent)"
-    unit = "currency-USD"
+    unit = USD
     documentation = (
         "The CTC entitlement in respect of this person as an adult dependent."
     )
