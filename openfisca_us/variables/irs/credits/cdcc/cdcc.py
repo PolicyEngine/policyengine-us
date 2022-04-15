@@ -1,4 +1,3 @@
-from numpy import ceil
 from openfisca_us.model_api import *
 
 
@@ -41,9 +40,10 @@ class c33200(Variable):
         max_credit = eligible_deps * cdcc.max
         c32800 = max_(0, min_(tax_unit("filer_e32800", period), max_credit))
         mars = tax_unit("mars", period)
-        is_head = tax_unit.members("is_tax_unit_head", period)
-        earnings = tax_unit.members("earned", period)
-        is_spouse = tax_unit.members("is_tax_unit_spouse", period)
+        person = tax_unit.members
+        is_head = person("is_tax_unit_head", period)
+        earnings = person("earned", period)
+        is_spouse = person("is_tax_unit_spouse", period)
         lowest_earnings = where(
             mars == mars.possible_values.JOINT,
             min_(
