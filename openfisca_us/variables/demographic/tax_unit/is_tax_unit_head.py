@@ -13,5 +13,5 @@ class is_tax_unit_head(Variable):
 
         # Of those who meet the criteria, select the first person defined
         rank = person.tax_unit.members_position * eligible
-        highest_rank = person.tax_unit.sum(rank)
-        return eligible & (rank == highest_rank)
+        first_rank = person.tax_unit.min(rank)
+        return eligible & (rank == first_rank)
