@@ -73,6 +73,7 @@ class RawACS(PublicDataset):
         household_url = f"https://www2.census.gov/programs-surveys/acs/data/pums/{year}/1-Year/csv_hus.zip"
 
         # The data dictionary for 2019 can be found here: https://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2019.pdf
+
         try:
             with pd.HDFStore(RawACS.file(year)) as storage:
                 # Household file
@@ -115,9 +116,9 @@ def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFram
         f.seek(0)
         zf = ZipFile(f)
         logging.info(f"Loading the first half of the dataset")
-        a = pd.read_csv(zf.open(prefix + "a.csv"))[columns]
+        a = pd.read_csv(zf.open(prefix + "a.csv"), usecols=columns)
         logging.info(f"Loading the second half of the dataset")
-        b = pd.read_csv(zf.open(prefix + "b.csv"))[columns]
+        b = pd.read_csv(zf.open(prefix + "b.csv"), usecols=columns)
     logging.info(f"Concatenating datasets")
     res = pd.concat([a, b]).fillna(0)
     res.columns = res.columns.str.upper()
