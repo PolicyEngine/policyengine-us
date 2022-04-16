@@ -11,6 +11,8 @@ import numpy as np
 class ACS(PublicDataset):
     name = "acs"
     is_openfisca_compatible = True
+    label = "ACS"
+    folder_path = OPENFISCA_US_MICRODATA_FOLDER
 
     def generate(self, year: int) -> None:
         """Generates the ACS dataset.
@@ -33,8 +35,8 @@ class ACS(PublicDataset):
             raw_data[entity] for entity in ("person", "spm_unit", "household")
         ]
 
-        add_ID_variables(acs, person, spm_unit, household)
-        add_SPM_variables(acs, spm_unit)
+        add_id_variables(acs, person, spm_unit, household)
+        add_spm_variables(acs, spm_unit)
 
         raw_data.close()
         acs.close()
@@ -42,7 +44,7 @@ class ACS(PublicDataset):
 ACS = ACS()
 
 
-def add_ID_variables(
+def add_id_variables(
     acs: h5py.File,
     person: DataFrame,
     spm_unit: DataFrame,
