@@ -12,6 +12,7 @@ class vehicles_owned(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
+        # We randomly split the household's vehicles between its adults
         household = person.household
         household_vehicles = household("household_vehicles_owned", period)
         is_adult = person("is_adult", period)

@@ -41,6 +41,7 @@ class ACS(PublicDataset):
     
         person = person[person.SERIALNO.isin(household.SERIALNO)]
         household = household[household.SERIALNO.isin(person.SERIALNO)]
+        spm_unit = spm_unit[spm_unit.SPM_ID.isin(person.SPM_ID)]
 
         add_id_variables(acs, person, spm_unit, household)
         add_spm_variables(acs, spm_unit)
@@ -86,7 +87,8 @@ def add_id_variables(
 
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
     acs["spm_unit_net_income"] = spm_unit.SPM_RESOURCES
-    acs["poverty_threshold"] = spm_unit.SPM_POVTHRESHOLD
+    acs["spm_unit_spm_threshold"] = spm_unit.SPM_POVTHRESHOLD
 
 def add_household_variables(acs: h5py.File, household: DataFrame):
     acs["household_vehicles_owned"] = household.VEH
+    acs["fips"] = household.ST

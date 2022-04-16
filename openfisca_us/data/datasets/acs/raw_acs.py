@@ -161,8 +161,8 @@ def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> pd.Data
         .first()
     )
 
-    person_table = storage["person"]
-    person_table["SPM_ID"] = person.SPM_ID
+    original_person_table = storage["person"]
+    combined_person_table = pd.merge(original_person_table, person, on=["SERIALNO", "SPORDER"])
 
-    storage["person"] = person_table
+    storage["person"] = combined_person_table
     storage["spm_unit"] = spm_table
