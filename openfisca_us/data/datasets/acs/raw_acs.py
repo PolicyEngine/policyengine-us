@@ -171,10 +171,12 @@ def create_spm_unit_table(
     original_person_table = storage["person"]
     # Ensure that join keys are the same type.
     JOIN_COLUMNS = ["SERIALNO", "SPORDER"]
+    print(original_person_table[JOIN_COLUMNS].dtypes)
+    print(person[JOIN_COLUMNS].dtypes)
     original_person_table[JOIN_COLUMNS] = original_person_table[
         JOIN_COLUMNS
-    ].astype(int)
-    person[JOIN_COLUMNS] = person[JOIN_COLUMNS].astype(int)
+    ].astype(str)
+    person[JOIN_COLUMNS] = person[JOIN_COLUMNS].astype(str)
     # Add SPM_ID from the SPM person table to the original person table.
     combined_person_table = pd.merge(
         original_person_table,

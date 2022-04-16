@@ -8,4 +8,3 @@ class household_vehicles_owned(Variable):
     unit = USD
     documentation = "Number of vehicles owned by the household"
     definition_period = YEAR
-

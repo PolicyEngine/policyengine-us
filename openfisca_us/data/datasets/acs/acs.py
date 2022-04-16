@@ -32,9 +32,10 @@ class ACS(PublicDataset):
             raw_data[entity] for entity in ("person", "spm_unit", "household")
         ]
         # Add primary and foreign keys
-        make_numeric = lambda x: int(
-            x.replace("2019GQ", "0").replace("2019HU", "1")
-        )
+
+        def make_numeric(x):
+            return int(x.replace("2019GQ", "0").replace("2019HU", "1"))
+
         household.SERIALNO = household.SERIALNO.apply(make_numeric)
         person.SERIALNO = person.SERIALNO.apply(make_numeric)
 
