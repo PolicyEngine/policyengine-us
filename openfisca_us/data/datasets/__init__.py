@@ -1,3 +1,4 @@
-from openfisca_us.data.datasets.cps import CPS, RawCPS
+from .cps import CPS, RawCPS
+from .acs import ACS, RawACS
 
-DATASETS = [CPS, RawCPS]
+DATASETS = [CPS, RawCPS, ACS, RawACS]
