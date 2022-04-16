@@ -8,10 +8,11 @@ class is_tax_unit_head(Variable):
     definition_period = ETERNITY
 
     def formula(person, period, parameters):
-        # Establish basic conditions
-        eligible = person("age", period) >= 18
-
-        # Of those who meet the criteria, select the first person defined
-        rank = person.tax_unit.members_position * eligible
-        highest_rank = person.tax_unit.sum(rank)
-        return eligible & (rank == highest_rank)
+        # Only adults can be heads.
+        eligible = ~person("is_child", period)
+        # Of those who meet the criteria, select the first person defined.
+        tax_unit = person.tax_unit
+        # NB: tax_unit.members_position is actually person-level.
+        rank = where(eligible, tax_unit.members_position, inf)
+        first_rank = tax_unit.min(rank)
+        return eligible & (rank == first_rank)

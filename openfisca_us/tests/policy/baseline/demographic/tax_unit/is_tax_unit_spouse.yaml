@@ -1,0 +1,34 @@
+- name: Default should be the tax unit head, and therefore not spouse.
+  period: 2022
+  output:
+    is_tax_unit_spouse: false
+
+- name: Couple should have one head and one spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse: {}
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    is_tax_unit_spouse: [false, true]
+
+- name: Children and other deps don't count.
+  period: 2022
+  input:
+    people:
+      child:
+        is_child: true
+      head:
+        is_tax_unit_head: true
+      spouse: {}
+      # Based on sequence of members.
+      other_dep: {}
+    tax_units:
+      tax_unit:
+        members: [child, head, spouse, other_dep]
+  output:
+    is_tax_unit_spouse: [false, false, true, false]

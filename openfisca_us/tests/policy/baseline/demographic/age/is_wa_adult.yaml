@@ -1,0 +1,26 @@
+- name: Default is true, since default age is 18.
+  period: 2020
+  output:
+    is_wa_adult: true
+
+- name: Children are not working-age adults.
+  period: 2020
+  input:
+    is_child: true
+  output:
+    is_wa_adult: false
+
+- name: Seniors are not working-age adults.
+  period: 2020
+  input:
+    is_senior: true
+  output:
+    is_wa_adult: false
+
+- name: People who are neither children nor seniors are working-age adults.
+  period: 2020
+  input:
+    is_child: false
+    is_senior: false
+  output:
+    is_wa_adult: true
