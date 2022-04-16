@@ -35,10 +35,12 @@ class ACS(PublicDataset):
             raw_data[entity] for entity in ("person", "spm_unit", "household")
         ]
         # Add primary and foreign keys
-        household["household_id"] = household.index
-        person["household_id"] = household[["household_id", "SERIALNO"]].set_index("SERIALNO").loc[person.SERIALNO.values].values
-        household = household[household.household_id.isin(person.household_id)]
-        person = person[person.household_id.isin(household.household_id)]
+        make_numeric = lambda x: int(x.replace("2019GQ", "0").replace("2019HU", "1"))
+        household.SERIALNO = household.SERIALNO.apply(make_numeric)
+        person.SERIALNO = person.SERIALNO.apply(make_numeric)
+    
+        person = person[person.SERIALNO.isin(household.SERIALNO)]
+        household = household[household.SERIALNO.isin(person.SERIALNO)]
 
         add_id_variables(acs, person, spm_unit, household)
         add_spm_variables(acs, spm_unit)
@@ -65,17 +67,17 @@ def add_id_variables(
             of the ACS.
         household (DataFrame): The household table of the ACS.
     """
-    acs["person_id"] = person.household_id * 1e2 + person.SPORDER
+    acs["person_id"] = person.SERIALNO * 1e2 + person.SPORDER
     acs["person_spm_unit_id"] = person.SPM_ID
     acs["spm_unit_id"] = spm_unit.SPM_ID
     # ACS doesn't have tax units.
     acs["tax_unit_id"] = spm_unit.SPM_ID
     # Until we add a family table, we'll use the person table.
     acs["family_id"] = spm_unit.SPM_ID
-    acs["person_household_id"] = person.household_id
+    acs["person_household_id"] = person.SERIALNO
     acs["person_tax_unit_id"] = person.SPM_ID
     acs["person_family_id"] = person.SPM_ID
-    acs["household_id"] = household.household_id
+    acs["household_id"] = household.SERIALNO
 
     # Add weights
     acs["person_weight"] = person.PWGTP

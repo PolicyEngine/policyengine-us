@@ -17,11 +17,12 @@ class vehicles_owned(Variable):
         is_adult = person("is_adult", period)
         max_vehicles = household_vehicles.max()
         adult_rank = where(is_adult, household.members_position, 100)
-        vehicles = np.zeros_like(is_adult)
-        for i in range(int(max_vehicles)):
+        vehicles = is_adult * 0
+        for _ in range(int(max_vehicles)):
             # Pick a random adult in each household
             selected_adult = randint(0, adult_rank[is_adult].max())
             maximum_reached = household.sum(vehicles) >= household_vehicles
-            vehicles += where(maximum_reached.project(), adult_rank == selected_adult, 0)
+            should_add_vehicle = ~maximum_reached & (adult_rank == selected_adult)
+            vehicles += where(should_add_vehicle, 1, 0)
         return vehicles
 
