@@ -1,0 +1,27 @@
+from numpy import maximum
+from openfisca_us.model_api import *
+from random import randint
+from openfisca_core.populations import Population
+
+class vehicles_owned(Variable):
+    value_type = float
+    entity = Person
+    label = "Vehicles owned"
+    unit = USD
+    documentation = "Number of vehicles owned by this person"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        household = person.household
+        household_vehicles = household("household_vehicles_owned", period)
+        is_adult = person("is_adult", period)
+        max_vehicles = household_vehicles.max()
+        adult_rank = where(is_adult, household.members_position, 100)
+        vehicles = np.zeros_like(is_adult)
+        for i in range(int(max_vehicles)):
+            # Pick a random adult in each household
+            selected_adult = randint(0, adult_rank[is_adult].max())
+            maximum_reached = household.sum(vehicles) >= household_vehicles
+            vehicles += where(maximum_reached.project(), adult_rank == selected_adult, 0)
+        return vehicles
+

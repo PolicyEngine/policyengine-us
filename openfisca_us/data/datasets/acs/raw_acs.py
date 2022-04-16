@@ -86,7 +86,7 @@ class RawACS(PublicDataset):
                 logging.info(f"Downloading SPM unit file")
                 spm_person = pd.read_stata(spm_url).fillna(0)
                 spm_person.columns = spm_person.columns.str.upper()
-                storage["spm_unit"] = create_spm_unit_table(spm_person)
+                create_spm_unit_table(storage, spm_person)
         except Exception as e:
             RawACS.remove(year)
             raise ValueError(
@@ -125,7 +125,7 @@ def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFram
     return res
 
 
-def create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
+def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> pd.DataFrame:
     SPM_UNIT_COLUMNS = [
         "CAPHOUSESUB",
         "CAPWKCCXPNS",
@@ -155,8 +155,14 @@ def create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
         "WUI_LT15",
         "ID",
     ]
-    return (
+    spm_table = (
         person[["SPM_" + column for column in SPM_UNIT_COLUMNS]]
         .groupby(person.SPM_ID)
         .first()
     )
+
+    person_table = storage["person"]
+    person_table["SPM_ID"] = person.SPM_ID
+
+    storage["person"] = person_table
+    storage["spm_unit"] = spm_table
