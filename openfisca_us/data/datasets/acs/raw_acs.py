@@ -1,5 +1,6 @@
 from io import BytesIO
 import logging
+from typing import List
 from zipfile import ZipFile
 import pandas as pd
 from openfisca_tools.data import PublicDataset
@@ -13,6 +14,48 @@ import numpy as np
 
 logging.getLogger().setLevel(logging.INFO)
 
+PERSON_COLUMNS = [
+    "SERIALNO", # Household ID
+    "SPORDER", # Person number within household
+    "PWGTP", # Person weight
+    "AGEP", # Age
+    "CIT", # Citizenship
+    "MAR", # Marital status
+    "WAGP", # Wage/salary
+    "SSP", # Social security income
+    "SSIP", # Supplemental security income
+    "SEX", # Sex
+    "SEMP", # Self-employment income
+    "SCHL", # Educational attainment
+    "RETP", # Retirement income
+    "PAP", # Public assistance income
+    "OIP", # Other income
+    "PERNP", # Total earnings
+    "PINCP", # Total income
+    "POVPIP", # Income-to-poverty line percentage
+    "RAC1P", # Race
+]
+
+HOUSEHOLD_COLUMNS = [
+    "SERIALNO", # Household ID
+    "PUMA", # PUMA area code
+    "ST", # State code
+    "ADJHSG", # Adjustment factor for housing dollar amounts
+    "ADJINC", # Adjustment factor for income
+    "WGTP", # Household weight
+    "NP", # Number of persons in household
+    "BDSP", # Number of bedrooms
+    "ELEP", # Electricity monthly cost
+    "FULP", # Fuel monthly cost
+    "GASP", # Gas monthly cost
+    "RMSP", # Number of rooms
+    "RNTP", # Monthly rent
+    "TEN", # Tenure
+    "VEH", # Number of vehicles
+    "FINCP", # Total income
+    "GRNTP", # Gross rent
+]
+
 
 class RawACS(PublicDataset):
     name = "raw_acs"
@@ -25,18 +68,19 @@ class RawACS(PublicDataset):
         if year in self.years:
             self.remove(year)
 
-        
         spm_url = f"https://www2.census.gov/programs-surveys/supplemental-poverty-measure/datasets/spm/spm_{year}_pu.dta"
         person_url = f"https://www2.census.gov/programs-surveys/acs/data/pums/{year}/1-Year/csv_pus.zip"
         household_url = f"https://www2.census.gov/programs-surveys/acs/data/pums/{year}/1-Year/csv_hus.zip"
+
+        # The data dictionary for 2019 can be found here: https://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2019.pdf
         try:
             with pd.HDFStore(RawACS.file(year)) as storage:
                 # Household file
                 logging.info(f"Downloading household file")
-                storage["household"] = concat_zipped_csvs(household_url, "psam_hus")
+                storage["household"] = concat_zipped_csvs(household_url, "psam_hus", HOUSEHOLD_COLUMNS)
                 # Person file
                 logging.info(f"Downloading person file")
-                storage["person"] = concat_zipped_csvs(person_url, "psam_pus")
+                storage["person"] = concat_zipped_csvs(person_url, "psam_pus", PERSON_COLUMNS)
                 # SPM unit file
                 logging.info(f"Downloading SPM unit file")
                 spm_person = pd.read_stata(spm_url).fillna(0)
@@ -50,8 +94,17 @@ class RawACS(PublicDataset):
 
 RawACS = RawACS()
 
-def concat_zipped_csvs(url: str, prefix: str) -> pd.DataFrame:
-    # Creates a DataFrame with the two csvs inside a zip file from a URL.
+def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFrame:
+    """Downloads the ACS microdata, which is a zip file containing two halves in CSV format.
+
+    Args:
+        url (str): The URL of the data server.
+        prefix (str): The prefix of the filenames, before a/b.csv.
+        columns (List[str]): The columns to filter (avoids hitting memory limits).
+
+    Returns:
+        pd.DataFrame: The concatenated DataFrame.
+    """
     req = requests.get(url, stream=True)
     with BytesIO() as f:
         pbar = tqdm()
@@ -61,8 +114,11 @@ def concat_zipped_csvs(url: str, prefix: str) -> pd.DataFrame:
                 f.write(chunk)
         f.seek(0)
         zf = ZipFile(f)
-        a = pd.read_csv(zf.open(prefix + "a.csv"))
-        b = pd.read_csv(zf.open(prefix + "b.csv"))
+        logging.info(f"Loading the first half of the dataset")
+        a = pd.read_csv(zf.open(prefix + "a.csv"))[columns]
+        logging.info(f"Loading the second half of the dataset")
+        b = pd.read_csv(zf.open(prefix + "b.csv"))[columns]
+    logging.info(f"Concatenating datasets")
     res = pd.concat([a, b]).fillna(0)
     res.columns = res.columns.str.upper()
     return res
