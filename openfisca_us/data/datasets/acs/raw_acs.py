@@ -4,56 +4,53 @@ from typing import List
 from zipfile import ZipFile
 import pandas as pd
 from openfisca_tools.data import PublicDataset
-import h5py
 import requests
 from tqdm import tqdm
-from openfisca_us.data.datasets.cps.raw_cps import RawCPS
 from openfisca_us.data.storage import OPENFISCA_US_MICRODATA_FOLDER
-from pandas import DataFrame, Series
-import numpy as np
+
 
 logging.getLogger().setLevel(logging.INFO)
 
 PERSON_COLUMNS = [
-    "SERIALNO", # Household ID
-    "SPORDER", # Person number within household
-    "PWGTP", # Person weight
-    "AGEP", # Age
-    "CIT", # Citizenship
-    "MAR", # Marital status
-    "WAGP", # Wage/salary
-    "SSP", # Social security income
-    "SSIP", # Supplemental security income
-    "SEX", # Sex
-    "SEMP", # Self-employment income
-    "SCHL", # Educational attainment
-    "RETP", # Retirement income
-    "PAP", # Public assistance income
-    "OIP", # Other income
-    "PERNP", # Total earnings
-    "PINCP", # Total income
-    "POVPIP", # Income-to-poverty line percentage
-    "RAC1P", # Race
+    "SERIALNO",  # Household ID
+    "SPORDER",  # Person number within household
+    "PWGTP",  # Person weight
+    "AGEP",  # Age
+    "CIT",  # Citizenship
+    "MAR",  # Marital status
+    "WAGP",  # Wage/salary
+    "SSP",  # Social security income
+    "SSIP",  # Supplemental security income
+    "SEX",  # Sex
+    "SEMP",  # Self-employment income
+    "SCHL",  # Educational attainment
+    "RETP",  # Retirement income
+    "PAP",  # Public assistance income
+    "OIP",  # Other income
+    "PERNP",  # Total earnings
+    "PINCP",  # Total income
+    "POVPIP",  # Income-to-poverty line percentage
+    "RAC1P",  # Race
 ]
 
 HOUSEHOLD_COLUMNS = [
-    "SERIALNO", # Household ID
-    "PUMA", # PUMA area code
-    "ST", # State code
-    "ADJHSG", # Adjustment factor for housing dollar amounts
-    "ADJINC", # Adjustment factor for income
-    "WGTP", # Household weight
-    "NP", # Number of persons in household
-    "BDSP", # Number of bedrooms
-    "ELEP", # Electricity monthly cost
-    "FULP", # Fuel monthly cost
-    "GASP", # Gas monthly cost
-    "RMSP", # Number of rooms
-    "RNTP", # Monthly rent
-    "TEN", # Tenure
-    "VEH", # Number of vehicles
-    "FINCP", # Total income
-    "GRNTP", # Gross rent
+    "SERIALNO",  # Household ID
+    "PUMA",  # PUMA area code
+    "ST",  # State code
+    "ADJHSG",  # Adjustment factor for housing dollar amounts
+    "ADJINC",  # Adjustment factor for income
+    "WGTP",  # Household weight
+    "NP",  # Number of persons in household
+    "BDSP",  # Number of bedrooms
+    "ELEP",  # Electricity monthly cost
+    "FULP",  # Fuel monthly cost
+    "GASP",  # Gas monthly cost
+    "RMSP",  # Number of rooms
+    "RNTP",  # Monthly rent
+    "TEN",  # Tenure
+    "VEH",  # Number of vehicles
+    "FINCP",  # Total income
+    "GRNTP",  # Gross rent
 ]
 
 
@@ -78,10 +75,14 @@ class RawACS(PublicDataset):
             with pd.HDFStore(RawACS.file(year)) as storage:
                 # Household file
                 logging.info(f"Downloading household file")
-                storage["household"] = concat_zipped_csvs(household_url, "psam_hus", HOUSEHOLD_COLUMNS)
+                storage["household"] = concat_zipped_csvs(
+                    household_url, "psam_hus", HOUSEHOLD_COLUMNS
+                )
                 # Person file
                 logging.info(f"Downloading person file")
-                storage["person"] = concat_zipped_csvs(person_url, "psam_pus", PERSON_COLUMNS)
+                storage["person"] = concat_zipped_csvs(
+                    person_url, "psam_pus", PERSON_COLUMNS
+                )
                 # SPM unit file
                 logging.info(f"Downloading SPM unit file")
                 spm_person = pd.read_stata(spm_url).fillna(0)
@@ -93,9 +94,13 @@ class RawACS(PublicDataset):
                 f"Attempted to extract and save the CSV files, but encountered an error: {e}"
             )
 
+
 RawACS = RawACS()
 
-def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFrame:
+
+def concat_zipped_csvs(
+    url: str, prefix: str, columns: List[str]
+) -> pd.DataFrame:
     """Downloads the ACS microdata, which is a zip file containing two halves in CSV format.
 
     Args:
@@ -109,9 +114,9 @@ def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFram
     req = requests.get(url, stream=True)
     with BytesIO() as f:
         pbar = tqdm()
-        for chunk in req.iter_content(chunk_size=1024): 
-            if chunk: # filter out keep-alive new chunks
-                pbar.update (len(chunk))
+        for chunk in req.iter_content(chunk_size=1024):
+            if chunk:  # filter out keep-alive new chunks
+                pbar.update(len(chunk))
                 f.write(chunk)
         f.seek(0)
         zf = ZipFile(f)
@@ -125,7 +130,9 @@ def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFram
     return res
 
 
-def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> pd.DataFrame:
+def create_spm_unit_table(
+    storage: pd.HDFStore, person: pd.DataFrame
+) -> pd.DataFrame:
     SPM_UNIT_COLUMNS = [
         "CAPHOUSESUB",
         "CAPWKCCXPNS",
@@ -162,7 +169,9 @@ def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> pd.Data
     )
 
     original_person_table = storage["person"]
-    combined_person_table = pd.merge(original_person_table, person, on=["SERIALNO", "SPORDER"])
+    combined_person_table = pd.merge(
+        original_person_table, person, on=["SERIALNO", "SPORDER"]
+    )
 
     storage["person"] = combined_person_table
     storage["spm_unit"] = spm_table
