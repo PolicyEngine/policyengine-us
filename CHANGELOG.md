@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.45.2] - 2022-04-15 18:10:27
+
+### Added
+
+- Unit tests for age variables.
+
+### Fixed
+
+- Tax unit head and spouse flag logic.
+
+## [0.45.1] - 2022-04-15 14:23:11
+
+### Added
+
+- Legislative references for CDCC parameters.
+
+### Fixed
+
+- CDCC uses maximum dependent parameter.
+
+## [0.45.0] - 2022-04-14 08:19:40
+
+### Added
+
+- Microdata now handled entirely within OpenFisca-US.
+
+## [0.44.0] - 2022-04-13 12:58:29
+
+### Added
+
+- Capped non-refundable credits variable.
+- Shortened labels for tax variables.
+
+## [0.43.1] - 2022-04-12 18:38:49
+
+### Fixed
+
+- Refundable CTC formula works properly when phase-in rate increased (comments added).
+
 ## [0.43.0] - 2022-04-07 06:08:18
 
 ### Added
@@ -609,6 +648,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.45.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.45.1...0.45.2
+[0.45.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.45.0...0.45.1
+[0.45.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.44.0...0.45.0
+[0.44.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.43.1...0.44.0
+[0.43.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.43.0...0.43.1
 [0.43.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.42.1...0.43.0
 [0.42.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.42.0...0.42.1
 [0.42.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.41.2...0.42.0

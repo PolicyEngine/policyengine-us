@@ -12,7 +12,7 @@ class ctc_reduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "CTC reduction from income"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Reduction of the total CTC due to income."
     definition_period = YEAR
 

@@ -498,3 +498,34 @@
     - Unused `exact` variable.
     - Variable for `social_security_taxes` (moved logic to `refundable_child_tax_credit`).
   date: 2022-04-07 06:08:18
+- bump: patch
+  changes:
+    fixed:
+    - Refundable CTC formula works properly when phase-in rate increased (comments
+      added).
+  date: 2022-04-12 18:38:49
+- bump: minor
+  changes:
+    added:
+    - Capped non-refundable credits variable.
+    - Shortened labels for tax variables.
+  date: 2022-04-13 12:58:29
+- bump: minor
+  changes:
+    added:
+    - Microdata now handled entirely within OpenFisca-US.
+  date: 2022-04-14 08:19:40
+- bump: patch
+  changes:
+    added:
+    - Legislative references for CDCC parameters.
+    fixed:
+    - CDCC uses maximum dependent parameter.
+  date: 2022-04-15 14:23:11
+- bump: patch
+  changes:
+    added:
+    - Unit tests for age variables.
+    fixed:
+    - Tax unit head and spouse flag logic.
+  date: 2022-04-15 18:10:27

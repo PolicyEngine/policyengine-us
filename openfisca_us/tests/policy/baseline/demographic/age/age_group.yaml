@@ -1,34 +1,20 @@
-- name: Child age, 12
+- name: Child
   period: 2020
   input:
-    age: 12
+    is_child: true
   output:
     age_group: CHILD
 
-- name: Child age, 17
+- name: Working-age adult
   period: 2020
   input:
-    age: 17
-  output:
-    age_group: CHILD
-
-- name: Adult age, 18
-  period: 2020
-  input:
-    age: 18
+    is_wa_adult: true
   output:
     age_group: WORKING_AGE
 
-- name: Adult age, 64
+- name: Senior.
   period: 2020
   input:
-    age: 64
-  output:
-    age_group: WORKING_AGE
-
-- name: Senior age, 65
-  period: 2020
-  input:
-    age: 65
+    is_senior: true
   output:
     age_group: SENIOR
