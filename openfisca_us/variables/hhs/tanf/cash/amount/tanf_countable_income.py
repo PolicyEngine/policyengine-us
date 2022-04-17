@@ -14,18 +14,21 @@ class tanf_countable_income(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        gross_earned_income = spm_unit("tanf_gross_earned_income", period)
-        state = spm_unit.household("state_code_str", period)
-        earnings_deductions = parameters(
+        deductions = parameters(
             period
-        ).hhs.tanf.cash.amount.countable_income.deductions.earnings
-        household_earnings_deduction = earnings_deductions.household[state]
-        percent_earnings_deduction = earnings_deductions.percent[state]
-        # Percent earnings deduction applies after deducting the household deduction.
-        earnings_after_household_deduction = gross_earned_income - household_earnings_deduction
-        total_percent_deduction = earnings_after_household_deduction * percent_earnings_deduction
-        total_earnings_deductions = household_earnings_deduction + total_percent_deduction
-        countable_earned_income = gross_earned_income - total_earnings_deductions
-        # No deduction for unearned income.
+        ).hhs.tanf.cash.amount.countable_income.deductions
+        # Annualize the monthly household deduction.
+        state = spm_unit.household("state_code_str", period)
+        household_deduction = deductions.household[state] * 12
+        # First subtract household deduction from unearned income.
         unearned_income = spm_unit("tanf_gross_unearned_income", period)
-        return max_(countable_earned_income + unearned_income, 0)
+        countable_unearned_income = max_(0, unearned_income - household_deduction)
+        # Then allocate remaining household deduction to earned income.
+        remaining_household_deduction = household_deduction - (unearned_income - countable_unearned_income)
+        gross_earned_income = spm_unit("tanf_gross_earned_income", period)
+        earnings_after_household_deduction = max_(gross_earned_income - remaining_household_deduction, 0)
+        # Then subtract percent earnings deduction after household deduction.
+        percent_earnings_deduction = deductions.earnings.percent[state]
+        total_percent_deduction = earnings_after_household_deduction * percent_earnings_deduction
+        countable_earned_income = earnings_after_household_deduction - total_percent_deduction
+        return countable_earned_income + countable_unearned_income
