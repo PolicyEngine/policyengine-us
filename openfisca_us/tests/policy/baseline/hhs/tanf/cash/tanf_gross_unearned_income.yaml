@@ -1,0 +1,25 @@
+- name: Default gross income is zero.
+  period: 2022
+  output:
+    tanf_gross_unearned_income: 0
+
+- name: TANF income for one person is their unearned income.
+  period: 2022
+  input:
+    social_security: 10_000
+  output:
+    tanf_gross_unearned_income: 10_000
+
+- name: TANF sums unearned income sources across household members.
+  period: 2022
+  input:
+    people:
+      p1:
+        ssi: 10_000
+      p2:
+        dividend_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    tanf_gross_unearned_income: 30_000
