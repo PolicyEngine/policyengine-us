@@ -1012,7 +1012,7 @@ class fips(Variable):
     entity = Household
     definition_period = YEAR
     documentation = "FIPS state code (not used in tax-calculation logic)"
-    default_value = 1
+    default_value = 6
 
 
 class h_seq(Variable):
