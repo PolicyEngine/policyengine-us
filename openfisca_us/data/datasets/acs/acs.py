@@ -36,14 +36,18 @@ class ACS(PublicDataset):
         ]
         # Add primary and foreign keys
         make_numeric = lambda x: int(x.replace("2019GQ", "0").replace("2019HU", "1"))
-        household.SERIALNO = household.SERIALNO.apply(make_numeric)
-        person.SERIALNO = person.SERIALNO.apply(make_numeric)
+        household.SERIALNO = household.SERIALNO.apply(make_numeric).astype(int)
+        person.SERIALNO = person.SERIALNO.apply(make_numeric).astype(int)
+        person.SPORDER = person.SPORDER.astype(int)
+        person.SPM_ID = person.SPM_ID.astype(int)
+        spm_unit.SPM_ID = spm_unit.SPM_ID.astype(int)
     
         person = person[person.SERIALNO.isin(household.SERIALNO)]
         household = household[household.SERIALNO.isin(person.SERIALNO)]
         spm_unit = spm_unit[spm_unit.SPM_ID.isin(person.SPM_ID)]
 
         add_id_variables(acs, person, spm_unit, household)
+        add_person_variables(acs, person)
         add_spm_variables(acs, spm_unit)
         add_household_variables(acs, household)
 
@@ -84,6 +88,8 @@ def add_id_variables(
     acs["person_weight"] = person.PWGTP
     acs["household_weight"] = household.WGTP
 
+def add_person_variables(acs: h5py.File, person: DataFrame):
+    acs["age"] = person.AGEP
 
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
     acs["spm_unit_net_income"] = spm_unit.SPM_RESOURCES
