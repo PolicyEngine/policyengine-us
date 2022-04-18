@@ -1,11 +1,8 @@
-import logging
 from openfisca_tools.data import PublicDataset
 import h5py
 from openfisca_us.data.datasets.acs.raw_acs import RawACS
-from openfisca_us.data.datasets.cps.raw_cps import RawCPS
 from openfisca_us.data.storage import OPENFISCA_US_MICRODATA_FOLDER
-from pandas import DataFrame, Series
-import numpy as np
+from pandas import DataFrame
 
 
 class ACS(PublicDataset):
@@ -35,13 +32,16 @@ class ACS(PublicDataset):
             raw_data[entity] for entity in ("person", "spm_unit", "household")
         ]
         # Add primary and foreign keys
-        make_numeric = lambda x: int(x.replace("2019GQ", "0").replace("2019HU", "1"))
-        household.SERIALNO = household.SERIALNO.apply(make_numeric).astype(int)
-        person.SERIALNO = person.SERIALNO.apply(make_numeric).astype(int)
+
+        def make_numeric(x):
+            return int(x.replace("2019GQ", "0").replace("2019HU", "1"))
+
+        household.SERIALNO = household.SERIALNO.apply(make_numeric)
+        person.SERIALNO = person.SERIALNO.apply(make_numeric)
         person.SPORDER = person.SPORDER.astype(int)
         person.SPM_ID = person.SPM_ID.astype(int)
         spm_unit.SPM_ID = spm_unit.SPM_ID.astype(int)
-    
+
         person = person[person.SERIALNO.isin(household.SERIALNO)]
         household = household[household.SERIALNO.isin(person.SERIALNO)]
         spm_unit = spm_unit[spm_unit.SPM_ID.isin(person.SPM_ID)]
@@ -53,6 +53,7 @@ class ACS(PublicDataset):
 
         raw_data.close()
         acs.close()
+
 
 ACS = ACS()
 
@@ -94,6 +95,7 @@ def add_person_variables(acs: h5py.File, person: DataFrame):
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
     acs["spm_unit_net_income"] = spm_unit.SPM_RESOURCES
     acs["spm_unit_spm_threshold"] = spm_unit.SPM_POVTHRESHOLD
+
 
 def add_household_variables(acs: h5py.File, household: DataFrame):
     acs["household_vehicles_owned"] = household.VEH
