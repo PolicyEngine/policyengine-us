@@ -9,4 +9,5 @@ See https://openfisca.org/doc/key-concepts/tax_and_benefit_system.html
 """
 from openfisca_us.system import CountryTaxBenefitSystem
 from openfisca_us.api import Microsimulation, IndividualSim
+from openfisca_us.data import ACS, CPS
 from openfisca_us import reforms

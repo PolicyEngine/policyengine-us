@@ -1,0 +1,30 @@
+- name: Default should be the tax unit head.
+  period: 2022
+  output:
+    is_tax_unit_head: true
+
+- name: First person should be head.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse: {}
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    is_tax_unit_head: [true, false]
+
+- name: First non-child is head.
+  period: 2022
+  input:
+    people:
+      child:
+        is_child: true
+      head: {}
+      spouse: {}
+    tax_units:
+      tax_unit:
+        members: [child, head, spouse]
+  output:
+    is_tax_unit_head: [false, true, false]

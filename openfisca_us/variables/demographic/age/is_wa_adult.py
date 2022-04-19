@@ -8,5 +8,4 @@ class is_wa_adult(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        age = person("age", period)
-        return (age >= 18) & (age < 65)
+        return ~person("is_child", period) & ~person("is_senior", period)

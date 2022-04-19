@@ -1,0 +1,24 @@
+- name: One vehicle, $400
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    vehicles_owned: 1
+  output:
+    per_vehicle_payment: 400
+
+- name: Three vehicles, only $800 (capped)
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    vehicles_owned: 3
+  output:
+    per_vehicle_payment: 800
+
+- name: Three vehicles, but outside CA (in IL), so no payment
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    vehicles_owned: 3
+    state_code: IL
+  output:
+    per_vehicle_payment: 0
