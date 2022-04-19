@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class hud_income_share(Variable):
+class hud_ttp_income_share(Variable):
     value_type = float
     entity = SPMUnit
     label = "HUD income share for total tenant payment"

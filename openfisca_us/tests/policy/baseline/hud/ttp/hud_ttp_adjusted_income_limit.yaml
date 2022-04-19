@@ -1,6 +1,0 @@
-- name: 30% of adjusted income.
-  period: 2022
-  input:
-    hud_adjusted_income: 12 # Monthly = 1.
-  output:
-    hud_ttp_income_limit: 0.3 # Parameter is 30%.

@@ -1,0 +1,6 @@
+- name: 30% of adjusted income.
+  period: 2022
+  input:
+    hud_adjusted_income: 1
+  output:
+    hud_ttp_adjusted_income_share: 0.3
