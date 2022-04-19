@@ -22,10 +22,7 @@ class c17000(Variable):
         medical_floor = medical_floor_ratio * max_(
             tax_unit("c00100", period), 0
         )
-        return max_(
-            0,
-            tax_unit("filer_e17500", period) - medical_floor,
-        )
+        return max_(0, tax_unit("filer_e17500", period) - medical_floor,)
 
 
 class c18300(Variable):

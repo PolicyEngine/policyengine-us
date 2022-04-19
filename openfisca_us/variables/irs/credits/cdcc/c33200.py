@@ -35,10 +35,7 @@ class c33200(Variable):
         crate = max_(
             cdcc.phaseout.min,
             cdcc.phaseout.max
-            - min_(
-                cdcc.phaseout.max - cdcc.phaseout.min,
-                tratio,
-            ),
+            - min_(cdcc.phaseout.max - cdcc.phaseout.min, tratio,),
         )
         tratio2 = max_(
             ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate / 1e2),

@@ -50,8 +50,7 @@ class dwks10(Variable):
         dwks10_if_no_gains = max_(
             0,
             min_(
-                tax_unit("filer_p23250", period),
-                tax_unit("c23650", period),
+                tax_unit("filer_p23250", period), tax_unit("c23650", period),
             ),
         ) + tax_unit("filer_e01100", period)
         return where(

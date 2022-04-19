@@ -15,9 +15,6 @@ class is_married(Variable):
         mars_type = marital_status.possible_values
         person_is_married = is_in(
             person.tax_unit("mars", period),
-            [
-                mars_type.JOINT,
-                mars_type.SEPARATE,
-            ],
+            [mars_type.JOINT, mars_type.SEPARATE,],
         )
         return family.any(person_is_married)

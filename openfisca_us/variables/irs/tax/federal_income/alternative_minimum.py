@@ -17,13 +17,7 @@ class c62100(Variable):
             c00100
             - e00700
             - tax_unit("c04470", period)
-            + max_(
-                0,
-                min_(
-                    tax_unit("c17000", period),
-                    0.025 * c00100,
-                ),
-            )
+            + max_(0, min_(tax_unit("c17000", period), 0.025 * c00100,),)
             + tax_unit("c18300", period)
             + tax_unit("c20800", period)
             - tax_unit("c21040", period)
@@ -102,13 +96,7 @@ class c09600(Variable):
         form_6251_part_iii_required = np.any(
             [
                 variable > 0
-                for variable in [
-                    dwks10,
-                    dwks13,
-                    dwks14,
-                    dwks19,
-                    e24515,
-                ]
+                for variable in [dwks10, dwks13, dwks14, dwks19, e24515,]
             ]
         )
 

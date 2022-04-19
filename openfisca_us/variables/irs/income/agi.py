@@ -182,11 +182,7 @@ class c02500(Variable):
             ss.rate.upper * e02400,
         )
         return select(
-            [
-                under_first_threshold,
-                under_second_threshold,
-                True,
-            ],
+            [under_first_threshold, under_second_threshold, True,],
             [
                 0,
                 amount_if_under_second_threshold,

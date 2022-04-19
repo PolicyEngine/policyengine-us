@@ -76,8 +76,7 @@ class ctc_reduction(Variable):
 
         # Apply the phase-out
         arpa_reduction_max = min_(
-            arpa_increase,
-            ctc.phaseout.arpa.rate * arpa_phaseout_range,
+            arpa_increase, ctc.phaseout.arpa.rate * arpa_phaseout_range,
         )
 
         arpa_reduction = min_(arpa_phaseout_max_reduction, arpa_reduction_max)
