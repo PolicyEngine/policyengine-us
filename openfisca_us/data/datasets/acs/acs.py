@@ -36,8 +36,8 @@ class ACS(PublicDataset):
         def make_numeric(x):
             return int(x.replace("2019GQ", "0").replace("2019HU", "1"))
 
-        household.SERIALNO = household.SERIALNO.apply(make_numeric)
-        person.SERIALNO = person.SERIALNO.apply(make_numeric)
+        household.SERIALNO = household.SERIALNO.apply(make_numeric).astype(int)
+        person.SERIALNO = person.SERIALNO.apply(make_numeric).astype(int)
         person.SPORDER = person.SPORDER.astype(int)
         person.SPM_ID = person.SPM_ID.astype(int)
         spm_unit.SPM_ID = spm_unit.SPM_ID.astype(int)
