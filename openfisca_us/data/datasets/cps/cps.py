@@ -46,6 +46,7 @@ class CPS(PublicDataset):
         add_personal_variables(cps, person)
         add_personal_income_variables(cps, person)
         add_spm_variables(cps, spm_unit)
+        add_household_variables(cps, household)
 
         raw_data.close()
         cps.close()
@@ -166,5 +167,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
 
     cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
 
+def add_household_variables(cps: h5py.File, household: DataFrame):
+    cps["fips"] = household.GESTFIPS
 
 CPS = CPS()

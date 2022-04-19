@@ -99,4 +99,4 @@ def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
 
 def add_household_variables(acs: h5py.File, household: DataFrame):
     acs["household_vehicles_owned"] = household.VEH
-    acs["fips"] = household.ST
+    acs["fips"] = acs["household_fips"] = household.ST
