@@ -167,7 +167,9 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
 
     cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
 
+
 def add_household_variables(cps: h5py.File, household: DataFrame):
     cps["fips"] = household.GESTFIPS
+
 
 CPS = CPS()

@@ -89,8 +89,10 @@ def add_id_variables(
     acs["person_weight"] = person.PWGTP
     acs["household_weight"] = household.WGTP
 
+
 def add_person_variables(acs: h5py.File, person: DataFrame):
     acs["age"] = person.AGEP
+
 
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
     acs["spm_unit_net_income"] = spm_unit.SPM_RESOURCES
