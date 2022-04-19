@@ -13,6 +13,7 @@ test:
 documentation:
 	jb build docs/book
 build:
+	rm openfisca_us/data/storage/*.h5
 	python setup.py sdist bdist_wheel
 
 changelog:

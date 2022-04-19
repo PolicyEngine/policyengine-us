@@ -53,6 +53,7 @@ setup(
             "coverage",
             "plotly",
             "yaml-changelog>=0.1.6",
+            "us",
         ],
     },
     python_requires=">=3.7,<3.8",
