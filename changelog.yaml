@@ -533,3 +533,7 @@
   changes:
     added:
       - American Community Survey input.
+- bump: patch
+  changes:
+    fixed:
+      - Bug preventing the package from publishing on PyPI.
