@@ -1,3 +1,4 @@
+import logging
 from openfisca_tools.data import PublicDataset
 import h5py
 from openfisca_us.data.datasets.acs.raw_acs import RawACS
@@ -33,17 +34,23 @@ class ACS(PublicDataset):
         ]
         # Add primary and foreign keys
 
-        def make_numeric(x):
-            return int(x.replace("2019GQ", "0").replace("2019HU", "1"))
-
-        household.SERIALNO = household.SERIALNO.apply(make_numeric).astype(int)
-        person.SERIALNO = person.SERIALNO.apply(make_numeric).astype(int)
+        household.SERIALNO = household.SERIALNO.astype(int)
+        person.SERIALNO = person.SERIALNO.astype(int)
         person.SPORDER = person.SPORDER.astype(int)
         person.SPM_ID = person.SPM_ID.astype(int)
         spm_unit.SPM_ID = spm_unit.SPM_ID.astype(int)
 
+        logging.info(
+            f"Persons with a linked household {person.SERIALNO.isin(household.SERIALNO).mean():.1%}"
+        )
         person = person[person.SERIALNO.isin(household.SERIALNO)]
+        logging.info(
+            f"Households with a linked person {household.SERIALNO.isin(person.SERIALNO).mean():.1%}"
+        )
         household = household[household.SERIALNO.isin(person.SERIALNO)]
+        logging.info(
+            f"SPM units with a linked person {spm_unit.SPM_ID.isin(person.SPM_ID).mean():.1%}"
+        )
         spm_unit = spm_unit[spm_unit.SPM_ID.isin(person.SPM_ID)]
 
         add_id_variables(acs, person, spm_unit, household)
