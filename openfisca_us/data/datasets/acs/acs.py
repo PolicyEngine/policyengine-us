@@ -92,6 +92,8 @@ def add_id_variables(
 
 def add_person_variables(acs: h5py.File, person: DataFrame):
     acs["age"] = person.AGEP
+    acs["employment_income"] = person.WAGP
+    acs["self_employment_income"] = person.SEMP
 
 
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
