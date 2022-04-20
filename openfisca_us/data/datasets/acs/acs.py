@@ -101,10 +101,11 @@ def add_person_variables(acs: h5py.File, person: DataFrame):
     acs["age"] = person.AGEP
     acs["employment_income"] = person.WAGP
     acs["self_employment_income"] = person.SEMP
+    acs["total_income"] = person.PINCP
 
 
 def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
-    acs["spm_unit_net_income"] = spm_unit.SPM_RESOURCES
+    acs["spm_unit_net_income_reported"] = spm_unit.SPM_RESOURCES
     acs["spm_unit_spm_threshold"] = spm_unit.SPM_POVTHRESHOLD
 
 
