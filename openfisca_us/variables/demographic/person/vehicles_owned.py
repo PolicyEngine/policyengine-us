@@ -1,6 +1,6 @@
 from numpy import maximum
 from openfisca_us.model_api import *
-from random import randint
+from random import randint, seed
 from openfisca_core.populations import Population
 
 
@@ -21,6 +21,7 @@ class vehicles_owned(Variable):
         max_vehicles = household_vehicles.max()
         adult_rank = where(is_adult, household.members_position, 100)
         vehicles = is_adult * 0
+        seed(0)
         for _ in range(int(max_vehicles)):
             # Pick a random adult in each household
             selected_adult = (
