@@ -10,6 +10,7 @@ class spm_unit_income_decile(Variable):
 
     def formula(spm_unit, period, parameters):
         from microdf import MicroSeries
+
         income = spm_unit("spm_unit_oecd_equiv_net_income", period)
         weights = spm_unit("spm_unit_weight", period) * spm_unit.nb_persons()
         return MicroSeries(income, weights=weights).decile_rank()
