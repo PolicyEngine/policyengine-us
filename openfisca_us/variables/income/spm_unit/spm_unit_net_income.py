@@ -18,11 +18,3 @@ class spm_unit_net_income(Variable):
         benefits = spm_unit("spm_unit_benefits", period)
         taxes = spm_unit("spm_unit_taxes", period)
         return market_income + benefits - taxes
-
-
-class spm_unit_net_income_reported(Variable):
-    value_type = float
-    entity = SPMUnit
-    label = "Reported net income"
-    unit = USD
-    definition_period = YEAR
