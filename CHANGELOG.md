@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.49.1] - 2022-04-22 13:39:09
+
+### Added
+
+- URL from which to download the latest CPS dataset (skipping generation)
+
 ## [0.49.0] - 2022-04-21 20:42:35
 
 ### Added
@@ -683,6 +689,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.49.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.0...0.49.1
 [0.49.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.48.0...0.49.0
 [0.48.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.47.0...0.48.0
 [0.47.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.46.1...0.47.0
