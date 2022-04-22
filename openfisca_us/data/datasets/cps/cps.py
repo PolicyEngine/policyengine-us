@@ -13,7 +13,9 @@ class CPS(PublicDataset):
     model = "openfisca_us"
     folder_path = OPENFISCA_US_MICRODATA_FOLDER
 
-    url_by_year = {2020: "https://some_url.org"}
+    url_by_year = {
+        2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5"
+    }
 
     def generate(self, year: int):
         """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
