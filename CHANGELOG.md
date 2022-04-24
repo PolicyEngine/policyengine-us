@@ -5,21 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<<<<<<< HEAD
-=======
-## [0.50.0] - 2022-04-24 12:37:49
-
-### Added
-
-- Created Jupyter Notebook for TANF.
-
-### Changed
-
-- Now applying TANF percent earnings deduction to gross earned income, not full gross income.
-- Added income sources for TANF gross earned and unearned income sources.
-- TANF tests now calculate variables annually instead of monthly.
-
->>>>>>> c4d27042dbd7ddec0b968c820c3d428d4f25da34
 ## [0.49.1] - 2022-04-22 13:39:09
 
 ### Added
