@@ -13,7 +13,9 @@ class CPS(PublicDataset):
     model = "openfisca_us"
     folder_path = OPENFISCA_US_MICRODATA_FOLDER
 
-    url_by_year = {2020: "https://some_url.org"}
+    url_by_year = {
+        2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5"
+    }
 
     def generate(self, year: int):
         """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
@@ -46,6 +48,7 @@ class CPS(PublicDataset):
         add_personal_variables(cps, person)
         add_personal_income_variables(cps, person)
         add_spm_variables(cps, spm_unit)
+        add_household_variables(cps, household)
 
         raw_data.close()
         cps.close()
@@ -165,6 +168,10 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
         cps[openfisca_variable] = spm_unit[asec_variable]
 
     cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
+
+
+def add_household_variables(cps: h5py.File, household: DataFrame):
+    cps["fips"] = household.GESTFIPS
 
 
 CPS = CPS()

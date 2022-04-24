@@ -5,17 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.46.0] - 2022-04-24 11:57:09
+## [0.49.1] - 2022-04-22 13:39:09
 
 ### Added
 
-- Created Jupyter Notebook for TANF.
+- URL from which to download the latest CPS dataset (skipping generation)
 
-### Changed
+## [0.49.0] - 2022-04-21 20:42:35
 
-- Now applying TANF percent earnings deduction to gross earned income, not full gross income.
-- Added income sources for TANF gross earned and unearned income sources.
-- TANF tests now calculate variables annually instead of monthly.
+### Added
+
+- Basic income now included in SPM unit benefits.
+
+## [0.48.0] - 2022-04-21 14:15:27
+
+### Added
+
+- SPM unit income decile.
+- SPM unit OECD equivalisation.
+
+### Fixed
+
+- Basic income variable for adults and seniors.
+
+## [0.47.0] - 2022-04-19 15:52:56
+
+### Added
+
+- Per-vehicle payment (California)
+
+## [0.46.1] - 2022-04-19 13:04:12
+
+### Fixed
+
+- Bug preventing the package from publishing on PyPI.
+
+## [0.46.0] - 2022-04-19 10:22:36
+
+### Added
+
+- American Community Survey input.
 
 ## [0.45.2] - 2022-04-15 18:10:27
 
@@ -660,6 +689,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.49.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.0...0.49.1
+[0.49.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.48.0...0.49.0
+[0.48.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.47.0...0.48.0
+[0.47.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.46.1...0.47.0
+[0.46.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.46.0...0.46.1
 [0.46.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.45.2...0.46.0
 [0.45.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.45.1...0.45.2
 [0.45.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.45.0...0.45.1

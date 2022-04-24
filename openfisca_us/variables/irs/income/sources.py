@@ -1009,9 +1009,10 @@ class ffpos(Variable):
 
 class fips(Variable):
     value_type = int
-    entity = TaxUnit
+    entity = Household
     definition_period = YEAR
     documentation = "FIPS state code (not used in tax-calculation logic)"
+    default_value = 6
 
 
 class h_seq(Variable):

@@ -532,10 +532,33 @@
 - bump: minor
   changes:
     added:
-    - Created Jupyter Notebook for TANF.
-    changed:
-    - Now applying TANF percent earnings deduction to gross earned income, not full
-      gross income.
-    - Added income sources for TANF gross earned and unearned income sources.
-    - TANF tests now calculate variables annually instead of monthly.
-  date: 2022-04-24 11:57:09
+    - American Community Survey input.
+  date: 2022-04-19 10:22:36
+- bump: patch
+  changes:
+    fixed:
+    - Bug preventing the package from publishing on PyPI.
+  date: 2022-04-19 13:04:12
+- bump: minor
+  changes:
+    added:
+    - Per-vehicle payment (California)
+  date: 2022-04-19 15:52:56
+- bump: minor
+  changes:
+    added:
+    - SPM unit income decile.
+    - SPM unit OECD equivalisation.
+    fixed:
+    - Basic income variable for adults and seniors.
+  date: 2022-04-21 14:15:27
+- bump: minor
+  changes:
+    added:
+    - Basic income now included in SPM unit benefits.
+  date: 2022-04-21 20:42:35
+- bump: patch
+  changes:
+    added:
+    - URL from which to download the latest CPS dataset (skipping generation)
+  date: 2022-04-22 13:39:09

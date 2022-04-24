@@ -6,3 +6,6 @@ class person_weight(Variable):
     entity = Person
     label = "Person weight"
     definition_period = YEAR
+
+    def formula(person, period, parameters):
+        return person.household("household_weight", period)
