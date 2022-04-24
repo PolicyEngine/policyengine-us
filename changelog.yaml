@@ -529,3 +529,13 @@
     fixed:
     - Tax unit head and spouse flag logic.
   date: 2022-04-15 18:10:27
+- bump: minor
+  changes:
+    added:
+    - Created Jupyter Notebook for TANF.
+    changed:
+    - Now applying TANF percent earnings deduction to gross earned income, not full
+      gross income.
+    - Added income sources for TANF gross earned and unearned income sources.
+    - TANF tests now calculate variables annually instead of monthly.
+  date: 2022-04-24 11:57:09
