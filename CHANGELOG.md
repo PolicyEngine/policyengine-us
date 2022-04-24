@@ -5,18 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.50.0] - 2022-04-24 11:57:09
-
-### Added
-
-- Created Jupyter Notebook for TANF.
-
-### Changed
-
-- Now applying TANF percent earnings deduction to gross earned income, not full gross income.
-- Added income sources for TANF gross earned and unearned income sources.
-- TANF tests now calculate variables annually instead of monthly.
-
 ## [0.49.1] - 2022-04-22 13:39:09
 
 ### Added
@@ -699,8 +687,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First prototype version with a standard deduction variable.
 
-
-
 [0.50.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.1...0.50.0
 [0.49.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.0...0.49.1
 [0.49.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.48.0...0.49.0
@@ -794,4 +780,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.3.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.0.1...0.1.0
-
