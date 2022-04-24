@@ -22,13 +22,23 @@ class tanf_countable_income(Variable):
         household_deduction = deductions.household[state] * 12
         # First subtract household deduction from unearned income.
         unearned_income = spm_unit("tanf_gross_unearned_income", period)
-        countable_unearned_income = max_(0, unearned_income - household_deduction)
+        countable_unearned_income = max_(
+            0, unearned_income - household_deduction
+        )
         # Then allocate remaining household deduction to earned income.
-        remaining_household_deduction = household_deduction - (unearned_income - countable_unearned_income)
+        remaining_household_deduction = household_deduction - (
+            unearned_income - countable_unearned_income
+        )
         gross_earned_income = spm_unit("tanf_gross_earned_income", period)
-        earnings_after_household_deduction = max_(gross_earned_income - remaining_household_deduction, 0)
+        earnings_after_household_deduction = max_(
+            gross_earned_income - remaining_household_deduction, 0
+        )
         # Then subtract percent earnings deduction after household deduction.
         percent_earnings_deduction = deductions.earnings.percent[state]
-        total_percent_deduction = earnings_after_household_deduction * percent_earnings_deduction
-        countable_earned_income = earnings_after_household_deduction - total_percent_deduction
+        total_percent_deduction = (
+            earnings_after_household_deduction * percent_earnings_deduction
+        )
+        countable_earned_income = (
+            earnings_after_household_deduction - total_percent_deduction
+        )
         return countable_earned_income + countable_unearned_income
