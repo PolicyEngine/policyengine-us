@@ -63,7 +63,7 @@ class TaxSim35:
     def generate_from_microsimulation(self, dataset: Dataset, year: int):
         sim = Microsimulation(dataset=dataset, year=year)
         system: TaxBenefitSystem = sim.simulation.tax_benefit_system
-        system.add_variables_from_directory(self.folder / "variables")
+        # system.add_variables_from_directory(self.folder / "variables")
         input_df = sim.df(self.INPUT_VARIABLES)
         taxsim_df = self.calculate(input_df)
         variables = system.variables
@@ -71,30 +71,31 @@ class TaxSim35:
         test_str = ""
         tax_unit_number = 1
         for tax_unit_id in tqdm(taxsim_df.taxsimid, desc="Writing YAML tests"):
-            if not (i % 100) == 0:
+            if not (i % 1000) == 0:
                 i += 1
                 continue
             i += 1
-            test_str += f"name: Tax unit {tax_unit_number:,.0f} matches TAXSIM35 outputs\nabsolute_error_margin: 1\nperiod: {year}\ninput:\n  people:\n"
+            test_str += f"- name: Tax unit {tax_unit_number:,.0f} matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"
+            tax_unit_number += 1
             people_in_tax_unit = sim.calc("person_id")[sim.calc("tax_unit_id", map_to="person") == tax_unit_id].values
             person_number = 1
             for person in people_in_tax_unit:
-                test_str += f"    person_{person_number}:\n"
+                test_str += f"      person_{person_number}:\n"
                 person_number += 1
                 for variable_name in self.OPENFISCA_US_INPUT_VARIABLES:
                     if variables[variable_name].entity.key == "person":
                         value = sim.calc(variable_name)[sim.calc("person_id") == person].values[0]
-                        test_str += f"      {variable_name}: {value}\n"
-            test_str += f"\ttax_units:\n    tax_unit:\n"
+                        test_str += f"        {variable_name}: {value:_.0f}\n"
+            test_str += f"    tax_units:\n      tax_unit:\n        members: [{','.join(['person_' + str(p) for p in range(1, person_number)])}]\n"
             for variable_name in self.OPENFISCA_US_INPUT_VARIABLES:
                 if variables[variable_name].entity.key == "tax_unit":
                     value = sim.calc(variable_name)[sim.calc("tax_unit_id") == tax_unit_id].values[0]
-                    test_str += f"  {variable_name}: {value}\n"
-            test_str += f"output:\n"
+                    test_str += f"        {variable_name}: {value}\n"
+            test_str += f"  output:\n"
             for variable_name in self.OUTPUT_VARIABLES:
                 if variables[variable_name].entity.key == "tax_unit":
                     value = sim.calc(variable_name)[sim.calc("tax_unit_id") == tax_unit_id].values[0]
-                    test_str += f"      {variable_name}: {value}\n"
+                    test_str += f"      {variable_name}: {value:_.0f}\n"
             test_str += "\n\n"
         return test_str
                     
