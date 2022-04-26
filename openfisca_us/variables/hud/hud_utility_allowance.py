@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class hud_payment_standard(Variable):
+class hud_utility_allowance(Variable):
     value_type = float
     entity = SPMUnit
     label = "HUD utility allowance"
