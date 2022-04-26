@@ -547,4 +547,22 @@
 - bump: minor
   changes:
     added:
-      - HUD total tenant payment and required variables and parameters.
+    - SPM unit income decile.
+    - SPM unit OECD equivalisation.
+    fixed:
+    - Basic income variable for adults and seniors.
+  date: 2022-04-21 14:15:27
+- bump: minor
+  changes:
+    added:
+    - Basic income now included in SPM unit benefits.
+  date: 2022-04-21 20:42:35
+- bump: patch
+  changes:
+    added:
+    - URL from which to download the latest CPS dataset (skipping generation)
+  date: 2022-04-22 13:39:09
+- bump: minor
+  changes:
+    added:
+    - Housing assistance and dependent variables.

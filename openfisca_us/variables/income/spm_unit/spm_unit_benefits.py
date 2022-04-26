@@ -20,6 +20,7 @@ class spm_unit_benefits(Variable):
             "lifeline",
             "acp",
             "ebb",
+            "basic_income",
             # "tanf", # Exclude until defined for California.
         ]
     )
