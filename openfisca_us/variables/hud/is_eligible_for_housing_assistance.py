@@ -11,8 +11,11 @@ class is_eligible_for_housing_assistance(Variable):
 
     def formula(spm_unit, period, parameters):
         receives_housing_assistance = spm_unit("receives_housing_assistance", period)
-        hud_annual_income = spm_unit("hud_annual_income", period)
-        fpl = spm_unit("fpl", period)
-        hud_fpl_percent = hud_annual_income / fpl
-        limit = parameters(period).hud.housing_assistance.limit
-        return receives_housing_assistance | (hud_fpl_percent <= limit)
+        income_level = spm_unit("hud_income_level", period)
+        income_levels = income_level.possible_values
+        is_income_eligible = (
+            (income_level == income_levels.ESPECIALLY_LOW)
+            | (income_level == income_levels.VERY_LOW)
+            | (income_level == income_levels.LOW)
+        )
+        return receives_housing_assistance | is_income_eligible
