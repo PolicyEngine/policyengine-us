@@ -20,7 +20,10 @@ class c21040(Variable):
             * phaseout.rate
         )
 
-        return min_(uncapped_phaseout, phaseout_amount_cap,)
+        return min_(
+            uncapped_phaseout,
+            phaseout_amount_cap,
+        )
 
 
 class c04470(Variable):
