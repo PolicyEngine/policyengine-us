@@ -1,0 +1,6 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_limit_income_tax_credit: 0

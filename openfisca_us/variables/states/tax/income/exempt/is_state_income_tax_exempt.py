@@ -10,12 +10,6 @@ class is_state_income_tax_exempt(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).states.tax.income.exempt
-        state = tax_unit.household("state_code_str", period)
-        mars = tax_unit("marital_status", period)
-        dependents = tax_unit("tax_unit_dependents", period)
+        limit = tax_unit("state_income_tax_exempt_limit", period)
         agi = tax_unit("adjusted_gross_income", period)
-        base_limit = p.limit[state][mars]
-        dep_limit = dependents * p.dependent[state][mars]
-        limit = base_limit + dep_limit
         return agi <= limit

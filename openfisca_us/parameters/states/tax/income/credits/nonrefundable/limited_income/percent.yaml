@@ -1,0 +1,14 @@
+description: State limited income tax credit percentage.
+MA:
+  values:
+    2021-01-01: 0.1
+  metadata:
+    reference:
+      - title: Schedule NTS-L-NR/PY No Tax Status and Limited Income Credit 2021 (line 16)
+        href: https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download
+metadata:
+  unit: /1
+  period: year
+  breakdown: state_code
+  name: state_limited_income_tax_credit_percent
+  label: State limited income tax credit percentage
