@@ -2,9 +2,11 @@ from openfisca_us.model_api import *
 
 
 class tax_unit_dependents(Variable):
-    value_type = bool
+    value_type = int
     entity = TaxUnit
-    label = "Count of tax unit dependents"
+    label = "Number of dependents in the tax unit"
     definition_period = YEAR
 
-    formula = sum_of_variables(["is_tax_unit_dependent"])
+    def formula(tax_unit, period, parameters):
+        dependent = tax_unit.members("is_tax_unit_dependent", period)
+        return tax_unit.sum(where(dependent, 1, 0))
