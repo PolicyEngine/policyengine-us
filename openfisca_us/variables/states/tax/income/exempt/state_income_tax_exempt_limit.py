@@ -6,7 +6,6 @@ class state_income_tax_exempt_limit(Variable):
     entity = TaxUnit
     label = "Income limit to be exempt from state income tax"
     unit = USD
-    documentation = "Income limit to be exempt from state income tax"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

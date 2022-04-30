@@ -6,7 +6,6 @@ class state_income_tax_payroll_tax_deduction(Variable):
     entity = TaxUnit
     label = "State income tax payroll tax deduction"
     unit = USD
-    documentation = "State income tax payroll tax deduction"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

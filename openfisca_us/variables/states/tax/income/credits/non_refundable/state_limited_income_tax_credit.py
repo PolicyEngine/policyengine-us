@@ -6,7 +6,6 @@ class state_limited_income_tax_credit(Variable):
     entity = TaxUnit
     label = "State limited income tax credit"
     unit = USD
-    documentation = "State limited income tax credit"
     definition_period = YEAR
     reference = "https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download"
 

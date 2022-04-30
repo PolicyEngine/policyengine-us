@@ -6,7 +6,6 @@ class state_income_tax_rental_deduction(Variable):
     entity = TaxUnit
     label = "State income tax rental deduction"
     unit = USD
-    documentation = "State income tax rental deduction"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

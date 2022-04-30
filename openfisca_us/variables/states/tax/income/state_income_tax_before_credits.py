@@ -6,7 +6,6 @@ class state_income_tax_before_credits(Variable):
     entity = TaxUnit
     label = "State income tax before credits"
     unit = USD
-    documentation = "State income tax before credits"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

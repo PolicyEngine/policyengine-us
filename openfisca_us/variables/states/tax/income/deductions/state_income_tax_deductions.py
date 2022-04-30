@@ -6,7 +6,6 @@ class state_income_tax_deductions(Variable):
     entity = TaxUnit
     label = "State income tax deductions"
     unit = USD
-    documentation = "State income tax deductions"
     definition_period = YEAR
 
     formula = sum_of_variables(

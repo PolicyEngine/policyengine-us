@@ -4,9 +4,8 @@ from openfisca_us.model_api import *
 class state_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "State EITC"
+    label = "State Earned Income Tax Credit"
     unit = USD
-    documentation = "State-level Earned Income Tax Credit"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

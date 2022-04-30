@@ -9,6 +9,7 @@ class spm_unit_state_tax(Variable):
     unit = USD
 
     # state_income_tax is at the tax unit level.
+    # sum_of_variables doesn't currently address this case, so write a formula.
     # formula = sum_of_variables(["state_income_tax"])
 
     def formula(spm_unit, period, parameters):

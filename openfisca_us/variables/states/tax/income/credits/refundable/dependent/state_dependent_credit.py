@@ -6,7 +6,6 @@ class state_dependent_credit(Variable):
     entity = TaxUnit
     label = "State dependent credit"
     unit = USD
-    documentation = "State dependent tax credit"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

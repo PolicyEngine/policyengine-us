@@ -6,7 +6,6 @@ class state_income_tax(Variable):
     entity = TaxUnit
     label = "State income tax"
     unit = USD
-    documentation = "State income tax"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
