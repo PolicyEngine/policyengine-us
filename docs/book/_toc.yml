@@ -3,12 +3,22 @@ root: index
 parts:
   - caption: Programs
     chapters:
-      - file: programs/fcc/lifeline
-      - file: programs/fcc/acp
-      - file: programs/hhs/tanf
-      - file: programs/irs/credits/eitc
-      - file: programs/usda/snap
-      - file: programs/usda/school_meals
-      - file: programs/usda/wic
-      - file: programs/states/ca/calepa/carb/cvrp
-      - file: programs/states/tax/income/ma
+      - file: programs/fcc/index
+        sections:
+          - file: programs/fcc/lifeline
+          - file: programs/fcc/acp
+      - file: programs/hhs/index
+        sections:
+          - file: programs/hhs/tanf
+      - file: programs/irs/index
+        sections:
+          - file: programs/irs/credits/eitc
+      - file: programs/usda/index
+        sections:
+          - file: programs/usda/snap
+          - file: programs/usda/school_meals
+          - file: programs/usda/wic
+      - file: programs/states/index
+        sections:
+          - file: programs/states/ca/calepa/carb/cvrp
+          - file: programs/states/tax/income/ma
