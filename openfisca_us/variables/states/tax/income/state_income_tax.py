@@ -10,7 +10,10 @@ class state_income_tax(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        pit = parameters(period).states.tax.income
-        state = tax_unit.household("state_code_str", period)
-        rate = pit.rates[state]
-        return tax_unit("state_taxable_income", period) * rate
+        before_refundable_credits = tax_unit(
+            "state_income_tax_before_refundable_credits", period
+        )
+        refundable_credits = tax_unit(
+            "state_income_tax_refundable_credits", period
+        )
+        return before_refundable_credits - refundable_credits
