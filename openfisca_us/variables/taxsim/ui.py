@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class pui(Variable):
+class ui(Variable):
     value_type = float
     entity = TaxUnit
     label = "Unemployment insurance (spouse)"

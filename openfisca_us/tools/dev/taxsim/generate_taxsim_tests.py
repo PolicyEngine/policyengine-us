@@ -103,7 +103,7 @@ class TaxSim35:
         result = process.communicate(input_csv_text.encode())[0].decode()
         return pd.read_csv(StringIO(result))
 
-    def generate_from_microsimulation(self, dataset: Dataset, year: int):
+    def generate_from_microsimulation(self, dataset: Dataset, year: int, number: int):
         sim = Microsimulation(dataset=dataset, year=year)
         system: TaxBenefitSystem = sim.simulation.tax_benefit_system
         # system.add_variables_from_directory(self.folder / "variables")
@@ -113,10 +113,11 @@ class TaxSim35:
         i = 0
         test_str = ""
         tax_unit_number = 1
+        # Shuffle the dataframe
+        taxsim_df = taxsim_df.sample(frac=1).reset_index(drop=True)
         for tax_unit_id in tqdm(taxsim_df.taxsimid, desc="Writing YAML tests"):
-            if not (i % 1000) == 0:
-                i += 1
-                continue
+            if i >= number:
+                break
             i += 1
             test_str += f"- name: Tax unit {tax_unit_number:,.0f} matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"
             tax_unit_number += 1
@@ -145,11 +146,5 @@ class TaxSim35:
     
 if __name__ == "__main__":
     taxsim = TaxSim35()
-    taxsim.calculate(dict(
-        taxsimid=1,
-        mstat=2,
-        year=2022,
-        ltcg=100_000,
-    ))
-    result = taxsim.generate_from_microsimulation(CPS, 2020)
+    result = taxsim.generate_from_microsimulation(CPS, 2020, number=16)
     print(result)

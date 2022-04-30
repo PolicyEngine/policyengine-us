@@ -6,7 +6,7 @@ class age1(Variable):
     entity = TaxUnit
     label = "Age of first dependent"
     unit = "year"
-    documentation = "Age of first dependent. Used for EITC, CTC and CCC. For 1991+ code students between 20 and 23 as 19 to get the EITC calculation correct. Code infants as "1". [For compatibiity with taxsim32, dep13-dep18 are accepted and have priority over age1-age3]. If niether dep19 or age1 are present in an uploaded file than depx is used for the number of child eligible for the EIC, CTC and CDCC."
+    documentation = """Age of first dependent. Used for EITC, CTC and CCC. For 1991+ code students between 20 and 23 as 19 to get the EITC calculation correct. Code infants as "1". [For compatibiity with taxsim32, dep13-dep18 are accepted and have priority over age1-age3]. If niether dep19 or age1 are present in an uploaded file than depx is used for the number of child eligible for the EIC, CTC and CDCC."""
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
