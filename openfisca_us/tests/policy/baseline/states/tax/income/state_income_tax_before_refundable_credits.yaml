@@ -1,0 +1,24 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax: 0
+
+- name: Massachusetts taxes 5% with a personal exemption of $4,400 for singles.
+  period: 2022
+  input:
+    state_code: MA
+    adjusted_gross_income: 10_000
+  output:
+    state_eitc: (10_000 - 4_400) * 0.05
+
+- name: Massachusetts taxes 5% with a personal exemption of $8,800 for couples plus $1,000 per child.
+  period: 2022
+  input:
+    state_code: MA
+    marital_status: JOINT
+    adjusted_gross_income: 20_000
+    dependents: 2
+  output:
+    state_eitc: (20_000 - 8_800 - 2 * 1_000) * 0.05

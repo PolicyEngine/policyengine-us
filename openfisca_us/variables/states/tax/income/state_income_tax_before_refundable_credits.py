@@ -13,4 +13,5 @@ class state_income_tax_before_refundable_credits(Variable):
         pit = parameters(period).states.tax.income
         state = tax_unit.household("state_code_str", period)
         rate = pit.rates[state]
-        return tax_unit("state_taxable_income", period) * rate
+        exempt = tax_unit("is_state_income_tax_exempt", period)
+        return tax_unit("state_taxable_income", period) * rate * ~exempt
