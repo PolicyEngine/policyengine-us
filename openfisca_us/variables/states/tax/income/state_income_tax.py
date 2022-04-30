@@ -11,6 +11,6 @@ class state_income_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         pit = parameters(period).states.tax.income
-        state = tax_unit.household("state_code", period)
-        mars = tax_unit("marital_status", period)
-        return tax_unit("eitc", period) * match[state]
+        state = tax_unit.household("state_code_str", period)
+        rate = pit.rates[state]
+        return tax_unit("state_taxable_income", period) * rate
