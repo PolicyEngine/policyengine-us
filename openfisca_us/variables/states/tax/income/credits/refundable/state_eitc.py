@@ -10,6 +10,8 @@ class state_eitc(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        match = parameters(period).states.tax.income.credits.eitc.percent_match
+        match = parameters(
+            period
+        ).states.tax.income.credits.refundable.eitc.percent_match
         state = tax_unit.household("state_code_str", period)
         return tax_unit("eitc", period) * match[state]
