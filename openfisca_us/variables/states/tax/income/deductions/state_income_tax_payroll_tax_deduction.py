@@ -18,7 +18,7 @@ class state_income_tax_payroll_tax_deduction(Variable):
             "self_employment_tax",
         ]
         taxes = add(person, period, TAXES)
-        state = tax_unit.household("state_code_str", period)
+        state = person.household("state_code_str", period)
         cap = parameters(period).states.tax.income.deductions.payroll_tax[
             state
         ]
