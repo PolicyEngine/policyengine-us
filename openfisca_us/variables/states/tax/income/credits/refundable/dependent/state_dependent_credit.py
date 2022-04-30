@@ -23,4 +23,3 @@ class state_dependent_credit(Variable):
         tax_unit_state = tax_unit.household("state_code_str", period)
         capped_eligible = min_(count_eligible, p.cap[tax_unit_state])
         return capped_eligible * p.amount[tax_unit_state]
-        
