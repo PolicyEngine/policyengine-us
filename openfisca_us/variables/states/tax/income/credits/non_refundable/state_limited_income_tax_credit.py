@@ -14,6 +14,7 @@ class state_limited_income_tax_credit(Variable):
         # Line numbers refer to MA's 2021 Schedule NTS-L-NR/PY.
         # Line 10.
         agi = tax_unit("adjusted_gross_income", period)
+        exempt = tax_unit("is_state_income_tax_exempt", period)
         # Lines 10-12: Compute eligibility based on income limit.
         state = tax_unit.household("state_code_str", period)
         mars = tax_unit("marital_status", period)
@@ -34,4 +35,4 @@ class state_limited_income_tax_credit(Variable):
         # Line 16.
         tax_for_credit = p.percent[state] * income_for_credit
         # Line 17.
-        return eligible * max_(0, tax_bc - tax_for_credit)
+        return eligible * ~exempt * max_(0, tax_bc - tax_for_credit)

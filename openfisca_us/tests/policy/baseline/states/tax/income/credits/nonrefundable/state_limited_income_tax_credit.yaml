@@ -5,6 +5,7 @@
     adjusted_gross_income: 14_000
     state_income_tax_exempt_limit: 8_000
     state_income_tax_before_credits: 1_000
+    is_state_income_tax_exempt: false
   output:
     # Income for Limited Income Credit = $14,000 - $8,000 = $6,000.
     # Tax for Limited Income Credit = $6,000 * 10% = $600.
@@ -18,5 +19,6 @@
     adjusted_gross_income: 14_001
     state_income_tax_exempt_limit: 8_000
     state_income_tax_before_credits: 1_000
+    is_state_income_tax_exempt: false
   output:
     state_limited_income_tax_credit: 0
