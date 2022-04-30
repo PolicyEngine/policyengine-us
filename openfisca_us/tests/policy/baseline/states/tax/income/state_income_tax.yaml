@@ -1,24 +1,20 @@
-- name: Default in Massachusetts is zero.
+- name: Default is zero.
   period: 2022
-  input:
-    state_code: MA
   output:
     state_income_tax: 0
 
-- name: Massachusetts taxes 5% with a personal exemption of $4,400 for singles.
+- name: Otherwise difference between tax before refundable credits and refundable credits.
   period: 2022
   input:
-    state_code: MA
-    adjusted_gross_income: 10_000
+    state_income_tax_before_refundable_credits: 3
+    state_income_tax_refundable_credits: 1
   output:
-    state_eitc: (10_000 - 4_400) * 0.05
+    state_income_tax: 2
 
-- name: Massachusetts taxes 5% with a personal exemption of $8,800 for couples plus $1,000 per child.
+- name: Can be negative.
   period: 2022
   input:
-    state_code: MA
-    marital_status: JOINT
-    adjusted_gross_income: 20_000
-    dependents: 2
+    state_income_tax_before_refundable_credits: 3
+    state_income_tax_refundable_credits: 4
   output:
-    state_eitc: (20_000 - 8_800 - 2 * 1_000) * 0.05
+    state_income_tax: -1
