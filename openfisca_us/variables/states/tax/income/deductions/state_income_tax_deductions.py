@@ -9,4 +9,9 @@ class state_income_tax_deductions(Variable):
     documentation = "State income tax deductions"
     definition_period = YEAR
 
-    formula = sum_of_variables(["state_income_tax_payroll_tax_deduction"])
+    formula = sum_of_variables(
+        [
+            "state_income_tax_payroll_tax_deduction",
+            "state_income_tax_rental_deduction",
+        ]
+    )

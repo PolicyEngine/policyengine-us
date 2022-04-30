@@ -8,3 +8,5 @@ class housing_cost(Variable):
     documentation = "Housing cost for this SPM unit"
     unit = USD
     definition_period = YEAR
+
+    formula = sum_of_variables(["rent"])
