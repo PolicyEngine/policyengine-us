@@ -9,4 +9,4 @@ class spm_unit_state_tax(Variable):
     unit = USD
 
     # state_income_tax is at the tax unit level.
-    formula = sum_of_variables("state_income_tax")
+    # formula = sum_of_variables("state_income_tax")

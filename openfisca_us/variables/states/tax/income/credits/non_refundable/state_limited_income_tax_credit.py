@@ -20,8 +20,8 @@ class state_limited_income_tax_credit(Variable):
         p = parameters(
             period
         ).states.tax.income.credits.non_refundable.limited_income
-        filer_limit = p.filer[state][mars]
-        dep_limit = p.dependent[state][mars]
+        filer_limit = p.income_limit.filer[state][mars]
+        dep_limit = p.income_limit.dependent[state][mars]
         dependents = tax_unit("tax_unit_dependents", period)
         limit = filer_limit + (dep_limit * dependents)
         eligible = agi <= limit
@@ -32,6 +32,6 @@ class state_limited_income_tax_credit(Variable):
         # Line 15.
         tax_bc = tax_unit("state_income_tax_before_credits", period)
         # Line 16.
-        tax_for_credit = p.agi_percent * income_for_credit
+        tax_for_credit = p.percent[state] * income_for_credit
         # Line 17.
         return eligible * max_(0, tax_bc - tax_for_credit)
