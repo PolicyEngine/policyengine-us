@@ -819,7 +819,7 @@ class e26270(Variable):
     documentation = "Sch E: Combined partnership and S-corporation net income/loss (includes k1bx14p and k1bx14s amounts and is included in e02000)"
 
 
-class filer_e26270(Variable):
+class filer_partnership_s_corp_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Partnership/S-corp income for the tax unit (excluding dependents)"
@@ -830,8 +830,8 @@ class filer_e26270(Variable):
         return tax_unit_non_dep_sum("e26270", tax_unit, period)
 
 
-filer_partnership_s_corp_income = variable_alias(
-    "filer_partnership_s_corp_income", filer_e26270
+filer_e26270 = variable_alias(
+    "filer_e26270", filer_partnership_s_corp_income
 )
 
 

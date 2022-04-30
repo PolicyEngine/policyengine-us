@@ -1,4 +1,12 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.irs.income.sources import pension_income
 
-pensions = variable_alias("pensions", pension_income)
+
+class pensions(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Pensions"
+    unit = "currency-USD"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, ["pension_income"])

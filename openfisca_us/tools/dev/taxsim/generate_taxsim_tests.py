@@ -34,7 +34,7 @@ class TaxSim35:
         "intrec",
         "stcg",
         "ltcg",
-        "otherprop",
+        # "otherprop",
         # "nonprop",
         "pensions",
         "gssi",
@@ -53,7 +53,7 @@ class TaxSim35:
         # "sprofinc",
     ]
     OUTPUT_VARIABLES = [
-        "fiitax",
+        "v25",
     ]
     OPENFISCA_US_INPUT_VARIABLES = [
         "mars",
@@ -62,7 +62,6 @@ class TaxSim35:
         "is_tax_unit_head",
         "is_tax_unit_spouse",
         "is_tax_unit_dependent",
-        "employment_income",
         "self_employment_income",
         "dividend_income",
         "pension_income",
@@ -72,7 +71,7 @@ class TaxSim35:
         "short_term_capital_gains",
         "long_term_capital_gains",
         "taxable_interest",
-        "filer_partnerships_s_corp_income",
+        "filer_partnership_s_corp_income",
     ]
 
     def __init__(self):
@@ -101,37 +100,60 @@ class TaxSim35:
         
         process = subprocess.Popen([str(self.executable_path.absolute())], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         result = process.communicate(input_csv_text.encode())[0].decode()
-        return pd.read_csv(StringIO(result))
+        try:
+            return pd.read_csv(StringIO(result))
+        except:
+            # Intermediate results
+            outputs = result.split("Federal Tax Calculation:")[1:]
+            column_names = [f"v{i}" for i in range(10, 30)]
+            column_names = [i for i in column_names if i != "v23"]
+            output_data = {column: [] for column in column_names}
+            for output in tqdm(outputs, desc="Parsing detailed outputs from TAXSIM"):
+                columns_used = []
+                for line in output.split("\n"):
+                    if any([name.replace("v", "") + "." in line for name in column_names]):
+                        number = line.split(".")[0].strip()
+                        value = line.split(".")[1].split("  ")[-1]
+                        name = f"v{number}"
+                        if name in output_data and name not in columns_used:
+                            output_data[name].append(int(value))
+                            columns_used.append(name)
+            return pd.DataFrame(output_data)
 
     def generate_from_microsimulation(self, dataset: Dataset, year: int, number: int):
         sim = Microsimulation(dataset=dataset, year=year)
         system: TaxBenefitSystem = sim.simulation.tax_benefit_system
         # system.add_variables_from_directory(self.folder / "variables")
-        input_df = sim.df(self.INPUT_VARIABLES)
+        input_df = sim.df(self.INPUT_VARIABLES).sample(n=number * 100).reset_index(drop=True)
+        input_df["idtl"] = 5 # Set full output
         taxsim_df = self.calculate(input_df)
+        taxsim_df = pd.concat([
+            input_df,
+            taxsim_df,
+        ], axis=1)
         variables = system.variables
         i = 0
         test_str = ""
         tax_unit_number = 1
         # Shuffle the dataframe
-        taxsim_df = taxsim_df.sample(frac=1).reset_index(drop=True)
+        taxsim_df = taxsim_df[taxsim_df[self.OUTPUT_VARIABLES].sum(axis=1) > 0].sample(frac=1).reset_index(drop=True)
         for tax_unit_id in tqdm(taxsim_df.taxsimid, desc="Writing YAML tests"):
             if i >= number:
                 break
             i += 1
-            test_str += f"- name: Tax unit {tax_unit_number:,.0f} matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"
+            test_str += f"- name: Tax unit {tax_unit_number:,.0f} matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: 2022\n  input:\n    people:\n"
             tax_unit_number += 1
             people_in_tax_unit = sim.calc("person_id")[sim.calc("tax_unit_id", map_to="person") == tax_unit_id].values
             person_number = 1
             for person in people_in_tax_unit:
                 test_str += f"      person_{person_number}:\n"
                 person_number += 1
-                for variable_name in self.OPENFISCA_US_INPUT_VARIABLES:
+                for variable_name in self.OPENFISCA_US_INPUT_VARIABLES :
                     if variables[variable_name].entity.key == "person":
                         value = sim.calc(variable_name)[sim.calc("person_id") == person].values[0]
                         test_str += f"        {variable_name}: {value:_.0f}\n"
             test_str += f"    tax_units:\n      tax_unit:\n        members: [{','.join(['person_' + str(p) for p in range(1, person_number)])}]\n"
-            for variable_name in self.OPENFISCA_US_INPUT_VARIABLES:
+            for variable_name in self.OPENFISCA_US_INPUT_VARIABLES + self.INPUT_VARIABLES:
                 if variables[variable_name].entity.key == "tax_unit":
                     value = sim.calc(variable_name)[sim.calc("tax_unit_id") == tax_unit_id].values[0]
                     test_str += f"        {variable_name}: {value}\n"
@@ -146,5 +168,5 @@ class TaxSim35:
     
 if __name__ == "__main__":
     taxsim = TaxSim35()
-    result = taxsim.generate_from_microsimulation(CPS, 2020, number=16)
+    result = taxsim.generate_from_microsimulation(CPS, 2020, number=32)
     print(result)

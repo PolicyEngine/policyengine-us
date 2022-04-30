@@ -1,5 +1,11 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.irs.income.sources import filer_partnership_s_corp_income
 
-scorp = variable_alias("scorp", filer_partnership_s_corp_income)
+class scorp(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "S-corp income"
+    unit = "currency-USD"
+    definition_period = YEAR
 
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, ["filer_partnership_s_corp_income"])
