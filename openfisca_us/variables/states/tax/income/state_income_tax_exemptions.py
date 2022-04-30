@@ -13,7 +13,7 @@ class state_income_tax_exemptions(Variable):
         exemptions = parameters(period).states.tax.income.exemptions
         state = tax_unit.household("state_code_str", period)
         mars = tax_unit("marital_status", period)
-        dependents = tax_unit("dependents", period)
+        dependents = tax_unit("tax_unit_dependents", period)
         personal_exemption = exemptions.personal[state][mars]
         dependent_exemption = exemptions.dependent[state] * dependents
         return personal_exemption + dependent_exemption
