@@ -12,4 +12,5 @@ class state_taxable_income(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
         exemptions = tax_unit("state_income_tax_exemptions", period)
-        return max_(agi - exemptions, 0)
+        deductions = tax_unit("state_income_tax_deductions", period)
+        return max_(agi - exemptions - deductions, 0)
