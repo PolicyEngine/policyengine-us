@@ -9,7 +9,7 @@
   period: 2022
   input:
     state_code: MA
-    agi: 10_000
+    adjusted_gross_income: 10_000
   output:
     state_eitc: (10_000 - 4_400) * 0.05
 
@@ -18,7 +18,7 @@
   input:
     state_code: MA
     marital_status: JOINT
-    agi: 20_000
+    adjusted_gross_income: 20_000
     dependents: 2
   output:
     state_eitc: (20_000 - 8_800 - 2 * 1_000) * 0.05
