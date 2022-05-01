@@ -99,9 +99,10 @@ class RawCPS(PublicDataset):
             "STATETAX_A",
             "STATETAX_B",
             "TAX_INC",
-            "TAX_ID",
         ]
-        return person[TAX_UNIT_COLUMNS].groupby(person.TAX_ID).sum()
+        tax_unit_df = person[TAX_UNIT_COLUMNS].groupby(person.TAX_ID).sum()
+        tax_unit_df["TAX_ID"] = tax_unit_df.index
+        return tax_unit_df
 
     @staticmethod
     def _create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:

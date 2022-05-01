@@ -1,5 +1,5 @@
 from openfisca_us.model_api import *
-
+from openfisca_core.populations import GroupPopulation, Population
 
 class is_tax_unit_spouse(Variable):
     value_type = bool
@@ -12,9 +12,6 @@ class is_tax_unit_spouse(Variable):
         adult = ~person("is_child", period)
         head = person("is_tax_unit_head", period)
         eligible = adult & ~head
-        # Of those who meet the criteria, select the first person defined.
         tax_unit = person.tax_unit
-        # NB: tax_unit.members_position is actually person-level.
-        rank = where(eligible, tax_unit.members_position, inf)
-        first_rank = tax_unit.min(rank)
-        return eligible & (rank == first_rank)
+        age = person("age", period)
+        return person.get_rank(tax_unit, -age, eligible) == 0

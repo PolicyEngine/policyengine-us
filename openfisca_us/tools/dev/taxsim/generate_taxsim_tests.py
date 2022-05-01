@@ -90,6 +90,8 @@ class TaxSim35:
         "long_term_capital_gains",
         "taxable_interest",
         "filer_partnership_s_corp_income",
+        "tax_unit_id",
+        "person_tax_unit_id",
     ]
 
     def __init__(self):
@@ -162,16 +164,19 @@ class TaxSim35:
             if i >= number:
                 break
             i += 1
-            test_str += f"- name: Tax unit {tax_unit_number:,.0f} matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"
+            test_str += f"- name: Tax unit {tax_unit_number:,.0f} (CPS ID {tax_unit_id}) matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"
             tax_unit_number += 1
-            people_in_tax_unit = sim.calc("person_id")[sim.calc("tax_unit_id", map_to="person") == tax_unit_id].values
+            person_id = sim.calc("person_id").values
+            person_tax_unit_id = sim.calc("tax_unit_id", map_to="person").values
+            tax_unit_ids = sim.calc("tax_unit_id").values
+            people_in_tax_unit = person_id[person_tax_unit_id == tax_unit_id]
             person_number = 1
             for person in people_in_tax_unit:
                 test_str += f"      person_{person_number}:\n"
                 person_number += 1
                 for variable_name in self.OPENFISCA_US_INPUT_VARIABLES + self.INPUT_VARIABLES:
                     if variables[variable_name].entity.key == "person":
-                        value = sim.calc(variable_name)[sim.calc("person_id") == person].values[0]
+                        value = sim.calc(variable_name, map_to="person").values[person_id == person][0]
                         try:
                             test_str += f"        {variable_name}: {value:_.0f}\n"
                         except:
@@ -179,7 +184,7 @@ class TaxSim35:
             test_str += f"    tax_units:\n      tax_unit:\n        members: [{','.join(['person_' + str(p) for p in range(1, person_number)])}]\n"
             for variable_name in self.OPENFISCA_US_INPUT_VARIABLES + self.INPUT_VARIABLES:
                 if variables[variable_name].entity.key == "tax_unit":
-                    value = sim.calc(variable_name)[sim.calc("tax_unit_id") == tax_unit_id].values[0]
+                    value = sim.calc(variable_name).values[tax_unit_ids == tax_unit_id][0]
                     try:
                         test_str += f"        {variable_name}: {value:_.0f}\n"
                     except:
