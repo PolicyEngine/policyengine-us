@@ -1,0 +1,14 @@
+description: Share of rent that can be deducted from income for state income tax.
+MA:
+  values:
+    2021-01-01: 0.5
+  metadata:
+    reference:
+      - title: "Taxable income: adjusted gross income less deductions and exemptions (a)(9)"
+        href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section9
+metadata:
+  unit: /1
+  period: year
+  breakdown: state_code
+  name: state_income_tax_rent_deduction_share
+  label: Rent share for state income tax deduction

@@ -1,0 +1,17 @@
+- name: Massachusetts taxes at 5%.
+  period: 2022
+  input:
+    state_code: MA
+    state_taxable_income: 100
+    is_state_income_tax_exempt: false
+  output:
+    state_income_tax_before_credits: 5
+
+- name: Exempt filers have no tax.
+  period: 2022
+  input:
+    state_code: MA
+    state_taxable_income: 100
+    is_state_income_tax_exempt: true
+  output:
+    state_income_tax_before_credits: 0

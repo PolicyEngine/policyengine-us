@@ -1,0 +1,20 @@
+- name: Default should be zero.
+  period: 2022
+  output:
+    tax_unit_dependents: 0
+
+- name: Otherwise count of dependents.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse: {}
+      c1:
+        is_tax_unit_dependent: true
+      c2:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, c1, c2]
+  output:
+    tax_unit_dependents: 2

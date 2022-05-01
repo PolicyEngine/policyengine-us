@@ -1,0 +1,24 @@
+- name: Single filer in Massachusetts with maximum qualifying income.
+  period: 2021
+  input:
+    state_code: MA
+    adjusted_gross_income: 14_000
+    state_income_tax_exempt_limit: 8_000
+    state_income_tax_before_credits: 1_000
+    is_state_income_tax_exempt: false
+  output:
+    # Income for Limited Income Credit = $14,000 - $8,000 = $6,000.
+    # Tax for Limited Income Credit = $6,000 * 10% = $600.
+    # Limited Income Credit = tax before credits - LIC tax = $1,000 - $600
+    state_limited_income_tax_credit: 400
+
+- name: Single filer in Massachusetts with income too high to qualify.
+  period: 2021
+  input:
+    state_code: MA
+    adjusted_gross_income: 14_001
+    state_income_tax_exempt_limit: 8_000
+    state_income_tax_before_credits: 1_000
+    is_state_income_tax_exempt: false
+  output:
+    state_limited_income_tax_credit: 0
