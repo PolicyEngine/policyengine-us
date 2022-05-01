@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.51.1] - 2022-05-01 20:21:24
+
+### Added
+
+- Notebook showing total net income and marginal tax rate charts for Massachusetts residents.
+
 ## [0.51.0] - 2022-05-01 14:45:31
 
 ### Added
@@ -702,6 +708,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.51.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.51.0...0.51.1
 [0.51.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.50.0...0.51.0
 [0.50.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.1...0.50.0
 [0.49.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.0...0.49.1
