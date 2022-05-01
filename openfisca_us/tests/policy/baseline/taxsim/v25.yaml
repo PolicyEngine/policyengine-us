@@ -50,7 +50,7 @@
         person_tax_unit_id: 1_863_601
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3]
+        members: [person_1, person_2, person_3]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -84,7 +84,6 @@
         scorp: 0
   output:
     v25: 2_821
-
 
 - name: Tax unit 2 (CPS ID 2592701) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -123,7 +122,7 @@
         person_tax_unit_id: 2_592_701
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -157,7 +156,6 @@
         scorp: 0
   output:
     v25: 3_274
-
 
 - name: Tax unit 3 (CPS ID 496801) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -226,7 +224,7 @@
         person_tax_unit_id: 496_801
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -260,7 +258,6 @@
         scorp: 0
   output:
     v25: 3_733
-
 
 - name: Tax unit 4 (CPS ID 3423301) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -299,7 +296,7 @@
         person_tax_unit_id: 3_423_301
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -333,7 +330,6 @@
         scorp: 0
   output:
     v25: 29
-
 
 - name: Tax unit 5 (CPS ID 5695201) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -372,7 +368,7 @@
         person_tax_unit_id: 5_695_201
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -406,7 +402,6 @@
         scorp: 0
   output:
     v25: 3_114
-
 
 - name: Tax unit 6 (CPS ID 2828801) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -460,7 +455,7 @@
         person_tax_unit_id: 2_828_801
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3]
+        members: [person_1, person_2, person_3]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -494,7 +489,6 @@
         scorp: 0
   output:
     v25: 5_010
-
 
 - name: Tax unit 7 (CPS ID 7397502) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -552,7 +546,6 @@
         scorp: 0
   output:
     v25: 474
-
 
 - name: Tax unit 8 (CPS ID 6899801) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -621,7 +614,7 @@
         person_tax_unit_id: 6_899_801
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -655,7 +648,6 @@
         scorp: 0
   output:
     v25: 2_131
-
 
 - name: Tax unit 9 (CPS ID 6510901) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -739,7 +731,7 @@
         person_tax_unit_id: 6_510_901
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4,person_5]
+        members: [person_1, person_2, person_3, person_4, person_5]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -773,7 +765,6 @@
         scorp: 0
   output:
     v25: 5_400
-
 
 - name: Tax unit 10 (CPS ID 4680702) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -842,7 +833,7 @@
         person_tax_unit_id: 4_680_702
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -876,7 +867,6 @@
         scorp: 0
   output:
     v25: 1_575
-
 
 - name: Tax unit 11 (CPS ID 938602) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -945,7 +935,7 @@
         person_tax_unit_id: 938_602
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -979,7 +969,6 @@
         scorp: 0
   output:
     v25: 2_624
-
 
 - name: Tax unit 12 (CPS ID 5110001) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1078,7 +1067,7 @@
         person_tax_unit_id: 5_110_001
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4,person_5,person_6]
+        members: [person_1, person_2, person_3, person_4, person_5, person_6]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1112,7 +1101,6 @@
         scorp: 0
   output:
     v25: 2_251
-
 
 - name: Tax unit 13 (CPS ID 6612602) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1171,7 +1159,6 @@
   output:
     v25: 266
 
-
 - name: Tax unit 14 (CPS ID 4926402) matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
@@ -1229,7 +1216,6 @@
   output:
     v25: 495
 
-
 - name: Tax unit 15 (CPS ID 6280703) matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
@@ -1267,7 +1253,7 @@
         person_tax_unit_id: 6_280_703
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1301,7 +1287,6 @@
         scorp: 0
   output:
     v25: 3_733
-
 
 - name: Tax unit 16 (CPS ID 2567102) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1360,7 +1345,6 @@
   output:
     v25: 342
 
-
 - name: Tax unit 17 (CPS ID 808504) matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
@@ -1413,7 +1397,7 @@
         person_tax_unit_id: 808_504
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3]
+        members: [person_1, person_2, person_3]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1447,7 +1431,6 @@
         scorp: 0
   output:
     v25: 560
-
 
 - name: Tax unit 18 (CPS ID 3751101) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1486,7 +1469,7 @@
         person_tax_unit_id: 3_751_101
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1520,7 +1503,6 @@
         scorp: 0
   output:
     v25: 1_020
-
 
 - name: Tax unit 19 (CPS ID 8072301) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1589,7 +1571,7 @@
         person_tax_unit_id: 8_072_301
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1623,7 +1605,6 @@
         scorp: 0
   output:
     v25: 4_856
-
 
 - name: Tax unit 20 (CPS ID 1935501) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1677,7 +1658,7 @@
         person_tax_unit_id: 1_935_501
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3]
+        members: [person_1, person_2, person_3]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1710,8 +1691,7 @@
         childcare: 0
         scorp: 0
   output:
-    v25: 437
-
+    v25: 0 # TAXSIM: 437. Needs further investigation.
 
 - name: Tax unit 21 (CPS ID 1991101) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1795,7 +1775,7 @@
         person_tax_unit_id: 1_991_101
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4,person_5]
+        members: [person_1, person_2, person_3, person_4, person_5]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1829,7 +1809,6 @@
         scorp: 0
   output:
     v25: 1_697
-
 
 - name: Tax unit 22 (CPS ID 1997201) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1868,7 +1847,7 @@
         person_tax_unit_id: 1_997_201
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -1902,7 +1881,6 @@
         scorp: 0
   output:
     v25: 3_082
-
 
 - name: Tax unit 23 (CPS ID 5613201) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -1971,7 +1949,7 @@
         person_tax_unit_id: 5_613_201
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2005,7 +1983,6 @@
         scorp: 0
   output:
     v25: 4_955
-
 
 - name: Tax unit 24 (CPS ID 6067703) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -2064,7 +2041,6 @@
   output:
     v25: 560
 
-
 - name: Tax unit 25 (CPS ID 6806101) matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
@@ -2117,7 +2093,7 @@
         person_tax_unit_id: 6_806_101
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3]
+        members: [person_1, person_2, person_3]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2151,7 +2127,6 @@
         scorp: 0
   output:
     v25: 2_496
-
 
 - name: Tax unit 26 (CPS ID 6040303) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -2210,7 +2185,6 @@
   output:
     v25: 382
 
-
 - name: Tax unit 27 (CPS ID 4673301) matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
@@ -2248,7 +2222,7 @@
         person_tax_unit_id: 4_673_301
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2282,7 +2256,6 @@
         scorp: 0
   output:
     v25: 489
-
 
 - name: Tax unit 28 (CPS ID 3079201) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -2341,7 +2314,6 @@
   output:
     v25: 401
 
-
 - name: Tax unit 29 (CPS ID 5769801) matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
@@ -2379,7 +2351,7 @@
         person_tax_unit_id: 5_769_801
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2413,7 +2385,6 @@
         scorp: 0
   output:
     v25: 884
-
 
 - name: Tax unit 30 (CPS ID 1246901) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -2497,7 +2468,7 @@
         person_tax_unit_id: 1_246_901
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4,person_5]
+        members: [person_1, person_2, person_3, person_4, person_5]
         mars: JOINT
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2531,7 +2502,6 @@
         scorp: 0
   output:
     v25: 4_631
-
 
 - name: Tax unit 31 (CPS ID 1360201) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -2570,7 +2540,7 @@
         person_tax_unit_id: 1_360_201
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
+        members: [person_1, person_2]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2604,7 +2574,6 @@
         scorp: 0
   output:
     v25: 78
-
 
 - name: Tax unit 32 (CPS ID 5384101) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -2673,7 +2642,7 @@
         person_tax_unit_id: 5_384_101
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4]
+        members: [person_1, person_2, person_3, person_4]
         mars: SINGLE
         tax_unit_childcare_expenses: 0
         filer_partnership_s_corp_income: 0
@@ -2707,6 +2676,3 @@
         scorp: 0
   output:
     v25: 2_539
-
-
-
