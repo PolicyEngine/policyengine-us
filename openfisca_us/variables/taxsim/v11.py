@@ -8,3 +8,5 @@ class v11(Variable):
     unit = "currency-USD"
     definition_period = YEAR
 
+    def formula(tax_unit, period, parameters):
+        return tax_unit("taxable_ui", period)

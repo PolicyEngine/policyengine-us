@@ -72,7 +72,7 @@ class TaxSim35:
         "sprofinc",
     ]
     OUTPUT_VARIABLES = [
-        "v25",
+        "v11",
     ]
     OPENFISCA_US_INPUT_VARIABLES = [
         "mars",
@@ -175,7 +175,7 @@ class TaxSim35:
         input_df["idtl"] = 2  # Set full output
         for variable in self.UNIMPLEMENTED_VARIABLES:
             input_df[variable] = 0
-        taxsim_df = self.calculate(input_df).reset_index(drop=True).shift(1)
+        taxsim_df = self.calculate(input_df).reset_index(drop=True)
         taxsim_df = taxsim_df.T.apply(lambda row: [0] + list(row.values[:-1])).T.drop(taxsim_df.columns[0], axis=1) # Some issue with the TAXSIM dataframe now coming out in the right format
         taxsim_df = pd.concat(
             [
@@ -238,7 +238,7 @@ class TaxSim35:
             test_str += f"  output:\n"
             for variable_name in self.OUTPUT_VARIABLES:
                 if variables[variable_name].entity.key == "tax_unit":
-                    value = taxsim_df.v25[
+                    value = taxsim_df[variable_name][
                         taxsim_df.taxsimid == tax_unit_id
                     ].values[0]
                     try:
