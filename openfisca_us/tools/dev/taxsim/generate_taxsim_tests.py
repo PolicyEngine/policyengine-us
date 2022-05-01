@@ -137,7 +137,7 @@ class TaxSim35:
         try:
             return pd.read_csv(StringIO(result))
         except:
-            # Intermediate results
+            # Full text results (idtl = 5)
             outputs = result.split("Federal Tax Calculation:")[1:]
             column_names = [f"v{i}" for i in range(10, 30)]
             column_names = [i for i in column_names if i != "v23"]
@@ -172,11 +172,11 @@ class TaxSim35:
             .sample(n=number * 100)
             .reset_index(drop=True)
         )
-        input_df["idtl"] = 5  # Set full output
+        input_df["idtl"] = 2  # Set full output
         for variable in self.UNIMPLEMENTED_VARIABLES:
             input_df[variable] = 0
-        input_df[:5].to_csv("input.csv")
-        taxsim_df = self.calculate(input_df)
+        taxsim_df = self.calculate(input_df).reset_index(drop=True).shift(1)
+        taxsim_df = taxsim_df.T.apply(lambda row: [0] + list(row.values[:-1])).T.drop(taxsim_df.columns[0], axis=1) # Some issue with the TAXSIM dataframe now coming out in the right format
         taxsim_df = pd.concat(
             [
                 input_df,

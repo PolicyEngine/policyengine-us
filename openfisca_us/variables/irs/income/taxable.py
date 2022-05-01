@@ -9,17 +9,9 @@ class pre_qbid_taxinc(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        # Calculate UI excluded from taxable income
-        ui = parameters(period).irs.unemployment_insurance
-        ui_amount = tax_unit("filer_e02300", period)
+        ui_amount = tax_unit("tax_unit_ui", period)
         agi = tax_unit("c00100", period)
-        agi_over_ui = agi - ui_amount
-        filing_status = tax_unit("filing_status", period)
-        ui_excluded = where(
-            agi_over_ui <= ui.exemption.cutoff[filing_status],
-            min_(ui_amount, ui.exemption.amount),
-            0,
-        )
+        ui_excluded = ui_amount - tax_unit("taxable_ui", period)
         maximum_deduction = max_(
             tax_unit("c04470", period), tax_unit("standard", period)
         )
