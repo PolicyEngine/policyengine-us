@@ -98,7 +98,9 @@ class sep(Variable):
     entity = TaxUnit
     definition_period = YEAR
     default_value = 1
-    documentation = "2 when MARS is 3 (married filing separately); otherwise 1"
+    documentation = (
+        "2 when filing_status is 3 (married filing separately); otherwise 1"
+    )
 
 
 class surtax(Variable):
@@ -217,8 +219,8 @@ class tax_unit_is_joint(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        mars = tax_unit("mars", period)
-        return mars == mars.possible_values.JOINT
+        filing_status = tax_unit("filing_status", period)
+        return filing_status == filing_status.possible_values.JOINT
 
 
 class care_deduction(Variable):

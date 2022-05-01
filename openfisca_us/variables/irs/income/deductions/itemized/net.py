@@ -12,11 +12,11 @@ class c21040(Variable):
     def formula(tax_unit, period, parameters):
         nonlimited = add(tax_unit, period, ["c17000", "c20500"])
         phaseout = parameters(period).irs.deductions.itemized.phaseout
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         c21060 = tax_unit("c21060", period)
         phaseout_amount_cap = phaseout.cap * max_(0, c21060 - nonlimited)
         uncapped_phaseout = (
-            max_(0, tax_unit("posagi", period) - phaseout.start[mars])
+            max_(0, tax_unit("posagi", period) - phaseout.start[filing_status])
             * phaseout.rate
         )
 

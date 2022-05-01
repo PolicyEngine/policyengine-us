@@ -24,7 +24,7 @@ class section_22_income(Variable):
     def formula(tax_unit, period, parameters):
         elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
         # Calculate initial amount
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
         num_qualifying_individuals = tax_unit.sum(
             person("qualifies_for_elderly_or_disabled_credit", period)
@@ -33,7 +33,7 @@ class section_22_income(Variable):
             [
                 num_qualifying_individuals == 1,
                 num_qualifying_individuals == 2,
-                mars == mars.possible_values.SEPARATE,
+                filing_status == filing_status.possible_values.SEPARATE,
                 True,
             ],
             [
@@ -67,7 +67,7 @@ class section_22_income(Variable):
         agi = tax_unit("c00100", period)
 
         amount_over_phaseout = max_(
-            0, agi - elderly_disabled.phaseout.threshold[mars]
+            0, agi - elderly_disabled.phaseout.threshold[filing_status]
         )
         phaseout_reduction = (
             elderly_disabled.phaseout.rate * amount_over_phaseout

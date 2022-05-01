@@ -14,9 +14,9 @@ class pre_qbid_taxinc(Variable):
         ui_amount = tax_unit("filer_e02300", period)
         agi = tax_unit("c00100", period)
         agi_over_ui = agi - ui_amount
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         ui_excluded = where(
-            agi_over_ui <= ui.exemption.cutoff[mars],
+            agi_over_ui <= ui.exemption.cutoff[filing_status],
             min_(ui_amount, ui.exemption.amount),
             0,
         )

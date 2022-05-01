@@ -15,7 +15,7 @@ class c33200(Variable):
         eligible_deps = min_(tax_unit("f2441", period), cdcc.eligibility.max)
         max_credit = eligible_deps * cdcc.max
         c32800 = max_(0, min_(tax_unit("filer_e32800", period), max_credit))
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
         earnings = person("earned", period)
@@ -23,7 +23,7 @@ class c33200(Variable):
         head_earnings = tax_unit.sum(is_head * earnings)
         spouse_earnings = tax_unit.sum(is_spouse * earnings)
         lowest_earnings = where(
-            mars == mars.possible_values.JOINT,
+            filing_status == filing_status.possible_values.JOINT,
             min_(head_earnings, spouse_earnings),
             head_earnings,
         )

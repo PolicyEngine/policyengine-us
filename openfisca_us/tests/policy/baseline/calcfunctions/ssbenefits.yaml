@@ -1,7 +1,7 @@
 - name: SSBenefits unit test 0
   period: 2019
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     ymod: 38323
     social_security: 3411
   output:
@@ -10,7 +10,7 @@
 - name: SSBenefits unit test 1
   period: 2019
   input:
-    mars: JOINT
+    filing_status: JOINT
     ymod: 54598
     social_security: 38818
   output:
@@ -20,7 +20,7 @@
   period: 2019
   absolute_error_margin: 0.01
   input:
-    mars: JOINT
+    filing_status: JOINT
     ymod: 132696
     social_security: 18518
   output:
@@ -29,7 +29,7 @@
 - name: SSBenefits unit test 3
   period: 2019
   input:
-    mars: JOINT
+    filing_status: JOINT
     ymod: 84124
     social_security: 10514
   output:
@@ -38,7 +38,7 @@
 - name: SSBenefits unit test 4
   period: 2019
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     ymod: 26098
     social_security: 18705
   output:
@@ -47,7 +47,7 @@
 - name: SSBenefits unit test 5
   period: 2019
   input:
-    mars: JOINT
+    filing_status: JOINT
     ymod: 33518
     social_security: 49667
   output:
@@ -56,7 +56,7 @@
 - name: SSBenefits unit test 6
   period: 2019
   input:
-    mars: JOINT
+    filing_status: JOINT
     ymod: 125013
     social_security: 52791
   output:
@@ -65,7 +65,7 @@
 - name: SSBenefits unit test 7
   period: 2019
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     ymod: 25533
     social_security: 16874
   output:
@@ -74,7 +74,7 @@
 - name: SSBenefits unit test 8
   period: 2019
   input:
-    mars: JOINT
+    filing_status: JOINT
     ymod: 51058
     social_security: 34044
   output:
@@ -83,7 +83,7 @@
 - name: SSBenefits unit test 9
   period: 2019
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     ymod: 66787
     social_security: 17894
   output:

@@ -1,0 +1,45 @@
+- name: Default is single.
+  period: 2022
+  output:
+    filing_status: SINGLE
+
+- name: Married people file as joint.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    filing_status: JOINT
+
+- name: Married people with dependents file as joint.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+      child:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+  output:
+    filing_status: JOINT
+
+- name: Single person with dependents files as head of household.
+  period: 2022
+  input:
+    people:
+      head: {}
+      child:
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD

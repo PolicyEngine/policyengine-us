@@ -582,5 +582,15 @@
 - bump: minor
   changes:
     added:
+    - Formulas for xtot, num, blind_head, blind_spouse, age_head, and age_spouse.
+    - Unit tests for some existing formulas.
+    changed:
+    - Classify single person with dependents as head of household, not single.
+    - Split tax unit variables into their own files.
+    - Rename `marital_status` and `mars` to `filing_status`.
+  date: 2022-05-01 21:21:19
+- bump: minor
+  changes:
+    added:
     - Script to generate integration tests from TAXSIM.
     - TAXSIM integration tests for the EITC.
