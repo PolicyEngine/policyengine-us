@@ -10,9 +10,6 @@ class is_tax_unit_head(Variable):
     def formula(person, period, parameters):
         # Only adults can be heads.
         eligible = ~person("is_child", period)
-        # Of those who meet the criteria, select the first person defined.
+        age = person("age", period)
         tax_unit = person.tax_unit
-        # NB: tax_unit.members_position is actually person-level.
-        rank = where(eligible, tax_unit.members_position, inf)
-        first_rank = tax_unit.min(rank)
-        return eligible & (rank == first_rank)
+        return person.get_rank(tax_unit, -age, eligible) == 0

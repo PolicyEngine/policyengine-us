@@ -589,3 +589,8 @@
     - Split tax unit variables into their own files.
     - Rename `marital_status` and `mars` to `filing_status`.
   date: 2022-05-01 21:21:19
+- bump: minor
+  changes:
+    added:
+    - Script to generate integration tests from TAXSIM.
+    - TAXSIM integration tests for the EITC.
