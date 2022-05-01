@@ -573,8 +573,11 @@
     added:
       - Massachusetts SNAP parameters.
   date: 2022-05-01 14:45:31
-- bump: patch
+- bump: minor
   changes:
     changed:
       - Classify single person with dependents as head of household, not single.
-      - Split tax unit variables into their own files and add unit tests.
+      - Split tax unit variables into their own files.
+    added:
+      - Formulas for xtot, num, blind_head, blind_spouse, age_head, and age_spouse.
+      - Unit tests for some existing formulas.
