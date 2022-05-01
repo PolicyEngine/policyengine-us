@@ -106,7 +106,7 @@ class ymod1(Variable):
         business_income = add(tax_unit, period, BUSINESS_INCOME_SOURCES)
         max_business_losses = parameters(
             period
-        ).irs.ald.misc.max_business_losses[tax_unit("mars", period)]
+        ).irs.ald.misc.max_business_losses[tax_unit("filing_status", period)]
         business_income_losses_capped = max_(
             business_income, -max_business_losses
         )
@@ -163,10 +163,10 @@ class c02500(Variable):
     def formula(tax_unit, period, parameters):
         ss = parameters(period).irs.social_security.taxability
         ymod = tax_unit("ymod", period)
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
 
-        lower_threshold = ss.threshold.lower[mars]
-        upper_threshold = ss.threshold.upper[mars]
+        lower_threshold = ss.threshold.lower[filing_status]
+        upper_threshold = ss.threshold.upper[filing_status]
 
         under_first_threshold = ymod < lower_threshold
         under_second_threshold = ymod < upper_threshold

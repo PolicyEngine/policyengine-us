@@ -28,7 +28,7 @@ class c05200(Variable):
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
         pt_tbase = reg_taxinc
 
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
 
         # Initialise regular and pass-through income tax to zero
         reg_tax = 0
@@ -38,7 +38,9 @@ class c05200(Variable):
         for i in range(1, 7):
             # Calculate rate applied to regular income up to the current
             # threshold (on income above the last threshold)
-            reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
+            reg_threshold = individual_income.bracket.thresholds[str(i)][
+                filing_status
+            ]
             reg_tax += individual_income.bracket.rates[
                 str(i)
             ] * amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
@@ -49,7 +51,9 @@ class c05200(Variable):
             # (which is not taxed again)
             pt_threshold = max_(
                 0,
-                individual_income.pass_through.bracket.thresholds[str(i)][mars]
+                individual_income.pass_through.bracket.thresholds[str(i)][
+                    filing_status
+                ]
                 - pt_tbase,
             )
             pt_tax += individual_income.pass_through.bracket.rates[
@@ -80,10 +84,10 @@ class taxbc(Variable):
 
     def formula(tax_unit, period, parameters):
         capital_gains = parameters(period).irs.capital_gains.brackets
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         dwks1 = tax_unit("c04800", period)
 
-        dwks16 = min_(capital_gains.thresholds["1"][mars], dwks1)
+        dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)
         dwks17 = min_(tax_unit("dwks14", period), dwks16)
 
         dwks20 = dwks16 - dwks17
@@ -93,7 +97,7 @@ class taxbc(Variable):
         dwks21 = min_(dwks1, dwks13)
         dwks22 = dwks20
         dwks23 = max_(0, dwks21 - dwks22)
-        dwks25 = min_(capital_gains.thresholds["2"][mars], dwks1)
+        dwks25 = min_(capital_gains.thresholds["2"][filing_status], dwks1)
         dwks19 = tax_unit("dwks19", period)
         dwks26 = min_(dwks19, dwks20)
         dwks27 = max_(0, dwks25 - dwks26)
@@ -136,7 +140,7 @@ class taxbc(Variable):
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
         pt_tbase = reg_taxinc
 
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
 
         # Initialise regular and pass-through income tax to zero
         reg_tax = 0
@@ -146,7 +150,9 @@ class taxbc(Variable):
         for i in range(1, 7):
             # Calculate rate applied to regular income up to the current
             # threshold (on income above the last threshold)
-            reg_threshold = individual_income.bracket.thresholds[str(i)][mars]
+            reg_threshold = individual_income.bracket.thresholds[str(i)][
+                filing_status
+            ]
             amount_in_bracket = amount_between(
                 reg_taxinc, last_reg_threshold, reg_threshold
             )
@@ -159,7 +165,9 @@ class taxbc(Variable):
             # way, but as treated as if stacked on top of regular income
             # (which is not taxed again)
             pt_threshold = max_(
-                individual_income.pass_through.bracket.thresholds[str(i)][mars]
+                individual_income.pass_through.bracket.thresholds[str(i)][
+                    filing_status
+                ]
                 - pt_tbase,
                 0,
             )

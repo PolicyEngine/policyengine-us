@@ -28,7 +28,7 @@ thresholds:
     label: Individual income tax rate thresholds
     breakdown:
       - range(1, 7)
-      - mars
+      - filing_status
     period: year
     propagate_metadata_to_children: true
     reference:

@@ -1,7 +1,7 @@
 - name: Earnings too low
   period: 2019
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     taxable_self_employment_income: 1_000
     filer_e00200: 10_000
   output:
@@ -10,7 +10,7 @@
 - name: Earnings high enough to pay the Additional Medicare Tax
   period: 2019
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     taxable_self_employment_income: 100_000
     filer_e00200: 1_000_000
   output:

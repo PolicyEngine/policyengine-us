@@ -27,7 +27,7 @@ class exemption_phaseout_start(Variable):
 
     def formula(tax_unit, period, parameters):
         return parameters(period).irs.income.exemption.phaseout.start[
-            tax_unit("mars", period)
+            tax_unit("filing_status", period)
         ]
 
 
