@@ -10,5 +10,8 @@
       head: {}
       spouse: {}
       child: {}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
   output:
     xtot: 3

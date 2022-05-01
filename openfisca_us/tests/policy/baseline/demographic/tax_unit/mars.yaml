@@ -10,6 +10,9 @@
       head: {}
       spouse:
         is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
   output:
     mars: JOINT
 
@@ -21,7 +24,10 @@
       spouse:
         is_tax_unit_spouse: true
       child:
-        is_tax_unit_dependent: tru
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
   output:
     mars: JOINT
 
@@ -32,5 +38,8 @@
       head: {}
       child:
         is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
   output:
     mars: HEAD_OF_HOUSEHOLD
