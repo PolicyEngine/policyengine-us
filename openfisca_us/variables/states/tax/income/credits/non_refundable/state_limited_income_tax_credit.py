@@ -16,7 +16,7 @@ class state_limited_income_tax_credit(Variable):
         exempt = tax_unit("is_state_income_tax_exempt", period)
         # Lines 10-12: Compute eligibility based on income limit.
         state = tax_unit.household("state_code_str", period)
-        mars = tax_unit("marital_status", period)
+        mars = tax_unit("filing_status", period)
         p = parameters(
             period
         ).states.tax.income.credits.non_refundable.limited_income

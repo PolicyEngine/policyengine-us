@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class MARSType(Enum):
+class FilingStatus(Enum):
     SINGLE = "Single"
     JOINT = "Joint"
     SEPARATE = "Separate"
@@ -9,22 +9,26 @@ class MARSType(Enum):
     WIDOW = "Widow(er)"
 
 
-class mars(Variable):
+class filing_status(Variable):
     value_type = Enum
     entity = TaxUnit
-    possible_values = MARSType
-    default_value = MARSType.SINGLE
+    possible_values = FilingStatus
+    default_value = FilingStatus.SINGLE
     definition_period = YEAR
-    label = "Marital status for the tax unit"
+    label = "Filing status for the tax unit"
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
         has_dependents = tax_unit("tax_unit_dependents", period) > 0
         return select(
             [has_spouse, has_dependents, True],
-            [MARSType.JOINT, MARSType.HEAD_OF_HOUSEHOLD, MARSType.SINGLE],
+            [
+                FilingStatus.JOINT,
+                FilingStatus.HEAD_OF_HOUSEHOLD,
+                FilingStatus.SINGLE,
+            ],
         )
 
 
-marital_status = variable_alias("marital_status", mars)
+# For Tax-Calculator.
+mars = variable_alias("mars", filing_status)

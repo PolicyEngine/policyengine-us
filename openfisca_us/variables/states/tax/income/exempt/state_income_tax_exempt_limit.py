@@ -11,7 +11,7 @@ class state_income_tax_exempt_limit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).states.tax.income.exempt
         state = tax_unit.household("state_code_str", period)
-        mars = tax_unit("marital_status", period)
+        mars = tax_unit("filing_status", period)
         dependents = tax_unit("tax_unit_dependents", period)
         base_limit = p.limit[state][mars]
         dep_limit = dependents * p.dependent[state][mars]

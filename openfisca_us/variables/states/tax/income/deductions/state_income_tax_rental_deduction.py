@@ -12,7 +12,7 @@ class state_income_tax_rental_deduction(Variable):
         rent = tax_unit.spm_unit("rent", period)
         p = parameters(period).states.tax.income.deductions.rent
         state = tax_unit.household("state_code_str", period)
-        mars = tax_unit("marital_status", period)
+        mars = tax_unit("filing_status", period)
         share = p.share[state]
         cap = p.cap[state][mars]
         uncapped = rent * share
