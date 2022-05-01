@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class stcg(Variable):
     value_type = float
     entity = TaxUnit

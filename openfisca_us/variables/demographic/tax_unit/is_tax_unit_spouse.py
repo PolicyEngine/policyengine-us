@@ -1,6 +1,7 @@
 from openfisca_us.model_api import *
 from openfisca_core.populations import GroupPopulation, Population
 
+
 class is_tax_unit_spouse(Variable):
     value_type = bool
     entity = Person

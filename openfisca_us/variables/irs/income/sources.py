@@ -297,6 +297,7 @@ class e01700(Variable):
     documentation = "Taxable pensions and annuities"
     unit = USD
 
+
 pension_income = variable_alias("pension_income", e01700)
 
 
@@ -358,6 +359,7 @@ class e02300(Variable):
     definition_period = YEAR
     documentation = "Unemployment insurance benefits"
     unit = USD
+
 
 unemployment_insurance = variable_alias("unemployment_insurance", e02300)
 
@@ -830,9 +832,7 @@ class filer_partnership_s_corp_income(Variable):
         return tax_unit_non_dep_sum("e26270", tax_unit, period)
 
 
-filer_e26270 = variable_alias(
-    "filer_e26270", filer_partnership_s_corp_income
-)
+filer_e26270 = variable_alias("filer_e26270", filer_partnership_s_corp_income)
 
 
 class e27200(Variable):
@@ -881,7 +881,11 @@ class filer_e32800(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e32800", tax_unit, period)
 
-tax_unit_childcare_expenses = variable_alias("tax_unit_childcare_expenses", filer_e32800)
+
+tax_unit_childcare_expenses = variable_alias(
+    "tax_unit_childcare_expenses", filer_e32800
+)
+
 
 class e58990(Variable):
     value_type = float
@@ -1114,6 +1118,7 @@ class p22250(Variable):
     documentation = "Sch D: Net short-term capital gains/losses"
     unit = USD
 
+
 short_term_capital_gains = variable_alias("short_term_capital_gains", p22250)
 
 
@@ -1136,6 +1141,7 @@ class p23250(Variable):
     definition_period = YEAR
     documentation = "Sch D: Net long-term capital gains/losses"
     unit = USD
+
 
 long_term_capital_gains = variable_alias("long_term_capital_gains", p23250)
 

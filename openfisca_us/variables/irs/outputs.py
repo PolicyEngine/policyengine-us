@@ -76,7 +76,11 @@ class earned(Variable):
             * misc.employer_share
             * person("self_employment_tax", period)
         )
-        return add(person, period, ["e00200", "self_employment_income"]) - adjustment
+        return (
+            add(person, period, ["e00200", "self_employment_income"])
+            - adjustment
+        )
+
 
 earned_income = variable_alias("earned_income", earned)
 
