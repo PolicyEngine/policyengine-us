@@ -1,570 +1,574 @@
 - changes:
     added:
-    - First prototype version with a standard deduction variable.
+      - First prototype version with a standard deduction variable.
   date: 2021-06-28 00:00:00
   version: 0.0.1
 - bump: minor
   changes:
     added:
-    - Prototype with some tax implementations.
+      - Prototype with some tax implementations.
   date: 2021-12-25 00:00:00
 - bump: minor
   changes:
     added:
-    - Tax variables, some benefit variables.
+      - Tax variables, some benefit variables.
   date: 2021-12-25 00:00:01
 - bump: minor
   changes:
     added:
-    - Lifeline benefit.
+      - Lifeline benefit.
   date: 2021-12-25 00:00:02
 - bump: patch
   changes:
     added:
-    - Automated tests.
+      - Automated tests.
   date: 2021-12-25 00:00:03
 - bump: minor
   changes:
     added:
-    - TANF eligibility, broken down into demographic and financial variables, with
-      financial separated by current enrollment in program.
-    - Demographic TANF eligibility per IL rules.
+      - TANF eligibility, broken down into demographic and financial variables, with
+        financial separated by current enrollment in program.
+      - Demographic TANF eligibility per IL rules.
   date: 2021-12-26 00:00:00
 - bump: minor
   changes:
     added:
-    - Medicaid income thresholds for California.
+      - Medicaid income thresholds for California.
   date: 2021-12-27 00:00:00
 - bump: minor
   changes:
     added:
-    - Alternative Minimum Tax (AMT) income and liability logic.
-    - Development tools for auto-generating unit tests for Tax-Calculator functions.
+      - Alternative Minimum Tax (AMT) income and liability logic.
+      - Development tools for auto-generating unit tests for Tax-Calculator functions.
   date: 2021-12-28 00:00:00
 - bump: minor
   changes:
     added:
-    - Gains Tax (capital gains treatment) logic and parameters.
+      - Gains Tax (capital gains treatment) logic and parameters.
   date: 2021-12-28 00:00:01
 - bump: minor
   changes:
     added:
-    - Minimum benefit logic for SNAP.
+      - Minimum benefit logic for SNAP.
   date: 2021-12-28 00:00:02
 - bump: minor
   changes:
     added:
-    - Social Security taxation logic.
+      - Social Security taxation logic.
   date: 2021-12-28 00:00:03
 - bump: minor
   changes:
     added:
-    - Income-to-SMI (state median income) ratio.
+      - Income-to-SMI (state median income) ratio.
   date: 2021-12-28 00:00:04
 - bump: minor
   changes:
     added:
-    - American Opportunity (tax) Credit.
-    - Lifetime Learning (tax) Credit.
+      - American Opportunity (tax) Credit.
+      - Lifetime Learning (tax) Credit.
   date: 2021-12-30 00:00:00
 - bump: minor
   changes:
     added:
-    - Elderly and Disabled (tax) Credit.
+      - Elderly and Disabled (tax) Credit.
   date: 2021-12-30 00:00:01
 - bump: minor
   changes:
     added:
-    - Formula for Medicaid person type, based on age and dependents.
-    - Variable for whether a person meets their Medicaid income eligibility requirement.
+      - Formula for Medicaid person type, based on age and dependents.
+      - Variable for whether a person meets their Medicaid income eligibility requirement.
   date: 2021-12-31 00:00:00
 - bump: minor
   changes:
     added:
-    - SNAP eligibility based on federal net and gross income limits.
-    - Unit and integration tests for SNAP variables.
+      - SNAP eligibility based on federal net and gross income limits.
+      - Unit and integration tests for SNAP variables.
   date: 2022-01-03 00:00:00
 - bump: minor
   changes:
     added:
-    - Federal SNAP asset tests logic
+      - Federal SNAP asset tests logic
   date: 2022-01-03 00:00:01
 - bump: minor
   changes:
     added:
-    - CCDF subsidy top-level logic
+      - CCDF subsidy top-level logic
   date: 2022-01-03 00:00:02
 - bump: minor
   changes:
     added:
-    - Categorical eligibility for SNAP, including broad-based categorical eligibility
-      via low-cost TANF programs that effectively extend SNAP's asset and income limits.
+      - Categorical eligibility for SNAP, including broad-based categorical eligibility
+        via low-cost TANF programs that effectively extend SNAP's asset and income limits.
     changed:
-    - Refactored SNAP code.
+      - Refactored SNAP code.
   date: 2022-01-04 00:00:00
 - bump: patch
   changes:
     changed:
-    - Use USDA elderly and disabled definitions in SNAP calculations.
+      - Use USDA elderly and disabled definitions in SNAP calculations.
   date: 2022-01-06 00:00:00
 - bump: minor
   changes:
     added:
-    - Total child care market rate.
+      - Total child care market rate.
   date: 2022-01-06 00:00:01
 - bump: minor
   changes:
     added:
-    - Update child care market rate to annual.
+      - Update child care market rate to annual.
   date: 2022-01-06 00:00:02
 - bump: patch
   changes:
     added:
-    - Formulas for `childcare_hours_per_week` and `spm_unit_size`.
-    - Unit tests and units for some variables.
+      - Formulas for `childcare_hours_per_week` and `spm_unit_size`.
+      - Unit tests and units for some variables.
     changed:
-    - Reorganized variables.
+      - Reorganized variables.
   date: 2022-01-07 00:00:00
 - bump: patch
   changes:
     changed:
-    - Removes the `u` prefix from all variable label strings.
+      - Removes the `u` prefix from all variable label strings.
   date: 2022-01-08 00:00:00
 - bump: patch
   changes:
     added:
-    - Units to all tax variables.
+      - Units to all tax variables.
     changed:
-    - Adds one line between tests in yaml files.
-    - Use consistent imports in variable Python files.
+      - Adds one line between tests in yaml files.
+      - Use consistent imports in variable Python files.
     removed:
-    - C-TAM benefit variables in tax Python files.
-    - Erroneous formula for `eic` variable.
+      - C-TAM benefit variables in tax Python files.
+      - Erroneous formula for `eic` variable.
   date: 2022-01-08 00:00:01
 - bump: minor
   changes:
     added:
-    - Formula for initial TANF eligibility.
-    - 'Two new variables: `tanf_gross_earned_income` and `tanf_gross_unearned_income`.'
-    - Variable & parameter for `initial_employment_deduction`.
-    - Integration tests for TANF cash aid from TANF IL website.
+      - Formula for initial TANF eligibility.
+      - "Two new variables: `tanf_gross_earned_income` and `tanf_gross_unearned_income`."
+      - Variable & parameter for `initial_employment_deduction`.
+      - Integration tests for TANF cash aid from TANF IL website.
     changed:
-    - '`tanf_countable_income` now includes unearned income and earned income deduction.'
+      - "`tanf_countable_income` now includes unearned income and earned income deduction."
   date: 2022-01-09 00:00:00
 - bump: patch
   changes:
     fixed:
-    - Test runner failed to test string values.
+      - Test runner failed to test string values.
   date: 2022-01-12 00:00:00
 - bump: patch
   changes:
     added:
-    - Metadata for SNAP eligibility parameters.
+      - Metadata for SNAP eligibility parameters.
     fixed:
-    - Parameter misname in SNAP formula.
+      - Parameter misname in SNAP formula.
   date: 2022-01-14 00:00:00
 - bump: minor
   changes:
     added:
-    - Add CCDF copay formula.
+      - Add CCDF copay formula.
   date: 2022-01-14 00:00:01
 - bump: minor
   changes:
     added:
-    - Formula for SSI based on eligibility and amount if eligible.
+      - Formula for SSI based on eligibility and amount if eligible.
   date: 2022-01-14 00:00:02
 - bump: minor
   changes:
     fixed:
-    - Update CCDF subsidy formula.
+      - Update CCDF subsidy formula.
   date: 2022-01-15 00:00:00
 - bump: patch
   changes:
     fixed:
-    - Added links to version tag diffs in changelog.
+      - Added links to version tag diffs in changelog.
   date: 2022-01-15 00:00:01
 - bump: minor
   changes:
     added:
-    - Logic for SNAP excess medical deduction and dependent care deduction.
-    - Limit SNAP earned income deduction to earned income.
-    - Jupyter Book documentation on SNAP.
-    - Updated SNAP parameters.
-    - 'Empty variables for calculating SNAP: `employment_income`, `self_employment_income`,
-      `dividend_income`, `interest_income`, `childcare_expenses`, and `medical_out_of_pocket_expenses`.'
+      - Logic for SNAP excess medical deduction and dependent care deduction.
+      - Limit SNAP earned income deduction to earned income.
+      - Jupyter Book documentation on SNAP.
+      - Updated SNAP parameters.
+      - "Empty variables for calculating SNAP: `employment_income`, `self_employment_income`,
+        `dividend_income`, `interest_income`, `childcare_expenses`, and `medical_out_of_pocket_expenses`."
     changed:
-    - Significant refactoring of SNAP code.
-    - Use openfisca-tools for `add` and `aggr` functions, and pass lists of variables
-      to these function.
-    - Rename min/max SNAP benefit parameters and variables to use `allotment`.
+      - Significant refactoring of SNAP code.
+      - Use openfisca-tools for `add` and `aggr` functions, and pass lists of variables
+        to these function.
+      - Rename min/max SNAP benefit parameters and variables to use `allotment`.
   date: 2022-01-17 00:00:00
 - bump: patch
   changes:
     changed:
-    - Add metadata for variables and parameters used in SNAP calculations.
-    - Renames two parameters involved in SNAP deductions from `threshold` to `disregard`.
+      - Add metadata for variables and parameters used in SNAP calculations.
+      - Renames two parameters involved in SNAP deductions from `threshold` to `disregard`.
   date: 2022-01-17 00:00:01
 - bump: minor
   changes:
     added:
-    - Child Tax Credit (including adult dependents) parameters, logic and tests.
+      - Child Tax Credit (including adult dependents) parameters, logic and tests.
   date: 2022-01-17 00:00:02
 - bump: minor
   changes:
     added:
-    - Categorical eligibility to school meal subsidies.
-    - Documentation notebook on school meal subsidies.
-    - Parameterized income sources for school meal subsidies.
+      - Categorical eligibility to school meal subsidies.
+      - Documentation notebook on school meal subsidies.
+      - Parameterized income sources for school meal subsidies.
     changed:
-    - Count school meal subsidies by school enrollment rather than age.
-    - Remove `spm_unit_` prefix from school meal variables.
+      - Count school meal subsidies by school enrollment rather than age.
+      - Remove `spm_unit_` prefix from school meal variables.
   date: 2022-01-25 00:00:00
 - bump: minor
   changes:
     added:
-    - Child Tax Credit (and historical policy).
-    - Non-refundable and refundable credit handling in tax logic.
-    - Metadata for education credits and the EITC.
+      - Child Tax Credit (and historical policy).
+      - Non-refundable and refundable credit handling in tax logic.
+      - Metadata for education credits and the EITC.
     fixed:
-    - Bugs in head/spouse detection and nonrefundable credits.
+      - Bugs in head/spouse detection and nonrefundable credits.
   date: 2022-01-28 00:00:00
 - bump: patch
   changes:
     added:
-    - Metadata and variable aliases for key tax variables.
-    - Employment, self-employment, interest and dividend income as inputs to tax logic.
+      - Metadata and variable aliases for key tax variables.
+      - Employment, self-employment, interest and dividend income as inputs to tax logic.
   date: 2022-02-02 00:00:00
 - bump: patch
   changes:
     added:
-    - Added formula for TANF variable `continuous_tanf_eligibility`
-    - Added integration test for continuous TANF eligibility to `integration.yaml`
+      - Added formula for TANF variable `continuous_tanf_eligibility`
+      - Added integration test for continuous TANF eligibility to `integration.yaml`
   date: 2022-02-06 00:00:00
 - bump: minor
   changes:
     added:
-    - SNAP emergency allotments for California.
-    - SNAP unearned income example in JupyterBook docs.
+      - SNAP emergency allotments for California.
+      - SNAP unearned income example in JupyterBook docs.
   date: 2022-02-06 00:00:01
 - bump: minor
   changes:
     added:
-    - California Clean Vehicle Rebate Project.
+      - California Clean Vehicle Rebate Project.
   date: 2022-02-07 00:00:00
 - bump: minor
   changes:
     added:
-    - Guaranteed income / cash assistance pilot income variable. This counts as unearned
-      income for SNAP, uncounted for taxes and other benefits.
+      - Guaranteed income / cash assistance pilot income variable. This counts as unearned
+        income for SNAP, uncounted for taxes and other benefits.
   date: 2022-02-07 00:00:01
 - bump: patch
   changes:
     fixed:
-    - EITC logic and parameters for non-3-child tax units.
+      - EITC logic and parameters for non-3-child tax units.
   date: 2022-02-08 00:00:00
 - bump: patch
   changes:
     added:
-    - PolicyEngine metadata and notebook for Lifeline program.
-    - Formula for `irs_gross_income`, which Lifeline uses to calculate income-based
-      eligibility.
+      - PolicyEngine metadata and notebook for Lifeline program.
+      - Formula for `irs_gross_income`, which Lifeline uses to calculate income-based
+        eligibility.
   date: 2022-02-08 00:00:01
 - bump: patch
   changes:
     fixed:
-    - Add Lifeline notebook to table of contents.
+      - Add Lifeline notebook to table of contents.
   date: 2022-02-08 00:00:02
 - bump: minor
   changes:
     added:
-    - Income limits for 5 Maryland Medicaid coverage groups.
+      - Income limits for 5 Maryland Medicaid coverage groups.
   date: 2022-02-09 00:00:00
 - bump: minor
   changes:
     added:
-    - WIC program.
+      - WIC program.
     fixed:
-    - Include guaranteed income / cash assistance in market income.
+      - Include guaranteed income / cash assistance in market income.
   date: 2022-02-09 00:00:01
 - bump: patch
   changes:
     fixed:
-    - Change WIC display name from `WIC benefit value` to `WIC`.
+      - Change WIC display name from `WIC benefit value` to `WIC`.
   date: 2022-02-09 00:00:02
 - bump: patch
   changes:
     fixed:
-    - Specify WIC's unit as USD.
+      - Specify WIC's unit as USD.
   date: 2022-02-09 00:00:03
 - bump: patch
   changes:
     fixed:
-    - Remove guaranteed income / cash assistance from benefits.
+      - Remove guaranteed income / cash assistance from benefits.
   date: 2022-02-09 00:00:04
 - bump: patch
   changes:
     added:
-    - Categorical breakdown metadata infrastructure from OpenFisca-Tools.
+      - Categorical breakdown metadata infrastructure from OpenFisca-Tools.
   date: 2022-02-10 00:00:00
 - bump: patch
   changes:
     added:
-    - Chained CPI-U (monthly and August-only) parameters.
-    - Metadata for SNAP max allotment.
+      - Chained CPI-U (monthly and August-only) parameters.
+      - Metadata for SNAP max allotment.
   date: 2022-02-13 00:00:00
 - bump: patch
   changes:
     changed:
-    - OpenFisca-Tools constraint widened to the current major version.
+      - OpenFisca-Tools constraint widened to the current major version.
   date: 2022-02-16 00:00:00
 - bump: minor
   changes:
     added:
-    - Uprated tax parameters for federal income tax.
+      - Uprated tax parameters for federal income tax.
   date: 2022-02-21 00:00:00
 - bump: minor
   changes:
     added:
-    - Affordable Connectivity Program.
+      - Affordable Connectivity Program.
     changed:
-    - Split school meal subsidies into free and reduced-price.
+      - Split school meal subsidies into free and reduced-price.
   date: 2022-02-21 00:00:01
 - bump: minor
   changes:
     added:
-    - Rural Tribal supplement for Lifeline.
+      - Rural Tribal supplement for Lifeline.
     changed:
-    - Restructure ACP and EBB Tribal amounts to work with PolicyEngine.
+      - Restructure ACP and EBB Tribal amounts to work with PolicyEngine.
   date: 2022-02-21 00:00:02
 - bump: patch
   changes:
     changed:
-    - Edited labels for ACP and SNAP normal allotment.
+      - Edited labels for ACP and SNAP normal allotment.
   date: 2022-02-21 00:00:03
 - bump: patch
   changes:
     fixed:
-    - Subtract Lifeline from broadband cost before calculating ACP and EBB.
+      - Subtract Lifeline from broadband cost before calculating ACP and EBB.
   date: 2022-02-27 00:00:00
 - bump: patch
   changes:
     added:
-    - Code coverage badge to README.md.
-    - Reminder for pull requests to run `make format && make documentation`.
-    - CPI-uprated values for WIC average payments.
+      - Code coverage badge to README.md.
+      - Reminder for pull requests to run `make format && make documentation`.
+      - CPI-uprated values for WIC average payments.
     changed:
-    - Child Tax Credit names renamed to `ctc`.
-    - Child and Dependent Care Credit names renamed to `cdcc`.
+      - Child Tax Credit names renamed to `ctc`.
+      - Child and Dependent Care Credit names renamed to `cdcc`.
     fixed:
-    - EITC maximum age in 2021 changed from 125 to infinity.
+      - EITC maximum age in 2021 changed from 125 to infinity.
   date: 2022-02-28 00:00:00
 - bump: minor
   changes:
     added:
-    - Supplemental Security Income for individuals.
-    - Social Security input variables, counted as unearned income for several programs.
+      - Supplemental Security Income for individuals.
+      - Social Security input variables, counted as unearned income for several programs.
   date: 2022-03-04 00:00:00
 - bump: patch
   changes:
     changed:
-    - Adjust variable labels for consistency.
+      - Adjust variable labels for consistency.
   date: 2022-03-04 00:00:01
 - bump: minor
   changes:
     added:
-    - SNAP aggregate benefits and participation.
+      - SNAP aggregate benefits and participation.
   date: 2022-03-05 00:00:00
 - bump: patch
   changes:
     changed:
-    - Point `e02400` to `social_security` (for PolicyEngine).
+      - Point `e02400` to `social_security` (for PolicyEngine).
   date: 2022-03-07 00:00:00
 - bump: patch
   changes:
     added:
-    - '`spm_unit_weight` variable.'
+      - "`spm_unit_weight` variable."
     fixed:
-    - SNAP now uses the additional amounts where main rates are not available.
+      - SNAP now uses the additional amounts where main rates are not available.
   date: 2022-03-07 00:00:01
 - bump: patch
   changes:
     changed:
-    - '`is_married` moved from person-level to family-level, with a formula added.'
+      - "`is_married` moved from person-level to family-level, with a formula added."
   date: 2022-03-08 00:00:00
 - bump: patch
   changes:
     changed:
-    - IRS-published uprated income tax parameters for 2019-22.
+      - IRS-published uprated income tax parameters for 2019-22.
   date: 2022-03-09 00:00:00
 - bump: patch
   changes:
     added:
-    - February 2022 chained CPI-U.
+      - February 2022 chained CPI-U.
     changed:
-    - Simplified WIC uprating.
+      - Simplified WIC uprating.
   date: 2022-03-11 00:00:00
 - bump: patch
   changes:
     fixed:
-    - EITC uses the correct phase-in rate.
+      - EITC uses the correct phase-in rate.
   date: 2022-03-13 00:00:00
 - bump: patch
   changes:
     changed:
-    - Tax folder re-organised to improve modularity.
+      - Tax folder re-organised to improve modularity.
     fixed:
-    - A bug in AMT calculations.
+      - A bug in AMT calculations.
   date: 2022-03-16 21:22:44
 - bump: patch
   changes:
     fixed:
-    - Push action on GitHub correctly publishes.
+      - Push action on GitHub correctly publishes.
   date: 2022-03-16 20:29:58
 - bump: patch
   changes:
     fixed:
-    - Push action on GitHub correctly publishes.
+      - Push action on GitHub correctly publishes.
   date: 2022-03-16 21:22:44
 - bump: minor
   changes:
     changed:
-    - Added multiple parameters for California's TANF system.
-    - Refactored the TANF structure for easier implementation of other state TANF
-      programs.
+      - Added multiple parameters for California's TANF system.
+      - Refactored the TANF structure for easier implementation of other state TANF
+        programs.
   date: 2022-03-27 18:49:02
 - bump: patch
   changes:
     added:
-    - Page on TANF to documentation.
+      - Page on TANF to documentation.
   date: 2022-03-28 10:40:42
 - bump: patch
   changes:
     fixed:
-    - Versioning action didn't update `setup.py`.
+      - Versioning action didn't update `setup.py`.
   date: 2022-03-28 10:55:27
 - bump: minor
   changes:
     changed:
-    - Added `is_eitc_qualifying_child` variable to improve EITC child logic.
-    - Split `is_in_school` into `is_in_k12_school` and `is_full_time_student`.
+      - Added `is_eitc_qualifying_child` variable to improve EITC child logic.
+      - Split `is_in_school` into `is_in_k12_school` and `is_full_time_student`.
   date: 2022-03-28 11:34:53
 - bump: minor
   changes:
     added:
-    - Net income limits for SNAP BBCE (TANF) program.
-    - Legislative references for SNAP income limits.
+      - Net income limits for SNAP BBCE (TANF) program.
+      - Legislative references for SNAP income limits.
     removed:
-    - 165% SNAP gross income limit for separate elderly and disabled households (unused).
+      - 165% SNAP gross income limit for separate elderly and disabled households (unused).
   date: 2022-03-30 01:17:38
 - bump: minor
   changes:
     added:
-    - CDCC parameters for eligibility and metadata.
+      - CDCC parameters for eligibility and metadata.
     fixed:
-    - A bug where the CDCC would phase down too quickly.
+      - A bug where the CDCC would phase down too quickly.
   date: 2022-03-30 11:46:11
 - bump: patch
   changes:
     added:
-    - Parameter metadata for tax credits and payroll taxes.
+      - Parameter metadata for tax credits and payroll taxes.
   date: 2022-03-30 13:12:44
 - bump: patch
   changes:
     added:
-    - Added full-time college student variable.
+      - Added full-time college student variable.
   date: 2022-03-30 18:53:00
 - bump: minor
   changes:
     added:
-    - HUD adjusted income and dependent variables and logic.
+      - HUD adjusted income and dependent variables and logic.
   date: 2022-04-05 19:04:10
 - bump: patch
   changes:
     fixed:
-    - Point TANF parameter to state instead of region.
+      - Point TANF parameter to state instead of region.
   date: 2022-04-06 10:35:14
 - bump: minor
   changes:
     added:
-    - More recent Social Security payroll tax cap parameter values.
-    - Separate parameters for employer payroll taxes and self-employment taxes.
-    - Parameter for self-employment net earnings disregard.
-    - Unit tests and legislative references for payroll and self-employment tax variables.
+      - More recent Social Security payroll tax cap parameter values.
+      - Separate parameters for employer payroll taxes and self-employment taxes.
+      - Parameter for self-employment net earnings disregard.
+      - Unit tests and legislative references for payroll and self-employment tax variables.
     changed:
-    - Reorganized payroll and self-employment tax parameters and variables.
-    - Replaced large parameters with infinity and made number formatting consistent.
+      - Reorganized payroll and self-employment tax parameters and variables.
+      - Replaced large parameters with infinity and made number formatting consistent.
     removed:
-    - Reform-only `social_security.add_taxable_earnings` parameter.
-    - Unused `exact` variable.
-    - Variable for `social_security_taxes` (moved logic to `refundable_child_tax_credit`).
+      - Reform-only `social_security.add_taxable_earnings` parameter.
+      - Unused `exact` variable.
+      - Variable for `social_security_taxes` (moved logic to `refundable_child_tax_credit`).
   date: 2022-04-07 06:08:18
 - bump: patch
   changes:
     fixed:
-    - Refundable CTC formula works properly when phase-in rate increased (comments
-      added).
+      - Refundable CTC formula works properly when phase-in rate increased (comments
+        added).
   date: 2022-04-12 18:38:49
 - bump: minor
   changes:
     added:
-    - Capped non-refundable credits variable.
-    - Shortened labels for tax variables.
+      - Capped non-refundable credits variable.
+      - Shortened labels for tax variables.
   date: 2022-04-13 12:58:29
 - bump: minor
   changes:
     added:
-    - Microdata now handled entirely within OpenFisca-US.
+      - Microdata now handled entirely within OpenFisca-US.
   date: 2022-04-14 08:19:40
 - bump: patch
   changes:
     added:
-    - Legislative references for CDCC parameters.
+      - Legislative references for CDCC parameters.
     fixed:
-    - CDCC uses maximum dependent parameter.
+      - CDCC uses maximum dependent parameter.
   date: 2022-04-15 14:23:11
 - bump: patch
   changes:
     added:
-    - Unit tests for age variables.
+      - Unit tests for age variables.
     fixed:
-    - Tax unit head and spouse flag logic.
+      - Tax unit head and spouse flag logic.
   date: 2022-04-15 18:10:27
 - bump: minor
   changes:
     added:
-    - American Community Survey input.
+      - American Community Survey input.
   date: 2022-04-19 10:22:36
 - bump: patch
   changes:
     fixed:
-    - Bug preventing the package from publishing on PyPI.
+      - Bug preventing the package from publishing on PyPI.
   date: 2022-04-19 13:04:12
 - bump: minor
   changes:
     added:
-    - Per-vehicle payment (California)
+      - Per-vehicle payment (California)
   date: 2022-04-19 15:52:56
 - bump: minor
   changes:
     added:
-    - SPM unit income decile.
-    - SPM unit OECD equivalisation.
+      - SPM unit income decile.
+      - SPM unit OECD equivalisation.
     fixed:
-    - Basic income variable for adults and seniors.
+      - Basic income variable for adults and seniors.
   date: 2022-04-21 14:15:27
 - bump: minor
   changes:
     added:
-    - Basic income now included in SPM unit benefits.
+      - Basic income now included in SPM unit benefits.
   date: 2022-04-21 20:42:35
 - bump: patch
   changes:
     added:
-    - URL from which to download the latest CPS dataset (skipping generation)
+      - URL from which to download the latest CPS dataset (skipping generation)
   date: 2022-04-22 13:39:09
 - bump: minor
   changes:
     added:
-    - Massachusetts state income tax.
-    - EITC documentation notebook.
+      - Massachusetts state income tax.
+      - EITC documentation notebook.
   date: 2022-04-30 22:16:10
+- bump: minor
+  changes:
+    added:
+      - Massachusetts SNAP parameters.
