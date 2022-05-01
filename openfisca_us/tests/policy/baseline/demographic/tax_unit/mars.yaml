@@ -1,0 +1,36 @@
+- name: Default is single.
+  period: 2022
+  output:
+    mars: SINGLE
+
+- name: Married people file as joint.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+  output:
+    mars: JOINT
+
+- name: Married people with dependents file as joint.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+      child:
+        is_tax_unit_dependent: tru
+  output:
+    mars: JOINT
+
+- name: Single person with dependents files as head of household.
+  period: 2022
+  input:
+    people:
+      head: {}
+      child:
+        is_tax_unit_dependent: true
+  output:
+    mars: HEAD_OF_HOUSEHOLD
