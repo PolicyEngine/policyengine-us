@@ -13,7 +13,6 @@ class eitc_phaseout_start(Variable):
         num_children = tax_unit("eitc_child_count", period)
         eitc = parameters(period).irs.credits.eitc
         is_joint = tax_unit("tax_unit_is_joint", period)
-        num_children = add(tax_unit, period, ["is_eitc_qualifying_child"])
         return (
             eitc.phaseout.start.calc(num_children)
             + is_joint * eitc.phaseout.joint_bonus

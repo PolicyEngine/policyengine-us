@@ -392,7 +392,7 @@ class filer_e02400(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e02400", tax_unit, period)
+        return add(tax_unit, period, ["social_security"])
 
 
 class e03150(Variable):
