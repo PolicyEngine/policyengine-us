@@ -1,7 +1,7 @@
 - name: Default is single.
   period: 2022
   output:
-    mars: SINGLE
+    filing_status: SINGLE
 
 - name: Married people file as joint.
   period: 2022
@@ -14,7 +14,7 @@
       tax_unit:
         members: [head, spouse]
   output:
-    mars: JOINT
+    filing_status: JOINT
 
 - name: Married people with dependents file as joint.
   period: 2022
@@ -29,7 +29,7 @@
       tax_unit:
         members: [head, spouse, child]
   output:
-    mars: JOINT
+    filing_status: JOINT
 
 - name: Single person with dependents files as head of household.
   period: 2022
@@ -42,4 +42,4 @@
       tax_unit:
         members: [head, child]
   output:
-    mars: HEAD_OF_HOUSEHOLD
+    filing_status: HEAD_OF_HOUSEHOLD

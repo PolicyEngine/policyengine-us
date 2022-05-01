@@ -12,12 +12,12 @@ class is_married(Variable):
         # If any tax unit is a married filer, assume the family is.
         person = family.members
         filing_status = person.tax_unit("filing_status", period)
-        mars_type = filing_status.possible_values
+        filing_status_type = filing_status.possible_values
         person_is_married = is_in(
-            person.tax_unit("mars", period),
+            person.tax_unit("filing_status", period),
             [
-                mars_type.JOINT,
-                mars_type.SEPARATE,
+                filing_status_type.JOINT,
+                filing_status_type.SEPARATE,
             ],
         )
         return family.any(person_is_married)

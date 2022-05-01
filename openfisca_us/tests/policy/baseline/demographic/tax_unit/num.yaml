@@ -6,13 +6,13 @@
 - name: num is 2 if joint.
   period: 2022
   input:
-    mars: JOINT
+    filing_status: JOINT
   output:
     num: 2
 
 - name: num is 1 if married filing separately.
   period: 2022
   input:
-    mars: SEPARATE
+    filing_status: SEPARATE
   output:
     num: 1
