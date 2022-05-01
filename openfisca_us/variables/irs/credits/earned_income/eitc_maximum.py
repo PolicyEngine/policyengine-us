@@ -10,7 +10,7 @@ class eitc_maximum(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        child_count = aggr(tax_unit, period, ["is_eitc_qualifying_child"])
+        child_count = add(tax_unit, period, ["is_eitc_qualifying_child"])
         eitc = parameters(period).irs.credits.eitc
         maximum = eitc.max.calc(child_count)
         phased_in_rate = eitc.phase_in_rate.calc(child_count)

@@ -16,7 +16,7 @@ class eitc_reduction(Variable):
             earnings, tax_unit("adjusted_gross_income", period)
         )
         is_joint = tax_unit("tax_unit_is_joint", period)
-        num_children = tax_unit.sum(tax_unit.members("is_child", period))
+        num_children = add(tax_unit, period, ["is_eitc_qualifying_child"])
         phaseout_start = (
             eitc.phaseout.start.calc(num_children)
             + is_joint * eitc.phaseout.joint_bonus

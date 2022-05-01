@@ -56,7 +56,7 @@ class filer_earned(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("earned", tax_unit, period)
+        return max_(0, tax_unit_non_dep_sum("earned", tax_unit, period))
 
 
 class earned(Variable):
@@ -76,12 +76,7 @@ class earned(Variable):
             * misc.employer_share
             * person("self_employment_tax", period)
         )
-        return max_(
-            0,
-            add(person, period, ["e00200", "self_employment_income"])
-            - adjustment,
-        )
-
+        return add(person, period, ["e00200", "self_employment_income"]) - adjustment
 
 earned_income = variable_alias("earned_income", earned)
 

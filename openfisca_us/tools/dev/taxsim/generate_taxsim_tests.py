@@ -33,6 +33,8 @@ class TaxSim35:
         "dep18",
         "pwages",
         "swages",
+        "psemp",
+        "ssemp",
         "dividends",
         "intrec",
         "stcg",
