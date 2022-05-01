@@ -1,5 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.demographic.tax_unit.MARSType import MARSType
 
 
 class dsi(Variable):
@@ -8,25 +7,6 @@ class dsi(Variable):
     definition_period = YEAR
     label = "Dependent elsewhere"
     documentation = "Claimed as dependent in another tax unit"
-
-
-class mars(Variable):
-    value_type = Enum
-    entity = TaxUnit
-    possible_values = MARSType
-    default_value = MARSType.SINGLE
-    definition_period = YEAR
-    label = "Marital status for the tax unit"
-
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        spouse_with_age = person("is_tax_unit_spouse", period)
-        has_age = person("age", period) > 0
-        has_spouse_with_age = tax_unit.any(spouse_with_age & has_age)
-        return where(has_spouse_with_age, MARSType.JOINT, MARSType.SINGLE)
-
-
-marital_status = variable_alias("marital_status", mars)
 
 
 class midr(Variable):
