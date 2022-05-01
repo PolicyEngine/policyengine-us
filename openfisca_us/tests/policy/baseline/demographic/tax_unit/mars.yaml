@@ -37,7 +37,7 @@
     people:
       head: {}
       child:
-        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
     tax_units:
       tax_unit:
         members: [head, child]
