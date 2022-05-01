@@ -78,7 +78,7 @@ class earned(Variable):
         )
         return max_(
             0,
-            add(person, period, ["e00200", "self_employment_tax"])
+            add(person, period, ["e00200", "self_employment_income"])
             - adjustment,
         )
 
