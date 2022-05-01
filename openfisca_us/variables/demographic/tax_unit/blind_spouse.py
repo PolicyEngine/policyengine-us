@@ -11,4 +11,4 @@ class blind_spouse(Variable):
         person = tax_unit.members
         blind = person("is_blind", period)
         spouse = person("is_tax_unit_spouse", period)
-        return tax_unit.any(blind * spouse)
+        return tax_unit.any(blind & spouse)

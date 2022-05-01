@@ -11,4 +11,4 @@ class blind_head(Variable):
         person = tax_unit.members
         blind = person("is_blind", period)
         head = person("is_tax_unit_head", period)
-        return tax_unit.any(blind * head)
+        return tax_unit.any(blind & head)
