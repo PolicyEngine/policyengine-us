@@ -6,4 +6,9 @@ class blind_spouse(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Tax unit spouse is blind"
-    documentation = "1 if spouse is blind; otherwise 0"
+
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        blind = person("is_blind", period)
+        spouse = person("is_tax_unit_spouse", period)
+        return tax_unit.any(blind * spouse)
