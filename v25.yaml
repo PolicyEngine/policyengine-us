@@ -4,8 +4,8 @@
   input:
     people:
       person_1:
-        employment_income: 11_000
-        age: 29
+        employment_income: 55_000
+        age: 38
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -14,39 +14,84 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 35
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 2
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 0
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
     tax_units:
       tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 5745201
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 29
-        sage: 0
-        depx: 0
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 6_774_502
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 38
+        sage: 35
+        depx: 2
         age1: 0
-        age2: 0
+        age2: 2
         age3: 0
-        pwages: 11000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 55_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 402
+    v25: 111
 
 
 - name: Tax unit 2 matches TAXSIM35 outputs
@@ -55,8 +100,8 @@
   input:
     people:
       person_1:
-        employment_income: 9_000
-        age: 61
+        employment_income: 29_000
+        age: 42
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -65,166 +110,12 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 4493002
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 61
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 9000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 555
-
-
-- name: Tax unit 3 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 15_000
-        age: 57
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 8315602
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 57
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 15000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 96
-
-
-- name: Tax unit 4 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 11_200
-        age: 32
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 1278505
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 32
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 11200.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 386
-
-
-- name: Tax unit 5 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 6_136
-        age: 43
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_2:
         employment_income: 0
-        age: 22
+        age: 21
         is_tax_unit_head: 0
         is_tax_unit_spouse: 1
         is_tax_unit_dependent: 0
@@ -233,130 +124,12 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 291001
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 43
-        sage: 22
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 6136.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 469
-
-
-- name: Tax unit 6 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 2_500
-        age: 37
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 11_160
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 11975402
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 37
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 2500.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 11160.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 0
-
-
-- name: Tax unit 7 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 17_000
-        age: 32
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 7_696
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
-        employment_income: 0
-        age: 33
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 13_032
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_3:
         employment_income: 0
-        age: 1
+        age: 9
         is_tax_unit_head: 0
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
@@ -365,88 +138,6 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2,person_3]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 3043301
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 32
-        sage: 33
-        depx: 1
-        age1: 1
-        age2: 0
-        age3: 0
-        pwages: 17000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 7696.0
-        ui: 13032.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 1_769
-
-
-- name: Tax unit 8 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 0
-        age: 19
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
-        employment_income: 18_000
-        age: 47
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_3:
-        employment_income: 0
-        age: 41
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -461,13 +152,12 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_5:
         employment_income: 0
-        age: 2
+        age: 5
         is_tax_unit_head: 0
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
@@ -476,7 +166,6 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -484,41 +173,45 @@
       tax_unit:
         members: [person_1,person_2,person_3,person_4,person_5]
         mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 5705201
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 2_248_503
+        year: 2_022
+        state: 0
         mstat: 2
-        page: 19
-        sage: 47
+        page: 42
+        sage: 21
         depx: 3
-        age1: 2
+        age1: 5
         age2: 8
-        age3: 41
-        pwages: 0.0
-        swages: 18000.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        age3: 9
+        dep13: 3
+        dep17: 3
+        dep18: 3
+        pwages: 29_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 6_164
+    v25: 6_357
 
 
-- name: Tax unit 9 matches TAXSIM35 outputs
+- name: Tax unit 3 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
-        employment_income: 400
-        age: 30
+        employment_income: 42_000
+        age: 39
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -527,124 +220,20 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 3996701
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 30
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 400.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 31
-
-
-- name: Tax unit 10 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 4_000
-        age: 61
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 4_320
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 7287003
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 61
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 4000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 4320.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 306
-
-
-- name: Tax unit 11 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 8_000
-        age: 25
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_2:
-        employment_income: 15_000
-        age: 66
-        is_tax_unit_head: 1
+        employment_income: 0
+        age: 7
+        is_tax_unit_head: 0
         is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_dependent: 1
         self_employment_income: 0
         dividend_income: 0
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -652,107 +241,59 @@
       tax_unit:
         members: [person_1,person_2]
         mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 1427602
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 2_321_602
+        year: 2_022
+        state: 0
         mstat: 1
-        page: 25
+        page: 39
         sage: 0
-        depx: 0
-        age1: 0
+        depx: 1
+        age1: 7
         age2: 0
         age3: 0
-        pwages: 8000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 1
+        dep17: 1
+        dep18: 1
+        pwages: 42_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 560
+    v25: 238
 
 
-- name: Tax unit 12 matches TAXSIM35 outputs
+- name: Tax unit 4 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
-        employment_income: 3_840
-        age: 29
+        employment_income: 0
+        age: 43
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
-        self_employment_income: 0
+        self_employment_income: 10_681
         dividend_income: 0
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 11727402
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 29
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 3840.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 294
-
-
-- name: Tax unit 13 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 4_000
-        age: 65
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 15_672
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_2:
-        employment_income: 0
-        age: 62
+        employment_income: 29_000
+        age: 29
         is_tax_unit_head: 0
         is_tax_unit_spouse: 1
         is_tax_unit_dependent: 0
@@ -761,254 +302,10 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_3:
-        employment_income: 80_000
-        age: 16
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2,person_3]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 27069004
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 65
-        sage: 62
-        depx: 1
-        age1: 16
-        age2: 0
-        age3: 0
-        pwages: 4000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 15672.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 1_360
-
-
-- name: Tax unit 14 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 1_025
-        age: 48
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
-        employment_income: 0
-        age: 15
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 1388302
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 48
-        sage: 0
-        depx: 1
-        age1: 15
-        age2: 0
-        age3: 0
-        pwages: 1025.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 348
-
-
-- name: Tax unit 15 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 9_800
-        age: 36
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 5462003
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 36
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 9800.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 494
-
-
-- name: Tax unit 16 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 9_000
-        age: 35
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
-        employment_income: 0
-        age: 15
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_3:
-        employment_income: 0
-        age: 14
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_4:
-        employment_income: 0
-        age: 13
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_5:
-        employment_income: 0
-        age: 11
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_6:
         employment_income: 0
         age: 9
         is_tax_unit_head: 0
@@ -1019,217 +316,162 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2,person_3,person_4,person_5,person_6]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 6051202
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 35
-        sage: 0
-        depx: 5
-        age1: 9
-        age2: 11
-        age3: 13
-        pwages: 9000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 4_050
-
-
-- name: Tax unit 17 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 15_200
-        age: 60
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 4705004
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 60
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 15200.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 80
-
-
-- name: Tax unit 18 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 65
-        age: 42
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 9_186
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 588401
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 42
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 65.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 9186.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 5
-
-
-- name: Tax unit 19 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
+      person_4:
         employment_income: 0
-        age: 57
-        is_tax_unit_head: 1
+        age: 8
+        is_tax_unit_head: 0
         is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 65_000
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
         dividend_income: 0
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_5:
+        employment_income: 0
+        age: 0
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4,person_5]
+        mars: JOINT
         tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 8_179_402
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 43
+        sage: 29
+        depx: 3
+        age1: 0
+        age2: 8
+        age3: 9
+        dep13: 3
+        dep17: 3
+        dep18: 3
+        pwages: 0
+        swages: 29_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 6_357
+
+
+- name: Tax unit 5 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 35_000
+        age: 34
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 5_100
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_2:
-        employment_income: 2_000
-        age: 58
+        employment_income: 0
+        age: 8
         is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
         self_employment_income: 0
         dividend_income: 0
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 2
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
     tax_units:
       tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 8154402
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 57
-        sage: 58
-        depx: 0
-        age1: 0
-        age2: 0
+        members: [person_1,person_2,person_3]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 8_396_104
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 34
+        sage: 0
+        depx: 2
+        age1: 2
+        age2: 8
         age3: 0
-        pwages: 0.0
-        swages: 2000.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 35_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 5_100
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 0
+    v25: 1_958
 
 
-- name: Tax unit 20 matches TAXSIM35 outputs
+- name: Tax unit 6 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
-        employment_income: 5_000
-        age: 27
+        employment_income: 14_200
+        age: 37
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -1238,7 +480,6 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -1246,41 +487,99 @@
       tax_unit:
         members: [person_1]
         mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 4294603
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 7_474_901
+        year: 2_022
+        state: 0
         mstat: 1
-        page: 27
+        page: 37
         sage: 0
         depx: 0
         age1: 0
         age2: 0
         age3: 0
-        pwages: 5000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 14_200
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 382
+    v25: 174
 
 
-- name: Tax unit 21 matches TAXSIM35 outputs
+- name: Tax unit 7 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
         employment_income: 5_000
-        age: 26
+        age: 62
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 8_400
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 8_264_402
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 62
+        sage: 0
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 5_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 8_400
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 382
+
+
+- name: Tax unit 8 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 20_000
+        age: 25
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -1288,8 +587,103 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 7_000
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 10
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 4
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 2
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        mars: SINGLE
         tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 3_945_901
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 25
+        sage: 0
+        depx: 3
+        age1: 2
+        age2: 4
+        age3: 10
+        dep13: 3
+        dep17: 3
+        dep18: 3
+        pwages: 20_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 6_935
+
+
+- name: Tax unit 9 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 41_600
+        age: 31
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -1304,7 +698,6 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -1312,41 +705,45 @@
       tax_unit:
         members: [person_1,person_2]
         mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 3136001
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 825_703
+        year: 2_022
+        state: 0
         mstat: 1
-        page: 26
+        page: 31
         sage: 0
         depx: 1
         age1: 4
         age2: 0
         age3: 0
-        pwages: 5000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 7000.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 1
+        dep17: 1
+        dep18: 1
+        pwages: 41_600
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 1_700
+    v25: 302
 
 
-- name: Tax unit 22 matches TAXSIM35 outputs
+- name: Tax unit 10 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
-        employment_income: 14_500
-        age: 50
+        employment_income: 25_000
+        age: 41
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -1354,197 +751,13 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 12_000
-        tax_unit_childcare_expenses: 0
+        unemployment_insurance: 13_000
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_2:
-        employment_income: 5_200
-        age: 21
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 1
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 724503
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 50
-        sage: 21
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 14500.0
-        swages: 5200.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 12000.0
-        ui: 1.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 0
-
-
-- name: Tax unit 23 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 7_000
-        age: 27
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 4513402
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 27
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 7000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 536
-
-
-- name: Tax unit 24 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 15_000
-        age: 61
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 11_000
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
-        employment_income: 0
-        age: 63
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 744301
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 61
-        sage: 63
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 15000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 11000.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 0
-
-
-- name: Tax unit 25 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
         employment_income: 0
         age: 54
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 7_315
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
-        employment_income: 13_000
-        age: 22
         is_tax_unit_head: 0
         is_tax_unit_spouse: 1
         is_tax_unit_dependent: 0
@@ -1553,114 +766,11 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 749402
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 54
-        sage: 22
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 0.0
-        swages: 13000.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 7315.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 560
-
-
-- name: Tax unit 26 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 18_000
-        age: 54
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-      person_2:
+      person_3:
         employment_income: 0
-        age: 50
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 7_200
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 23989504
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 54
-        sage: 50
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 18000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 7200.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 309
-
-
-- name: Tax unit 27 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 7_333
         age: 17
         is_tax_unit_head: 0
         is_tax_unit_spouse: 0
@@ -1670,13 +780,106 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-      person_2:
-        employment_income: 6_000
-        age: 35
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 8_487_604
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 41
+        sage: 54
+        depx: 1
+        age1: 17
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 1
+        pwages: 25_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 13_000
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 1_856
+
+
+- name: Tax unit 11 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 7_490
+        age: 34
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 13_056
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 2_572_601
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 34
+        sage: 0
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 7_490
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 13_056
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 560
+
+
+- name: Tax unit 12 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 42_000
+        age: 28
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -1685,13 +888,12 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-      person_3:
-        employment_income: 0
-        age: 35
+      person_2:
+        employment_income: 10_000
+        age: 24
         is_tax_unit_head: 0
         is_tax_unit_spouse: 1
         is_tax_unit_dependent: 0
@@ -1700,13 +902,26 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 8
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_4:
         employment_income: 0
-        age: 15
+        age: 4
         is_tax_unit_head: 0
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
@@ -1715,13 +930,52 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-      person_5:
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 4_970_804
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 28
+        sage: 24
+        depx: 2
+        age1: 4
+        age2: 8
+        age3: 0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 42_000
+        swages: 10_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 743
+
+
+- name: Tax unit 13 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
         employment_income: 0
-        age: 14
+        age: 12
         is_tax_unit_head: 0
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
@@ -1730,11 +984,92 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-      person_6:
+      person_2:
+        employment_income: 0
+        age: 9
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 15_000
+        age: 28
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 7_019_101
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 28
+        sage: 0
+        depx: 2
+        age1: 9
+        age2: 12
+        age3: 0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 15_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 6_000
+
+
+- name: Tax unit 14 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 20_000
+        age: 38
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 5_088
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
         employment_income: 0
         age: 13
         is_tax_unit_head: 0
@@ -1745,100 +1080,52 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
     tax_units:
       tax_unit:
-        members: [person_1,person_2,person_3,person_4,person_5,person_6]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 6940405
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 35
-        sage: 35
-        depx: 4
-        age1: 13
-        age2: 14
-        age3: 15
-        pwages: 6000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 2_700
-
-
-- name: Tax unit 28 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 13_000
-        age: 26
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        self_employment_income: 0
-        dividend_income: 0
-        pension_income: 0
-        social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
-        short_term_capital_gains: 0
-        long_term_capital_gains: 0
-        taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1]
+        members: [person_1,person_2]
         mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 24086804
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 25_276_206
+        year: 2_022
+        state: 0
         mstat: 1
-        page: 26
+        page: 38
         sage: 0
-        depx: 0
-        age1: 0
+        depx: 1
+        age1: 13
         age2: 0
         age3: 0
-        pwages: 13000.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 0
+        dep17: 1
+        dep18: 1
+        pwages: 20_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 5_088
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 249
+    v25: 2_940
 
 
-- name: Tax unit 29 matches TAXSIM35 outputs
+- name: Tax unit 15 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
-        employment_income: 12_000
-        age: 27
+        employment_income: 2_000
+        age: 35
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
@@ -1847,13 +1134,12 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
       person_2:
-        employment_income: 8_900
-        age: 29
+        employment_income: 39_468
+        age: 36
         is_tax_unit_head: 0
         is_tax_unit_spouse: 1
         is_tax_unit_dependent: 0
@@ -1861,94 +1147,74 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
+        unemployment_insurance: 10_353
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
-    tax_units:
-      tax_unit:
-        members: [person_1,person_2]
-        mars: JOINT
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 1896002
-        year: 2022
-        state: 0.0
-        mstat: 2
-        page: 27
-        sage: 29
-        depx: 0
-        age1: 0
-        age2: 0
-        age3: 0
-        pwages: 12000.0
-        swages: 8900.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
-  output:
-      v25: 87
-
-
-- name: Tax unit 30 matches TAXSIM35 outputs
-  absolute_error_margin: 1
-  period: 2022
-  input:
-    people:
-      person_1:
-        employment_income: 2_200
-        age: 26
-        is_tax_unit_head: 1
+      person_3:
+        employment_income: 0
+        age: 14
+        is_tax_unit_head: 0
         is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_dependent: 1
         self_employment_income: 0
         dividend_income: 0
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 13
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
     tax_units:
       tax_unit:
-        members: [person_1]
-        mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 7397802
-        year: 2022
-        state: 0.0
-        mstat: 1
-        page: 26
-        sage: 0
-        depx: 0
-        age1: 0
-        age2: 0
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 14_875_202
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 35
+        sage: 36
+        depx: 2
+        age1: 13
+        age2: 14
         age3: 0
-        pwages: 2200.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 0
+        dep17: 2
+        dep18: 2
+        pwages: 2_000
+        swages: 39_468
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 10_353
+        childcare: 0
+        scorp: 0
   output:
-      v25: 168
+    v25: 780
 
 
-- name: Tax unit 31 matches TAXSIM35 outputs
+- name: Tax unit 16 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
@@ -1964,7 +1230,6 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -1979,7 +1244,6 @@
         pension_income: 0
         social_security: 0
         unemployment_insurance: 0
-        tax_unit_childcare_expenses: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -1987,10 +1251,11 @@
       tax_unit:
         members: [person_1,person_2]
         mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 2945002
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 2_945_002
+        year: 2_022
+        state: 0
         mstat: 1
         page: 31
         sage: 0
@@ -1998,29 +1263,154 @@
         age1: 6
         age2: 0
         age3: 0
-        pwages: 1891.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 0.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 1
+        dep17: 1
+        dep18: 1
+        pwages: 1_891
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 643
+    v25: 642
 
 
-- name: Tax unit 32 matches TAXSIM35 outputs
+- name: Tax unit 17 matches TAXSIM35 outputs
   absolute_error_margin: 1
   period: 2022
   input:
     people:
       person_1:
-        employment_income: 12_570
+        employment_income: 31_000
+        age: 43
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 7
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 5_393_302
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 43
+        sage: 0
+        depx: 1
+        age1: 7
+        age2: 0
+        age3: 0
+        dep13: 1
+        dep17: 1
+        dep18: 1
+        pwages: 31_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 1_995
+
+
+- name: Tax unit 18 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 1_073
+        age: 64
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 490_602
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 64
+        sage: 0
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 1_073
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 82
+
+
+- name: Tax unit 19 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 12_000
         age: 27
         is_tax_unit_head: 1
         is_tax_unit_spouse: 0
@@ -2029,8 +1419,7 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 1_200
-        tax_unit_childcare_expenses: 0
+        unemployment_insurance: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
         taxable_interest: 0
@@ -2038,10 +1427,11 @@
       tax_unit:
         members: [person_1]
         mars: SINGLE
-        filer_partnership_s_corp_income: 0.0
-        taxsimid: 3277101
-        year: 2022
-        state: 0.0
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 4_966_801
+        year: 2_022
+        state: 0
         mstat: 1
         page: 27
         sage: 0
@@ -2049,20 +1439,1075 @@
         age1: 0
         age2: 0
         age3: 0
-        pwages: 12570.0
-        swages: 0.0
-        dividends: 0.0
-        intrec: 0.0
-        stcg: 0.0
-        ltcg: 0.0
-        pensions: 0.0
-        gssi: 0.0
-        pui: 1200.0
-        ui: 0.0
-        childcare: 0.0
-        scorp: 0.0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 12_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
   output:
-      v25: 190
+    v25: 342
+
+
+- name: Tax unit 20 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 6_200
+        age: 26
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 350
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 1_100
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 12_075_303
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 26
+        sage: 0
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 6_200
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 1_100
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 474
+
+
+- name: Tax unit 21 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 27_000
+        age: 37
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 20_000
+        age: 18
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 16
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 2
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 5_992_401
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 37
+        sage: 18
+        depx: 2
+        age1: 2
+        age2: 16
+        age3: 0
+        dep13: 1
+        dep17: 2
+        dep18: 2
+        pwages: 27_000
+        swages: 20_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 1_796
+
+
+- name: Tax unit 22 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 12_000
+        age: 62
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 58
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 13_440
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 830_801
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 62
+        sage: 58
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 12_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 13_440
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 560
+
+
+- name: Tax unit 23 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 2_000
+        age: 32
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 19_000
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 25_000
+        age: 38
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 15_000
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 15
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 13
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 2_168_106
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 32
+        sage: 38
+        depx: 2
+        age1: 13
+        age2: 15
+        age3: 0
+        dep13: 0
+        dep17: 2
+        dep18: 2
+        pwages: 2_000
+        swages: 25_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 19_000
+        ui: 15_000
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 2_006
+
+
+- name: Tax unit 24 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 16_000
+        age: 48
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 6_499_502
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 48
+        sage: 0
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 16_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 36
+
+
+- name: Tax unit 25 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 35_000
+        age: 52
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 9
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 2
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 7_298_303
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 52
+        sage: 0
+        depx: 2
+        age1: 2
+        age2: 9
+        age3: 0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 35_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 3_032
+
+
+- name: Tax unit 26 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 35_000
+        age: 56
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 16
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 15
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 18
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 8_635_204
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 56
+        sage: 18
+        depx: 2
+        age1: 15
+        age2: 16
+        age3: 0
+        dep13: 0
+        dep17: 2
+        dep18: 2
+        pwages: 35_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 4_323
+
+
+- name: Tax unit 27 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 30_000
+        age: 35
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 15
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 12
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 6_087_702
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 35
+        sage: 0
+        depx: 2
+        age1: 12
+        age2: 15
+        age3: 0
+        dep13: 1
+        dep17: 2
+        dep18: 2
+        pwages: 30_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 4_085
+
+
+- name: Tax unit 28 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 6_000
+        age: 63
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 2_315_001
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 63
+        sage: 0
+        depx: 0
+        age1: 0
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 0
+        pwages: 6_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 459
+
+
+- name: Tax unit 29 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 15_000
+        age: 23
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 20_000
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 0
+        age: 5
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 4
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        mars: SINGLE
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 41_756_008
+        year: 2_022
+        state: 0
+        mstat: 1
+        page: 23
+        sage: 0
+        depx: 2
+        age1: 4
+        age2: 5
+        age3: 0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 15_000
+        swages: 0
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 20_000
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 3_032
+
+
+- name: Tax unit 30 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 49
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 25_000
+        age: 43
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 17
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 5_365_202
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 49
+        sage: 43
+        depx: 1
+        age1: 17
+        age2: 0
+        age3: 0
+        dep13: 0
+        dep17: 0
+        dep18: 1
+        pwages: 0
+        swages: 25_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 3_733
+
+
+- name: Tax unit 31 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 22_000
+        age: 42
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 30_000
+        age: 38
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 16
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 8
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_5:
+        employment_income: 0
+        age: 4
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4,person_5]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 4_240_802
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 42
+        sage: 38
+        depx: 3
+        age1: 4
+        age2: 8
+        age3: 16
+        dep13: 2
+        dep17: 3
+        dep18: 3
+        pwages: 22_000
+        swages: 30_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 1_514
+
+
+- name: Tax unit 32 matches TAXSIM35 outputs
+  absolute_error_margin: 1
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 0
+        age: 26
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_2:
+        employment_income: 48_000
+        age: 24
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_3:
+        employment_income: 0
+        age: 1
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+      person_4:
+        employment_income: 0
+        age: 0
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        self_employment_income: 0
+        dividend_income: 0
+        pension_income: 0
+        social_security: 0
+        unemployment_insurance: 0
+        short_term_capital_gains: 0
+        long_term_capital_gains: 0
+        taxable_interest: 0
+    tax_units:
+      tax_unit:
+        members: [person_1,person_2,person_3,person_4]
+        mars: JOINT
+        tax_unit_childcare_expenses: 0
+        filer_partnership_s_corp_income: 0
+        taxsimid: 7_345_101
+        year: 2_022
+        state: 0
+        mstat: 2
+        page: 26
+        sage: 24
+        depx: 2
+        age1: 0
+        age2: 1
+        age3: 0
+        dep13: 2
+        dep17: 2
+        dep18: 2
+        pwages: 0
+        swages: 48_000
+        dividends: 0
+        intrec: 0
+        stcg: 0
+        ltcg: 0
+        pensions: 0
+        gssi: 0
+        pui: 0
+        ui: 0
+        childcare: 0
+        scorp: 0
+  output:
+    v25: 1_585
 
 
 
