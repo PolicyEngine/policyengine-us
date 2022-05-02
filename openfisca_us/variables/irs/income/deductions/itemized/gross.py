@@ -11,6 +11,6 @@ class c21060(Variable):
         "Itemized deductions before phase-out (zero for non-itemizers)"
     )
 
-    def formula(tax_unit, period, parameters):
-        ELEMENTS = ["c17000", "c18300", "c19200", "c19700", "c20500", "c20800"]
-        return add(tax_unit, period, ELEMENTS)
+    formula = sum_of_variables(
+        ["c17000", "c18300", "c19200", "c19700", "c20500", "c20800"]
+    )

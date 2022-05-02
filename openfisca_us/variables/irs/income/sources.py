@@ -640,25 +640,6 @@ class filer_e17500(Variable):
         return tax_unit_non_dep_sum("e17500", tax_unit, period)
 
 
-class e18400(Variable):
-    value_type = float
-    entity = Person
-    definition_period = YEAR
-    documentation = "Itemizable state and local income/sales taxes"
-    unit = USD
-
-
-class filer_e18400(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Itemized SALT for the tax unit (excluding dependents)"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e18400", tax_unit, period)
-
-
 class e18500(Variable):
     value_type = float
     entity = Person
