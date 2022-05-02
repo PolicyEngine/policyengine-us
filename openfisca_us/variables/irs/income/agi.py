@@ -152,8 +152,6 @@ class c02900(Variable):
         )
 
 
-
-
 class c00100(Variable):
     value_type = float
     entity = TaxUnit
@@ -163,7 +161,9 @@ class c00100(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["ymod1", "c02500"]) - tax_unit("c02900", period)
+        return add(tax_unit, period, ["ymod1", "c02500"]) - tax_unit(
+            "c02900", period
+        )
 
 
 adjusted_gross_income = variable_alias("adjusted_gross_income", c00100)

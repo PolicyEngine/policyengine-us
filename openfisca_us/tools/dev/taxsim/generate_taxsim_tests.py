@@ -176,7 +176,11 @@ class TaxSim35:
         for variable in self.UNIMPLEMENTED_VARIABLES:
             input_df[variable] = 0
         taxsim_df = self.calculate(input_df).reset_index(drop=True)
-        taxsim_df = taxsim_df.T.apply(lambda row: [0] + list(row.values[:-1])).T.drop(taxsim_df.columns[0], axis=1) # Some issue with the TAXSIM dataframe now coming out in the right format
+        taxsim_df = taxsim_df.T.apply(
+            lambda row: [0] + list(row.values[:-1])
+        ).T.drop(
+            taxsim_df.columns[0], axis=1
+        )  # Some issue with the TAXSIM dataframe now coming out in the right format
         taxsim_df = pd.concat(
             [
                 input_df,

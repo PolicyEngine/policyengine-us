@@ -374,6 +374,7 @@ class tax_unit_ui(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("unemployment_insurance", tax_unit, period)
 
+
 filer_e02300 = variable_alias("filer_e02300", tax_unit_ui)
 
 
@@ -397,6 +398,7 @@ class tax_unit_ss(Variable):
 
     def formula(tax_unit, period, parameters):
         return add(tax_unit, period, ["social_security"])
+
 
 filer_e02400 = variable_alias("filer_e02400", tax_unit_ss)
 
