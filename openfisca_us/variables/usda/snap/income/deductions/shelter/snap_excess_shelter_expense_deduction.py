@@ -34,8 +34,10 @@ class snap_excess_shelter_expense_deduction(Variable):
             has_elderly_disabled, uncapped_ded, capped_ded
         ) + spm_unit("snap_utility_allowance", period)
         # Homeless shelter deduction is flat and has no utility component.
+        state = spm_unit.household("state_code_str", period)
+        homeless_deduction = p.homeless.deduction * WEEKS_IN_YEAR * p.homeless.available[state]
         return where(
-            spm_unit.household("is_homeless", period),
-            p.homeless * 12,
+            spm_unit.household("is_homeless", period) & (housing_cost > 0) & (homeless_deduction > non_homeless_shelter_deduction),
+            homeless_deduction,
             non_homeless_shelter_deduction,
         )
