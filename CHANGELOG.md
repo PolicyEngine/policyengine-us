@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.54.1] - 2022-05-02 06:38:45
+
+### Fixed
+
+- Specify documentation colors without policyengine package.
+
+## [0.54.0] - 2022-05-02 05:24:28
+
+### Changed
+
+- Tied SALT deduction to state income tax.
+- Improved charts in Massachusetts notebook.
+
+## [0.53.0] - 2022-05-01 23:08:30
+
+### Added
+
+- Script to generate integration tests from TAXSIM.
+- TAXSIM integration tests for the EITC.
+
 ## [0.52.0] - 2022-05-01 21:21:19
 
 ### Added
@@ -28,6 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Empty variables for state and local sales tax, and local income tax.
+- Logic for the SALT deduction to choose the greater of state and local income tax or state and local sales tax.
 - Massachusetts SNAP parameters.
 
 ## [0.50.0] - 2022-04-30 22:16:10
@@ -721,6 +743,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.54.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.0...0.54.1
+[0.54.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.53.0...0.54.0
+[0.53.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.52.0...0.53.0
 [0.52.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.51.1...0.52.0
 [0.51.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.51.0...0.51.1
 [0.51.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.50.0...0.51.0
