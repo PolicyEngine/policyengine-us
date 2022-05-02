@@ -8,4 +8,3 @@ class child_support_expense(Variable):
     unit = "currency-USD"
     documentation = "Legally mandated child support expenses."
     definition_period = YEAR
-

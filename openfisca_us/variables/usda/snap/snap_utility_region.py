@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class SnapUtilityRegion(Enum):
     AL = "AL"
     AK = "AK"
@@ -60,6 +61,7 @@ class SnapUtilityRegion(Enum):
     AA = "AA"
     AE = "AE"
     AP = "AP"
+
 
 class snap_utility_region(Variable):
     value_type = Enum
