@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.54.1] - 2022-05-02 06:38:45
+
+### Fixed
+
+- Specify documentation colors without policyengine package.
+
 ## [0.54.0] - 2022-05-02 05:24:28
 
 ### Changed
@@ -737,6 +743,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.54.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.0...0.54.1
 [0.54.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.53.0...0.54.0
 [0.53.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.52.0...0.53.0
 [0.52.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.51.1...0.52.0
