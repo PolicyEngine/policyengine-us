@@ -29,7 +29,6 @@ setup(
     install_requires=[
         "OpenFisca-Core[web-api] >= 35.0.0",
         "microdf_python",
-        "policyengine",
         "pandas",
         "tqdm",
         "requests",
