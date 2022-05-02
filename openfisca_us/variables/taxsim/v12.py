@@ -5,7 +5,7 @@ class v12(Variable):
     value_type = float
     entity = TaxUnit
     label = "Social Security in AGI"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

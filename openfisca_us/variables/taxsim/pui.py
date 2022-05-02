@@ -5,7 +5,7 @@ class pui(Variable):
     value_type = float
     entity = TaxUnit
     label = "Unemployment insurance (primary taxpayer)"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Unemployment Compensation received - primary taxpayer."
     definition_period = YEAR
 

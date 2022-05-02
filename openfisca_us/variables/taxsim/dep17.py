@@ -5,7 +5,7 @@ class dep17(Variable):
     value_type = float
     entity = TaxUnit
     label = "Children under 17"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

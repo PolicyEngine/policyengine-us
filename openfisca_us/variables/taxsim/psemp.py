@@ -5,7 +5,7 @@ class psemp(Variable):
     value_type = float
     entity = TaxUnit
     label = "Self-employment income of taxpayer (excluding QBI)"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

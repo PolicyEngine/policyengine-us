@@ -5,7 +5,7 @@ class pwages(Variable):
     value_type = float
     entity = TaxUnit
     label = "Wages for primary taxpayer"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Wage and salary income of Primary Taxpayer"
     definition_period = YEAR
 

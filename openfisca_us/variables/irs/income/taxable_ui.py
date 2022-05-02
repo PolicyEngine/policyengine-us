@@ -5,7 +5,7 @@ class taxable_ui(Variable):
     value_type = float
     entity = TaxUnit
     label = "Taxable unemployment insurance"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Unemployment insurance included in AGI."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/85"
