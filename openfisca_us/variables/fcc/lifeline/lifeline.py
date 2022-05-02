@@ -21,7 +21,7 @@ class lifeline(Variable):
         max_amount = (
             amounts.standard
             + is_rural_tribal * amounts.rural_tribal_supplement
-        ) * 12
+        ) * MONTHS_IN_YEAR
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]
         )
