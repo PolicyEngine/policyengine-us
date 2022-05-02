@@ -41,7 +41,7 @@ class c18300(Variable):
         c18400 = max_(tax_unit("filer_e18400", period), 0)
         c18500 = tax_unit("filer_e18500", period)
         salt = parameters(period).irs.deductions.itemized.salt_and_real_estate
-        cap = salt.cap[tax_unit("mars", period)]
+        cap = salt.cap[tax_unit("filing_status", period)]
         return min_(c18400 + c18500, cap)
 
 

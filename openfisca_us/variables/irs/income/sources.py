@@ -298,6 +298,9 @@ class e01700(Variable):
     unit = USD
 
 
+pension_income = variable_alias("pension_income", e01700)
+
+
 class filer_e01700(Variable):
     value_type = float
     entity = TaxUnit
@@ -358,6 +361,9 @@ class e02300(Variable):
     unit = USD
 
 
+unemployment_insurance = variable_alias("unemployment_insurance", e02300)
+
+
 class filer_e02300(Variable):
     value_type = float
     entity = TaxUnit
@@ -366,7 +372,7 @@ class filer_e02300(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e02300", tax_unit, period)
+        return tax_unit_non_dep_sum("unemployment_insurance", tax_unit, period)
 
 
 class e02400(Variable):
@@ -388,7 +394,7 @@ class filer_e02400(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum("e02400", tax_unit, period)
+        return add(tax_unit, period, ["social_security"])
 
 
 class e03150(Variable):
@@ -796,7 +802,7 @@ class e26270(Variable):
     documentation = "Sch E: Combined partnership and S-corporation net income/loss (includes k1bx14p and k1bx14s amounts and is included in e02000)"
 
 
-class filer_e26270(Variable):
+class filer_partnership_s_corp_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Partnership/S-corp income for the tax unit (excluding dependents)"
@@ -807,9 +813,7 @@ class filer_e26270(Variable):
         return tax_unit_non_dep_sum("e26270", tax_unit, period)
 
 
-filer_partnership_s_corp_income = variable_alias(
-    "filer_partnership_s_corp_income", filer_e26270
-)
+filer_e26270 = variable_alias("filer_e26270", filer_partnership_s_corp_income)
 
 
 class e27200(Variable):
@@ -857,6 +861,11 @@ class filer_e32800(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e32800", tax_unit, period)
+
+
+tax_unit_childcare_expenses = variable_alias(
+    "tax_unit_childcare_expenses", filer_e32800
+)
 
 
 class e58990(Variable):
@@ -1091,6 +1100,9 @@ class p22250(Variable):
     unit = USD
 
 
+short_term_capital_gains = variable_alias("short_term_capital_gains", p22250)
+
+
 class filer_p22250(Variable):
     value_type = float
     entity = TaxUnit
@@ -1110,6 +1122,9 @@ class p23250(Variable):
     definition_period = YEAR
     documentation = "Sch D: Net long-term capital gains/losses"
     unit = USD
+
+
+long_term_capital_gains = variable_alias("long_term_capital_gains", p23250)
 
 
 class filer_p23250(Variable):

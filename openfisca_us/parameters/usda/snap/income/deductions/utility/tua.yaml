@@ -2,11 +2,15 @@ description: A household is eligible for the Telephone Utility Allowance if is n
 CA:
   2010-01-01: 0
   2021-10-01: 19
+MA:
+  2010-01-01: 0
+  2021-10-01: 48
 metadata:
   unit: currency-USD
   period: month
   reference:
     - name: USDA | Food and Nutrition Service | SNAP | Standard Utility Allowances
       href: https://www.fns.usda.gov/snap/eligibility/deduction/standard-utility-allowances
-  breakdown:
-    - state_code
+    - name: SNAP Screener | SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
+  breakdown: state_code

@@ -1,7 +1,7 @@
 - name: Threshold for single is $150,000.
   period: 2022
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     c00100: 150_001 # AGI.
   output:
     is_ca_cvrp_normal_rebate_eligible: false
@@ -9,7 +9,7 @@
 - name: Threshold for single is $150,000.
   period: 2022
   input:
-    mars: SINGLE
+    filing_status: SINGLE
     c00100: 150_000
   output:
     is_ca_cvrp_normal_rebate_eligible: true

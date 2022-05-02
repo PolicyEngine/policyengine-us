@@ -20,5 +20,6 @@ parts:
           - file: programs/usda/wic
       - file: programs/states/index
         sections:
+          - file: programs/states/ma
           - file: programs/states/ca/calepa/carb/cvrp
           - file: programs/states/tax/income/ma

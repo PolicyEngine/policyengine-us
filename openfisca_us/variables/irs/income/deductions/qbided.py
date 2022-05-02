@@ -11,7 +11,7 @@ class qbided(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         QBINC_ELEMENTS = [
             "filer_e00900",
             "filer_e26270",
@@ -20,8 +20,8 @@ class qbided(Variable):
         ]
         qbinc = max_(0, add(tax_unit, period, QBINC_ELEMENTS))
         qbid = parameters(period).irs.deductions.qualified_business_interest
-        lower_threshold = qbid.threshold.lower[mars]
-        upper_threshold = lower_threshold + qbid.threshold.gap[mars]
+        lower_threshold = qbid.threshold.lower[filing_status]
+        upper_threshold = lower_threshold + qbid.threshold.gap[filing_status]
         pre_qbid_taxinc = tax_unit("pre_qbid_taxinc", period)
         under_lower_threshold = pre_qbid_taxinc < lower_threshold
         between_thresholds = ~under_lower_threshold & (
@@ -40,10 +40,10 @@ class qbided(Variable):
         )
         fraction_of_gap_passed = (
             pre_qbid_taxinc - lower_threshold
-        ) / qbid.threshold.gap[mars]
+        ) / qbid.threshold.gap[filing_status]
         fraction_of_gap_unused = (
             upper_threshold - pre_qbid_taxinc
-        ) / qbid.threshold.gap[mars]
+        ) / qbid.threshold.gap[filing_status]
 
         # Adjustments for qualified income under the upper threshold
         qbi_between_threshold_multiplier = where(

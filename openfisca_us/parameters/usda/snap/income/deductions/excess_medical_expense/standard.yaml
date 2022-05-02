@@ -1,9 +1,12 @@
 description: SNAP standard medical deduction (SMD) for households with medical expenses exceeding the threshold.
 CA:
   2022-01-01: 120
+MA:
+  2022-01-01: 155
 metadata:
   reference:
     - title: SNAP Screener Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
   unit: currency-USD
   period: month
+  breakdown: state_code
