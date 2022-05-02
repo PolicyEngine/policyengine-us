@@ -9,5 +9,5 @@ class count_distinct_utility_expenses(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        utilities = ["heating_cooling", "electricity", "gas", "phone", "trash", "water", "sewage"]
+        utilities = ["heating_cooling", "electricity", "gas", "telephone", "trash", "water", "sewage"]
         return sum([spm_unit(variable + "_expense", period) > 0 for variable in utilities])
