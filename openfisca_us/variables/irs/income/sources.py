@@ -388,7 +388,7 @@ class e02400(Variable):
         return person("social_security", period)
 
 
-class filer_e02400(Variable):
+class tax_unit_ss(Variable):
     value_type = float
     entity = TaxUnit
     label = "Social security benefits for the tax unit (excluding dependents)"
@@ -397,6 +397,8 @@ class filer_e02400(Variable):
 
     def formula(tax_unit, period, parameters):
         return add(tax_unit, period, ["social_security"])
+
+filer_e02400 = variable_alias("filer_e02400", tax_unit_ss)
 
 
 class e03150(Variable):

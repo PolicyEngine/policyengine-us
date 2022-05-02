@@ -72,7 +72,7 @@ class TaxSim35:
         "sprofinc",
     ]
     OUTPUT_VARIABLES = [
-        "v11",
+        "v12",
     ]
     OPENFISCA_US_INPUT_VARIABLES = [
         "mars",

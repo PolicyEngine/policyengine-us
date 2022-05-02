@@ -152,47 +152,6 @@ class c02900(Variable):
         )
 
 
-class c02500(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Taxable social security benefits"
-    documentation = "Social security (OASDI) benefits included in AGI"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        ss = parameters(period).irs.social_security.taxability
-        ymod = tax_unit("ymod", period)
-        filing_status = tax_unit("filing_status", period)
-
-        lower_threshold = ss.threshold.lower[filing_status]
-        upper_threshold = ss.threshold.upper[filing_status]
-
-        under_first_threshold = ymod < lower_threshold
-        under_second_threshold = ymod < upper_threshold
-
-        e02400 = tax_unit("filer_e02400", period)
-
-        amount_if_under_second_threshold = ss.rate.lower * min_(
-            ymod - lower_threshold, e02400
-        )
-        amount_if_over_second_threshold = min_(
-            ss.rate.upper * (ymod - upper_threshold)
-            + ss.rate.lower * min_(e02400, upper_threshold - lower_threshold),
-            ss.rate.upper * e02400,
-        )
-        return select(
-            [
-                under_first_threshold,
-                under_second_threshold,
-                True,
-            ],
-            [
-                0,
-                amount_if_under_second_threshold,
-                amount_if_over_second_threshold,
-            ],
-        )
 
 
 class c00100(Variable):
