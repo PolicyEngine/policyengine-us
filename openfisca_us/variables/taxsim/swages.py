@@ -5,7 +5,7 @@ class swages(Variable):
     value_type = float
     entity = TaxUnit
     label = "Wages for spouse"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Wage and salary income of spouse"
     definition_period = YEAR
 

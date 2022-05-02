@@ -5,7 +5,7 @@ class eitc_phaseout_start(Variable):
     value_type = float
     entity = TaxUnit
     label = "EITC phaseout start"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Earnings above this level reduce EITC entitlement."
     definition_period = YEAR
 

@@ -5,7 +5,7 @@ class childcare(Variable):
     value_type = float
     entity = TaxUnit
     label = "Childcare"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

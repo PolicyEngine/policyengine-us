@@ -5,7 +5,7 @@ class v25(Variable):
     value_type = float
     entity = TaxUnit
     label = "EITC"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

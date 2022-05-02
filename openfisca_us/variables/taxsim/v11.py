@@ -1,12 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class dividends(Variable):
+class v11(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Dividends"
+    label = "UI in AGI"
     unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["dividend_income"])
+        return tax_unit("taxable_ui", period)

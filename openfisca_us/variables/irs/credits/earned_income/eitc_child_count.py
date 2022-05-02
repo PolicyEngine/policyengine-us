@@ -5,7 +5,7 @@ class eitc_child_count(Variable):
     value_type = int
     entity = TaxUnit
     label = "EITC-qualifying children"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Number of children qualifying as children for the EITC."
     definition_period = YEAR
 

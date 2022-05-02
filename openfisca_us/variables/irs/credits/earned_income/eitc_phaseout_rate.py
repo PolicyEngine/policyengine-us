@@ -5,7 +5,7 @@ class eitc_phaseout_rate(Variable):
     value_type = float
     entity = TaxUnit
     label = "EITC phase-out rate"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
     definition_period = YEAR
 

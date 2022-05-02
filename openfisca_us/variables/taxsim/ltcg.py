@@ -5,7 +5,7 @@ class ltcg(Variable):
     value_type = float
     entity = TaxUnit
     label = "Long-term capital gains"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

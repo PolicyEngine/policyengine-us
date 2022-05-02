@@ -364,7 +364,7 @@ class e02300(Variable):
 unemployment_insurance = variable_alias("unemployment_insurance", e02300)
 
 
-class filer_e02300(Variable):
+class tax_unit_ui(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -373,6 +373,9 @@ class filer_e02300(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("unemployment_insurance", tax_unit, period)
+
+
+filer_e02300 = variable_alias("filer_e02300", tax_unit_ui)
 
 
 class e02400(Variable):
@@ -386,7 +389,7 @@ class e02400(Variable):
         return person("social_security", period)
 
 
-class filer_e02400(Variable):
+class tax_unit_ss(Variable):
     value_type = float
     entity = TaxUnit
     label = "Social security benefits for the tax unit (excluding dependents)"
@@ -395,6 +398,9 @@ class filer_e02400(Variable):
 
     def formula(tax_unit, period, parameters):
         return add(tax_unit, period, ["social_security"])
+
+
+filer_e02400 = variable_alias("filer_e02400", tax_unit_ss)
 
 
 class e03150(Variable):

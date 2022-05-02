@@ -5,7 +5,7 @@ class eitc_phased_in(Variable):
     value_type = float
     entity = TaxUnit
     label = "EITC phase-in amount"
-    unit = "currency-USD"
+    unit = USD
     documentation = "EITC maximum amount, taking into account earnings."
     definition_period = YEAR
 
