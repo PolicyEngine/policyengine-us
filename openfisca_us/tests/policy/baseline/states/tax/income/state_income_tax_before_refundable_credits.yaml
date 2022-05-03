@@ -1,0 +1,15 @@
+- name: Difference between tax before credits and non-refundable credits.
+  period: 2022
+  input:
+    state_income_tax_before_credits: 3
+    state_income_tax_non_refundable_credits: 1
+  output:
+    state_income_tax_before_refundable_credits: 2
+
+- name: Can be negative, since non-refundable credits are expected to already be capped.
+  period: 2022
+  input:
+    state_income_tax_before_credits: 3
+    state_income_tax_non_refundable_credits: 4
+  output:
+    state_income_tax_before_refundable_credits: -1

@@ -25,4 +25,4 @@ class wic(Variable):
         ) & nutritional_risk
         values = parameters(period).usda.wic.value
         value_if_eligible = values[category]
-        return eligible * value_if_eligible * 12
+        return eligible * value_if_eligible * MONTHS_IN_YEAR

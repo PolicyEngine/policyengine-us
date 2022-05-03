@@ -31,4 +31,4 @@ class ccdf_market_rate(Variable):
             ],
             [1, days_per_week, days_per_week, hours_per_week],
         )
-        return rate_per_period * periods_per_week * 52
+        return rate_per_period * periods_per_week * WEEKS_IN_YEAR

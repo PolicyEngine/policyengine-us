@@ -1,0 +1,35 @@
+- name: Default is 18, since that's the default age.
+  period: 2022
+  output:
+    age_head: 18
+
+- name: Age of single person is age_head.
+  period: 2022
+  input:
+    age: 50
+  output:
+    age_head: 50
+
+- name: With multiple people, only head's age is reported.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 20
+      spouse: {}
+    tax_unit:
+      members: [head, spouse]
+  output:
+    age_head: 20
+
+- name: With multiple people, only head is checked.
+  period: 2022
+  input:
+    people:
+      head: {}
+      child:
+        is_blind: true
+    tax_unit:
+      members: [head, child]
+  output:
+    blind_head: false

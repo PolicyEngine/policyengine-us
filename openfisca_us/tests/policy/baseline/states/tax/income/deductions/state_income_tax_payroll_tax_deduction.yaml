@@ -1,0 +1,39 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax_payroll_tax_deduction: 0
+
+- name: Massachusetts caps the payroll tax deduction at $2,000 for single filers.
+  period: 2022
+  input:
+    state_code: MA
+    employee_medicare_tax: 10_000
+  output:
+    state_income_tax_payroll_tax_deduction: 2_000
+
+- name: Massachusetts caps the payroll tax deduction at $2,000 per person.
+  period: 2022
+  input:
+    people:
+      head:
+        employee_social_security_tax: 1_500
+        employee_medicare_tax: 1_000
+        is_tax_unit_dependent: false
+      spouse:
+        self_employment_tax: 500
+        is_tax_unit_dependent: false
+      child:
+        is_tax_unit_dependent: true
+        employee_social_security_tax: 200
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        state_code: MA
+        members: [head, spouse, child]
+  output:
+    # $2,000 from head, $500 from spouse, $0 from child.
+    state_income_tax_payroll_tax_deduction: 2_500

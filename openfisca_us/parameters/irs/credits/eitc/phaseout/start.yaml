@@ -9,7 +9,7 @@ brackets:
       values:
         2019-01-01: 8_650
         2021-01-01: 11_610
-        2022-01-01: 8_931
+        2022-01-01: 9_160
       metadata:
         unit: currency-USD
   - threshold:
@@ -21,7 +21,7 @@ brackets:
       values:
         2019-01-01: 19_030
         2021-01-01: 19_460
-        2022-01-01: 19_650
+        2022-01-01: 20_130
       metadata:
         unit: currency-USD
   - threshold:
@@ -33,7 +33,7 @@ brackets:
       values:
         2019-01-01: 19_030
         2021-01-01: 19_460
-        2022-01-01: 19_650
+        2022-01-01: 20_130
       metadata:
         unit: currency-USD
   - threshold:
@@ -45,12 +45,20 @@ brackets:
       values:
         2019-01-01: 19_030
         2021-01-01: 19_460
-        2022-01-01: 19_650
+        2022-01-01: 20_130
       metadata:
         unit: currency-USD
 metadata:
   type: single_amount
   reference:
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-45.pdf
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
     - title: Tax-Calculator
       href: https://github.com/PSLmodels/Tax-Calculator/blob/master/taxcalc/policy_current_law.json
     - title: EITC Tables | IRS

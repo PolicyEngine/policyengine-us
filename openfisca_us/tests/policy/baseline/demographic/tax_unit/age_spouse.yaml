@@ -1,0 +1,12 @@
+- name: Age of spouse.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+        age: 20
+    tax_unit:
+      members: [head, spouse]
+  output:
+    age_spouse: 20
