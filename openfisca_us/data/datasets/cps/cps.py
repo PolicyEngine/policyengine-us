@@ -150,7 +150,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
     SPM_RENAMES = dict(
         spm_unit_total_income="SPM_TOTVAL",
-        snap="SPM_SNAPSUB",
+        snap_reported="SPM_SNAPSUB",
         spm_unit_capped_housing_subsidy="SPM_CAPHOUSESUB",
         free_school_meals="SPM_SCHLUNCH",
         spm_unit_energy_subsidy="SPM_ENGVAL",
