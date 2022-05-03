@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class hud_payment_standard(Variable):
+class pha_payment_standard(Variable):
     value_type = float
     entity = SPMUnit
     label = "HUD payment standard"
