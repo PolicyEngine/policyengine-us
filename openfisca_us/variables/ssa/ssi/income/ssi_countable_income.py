@@ -25,4 +25,6 @@ class ssi_countable_income(Variable):
         earned_after_flat_exclusion = max_(earned - earned_exclusion, 0)
         countable_earned_share = 1 - exclusions.earned_share
         countable_earned = earned_after_flat_exclusion * countable_earned_share
-        return (countable_unearned + countable_earned + deemed) * MONTHS_IN_YEAR
+        return (
+            countable_unearned + countable_earned + deemed
+        ) * MONTHS_IN_YEAR
