@@ -5,6 +5,6 @@ class snap_reported(Variable):
     value_type = float
     entity = SPMUnit
     label = "SNAP (reported amount)"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Reported value of SNAP."
     definition_period = YEAR

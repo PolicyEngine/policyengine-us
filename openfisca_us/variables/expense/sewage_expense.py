@@ -5,5 +5,5 @@ class sewage_expense(Variable):
     value_type = float
     entity = SPMUnit
     label = "Sewage expense"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

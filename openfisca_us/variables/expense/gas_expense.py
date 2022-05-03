@@ -5,5 +5,5 @@ class gas_expense(Variable):
     value_type = float
     entity = SPMUnit
     label = "Gas expense"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

@@ -5,5 +5,5 @@ class trash_expense(Variable):
     value_type = float
     entity = SPMUnit
     label = "Trash expense"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

@@ -5,6 +5,6 @@ class child_support_expense(Variable):
     value_type = float
     entity = Person
     label = "Child support expense"
-    unit = "currency-USD"
+    unit = USD
     documentation = "Legally mandated child support expenses."
     definition_period = YEAR

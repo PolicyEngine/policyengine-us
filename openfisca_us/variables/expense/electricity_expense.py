@@ -5,5 +5,5 @@ class electricity_expense(Variable):
     value_type = float
     entity = SPMUnit
     label = "Electricity expense"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR

@@ -6,7 +6,7 @@ class telephone_expense(Variable):
     entity = SPMUnit
     label = "Phone expense"
     documentation = "Phone line cost for this SPM unit"
-    unit = "currency-USD"
+    unit = USD
     definition_period = YEAR
 
     formula = sum_of_variables(["phone_cost"])  # For compatibility
