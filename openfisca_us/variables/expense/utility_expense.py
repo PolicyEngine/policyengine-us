@@ -16,6 +16,6 @@ class utility_expense(Variable):
             "trash_expense",
             "water_expense",
             "sewage_expense",
-            "telephone_expense",
+            "phone_expense",
         ]
     )

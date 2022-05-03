@@ -13,7 +13,7 @@ class count_distinct_utility_expenses(Variable):
             "heating_cooling",
             "electricity",
             "gas",
-            "telephone",
+            "phone",
             "trash",
             "water",
             "sewage",

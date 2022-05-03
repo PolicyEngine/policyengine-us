@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class telephone_expense(Variable):
+class phone_expense(Variable):
     value_type = float
     entity = SPMUnit
     label = "Phone expense"
