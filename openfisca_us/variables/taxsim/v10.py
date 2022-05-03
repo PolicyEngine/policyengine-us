@@ -5,7 +5,7 @@ class v10(Variable):
     value_type = float
     entity = TaxUnit
     label = "Federal AGI"
-    unit = "currency-USD"
+    unit = USD
     documentation = "TAXSIM federal AGI"
     definition_period = YEAR
 

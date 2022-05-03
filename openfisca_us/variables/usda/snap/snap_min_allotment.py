@@ -22,7 +22,7 @@ class snap_min_allotment(Variable):
             snap.max_allotment.main[snap_region][
                 str(min_allotment.relevant_max_allotment_household_size)
             ]
-            * 12
+            * MONTHS_IN_YEAR
         )
         # Minimum benefits only apply to households up to a certain size.
         size = spm_unit("spm_unit_size", period)
