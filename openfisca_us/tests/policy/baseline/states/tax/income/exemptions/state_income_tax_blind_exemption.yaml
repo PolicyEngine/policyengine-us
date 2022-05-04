@@ -13,11 +13,11 @@
   output:
     state_income_tax_blind_exemption: 2_200
 
-- name: A tax unit with two aged people gets two exemptions of $700 each.
+- name: A tax unit with two blind people gets two exemptions of $2,200 each.
   period: 2022
   input:
     state_code: MA
     blind_head: true
     blind_spouse: true
   output:
-    state_income_tax_aged_exemption: 4_400
+    state_income_tax_blind_exemption: 4_400

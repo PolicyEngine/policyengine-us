@@ -1,3 +1,4 @@
+from itertools import count
 from openfisca_us.model_api import *
 
 
@@ -14,4 +15,6 @@ class state_income_tax_aged_exemption(Variable):
         age_limit = p.age[state]
         head_eligible = tax_unit("age_head", period) >= age_limit
         spouse_eligible = tax_unit("age_spouse", period) >= age_limit
-        return p.amount[state] * (head_eligible + spouse_eligible)
+        return p.amount[state] * (
+            head_eligible.astype(int) + spouse_eligible.astype(int)
+        )

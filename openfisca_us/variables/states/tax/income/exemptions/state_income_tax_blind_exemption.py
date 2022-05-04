@@ -13,4 +13,6 @@ class state_income_tax_blind_exemption(Variable):
         state = tax_unit.household("state_code_str", period)
         head_eligible = tax_unit("blind_head", period)
         spouse_eligible = tax_unit("blind_spouse", period)
-        return amount[state] * (head_eligible + spouse_eligible)
+        return amount[state] * (
+            head_eligible.astype(int) + spouse_eligible.astype(int)
+        )
