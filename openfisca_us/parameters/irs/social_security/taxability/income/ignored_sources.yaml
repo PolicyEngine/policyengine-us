@@ -1,0 +1,12 @@
+description: Income sources ignored to reach gross income for social-security-related MAGI.
+values:
+  2010-01-01:
+    - taxable_social_security
+    - taxable_unemployment_insurance
+metadata:
+  unit: currency-USD
+  name: ss_magi_ignored_income
+  label: Social-security-related MAGI ignored income
+  reference:
+    - title: 26 U.S. Code § 86 - Social security and tier 1 railroad retirement benefits
+      href: https://www.law.cornell.edu/uscode/text/26/86

@@ -1,9 +1,9 @@
 from openfisca_us.model_api import *
 
 
-class tax_exempt_interest(Variable):
+class tax_exempt_interest_income(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Tax-exempt interest income"
     unit = USD
     documentation = "Interest income which is exempt from tax."

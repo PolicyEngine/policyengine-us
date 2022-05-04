@@ -13,10 +13,15 @@ class taxable_ss_magi(Variable):
     def formula(tax_unit, period, parameters):
         irs = parameters(period).irs
         gross_income_sources = irs.gross_income.sources
-        income_sources_without_ss = [income_source for income_source in gross_income_sources if income_source != "taxable_social_security"]
+        ss_magi = irs.social_security.taxability.income
+        ignored_sources = ss_magi.ignored_sources
+        income_sources_without_ss = [
+            income_source for income_source in gross_income_sources 
+            if income_source not in ignored_sources
+        ]
         gross_income = add(tax_unit, period, income_sources_without_ss)
         above_the_line_deductions = irs.ald.deductions
-        revoked_deductions = irs.social_security.taxability.income.revoked_deductions
+        revoked_deductions =ss_magi.revoked_deductions
         deductions = [
             deduction for deduction in above_the_line_deductions
             if deduction not in revoked_deductions

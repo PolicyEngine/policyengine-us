@@ -11,7 +11,7 @@ class maximum_capital_loss(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/1211"
 
     def formula(tax_unit, period, parameters):
-        capital_loss = max_(-tax_unit("capital_loss", period), 0)
+        capital_loss = tax_unit("tax_unit_capital_loss", period)
         filing_status = tax_unit("filing_status", period)
         max_loss = parameters(period).irs.ald.loss.capital.max[filing_status]
         return min_(max_loss, capital_loss)
