@@ -9,4 +9,4 @@ class v11(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("taxable_ui", period)
+        return tax_unit("taxable_unemployment_insurance", period)

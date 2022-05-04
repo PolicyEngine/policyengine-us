@@ -15,5 +15,5 @@ class irs_gross_income(Variable):
         total = 0
         for source in sources:
             # Add positive values only - losses are deducted later.
-            total += max_(0, tax_unit(source, period))
+            total += max_(0, add(tax_unit, period, [source]))
         return total
