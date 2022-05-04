@@ -12,7 +12,7 @@ class taxable_ui(Variable):
 
     def formula(tax_unit, period, parameters):
         ui = parameters(period).irs.unemployment_insurance
-        ui_amount = tax_unit("tax_unit_ui", period)
+        ui_amount = tax_unit("tax_unit_unemployment_insurance", period)
         agi = tax_unit("adjusted_gross_income", period)
         agi_over_ui = agi - ui_amount
         filing_status = tax_unit("filing_status", period)

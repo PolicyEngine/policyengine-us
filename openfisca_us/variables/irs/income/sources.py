@@ -42,6 +42,8 @@ class filer_e00200(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00200", tax_unit, period)
 
+tax_unit_employment_income = variable_alias("tax_unit_employment_income", filer_e00200)
+
 
 class pencon(Variable):
     value_type = float
@@ -72,6 +74,8 @@ class e00300(Variable):
     def formula(person, period, parameters):
         return person("interest_income", period)
 
+taxable_interest_income = variable_alias("taxable_interest_income", e00300)
+
 
 class filer_e00300(Variable):
     value_type = float
@@ -84,7 +88,7 @@ class filer_e00300(Variable):
         return tax_unit_non_dep_sum("e00300", tax_unit, period)
 
 
-taxable_interest = variable_alias("taxable_interest", e00300)
+tax_unit_taxable_interest_income = variable_alias("taxable_interest", e00300)
 
 
 class e00400(Variable):
@@ -121,6 +125,8 @@ class e00600(Variable):
     def formula(person, period, parameters):
         return person("dividend_income", period)
 
+ordinary_dividends = variable_alias("ordinary_dividends", e00600)
+
 
 class filer_e00600(Variable):
     value_type = float
@@ -131,6 +137,8 @@ class filer_e00600(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00600", tax_unit, period)
+
+tax_unit_ordinary_dividends = variable_alias("tax_unit_ordinary_dividends", e00600)
 
 
 class e00650(Variable):
@@ -159,6 +167,8 @@ class e00700(Variable):
     documentation = "Taxable refunds of state and local income taxes"
     unit = USD
 
+salt_refund_income = variable_alias("salt_refund_income", e00700)
+
 
 class filer_e00700(Variable):
     value_type = float
@@ -170,6 +180,8 @@ class filer_e00700(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00700", tax_unit, period)
 
+tax_unit_salt_refund_income = variable_alias("tax_unit_salt_refund_income", filer_e00700)
+
 
 class e00800(Variable):
     value_type = float
@@ -178,6 +190,7 @@ class e00800(Variable):
     documentation = "Alimony received"
     unit = USD
 
+alimony_income = variable_alias("alimony_income", e00800)
 
 class filer_e00800(Variable):
     value_type = float
@@ -188,6 +201,8 @@ class filer_e00800(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00800", tax_unit, period)
+
+tax_unit_alimony_income = variable_alias("tax_unit_alimony_income", filer_e00800)
 
 
 class e00900(Variable):
@@ -213,6 +228,8 @@ class filer_e00900(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00900", tax_unit, period)
 
+tax_unit_self_employment_income = variable_alias("tax_unit_self_employment_income", filer_e00900)
+
 
 class e01100(Variable):
     value_type = float
@@ -231,6 +248,8 @@ class filer_e01100(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01100", tax_unit, period)
+
+non_schedule_d_capital_gains = variable_alias("non_schedule_d_capital_gains", filer_e01100)
 
 
 class e01200(Variable):
@@ -251,6 +270,8 @@ class filer_e01200(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01200", tax_unit, period)
 
+tax_unit_other_net_gain = variable_alias("tax_unit_other_net_gain", filer_e01200)
+
 
 class e01400(Variable):
     value_type = float
@@ -258,6 +279,8 @@ class e01400(Variable):
     definition_period = YEAR
     documentation = "Taxable IRA distributions"
     unit = USD
+
+ira_income = variable_alias("ira_income", e01400)
 
 
 class filer_e01400(Variable):
@@ -269,6 +292,8 @@ class filer_e01400(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01400", tax_unit, period)
+
+tax_unit_ira_income = variable_alias("tax_unit_ira_income", e01400)
 
 
 class e01500(Variable):
@@ -311,6 +336,8 @@ class filer_e01700(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01700", tax_unit, period)
 
+tax_unit_pension_income = variable_alias("tax_unit_pension_income", e01700)
+
 
 class e02000(Variable):
     value_type = float
@@ -331,7 +358,7 @@ class filer_e02000(Variable):
         return tax_unit_non_dep_sum("e02000", tax_unit, period)
 
 
-filer_rental_income = variable_alias("filer_rental_income", filer_e02000)
+tax_unit_rental_income = variable_alias("filer_rental_income", filer_e02000)
 
 
 class e02100(Variable):
@@ -340,6 +367,8 @@ class e02100(Variable):
     definition_period = YEAR
     documentation = "Farm net income/loss from Sch F"
     unit = USD
+
+farm_income = variable_alias("farm_income", e02100)
 
 
 class filer_e02100(Variable):
@@ -351,6 +380,8 @@ class filer_e02100(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e02100", tax_unit, period)
+
+tax_unit_farm_income = variable_alias("tax_unit_farm_income", filer_e02100)
 
 
 class e02300(Variable):
@@ -364,7 +395,7 @@ class e02300(Variable):
 unemployment_insurance = variable_alias("unemployment_insurance", e02300)
 
 
-class tax_unit_ui(Variable):
+class tax_unit_unemployment_insurance(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -375,7 +406,7 @@ class tax_unit_ui(Variable):
         return tax_unit_non_dep_sum("unemployment_insurance", tax_unit, period)
 
 
-filer_e02300 = variable_alias("filer_e02300", tax_unit_ui)
+filer_e02300 = variable_alias("filer_e02300", tax_unit_unemployment_insurance)
 
 
 class e02400(Variable):

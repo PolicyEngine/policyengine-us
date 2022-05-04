@@ -13,6 +13,7 @@ class market_income(Variable):
         COMPONENTS = [
             "employment_income",
             "self_employment_income",
+            "pension_income",
             "dividend_income",
             "interest_income",
             "gi_cash_assistance",

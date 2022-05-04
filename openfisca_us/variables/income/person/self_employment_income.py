@@ -6,5 +6,5 @@ class self_employment_income(Variable):
     entity = Person
     label = "Self-employment income"
     unit = USD
-    documentation = "Self-employment income"
+    documentation = "Self-employment non-farm income."
     definition_period = YEAR
