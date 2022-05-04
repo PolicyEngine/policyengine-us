@@ -1,0 +1,31 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax_rental_deduction: 0
+
+- name: Massachusetts sets the rental deduction at half the rent paid (capped).
+  period: 2022
+  input:
+    state_code: MA
+    rent: 2
+  output:
+    state_income_tax_rental_deduction: 1
+
+- name: Massachusetts caps the rental deduction at $3,000 for single and joint filers.
+  period: 2022
+  input:
+    state_code: MA
+    rent: 10_000
+  output:
+    state_income_tax_rental_deduction: 3_000
+
+- name: Massachusetts caps the rental deduction at $1,500 for married filing separately filers.
+  period: 2022
+  input:
+    state_code: MA
+    filing_status: SEPARATE
+    rent: 10_000
+  output:
+    state_income_tax_rental_deduction: 1_500

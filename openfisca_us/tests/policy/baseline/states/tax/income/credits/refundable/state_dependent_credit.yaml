@@ -1,0 +1,44 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_dependent_credit: 0
+
+- name: $180 for a single dependent under age 12 in Massachusetts.
+  period: 2022
+  input:
+    people:
+      adult: {}
+      child:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+    households:
+      household:
+        members: [adult, child]
+        state_code_str: MA
+  output:
+    state_dependent_credit: 180
+
+- name: Capped at two dependents in MA.
+  period: 2022
+  input:
+    people:
+      adult: {}
+      child:
+        age: 11
+      elderly:
+        age: 65
+      disabled:
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [adult, child, elderly, disabled]
+    households:
+      household:
+        members: [adult, child, elderly, disabled]
+        state_code_str: MA
+  output:
+    state_dependent_credit: 360

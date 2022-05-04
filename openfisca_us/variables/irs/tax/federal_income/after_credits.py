@@ -31,9 +31,11 @@ class iitax(Variable):
     documentation = "Total federal individual income tax liability."
 
     def formula(tax_unit, period, parameters):
-        return tax_unit(
+        before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
-        ) - tax_unit("income_tax_refundable_credits", period)
+        )
+        refundable_credits = tax_unit("income_tax_refundable_credits", period)
+        return before_refundable_credits - refundable_credits
 
 
 income_tax = variable_alias("income_tax", iitax)

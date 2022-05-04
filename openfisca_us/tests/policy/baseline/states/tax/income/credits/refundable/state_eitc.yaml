@@ -1,0 +1,14 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_eitc: 0
+
+- name: Massachusetts matches 30% of federal EITC.
+  period: 2022
+  input:
+    state_code: MA
+    eitc: 1_000
+  output:
+    state_eitc: 300

@@ -33,7 +33,7 @@ def convert_param(param: dict) -> dict:
             else:
                 result[mars]["values"][date] = val
     result["metadata"] = dict(
-        unit="currency-USD",
+        unit=USD,
     )
     if result["values"] == {}:
         del result["values"]

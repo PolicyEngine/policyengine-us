@@ -106,7 +106,7 @@ class ymod1(Variable):
         business_income = add(tax_unit, period, BUSINESS_INCOME_SOURCES)
         max_business_losses = parameters(
             period
-        ).irs.ald.misc.max_business_losses[tax_unit("mars", period)]
+        ).irs.ald.misc.max_business_losses[tax_unit("filing_status", period)]
         business_income_losses_capped = max_(
             business_income, -max_business_losses
         )
@@ -152,49 +152,6 @@ class c02900(Variable):
         )
 
 
-class c02500(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Taxable social security benefits"
-    documentation = "Social security (OASDI) benefits included in AGI"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        ss = parameters(period).irs.social_security.taxability
-        ymod = tax_unit("ymod", period)
-        mars = tax_unit("mars", period)
-
-        lower_threshold = ss.threshold.lower[mars]
-        upper_threshold = ss.threshold.upper[mars]
-
-        under_first_threshold = ymod < lower_threshold
-        under_second_threshold = ymod < upper_threshold
-
-        e02400 = tax_unit("filer_e02400", period)
-
-        amount_if_under_second_threshold = ss.rate.lower * min_(
-            ymod - lower_threshold, e02400
-        )
-        amount_if_over_second_threshold = min_(
-            ss.rate.upper * (ymod - upper_threshold)
-            + ss.rate.lower * min_(e02400, upper_threshold - lower_threshold),
-            ss.rate.upper * e02400,
-        )
-        return select(
-            [
-                under_first_threshold,
-                under_second_threshold,
-                True,
-            ],
-            [
-                0,
-                amount_if_under_second_threshold,
-                amount_if_over_second_threshold,
-            ],
-        )
-
-
 class c00100(Variable):
     value_type = float
     entity = TaxUnit
@@ -204,7 +161,9 @@ class c00100(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["ymod1", "c02500", "c02900"])
+        return add(tax_unit, period, ["ymod1", "c02500"]) - tax_unit(
+            "c02900", period
+        )
 
 
 adjusted_gross_income = variable_alias("adjusted_gross_income", c00100)

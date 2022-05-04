@@ -1,0 +1,28 @@
+description: Maximum rental deduction for state income taxes.
+MA:
+  SINGLE:
+    2020-01-01: 0
+    2021-01-01: 3_000
+  JOINT:
+    2020-01-01: 0
+    2021-01-01: 3_000
+  HEAD_OF_HOUSEHOLD:
+    2020-01-01: 0
+    2021-01-01: 3_000
+  SEPARATE:
+    2020-01-01: 0
+    2021-01-01: 1_500
+  metadata:
+    reference:
+      # Legislation only mentions the $3,000.
+      - title: "Taxable income: adjusted gross income less deductions and exemptions (a)(9)"
+        href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section9
+      # Guide specifies the $1,500 for married filing separate.
+      - title: Form 1 2021 Massachusetts Resident Income Tax (line 14)
+        href: https://www.mass.gov/doc/2021-form-1-instructions/download#page=11
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown: [state_code, filing_status]
+  name: state_income_tax_rent_deduction_cap
+  label: Maximum rental deduction for state income taxes.

@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class SNAPUttilityAllowanceType(Enum):
     SUA = "Standard Utility Allowance"
     LUA = "Limited Utility Allowance"
-    TUA = "Telephone Utility Allowance"
+    IUA = "Individual Utility Allowance"
     NONE = "None"
 
 
@@ -20,18 +20,23 @@ class snap_utility_allowance_type(Variable):
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
-        household = spm_unit.household
+        distinct_utility_bills = spm_unit(
+            "count_distinct_utility_expenses", period
+        )
+        lua = parameters(period).usda.snap.income.deductions.utility.limited
+        region = spm_unit.household("snap_utility_region_str", period)
+        lua_is_defined = lua.active[region].astype(bool)
         return select(
             [
-                household("has_heating_cooling_expense", period),
-                household("has_other_utility_expense", period),
-                household("has_telephone_expense", period),
+                spm_unit("has_heating_cooling_expense", period),
+                lua_is_defined & (distinct_utility_bills >= 2),
+                distinct_utility_bills > 0,
                 True,
             ],
             [
                 SNAPUttilityAllowanceType.SUA,
                 SNAPUttilityAllowanceType.LUA,
-                SNAPUttilityAllowanceType.TUA,
+                SNAPUttilityAllowanceType.IUA,
                 SNAPUttilityAllowanceType.NONE,
             ],
         )

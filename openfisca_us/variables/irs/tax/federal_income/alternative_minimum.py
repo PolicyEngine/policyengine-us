@@ -36,15 +36,15 @@ class c62100(Variable):
             "filer_cmbtp", period
         )  # add income not in AGI but considered income for AMT
         amt = parameters(period).irs.income.amt
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         separate_addition = max_(
             0,
             min_(
-                amt.exemption.amount[mars],
+                amt.exemption.amount[filing_status],
                 amt.exemption.phaseout.rate
                 * (c62100 - amt.exemption.separate_limit),
             ),
-        ) * (mars == mars.possible_values.SEPARATE)
+        ) * (filing_status == filing_status.possible_values.SEPARATE)
         return c62100 + separate_addition
 
 
@@ -64,12 +64,13 @@ class c09600(Variable):
         # Form 6251, Part II top
         amt = parameters(period).irs.income.amt
         phaseout = amt.exemption.phaseout
-        mars = tax_unit("mars", period)
+        filing_status = tax_unit("filing_status", period)
         line29 = max_(
             0,
             (
-                amt.exemption.amount[mars]
-                - phaseout.rate * max_(0, c62100 - phaseout.start[mars])
+                amt.exemption.amount[filing_status]
+                - phaseout.rate
+                * max_(0, c62100 - phaseout.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)
@@ -128,14 +129,14 @@ class c09600(Variable):
         )
         line44 = dwks14
         cg = amt.capital_gains.brackets
-        line45 = max_(0, cg.thresholds["1"][mars] - line44)
+        line45 = max_(0, cg.thresholds["1"][filing_status] - line44)
         line46 = min_(line30, line37)
         line47 = min_(line45, line46)
         cgtax1 = line47 * cg.rates["1"]
         line48 = line46 - line47
         line51 = dwks19
         line52 = line45 + line51
-        line53 = max_(0, cg.thresholds["2"][mars] - line52)
+        line53 = max_(0, cg.thresholds["2"][filing_status] - line52)
         line54 = min_(line48, line53)
         cgtax2 = line54 * cg.rates["2"]
         line56 = line47 + line54

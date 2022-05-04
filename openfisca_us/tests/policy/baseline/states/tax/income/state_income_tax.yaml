@@ -1,0 +1,20 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    state_income_tax: 0
+
+- name: Otherwise difference between tax before refundable credits and refundable credits.
+  period: 2022
+  input:
+    state_income_tax_before_refundable_credits: 3
+    state_income_tax_refundable_credits: 1
+  output:
+    state_income_tax: 2
+
+- name: Can be negative.
+  period: 2022
+  input:
+    state_income_tax_before_refundable_credits: 3
+    state_income_tax_refundable_credits: 4
+  output:
+    state_income_tax: -1

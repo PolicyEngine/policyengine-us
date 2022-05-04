@@ -1,0 +1,23 @@
+- name: Default in Massachusetts is zero, since default blindness is false.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax_blind_exemption: 0
+
+- name: A tax unit with a single blind person.
+  period: 2022
+  input:
+    state_code: MA
+    blind_head: true
+  output:
+    state_income_tax_blind_exemption: 2_200
+
+- name: A tax unit with two blind people gets two exemptions of $2,200 each.
+  period: 2022
+  input:
+    state_code: MA
+    blind_head: true
+    blind_spouse: true
+  output:
+    state_income_tax_blind_exemption: 4_400

@@ -15,4 +15,4 @@ class tanf_max_amount(Variable):
         max_amount = parameters(
             period
         ).hhs.tanf.cash.eligibility.continuous.income.limits
-        return max_amount[state][household_size] * 12
+        return max_amount[state][household_size] * MONTHS_IN_YEAR
