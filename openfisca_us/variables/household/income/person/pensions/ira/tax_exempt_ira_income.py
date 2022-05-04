@@ -8,4 +8,3 @@ class tax_exempt_ira_income(Variable):
     unit = USD
     documentation = "Income from Roth IRAs."
     definition_period = YEAR
-

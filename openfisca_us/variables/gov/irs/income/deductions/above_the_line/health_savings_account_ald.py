@@ -8,4 +8,3 @@ class health_savings_account_ald(Variable):
     unit = USD
     documentation = "Above-the-line deduction from gross income for health savings account expenses."
     definition_period = YEAR
-

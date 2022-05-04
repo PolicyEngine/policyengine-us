@@ -7,4 +7,3 @@ class ordinary_dividend_income(Variable):
     label = "Ordinary dividend income"
     unit = USD
     definition_period = YEAR
-

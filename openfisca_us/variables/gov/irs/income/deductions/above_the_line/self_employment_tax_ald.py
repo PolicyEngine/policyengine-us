@@ -12,5 +12,7 @@ class self_employment_tax_ald(Variable):
 
     def formula(tax_unit, period, parameters):
         self_employment_tax = add(tax_unit, period, ["self_employment_tax"])
-        percent_deductible = parameters(period).irs.ald.self_employment_tax.percent_deductible
+        percent_deductible = parameters(
+            period
+        ).irs.ald.self_employment_tax.percent_deductible
         return self_employment_tax * percent_deductible

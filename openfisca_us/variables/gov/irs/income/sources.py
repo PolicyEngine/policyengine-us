@@ -121,6 +121,7 @@ class e00600(Variable):
     def formula(person, period, parameters):
         return person("dividend_income", period)
 
+
 ordinary_dividends = variable_alias("ordinary_dividends", e00600)
 
 
@@ -134,7 +135,10 @@ class filer_e00600(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00600", tax_unit, period)
 
-tax_unit_ordinary_dividends = variable_alias("tax_unit_ordinary_dividends", e00600)
+
+tax_unit_ordinary_dividends = variable_alias(
+    "tax_unit_ordinary_dividends", e00600
+)
 
 
 class e00650(Variable):
@@ -162,6 +166,7 @@ class e00700(Variable):
     definition_period = YEAR
     documentation = "Taxable refunds of state and local income taxes"
     unit = USD
+
 
 class filer_e00700(Variable):
     value_type = float
@@ -193,7 +198,6 @@ class filer_e00800(Variable):
         return tax_unit_non_dep_sum("e00800", tax_unit, period)
 
 
-
 class e00900(Variable):
     value_type = float
     entity = Person
@@ -218,7 +222,6 @@ class filer_e00900(Variable):
         return tax_unit_non_dep_sum("e00900", tax_unit, period)
 
 
-
 class e01100(Variable):
     value_type = float
     entity = Person
@@ -236,7 +239,6 @@ class filer_e01100(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01100", tax_unit, period)
-
 
 
 class e01200(Variable):
@@ -258,14 +260,12 @@ class filer_e01200(Variable):
         return tax_unit_non_dep_sum("e01200", tax_unit, period)
 
 
-
 class e01400(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = "Taxable IRA distributions"
     unit = USD
-
 
 
 class filer_e01400(Variable):
@@ -277,7 +277,6 @@ class filer_e01400(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01400", tax_unit, period)
-
 
 
 class e01500(Variable):
@@ -307,8 +306,6 @@ class e01700(Variable):
     unit = USD
 
 
-
-
 class filer_e01700(Variable):
     value_type = float
     entity = TaxUnit
@@ -318,7 +315,6 @@ class filer_e01700(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e01700", tax_unit, period)
-
 
 
 class e02000(Variable):
@@ -340,15 +336,12 @@ class filer_e02000(Variable):
         return tax_unit_non_dep_sum("e02000", tax_unit, period)
 
 
-
-
 class e02100(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = "Farm net income/loss from Sch F"
     unit = USD
-
 
 
 class filer_e02100(Variable):
@@ -362,15 +355,12 @@ class filer_e02100(Variable):
         return tax_unit_non_dep_sum("e02100", tax_unit, period)
 
 
-
 class e02300(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
     documentation = "Unemployment insurance benefits"
     unit = USD
-
-
 
 
 class filer_e02300(Variable):
@@ -382,7 +372,6 @@ class filer_e02300(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("unemployment_insurance", tax_unit, period)
-
 
 
 class e02400(Variable):
@@ -932,7 +921,6 @@ class e87530(Variable):
     unit = USD
 
 
-
 class elderly_dependents(Variable):
     value_type = int
     entity = TaxUnit
@@ -1128,6 +1116,7 @@ class p23250(Variable):
     definition_period = YEAR
     documentation = "Sch D: Net long-term capital gains/losses"
     unit = USD
+
 
 class filer_p23250(Variable):
     value_type = float

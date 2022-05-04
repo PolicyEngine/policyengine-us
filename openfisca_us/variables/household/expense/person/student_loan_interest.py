@@ -7,4 +7,3 @@ class student_loan_interest(Variable):
     label = "Student loan interest expense"
     unit = USD
     definition_period = YEAR
-

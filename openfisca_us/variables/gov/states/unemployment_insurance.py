@@ -8,4 +8,3 @@ class unemployment_insurance(Variable):
     unit = USD
     documentation = "Income from unemployment insurance programs."
     definition_period = YEAR
-

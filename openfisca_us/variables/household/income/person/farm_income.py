@@ -8,4 +8,3 @@ class farm_income(Variable):
     unit = USD
     documentation = "Income from agricultural businesses. Do not include this income in self-employment income."
     definition_period = YEAR
-

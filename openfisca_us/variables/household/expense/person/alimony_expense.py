@@ -7,4 +7,3 @@ class alimony_expense(Variable):
     label = "Alimony expense"
     unit = USD
     definition_period = YEAR
-

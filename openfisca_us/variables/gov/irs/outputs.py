@@ -125,7 +125,10 @@ class c01000(Variable):
             (-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period)
         )
 
-tax_unit_net_capital_gains = variable_alias("tax_unit_net_capital_gains", c01000)
+
+tax_unit_net_capital_gains = variable_alias(
+    "tax_unit_net_capital_gains", c01000
+)
 
 
 class c03260(Variable):

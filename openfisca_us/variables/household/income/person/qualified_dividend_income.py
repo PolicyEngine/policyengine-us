@@ -7,4 +7,3 @@ class qualified_dividend_income(Variable):
     label = "Qualified dividend income"
     unit = USD
     definition_period = YEAR
-

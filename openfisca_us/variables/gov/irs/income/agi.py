@@ -164,4 +164,3 @@ class c00100(Variable):
         return add(tax_unit, period, ["ymod1", "c02500"]) - tax_unit(
             "c02900", period
         )
-

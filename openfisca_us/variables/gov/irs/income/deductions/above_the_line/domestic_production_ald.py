@@ -8,4 +8,3 @@ class domestic_production_ald(Variable):
     unit = USD
     documentation = "Above-the-line deduction from gross income for domestic production activities."
     definition_period = YEAR
-

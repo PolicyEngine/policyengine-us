@@ -8,4 +8,3 @@ class ira_contributions(Variable):
     unit = USD
     documentation = "Contributions to Individual Retirement Accounts."
     definition_period = YEAR
-

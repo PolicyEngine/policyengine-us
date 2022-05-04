@@ -7,4 +7,3 @@ class qualified_tuition_expenses(Variable):
     label = "Qualified tuition expenses"
     unit = USD
     definition_period = YEAR
-

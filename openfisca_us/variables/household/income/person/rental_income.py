@@ -8,4 +8,3 @@ class rental_income(Variable):
     unit = USD
     documentation = "Income from rental of property."
     definition_period = YEAR
-

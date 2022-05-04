@@ -8,4 +8,3 @@ class partnership_s_corp_income(Variable):
     unit = USD
     documentation = "Income from partnerships or S-corporations."
     definition_period = YEAR
-

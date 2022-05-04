@@ -7,4 +7,3 @@ class sep_simple_qualified_plan_contributions(Variable):
     label = "SEP, SIMPLE or Qualified plan contributions"
     unit = USD
     definition_period = YEAR
-

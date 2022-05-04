@@ -8,4 +8,3 @@ class self_employed_health_insurance_ald(Variable):
     unit = USD
     documentation = "Above-the-line deduction for self-employed health insurance contributions."
     definition_period = YEAR
-

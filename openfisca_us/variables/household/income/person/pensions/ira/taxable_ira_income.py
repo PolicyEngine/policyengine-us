@@ -8,4 +8,3 @@ class taxable_ira_income(Variable):
     unit = USD
     documentation = "Income from traditional IRAs."
     definition_period = YEAR
-

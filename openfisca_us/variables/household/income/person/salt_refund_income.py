@@ -7,4 +7,3 @@ class salt_refund_income(Variable):
     label = "State and local tax refund income"
     unit = USD
     definition_period = YEAR
-

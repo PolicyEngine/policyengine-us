@@ -7,4 +7,3 @@ class short_term_capital_gains(Variable):
     label = "Short-term capital gains"
     unit = USD
     definition_period = YEAR
-

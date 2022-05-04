@@ -8,4 +8,3 @@ class debt_relief(Variable):
     unit = USD
     documentation = "Income from discharge of indebtedness."
     definition_period = YEAR
-

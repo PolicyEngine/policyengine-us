@@ -9,4 +9,6 @@ class capital_gains(Variable):
     documentation = "Net gain from disposition of property."
     definition_period = YEAR
 
-    formula = sum_of_variables(["short_term_capital_gains", "long_term_capital_gains"])
+    formula = sum_of_variables(
+        ["short_term_capital_gains", "long_term_capital_gains"]
+    )
