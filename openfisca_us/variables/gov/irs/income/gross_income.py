@@ -10,10 +10,10 @@ class irs_gross_income(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/61"
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         sources = parameters(period).irs.gross_income.sources
         total = 0
         for source in sources:
             # Add positive values only - losses are deducted later.
-            total += max_(0, add(tax_unit, period, [source]))
+            total += max_(0, add(person, period, [source]))
         return total
