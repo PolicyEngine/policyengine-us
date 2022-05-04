@@ -1,0 +1,6 @@
+- name: Default in Massachusetts is $4,400 for a single filer.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax_personal_exemption: 4_400
