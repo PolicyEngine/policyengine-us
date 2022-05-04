@@ -7,4 +7,3 @@ class health_insurance_premiums(Variable):
     label = "Health insurance premiums"
     unit = USD
     definition_period = YEAR
-

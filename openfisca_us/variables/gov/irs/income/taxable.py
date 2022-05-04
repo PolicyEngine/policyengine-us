@@ -11,7 +11,9 @@ class pre_qbid_taxinc(Variable):
     def formula(tax_unit, period, parameters):
         ui_amount = tax_unit("tax_unit_unemployment_insurance", period)
         agi = tax_unit("adjusted_gross_income", period)
-        ui_excluded = ui_amount - tax_unit("tax_unit_taxable_unemployment_insurance", period)
+        ui_excluded = ui_amount - tax_unit(
+            "tax_unit_taxable_unemployment_insurance", period
+        )
         maximum_deduction = max_(
             tax_unit("c04470", period), tax_unit("standard", period)
         )

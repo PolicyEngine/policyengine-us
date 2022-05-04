@@ -84,7 +84,6 @@ class filer_e00300(Variable):
         return tax_unit_non_dep_sum("e00300", tax_unit, period)
 
 
-
 class e00400(Variable):
     value_type = float
     entity = Person
@@ -104,7 +103,6 @@ class filer_e00400(Variable):
 
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00400", tax_unit, period)
-
 
 
 class e00600(Variable):

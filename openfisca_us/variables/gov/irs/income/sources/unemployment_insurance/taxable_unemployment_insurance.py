@@ -15,5 +15,7 @@ class taxable_unemployment_insurance(Variable):
         # not affect overall tax liability.
 
         is_tax_unit_head = person("is_tax_unit_head", period)
-        tax_unit_taxable_ui = person.tax_unit("tax_unit_taxable_unemployment_insurance", period)
+        tax_unit_taxable_ui = person.tax_unit(
+            "tax_unit_taxable_unemployment_insurance", period
+        )
         return where(is_tax_unit_head, tax_unit_taxable_ui, 0)

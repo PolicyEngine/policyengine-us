@@ -13,15 +13,17 @@ class taxable_social_security(Variable):
     def formula(tax_unit, period, parameters):
         ss = parameters(period).irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
-        
-        # The legislation directs the usage an income definition that is 
-        # a particularly modified AGI, plus half of gross social security 
-        # payments. We assume that the 'half' here is the same underlying 
-        # parameter as the lower taxability marginal rate (also 50% in the 
+
+        # The legislation directs the usage an income definition that is
+        # a particularly modified AGI, plus half of gross social security
+        # payments. We assume that the 'half' here is the same underlying
+        # parameter as the lower taxability marginal rate (also 50% in the
         # baseline), and that they would be mechanically the same parameter.
 
         ss_fraction = ss.rate.lower * gross_ss
-        modified_agi_plus_half_ss = tax_unit("taxable_ss_magi", period) + ss_fraction
+        modified_agi_plus_half_ss = (
+            tax_unit("taxable_ss_magi", period) + ss_fraction
+        )
         filing_status = tax_unit("filing_status", period)
 
         base_amount = ss.threshold.lower[filing_status]
@@ -60,5 +62,3 @@ class taxable_social_security(Variable):
                 amount_if_over_second_threshold,
             ],
         )
-
-

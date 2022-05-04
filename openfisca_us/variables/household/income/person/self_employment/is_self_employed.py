@@ -7,4 +7,3 @@ class is_self_employed(Variable):
     label = "Is self-employed"
     documentation = "Whether this person is self-employed."
     definition_period = YEAR
-

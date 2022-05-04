@@ -10,6 +10,6 @@ class self_employed_health_insurance_premiums(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        is_self_employed = person('is_self_employed', period)
-        health_insurance_premiums = person('health_insurance_premiums', period)
+        is_self_employed = person("is_self_employed", period)
+        health_insurance_premiums = person("health_insurance_premiums", period)
         return is_self_employed * health_insurance_premiums

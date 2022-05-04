@@ -8,4 +8,3 @@ class taxable_interest_income(Variable):
     unit = USD
     documentation = "Income from interest that is taxable."
     definition_period = YEAR
-

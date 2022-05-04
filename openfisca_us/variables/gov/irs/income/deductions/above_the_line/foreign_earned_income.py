@@ -9,4 +9,3 @@ class foreign_earned_income_exclusion(Variable):
     documentation = "Income earned and any housing expense in foreign countries that is excluded from adjusted gross income under 26 U.S. Code § 911."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/911"
-
