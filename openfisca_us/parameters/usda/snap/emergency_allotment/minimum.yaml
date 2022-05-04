@@ -1,9 +1,7 @@
 description: Minimum amount of SNAP emergency allotment.
 
-CA:
-  2022-01-01: 95
-MA:
-  2022-01-01: 95
+values:
+  2020-01-01: 95
 
 metadata:
   period: month
@@ -13,4 +11,3 @@ metadata:
       href: https://foodforpeople.org/covid-19-calfresh
     - title: SNAP Screener Eligibility Parameters
       href: https://www.snapscreener.com/?p=table
-  breakdown: state_code
