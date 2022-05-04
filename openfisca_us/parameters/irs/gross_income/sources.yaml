@@ -4,7 +4,7 @@ values:
     - employment_income
     - self_employment_income
     - capital_gains
-    - interest_income
+    - taxable_interest_income
     - rental_income
     # Royalties included in rental income
     - dividend_income
@@ -13,6 +13,8 @@ values:
     - debt_relief
     # Decedent income
     # Estate interest income
+    - taxable_unemployment_insurance
+    - taxable_social_security
 metadata:
   unit: currency-USD
   name: irs_gross_income_sources

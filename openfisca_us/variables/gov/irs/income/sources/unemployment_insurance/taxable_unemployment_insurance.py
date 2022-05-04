@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class taxable_ui(Variable):
+class taxable_unemployment_insurance(Variable):
     value_type = float
     entity = TaxUnit
     label = "Taxable unemployment insurance"

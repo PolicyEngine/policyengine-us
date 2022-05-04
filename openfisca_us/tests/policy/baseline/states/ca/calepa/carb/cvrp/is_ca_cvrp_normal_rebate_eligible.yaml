@@ -2,7 +2,7 @@
   period: 2022
   input:
     filing_status: SINGLE
-    c00100: 150_001 # AGI.
+    adjusted_gross_income: 150_001 # AGI.
   output:
     is_ca_cvrp_normal_rebate_eligible: false
 
@@ -10,6 +10,6 @@
   period: 2022
   input:
     filing_status: SINGLE
-    c00100: 150_000
+    adjusted_gross_income: 150_000
   output:
     is_ca_cvrp_normal_rebate_eligible: true

@@ -14,3 +14,5 @@ Above-the-line deductions are deductions made from gross income to arrive at adj
 | [222](https://www.law.cornell.edu/uscode/text/26/222) | Qualified tuition expenses (repealed) |
 | [223](https://www.law.cornell.edu/uscode/text/26/223) | Health savings accounts |
 | [469](https://www.law.cornell.edu/uscode/text/26/469) | Passive activity |
+| [911](https://www.law.cornell.edu/uscode/text/26/911) | Foreign earned income |
+| [933](https://www.law.cornell.edu/uscode/text/26/933) | Income from Puerto Rico |

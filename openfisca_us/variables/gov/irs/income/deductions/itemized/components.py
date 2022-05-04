@@ -20,7 +20,7 @@ class c17000(Variable):
             medical.floor.base + has_aged * medical.floor.aged_addition
         )
         medical_floor = medical_floor_ratio * max_(
-            tax_unit("c00100", period), 0
+            tax_unit("adjusted_gross_income", period), 0
         )
         return max_(
             0,

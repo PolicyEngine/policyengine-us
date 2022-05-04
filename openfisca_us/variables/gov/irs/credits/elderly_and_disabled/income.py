@@ -64,7 +64,7 @@ class section_22_income(Variable):
         taxable_pensions = tax_unit("filer_e01700", period)
         non_taxable_pensions = total_pensions - taxable_pensions
         capped_reduced_amount = capped_amount - non_taxable_pensions
-        agi = tax_unit("c00100", period)
+        agi = tax_unit("adjusted_gross_income", period)
 
         amount_over_phaseout = max_(
             0, agi - elderly_disabled.phaseout.threshold[filing_status]

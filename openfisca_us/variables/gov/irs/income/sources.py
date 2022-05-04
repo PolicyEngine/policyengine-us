@@ -84,8 +84,6 @@ class filer_e00300(Variable):
         return tax_unit_non_dep_sum("e00300", tax_unit, period)
 
 
-tax_unit_taxable_interest_income = variable_alias("taxable_interest", e00300)
-
 
 class e00400(Variable):
     value_type = float
@@ -107,8 +105,6 @@ class filer_e00400(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum("e00400", tax_unit, period)
 
-
-tax_exempt_interest = variable_alias("tax_exempt_interest", e00400)
 
 
 class e00600(Variable):

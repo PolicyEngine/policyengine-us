@@ -28,9 +28,9 @@ class c33200(Variable):
             head_earnings,
         )
         c33000 = max_(0, min_(c32800, lowest_earnings))
-        c00100 = tax_unit("c00100", period)
+        adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         tratio = 0.01 * max_(
-            ((c00100 - cdcc.phaseout.start) * cdcc.phaseout.rate), 0
+            ((adjusted_gross_income - cdcc.phaseout.start) * cdcc.phaseout.rate), 0
         )
         crate = max_(
             cdcc.phaseout.min,
@@ -41,14 +41,14 @@ class c33200(Variable):
             ),
         )
         tratio2 = max_(
-            ((c00100 - cdcc.phaseout.second_start) * cdcc.phaseout.rate / 1e2),
+            ((adjusted_gross_income - cdcc.phaseout.second_start) * cdcc.phaseout.rate / 1e2),
             0,
         )
         crate_if_over_second_threshold = max_(
             0, cdcc.phaseout.min - min_(cdcc.phaseout.min, tratio2)
         )
         crate = where(
-            c00100 > cdcc.phaseout.second_start,
+            adjusted_gross_income > cdcc.phaseout.second_start,
             crate_if_over_second_threshold,
             crate,
         )

@@ -11,17 +11,17 @@ class c62100(Variable):
 
     def formula(tax_unit, period, parameters):
         # Form 6251, Part I
-        c00100 = tax_unit("c00100", period)
+        adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         e00700 = tax_unit("filer_e00700", period)
         c62100_if_no_standard = (
-            c00100
+            adjusted_gross_income
             - e00700
             - tax_unit("c04470", period)
             + max_(
                 0,
                 min_(
                     tax_unit("c17000", period),
-                    0.025 * c00100,
+                    0.025 * adjusted_gross_income,
                 ),
             )
             + tax_unit("c18300", period)
@@ -31,7 +31,7 @@ class c62100(Variable):
         c62100 = where(
             tax_unit("standard", period) == 0,
             c62100_if_no_standard,
-            c00100 - e00700,
+            adjusted_gross_income - e00700,
         ) + tax_unit(
             "filer_cmbtp", period
         )  # add income not in AGI but considered income for AMT

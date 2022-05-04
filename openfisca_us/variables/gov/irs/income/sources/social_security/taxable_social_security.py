@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class taxable_ss(Variable):
+class taxable_social_security(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -12,10 +12,16 @@ class taxable_ss(Variable):
 
     def formula(tax_unit, period, parameters):
         ss = parameters(period).irs.social_security.taxability
-        gross_ss = tax_unit("tax_unit_ss", period)
-        modified_agi_plus_half_ss = tax_unit(
-            "ymod", period
-        )  # Defined in 26 U.S.C § 86(b)(2)
+        gross_ss = tax_unit("tax_unit_social_security", period)
+        
+        # The legislation directs the usage an income definition that is 
+        # a particularly modified AGI, plus half of gross social security 
+        # payments. We assume that the 'half' here is the same underlying 
+        # parameter as the lower taxability marginal rate (also 50% in the 
+        # baseline), and that they would be mechanically the same parameter.
+
+        ss_fraction = ss.rate.lower * gross_ss
+        modified_agi_plus_half_ss = tax_unit("taxable_ss_magi", period) + ss_fraction
         filing_status = tax_unit("filing_status", period)
 
         base_amount = ss.threshold.lower[filing_status]
@@ -56,4 +62,3 @@ class taxable_ss(Variable):
         )
 
 
-c02500 = variable_alias("c02500", taxable_ss)

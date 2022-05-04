@@ -10,7 +10,7 @@ class posagi(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return max_(tax_unit("c00100", period), 0)
+        return max_(tax_unit("adjusted_gross_income", period), 0)
 
 
 class invinc_agi_ec(Variable):
@@ -149,18 +149,4 @@ class c02900(Variable):
                 (1 - misc_haircuts[variable]) * tax_unit(variable, period)
                 for variable in haircut_vars
             ]
-        )
-
-
-class c00100(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "AGI"
-    documentation = "Adjusted Gross Income"
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["ymod1", "c02500"]) - tax_unit(
-            "c02900", period
         )

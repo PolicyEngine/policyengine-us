@@ -1,0 +1,16 @@
+description: Above-the-line deductions reverted to reach social-security-related MAGI from AGI.
+values:
+  2010-01-01:
+    - taxable_social_security
+    - us_bonds_for_higher_ed
+    - qualified_adoption_assistance_expense
+    - student_loan_interest
+    - specified_possession_income
+    - puerto_rico_income
+metadata:
+  unit: currency-USD
+  name: ss_magi_reverted_deductions
+  label: Social-security-related MAGI reverted deductions
+  reference:
+    - title: 26 U.S. Code § 86 - Social security and tier 1 railroad retirement benefits
+      href: https://www.law.cornell.edu/uscode/text/26/86

@@ -7,3 +7,5 @@ class interest_income(Variable):
     label = "Interest income"
     unit = USD
     definition_period = YEAR
+
+    formula = sum_of_variables(["taxable_interest", "tax_exempt_interest"])
