@@ -10,5 +10,6 @@ class above_the_line_deductions(Variable):
         "Deductions applied to reach adjusted gross income from gross income."
     )
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/62"
 
     formula = sum_of_variables("irs.ald.deductions")

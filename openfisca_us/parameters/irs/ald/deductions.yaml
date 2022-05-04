@@ -1,6 +1,7 @@
 description: Above-the-line deductions from gross income to reach adjusted gross income.
 values:
   2010-01-01:
+    - loss_ald
     - self_employment_tax_ald
     - student_loan_interest
     - early_withdrawal_penalty
@@ -13,6 +14,7 @@ values:
     - ira_contributions
     - sep_simple_qualified_plan_contributions
   2018-01-01:
+    - loss_ald
     - self_employment_tax_ald
     - student_loan_interest
     - early_withdrawal_penalty
@@ -23,12 +25,12 @@ values:
     - ira_contributions
     - sep_simple_qualified_plan_contributions
   2026-01-01:
+    - loss_ald
     - self_employment_tax_ald
     - student_loan_interest
     - early_withdrawal_penalty
     - alimony_expense
     - educator_expense
-    - domestic_production_ald
     - health_savings_account_ald
     - self_employed_health_insurance_ald
     - ira_contributions
