@@ -14,12 +14,19 @@ class taxable_ss_magi(Variable):
         irs = parameters(period).irs
         gross_income_sources = irs.gross_income.sources
         ss_magi = irs.social_security.taxability.income
-        ignored_sources = ss_magi.ignored_sources
         income_sources_without_ss = [
             income_source
             for income_source in gross_income_sources
-            if income_source not in ignored_sources
+            if income_source
+            not in [
+                "taxable_social_security",
+                "taxable_unemployment_insurance",
+            ]
         ]
+        if "taxable_unemployment_insurance" in gross_income_sources:
+            # Reforms which drop the UI variable from gross income should
+            # trigger SS-related MAGI to drop it too.
+            income_sources_without_ss.append("unemployment_insurance")
         gross_income = add(tax_unit, period, income_sources_without_ss)
         above_the_line_deductions = irs.ald.deductions
         revoked_deductions = ss_magi.revoked_deductions
