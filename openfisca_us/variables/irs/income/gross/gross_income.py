@@ -20,7 +20,7 @@ class gross_income(Variable):
         "tax_unit_unemployment_insurance",
         "tax_unit_interest_income",
         "tax_unit_ordinary_dividend_income",
-        "tax_unit_net_capital_gains",
+        "tax_unit_capital_gains",
         "tax_unit_non_schedule_d_capital_gains",
         "tax_unit_other_net_gain",
     ])
