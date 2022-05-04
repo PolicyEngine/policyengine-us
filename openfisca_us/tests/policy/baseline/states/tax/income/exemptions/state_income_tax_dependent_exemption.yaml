@@ -1,0 +1,14 @@
+- name: Default in Massachusetts is zero.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax_dependent_exemption: 0
+
+- name: A tax unit with two dependents gets two exemptions of $1,000 each.
+  period: 2022
+  input:
+    state_code: MA
+    tax_unit_dependents: 2
+  output:
+    state_income_tax_dependent_exemption: 2_000

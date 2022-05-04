@@ -1,0 +1,23 @@
+- name: Default in Massachusetts is zero, since default ages are 18.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_income_tax_aged_exemption: 0
+
+- name: A tax unit with a single aged person.
+  period: 2022
+  input:
+    state_code: MA
+    age_head: 65
+  output:
+    state_income_tax_aged_exemption: 700
+
+- name: A tax unit with two aged people gets two exemptions of $700 each.
+  period: 2022
+  input:
+    state_code: MA
+    age_head: 70
+    age_spouse: 80
+  output:
+    state_income_tax_aged_exemption: 1_400
