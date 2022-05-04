@@ -13,7 +13,8 @@ class irs_gross_income(Variable):
     def formula(person, period, parameters):
         sources = parameters(period).irs.gross_income.sources
         total = 0
+        not_dependent = ~person("is_tax_unit_dependent", period)
         for source in sources:
             # Add positive values only - losses are deducted later.
-            total += max_(0, add(person, period, [source]))
+            total += not_dependent * max_(0, add(person, period, [source]))
         return total
