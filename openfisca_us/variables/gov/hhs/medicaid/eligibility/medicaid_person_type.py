@@ -4,9 +4,11 @@ from openfisca_us.model_api import *
 class MedicaidPersonType(Enum):
     ADULT_WITHOUT_DEPENDENT = "Adult without dependent"
     ADULT_WITH_DEPENDENT = "Adult with dependent"
+    PREGNANT = "Pregnant adult"
     CHILD_AGE_0 = "Child age 0"
     CHILD_AGE_1_5 = "Child age 1 to 5"
     CHILD_AGE_6_18 = "Child age 6 to 18"
+    CHILD_AGE_19_20 = "Adult 19-20 (covered as child)"
 
 
 class medicaid_person_type(Variable):
