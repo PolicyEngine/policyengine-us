@@ -8,3 +8,4 @@ class medicaid(Variable):
     documentation = "Estimated benefit amount from Medicaid"
     label = "Medicaid benefit"
     unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/42/1396a"
