@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.57.0] - 2022-05-04 19:44:35
+
+### Added
+
+- SSI notebook.
+- SSI example to MA notebook.
+- MA state tax exemptions for aged and blind people.
+- Unit tests for state tax exemptions.
+
 ## [0.56.0] - 2022-05-03 16:41:49
 
 ### Added
@@ -755,6 +764,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.57.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.56.0...0.57.0
 [0.56.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.55.0...0.56.0
 [0.55.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.1...0.55.0
 [0.54.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.0...0.54.1
