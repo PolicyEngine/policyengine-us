@@ -7,7 +7,7 @@ class taxable_uc_agi(Variable):
     label = "Taxable unemployment compensation for SS adjusted gross income"
     unit = USD
     documentation = (
-        "Income used to determine taxability of unemployment insurance."
+        "Income used to determine taxability of unemployment compensation."
     )
     definition_period = YEAR
 

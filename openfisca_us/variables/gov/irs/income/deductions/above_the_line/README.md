@@ -4,7 +4,7 @@ Above-the-line deductions are deductions made from gross income to arrive at adj
 
 | Section | Deduction |
 | --- | --- |
-| [85](https://www.law.cornell.edu/uscode/text/26/85) | Unemployment insurance |
+| [85](https://www.law.cornell.edu/uscode/text/26/85) | Unemployment compensation |
 | [86](https://www.law.cornell.edu/uscode/text/26/86) | Social security |
 | [135](https://www.law.cornell.edu/uscode/text/26/135) | Tuition fees |
 | [137](https://www.law.cornell.edu/uscode/text/26/137) | Adoption expenses |

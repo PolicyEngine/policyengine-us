@@ -353,7 +353,7 @@ class e02300(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    documentation = "Unemployment insurance benefits"
+    documentation = "Unemployment compensation benefits"
     unit = USD
 
 
@@ -361,7 +361,7 @@ class filer_e02300(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Unemployment insurance benefits for filing unit (excluding dependents)"
+    documentation = "Unemployment compensation benefits for filing unit (excluding dependents)"
     unit = USD
 
     def formula(tax_unit, period, parameters):

@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class pui(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Unemployment insurance (primary taxpayer)"
+    label = "Unemployment compensation (primary taxpayer)"
     unit = USD
     documentation = "Unemployment Compensation received - primary taxpayer."
     definition_period = YEAR

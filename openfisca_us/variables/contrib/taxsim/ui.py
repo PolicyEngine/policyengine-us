@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class ui(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Unemployment insurance (spouse)"
+    label = "Unemployment compensation (spouse)"
     unit = USD
     documentation = "Unemployment compensation received - secondary taxpayer. The split is relevant only 2020-2021."
     definition_period = YEAR

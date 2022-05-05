@@ -4,12 +4,12 @@ from openfisca_us.model_api import *
 class taxable_unemployment_compensation(Variable):
     value_type = float
     entity = Person
-    label = "Taxable unemployment insurance"
+    label = "Taxable unemployment compensation"
     unit = USD
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        # The taxable amount of unemployment insurance is decided at the tax unit level, but
+        # The taxable amount of unemployment compensation is decided at the tax unit level, but
         # gross income (which contains taxable UI) is person-level. Therefore, we include the
         # taxable UI in gross income by assigning it to the head of the tax unit: this will be
         # not affect overall tax liability.

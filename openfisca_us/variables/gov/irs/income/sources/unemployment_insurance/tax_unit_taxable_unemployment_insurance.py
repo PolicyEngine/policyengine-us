@@ -4,9 +4,9 @@ from openfisca_us.model_api import *
 class tax_unit_taxable_unemployment_compensation(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Taxable unemployment insurance"
+    label = "Taxable unemployment compensation"
     unit = USD
-    documentation = "Unemployment insurance included in AGI."
+    documentation = "Unemployment compensation included in AGI."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/85"
 
