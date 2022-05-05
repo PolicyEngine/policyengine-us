@@ -4,6 +4,19 @@ from openfisca_us.model_api import *
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 
 
+def import_yaml():
+    import yaml
+
+    try:
+        from yaml import CLoader as Loader
+    except ImportError:
+        from yaml import SafeLoader as Loader
+    return yaml, Loader
+
+
+yaml, Loader = import_yaml()
+
+
 def create_taxcalc_alias(name: str, variable: Type[Variable]):
     """Creates a new OpenFisca variable with the same metadata as the given variable, but the Tax-Calculator name.
     The variable will be cast to tax unit level if it is not already.
@@ -68,7 +81,7 @@ def add_taxcalc_variable_aliases(system: TaxBenefitSystem):
     """
 
     with open(Path(__file__).parent / "variable_mapping.yaml") as f:
-        variable_map = yaml.load(f, Loader=yaml.FullLoader)
+        variable_map = yaml.load(f, Loader=Loader)
 
     for openfisca_us_name, taxcalc_name in variable_map.items():
         system.add_variable(

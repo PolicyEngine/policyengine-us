@@ -638,3 +638,7 @@
     added:
     - Metadata and verbose variable names for IRS computation up to AGI.
   date: 2022-05-05 17:25:36
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing the system to fail to load on Colab.
