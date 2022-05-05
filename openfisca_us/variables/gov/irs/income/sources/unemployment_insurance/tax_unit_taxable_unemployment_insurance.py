@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class tax_unit_taxable_unemployment_insurance(Variable):
+class tax_unit_taxable_unemployment_compensation(Variable):
     value_type = float
     entity = TaxUnit
     label = "Taxable unemployment insurance"
@@ -11,8 +11,8 @@ class tax_unit_taxable_unemployment_insurance(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/85"
 
     def formula(tax_unit, period, parameters):
-        ui = parameters(period).irs.unemployment_insurance
-        ui_amount = tax_unit("tax_unit_unemployment_insurance", period)
+        ui = parameters(period).irs.unemployment_compensation
+        ui_amount = tax_unit("tax_unit_unemployment_compensation", period)
         agi = tax_unit("taxable_ui_agi", period)
         agi_over_ui = agi - ui_amount
         filing_status = tax_unit("filing_status", period)

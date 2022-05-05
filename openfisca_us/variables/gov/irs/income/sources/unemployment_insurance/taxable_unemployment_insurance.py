@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class taxable_unemployment_insurance(Variable):
+class taxable_unemployment_compensation(Variable):
     value_type = float
     entity = Person
     label = "Taxable unemployment insurance"
@@ -16,6 +16,6 @@ class taxable_unemployment_insurance(Variable):
 
         is_tax_unit_head = person("is_tax_unit_head", period)
         tax_unit_taxable_ui = person.tax_unit(
-            "tax_unit_taxable_unemployment_insurance", period
+            "tax_unit_taxable_unemployment_compensation", period
         )
         return where(is_tax_unit_head, tax_unit_taxable_ui, 0)

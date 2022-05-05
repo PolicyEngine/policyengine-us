@@ -12,5 +12,5 @@ class pui(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         is_primary = person("is_tax_unit_head", period)
-        unemployment_insurance = person("unemployment_insurance", period)
-        return tax_unit.sum(unemployment_insurance * is_primary)
+        unemployment_compensation = person("unemployment_compensation", period)
+        return tax_unit.sum(unemployment_compensation * is_primary)

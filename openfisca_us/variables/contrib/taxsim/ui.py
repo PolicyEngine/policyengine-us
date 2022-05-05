@@ -12,5 +12,5 @@ class ui(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         is_spouse = person("is_tax_unit_spouse", period)
-        unemployment_insurance = person("unemployment_insurance", period)
-        return tax_unit.sum(unemployment_insurance * is_spouse)
+        unemployment_compensation = person("unemployment_compensation", period)
+        return tax_unit.sum(unemployment_compensation * is_spouse)

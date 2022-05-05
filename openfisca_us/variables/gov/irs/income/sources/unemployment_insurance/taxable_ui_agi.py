@@ -17,7 +17,7 @@ class taxable_ui_agi(Variable):
         income_sources_without_ss = [
             income_source
             for income_source in gross_income_sources
-            if income_source != "taxable_unemployment_insurance"
+            if income_source != "taxable_unemployment_compensation"
         ]
         gross_income = add(tax_unit, period, income_sources_without_ss)
         above_the_line_deductions = irs.ald.deductions
