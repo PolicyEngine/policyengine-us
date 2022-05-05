@@ -9,8 +9,6 @@ class meets_medicaid_income_threshold(Variable):
     documentation = "Whether the person meets the Medicaid income threshold given their state, age, and family structure."
 
     def formula(person, period, parameters):
-        income = person.spm_unit("medicaid_gross_income", period)
-        fpg = person.spm_unit("spm_unit_fpg", period)
         fpg_income_threshold = person("medicaid_income_threshold", period)
-        income_share_of_fpg = income / fpg
+        income_share_of_fpg = person.spm_unit("medicaid_income_level", period)
         return income_share_of_fpg <= fpg_income_threshold
