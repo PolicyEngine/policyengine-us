@@ -13,6 +13,9 @@ parts:
       - file: programs/irs/index
         sections:
           - file: programs/irs/credits/eitc
+      - file: programs/ssa/index
+        sections:
+          - file: programs/ssa/ssi
       - file: programs/usda/index
         sections:
           - file: programs/usda/snap
