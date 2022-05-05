@@ -372,7 +372,7 @@ class e02400(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    documentation = "Total social security (OASDI) benefits"
+    documentation = "Total Social Security (OASDI) benefits"
     unit = USD
 
     def formula(person, period, parameters):

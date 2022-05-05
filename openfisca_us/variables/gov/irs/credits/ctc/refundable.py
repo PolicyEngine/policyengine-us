@@ -78,7 +78,7 @@ class refundable_ctc(Variable):
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
         # would increase if [tax liability] increased by tax_increase", where tax_increase is the greater of:
         # - the phase-in amount
-        # - social security tax minus the EITC
+        # - Social Security tax minus the EITC
         # First, we find tax_increase:
 
         earnings = aggr(tax_unit, period, ["earned_income"])
@@ -89,7 +89,7 @@ class refundable_ctc(Variable):
             earnings_over_threshold * ctc.refundable.phase_in.rate
         )
 
-        # Compute "social security taxes" as defined in the US Code for the ACTC.
+        # Compute "Social Security taxes" as defined in the US Code for the ACTC.
         # This includes OASDI and Medicare payroll taxes, as well as half
         # of self-employment taxes.
         PERSON_VARIABLES = [

@@ -6,7 +6,7 @@ class taxable_ss_magi(Variable):
     entity = TaxUnit
     label = "Modified adjusted gross income (SS)"
     unit = USD
-    documentation = "Income used to determine taxability of social security."
+    documentation = "Income used to determine taxability of Social Security."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
 

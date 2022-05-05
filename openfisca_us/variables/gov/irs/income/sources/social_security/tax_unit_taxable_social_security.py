@@ -5,7 +5,7 @@ class tax_unit_taxable_social_security(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Taxable social security benefits"
+    label = "Taxable Social Security benefits"
     documentation = "Social security (OASDI) benefits included in AGI"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
@@ -15,7 +15,7 @@ class tax_unit_taxable_social_security(Variable):
         gross_ss = tax_unit("tax_unit_social_security", period)
 
         # The legislation directs the usage an income definition that is
-        # a particularly modified AGI, plus half of gross social security
+        # a particularly modified AGI, plus half of gross Social Security
         # payments. We assume that the 'half' here is the same underlying
         # parameter as the lower taxability marginal rate (also 50% in the
         # baseline), and that they would be mechanically the same parameter.
