@@ -23,4 +23,4 @@ class medicaid_income(Variable):
         filer_medicaid_magi = is_tax_unit_head * person.tax_unit(
             "tax_unit_medicaid_magi", period
         )
-        return spm_unit.sum(filer_medicaid_magi, period)
+        return spm_unit.sum(filer_medicaid_magi)

@@ -9,4 +9,6 @@ class pension_contributions(Variable):
     documentation = "Contributions to IRAs, SEP, and other pension funds."
     definition_period = YEAR
 
-    formula = sum_of_variables(["ira_contributions", "sep_simple_qualified_plan_contributions"])
+    formula = sum_of_variables(
+        ["ira_contributions", "sep_simple_qualified_plan_contributions"]
+    )

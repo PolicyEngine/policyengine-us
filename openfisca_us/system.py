@@ -9,7 +9,9 @@ from openfisca_tools import (
 )
 import os
 
-from openfisca_us.tools.dev.taxcalc.generate_taxcalc_variable import add_taxcalc_variable_aliases
+from openfisca_us.tools.dev.taxcalc.generate_taxcalc_variable import (
+    add_taxcalc_variable_aliases,
+)
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
 

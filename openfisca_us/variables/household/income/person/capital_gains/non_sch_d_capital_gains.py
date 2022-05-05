@@ -7,4 +7,3 @@ class non_sch_d_capital_gains(Variable):
     label = "Capital gains not reported on Schedule D."
     unit = USD
     definition_period = YEAR
-
