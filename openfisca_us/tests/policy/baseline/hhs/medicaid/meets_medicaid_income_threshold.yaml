@@ -6,7 +6,7 @@
 - name: Someone with income at 140% of the poverty level
   period: 2021
   input:
-    market_income: 12_880 * 1.4 # Poverty line for one-person household is $12,880.
+    employment_income: 12_880 * 1.4 # Poverty line for one-person household is $12,880.
   output:
     meets_medicaid_income_threshold: false
 
@@ -15,9 +15,9 @@
   input:
     people:
       parent1:
-        market_income: 12_880 * 1
+        employment_income: 12_880 * 1
       parent2:
-        market_income: 12_880 * 0.35
+        employment_income: 12_880 * 0.35
       child1:
         age: 5
       child2:

@@ -13,10 +13,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_863_601
       person_2:
         employment_income: 0
@@ -28,10 +28,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_863_601
       person_3:
         employment_income: 0
@@ -43,10 +43,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_863_601
     tax_units:
       tax_unit:
@@ -100,10 +100,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 2_592_701
       person_2:
         employment_income: 0
@@ -115,10 +115,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 2_592_701
     tax_units:
       tax_unit:
@@ -172,10 +172,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 496_801
       person_2:
         employment_income: 0
@@ -187,10 +187,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 1_500
+        unemployment_compensation: 1_500
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 496_801
       person_3:
         employment_income: 2_000
@@ -202,10 +202,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 496_801
       person_4:
         employment_income: 0
@@ -217,10 +217,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 496_801
     tax_units:
       tax_unit:
@@ -257,7 +257,7 @@
         childcare: 0
         scorp: 0
   output:
-    v25: 3_733
+    v25: 3_733 # TAXSIM: 3_584
 
 - name: Tax unit 4 (CPS ID 3423301) matches TAXSIM35 outputs
   absolute_error_margin: 1
@@ -274,10 +274,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 3_423_301
       person_2:
         employment_income: 0
@@ -289,10 +289,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 3_423_301
     tax_units:
       tax_unit:
@@ -346,10 +346,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_695_201
       person_2:
         employment_income: 0
@@ -361,10 +361,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_695_201
     tax_units:
       tax_unit:
@@ -418,10 +418,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 2_828_801
       person_2:
         employment_income: 0
@@ -433,10 +433,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 2_828_801
       person_3:
         employment_income: 0
@@ -448,10 +448,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 2_828_801
     tax_units:
       tax_unit:
@@ -505,10 +505,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 7_397_502
     tax_units:
       tax_unit:
@@ -562,10 +562,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_899_801
       person_2:
         employment_income: 42_000
@@ -577,10 +577,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_899_801
       person_3:
         employment_income: 0
@@ -592,10 +592,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 5_520
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_899_801
       person_4:
         employment_income: 0
@@ -607,10 +607,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_899_801
     tax_units:
       tax_unit:
@@ -664,10 +664,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_510_901
       person_2:
         employment_income: 0
@@ -679,10 +679,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_510_901
       person_3:
         employment_income: 0
@@ -694,10 +694,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_510_901
       person_4:
         employment_income: 0
@@ -709,10 +709,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_510_901
       person_5:
         employment_income: 0
@@ -724,10 +724,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_510_901
     tax_units:
       tax_unit:
@@ -781,10 +781,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_680_702
       person_2:
         employment_income: 0
@@ -796,10 +796,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_680_702
       person_3:
         employment_income: 0
@@ -811,10 +811,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_680_702
       person_4:
         employment_income: 3_500
@@ -826,10 +826,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 1_500
+        unemployment_compensation: 1_500
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_680_702
     tax_units:
       tax_unit:
@@ -883,10 +883,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 938_602
       person_2:
         employment_income: 0
@@ -898,10 +898,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 938_602
       person_3:
         employment_income: 0
@@ -913,10 +913,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 938_602
       person_4:
         employment_income: 40_600
@@ -928,10 +928,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 938_602
     tax_units:
       tax_unit:
@@ -985,10 +985,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_110_001
       person_2:
         employment_income: 8_500
@@ -1000,10 +1000,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_110_001
       person_3:
         employment_income: 0
@@ -1015,10 +1015,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_110_001
       person_4:
         employment_income: 0
@@ -1030,10 +1030,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_110_001
       person_5:
         employment_income: 0
@@ -1045,10 +1045,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_110_001
       person_6:
         employment_income: 0
@@ -1060,10 +1060,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_110_001
     tax_units:
       tax_unit:
@@ -1117,10 +1117,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_612_602
     tax_units:
       tax_unit:
@@ -1174,10 +1174,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_926_402
     tax_units:
       tax_unit:
@@ -1231,10 +1231,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_280_703
       person_2:
         employment_income: 0
@@ -1246,10 +1246,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_280_703
     tax_units:
       tax_unit:
@@ -1303,10 +1303,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 2_567_102
     tax_units:
       tax_unit:
@@ -1360,10 +1360,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 808_504
       person_2:
         employment_income: 0
@@ -1375,10 +1375,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 808_504
       person_3:
         employment_income: 20_000
@@ -1390,10 +1390,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 808_504
     tax_units:
       tax_unit:
@@ -1447,10 +1447,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 11_200
+        unemployment_compensation: 11_200
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 3_751_101
       person_2:
         employment_income: 0
@@ -1462,10 +1462,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 3_751_101
     tax_units:
       tax_unit:
@@ -1519,10 +1519,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 8_072_301
       person_2:
         employment_income: 0
@@ -1534,10 +1534,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 8_072_301
       person_3:
         employment_income: 0
@@ -1549,10 +1549,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 8_072_301
       person_4:
         employment_income: 0
@@ -1564,10 +1564,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 8_072_301
     tax_units:
       tax_unit:
@@ -1621,10 +1621,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 36_320
+        unemployment_compensation: 36_320
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_935_501
       person_2:
         employment_income: 0
@@ -1636,10 +1636,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_935_501
       person_3:
         employment_income: 0
@@ -1651,10 +1651,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_935_501
     tax_units:
       tax_unit:
@@ -1708,10 +1708,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_991_101
       person_2:
         employment_income: 0
@@ -1723,10 +1723,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_991_101
       person_3:
         employment_income: 0
@@ -1738,10 +1738,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_991_101
       person_4:
         employment_income: 0
@@ -1753,10 +1753,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_991_101
       person_5:
         employment_income: 0
@@ -1768,10 +1768,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_991_101
     tax_units:
       tax_unit:
@@ -1825,10 +1825,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 1_200
+        unemployment_compensation: 1_200
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_997_201
       person_2:
         employment_income: 0
@@ -1840,10 +1840,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_997_201
     tax_units:
       tax_unit:
@@ -1897,10 +1897,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_613_201
       person_2:
         employment_income: 0
@@ -1912,10 +1912,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_613_201
       person_3:
         employment_income: 0
@@ -1927,10 +1927,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_613_201
       person_4:
         employment_income: 0
@@ -1942,10 +1942,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_613_201
     tax_units:
       tax_unit:
@@ -1999,10 +1999,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 10_404
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_067_703
     tax_units:
       tax_unit:
@@ -2056,10 +2056,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_806_101
       person_2:
         employment_income: 34_000
@@ -2071,10 +2071,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_806_101
       person_3:
         employment_income: 0
@@ -2086,10 +2086,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_806_101
     tax_units:
       tax_unit:
@@ -2143,10 +2143,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 6_040_303
     tax_units:
       tax_unit:
@@ -2200,10 +2200,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_673_301
       person_2:
         employment_income: 0
@@ -2215,10 +2215,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 10_476
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 4_673_301
     tax_units:
       tax_unit:
@@ -2272,10 +2272,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 3_079_201
     tax_units:
       tax_unit:
@@ -2329,10 +2329,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 10_800
+        unemployment_compensation: 10_800
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_769_801
       person_2:
         employment_income: 0
@@ -2344,10 +2344,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_769_801
     tax_units:
       tax_unit:
@@ -2401,10 +2401,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 1_200
+        unemployment_compensation: 1_200
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_246_901
       person_2:
         employment_income: 30_000
@@ -2416,10 +2416,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_246_901
       person_3:
         employment_income: 0
@@ -2431,10 +2431,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_246_901
       person_4:
         employment_income: 0
@@ -2446,10 +2446,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_246_901
       person_5:
         employment_income: 0
@@ -2461,10 +2461,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_246_901
     tax_units:
       tax_unit:
@@ -2518,10 +2518,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_360_201
       person_2:
         employment_income: 0
@@ -2533,10 +2533,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 1_360_201
     tax_units:
       tax_unit:
@@ -2590,10 +2590,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_384_101
       person_2:
         employment_income: 0
@@ -2605,10 +2605,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_384_101
       person_3:
         employment_income: 0
@@ -2620,10 +2620,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_384_101
       person_4:
         employment_income: 0
@@ -2635,10 +2635,10 @@
         dividend_income: 0
         pension_income: 0
         social_security: 0
-        unemployment_insurance: 0
+        unemployment_compensation: 0
         short_term_capital_gains: 0
         long_term_capital_gains: 0
-        taxable_interest: 0
+        taxable_interest_income: 0
         person_tax_unit_id: 5_384_101
     tax_units:
       tax_unit:

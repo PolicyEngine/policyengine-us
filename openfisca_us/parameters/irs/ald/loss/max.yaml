@@ -1,0 +1,44 @@
+description: Maximum amount of business losses deductible
+metadata:
+  unit: currency-USD
+  period: year
+  name: irs_max_business_loss
+  label: Business loss limitation
+  reference:
+    - title: 26 U.S. Code § 461 - General rule for taxable year of deduction
+      href: https://www.law.cornell.edu/uscode/text/26/461#l
+HEAD_OF_HOUSEHOLD:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 250_000
+    2019-01-01: 255_000
+    2026-01-01: 283_535.22
+    2027-01-01: .inf
+JOINT:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 500_000
+    2019-01-01: 510_000
+    2026-01-01: 567_070.42
+    2027-01-01: .inf
+SEPARATE:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 250_000.0
+    2019-01-01: 255_000.0
+    2026-01-01: 283_535.22
+    2027-01-01: .inf
+SINGLE:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 250_000.0
+    2019-01-01: 255_000.0
+    2026-01-01: 283_535.22
+    2027-01-01: .inf
+WIDOW:
+  values:
+    2013-01-01: .inf
+    2018-01-01: 500_000.0
+    2019-01-01: 510_000.0
+    2026-01-01: 567_070.42
+    2027-01-01: .inf

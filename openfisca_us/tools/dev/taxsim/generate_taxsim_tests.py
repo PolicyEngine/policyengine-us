@@ -85,7 +85,7 @@ class TaxSim35:
         "dividend_income",
         "pension_income",
         "social_security",
-        "unemployment_insurance",
+        "unemployment_compensation",
         "tax_unit_childcare_expenses",
         "short_term_capital_gains",
         "long_term_capital_gains",
