@@ -1,10 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class taxable_ui_agi(Variable):
+class taxable_uc_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Adjusted gross income (SS)"
+    label = "Taxable unemployment compensation for SS adjusted gross income"
     unit = USD
     documentation = (
         "Income used to determine taxability of unemployment insurance."

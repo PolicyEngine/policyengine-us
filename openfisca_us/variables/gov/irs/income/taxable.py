@@ -9,9 +9,9 @@ class pre_qbid_taxinc(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        ui_amount = tax_unit("tax_unit_unemployment_compensation", period)
+        uc_amount = tax_unit("tax_unit_unemployment_compensation", period)
         agi = tax_unit("adjusted_gross_income", period)
-        ui_excluded = ui_amount - tax_unit(
+        uc_excluded = uc_amount - tax_unit(
             "tax_unit_taxable_unemployment_compensation", period
         )
         maximum_deduction = max_(
@@ -19,7 +19,7 @@ class pre_qbid_taxinc(Variable):
         )
         personal_exemptions = tax_unit("c04600", period)
         return max_(
-            0, agi - maximum_deduction - personal_exemptions - ui_excluded
+            0, agi - maximum_deduction - personal_exemptions - uc_excluded
         )
 
 

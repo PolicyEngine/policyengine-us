@@ -15,7 +15,7 @@ class taxable_unemployment_compensation(Variable):
         # not affect overall tax liability.
 
         is_tax_unit_head = person("is_tax_unit_head", period)
-        tax_unit_taxable_ui = person.tax_unit(
+        tax_unit_taxable_uc = person.tax_unit(
             "tax_unit_taxable_unemployment_compensation", period
         )
-        return where(is_tax_unit_head, tax_unit_taxable_ui, 0)
+        return where(is_tax_unit_head, tax_unit_taxable_uc, 0)
