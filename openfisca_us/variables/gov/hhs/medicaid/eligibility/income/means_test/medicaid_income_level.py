@@ -6,7 +6,9 @@ class medicaid_income_level(Variable):
     entity = SPMUnit
     label = "Medicaid income level"
     unit = "/1"
-    documentation = "Income for Medicaid as a percentage of the federal poverty line."
+    documentation = (
+        "Income for Medicaid as a percentage of the federal poverty line."
+    )
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
