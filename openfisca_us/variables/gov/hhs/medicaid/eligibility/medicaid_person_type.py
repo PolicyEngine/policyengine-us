@@ -31,13 +31,13 @@ class medicaid_person_type(Variable):
             period
         ).hhs.medicaid.under_21_qualifies_as_child
         state = person.household("state_code_str", period)
-        state_has_under_21_child_category = under_21_qualifies[state]
+        state_has_under_21_child_category = under_21_qualifies[state] > 0
         return select(
             [
                 age == 0,
                 age < 6,
                 age < 19,
-                (age < 21) * state_has_under_21_child_category,
+                (age < 21) & state_has_under_21_child_category,
                 has_dependents,
                 True,
             ],
