@@ -27,11 +27,20 @@ class medicaid_person_type(Variable):
         has_dependents = person.spm_unit.any(
             person.spm_unit.members("age", period) < 19
         )
-        under_21_qualifies = parameters(period).hhs.medicaid.under_21_qualifies_as_child
+        under_21_qualifies = parameters(
+            period
+        ).hhs.medicaid.under_21_qualifies_as_child
         state = person.household("state_code_str", period)
         state_has_under_21_child_category = under_21_qualifies[state]
         return select(
-            [age == 0, age < 6, age < 19, (age < 21) & state_has_under_21_child_category, has_dependents, True],
+            [
+                age == 0,
+                age < 6,
+                age < 19,
+                (age < 21) * state_has_under_21_child_category,
+                has_dependents,
+                True,
+            ],
             [
                 MedicaidPersonType.CHILD_AGE_0,
                 MedicaidPersonType.CHILD_AGE_1_5,
