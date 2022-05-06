@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.58.1] - 2022-05-05 21:54:08
+
+### Fixed
+
+- Bug causing the system to fail to load on Colab.
+
+## [0.58.0] - 2022-05-05 17:25:36
+
+### Added
+
+- Metadata and verbose variable names for IRS computation up to AGI.
+
 ## [0.57.1] - 2022-05-05 06:07:31
 
 ### Changed
@@ -771,6 +783,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.58.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.0...0.58.1
+[0.58.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.1...0.58.0
 [0.57.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.0...0.57.1
 [0.57.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.56.0...0.57.0
 [0.56.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.55.0...0.56.0
