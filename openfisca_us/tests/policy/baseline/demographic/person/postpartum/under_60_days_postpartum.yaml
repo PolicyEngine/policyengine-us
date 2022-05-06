@@ -1,0 +1,7 @@
+- name: Under 60 days postparum
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    count_days_postpartum: 59
+  output:
+    under_60_days_postpartum: true
