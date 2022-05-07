@@ -124,6 +124,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame):
         80 + 5 * np.random.rand(len(person)),
         person.A_AGE,
     )
+    cps["is_female"] = person.A_SEX == 2
 
 
 def add_personal_income_variables(cps: h5py.File, person: DataFrame):
