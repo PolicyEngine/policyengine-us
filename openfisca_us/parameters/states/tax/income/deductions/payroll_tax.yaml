@@ -1,0 +1,14 @@
+description: Maximum per-person payroll tax deduction for state income tax.
+MA:
+  values:
+    2021-01-01: 2_000
+  metadata:
+    reference:
+      - title: Form 1 2021 Massachusetts Resident Income Tax
+        href: https://www.mass.gov/doc/2021-form-1-instructions/download#page=11
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown: state_code
+  name: payroll_tax_state_income_tax_deduction
+  label: State income tax deduction for payroll taxes

@@ -5,6 +5,100 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.58.1] - 2022-05-05 21:54:08
+
+### Fixed
+
+- Bug causing the system to fail to load on Colab.
+
+## [0.58.0] - 2022-05-05 17:25:36
+
+### Added
+
+- Metadata and verbose variable names for IRS computation up to AGI.
+
+## [0.57.1] - 2022-05-05 06:07:31
+
+### Changed
+
+- CO SNAP BBCE net income limit set to true.
+- Cite official source for SNAP emergency allotment amount.
+
+## [0.57.0] - 2022-05-04 19:44:35
+
+### Added
+
+- SSI notebook.
+- SSI example to MA notebook.
+- MA state tax exemptions for aged and blind people.
+- Unit tests for state tax exemptions.
+
+## [0.56.0] - 2022-05-03 16:41:49
+
+### Added
+
+- SNAP parameters by state from snapscreener.com.
+
+## [0.55.0] - 2022-05-02 17:50:11
+
+### Added
+
+- TAXSIM tests for taxable SS and UI.
+
+## [0.54.1] - 2022-05-02 06:38:45
+
+### Fixed
+
+- Specify documentation colors without policyengine package.
+
+## [0.54.0] - 2022-05-02 05:24:28
+
+### Changed
+
+- Tied SALT deduction to state income tax.
+- Improved charts in Massachusetts notebook.
+
+## [0.53.0] - 2022-05-01 23:08:30
+
+### Added
+
+- Script to generate integration tests from TAXSIM.
+- TAXSIM integration tests for the EITC.
+
+## [0.52.0] - 2022-05-01 21:21:19
+
+### Added
+
+- Formulas for xtot, num, blind_head, blind_spouse, age_head, and age_spouse.
+- Unit tests for some existing formulas.
+
+### Changed
+
+- Classify single person with dependents as head of household, not single.
+- Split tax unit variables into their own files.
+- Rename `marital_status` and `mars` to `filing_status`.
+
+## [0.51.1] - 2022-05-01 20:21:24
+
+### Added
+
+- Notebook showing total net income and marginal tax rate charts for Massachusetts residents.
+
+## [0.51.0] - 2022-05-01 14:45:31
+
+### Added
+
+- Empty variables for state and local sales tax, and local income tax.
+- Logic for the SALT deduction to choose the greater of state and local income tax or state and local sales tax.
+- Massachusetts SNAP parameters.
+
+## [0.50.0] - 2022-04-30 22:16:10
+
+### Added
+
+- Massachusetts state income tax.
+- EITC documentation notebook.
+
 ## [0.49.1] - 2022-04-22 13:39:09
 
 ### Added
@@ -689,6 +783,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.58.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.0...0.58.1
+[0.58.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.1...0.58.0
+[0.57.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.0...0.57.1
+[0.57.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.56.0...0.57.0
+[0.56.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.55.0...0.56.0
+[0.55.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.1...0.55.0
+[0.54.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.0...0.54.1
+[0.54.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.53.0...0.54.0
+[0.53.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.52.0...0.53.0
+[0.52.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.51.1...0.52.0
+[0.51.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.51.0...0.51.1
+[0.51.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.50.0...0.51.0
+[0.50.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.1...0.50.0
 [0.49.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.49.0...0.49.1
 [0.49.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.48.0...0.49.0
 [0.48.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.47.0...0.48.0

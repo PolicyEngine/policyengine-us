@@ -1,0 +1,22 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    state_taxable_income: 0
+
+- name: Otherwise max(AGI - deductions - exemptions, 0)
+  period: 2022
+  input:
+    adjusted_gross_income: 10
+    state_income_tax_deductions: 2
+    state_income_tax_exemptions: 3
+  output:
+    state_taxable_income: 5
+
+- name: Cannot be negative.
+  period: 2022
+  input:
+    adjusted_gross_income: 10
+    state_income_tax_deductions: 2
+    state_income_tax_exemptions: 9
+  output:
+    state_taxable_income: 0

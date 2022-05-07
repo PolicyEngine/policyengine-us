@@ -565,4 +565,85 @@
 - bump: minor
   changes:
     added:
+      - Massachusetts state income tax.
+      - EITC documentation notebook.
+  date: 2022-04-30 22:16:10
+- bump: minor
+  changes:
+    added:
+      - Empty variables for state and local sales tax, and local income tax.
+      - Logic for the SALT deduction to choose the greater of state and local income
+        tax or state and local sales tax.
+      - Massachusetts SNAP parameters.
+  date: 2022-05-01 14:45:31
+- bump: patch
+  changes:
+    added:
+      - Notebook showing total net income and marginal tax rate charts for Massachusetts
+        residents.
+  date: 2022-05-01 20:21:24
+- bump: minor
+  changes:
+    added:
+      - Formulas for xtot, num, blind_head, blind_spouse, age_head, and age_spouse.
+      - Unit tests for some existing formulas.
+    changed:
+      - Classify single person with dependents as head of household, not single.
+      - Split tax unit variables into their own files.
+      - Rename `marital_status` and `mars` to `filing_status`.
+  date: 2022-05-01 21:21:19
+- bump: minor
+  changes:
+    added:
+      - Script to generate integration tests from TAXSIM.
+      - TAXSIM integration tests for the EITC.
+  date: 2022-05-01 23:08:30
+- bump: minor
+  changes:
+    changed:
+      - Tied SALT deduction to state income tax.
+      - Improved charts in Massachusetts notebook.
+  date: 2022-05-02 05:24:28
+- bump: patch
+  changes:
+    fixed:
+      - Specify documentation colors without policyengine package.
+  date: 2022-05-02 06:38:45
+- bump: minor
+  changes:
+    added:
+      - TAXSIM tests for taxable SS and UI.
+  date: 2022-05-02 17:50:11
+- bump: minor
+  changes:
+    added:
+      - SNAP parameters by state from snapscreener.com.
+  date: 2022-05-03 16:41:49
+- bump: minor
+  changes:
+    added:
+      - SSI notebook.
+      - SSI example to MA notebook.
+      - MA state tax exemptions for aged and blind people.
+      - Unit tests for state tax exemptions.
+  date: 2022-05-04 19:44:35
+- bump: patch
+  changes:
+    changed:
+      - CO SNAP BBCE net income limit set to true.
+      - Cite official source for SNAP emergency allotment amount.
+  date: 2022-05-05 06:07:31
+- bump: minor
+  changes:
+    added:
+      - Metadata and verbose variable names for IRS computation up to AGI.
+  date: 2022-05-05 17:25:36
+- bump: patch
+  changes:
+    fixed:
+      - Bug causing the system to fail to load on Colab.
+  date: 2022-05-05 21:54:08
+- bump: minor
+  changes:
+    added:
       - TANF from CPS data.

@@ -1,0 +1,14 @@
+description: State EITC match.
+MA:
+  values:
+    2019-01-01: 0.3
+  metadata:
+    reference:
+      - title: Credits (h)(1)
+        href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6
+metadata:
+  unit: /1
+  period: year
+  breakdown: state_code
+  name: state_eitc_percent_match
+  label: State EITC percent match

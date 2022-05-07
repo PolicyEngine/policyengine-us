@@ -1,0 +1,35 @@
+- name: Default is false.
+  period: 2022
+  output:
+    blind_head: false
+
+- name: Blind single person is blind_head.
+  period: 2022
+  input:
+    blind_head: true
+  output:
+    blind_head: true
+
+- name: With multiple people, only head is checked.
+  period: 2022
+  input:
+    people:
+      head:
+        is_blind: true
+      spouse: {}
+    tax_unit:
+      members: [head, spouse]
+  output:
+    blind_head: true
+
+- name: With multiple people, only head is checked.
+  period: 2022
+  input:
+    people:
+      head: {}
+      child:
+        is_blind: true
+    tax_unit:
+      members: [head, child]
+  output:
+    blind_head: false

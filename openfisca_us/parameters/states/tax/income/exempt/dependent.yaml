@@ -1,0 +1,25 @@
+description: Extra AGI limit per dependent to be exempt from state income tax.
+MA:
+  # Described as No Tax Status in Massachusetts.
+  SINGLE:
+    2020-01-01: 0
+    2021-01-01: 0
+  JOINT:
+    2020-01-01: 0
+    2021-01-01: 1_000
+  HEAD_OF_HOUSEHOLD:
+    2020-01-01: 0
+    2021-01-01: 1_000
+  SEPARATE:
+    2020-01-01: 0
+    2021-01-01: 0
+  metadata:
+    reference:
+      - title: Form 1 2021 Massachusetts Resident Income Tax (line 27)
+        href: https://www.mass.gov/doc/2021-form-1-instructions/download#page=12
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown: [state_code, filing_status]
+  name: state_income_tax_no_tax_status_dependent_extra_limit
+  label: Extra AGI limit per dependent to be exempt from state income tax.

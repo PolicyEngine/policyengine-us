@@ -1,0 +1,18 @@
+description: State limited income tax credit income limit increase per dependent.
+MA:
+  JOINT:
+    2020-01-01: 0
+    2021-01-01: 1_750
+  HEAD_OF_HOUSEHOLD:
+    2020-01-01: 0
+    2021-01-01: 1_750
+  metadata:
+    reference:
+      - title: Schedule NTS-L-NR/PY No Tax Status and Limited Income Credit 2021 (line 12)
+        href: https://www.mass.gov/doc/2021-schedule-nts-l-nrpy-no-tax-status-and-limited-income-credit/download
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown: [state_code, filing_status]
+  name: state_limited_income_tax_credit_income_limit_dependent
+  label: State limited income tax credit income limit increase per dependent

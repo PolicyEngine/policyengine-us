@@ -1,0 +1,17 @@
+- name: Default is 1.
+  period: 2022
+  output:
+    xtot: 1
+
+- name: Otherwise number of people in the tax unit.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse: {}
+      child: {}
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+  output:
+    xtot: 3
