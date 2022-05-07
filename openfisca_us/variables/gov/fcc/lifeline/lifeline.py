@@ -17,14 +17,14 @@ class lifeline(Variable):
         household = spm_unit.household
         is_rural_tribal = and_(
             household, period, ["is_rural", "is_on_tribal_land"]
-            )
+        )
         max_amount = (
             amounts.standard
             + is_rural_tribal * amounts.rural_tribal_supplement
-            ) * MONTHS_IN_YEAR
+        ) * MONTHS_IN_YEAR
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]
-            )
+        )
         amount_if_eligible = min_(phone_broadband_cost, max_amount)
         eligible = spm_unit("is_lifeline_eligible", period)
         return eligible * amount_if_eligible

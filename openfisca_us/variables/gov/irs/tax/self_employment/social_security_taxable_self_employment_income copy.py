@@ -14,4 +14,4 @@ class social_security_taxable_self_employment_income(Variable):
         return min_(
             person("taxable_self_employment_income", period),
             ss_cap - person("taxable_earnings_for_social_security", period),
-            )
+        )

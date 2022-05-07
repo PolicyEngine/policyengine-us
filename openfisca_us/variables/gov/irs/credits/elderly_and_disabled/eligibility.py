@@ -26,7 +26,7 @@ class qualifies_for_elderly_or_disabled_credit(Variable):
     label = "Qualifies for elderly or disabled credit"
     documentation = (
         "Whether this tax unit qualifies for the elderly or disabled credit"
-        )
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):

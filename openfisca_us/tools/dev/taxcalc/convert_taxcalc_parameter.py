@@ -4,7 +4,7 @@ import argparse
 
 TAXCALC_PARAM_FILE = (
     "/home/nikhil/pslmodels/Tax-Calculator/taxcalc/policy_current_law.json"
-    )
+)
 
 MARS_map = {
     "single": "SINGLE",
@@ -12,7 +12,7 @@ MARS_map = {
     "mseparate": "SEPARATE",
     "headhh": "HEAD_OF_HOUSEHOLD",
     "widow": "WIDOW",
-    }
+}
 
 
 def year_to_date(year: int) -> str:
@@ -34,7 +34,7 @@ def convert_param(param: dict) -> dict:
                 result[mars]["values"][date] = val
     result["metadata"] = dict(
         unit=USD,
-        )
+    )
     if result["values"] == {}:
         del result["values"]
     return yaml.dump(result, sort_keys=False).replace("'", "")
@@ -43,15 +43,15 @@ def convert_param(param: dict) -> dict:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Utility to convert tax-calculator parameters to OpenFisca parameters."
-        )
+    )
     parser.add_argument(
         "--tc-params",
         default=TAXCALC_PARAM_FILE,
         help="Path to the tax-calculator policy_current_law.json file.",
-        )
+    )
     parser.add_argument(
         "parameter", help="The name of the parameter to convert"
-        )
+    )
     args = parser.parse_args()
 
     with open(args.tc_params, "r") as f:

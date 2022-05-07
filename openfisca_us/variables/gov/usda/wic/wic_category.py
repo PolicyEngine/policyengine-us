@@ -33,10 +33,10 @@ class wic_category(Variable):
                 (
                     mother & breastfeeding & (min_age_family < 1),
                     WICCategory.BREASTFEEDING,
-                    ),
+                ),
                 (mother & (min_age_family < 0.5), WICCategory.POSTPARTUM),
                 (age < 1, WICCategory.INFANT),
                 (age < 5, WICCategory.CHILD),
                 (True, WICCategory.NONE),
-                )
             )
+        )

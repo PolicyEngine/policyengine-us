@@ -12,5 +12,5 @@ class adjusted_gross_income(Variable):
         gross_income = add(tax_unit, period, ["irs_gross_income"])
         above_the_line_deductions = tax_unit(
             "above_the_line_deductions", period
-            )
+        )
         return max_(gross_income - above_the_line_deductions, 0)

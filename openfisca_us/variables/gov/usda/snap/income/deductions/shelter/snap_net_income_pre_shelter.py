@@ -15,6 +15,6 @@ class snap_net_income_pre_shelter(Variable):
         DEDUCTIONS = [
             "snap_standard_deduction",
             "snap_earned_income_deduction",
-            ]
+        ]
         deductions = add(spm_unit, period, DEDUCTIONS)
         return max_(income - deductions, 0)

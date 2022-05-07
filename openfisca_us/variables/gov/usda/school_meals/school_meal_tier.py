@@ -21,12 +21,12 @@ class school_meal_tier(Variable):
         # Categorical eligibility provides free school meals.
         categorical_eligibility = spm_unit(
             "meets_school_meal_categorical_eligibility", period
-            )
+        )
         return select(
             [
                 (fpg_ratio <= p_income_limit.FREE) | categorical_eligibility,
                 fpg_ratio <= p_income_limit.REDUCED,
                 True,
-                ],
+            ],
             [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.PAID],
-            )
+        )

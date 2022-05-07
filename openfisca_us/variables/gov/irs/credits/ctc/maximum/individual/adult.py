@@ -8,13 +8,13 @@ class ctc_adult_individual_maximum(Variable):
     unit = USD
     documentation = (
         "The CTC entitlement in respect of this person as an adult dependent."
-        )
+    )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
-        )
+    )
 
     def formula_2018(person, period, parameters):
         ctc = parameters(period).irs.credits.ctc

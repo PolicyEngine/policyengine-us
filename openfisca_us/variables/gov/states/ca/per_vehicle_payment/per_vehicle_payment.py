@@ -8,7 +8,7 @@ class per_vehicle_payment(Variable):
     unit = USD
     documentation = (
         "Payment to vehicle owners in respect of each owned vehicle."
-        )
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):

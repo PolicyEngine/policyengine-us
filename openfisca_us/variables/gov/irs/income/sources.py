@@ -97,7 +97,7 @@ class filer_e00400(Variable):
     entity = TaxUnit
     label = (
         "Tax-exempt interest income for the tax unit (excluding dependents)"
-        )
+    )
     definition_period = YEAR
     unit = USD
 
@@ -132,7 +132,7 @@ class filer_e00600(Variable):
 
 tax_unit_ordinary_dividends = variable_alias(
     "tax_unit_ordinary_dividends", e00600
-    )
+)
 
 
 class e00650(Variable):
@@ -209,7 +209,7 @@ class filer_e00900(Variable):
     definition_period = YEAR
     documentation = (
         "Sch C business net profit/loss for filing unit (excluding dependents)"
-        )
+    )
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -367,7 +367,7 @@ class filer_e02300(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum(
             "unemployment_compensation", tax_unit, period
-            )
+        )
 
 
 class e02400(Variable):
@@ -408,7 +408,7 @@ class filer_e03150(Variable):
     entity = TaxUnit
     label = (
         "Deductible IRA contributions for the tax unit (excluding dependents)"
-        )
+    )
     definition_period = YEAR
     unit = USD
 
@@ -739,7 +739,7 @@ class g20500(Variable):
     definition_period = YEAR
     documentation = (
         "Itemizable gross (before 10% AGI disregard) casualty or theft loss"
-        )
+    )
     unit = USD
 
 
@@ -840,7 +840,7 @@ class e32800(Variable):
     unit = USD
     documentation = (
         "Child/dependent-care expenses for qualifying persons from Form 2441"
-        )
+    )
 
     def formula(person, period, parameters):
         is_tax_unit_head = person("is_tax_unit_head", period)
@@ -853,7 +853,7 @@ class filer_e32800(Variable):
     entity = TaxUnit
     label = (
         "Child/dependent-care expenses for the tax unit (excluding dependents)"
-        )
+    )
     definition_period = YEAR
     unit = USD
 
@@ -863,7 +863,7 @@ class filer_e32800(Variable):
 
 tax_unit_childcare_expenses = variable_alias(
     "tax_unit_childcare_expenses", filer_e32800
-    )
+)
 
 
 class e58990(Variable):
@@ -879,7 +879,7 @@ class filer_e58990(Variable):
     entity = TaxUnit
     label = (
         "Investment income (Form 3952) for the tax unit (excluding dependents)"
-        )
+    )
     definition_period = YEAR
     unit = USD
 
@@ -913,7 +913,7 @@ class e87530(Variable):
     label = "Qualified tuition expenses"
     documentation = (
         "Adjusted qualified lifetime learning expenses for all students"
-        )
+    )
     unit = USD
 
 
@@ -950,7 +950,7 @@ class cdcc_qualified_dependent(Variable):
         dependent_or_spouse = is_dependent | is_spouse
         return meets_age_criteria | (
             dependent_or_spouse & incapable_of_self_care
-            )
+        )
 
 
 class f2441(Variable):
@@ -962,7 +962,7 @@ class f2441(Variable):
     def formula(tax_unit, period, parameters):
         gross_num_eligible = tax_unit.sum(
             tax_unit.members("cdcc_qualified_dependent", period)
-            )
+        )
         cdcc = parameters(period).irs.credits.cdcc
         return min_(gross_num_eligible, cdcc.eligibility.max)
 
@@ -973,7 +973,7 @@ class f6251(Variable):
     definition_period = YEAR
     documentation = (
         "True if Form 6251 (AMT) attached to return; otherwise false"
-        )
+    )
 
 
 class a_lineno(Variable):
@@ -1004,7 +1004,7 @@ class h_seq(Variable):
     definition_period = YEAR
     documentation = (
         "CPS household sequence number (not used in tax-calculation logic)"
-        )
+    )
 
 
 class data_source(Variable):
@@ -1020,7 +1020,7 @@ class k1bx14(Variable):
     definition_period = YEAR
     documentation = (
         "Partner self-employment earnings/loss (included in e26270 total)"
-        )
+    )
     unit = USD
 
 
@@ -1098,7 +1098,7 @@ class filer_p22250(Variable):
     entity = TaxUnit
     label = (
         "Net short-term capital gains for the tax unit (excluding dependents)"
-        )
+    )
     definition_period = YEAR
     unit = USD
 
@@ -1119,7 +1119,7 @@ class filer_p23250(Variable):
     entity = TaxUnit
     label = (
         "Net long-term capital gains for the tax unit (excluding dependents)"
-        )
+    )
     definition_period = YEAR
     unit = USD
 
@@ -1180,13 +1180,13 @@ class hasqdivltcg(Variable):
             "filer_p23250",
             "filer_e01100",
             "filer_e00650",
-            ]
+        ]
         return np.any(
             [
                 tax_unit(income_source, period) > 0
                 for income_source in INCOME_SOURCES
-                ]
-            )
+            ]
+        )
 
 
 class c23650(Variable):

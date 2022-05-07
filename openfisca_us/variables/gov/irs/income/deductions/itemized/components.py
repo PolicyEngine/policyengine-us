@@ -15,17 +15,17 @@ class c17000(Variable):
         has_aged = (tax_unit("age_head", period) >= 65) | (
             tax_unit("tax_unit_is_joint", period)
             & (tax_unit("age_spouse", period) >= 65)
-            )
+        )
         medical_floor_ratio = (
             medical.floor.base + has_aged * medical.floor.aged_addition
-            )
+        )
         medical_floor = medical_floor_ratio * max_(
             tax_unit("adjusted_gross_income", period), 0
-            )
+        )
         return max_(
             0,
             tax_unit("filer_e17500", period) - medical_floor,
-            )
+        )
 
 
 class c18300(Variable):
@@ -54,7 +54,7 @@ class c19200(Variable):
     unit = USD
     documentation = (
         "Sch A: Interest deducted (component of pre-limitation c21060 total)"
-        )
+    )
 
     def formula(tax_unit, period, parameters):
         return tax_unit("filer_e19200", period)
@@ -75,11 +75,11 @@ class c19700(Variable):
         lim30 = min_(
             charity.ceiling.non_cash * posagi,
             tax_unit("filer_e20100", period),
-            )
+        )
         c19700 = min_(
             charity.ceiling.all * posagi,
             lim30 + tax_unit("filer_e19800", period),
-            )
+        )
         return max_(c19700, 0)
 
 

@@ -10,7 +10,7 @@ class meets_snap_gross_income_test(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
-        )
+    )
 
     def formula(spm_unit, period, parameters):
         limit = parameters(period).usda.snap.income.limit.gross

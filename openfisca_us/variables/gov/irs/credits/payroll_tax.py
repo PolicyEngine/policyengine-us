@@ -12,7 +12,7 @@ class rptc(Variable):
 
 refundable_payroll_tax_credit = variable_alias(
     "refundable_payroll_tax_credit", rptc
-    )
+)
 
 
 class rptc_p(Variable):

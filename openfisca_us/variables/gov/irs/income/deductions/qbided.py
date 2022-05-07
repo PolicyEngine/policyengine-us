@@ -17,7 +17,7 @@ class qbided(Variable):
             "filer_e26270",
             "filer_e02100",
             "filer_e27200",
-            ]
+        ]
         qbinc = max_(0, add(tax_unit, period, QBINC_ELEMENTS))
         qbid = parameters(period).irs.deductions.qualified_business_interest
         lower_threshold = qbid.threshold.lower[filing_status]
@@ -26,7 +26,7 @@ class qbided(Variable):
         under_lower_threshold = pre_qbid_taxinc < lower_threshold
         between_thresholds = ~under_lower_threshold & (
             pre_qbid_taxinc < upper_threshold
-            )
+        )
         above_upper_threshold = ~under_lower_threshold & ~between_thresholds
         income_is_qualified = tax_unit("pt_sstb_income", period)
 
@@ -37,23 +37,23 @@ class qbided(Variable):
         alt_cap = (
             w2_wages * qbid.cap.w2_wages.alt_rate
             + business_property * qbid.cap.business_property.rate
-            )
+        )
         fraction_of_gap_passed = (
             pre_qbid_taxinc - lower_threshold
-            ) / qbid.threshold.gap[filing_status]
+        ) / qbid.threshold.gap[filing_status]
         fraction_of_gap_unused = (
             upper_threshold - pre_qbid_taxinc
-            ) / qbid.threshold.gap[filing_status]
+        ) / qbid.threshold.gap[filing_status]
 
         # Adjustments for qualified income under the upper threshold
         qbi_between_threshold_multiplier = where(
             income_is_qualified & between_thresholds,
             fraction_of_gap_unused,
             1.0,
-            )
+        )
         max_qbid = (
             qbinc * qbid.pass_through_rate * qbi_between_threshold_multiplier
-            )
+        )
         full_cap = max_(wage_cap, alt_cap) * qbi_between_threshold_multiplier
 
         # Adjustment for QBID where income is between the main thresholds
@@ -64,13 +64,13 @@ class qbided(Variable):
                 under_lower_threshold,
                 between_thresholds,
                 above_upper_threshold,
-                ),
+            ),
             (
                 max_qbid,
                 max_qbid - adjustment,
                 where(income_is_qualified, 0, min_(max_qbid, full_cap)),
-                ),
-            )
+            ),
+        )
 
         # Apply taxable income cap
         net_cg = add(tax_unit, period, ["filer_e00650", "c01000"])

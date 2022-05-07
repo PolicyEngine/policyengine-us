@@ -22,19 +22,19 @@ class c62100(Variable):
                 min_(
                     tax_unit("c17000", period),
                     0.025 * adjusted_gross_income,
-                    ),
-                )
+                ),
+            )
             + tax_unit("c18300", period)
             + tax_unit("c20800", period)
             - tax_unit("c21040", period)
-            )
+        )
         c62100 = where(
             tax_unit("standard", period) == 0,
             c62100_if_no_standard,
             adjusted_gross_income - e00700,
-            ) + tax_unit(
+        ) + tax_unit(
             "filer_cmbtp", period
-            )  # add income not in AGI but considered income for AMT
+        )  # add income not in AGI but considered income for AMT
         amt = parameters(period).irs.income.amt
         filing_status = tax_unit("filing_status", period)
         separate_addition = max_(
@@ -43,8 +43,8 @@ class c62100(Variable):
                 amt.exemption.amount[filing_status],
                 amt.exemption.phaseout.rate
                 * (c62100 - amt.exemption.separate_limit),
-                ),
-            ) * (filing_status == filing_status.possible_values.SEPARATE)
+            ),
+        ) * (filing_status == filing_status.possible_values.SEPARATE)
         return c62100 + separate_addition
 
 
@@ -71,8 +71,8 @@ class c09600(Variable):
                 amt.exemption.amount[filing_status]
                 - phaseout.rate
                 * max_(0, c62100 - phaseout.start[filing_status])
-                ),
-            )
+            ),
+        )
         age_head = tax_unit("age_head", period)
         child = amt.exemption.child
         young_head = (age_head != 0) & (age_head < child.max_age)
@@ -81,15 +81,15 @@ class c09600(Variable):
             young_head & no_or_young_spouse,
             min_(line29, tax_unit("filer_earned", period) + child.amount),
             line29,
-            )
+        )
         line30 = max_(0, c62100 - line29)
         brackets = amt.brackets
         amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
             "sep", period
-            )
+        )
         line3163 = brackets.rates["1"] * line30 + brackets.rates["2"] * max_(
             0, amount_over_threshold
-            )
+        )
         dwks10, dwks13, dwks14, dwks19, e24515 = [
             tax_unit(variable, period)
             for variable in [
@@ -98,8 +98,8 @@ class c09600(Variable):
                 "dwks14",
                 "dwks19",
                 "filer_e24515",
-                ]
             ]
+        ]
         form_6251_part_iii_required = np.any(
             [
                 variable > 0
@@ -109,9 +109,9 @@ class c09600(Variable):
                     dwks14,
                     dwks19,
                     e24515,
-                    ]
                 ]
-            )
+            ]
+        )
 
         # Complete Form 6251, Part III
 
@@ -122,11 +122,11 @@ class c09600(Variable):
         line41 = max_(0, line30 - line40)
         amount_over_threshold = max_(
             0, line41 - amt.brackets.thresholds["1"] / tax_unit("sep", period)
-            )
+        )
         line42 = (
             amt.brackets.rates["1"] * line41
             + amt.brackets.rates["2"] * amount_over_threshold
-            )
+        )
         line44 = dwks14
         cg = amt.capital_gains.brackets
         line45 = max_(0, cg.thresholds["1"][filing_status] - line44)
@@ -147,7 +147,7 @@ class c09600(Variable):
             line38 == 0,
             0,
             0.25 * max_(0, (line30 - line41 - line56 - line57 - linex2)),
-            )
+        )
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
@@ -156,7 +156,7 @@ class c09600(Variable):
         # Form 6251, Part II bottom
         line32 = where(
             tax_unit("f6251", period), tax_unit("filer_e62900", period), e07300
-            )
+        )
         line33 = line31 - line32
         return max_(
             0,
@@ -167,9 +167,9 @@ class c09600(Variable):
                     tax_unit("taxbc", period)
                     - e07300
                     - tax_unit("c05700", period)
-                    ),
                 ),
-            )
+            ),
+        )
 
 
 alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)

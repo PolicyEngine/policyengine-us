@@ -42,7 +42,7 @@ class dwks10(Variable):
     label = "DWKS10"
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -52,13 +52,13 @@ class dwks10(Variable):
             min_(
                 tax_unit("filer_p23250", period),
                 tax_unit("c23650", period),
-                ),
-            ) + tax_unit("filer_e01100", period)
+            ),
+        ) + tax_unit("filer_e01100", period)
         return where(
             tax_unit("hasqdivltcg", period),
             dwks10_if_gains,
             dwks10_if_no_gains,
-            )
+        )
 
 
 class dwks13(Variable):
@@ -69,14 +69,14 @@ class dwks13(Variable):
     unit = USD
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
 
     def formula(tax_unit, period, parameters):
         dwks1 = tax_unit("c04800", period)
         e24515 = tax_unit("filer_e24515", period)
         dwks11 = e24515 + tax_unit(
             "filer_e24518", period
-            )  # Sch D lines 18 and 19, respectively
+        )  # Sch D lines 18 and 19, respectively
         dwks9 = tax_unit("dwks9", period)
         dwks12 = min_(dwks9, dwks11)
         dwks10 = tax_unit("dwks10", period)
@@ -91,7 +91,7 @@ class dwks14(Variable):
     unit = USD
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
 
     def formula(tax_unit, period, parameters):
         dwks1 = tax_unit("c04800", period)
@@ -107,7 +107,7 @@ class dwks19(Variable):
     unit = USD
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
 
     def formula(tax_unit, period, parameters):
         dwks14 = tax_unit("dwks14", period)

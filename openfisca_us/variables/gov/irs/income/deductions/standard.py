@@ -17,7 +17,7 @@ class basic_standard_deduction(Variable):
             std.dependent.additional_earned_income
             + tax_unit("filer_earned", period),
             std.dependent.amount,
-            )
+        )
         basic_if_dsi = min_(std.amount[filing_status], c15100_if_dsi)
         basic_if_not_dsi = where(midr, 0, std.amount[filing_status])
         return where(tax_unit("dsi", period), basic_if_dsi, basic_if_not_dsi)
@@ -38,14 +38,14 @@ class aged_blind_extra_standard_deduction(Variable):
         blind_spouse = tax_unit("blind_spouse", period) * 1
         aged_head = (
             tax_unit("age_head", period) >= std.aged_or_blind.age_threshold
-            ) * 1
+        ) * 1
         aged_spouse = (
             (filing_status == filing_status_type.JOINT)
             & (
                 tax_unit("age_spouse", period)
                 >= std.aged_or_blind.age_threshold
-                )
-            ) * 1
+            )
+        ) * 1
         num_extra_stded = blind_head + blind_spouse + aged_head + aged_spouse
         return num_extra_stded * std.aged_or_blind.amount[filing_status]
 
@@ -72,7 +72,7 @@ class standard(Variable):
         standard = basic_stded + extra_stded
         standard = where(
             (filing_status == filing_status_type.SEPARATE) & midr, 0, standard
-            )
+        )
         return standard + charity.allow_nonitemizers * min_(
             tax_unit("c19700", period), charity.nonitemizers_max
-            )
+        )

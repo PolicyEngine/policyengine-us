@@ -15,7 +15,7 @@ class eitc_eligible(Variable):
         eitc = parameters(period).irs.credits.eitc
         meets_age_requirements = (age >= eitc.eligibility.age.min) & (
             age <= eitc.eligibility.age.max
-            )
+        )
         inv_income_sources = eitc.eligibility.counted_inv_income
         investment_income = (
             aggr(tax_unit, period, inv_income_sources)
@@ -24,10 +24,10 @@ class eitc_eligible(Variable):
                 0,
                 tax_unit("tax_unit_rental_income", period)
                 - tax_unit("tax_unit_partnership_s_corp_income", period),
-                )
             )
+        )
         inv_income_disqualified = (
             investment_income > eitc.phaseout.max_investment_income
-            )
+        )
         eligible = has_child | tax_unit.any(meets_age_requirements)
         return eligible & ~inv_income_disqualified

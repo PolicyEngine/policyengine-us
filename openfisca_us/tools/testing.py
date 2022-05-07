@@ -17,7 +17,7 @@ from openfisca_core.tools import (
     assert_enum_equals,
     assert_datetime_equals,
     eval_expression,
-    )
+)
 from openfisca_core.simulation_builder import SimulationBuilder
 from openfisca_core.errors import SituationParsingError, VariableNotFound
 from openfisca_core.scripts import build_tax_benefit_system
@@ -39,7 +39,7 @@ def import_yaml():
             "test suite slower to run. Once you have installed libyaml, run `pip "
             "uninstall pyyaml && pip install pyyaml --no-cache-dir` so that it is used in your "
             "Python environment."
-            )
+        )
         from yaml import SafeLoader as Loader
     return yaml, Loader
 
@@ -57,7 +57,7 @@ TEST_KEYWORDS = {
     "period",
     "reforms",
     "relative_error_margin",
-    }
+}
 
 yaml, Loader = import_yaml()
 
@@ -104,7 +104,7 @@ def run_tests(tax_benefit_system, paths, options=None):
     return pytest.main(
         [*argv, *paths] if True else paths,
         plugins=[OpenFiscaPlugin(tax_benefit_system, options)],
-        )
+    )
 
 
 class YamlFile(pytest.File):
@@ -121,8 +121,8 @@ class YamlFile(pytest.File):
                 [
                     traceback.format_exc(),
                     f"'{self.fspath}' is not a valid YAML file. Check the stack trace above for more details.",
-                    ]
-                )
+                ]
+            )
             raise ValueError(message)
 
         if not isinstance(tests, list):
@@ -136,7 +136,7 @@ class YamlFile(pytest.File):
                     baseline_tax_benefit_system=self.tax_benefit_system,
                     test=test,
                     options=self.options,
-                    )
+                )
 
     def should_ignore(self, test):
         name_filter = self.options.get("name_filter")
@@ -145,7 +145,7 @@ class YamlFile(pytest.File):
             and name_filter not in os.path.splitext(self.fspath.basename)[0]
             and name_filter not in test.get("name", "")
             and name_filter not in test.get("keywords", [])
-            )
+        )
 
 
 class YamlItem(pytest.Item):
@@ -154,8 +154,8 @@ class YamlItem(pytest.Item):
     """
 
     def __init__(
-            self, name, parent, baseline_tax_benefit_system, test, options
-            ):
+        self, name, parent, baseline_tax_benefit_system, test, options
+    ):
         super(YamlItem, self).__init__(name, parent)
         self.baseline_tax_benefit_system = baseline_tax_benefit_system
         self.options = options
@@ -169,16 +169,16 @@ class YamlItem(pytest.Item):
             raise ValueError(
                 "Missing key 'output' in test '{}' in file '{}'".format(
                     self.name, self.fspath
-                    )
                 )
+            )
 
         if not TEST_KEYWORDS.issuperset(self.test.keys()):
             unexpected_keys = set(self.test.keys()).difference(TEST_KEYWORDS)
             raise ValueError(
                 "Unexpected keys {} in test '{}' in file '{}'".format(
                     unexpected_keys, self.name, self.fspath
-                    )
                 )
+            )
 
         builder = SimulationBuilder()
         unsafe_input = self.test.get("input", {})
@@ -195,7 +195,7 @@ class YamlItem(pytest.Item):
             self.baseline_tax_benefit_system,
             self.test.get("reforms", []),
             self.test.get("extensions", []),
-            )
+        )
         for reform in inline_reforms:
             self.tax_benefit_system = reform(self.tax_benefit_system)
         verbose = self.options.get("verbose")
@@ -206,7 +206,7 @@ class YamlItem(pytest.Item):
             builder.set_default_period(period)
             self.simulation = builder.build_from_dict(
                 self.tax_benefit_system, input
-                )
+            )
         except (VariableNotFound, SituationParsingError):
             raise
         except Exception as e:
@@ -215,16 +215,16 @@ class YamlItem(pytest.Item):
                     str(e),
                     "",
                     f"Unexpected error raised while parsing '{self.fspath}'",
-                    ]
-                )
+                ]
+            )
             raise ValueError(error_message).with_traceback(
                 sys.exc_info()[2]
-                ) from e  # Keep the stack trace from the root error
+            ) from e  # Keep the stack trace from the root error
 
         try:
             self.simulation.trace = (
                 verbose or performance_graph or performance_tables
-                )
+            )
             self.check_output()
         finally:
             tracer = self.simulation.tracer
@@ -252,18 +252,18 @@ class YamlItem(pytest.Item):
             return
         for key, expected_value in output.items():
             if self.tax_benefit_system.get_variable(
-                    key
-                    ):  # If key is a variable
+                key
+            ):  # If key is a variable
                 self.check_variable(
                     key, expected_value, self.test.get("period")
-                    )
+                )
             elif self.simulation.populations.get(
-                    key
-                    ):  # If key is an entity singular
+                key
+            ):  # If key is an entity singular
                 for variable_name, value in expected_value.items():
                     self.check_variable(
                         variable_name, value, self.test.get("period")
-                        )
+                    )
             else:
                 population = self.simulation.get_population(plural=key)
                 if population is not None:  # If key is an entity plural
@@ -275,26 +275,26 @@ class YamlItem(pytest.Item):
                                 value,
                                 self.test.get("period"),
                                 entity_index,
-                                )
+                            )
                 else:
                     raise VariableNotFound(key, self.tax_benefit_system)
 
     def check_variable(
-            self, variable_name, expected_value, period, entity_index=None
-            ):
+        self, variable_name, expected_value, period, entity_index=None
+    ):
         if self.should_ignore_variable(variable_name):
             return
         if isinstance(expected_value, dict):
             for (
-                    requested_period,
-                    expected_value_at_period,
-                    ) in expected_value.items():
+                requested_period,
+                expected_value_at_period,
+            ) in expected_value.items():
                 self.check_variable(
                     variable_name,
                     expected_value_at_period,
                     requested_period,
                     entity_index,
-                    )
+                )
             return
 
         actual_value = self.simulation.calculate(variable_name, period)
@@ -307,25 +307,25 @@ class YamlItem(pytest.Item):
             absolute_error_margin=self.test.get("absolute_error_margin"),
             message=f"{variable_name}@{period}: ",
             relative_error_margin=self.test.get("relative_error_margin"),
-            )
+        )
 
     def should_ignore_variable(self, variable_name):
         only_variables = self.options.get("only_variables")
         ignore_variables = self.options.get("ignore_variables")
         variable_ignored = (
             ignore_variables is not None and variable_name in ignore_variables
-            )
+        )
         variable_not_tested = (
             only_variables is not None and variable_name not in only_variables
-            )
+        )
 
         return variable_ignored or variable_not_tested
 
     def repr_failure(self, excinfo):
         if not isinstance(
-                excinfo.value,
-                (AssertionError, VariableNotFound, SituationParsingError),
-                ):
+            excinfo.value,
+            (AssertionError, VariableNotFound, SituationParsingError),
+        ):
             return super(YamlItem, self).repr_failure(excinfo)
 
         message = excinfo.value.args[0]
@@ -337,8 +337,8 @@ class YamlItem(pytest.Item):
                 f"{str(self.fspath)}:",
                 f"  Test '{str(self.name)}':",
                 textwrap.indent(message, "    "),
-                ]
-            )
+            ]
+        )
 
 
 class OpenFiscaPlugin(object):
@@ -358,7 +358,7 @@ class OpenFiscaPlugin(object):
                 fspath=path,
                 tax_benefit_system=self.tax_benefit_system,
                 options=self.options,
-                )
+            )
 
 
 def _get_tax_benefit_system(baseline, reforms, extensions):
@@ -377,7 +377,7 @@ def _get_tax_benefit_system(baseline, reforms, extensions):
     for reform_path in reforms:
         current_tax_benefit_system = current_tax_benefit_system.apply_reform(
             reform_path
-            )
+        )
 
     for extension in extensions:
         current_tax_benefit_system = current_tax_benefit_system.clone()
@@ -389,12 +389,12 @@ def _get_tax_benefit_system(baseline, reforms, extensions):
 
 
 def assert_near(
-        value,
-        target_value,
-        absolute_error_margin=None,
-        message="",
-        relative_error_margin=None,
-        ):
+    value,
+    target_value,
+    absolute_error_margin=None,
+    message="",
+    relative_error_margin=None,
+):
     """
 
     :param value: Value returned by the test
@@ -428,23 +428,23 @@ def assert_near(
         # Data type not translatable to floating point, assert complete equality
         assert np.array(value) == np.array(
             target_value
-            ), "{}{} differs from {}".format(message, value, target_value)
+        ), "{}{} differs from {}".format(message, value, target_value)
         return
 
     diff = abs(target_value - value)
     if absolute_error_margin is not None:
         assert (
             diff <= absolute_error_margin
-            ).all(), "{}{} differs from {} with an absolute margin {} > {}".format(
+        ).all(), "{}{} differs from {} with an absolute margin {} > {}".format(
             message, value, target_value, diff, absolute_error_margin
-            )
+        )
     if relative_error_margin is not None:
         assert (
             diff <= abs(relative_error_margin * target_value)
-            ).all(), "{}{} differs from {} with a relative margin {} > {}".format(
+        ).all(), "{}{} differs from {} with a relative margin {} > {}".format(
             message,
             value,
             target_value,
             diff,
             abs(relative_error_margin * target_value),
-            )
+        )

@@ -10,4 +10,4 @@ class self_employment_tax(Variable):
 
     formula = sum_of_variables(
         ["self_employment_social_security_tax", "self_employment_medicare_tax"]
-        )
+    )

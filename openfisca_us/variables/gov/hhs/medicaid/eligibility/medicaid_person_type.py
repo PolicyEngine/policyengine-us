@@ -27,14 +27,16 @@ class medicaid_person_type(Variable):
         # Get the existence of dependents, as defined by people 18 or younger.
         has_dependents = person.spm_unit.any(
             person.spm_unit.members("age", period) < 19
-            )
+        )
         under_21_qualifies = ma.under_21_qualifies_as_child
         state = person.household("state_code_str", period)
         state_has_under_21_child_category = under_21_qualifies[state] > 0
         is_pregnant = person("is_pregnant", period)
         days_postpartum = person("count_days_postpartum", period)
         max_postpartum_days = ma.postpartum_coverage[state]
-        is_covered_as_pregnant = is_pregnant | (days_postpartum < max_postpartum_days)
+        is_covered_as_pregnant = is_pregnant | (
+            days_postpartum < max_postpartum_days
+        )
         return select(
             [
                 is_covered_as_pregnant,
@@ -44,7 +46,7 @@ class medicaid_person_type(Variable):
                 (age < 21) & state_has_under_21_child_category,
                 has_dependents,
                 True,
-                ],
+            ],
             [
                 MedicaidPersonType.PREGNANT,
                 MedicaidPersonType.CHILD_AGE_0,
@@ -53,5 +55,5 @@ class medicaid_person_type(Variable):
                 MedicaidPersonType.CHILD_AGE_19_20,
                 MedicaidPersonType.ADULT_WITH_DEPENDENT,
                 MedicaidPersonType.ADULT_WITHOUT_DEPENDENT,
-                ],
-            )
+            ],
+        )

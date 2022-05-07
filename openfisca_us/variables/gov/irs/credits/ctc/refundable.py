@@ -12,7 +12,7 @@ class ctc_refundable_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
-        )
+    )
 
     def formula(person, period, parameters):
         return person("ctc_individual_maximum", period)
@@ -45,8 +45,8 @@ class ctc_limiting_tax_liability(Variable):
                 tax_unit(credit, period)
                 for credit in non_refundable_credits
                 if credit != "non_refundable_ctc"
-                ]
-            )
+            ]
+        )
         return tax_unit("income_tax_before_credits", period) - total_credits
 
 
@@ -73,7 +73,7 @@ class refundable_ctc(Variable):
         maximum_refundable_ctc = min_(
             aggr(tax_unit, period, ["ctc_refundable_individual_maximum"]),
             total_ctc,
-            )
+        )
 
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
         # would increase if [tax liability] increased by tax_increase", where tax_increase is the greater of:
@@ -84,10 +84,10 @@ class refundable_ctc(Variable):
         earnings = aggr(tax_unit, period, ["earned_income"])
         earnings_over_threshold = max_(
             0, earnings - ctc.refundable.phase_in.threshold
-            )
+        )
         relevant_earnings = (
             earnings_over_threshold * ctc.refundable.phase_in.rate
-            )
+        )
 
         # Compute "Social Security taxes" as defined in the US Code for the ACTC.
         # This includes OASDI and Medicare payroll taxes, as well as half
@@ -96,17 +96,17 @@ class refundable_ctc(Variable):
             "employee_social_security_tax",
             "employee_medicare_tax",
             "e09800",  # Unreported payroll tax.
-            ]
+        ]
         PERSON_VARIABLES_SUBTRACT = ["e11200"]  # Excess payroll tax withheld.
         TAX_UNIT_VARIABLES = [
             "c03260",  # Deductible portion of the self-employed tax.
             "additional_medicare_tax",
-            ]
+        ]
         social_security_tax = (
             aggr(tax_unit, period, PERSON_VARIABLES)
             + add(tax_unit, period, TAX_UNIT_VARIABLES)
             - aggr(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
-            )
+        )
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
 
@@ -116,10 +116,10 @@ class refundable_ctc(Variable):
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
         ctc_capped_by_increased_tax = min_(
             total_ctc, limiting_tax + tax_increase
-            )
+        )
         amount_ctc_would_increase = (
             ctc_capped_by_increased_tax - ctc_capped_by_tax
-            )
+        )
 
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
@@ -136,7 +136,7 @@ class non_refundable_ctc(Variable):
     unit = USD
     documentation = (
         "The portion of the Child Tax Credit that is not refundable."
-        )
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

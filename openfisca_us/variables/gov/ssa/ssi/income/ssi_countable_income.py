@@ -27,4 +27,4 @@ class ssi_countable_income(Variable):
         countable_earned = earned_after_flat_exclusion * countable_earned_share
         return (
             countable_unearned + countable_earned + deemed
-            ) * MONTHS_IN_YEAR
+        ) * MONTHS_IN_YEAR

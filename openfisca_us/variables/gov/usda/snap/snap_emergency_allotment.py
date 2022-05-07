@@ -23,5 +23,5 @@ class snap_emergency_allotment(Variable):
         ea_minimum = ea.minimum * MONTHS_IN_YEAR
         ea_amount_if_in_effect = max_(
             ea_minimum, max_allotment - normal_allotment
-            )
+        )
         return eligible * ea_in_effect * ea_amount_if_in_effect

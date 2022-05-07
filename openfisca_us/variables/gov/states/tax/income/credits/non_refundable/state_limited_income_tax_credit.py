@@ -19,7 +19,7 @@ class state_limited_income_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(
             period
-            ).states.tax.income.credits.non_refundable.limited_income
+        ).states.tax.income.credits.non_refundable.limited_income
         filer_limit = p.income_limit.filer[state][filing_status]
         dep_limit = p.income_limit.dependent[state][filing_status]
         dependents = tax_unit("tax_unit_dependents", period)

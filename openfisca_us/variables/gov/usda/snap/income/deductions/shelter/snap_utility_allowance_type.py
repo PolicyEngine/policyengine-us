@@ -16,13 +16,13 @@ class snap_utility_allowance_type(Variable):
     default_value = SNAPUttilityAllowanceType.NONE
     documentation = (
         "The type of utility allowance that is eligible for the SPM unit"
-        )
+    )
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
         distinct_utility_bills = spm_unit(
             "count_distinct_utility_expenses", period
-            )
+        )
         lua = parameters(period).usda.snap.income.deductions.utility.limited
         region = spm_unit.household("snap_utility_region_str", period)
         lua_is_defined = lua.active[region].astype(bool)
@@ -32,11 +32,11 @@ class snap_utility_allowance_type(Variable):
                 lua_is_defined & (distinct_utility_bills >= 2),
                 distinct_utility_bills > 0,
                 True,
-                ],
+            ],
             [
                 SNAPUttilityAllowanceType.SUA,
                 SNAPUttilityAllowanceType.LUA,
                 SNAPUttilityAllowanceType.IUA,
                 SNAPUttilityAllowanceType.NONE,
-                ],
-            )
+            ],
+        )
