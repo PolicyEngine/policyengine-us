@@ -11,7 +11,7 @@ DEFAULT_SITUATION = {
     "families": {"family": {"members": ["person"]}},
     "spm_units": {"spm_units": {"members": ["person"]}},
     "households": {"household": {"members": ["person"]}},
-}
+    }
 
 EXEMPTIONS = (
     "tanf_max_amount",
@@ -22,7 +22,7 @@ EXEMPTIONS = (
     "is_tanf_initial_eligible",
     "is_tanf_continuous_eligible",
     "is_tanf_eligible",
-)
+    )
 
 
 @pytest.mark.parametrize("variable", system.variables)

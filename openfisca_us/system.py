@@ -6,12 +6,12 @@ from openfisca_tools import (
     homogenize_parameter_structures,
     uprate_parameters,
     propagate_parameter_metadata,
-)
+    )
 import os
 
 from openfisca_us.tools.dev.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
-)
+    )
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,7 +28,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # We add to our tax and benefit system all the variables
         self.add_variables_from_directory(
             os.path.join(COUNTRY_DIR, "variables")
-        )
+            )
 
         # We add to our tax and benefit system all the legislation parameters defined in the  parameters files
         param_path = os.path.join(COUNTRY_DIR, "parameters")
@@ -36,7 +36,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.parameters = homogenize_parameter_structures(
             self.parameters, self.variables
-        )
+            )
 
         self.parameters = propagate_parameter_metadata(self.parameters)
 

@@ -14,7 +14,7 @@ class education_tax_credits(Variable):
         ELEMENTS = [
             "non_refundable_american_opportunity_credit",
             "lifetime_learning_credit",
-        ]
+            ]
         return add(tax_unit, period, ELEMENTS)
 
 

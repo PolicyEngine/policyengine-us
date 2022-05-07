@@ -15,7 +15,7 @@ class pre_c04600(Variable):
             tax_unit("dsi", period),
             0,
             tax_unit("xtot", period) * exemption.amount,
-        )
+            )
 
 
 class exemption_phaseout_start(Variable):
@@ -28,7 +28,7 @@ class exemption_phaseout_start(Variable):
     def formula(tax_unit, period, parameters):
         return parameters(period).irs.income.exemption.phaseout.start[
             tax_unit("filing_status", period)
-        ]
+            ]
 
 
 class c04600(Variable):
@@ -43,7 +43,7 @@ class c04600(Variable):
         phaseout_start = tax_unit("exemption_phaseout_start", period)
         line_5 = max_(
             0, tax_unit("adjusted_gross_income", period) - phaseout_start
-        )
+            )
         line_6 = line_5 / (2500 / tax_unit("sep", period))
         line_7 = phaseout.rate * line_6
         return tax_unit("pre_c04600", period) * (1 - line_7)

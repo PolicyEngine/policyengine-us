@@ -17,8 +17,8 @@ variables = CountryTaxBenefitSystem().variables
 
 def extract_return(fname):
     for x in ast.walk(
-        ast.parse(open(Path(__file__).parent / "calcfunctions.py").read())
-    ):
+            ast.parse(open(Path(__file__).parent / "calcfunctions.py").read())
+            ):
         if not (isinstance(x, ast.FunctionDef)):
             continue
         if not (x.name == fname):
@@ -61,8 +61,8 @@ def safe_cast(x, t):
 
 
 def generate_input_values(
-    inputs: List[str], output_names: List[str], overrides: Dict[str, float]
-) -> Dict[str, float]:
+        inputs: List[str], output_names: List[str], overrides: Dict[str, float]
+        ) -> Dict[str, float]:
     """Fetches the parameter value if the input is a parameter,
     otherwise returns the value from a random CPS tax unit.
 
@@ -78,7 +78,7 @@ def generate_input_values(
         try:
             cps_tax_unit = cps[(cps[output_names] != 0).min(axis=1)].sample(
                 n=1
-            )
+                )
         except:
             cps_tax_unit = cps.sample(n=1)
     result = {}
@@ -96,8 +96,8 @@ def generate_input_values(
 
 
 def generate_unit_test(
-    fn_name: str, input_overrides: Dict[str, float] = None
-) -> Tuple[dict, Callable[[dict], Tuple[float]], Tuple[float]]:
+        fn_name: str, input_overrides: Dict[str, float] = None
+        ) -> Tuple[dict, Callable[[dict], Tuple[float]], Tuple[float]]:
     """Generates a unit test for a calcfunctions function.
 
     Args:
@@ -119,14 +119,14 @@ def generate_unit_test(
 
     kwargs = generate_input_values(
         get_inputs(fn), get_outputs(fn), overrides=input_overrides
-    )
+        )
 
     return kwargs, fn_, list(map(lambda x: round(float(x), 2), fn_(kwargs)))
 
 
 def attempt_generate_all_nonzero_unit_test(
-    fn_name: str,
-) -> Tuple[dict, Callable[[dict], Tuple[float]], Tuple[float]]:
+        fn_name: str,
+        ) -> Tuple[dict, Callable[[dict], Tuple[float]], Tuple[float]]:
     for _ in range(1_000):
         kwargs, fn_, result = generate_unit_test(fn_name)
         # This function often needs manually modifying depending on the function
@@ -140,10 +140,10 @@ def generate_yaml_test_dict(fn_name: str, name: str = None):
     input_dict = {
         rename_variable(x): safe_cast(
             translate_value(x, y), lambda x: round(float(x), 2)
-        )
+            )
         for x, y in kwargs.items()
         if x in cps and x not in outputs
-    }
+        }
     structured_input_dict = convert_tc_structure_to_openfisca(input_dict)
     test_dict = dict(
         name=f"Unit test for {fn_name}" if name is None else name,
@@ -151,7 +151,7 @@ def generate_yaml_test_dict(fn_name: str, name: str = None):
         absolute_error_margin=0.01,
         input=structured_input_dict,
         output=get_test_output(structured_input_dict, fn_name),
-    )
+        )
     return test_dict
 
 
@@ -163,31 +163,31 @@ def convert_tc_structure_to_openfisca(input_dict: dict) -> dict:
             new_input_dict["people"][name] = {
                 "age": 5,
                 "is_tax_unit_dependent": True,
-            }
+                }
             new_input_dict["tax_units"]["tax_unit"]["members"].append(name)
     if (
-        "n24" in input_dict
-        and input_dict["n24"] - (input_dict.get("nu06") or 0) > 0
-    ):
+            "n24" in input_dict
+            and input_dict["n24"] - (input_dict.get("nu06") or 0) > 0
+            ):
         for i in range(
-            int(input_dict.get("n24") - (input_dict.get("nu06") or 0))
-        ):
+                int(input_dict.get("n24") - (input_dict.get("nu06") or 0))
+                ):
             name = f"child_under_17_over_6_{i+1}"
             new_input_dict["people"][name] = {
                 "age": 16,
                 "is_tax_unit_dependent": True,
-            }
+                }
             new_input_dict["tax_units"]["tax_unit"]["members"].append(name)
     if "xtot" in input_dict and "num" in input_dict and "n24" in input_dict:
         num_adult_dependents = (
             input_dict["xtot"] - input_dict["num"] - input_dict["n24"]
-        )
+            )
         for i in range(int(num_adult_dependents)):
             name = f"adult_dependent_{i+1}"
             new_input_dict["people"][name] = {
                 "age": 18,
                 "is_tax_unit_dependent": True,
-            }
+                }
             new_input_dict["tax_units"]["tax_unit"]["members"].append(name)
     if "num" in input_dict:
         if input_dict["num"] > 0:
@@ -195,14 +195,14 @@ def convert_tc_structure_to_openfisca(input_dict: dict) -> dict:
             new_input_dict["people"]["primary"] = {
                 "age": 18,
                 "is_tax_unit_dependent": False,
-            }
+                }
             new_input_dict["tax_units"]["tax_unit"]["members"].append(name)
         if input_dict["num"] > 1:
             name = "spouse"
             new_input_dict["people"]["spouse"] = {
                 "age": 18,
                 "is_tax_unit_dependent": False,
-            }
+                }
             new_input_dict["tax_units"]["tax_unit"]["members"].append(name)
     for key in input_dict:
         if key[-2:] == "_s" and "spouse" in input_dict["people"]:
@@ -222,59 +222,59 @@ def convert_openfisca_structure_to_tc(input_dict: dict) -> dict:
     new_input_dict["nu06"] = len(
         list(
             filter(lambda name: input_dict["people"][name]["age"] < 6, members)
+            )
         )
-    )
     new_input_dict["n24"] = len(
         list(
             filter(
                 lambda name: input_dict["people"][name]["age"] < 17, members
+                )
             )
         )
-    )
     new_input_dict["n1820"] = len(
         list(
             filter(
                 lambda name: input_dict["people"][name]["age"] >= 18
                 and input_dict["people"][name]["age"] < 21,
                 members,
+                )
             )
         )
-    )
     new_input_dict["n21"] = len(
         list(
             filter(
                 lambda name: input_dict["people"][name]["age"] >= 21, members
+                )
             )
         )
-    )
     new_input_dict["XTOT"] = len(
         list(
             filter(
                 lambda name: input_dict["people"][name][
                     "is_tax_unit_dependent"
-                ],
+                    ],
                 members,
+                )
             )
         )
-    )
     new_input_dict["num"] = (
         2 if input_dict["tax_units"]["tax_unit"]["mars"] == "JOINT" else 1
-    )
+        )
     for person in input_dict["people"]:
         for variable in input_dict["people"][person]:
             if person == "primary":
                 new_input_dict[variable + "_p"] = input_dict["people"][person][
                     variable
-                ]
+                    ]
             if person == "spouse":
                 new_input_dict[variable + "_s"] = input_dict["people"][person][
                     variable
-                ]
+                    ]
         for variable in input_dict["tax_units"]["tax_unit"]:
             if variable != "members":
                 new_input_dict[variable] = input_dict["tax_units"]["tax_unit"][
                     variable
-                ]
+                    ]
     return new_input_dict
 
 
@@ -284,17 +284,17 @@ def generate_yaml_tests(fn_name: str, n: int = 10) -> str:
             generate_yaml_test_dict(
                 fn_name,
                 name=f"{fn_name} unit test {i + 1} (from generate_taxcalc_unit_tests.py)",
-            )
+                )
             for i in range(n)
-        ],
+            ],
         sort_keys=False,
-    )
+        )
 
 
 RENAMES = {
     "MARS": "mars",
     "XTOT": "xtot",
-}
+    }
 
 VALUE_RENAMES = {
     "MARS": {
@@ -303,14 +303,14 @@ VALUE_RENAMES = {
         3: "SEPARATE",
         4: "HEAD_OF_HOUSEHOLD",
         5: "WIDOW",
+        }
     }
-}
 
 INVERSE_RENAMES = {y: x for x, y in RENAMES.items()}
 
 INVERSE_VALUE_RENAMES = {
     x: {b: a for a, b in y.items()} for x, y in VALUE_RENAMES.items()
-}
+    }
 
 
 def rename_variable(x):
@@ -330,21 +330,21 @@ def inverse_translate_value(name, x):
         INVERSE_VALUE_RENAMES[name].get(x, x)
         if name in INVERSE_VALUE_RENAMES
         else x
-    )
+        )
 
 
 def get_test_output(test: dict, fn_name: str) -> dict:
     input_overrides = {
         inverse_rename_variable(x): inverse_translate_value(
             inverse_rename_variable(x), y
-        )
+            )
         for x, y in convert_openfisca_structure_to_tc(test).items()
-    }
+        }
     kwargs, fn_, _ = generate_unit_test(fn_name, input_overrides)
     result = {
         x: float(y)
         for x, y in zip(get_outputs(CALCFUNCTIONS[fn_name]), fn_(kwargs))
-    }
+        }
     return result
 
 
@@ -355,9 +355,9 @@ def debug_test_yaml(fn_name: str, file: str, i: int = 0):
     input_overrides = {
         inverse_rename_variable(x): inverse_translate_value(
             inverse_rename_variable(x), y
-        )
+            )
         for x, y in convert_openfisca_structure_to_tc(test["input"]).items()
-    }
+        }
     kwargs, fn_, _ = generate_unit_test(fn_name, input_overrides)
     fn_(kwargs)
 
@@ -374,18 +374,18 @@ if __name__ == "__main__":
     if not DEBUG_MODE:
         parser = argparse.ArgumentParser(
             description="Generate unit tests for calcfunctions."
-        )
+            )
         parser.add_argument(
             "function",
             type=str,
             help="The name of the function to generate unit tests for.",
-        )
+            )
         parser.add_argument(
             "--n",
             type=int,
             default=10,
             help="The number of unit tests to generate.",
-        )
+            )
         args = parser.parse_args()
         print(generate_yaml_tests(args.function, args.n))
     else:
@@ -394,4 +394,4 @@ if __name__ == "__main__":
             "ChildDepTaxCredit",
             "openfisca_us/tests/policy/baseline/calcfunctions/childdeptaxcredit.yaml",
             1,
-        )
+            )

@@ -16,4 +16,4 @@ class eitc_phaseout_start(Variable):
         return (
             eitc.phaseout.start.calc(num_children)
             + is_joint * eitc.phaseout.joint_bonus
-        )
+            )

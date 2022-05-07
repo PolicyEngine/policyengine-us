@@ -15,11 +15,11 @@ class niit(Variable):
             "filer_e00600",
             "c01000",
             "filer_e02000",
-        ]
+            ]
         nii = max_(0, add(tax_unit, period, NII_ELEMENTS))
         niit = parameters(period).irs.investment.net_inv_inc_tax
         threshold = niit.threshold[tax_unit("filing_status", period)]
         base = min_(
             nii, max_(0, tax_unit("adjusted_gross_income", period) - threshold)
-        )
+            )
         return niit.rate * base

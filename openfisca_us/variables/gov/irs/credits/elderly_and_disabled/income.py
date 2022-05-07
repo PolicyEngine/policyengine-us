@@ -17,7 +17,7 @@ class section_22_income(Variable):
     unit = USD
     documentation = (
         "Income upon which the elderly or disabled credit is applied"
-    )
+        )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
@@ -28,21 +28,21 @@ class section_22_income(Variable):
         person = tax_unit.members
         num_qualifying_individuals = tax_unit.sum(
             person("qualifies_for_elderly_or_disabled_credit", period)
-        )
+            )
         initial_amount = select(
             [
                 num_qualifying_individuals == 1,
                 num_qualifying_individuals == 2,
                 filing_status == filing_status.possible_values.SEPARATE,
                 True,
-            ],
+                ],
             [
                 elderly_disabled.amount.one_qualified,
                 elderly_disabled.amount.two_qualified,
                 elderly_disabled.amount.separate,
                 0,
-            ],
-        )
+                ],
+            )
 
         # Limitations on under-65s
 
@@ -52,12 +52,12 @@ class section_22_income(Variable):
         disability_income = person("total_disability_payments", period)
         non_elderly_disability_income = tax_unit.sum(
             disability_income * ~is_elderly
-        )
+            )
 
         cap = (
             num_elderly * elderly_disabled.amount.one_qualified
             + non_elderly_disability_income
-        )
+            )
 
         capped_amount = min_(initial_amount, cap)
         total_pensions = tax_unit("filer_e01500", period)
@@ -68,9 +68,9 @@ class section_22_income(Variable):
 
         amount_over_phaseout = max_(
             0, agi - elderly_disabled.phaseout.threshold[filing_status]
-        )
+            )
         phaseout_reduction = (
             elderly_disabled.phaseout.rate * amount_over_phaseout
-        )
+            )
 
         return max_(0, capped_reduced_amount - phaseout_reduction)

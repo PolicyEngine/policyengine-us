@@ -13,13 +13,13 @@ class c09200(Variable):
         income_tax_bc = tax_unit("income_tax_before_credits", period)
         capped_credits = tax_unit(
             "income_tax_capped_non_refundable_credits", period
-        )
+            )
         return income_tax_bc - capped_credits
 
 
 income_tax_before_refundable_credits = variable_alias(
     "income_tax_before_refundable_credits", c09200
-)
+    )
 
 
 class iitax(Variable):
@@ -33,7 +33,7 @@ class iitax(Variable):
     def formula(tax_unit, period, parameters):
         before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
-        )
+            )
         refundable_credits = tax_unit("income_tax_refundable_credits", period)
         return before_refundable_credits - refundable_credits
 

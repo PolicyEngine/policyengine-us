@@ -10,7 +10,7 @@ def tax_unit_non_dep_sum(var, tax_unit, period):
     return tax_unit.sum(
         tax_unit.members(var, period)
         * not_(tax_unit.members("is_tax_unit_dependent", period))
-    )
+        )
 
 
 def sum_contained_tax_units(var, population, period):
@@ -35,12 +35,12 @@ def variable_alias(name: str, variable_cls: type) -> type:
     class_dict = dict(variable_cls.__dict__)
     class_dict["formula"] = lambda entity, period: entity(
         variable_cls.__name__, period
-    )
+        )
     return type(
         name,
         variable_cls.__bases__,
         class_dict,
-    )
+        )
 
 
 def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
@@ -50,7 +50,7 @@ def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
     class_dict = dict(variable_cls.__dict__)
     class_dict["formula"] = lambda entity, period: entity(
         variable_cls.__name__, period
-    )
+        )
     return type(
         name,
         (Variable,),
@@ -62,8 +62,8 @@ def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
             unit=variable_cls.unit,
             documentation=variable_cls.documentation
             + " This is a read-only copy variable, matching the corresponding variable in the open-source US federal tax model Tax-Calculator.",
-        ),
-    )
+            ),
+        )
 
 
 def sum_among_non_dependents(variable: str) -> Callable:

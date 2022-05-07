@@ -14,5 +14,5 @@ class tax_unit_medicaid_magi(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         income_additions = parameters(
             period
-        ).hhs.medicaid.income.additions_over_agi
+            ).hhs.medicaid.income.additions_over_agi
         return max_(0, agi + add(tax_unit, period, income_additions))

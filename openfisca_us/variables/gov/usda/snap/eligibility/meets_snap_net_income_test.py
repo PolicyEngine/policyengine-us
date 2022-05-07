@@ -10,7 +10,7 @@ class meets_snap_net_income_test(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
-    )
+        )
 
     def formula(spm_unit, period, parameters):
         net_income_limit_fpg = parameters(period).usda.snap.income.limit.net

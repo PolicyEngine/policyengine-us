@@ -9,4 +9,4 @@ class fdpir(Variable):
     unit = USD
     documentation = (
         "Benefit value of the Food Distribution Program on Indian Reservations"
-    )
+        )

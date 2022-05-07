@@ -17,5 +17,5 @@ class meets_snap_asset_test(Variable):
             has_elderly_or_disabled,
             asset_test.limit.elderly_disabled,
             asset_test.limit.standard,
-        )
+            )
         return assets <= asset_limit

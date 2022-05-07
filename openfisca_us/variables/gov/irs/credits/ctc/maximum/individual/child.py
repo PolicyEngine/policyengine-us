@@ -12,7 +12,7 @@ class ctc_child_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
-    )
+        )
 
     def formula(person, period, parameters):
         ctc = parameters(period).irs.credits.ctc
@@ -28,6 +28,6 @@ class ctc_child_individual_maximum(Variable):
         return (
             is_young_child * ctc.child.young.increase
             + is_child * ctc.child.amount
-        )
+            )
 
     formula_2022 = formula

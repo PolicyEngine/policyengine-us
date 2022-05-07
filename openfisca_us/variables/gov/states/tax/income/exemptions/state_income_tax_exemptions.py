@@ -14,5 +14,5 @@ class state_income_tax_exemptions(Variable):
             "state_income_tax_dependent_exemption",
             "state_income_tax_aged_exemption",
             "state_income_tax_blind_exemption",
-        ]
-    )
+            ]
+        )

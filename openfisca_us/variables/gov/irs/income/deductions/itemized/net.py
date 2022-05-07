@@ -18,12 +18,12 @@ class c21040(Variable):
         uncapped_phaseout = (
             max_(0, tax_unit("posagi", period) - phaseout.start[filing_status])
             * phaseout.rate
-        )
+            )
 
         return min_(
             uncapped_phaseout,
             phaseout_amount_cap,
-        )
+            )
 
 
 class c04470(Variable):
@@ -34,7 +34,7 @@ class c04470(Variable):
     unit = USD
     documentation = (
         "Itemized deductions after phase-out (zero for non-itemizers)"
-    )
+        )
 
     def formula(tax_unit, period, parameters):
         return max_(0, tax_unit("c21060", period) - tax_unit("c21040", period))

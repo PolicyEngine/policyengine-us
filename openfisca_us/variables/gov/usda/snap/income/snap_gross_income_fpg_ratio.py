@@ -8,7 +8,7 @@ class snap_gross_income_fpg_ratio(Variable):
     label = "SNAP gross income to FPL ratio"
     documentation = (
         "SNAP gross income as a percentage of the federal poverty line"
-    )
+        )
     unit = "/1"
 
     def formula(spm_unit, period):

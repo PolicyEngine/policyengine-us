@@ -20,5 +20,5 @@ class tax_unit_taxable_unemployment_compensation(Variable):
             agi_over_uc <= ui.exemption.cutoff[filing_status],
             min_(uc_amount, ui.exemption.amount),
             0,
-        )
+            )
         return uc_amount - uc_excluded

@@ -10,7 +10,7 @@ class is_snap_eligible(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
-    )
+        )
 
     def formula(spm_unit, period, parameters):
         net = spm_unit("meets_snap_net_income_test", period)
@@ -20,5 +20,5 @@ class is_snap_eligible(Variable):
         # Categorical eligibility (SSI, TANF, and BBCE TANF) overrides tests.
         categorical_eligibility = spm_unit(
             "meets_snap_categorical_eligibility", period
-        )
+            )
         return normal_eligibility | categorical_eligibility

@@ -17,5 +17,5 @@ class is_ca_cvrp_increased_rebate_eligible(Variable):
         income_eligible = fpg_ratio <= p.fpl_limit
         categorically_eligible = (
             aggr(spm_unit, period, p.categorical_eligibility) > 0
-        )
+            )
         return income_eligible | categorically_eligible

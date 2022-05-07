@@ -13,4 +13,4 @@ class meets_school_meal_categorical_eligibility(Variable):
         programs = parameters(period).usda.school_meals.categorical_eligibility
         return np.any(
             [spm_unit(program, period) for program in programs], axis=0
-        )
+            )

@@ -3,7 +3,7 @@ GROUP_ENTITY_NAMES = (
     "spm_unit",
     "family",
     "household",
-)
+    )
 
 
 def test_variable_names():
@@ -14,7 +14,7 @@ def test_variable_names():
         variable = type(instance)
         assert (
             variable.__name__.islower()
-        ), f"{variable.__name__} is not all lowercase"
+            ), f"{variable.__name__} is not all lowercase"
         if variable.entity.key in GROUP_ENTITY_NAMES:
             pass
             # assert variable.__name__[:len(variable.entity.key)] == variable.entity.key, f"{variable.__name__} does not begin with the specified group entity"

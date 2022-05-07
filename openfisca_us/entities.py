@@ -14,9 +14,9 @@ Household = build_entity(
             plural="members",
             label="Member",
             doc="A member of the household",
-        ),
-    ],
-)
+            ),
+        ],
+    )
 
 SPMUnit = build_entity(
     key="spm_unit",
@@ -31,10 +31,10 @@ SPMUnit = build_entity(
             plural="members",
             label="Member",
             doc="A member of the SPM unit",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["household"],
-)
+    )
 
 Family = build_entity(
     key="family",
@@ -49,10 +49,10 @@ Family = build_entity(
             plural="members",
             label="Member",
             doc="A member of the family",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["spm_unit", "household"],
-)
+    )
 
 TaxUnit = build_entity(
     key="tax_unit",
@@ -67,10 +67,10 @@ TaxUnit = build_entity(
             plural="members",
             label="Member",
             doc="A member of the tax unit",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["spm_unit", "family", "household"],
-)
+    )
 
 
 Person = build_entity(
@@ -81,6 +81,6 @@ Person = build_entity(
     A person.
     """,
     is_person=True,
-)
+    )
 
 entities = [Household, SPMUnit, Family, TaxUnit, Person]
