@@ -21,19 +21,23 @@ class medicaid_person_type(Variable):
     documentation = "Person type for Medicaid"
 
     def formula(person, period, parameters):
+        ma = parameters(period).hhs.medicaid
         # Get the person's age.
         age = person("age", period)
         # Get the existence of dependents, as defined by people 18 or younger.
         has_dependents = person.spm_unit.any(
             person.spm_unit.members("age", period) < 19
         )
-        under_21_qualifies = parameters(
-            period
-        ).hhs.medicaid.under_21_qualifies_as_child
+        under_21_qualifies = ma.under_21_qualifies_as_child
         state = person.household("state_code_str", period)
         state_has_under_21_child_category = under_21_qualifies[state] > 0
+        is_pregnant = person("is_pregnant", period)
+        days_postpartum = person("count_days_postpartum", period)
+        max_postpartum_days = ma.postpartum_coverage[state]
+        is_covered_as_pregnant = is_pregnant | (days_postpartum < max_postpartum_days)
         return select(
             [
+                is_covered_as_pregnant,
                 age == 0,
                 age < 6,
                 age < 19,
@@ -42,6 +46,7 @@ class medicaid_person_type(Variable):
                 True,
             ],
             [
+                MedicaidPersonType.PREGNANT,
                 MedicaidPersonType.CHILD_AGE_0,
                 MedicaidPersonType.CHILD_AGE_1_5,
                 MedicaidPersonType.CHILD_AGE_6_18,

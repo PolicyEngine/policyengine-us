@@ -51,3 +51,36 @@
   output:
     medicaid_person_type:
       [ADULT_WITH_DEPENDENT, ADULT_WITH_DEPENDENT, CHILD_AGE_1_5, CHILD_AGE_0]
+
+- name: Pregnant person is covered as pregnant.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    is_pregnant: true
+  output:
+    medicaid_person_type: PREGNANT
+
+- name: 59 days post-partum in CA, covered as pregnant.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    count_days_postpartum: 59
+  output:
+    medicaid_person_type: PREGNANT
+
+- name: 60 days post-partum in CA, covered as an adult with a dependent.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      parent:
+        age: 30
+        count_days_postpartum: 60
+      child:
+        age: 4
+        count_days_postpartum: .inf
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+  output:
+    medicaid_person_type: [ADULT_WITH_DEPENDENT, CHILD_AGE_1_5]
