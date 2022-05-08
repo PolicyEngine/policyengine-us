@@ -643,3 +643,9 @@
     fixed:
     - Bug causing the system to fail to load on Colab.
   date: 2022-05-05 21:54:08
+- bump: minor
+  changes:
+    added:
+    - TAXSIM integration tests for AGI.
+    changed:
+    - TAXSIM variables renamed to contain `taxsim_` prefix.
