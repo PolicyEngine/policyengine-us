@@ -1,4 +1,5 @@
 import logging
+from turtle import shape
 from openfisca_tools.data import PublicDataset
 import h5py
 from openfisca_us.data.datasets.cps.raw_cps import RawCPS
@@ -127,8 +128,16 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     )
     # A_SEX is 1 -> male, 2 -> female.
     cps["is_female"] = person.A_SEX == 2
-    # Calculate number of children in the household using parental pointers.
-    def parent_count(col: str):
+
+    def parent_count(col: str) -> pd.DataFrame:
+        """Calculate number of children in the household using parental
+            pointers.
+
+        Args:
+            col (str): Either PEPAR1 and PEPAR2, which correspond to A_LINENO
+            of the person's first and second parent in the household,
+            respectively.
+        """
         return (
             person[person[col] > 0]
             .groupby(["PH_SEQ", col])
@@ -138,9 +147,15 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
         )
 
     # Aggregate to parent.
-    res = pd.concat([parent_count("PEPAR1"), parent_count("PEPAR2")])
-    res.groupby(["PH_SEQ", "A_LINENO"]).children.sum().reset_index()
-    tmp = person[["PH_SEQ", "A_LINENO"]].merge(res, on=["PH_SEQ", "A_LINENO"])
+    res = (
+        pd.concat([parent_count("PEPAR1"), parent_count("PEPAR2")])
+        .groupby(["PH_SEQ", "A_LINENO"])
+        .children.sum()
+        .reset_index()
+    )
+    tmp = person[["PH_SEQ", "A_LINENO"]].merge(
+        res, on=["PH_SEQ", "A_LINENO"], how="left"
+    )
     cps["own_children_in_household"] = tmp.children.fillna(0)
 
 
