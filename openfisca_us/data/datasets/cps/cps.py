@@ -62,7 +62,7 @@ def add_id_variables(
     family: DataFrame,
     spm_unit: DataFrame,
     household: DataFrame,
-):
+) -> None:
     """Add basic ID and weight variables.
 
     Args:
@@ -106,7 +106,7 @@ def add_id_variables(
     cps["household_weight"] = household.HSUP_WGT / 1e2
 
 
-def add_personal_variables(cps: h5py.File, person: DataFrame):
+def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     """Add personal demographic variables.
 
     Args:
@@ -168,7 +168,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["tanf_person"] = person.PAW_VAL
 
 
-def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
+def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     SPM_RENAMES = dict(
         spm_unit_total_income="SPM_TOTVAL",
         snap_reported="SPM_SNAPSUB",
@@ -191,7 +191,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
     cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
 
 
-def add_household_variables(cps: h5py.File, household: DataFrame):
+def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     cps["fips"] = household.GESTFIPS
 
 
