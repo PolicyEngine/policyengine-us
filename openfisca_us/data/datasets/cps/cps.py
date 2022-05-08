@@ -129,7 +129,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # A_SEX is 1 -> male, 2 -> female.
     cps["is_female"] = person.A_SEX == 2
 
-    def parent_count(col: str) -> pd.DataFrame:
+    def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
             pointers.
 
@@ -148,7 +148,9 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
 
     # Aggregate to parent.
     res = (
-        pd.concat([parent_count("PEPAR1"), parent_count("PEPAR2")])
+        pd.concat(
+            [children_per_parent("PEPAR1"), children_per_parent("PEPAR2")]
+        )
         .groupby(["PH_SEQ", "A_LINENO"])
         .children.sum()
         .reset_index()
