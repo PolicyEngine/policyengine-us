@@ -19,6 +19,7 @@ class CPS(PublicDataset):
 
     def generate(self, year: int):
         """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
+        Codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
 
         Args:
             year (int): The year of the Raw CPS to use.
@@ -124,6 +125,11 @@ def add_personal_variables(cps: h5py.File, person: DataFrame):
         80 + 5 * np.random.rand(len(person)),
         person.A_AGE,
     )
+    cps["sex"] = np.where(
+        person.A_SEX == 1,
+        "MALE",
+        "FEMALE",
+    ).astype("S")
 
 
 def add_personal_income_variables(cps: h5py.File, person: DataFrame):
