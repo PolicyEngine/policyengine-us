@@ -10,6 +10,7 @@ class taxable_uc_agi(Variable):
         "Income used to determine taxability of unemployment compensation."
     )
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/85"
 
     def formula(tax_unit, period, parameters):
         irs = parameters(period).irs

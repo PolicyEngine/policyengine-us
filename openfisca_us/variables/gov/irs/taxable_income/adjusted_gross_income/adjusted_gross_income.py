@@ -7,6 +7,7 @@ class adjusted_gross_income(Variable):
     label = "Adjusted gross income"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/62"
 
     def formula(tax_unit, period, parameters):
         gross_income = add(tax_unit, period, ["irs_gross_income"])
