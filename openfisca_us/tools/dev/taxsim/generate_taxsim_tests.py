@@ -16,6 +16,8 @@ from argparse import ArgumentParser
 
 
 class TaxSim35:
+    """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/
+    """
     EXECUTABLE_URL = "https://taxsim.nber.org/stata/taxsim35/taxsim35-unix.exe"
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"

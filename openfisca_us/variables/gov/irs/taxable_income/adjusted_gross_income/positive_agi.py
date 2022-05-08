@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class posagi(Variable):
+class positive_agi(Variable):
     value_type = float
     entity = TaxUnit
     label = "Positive AGI"
@@ -11,3 +11,5 @@ class posagi(Variable):
 
     def formula(tax_unit, period, parameters):
         return max_(tax_unit("adjusted_gross_income", period), 0)
+
+posagi = variable_alias("posagi", positive_agi)
