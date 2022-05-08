@@ -167,8 +167,12 @@ class TaxSim35:
     ):
         sim = Microsimulation(dataset=dataset, year=2020)
         system: TaxBenefitSystem = sim.simulation.tax_benefit_system
-        openfisca_named_taxsim_input_variables = [f"taxsim_{variable}" for variable in self.INPUT_VARIABLES]
-        openfisca_named_taxsim_output_variables = [f"taxsim_{variable}" for variable in self.OUTPUT_VARIABLES]
+        openfisca_named_taxsim_input_variables = [
+            f"taxsim_{variable}" for variable in self.INPUT_VARIABLES
+        ]
+        openfisca_named_taxsim_output_variables = [
+            f"taxsim_{variable}" for variable in self.OUTPUT_VARIABLES
+        ]
         input_df = (
             sim.df(openfisca_named_taxsim_input_variables, period=year)
             .sample(n=number * 100)
@@ -179,19 +183,17 @@ class TaxSim35:
         for variable in self.UNIMPLEMENTED_VARIABLES:
             input_df[variable] = 0
         taxsim_df = self.calculate(input_df).reset_index(drop=True)
-        taxsim_df = taxsim_df.rename(columns={
-            col: f"taxsim_{col}"
-            for col in taxsim_df.columns
-        })
+        taxsim_df = taxsim_df.rename(
+            columns={col: f"taxsim_{col}" for col in taxsim_df.columns}
+        )
         taxsim_df = taxsim_df.T.apply(
             lambda row: [0] + list(row.values[:-1])
         ).T.drop(
             taxsim_df.columns[0], axis=1
         )  # Some issue with the TAXSIM dataframe now coming out in the right format
-        input_df = input_df.rename(columns={
-            col: f"taxsim_{col}"
-            for col in input_df.columns
-        })
+        input_df = input_df.rename(
+            columns={col: f"taxsim_{col}" for col in input_df.columns}
+        )
         taxsim_df = pd.concat(
             [
                 input_df,
@@ -205,11 +207,16 @@ class TaxSim35:
         tax_unit_number = 1
         # Shuffle the dataframe
         taxsim_df = (
-            taxsim_df[taxsim_df[openfisca_named_taxsim_output_variables].sum(axis=1) > 0]
+            taxsim_df[
+                taxsim_df[openfisca_named_taxsim_output_variables].sum(axis=1)
+                > 0
+            ]
             .sample(frac=1)
             .reset_index(drop=True)
         )
-        for tax_unit_id in tqdm(taxsim_df.taxsim_taxsimid, desc="Writing YAML tests"):
+        for tax_unit_id in tqdm(
+            taxsim_df.taxsim_taxsimid, desc="Writing YAML tests"
+        ):
             if i >= number:
                 break
             i += 1
@@ -226,7 +233,8 @@ class TaxSim35:
                 test_str += f"      person_{person_number}:\n"
                 person_number += 1
                 for variable_name in (
-                    self.OPENFISCA_US_INPUT_VARIABLES + openfisca_named_taxsim_input_variables
+                    self.OPENFISCA_US_INPUT_VARIABLES
+                    + openfisca_named_taxsim_input_variables
                 ):
                     if variables[variable_name].entity.key == "person":
                         value = sim.calc(
@@ -240,7 +248,8 @@ class TaxSim35:
                             test_str += f"        {variable_name}: {value}\n"
             test_str += f"    tax_units:\n      tax_unit:\n        members: [{','.join(['person_' + str(p) for p in range(1, person_number)])}]\n"
             for variable_name in (
-                self.OPENFISCA_US_INPUT_VARIABLES + openfisca_named_taxsim_input_variables
+                self.OPENFISCA_US_INPUT_VARIABLES
+                + openfisca_named_taxsim_input_variables
             ):
                 if variables[variable_name].entity.key == "tax_unit":
                     value = sim.calc(variable_name).values[
@@ -278,5 +287,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     taxsim = TaxSim35()
     taxsim.OUTPUT_VARIABLES = args.outputs
-    result = taxsim.generate_from_microsimulation(CPS, args.year, number=args.num)
+    result = taxsim.generate_from_microsimulation(
+        CPS, args.year, number=args.num
+    )
     print(result)
