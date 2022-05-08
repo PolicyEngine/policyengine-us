@@ -5,6 +5,7 @@ from openfisca_us.data.datasets.cps.raw_cps import RawCPS
 from openfisca_us.data.storage import OPENFISCA_US_MICRODATA_FOLDER
 from pandas import DataFrame, Series
 import numpy as np
+import pandas as pd
 
 
 class CPS(PublicDataset):
@@ -124,7 +125,23 @@ def add_personal_variables(cps: h5py.File, person: DataFrame):
         80 + 5 * np.random.rand(len(person)),
         person.A_AGE,
     )
+    # A_SEX is 1 -> male, 2 -> female.
     cps["is_female"] = person.A_SEX == 2
+    # Calculate number of children in the household using parental pointers.
+    def parent_count(col: str):
+        return (
+            person[person[col] > 0]
+            .groupby(["PH_SEQ", col])
+            .size()
+            .reset_index()
+            .rename(columns={col: "A_LINENO", 0: "children"})
+        )
+
+    # Aggregate to parent.
+    res = pd.concat([parent_count("PEPAR1"), parent_count("PEPAR2")])
+    res.groupby(["PH_SEQ", "A_LINENO"]).children.sum().reset_index()
+    tmp = person[["PH_SEQ", "A_LINENO"]].merge(res, on=["PH_SEQ", "A_LINENO"])
+    cps["own_children_in_household"] = tmp.children.fillna(0)
 
 
 def add_personal_income_variables(cps: h5py.File, person: DataFrame):
