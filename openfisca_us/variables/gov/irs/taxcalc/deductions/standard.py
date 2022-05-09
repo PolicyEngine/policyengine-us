@@ -1,27 +1,6 @@
 from openfisca_us.model_api import *
 
 
-class basic_standard_deduction(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Basic standard deduction"
-    definition_period = YEAR
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        std = parameters(period).irs.deductions.standard
-        filing_status = tax_unit("filing_status", period)
-        midr = tax_unit("midr", period)
-
-        c15100_if_dsi = max_(
-            std.dependent.additional_earned_income
-            + tax_unit("filer_earned", period),
-            std.dependent.amount,
-        )
-        basic_if_dsi = min_(std.amount[filing_status], c15100_if_dsi)
-        basic_if_not_dsi = where(midr, 0, std.amount[filing_status])
-        return where(tax_unit("dsi", period), basic_if_dsi, basic_if_not_dsi)
-
 
 class aged_blind_extra_standard_deduction(Variable):
     value_type = float

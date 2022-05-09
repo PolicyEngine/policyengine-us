@@ -8,4 +8,4 @@ class tax_unit_earned_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_among_non_dependents(["earned_income"])
+    formula = sum_among_non_dependents("earned_income")

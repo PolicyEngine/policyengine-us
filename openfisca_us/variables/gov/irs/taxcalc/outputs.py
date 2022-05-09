@@ -82,8 +82,6 @@ class earned(Variable):
         )
 
 
-earned_income = variable_alias("earned_income", earned)
-
 
 class othertaxes(Variable):
     value_type = float
