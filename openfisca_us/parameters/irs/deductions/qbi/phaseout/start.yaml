@@ -1,6 +1,9 @@
-description: Lower threshold of pre-QBID taxable income
+description: Threshold of taxable income (excluding QBID) after which the QBI deduction is phased out.
 metadata:
   unit: currency-USD
+  period: year
+  name: qbid_phaseout_start
+  label: Qualified business income deduction phaseout start
 HEAD_OF_HOUSEHOLD:
   2013-01-01: 0.0
   2018-01-01: 157500.0

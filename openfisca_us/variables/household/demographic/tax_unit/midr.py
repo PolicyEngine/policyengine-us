@@ -1,11 +1,11 @@
 from openfisca_us.model_api import *
 
 
-class midr(Variable):
+class separate_filer_itemizes(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
     label = "Separate filer itemizes"
-    documentation = (
-        "True if separately-filing spouse itemizes, otherwise false"
-    )
+    documentation = "Whether the taxpayer in this tax unit has a spouse who files separately and itemizes deductions."
+
+midr = variable_alias("midf", separate_filer_itemizes)
