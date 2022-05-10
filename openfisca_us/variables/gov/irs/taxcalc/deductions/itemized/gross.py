@@ -12,5 +12,5 @@ class c21060(Variable):
     )
 
     formula = sum_of_variables(
-        "irs.deductions.itemized.deductions_if_itemizing"
+        "irs.deductions.deductions_if_itemizing"
     )

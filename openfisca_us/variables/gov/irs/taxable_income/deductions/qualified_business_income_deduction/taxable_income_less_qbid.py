@@ -21,11 +21,11 @@ class taxable_income_less_qbid(Variable):
             for deduction in deductions.deductions_if_not_itemizing
             if deduction != "qualified_business_income_deduction"
         ]
-        itemizes = tax_unit("tax_unit_itemizes", period)
         ded_value_if_itemizing = add(tax_unit, period, ded_if_itemizing)
         ded_value_if_not_itemizing = add(
             tax_unit, period, ded_if_not_itemizing
         )
+        itemizes = ded_value_if_itemizing > ded_value_if_not_itemizing
         return max_(
             0,
             agi

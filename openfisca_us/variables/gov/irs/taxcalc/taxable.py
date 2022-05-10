@@ -36,5 +36,3 @@ class c04800(Variable):
             0, tax_unit("pre_qbid_taxinc", period) - tax_unit("qbided", period)
         )
 
-
-taxable_income = variable_alias("taxable_income", c04800)

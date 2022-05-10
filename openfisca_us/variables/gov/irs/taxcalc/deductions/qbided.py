@@ -19,9 +19,9 @@ class qbided(Variable):
             "filer_e27200",
         ]
         qbinc = max_(0, add(tax_unit, period, QBINC_ELEMENTS))
-        qbid = parameters(period).irs.deductions.qualified_business_interest
-        lower_threshold = qbid.threshold.lower[filing_status]
-        upper_threshold = lower_threshold + qbid.threshold.gap[filing_status]
+        qbid = parameters(period).irs.deductions.qbi
+        lower_threshold = qbid.phaseout.start[filing_status]
+        upper_threshold = lower_threshold + qbid.phaseout.length[filing_status]
         pre_qbid_taxinc = tax_unit("pre_qbid_taxinc", period)
         under_lower_threshold = pre_qbid_taxinc < lower_threshold
         between_thresholds = ~under_lower_threshold & (
@@ -33,17 +33,17 @@ class qbided(Variable):
         # Wage/capital limitations
         w2_wages = tax_unit("pt_binc_w2_wages", period)
         business_property = tax_unit("pt_ubia_property", period)
-        wage_cap = w2_wages * qbid.cap.w2_wages.rate
+        wage_cap = w2_wages * qbid.max.w2_wages.rate
         alt_cap = (
-            w2_wages * qbid.cap.w2_wages.alt_rate
-            + business_property * qbid.cap.business_property.rate
+            w2_wages * qbid.max.w2_wages.alt_rate
+            + business_property * qbid.max.business_property.rate
         )
         fraction_of_gap_passed = (
             pre_qbid_taxinc - lower_threshold
-        ) / qbid.threshold.gap[filing_status]
+        ) / qbid.phaseout.length[filing_status]
         fraction_of_gap_unused = (
             upper_threshold - pre_qbid_taxinc
-        ) / qbid.threshold.gap[filing_status]
+        ) / qbid.phaseout.length[filing_status]
 
         # Adjustments for qualified income under the upper threshold
         qbi_between_threshold_multiplier = where(
@@ -52,7 +52,7 @@ class qbided(Variable):
             1.0,
         )
         max_qbid = (
-            qbinc * qbid.pass_through_rate * qbi_between_threshold_multiplier
+            qbinc * qbid.max.rate * qbi_between_threshold_multiplier
         )
         full_cap = max_(wage_cap, alt_cap) * qbi_between_threshold_multiplier
 
@@ -74,5 +74,5 @@ class qbided(Variable):
 
         # Apply taxable income cap
         net_cg = add(tax_unit, period, ["filer_e00650", "c01000"])
-        taxinc_cap = qbid.pass_through_rate * max_(0, pre_qbid_taxinc - net_cg)
+        taxinc_cap = qbid.max.rate * max_(0, pre_qbid_taxinc - net_cg)
         return min_(qbid_amount, taxinc_cap)

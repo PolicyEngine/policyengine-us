@@ -8,7 +8,7 @@ class state_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
+    def formula_2021(tax_unit, period, parameters):
         before_refundable_credits = tax_unit(
             "state_income_tax_before_refundable_credits", period
         )

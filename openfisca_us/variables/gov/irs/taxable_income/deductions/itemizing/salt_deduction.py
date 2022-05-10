@@ -11,8 +11,8 @@ class salt_deduction(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/164"
 
     def formula(tax_unit, period, parameters):
-        salt = tax_unit("state_and_local_sales_or_income_tax", period)
+        salt_amount = tax_unit("state_and_local_sales_or_income_tax", period)
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         salt = parameters(period).irs.deductions.itemized.salt_and_real_estate
         cap = salt.cap[tax_unit("filing_status", period)]
-        return min_(cap, salt + real_estate_taxes)
+        return min_(cap, salt_amount + real_estate_taxes)

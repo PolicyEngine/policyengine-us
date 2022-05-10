@@ -12,12 +12,8 @@ class c17000(Variable):
 
     def formula(tax_unit, period, parameters):
         medical = parameters(period).irs.deductions.itemized.medical
-        has_aged = (tax_unit("age_head", period) >= 65) | (
-            tax_unit("tax_unit_is_joint", period)
-            & (tax_unit("age_spouse", period) >= 65)
-        )
         medical_floor_ratio = (
-            medical.floor.base + has_aged * medical.floor.aged_addition
+            medical.floor
         )
         medical_floor = medical_floor_ratio * max_(
             tax_unit("adjusted_gross_income", period), 0
@@ -96,7 +92,7 @@ class c20500(Variable):
         casualty = parameters(period).irs.deductions.itemized.casualty
         floor = casualty.floor * tax_unit("posagi", period)
         deduction = max_(0, tax_unit("filer_g20500", period) - floor)
-        return deduction * (1 - casualty.haircut)
+        return deduction
 
 
 class c20800(Variable):
@@ -106,9 +102,3 @@ class c20800(Variable):
     label = "Miscellaneous deductions"
     unit = USD
     documentation = "Sch A: Net limited miscellaneous deductions deducted (component of pre-limitation c21060 total)"
-
-    def formula(tax_unit, period, parameters):
-        misc = parameters(period).irs.deductions.itemized.misc
-        floor = misc.floor * tax_unit("posagi", period)
-        deduction = max_(0, tax_unit("filer_e20400", period) - floor)
-        return deduction * (1 - misc.haircut)

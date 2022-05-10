@@ -40,7 +40,7 @@ class standard(Variable):
         basic_stded = tax_unit("basic_standard_deduction", period)
         charity = parameters(period).irs.deductions.itemized.charity
         filing_status = tax_unit("filing_status", period)
-        midr = tax_unit("midr", period)
+        separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
         filing_status_type = filing_status.possible_values
 
         # Calculate extra standard deduction for aged and blind
@@ -49,8 +49,6 @@ class standard(Variable):
         # Calculate the total standard deduction
         standard = basic_stded + extra_stded
         standard = where(
-            (filing_status == filing_status_type.SEPARATE) & midr, 0, standard
+            (filing_status == filing_status_type.SEPARATE) & separate_filer_itemizes, 0, standard
         )
-        return standard + charity.allow_nonitemizers * min_(
-            tax_unit("charitable_deduction", period), charity.nonitemizers_max
-        )
+        return standard

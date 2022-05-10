@@ -9,4 +9,4 @@ class separate_filer_itemizes(Variable):
     documentation = "Whether the taxpayer in this tax unit has a spouse who files separately and itemizes deductions."
 
 
-midr = variable_alias("midf", separate_filer_itemizes)
+midr = variable_alias("midr", separate_filer_itemizes)
