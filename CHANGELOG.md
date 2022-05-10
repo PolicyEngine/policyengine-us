@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.61.0] - 2022-05-10 17:57:30
+
+### Added
+
+- TANF from CPS data.
+- Female variable.
+- Variable for number of own children in household.
+
 ## [0.60.0] - 2022-05-10 13:57:16
 
 ### Added
@@ -799,6 +807,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.61.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.60.0...0.61.0
 [0.60.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.59.0...0.60.0
 [0.59.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.1...0.59.0
 [0.58.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.0...0.58.1
