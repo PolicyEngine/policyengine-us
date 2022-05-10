@@ -52,5 +52,5 @@ class standard(Variable):
             (filing_status == filing_status_type.SEPARATE) & midr, 0, standard
         )
         return standard + charity.allow_nonitemizers * min_(
-            tax_unit("c19700", period), charity.nonitemizers_max
+            tax_unit("charitable_deduction", period), charity.nonitemizers_max
         )

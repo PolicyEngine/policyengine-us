@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class charitable_deduction(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Charitable deduction"
     unit = USD
     documentation = "Deduction from taxable income for charitable donations."
@@ -16,8 +16,8 @@ class charitable_deduction(Variable):
             tax_unit, period, ["charitable_non_cash_donations"]
         )
         positive_agi = tax_unit("positive_agi", period)
-        deduction = parameters(period).irs.deductions.itemized.charity.ceiling
+        celling = parameters(period).irs.deductions.itemized.charity.ceiling
         capped_non_cash_donations = min_(
-            non_cash_donations, deduction.ceiling.non_cash
+            non_cash_donations, celling.non_cash * positive_agi
         )
-        return min_(capped_non_cash_donations, deduction.ceiling.all)
+        return min_(capped_non_cash_donations + cash_donations, celling.all * positive_agi)

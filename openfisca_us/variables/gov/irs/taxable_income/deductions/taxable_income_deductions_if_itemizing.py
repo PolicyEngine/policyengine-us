@@ -9,5 +9,5 @@ class taxable_income_deductions_if_itemizing(Variable):
     definition_period = YEAR
 
     formula = sum_of_variables(
-        "irs.deductions.itemized.deductions_if_itemizing"
+        "irs.deductions.deductions_if_itemizing"
     )

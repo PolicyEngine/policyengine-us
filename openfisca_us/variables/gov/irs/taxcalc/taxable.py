@@ -15,7 +15,7 @@ class pre_qbid_taxinc(Variable):
             "tax_unit_taxable_unemployment_compensation", period
         )
         maximum_deduction = max_(
-            tax_unit("c04470", period), tax_unit("standard", period)
+            tax_unit("taxable_income_deductions_if_itemizing", period), tax_unit("standard", period)
         )
         personal_exemptions = tax_unit("c04600", period)
         return max_(
