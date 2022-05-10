@@ -182,7 +182,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["e00800"] = (person.OI_OFF == 20) * person.OI_VAL
 
     # TANF
-    cps["tanf_person"] = person.PAW_VAL
+    cps["tanf_reported"] = person.PAW_VAL
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:

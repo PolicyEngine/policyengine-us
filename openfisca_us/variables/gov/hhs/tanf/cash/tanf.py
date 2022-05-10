@@ -12,6 +12,9 @@ class tanf(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
+        tanf_reported = add(spm_unit, period, ["tanf_reported"])
+        if tanf_reported.sum() > 0:
+            return tanf_reported
         # Obtain eligibility.
         eligible = spm_unit("is_tanf_eligible", period)
         # Obtain amount they would receive if they were eligible.
