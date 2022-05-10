@@ -9,3 +9,4 @@ class taxable_income_deductions_if_not_itemizing(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/63#b"
 
+    formula = sum_of_variables("irs.deductions.deductions_if_not_itemizing")

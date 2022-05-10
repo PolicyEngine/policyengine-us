@@ -16,5 +16,5 @@ class qualified_business_income(Variable):
         qualified = tax_unit("business_is_qualified", period)
         return total_income * qualified
 
-    # Note. does not implement https://www.law.cornell.edu/uscode/text/26/199A#b_3, which provides exceptions for where some specified service business income may be
+    # Note. does not implement https://www.law.cornell.edu/uscode/text/26/199A#d_3, which provides exceptions for where some specified service business income may be
     # treated as qualified business income depending on taxable income.

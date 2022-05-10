@@ -7,3 +7,5 @@ class spm_unit_medical_expenses(Variable):
     label = "SPM unit medical expenses"
     definition_period = YEAR
     unit = USD
+
+    formula = sum_of_variables(["medical_expense"])
