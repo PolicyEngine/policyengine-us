@@ -12,9 +12,7 @@ class c17000(Variable):
 
     def formula(tax_unit, period, parameters):
         medical = parameters(period).irs.deductions.itemized.medical
-        medical_floor_ratio = (
-            medical.floor
-        )
+        medical_floor_ratio = medical.floor
         medical_floor = medical_floor_ratio * max_(
             tax_unit("adjusted_gross_income", period), 0
         )

@@ -11,6 +11,4 @@ class c21060(Variable):
         "Itemized deductions before phase-out (zero for non-itemizers)"
     )
 
-    formula = sum_of_variables(
-        "irs.deductions.deductions_if_itemizing"
-    )
+    formula = sum_of_variables("irs.deductions.deductions_if_itemizing")

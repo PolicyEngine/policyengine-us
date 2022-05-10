@@ -49,6 +49,9 @@ class standard(Variable):
         # Calculate the total standard deduction
         standard = basic_stded + extra_stded
         standard = where(
-            (filing_status == filing_status_type.SEPARATE) & separate_filer_itemizes, 0, standard
+            (filing_status == filing_status_type.SEPARATE)
+            & separate_filer_itemizes,
+            0,
+            standard,
         )
         return standard

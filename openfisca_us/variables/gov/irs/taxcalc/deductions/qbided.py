@@ -51,9 +51,7 @@ class qbided(Variable):
             fraction_of_gap_unused,
             1.0,
         )
-        max_qbid = (
-            qbinc * qbid.max.rate * qbi_between_threshold_multiplier
-        )
+        max_qbid = qbinc * qbid.max.rate * qbi_between_threshold_multiplier
         full_cap = max_(wage_cap, alt_cap) * qbi_between_threshold_multiplier
 
         # Adjustment for QBID where income is between the main thresholds

@@ -20,4 +20,7 @@ class charitable_deduction(Variable):
         capped_non_cash_donations = min_(
             non_cash_donations, celling.non_cash * positive_agi
         )
-        return min_(capped_non_cash_donations + cash_donations, celling.all * positive_agi)
+        return min_(
+            capped_non_cash_donations + cash_donations,
+            celling.all * positive_agi,
+        )
