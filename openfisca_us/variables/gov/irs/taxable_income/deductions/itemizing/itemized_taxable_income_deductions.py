@@ -8,4 +8,4 @@ class itemized_taxable_income_deductions(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("irs.deductions.itemized.itemized_deductions")
+    formula = sum_of_variables("irs.deductions.itemized_deductions")

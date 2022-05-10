@@ -650,3 +650,7 @@
     changed:
     - TAXSIM variables renamed to contain `taxsim_` prefix.
   date: 2022-05-08 19:55:20
+- bump: minor
+  changes:
+    changed:
+    - Refactored (references, simplifications and reorganisation) AGI -> taxable income code.
