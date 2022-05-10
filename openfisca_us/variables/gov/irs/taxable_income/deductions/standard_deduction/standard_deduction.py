@@ -9,4 +9,6 @@ class standard_deduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/63#c"
 
-    formula = sum_of_variables(["basic_standard_deduction", "additional_standard_deduction"])
+    formula = sum_of_variables(
+        ["basic_standard_deduction", "additional_standard_deduction"]
+    )

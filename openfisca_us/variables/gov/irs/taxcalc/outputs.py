@@ -82,7 +82,6 @@ class earned(Variable):
         )
 
 
-
 class othertaxes(Variable):
     value_type = float
     entity = TaxUnit

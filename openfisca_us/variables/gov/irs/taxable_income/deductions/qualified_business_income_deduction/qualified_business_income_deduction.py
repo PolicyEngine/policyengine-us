@@ -13,5 +13,3 @@ class qualified_business_income_deduction(Variable):
         max_qbid = tax_unit("maximum_qbid", period)
         limit = tax_unit("qbid_limit", period)
         return min_(max_qbid, limit)
-
-

@@ -1,9 +1,9 @@
 from openfisca_us.model_api import *
 
 
-class farm_rent_income(Variable):
+class casualty_loss(Variable):
     value_type = float
     entity = Person
-    label = "Farm rent net income"
+    label = "Casualty/theft loss"
     unit = USD
     definition_period = YEAR

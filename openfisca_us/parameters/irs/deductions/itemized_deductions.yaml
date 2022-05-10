@@ -1,4 +1,4 @@
-description: Deductions from taxable income if itemizing.
+description: Deductions from taxable income if itemizing (that are not available if not itemizing).
 values:
   2018-01-01:
     - charitable_deduction
@@ -6,7 +6,6 @@ values:
     - salt_deduction
     - medical_expense_deduction
     - casualty_loss_deduction
-    - qualified_business_income_deduction
 metadata:
   unit: variable
   name: taxable_income_deductions_if_itemizing

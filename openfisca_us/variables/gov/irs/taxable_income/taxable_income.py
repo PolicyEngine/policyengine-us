@@ -11,6 +11,8 @@ class irs_income_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        deductions = parameters(period).irs.deductions.taxable_income_deductions
+        deductions = parameters(
+            period
+        ).irs.deductions.taxable_income_deductions
         deduction_value = add(tax_unit, period, deductions)
         return max_(0, agi - deduction_value)

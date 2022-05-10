@@ -1,9 +1,9 @@
 from openfisca_us.model_api import *
 
 
-class farm_rent_income(Variable):
+class real_estate_taxes(Variable):
     value_type = float
     entity = Person
-    label = "Farm rent net income"
+    label = "Real estate taxes"
     unit = USD
     definition_period = YEAR
