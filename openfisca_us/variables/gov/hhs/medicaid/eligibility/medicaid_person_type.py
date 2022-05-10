@@ -9,6 +9,7 @@ class MedicaidPersonType(Enum):
     CHILD_AGE_1_5 = "Child age 1 to 5"
     CHILD_AGE_6_18 = "Child age 6 to 18"
     CHILD_AGE_19_20 = "Adult under 21 (covered as child)"
+    AGED_BLIND_DISABLED = "Aged, blind, or disabled"
 
 
 class medicaid_person_type(Variable):
@@ -37,9 +38,13 @@ class medicaid_person_type(Variable):
         is_covered_as_pregnant = is_pregnant | (
             days_postpartum < max_postpartum_days
         )
+        is_blind = person("is_blind", period)
+        is_disabled = person("is_disabled", period)
+        is_aged = age > ma.aged_threshold
         return select(
             [
                 is_covered_as_pregnant,
+                is_aged | is_blind | is_disabled,
                 age == 0,
                 age < 6,
                 age < 19,
@@ -49,6 +54,7 @@ class medicaid_person_type(Variable):
             ],
             [
                 MedicaidPersonType.PREGNANT,
+                MedicaidPersonType.AGED_BLIND_DISABLED,
                 MedicaidPersonType.CHILD_AGE_0,
                 MedicaidPersonType.CHILD_AGE_1_5,
                 MedicaidPersonType.CHILD_AGE_6_18,
