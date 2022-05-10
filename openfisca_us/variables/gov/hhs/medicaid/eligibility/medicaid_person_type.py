@@ -38,13 +38,13 @@ class medicaid_person_type(Variable):
         is_covered_as_pregnant = is_pregnant | (
             days_postpartum < max_postpartum_days
         )
-        is_blind = person("is_blind", period)
-        is_disabled = person("is_disabled", period)
-        is_aged = age > ma.aged_threshold
+        qualifies_as_disabled = person(
+            "meets_medicaid_disabled_criteria", period
+        )
         return select(
             [
                 is_covered_as_pregnant,
-                is_aged | is_blind | is_disabled,
+                qualifies_as_disabled,
                 age == 0,
                 age < 6,
                 age < 19,
