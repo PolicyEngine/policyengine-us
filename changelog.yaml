@@ -646,4 +646,18 @@
 - bump: minor
   changes:
     added:
+      - TAXSIM integration tests for AGI.
+    changed:
+      - TAXSIM variables renamed to contain `taxsim_` prefix.
+  date: 2022-05-08 19:55:20
+- bump: minor
+  changes:
+    added:
+      - Medicaid eligibility for 50 states.
+  date: 2022-05-10 13:57:16
+- bump: minor
+  changes:
+    added:
       - TANF from CPS data.
+      - Female variable.
+      - Variable for number of own children in household.

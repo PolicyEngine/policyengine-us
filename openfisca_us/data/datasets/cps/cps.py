@@ -170,16 +170,16 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     """
     cps["employment_income"] = person.WSAL_VAL
     cps["self_employment_income"] = person.SEMP_VAL
-    cps["e02100"] = person.FRSE_VAL
+    cps["farm_income"] = person.FRSE_VAL
     cps["social_security"] = person.SS_VAL
-    cps["e02300"] = person.UC_VAL
+    cps["unemployment_compensation"] = person.UC_VAL
 
     # Pensions/annuities
     other_inc_type = person.OI_OFF
-    cps["e01500"] = other_inc_type.isin((2, 13)) * person.OI_VAL
+    cps["pension_income"] = other_inc_type.isin((2, 13)) * person.OI_VAL
 
     # Alimony
-    cps["e00800"] = (person.OI_OFF == 20) * person.OI_VAL
+    cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
 
     # TANF
     cps["tanf_reported"] = person.PAW_VAL

@@ -3,10 +3,10 @@
   output:
     meets_medicaid_income_threshold: true
 
-- name: Someone with income at 140% of the poverty level
+- name: Someone with income at 300% of the poverty level
   period: 2021
   input:
-    employment_income: 12_880 * 1.4 # Poverty line for one-person household is $12,880.
+    employment_income: 12_880 * 3 # Poverty line for one-person household is $12,880.
   output:
     meets_medicaid_income_threshold: false
 
