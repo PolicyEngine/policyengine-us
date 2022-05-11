@@ -1,5 +1,4 @@
 import logging
-from turtle import shape
 from openfisca_tools.data import PublicDataset
 import h5py
 from openfisca_us.data.datasets.cps.raw_cps import RawCPS
