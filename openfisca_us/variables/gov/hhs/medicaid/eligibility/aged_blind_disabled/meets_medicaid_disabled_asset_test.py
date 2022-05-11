@@ -10,8 +10,6 @@ class meets_medicaid_disabled_asset_test(Variable):
 
     def formula(person, period, parameters):
         assets = person.spm_unit("spm_unit_assets", period)
-        limit = parameters(
-            period
-        ).hhs.medicaid.aged_or_disabled.asset_limit
+        limit = parameters(period).hhs.medicaid.aged_or_disabled.asset_limit
         state = person.household("state_code_str", period)
         return assets <= limit[state]

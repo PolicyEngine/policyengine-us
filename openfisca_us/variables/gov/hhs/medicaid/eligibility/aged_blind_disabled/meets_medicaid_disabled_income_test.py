@@ -9,9 +9,7 @@ class meets_medicaid_disabled_income_test(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        limit = parameters(
-            period
-        ).hhs.medicaid.aged_or_disabled.income_limit
+        limit = parameters(period).hhs.medicaid.aged_or_disabled.income_limit
         state = person.household("state_code_str", period)
         income_share_of_fpg = person.spm_unit("medicaid_income_level", period)
         return income_share_of_fpg <= limit[state]

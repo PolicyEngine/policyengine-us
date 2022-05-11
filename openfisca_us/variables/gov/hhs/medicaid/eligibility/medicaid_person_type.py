@@ -7,8 +7,8 @@ class MedicaidPersonType(Enum):
     PREGNANT = "Pregnant adult"
     CHILD_AGE_0 = "Child age 0"
     CHILD_AGE_1_5 = "Child age 1 to 5"
-    CHILD_AGE_6_17 = "Child age 6 to 17"
-    CHILD_AGE_18_20 = "Adult under 21 (covered as child)"
+    CHILD_AGE_6_18 = "Child age 6 to 17"
+    CHILD_AGE_19_20 = "Adult under 21 (covered as child)"
     AGED_BLIND_DISABLED = "Aged, blind, or disabled"
 
 
@@ -26,9 +26,7 @@ class medicaid_person_type(Variable):
         # Get the person's age.
         age = person("age", period)
         # Get the existence of dependents, as defined by people 18 or younger.
-        has_dependents = person.spm_unit.any(
-            age < ma.dependent_age
-        )
+        has_dependents = person.spm_unit.any(age < ma.dependent_age)
         under_21_qualifies = ma.under_21_qualifies_as_child
         state = person.household("state_code_str", period)
         state_has_under_21_child_category = under_21_qualifies[state] > 0
@@ -57,8 +55,8 @@ class medicaid_person_type(Variable):
                 MedicaidPersonType.AGED_BLIND_DISABLED,
                 MedicaidPersonType.CHILD_AGE_0,
                 MedicaidPersonType.CHILD_AGE_1_5,
-                MedicaidPersonType.CHILD_AGE_6_17,
-                MedicaidPersonType.CHILD_AGE_18_20,
+                MedicaidPersonType.CHILD_AGE_6_18,
+                MedicaidPersonType.CHILD_AGE_19_20,
                 MedicaidPersonType.ADULT_WITH_DEPENDENT,
                 MedicaidPersonType.ADULT_WITHOUT_DEPENDENT,
             ],

@@ -11,13 +11,8 @@ class is_medicaid_eligible(Variable):
     def formula(person, period, parameters):
         person_type = person("medicaid_person_type", period)
         person_types = person_type.possible_values
-        return select(
-            [
-                person_type == person_types.AGED_BLIND_DISABLED,
-                True,
-            ],
-            [
-                person("meets_medicaid_disabled_income_test", period),
-                person("meets_medicaid_income_threshold", period),
-            ],
+        return where(
+            person_type == person_types.AGED_BLIND_DISABLED,
+            person("meets_medicaid_disabled_income_test", period),
+            person("meets_medicaid_income_threshold", period),
         )

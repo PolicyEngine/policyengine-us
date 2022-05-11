@@ -12,10 +12,5 @@ class medicaid(Variable):
 
     def formula(person, period, parameters):
         eligible = person("is_medicaid_eligible", period)
-        state_code = person.household("state_code_str", period)
-        medicaid = parameters(period).hhs.medicaid
-        average_payment_per_person = (
-            medicaid.benefit.total_spending[state_code]
-            / medicaid.benefit.total_population[state_code]
-        )
+        average_payment_per_person = person("medicaid_average_payment", period)
         return eligible * average_payment_per_person
