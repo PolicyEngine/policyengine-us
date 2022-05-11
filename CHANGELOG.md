@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.62.1] - 2022-05-11 15:14:12
+
+### Fixed
+
+- Moved lingering state income tax deduction files into variables/gov.
+
 ## [0.62.0] - 2022-05-11 14:17:28
 
 ### Added
@@ -813,6 +819,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.62.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.0...0.62.1
 [0.62.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.61.0...0.62.0
 [0.61.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.60.0...0.61.0
 [0.60.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.59.0...0.60.0
