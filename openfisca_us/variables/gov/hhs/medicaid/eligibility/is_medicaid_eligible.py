@@ -10,7 +10,7 @@ class is_medicaid_eligible(Variable):
 
     def formula(person, period, parameters):
         person_type = person("medicaid_person_type", period)
-        person_types = person_type
+        person_types = person_type.possible_values
         return select(
             [
                 person_type == person_types.AGED_BLIND_DISABLED,
