@@ -677,3 +677,7 @@
     changed:
     - Label state income tax consistently with federal.
   date: 2022-05-11 17:41:12
+- bump: patch
+  changes:
+    fixed:
+    - Remove bad import causing failure on some headless configurations.
