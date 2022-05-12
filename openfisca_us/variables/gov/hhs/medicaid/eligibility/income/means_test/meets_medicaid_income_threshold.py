@@ -10,5 +10,5 @@ class meets_medicaid_income_threshold(Variable):
 
     def formula(person, period, parameters):
         fpg_income_threshold = person("medicaid_income_threshold", period)
-        income_share_of_fpg = person.spm_unit("medicaid_income_level", period)
+        income_share_of_fpg = person.tax_unit("medicaid_income_level", period)
         return income_share_of_fpg <= fpg_income_threshold

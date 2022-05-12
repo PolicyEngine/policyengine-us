@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class medicaid_income_level(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = TaxUnit
     label = "Medicaid income level"
     unit = "/1"
     documentation = (
@@ -11,7 +11,7 @@ class medicaid_income_level(Variable):
     )
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
-        income = spm_unit("medicaid_income", period)
-        fpg = spm_unit("spm_unit_fpg", period)
+    def formula(tax_unit, period, parameters):
+        income = tax_unit("medicaid_income", period)
+        fpg = tax_unit("tax_unit_fpg", period)
         return income / fpg

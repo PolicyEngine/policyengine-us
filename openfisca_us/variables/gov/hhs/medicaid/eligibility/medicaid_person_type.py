@@ -26,7 +26,7 @@ class medicaid_person_type(Variable):
         # Get the person's age.
         age = person("age", period)
         # Get the existence of dependents, as defined by people 18 or younger.
-        has_dependents = person.spm_unit.any(age < ma.dependent_age)
+        has_dependents = person.tax_unit.any(age < ma.dependent_age)
         under_21_qualifies = ma.under_21_qualifies_as_child
         state = person.household("state_code_str", period)
         state_has_under_21_child_category = under_21_qualifies[state] > 0
