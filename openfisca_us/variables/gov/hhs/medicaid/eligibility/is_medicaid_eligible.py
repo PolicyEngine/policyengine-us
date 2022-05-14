@@ -4,15 +4,12 @@ from openfisca_us.model_api import *
 class is_medicaid_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Meets Medicaid financial criteria"
-    unit = USD
+    label = "Eligible for Medicaid"
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/42/1396a#a_10"
 
     def formula(person, period, parameters):
-        person_type = person("medicaid_person_type", period)
-        person_types = person_type.possible_values
-        return where(
-            person_type == person_types.AGED_BLIND_DISABLED,
-            person("meets_medicaid_disabled_income_test", period),
-            person("meets_medicaid_income_threshold", period),
-        )
+        categories = parameters(
+            period
+        ).hhs.medicaid.eligibility.categories.covered
+        return np.any([person(category, period) for category in categories])

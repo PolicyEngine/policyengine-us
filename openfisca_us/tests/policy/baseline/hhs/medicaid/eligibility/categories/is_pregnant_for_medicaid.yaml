@@ -1,0 +1,31 @@
+- name: Pregnancy and under FPL limit confers eligibility in CA
+  period: 2022
+  input:
+    is_pregnant: true
+    medicaid_income_level: 2.12
+  output:
+    is_pregnant_for_medicaid: true
+
+- name: Pregnancy and over FPL limit confers ineligibility in CA
+  period: 2022
+  input:
+    is_pregnant: true
+    medicaid_income_level: 2.13
+  output:
+    is_pregnant_for_medicaid: false
+
+- name: Under FPL limit, 59 days postpartum, eligible in CA.
+  period: 2022
+  input:
+    medicaid_income_level: 2.12
+    count_days_postpartum: 59
+  output:
+    is_pregnant_for_medicaid: true
+
+- name: Under FPL limit, 60 days postpartum, ineligible in CA.
+  period: 2022
+  input:
+    medicaid_income_level: 2.12
+    count_days_postpartum: 60
+  output:
+    is_pregnant_for_medicaid: false

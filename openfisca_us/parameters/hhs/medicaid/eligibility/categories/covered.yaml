@@ -1,0 +1,16 @@
+description: Categories of person covered under Medicaid.
+values:
+  2015-01-01:
+    - is_pregnant_for_medicaid
+    - is_infant_for_medicaid
+    - is_young_child_for_medicaid
+    - is_older_child_for_medicaid
+    - is_parent_for_medicaid
+    - is_adult_for_medicaid
+metadata:
+  unit: variable
+  name: medicaid_categories
+  label: "Medicaid categories"
+  reference:
+    - title: 42 U.S. Code § 1396(a)(10)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/1396#a_10_A

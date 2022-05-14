@@ -1,0 +1,22 @@
+- name: Child under 1 and FPL limit, eligible in CA
+  period: 2022
+  input:
+    age: 0
+    medicaid_income_level: 2.65
+  output:
+    is_infant_for_medicaid: true
+
+- name: Child under 1 but not FPL limit, ineligible in CA
+  period: 2022
+  input:
+    age: 0
+    medicaid_income_level: 2.66
+  output:
+    is_infant_for_medicaid: false
+
+- name: Child over 1, ineligible in CA
+  period: 2022
+  input:
+    age: 1
+  output:
+    is_infant_for_medicaid: false

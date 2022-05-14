@@ -1,0 +1,22 @@
+- name: Child under 6 and FPL limit, eligible in CA
+  period: 2022
+  input:
+    age: 3
+    medicaid_income_level: 2.65
+  output:
+    is_young_child_for_medicaid: true
+
+- name: Child under 6 but not FPL limit, ineligible in CA
+  period: 2022
+  input:
+    age: 3
+    medicaid_income_level: 2.66
+  output:
+    is_young_child_for_medicaid: false
+
+- name: Child over 6, ineligible in CA
+  period: 2022
+  input:
+    age: 6
+  output:
+    is_young_child_for_medicaid: false
