@@ -1,0 +1,13 @@
+description: Income sources not included in AGI but included in Medicaid-related MAGI.
+values:
+  2010-01-01:
+    - foreign_earned_income_exclusion
+    - student_loan_interest
+    - tax_exempt_social_security
+metadata:
+  unit: variable
+  name: medicaid_magi_additions_over_agi
+  label: "Medicaid-related MAGI additions over AGI"
+  reference:
+    - title: 26 U.S. Code § 36B(d)(2) - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B#d_2

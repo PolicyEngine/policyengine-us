@@ -627,3 +627,58 @@
     - MA state tax exemptions for aged and blind people.
     - Unit tests for state tax exemptions.
   date: 2022-05-04 19:44:35
+- bump: patch
+  changes:
+    changed:
+    - CO SNAP BBCE net income limit set to true.
+    - Cite official source for SNAP emergency allotment amount.
+  date: 2022-05-05 06:07:31
+- bump: minor
+  changes:
+    added:
+    - Metadata and verbose variable names for IRS computation up to AGI.
+  date: 2022-05-05 17:25:36
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing the system to fail to load on Colab.
+  date: 2022-05-05 21:54:08
+- bump: minor
+  changes:
+    added:
+    - TAXSIM integration tests for AGI.
+    changed:
+    - TAXSIM variables renamed to contain `taxsim_` prefix.
+  date: 2022-05-08 19:55:20
+- bump: minor
+  changes:
+    added:
+    - Medicaid eligibility for 50 states.
+  date: 2022-05-10 13:57:16
+- bump: minor
+  changes:
+    added:
+    - TANF from CPS data.
+    - Female variable.
+    - Variable for number of own children in household.
+  date: 2022-05-10 17:57:30
+- bump: minor
+  changes:
+    added:
+    - List of fully implemented programs at the US and state level.
+  date: 2022-05-11 14:17:28
+- bump: patch
+  changes:
+    fixed:
+    - Moved lingering state income tax deduction files into variables/gov.
+  date: 2022-05-11 15:14:12
+- bump: patch
+  changes:
+    changed:
+    - Label state income tax consistently with federal.
+  date: 2022-05-11 17:41:12
+- bump: patch
+  changes:
+    fixed:
+    - Remove bad import causing failure on some headless configurations.
+  date: 2022-05-11 23:19:04

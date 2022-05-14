@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.62.3] - 2022-05-11 23:19:04
+
+### Fixed
+
+- Remove bad import causing failure on some headless configurations.
+
+## [0.62.2] - 2022-05-11 17:41:12
+
+### Changed
+
+- Label state income tax consistently with federal.
+
+## [0.62.1] - 2022-05-11 15:14:12
+
+### Fixed
+
+- Moved lingering state income tax deduction files into variables/gov.
+
+## [0.62.0] - 2022-05-11 14:17:28
+
+### Added
+
+- List of fully implemented programs at the US and state level.
+
+## [0.61.0] - 2022-05-10 17:57:30
+
+### Added
+
+- TANF from CPS data.
+- Female variable.
+- Variable for number of own children in household.
+
+## [0.60.0] - 2022-05-10 13:57:16
+
+### Added
+
+- Medicaid eligibility for 50 states.
+
+## [0.59.0] - 2022-05-08 19:55:20
+
+### Added
+
+- TAXSIM integration tests for AGI.
+
+### Changed
+
+- TAXSIM variables renamed to contain `taxsim_` prefix.
+
+## [0.58.1] - 2022-05-05 21:54:08
+
+### Fixed
+
+- Bug causing the system to fail to load on Colab.
+
+## [0.58.0] - 2022-05-05 17:25:36
+
+### Added
+
+- Metadata and verbose variable names for IRS computation up to AGI.
+
+## [0.57.1] - 2022-05-05 06:07:31
+
+### Changed
+
+- CO SNAP BBCE net income limit set to true.
+- Cite official source for SNAP emergency allotment amount.
+
 ## [0.57.0] - 2022-05-04 19:44:35
 
 ### Added
@@ -764,6 +831,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.62.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.2...0.62.3
+[0.62.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.1...0.62.2
+[0.62.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.0...0.62.1
+[0.62.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.61.0...0.62.0
+[0.61.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.60.0...0.61.0
+[0.60.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.59.0...0.60.0
+[0.59.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.1...0.59.0
+[0.58.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.0...0.58.1
+[0.58.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.1...0.58.0
+[0.57.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.0...0.57.1
 [0.57.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.56.0...0.57.0
 [0.56.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.55.0...0.56.0
 [0.55.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.1...0.55.0
