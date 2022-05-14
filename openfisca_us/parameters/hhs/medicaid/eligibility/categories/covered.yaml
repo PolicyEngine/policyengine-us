@@ -1,4 +1,4 @@
-description: Categories of person covered under Medicaid.
+description: Categories of person covered under Medicaid. These are not mutually exclusive - a person only needs to qualify under one category.
 values:
   2015-01-01:
     - is_pregnant_for_medicaid
@@ -7,6 +7,7 @@ values:
     - is_older_child_for_medicaid
     - is_parent_for_medicaid
     - is_adult_for_medicaid
+    - is_young_adult_for_medicaid
 metadata:
   unit: variable
   name: medicaid_categories
