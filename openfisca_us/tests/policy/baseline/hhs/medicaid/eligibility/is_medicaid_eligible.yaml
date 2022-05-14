@@ -46,3 +46,10 @@
     is_young_adult_for_medicaid: true
   output:
     is_medicaid_eligible: true
+
+- name: Medicaid eligibility from SSI receipt
+  period: 2022
+  input:
+    is_ssi_recipient_for_medicaid: true
+  output:
+    is_medicaid_eligible: true
