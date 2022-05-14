@@ -15,7 +15,4 @@ class is_young_adult_for_medicaid(Variable):
         income = person("medicaid_income_level", period)
         state = person.household("state_code_str", period)
         income_limit = ma.income_limit[state]
-        return (
-            is_young_adult
-            & (income < income_limit)
-        )
+        return is_young_adult & (income < income_limit)

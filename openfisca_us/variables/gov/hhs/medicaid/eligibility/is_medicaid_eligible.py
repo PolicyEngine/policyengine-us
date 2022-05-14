@@ -9,7 +9,5 @@ class is_medicaid_eligible(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#a_10"
 
     def formula(person, period, parameters):
-        categories = parameters(
-            period
-        ).hhs.medicaid.eligibility.categories.covered
-        return np.any([person(category, period) for category in categories])
+        category = person("medicaid_category", period)
+        return category != category.possible_values.NONE
