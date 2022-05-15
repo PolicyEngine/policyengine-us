@@ -11,5 +11,5 @@ class medicaid(Variable):
 
     def formula(person, period, parameters):
         eligible = person("is_medicaid_eligible", period)
-        average_payment = person("medicaid_benefit_value", period)
-        return eligible * average_payment
+        benefit = person("medicaid_benefit_value", period)
+        return eligible * benefit
