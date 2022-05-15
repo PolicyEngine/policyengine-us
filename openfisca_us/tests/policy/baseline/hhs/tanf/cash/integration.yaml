@@ -8,7 +8,7 @@
         ssi: 1_000 * 12 # Example doesn't provide number
       mrs_j:
         age: 35 # Not in the example.
-        market_income: 1_000 * 12
+        employment_income: 1_000 * 12
       child1:
         age: 14 # Not in the example.
       # NB: Example says 2 children, but calculation only shows payment level for 3.
@@ -31,7 +31,7 @@
     people:
       ms_p:
         age: 42 # Not in the example.
-        market_income: 860 * 12
+        employment_income: 860 * 12
       child_1:
         age: 14 # Not in the example.
       child_2:
@@ -63,7 +63,7 @@
         ssi: 1_000 * 12 # Example doesn't provide number.
       mrs_j:
         age: 35 # Not in the example.
-        market_income: 1_000 * 12
+        employment_income: 1_000 * 12
       child1:
         age: 14 # Not in the example.
       # NB: Example says 2 children, but calculation only shows payment level for 3.
