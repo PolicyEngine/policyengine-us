@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class is_adult_for_medicaid(Variable):
     value_type = bool
     entity = Person
-    label = "Is an adult for Medicaid"
+    label = "Working-age and childless adults"
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#a_10_A_i_VIII"

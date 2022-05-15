@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class is_parent_for_medicaid(Variable):
     value_type = bool
     entity = Person
-    label = "Is a parent or care-taker relative for Medicaid"
+    label = "Parents"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396u-1"
 

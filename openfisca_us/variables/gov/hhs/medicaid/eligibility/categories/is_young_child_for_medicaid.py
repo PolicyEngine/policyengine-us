@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class is_young_child_for_medicaid(Variable):
     value_type = bool
     entity = Person
-    label = "Is a young child for Medicaid"
+    label = "Young children"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1396a#l_1_C"
 
