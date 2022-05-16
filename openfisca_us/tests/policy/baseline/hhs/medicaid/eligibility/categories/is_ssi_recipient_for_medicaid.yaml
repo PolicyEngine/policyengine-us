@@ -1,0 +1,14 @@
+- name: SSI recipient in CA qualifies
+  period: 2022
+  input:
+    ssi: 1
+  output:
+    is_ssi_recipient_for_medicaid: true
+
+- name: SSI recipient in CT (a 209(b) state) does not qualify
+  period: 2022
+  input:
+    ssi: 1
+    state_code: CT
+  output:
+    is_ssi_recipient_for_medicaid: false

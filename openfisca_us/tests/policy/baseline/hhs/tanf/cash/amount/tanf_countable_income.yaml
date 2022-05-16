@@ -1,0 +1,50 @@
+# TODO: Update tests here. Should have an assortment of combinations of flat, percentage, etc. income deductions.
+
+- name: "IL TANF: Calculating countable income from total gross income: $3500 gross income"
+  period: 2022
+  input:
+    tanf_gross_earned_income: 3500 * 12
+    state_code: IL
+  output:
+    # This suggests a 75% deduction, which Illinois does.
+    tanf_countable_income: 12 * 3500 / 4
+
+- name: "CA TANF: Calculating countable income from total gross income: $3500 gross income"
+  period: 2022
+  input:
+    tanf_gross_earned_income: 3500 * 12
+    state_code: CA
+  output:
+    # This suggests a $550 household deduction and a 50% deduction, which California does.
+    tanf_countable_income: 12 * (3500 - 550) / 2
+
+- name: CA TANF unearned income test.
+  period: 2022
+  input:
+    tanf_gross_unearned_income: 12 * 1000
+    state_code: CA
+  output:
+    tanf_countable_income: 12 * (1000 - 550)
+
+- name: CA TANF with earned and unearned income.
+  period: 2022
+  input:
+    tanf_gross_earned_income: 12 * 1000
+    tanf_gross_unearned_income: 12 * 200
+    state_code: CA
+  output:
+    # First subtract $200 of the $550 household deduction from unearned income.
+    # Then allocate the remaining -$350 to the earned income.
+    # Divide the $650 by 2 to get the countable income.
+    tanf_countable_income: 12 * 325
+
+- name: CA TANF with earned and unearned income, where the household deduction only applies to unearned income.
+  period: 2022
+  input:
+    tanf_gross_earned_income: 12 * 200
+    tanf_gross_unearned_income: 12 * 1000
+    state_code: CA
+  output:
+    # Subtract the full $550 household deduction from unearned income.
+    # Divide the $200 by 2 and add countable unearned income to get the total countable income.
+    tanf_countable_income: 12 * (1000 - 550 + (200 / 2))

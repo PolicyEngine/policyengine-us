@@ -11,4 +11,5 @@ class tanf_gross_earned_income(Variable):
     reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
 
     def formula(spm_unit, period, parameters):
-        return spm_unit.sum(spm_unit.members("market_income", period))
+        sources = parameters(period).hhs.tanf.cash.income.gross.sources.earned
+        return add(spm_unit, period, sources)

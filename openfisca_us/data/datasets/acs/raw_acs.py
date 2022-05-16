@@ -144,9 +144,7 @@ def concat_zipped_csvs(
     return res
 
 
-def create_spm_unit_table(
-    storage: pd.HDFStore, person: pd.DataFrame
-) -> pd.DataFrame:
+def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> None:
     SPM_UNIT_COLUMNS = [
         "CAPHOUSESUB",
         "CAPWKCCXPNS",

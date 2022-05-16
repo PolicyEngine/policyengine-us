@@ -13,3 +13,10 @@
     tanf_amount_if_eligible: -100
   output:
     tanf: 0
+
+- name: "Has TANF reported"
+  period: 2022
+  input:
+    tanf_reported: 1
+  output:
+    tanf: 1

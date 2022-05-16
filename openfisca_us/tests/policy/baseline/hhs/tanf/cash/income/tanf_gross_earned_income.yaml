@@ -1,0 +1,25 @@
+- name: Default gross/employment income is zero.
+  period: 2022
+  output:
+    tanf_gross_earned_income: 0
+
+- name: TANF income for one person is their employment income.
+  period: 2022
+  input:
+    employment_income: 10_000
+  output:
+    tanf_gross_earned_income: 10_000
+
+- name: TANF sums employment and self-employment income.
+  period: 2022
+  input:
+    people:
+      p1:
+        employment_income: 10_000
+      p2:
+        self_employment_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    tanf_gross_earned_income: 30_000
