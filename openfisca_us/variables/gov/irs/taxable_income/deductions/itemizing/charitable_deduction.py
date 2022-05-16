@@ -16,11 +16,11 @@ class charitable_deduction(Variable):
             tax_unit, period, ["charitable_non_cash_donations"]
         )
         positive_agi = tax_unit("positive_agi", period)
-        celling = parameters(period).irs.deductions.itemized.charity.ceiling
+        ceiling = parameters(period).irs.deductions.itemized.charity.ceiling
         capped_non_cash_donations = min_(
-            non_cash_donations, celling.non_cash * positive_agi
+            non_cash_donations, ceiling.non_cash * positive_agi
         )
         return min_(
             capped_non_cash_donations + cash_donations,
-            celling.all * positive_agi,
+            ceiling.all * positive_agi,
         )

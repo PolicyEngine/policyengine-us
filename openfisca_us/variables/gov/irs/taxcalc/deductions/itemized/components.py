@@ -65,7 +65,7 @@ class c19700(Variable):
 
     def formula(tax_unit, period, parameters):
         charity = parameters(period).irs.deductions.itemized.charity
-        posagi = tax_unit("posagi", period)
+        posagi = tax_unit("positive_agi", period)
         lim30 = min_(
             charity.ceiling.non_cash * posagi,
             tax_unit("filer_e20100", period),
@@ -88,7 +88,7 @@ class c20500(Variable):
 
     def formula(tax_unit, period, parameters):
         casualty = parameters(period).irs.deductions.itemized.casualty
-        floor = casualty.floor * tax_unit("posagi", period)
+        floor = casualty.floor * tax_unit("positive_agi", period)
         deduction = max_(0, tax_unit("filer_g20500", period) - floor)
         return deduction
 
