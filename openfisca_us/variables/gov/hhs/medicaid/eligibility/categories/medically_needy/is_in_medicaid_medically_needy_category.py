@@ -9,7 +9,9 @@ class is_in_medicaid_medically_needy_category(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ma = parameters(period).hhs.medicaid.eligibility.categories.medically_needy
+        ma = parameters(
+            period
+        ).hhs.medicaid.eligibility.categories.medically_needy
         aged_threshold = parameters(period).ssa.ssi.eligibility.aged_threshold
         is_child = any_(person, period, ma.categories.child.child_categories)
         is_disabled = person("is_ssi_disabled", period)
@@ -18,10 +20,26 @@ class is_in_medicaid_medically_needy_category(Variable):
         is_parent = person("is_parent_for_medicaid_nfc", period)
         mn = ma.categories
         state = person.household("state_code_str", period)
-        categories = [mn.child.child, mn.disabled, mn.parent, mn.pregnant, mn.senior]
+        categories = [
+            mn.child.child,
+            mn.disabled,
+            mn.parent,
+            mn.pregnant,
+            mn.senior,
+        ]
         category_covered = [parameter[state] > 0 for parameter in categories]
-        in_category = [is_child, is_disabled, is_parent, is_pregnant, is_senior]
-        return np.any([
-            person_in_category & category_is_covered
-            for person_in_category, category_is_covered in zip(in_category, category_covered)
-        ])
+        in_category = [
+            is_child,
+            is_disabled,
+            is_parent,
+            is_pregnant,
+            is_senior,
+        ]
+        return np.any(
+            [
+                person_in_category & category_is_covered
+                for person_in_category, category_is_covered in zip(
+                    in_category, category_covered
+                )
+            ]
+        )

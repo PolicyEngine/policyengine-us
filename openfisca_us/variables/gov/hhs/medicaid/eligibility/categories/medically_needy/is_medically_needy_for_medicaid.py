@@ -15,22 +15,25 @@ class is_medically_needy_for_medicaid(Variable):
         tax_unit = person.tax_unit
         income = tax_unit.sum(personal_income - medical_expenses)
         assets = tax_unit.sum(personal_assets)
-        ma = parameters(
-            period
-        ).hhs.medicaid.eligibility.categories.medically_needy
+        ma = parameters(period).hhs.medicaid
+        mn = ma.eligibility.categories.medically_needy
         is_joint = person.tax_unit("tax_unit_is_joint", period)
         state = person.household("state_code_str", period)
         income_limit = where(
             is_joint,
-            ma.limit.income.couple[state],
-            ma.limit.income.individual[state],
+            mn.limit.income.couple[state] * MONTHS_IN_YEAR,
+            mn.limit.income.individual[state] * MONTHS_IN_YEAR,
         )
         asset_limit = where(
             is_joint,
-            ma.assets.limit.couple[state],
-            ma.assets.limit.individual[state],
+            mn.limit.assets.couple[state],
+            mn.limit.assets.individual[state],
         )
-        under_limits = (income < income_limit) & (
-            assets < asset_limit
-        )
-        return in_category & under_limits
+        under_limits = (income < income_limit) & (assets < asset_limit)
+        other_categories = [
+            category
+            for category in ma.eligibility.categories.covered
+            if category != "is_medically_needy_for_medicaid"
+        ]
+        not_in_other_pathway = add(person, period, other_categories) == 0
+        return in_category & not_in_other_pathway & under_limits
