@@ -91,13 +91,13 @@ class c09600(Variable):
             0, amount_over_threshold
         )
         dwks10, dwks13, dwks14, dwks19, e24515 = [
-            tax_unit(variable, period)
+            add(tax_unit, period, [variable])
             for variable in [
                 "dwks10",
                 "dwks13",
                 "dwks14",
                 "dwks19",
-                "filer_e24515",
+                "unrecaptured_section_1250_gain",
             ]
         ]
         form_6251_part_iii_required = np.any(
@@ -155,7 +155,7 @@ class c09600(Variable):
 
         # Form 6251, Part II bottom
         line32 = where(
-            tax_unit("f6251", period), tax_unit("filer_e62900", period), e07300
+            tax_unit("amt_form_completed", period), tax_unit("foreign_tax_credit", period), e07300
         )
         line33 = line31 - line32
         return max_(

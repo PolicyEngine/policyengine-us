@@ -60,8 +60,8 @@ class section_22_income(Variable):
         )
 
         capped_amount = min_(initial_amount, cap)
-        total_pensions = tax_unit("filer_e01500", period)
-        taxable_pensions = tax_unit("filer_e01700", period)
+        total_pensions = tax_unit("pension_income", period)
+        taxable_pensions = tax_unit("taxable_pension_income", period)
         non_taxable_pensions = total_pensions - taxable_pensions
         capped_reduced_amount = capped_amount - non_taxable_pensions
         agi = tax_unit("adjusted_gross_income", period)

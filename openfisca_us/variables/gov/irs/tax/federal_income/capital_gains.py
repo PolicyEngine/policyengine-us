@@ -10,7 +10,7 @@ class dwks6(Variable):
 
     def formula(tax_unit, period, parameters):
         dwks2 = tax_unit("qualified_dividend_income", period)
-        dwks3 = tax_unit("filer_e58990", period)
+        dwks3 = tax_unit("investment_income_form_4952", period)
         # dwks4 always assumed to be zero
         dwks5 = max_(0, dwks3)
         return max_(0, dwks2 - dwks5)
@@ -24,7 +24,7 @@ class dwks9(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p23250 = tax_unit("filer_p23250", period)
+        p23250 = add(tax_unit, period, ["long_term_capital_gains"])
         c23650 = tax_unit("c23650", period)
         dwks7 = min_(p23250, c23650)  # SchD lines 15 and 16, respectively
         # dwks8 = min(dwks3, dwks4)
@@ -32,7 +32,7 @@ class dwks9(Variable):
         # BELOW TWO STATEMENTS ARE UNCLEAR IN LIGHT OF dwks9=... COMMENT
         e01100 = add(tax_unit, period, ["non_sch_d_capital_gains"])
         c24510 = where(e01100 > 0, e01100, max_(0, dwks7) + e01100)
-        return max_(0, c24510 - min_(0, tax_unit("filer_e58990", period)))
+        return max_(0, c24510 - min_(0, tax_unit("investment_income_form_4952", period)))
 
 
 class dwks10(Variable):
@@ -50,7 +50,7 @@ class dwks10(Variable):
         dwks10_if_no_gains = max_(
             0,
             min_(
-                tax_unit("filer_p23250", period),
+                add(tax_unit, period, ["long_term_capital_gains"]),
                 tax_unit("c23650", period),
             ),
         ) + add(tax_unit, period, ["non_sch_d_capital_gains"])
@@ -73,10 +73,8 @@ class dwks13(Variable):
 
     def formula(tax_unit, period, parameters):
         dwks1 = tax_unit("c04800", period)
-        e24515 = tax_unit("filer_e24515", period)
-        dwks11 = e24515 + tax_unit(
-            "filer_e24518", period
-        )  # Sch D lines 18 and 19, respectively
+        e24515 = add(tax_unit, period, ["unrecaptured_section_1250_gain"])
+        dwks11 = e24515 + add(tax_unit, period, ["capital_gain_28_percent"])  # Sch D lines 18 and 19, respectively
         dwks9 = tax_unit("dwks9", period)
         dwks12 = min_(dwks9, dwks11)
         dwks10 = tax_unit("dwks10", period)

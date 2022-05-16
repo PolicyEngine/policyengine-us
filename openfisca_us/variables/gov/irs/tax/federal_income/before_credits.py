@@ -14,7 +14,7 @@ class c05200(Variable):
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).irs.income
-        e26270 = tax_unit("filer_e26270", period)
+        e26270 = add(tax_unit, period, ["partnership_s_corp_income"])
         e00900 = tax_unit("self_employment_income", period)
 
         # Determine pass-through and non-pass-through income
@@ -108,7 +108,7 @@ class taxbc(Variable):
         dwks32 = capital_gains.rates["3"] * dwks31
         # Break in worksheet lines
         dwks33 = min_(
-            tax_unit("dwks9", period), tax_unit("filer_e24515", period)
+            tax_unit("dwks9", period), add(tax_unit, period, ["unrecaptured_section_1250_gain"])
         )
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
@@ -126,7 +126,7 @@ class taxbc(Variable):
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).irs.income
-        e26270 = tax_unit("filer_e26270", period)
+        e26270 = add(tax_unit, period, ["partnership_s_corp_income"])
         e00900 = tax_unit("self_employment_income", period)
 
         # Determine pass-through and non-pass-through income

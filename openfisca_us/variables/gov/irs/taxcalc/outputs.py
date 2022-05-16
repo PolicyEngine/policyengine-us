@@ -8,7 +8,7 @@ class sey(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        return add(person, period, ["self_employment_income", "e02100", "k1bx14"])
+        return add(person, period, ["self_employment_income", "farm_income", "k1bx14"])
 
 
 class filer_sey(Variable):
