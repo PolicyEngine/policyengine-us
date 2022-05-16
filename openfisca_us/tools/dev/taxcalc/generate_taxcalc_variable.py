@@ -91,9 +91,5 @@ def add_taxcalc_variable_aliases(system: TaxBenefitSystem):
                 )
             )
         except Exception as e:
-            print(
-                "Error adding alias for {}: {}".format(
-                    openfisca_us_name, e
-                )
-            )
+            print("Error adding alias for {}: {}".format(openfisca_us_name, e))
             raise e

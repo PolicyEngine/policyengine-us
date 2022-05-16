@@ -7,4 +7,3 @@ class amt_non_agi_income(Variable):
     label = "Income considered for AMT but not AGI"
     unit = USD
     definition_period = YEAR
-

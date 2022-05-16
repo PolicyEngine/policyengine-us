@@ -11,4 +11,3 @@ class positive_agi(Variable):
 
     def formula(tax_unit, period, parameters):
         return max_(tax_unit("adjusted_gross_income", period), 0)
-

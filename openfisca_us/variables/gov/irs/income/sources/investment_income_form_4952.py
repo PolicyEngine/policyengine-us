@@ -7,4 +7,3 @@ class investment_income_form_4952(Variable):
     label = "Investment income from Form 4952"
     unit = USD
     definition_period = YEAR
-

@@ -7,4 +7,3 @@ class qualified_retirement_penalty(Variable):
     label = "Penalty tax on qualified retirement plans"
     unit = USD
     definition_period = YEAR
-

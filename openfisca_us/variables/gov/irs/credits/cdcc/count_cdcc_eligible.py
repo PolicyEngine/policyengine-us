@@ -7,4 +7,3 @@ class count_cdcc_eligible(Variable):
     label = "CDCC-eligible children"
     unit = USD
     definition_period = YEAR
-

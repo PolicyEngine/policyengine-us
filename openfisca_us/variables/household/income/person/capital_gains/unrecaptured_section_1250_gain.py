@@ -7,4 +7,3 @@ class unrecaptured_section_1250_gain(Variable):
     label = "Un-recaptured section 1250 gain"
     unit = USD
     definition_period = YEAR
-

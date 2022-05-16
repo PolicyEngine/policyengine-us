@@ -8,4 +8,3 @@ class c21040(Variable):
     label = "Phased-out itemized deductions"
     unit = USD
     documentation = "Itemized deductions that are phased out"
-

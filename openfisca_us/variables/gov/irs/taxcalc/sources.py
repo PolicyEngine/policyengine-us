@@ -298,8 +298,6 @@ class n21(Variable):
     documentation = "Number of people 21 years old or older in the filing unit"
 
 
-
-
 class hasqdivltcg(Variable):
     value_type = bool
     entity = TaxUnit
@@ -333,4 +331,8 @@ class c23650(Variable):
     documentation = "Net capital gains (long and short term) before exclusion"
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["long_term_capital_gains", "short_term_capital_gains"])
+        return add(
+            tax_unit,
+            period,
+            ["long_term_capital_gains", "short_term_capital_gains"],
+        )

@@ -108,7 +108,8 @@ class taxbc(Variable):
         dwks32 = capital_gains.rates["3"] * dwks31
         # Break in worksheet lines
         dwks33 = min_(
-            tax_unit("dwks9", period), add(tax_unit, period, ["unrecaptured_section_1250_gain"])
+            tax_unit("dwks9", period),
+            add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
         )
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19

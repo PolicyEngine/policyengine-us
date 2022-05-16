@@ -7,4 +7,3 @@ class foreign_tax_credit(Variable):
     definition_period = YEAR
     documentation = "Foreign tax credit from Form 1116"
     unit = USD
-

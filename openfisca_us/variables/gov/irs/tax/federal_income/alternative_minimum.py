@@ -155,7 +155,9 @@ class c09600(Variable):
 
         # Form 6251, Part II bottom
         line32 = where(
-            tax_unit("amt_form_completed", period), tax_unit("foreign_tax_credit", period), e07300
+            tax_unit("amt_form_completed", period),
+            tax_unit("foreign_tax_credit", period),
+            e07300,
         )
         line33 = line31 - line32
         return max_(

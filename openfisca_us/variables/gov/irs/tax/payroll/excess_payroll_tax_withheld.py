@@ -7,4 +7,3 @@ class excess_payroll_tax_withheld(Variable):
     label = "Excess payroll (FICA/RRTA) tax withheld"
     unit = USD
     definition_period = YEAR
-

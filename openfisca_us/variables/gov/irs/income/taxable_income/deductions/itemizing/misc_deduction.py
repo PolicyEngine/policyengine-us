@@ -7,4 +7,3 @@ class misc_deduction(Variable):
     label = "Miscellaneous deduction"
     unit = USD
     definition_period = YEAR
-

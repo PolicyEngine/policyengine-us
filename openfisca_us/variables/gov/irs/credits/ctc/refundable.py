@@ -97,7 +97,9 @@ class refundable_ctc(Variable):
             "employee_medicare_tax",
             "unreported_payroll_tax",
         ]
-        PERSON_VARIABLES_SUBTRACT = ["excess_payroll_tax_withheld"]  # Excess payroll tax withheld.
+        PERSON_VARIABLES_SUBTRACT = [
+            "excess_payroll_tax_withheld"
+        ]  # Excess payroll tax withheld.
         TAX_UNIT_VARIABLES = [
             "c03260",  # Deductible portion of the self-employed tax.
             "additional_medicare_tax",

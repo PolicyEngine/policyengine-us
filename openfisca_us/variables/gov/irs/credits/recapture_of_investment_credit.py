@@ -7,4 +7,3 @@ class recapture_of_investment_credit(Variable):
     label = "Recapture of Investment Credit"
     unit = USD
     definition_period = YEAR
-

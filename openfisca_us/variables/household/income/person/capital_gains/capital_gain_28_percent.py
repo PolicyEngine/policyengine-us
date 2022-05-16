@@ -7,4 +7,3 @@ class capital_gain_28_percent(Variable):
     label = "28\% rate gain"
     unit = USD
     definition_period = YEAR
-

@@ -7,4 +7,3 @@ class tuition_and_fees(Variable):
     label = "Tuition and fees (from Form 8917)"
     unit = USD
     definition_period = YEAR
-

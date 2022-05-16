@@ -32,7 +32,10 @@ class dwks9(Variable):
         # BELOW TWO STATEMENTS ARE UNCLEAR IN LIGHT OF dwks9=... COMMENT
         e01100 = add(tax_unit, period, ["non_sch_d_capital_gains"])
         c24510 = where(e01100 > 0, e01100, max_(0, dwks7) + e01100)
-        return max_(0, c24510 - min_(0, tax_unit("investment_income_form_4952", period)))
+        return max_(
+            0,
+            c24510 - min_(0, tax_unit("investment_income_form_4952", period)),
+        )
 
 
 class dwks10(Variable):
@@ -74,7 +77,9 @@ class dwks13(Variable):
     def formula(tax_unit, period, parameters):
         dwks1 = tax_unit("c04800", period)
         e24515 = add(tax_unit, period, ["unrecaptured_section_1250_gain"])
-        dwks11 = e24515 + add(tax_unit, period, ["capital_gain_28_percent"])  # Sch D lines 18 and 19, respectively
+        dwks11 = e24515 + add(
+            tax_unit, period, ["capital_gain_28_percent"]
+        )  # Sch D lines 18 and 19, respectively
         dwks9 = tax_unit("dwks9", period)
         dwks12 = min_(dwks9, dwks11)
         dwks10 = tax_unit("dwks10", period)

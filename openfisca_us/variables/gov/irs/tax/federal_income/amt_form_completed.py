@@ -7,4 +7,3 @@ class amt_form_completed(Variable):
     label = "AMT form completed"
     unit = USD
     definition_period = YEAR
-
