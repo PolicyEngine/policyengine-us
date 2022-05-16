@@ -56,10 +56,10 @@ class TaxSim35:
         "childcare",
         # "mortgage",
         "scorp",
-        # "pbusinc",
-        # "pprofinc",
-        # "sbusinc",
-        # "sprofinc",
+        "pbusinc",
+        "pprofinc",
+        "sbusinc",
+        "sprofinc",
     ]
     UNIMPLEMENTED_VARIABLES = [
         "otherprop",
@@ -69,10 +69,6 @@ class TaxSim35:
         "proptax",
         "otheritem",
         "mortgage",
-        "pbusinc",
-        "pprofinc",
-        "sbusinc",
-        "sprofinc",
     ]
     OUTPUT_VARIABLES = [
         "v18",
