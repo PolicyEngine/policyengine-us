@@ -9,7 +9,7 @@ class dwks6(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        dwks2 = tax_unit("filer_e00650", period)
+        dwks2 = tax_unit("qualified_dividend_income", period)
         dwks3 = tax_unit("filer_e58990", period)
         # dwks4 always assumed to be zero
         dwks5 = max_(0, dwks3)
@@ -30,7 +30,7 @@ class dwks9(Variable):
         # dwks8 = min(dwks3, dwks4)
         # dwks9 = max(0., dwks7 - dwks8)
         # BELOW TWO STATEMENTS ARE UNCLEAR IN LIGHT OF dwks9=... COMMENT
-        e01100 = tax_unit("filer_e01100", period)
+        e01100 = add(tax_unit, period, ["non_sch_d_capital_gains"])
         c24510 = where(e01100 > 0, e01100, max_(0, dwks7) + e01100)
         return max_(0, c24510 - min_(0, tax_unit("filer_e58990", period)))
 
@@ -53,7 +53,7 @@ class dwks10(Variable):
                 tax_unit("filer_p23250", period),
                 tax_unit("c23650", period),
             ),
-        ) + tax_unit("filer_e01100", period)
+        ) + add(tax_unit, period, ["non_sch_d_capital_gains"])
         return where(
             tax_unit("hasqdivltcg", period),
             dwks10_if_gains,

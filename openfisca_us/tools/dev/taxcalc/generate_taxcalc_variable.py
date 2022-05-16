@@ -84,8 +84,16 @@ def add_taxcalc_variable_aliases(system: TaxBenefitSystem):
         variable_map = yaml.load(f, Loader=Loader)
 
     for openfisca_us_name, taxcalc_name in variable_map.items():
-        system.add_variable(
-            create_taxcalc_alias(
-                taxcalc_name, type(system.variables[openfisca_us_name])
+        try:
+            system.add_variable(
+                create_taxcalc_alias(
+                    taxcalc_name, type(system.variables[openfisca_us_name])
+                )
             )
-        )
+        except Exception as e:
+            print(
+                "Error adding alias for {}: {}".format(
+                    openfisca_us_name, e
+                )
+            )
+            raise e

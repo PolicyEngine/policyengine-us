@@ -15,7 +15,7 @@ class c05200(Variable):
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).irs.income
         e26270 = tax_unit("filer_e26270", period)
-        e00900 = tax_unit("filer_e00900", period)
+        e00900 = tax_unit("self_employment_income", period)
 
         # Determine pass-through and non-pass-through income
         pt_active_gross = e00900 + e26270
@@ -127,7 +127,7 @@ class taxbc(Variable):
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).irs.income
         e26270 = tax_unit("filer_e26270", period)
-        e00900 = tax_unit("filer_e00900", period)
+        e00900 = tax_unit("self_employment_income", period)
 
         # Determine pass-through and non-pass-through income
         pt_active_gross = e00900 + e26270

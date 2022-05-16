@@ -11,10 +11,10 @@ class niit(Variable):
 
     def formula(tax_unit, period, parameters):
         NII_ELEMENTS = [
-            "filer_e00300",
-            "filer_e00600",
+            "taxable_interest_income",
+            "ordinary_dividend_income",
             "c01000",
-            "filer_e02000",
+            "rental_income",
         ]
         nii = max_(0, add(tax_unit, period, NII_ELEMENTS))
         niit = parameters(period).irs.investment.net_inv_inc_tax

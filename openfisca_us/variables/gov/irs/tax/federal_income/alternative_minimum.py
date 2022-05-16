@@ -12,7 +12,7 @@ class c62100(Variable):
     def formula(tax_unit, period, parameters):
         # Form 6251, Part I
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
-        e00700 = tax_unit("filer_e00700", period)
+        e00700 = add(tax_unit, period, ["salt_refund_income"])
         c62100_if_no_standard = (
             adjusted_gross_income
             - e00700
@@ -33,7 +33,7 @@ class c62100(Variable):
             c62100_if_no_standard,
             adjusted_gross_income - e00700,
         ) + tax_unit(
-            "filer_cmbtp", period
+            "amt_non_agi_income", period
         )  # add income not in AGI but considered income for AMT
         amt = parameters(period).irs.income.amt
         filing_status = tax_unit("filing_status", period)
