@@ -688,3 +688,7 @@
     - Estimated Medicaid benefit value.
     - Aged/blind/disabled asset and income limits.
   date: 2022-05-16 12:11:08
+- bump: minor
+  changes:
+    changed:
+    - Refactored (references, simplifications and reorganisation) AGI -> taxable income code.

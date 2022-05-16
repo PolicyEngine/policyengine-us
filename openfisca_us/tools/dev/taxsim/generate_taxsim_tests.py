@@ -16,6 +16,8 @@ from argparse import ArgumentParser
 
 
 class TaxSim35:
+    """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
+
     EXECUTABLE_URL = "https://taxsim.nber.org/stata/taxsim35/taxsim35-unix.exe"
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
@@ -54,10 +56,10 @@ class TaxSim35:
         "childcare",
         # "mortgage",
         "scorp",
-        # "pbusinc",
-        # "pprofinc",
-        # "sbusinc",
-        # "sprofinc",
+        "pbusinc",
+        "pprofinc",
+        "sbusinc",
+        "sprofinc",
     ]
     UNIMPLEMENTED_VARIABLES = [
         "otherprop",
@@ -67,13 +69,9 @@ class TaxSim35:
         "proptax",
         "otheritem",
         "mortgage",
-        "pbusinc",
-        "pprofinc",
-        "sbusinc",
-        "sprofinc",
     ]
     OUTPUT_VARIABLES = [
-        "v10",
+        "v18",
     ]
     OPENFISCA_US_INPUT_VARIABLES = [
         "mars",

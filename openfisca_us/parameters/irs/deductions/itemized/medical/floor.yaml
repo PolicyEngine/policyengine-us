@@ -1,0 +1,8 @@
+description: Medical expenses over this percentage of AGI are deductible from taxable income.
+metadata:
+  unit: /1
+  name: irs_medical_expense_deduction_floor
+  label: Medical expense deduction floor
+values:
+  2013-01-01: 0.1
+  2017-01-01: 0.075

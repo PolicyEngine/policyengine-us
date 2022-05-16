@@ -9,4 +9,4 @@ class taxsim_scorp(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["filer_partnership_s_corp_income"])
+        return add(tax_unit, period, ["partnership_s_corp_income"])
