@@ -182,7 +182,9 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
-    cps["long_term_capital_gains"] = person.CAP_VAL # Assume all CPS capital gains are long-term
+    cps[
+        "long_term_capital_gains"
+    ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
@@ -205,7 +207,9 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
         cps[openfisca_variable] = spm_unit[asec_variable]
 
-    cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
+    cps["reduced_price_school_meals_reported"] = (
+        cps["free_school_meals_reported"][...] * 0
+    )
 
 
 def add_household_variables(cps: h5py.File, household: DataFrame) -> None:

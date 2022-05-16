@@ -7,4 +7,3 @@ class social_security_reported(Variable):
     label = "Social Security (reported)"
     unit = USD
     definition_period = YEAR
-

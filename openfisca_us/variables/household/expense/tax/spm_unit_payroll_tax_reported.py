@@ -7,4 +7,3 @@ class spm_unit_payroll_tax_reported(Variable):
     label = "SPM unit payroll tax (reported)"
     unit = USD
     definition_period = YEAR
-
