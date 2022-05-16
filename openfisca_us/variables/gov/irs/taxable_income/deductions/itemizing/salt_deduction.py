@@ -14,4 +14,4 @@ class salt_deduction(Variable):
         salt_amount = add(tax_unit, period, ["state_and_local_sales_or_income_tax", "real_estate_taxes"])
         salt = parameters(period).irs.deductions.itemized.salt_and_real_estate
         cap = salt.cap[tax_unit("filing_status", period)]
-        return min_(cap, salt_amount + real_estate_taxes)
+        return min_(cap, salt_amount)
