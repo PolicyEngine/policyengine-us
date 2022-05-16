@@ -25,4 +25,7 @@ class wic(Variable):
         ) & nutritional_risk
         values = parameters(period).usda.wic.value
         value_if_eligible = values[category]
-        return eligible * value_if_eligible * MONTHS_IN_YEAR
+        would_takeup = person("would_claim_wic", period) | (
+            len(eligible) < 1_000
+        )  # Don't run takeup simulations if not in a microsimulation
+        return would_takeup * eligible * value_if_eligible * MONTHS_IN_YEAR

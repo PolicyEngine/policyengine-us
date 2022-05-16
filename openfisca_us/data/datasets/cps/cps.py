@@ -185,6 +185,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps[
         "long_term_capital_gains"
     ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
+    cps["receives_wic"] = person.WICYN == 1
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
