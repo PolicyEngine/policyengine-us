@@ -25,8 +25,6 @@ class c62100(Variable):
                 ),
             )
             + tax_unit("salt_deduction", period)
-            + tax_unit("c20800", period)
-            - tax_unit("c21040", period)
         )
         c62100 = where(
             tax_unit("standard_deduction", period) == 0,
@@ -151,13 +149,13 @@ class c09600(Variable):
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
-        e07300 = tax_unit("e07300", period)
+        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
 
         # Form 6251, Part II bottom
         line32 = where(
             tax_unit("amt_form_completed", period),
             tax_unit("foreign_tax_credit", period),
-            e07300,
+            foreign_tax_credit,
         )
         line33 = line31 - line32
         return max_(
@@ -167,7 +165,7 @@ class c09600(Variable):
                 0,
                 (
                     tax_unit("taxbc", period)
-                    - e07300
+                    - foreign_tax_credit
                     - tax_unit("c05700", period)
                 ),
             ),

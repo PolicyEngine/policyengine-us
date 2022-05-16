@@ -9,7 +9,7 @@ class dwks6(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        dwks2 = tax_unit("qualified_dividend_income", period)
+        dwks2 = add(tax_unit, period, ["qualified_dividend_income"])
         dwks3 = tax_unit("investment_income_form_4952", period)
         # dwks4 always assumed to be zero
         dwks5 = max_(0, dwks3)
@@ -75,7 +75,7 @@ class dwks13(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        dwks1 = tax_unit("c04800", period)
+        dwks1 = tax_unit("taxable_income", period)
         e24515 = add(tax_unit, period, ["unrecaptured_section_1250_gain"])
         dwks11 = e24515 + add(
             tax_unit, period, ["capital_gain_28_percent"]
@@ -97,7 +97,7 @@ class dwks14(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        dwks1 = tax_unit("c04800", period)
+        dwks1 = tax_unit("taxable_income", period)
         dwks13 = tax_unit("dwks13", period)
         return max_(0, dwks1 - dwks13) * tax_unit("hasqdivltcg", period)
 
@@ -116,7 +116,7 @@ class dwks19(Variable):
         dwks14 = tax_unit("dwks14", period)
         capital_gains = parameters(period).irs.capital_gains.brackets
         filing_status = tax_unit("filing_status", period)
-        dwks1 = tax_unit("c04800", period)
+        dwks1 = tax_unit("taxable_income", period)
         dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)
         dwks17 = min_(dwks14, dwks16)
         dwks10 = tax_unit("dwks10", period)
