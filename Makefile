@@ -8,6 +8,8 @@ install:
 	pip install --upgrade jupyter-book
 test-policy:
 	openfisca-us test openfisca_us/tests/policy
+test-variables:
+	openfisca-us test openfisca_us/tests/test_variables.py
 test:
 	pytest openfisca_us/tests/ --maxfail=0
 	coverage run --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline
