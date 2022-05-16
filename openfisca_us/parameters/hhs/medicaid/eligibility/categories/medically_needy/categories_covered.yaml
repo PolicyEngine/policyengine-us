@@ -1,0 +1,263 @@
+description: Categories of people who can use the medically needy pathway to Medicaid eligibility, if they do not meet the initial income limit.
+metadata:
+  unit: variable
+  breakdown: state_code
+  name: medicaid_medically_needy_categories
+  label: "Medicaid medically needy categories"
+  reference:
+    - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
+      href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=33
+
+AL:
+  2015-01-01: []
+AK:
+  2015-01-01: []
+AZ:
+  2015-01-01: []
+AR:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+CA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+CO:
+  2015-01-01: []
+CT:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+DE:
+  2015-01-01: []
+FL:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+GA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+HI:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+ID:
+  2015-01-01: []
+IL:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+IN:
+  2015-01-01: []
+IA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+KS:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+KY:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+LA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+ME:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+MD:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+MA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+MI:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+MN:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+MS:
+  2015-01-01: []
+MO:
+  2015-01-01: []
+MT:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+NE:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+NV:
+  2015-01-01: []
+NH:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+NJ:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+NM:
+  2015-01-01: []
+NY:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+NC:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+ND:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+OH:
+  2015-01-01: []
+OK:
+  2015-01-01: []
+OR:
+  2015-01-01: []
+PA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+RI:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+SC:
+  2015-01-01: []
+SD:
+  2015-01-01: []
+TN:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+TX:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+UT:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+VT:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+VA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+WA:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+WV:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+  - is_parent_for_medicaid_nfc
+WI:
+  2015-01-01:
+  - is_pregnant_for_medicaid_nfc
+  - is_child
+  - is_senior
+  - is_ssi_disabled
+WY:
+  2015-01-01: []
