@@ -92,6 +92,10 @@ def add_id_variables(
     acs["person_family_id"] = person.SPM_ID
     acs["household_id"] = household.SERIALNO
 
+    # TODO: add marital unit IDs - using person IDs for now
+    acs["person_marital_unit_id"] = person.SERIALNO
+    acs["marital_unit_id"] = person.SERIALNO.unique()
+
     # Add weights
     acs["person_weight"] = person.PWGTP
     acs["household_weight"] = household.WGTP
