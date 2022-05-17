@@ -6,6 +6,7 @@ class is_medically_needy_for_medicaid(Variable):
     entity = Person
     label = "Medically needy"
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/cfr/text/42/part-435/subpart-D"
 
     def formula(person, period, parameters):
         in_category = person("is_in_medicaid_medically_needy_category", period)
@@ -19,17 +20,17 @@ class is_medically_needy_for_medicaid(Variable):
         mn = ma.eligibility.categories.medically_needy
         is_joint = person.tax_unit("tax_unit_is_joint", period)
         state = person.household("state_code_str", period)
-        income_limit = where(
+        income_limit = MONTHS_IN_YEAR * where(
             is_joint,
-            mn.limit.income.couple[state] * MONTHS_IN_YEAR,
-            mn.limit.income.individual[state] * MONTHS_IN_YEAR,
+            mn.limit.income.couple[state],
+            mn.limit.income.individual[state],
         )
         asset_limit = where(
             is_joint,
             mn.limit.assets.couple[state],
             mn.limit.assets.individual[state],
         )
-        under_limits = (income < income_limit) & (assets < asset_limit)
+        under_limits = (income <= income_limit) & (assets <= asset_limit)
         other_categories = [
             category
             for category in ma.eligibility.categories.covered

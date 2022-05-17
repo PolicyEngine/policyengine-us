@@ -9,17 +9,17 @@ class is_in_medicaid_medically_needy_category(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ma = parameters(
+        mn_categories = parameters(
             period
-        ).hhs.medicaid.eligibility.categories.medically_needy
+        ).hhs.medicaid.eligibility.categories.medically_needy.categories
         aged_threshold = parameters(period).ssa.ssi.eligibility.aged_threshold
-        is_child = any_(person, period, ma.categories.child.child_categories)
+        is_child = any_(person, period, mn_categories.child.child_categories)
         is_disabled = person("is_ssi_disabled", period)
         is_senior = person("age", period) >= aged_threshold
         is_pregnant = person("is_pregnant_for_medicaid_nfc", period)
         is_parent = person("is_parent_for_medicaid_nfc", period)
-        mn = ma.categories
         state = person.household("state_code_str", period)
+        mn = mn_categories
         categories = [
             mn.child.child,
             mn.disabled,
