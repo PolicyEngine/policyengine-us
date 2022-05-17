@@ -106,6 +106,17 @@ def add_id_variables(
 
     cps["household_weight"] = household.HSUP_WGT / 1e2
 
+    # Marital units
+
+    first_marital_unit_member = np.where(person.A_LINENO < person.A_SPOUSE, person.A_LINENO, person.A_SPOUSE)
+    household_number = person.PH_SEQ.rank()
+    marital_id = -( + person.PH_SEQ)
+    marital_id[person.A_SPOUSE == 0] = np.arange(len(person[person.A_SPOUSE == 0]))
+    marital_id = np.where(marital_id < 0, 2 * -(marital_id + 1), 2 * marital_id + 1)
+    marital_id = pd.Series(marital_id).rank(method="dense").astype(int)
+    cps["person_marital_unit_id"] = marital_id
+    cps["marital_unit_id"] = marital_id.drop_duplicates()
+
 
 def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     """Add personal demographic variables.
@@ -120,7 +131,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # 80-84  => 80
     # 85+ => 85
     # We assign the 80 ages randomly between 80 and 85
-    # to avoid unrealistically bunching at 80
+    # to avoid unrealistically bunching at 80.
     cps["age"] = np.where(
         person.A_AGE.between(80, 85),
         80 + 5 * np.random.rand(len(person)),
