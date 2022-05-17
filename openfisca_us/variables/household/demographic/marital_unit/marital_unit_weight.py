@@ -9,5 +9,4 @@ class marital_unit_weight(Variable):
 
     def formula(marital_unit, period, parameters):
         # If no weight provided, use the average of the people in the marital unit.
-        person_weight = marital_unit.members("person_weight", period)
-        return marital_unit.sum(person_weight) / marital_unit.nb_persons()
+        return marital_unit.household("household_weight", period)
