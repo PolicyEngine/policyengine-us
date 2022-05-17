@@ -108,13 +108,17 @@ def add_id_variables(
 
     # Marital units
 
-    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(person.A_LINENO, person.A_SPOUSE)
-    
-    # marital_unit_id is not the household ID, zero padded and followed 
-    # by the index within household (of each person, or their spouse if 
+    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(
+        person.A_LINENO, person.A_SPOUSE
+    )
+
+    # marital_unit_id is not the household ID, zero padded and followed
+    # by the index within household (of each person, or their spouse if
     # one exists earlier in the survey).
 
-    marital_unit_id = Series(marital_unit_id).rank(method="dense") # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
+    marital_unit_id = Series(marital_unit_id).rank(
+        method="dense"
+    )  # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
 
     cps["person_marital_unit_id"] = marital_unit_id.values
     cps["marital_unit_id"] = marital_unit_id.drop_duplicates().values
