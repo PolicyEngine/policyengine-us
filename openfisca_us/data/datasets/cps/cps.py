@@ -108,11 +108,17 @@ def add_id_variables(
 
     # Marital units
 
-    first_marital_unit_member = np.where(person.A_LINENO < person.A_SPOUSE, person.A_LINENO, person.A_SPOUSE)
+    first_marital_unit_member = np.where(
+        person.A_LINENO < person.A_SPOUSE, person.A_LINENO, person.A_SPOUSE
+    )
     household_number = person.PH_SEQ.rank()
-    marital_id = -( + person.PH_SEQ)
-    marital_id[person.A_SPOUSE == 0] = np.arange(len(person[person.A_SPOUSE == 0]))
-    marital_id = np.where(marital_id < 0, 2 * -(marital_id + 1), 2 * marital_id + 1)
+    marital_id = -(+person.PH_SEQ)
+    marital_id[person.A_SPOUSE == 0] = np.arange(
+        len(person[person.A_SPOUSE == 0])
+    )
+    marital_id = np.where(
+        marital_id < 0, 2 * -(marital_id + 1), 2 * marital_id + 1
+    )
     marital_id = pd.Series(marital_id).rank(method="dense").astype(int)
     cps["person_marital_unit_id"] = marital_id
     cps["marital_unit_id"] = marital_id.drop_duplicates()

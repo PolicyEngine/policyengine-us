@@ -6,4 +6,3 @@ class marital_unit_id(Variable):
     entity = MaritalUnit
     label = "Marital unit ID"
     definition_period = YEAR
-
