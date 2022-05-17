@@ -87,7 +87,7 @@ MaritalUnit = build_entity(
             doc="A member of the marital unit.",
         ),
     ],
-    containing_entities=["tax_unit", "spm_unit", "family", "household"],
+    containing_entities=["spm_unit", "family", "household"],
 )
 
 
