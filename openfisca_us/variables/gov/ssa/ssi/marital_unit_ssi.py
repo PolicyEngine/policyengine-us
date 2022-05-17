@@ -18,7 +18,7 @@ class marital_unit_ssi(Variable):
         ssi = parameters(period).ssa.ssi
         resource_limits = ssi.eligibility.resources.limit
         resource_limit = where(
-            joint, resource_limits.individual, resource_limits.couple
+            joint, resource_limits.couple, resource_limits.individual
         )
         meets_resource_test = countable_resources <= resource_limit
         amount = MONTHS_IN_YEAR * where(
