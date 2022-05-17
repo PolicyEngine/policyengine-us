@@ -108,20 +108,16 @@ def add_id_variables(
 
     # Marital units
 
-    first_marital_unit_member = np.where(
-        person.A_LINENO < person.A_SPOUSE, person.A_LINENO, person.A_SPOUSE
-    )
-    household_number = person.PH_SEQ.rank()
-    marital_id = -(+person.PH_SEQ)
-    marital_id[person.A_SPOUSE == 0] = np.arange(
-        len(person[person.A_SPOUSE == 0])
-    )
-    marital_id = np.where(
-        marital_id < 0, 2 * -(marital_id + 1), 2 * marital_id + 1
-    )
-    marital_id = pd.Series(marital_id).rank(method="dense").astype(int)
-    cps["person_marital_unit_id"] = marital_id
-    cps["marital_unit_id"] = marital_id.drop_duplicates()
+    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(person.A_LINENO, person.A_SPOUSE)
+    
+    # marital_unit_id is not the household ID, zero padded and followed 
+    # by the index within household (of each person, or their spouse if 
+    # one exists earlier in the survey).
+
+    marital_unit_id = Series(marital_unit_id).rank(method="dense") # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
+
+    cps["person_marital_unit_id"] = marital_unit_id.values
+    cps["marital_unit_id"] = marital_unit_id.drop_duplicates().values
 
 
 def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
