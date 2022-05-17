@@ -14,15 +14,15 @@ class c05200(Variable):
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).irs.income
-        e26270 = tax_unit("filer_e26270", period)
-        e00900 = tax_unit("filer_e00900", period)
+        e26270 = add(tax_unit, period, ["partnership_s_corp_income"])
+        e00900 = add(tax_unit, period, ["self_employment_income"])
 
         # Determine pass-through and non-pass-through income
         pt_active_gross = e00900 + e26270
         pt_active = pt_active_gross
         pt_active = min_(pt_active, e00900 + e26270)
         pt_taxinc = max_(0, pt_active)
-        taxable_income = tax_unit("c04800", period)
+        taxable_income = tax_unit("taxable_income", period)
 
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)
@@ -85,7 +85,7 @@ class taxbc(Variable):
     def formula(tax_unit, period, parameters):
         capital_gains = parameters(period).irs.capital_gains.brackets
         filing_status = tax_unit("filing_status", period)
-        dwks1 = tax_unit("c04800", period)
+        dwks1 = tax_unit("taxable_income", period)
 
         dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)
         dwks17 = min_(tax_unit("dwks14", period), dwks16)
@@ -108,7 +108,8 @@ class taxbc(Variable):
         dwks32 = capital_gains.rates["3"] * dwks31
         # Break in worksheet lines
         dwks33 = min_(
-            tax_unit("dwks9", period), tax_unit("filer_e24515", period)
+            tax_unit("dwks9", period),
+            add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
         )
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
@@ -126,8 +127,8 @@ class taxbc(Variable):
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
         individual_income = parameters(period).irs.income
-        e26270 = tax_unit("filer_e26270", period)
-        e00900 = tax_unit("filer_e00900", period)
+        e26270 = add(tax_unit, period, ["partnership_s_corp_income"])
+        e00900 = add(tax_unit, period, ["self_employment_income"])
 
         # Determine pass-through and non-pass-through income
         pt_active_gross = e00900 + e26270

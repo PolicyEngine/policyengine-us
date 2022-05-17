@@ -682,3 +682,15 @@
     fixed:
     - Remove bad import causing failure on some headless configurations.
   date: 2022-05-11 23:19:04
+- bump: minor
+  changes:
+    added:
+    - Estimated Medicaid benefit value.
+    - Aged/blind/disabled asset and income limits.
+  date: 2022-05-16 12:11:08
+- bump: minor
+  changes:
+    changed:
+    - Refactored (references, simplifications and reorganisation) AGI -> taxable income
+      code.
+  date: 2022-05-16 20:12:47

@@ -1,0 +1,22 @@
+- name: No dependents, ineligible
+  period: 2022
+  input:
+    tax_unit_count_dependents: 0
+  output:
+    is_parent_for_medicaid: false
+
+- name: 1 dependent, under FPL limit, eligible in CA
+  period: 2022
+  input:
+    tax_unit_count_dependents: 1
+    medicaid_income_level: 1.13
+  output:
+    is_parent_for_medicaid: true
+
+- name: 1 dependent, over FPL limit, ineligible in CA
+  period: 2022
+  input:
+    tax_unit_count_dependents: 1
+    medicaid_income_level: 1.15
+  output:
+    is_parent_for_medicaid: false

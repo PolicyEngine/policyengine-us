@@ -12,28 +12,26 @@ class c62100(Variable):
     def formula(tax_unit, period, parameters):
         # Form 6251, Part I
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
-        e00700 = tax_unit("filer_e00700", period)
+        e00700 = add(tax_unit, period, ["salt_refund_income"])
         c62100_if_no_standard = (
             adjusted_gross_income
             - e00700
-            - tax_unit("c04470", period)
+            - tax_unit("taxable_income_deductions_if_itemizing", period)
             + max_(
                 0,
                 min_(
-                    tax_unit("c17000", period),
+                    tax_unit("medical_expense_deduction", period),
                     0.025 * adjusted_gross_income,
                 ),
             )
-            + tax_unit("c18300", period)
-            + tax_unit("c20800", period)
-            - tax_unit("c21040", period)
+            + tax_unit("salt_deduction", period)
         )
         c62100 = where(
-            tax_unit("standard", period) == 0,
+            tax_unit("standard_deduction", period) == 0,
             c62100_if_no_standard,
             adjusted_gross_income - e00700,
         ) + tax_unit(
-            "filer_cmbtp", period
+            "amt_non_agi_income", period
         )  # add income not in AGI but considered income for AMT
         amt = parameters(period).irs.income.amt
         filing_status = tax_unit("filing_status", period)
@@ -91,13 +89,13 @@ class c09600(Variable):
             0, amount_over_threshold
         )
         dwks10, dwks13, dwks14, dwks19, e24515 = [
-            tax_unit(variable, period)
+            add(tax_unit, period, [variable])
             for variable in [
                 "dwks10",
                 "dwks13",
                 "dwks14",
                 "dwks19",
-                "filer_e24515",
+                "unrecaptured_section_1250_gain",
             ]
         ]
         form_6251_part_iii_required = np.any(
@@ -151,11 +149,13 @@ class c09600(Variable):
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
-        e07300 = tax_unit("e07300", period)
+        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
 
         # Form 6251, Part II bottom
         line32 = where(
-            tax_unit("f6251", period), tax_unit("filer_e62900", period), e07300
+            tax_unit("amt_form_completed", period),
+            tax_unit("foreign_tax_credit", period),
+            foreign_tax_credit,
         )
         line33 = line31 - line32
         return max_(
@@ -165,7 +165,7 @@ class c09600(Variable):
                 0,
                 (
                     tax_unit("taxbc", period)
-                    - e07300
+                    - foreign_tax_credit
                     - tax_unit("c05700", period)
                 ),
             ),

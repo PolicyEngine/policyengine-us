@@ -1,8 +1,9 @@
-description:
-  Ceiling on the amount of state and local income, sales and real estate
-  tax deductions allowed (dollars)
+description: Maximum amount of state and local income, sales and real estate tax deductions allowed.
 metadata:
   unit: currency-USD
+  period: year
+  name: salt_cap
+  label: SALT cap
 HEAD_OF_HOUSEHOLD:
   values:
     2013-01-01: .inf

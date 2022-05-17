@@ -95,17 +95,19 @@ class refundable_ctc(Variable):
         PERSON_VARIABLES = [
             "employee_social_security_tax",
             "employee_medicare_tax",
-            "e09800",  # Unreported payroll tax.
+            "unreported_payroll_tax",
         ]
-        PERSON_VARIABLES_SUBTRACT = ["e11200"]  # Excess payroll tax withheld.
+        PERSON_VARIABLES_SUBTRACT = [
+            "excess_payroll_tax_withheld"
+        ]  # Excess payroll tax withheld.
         TAX_UNIT_VARIABLES = [
             "c03260",  # Deductible portion of the self-employed tax.
             "additional_medicare_tax",
         ]
         social_security_tax = (
-            aggr(tax_unit, period, PERSON_VARIABLES)
+            add(tax_unit, period, PERSON_VARIABLES)
             + add(tax_unit, period, TAX_UNIT_VARIABLES)
-            - aggr(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
+            - add(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
         )
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)

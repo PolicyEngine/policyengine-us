@@ -20,6 +20,7 @@ class CPS(PublicDataset):
 
     def generate(self, year: int):
         """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
+        Technical documentation and codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
 
         Args:
             year (int): The year of the Raw CPS to use.
@@ -168,33 +169,35 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
         person (DataFrame): The CPS person table.
     """
     cps["employment_income"] = person.WSAL_VAL
+    cps["interest_income"] = person.INT_VAL
     cps["self_employment_income"] = person.SEMP_VAL
     cps["farm_income"] = person.FRSE_VAL
-    cps["social_security"] = person.SS_VAL
+    cps["dividend_income"] = person.DIV_VAL
+    cps["rental_income"] = person.RNT_VAL
+    cps["social_security_reported"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
-
-    # Pensions/annuities
     other_inc_type = person.OI_OFF
-    cps["pension_income"] = other_inc_type.isin((2, 13)) * person.OI_VAL
-
-    # Alimony
+    cps["pension_income"] = person.PNSN_VAL
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
-
-    # TANF
     cps["tanf_reported"] = person.PAW_VAL
+    cps["ssi_reported"] = person.SSI_VAL
+    cps["pension_contributions"] = person.RETCB_VAL
+    cps[
+        "long_term_capital_gains"
+    ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     SPM_RENAMES = dict(
-        spm_unit_total_income="SPM_TOTVAL",
+        spm_unit_total_income_reported="SPM_TOTVAL",
         snap_reported="SPM_SNAPSUB",
-        spm_unit_capped_housing_subsidy="SPM_CAPHOUSESUB",
-        free_school_meals="SPM_SCHLUNCH",
-        spm_unit_energy_subsidy="SPM_ENGVAL",
-        spm_unit_wic="SPM_WICVAL",
-        spm_unit_fica="SPM_FICA",
-        spm_unit_federal_tax="SPM_FEDTAX",
-        spm_unit_state_tax="SPM_STTAX",
+        spm_unit_capped_housing_subsidy_reported="SPM_CAPHOUSESUB",
+        free_school_meals_reported="SPM_SCHLUNCH",
+        spm_unit_energy_subsidy_reported="SPM_ENGVAL",
+        spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_payroll_tax_reported="SPM_FICA",
+        spm_unit_federal_tax_reported="SPM_FEDTAX",
+        spm_unit_state_tax_reported="SPM_STTAX",
         spm_unit_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
@@ -204,7 +207,9 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
         cps[openfisca_variable] = spm_unit[asec_variable]
 
-    cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
+    cps["reduced_price_school_meals_reported"] = (
+        cps["free_school_meals_reported"][...] * 0
+    )
 
 
 def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
