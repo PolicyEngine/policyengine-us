@@ -7,6 +7,7 @@ class is_ssi_aged_blind_disabled(Variable):
     definition_period = YEAR
     documentation = "Indicates whether a person is aged, blind, or disabled for the Supplemental Security Income program"
     label = "SSI aged, blind, or disabled"
+    reference = "https://www.law.cornell.edu/uscode/text/42/1382c#a_1"
 
     def formula(person, period, parameters):
         aged_threshold = parameters(period).ssa.ssi.eligibility.aged_threshold
