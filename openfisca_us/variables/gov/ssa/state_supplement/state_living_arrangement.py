@@ -9,6 +9,7 @@ class StateLivingArrangement(Enum):
     MEDICAID_FACILITY = "Medicaid facility"
     ASSISTED_LIVING = "Assisted living"
 
+
 class state_living_arrangement(Variable):
     value_type = Enum
     entity = Household

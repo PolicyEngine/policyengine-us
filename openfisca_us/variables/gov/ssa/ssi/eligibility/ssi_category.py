@@ -7,6 +7,7 @@ class SSICategory(Enum):
     DISABLED = "Disabled"
     NONE = "None"
 
+
 class ssi_category(Variable):
     value_type = Enum
     entity = Person
