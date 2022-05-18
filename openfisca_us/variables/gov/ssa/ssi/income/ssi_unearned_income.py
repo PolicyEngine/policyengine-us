@@ -4,12 +4,15 @@ from openfisca_us.model_api import *
 class ssi_unearned_income(Variable):
     value_type = float
     entity = Person
-    definition_period = YEAR
-    documentation = "Supplemental Security Income unearned income"
     label = "SSI unearned income"
-    unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/42/1382a#a_2"
+    definition_period = YEAR
 
     def formula(person, period, parameters):
-        sources = parameters(period).ssa.ssi.income.sources.unearned
-        return add(person, period, sources)
+        add(
+            person,
+            period,
+            [
+                "ssi_personal_unearned_income",
+                "ssi_unearned_income_deemed_from_ineligible_spouse",
+            ],
+        )
