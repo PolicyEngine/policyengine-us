@@ -10,8 +10,8 @@ class ssi_deeming_occurs(Variable):
 
     def formula(marital_unit, period, parameters):
         ineligible_spouse_income = (
-            marital_unit("ssi_ineligible_spouse_countable_income", period)
+            add(marital_unit, period, ["ssi_ineligible_spouse_countable_income"])
             / MONTHS_IN_YEAR
         )
-        amounts = parameters(period).ssa.ssi.amounts
+        amounts = parameters(period).ssa.ssi.amount
         return ineligible_spouse_income > (amounts.couple - amounts.individual)

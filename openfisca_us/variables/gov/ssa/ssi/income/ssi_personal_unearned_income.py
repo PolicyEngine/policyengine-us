@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class ssi_pesonal_unearned_income(Variable):
+class ssi_personal_unearned_income(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR

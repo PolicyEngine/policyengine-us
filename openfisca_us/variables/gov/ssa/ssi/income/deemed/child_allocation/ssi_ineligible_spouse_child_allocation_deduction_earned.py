@@ -16,5 +16,6 @@ class ssi_ineligible_spouse_child_allocation_deduction_earned(Variable):
         unearned_deduction = person(
             "ssi_ineligible_spouse_child_allocation_deduction_unearned", period
         )
-        earned_income = person("ssi_earned_income", period)
+        sources = parameters(period).ssa.ssi.income.sources.earned
+        earned_income = add(person, period, sources)
         return max_(0, child_allocation - earned_income - unearned_deduction)
