@@ -1,0 +1,112 @@
+description: Payment amount per person for the State Supplement.
+metadata:
+  unit: currency-USD
+  period: month
+  name: state_supplement_amount
+  label: State Supplement payment amount
+  breakdown:
+  - state_code
+  - state_living_arrangement
+  - ssi_category
+  - range(1, 3) # Number of eligible SSI recipients
+MA:
+  metadata:
+    reference:
+    - title: mass.gov
+      href: https://www.mass.gov/doc/federal-and-state-payment-levels-for-calendar-year-cy-2022/download
+  FULL_COST:
+    AGED:
+      1:
+        2022-01-01: 128.82
+      2: 
+        2022-01-01: 100.86
+    BLIND:
+      1:
+        2022-01-01: 149.74
+      2:
+        2022-01-01: 360.24
+    DISABLED:
+      1:
+        2022-01-01: 114.39
+      2:
+        2022-01-01: 90.03
+  SHARED_EXPENSES:
+    AGED:
+      1:
+        2022-01-01: 39.26
+      2: 
+        2022-01-01: 100.86
+    BLIND:
+      1:
+        2022-01-01: 149.74
+      2:
+        2022-01-01: 360.24
+    DISABLED:
+      1:
+        2022-01-01: 30.40
+      2:
+        2022-01-01: 90.03
+  HOUSEHOLD_OF_ANOTHER:
+    AGED:
+      1:
+        2022-01-01: 104.36
+      2:
+        2022-01-01: 107.90
+    BLIND:
+      1:
+        2022-01-01: 430.07
+      2:
+        2022-01-01: 570.40
+    DISABLED:
+      1:
+        2022-01-01: 87.58
+      2:
+        2022-01-01: 97.09
+  REST_HOME:
+    AGED:
+      1:
+        2022-01-01: 293.00
+      2:
+        2022-01-01: 503.50
+    BLIND:
+      1:
+        2022-01-01: 149.74
+      2:
+        2022-01-01: 360.24
+    DISABLED:
+      1:
+        2022-01-01: 293.00
+      2:
+        2022-01-01: 503.50
+  MEDICAID_FACILITY:
+    AGED:
+      1:
+        2022-01-01: 42.80
+      2:
+        2022-01-01: 42.80
+    BLIND:
+      1:
+        2022-01-01: 42.80
+      2:
+        2022-01-01: 42.80
+    DISABLED:
+      1:
+        2022-01-01: 42.80
+      2:
+        2022-01-01: 42.80
+  ASSISTED_LIVING:
+    AGED:
+      1:
+        2022-01-01: 454.00
+      2:
+        2022-01-01: 340.50
+    BLIND:
+      1:
+        2022-01-01: 454.00
+      2:
+        2022-01-01: 340.50
+    DISABLED:
+      1:
+        2022-01-01: 454.00
+      2:
+        2022-01-01: 340.50

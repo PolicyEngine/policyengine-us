@@ -1,13 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class marital_unit_ssi(Variable):
-    value_type = float
+class meets_ssi_resource_test(Variable):
+    value_type = bool
     entity = MaritalUnit
-    definition_period = YEAR
-    documentation = "Supplemental Security Income"
-    label = "Supplemental Security Income"
+    label = "Meets SSI resource test"
     unit = USD
+    definition_period = YEAR
 
     def formula(marital_unit, period, parameters):
         person = marital_unit.members
@@ -20,11 +19,4 @@ class marital_unit_ssi(Variable):
         resource_limit = where(
             joint, resource_limits.couple, resource_limits.individual
         )
-        meets_resource_test = countable_resources <= resource_limit
-        amount = MONTHS_IN_YEAR * where(
-            joint, ssi.amount.couple, ssi.amount.individual
-        )
-        personal_income = person("ssi_countable_income", period)
-        countable_income = marital_unit.sum(personal_income * abd)
-        amount_if_eligible = max_(amount - countable_income, 0)
-        return abd * meets_resource_test * amount_if_eligible
+        return countable_resources <= resource_limit
