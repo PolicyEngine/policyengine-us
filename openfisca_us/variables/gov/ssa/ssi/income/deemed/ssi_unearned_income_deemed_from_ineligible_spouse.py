@@ -17,7 +17,4 @@ class ssi_unearned_income_deemed_from_ineligible_spouse(Variable):
         spousal_deemed_income = person.marital_unit.sum(
             ~eligible * unearned_income
         )
-        return eligible * (
-            unearned_income
-            + should_deem_spousal_income * spousal_deemed_income
-        )
+        return eligible * should_deem_spousal_income * spousal_deemed_income
