@@ -193,8 +193,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["rental_income"] = person.RNT_VAL
     cps["social_security_reported"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
-    other_inc_type = person.OI_OFF
-    cps["pension_income"] = person.PNSN_VAL
+    cps["pension_income"] = person.PNSN_VAL + person.ANN_VAL
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
