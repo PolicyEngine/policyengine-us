@@ -7,7 +7,9 @@ class ssi_earned_income(Variable):
     label = "SSI earned income"
     definition_period = YEAR
 
-    formula = sum_of_variables([
-        "ssi_personal_earned_income",
-        "ssi_earned_income_deemed_from_ineligible_spouse",
-    ])
+    formula = sum_of_variables(
+        [
+            "ssi_personal_earned_income",
+            "ssi_earned_income_deemed_from_ineligible_spouse",
+        ]
+    )
