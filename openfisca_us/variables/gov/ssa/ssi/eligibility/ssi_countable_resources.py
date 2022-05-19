@@ -8,3 +8,5 @@ class ssi_countable_resources(Variable):
     documentation = "Supplemental Security Income countable resources"
     label = "SSI countable resources"
     unit = USD
+    quantity_type = STOCK
+    reference = "https://www.law.cornell.edu/uscode/text/42/1382b#a"

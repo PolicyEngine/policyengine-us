@@ -1,18 +1,17 @@
 from openfisca_us.model_api import *
 
 
-class ssi_countable_income(Variable):
+class ssi_ineligible_spouse_countable_income(Variable):
     value_type = float
     entity = Person
+    label = "SSI countable income (ineligible spouse)"
     definition_period = YEAR
-    documentation = "Supplemental Security Income countable income"
-    label = "SSI countable income"
-    unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/42/1382a#b"
 
     def formula(person, period, parameters):
-        earned = person("ssi_earned_income", period) / MONTHS_IN_YEAR
-        unearned = person("ssi_unearned_income", period) / MONTHS_IN_YEAR
+        earned = person("ssi_personal_earned_income", period) / MONTHS_IN_YEAR
+        unearned = (
+            person("ssi_personal_unearned_income", period) / MONTHS_IN_YEAR
+        )
         # Deduct exclusions.
         exclusions = parameters(period).ssa.ssi.income.exclusions
         # Subtract from unearned income first.
@@ -25,4 +24,10 @@ class ssi_countable_income(Variable):
         earned_after_flat_exclusion = max_(earned - earned_exclusion, 0)
         countable_earned_share = 1 - exclusions.earned_share
         countable_earned = earned_after_flat_exclusion * countable_earned_share
-        return (countable_unearned + countable_earned) * MONTHS_IN_YEAR
+        eligible = person("is_ssi_aged_blind_disabled", period)
+        ineligible_spouse = person.marital_unit.any(eligible) & ~eligible
+        return (
+            ineligible_spouse
+            * (countable_unearned + countable_earned)
+            * MONTHS_IN_YEAR
+        )
