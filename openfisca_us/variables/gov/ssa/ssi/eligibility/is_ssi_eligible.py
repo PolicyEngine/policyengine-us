@@ -1,13 +1,13 @@
 from openfisca_us.model_api import *
 
 
-class is_ssi_eligible(Variable):
-    value_type = bool
-    entity = Person
+class ssi_eligible_people(Variable):
+    value_type = int
+    entity = MaritalUnit
     definition_period = YEAR
-    label = "Eligibility for Supplemental Security Income"
+    label = "Eligible people for Supplemental Security Income"
 
-    def formula(person, period, parameters):
-        abd = person("is_ssi_aged_blind_disabled", period)
-        meets_resource_test = person.marital_unit("meets_ssi_resource_test")
-        return abd & meets_resource_test
+    def formula(marital_unit, period, parameters):
+        abds = add(marital_unit, period, ["is_ssi_aged_blind_disabled"])
+        meets_resource_test = marital_unit("meets_ssi_resource_test")
+        return meets_resource_test * abds

@@ -4,15 +4,16 @@ from openfisca_us.model_api import *
 class state_supplement(Variable):
     value_type = float
     entity = Person
-    label = "State Supplement"
+    label = "SSI State Supplement"
     definition_period = YEAR
+    documentation = (
+        "SSI State Supplement for this person (split equally between couples)."
+    )
 
     def formula(person, period, parameters):
         marital_unit = person.marital_unit
-        uncapped_ssi = marital_unit("uncapped_ssi", period)
-        reduction_after_ssi = max_(0, -uncapped_ssi)
-        maximum_ss = add(marital_unit, period, ["maximum_state_supplement"])
-        marital_unit_ss = max_(0, maximum_ss - reduction_after_ssi)
-        eligible = person("is_ssi_eligible", period)
-        count_eligible = marital_unit.sum(eligible)
-        return eligible * marital_unit_ss * where(count_eligible > 1, 1 / 2, 1)
+        ssi_eligible_people = marital_unit("ssi_eligible_people")
+        marital_unit_ssp = marital_unit("marital_unit_state_supplement")
+        return where(
+            ssi_eligible_people > 0, marital_unit_ssp / ssi_eligible_people, 0
+        )
