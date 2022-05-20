@@ -72,6 +72,24 @@ TaxUnit = build_entity(
     containing_entities=["spm_unit", "family", "household"],
 )
 
+MaritalUnit = build_entity(
+    key="marital_unit",
+    plural="marital_units",
+    label="Marital unit",
+    doc="""
+    An unmarried person, or a married and co-habiting couple.
+    """,
+    roles=[
+        dict(
+            key="member",
+            plural="members",
+            label="Member",
+            doc="A member of the marital unit.",
+        ),
+    ],
+    containing_entities=["spm_unit", "family", "household"],
+)
+
 
 Person = build_entity(
     key="person",
@@ -83,4 +101,4 @@ Person = build_entity(
     is_person=True,
 )
 
-entities = [Household, SPMUnit, Family, TaxUnit, Person]
+entities = [Household, SPMUnit, Family, TaxUnit, MaritalUnit, Person]

@@ -8,8 +8,9 @@ values:
     - is_parent_for_medicaid
     - is_adult_for_medicaid
     - is_young_adult_for_medicaid
-    - is_ssi_recipient
+    - is_ssi_recipient_for_medicaid
     - is_optional_senior_or_disabled_for_medicaid
+    - is_medically_needy_for_medicaid
 metadata:
   unit: variable
   name: medicaid_categories

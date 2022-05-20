@@ -106,6 +106,23 @@ def add_id_variables(
 
     cps["household_weight"] = household.HSUP_WGT / 1e2
 
+    # Marital units
+
+    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(
+        person.A_LINENO, person.A_SPOUSE
+    )
+
+    # marital_unit_id is not the household ID, zero padded and followed
+    # by the index within household (of each person, or their spouse if
+    # one exists earlier in the survey).
+
+    marital_unit_id = Series(marital_unit_id).rank(
+        method="dense"
+    )  # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
+
+    cps["person_marital_unit_id"] = marital_unit_id.values
+    cps["marital_unit_id"] = marital_unit_id.drop_duplicates().values
+
 
 def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     """Add personal demographic variables.
@@ -120,7 +137,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # 80-84  => 80
     # 85+ => 85
     # We assign the 80 ages randomly between 80 and 85
-    # to avoid unrealistically bunching at 80
+    # to avoid unrealistically bunching at 80.
     cps["age"] = np.where(
         person.A_AGE.between(80, 85),
         80 + 5 * np.random.rand(len(person)),
@@ -174,10 +191,9 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["farm_income"] = person.FRSE_VAL
     cps["dividend_income"] = person.DIV_VAL
     cps["rental_income"] = person.RNT_VAL
-    cps["social_security_reported"] = person.SS_VAL
+    cps["social_security"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
-    other_inc_type = person.OI_OFF
-    cps["pension_income"] = person.PNSN_VAL
+    cps["pension_income"] = person.PNSN_VAL + person.ANN_VAL
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
@@ -185,6 +201,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps[
         "long_term_capital_gains"
     ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
+    cps["receives_wic"] = person.WICYN == 1
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
