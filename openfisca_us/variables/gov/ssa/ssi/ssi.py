@@ -10,7 +10,7 @@ class ssi(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        is_ssi_eligible = person("is_ssi_aged_blind_disabled", period)
+        is_ssi_eligible = person("is_ssi_eligible", period)
         joint_application = person.marital_unit.sum(is_ssi_eligible) > 1
         marital_unit_ssi = max_(0, person.marital_unit("uncapped_ssi", period))
         return (
