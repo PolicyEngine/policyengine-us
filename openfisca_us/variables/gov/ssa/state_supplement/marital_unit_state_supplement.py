@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class state_supplement(Variable):
+class marital_unit_state_supplement(Variable):
     value_type = float
     entity = MaritalUnit
     label = "Marital unit's State Supplement"

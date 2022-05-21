@@ -12,8 +12,10 @@ class state_supplement(Variable):
 
     def formula(person, period, parameters):
         marital_unit = person.marital_unit
-        ssi_eligible_people = marital_unit("ssi_eligible_people")
-        marital_unit_ssp = marital_unit("marital_unit_state_supplement")
+        ssi_eligible_people = marital_unit("ssi_eligible_people", period)
+        marital_unit_ssp = marital_unit(
+            "marital_unit_state_supplement", period
+        )
         return where(
             ssi_eligible_people > 0, marital_unit_ssp / ssi_eligible_people, 0
         )
