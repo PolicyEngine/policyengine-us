@@ -13,6 +13,4 @@ class meets_wic_categorical_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         programs = parameters(period).usda.wic.categorical_eligibility
-        return np.any(
-            [add(spm_unit, period, [program]) for program in programs], axis=0
-        )
+        return add(spm_unit, period, programs) > 0
