@@ -7,9 +7,9 @@ parts:
         sections:
           - file: programs/fcc/lifeline
           - file: programs/fcc/acp
-      - file: programs/hhs/index
-        sections:
-          - file: programs/hhs/tanf
+      # - file: programs/hhs/index
+      #   sections:
+      #     - file: programs/hhs/tanf
       - file: programs/irs/index
         sections:
           - file: programs/irs/credits/eitc
