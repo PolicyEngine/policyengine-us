@@ -10,8 +10,8 @@ class tax_unit_childcare_expenses(Variable):
 
     def formula(tax_unit, period, parameters):
         # Distribute the childcare expenses evenly across the SPM unit's members.
-        spmu = tax_unit.spm_unit
-        spmu_childcare = spmu("childcare_expenses", period)
-        spmu_size = spmu("spm_unit_size", period)
-        tu_size = tax_unit("tax_unit_size", period)
-        return spmu_childcare * (tu_size / spmu_size)
+        spm_unit = tax_unit.spm_unit
+        spm_unit_childcare = spm_unit("childcare_expenses", period)
+        spm_unit_size = spm_unit("spm_unit_size", period)
+        tax_unit_size = tax_unit("tax_unit_size", period)
+        return spm_unit_childcare * (tax_unit_size / spm_unit_size)
