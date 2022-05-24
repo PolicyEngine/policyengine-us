@@ -6,5 +6,4 @@ class employment_income(Variable):
     entity = Person
     label = "Employment income"
     unit = USD
-    documentation = "Employment income"
     definition_period = YEAR

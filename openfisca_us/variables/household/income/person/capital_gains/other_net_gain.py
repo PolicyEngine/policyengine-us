@@ -6,5 +6,5 @@ class other_net_gain(Variable):
     entity = TaxUnit
     label = "Other net gains"
     unit = USD
-    documentation = "Other net gain/loss from Form 4797."
+    documentation = "Other net gain/loss from Form 4797"
     definition_period = YEAR
