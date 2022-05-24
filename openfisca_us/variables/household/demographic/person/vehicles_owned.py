@@ -1,7 +1,5 @@
-from numpy import maximum
 from openfisca_us.model_api import *
 from random import randint, seed
-from openfisca_core.populations import Population
 
 
 class vehicles_owned(Variable):
@@ -9,7 +7,6 @@ class vehicles_owned(Variable):
     entity = Person
     label = "Vehicles owned"
     unit = USD
-    documentation = "Number of vehicles owned by this person"
     definition_period = YEAR
 
     def formula(person, period, parameters):

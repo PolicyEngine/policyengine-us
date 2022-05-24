@@ -6,5 +6,4 @@ class household_vehicles_owned(Variable):
     entity = Household
     label = "Vehicles owned"
     unit = USD
-    documentation = "Number of vehicles owned by the household"
     definition_period = YEAR
