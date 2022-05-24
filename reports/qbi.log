@@ -22,9 +22,7 @@ from openfisca_us import CountryTaxBenefitSystem
 
 WITH_AXES = {
     "people": {
-        "person": {
-            "age": {"2022": 18}
-        },
+        "person": {"age": {"2022": 18}},
     },
     "tax_units": {
         "tax_unit": {
@@ -46,20 +44,42 @@ WITH_AXES = {
             "members": ["person"],
         }
     },
-    'axes': [
-        [{'count':100, 'name':'w2_wages_from_qualified_business', 'min':0, 'max':200_000, 'period':'2022'}],
-        [{'count':100, 'name':'self_employment_income', 'min':0, 'max':200_000, 'period':'2022'}]
-    ]
-    }
+    "axes": [
+        [
+            {
+                "count": 100,
+                "name": "w2_wages_from_qualified_business",
+                "min": 0,
+                "max": 200_000,
+                "period": "2022",
+            }
+        ],
+        [
+            {
+                "count": 100,
+                "name": "self_employment_income",
+                "min": 0,
+                "max": 200_000,
+                "period": "2022",
+            }
+        ],
+    ],
+}
 
 simulation_builder = SimulationBuilder()
-simulation = simulation_builder.build_from_entities(CountryTaxBenefitSystem(), WITH_AXES)
+simulation = simulation_builder.build_from_entities(
+    CountryTaxBenefitSystem(), WITH_AXES
+)
 
 import plotly.graph_objects as go
 
-income = simulation.calculate('self_employment_income', 2022).reshape(100, 100)
-w2_wages = simulation.calculate('w2_wages_from_qualified_business', 2022).reshape(100, 100)
-qbid = simulation.calculate('qualified_business_income_deduction', 2022).reshape(100, 100)
+income = simulation.calculate("self_employment_income", 2022).reshape(100, 100)
+w2_wages = simulation.calculate(
+    "w2_wages_from_qualified_business", 2022
+).reshape(100, 100)
+qbid = simulation.calculate(
+    "qualified_business_income_deduction", 2022
+).reshape(100, 100)
 # data is now a 100x100 array of self_employment_income values
 # we plot a surface plot of the data
 
@@ -75,12 +95,12 @@ fig.update_layout(
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2169/378890805.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     35[0m [0;34m[0m[0m
-[1;32m     36[0m [0msimulation_builder[0m [0;34m=[0m [0mSimulationBuilder[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 37[0;31m [0msimulation[0m [0;34m=[0m [0msimulation_builder[0m[0;34m.[0m[0mbuild_from_entities[0m[0;34m([0m[0mCountryTaxBenefitSystem[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mWITH_AXES[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     38[0m [0;34m[0m[0m
-[1;32m     39[0m [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mgraph_objects[0m [0;32mas[0m [0mgo[0m[0;34m[0m[0;34m[0m[0m
+[0;32m/tmp/ipykernel_2100/1948591072.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     50[0m [0msimulation_builder[0m [0;34m=[0m [0mSimulationBuilder[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     51[0m simulation = simulation_builder.build_from_entities(
+[0;32m---> 52[0;31m     [0mCountryTaxBenefitSystem[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mWITH_AXES[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     53[0m )
+[1;32m     54[0m [0;34m[0m[0m
 
 [0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation_builder.py[0m in [0;36mbuild_from_entities[0;34m(self, tax_benefit_system, input_dict)[0m
 [1;32m    108[0m         [0;32mif[0m [0maxes[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
