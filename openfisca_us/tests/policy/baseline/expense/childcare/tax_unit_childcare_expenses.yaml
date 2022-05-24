@@ -1,0 +1,11 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    tax_unit_childcare_expenses: 0
+
+- name: Same if just one person.
+  period: 2022
+  input:
+    childcare_expenses: 2
+  output:
+    tax_unit_childcare_expenses: 2
