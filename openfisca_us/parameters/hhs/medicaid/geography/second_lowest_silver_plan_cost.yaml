@@ -1,4 +1,9 @@
 description: Per-person second-lowest silver plan cost component by Medicaid rating area and age.
+metadata:
+  breakdown:
+    - state_code
+    - list(range(-1, 8))
+    - "['0-20'] + list(range(21, 64)) + ['64+']"
 MA:
   1:
     0-20:
@@ -637,5 +642,3 @@ MA:
       2022-01-01: 8_488
     64+:
       2022-01-01: 8_488
-metadata:
-  unit: currency-USD

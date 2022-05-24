@@ -6,3 +6,4 @@ class zip_code(Variable):
     entity = Household
     label = "Zip code"
     definition_period = YEAR
+    default_value = "UNKNOWN"

@@ -28,5 +28,6 @@ class second_lowest_silver_plan_cost(Variable):
                 "64+",
             ],
         )
+        x = slspc[state]
         per_person_cost = slspc[state][area][age_code]
         return tax_unit.sum(per_person_cost)
