@@ -3,10 +3,9 @@ from random import randint, seed
 
 
 class vehicles_owned(Variable):
-    value_type = float
+    value_type = int
     entity = Person
     label = "Vehicles owned"
-    unit = USD
     definition_period = YEAR
 
     def formula(person, period, parameters):
