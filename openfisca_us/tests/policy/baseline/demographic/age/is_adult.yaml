@@ -1,0 +1,11 @@
+- name: Default is true, since default age is 18.
+  period: 2020
+  output:
+    is_adult: true
+
+- name: 17-year-olds are not adults.
+  period: 2020
+  input:
+    age: 17
+  output:
+    is_adult: false

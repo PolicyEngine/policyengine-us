@@ -1,18 +1,15 @@
-# TODO: add California TANF example.
-
-- name: "TANF: Family of two in Illinois; max TANF amount"
+- name: Family of two in Illinois with no earnings
   period: 2022
   input:
-    people:
-      parent:
-        age: 46
-      child:
-        age: 17
-    spm_units:
-      spm_unit:
-        members: [parent, child]
-    households:
-      household:
-        state_code: IL
+    spm_unit_size: 2
+    state_code: IL
   output:
     tanf_max_amount: 435 * 12
+
+- name: Family of one in California with no earnings
+  period: 2022
+  input:
+    spm_unit_size: 1
+    state_code: CA
+  output:
+    tanf_max_amount: 579 * 12
