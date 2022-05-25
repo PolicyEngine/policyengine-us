@@ -1,0 +1,31 @@
+- name: Single person at 200% FPL, MA.
+  period: 2022
+  relative_error_margin: 0.05
+  input:
+    zip_code: "01101"
+    state_code: MA
+    medicaid_income: 13_590 * 2
+    age: 21
+  output:
+    premium_tax_credit: 301 * 12
+
+- name: Single parent at 250% FPL, MA.
+  period: 2022
+  relative_error_margin: 0.05
+  input:
+    households:
+      household:
+        zip_code: "01101"
+        state_code: MA
+        members: [parent, child]
+    tax_units:
+      tax_unit:
+        medicaid_income: 45_775
+        members: [parent, child]
+    people:
+      parent:
+        age: 32
+      child:
+        age: 5
+  output:
+    premium_tax_credit: 459 * 12
