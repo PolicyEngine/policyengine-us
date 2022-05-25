@@ -1,0 +1,32 @@
+from openfisca_us.model_api import *
+
+
+class cdcc_relevant_expenses(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "CDCC-relevant care expenses"
+    unit = USD
+    definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/26/21#c"
+
+    def formula(tax_unit, period, parameters):
+        # First, cap based on the number of eligible care receivers
+        expenses = tax_unit("tax_unit_childcare_expenses", period)
+        max_expenses = parameters(period).irs.credits.cdcc.max
+        count_eligible = tax_unit("count_cdcc_eligible", period)
+        eligible_capped_expenses = min_(
+            expenses, max_expenses * count_eligible
+        )
+        # Then, cap further to the lowest earnings between the taxpayer and spouse
+        earned_income = tax_unit.members("earned", period)
+        is_joint = tax_unit("tax_unit_is_joint", period)
+        is_spouse = tax_unit.members("is_tax_unit_spouse", period)
+        is_head = tax_unit.members("is_tax_unit_head", period)
+        head_earnings = tax_unit.sum(is_head * earned_income)
+        spouse_earnings = tax_unit.sum(is_spouse * earned_income)
+        lower_earnings = where(
+            is_joint,
+            min_(head_earnings, spouse_earnings),
+            head_earnings,
+        )
+        return min_(eligible_capped_expenses, lower_earnings)

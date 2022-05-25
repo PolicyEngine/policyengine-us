@@ -79,7 +79,9 @@ class earned(Variable):
             * person("self_employment_tax", period)
         )
         return (
-            add(person, period, ["e00200", "self_employment_income"])
+            add(
+                person, period, ["employment_income", "self_employment_income"]
+            )
             - adjustment
         )
 
