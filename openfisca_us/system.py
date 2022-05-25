@@ -8,6 +8,7 @@ from openfisca_tools import (
     propagate_parameter_metadata,
 )
 import os
+from openfisca_us.tools.backdate_parameters import backdate_parameters
 
 from openfisca_us.tools.dev.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
@@ -43,6 +44,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = set_irs_uprating_parameter(self.parameters)
 
         self.parameters = uprate_parameters(self.parameters)
+
+        self.parameters = backdate_parameters()(self.parameters)
 
         # Add taxcalc aliases
 
