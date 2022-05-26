@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.67.0] - 2022-05-26 14:10:48
+
+### Added
+
+- CDCC integration tests.
+
+### Changed
+
+- Re-implemented CDCC according to the U.S. code.
+
 ## [0.66.1] - 2022-05-24 15:20:46
 
 ### Added
@@ -875,6 +885,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.67.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.66.1...0.67.0
 [0.66.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.66.0...0.66.1
 [0.66.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.65.0...0.66.0
 [0.65.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.64.1...0.65.0
