@@ -721,3 +721,9 @@
     removed:
     - Extraneous variable documentation fields.
   date: 2022-05-24 15:20:46
+- bump: minor
+  changes:
+    changed:
+    - Re-implemented CDCC according to the U.S. code.
+    added:
+    - CDCC integration tests.
