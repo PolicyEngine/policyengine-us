@@ -8,7 +8,4 @@ class count_cdcc_eligible(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        num_eligible = add(tax_unit, period, ["cdcc_eligible"])
-        max_eligible = parameters(period).irs.credits.cdcc.eligibility.max
-        return min_(num_eligible, max_eligible)
+    formula = sum_of_variables(["is_cdcc_eligible"])

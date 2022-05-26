@@ -1,0 +1,24 @@
+- name: Two parents, three children with $8k childcare expenses
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 172_000
+        social_security: 47000
+      person2:
+        age: 32
+        employment_income: 114_000
+      person3:
+        age: 12
+      person4:
+        age: 12
+      person5:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 8_000
+  output:
+    cdcc: 1_200

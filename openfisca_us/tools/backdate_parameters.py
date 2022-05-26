@@ -22,13 +22,9 @@ def backdate_parameters(
                 earliest_value = earliest.value
                 earliest_instant = str_to_instant(earliest.instant_str)
                 if first_instant < earliest_instant:
-                    num_days = (
-                        earliest_instant.date - first_instant.date
-                    ).days
+                    days = (earliest_instant.date - first_instant.date).days
                     param.update(
-                        period=periods.Period(
-                            ("day", first_instant, num_days)
-                        ),
+                        period=periods.Period(("day", first_instant, days)),
                         value=earliest_value,
                     )
         return parameters
