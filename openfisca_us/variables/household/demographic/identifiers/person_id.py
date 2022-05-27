@@ -6,3 +6,6 @@ class person_id(Variable):
     entity = Person
     label = "Unique reference for this person"
     definition_period = ETERNITY
+
+    def formula(person, period, parameters):
+        return np.arange(len(person("age", period)))
