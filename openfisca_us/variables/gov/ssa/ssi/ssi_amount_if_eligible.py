@@ -11,3 +11,10 @@ class ssi_amount_if_eligible(Variable):
 
     def formula(person, period, parameters):
         has_eligible_spouse = spouse(person, period, "is_ssi_eligible_spouse")
+        has_income_deemed_from_ineligible_spouse = person("ssi_income_deemed_from_ineligible_spouse", period) > 0
+        ssi = parameters(period).ssa.ssi.amount
+        return where(
+            has_eligible_spouse & has_income_deemed_from_ineligible_spouse,
+            ssi.couple,
+            ssi.individual,
+        )

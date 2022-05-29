@@ -13,5 +13,5 @@ class ssi_ineligible_child_allocation(Variable):
     def formula(person, period, parameters):
         income = add(person, period, ["ssi_personal_earned_income", "ssi_personal_unearned_income"])
         ssi = parameters(period).ssa.ssi.amount
-        allocation = person("is_ssi_ineligible_child", period) * (ssi.couple - ssi.individual)
+        allocation = person("is_ssi_ineligible_child", period) * (ssi.couple - ssi.individual) * MONTHS_IN_YEAR
         return max_(0, allocation - income)

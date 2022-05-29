@@ -8,8 +8,8 @@ class ssi_unearned_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables([
-        "ssi_personal_unearned_income", 
-        "ssi_unearned_income_deemed_from_ineligible_parent", 
-        "ssi_unearned_income_deemed_from_ineligible_spouse"
-    ])
+    def formula(person, period, parameters):
+        personal = person("ssi_personal_unearned_income", period)
+        from_ineligible_spouse = person("ssi_unearned_income_deemed_from_ineligible_spouse", period)
+        total_spouse_income = person("ssi_income_deemed_from_ineligible_spouse", period)
+        return personal + from_ineligible_spouse * (total_spouse_income > 0)

@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class is_ssi_eligible_spouse(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Is an SSI-eligible spouse"
     unit = USD
