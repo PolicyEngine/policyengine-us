@@ -8,3 +8,8 @@ class ssi_unearned_income(Variable):
     unit = USD
     definition_period = YEAR
 
+    formula = sum_of_variables([
+        "ssi_personal_unearned_income", 
+        "ssi_unearned_income_deemed_from_ineligible_parent", 
+        "ssi_unearned_income_deemed_from_ineligible_spouse"
+    ])

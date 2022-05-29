@@ -7,4 +7,16 @@ class ssi_earned_income_deemed_from_ineligible_spouse(Variable):
     label = "SSI earned income (deemed from ineligible spouse)"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
+    def formula(person, period, parameters):
+        # First, determine unearned income from the ineligible spouse.
+        # This is (a) in the law.
+        ineligible_spouse = person("is_ssi_ineligible_spouse", period)
+        unearned_income = person("ssi_personal_unearned_income", period)
+        ineligible_spousal_unearned_income = (
+            person.marital_unit.sum(ineligible_spouse * unearned_income)
+            - ineligible_spouse * unearned_income
+        )
+
+        # Next, determine allocations for ineligible children.
