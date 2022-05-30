@@ -11,5 +11,7 @@ class uncapped_ssi(Variable):
 
     def formula(person, period, parameters):
         amount = person("ssi_amount_if_eligible", period)
+        meets_resource_test = person("meets_ssi_resource_test", period)
+        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         countable_income = person("ssi_countable_income", period)
-        return amount - countable_income
+        return (meets_resource_test * aged_blind_disabled) * (amount - countable_income)

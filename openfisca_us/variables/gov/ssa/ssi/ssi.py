@@ -10,5 +10,5 @@ class ssi(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1382"
 
     def formula(person, period, parameters):
-        pass
+        return max_(0, person("uncapped_ssi", period))
 
