@@ -13,10 +13,11 @@ class ssi_countable_income(Variable):
     def formula(person, period, parameters):
         personal_earned_income = person("ssi_earned_income", period)
         personal_unearned_income = person("ssi_unearned_income", period)
+        parental_income_deemed_as_unearned_income = person("ssi_unearned_income_deemed_from_ineligible_parent", period)
 
         personal_income = _apply_ssi_exclusions(
             personal_earned_income, 
-            personal_unearned_income, 
+            personal_unearned_income + parental_income_deemed_as_unearned_income, 
             parameters, 
             period
         )

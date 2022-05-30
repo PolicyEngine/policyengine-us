@@ -12,7 +12,7 @@ class ssi_ineligible_parent_allocation(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"
 
     def formula(person, period, parameters):
-        income = _apply_ssi_exclusions(person("ssi_earned_income", period), person("ssi_unearned_income", period), parameters, period)
         ssi = parameters(period).ssa.ssi.amount
-        allocation = person("is_ssi_ineligible_parent", period) * (ssi.couple - ssi.individual) * MONTHS_IN_YEAR
-        return max_(0, allocation - income)
+        ineligible_parent = person("is_ssi_ineligible_parent", period)
+        num_ineligible_parents = person.tax_unit.sum(ineligible_parent)
+        return where(num_ineligible_parents == 2, ssi.couple, ssi.individual * ineligible_parent)
