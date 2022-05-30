@@ -39,6 +39,10 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         )
         total_allocations = child_allocations + parental_allocations
 
+        print(f"ineligible_parents_income: {ineligible_parents_income}")
+        print(f"child_allocations: {child_allocations}")
+        print(f"parental_allocations: {parental_allocations}")
+
         net_parental_deemed_income = max_(
             0, ineligible_parents_income - total_allocations
         )

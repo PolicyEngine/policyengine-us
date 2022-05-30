@@ -19,6 +19,6 @@ class ssi_ineligible_parent_allocation(Variable):
         num_ineligible_parents = person.tax_unit.sum(ineligible_parent)
         return where(
             num_ineligible_parents == 2,
-            ssi.couple,
-            ssi.individual * ineligible_parent,
-        )
+            ssi.couple / 2,
+            ssi.individual,
+        ) * MONTHS_IN_YEAR * ineligible_parent

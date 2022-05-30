@@ -1,0 +1,22 @@
+- name: Example 1 from https://www.law.cornell.edu/cfr/text/20/416.1165
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      henry:
+        age: 12 # Assumed
+        is_ssi_disabled: true
+      henrys_brother:
+        age: 12
+      henrys_mother:
+        pension_income: 365 * 12
+      henrys_father:
+        employment_income: 1_165 * 12
+    tax_units:
+      tax_unit:
+        members: [henry, henrys_brother, henrys_mother, henrys_father]
+    marital_units:
+      marital_unit:
+        members: [henrys_mother, henrys_father]
+  output:
+    ssi_countable_income: [372, 0, 0, 0]
