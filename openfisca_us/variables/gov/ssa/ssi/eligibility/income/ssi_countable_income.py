@@ -39,5 +39,7 @@ class ssi_countable_income(Variable):
         is_ssi_claimant = person("is_ssi_eligible_individual", period)
 
         return where(
-            has_donated_income | ~is_ssi_claimant, 0, personal_income + income_from_spouse
+            has_donated_income | ~is_ssi_claimant,
+            0,
+            personal_income + income_from_spouse,
         )
