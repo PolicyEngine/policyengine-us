@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.68.1] - 2022-05-30 22:40:36
+
+### Fixed
+
+- A bug causing the CDCC to not cap at the two-child childcare max expenses.
+
 ## [0.68.0] - 2022-05-28 06:59:45
 
 ### Added
@@ -891,6 +897,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.68.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.68.0...0.68.1
 [0.68.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.67.0...0.68.0
 [0.67.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.66.1...0.67.0
 [0.66.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.66.0...0.66.1
