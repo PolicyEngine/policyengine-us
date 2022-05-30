@@ -4,7 +4,7 @@
   input:
     people:
       henry:
-        age: 12 # Assumed
+        age: 12 # Assumed, just needs to be a child
         is_ssi_disabled: true
       henrys_brother:
         age: 12
@@ -20,3 +20,22 @@
         members: [henrys_mother, henrys_father]
   output:
     ssi_countable_income: [372, 0, 0, 0]
+
+- name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1165
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      james:
+        is_ssi_disabled: true
+        age: 12
+      tony:
+        is_ssi_disabled: true
+        age: 12
+      mother:
+        ssi_unearned_income: 542 * 12
+    tax_units:
+      tax_unit:
+        members: [james, tony, mother]
+  output:
+    ssi_countable_income: [360, 360, 0]
