@@ -12,7 +12,7 @@ class maximum_state_supplement(Variable):
 
     def formula(person, period, parameters):
         marital_unit = person.marital_unit
-        eligible = person("is_ssi_aged_blind_disabled", period)
+        eligible = person("is_ssi_eligible_individual", period)
         state_code = person.household("state_code_str", period)
         living_arrangement = person.household(
             "state_living_arrangement", period

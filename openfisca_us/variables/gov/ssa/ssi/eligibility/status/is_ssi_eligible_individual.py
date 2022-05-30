@@ -11,7 +11,4 @@ class is_ssi_eligible_individual(Variable):
     def formula(person, period, parameters):
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
         is_ssi_eligible_spouse = person("is_ssi_eligible_spouse", period)
-        meets_non_financial_criteria = aged_blind_disabled & ~is_ssi_eligible_spouse
-
-        pass
-    
+        return aged_blind_disabled & ~is_ssi_eligible_spouse
