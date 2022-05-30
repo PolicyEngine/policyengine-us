@@ -8,8 +8,4 @@ class ssi_earned_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
-        personal = person("ssi_personal_earned_income", period)
-        from_ineligible_spouse = person("ssi_earned_income_deemed_from_ineligible_spouse", period)
-        total_spouse_income = person("ssi_income_deemed_from_ineligible_spouse", period)
-        return personal + from_ineligible_spouse * (total_spouse_income > 0)
+    formula = sum_of_variables("ssa.ssi.income.sources.earned")

@@ -14,7 +14,7 @@ class ssi_unearned_income_deemed_from_ineligible_spouse(Variable):
         # First, determine unearned income from the ineligible spouse.
         # This is (a) in the law.
         ineligible_spouse = person("is_ssi_ineligible_spouse", period)
-        unearned_income = person("ssi_personal_unearned_income", period)
+        unearned_income = person("ssi_unearned_income", period)
         ineligible_spousal_unearned_income = (
             person.marital_unit.sum(ineligible_spouse * unearned_income)
             - ineligible_spouse * unearned_income
