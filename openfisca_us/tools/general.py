@@ -72,6 +72,7 @@ def sum_among_non_dependents(variable: str) -> Callable:
 
     return formula
 
+
 def spouse(person: Population, period: int, variable: str) -> ArrayLike:
     values = person(variable, period)
     return (person.marital_unit.sum(values) - values).astype(values.dtype)

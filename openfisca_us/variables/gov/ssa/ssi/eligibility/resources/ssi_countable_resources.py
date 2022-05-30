@@ -7,4 +7,3 @@ class ssi_countable_resources(Variable):
     label = "SSI countable resources"
     unit = USD
     definition_period = YEAR
-

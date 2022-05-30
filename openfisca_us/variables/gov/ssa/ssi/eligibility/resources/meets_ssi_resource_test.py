@@ -12,7 +12,11 @@ class meets_ssi_resource_test(Variable):
         abd = person("is_ssi_aged_blind_disabled", period)
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)
-        countable_resources = where(joint_claim, person.marital_unit.sum(personal_resources), personal_resources)
+        countable_resources = where(
+            joint_claim,
+            person.marital_unit.sum(personal_resources),
+            personal_resources,
+        )
         ssi = parameters(period).ssa.ssi
         resource_limits = ssi.eligibility.resources.limit
         resource_limit = where(

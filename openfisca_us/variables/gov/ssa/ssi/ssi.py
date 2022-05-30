@@ -11,4 +11,3 @@ class ssi(Variable):
 
     def formula(person, period, parameters):
         return max_(0, person("uncapped_ssi", period))
-

@@ -1,7 +1,12 @@
 from openfisca_us.model_api import *
 
 
-def _apply_ssi_exclusions(earned_income: ArrayLike, unearned_income: ArrayLike, parameters: ParameterNode, period: Period) -> ArrayLike:
+def _apply_ssi_exclusions(
+    earned_income: ArrayLike,
+    unearned_income: ArrayLike,
+    parameters: ParameterNode,
+    period: Period,
+) -> ArrayLike:
     """Applies the SSI exclusions to earned income and unearned income, combining the result.
 
     Args:
