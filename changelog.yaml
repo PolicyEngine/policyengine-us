@@ -738,3 +738,7 @@
     fixed:
     - A bug causing the CDCC to not cap at the two-child childcare max expenses.
   date: 2022-05-30 22:40:36
+- bump: patch
+  changes:
+    changed:
+    - Premium Tax Credit formula skips intensive calculations if all tax units are ineligible.

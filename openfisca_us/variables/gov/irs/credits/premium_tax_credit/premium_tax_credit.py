@@ -10,8 +10,12 @@ class premium_tax_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/36B"
 
     def formula(tax_unit, period, parameters):
-        applicable_percentage = tax_unit("ptc_phase_out_rate", period)
         eligible = tax_unit("is_ptc_eligible", period)
+        if all(~eligible):
+            # If every tax unit is ineligible, skip the rest of the calculation
+            # and return zero values.
+            return eligible.astype(np.float32)
+        applicable_percentage = tax_unit("ptc_phase_out_rate", period)
         plan_cost = tax_unit("second_lowest_silver_plan_cost", period)
         income = tax_unit("medicaid_income", period)
         return eligible * max_(0, plan_cost - income * applicable_percentage)
