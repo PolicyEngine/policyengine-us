@@ -11,4 +11,3 @@ class is_ssi_ineligible_child(Variable):
         abd = person("is_ssi_aged_blind_disabled", period)
         child = person("is_child", period)
         return ~abd & child
-        
