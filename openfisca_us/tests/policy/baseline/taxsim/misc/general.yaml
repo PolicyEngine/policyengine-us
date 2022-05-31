@@ -1,0 +1,64 @@
+- name: Tax unit with taxsimid 483 from f18.its.csv
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 41
+        employment_income: 292000
+        unemployment_compensation: 5000
+        social_security: 19000
+        pension_income: 43000
+        has_marketplace_health_coverage: false
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 45
+        employment_income: 139000
+        has_marketplace_health_coverage: false
+      person3:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+      person4:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+      person5:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+      person6:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        tax_unit_childcare_expenses: 10000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: TX
+  output:
+    tax_unit_taxable_unemployment_compensation: 5000.00
+    tax_unit_taxable_social_security: 16150.00
+    adjusted_gross_income: 495150.00
+    taxable_income: 471150.00
+    eitc: 0.00
+    non_refundable_ctc: 3242.50
+    refundable_ctc: 0.00
+    cdcc: 1200.00  # expected cdcc = 0.20 * 6000
+    income_tax: 111839.00

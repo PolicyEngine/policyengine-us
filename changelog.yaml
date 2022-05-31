@@ -733,6 +733,11 @@
     added:
     - EITC parameters for 2017 and 2018.
   date: 2022-05-28 06:59:45
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing the CDCC to not cap at the two-child childcare max expenses.
+  date: 2022-05-30 22:40:36
 - bump: minor
   changes:
     added:
