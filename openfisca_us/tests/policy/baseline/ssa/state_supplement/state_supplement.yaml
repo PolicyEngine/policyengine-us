@@ -5,15 +5,18 @@
     people:
       person_1:
         age: 67
-        ssi_countable_income: 20_000
+        ssi_countable_income: 17_000
       person_2:
         is_blind: true
     marital_units:
       marital_unit:
+        members: [person_1, person_2]
+    tax_units:
+      tax_unit:
         members: [person_1, person_2]
     households:
       household:
         members: [person_1, person_2]
         state_code: MA
   output:
-    state_supplement: [332, 332]
+    state_supplement: [450, 450]

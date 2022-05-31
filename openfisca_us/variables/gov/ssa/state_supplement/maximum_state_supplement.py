@@ -12,8 +12,7 @@ class maximum_state_supplement(Variable):
 
     def formula(person, period, parameters):
         marital_unit = person.marital_unit
-        eligible = person("is_ssi_aged_blind_disabled", period)
-        num_eligible = marital_unit.sum(eligible)
+        eligible = person("is_ssi_eligible_individual", period)
         state_code = person.household("state_code_str", period)
         living_arrangement = person.household(
             "state_living_arrangement", period
@@ -23,25 +22,26 @@ class maximum_state_supplement(Variable):
         is_blind = person("is_blind", period)
         is_aged = person("is_ssi_aged", period)
         is_disabled = person("is_ssi_disabled", period)
-        num_persons = len(is_blind)
+        count_persons = len(is_blind)
         ssi_categories = person("ssi_category", period).possible_values
-        num_eligible_str = clip(num_eligible.astype(int), 1, 2).astype(str)
+        joint_claim = person("ssi_claim_is_joint", period)
+        count_eligible_str = where(joint_claim, 2, 1).astype(str)
         per_person_amount = (
             max_(
-                amounts[np.array([ssi_categories.AGED] * num_persons)][
-                    num_eligible_str
+                amounts[np.array([ssi_categories.AGED] * count_persons)][
+                    count_eligible_str
                 ]
                 * is_aged,
-                amounts[np.array([ssi_categories.BLIND] * num_persons)][
-                    num_eligible_str
+                amounts[np.array([ssi_categories.BLIND] * count_persons)][
+                    count_eligible_str
                 ]
                 * is_blind,
-                amounts[np.array([ssi_categories.DISABLED] * num_persons)][
-                    num_eligible_str
+                amounts[np.array([ssi_categories.DISABLED] * count_persons)][
+                    count_eligible_str
                 ]
                 * is_disabled,
             )
             * MONTHS_IN_YEAR
         )
         combined_amount = marital_unit.sum(per_person_amount)
-        return eligible * combined_amount * where(num_eligible > 1, 1 / 2, 1)
+        return eligible * combined_amount * where(joint_claim, 1 / 2, 1)

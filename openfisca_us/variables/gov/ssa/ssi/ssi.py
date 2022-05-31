@@ -6,15 +6,8 @@ class ssi(Variable):
     entity = Person
     label = "SSI"
     unit = USD
-    documentation = "SSI for this person (split equally between couples)."
     definition_period = YEAR
+    reference = "https://www.law.cornell.edu/uscode/text/42/1382"
 
     def formula(person, period, parameters):
-        is_ssi_eligible = person("is_ssi_aged_blind_disabled", period)
-        joint_application = person.marital_unit.sum(is_ssi_eligible) > 1
-        marital_unit_ssi = max_(0, person.marital_unit("uncapped_ssi", period))
-        return (
-            is_ssi_eligible
-            * marital_unit_ssi
-            * where(joint_application, 1 / 2, 1)
-        )
+        return max_(0, person("uncapped_ssi", period))

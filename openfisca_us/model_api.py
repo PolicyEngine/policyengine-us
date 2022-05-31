@@ -4,6 +4,9 @@ from openfisca_us.entities import *
 from openfisca_us.tools.general import *
 from pathlib import Path
 from openfisca_us.typing import *
+import warnings
+
+warnings.filterwarnings("ignore")
 
 REPO = Path(__file__).parent
 
