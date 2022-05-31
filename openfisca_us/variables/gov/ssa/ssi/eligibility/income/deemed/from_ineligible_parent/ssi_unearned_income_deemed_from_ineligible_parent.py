@@ -17,14 +17,15 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
             "is_child", period
         )
         ineligible_parent = person("is_ssi_ineligible_parent", period)
+        tax_unit = person.tax_unit
 
         ineligible_parents_income = eligible_child * _apply_ssi_exclusions(
             eligible_child
-            * person.tax_unit.sum(
+            * tax_unit.sum(
                 person("ssi_earned_income", period) * ineligible_parent
             ),
             eligible_child
-            * person.tax_unit.sum(
+            * tax_unit.sum(
                 person("ssi_unearned_income", period) * ineligible_parent
             ),
             parameters,
@@ -32,19 +33,19 @@ class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
         )
 
         child_allocations = add(
-            person.tax_unit, period, ["ssi_ineligible_child_allocation"]
+            tax_unit, period, ["ssi_ineligible_child_allocation"]
         )
         parental_allocations = add(
-            person.tax_unit, period, ["ssi_ineligible_parent_allocation"]
+            tax_unit, period, ["ssi_ineligible_parent_allocation"]
         )
         total_allocations = child_allocations + parental_allocations
 
         net_parental_deemed_income = max_(
             0, ineligible_parents_income - total_allocations
         )
-        num_eligible_children = person.tax_unit.sum(eligible_child)
+        count_eligible_children = tax_unit.sum(eligible_child)
         return where(
-            num_eligible_children > 0,
-            net_parental_deemed_income / num_eligible_children,
+            count_eligible_children > 0,
+            net_parental_deemed_income / count_eligible_children,
             0,
         )

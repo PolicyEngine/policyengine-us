@@ -14,4 +14,4 @@ class uncapped_ssi(Variable):
         meets_resource_test = person("meets_ssi_resource_test", period)
         eligible = person("is_ssi_eligible_individual", period)
         countable_income = person("ssi_countable_income", period)
-        return (meets_resource_test * eligible) * (amount - countable_income)
+        return (meets_resource_test & eligible) * (amount - countable_income)

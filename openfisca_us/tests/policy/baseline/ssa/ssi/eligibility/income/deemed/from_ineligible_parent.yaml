@@ -1,4 +1,4 @@
-- name: Example 1 from https://www.law.cornell.edu/cfr/text/20/416.1165
+- name: Example 1 from https://www.law.cornell.edu/cfr/text/20/416.1165#h
   period: 1992
   absolute_error_margin: 0
   input:
@@ -19,9 +19,9 @@
       marital_unit:
         members: [henrys_mother, henrys_father]
   output:
-    ssi_countable_income: [372, 0, 0, 0]
+    ssi_countable_income: [372, 0, 0, 0] # 31 * 12
 
-- name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1165
+- name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1165#h
   period: 1992
   absolute_error_margin: 0
   input:
@@ -38,4 +38,4 @@
       tax_unit:
         members: [james, tony, mother]
   output:
-    ssi_countable_income: [360, 360, 0]
+    ssi_countable_income: [360, 360, 0] # 30 * 12

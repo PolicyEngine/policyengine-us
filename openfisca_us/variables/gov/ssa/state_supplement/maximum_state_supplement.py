@@ -22,22 +22,22 @@ class maximum_state_supplement(Variable):
         is_blind = person("is_blind", period)
         is_aged = person("is_ssi_aged", period)
         is_disabled = person("is_ssi_disabled", period)
-        num_persons = len(is_blind)
+        count_persons = len(is_blind)
         ssi_categories = person("ssi_category", period).possible_values
         joint_claim = person("ssi_claim_is_joint", period)
-        num_eligible_str = where(joint_claim, 2, 1).astype(str)
+        count_eligible_str = where(joint_claim, 2, 1).astype(str)
         per_person_amount = (
             max_(
-                amounts[np.array([ssi_categories.AGED] * num_persons)][
-                    num_eligible_str
+                amounts[np.array([ssi_categories.AGED] * count_persons)][
+                    count_eligible_str
                 ]
                 * is_aged,
-                amounts[np.array([ssi_categories.BLIND] * num_persons)][
-                    num_eligible_str
+                amounts[np.array([ssi_categories.BLIND] * count_persons)][
+                    count_eligible_str
                 ]
                 * is_blind,
-                amounts[np.array([ssi_categories.DISABLED] * num_persons)][
-                    num_eligible_str
+                amounts[np.array([ssi_categories.DISABLED] * count_persons)][
+                    count_eligible_str
                 ]
                 * is_disabled,
             )
