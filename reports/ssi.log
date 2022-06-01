@@ -1,0 +1,98 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from openfisca_us import IndividualSim
+import pandas as pd
+import plotly.express as px
+
+LIGHT_GRAY = "#F5F5F5"
+GRAY = "#BDBDBD"
+BLUE = "#5091cc"
+LIGHT_BLUE = "lightblue"
+DARK_BLUE = "darkblue"
+
+
+def make_ssi(social_security=0, vary="employment_income"):
+    sim = IndividualSim(year=2022)
+    sim.add_person(
+        name="head", is_ssi_disabled=True, social_security=social_security
+    )
+    sim.vary(vary, max=30_000, step=120)
+    employment_income = sim.calc("employment_income")[0]
+    ssi = sim.calc("ssi")[0]
+    mtr = -sim.deriv("ssi", "employment_income", wrt_target="head")
+    return pd.DataFrame(
+        dict(
+            employment_income=employment_income,
+            ssi=ssi,
+            mtr=mtr,
+            social_security=social_security,
+        )
+    )
+
+# Compute for different values of Social Security income.l = []
+for ss in [0, 500 * 12]:
+    l.append(make_ssi(social_security=ss))
+
+df = pd.concat(l)
+
+# Make monthly.
+df[["employment_income", "ssi", "social_security"]] /= 12
+df.social_security = "$" + df.social_security.astype(int).astype(str)
+
+LABELS = dict(
+    employment_income="Monthly employment income",
+    ssi="Monthly Supplemental Security Income",
+    mtr="SSI marginal tax rate",
+    social_security="Monthly Social Security",
+)
+
+COLOR_MAP = {"$0": DARK_BLUE, "$500": BLUE}
+
+fig = px.line(
+    df,
+    "employment_income",
+    "ssi",
+    color="social_security",
+    labels=LABELS,
+    title="Supplemental Security Income for a single person",
+    color_discrete_map=COLOR_MAP,
+)
+fig.update_layout(
+    xaxis_tickformat="$,",
+    yaxis_tickformat="$,",
+    plot_bgcolor="white",
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
+fig.show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2195/316292052.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     30[0m [0;31m# Compute for different values of Social Security income.l = [][0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     31[0m [0;32mfor[0m [0mss[0m [0;32min[0m [0;34m[[0m[0;36m0[0m[0;34m,[0m [0;36m500[0m [0;34m*[0m [0;36m12[0m[0;34m][0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 32[0;31m     [0ml[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mmake_ssi[0m[0;34m([0m[0msocial_security[0m[0;34m=[0m[0mss[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     33[0m [0;34m[0m[0m
+[1;32m     34[0m [0mdf[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mconcat[0m[0;34m([0m[0ml[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mNameError[0m: name 'l' is not defined
+NameError: name 'l' is not defined
+
