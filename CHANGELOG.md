@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.69.1] - 2022-06-01 04:50:12
+
+### Added
+
+- New `tax_unit_ssi` variable.
+- Example of single parent with two disabled children in SSI documentation notebook.
+
+### Fixed
+
+- Zeroed out `premium_tax_credit` in Massachusetts example notebook.
+
 ## [0.69.0] - 2022-05-31 17:31:13
 
 ### Added
@@ -903,6 +914,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.69.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.0...0.69.1
 [0.69.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.68.1...0.69.0
 [0.68.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.68.0...0.68.1
 [0.68.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.67.0...0.68.0
