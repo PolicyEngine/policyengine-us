@@ -16,16 +16,8 @@ class ctc_child_individual_maximum(Variable):
 
     def formula(person, period, parameters):
         ctc = parameters(period).irs.credits.ctc
-        return person("is_ctc_qualifying_child", period) * ctc.child.amount
-
-    def formula_2021(person, period, parameters):
-        ctc = parameters(period).irs.credits.ctc
-        age = person("age", period)
         is_child = person("is_ctc_qualifying_child", period)
-        is_young_child = age <= ctc.child.young.max_age
-        return (
-            is_young_child * ctc.child.young.increase
-            + is_child * ctc.child.amount
-        )
-
-    formula_2022 = formula
+        base_amount = is_child * ctc.child.amount
+        is_young_child = person("is_ctc_qualifying_young_child", period)
+        young_child_amount = is_young_child * ctc.child.young.increase
+        return base_amount + young_child_amount

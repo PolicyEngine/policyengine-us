@@ -761,9 +761,10 @@
     added:
     - New `taxsim_tfica` variable for testing.
   date: 2022-06-02 03:24:39
-- bump: patch
+- bump: minor
   changes:
     fixed:
     - Limit excess of Social Security taxes over EITC for refundable CTC to taxpayers with a minimum number of children.
     changed:
+    - Apply consistent CTC formula to all years.
     - Move CTC variables into their own files and other minor refactoring.
