@@ -9,6 +9,7 @@
     tax_units:
       tax_unit:
         members: [primary, spouse, child]
+        is_ptc_eligible: true
     people:
       primary:
         age: 26
