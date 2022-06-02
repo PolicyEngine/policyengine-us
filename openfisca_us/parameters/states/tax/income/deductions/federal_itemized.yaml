@@ -1,8 +1,10 @@
 description: Whether the federal medical expense deduction is also deductible from taxable income for State income taxes.
 MA:
-  2010-01-01: true
+  2010-01-01:
+  - medical_expense_deduction
 metadata:
   unit: bool
   name: state_income_tax_med_exp_deductible
   label: State income tax medical expense deduction
   breakdown: state_code
+  breakdown_default: []
