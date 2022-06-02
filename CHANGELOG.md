@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.70.1] - 2022-06-02 16:51:48
+
+### Fixed
+
+- Fix EITC bug which applied the phase-out after, instead of before, the phase-in.
+
 ## [0.70.0] - 2022-06-02 11:44:25
 
 ### Changed
@@ -937,6 +943,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.70.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.0...0.70.1
 [0.70.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.3...0.70.0
 [0.69.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.2...0.69.3
 [0.69.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.1...0.69.2
