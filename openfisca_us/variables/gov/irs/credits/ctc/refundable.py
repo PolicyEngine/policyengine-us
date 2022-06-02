@@ -97,9 +97,7 @@ class refundable_ctc(Variable):
             "employee_medicare_tax",
             "unreported_payroll_tax",
         ]
-        PERSON_VARIABLES_SUBTRACT = [
-            "excess_payroll_tax_withheld"
-        ]  # Excess payroll tax withheld.
+        PERSON_VARIABLES_SUBTRACT = ["excess_payroll_tax_withheld"]
         TAX_UNIT_VARIABLES = [
             "c03260",  # Deductible portion of the self-employed tax.
             "additional_medicare_tax",
@@ -111,9 +109,15 @@ class refundable_ctc(Variable):
         )
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
-
-        tax_increase = max_(relevant_earnings, social_security_excess)
-
+        qualifying_children = add(
+            tax_unit, period, ["is_ctc_qualifying_child"]
+        )
+        tax_increase = where(
+            qualifying_children
+            < ctc.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
+            relevant_earnings,
+            max_(relevant_earnings, social_security_excess),
+        )
         limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
         ctc_capped_by_increased_tax = min_(
