@@ -63,14 +63,11 @@ class section_22_income(Variable):
         total_pensions = add(tax_unit, period, ["pension_income"])
         taxable_pensions = add(tax_unit, period, ["taxable_pension_income"])
         non_taxable_pensions = total_pensions - taxable_pensions
-        non_taxable_social_security = (
-            tax_unit("tax_unit_social_security", period)
-            - tax_unit("tax_unit_taxable_social_security", period)
-        )
+        non_taxable_social_security = tax_unit(
+            "tax_unit_social_security", period
+        ) - tax_unit("tax_unit_taxable_social_security", period)
         capped_reduced_amount = (
-            capped_amount
-            - non_taxable_pensions
-            - non_taxable_social_security
+            capped_amount - non_taxable_pensions - non_taxable_social_security
         )
         agi = tax_unit("adjusted_gross_income", period)
 
