@@ -31,7 +31,7 @@ class second_lowest_silver_plan_cost(Variable):
         )
         eligible = person.tax_unit("is_ptc_eligible", period)
         per_person_cost = index_(
-            parameter=slspc,
+            into=slspc,
             indices=[state, area, age_code],
             where=eligible,
         )
