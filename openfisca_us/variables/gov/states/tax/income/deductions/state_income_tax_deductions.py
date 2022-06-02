@@ -12,5 +12,6 @@ class state_income_tax_deductions(Variable):
         [
             "state_income_tax_payroll_tax_deduction",
             "state_income_tax_rental_deduction",
+            "state_income_tax_medical_expense_deduction",
         ]
     )
