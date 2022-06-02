@@ -770,3 +770,7 @@
     - Limit excess of Social Security taxes over EITC for refundable CTC to taxpayers
       with a minimum number of children.
   date: 2022-06-02 11:44:25
+- bump: patch
+  changes:
+    fixed:
+    - Fix EITC bug which applied the phase-out after, instead of before, the phase-in.

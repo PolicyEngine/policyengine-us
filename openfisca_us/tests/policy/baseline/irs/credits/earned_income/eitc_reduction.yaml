@@ -4,9 +4,10 @@
   input: {}
   output:
     eitc_reduction: 0
+
 - name: Two children, full reduction
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 1
   input:
     people:
       child_1:
@@ -20,4 +21,4 @@
       tax_unit:
         members: [child_1, child_2, parent]
   output:
-    eitc_reduction: 6_164
+    eitc_reduction: 6_290
