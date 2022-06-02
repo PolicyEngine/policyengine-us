@@ -780,3 +780,7 @@
     changed:
     - Applied new openfisca-tools helper function `index_` to speed up SLSPC calculations.
   date: 2022-06-02 17:01:01
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing UC- and SS-related MAGI to incorrectly overcount loss deductions.
