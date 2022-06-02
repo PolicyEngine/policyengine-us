@@ -10,12 +10,13 @@ class second_lowest_silver_plan_cost(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        area = person.household("medicaid_rating_area", period)
-        state = person.household("state_code_str", period)
+        household = person.household
+        area = household("medicaid_rating_area", period)
+        state = household("state_code_str", period)
         slspc = parameters(
             period
         ).hhs.medicaid.geography.second_lowest_silver_plan_cost
-        age = tax_unit.members("age", period)
+        age = person("age", period)
         age_code = select(
             [
                 age < 21,
@@ -28,6 +29,5 @@ class second_lowest_silver_plan_cost(Variable):
                 "64+",
             ],
         )
-        x = slspc[state]
         per_person_cost = slspc[state][area][age_code]
         return tax_unit.sum(per_person_cost)
