@@ -773,4 +773,9 @@
 - bump: patch
   changes:
     fixed:
+    - Fix EITC bug which applied the phase-out after, instead of before, the phase-in.
+  date: 2022-06-02 16:51:48
+- bump: patch
+  changes:
+    fixed:
     - A bug causing UC- and SS-related MAGI to incorrectly overcount loss deductions.

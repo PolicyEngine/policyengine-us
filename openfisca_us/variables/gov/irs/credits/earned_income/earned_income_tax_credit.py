@@ -11,9 +11,11 @@ class earned_income_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("eitc_eligible", period)
-        maximum = tax_unit("eitc_phased_in", period)
+        maximum = tax_unit("eitc_maximum", period)
+        phased_in = tax_unit("eitc_phased_in", period)
         reduction = tax_unit("eitc_reduction", period)
-        return eligible * (maximum - reduction)
+        limitation = max_(0, maximum - reduction)
+        return eligible * min_(phased_in, limitation)
 
 
 c59660 = variable_alias("c59660", earned_income_tax_credit)

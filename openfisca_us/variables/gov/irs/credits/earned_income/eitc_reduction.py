@@ -17,5 +17,4 @@ class eitc_reduction(Variable):
         phaseout_start = tax_unit("eitc_phaseout_start", period)
         phaseout_rate = tax_unit("eitc_phaseout_rate", period)
         phaseout_region = max_(0, highest_income_variable - phaseout_start)
-        uncapped_reduction = phaseout_rate * phaseout_region
-        return min_(uncapped_reduction, tax_unit("eitc_phased_in", period))
+        return phaseout_rate * phaseout_region
