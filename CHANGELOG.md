@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.70.2] - 2022-06-02 17:01:01
+
+### Changed
+
+- Applied new openfisca-tools helper function `index_` to speed up SLSPC calculations.
+
 ## [0.70.1] - 2022-06-02 16:51:48
 
 ### Fixed
@@ -943,6 +949,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.70.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.1...0.70.2
 [0.70.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.0...0.70.1
 [0.70.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.3...0.70.0
 [0.69.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.2...0.69.3
