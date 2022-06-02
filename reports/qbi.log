@@ -95,7 +95,7 @@ fig.update_layout(
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2122/1948591072.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2292/1948591072.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     50[0m [0msimulation_builder[0m [0;34m=[0m [0mSimulationBuilder[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     51[0m simulation = simulation_builder.build_from_entities(
 [0;32m---> 52[0;31m     [0mCountryTaxBenefitSystem[0m[0;34m([0m[0;34m)[0m[0;34m,[0m [0mWITH_AXES[0m[0;34m[0m[0;34m[0m[0m
