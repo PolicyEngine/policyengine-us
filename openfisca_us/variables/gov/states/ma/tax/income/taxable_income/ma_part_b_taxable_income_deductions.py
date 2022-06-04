@@ -7,6 +7,8 @@ class ma_part_b_taxable_income_deductions(Variable):
     label = "MA Part B taxable income deductions"
     unit = USD
     definition_period = YEAR
+    is_eligible = in_state("MA")
+    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
 
     def formula(tax_unit, period, parameters):
         tax = parameters(period).states.ma.tax.income
@@ -17,7 +19,7 @@ class ma_part_b_taxable_income_deductions(Variable):
             tax.deductions.public_retirement_contributions,
             fica,
         )
-        interest_and_dividends = add(tax_unit, period, ["interest", "dividend_income"])
+        interest_and_dividends = add(tax_unit, period, ["interest_income", "dividend_income"])
 
         interest_and_dividends = min_(
             tax.exemptions.interest[filing_status],

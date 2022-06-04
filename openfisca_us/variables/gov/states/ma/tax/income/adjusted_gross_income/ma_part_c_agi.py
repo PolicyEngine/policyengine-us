@@ -7,6 +7,7 @@ class ma_part_c_agi(Variable):
     label = "MA Part C AGI"
     unit = USD
     definition_period = YEAR
+    is_eligible = in_state("MA")
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
 
     formula = sum_of_variables(["ma_part_c_gross_income"])

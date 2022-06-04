@@ -7,6 +7,8 @@ class ma_part_b_taxable_income(Variable):
     label = "MA Part B taxable income"
     unit = USD
     definition_period = YEAR
+    is_eligible = in_state("MA")
+    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
 
     def formula(tax_unit, period, parameters):
         part_b_agi = tax_unit("ma_part_b_agi", period)
