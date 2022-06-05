@@ -16,7 +16,7 @@ class ma_income_tax_before_credits(Variable):
         part_b = tax_unit("ma_part_b_taxable_income", period)
         part_c = tax_unit("ma_part_c_taxable_income", period)
         rates = parameters(period).states.ma.tax.income.rates
-        exempt = tax_unit("is_state_income_tax_exempt", period)
+        exempt = tax_unit("is_ma_income_tax_exempt", period)
         return ~exempt * (
             rates.part_a_interest_dividends * part_a_interest_dividends
             + rates.part_a_capital_gains * part_a_capital_gains

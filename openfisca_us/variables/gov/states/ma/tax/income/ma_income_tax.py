@@ -15,7 +15,8 @@ class ma_income_tax(Variable):
         income_tax_before_credits = tax_unit("ma_income_tax_before_credits", period)
         credits = [
             "ma_limited_income_tax_credit",
-            "state_income_tax_refundable_credits",
+            "ma_eitc",
+            "ma_dependent_credit",
         ]
         credit_value = add(tax_unit, period, credits)
         return income_tax_before_credits - credit_value

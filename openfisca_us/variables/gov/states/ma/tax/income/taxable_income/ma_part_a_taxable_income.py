@@ -13,6 +13,6 @@ class ma_part_a_taxable_income(Variable):
     def formula(tax_unit, period, parameters):
         part_a_agi = tax_unit("ma_part_a_agi", period)
         part_b_agi = tax_unit("ma_part_b_agi", period)
-        part_b_deductions = tax_unit("ma_part_b_deductions", period)
+        part_b_deductions = tax_unit("ma_part_b_taxable_income_deductions", period)
         remaining_part_b_deductions = max_(0, part_b_deductions - part_b_agi)
         return max_(0, part_a_agi - remaining_part_b_deductions)

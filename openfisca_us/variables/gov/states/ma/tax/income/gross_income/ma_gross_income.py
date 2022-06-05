@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class massachusetts_gross_income(Variable):
+class ma_gross_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "MA gross income"
@@ -12,7 +12,7 @@ class massachusetts_gross_income(Variable):
 
     def formula(tax_unit, period, parameters):
         # Mass. General Laws c.62 § 2(a)
-        federal_gross_income = tax_unit("irs_gross_income", period)
+        federal_gross_income = add(tax_unit, period, ["irs_gross_income"])
         foreign_earned_income = tax_unit("foreign_earned_income_exclusion", period)
         social_security_in_agi = add(tax_unit, period, ["taxable_social_security"])
         deductions = foreign_earned_income + social_security_in_agi

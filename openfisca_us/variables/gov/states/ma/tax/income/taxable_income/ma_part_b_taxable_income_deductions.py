@@ -37,10 +37,10 @@ class ma_part_b_taxable_income_deductions(Variable):
         person = tax_unit.members
 
         count_dependents = tax_unit("tax_unit_dependents", period)
-        dependent_exemption = tax.exemptions.dependent[filing_status] * count_dependents
+        dependent_exemption = tax.exemptions.dependent * count_dependents
 
         age = person("age", period)
-        dependent = tax_unit("is_tax_unit_dependent", period)
+        dependent = person("is_tax_unit_dependent", period)
         count_aged = tax_unit.sum(~dependent & (age >= tax.exemptions.aged.age))
         aged_exemption = tax.exemptions.aged.amount * count_aged
 
