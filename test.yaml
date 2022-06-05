@@ -1,0 +1,7 @@
+- name: MA income tax
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    employment_income: 100
+  output:
+    tax_unit_itemizes: 1

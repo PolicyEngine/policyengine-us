@@ -1,5 +1,5 @@
 from openfisca_us.model_api import *
-from openfisca_core.tracers import SimpleTracer
+from openfisca_core.tracers import FullTracer
 
 
 class tax_liability_if_not_itemizing(Variable):
@@ -13,12 +13,12 @@ class tax_liability_if_not_itemizing(Variable):
         simulation = tax_unit.simulation
 
         simulation_if_not_itemizing = simulation.clone()
-        simulation_if_not_itemizing.tracer = SimpleTracer()
+        simulation_if_not_itemizing.tracer = FullTracer()
         simulation_if_not_itemizing.set_input(
             "tax_unit_itemizes", period, False
         )
         old_tracer = simulation.tracer
-        simulation.tracer = SimpleTracer()
+        simulation.tracer = FullTracer()
         values = simulation_if_not_itemizing.calculate(
             "total_income_tax", period
         )

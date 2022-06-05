@@ -1,8 +1,0 @@
-- name: Itemizing logic runs
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    employment_income: 100_000
-    medical_expense_deduction: 20_000
-  output:
-    tax_unit_itemizes: true
