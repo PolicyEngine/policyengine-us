@@ -15,7 +15,9 @@ class tax_liability_if_not_itemizing(Variable):
         simulation_if_not_itemizing = simulation.clone()
         simulation_if_not_itemizing.tracer = SimpleTracer()
         simulation_if_not_itemizing.set_input(
-            "tax_unit_itemizes", period, False
+            "tax_unit_itemizes",
+            period,
+            np.zeros((tax_unit.count,), dtype=bool),
         )
         old_tracer = simulation.tracer
         simulation.tracer = SimpleTracer()

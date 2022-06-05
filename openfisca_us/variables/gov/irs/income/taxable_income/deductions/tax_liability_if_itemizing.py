@@ -15,7 +15,9 @@ class tax_liability_if_itemizing(Variable):
         simulation.tracer = SimpleTracer()
         simulation_if_itemizing = simulation.clone()
         simulation_if_itemizing.tracer = SimpleTracer()
-        simulation_if_itemizing.set_input("tax_unit_itemizes", period, True)
+        simulation_if_itemizing.set_input(
+            "tax_unit_itemizes", period, np.ones((tax_unit.count,), dtype=bool)
+        )
         # This fixes a memory bug, essentially taking
         # the tracer out of reach of the new simulation (which somehow pollutes the old one)
         try:
