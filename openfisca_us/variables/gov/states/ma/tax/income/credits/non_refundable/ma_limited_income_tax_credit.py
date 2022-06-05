@@ -12,8 +12,12 @@ class ma_limited_income_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("ma_agi", period)
-        exemption_threshold = tax_unit("ma_income_tax_exemption_threshold", period)
-        lic = parameters(period).states.ma.tax.income.credits.non_refundable.limited_income_credit
+        exemption_threshold = tax_unit(
+            "ma_income_tax_exemption_threshold", period
+        )
+        lic = parameters(
+            period
+        ).states.ma.tax.income.credits.non_refundable.limited_income_credit
         income_level = agi / exemption_threshold
         eligible = income_level <= lic.income_limit
         other_credits = ["ma_dependent_credit", "ma_eitc"]

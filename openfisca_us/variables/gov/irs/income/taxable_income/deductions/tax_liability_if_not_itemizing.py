@@ -22,10 +22,11 @@ class tax_liability_if_not_itemizing(Variable):
         # This fixes a memory bug, essentially taking
         # the tracer out of reach of the new simulation (which somehow pollutes the old one)
         try:
-            values = simulation_if_not_itemizing.calculate("total_income_tax", period)
+            values = simulation_if_not_itemizing.calculate(
+                "total_income_tax", period
+            )
         except Exception as e:
             simulation.tracer = old_tracer
             raise e
-        simulation.tracer = old_tracer # Re-attach the old tracer
+        simulation.tracer = old_tracer  # Re-attach the old tracer
         return values
-

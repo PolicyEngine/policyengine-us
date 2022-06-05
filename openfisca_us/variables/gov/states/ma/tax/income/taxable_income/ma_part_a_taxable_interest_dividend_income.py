@@ -12,5 +12,7 @@ class ma_part_a_taxable_interest_dividend_income(Variable):
 
     def formula(tax_unit, period, parameters):
         part_a_taxable_income = tax_unit("ma_part_a_taxable_income", period)
-        interest_and_dividends = add(tax_unit, period, ["interest_income", "dividend_income"])
+        interest_and_dividends = add(
+            tax_unit, period, ["interest_income", "dividend_income"]
+        )
         return min_(part_a_taxable_income, interest_and_dividends)

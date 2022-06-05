@@ -11,11 +11,11 @@ class ma_part_a_gross_income(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
 
     def formula(tax_unit, period, parameters):
-        non_ma_interest = 0 # All interest assumed to be from banks with a presence in MA.
-        dividends = add(tax_unit, period, ["dividend_income"])
-        short_term_capital_gains = max_(0, add(tax_unit, period, ["short_term_capital_gains"]))
-        return (
-            non_ma_interest
-            + dividends
-            + short_term_capital_gains
+        non_ma_interest = (
+            0  # All interest assumed to be from banks with a presence in MA.
         )
+        dividends = add(tax_unit, period, ["dividend_income"])
+        short_term_capital_gains = max_(
+            0, add(tax_unit, period, ["short_term_capital_gains"])
+        )
+        return non_ma_interest + dividends + short_term_capital_gains

@@ -10,7 +10,9 @@ class ma_dependent_credit(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).states.ma.tax.income.credits.refundable.dependent
+        p = parameters(
+            period
+        ).states.ma.tax.income.credits.refundable.dependent
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)

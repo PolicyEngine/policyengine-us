@@ -15,6 +15,10 @@ class ma_part_b_agi(Variable):
         parameters = parameters(period)
         federal_deductions = parameters.irs.ald.deductions
         disallowed_deductions = parameters.states.ma.tax.income.ald.disallowed
-        deductions = [deduction for deduction in federal_deductions if deduction not in disallowed_deductions]
+        deductions = [
+            deduction
+            for deduction in federal_deductions
+            if deduction not in disallowed_deductions
+        ]
         deduction_value = add(tax_unit, period, deductions)
         return max_(0, part_b_gross_income - deduction_value)

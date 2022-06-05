@@ -10,4 +10,10 @@ class ma_agi(Variable):
     is_eligible = in_state("MA")
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
 
-    formula = sum_of_variables(["ma_part_a_gross_income", "ma_part_b_gross_income", "ma_part_c_gross_income"])
+    formula = sum_of_variables(
+        [
+            "ma_part_a_gross_income",
+            "ma_part_b_gross_income",
+            "ma_part_c_gross_income",
+        ]
+    )

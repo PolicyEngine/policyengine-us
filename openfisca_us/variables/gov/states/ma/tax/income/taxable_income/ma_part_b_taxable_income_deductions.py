@@ -19,7 +19,9 @@ class ma_part_b_taxable_income_deductions(Variable):
             tax.deductions.public_retirement_contributions,
             fica,
         )
-        interest_and_dividends = add(tax_unit, period, ["interest_income", "dividend_income"])
+        interest_and_dividends = add(
+            tax_unit, period, ["interest_income", "dividend_income"]
+        )
 
         interest_and_dividends = min_(
             tax.exemptions.interest[filing_status],
@@ -41,7 +43,9 @@ class ma_part_b_taxable_income_deductions(Variable):
 
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)
-        count_aged = tax_unit.sum(~dependent & (age >= tax.exemptions.aged.age))
+        count_aged = tax_unit.sum(
+            ~dependent & (age >= tax.exemptions.aged.age)
+        )
         aged_exemption = tax.exemptions.aged.amount * count_aged
 
         blind = person("is_blind", period)
@@ -49,11 +53,13 @@ class ma_part_b_taxable_income_deductions(Variable):
         blind_exemption = tax.exemptions.blind * count_blind
 
         itemizes = tax_unit("tax_unit_itemizes", period)
-        federal_medical_expense_deduction = tax_unit("medical_expense_deduction", period)
+        federal_medical_expense_deduction = tax_unit(
+            "medical_expense_deduction", period
+        )
 
         medical_dental_exemption = itemizes * federal_medical_expense_deduction
 
-        adoption_exemption = 0 # Assumed to be zero
+        adoption_exemption = 0  # Assumed to be zero
 
         return (
             fica
