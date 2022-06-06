@@ -25,7 +25,7 @@ class tax_liability_if_not_itemizing(Variable):
         # the tracer out of reach of the new simulation (which somehow pollutes the old one)
         try:
             values = simulation_if_not_itemizing.calculate(
-                "total_income_tax", period
+                "federal_state_income_tax", period
             )
         except Exception as e:
             simulation.tracer = old_tracer
