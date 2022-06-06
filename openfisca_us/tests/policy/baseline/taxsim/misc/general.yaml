@@ -145,3 +145,52 @@
     refundable_ctc: 0.00
     eitc: 0.00
     income_tax: 3146.00
+
+
+- name: Tax unit with taxsimid 663 from f19.its.csv
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 73
+        employment_income: 2000
+        pension_income: 11000
+        social_security: 3000
+        unemployment_compensation: 2000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 69
+        employment_income: 22000
+      person3:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+      person4:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 17
+      person5:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        tax_unit_childcare_expenses: 8000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    taxsim_tfica: 1836.00
+    income_tax: -5075.99
