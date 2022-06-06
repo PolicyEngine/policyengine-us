@@ -1,0 +1,158 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from openfisca_us import IndividualSim
+import pandas as pd
+import plotly.express as px
+
+
+def make_tax(adults, children):
+    sim = IndividualSim(year=2022)
+    sim.add_person(name="head", age=25)
+    members = ["head"]
+    if adults == 2:
+        sim.add_person(name="spouse")
+        members += ["spouse"]
+    for i in range(children):
+        child = "child{}".format(i)
+        sim.add_person(name=child, age=6)
+        members += [child]
+    sim.add_tax_unit(name="tax_unit", members=members)
+    sim.add_spm_unit(name="spm_unit", members=members, rent=12_000)
+    sim.add_household(name="household", members=members, state_code="MA")
+    sim.vary("employment_income", max=100_000, step=100)
+    return pd.DataFrame(
+        dict(
+            employment_income=sim.calc("employment_income")[0],
+            state_income_tax=sim.calc("state_income_tax")[0].round(),
+            state_eitc=sim.calc("state_eitc")[0].round(),
+            state_limited_income_tax_credit=sim.calc(
+                "state_limited_income_tax_credit"
+            )[0].round(),
+            mtr=sim.deriv(
+                "state_income_tax", "employment_income", wrt_target="head"
+            ),
+            adults=adults,
+            children=children,
+        )
+    )
+
+
+# Make a table of state taxes for different numbers of adults and children.
+l = []
+for adults in range(1, 3):
+    for children in range(0, 4):
+        l.append(make_tax(adults, children))
+
+df = pd.concat(l)
+
+LABELS = dict(
+    employment_income="Employment income",
+    state_income_tax="Massachusetts income tax",
+    mtr="State marginal tax rate",
+    adults="Adults",
+    children="Children",
+    state_eitc="Massachusetts EITC",
+    state_limited_income_tax_credit="Massachusetts Limited Income Credit",
+)
+
+fig = px.line(
+    df,
+    "employment_income",
+    "state_income_tax",
+    color="children",
+    animation_frame="adults",
+    labels=LABELS,
+    title="Massachusetts income tax",
+)
+fig.update_layout(xaxis_tickformat="$,", yaxis_tickformat="$,")
+fig.show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation_builder.py[0m in [0;36minit_variable_values[0;34m(self, entity, instance_object, instance_id)[0m
+[1;32m    353[0m             [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 354[0;31m                 [0mentity[0m[0;34m.[0m[0mcheck_variable_defined_for_entity[0m[0;34m([0m[0mvariable_name[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    355[0m             [0;32mexcept[0m [0mValueError[0m [0;32mas[0m [0me[0m[0;34m:[0m  [0;31m# The variable is defined for another entity[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/entities/entity.py[0m in [0;36mcheck_variable_defined_for_entity[0;34m(self, variable_name)[0m
+[1;32m     39[0m                 "<https://openfisca.org/doc/coding-the-legislation/50_entities.html>."])
+[0;32m---> 40[0;31m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;31mValueError[0m: You tried to compute the variable 'rent' for the entity 'spm_units';
+however the variable 'rent' is defined for 'people'.
+Learn more about entities in our documentation:
+<https://openfisca.org/doc/coding-the-legislation/50_entities.html>.
+
+During handling of the above exception, another exception occurred:
+
+[0;31mSituationParsingError[0m                     Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2234/3466924733.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     40[0m [0;32mfor[0m [0madults[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m1[0m[0;34m,[0m [0;36m3[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     41[0m     [0;32mfor[0m [0mchildren[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m0[0m[0;34m,[0m [0;36m4[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 42[0;31m         [0ml[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mmake_tax[0m[0;34m([0m[0madults[0m[0;34m,[0m [0mchildren[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     43[0m [0;34m[0m[0m
+[1;32m     44[0m [0mdf[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mconcat[0m[0;34m([0m[0ml[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/tmp/ipykernel_2234/3466924733.py[0m in [0;36mmake_tax[0;34m(adults, children)[0m
+[1;32m     18[0m     [0msim[0m[0;34m.[0m[0madd_spm_unit[0m[0;34m([0m[0mname[0m[0;34m=[0m[0;34m"spm_unit"[0m[0;34m,[0m [0mmembers[0m[0;34m=[0m[0mmembers[0m[0;34m,[0m [0mrent[0m[0;34m=[0m[0;36m12_000[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     19[0m     [0msim[0m[0;34m.[0m[0madd_household[0m[0;34m([0m[0mname[0m[0;34m=[0m[0;34m"household"[0m[0;34m,[0m [0mmembers[0m[0;34m=[0m[0mmembers[0m[0;34m,[0m [0mstate_code[0m[0;34m=[0m[0;34m"MA"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 20[0;31m     [0msim[0m[0;34m.[0m[0mvary[0m[0;34m([0m[0;34m"employment_income"[0m[0;34m,[0m [0mmax[0m[0;34m=[0m[0;36m100_000[0m[0;34m,[0m [0mstep[0m[0;34m=[0m[0;36m100[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     21[0m     return pd.DataFrame(
+[1;32m     22[0m         dict(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/hypothetical.py[0m in [0;36mvary[0;34m(self, var, parameter, min, max, step, index, period)[0m
+[1;32m    388[0m                 }
+[1;32m    389[0m             ]
+[0;32m--> 390[0;31m             [0mself[0m[0;34m.[0m[0mbuild[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    391[0m             [0mself[0m[0;34m.[0m[0mvarying[0m [0;34m=[0m [0;32mTrue[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    392[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/hypothetical.py[0m in [0;36mbuild[0;34m(self)[0m
+[1;32m     86[0m             [0;31m# Add missing entities with specified default roles[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     87[0m         self.simulation = self.sim_builder.build_from_entities(
+[0;32m---> 88[0;31m             [0mself[0m[0;34m.[0m[0msystem[0m[0;34m,[0m [0mself[0m[0;34m.[0m[0msituation_data[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     89[0m         )
+[1;32m     90[0m         [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mtrace[0m [0;34m=[0m [0;32mTrue[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation_builder.py[0m in [0;36mbuild_from_entities[0;34m(self, tax_benefit_system, input_dict)[0m
+[1;32m    102[0m             [0minstances_json[0m [0;34m=[0m [0minput_dict[0m[0;34m.[0m[0mget[0m[0;34m([0m[0mentity_class[0m[0;34m.[0m[0mplural[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    103[0m             [0;32mif[0m [0minstances_json[0m [0;32mis[0m [0;32mnot[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 104[0;31m                 [0mself[0m[0;34m.[0m[0madd_group_entity[0m[0;34m([0m[0mself[0m[0;34m.[0m[0mpersons_plural[0m[0;34m,[0m [0mpersons_ids[0m[0;34m,[0m [0mentity_class[0m[0;34m,[0m [0minstances_json[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    105[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    106[0m                 [0mself[0m[0;34m.[0m[0madd_default_group_entity[0m[0;34m([0m[0mpersons_ids[0m[0;34m,[0m [0mentity_class[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation_builder.py[0m in [0;36madd_group_entity[0;34m(self, persons_plural, persons_ids, entity, instances_json)[0m
+[1;32m    307[0m                     [0mself[0m[0;34m.[0m[0mroles[0m[0;34m[[0m[0mentity[0m[0;34m.[0m[0mplural[0m[0;34m][0m[0;34m[[0m[0mperson_index[0m[0;34m][0m [0;34m=[0m [0mperson_role[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    308[0m [0;34m[0m[0m
+[0;32m--> 309[0;31m             [0mself[0m[0;34m.[0m[0minit_variable_values[0m[0;34m([0m[0mentity[0m[0;34m,[0m [0mvariables_json[0m[0;34m,[0m [0minstance_id[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    310[0m [0;34m[0m[0m
+[1;32m    311[0m         [0;32mif[0m [0mpersons_to_allocate[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation_builder.py[0m in [0;36minit_variable_values[0;34m(self, entity, instance_object, instance_id)[0m
+[1;32m    354[0m                 [0mentity[0m[0;34m.[0m[0mcheck_variable_defined_for_entity[0m[0;34m([0m[0mvariable_name[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    355[0m             [0;32mexcept[0m [0mValueError[0m [0;32mas[0m [0me[0m[0;34m:[0m  [0;31m# The variable is defined for another entity[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 356[0;31m                 [0;32mraise[0m [0mSituationParsingError[0m[0;34m([0m[0mpath_in_json[0m[0;34m,[0m [0me[0m[0;34m.[0m[0margs[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    357[0m             [0;32mexcept[0m [0mVariableNotFoundError[0m [0;32mas[0m [0me[0m[0;34m:[0m  [0;31m# The variable doesn't exist[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    358[0m                 [0;32mraise[0m [0mSituationParsingError[0m[0;34m([0m[0mpath_in_json[0m[0;34m,[0m [0mstr[0m[0;34m([0m[0me[0m[0;34m)[0m[0;34m,[0m [0mcode[0m [0;34m=[0m [0;36m404[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mSituationParsingError[0m: {'spm_units': {'spm_unit': {'rent': "You tried to compute the variable 'rent' for the entity 'spm_units'; however the variable 'rent' is defined for 'people'. Learn more about entities in our documentation: <https://openfisca.org/doc/coding-the-legislation/50_entities.html>."}}}
+SituationParsingError: {'spm_units': {'spm_unit': {'rent': "You tried to compute the variable 'rent' for the entity 'spm_units'; however the variable 'rent' is defined for 'people'. Learn more about entities in our documentation: <https://openfisca.org/doc/coding-the-legislation/50_entities.html>."}}}
+
