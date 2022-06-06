@@ -7,7 +7,9 @@ class ma_dependent_credit(Variable):
     label = "MA dependent credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6" # (y)
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(

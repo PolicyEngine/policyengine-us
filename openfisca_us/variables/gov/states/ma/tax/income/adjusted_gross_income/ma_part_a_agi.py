@@ -7,7 +7,9 @@ class ma_part_a_agi(Variable):
     label = "MA Part A AGI"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2" # (c)
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"  # (c)
+    )
 
     def formula(tax_unit, period, parameters):
         part_a_gross_income = tax_unit("ma_part_a_gross_income", period)
@@ -15,8 +17,12 @@ class ma_part_a_agi(Variable):
             tax_unit, period, ["short_term_capital_gains"]
         )
         short_term_capital_loss = max_(0, -short_term_capital_gains)
-        nonnegative_short_term_capital_gains = max_(0, short_term_capital_gains)
-        interest_and_dividends = part_a_gross_income - nonnegative_short_term_capital_gains
+        nonnegative_short_term_capital_gains = max_(
+            0, short_term_capital_gains
+        )
+        interest_and_dividends = (
+            part_a_gross_income - nonnegative_short_term_capital_gains
+        )
 
         tax = parameters(period).states.ma.tax.income
         interest_dividends_deduction_cap = (
@@ -59,7 +65,8 @@ class ma_part_a_agi(Variable):
         )
 
         long_term_gains_deduction = (
-            tax.capital_gains.long_term_deduction * nonnegative_long_term_capital_gains
+            tax.capital_gains.long_term_deduction
+            * nonnegative_long_term_capital_gains
         )
 
         deductions = (
