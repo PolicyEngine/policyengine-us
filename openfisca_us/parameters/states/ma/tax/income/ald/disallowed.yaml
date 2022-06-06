@@ -1,10 +1,10 @@
 description: Above-the-line deductions disallowed in Massachusetts income tax.
 values:
   2001-01-01:
-    - loss_ald
-    - ira_contributions
-    - sep_simple_qualified_plan_contributions
-    - early_withdrawal_penalty
+    - loss_ald # (c)
+    - ira_contributions # (f)
+    - sep_simple_qualified_plan_contributions # (f)
+    - early_withdrawal_penalty # (h)
 metadata:
   unit: variable
   name: ma_ald_disallowed
