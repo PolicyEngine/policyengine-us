@@ -7,7 +7,6 @@ class ma_part_a_gross_income(Variable):
     label = "MA Part A gross income"
     unit = USD
     definition_period = YEAR
-    is_eligible = in_state("MA")
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
 
     def formula(tax_unit, period, parameters):

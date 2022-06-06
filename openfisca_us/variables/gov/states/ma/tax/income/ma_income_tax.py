@@ -8,10 +8,10 @@ class ma_income_tax(Variable):
     unit = USD
     documentation = "Massachusetts State income tax."
     definition_period = YEAR
-    is_eligible = in_state("MA")
     reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
 
     def formula(tax_unit, period, parameters):
+        in_ma = tax_unit.household("state_code_str", period) == "MA"
         income_tax_before_credits = tax_unit(
             "ma_income_tax_before_credits", period
         )
@@ -21,4 +21,4 @@ class ma_income_tax(Variable):
             "ma_dependent_credit",
         ]
         credit_value = add(tax_unit, period, credits)
-        return income_tax_before_credits - credit_value
+        return in_ma * (income_tax_before_credits - credit_value)

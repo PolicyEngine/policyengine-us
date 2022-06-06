@@ -7,7 +7,6 @@ class ma_part_a_taxable_capital_gains_income(Variable):
     label = "MA Part A taxable income from capital gains"
     unit = USD
     definition_period = YEAR
-    is_eligible = in_state("MA")
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
 
     def formula(tax_unit, period, parameters):
