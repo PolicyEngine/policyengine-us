@@ -70,8 +70,6 @@ class ma_part_b_taxable_income_deductions(Variable):
             "medical_expense_deduction", period
         )
         medical_dental_exemption = itemizes * federal_medical_expense_deduction
-        # (5): Adoption exemption.
-        adoption_exemption = 0
         # Total deductions and exemptions.
         return (
             fica
@@ -82,5 +80,4 @@ class ma_part_b_taxable_income_deductions(Variable):
             + aged_exemption
             + blind_exemption
             + medical_dental_exemption
-            + adoption_exemption
         )
