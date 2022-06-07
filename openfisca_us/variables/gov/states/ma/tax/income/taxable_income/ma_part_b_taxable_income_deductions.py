@@ -30,7 +30,7 @@ class ma_part_b_taxable_income_deductions(Variable):
             tax.deductions.public_retirement_contributions,
             fica_person * person("is_tax_unit_spouse", period),
         )
-        fica = fica_head + fica_spouse
+        fica = tax_unit.sum(fica_head) + tax_unit.sum(fica_spouse)
         # (B)(a)(6): Interest and dividends deduction.
         interest_and_dividends = add(
             tax_unit, period, ["interest_income", "dividend_income"]
