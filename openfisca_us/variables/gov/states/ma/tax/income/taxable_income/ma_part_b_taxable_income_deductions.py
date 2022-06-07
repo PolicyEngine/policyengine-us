@@ -24,11 +24,11 @@ class ma_part_b_taxable_income_deductions(Variable):
         fica_person = add(person, period, SS_MEDICARE_VARIABLES)
         fica_head = min_(
             tax.deductions.public_retirement_contributions,
-            fica_person * person("is_tax_unit_head"),
+            fica_person * person("is_tax_unit_head", period),
         )
         fica_spouse = min_(
             tax.deductions.public_retirement_contributions,
-            fica_person * person("is_tax_unit_spouse"),
+            fica_person * person("is_tax_unit_spouse", period),
         )
         fica = fica_head + fica_spouse
         # (B)(a)(6): Interest and dividends deduction.
