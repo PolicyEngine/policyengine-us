@@ -808,3 +808,7 @@
     - New York State EITC.
     - Longer history for the Massachusetts rental tax deduction.
   date: 2022-06-07 18:04:31
+- bump: patch
+  changes:
+    fixed:
+    - Deduct government retirement contributions from MA taxable income on a per-person basis.
