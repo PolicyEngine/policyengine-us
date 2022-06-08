@@ -4,7 +4,8 @@ metadata:
   period: month
   name: medicaid_senior_disabled_income_limit_individual
   label: "Medicaid senior or disabled income limit (individual)"
-  breakdown: state_code
+  breakdown:
+  - state_code
   reference:
     - title: "Medicaid Financial Eligibility for Seniors and People with Disabilities: Findings from a 50-State Survey | KFF"
       href: https://www.kff.org/report-section/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey-appendix-tables/

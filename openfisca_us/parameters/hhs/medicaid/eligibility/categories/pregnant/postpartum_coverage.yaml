@@ -3,7 +3,8 @@ metadata:
   unit: day
   name: medicaid_postpartum_coverage
   label: "Medicaid postpartum coverage"
-  breakdown: state_code
+  breakdown:
+  - state_code
   reference:
     - title: 42 U.S. Code § 1396a(e)(5)
       href: https://www.law.cornell.edu/uscode/text/42/1396a#e_5

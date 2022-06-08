@@ -3,7 +3,8 @@ metadata:
   unit: /1
   name: medicaid_older_child_income_limit
   label: Medicaid older child income limit
-  breakdown: state_code
+  breakdown:
+  - state_code
   reference:
     - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
       href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=33
