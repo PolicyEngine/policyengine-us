@@ -10,6 +10,7 @@ CA:
 metadata:
   unit: currency-USD
   period: year
-  breakdown: state_code
+  breakdown:
+  - state_code
   name: per_vehicle_payment_amount
   label: Per-vehicle payment amount

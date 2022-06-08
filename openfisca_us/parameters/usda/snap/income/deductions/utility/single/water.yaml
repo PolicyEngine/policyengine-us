@@ -4,7 +4,8 @@ metadata:
   period: month
   name: snap_utility_water
   label: SNAP standard utility allowance for water expenses
-  breakdown: snap_utility_region
+  breakdown:
+  - snap_utility_region
 AK:
   2010-01-01: 0
   2021-10-01: 37

@@ -160,7 +160,8 @@ WY:
   2021-10-01: true
 metadata:
   unit: bool
-  breakdown: state_code
+  breakdown:
+  - state_code
   reference:
     - title: SNAP Screener SNAP Eligibility Parameters
       href: https://www.snapscreener.com/?p=table

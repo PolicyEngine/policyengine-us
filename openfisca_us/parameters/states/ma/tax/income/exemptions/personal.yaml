@@ -61,6 +61,7 @@ JOINT:
 metadata:
   unit: currency-USD
   period: year
-  breakdown: filing_status
+  breakdown:
+  - filing_status
   name: ma_income_tax_personal_exemption
   label: MA income tax personal exemption

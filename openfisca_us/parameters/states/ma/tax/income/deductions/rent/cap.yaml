@@ -39,6 +39,7 @@ metadata:
       href: https://www.mass.gov/doc/2011-form-1-instructions/download#page=20
   unit: currency-USD
   period: year
-  breakdown: filing_status
+  breakdown:
+  - filing_status
   name: ma_income_tax_rent_deduction_cap
   label: Maximum rental deduction for MA income taxes.

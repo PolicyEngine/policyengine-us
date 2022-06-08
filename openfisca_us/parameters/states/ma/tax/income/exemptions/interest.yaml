@@ -12,7 +12,8 @@ SEPARATE:
 metadata:
   unit: currency-USD
   period: year
-  breakdown: filing_status
+  breakdown:
+  - filing_status
   name: ma_interest_exemption
   label: MA interest exemption
   reference:
