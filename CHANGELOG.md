@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.72.2] - 2022-06-08 05:07:17
+
+### Added
+
+- Metadata for MA policy.
+
+## [0.72.1] - 2022-06-07 20:27:48
+
+### Fixed
+
+- Deduct government retirement contributions from MA taxable income on a per-person basis.
+
+## [0.72.0] - 2022-06-07 18:04:31
+
+### Added
+
+- New York State EITC.
+- Longer history for the Massachusetts rental tax deduction.
+
+## [0.71.2] - 2022-06-07 09:54:21
+
+### Fixed
+
+- Medicaid benefit value per state.
+
 ## [0.71.1] - 2022-06-06 16:15:48
 
 ### Changed
@@ -971,6 +996,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.72.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.72.1...0.72.2
+[0.72.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.72.0...0.72.1
+[0.72.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.71.2...0.72.0
+[0.71.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.71.1...0.71.2
 [0.71.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.71.0...0.71.1
 [0.71.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.3...0.71.0
 [0.70.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.2...0.70.3
