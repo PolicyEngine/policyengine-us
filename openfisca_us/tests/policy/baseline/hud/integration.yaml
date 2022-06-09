@@ -1,0 +1,9 @@
+- name: HAP if eligible.
+  period: 2022
+  input:
+    employment_income: 1_000 * 12
+    hud_gross_rent: 600 * 12
+    ami: 50_000
+    pha_payment_standard: 10_000
+  output:
+    housing_assistance: 0
