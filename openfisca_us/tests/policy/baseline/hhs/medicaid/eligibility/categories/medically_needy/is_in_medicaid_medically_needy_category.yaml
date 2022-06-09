@@ -1,0 +1,15 @@
+- name: Senior in MA is in a medically needy category
+  period: 2022
+  input:
+    age: 66
+    state_code: MA
+  output:
+    is_in_medicaid_medically_needy_category: true
+
+- name: Childless adult in MA is not in a medically needy category
+  period: 2022
+  input:
+    age: 30
+    state_code: MA
+  output:
+    is_in_medicaid_medically_needy_category: false

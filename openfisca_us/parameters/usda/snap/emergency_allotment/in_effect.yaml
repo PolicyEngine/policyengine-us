@@ -14,7 +14,6 @@ AR:
 AZ:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 CA:
   2010-01-01: false
   2020-03-01: true
@@ -24,66 +23,55 @@ CO:
 CT:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 DC:
   2010-01-01: false
   2020-03-01: true
 DE:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 FL:
   2010-01-01: false
   2020-03-01: true
-  2022-08-01: false
+  2021-08-01: false
 GA:
   2010-01-01: false
   2020-03-01: true
 GU:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 HI:
   2010-01-01: false
   2020-03-01: true
 IA:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 ID:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 IL:
   2010-01-01: false
   2020-03-01: true
 IN:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 KS:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 KY:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 LA:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 MA:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 MD:
   2010-01-01: false
   2020-03-01: true
 ME:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 MI:
   2010-01-01: false
   2021-10-01: true
@@ -125,11 +113,9 @@ NM:
 NV:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 NY:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 OH:
   2010-01-01: false
   2020-03-01: true
@@ -168,11 +154,9 @@ VA:
 VI:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 VT:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 WA:
   2010-01-01: false
   2020-03-01: true
@@ -185,7 +169,6 @@ WV:
 WY:
   2010-01-01: false
   2020-03-01: true
-  2022-05-01: false
 
 metadata:
   reference:
@@ -193,4 +176,5 @@ metadata:
       href: https://www.fns.usda.gov/disaster/pandemic/covid-19/california#snap
     - title: SNAP COVID-19 Emergency Allotments Guidance
       href: https://www.fns.usda.gov/snap/covid-19-emergency-allotments-guidance
-  breakdown: state_code
+  breakdown:
+  - state_code

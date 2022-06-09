@@ -8,6 +8,11 @@ from openfisca_tools import (
     propagate_parameter_metadata,
 )
 import os
+from openfisca_us.tools.backdate_parameters import backdate_parameters
+
+from openfisca_us.tools.dev.taxcalc.generate_taxcalc_variable import (
+    add_taxcalc_variable_aliases,
+)
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -40,4 +45,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
 
         self.parameters = uprate_parameters(self.parameters)
 
-        # We define which variable, parameter and simulation example will be used in the OpenAPI specification
+        self.parameters = backdate_parameters()(self.parameters)
+
+        # Add taxcalc aliases
+
+        add_taxcalc_variable_aliases(self)

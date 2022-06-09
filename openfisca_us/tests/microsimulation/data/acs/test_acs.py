@@ -14,4 +14,4 @@ def test_acs_dataset_generates(year):
 @pytest.mark.dependency(depends=["acs"])
 @pytest.mark.parametrize("year", ACS_YEARS)
 def test_acs_openfisca_us_compatible(year):
-    Microsimulation(dataset=ACS, year=year).calc("tax")
+    Microsimulation(dataset=ACS, year=year).calc("employment_income")

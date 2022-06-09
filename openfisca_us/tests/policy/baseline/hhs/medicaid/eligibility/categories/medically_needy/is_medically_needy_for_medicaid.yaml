@@ -1,0 +1,22 @@
+- name: MA, 2 people, under asset and income limits and seniors but qualifies as senior (medicaidscreener.com)
+  period: 2022
+  input:
+    people:
+      person_1:
+        age: 77
+        employment_income: 200
+        ssi_countable_resources: 1_000
+        medical_out_of_pocket_expenses: 500
+      person_2:
+        age: 66
+        employment_income: 100
+        ssi_countable_resources: 800
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MA
+  output:
+    is_medically_needy_for_medicaid: false

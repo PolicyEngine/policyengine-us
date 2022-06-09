@@ -5,6 +5,253 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.72.3] - 2022-06-08 10:45:48
+
+### Changed
+
+- Breakdowns always specified as a list.
+
+## [0.72.2] - 2022-06-08 05:07:17
+
+### Added
+
+- Metadata for MA policy.
+
+## [0.72.1] - 2022-06-07 20:27:48
+
+### Fixed
+
+- Deduct government retirement contributions from MA taxable income on a per-person basis.
+
+## [0.72.0] - 2022-06-07 18:04:31
+
+### Added
+
+- New York State EITC.
+- Longer history for the Massachusetts rental tax deduction.
+
+## [0.71.2] - 2022-06-07 09:54:21
+
+### Fixed
+
+- Medicaid benefit value per state.
+
+## [0.71.1] - 2022-06-06 16:15:48
+
+### Changed
+
+- Reorganized state documentation.
+
+### Fixed
+
+- Entered rent person-level in documentation to align with latest package update.
+
+## [0.71.0] - 2022-06-06 13:50:33
+
+### Added
+
+- Massachusetts State income tax.
+
+## [0.70.3] - 2022-06-02 17:03:08
+
+### Fixed
+
+- A bug causing UC- and SS-related MAGI to incorrectly overcount loss deductions.
+
+## [0.70.2] - 2022-06-02 17:01:01
+
+### Changed
+
+- Applied new openfisca-tools helper function `index_` to speed up SLSPC calculations.
+
+## [0.70.1] - 2022-06-02 16:51:48
+
+### Fixed
+
+- Fix EITC bug which applied the phase-out after, instead of before, the phase-in.
+
+## [0.70.0] - 2022-06-02 11:44:25
+
+### Changed
+
+- Apply consistent CTC young child formula to all years.
+- Move CTC variables into their own files and other minor refactoring.
+
+### Fixed
+
+- Limit excess of Social Security taxes over EITC for refundable CTC to taxpayers with a minimum number of children.
+
+## [0.69.3] - 2022-06-02 03:24:39
+
+### Added
+
+- New `taxsim_tfica` variable for testing.
+
+## [0.69.2] - 2022-06-01 05:49:06
+
+### Fixed
+
+- Typo in SSI notebook.
+
+## [0.69.1] - 2022-06-01 04:50:12
+
+### Added
+
+- New `tax_unit_ssi` variable.
+- Example of single parent with two disabled children in SSI documentation notebook.
+
+### Fixed
+
+- Zeroed out `premium_tax_credit` in Massachusetts example notebook.
+
+## [0.69.0] - 2022-05-31 17:31:13
+
+### Added
+
+- SSI deeming rules.
+
+## [0.68.1] - 2022-05-30 22:40:36
+
+### Fixed
+
+- A bug causing the CDCC to not cap at the two-child childcare max expenses.
+
+## [0.68.0] - 2022-05-28 06:59:45
+
+### Added
+
+- EITC parameters for 2017 and 2018.
+
+## [0.67.0] - 2022-05-26 14:10:48
+
+### Added
+
+- CDCC integration tests.
+
+### Changed
+
+- Re-implemented CDCC according to the U.S. code.
+
+## [0.66.1] - 2022-05-24 15:20:46
+
+### Added
+
+- WIC by earnings example in docs.
+
+### Fixed
+
+- Made WIC categorical eligibility person-level and more accurate.
+- Pointed TANF maximum benefit variable to the correct parameter.
+- Bug preventing tax_unit_childcare_expenses from being calculated.
+
+## [0.66.0] - 2022-05-19 12:47:08
+
+### Added
+
+- MaritalUnit entity.
+- Massachusetts state supplement.
+
+## [0.65.0] - 2022-05-19 11:54:27
+
+### Added
+
+- WIC takeup and nutritional risk imputations.
+
+## [0.64.1] - 2022-05-17 22:49:48
+
+### Fixed
+
+- Corrected EITC phase-out start values for 2020 and 2021.
+
+## [0.64.0] - 2022-05-16 20:12:47
+
+### Changed
+
+- Refactored (references, simplifications and reorganisation) AGI -> taxable income code.
+
+## [0.63.0] - 2022-05-16 12:11:08
+
+### Added
+
+- Estimated Medicaid benefit value.
+- Aged/blind/disabled asset and income limits.
+
+## [0.62.3] - 2022-05-11 23:19:04
+
+### Fixed
+
+- Remove bad import causing failure on some headless configurations.
+
+## [0.62.2] - 2022-05-11 17:41:12
+
+### Changed
+
+- Label state income tax consistently with federal.
+
+## [0.62.1] - 2022-05-11 15:14:12
+
+### Fixed
+
+- Moved lingering state income tax deduction files into variables/gov.
+
+## [0.62.0] - 2022-05-11 14:17:28
+
+### Added
+
+- List of fully implemented programs at the US and state level.
+
+## [0.61.0] - 2022-05-10 17:57:30
+
+### Added
+
+- TANF from CPS data.
+- Female variable.
+- Variable for number of own children in household.
+
+## [0.60.0] - 2022-05-10 13:57:16
+
+### Added
+
+- Medicaid eligibility for 50 states.
+
+## [0.59.0] - 2022-05-08 19:55:20
+
+### Added
+
+- TAXSIM integration tests for AGI.
+
+### Changed
+
+- TAXSIM variables renamed to contain `taxsim_` prefix.
+
+## [0.58.1] - 2022-05-05 21:54:08
+
+### Fixed
+
+- Bug causing the system to fail to load on Colab.
+
+## [0.58.0] - 2022-05-05 17:25:36
+
+### Added
+
+- Metadata and verbose variable names for IRS computation up to AGI.
+
+## [0.57.1] - 2022-05-05 06:07:31
+
+### Changed
+
+- CO SNAP BBCE net income limit set to true.
+- Cite official source for SNAP emergency allotment amount.
+
+## [0.57.0] - 2022-05-04 19:44:35
+
+### Added
+
+- SSI notebook.
+- SSI example to MA notebook.
+- MA state tax exemptions for aged and blind people.
+- Unit tests for state tax exemptions.
+
 ## [0.56.0] - 2022-05-03 16:41:49
 
 ### Added
@@ -755,6 +1002,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.72.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.72.2...0.72.3
+[0.72.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.72.1...0.72.2
+[0.72.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.72.0...0.72.1
+[0.72.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.71.2...0.72.0
+[0.71.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.71.1...0.71.2
+[0.71.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.71.0...0.71.1
+[0.71.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.3...0.71.0
+[0.70.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.2...0.70.3
+[0.70.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.1...0.70.2
+[0.70.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.70.0...0.70.1
+[0.70.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.3...0.70.0
+[0.69.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.2...0.69.3
+[0.69.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.1...0.69.2
+[0.69.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.69.0...0.69.1
+[0.69.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.68.1...0.69.0
+[0.68.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.68.0...0.68.1
+[0.68.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.67.0...0.68.0
+[0.67.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.66.1...0.67.0
+[0.66.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.66.0...0.66.1
+[0.66.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.65.0...0.66.0
+[0.65.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.64.1...0.65.0
+[0.64.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.64.0...0.64.1
+[0.64.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.63.0...0.64.0
+[0.63.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.3...0.63.0
+[0.62.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.2...0.62.3
+[0.62.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.1...0.62.2
+[0.62.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.62.0...0.62.1
+[0.62.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.61.0...0.62.0
+[0.61.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.60.0...0.61.0
+[0.60.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.59.0...0.60.0
+[0.59.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.1...0.59.0
+[0.58.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.58.0...0.58.1
+[0.58.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.1...0.58.0
+[0.57.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.57.0...0.57.1
+[0.57.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.56.0...0.57.0
 [0.56.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.55.0...0.56.0
 [0.55.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.1...0.55.0
 [0.54.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.54.0...0.54.1

@@ -1,10 +1,10 @@
 - name: No tax for no income
   period: 2019
   input:
-    filer_e00300: 0
-    filer_e00600: 0
+    taxable_interest_income: 0
+    ordinary_dividend_income: 0
     c01000: 0
-    filer_e02000: 0
+    rental_income: 0
     filing_status: SINGLE
   output:
     niit: 0
@@ -12,10 +12,10 @@
 - name: Rental income just under threshold
   period: 2019
   input:
-    filer_e00300: 0
-    filer_e00600: 0
+    taxable_interest_income: 0
+    ordinary_dividend_income: 0
     c01000: 0
-    filer_e02000: 199_000
+    rental_income: 199_000
     filing_status: SINGLE
   output:
     niit: 0
@@ -23,11 +23,11 @@
 - name: Rental income just above threshold
   period: 2019
   input:
-    filer_e00300: 0
-    filer_e00600: 0
+    taxable_interest_income: 0
+    ordinary_dividend_income: 0
     c01000: 0
-    c00100: 205_000
-    filer_e02000: 205_000
+    adjusted_gross_income: 205_000
+    rental_income: 205_000
     filing_status: SINGLE
   output:
     niit: 190
@@ -35,11 +35,11 @@
 - name: Rental income just above threshold
   period: 2019
   input:
-    filer_e00300: 0
-    filer_e00600: 0
+    taxable_interest_income: 0
+    ordinary_dividend_income: 0
     c01000: 0
-    c00100: 900_000
-    filer_e02000: 900_000
+    adjusted_gross_income: 900_000
+    rental_income: 900_000
     filing_status: SINGLE
   output:
     niit: 26_600

@@ -1,0 +1,23 @@
+description: Age range defining an adult for Medicaid.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: false
+  - threshold:
+      2015-01-01: 19
+    amount:
+      2015-01-01: true
+  - threshold:
+      2015-01-01: 65
+    amount:
+      2015-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  name: medicaid_adult_age_range
+  label: "Medicaid adult age range"
+  reference:
+    - title: Medicaid and CHIP Eligibility and Enrollment Policies as of January 2022 | KFF
+      href: https://files.kff.org/attachment/REPORT-Medicaid-and-CHIP-Eligibility-and-Enrollment-Policies-as-of-January-2022.pdf#page=33

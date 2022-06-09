@@ -70,7 +70,7 @@ def add_id_variables(
     person: DataFrame,
     spm_unit: DataFrame,
     household: DataFrame,
-):
+) -> None:
     """Add basic ID and weight variables.
 
     Args:
@@ -92,23 +92,27 @@ def add_id_variables(
     acs["person_family_id"] = person.SPM_ID
     acs["household_id"] = household.SERIALNO
 
+    # TODO: add marital unit IDs - using person IDs for now
+    acs["person_marital_unit_id"] = person.SERIALNO
+    acs["marital_unit_id"] = person.SERIALNO.unique()
+
     # Add weights
     acs["person_weight"] = person.PWGTP
     acs["household_weight"] = household.WGTP
 
 
-def add_person_variables(acs: h5py.File, person: DataFrame):
+def add_person_variables(acs: h5py.File, person: DataFrame) -> None:
     acs["age"] = person.AGEP
     acs["employment_income"] = person.WAGP
     acs["self_employment_income"] = person.SEMP
     acs["total_income"] = person.PINCP
 
 
-def add_spm_variables(acs: h5py.File, spm_unit: DataFrame):
+def add_spm_variables(acs: h5py.File, spm_unit: DataFrame) -> None:
     acs["spm_unit_net_income_reported"] = spm_unit.SPM_RESOURCES
     acs["spm_unit_spm_threshold"] = spm_unit.SPM_POVTHRESHOLD
 
 
-def add_household_variables(acs: h5py.File, household: DataFrame):
+def add_household_variables(acs: h5py.File, household: DataFrame) -> None:
     acs["household_vehicles_owned"] = household.VEH
     acs["fips"] = acs["household_fips"] = household.ST

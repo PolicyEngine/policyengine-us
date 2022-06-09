@@ -1,0 +1,16 @@
+description: Flat earned income deduction for Temporary Assistance for Needy Families.
+IL:
+  2010-07-01: 0
+CA:
+  values:
+    2019-01-01: 550
+    2022-06-01: 600
+  metadata:
+    reference:
+      - title: Contra Costa County Employment & Human Services CalWorks Fact Sheet
+        href: https://ehsd.org/benefits/calworks-cash-aid/calworks-fact-sheet/
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+  - state_code

@@ -1,0 +1,14 @@
+description: Programs which are not simulated, and instead taken from reported values.
+values:
+  1975-01-01:
+  - spm_unit_capped_housing_subsidy
+  - spm_unit_energy_subsidy
+  - spm_unit_wic
+  2010-01-01:
+  - spm_unit_capped_housing_subsidy
+  - spm_unit_energy_subsidy
+  - spm_unit_wic
+metadata:
+  unit: variable
+  name: disabled_programs
+  label: Disabled programs

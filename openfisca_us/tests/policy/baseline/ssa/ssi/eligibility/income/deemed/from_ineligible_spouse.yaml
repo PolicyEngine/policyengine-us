@@ -1,0 +1,56 @@
+- name: Example 1 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_todd:
+        age: 70
+      mrs_todd:
+        ssi_unearned_income: 252 * 12
+    marital_units:
+      marital_unit:
+        members: [mr_todd, mrs_todd]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+
+- name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_todd:
+        is_ssi_disabled: true
+      mrs_todd:
+        ssi_earned_income: 401 * 12
+        ssi_unearned_income: 252 * 12
+      christine:
+        is_child: true
+    marital_units:
+      marital_unit:
+        members: [mr_todd, mrs_todd]
+    tax_units:
+      tax_unit:
+        members: [mr_todd, mrs_todd, christine]
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [2784, 0, 0] # 232 * 12
+
+- name: Example 3 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
+  period: 1986
+  absolute_error_margin: 0
+  input:
+    people:
+      mr_smith:
+        is_ssi_disabled: true
+        pension_income: 100 * 12
+      mrs_smith:
+        ssi_earned_income: 201 * 12
+    marital_units:
+      marital_unit:
+        members: [mr_smith, mrs_smith]
+    tax_units:
+      tax_unit:
+        members: [mr_smith, mrs_smith]
+  output:
+    ssi_countable_income: [1_776, 0] # 148 * 12
+
+# Example 4 skipped as it relates to sponsored aliens.

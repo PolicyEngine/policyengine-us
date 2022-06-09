@@ -1,0 +1,16 @@
+description: Age range defining an infant for Medicaid.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: true
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: false
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  name: medicaid_infant_age_range
+  label: "Medicaid infant age range"

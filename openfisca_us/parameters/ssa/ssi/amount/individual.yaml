@@ -53,6 +53,7 @@ metadata:
   label: Monthly maximum Federal SSI payment amounts for an eligible individual
   name: ssi_amount_individual
   unit: currency-USD
+  period: month
   reference:
     - title: SSI Federal Payment Amounts
       href: https://www.ssa.gov/oact/cola/SSIamts.html

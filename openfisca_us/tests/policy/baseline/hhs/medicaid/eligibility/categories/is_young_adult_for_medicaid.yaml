@@ -1,0 +1,26 @@
+- name: Age 19 in DC and under FPL limit, young adult
+  period: 2022
+  input:
+    age: 19
+    state_code: DC
+    medicaid_income_level: 2.20
+  output:
+    is_young_adult_for_medicaid: true
+
+- name: Age 19 in DC, over FPL limit, not young adult
+  period: 2022
+  input:
+    age: 19
+    state_code: DC
+    medicaid_income_level: 2.21
+  output:
+    is_young_adult_for_medicaid: false
+
+- name: Age 19 in CA, not young adult
+  period: 2022
+  input:
+    age: 19
+    state_code: CA
+    medicaid_income_level: 0
+  output:
+    is_young_adult_for_medicaid: false

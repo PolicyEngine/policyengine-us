@@ -1,0 +1,28 @@
+- name: Under exemption threshold, no credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    employment_income: 7_000
+  output:
+    ma_limited_income_tax_credit: 0
+
+- name: In eligibility region, MA income tax excess capped at 10%
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    employment_income: 10_000
+    ma_income_tax_before_credits: 201
+  output:
+    ma_limited_income_tax_credit: 1
+
+- name: Outside eligibility region
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    employment_income: 16_000
+  output:
+    ma_limited_income_tax_credit: 0
+

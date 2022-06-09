@@ -1,0 +1,23 @@
+description: Percentage of WIC-eligible individuals that participate.
+metadata:
+  unit: /1
+  breakdown:
+  - wic_category
+  name: wic_takeup
+  label: WIC takeup rate
+  reference:
+  - title: WIC Eligibility and Coverage Rates - 2018
+    href: https://www.fns.usda.gov/wic/eligibility-and-coverage-rates-2018
+
+PREGNANT:
+  2018-01-01: 0.533
+POSTPARTUM:
+  2018-01-01: 0.844
+BREASTFEEDING:
+  2018-01-01: 0.844
+INFANT:
+  2018-01-01: 0.978
+CHILD:
+  2018-01-01: 0.4425 # Mean of ages 1-4
+NONE:
+  2018-01-01: 0

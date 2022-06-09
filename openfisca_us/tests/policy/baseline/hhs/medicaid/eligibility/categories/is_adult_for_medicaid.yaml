@@ -1,0 +1,29 @@
+- name: Under 19, not an adult
+  period: 2022
+  input:
+    age: 17
+  output:
+    is_adult_for_medicaid: false
+
+- name: Over 65, not an adult
+  period: 2022
+  input:
+    age: 66
+  output:
+    is_adult_for_medicaid: false
+
+- name: Between 19-65, under FPL limit in CA
+  period: 2022
+  input:
+    age: 25
+    medicaid_income_level: 1.37
+  output:
+    is_adult_for_medicaid: true
+
+- name: Between 19-65, over FPL limit in CA
+  period: 2022
+  input:
+    age: 25
+    medicaid_income_level: 1.39
+  output:
+    is_adult_for_medicaid: false

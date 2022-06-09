@@ -1,0 +1,55 @@
+description: MA income tax rates.
+part_a_interest_dividends:
+  description: The tax rate on interest and dividend income (Part A income).
+  values:
+    2002-01-01: 0.053
+    # Amount started falling in 2004.
+    # Rates from 2015 to 2022 are from Tax Foundation.
+    2015-01-01: 0.0515
+    2016-01-01: 0.051
+    2019-01-01: 0.0505
+    2020-01-01: 0.05
+  metadata:
+    label: MA Interest and dividends tax rate
+    name: ma_part_a_int_div_rate
+    unit: /1
+part_a_capital_gains:
+  description: The tax rate on short-term capital gains (Part A income).
+  values:
+    2002-01-01: 0.12
+  metadata:
+    label: MA short-term capital gains rate
+    name: ma_part_a_stcg_rate
+    unit: /1
+part_b:
+  description: The tax rate on all taxable income that is not interest, dividends or capital gains.
+  values:
+    2002-01-01: 0.053
+    2015-01-01: 0.0515
+    2016-01-01: 0.051
+    2019-01-01: 0.0505
+    2020-01-01: 0.05
+  metadata:
+    label: MA main income tax rate
+    name: ma_part_b_rate
+    unit: /1
+part_c:
+  description: The tax rate on long-term capital gains.
+  values:
+    2002-01-01: 0.053
+    2015-01-01: 0.0515
+    2016-01-01: 0.051
+    2019-01-01: 0.0505
+    2020-01-01: 0.05
+  metadata:
+    label: MA long-term capital gains rate
+    name: ma_part_c_rate
+    unit: /1
+metadata:
+  reference:
+    - title: "Section 4: Rates of tax for residents, non-residents and corporate trusts (b)"
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section4
+    - title: State Individual Income Tax Rates and Brackets (Tax Foundation)
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
+  unit: /1
+  period: year

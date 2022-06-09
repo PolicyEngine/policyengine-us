@@ -622,4 +622,209 @@
 - bump: minor
   changes:
     added:
+<<<<<<< HEAD
     - Housing assistance and dependent variables.
+=======
+    - SSI notebook.
+    - SSI example to MA notebook.
+    - MA state tax exemptions for aged and blind people.
+    - Unit tests for state tax exemptions.
+  date: 2022-05-04 19:44:35
+- bump: patch
+  changes:
+    changed:
+    - CO SNAP BBCE net income limit set to true.
+    - Cite official source for SNAP emergency allotment amount.
+  date: 2022-05-05 06:07:31
+- bump: minor
+  changes:
+    added:
+    - Metadata and verbose variable names for IRS computation up to AGI.
+  date: 2022-05-05 17:25:36
+- bump: patch
+  changes:
+    fixed:
+    - Bug causing the system to fail to load on Colab.
+  date: 2022-05-05 21:54:08
+- bump: minor
+  changes:
+    added:
+    - TAXSIM integration tests for AGI.
+    changed:
+    - TAXSIM variables renamed to contain `taxsim_` prefix.
+  date: 2022-05-08 19:55:20
+- bump: minor
+  changes:
+    added:
+    - Medicaid eligibility for 50 states.
+  date: 2022-05-10 13:57:16
+- bump: minor
+  changes:
+    added:
+    - TANF from CPS data.
+    - Female variable.
+    - Variable for number of own children in household.
+  date: 2022-05-10 17:57:30
+- bump: minor
+  changes:
+    added:
+    - List of fully implemented programs at the US and state level.
+  date: 2022-05-11 14:17:28
+- bump: patch
+  changes:
+    fixed:
+    - Moved lingering state income tax deduction files into variables/gov.
+  date: 2022-05-11 15:14:12
+- bump: patch
+  changes:
+    changed:
+    - Label state income tax consistently with federal.
+  date: 2022-05-11 17:41:12
+- bump: patch
+  changes:
+    fixed:
+    - Remove bad import causing failure on some headless configurations.
+  date: 2022-05-11 23:19:04
+- bump: minor
+  changes:
+    added:
+    - Estimated Medicaid benefit value.
+    - Aged/blind/disabled asset and income limits.
+  date: 2022-05-16 12:11:08
+- bump: minor
+  changes:
+    changed:
+    - Refactored (references, simplifications and reorganisation) AGI -> taxable income
+      code.
+  date: 2022-05-16 20:12:47
+- bump: patch
+  changes:
+    fixed:
+    - Corrected EITC phase-out start values for 2020 and 2021.
+  date: 2022-05-17 22:49:48
+- bump: minor
+  changes:
+    added:
+    - WIC takeup and nutritional risk imputations.
+  date: 2022-05-19 11:54:27
+- bump: minor
+  changes:
+    added:
+    - MaritalUnit entity.
+    - Massachusetts state supplement.
+  date: 2022-05-19 12:47:08
+- bump: patch
+  changes:
+    added:
+    - WIC by earnings example in docs.
+    fixed:
+    - Made WIC categorical eligibility person-level and more accurate.
+    - Pointed TANF maximum benefit variable to the correct parameter.
+    - Bug preventing tax_unit_childcare_expenses from being calculated.
+    removed:
+    - Extraneous variable documentation fields.
+  date: 2022-05-24 15:20:46
+- bump: minor
+  changes:
+    added:
+    - CDCC integration tests.
+    changed:
+    - Re-implemented CDCC according to the U.S. code.
+  date: 2022-05-26 14:10:48
+- bump: minor
+  changes:
+    added:
+    - EITC parameters for 2017 and 2018.
+  date: 2022-05-28 06:59:45
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing the CDCC to not cap at the two-child childcare max expenses.
+  date: 2022-05-30 22:40:36
+- bump: minor
+  changes:
+    added:
+    - SSI deeming rules.
+  date: 2022-05-31 17:31:13
+- bump: patch
+  changes:
+    added:
+    - New `tax_unit_ssi` variable.
+    - Example of single parent with two disabled children in SSI documentation notebook.
+    fixed:
+    - Zeroed out `premium_tax_credit` in Massachusetts example notebook.
+  date: 2022-06-01 04:50:12
+- bump: patch
+  changes:
+    fixed:
+    - Typo in SSI notebook.
+  date: 2022-06-01 05:49:06
+- bump: patch
+  changes:
+    added:
+    - New `taxsim_tfica` variable for testing.
+  date: 2022-06-02 03:24:39
+- bump: minor
+  changes:
+    changed:
+    - Apply consistent CTC young child formula to all years.
+    - Move CTC variables into their own files and other minor refactoring.
+    fixed:
+    - Limit excess of Social Security taxes over EITC for refundable CTC to taxpayers
+      with a minimum number of children.
+  date: 2022-06-02 11:44:25
+- bump: patch
+  changes:
+    fixed:
+    - Fix EITC bug which applied the phase-out after, instead of before, the phase-in.
+  date: 2022-06-02 16:51:48
+- bump: patch
+  changes:
+    changed:
+    - Applied new openfisca-tools helper function `index_` to speed up SLSPC calculations.
+  date: 2022-06-02 17:01:01
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing UC- and SS-related MAGI to incorrectly overcount loss deductions.
+  date: 2022-06-02 17:03:08
+- bump: minor
+  changes:
+    added:
+    - Massachusetts State income tax.
+  date: 2022-06-06 13:50:33
+- bump: patch
+  changes:
+    changed:
+    - Reorganized state documentation.
+    fixed:
+    - Entered rent person-level in documentation to align with latest package update.
+  date: 2022-06-06 16:15:48
+- bump: patch
+  changes:
+    fixed:
+    - Medicaid benefit value per state.
+  date: 2022-06-07 09:54:21
+- bump: minor
+  changes:
+    added:
+    - New York State EITC.
+    - Longer history for the Massachusetts rental tax deduction.
+  date: 2022-06-07 18:04:31
+- bump: patch
+  changes:
+    fixed:
+    - Deduct government retirement contributions from MA taxable income on a per-person
+      basis.
+  date: 2022-06-07 20:27:48
+- bump: patch
+  changes:
+    added:
+    - Metadata for MA policy.
+  date: 2022-06-08 05:07:17
+- bump: patch
+  changes:
+    changed:
+    - Breakdowns always specified as a list.
+  date: 2022-06-08 10:45:48
+>>>>>>> d5b6a65ebf8b2995628ecb2f024587bfc5efe8ec

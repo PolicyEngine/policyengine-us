@@ -1,0 +1,20 @@
+description: Categories of person covered under Medicaid. These are not mutually exclusive - a person only needs to qualify under one category.
+values:
+  2015-01-01:
+    - is_pregnant_for_medicaid
+    - is_infant_for_medicaid
+    - is_young_child_for_medicaid
+    - is_older_child_for_medicaid
+    - is_parent_for_medicaid
+    - is_adult_for_medicaid
+    - is_young_adult_for_medicaid
+    - is_ssi_recipient_for_medicaid
+    - is_optional_senior_or_disabled_for_medicaid
+    - is_medically_needy_for_medicaid
+metadata:
+  unit: variable
+  name: medicaid_categories
+  label: "Medicaid categories"
+  reference:
+    - title: 42 U.S. Code § 1396(a)(10)(A)
+      href: https://www.law.cornell.edu/uscode/text/42/1396#a_10_A

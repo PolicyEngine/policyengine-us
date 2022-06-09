@@ -5,6 +5,7 @@ from openfisca_us.data.datasets.cps.raw_cps import RawCPS
 from openfisca_us.data.storage import OPENFISCA_US_MICRODATA_FOLDER
 from pandas import DataFrame, Series
 import numpy as np
+import pandas as pd
 
 
 class CPS(PublicDataset):
@@ -19,6 +20,7 @@ class CPS(PublicDataset):
 
     def generate(self, year: int):
         """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
+        Technical documentation and codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
 
         Args:
             year (int): The year of the Raw CPS to use.
@@ -61,7 +63,7 @@ def add_id_variables(
     family: DataFrame,
     spm_unit: DataFrame,
     household: DataFrame,
-):
+) -> None:
     """Add basic ID and weight variables.
 
     Args:
@@ -104,8 +106,25 @@ def add_id_variables(
 
     cps["household_weight"] = household.HSUP_WGT / 1e2
 
+    # Marital units
 
-def add_personal_variables(cps: h5py.File, person: DataFrame):
+    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(
+        person.A_LINENO, person.A_SPOUSE
+    )
+
+    # marital_unit_id is not the household ID, zero padded and followed
+    # by the index within household (of each person, or their spouse if
+    # one exists earlier in the survey).
+
+    marital_unit_id = Series(marital_unit_id).rank(
+        method="dense"
+    )  # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
+
+    cps["person_marital_unit_id"] = marital_unit_id.values
+    cps["marital_unit_id"] = marital_unit_id.drop_duplicates().values
+
+
+def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     """Add personal demographic variables.
 
     Args:
@@ -118,12 +137,47 @@ def add_personal_variables(cps: h5py.File, person: DataFrame):
     # 80-84  => 80
     # 85+ => 85
     # We assign the 80 ages randomly between 80 and 85
-    # to avoid unrealistically bunching at 80
+    # to avoid unrealistically bunching at 80.
     cps["age"] = np.where(
         person.A_AGE.between(80, 85),
         80 + 5 * np.random.rand(len(person)),
         person.A_AGE,
     )
+    # A_SEX is 1 -> male, 2 -> female.
+    cps["is_female"] = person.A_SEX == 2
+
+    def children_per_parent(col: str) -> pd.DataFrame:
+        """Calculate number of children in the household using parental
+            pointers.
+
+        Args:
+            col (str): Either PEPAR1 and PEPAR2, which correspond to A_LINENO
+            of the person's first and second parent in the household,
+            respectively.
+        """
+        return (
+            person[person[col] > 0]
+            .groupby(["PH_SEQ", col])
+            .size()
+            .reset_index()
+            .rename(columns={col: "A_LINENO", 0: "children"})
+        )
+
+    # Aggregate to parent.
+    res = (
+        pd.concat(
+            [children_per_parent("PEPAR1"), children_per_parent("PEPAR2")]
+        )
+        .groupby(["PH_SEQ", "A_LINENO"])
+        .children.sum()
+        .reset_index()
+    )
+    tmp = person[["PH_SEQ", "A_LINENO"]].merge(
+        res, on=["PH_SEQ", "A_LINENO"], how="left"
+    )
+    cps["own_children_in_household"] = tmp.children.fillna(0)
+
+    cps["has_marketplace_health_coverage"] = person.MRK == 1
 
 
 def add_personal_income_variables(cps: h5py.File, person: DataFrame):
@@ -134,30 +188,35 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
         person (DataFrame): The CPS person table.
     """
     cps["employment_income"] = person.WSAL_VAL
+    cps["interest_income"] = person.INT_VAL
     cps["self_employment_income"] = person.SEMP_VAL
-    cps["e02100"] = person.FRSE_VAL
+    cps["farm_income"] = person.FRSE_VAL
+    cps["dividend_income"] = person.DIV_VAL
+    cps["rental_income"] = person.RNT_VAL
     cps["social_security"] = person.SS_VAL
-    cps["e02300"] = person.UC_VAL
+    cps["unemployment_compensation"] = person.UC_VAL
+    cps["pension_income"] = person.PNSN_VAL + person.ANN_VAL
+    cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
+    cps["tanf_reported"] = person.PAW_VAL
+    cps["ssi_reported"] = person.SSI_VAL
+    cps["pension_contributions"] = person.RETCB_VAL
+    cps[
+        "long_term_capital_gains"
+    ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
+    cps["receives_wic"] = person.WICYN == 1
 
-    # Pensions/annuities
-    other_inc_type = person.OI_OFF
-    cps["e01500"] = other_inc_type.isin((2, 13)) * person.OI_VAL
 
-    # Alimony
-    cps["e00800"] = (person.OI_OFF == 20) * person.OI_VAL
-
-
-def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
+def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
     SPM_RENAMES = dict(
-        spm_unit_total_income="SPM_TOTVAL",
+        spm_unit_total_income_reported="SPM_TOTVAL",
         snap_reported="SPM_SNAPSUB",
-        spm_unit_capped_housing_subsidy="SPM_CAPHOUSESUB",
-        free_school_meals="SPM_SCHLUNCH",
-        spm_unit_energy_subsidy="SPM_ENGVAL",
-        spm_unit_wic="SPM_WICVAL",
-        spm_unit_fica="SPM_FICA",
-        spm_unit_federal_tax="SPM_FEDTAX",
-        spm_unit_state_tax="SPM_STTAX",
+        spm_unit_capped_housing_subsidy_reported="SPM_CAPHOUSESUB",
+        free_school_meals_reported="SPM_SCHLUNCH",
+        spm_unit_energy_subsidy_reported="SPM_ENGVAL",
+        spm_unit_wic_reported="SPM_WICVAL",
+        spm_unit_payroll_tax_reported="SPM_FICA",
+        spm_unit_federal_tax_reported="SPM_FEDTAX",
+        spm_unit_state_tax_reported="SPM_STTAX",
         spm_unit_work_childcare_expenses="SPM_CAPWKCCXPNS",
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
@@ -167,10 +226,12 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame):
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
         cps[openfisca_variable] = spm_unit[asec_variable]
 
-    cps["reduced_price_school_meals"] = cps["free_school_meals"][...] * 0
+    cps["reduced_price_school_meals_reported"] = (
+        cps["free_school_meals_reported"][...] * 0
+    )
 
 
-def add_household_variables(cps: h5py.File, household: DataFrame):
+def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     cps["fips"] = household.GESTFIPS
 
 
