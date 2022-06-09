@@ -15,4 +15,4 @@ class hud_ttp_adjusted_income_share(Variable):
             period
         ).hud.total_tenant_payment.adjusted_income_share
         income = spm_unit("hud_adjusted_income", period)
-        return share * income / MONTHS_IN_YEAR
+        return share * income

@@ -13,4 +13,4 @@ class hud_ttp_income_share(Variable):
     def formula(spm_unit, period, parameters):
         share = parameters(period).hud.total_tenant_payment.income_share
         income = spm_unit("hud_annual_income", period)
-        return share * income / MONTHS_IN_YEAR
+        return share * income
