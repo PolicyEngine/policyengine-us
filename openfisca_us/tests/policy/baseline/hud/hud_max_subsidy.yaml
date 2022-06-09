@@ -1,0 +1,8 @@
+- name: "Example 7: Calculating Maximum Subsidy"
+  # https://www.hud.gov/sites/dfiles/PIH/documents/HCV_Guidebook_Calculating_Rent_and_HAP_Payments.pdf#page=7
+  period: 2022
+  input:
+    pha_payment_standard: 450
+    hud_ttp: 210
+  output:
+    hud_max_subsidy: 240

@@ -1,0 +1,47 @@
+description: Area median income limit to qualify for HUD programs.
+MODERATE:
+  1:
+    2000-10-31: 0.7
+  2:
+    2000-10-31: 0.8
+  3:
+    2000-10-31: 0.9
+  4:
+    2000-10-31: 1
+LOW:
+  1:
+    2000-10-31: 0.56
+  2:
+    2000-10-31: 0.64
+  3:
+    2000-10-31: 0.72
+  4:
+    2000-10-31: 0.8
+VERY_LOW:
+  1:
+    2000-10-31: 0.42
+  2:
+    2000-10-31: 0.48
+  3:
+    2000-10-31: 0.54
+  4:
+    2000-10-31: 0.6
+ESPECIALLY_LOW:
+  1:
+    2000-10-31: 0.35
+  2:
+    2000-10-31: 0.4
+  3:
+    2000-10-31: 0.45
+  4:
+    2000-10-31: 0.5
+metadata:
+  unit: /1
+  name: hud_ami_income_limit
+  label: HUD area median income limit
+  reference:
+    - title: 24 CFR § 81.17 - Affordability - Income level definitions - family size and income known (owner-occupied units, actual tenants, and prospective tenants).
+      href: https://www.law.cornell.edu/cfr/text/24/81.17
+  breakdown:
+    - hud_income_level
+    - range(1, 5)

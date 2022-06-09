@@ -1,0 +1,15 @@
+- name: HAP if eligible.
+  period: 2022
+  input:
+    is_eligible_for_housing_assistance: true
+    hud_hap: 1
+  output:
+    housing_assistance: 1
+
+- name: Zero if ineligible.
+  period: 2022
+  input:
+    is_eligible_for_housing_assistance: false
+    hud_hap: 1
+  output:
+    housing_assistance: 0
