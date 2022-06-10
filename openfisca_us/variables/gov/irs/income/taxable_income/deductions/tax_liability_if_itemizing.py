@@ -11,6 +11,7 @@ class tax_liability_if_itemizing(Variable):
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
         simulation.max_spiral_loops = 10
+        simulation._check_for_cycle = lambda *args: None
         simulation_if_itemizing = simulation.clone()
         computed_variables = get_stored_variables(simulation)
         simulation_if_itemizing.tracer = simulation.tracer
