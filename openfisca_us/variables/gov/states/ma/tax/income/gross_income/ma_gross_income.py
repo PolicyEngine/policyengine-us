@@ -10,7 +10,6 @@ class ma_gross_income(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
 
     def formula(tax_unit, period, parameters):
-        earnings = tax_unit("tax_unit_dependents", period)
         # Mass. General Laws c.62 § 2(a)
         federal_gross_income = add(tax_unit, period, ["irs_gross_income"])
         foreign_earned_income = tax_unit(
