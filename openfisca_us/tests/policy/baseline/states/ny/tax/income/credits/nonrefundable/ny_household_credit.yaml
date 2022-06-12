@@ -21,12 +21,25 @@
   output:
     ny_household_credit: 0
 
-- name: 3-person tax unit with $32,000 income receives $30.
+- name: 4-person tax unit with $32,000 income receives $35.
   period: 2021
   input:
     state_code: NY
     adjusted_gross_income: 32_000
     filing_status: JOINT
-    tax_unit_size: 3
+    tax_unit_size: 4
   output:
-    ny_household_credit: 30
+    ny_household_credit: 35
+
+- name: 2-person married filing separately tax unit with $16,000 income receives half of a 4-person's with $32,000 income (above), rounded up.
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 16_000
+    spouse_separate_adjusted_gross_income: 16_000
+    filing_status: SEPARATE
+    tax_unit_size: 2
+    spouse_separate_tax_unit_size: 2
+  output:
+    ny_household_credit: 18
+
