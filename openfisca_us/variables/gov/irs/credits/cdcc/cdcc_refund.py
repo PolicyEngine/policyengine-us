@@ -13,6 +13,6 @@ class cdcc_refund(Variable):
     def formula(tax_unit, period, parameters):
         cdcc = parameters(period).irs.credits.cdcc
         if cdcc.refundable and not cdcc.abolition:
-            return tax_unit("c33200", period)
+            return tax_unit("cdcc", period)
         else:
             return 0

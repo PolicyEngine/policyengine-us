@@ -1,0 +1,13 @@
+- name: CDCC was refundable in 2021.
+  period: 2021
+  input:
+    cdcc: 1
+  output:
+    cdcc_refund: 1
+
+- name: CDCC was not refundable in 2022.
+  period: 2022
+  input:
+    cdcc: 1
+  output:
+    cdcc_refund: 0
