@@ -11,6 +11,7 @@ class ny_household_credit(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (b)
 
     def formula(tax_unit, period, parameters):
+        in_ny = tax_unit.household("state_code_str", period) == "NY"
         p = parameters(
             period
         ).states.ny.tax.income.credits.nonrefundable.household_credit
@@ -44,4 +45,4 @@ class ny_household_credit(Variable):
             total_amount_if_not_single / where(separate, 2, 1)
         )
         non_single_amount = amount_if_not_single * ~single
-        return single_amount + non_single_amount
+        return in_ny * (single_amount + non_single_amount)
