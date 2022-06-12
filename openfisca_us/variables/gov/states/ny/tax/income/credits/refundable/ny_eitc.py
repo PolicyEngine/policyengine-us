@@ -14,4 +14,4 @@ class ny_eitc(Variable):
         rate = parameters(period).states.ny.tax.income.credits.refundable.eitc
         tentative_nys_eic = eitc * rate
         household_credit = tax_unit("ny_household_credit", period)
-        return tentative_nys_eic - household_credit
+        return max_(0, tentative_nys_eic - household_credit)
