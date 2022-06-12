@@ -87,14 +87,14 @@ fig.show()
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mKeyError[0m                                  Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2206/2734893814.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2263/2734893814.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     40[0m [0;32mfor[0m [0madults[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m1[0m[0;34m,[0m [0;36m3[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     41[0m     [0;32mfor[0m [0mchildren[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m0[0m[0;34m,[0m [0;36m4[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 42[0;31m         [0ml[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mmake_tax[0m[0;34m([0m[0madults[0m[0;34m,[0m [0mchildren[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m[1;32m     43[0m [0;34m[0m[0m
 [1;32m     44[0m [0mdf[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mconcat[0m[0;34m([0m[0ml[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/tmp/ipykernel_2206/2734893814.py[0m in [0;36mmake_tax[0;34m(adults, children)[0m
+[0;32m/tmp/ipykernel_2263/2734893814.py[0m in [0;36mmake_tax[0;34m(adults, children)[0m
 [1;32m     23[0m             [0memployment_income[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"employment_income"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     24[0m             [0mstate_income_tax[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"state_income_tax"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mround[0m[0;34m([0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 25[0;31m             [0mstate_eitc[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"state_eitc"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mround[0m[0;34m([0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
