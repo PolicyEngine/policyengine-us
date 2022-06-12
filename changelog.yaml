@@ -834,6 +834,10 @@
     fixed:
     - A bug causing itemisation logic to fail.
   date: 2022-06-10 13:24:12
+- bump: patch
+  changes:
+    fixed:
+    - Point `cdcc_refund` to `cdcc` not the deprecated `c33200`.
 - bump: minor
   changes:
     added:
