@@ -28,6 +28,9 @@ parts:
             sections:
               - file: programs/states/ma/tax-benefit
               - file: programs/states/ma/income-tax
+          - file: programs/states/ny/index
+            sections:
+              - file: programs/states/ny/eitc
       - file: programs/usda/index
         sections:
           - file: programs/usda/snap
