@@ -1,0 +1,14 @@
+- name: Zero by default, since not married filing separate.
+  period: 2022
+  input:
+    tax_unit_size: 2
+  output:
+    spouse_separate_tax_unit_size: 0
+
+- name: Same value as own's size if married filing separately.
+  period: 2022
+  input:
+    tax_unit_size: 2
+    filing_status: SEPARATE
+  output:
+    spouse_separate_tax_unit_size: 2
