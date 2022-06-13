@@ -834,3 +834,7 @@
     fixed:
     - A bug causing itemisation logic to fail.
   date: 2022-06-10 13:24:12
+- bump: patch
+  changes:
+    fixed:
+    - Childcare expenses are now correctly loaded from the CPS.
