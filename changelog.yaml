@@ -837,4 +837,14 @@
 - bump: patch
   changes:
     fixed:
+    - Point `cdcc_refund` to `cdcc` not the deprecated `c33200`.
+  date: 2022-06-12 20:17:09
+- bump: minor
+  changes:
+    added:
+    - New York State household credit.
+  date: 2022-06-13 15:06:03
+- bump: patch
+  changes:
+    fixed:
     - Childcare expenses are now correctly loaded from the CPS.

@@ -10,17 +10,15 @@ parts:
       - file: programs/hhs/index
         sections:
           - file: programs/hhs/tanf
+      - file: programs/hud/index
+        sections:
+          - file: programs/hud/housing-assistance
       - file: programs/irs/index
         sections:
           - file: programs/irs/credits/eitc
       - file: programs/ssa/index
         sections:
           - file: programs/ssa/ssi
-      - file: programs/usda/index
-        sections:
-          - file: programs/usda/snap
-          - file: programs/usda/school_meals
-          - file: programs/usda/wic
       - file: programs/states/index
         sections:
           - file: programs/states/ca/index
@@ -30,3 +28,12 @@ parts:
             sections:
               - file: programs/states/ma/tax-benefit
               - file: programs/states/ma/income-tax
+          - file: programs/states/ny/index
+            sections:
+              - file: programs/states/ny/eitc
+      - file: programs/usda/index
+        sections:
+          - file: programs/usda/snap
+          - file: programs/usda/school_meals
+          - file: programs/usda/wic
+      
