@@ -14,6 +14,9 @@ class tax_unit_childcare_expenses(Variable):
         spm_unit_childcare = spm_unit("childcare_expenses", period)
         spm_unit_count_children = add(spm_unit, period, ["is_child"])
         tax_unit_count_children = add(tax_unit, period, ["is_child"])
-        return spm_unit_childcare * (
-            tax_unit_count_children / spm_unit_count_children
+        child_ratio = where(
+            spm_unit_count_children > 0,
+            tax_unit_count_children / spm_unit_count_children,
+            0,
         )
+        return spm_unit_childcare * child_ratio
