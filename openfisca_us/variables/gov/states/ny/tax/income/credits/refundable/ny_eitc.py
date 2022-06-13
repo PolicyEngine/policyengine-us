@@ -10,8 +10,9 @@ class ny_eitc(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (d)
 
     def formula(tax_unit, period, parameters):
+        in_ny = tax_unit.household("state_code_str", period) == "NY"
         eitc = tax_unit("earned_income_tax_credit", period)
         rate = parameters(period).states.ny.tax.income.credits.refundable.eitc
         tentative_nys_eic = eitc * rate
         household_credit = tax_unit("ny_household_credit", period)
-        return tentative_nys_eic - household_credit
+        return in_ny * max_(0, tentative_nys_eic - household_credit)
