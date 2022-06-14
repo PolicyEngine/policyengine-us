@@ -21,6 +21,11 @@ class ny_ctc(Variable):
         qualifying_children = tax_unit.sum(qualifies)
         # First calculate federal match.
         federal_match = tax_unit("ctc", period) * p.amount.percent
+        # Scale federal match by number of qualifying children.
+        federal_qualifying_children = tax_unit.sum(qualifies_for_federal_ctc)
+        qualifying_federal_match = (
+            federal_match * qualifying_children / federal_qualifying_children
+        )
         # Filers with income below the CTC phase-out threshold receive a
         # minimum amount per child.
         minimum = p.amount.minimum * qualifying_children
@@ -29,4 +34,4 @@ class ny_ctc(Variable):
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
         eligible = in_ny & (qualifying_children > 0)
-        return eligible * max_(applicable_minimum, federal_match)
+        return eligible * max_(applicable_minimum, qualifying_federal_match)
