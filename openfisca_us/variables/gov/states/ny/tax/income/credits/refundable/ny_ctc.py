@@ -5,7 +5,7 @@ class ny_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "NY CTC"
-    description = "New York's Empire State Child Credit"
+    documentation = "New York's Empire State Child Credit"
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (c-1)
@@ -13,11 +13,20 @@ class ny_ctc(Variable):
     def formula(tax_unit, period, parameters):
         in_ny = tax_unit.household("state_code_str", period) == "NY"
         p = parameters(period).states.ny.tax.income.credits.refundable.ctc
-        # Qualifying children
-        # Maximum of the minimum amount per child and the share of the federal credit.
-        minimum = 
-        ctc = tax_unit("child_tax_credit", period)
-        
-        tentative_nys_eic = eitc * rate
-        household_credit = tax_unit("ny_household_credit", period)
-        return in_ny * max_(0, tentative_nys_eic - household_credit)
+        # Qualifying children.
+        person = tax_unit.members
+        qualifies_for_federal_ctc = person("is_ctc_qualifying_child", period)
+        age = person("age", period)
+        qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
+        qualifying_children = tax_unit.sum(qualifies)
+        # First calculate federal match.
+        federal_match = tax_unit("ctc", period) * p.amount.percent
+        # Filers with income below the CTC phase-out threshold receive a
+        # minimum amount per child.
+        minimum = p.amount.minimum * qualifying_children
+        agi = tax_unit("adjusted_gross_income", period)
+        federal_threshold = tax_unit("ctc_phase_out_threshold", period)
+        eligible_for_minimum = agi < federal_threshold
+        applicable_minimum = eligible_for_minimum * minimum
+        eligible = in_ny & (qualifying_children > 0)
+        return eligible * max_(applicable_minimum, federal_match)
