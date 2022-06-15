@@ -22,7 +22,7 @@ class cdcc_relevant_expenses(Variable):
         eligible_capped_expenses = min_(expenses, cdcc.max * count_eligible)
         # Then, cap further to the lowest earnings between the taxpayer and spouse
         person = tax_unit.members
-        earned_income = person("earned", period)
+        earned_income = max_(0, person("earned", period))
         is_joint = tax_unit("tax_unit_is_joint", period)
         is_spouse = person("is_tax_unit_spouse", period)
         is_head = person("is_tax_unit_head", period)
