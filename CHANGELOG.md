@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.74.2] - 2022-06-15 21:45:58
+
+### Fixed
+
+- A bug causing the CDCC to have negative relevant expenses.
+
 ## [0.74.1] - 2022-06-13 21:56:08
 
 ### Fixed
@@ -1032,6 +1038,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.74.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.1...0.74.2
 [0.74.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.0...0.74.1
 [0.74.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.73.2...0.74.0
 [0.73.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.73.1...0.73.2
