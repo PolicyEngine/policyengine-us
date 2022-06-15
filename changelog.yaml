@@ -849,3 +849,7 @@
     fixed:
     - Childcare expenses are now correctly loaded from the CPS.
   date: 2022-06-13 21:56:08
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing the CDCC to have negative relevant expenses.
