@@ -854,10 +854,13 @@
     fixed:
     - A bug causing the CDCC to have negative relevant expenses.
   date: 2022-06-15 21:45:58
-- bump: patch
+- bump: minor
   changes:
     removed:
     - An unused CDCC abolition parameter.
     fixed:
     - Three-digit zipcodes are generated with a fixed seed.
     - Housing subsidies correctly included in benefits.
+    added:
+    - Basic income amounts for young children and young adults.
+    - Flat tax on AGI.
