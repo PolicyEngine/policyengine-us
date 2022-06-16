@@ -854,3 +854,9 @@
     fixed:
     - A bug causing the CDCC to have negative relevant expenses.
   date: 2022-06-15 21:45:58
+- bump: patch
+  changes:
+    changed:
+    - Replace `phaseout` with `phase_out` or `phase-out` in variables and text.
+    - Reorganize variables into their own files.
+
