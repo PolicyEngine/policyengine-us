@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.75.1] - 2022-06-16 16:58:09
+
+### Changed
+
+- Replace `phaseout` with `phase_out` or `phase-out` in variables and text.
+- Reorganize variables into their own files.
+
 ## [0.75.0] - 2022-06-16 16:28:07
 
 ### Added
@@ -1050,6 +1057,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.75.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.75.0...0.75.1
 [0.75.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.2...0.75.0
 [0.74.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.1...0.74.2
 [0.74.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.0...0.74.1
