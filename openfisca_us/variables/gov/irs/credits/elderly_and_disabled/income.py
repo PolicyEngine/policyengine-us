@@ -75,11 +75,11 @@ class section_22_income(Variable):
         )
         agi = tax_unit("adjusted_gross_income", period)
 
-        amount_over_phaseout = max_(
-            0, agi - elderly_disabled.phaseout.threshold[filing_status]
+        amount_over_phase_out = max_(
+            0, agi - elderly_disabled.phase_out.threshold[filing_status]
         )
-        phaseout_reduction = (
-            elderly_disabled.phaseout.rate * amount_over_phaseout
+        phase_out_reduction = (
+            elderly_disabled.phase_out.rate * amount_over_phase_out
         )
 
-        return max_(0, capped_reduced_amount - phaseout_reduction)
+        return max_(0, capped_reduced_amount - phase_out_reduction)

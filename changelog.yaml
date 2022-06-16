@@ -865,3 +865,8 @@
     removed:
     - An unused CDCC abolition parameter.
   date: 2022-06-16 16:28:07
+- bump: patch
+  changes:
+    changed:
+    - Replace `phaseout` with `phase_out` or `phase-out` in variables and text.
+    - Reorganize variables into their own files.
