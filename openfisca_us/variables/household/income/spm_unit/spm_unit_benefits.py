@@ -22,6 +22,6 @@ class spm_unit_benefits(Variable):
             "ebb",
             "basic_income",
             "spm_unit_capped_housing_subsidy",
-            # "tanf", # Exclude until defined for California.
+            "tanf",
         ]
     )
