@@ -3,31 +3,64 @@ brackets:
   - threshold:
       2010-01-01: 0
     amount:
-      description: Unconditional payment to children.
+      description: Unconditional payment to young children.
       values:
         2010-01-01: 0
       metadata:
-        label: Child basic income
+        label: Young child basic income
         unit: currency-USD
         period: year
-        name: child_bi
+        name: young_child_bi
   - threshold:
-      description: Age at which individuals receive the working-age adult payment, rather than the child payment.
+      values:
+        2010-01-01: 0
+      metadata:
+        label: Older child basic income age
+        unit: year
+        name: older_child_bi_age
+    amount:
+      description: Unconditional payment to older children.
+      values:
+        2010-01-01: 0
+      metadata:
+        label: older child basic income
+        unit: currency-USD
+        period: year
+        name: older_child_bi
+  - threshold:
+      description: Age at which individuals receive the young adult payment, rather than the older child payment.
       values:
         2010-01-01: 18
       metadata:
-        label: Basic income adult age
+        label: Basic income young adult age
         unit: year
-        name: adult_bi_age
+        name: young_adult_bi_age
     amount:
       description: Unconditional payment to working-age adults.
       values:
         2010-01-01: 0
       metadata:
-        label: Adult basic income
+        label: Young adult basic income
         unit: currency-USD
         period: year
-        name: adult_bi
+        name: young_adult_bi
+  - threshold:
+      description: Age at which individuals receive the older adult payment, rather than the young adult payment.
+      values:
+        2010-01-01: 18
+      metadata:
+        label: Basic income older adult age
+        unit: year
+        name: older_adult_bi_age
+    amount:
+      description: Unconditional payment to older adults.
+      values:
+        2010-01-01: 0
+      metadata:
+        label: Older adult basic income
+        unit: currency-USD
+        period: year
+        name: older_adult_bi
   - threshold:
       description: Age at which individuals receive the senior citizen payment, rather than the working-age adult payment.
       values:
