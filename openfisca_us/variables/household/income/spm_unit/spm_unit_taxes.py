@@ -14,5 +14,6 @@ class spm_unit_taxes(Variable):
             "spm_unit_self_employment_tax",
             "spm_unit_federal_tax",
             "spm_unit_state_tax",
+            "flat_tax",
         ]
     )
