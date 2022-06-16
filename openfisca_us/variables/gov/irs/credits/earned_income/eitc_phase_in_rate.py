@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class eitc_phasein_rate(Variable):
+class eitc_phase_in_rate(Variable):
     value_type = float
     entity = TaxUnit
     label = "EITC phase-in rate"

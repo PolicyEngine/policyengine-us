@@ -1,43 +1,43 @@
 start:
-  description: Phaseout start for both the American Opportunity Credit and Lifetime Learning Credit on AGI
+  description: Phase-out start for both the American Opportunity Credit and Lifetime Learning Credit on AGI
   single:
-    description: Phaseout start for both the American Opportunity Credit and Lifetime Learning Credit on AGI.
+    description: Phase-out start for both the American Opportunity Credit and Lifetime Learning Credit on AGI.
     values:
       2010-01-01: 80_000
     metadata:
       unit: currency-USD
       period: year
-      name: education_credit_phaseout_start_single
-      label: Education credits phaseout start (single filers)
+      name: education_credit_phase_out_start_single
+      label: Education credits phase-out start (single filers)
   joint:
-    description: Phaseout start for both the American Opportunity Credit and Lifetime Learning Credit on AGI.
+    description: Phase-out start for both the American Opportunity Credit and Lifetime Learning Credit on AGI.
     values:
       2010-01-01: 160_000
     metadata:
       unit: currency-USD
       period: year
-      name: education_credit_phaseout_start_joint
-      label: Education credits phaseout start (joint filers)
+      name: education_credit_phase_out_start_joint
+      label: Education credits phase-out start (joint filers)
 length:
-  description: Length of the phaseout for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero)
+  description: Length of the phase-out for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero)
   single:
-    description: Length of the phaseout for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero).
+    description: Length of the phase-out for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero).
     values:
       2010-01-01: 10_000
     metadata:
       unit: currency-USD
       period: year
-      name: education_credit_phaseout_length_single
-      label: Education credits phaseout length (single filers)
+      name: education_credit_phase_out_length_single
+      label: Education credits phase-out length (single filers)
   joint:
-    description: Length of the phaseout for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero).
+    description: Length of the phase-out for both the American Opportunity Credit and Lifetime Learning Credit on AGI (when excess income totals this amount, the credit is reduced to zero).
     values:
       2010-01-01: 20_000
     metadata:
       unit: currency-USD
       period: year
-      name: education_credit_phaseout_length_joint
-      label: Education credits phaseout length (joint filers)
+      name: education_credit_phase_out_length_joint
+      label: Education credits phase-out length (joint filers)
 metadata:
   reference:
     - title: 26 U.S. Code § 25A(d)(1)

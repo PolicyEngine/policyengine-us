@@ -1,10 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class eitc_phaseout_start(Variable):
+class eitc_phase_out_start(Variable):
     value_type = float
     entity = TaxUnit
-    label = "EITC phaseout start"
+    label = "EITC phase-out start"
     unit = USD
     documentation = "Earnings above this level reduce EITC entitlement."
     definition_period = YEAR
@@ -14,6 +14,6 @@ class eitc_phaseout_start(Variable):
         eitc = parameters(period).irs.credits.eitc
         is_joint = tax_unit("tax_unit_is_joint", period)
         return (
-            eitc.phaseout.start.calc(num_children)
-            + is_joint * eitc.phaseout.joint_bonus
+            eitc.phase_out.start.calc(num_children)
+            + is_joint * eitc.phase_out.joint_bonus
         )

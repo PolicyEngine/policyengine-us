@@ -27,7 +27,7 @@ class eitc_eligible(Variable):
             )
         )
         inv_income_disqualified = (
-            investment_income > eitc.phaseout.max_investment_income
+            investment_income > eitc.phase_out.max_investment_income
         )
         eligible = has_child | tax_unit.any(meets_age_requirements)
         return eligible & ~inv_income_disqualified

@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class eitc_phaseout_rate(Variable):
+class eitc_phase_out_rate(Variable):
     value_type = float
     entity = TaxUnit
     label = "EITC phase-out rate"
@@ -12,4 +12,4 @@ class eitc_phaseout_rate(Variable):
     def formula(tax_unit, period, parameters):
         eitc = parameters(period).irs.credits.eitc
         num_children = tax_unit("eitc_child_count", period)
-        return eitc.phaseout.rate.calc(num_children)
+        return eitc.phase_out.rate.calc(num_children)

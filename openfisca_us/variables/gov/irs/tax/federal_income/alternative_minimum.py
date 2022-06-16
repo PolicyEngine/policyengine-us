@@ -39,7 +39,7 @@ class c62100(Variable):
             0,
             min_(
                 amt.exemption.amount[filing_status],
-                amt.exemption.phaseout.rate
+                amt.exemption.phase_out.rate
                 * (c62100 - amt.exemption.separate_limit),
             ),
         ) * (filing_status == filing_status.possible_values.SEPARATE)
@@ -61,14 +61,14 @@ class c09600(Variable):
         c62100 = tax_unit("c62100", period)
         # Form 6251, Part II top
         amt = parameters(period).irs.income.amt
-        phaseout = amt.exemption.phaseout
+        phase_out = amt.exemption.phase_out
         filing_status = tax_unit("filing_status", period)
         line29 = max_(
             0,
             (
                 amt.exemption.amount[filing_status]
-                - phaseout.rate
-                * max_(0, c62100 - phaseout.start[filing_status])
+                - phase_out.rate
+                * max_(0, c62100 - phase_out.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)

@@ -1,4 +1,4 @@
-description: Child tax credit phaseout MAGI start
+description: Child tax credit phase-out MAGI start
 SINGLE:
   values:
     2013-01-01: 75_000
@@ -52,8 +52,8 @@ WIDOW:
 metadata:
   unit: currency-USD
   period: year
-  name: ctc_phaseout_threshold
-  label: CTC phaseout threshold
+  name: ctc_phase_out_threshold
+  label: CTC phase-out threshold
   breakdown:
     - filing_status
   reference:
