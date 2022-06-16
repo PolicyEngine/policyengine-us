@@ -16,6 +16,7 @@ class three_digit_zip_code(Variable):
             ).demographic.geography.population_by_three_digit_zip_code
             zip_codes = np.array(list(population_data._children.keys()))
             populations = np.array(list(population_data._children.values()))
+            np.random.seed(0)
             zip_code = (
                 np.random.choice(
                     zip_codes,
