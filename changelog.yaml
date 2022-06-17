@@ -871,3 +871,8 @@
     - Replace `phaseout` with `phase_out` or `phase-out` in variables and text.
     - Reorganize variables into their own files.
   date: 2022-06-16 16:58:09
+- bump: patch
+  changes:
+    fixed:
+    - Payroll taxable wages deduct pension contributions rather than adding them.
+    - Market income includes missing capital gains, farm, illicit and rental income.
