@@ -17,5 +17,9 @@ class market_income(Variable):
             "dividend_income",
             "interest_income",
             "gi_cash_assistance",
+            "capital_gains",
+            "rental_income",
+            "illicit_income",
+            "farm_income",
         ]
         return add(person, period, COMPONENTS)
