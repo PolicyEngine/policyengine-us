@@ -8,4 +8,8 @@ class payroll_tax_gross_wages(Variable):
     definition_period = YEAR
     unit = USD
 
-    formula = sum_of_variables(["employment_income", "pension_contributions"])
+    def formula(person, period, parameters):
+        earnings = person("employment_income", period)
+        pension_contributions = person("pension_contributions", period)
+        return max_(0, earnings - pension_contributions)
+
