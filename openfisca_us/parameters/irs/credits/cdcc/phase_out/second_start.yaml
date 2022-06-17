@@ -1,0 +1,12 @@
+description: Child & dependent care credit second phase-out start.
+metadata:
+  unit: currency-USD
+  name: cdcc_phase_out_second_start
+  label: CDCC second phase-out start
+  reference:
+    - title: 26 U.S. Code § 21(g)(4)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/21#g_4_B
+values:
+  2013-01-01: .inf
+  2021-01-01: 400_000
+  2022-01-01: .inf
