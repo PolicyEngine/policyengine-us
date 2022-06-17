@@ -8,4 +8,4 @@ class payroll_tax_gross_wages(Variable):
     definition_period = YEAR
     unit = USD
 
-    formula = sum_of_variables(["employment_income", "pension_contributions"])
+    formula = sum_of_variables(["employment_income"])
