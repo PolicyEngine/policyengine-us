@@ -6,10 +6,13 @@ class basic_income(Variable):
     entity = Person
     label = "Basic income"
     unit = USD
-    documentation = "Total basic income payments for this person."
+    documentation = "Total basic income payments for this person. Phase-outs as an equal percentage to all tax unit members."
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        bi = parameters(period).contrib.ubi_center.basic_income
-        age = person("age", period)
-        return bi.amount_by_age.calc(age)
+        basic_income = person("bi_before_phase_out", period)
+        tax_unit = person.tax_unit
+        tax_unit_basic_income = tax_unit.sum(basic_income)
+        tax_unit_phase_out = tax_unit("bi_phase_out", period)
+        percent_reduction = tax_unit_phase_out / tax_unit_basic_income
+        return basic_income * (1 - percent_reduction)
