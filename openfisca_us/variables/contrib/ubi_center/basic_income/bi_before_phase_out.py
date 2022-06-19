@@ -6,7 +6,9 @@ class bi_before_phase_out(Variable):
     entity = Person
     label = "Basic income before phase-outs"
     unit = USD
-    documentation = "Total basic income payments for this person, before apply phase-outs."
+    documentation = (
+        "Total basic income payments for this person, before apply phase-outs."
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):
