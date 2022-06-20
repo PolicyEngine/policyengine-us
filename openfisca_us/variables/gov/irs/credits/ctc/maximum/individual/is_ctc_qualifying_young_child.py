@@ -12,4 +12,6 @@ class is_ctc_qualifying_young_child(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        return age <= parameters(period).irs.credits.ctc.child.young.max_age
+        return (
+            age <= parameters(period).gov.irs.credits.ctc.child.young.max_age
+        )

@@ -16,7 +16,7 @@ class ma_limited_income_tax_credit(Variable):
         )
         lic = parameters(
             period
-        ).states.ma.tax.income.credits.non_refundable.limited_income_credit
+        ).gov.states.ma.tax.income.credits.limited_income_credit
         income_level = agi / exemption_threshold
         eligible = income_level <= lic.income_limit
         income_tax = tax_unit("ma_income_tax_before_credits", period)

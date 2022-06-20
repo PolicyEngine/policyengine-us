@@ -9,7 +9,7 @@ class aged_blind_extra_standard_deduction(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        std = parameters(period).irs.deductions.standard
+        std = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
         filing_status_type = filing_status.possible_values
         blind_head = tax_unit("blind_head", period) * 1

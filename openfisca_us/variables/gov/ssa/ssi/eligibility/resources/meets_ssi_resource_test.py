@@ -17,7 +17,7 @@ class meets_ssi_resource_test(Variable):
             person.marital_unit.sum(personal_resources),
             personal_resources,
         )
-        ssi = parameters(period).ssa.ssi
+        ssi = parameters(period).gov.ssa.ssi
         resource_limits = ssi.eligibility.resources.limit
         resource_limit = where(
             joint_claim, resource_limits.couple, resource_limits.individual

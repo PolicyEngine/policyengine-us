@@ -13,7 +13,7 @@ class c05200(Variable):
         # Separate non-negative taxable income into two non-negative components,
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
-        individual_income = parameters(period).irs.income
+        individual_income = parameters(period).gov.irs.income
         e26270 = add(tax_unit, period, ["partnership_s_corp_income"])
         e00900 = add(tax_unit, period, ["self_employment_income"])
 

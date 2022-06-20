@@ -11,7 +11,7 @@ class meets_snap_asset_test(Variable):
 
     def formula(spm_unit, period, parameters):
         has_elderly_or_disabled = spm_unit("has_usda_elderly_disabled", period)
-        asset_test = parameters(period).usda.snap.asset_test
+        asset_test = parameters(period).gov.usda.snap.asset_test
         assets = spm_unit("snap_assets", period)
         asset_limit = where(
             has_elderly_or_disabled,

@@ -11,7 +11,7 @@ class is_ssi_recipient_for_medicaid(Variable):
 
     def formula(person, period, parameters):
         state = person.household("state_code_str", period)
-        ma = parameters(period).hhs.medicaid.eligibility.categories
+        ma = parameters(period).gov.hhs.medicaid.eligibility.categories
         is_covered = ma.ssi_recipient.is_covered[state] > 0
         receives_ssi = person("ssi", period) > 0
         return receives_ssi & is_covered

@@ -13,7 +13,7 @@ class qualified_business_income(Variable):
     def formula(tax_unit, period, parameters):
         components = parameters(
             period
-        ).irs.deductions.qbi.max.income_definition
+        ).gov.irs.deductions.qbi.max.income_definition
         total_income = add(tax_unit, period, components)
         qualified = tax_unit("business_is_qualified", period)
         return total_income * qualified

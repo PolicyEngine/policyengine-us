@@ -10,7 +10,7 @@ class taxbc(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        capital_gains = parameters(period).irs.capital_gains.brackets
+        capital_gains = parameters(period).gov.irs.capital_gains.brackets
         filing_status = tax_unit("filing_status", period)
         dwks1 = tax_unit("taxable_income", period)
 
@@ -53,7 +53,7 @@ class taxbc(Variable):
         # Separate non-negative taxable income into two non-negative components,
         # doing this in a way so that the components add up to taxable income
         # define pass-through income eligible for PT schedule
-        individual_income = parameters(period).irs.income
+        individual_income = parameters(period).gov.irs.income
         e26270 = add(tax_unit, period, ["partnership_s_corp_income"])
         e00900 = add(tax_unit, period, ["self_employment_income"])
 

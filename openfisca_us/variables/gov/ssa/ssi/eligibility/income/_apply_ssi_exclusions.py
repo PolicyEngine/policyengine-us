@@ -20,7 +20,7 @@ def _apply_ssi_exclusions(
 
     earned = earned_income / MONTHS_IN_YEAR
     unearned = unearned_income / MONTHS_IN_YEAR
-    exclusions = parameters(period).ssa.ssi.income.exclusions
+    exclusions = parameters(period).gov.ssa.ssi.income.exclusions
     # Subtract general exclusion from unearned income first.
     unearned_exclusion = min_(exclusions.general, unearned)
     countable_unearned = unearned - unearned_exclusion

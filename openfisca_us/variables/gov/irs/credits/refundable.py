@@ -10,5 +10,5 @@ class income_tax_refundable_credits(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        credits = parameters(period).irs.credits.refundable
+        credits = parameters(period).gov.irs.credits.refundable
         return add(tax_unit, period, credits)

@@ -19,7 +19,7 @@ class ctc_refundable_individual_maximum(Variable):
 
     def formula_2018(person, period, parameters):
         amount = person("ctc_individual_maximum", period)
-        ctc = parameters(period).irs.credits.ctc
+        ctc = parameters(period).gov.irs.credits.ctc
         return min_(amount, ctc.refundable.individual_max)
 
     def formula_2021(person, period, parameters):

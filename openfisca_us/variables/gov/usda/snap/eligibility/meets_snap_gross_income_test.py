@@ -13,7 +13,7 @@ class meets_snap_gross_income_test(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        limit = parameters(period).usda.snap.income.limit.gross
+        limit = parameters(period).gov.usda.snap.income.limit.gross
         income = spm_unit("snap_gross_income_fpg_ratio", period)
         # Households with elderly and disabled people are exempt from the
         # gross income test.

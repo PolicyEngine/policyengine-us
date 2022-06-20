@@ -17,5 +17,5 @@ class self_employment_tax_ald(Variable):
         total_tax = tax_unit.sum(self_employment_tax * ~is_dependent)
         percent_deductible = parameters(
             period
-        ).irs.ald.self_employment_tax.percent_deductible
+        ).gov.irs.ald.self_employment_tax.percent_deductible
         return total_tax * percent_deductible

@@ -11,7 +11,7 @@ class lifetime_learning_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
 
     def formula(tax_unit, period, parameters):
-        education = parameters(period).irs.credits.education
+        education = parameters(period).gov.irs.credits.education
         llc = education.lifetime_learning_credit
         person = tax_unit.members
         is_aoc_eligible = person(

@@ -10,6 +10,6 @@ class eitc_phase_out_rate(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        eitc = parameters(period).irs.credits.eitc
+        eitc = parameters(period).gov.irs.credits.eitc
         num_children = tax_unit("eitc_child_count", period)
         return eitc.phase_out.rate.calc(num_children)

@@ -10,7 +10,7 @@ class cdcc_rate(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21#a_2"
 
     def formula(tax_unit, period, parameters):
-        cdcc = parameters(period).irs.credits.cdcc
+        cdcc = parameters(period).gov.irs.credits.cdcc
         agi = tax_unit("adjusted_gross_income", period)
 
         # First phase-out

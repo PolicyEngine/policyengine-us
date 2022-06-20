@@ -13,7 +13,7 @@ class snap_min_allotment(Variable):
 
     def formula(spm_unit, period, parameters):
         # Parameters for the minimum benefit.
-        snap = parameters(period).usda.snap
+        snap = parameters(period).gov.usda.snap
         min_allotment = snap.min_allotment
         # Calculate the relevant maximum benefit, defined as the maximum
         # benefit for a household of a certain size in their state.

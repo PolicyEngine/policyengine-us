@@ -23,7 +23,9 @@ class snap_utility_allowance_type(Variable):
         distinct_utility_bills = spm_unit(
             "count_distinct_utility_expenses", period
         )
-        lua = parameters(period).usda.snap.income.deductions.utility.limited
+        lua = parameters(
+            period
+        ).gov.usda.snap.income.deductions.utility.limited
         region = spm_unit.household("snap_utility_region_str", period)
         lua_is_defined = lua.active[region].astype(bool)
         return select(

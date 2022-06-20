@@ -8,7 +8,9 @@ class medicaid_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        mra = parameters(period).hhs.medicaid.geography.medicaid_rating_area
+        mra = parameters(
+            period
+        ).gov.hhs.medicaid.geography.medicaid_rating_area
         state = household("state_code_str", period)
         has_defined_mra = pd.Series(state).isin(mra._children)
         state = where(

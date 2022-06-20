@@ -13,7 +13,7 @@ class snap_expected_contribution(Variable):
     def formula(spm_unit, period, parameters):
         expected_food_contribution = parameters(
             period
-        ).usda.snap.expected_contribution
+        ).gov.usda.snap.expected_contribution
         return (
             np.floor(spm_unit("snap_net_income", period))
             * expected_food_contribution

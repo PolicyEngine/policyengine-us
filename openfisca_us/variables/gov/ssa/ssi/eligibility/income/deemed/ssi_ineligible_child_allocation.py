@@ -14,7 +14,7 @@ class ssi_ineligible_child_allocation(Variable):
         income = add(
             person, period, ["ssi_earned_income", "ssi_unearned_income"]
         )
-        ssi = parameters(period).ssa.ssi.amount
+        ssi = parameters(period).gov.ssa.ssi.amount
         allocation = (
             person("is_ssi_ineligible_child", period)
             * (ssi.couple - ssi.individual)
