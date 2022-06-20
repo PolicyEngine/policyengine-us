@@ -1,0 +1,7 @@
+- name: Dependents get the exemption
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    tax_unit_count_dependents: 2
+  output:
+    ut_taxpayer_credit_maximum: -1
