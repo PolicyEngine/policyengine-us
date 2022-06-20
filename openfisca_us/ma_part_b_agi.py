@@ -1,6 +1,6 @@
 from openfisca_us.model_api import *
 
-
+FUNCTIONAL_CHANGE
 class ma_part_b_agi(Variable):
     value_type = float
     entity = TaxUnit
