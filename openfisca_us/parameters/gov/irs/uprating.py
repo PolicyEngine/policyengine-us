@@ -3,7 +3,7 @@ from openfisca_core.periods import instant
 
 
 def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
-    cpi = parameters.bls.cpi.c_cpi_u
+    cpi = parameters.gov.bls.cpi.c_cpi_u
     end = instant(f"{year}-08-01")
     start = end.offset(-MONTHS_IN_YEAR, MONTH)
     monthly_cpi_values = []
