@@ -8,7 +8,7 @@ class non_refundable_ctc(Variable):
     unit = USD
     documentation = (
         "The portion of the Child Tax Credit that is not refundable."
-        )
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

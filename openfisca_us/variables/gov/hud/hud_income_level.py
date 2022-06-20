@@ -35,19 +35,19 @@ class hud_income_level(Variable):
         moderate_threshold = (
             size_limit.MODERATE[size_capped_at_4]
             + size_limit_excess.MODERATE * size_exceeding_4
-            )
+        )
         low_threshold = (
             size_limit.LOW[size_capped_at_4]
             + size_limit_excess.LOW * size_exceeding_4
-            )
+        )
         very_low_threshold = (
             size_limit.VERY_LOW[size_capped_at_4]
             + size_limit_excess.VERY_LOW * size_exceeding_4
-            )
+        )
         especially_low_threshold = (
             size_limit.ESPECIALLY_LOW[size_capped_at_4]
             + size_limit_excess.ESPECIALLY_LOW * size_exceeding_4
-            )
+        )
         # Return the lowest matching one.
         return select(
             [
@@ -56,12 +56,12 @@ class hud_income_level(Variable):
                 income_ami_ratio <= low_threshold,
                 income_ami_ratio <= moderate_threshold,
                 True,
-                ],
+            ],
             [
                 HUDIncomeLevel.ESPECIALLY_LOW,
                 HUDIncomeLevel.VERY_LOW,
                 HUDIncomeLevel.LOW,
                 HUDIncomeLevel.MODERATE,
                 HUDIncomeLevel.ABOVE_MODERATE,
-                ],
-            )
+            ],
+        )

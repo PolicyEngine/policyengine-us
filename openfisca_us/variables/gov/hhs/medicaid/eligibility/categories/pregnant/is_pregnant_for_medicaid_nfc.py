@@ -10,7 +10,7 @@ class is_pregnant_for_medicaid_nfc(Variable):
     def formula(person, period, parameters):
         ma = parameters(
             period
-            ).gov.hhs.medicaid.eligibility.categories.pregnant
+        ).gov.hhs.medicaid.eligibility.categories.pregnant
         is_pregnant = person("is_pregnant", period)
         days_postpartum = person("count_days_postpartum", period)
         state = person.household("state_code_str", period)

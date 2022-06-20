@@ -12,12 +12,12 @@ class ctc_limiting_tax_liability(Variable):
     def formula(tax_unit, period, parameters):
         non_refundable_credits = parameters(
             period
-            ).gov.irs.credits.non_refundable
+        ).gov.irs.credits.non_refundable
         total_credits = sum(
             [
                 tax_unit(credit, period)
                 for credit in non_refundable_credits
                 if credit != "non_refundable_ctc"
-                ]
-            )
+            ]
+        )
         return tax_unit("income_tax_before_credits", period) - total_credits

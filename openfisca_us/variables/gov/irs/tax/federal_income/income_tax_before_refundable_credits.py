@@ -13,7 +13,7 @@ class c09200(Variable):
         income_tax_bc = tax_unit("income_tax_before_credits", period)
         capped_credits = tax_unit(
             "income_tax_capped_non_refundable_credits", period
-            )
+        )
         return income_tax_bc - capped_credits
 
 

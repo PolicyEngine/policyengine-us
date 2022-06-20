@@ -16,6 +16,6 @@ class ebb(Variable):
         amounts = parameters(period).gov.fcc.ebb.amount
         max_amount = (
             where(tribal, amounts.tribal, amounts.standard) * MONTHS_IN_YEAR
-            )
+        )
         amount_if_eligible = min_(max_amount, broadband_cost)
         return where(eligible, amount_if_eligible, 0)

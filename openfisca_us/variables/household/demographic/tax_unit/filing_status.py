@@ -26,8 +26,8 @@ class filing_status(Variable):
                 FilingStatus.JOINT,
                 FilingStatus.HEAD_OF_HOUSEHOLD,
                 FilingStatus.SINGLE,
-                ],
-            )
+            ],
+        )
 
 
 # For Tax-Calculator.

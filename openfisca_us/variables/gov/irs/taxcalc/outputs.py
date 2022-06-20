@@ -9,7 +9,7 @@ class sey(Variable):
 
     formula = sum_of_variables(
         ["self_employment_income", "farm_income", "k1bx14"]
-        )
+    )
 
 
 class filer_sey(Variable):
@@ -38,7 +38,7 @@ class combined(Variable):
             "self_employment_social_security_tax",
             "employee_medicare_tax",
             "employee_social_security_tax",
-            ]
+        ]
         tax_unit_components = add(tax_unit, period, TAX_UNIT_COMPONENTS)
         person_components = aggr(tax_unit, period, PERSON_COMPONENTS)
         return tax_unit_components + person_components
@@ -53,7 +53,7 @@ class filer_earned(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -67,7 +67,7 @@ class earned(Variable):
     label = "Earned income"
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
     def formula(person, period, parameters):
@@ -76,13 +76,13 @@ class earned(Variable):
             (1 - misc.self_emp_tax_adj)
             * misc.employer_share
             * person("self_employment_tax", period)
-            )
+        )
         return (
             add(
                 person, period, ["employment_income", "self_employment_income"]
-                )
-            - adjustment
             )
+            - adjustment
+        )
 
 
 class othertaxes(Variable):
@@ -100,7 +100,7 @@ class sep(Variable):
     default_value = 1
     documentation = (
         "2 when filing_status is 3 (married filing separately); otherwise 1"
-        )
+    )
 
 
 class surtax(Variable):
@@ -109,7 +109,7 @@ class surtax(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -123,7 +123,7 @@ class c01000(Variable):
     def formula(tax_unit, period, parameters):
         return max_(
             (-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period)
-            )
+        )
 
 
 tax_unit_net_capital_gains = variable_alias(
@@ -137,7 +137,7 @@ class c03260(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -152,7 +152,7 @@ class c05700(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -162,7 +162,7 @@ class c07240(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -172,7 +172,7 @@ class c07260(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -182,7 +182,7 @@ class c07300(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -192,7 +192,7 @@ class c07400(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -202,7 +202,7 @@ class c07600(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -212,7 +212,7 @@ class c08000(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -234,7 +234,7 @@ class care_deduction(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
 
 
 class ctc_new(Variable):
@@ -243,7 +243,7 @@ class ctc_new(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 
@@ -254,7 +254,7 @@ class recovery_rebate_credit(Variable):
     label = "Recovery Rebate Credit"
     documentation = (
         "Recovery Rebate Credit, from American Rescue Plan Act of 2021"
-        )
+    )
     unit = USD
 
 
@@ -272,7 +272,7 @@ class fstax(Variable):
     definition_period = YEAR
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
     unit = USD
 
 

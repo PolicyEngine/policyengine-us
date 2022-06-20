@@ -31,7 +31,7 @@ class ACS(PublicDataset):
 
         person, spm_unit, household = [
             raw_data[entity] for entity in ("person", "spm_unit", "household")
-            ]
+        ]
         # Add primary and foreign keys
 
         household.SERIALNO = household.SERIALNO.astype(int)
@@ -42,15 +42,15 @@ class ACS(PublicDataset):
 
         logging.info(
             f"Persons with a linked household {person.SERIALNO.isin(household.SERIALNO).mean():.1%}"
-            )
+        )
         person = person[person.SERIALNO.isin(household.SERIALNO)]
         logging.info(
             f"Households with a linked person {household.SERIALNO.isin(person.SERIALNO).mean():.1%}"
-            )
+        )
         household = household[household.SERIALNO.isin(person.SERIALNO)]
         logging.info(
             f"SPM units with a linked person {spm_unit.SPM_ID.isin(person.SPM_ID).mean():.1%}"
-            )
+        )
         spm_unit = spm_unit[spm_unit.SPM_ID.isin(person.SPM_ID)]
 
         add_id_variables(acs, person, spm_unit, household)

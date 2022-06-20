@@ -12,7 +12,7 @@ class ctc_refundable_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
-        )
+    )
 
     def formula(person, period, parameters):
         return person("ctc_individual_maximum", period)

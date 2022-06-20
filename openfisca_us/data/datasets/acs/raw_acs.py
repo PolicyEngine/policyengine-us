@@ -77,24 +77,24 @@ class RawACS(PublicDataset):
                 logging.info(f"Downloading household file")
                 household = concat_zipped_csvs(
                     household_url, "psam_hus", HOUSEHOLD_COLUMNS
-                    )
+                )
                 # Remove group quarters (zero weight)
                 household = household[
                     ~household.SERIALNO.str.contains("2019GQ")
-                    ]
+                ]
                 household["SERIALNO"] = household["SERIALNO"].apply(
                     lambda x: int(x.replace("2019HU", ""))
-                    )
+                )
                 storage["household"] = household
                 # Person file
                 logging.info(f"Downloading person file")
                 person = concat_zipped_csvs(
                     person_url, "psam_pus", PERSON_COLUMNS
-                    )
+                )
                 person = person[~person.SERIALNO.str.contains("2019GQ")]
                 person["SERIALNO"] = person["SERIALNO"].apply(
                     lambda x: int(x.replace("2019HU", ""))
-                    )
+                )
                 storage["person"] = person
                 # SPM unit file
                 logging.info(f"Downloading SPM unit file")
@@ -105,7 +105,7 @@ class RawACS(PublicDataset):
             RawACS.remove(year)
             logging.error(
                 f"Attempted to extract and save the CSV files, but encountered an error: {e}"
-                )
+            )
             raise e
 
 
@@ -173,26 +173,26 @@ def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> None:
         "WKXPNS",
         "WUI_LT15",
         "ID",
-        ]
+    ]
     spm_table = (
         person[["SPM_" + column for column in SPM_UNIT_COLUMNS]]
         .groupby(person.SPM_ID)
         .first()
-        )
+    )
 
     original_person_table = storage["person"]
     # Ensure that join keys are the same type.
     JOIN_COLUMNS = ["SERIALNO", "SPORDER"]
     original_person_table[JOIN_COLUMNS] = original_person_table[
         JOIN_COLUMNS
-        ].astype(int)
+    ].astype(int)
     person[JOIN_COLUMNS] = person[JOIN_COLUMNS].astype(int)
     # Add SPM_ID from the SPM person table to the original person table.
     combined_person_table = pd.merge(
         original_person_table,
         person[JOIN_COLUMNS + ["SPM_ID"]],
         on=JOIN_COLUMNS,
-        )
+    )
 
     storage["person"] = combined_person_table
     storage["spm_unit"] = spm_table

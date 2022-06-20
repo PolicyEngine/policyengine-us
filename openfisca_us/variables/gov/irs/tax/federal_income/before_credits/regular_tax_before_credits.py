@@ -37,7 +37,7 @@ class taxbc(Variable):
         dwks33 = min_(
             tax_unit("dwks9", period),
             add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
-            )
+        )
         dwks10 = tax_unit("dwks10", period)
         dwks34 = dwks10 + dwks19
         dwks36 = max_(0, dwks34 - dwks1)
@@ -80,13 +80,13 @@ class taxbc(Variable):
             # threshold (on income above the last threshold)
             reg_threshold = individual_income.bracket.thresholds[str(i)][
                 filing_status
-                ]
+            ]
             amount_in_bracket = amount_between(
                 reg_taxinc, last_reg_threshold, reg_threshold
-                )
+            )
             reg_tax += (
                 individual_income.bracket.rates[str(i)] * amount_in_bracket
-                )
+            )
             last_reg_threshold = reg_threshold
 
             # Calculate rate applied to pass-through income on in the same
@@ -95,22 +95,22 @@ class taxbc(Variable):
             pt_threshold = max_(
                 individual_income.pass_through.bracket.thresholds[str(i)][
                     filing_status
-                    ]
+                ]
                 - pt_tbase,
                 0,
-                )
+            )
             pt_tax += individual_income.pass_through.bracket.rates[
                 str(i)
-                ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
+            ] * amount_between(pt_taxinc, last_pt_threshold, pt_threshold)
             last_pt_threshold = pt_threshold
 
         # Calculate regular and pass-through tax above the last threshold
         reg_tax += individual_income.bracket.rates["7"] * max_(
             reg_taxinc - last_reg_threshold, 0
-            )
+        )
         pt_tax += individual_income.pass_through.bracket.rates["7"] * max_(
             pt_taxinc - last_pt_threshold, 0
-            )
+        )
 
         dwks42 = reg_tax + pt_tax
 
@@ -122,8 +122,8 @@ class taxbc(Variable):
                 dwks41,
                 dwks42,
                 lowest_rate_tax,
-                ]
-            )
+            ]
+        )
         c05200 = tax_unit("income_tax_main_rates", period)
         dwks44 = c05200
         dwks45 = min_(dwks43, dwks44)

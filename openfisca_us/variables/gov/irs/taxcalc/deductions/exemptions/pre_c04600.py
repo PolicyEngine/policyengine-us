@@ -15,4 +15,4 @@ class pre_c04600(Variable):
             tax_unit("dsi", period),
             0,
             tax_unit("xtot", period) * exemption.amount,
-            )
+        )

@@ -13,5 +13,5 @@ class tanf_gross_earned_income(Variable):
     def formula(spm_unit, period, parameters):
         sources = parameters(
             period
-            ).gov.hhs.tanf.cash.income.gross.sources.earned
+        ).gov.hhs.tanf.cash.income.gross.sources.earned
         return add(spm_unit, period, sources)

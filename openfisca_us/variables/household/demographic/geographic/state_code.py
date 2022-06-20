@@ -74,4 +74,4 @@ class state_code(Variable):
     def formula(household, period, parameters):
         return StateCode.encode(
             household("state_name", period).decode_to_str()
-            )
+        )

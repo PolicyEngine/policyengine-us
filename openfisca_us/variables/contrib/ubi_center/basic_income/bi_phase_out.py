@@ -12,7 +12,7 @@ class bi_phase_out(Variable):
         basic_income = add(tax_unit, period, ["bi_before_phase_out"])
         phase_out = parameters(
             period
-            ).contrib.ubi_center.basic_income.phase_out
+        ).contrib.ubi_center.basic_income.phase_out
         agi = tax_unit("adjusted_gross_income", period)
         mars = tax_unit("mars", period)
         threshold = phase_out.threshold[mars]

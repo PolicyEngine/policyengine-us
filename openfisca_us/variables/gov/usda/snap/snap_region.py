@@ -31,9 +31,9 @@ class snap_region(Variable):
                     **{
                         key: value
                         for key, value in SNAPRegion._member_map_.items()
-                        },
-                    }
-                )
-            .values
+                    },
+                }
             )
+            .values
+        )
         return SNAPRegion.encode(mapped_values)

@@ -16,5 +16,5 @@ class wic_fpg(Variable):
         state_group = spm_unit.household("state_group_str", period)
         additional = parameters(period).gov.hhs.fpg.additional_person[
             state_group
-            ]
+        ]
         return normal_fpg + additional * pregnant

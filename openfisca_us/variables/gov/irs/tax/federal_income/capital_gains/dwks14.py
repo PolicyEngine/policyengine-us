@@ -9,7 +9,7 @@ class dwks14(Variable):
     unit = USD
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-        )
+    )
 
     def formula(tax_unit, period, parameters):
         dwks1 = tax_unit("taxable_income", period)

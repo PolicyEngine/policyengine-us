@@ -102,7 +102,7 @@ class filer_e02300(Variable):
     def formula(tax_unit, period, parameters):
         return tax_unit_non_dep_sum(
             "unemployment_compensation", tax_unit, period
-            )
+        )
 
 
 class e02400(Variable):
@@ -134,7 +134,7 @@ class e87530(Variable):
     label = "Qualified tuition expenses"
     documentation = (
         "Adjusted qualified lifetime learning expenses for all students"
-        )
+    )
     unit = USD
 
 
@@ -171,7 +171,7 @@ class cdcc_qualified_dependent(Variable):
         dependent_or_spouse = is_dependent | is_spouse
         return meets_age_criteria | (
             dependent_or_spouse & incapable_of_self_care
-            )
+        )
 
 
 class f2441(Variable):
@@ -183,7 +183,7 @@ class f2441(Variable):
     def formula(tax_unit, period, parameters):
         gross_num_eligible = tax_unit.sum(
             tax_unit.members("cdcc_qualified_dependent", period)
-            )
+        )
         cdcc = parameters(period).gov.irs.credits.cdcc
         return min_(gross_num_eligible, cdcc.eligibility.max)
 
@@ -194,7 +194,7 @@ class f6251(Variable):
     definition_period = YEAR
     documentation = (
         "True if Form 6251 (AMT) attached to return; otherwise false"
-        )
+    )
 
 
 class a_lineno(Variable):
@@ -225,7 +225,7 @@ class h_seq(Variable):
     definition_period = YEAR
     documentation = (
         "CPS household sequence number (not used in tax-calculation logic)"
-        )
+    )
 
 
 class data_source(Variable):
@@ -241,7 +241,7 @@ class k1bx14(Variable):
     definition_period = YEAR
     documentation = (
         "Partner self-employment earnings/loss (included in e26270 total)"
-        )
+    )
     unit = USD
 
 
@@ -313,13 +313,13 @@ class hasqdivltcg(Variable):
             "long_term_capital_gains",
             "non_sch_d_capital_gains",
             "qualified_dividend_income",
-            ]
+        ]
         return np.any(
             [
                 add(tax_unit, period, [income_source]) > 0
                 for income_source in INCOME_SOURCES
-                ]
-            )
+            ]
+        )
 
 
 class c23650(Variable):
@@ -335,4 +335,4 @@ class c23650(Variable):
             tax_unit,
             period,
             ["long_term_capital_gains", "short_term_capital_gains"],
-            )
+        )

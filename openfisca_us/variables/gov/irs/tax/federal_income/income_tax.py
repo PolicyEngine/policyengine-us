@@ -12,7 +12,7 @@ class iitax(Variable):
     def formula(tax_unit, period, parameters):
         before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
-            )
+        )
         refundable_credits = tax_unit("income_tax_refundable_credits", period)
         return before_refundable_credits - refundable_credits
 

@@ -18,5 +18,5 @@ class hud_ttp(Variable):
                 spm_unit("hud_ttp_adjusted_income_share", period),
                 spm_unit("housing_designated_welfare", period),
                 spm_unit("hud_minimum_rent", period),
-                ]
-            )
+            ]
+        )

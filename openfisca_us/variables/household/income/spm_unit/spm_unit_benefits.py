@@ -23,5 +23,5 @@ class spm_unit_benefits(Variable):
             "basic_income",
             "spm_unit_capped_housing_subsidy",
             "tanf",
-            ]
-        )
+        ]
+    )

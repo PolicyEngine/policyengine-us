@@ -16,7 +16,7 @@ class maximum_state_supplement(Variable):
         state_code = person.household("state_code_str", period)
         living_arrangement = person.household(
             "state_living_arrangement", period
-            )
+        )
         ss_amounts = parameters(period).ssa.state_supplement.amount
         amounts = ss_amounts[state_code][living_arrangement]
         is_blind = person("is_blind", period)
@@ -30,18 +30,18 @@ class maximum_state_supplement(Variable):
             max_(
                 amounts[np.array([ssi_categories.AGED] * count_persons)][
                     count_eligible_str
-                    ]
+                ]
                 * is_aged,
                 amounts[np.array([ssi_categories.BLIND] * count_persons)][
                     count_eligible_str
-                    ]
+                ]
                 * is_blind,
                 amounts[np.array([ssi_categories.DISABLED] * count_persons)][
                     count_eligible_str
-                    ]
+                ]
                 * is_disabled,
-                )
-            * MONTHS_IN_YEAR
             )
+            * MONTHS_IN_YEAR
+        )
         combined_amount = marital_unit.sum(per_person_amount)
         return eligible * combined_amount * where(joint_claim, 1 / 2, 1)

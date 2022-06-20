@@ -20,4 +20,4 @@ class dwks9(Variable):
         return max_(
             0,
             c24510 - min_(0, tax_unit("investment_income_form_4952", period)),
-            )
+        )

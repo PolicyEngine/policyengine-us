@@ -12,7 +12,7 @@ class is_older_child_for_medicaid(Variable):
         age = person("age", period)
         ma = parameters(
             period
-            ).gov.hhs.medicaid.eligibility.categories.older_child
+        ).gov.hhs.medicaid.eligibility.categories.older_child
         income = person("medicaid_income_level", period)
         is_older_child = ma.age_range.calc(age)
         state = person.household("state_code_str", period)

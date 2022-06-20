@@ -16,4 +16,4 @@ class is_tanf_non_cash_hheod(Variable):
             requires_all,
             spm_unit("has_all_usda_elderly_disabled", period),
             spm_unit("has_usda_elderly_disabled", period),
-            )
+        )

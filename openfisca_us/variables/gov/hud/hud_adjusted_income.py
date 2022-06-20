@@ -40,4 +40,4 @@ class hud_adjusted_income(Variable):
             - childcare_expenses
             - moop_ded,
             0,
-            )
+        )

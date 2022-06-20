@@ -10,7 +10,7 @@ class spm_unit_oecd_equiv_net_income(Variable):
     definition_period = YEAR
     reference = (
         "https://www.oecd.org/economy/growth/OECD-Note-EquivalenceScales.pdf"
-        )
+    )
 
     def formula(spm_unit, period, parameters):
         number_of_people = spm_unit.nb_persons()

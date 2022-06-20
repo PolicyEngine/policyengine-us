@@ -10,11 +10,11 @@ class meets_snap_net_income_test(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2017#a",
         "https://www.law.cornell.edu/uscode/text/7/2014#c",
-        )
+    )
 
     def formula(spm_unit, period, parameters):
         net_income_limit_fpg = parameters(
             period
-            ).gov.usda.snap.income.limit.net
+        ).gov.usda.snap.income.limit.net
         net_income_fpg = spm_unit("snap_net_income_fpg_ratio", period)
         return net_income_fpg <= net_income_limit_fpg

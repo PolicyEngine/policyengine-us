@@ -132,7 +132,7 @@ class state_name(Variable):
                     55: StateName.WI,
                     56: StateName.WY,
                     72: StateName.PR,
-                    }
-                )
-            .values
+                }
             )
+            .values
+        )

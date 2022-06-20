@@ -13,7 +13,7 @@ class three_digit_zip_code(Variable):
             # We don't have full zip codes - randomly assign zip codes
             population_data = parameters(
                 period
-                ).demographic.geography.population_by_three_digit_zip_code
+            ).demographic.geography.population_by_three_digit_zip_code
             zip_codes = np.array(list(population_data._children.keys()))
             populations = np.array(list(population_data._children.values()))
             np.random.seed(0)
@@ -22,10 +22,10 @@ class three_digit_zip_code(Variable):
                     zip_codes,
                     size=len(zip_code),
                     p=populations / populations.sum(),
-                    )
+                )
                 .astype(int)
                 .astype(str)
-                )
+            )
         else:
             zip_code = (zip_code.astype(int) // 1e2).astype(int).astype(str)
         return np.char.zfill(zip_code, 3)

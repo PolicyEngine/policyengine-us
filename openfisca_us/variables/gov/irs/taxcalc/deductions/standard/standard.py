@@ -26,4 +26,4 @@ class standard(Variable):
             & separate_filer_itemizes,
             0,
             initial_standard,
-            )
+        )

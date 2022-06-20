@@ -12,7 +12,7 @@ class meets_school_meal_categorical_eligibility(Variable):
     def formula(spm_unit, period, parameters):
         programs = parameters(
             period
-            ).gov.usda.school_meals.categorical_eligibility
+        ).gov.usda.school_meals.categorical_eligibility
         return np.any(
             [spm_unit(program, period) for program in programs], axis=0
-            )
+        )

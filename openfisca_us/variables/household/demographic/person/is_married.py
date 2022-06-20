@@ -18,6 +18,6 @@ class is_married(Variable):
             [
                 filing_status_type.JOINT,
                 filing_status_type.SEPARATE,
-                ],
-            )
+            ],
+        )
         return family.any(person_is_married)

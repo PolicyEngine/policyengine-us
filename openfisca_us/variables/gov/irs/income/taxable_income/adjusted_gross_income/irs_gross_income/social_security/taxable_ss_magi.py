@@ -21,8 +21,8 @@ class taxable_ss_magi(Variable):
             not in [
                 "taxable_social_security",
                 "taxable_unemployment_compensation",
-                ]
             ]
+        ]
         if "taxable_unemployment_compensation" in gross_income_sources:
             # Reforms which drop the UI variable from gross income should
             # trigger SS-related MAGI to drop it too.
@@ -34,7 +34,7 @@ class taxable_ss_magi(Variable):
             # Add positive values only - losses are deducted later.
             gross_income += not_dependent * max_(
                 0, add(person, period, [source])
-                )
+            )
         gross_income = tax_unit.sum(gross_income)
         above_the_line_deductions = irs.ald.deductions
         revoked_deductions = ss_magi.revoked_deductions
@@ -42,6 +42,6 @@ class taxable_ss_magi(Variable):
             deduction
             for deduction in above_the_line_deductions
             if deduction not in revoked_deductions
-            ]
+        ]
         total_deductions = add(tax_unit, period, deductions)
         return max_(0, gross_income - total_deductions)

@@ -18,9 +18,9 @@ class ma_income_tax_exemption_threshold(Variable):
         personal_exemptions_added = (
             exempt_status.personal_exemption_added[filing_status]
             * tax.exemptions.personal[filing_status]
-            )
+        )
         return (
             exempt_status.base[filing_status]
             + dependents * tax.exemptions.dependent
             + personal_exemptions_added
-            )
+        )

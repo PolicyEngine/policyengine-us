@@ -9,7 +9,7 @@ class ma_eitc(Variable):
     definition_period = YEAR
     reference = (
         "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (h)
-        )
+    )
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)

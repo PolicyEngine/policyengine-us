@@ -20,13 +20,13 @@ class tax_liability_if_not_itemizing(Variable):
             "tax_unit_itemizes",
             period,
             np.zeros((tax_unit.count,), dtype=bool),
-            )
+        )
         values = simulation_if_not_itemizing.calculate(
             "federal_state_income_tax", period
-            )
+        )
         added_variables = set(
             get_stored_variables(simulation_if_not_itemizing)
-            ) - set(computed_variables)
+        ) - set(computed_variables)
         for variable in added_variables:
             simulation.get_holder(variable).delete_arrays()
         return values

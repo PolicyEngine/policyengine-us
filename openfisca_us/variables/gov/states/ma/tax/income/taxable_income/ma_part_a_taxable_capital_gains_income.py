@@ -13,5 +13,5 @@ class ma_part_a_taxable_capital_gains_income(Variable):
         part_a_taxable_income = tax_unit("ma_part_a_taxable_income", period)
         part_a_taxable_interest_dividends = tax_unit(
             "ma_part_a_taxable_interest_dividend_income", period
-            )
+        )
         return part_a_taxable_income - part_a_taxable_interest_dividends

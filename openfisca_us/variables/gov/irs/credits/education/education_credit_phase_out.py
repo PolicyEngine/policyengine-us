@@ -17,11 +17,11 @@ class education_credit_phase_out(Variable):
             is_joint,
             education.phase_out.start.joint,
             education.phase_out.start.single,
-            )
+        )
         phase_out_length = where(
             is_joint,
             education.phase_out.length.joint,
             education.phase_out.length.single,
-            )
+        )
         excess_agi = max_(0, agi - phase_out_start)
         return min_(1, excess_agi / phase_out_length)

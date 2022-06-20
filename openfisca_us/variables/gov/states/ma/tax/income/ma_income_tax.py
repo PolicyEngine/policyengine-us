@@ -14,11 +14,11 @@ class ma_income_tax(Variable):
         in_ma = tax_unit.household("state_code_str", period) == "MA"
         income_tax_before_credits = tax_unit(
             "ma_income_tax_before_credits", period
-            )
+        )
         CREDITS = [
             "ma_limited_income_tax_credit",
             "ma_eitc",
             "ma_dependent_credit",
-            ]
+        ]
         credit_value = add(tax_unit, period, CREDITS)
         return in_ma * (income_tax_before_credits - credit_value)

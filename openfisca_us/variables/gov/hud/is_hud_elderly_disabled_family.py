@@ -8,7 +8,7 @@ class is_hud_elderly_disabled_family(Variable):
     unit = USD
     documentation = (
         "Whether an SPM unit is deemed elderly or disabled for HUD purposes"
-        )
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
 

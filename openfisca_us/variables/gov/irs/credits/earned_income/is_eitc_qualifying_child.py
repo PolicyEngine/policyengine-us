@@ -15,7 +15,7 @@ class is_eitc_qualifying_child(Variable):
         student = person("is_full_time_student", period)
         max_ages = parameters(
             period
-            ).gov.irs.credits.eitc.qualifying_child.max_age
+        ).gov.irs.credits.eitc.qualifying_child.max_age
         max_age = where(student, max_ages.student, max_ages.non_student)
         age_qualifies = age <= max_age
         return dependent & (age_qualifies | disabled)

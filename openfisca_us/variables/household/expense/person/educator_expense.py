@@ -8,5 +8,5 @@ class educator_expense(Variable):
     unit = USD
     documentation = (
         "Expenses necessary for carrying out educator-related duties."
-        )
+    )
     definition_period = YEAR

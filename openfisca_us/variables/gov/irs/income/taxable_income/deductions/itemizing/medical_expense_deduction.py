@@ -17,4 +17,4 @@ class medical_expense_deduction(Variable):
         return max_(
             0,
             expense - medical_floor,
-            )
+        )

@@ -25,11 +25,11 @@ def set_parameter(
                     except:
                         raise ValueError(
                             "Invalid bracket syntax (should be e.g. tax.brackets[3].rate"
-                            )
+                        )
             except:
                 raise ValueError(
                     f"Could not find the parameter (failed at {name})."
-                    )
+                )
         node.update(period=period, value=value)
         return parameters
 
@@ -59,11 +59,11 @@ def change_parameter(
                     except:
                         raise ValueError(
                             "Invalid bracket syntax (should be e.g. tax.brackets[3].rate"
-                            )
+                        )
             except:
                 raise ValueError(
                     f"Could not find the parameter (failed at {name})."
-                    )
+                )
         node.update(period=period, value=node.get_at_instant(period))
         return parameters
 

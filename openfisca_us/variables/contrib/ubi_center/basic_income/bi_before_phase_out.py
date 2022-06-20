@@ -8,7 +8,7 @@ class bi_before_phase_out(Variable):
     unit = USD
     documentation = (
         "Total basic income payments for this person, before apply phase-outs."
-        )
+    )
     definition_period = YEAR
 
     def formula(person, period, parameters):

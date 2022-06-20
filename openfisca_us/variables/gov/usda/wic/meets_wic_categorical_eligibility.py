@@ -7,7 +7,7 @@ class meets_wic_categorical_eligibility(Variable):
     definition_period = YEAR
     documentation = (
         "Meets the program participation eligibility criteria for WIC"
-        )
+    )
     label = "Meets WIC categorical (program participation) eligibility"
     reference = "https://www.law.cornell.edu/uscode/text/42/1786#d_2_A"
 
@@ -23,9 +23,9 @@ class meets_wic_categorical_eligibility(Variable):
         infant = wic_category == wic_category.possible_values.INFANT
         pregnant_or_infant_medicaid_in_spmu = spm_unit.any(
             receives_medicaid & (pregnant | infant)
-            )
+        )
         return (
             receives_snap_or_tanf
             | receives_medicaid
             | pregnant_or_infant_medicaid_in_spmu
-            )
+        )

@@ -18,6 +18,6 @@ class ma_part_b_agi(Variable):
             deduction
             for deduction in federal_deductions
             if deduction not in disallowed_deductions
-            ]
+        ]
         deduction_value = add(tax_unit, period, deductions)
         return max_(0, part_b_gross_income - deduction_value)

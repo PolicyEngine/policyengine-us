@@ -10,6 +10,6 @@ class is_young_child_for_medicaid_nfc(Variable):
     def formula(person, period, parameters):
         ma = parameters(
             period
-            ).gov.hhs.medicaid.eligibility.categories.young_child
+        ).gov.hhs.medicaid.eligibility.categories.young_child
         age = person("age", period)
         return ma.age_range.calc(age)

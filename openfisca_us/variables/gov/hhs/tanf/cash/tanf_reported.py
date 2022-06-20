@@ -8,5 +8,5 @@ class tanf_reported(Variable):
     label = "Reported TANF"
     documentation = (
         "Amount of Temporary Assistance for Needy Families benefit reported."
-        )
+    )
     unit = USD

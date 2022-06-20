@@ -17,9 +17,9 @@ class additional_standard_deduction(Variable):
         blind_spouse = tax_unit("blind_spouse", period) * 1
         aged_head = (
             tax_unit("age_head", period) >= std.aged_or_blind.age_threshold
-            ) * 1
+        ) * 1
         aged_spouse = (
             tax_unit("age_spouse", period) >= std.aged_or_blind.age_threshold
-            ) * 1
+        ) * 1
         count_extra_stded = blind_head + blind_spouse + aged_head + aged_spouse
         return count_extra_stded * std.aged_or_blind.amount[filing_status]
