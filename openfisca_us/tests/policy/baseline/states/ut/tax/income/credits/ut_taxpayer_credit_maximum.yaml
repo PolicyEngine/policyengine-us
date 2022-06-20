@@ -1,5 +1,5 @@
 - name: Dependents get the exemption
-  period: 2020
+  period: 2022
   absolute_error_margin: 0
   input:
     tax_unit_count_dependents: 2
@@ -7,3 +7,17 @@
     tax_unit_itemizes: false
   output:
     ut_taxpayer_credit_maximum: 1750 * 0.06 * 2
+
+- name: Itemizer
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    tax_unit_count_dependents: 0
+    tax_unit_itemizes: true
+    charitable_deduction: 100
+    interest_deduction: 100
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    qualified_business_income_deduction: 0
+  output:
+    ut_taxpayer_credit_maximum: 200 * 0.06
