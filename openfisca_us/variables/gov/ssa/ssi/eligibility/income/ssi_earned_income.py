@@ -8,4 +8,4 @@ class ssi_earned_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("ssa.ssi.income.sources.earned")
+    formula = sum_of_variables("gov.ssa.ssi.income.sources.earned")
