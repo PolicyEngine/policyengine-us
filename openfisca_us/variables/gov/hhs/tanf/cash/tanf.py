@@ -8,7 +8,7 @@ class tanf(Variable):
     label = "TANF"
     documentation = (
         "Amount of Temporary Assistance for Needy Families benefit received."
-    )
+        )
     unit = USD
 
     def formula(spm_unit, period, parameters):

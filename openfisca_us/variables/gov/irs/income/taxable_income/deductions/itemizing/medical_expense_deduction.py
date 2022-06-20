@@ -12,9 +12,9 @@ class medical_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         expense = add(tax_unit, period, ["medical_expense"])
-        medical = parameters(period).irs.deductions.itemized.medical
+        medical = parameters(period).gov.irs.deductions.itemized.medical
         medical_floor = medical.floor * tax_unit("positive_agi", period)
         return max_(
             0,
             expense - medical_floor,
-        )
+            )

@@ -11,9 +11,11 @@ class medicaid_income(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#e_14_G",  # Medicaid law pointing to IRC
         "https://www.law.cornell.edu/uscode/text/26/36B#d_2",  # IRC defining income
-    )
+        )
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        income_additions = parameters(period).hhs.medicaid.income.modification
+        income_additions = parameters(
+            period
+            ).gov.hhs.medicaid.income.modification
         return max_(0, agi + add(tax_unit, period, income_additions))

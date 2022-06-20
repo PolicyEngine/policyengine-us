@@ -8,7 +8,7 @@ class tax_unit_partnership_s_corp_income(Variable):
     unit = USD
     documentation = (
         "Combined partnership/S-corporation income for the tax unit."
-    )
+        )
     definition_period = YEAR
 
     formula = sum_of_variables(["partnership_s_corp_income"])

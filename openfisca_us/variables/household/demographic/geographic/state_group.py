@@ -26,4 +26,4 @@ class state_group(Variable):
             np.isin(state_code, NON_CONTIGUOUS_STATES),
             StateGroup.encode(state_code).decode(),
             StateGroup.CONTIGUOUS_US,
-        )
+            )

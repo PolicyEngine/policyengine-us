@@ -11,4 +11,4 @@ class capital_gains(Variable):
 
     formula = sum_of_variables(
         ["short_term_capital_gains", "long_term_capital_gains"]
-    )
+        )

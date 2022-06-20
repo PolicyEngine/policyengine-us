@@ -10,9 +10,9 @@ class is_lifeline_eligible(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/47/54.409"
 
     def formula(spm_unit, period, parameters):
-        programs = parameters(period).fcc.lifeline.categorical_eligibility
+        programs = parameters(period).gov.fcc.lifeline.categorical_eligibility
         categorically_eligible = add(spm_unit, period, programs) > 0
         fpg_ratio = spm_unit("fcc_fpg_ratio", period)
-        fpg_limit = parameters(period).fcc.lifeline.fpg_limit
+        fpg_limit = parameters(period).gov.fcc.lifeline.fpg_limit
         fpg_eligible = fpg_ratio <= fpg_limit
         return categorically_eligible | fpg_eligible

@@ -10,4 +10,4 @@ class interest_income(Variable):
 
     formula = sum_of_variables(
         ["taxable_interest_income", "tax_exempt_interest_income"]
-    )
+        )

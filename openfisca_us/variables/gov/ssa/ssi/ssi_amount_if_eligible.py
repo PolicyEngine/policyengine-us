@@ -16,6 +16,6 @@ class ssi_amount_if_eligible(Variable):
                 person("ssi_claim_is_joint", period),
                 ssi.couple,
                 ssi.individual,
-            )
+                )
             * MONTHS_IN_YEAR
-        )
+            )

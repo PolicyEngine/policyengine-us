@@ -10,9 +10,9 @@ class pre_c04600(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        exemption = parameters(period).irs.income.exemption
+        exemption = parameters(period).gov.irs.income.exemption
         return where(
             tax_unit("dsi", period),
             0,
             tax_unit("xtot", period) * exemption.amount,
-        )
+            )

@@ -26,7 +26,7 @@ def backdate_parameters(
                     param.update(
                         period=periods.Period(("day", first_instant, days)),
                         value=earliest_value,
-                    )
+                        )
         return parameters
 
     return modifier

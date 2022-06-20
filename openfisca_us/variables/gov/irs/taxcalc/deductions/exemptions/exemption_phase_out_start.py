@@ -9,6 +9,6 @@ class exemption_phase_out_start(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return parameters(period).irs.income.exemption.phase_out.start[
+        return parameters(period).gov.irs.income.exemption.phase_out.start[
             tax_unit("filing_status", period)
-        ]
+            ]

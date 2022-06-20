@@ -11,4 +11,4 @@ class standard_deduction(Variable):
 
     formula = sum_of_variables(
         ["basic_standard_deduction", "additional_standard_deduction"]
-    )
+        )

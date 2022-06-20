@@ -10,18 +10,18 @@ class snap_max_allotment(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        max_allotments = parameters(period).usda.snap.max_allotment
+        max_allotments = parameters(period).gov.usda.snap.max_allotment
         MAX_HOUSEHOLD_SIZE_UNDER_MAIN = 8
         snap_region = spm_unit.household("snap_region_str", period)
         household_size = min_(
             spm_unit("spm_unit_size", period), MAX_HOUSEHOLD_SIZE_UNDER_MAIN
-        )
+            )
         additional_members = max_(
             0,
             spm_unit("spm_unit_size", period) - MAX_HOUSEHOLD_SIZE_UNDER_MAIN,
-        )
+            )
         main_allotment = max_allotments.main[snap_region][household_size]
         additional_allotment = (
             additional_members * max_allotments.additional[snap_region]
-        )
+            )
         return (main_allotment + additional_allotment) * MONTHS_IN_YEAR

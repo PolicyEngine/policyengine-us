@@ -10,4 +10,4 @@ class is_pregnant_for_medicaid(Variable):
 
     formula = all_of_variables(
         ["is_pregnant_for_medicaid_fc", "is_pregnant_for_medicaid_nfc"]
-    )
+        )

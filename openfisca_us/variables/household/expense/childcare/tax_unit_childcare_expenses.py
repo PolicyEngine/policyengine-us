@@ -18,5 +18,5 @@ class tax_unit_childcare_expenses(Variable):
             spm_unit_count_children > 0,
             tax_unit_count_children / spm_unit_count_children,
             0,
-        )
+            )
         return spm_unit_childcare * child_ratio

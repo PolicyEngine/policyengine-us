@@ -18,4 +18,4 @@ class state_supplement(Variable):
             joint_claim,
             person.marital_unit.sum(state_supplement) / 2,
             state_supplement,
-        )
+            )

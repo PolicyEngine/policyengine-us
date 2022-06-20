@@ -9,7 +9,7 @@ class ca_cvrp(Variable):
     unit = USD
     documentation = (
         "Total California Clean Vehicle Rebate Project (CVRP) benefit"
-    )
+        )
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
 
     def formula(person, period, parameters):
@@ -20,12 +20,12 @@ class ca_cvrp(Variable):
         # Calculate increased rebate (more means-tested).
         p_increased_amount = parameters(
             period
-        ).states.ca.calepa.carb.cvrp.increased_rebate.amount
+            ).states.ca.calepa.carb.cvrp.increased_rebate.amount
         increased_eligible = person(
             "is_ca_cvrp_increased_rebate_eligible", period
-        )
+            )
         bought_qualifying_ev = vehicle_amount > 0
         increased_amount = (
             increased_eligible & bought_qualifying_ev
-        ) * p_increased_amount
+            ) * p_increased_amount
         return normal_amount + increased_amount

@@ -14,8 +14,8 @@ Household = build_entity(
             plural="members",
             label="Member",
             doc="A member of the household",
-        ),
-    ],
+            ),
+        ],
 )
 
 SPMUnit = build_entity(
@@ -31,8 +31,8 @@ SPMUnit = build_entity(
             plural="members",
             label="Member",
             doc="A member of the SPM unit",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["household"],
 )
 
@@ -49,8 +49,8 @@ Family = build_entity(
             plural="members",
             label="Member",
             doc="A member of the family",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["spm_unit", "household"],
 )
 
@@ -67,8 +67,8 @@ TaxUnit = build_entity(
             plural="members",
             label="Member",
             doc="A member of the tax unit",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["spm_unit", "family", "household"],
 )
 
@@ -85,8 +85,8 @@ MaritalUnit = build_entity(
             plural="members",
             label="Member",
             doc="A member of the marital unit.",
-        ),
-    ],
+            ),
+        ],
     containing_entities=["spm_unit", "family", "household"],
 )
 

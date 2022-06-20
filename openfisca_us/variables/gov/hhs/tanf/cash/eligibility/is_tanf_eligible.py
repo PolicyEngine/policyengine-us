@@ -11,10 +11,10 @@ class is_tanf_eligible(Variable):
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit.any(
             spm_unit.members("is_person_demographic_tanf_eligible", period)
-        )
+            )
         economic_eligible = where(
             spm_unit("is_tanf_enrolled", period),
             spm_unit("is_tanf_continuous_eligible", period),
             spm_unit("is_tanf_initial_eligible", period),
-        )
+            )
         return demographic_eligible & economic_eligible

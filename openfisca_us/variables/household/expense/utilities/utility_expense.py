@@ -17,5 +17,5 @@ class utility_expense(Variable):
             "water_expense",
             "sewage_expense",
             "phone_expense",
-        ]
-    )
+            ]
+        )

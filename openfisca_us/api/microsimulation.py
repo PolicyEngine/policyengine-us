@@ -11,8 +11,8 @@ class Microsimulation(GeneralMicrosimulation):
     default_dataset = CPS
 
     def __init__(
-        self, reform=(), dataset: type = CPS, year: int = None, **kwargs
-    ):
+            self, reform=(), dataset: type = CPS, year: int = None, **kwargs
+            ):
         if dataset == CPS and len(CPS.years) == 0:
             CPS.generate(2020)
 

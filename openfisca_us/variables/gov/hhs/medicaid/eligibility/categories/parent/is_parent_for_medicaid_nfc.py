@@ -11,5 +11,5 @@ class is_parent_for_medicaid_nfc(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         has_dependent_in_tax_unit = (
             person.tax_unit("tax_unit_count_dependents", period) > 0
-        )
+            )
         return ~is_dependent & has_dependent_in_tax_unit

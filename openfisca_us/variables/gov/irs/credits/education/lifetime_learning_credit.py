@@ -11,15 +11,15 @@ class lifetime_learning_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
 
     def formula(tax_unit, period, parameters):
-        education = parameters(period).irs.credits.education
+        education = parameters(period).gov.irs.credits.education
         llc = education.lifetime_learning_credit
         person = tax_unit.members
         is_aoc_eligible = person(
             "is_eligible_for_american_opportunity_credit", period
-        )
+            )
         eligible_expenses = tax_unit.sum(
             person("qualified_tuition_expenses", period) * ~is_aoc_eligible
-        )
+            )
         capped_expenses = min_(llc.expense_limit, eligible_expenses)
         maximum_amount = llc.rate * capped_expenses
         phase_out = tax_unit("education_credit_phase_out", period)

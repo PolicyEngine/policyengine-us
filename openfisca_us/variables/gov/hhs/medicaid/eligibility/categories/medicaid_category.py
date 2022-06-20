@@ -25,7 +25,7 @@ class medicaid_category(Variable):
     def formula(person, period, parameters):
         categories = parameters(
             period
-        ).hhs.medicaid.eligibility.categories.covered
+            ).hhs.medicaid.eligibility.categories.covered
 
         variable_to_category = dict(
             is_infant_for_medicaid=MedicaidCategory.INFANT,
@@ -36,7 +36,7 @@ class medicaid_category(Variable):
             is_parent_for_medicaid=MedicaidCategory.PARENT,
             is_pregnant_for_medicaid=MedicaidCategory.PREGNANT,
             is_ssi_recipient_for_medicaid=MedicaidCategory.SSI_RECIPIENT,
-        )
+            )
 
         # Ensure parametric reforms to the list of categories prevent those
         # categories from being selected.
@@ -45,13 +45,13 @@ class medicaid_category(Variable):
             name: category
             for name, category in variable_to_category.items()
             if name in categories
-        }
+            }
 
         return select(
             [
                 person(variable, period)
                 for variable in variable_to_category.keys()
-            ]
+                ]
             + [True],
             list(variable_to_category.values()) + [MedicaidCategory.NONE],
-        )
+            )

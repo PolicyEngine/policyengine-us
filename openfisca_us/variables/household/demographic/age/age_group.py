@@ -21,6 +21,6 @@ class age_group(Variable):
                 person("is_child", period),
                 person("is_wa_adult", period),
                 person("is_senior", period),
-            ],
+                ],
             [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
-        )
+            )

@@ -17,7 +17,7 @@ class ssi_countable_income(Variable):
         personal_unearned_income = person("ssi_unearned_income", period)
         parental_income_deemed_as_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_parent", period
-        )
+            )
 
         personal_income = _apply_ssi_exclusions(
             personal_earned_income,
@@ -25,16 +25,16 @@ class ssi_countable_income(Variable):
             + parental_income_deemed_as_unearned_income,
             parameters,
             period,
-        )
+            )
 
         income_from_spouse = person(
             "ssi_income_deemed_from_ineligible_spouse", period
-        )
+            )
 
         # Ensure the spouse whose income is deemed to their spouse loses their income.
         has_donated_income = (
             person.marital_unit.sum(income_from_spouse) > income_from_spouse
-        )
+            )
 
         is_ssi_claimant = person("is_ssi_eligible_individual", period)
 
@@ -42,4 +42,4 @@ class ssi_countable_income(Variable):
             has_donated_income | ~is_ssi_claimant,
             0,
             personal_income + income_from_spouse,
-        )
+            )

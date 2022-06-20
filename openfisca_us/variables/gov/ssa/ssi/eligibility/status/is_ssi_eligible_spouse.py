@@ -13,6 +13,6 @@ class is_ssi_eligible_spouse(Variable):
         both_aged_blind_disabled = (
             add(person.marital_unit, period, ["is_ssi_aged_blind_disabled"])
             == 2
-        )
+            )
         spouse = person("is_tax_unit_spouse", period)
         return spouse & both_aged_blind_disabled

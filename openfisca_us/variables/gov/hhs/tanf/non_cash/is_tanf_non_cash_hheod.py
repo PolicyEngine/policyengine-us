@@ -10,10 +10,10 @@ class is_tanf_non_cash_hheod(Variable):
 
     def formula(spm_unit, period, parameters):
         state = spm_unit.household("state_code_str", period)
-        bbce = parameters(period).hhs.tanf.non_cash
+        bbce = parameters(period).gov.hhs.tanf.non_cash
         requires_all = bbce.requires_all_for_hheod[state]
         return where(
             requires_all,
             spm_unit("has_all_usda_elderly_disabled", period),
             spm_unit("has_usda_elderly_disabled", period),
-        )
+            )

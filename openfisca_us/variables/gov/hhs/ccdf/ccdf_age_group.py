@@ -27,11 +27,11 @@ class ccdf_age_group(Variable):
                 ((age < 2) & ~home_based) | ((age < 3) & home_based),
                 age < 6,
                 age < 13,
-            ],
+                ],
             [
                 CCDFAgeGroup.INFANT,
                 CCDFAgeGroup.TODDLER,
                 CCDFAgeGroup.PRESCHOOLER,
                 CCDFAgeGroup.SCHOOL_AGE,
-            ],
-        )
+                ],
+            )

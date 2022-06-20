@@ -15,4 +15,4 @@ class ma_part_b_gross_income(Variable):
         ma_part_c_gross_income = tax_unit("ma_part_c_gross_income", period)
         return (
             ma_gross_income - ma_part_a_gross_income - ma_part_c_gross_income
-        )
+            )

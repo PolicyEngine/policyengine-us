@@ -11,7 +11,7 @@ class c05800(Variable):
 
     formula = sum_of_variables(
         ["regular_tax_before_credits", "alternative_minimum_tax"]
-    )
+        )
 
 
 income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)

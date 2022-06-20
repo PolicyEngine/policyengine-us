@@ -27,7 +27,7 @@ class RawCPS(PublicDataset):
 
         CPS_URL_BY_YEAR = {
             2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip"
-        }
+            }
 
         if year not in CPS_URL_BY_YEAR:
             raise ValueError(f"No raw CPS data URL known for year {year}.")
@@ -37,21 +37,21 @@ class RawCPS(PublicDataset):
         response = requests.get(url, stream=True)
         total_size_in_bytes = int(
             response.headers.get("content-length", 200e6)
-        )
+            )
         progress_bar = tqdm(
             total=total_size_in_bytes,
             unit="iB",
             unit_scale=True,
             desc="Downloading ASEC",
-        )
+            )
         if response.status_code == 404:
             raise FileNotFoundError(
                 "Received a 404 response when fetching the data."
-            )
+                )
         try:
             with BytesIO() as file, pd.HDFStore(
-                self.file(year), mode="w"
-            ) as storage:
+                    self.file(year), mode="w"
+                    ) as storage:
                 content_length_actual = 0
                 for data in response.iter_content(int(1e6)):
                     progress_bar.update(len(data))
@@ -75,7 +75,7 @@ class RawCPS(PublicDataset):
                     household_id = household.H_SEQ
                     household = household[
                         household_id.isin(person_household_id)
-                    ]
+                        ]
                     storage["household"] = household
                 storage["tax_unit"] = RawCPS._create_tax_unit_table(person)
                 storage["spm_unit"] = RawCPS._create_spm_unit_table(person)
@@ -83,7 +83,7 @@ class RawCPS(PublicDataset):
             self.remove(year)
             raise ValueError(
                 f"Attempted to extract and save the CSV files, but encountered an error: {e} (removed the intermediate dataset)."
-            )
+                )
 
     @staticmethod
     def _create_tax_unit_table(person: pd.DataFrame) -> pd.DataFrame:
@@ -99,7 +99,7 @@ class RawCPS(PublicDataset):
             "STATETAX_A",
             "STATETAX_B",
             "TAX_INC",
-        ]
+            ]
         tax_unit_df = person[TAX_UNIT_COLUMNS].groupby(person.TAX_ID).sum()
         tax_unit_df["TAX_ID"] = tax_unit_df.index
         return tax_unit_df
@@ -145,12 +145,12 @@ class RawCPS(PublicDataset):
             "WNEWPARENT",
             "WUI_LT15",
             "ID",
-        ]
+            ]
         return (
             person[["SPM_" + column for column in SPM_UNIT_COLUMNS]]
             .groupby(person.SPM_ID)
             .first()
-        )
+            )
 
 
 RawCPS = RawCPS()

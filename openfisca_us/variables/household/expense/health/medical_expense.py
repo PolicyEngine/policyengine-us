@@ -10,4 +10,4 @@ class medical_expense(Variable):
 
     formula = sum_of_variables(
         ["health_insurance_premiums", "medical_out_of_pocket_expenses"]
-    )
+        )

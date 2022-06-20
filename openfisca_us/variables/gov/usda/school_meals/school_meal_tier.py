@@ -17,16 +17,16 @@ class school_meal_tier(Variable):
 
     def formula(spm_unit, period, parameters):
         fpg_ratio = spm_unit("school_meal_fpg_ratio", period)
-        p_income_limit = parameters(period).usda.school_meals.income.limit
+        p_income_limit = parameters(period).gov.usda.school_meals.income.limit
         # Categorical eligibility provides free school meals.
         categorical_eligibility = spm_unit(
             "meets_school_meal_categorical_eligibility", period
-        )
+            )
         return select(
             [
                 (fpg_ratio <= p_income_limit.FREE) | categorical_eligibility,
                 fpg_ratio <= p_income_limit.REDUCED,
                 True,
-            ],
+                ],
             [SchoolMealTier.FREE, SchoolMealTier.REDUCED, SchoolMealTier.PAID],
-        )
+            )

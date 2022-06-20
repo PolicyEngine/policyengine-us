@@ -14,7 +14,7 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.7",
         "Topic :: Scientific/Engineering :: Information Analysis",
-    ],
+        ],
     description="OpenFisca tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
@@ -24,8 +24,8 @@ setup(
         (
             "share/openfisca/openfisca-country-template",
             ["CHANGELOG.md", "LICENSE", "README.md"],
-        ),
-    ],
+            ),
+        ],
     install_requires=[
         "h5py",
         "microdf_python",
@@ -40,7 +40,7 @@ setup(
         "synthimpute",
         "tables",
         "tqdm",
-    ],
+        ],
     extras_require={
         "dev": [
             "autopep8 >= 1.5.4, < 2.0.0",
@@ -52,14 +52,14 @@ setup(
             "setuptools",
             "wheel",
             "yaml-changelog>=0.1.6",
-        ],
-    },
+            ],
+        },
     python_requires=">=3.7,<3.8",
     entry_points={
         "console_scripts": [
             "openfisca-us = openfisca_us.tools.cli:main",
             "openfisca-us-data = openfisca_us.data.cli:cli",
-        ],
-    },
+            ],
+        },
     packages=find_packages(),
 )

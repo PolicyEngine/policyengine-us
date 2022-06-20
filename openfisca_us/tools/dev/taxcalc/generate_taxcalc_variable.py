@@ -36,25 +36,25 @@ def create_taxcalc_alias(name: str, variable: Type[Variable]):
         elif variable.entity == Household:
             return tax_unit.value_from_first_person(
                 tax_unit.members.household(variable.__name__, period)
-            )
+                )
         else:
             raise ValueError("Unsupported entity: {}".format(variable.entity))
 
     original_documentation = (
         variable.documentation if hasattr(variable, "documentation") else None
-    )
+        )
     addition_to_documentation = (
         "This is a read-only variable alias returning the OpenFisca-US variable "
         + name
         + " under the (prefixed) name for its equivalent in Tax-Calculator, "
         + full_name
         + "."
-    )
+        )
     documentation = (
         original_documentation + ". " + addition_to_documentation
         if original_documentation
         else addition_to_documentation
-    )
+        )
 
     return type(
         full_name,
@@ -69,8 +69,8 @@ def create_taxcalc_alias(name: str, variable: Type[Variable]):
             documentation=documentation,
             value_type=variable.value_type,
             formula=formula,
-        ),
-    )
+            ),
+        )
 
 
 def add_taxcalc_variable_aliases(system: TaxBenefitSystem):
@@ -88,8 +88,8 @@ def add_taxcalc_variable_aliases(system: TaxBenefitSystem):
             system.add_variable(
                 create_taxcalc_alias(
                     taxcalc_name, type(system.variables[openfisca_us_name])
+                    )
                 )
-            )
         except Exception as e:
             print("Error adding alias for {}: {}".format(openfisca_us_name, e))
             raise e

@@ -11,4 +11,4 @@ class pension_contributions(Variable):
 
     formula = sum_of_variables(
         ["ira_contributions", "sep_simple_qualified_plan_contributions"]
-    )
+        )

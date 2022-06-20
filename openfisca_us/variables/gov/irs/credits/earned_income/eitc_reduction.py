@@ -13,7 +13,7 @@ class eitc_reduction(Variable):
         earnings = tax_unit("filer_earned", period)
         highest_income_variable = max_(
             earnings, tax_unit("adjusted_gross_income", period)
-        )
+            )
         phase_out_start = tax_unit("eitc_phase_out_start", period)
         phase_out_rate = tax_unit("eitc_phase_out_rate", period)
         phase_out_region = max_(0, highest_income_variable - phase_out_start)

@@ -8,11 +8,11 @@ class c07100(Variable):
     label = "Income tax non-refundable credits"
     documentation = (
         "Total non-refundable credits used to reduce positive tax liability"
-    )
+        )
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        credits = parameters(period).irs.credits.non_refundable
+        credits = parameters(period).gov.irs.credits.non_refundable
         return add(tax_unit, period, credits)
 
 
@@ -33,4 +33,4 @@ class income_tax_capped_non_refundable_credits(Variable):
         return min_(
             tax_unit("income_tax_before_credits", period),
             tax_unit("income_tax_non_refundable_credits", period),
-        )
+            )

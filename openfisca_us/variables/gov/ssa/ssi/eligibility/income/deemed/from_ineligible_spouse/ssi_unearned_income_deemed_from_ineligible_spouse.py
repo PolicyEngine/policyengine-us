@@ -18,10 +18,10 @@ class ssi_unearned_income_deemed_from_ineligible_spouse(Variable):
         ineligible_spousal_unearned_income = (
             person.marital_unit.sum(ineligible_spouse * unearned_income)
             - ineligible_spouse * unearned_income
-        )
+            )
 
         # Next, (b) determine and subtract allocations for ineligible children.
         child_allocations = add(
             person.tax_unit, period, ["ssi_ineligible_child_allocation"]
-        )
+            )
         return max_(0, ineligible_spousal_unearned_income - child_allocations)

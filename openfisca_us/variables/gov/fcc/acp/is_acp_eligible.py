@@ -11,22 +11,22 @@ class is_acp_eligible(Variable):
     reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
 
     def formula(spm_unit, period, parameters):
-        fcc = parameters(period).fcc
+        fcc = parameters(period).gov.fcc
         categorically_eligible = np.any(
             [
                 aggr(spm_unit, period, [program])
                 for program in fcc.acp.categorical_eligibility
-            ],
+                ],
             axis=0,
-        )
+            )
         # ACP categorical eligibility points includes Lifeline categorical eligibility.
         lifeline_categorically_eligible = np.any(
             [
                 aggr(spm_unit, period, [program])
                 for program in fcc.lifeline.categorical_eligibility
-            ],
+                ],
             axis=0,
-        )
+            )
         fpg_eligible = spm_unit("fcc_fpg_ratio", period) <= fcc.acp.fpg_limit
         # Cannot be simultaneously enrolled in Emergency Broadband Benefit.
         ebb_enrolled = spm_unit("ebb", period) > 0
@@ -34,4 +34,4 @@ class is_acp_eligible(Variable):
             categorically_eligible
             | fpg_eligible
             | lifeline_categorically_eligible
-        ) & ~ebb_enrolled
+            ) & ~ebb_enrolled

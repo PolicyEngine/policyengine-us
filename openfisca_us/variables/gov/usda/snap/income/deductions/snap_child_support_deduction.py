@@ -8,7 +8,7 @@ class snap_child_support_deduction(Variable):
     unit = USD
     documentation = (
         "Deduction from SNAP gross income for child support payments"
-    )
+        )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_4"
 
@@ -17,5 +17,5 @@ class snap_child_support_deduction(Variable):
         state = spm_unit.household("state_code_str", period)
         is_deductible = parameters(
             period
-        ).usda.snap.income.deductions.child_support[state]
+            ).usda.snap.income.deductions.child_support[state]
         return where(is_deductible, child_support, 0)

@@ -17,5 +17,5 @@ class taxable_social_security(Variable):
         is_tax_unit_head = person("is_tax_unit_head", period)
         tax_unit_taxable_uc = person.tax_unit(
             "tax_unit_taxable_social_security", period
-        )
+            )
         return is_tax_unit_head * tax_unit_taxable_uc

@@ -14,10 +14,10 @@ class IndividualSim(GeneralIndividualSim):
         spm_unit="member",
         household="member",
         family="member",
-    )
+        )
     required_entities = [
         "tax_unit",
         "spm_unit",
         "household",
         "family",
-    ]
+        ]

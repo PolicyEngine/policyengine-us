@@ -16,7 +16,7 @@ class CPS(PublicDataset):
 
     url_by_year = {
         2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5"
-    }
+        }
 
     def generate(self, year: int):
         """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
@@ -43,8 +43,8 @@ class CPS(PublicDataset):
                 "family",
                 "spm_unit",
                 "household",
-            )
-        ]
+                )
+            ]
 
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
         add_personal_variables(cps, person)
@@ -95,12 +95,12 @@ def add_id_variables(
     # Tax unit weight is the weight of the containing family.
     family_weight = Series(
         cps["family_weight"][...], index=cps["family_id"][...]
-    )
+        )
     person_family_id = cps["person_family_id"][...]
     persons_family_weight = Series(family_weight[person_family_id])
     cps["tax_unit_weight"] = persons_family_weight.groupby(
         cps["person_tax_unit_id"][...]
-    ).first()
+        ).first()
 
     cps["spm_unit_weight"] = spm_unit.SPM_WEIGHT / 1e2
 
@@ -110,7 +110,7 @@ def add_id_variables(
 
     marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(
         person.A_LINENO, person.A_SPOUSE
-    )
+        )
 
     # marital_unit_id is not the household ID, zero padded and followed
     # by the index within household (of each person, or their spouse if
@@ -118,7 +118,7 @@ def add_id_variables(
 
     marital_unit_id = Series(marital_unit_id).rank(
         method="dense"
-    )  # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
+        )  # Simplify to a natural number sequence with repetitions [0, 1, 1, 2, 3, ...]
 
     cps["person_marital_unit_id"] = marital_unit_id.values
     cps["marital_unit_id"] = marital_unit_id.drop_duplicates().values
@@ -142,7 +142,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
         person.A_AGE.between(80, 85),
         80 + 5 * np.random.rand(len(person)),
         person.A_AGE,
-    )
+        )
     # A_SEX is 1 -> male, 2 -> female.
     cps["is_female"] = person.A_SEX == 2
 
@@ -161,20 +161,20 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
             .size()
             .reset_index()
             .rename(columns={col: "A_LINENO", 0: "children"})
-        )
+            )
 
     # Aggregate to parent.
     res = (
         pd.concat(
             [children_per_parent("PEPAR1"), children_per_parent("PEPAR2")]
-        )
+            )
         .groupby(["PH_SEQ", "A_LINENO"])
         .children.sum()
         .reset_index()
-    )
+        )
     tmp = person[["PH_SEQ", "A_LINENO"]].merge(
         res, on=["PH_SEQ", "A_LINENO"], how="left"
-    )
+        )
     cps["own_children_in_household"] = tmp.children.fillna(0)
 
     cps["has_marketplace_health_coverage"] = person.MRK == 1
@@ -202,7 +202,7 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     cps["pension_contributions"] = person.RETCB_VAL
     cps[
         "long_term_capital_gains"
-    ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
+        ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
     cps["receives_wic"] = person.WICYN == 1
 
 
@@ -222,14 +222,14 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
         childcare_expenses="SPM_CHILDCAREXPNS",
-    )
+        )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():
         cps[openfisca_variable] = spm_unit[asec_variable]
 
     cps["reduced_price_school_meals_reported"] = (
         cps["free_school_meals_reported"][...] * 0
-    )
+        )
 
 
 def add_household_variables(cps: h5py.File, household: DataFrame) -> None:

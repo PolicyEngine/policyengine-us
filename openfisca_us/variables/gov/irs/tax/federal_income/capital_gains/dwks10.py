@@ -8,7 +8,7 @@ class dwks10(Variable):
     label = "DWKS10"
     documentation = (
         "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+        )
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -18,10 +18,10 @@ class dwks10(Variable):
             min_(
                 add(tax_unit, period, ["long_term_capital_gains"]),
                 tax_unit("c23650", period),
-            ),
-        ) + add(tax_unit, period, ["non_sch_d_capital_gains"])
+                ),
+            ) + add(tax_unit, period, ["non_sch_d_capital_gains"])
         return where(
             tax_unit("hasqdivltcg", period),
             dwks10_if_gains,
             dwks10_if_no_gains,
-        )
+            )

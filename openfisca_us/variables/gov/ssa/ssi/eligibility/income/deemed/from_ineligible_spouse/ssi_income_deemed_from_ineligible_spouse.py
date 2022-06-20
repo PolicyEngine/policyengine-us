@@ -17,24 +17,24 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
         personal_unearned_income = person("ssi_unearned_income", period)
         spousal_earned_income = person(
             "ssi_earned_income_deemed_from_ineligible_spouse", period
-        )
+            )
         spousal_unearned_income = person(
             "ssi_unearned_income_deemed_from_ineligible_spouse", period
-        )
+            )
 
         income_if_combined = _apply_ssi_exclusions(
             personal_earned_income + spousal_earned_income,
             personal_unearned_income + spousal_unearned_income,
             parameters,
             period,
-        )
+            )
 
         income_if_not_combined = _apply_ssi_exclusions(
             personal_earned_income,
             personal_unearned_income,
             parameters,
             period,
-        )
+            )
 
         spousal_deemed_income = income_if_combined - income_if_not_combined
 
@@ -43,6 +43,6 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
             person("is_ssi_ineligible_child", period)
             * (ssi.couple - ssi.individual)
             * MONTHS_IN_YEAR
-        )
+            )
 
         return spousal_deemed_income * (spousal_deemed_income > person_rate)
