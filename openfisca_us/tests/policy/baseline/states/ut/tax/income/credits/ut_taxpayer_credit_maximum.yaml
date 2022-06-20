@@ -3,5 +3,7 @@
   absolute_error_margin: 0
   input:
     tax_unit_count_dependents: 2
+    standard_deduction: 0
+    tax_unit_itemizes: false
   output:
-    ut_taxpayer_credit_maximum: -1
+    ut_taxpayer_credit_maximum: 1750 * 0.06 * 2
