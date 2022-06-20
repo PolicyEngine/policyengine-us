@@ -13,7 +13,7 @@ def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
 
 
 def set_irs_uprating_parameter(parameters: ParameterNode) -> ParameterNode:
-    uprating_index: Parameter = parameters.irs.uprating
+    uprating_index: Parameter = parameters.gov.irs.uprating
     for year in range(2010, 2030):
         irs_cpi = get_irs_cpi(parameters, year - 1)
         uprating_index.update(period=f"year:{year}-01-01:1", value=irs_cpi)
