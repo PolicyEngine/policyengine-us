@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.77.0] - 2022-06-20 22:23:30
+
+### Added
+
+- UT taxpayer credit maximum.
+
 ## [0.76.1] - 2022-06-20 13:24:54
 
 ### Changed
@@ -1077,6 +1083,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.77.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.76.1...0.77.0
 [0.76.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.76.0...0.76.1
 [0.76.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.75.2...0.76.0
 [0.75.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.75.1...0.75.2
