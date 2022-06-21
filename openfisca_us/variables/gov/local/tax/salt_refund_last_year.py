@@ -6,5 +6,4 @@ class salt_refund_last_year(Variable):
     entity = TaxUnit
     label = "SALT refund last year"
     unit = USD
-    documentation = "Description"
     definition_period = YEAR

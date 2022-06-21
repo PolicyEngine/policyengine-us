@@ -6,5 +6,4 @@ class ut_additions_to_income(Variable):
     entity = TaxUnit
     label = "UT additions to income"
     unit = USD
-    documentation = "Description"
     definition_period = YEAR

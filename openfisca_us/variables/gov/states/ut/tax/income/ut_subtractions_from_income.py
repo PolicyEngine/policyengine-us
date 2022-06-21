@@ -6,5 +6,4 @@ class ut_subtractions_from_income(Variable):
     entity = TaxUnit
     label = "UT subtractions from income"
     unit = USD
-    documentation = "Description"
     definition_period = YEAR

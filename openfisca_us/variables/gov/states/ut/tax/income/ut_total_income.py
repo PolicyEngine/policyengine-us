@@ -6,7 +6,6 @@ class ut_total_income(Variable):
     entity = TaxUnit
     label = "UT total income"
     unit = USD
-    documentation = "Description"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
