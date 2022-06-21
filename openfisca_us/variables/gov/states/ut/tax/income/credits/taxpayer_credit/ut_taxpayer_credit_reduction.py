@@ -10,7 +10,9 @@ class ut_taxpayer_credit_reduction(Variable):
 
     def formula(tax_unit, period, parameters):
         gov = parameters(period).gov
-        ut_taxpayer_credit_params_path = gov.states.ut.tax.income.credits.taxpayer_credit
+        ut_taxpayer_credit_params_path = (
+            gov.states.ut.tax.income.credits.taxpayer_credit
+        )
         phaseout_start = ut_taxpayer_credit_params_path.phase_out.start
         phaseout_rate = ut_taxpayer_credit_params_path.phase_out.rate
         ut_taxable_income = tax_unit("ut_taxable_income", period)
