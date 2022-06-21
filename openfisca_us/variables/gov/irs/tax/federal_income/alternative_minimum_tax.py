@@ -101,7 +101,13 @@ class c09600(Variable):
         form_6251_part_iii_required = np.any(
             [
                 variable > 0
-                for variable in [dwks10, dwks13, dwks14, dwks19, e24515,]
+                for variable in [
+                    dwks10,
+                    dwks13,
+                    dwks14,
+                    dwks19,
+                    e24515,
+                ]
             ]
         )
 

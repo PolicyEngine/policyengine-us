@@ -29,6 +29,8 @@ class cdcc_relevant_expenses(Variable):
         head_earnings = tax_unit.sum(is_head * earned_income)
         spouse_earnings = tax_unit.sum(is_spouse * earned_income)
         lower_earnings = where(
-            is_joint, min_(head_earnings, spouse_earnings), head_earnings,
+            is_joint,
+            min_(head_earnings, spouse_earnings),
+            head_earnings,
         )
         return min_(eligible_capped_expenses, lower_earnings)

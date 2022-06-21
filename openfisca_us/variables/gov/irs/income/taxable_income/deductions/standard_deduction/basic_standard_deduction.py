@@ -28,6 +28,14 @@ class basic_standard_deduction(Variable):
         )
 
         return select(
-            [separate_filer_itemizes, claimed_as_dependent_elsewhere, True,],
-            [0, standard_deduction_if_dependent, standard_deduction,],
+            [
+                separate_filer_itemizes,
+                claimed_as_dependent_elsewhere,
+                True,
+            ],
+            [
+                0,
+                standard_deduction_if_dependent,
+                standard_deduction,
+            ],
         )
