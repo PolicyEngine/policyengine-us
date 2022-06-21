@@ -1,10 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class ut_taxpayer_credit_maximum(Variable):
+class ut_taxpayer_credit_max(Variable):
     value_type = float
     entity = TaxUnit
-    label = "UT taxpayer credit"
+    label = "UT taxpayer credit maximum"
     unit = USD
     definition_period = YEAR
 
