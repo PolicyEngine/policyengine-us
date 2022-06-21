@@ -13,6 +13,6 @@ class ut_taxpayer_credit(Variable):
             "ut_taxpayer_credit_max", period
         )
         ut_taxpayer_credit_reduction = tax_unit(
-            "ut_taxpayaer_credit_reduction", period
+            "ut_taxpayer_credit_reduction", period
         )
         return ut_init_cred_before_phaseout - ut_taxpayer_credit_reduction
