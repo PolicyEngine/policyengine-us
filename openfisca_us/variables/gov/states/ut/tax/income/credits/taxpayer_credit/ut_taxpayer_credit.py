@@ -9,9 +9,7 @@ class ut_taxpayer_credit(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        ut_taxpayer_credit_max = tax_unit(
-            "ut_taxpayer_credit_max", period
-        )
+        ut_taxpayer_credit_max = tax_unit("ut_taxpayer_credit_max", period)
         ut_taxpayer_credit_reduction = tax_unit(
             "ut_taxpayer_credit_reduction", period
         )

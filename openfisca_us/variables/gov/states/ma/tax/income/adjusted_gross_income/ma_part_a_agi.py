@@ -30,10 +30,7 @@ class ma_part_a_agi(Variable):
         )
         short_term_loss_against_interest_dividends = min_(
             interest_dividends_deduction_cap,
-            min_(
-                interest_and_dividends,
-                short_term_capital_loss,
-            ),
+            min_(interest_and_dividends, short_term_capital_loss,),
         )
 
         long_term_capital_gains = add(
@@ -43,8 +40,7 @@ class ma_part_a_agi(Variable):
         nonnegative_long_term_capital_gains = max_(0, long_term_capital_gains)
 
         long_term_loss_against_short_term_gain = min_(
-            long_term_capital_loss,
-            nonnegative_short_term_capital_gains,
+            long_term_capital_loss, nonnegative_short_term_capital_gains,
         )
         remaining_long_term_loss = (
             long_term_capital_loss - long_term_loss_against_short_term_gain
@@ -58,10 +54,7 @@ class ma_part_a_agi(Variable):
         )
         long_term_loss_against_interest_dividends = min_(
             remaining_interest_deduction_cap,
-            min_(
-                remaining_long_term_loss,
-                remaining_interest_dividends,
-            ),
+            min_(remaining_long_term_loss, remaining_interest_dividends,),
         )
 
         long_term_gains_deduction = (

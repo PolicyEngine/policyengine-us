@@ -192,13 +192,7 @@ class TaxSim35:
         input_df = input_df.rename(
             columns={col: f"taxsim_{col}" for col in input_df.columns}
         )
-        taxsim_df = pd.concat(
-            [
-                input_df,
-                taxsim_df,
-            ],
-            axis=1,
-        )
+        taxsim_df = pd.concat([input_df, taxsim_df,], axis=1,)
         variables = system.variables
         i = 0
         test_str = ""
