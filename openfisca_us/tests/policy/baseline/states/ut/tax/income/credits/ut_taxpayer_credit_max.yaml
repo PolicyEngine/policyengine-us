@@ -6,7 +6,7 @@
     standard_deduction: 0
     tax_unit_itemizes: false
   output:
-    ut_taxpayer_credit_maximum: 1750 * 0.06 * 2
+    ut_taxpayer_credit_max: 1750 * 0.06 * 2
 
 - name: Itemizer
   period: 2022
@@ -20,4 +20,4 @@
     casualty_loss_deduction: 0
     qualified_business_income_deduction: 0
   output:
-    ut_taxpayer_credit_maximum: 200 * 0.06
+    ut_taxpayer_credit_max: 200 * 0.06
