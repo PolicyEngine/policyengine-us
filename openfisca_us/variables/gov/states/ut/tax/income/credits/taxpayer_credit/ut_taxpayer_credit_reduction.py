@@ -13,8 +13,8 @@ class ut_taxpayer_credit_reduction(Variable):
         ut_taxpayer_credit_params_path = (
             gov.states.ut.tax.income.credits.taxpayer_credit
         )
-        phaseout_start = ut_taxpayer_credit_params_path.phase_out.start
-        phaseout_rate = ut_taxpayer_credit_params_path.phase_out.rate
+        phase_out_start = ut_taxpayer_credit_params_path.phase_out.start
+        phase_out_rate = ut_taxpayer_credit_params_path.phase_out.rate
         ut_taxable_income = tax_unit("ut_taxable_income", period)
-        income_subject_to_phaseout = max(ut_taxable_income - phaseout_start, 0)
-        return income_subject_to_phaseout * phaseout_rate
+        income_subject_to_phase_out = max(ut_taxable_income - phase_out_start, 0)
+        return income_subject_to_phase_out * phase_out_rate
