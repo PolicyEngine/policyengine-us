@@ -1,4 +1,4 @@
-from openfisca_us import *
+from openfisca_us.model_api import *
 
 
 class ut_subtractions_from_income(Variable):
