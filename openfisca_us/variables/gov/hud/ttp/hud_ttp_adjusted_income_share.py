@@ -13,6 +13,6 @@ class hud_ttp_adjusted_income_share(Variable):
     def formula(spm_unit, period, parameters):
         share = parameters(
             period
-        ).hud.total_tenant_payment.adjusted_income_share
+        ).gov.hud.total_tenant_payment.adjusted_income_share
         income = spm_unit("hud_adjusted_income", period)
         return share * income

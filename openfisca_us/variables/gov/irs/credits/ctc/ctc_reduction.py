@@ -18,7 +18,7 @@ class ctc_reduction(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("adjusted_gross_income", period)
-        ctc = parameters(period).irs.credits.ctc
+        ctc = parameters(period).gov.irs.credits.ctc
         filing_status = tax_unit("filing_status", period)
         income_over_threshold = max_(
             0, income - ctc.phase_out.threshold[filing_status]
@@ -34,7 +34,7 @@ class ctc_reduction(Variable):
         # applying before and only to the increase in the maximum CTC under ARPA.
 
         income = tax_unit("adjusted_gross_income", period)
-        ctc = parameters(period).irs.credits.ctc
+        ctc = parameters(period).gov.irs.credits.ctc
         filing_status = tax_unit("filing_status", period)
         income_over_threshold = max_(
             0, income - ctc.phase_out.threshold[filing_status]
@@ -56,8 +56,8 @@ class ctc_reduction(Variable):
         # Calculate the increase - do this by finding the original CTC if
         # ARPA had not applied - this year's variables, last year's parameters.
         no_arpa_parameters = default_parameters.clone()
-        old_ctc = parameters(period.last_year).irs.credits.ctc
-        no_arpa_ctc = no_arpa_parameters.irs.credits.ctc
+        old_ctc = parameters(period.last_year).gov.irs.credits.ctc
+        no_arpa_ctc = no_arpa_parameters.gov.irs.credits.ctc
         no_arpa_ctc.child.young.increase.update(value=0, period=period)
         no_arpa_ctc.child.amount.update(
             value=old_ctc.child.amount, period=period

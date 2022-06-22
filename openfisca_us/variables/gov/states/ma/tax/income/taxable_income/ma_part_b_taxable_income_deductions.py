@@ -10,7 +10,7 @@ class ma_part_b_taxable_income_deductions(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
 
     def formula(tax_unit, period, parameters):
-        tax = parameters(period).states.ma.tax.income
+        tax = parameters(period).gov.states.ma.tax.income
         # (B)(a)(3): Taxes for retirement programs.
         # NB: The law only mentions FICA and FRRA, but mass.gov includes SECA.
         # https://www.mass.gov/service-details/learn-about-business-and-professional-income

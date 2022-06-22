@@ -18,7 +18,7 @@ class refundable_ctc(Variable):
         # This is the full CTC. This is then limited to the maximum refundable amount per child as per the
         # TCJA provision.
 
-        ctc = parameters(period).irs.credits.ctc
+        ctc = parameters(period).gov.irs.credits.ctc
 
         total_ctc = tax_unit("ctc", period)
         maximum_refundable_ctc = min_(

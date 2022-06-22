@@ -11,7 +11,7 @@ class american_opportunity_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#b"
 
     def formula(tax_unit, period, parameters):
-        education = parameters(period).irs.credits.education
+        education = parameters(period).gov.irs.credits.education
         aoc = education.american_opportunity_credit
         person = tax_unit.members
         is_eligible = person(

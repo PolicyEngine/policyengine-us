@@ -9,7 +9,7 @@ class c04600(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        phase_out = parameters(period).irs.income.exemption.phase_out
+        phase_out = parameters(period).gov.irs.income.exemption.phase_out
         phase_out_start = tax_unit("exemption_phase_out_start", period)
         line_5 = max_(
             0, tax_unit("adjusted_gross_income", period) - phase_out_start

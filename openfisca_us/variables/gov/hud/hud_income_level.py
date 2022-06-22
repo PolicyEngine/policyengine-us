@@ -27,7 +27,7 @@ class hud_income_level(Variable):
         ami = spm_unit("ami", period)
         income_ami_ratio = annual_income / ami
         # Look up thresholds for each income level.
-        p = parameters(period).hud.ami_limit
+        p = parameters(period).gov.hud.ami_limit
         size_limit = p.family_size
         size_limit_excess = p.per_person_exceeding_4
         size_exceeding_4 = max_(size - 4, 0)

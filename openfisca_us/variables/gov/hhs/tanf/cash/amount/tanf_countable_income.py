@@ -16,7 +16,7 @@ class tanf_countable_income(Variable):
     def formula(spm_unit, period, parameters):
         deductions = parameters(
             period
-        ).hhs.tanf.cash.amount.countable_income.deductions
+        ).gov.hhs.tanf.cash.amount.countable_income.deductions
         # Annualize the monthly household deduction.
         state = spm_unit.household("state_code_str", period)
         household_deduction = deductions.household[state] * 12

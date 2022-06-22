@@ -11,5 +11,5 @@ class snap_deductions(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e"
 
     def formula(spm_unit, period, parameters):
-        snap_deductions = parameters(period).usda.snap.income.deductions
+        snap_deductions = parameters(period).gov.usda.snap.income.deductions
         return add(spm_unit, period, snap_deductions.allowed)

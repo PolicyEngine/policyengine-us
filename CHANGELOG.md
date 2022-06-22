@@ -5,6 +5,88 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.81.5] - 2022-06-22 04:36:30
+
+### Fixed
+
+- Really last tab.
+
+## [0.81.4] - 2022-06-22 04:17:18
+
+### Fixed
+
+- Last lingering tab.
+
+## [0.81.3] - 2022-06-22 03:55:59
+
+### Fixed
+
+- Remove tab again.
+
+## [0.81.2] - 2022-06-22 03:04:03
+
+### Fixed
+
+- Tabs in parameter files removed.
+
+## [0.81.1] - 2022-06-22 01:51:51
+
+### Fixed
+
+- Bugs causing basic income to be NaN.
+
+## [0.81.0] - 2022-06-21 23:47:14
+
+### Added
+
+- UT tax before credit
+- UT tax rate
+
+## [0.80.0] - 2022-06-21 23:38:30
+
+### Added
+
+- UT taxpayer credit.
+
+## [0.79.0] - 2022-06-21 23:13:24
+
+### Added
+
+- UT taxpayer credit reduction.
+
+## [0.78.0] - 2022-06-21 22:53:46
+
+### Added
+
+- UT total income.
+- UT taxable income
+
+## [0.77.0] - 2022-06-20 22:23:30
+
+### Added
+
+- UT taxpayer credit maximum.
+
+## [0.76.1] - 2022-06-20 13:24:54
+
+### Changed
+
+- Reorganize tax credits to skip the refundable/non-refundable distinction.
+- Reorganize parameters to layer under gov.
+
+## [0.76.0] - 2022-06-19 16:59:40
+
+### Added
+
+- Basic income phase-out parameters, logic and testing.
+
+## [0.75.2] - 2022-06-17 16:36:16
+
+### Fixed
+
+- Payroll taxable wages deduct pension contributions rather than adding them.
+- Market income includes missing capital gains, farm, illicit and rental income.
+
 ## [0.75.1] - 2022-06-16 16:58:09
 
 ### Changed
@@ -1057,6 +1139,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.81.5]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.4...0.81.5
+[0.81.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.3...0.81.4
+[0.81.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.2...0.81.3
+[0.81.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.1...0.81.2
+[0.81.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.0...0.81.1
+[0.81.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.80.0...0.81.0
+[0.80.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.79.0...0.80.0
+[0.79.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.78.0...0.79.0
+[0.78.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.77.0...0.78.0
+[0.77.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.76.1...0.77.0
+[0.76.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.76.0...0.76.1
+[0.76.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.75.2...0.76.0
+[0.75.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.75.1...0.75.2
 [0.75.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.75.0...0.75.1
 [0.75.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.2...0.75.0
 [0.74.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.74.1...0.74.2

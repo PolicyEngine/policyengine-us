@@ -15,7 +15,7 @@ class cdcc_relevant_expenses(Variable):
     def formula(tax_unit, period, parameters):
         # First, cap based on the number of eligible care receivers
         expenses = tax_unit("tax_unit_childcare_expenses", period)
-        cdcc = parameters(period).irs.credits.cdcc
+        cdcc = parameters(period).gov.irs.credits.cdcc
         count_eligible = min_(
             cdcc.eligibility.max, tax_unit("count_cdcc_eligible", period)
         )

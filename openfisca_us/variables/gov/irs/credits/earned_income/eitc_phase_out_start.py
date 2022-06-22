@@ -11,7 +11,7 @@ class eitc_phase_out_start(Variable):
 
     def formula(tax_unit, period, parameters):
         num_children = tax_unit("eitc_child_count", period)
-        eitc = parameters(period).irs.credits.eitc
+        eitc = parameters(period).gov.irs.credits.eitc
         is_joint = tax_unit("tax_unit_is_joint", period)
         return (
             eitc.phase_out.start.calc(num_children)

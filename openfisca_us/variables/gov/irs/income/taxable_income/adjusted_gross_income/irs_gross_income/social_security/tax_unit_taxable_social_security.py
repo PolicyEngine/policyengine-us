@@ -11,7 +11,7 @@ class tax_unit_taxable_social_security(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
 
     def formula(tax_unit, period, parameters):
-        ss = parameters(period).irs.social_security.taxability
+        ss = parameters(period).gov.irs.social_security.taxability
         gross_ss = tax_unit("tax_unit_social_security", period)
 
         # The legislation directs the usage an income definition that is

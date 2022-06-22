@@ -33,7 +33,7 @@ class c62100(Variable):
         ) + tax_unit(
             "amt_non_agi_income", period
         )  # add income not in AGI but considered income for AMT
-        amt = parameters(period).irs.income.amt
+        amt = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
         separate_addition = max_(
             0,
@@ -60,7 +60,7 @@ class c09600(Variable):
     def formula(tax_unit, period, parameters):
         c62100 = tax_unit("c62100", period)
         # Form 6251, Part II top
-        amt = parameters(period).irs.income.amt
+        amt = parameters(period).gov.irs.income.amt
         phase_out = amt.exemption.phase_out
         filing_status = tax_unit("filing_status", period)
         line29 = max_(

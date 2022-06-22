@@ -9,5 +9,5 @@ class is_ccdf_income_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         income_to_smi_ratio = spm_unit("ccdf_income_to_smi_ratio", period)
-        p_ratio_limit = parameters(period).hhs.ccdf.income_limit_smi
+        p_ratio_limit = parameters(period).gov.hhs.ccdf.income_limit_smi
         return income_to_smi_ratio <= p_ratio_limit

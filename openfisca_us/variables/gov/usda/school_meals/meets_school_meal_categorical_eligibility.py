@@ -10,7 +10,9 @@ class meets_school_meal_categorical_eligibility(Variable):
     reference = "https://www.fns.usda.gov/cn/extending-categorical-eligibility-additional-children-household"
 
     def formula(spm_unit, period, parameters):
-        programs = parameters(period).usda.school_meals.categorical_eligibility
+        programs = parameters(
+            period
+        ).gov.usda.school_meals.categorical_eligibility
         return np.any(
             [spm_unit(program, period) for program in programs], axis=0
         )

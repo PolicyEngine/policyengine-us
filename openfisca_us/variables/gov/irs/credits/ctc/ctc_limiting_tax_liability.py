@@ -10,7 +10,9 @@ class ctc_limiting_tax_liability(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        non_refundable_credits = parameters(period).irs.credits.non_refundable
+        non_refundable_credits = parameters(
+            period
+        ).gov.irs.credits.non_refundable
         total_credits = sum(
             [
                 tax_unit(credit, period)

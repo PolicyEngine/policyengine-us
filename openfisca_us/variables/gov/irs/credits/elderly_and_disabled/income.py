@@ -22,7 +22,9 @@ class section_22_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
     def formula(tax_unit, period, parameters):
-        elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
+        elderly_disabled = parameters(
+            period
+        ).gov.irs.credits.elderly_or_disabled
         # Calculate initial amount
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members

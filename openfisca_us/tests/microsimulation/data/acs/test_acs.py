@@ -2,7 +2,7 @@ from openfisca_us.data import ACS
 import pytest
 from openfisca_us import Microsimulation
 
-ACS_YEARS = [2019]
+ACS_YEARS = []
 
 
 @pytest.mark.dependency(name="acs")

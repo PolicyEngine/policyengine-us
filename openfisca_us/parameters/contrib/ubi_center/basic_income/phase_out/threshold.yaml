@@ -1,0 +1,17 @@
+description: AGI over this amount begins to cancel out basic income payments.
+SINGLE:
+  2010-01-01: 0
+JOINT:
+  2010-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2010-01-01: 0
+SEPARATE:
+  2010-01-01: 0
+WIDOW:
+  2010-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  name: bi_phase_out_threshold
+  label: Basic income phase-out threshold
+  breakdown: filing_status

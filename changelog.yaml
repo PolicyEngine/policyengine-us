@@ -871,6 +871,75 @@
     - Replace `phaseout` with `phase_out` or `phase-out` in variables and text.
     - Reorganize variables into their own files.
   date: 2022-06-16 16:58:09
+- bump: patch
+  changes:
+    fixed:
+    - Payroll taxable wages deduct pension contributions rather than adding them.
+    - Market income includes missing capital gains, farm, illicit and rental income.
+  date: 2022-06-17 16:36:16
+- bump: minor
+  changes:
+    added:
+    - Basic income phase-out parameters, logic and testing.
+  date: 2022-06-19 16:59:40
+- bump: patch
+  changes:
+    changed:
+    - Reorganize tax credits to skip the refundable/non-refundable distinction.
+    - Reorganize parameters to layer under gov.
+  date: 2022-06-20 13:24:54
+- bump: minor
+  changes:
+    added:
+    - UT taxpayer credit maximum.
+  date: 2022-06-20 22:23:30
+- bump: minor
+  changes:
+    added:
+    - UT total income.
+    - UT taxable income
+  date: 2022-06-21 22:53:46
+- bump: minor
+  changes:
+    added:
+    - UT taxpayer credit reduction.
+  date: 2022-06-21 23:13:24
+- bump: minor
+  changes:
+    added:
+    - UT taxpayer credit.
+  date: 2022-06-21 23:38:30
+- bump: minor
+  changes:
+    added:
+    - UT tax before credit
+    - UT tax rate
+  date: 2022-06-21 23:47:14
+- bump: patch
+  changes:
+    fixed:
+    - Bugs causing basic income to be NaN.
+  date: 2022-06-22 01:51:51
+- bump: patch
+  changes:
+    fixed:
+    - Tabs in parameter files removed.
+  date: 2022-06-22 03:04:03
+- bump: patch
+  changes:
+    fixed:
+    - Remove tab again.
+  date: 2022-06-22 03:55:59
+- bump: patch
+  changes:
+    fixed:
+    - Last lingering tab.
+  date: 2022-06-22 04:17:18
+- bump: patch
+  changes:
+    fixed:
+    - Really last tab.
+  date: 2022-06-22 04:36:30
 - bump: minor
   changes:
     added:

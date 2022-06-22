@@ -11,6 +11,6 @@ class hud_ttp_income_share(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/24/5.628#a_2"
 
     def formula(spm_unit, period, parameters):
-        share = parameters(period).hud.total_tenant_payment.income_share
+        share = parameters(period).gov.hud.total_tenant_payment.income_share
         income = spm_unit("hud_annual_income", period)
         return share * income

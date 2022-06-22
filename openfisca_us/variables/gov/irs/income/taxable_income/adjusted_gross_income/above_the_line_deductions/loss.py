@@ -14,7 +14,7 @@ class loss_ald(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        max_loss = parameters(period).irs.ald.loss.max[filing_status]
+        max_loss = parameters(period).gov.irs.ald.loss.max[filing_status]
         personal_self_employment_loss = max_(
             -tax_unit.members("self_employment_income", period), 0
         )

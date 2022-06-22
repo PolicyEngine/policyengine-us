@@ -16,7 +16,7 @@ class qbid_limit(Variable):
             tax_unit, period, ["unadjusted_basis_qualified_property"]
         )
         taxable_income_less_qbid = tax_unit("taxable_income_less_qbid", period)
-        qbid = parameters(period).irs.deductions.qbi
+        qbid = parameters(period).gov.irs.deductions.qbi
         filing_status = tax_unit("filing_status", period)
         phase_out_start = qbid.phase_out.start[filing_status]
         phase_out_length = qbid.phase_out.length[filing_status]

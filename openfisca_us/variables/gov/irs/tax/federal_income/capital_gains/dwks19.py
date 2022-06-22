@@ -13,7 +13,7 @@ class dwks19(Variable):
 
     def formula(tax_unit, period, parameters):
         dwks14 = tax_unit("dwks14", period)
-        capital_gains = parameters(period).irs.capital_gains.brackets
+        capital_gains = parameters(period).gov.irs.capital_gains.brackets
         filing_status = tax_unit("filing_status", period)
         dwks1 = tax_unit("taxable_income", period)
         dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)

@@ -17,7 +17,7 @@ class niit(Variable):
             "rental_income",
         ]
         nii = max_(0, add(tax_unit, period, NII_ELEMENTS))
-        niit = parameters(period).irs.investment.net_inv_inc_tax
+        niit = parameters(period).gov.irs.investment.net_inv_inc_tax
         threshold = niit.threshold[tax_unit("filing_status", period)]
         base = min_(
             nii, max_(0, tax_unit("adjusted_gross_income", period) - threshold)
