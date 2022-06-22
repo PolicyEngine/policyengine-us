@@ -32,6 +32,10 @@ WIDOW:
 metadata:
   unit: currency-USD
   label: Standard deduction
+  name: standard_deduction
+  period: year
+  breakdown:
+    - filing_status
   reference:
     - title: 2022 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
