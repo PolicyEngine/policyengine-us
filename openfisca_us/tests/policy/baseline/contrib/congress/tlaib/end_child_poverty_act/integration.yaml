@@ -1,6 +1,15 @@
 - name: "California household with one parent with $40,000 income, two children, and one grandparent."
   period: 2022
   input:
+    # ECPA parameters.
+    contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.amount: 600
+    contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.min_age: 19
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount: [1_200, 600, 600, 600, 600]
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.min_age: 19
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.max_age: 64
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.rate: 0.05
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start: [40_000, 20_000, 20_000, 20_000, 20_000]
+    # Household.
     people:
       head:
         age: 36

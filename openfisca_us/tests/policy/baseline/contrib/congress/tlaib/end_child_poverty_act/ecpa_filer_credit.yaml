@@ -1,10 +1,18 @@
-- name: "Seniors do not qualify for the ECPA filer credit."
+- name: Seniors do not qualify for the ECPA filer credit
   period: 2022
   input:
+    # ECPA parameters.
+    contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.amount: 600
+    contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.min_age: 19
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount: [1_200, 600, 600, 600, 600]
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.min_age: 19
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.max_age: 64
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.rate: 0.05
+    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start: [40_000, 20_000, 20_000, 20_000, 20_000]
     people:
       head:
         age: 76
         is_tax_unit_head: True
         adjusted_gross_income: 30_000
   output:
-    ecpa_filer_credit: 100
+    ecpa_filer_credit: 0
