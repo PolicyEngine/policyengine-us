@@ -17,6 +17,6 @@ class basic_income(Variable):
         percent_reduction = where(
             tax_unit_basic_income > 0,
             tax_unit_phase_out / tax_unit_basic_income,
-            0
+            0,
         )
         return basic_income * (1 - percent_reduction)
