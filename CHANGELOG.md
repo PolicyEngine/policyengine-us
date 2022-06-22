@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.81.2] - 2022-06-22 03:04:03
+
+### Fixed
+
+- Tabs in parameter files removed.
+
 ## [0.81.1] - 2022-06-22 01:51:51
 
 ### Fixed
@@ -1115,6 +1121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.81.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.1...0.81.2
 [0.81.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.81.0...0.81.1
 [0.81.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.80.0...0.81.0
 [0.80.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.79.0...0.80.0
