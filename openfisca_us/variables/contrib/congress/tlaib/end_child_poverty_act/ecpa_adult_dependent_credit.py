@@ -13,7 +13,6 @@ class ecpa_adult_dependent_credit(Variable):
             period
         ).contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit
         # Adult dependent credit.
-        adult_dependent = person("is_tax_unit_dependent", period) & ~(
-            person("age", period) <= p.min_age
-        )
-        return p.amount * tax_unit.sum(adult_dependent)
+        dependent = person("is_tax_unit_dependent", period)
+        adult = person("age", period) >= p.min_age
+        return p.amount * tax_unit.sum(adult & dependent)
