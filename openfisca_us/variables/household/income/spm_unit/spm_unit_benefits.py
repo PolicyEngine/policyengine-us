@@ -20,8 +20,11 @@ class spm_unit_benefits(Variable):
             "lifeline",
             "acp",
             "ebb",
-            "basic_income",
             "spm_unit_capped_housing_subsidy",
             "tanf",
+            # Contributed.
+            "basic_income",
+            "ecpa_filer_credit",
+            "ecpa_adult_dependent_credit",
         ]
     )
