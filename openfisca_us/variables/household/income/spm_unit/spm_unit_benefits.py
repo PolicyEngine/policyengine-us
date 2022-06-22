@@ -24,7 +24,5 @@ class spm_unit_benefits(Variable):
             "tanf",
             # Contributed.
             "basic_income",
-            "ecpa_filer_credit",
-            "ecpa_adult_dependent_credit",
         ]
     )
