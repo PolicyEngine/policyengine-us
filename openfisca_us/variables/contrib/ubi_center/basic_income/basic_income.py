@@ -14,5 +14,9 @@ class basic_income(Variable):
         tax_unit = person.tax_unit
         tax_unit_basic_income = tax_unit.sum(basic_income)
         tax_unit_phase_out = tax_unit("bi_phase_out", period)
-        percent_reduction = tax_unit_phase_out / tax_unit_basic_income
+        percent_reduction = where(
+            tax_unit_basic_income > 0,
+            tax_unit_phase_out / tax_unit_basic_income,
+            0,
+        )
         return basic_income * (1 - percent_reduction)

@@ -13,7 +13,7 @@ brackets:
         name: young_child_bi
   - threshold:
       values:
-        2010-01-01: 0
+        2010-01-01: 6
       metadata:
         label: Older child basic income age
         unit: year
@@ -23,7 +23,7 @@ brackets:
       values:
         2010-01-01: 0
       metadata:
-        label: older child basic income
+        label: Older child basic income
         unit: currency-USD
         period: year
         name: older_child_bi
@@ -32,7 +32,7 @@ brackets:
       values:
         2010-01-01: 18
       metadata:
-        label: Basic income young adult age
+        label: Young adult basic income age
         unit: year
         name: young_adult_bi_age
     amount:
@@ -47,9 +47,9 @@ brackets:
   - threshold:
       description: Age at which individuals receive the older adult payment, rather than the young adult payment.
       values:
-        2010-01-01: 18
+        2010-01-01: 25
       metadata:
-        label: Basic income older adult age
+        label: Older adult basic income age
         unit: year
         name: older_adult_bi_age
     amount:
