@@ -1,5 +1,5 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.gov.states.in.tax.income.in_add_backs import in_add_backs
+from openfisca_us.variables.gov.states. in .tax.income.in_add_backs import in_add_backs
 
 
 class in_agi(Variable):

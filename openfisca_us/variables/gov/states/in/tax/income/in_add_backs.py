@@ -7,4 +7,3 @@ class in_add_backs(Variable):
     label = "IN add-backs"
     unit = USD
     definition_period = YEAR
-    
