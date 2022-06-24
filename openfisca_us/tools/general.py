@@ -71,3 +71,15 @@ def sum_among_non_dependents(variable: str) -> Callable:
         return tax_unit_non_dep_sum(variable, tax_unit, period)
 
     return formula
+
+
+def spouse(person: Population, period: int, variable: str) -> ArrayLike:
+    values = person(variable, period)
+    return (person.marital_unit.sum(values) - values).astype(values.dtype)
+
+
+def in_state(state):
+    def is_eligible(population, period, parameters):
+        return population.household("state_code_str", period) == state
+
+    return is_eligible

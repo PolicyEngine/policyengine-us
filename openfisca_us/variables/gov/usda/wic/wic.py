@@ -15,7 +15,7 @@ class wic(Variable):
 
     def formula(person, period, parameters):
         meets_income_test = person.spm_unit("meets_wic_income_test", period)
-        meets_categorical_test = person.spm_unit(
+        meets_categorical_test = person(
             "meets_wic_categorical_eligibility", period
         )
         category = person("wic_category_str", period)
@@ -23,7 +23,7 @@ class wic(Variable):
         eligible = (
             meets_income_test | meets_categorical_test
         ) & nutritional_risk
-        values = parameters(period).usda.wic.value
+        values = parameters(period).gov.usda.wic.value
         value_if_eligible = values[category]
         would_takeup = person("would_claim_wic", period) | (
             len(eligible) < 1_000

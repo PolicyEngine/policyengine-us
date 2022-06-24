@@ -9,7 +9,7 @@ jobs:
       (github.repository == 'PolicyEngine/openfisca-us')
       && (github.event.head_commit.message == 'Update OpenFisca-US')
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Check formatting
         uses: "lgeiger/black-action@master"
         with:
@@ -22,13 +22,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 3.7
       - name: Build changelog
@@ -36,7 +36,7 @@ jobs:
       - name: Preview changelog update
         run: ".github/get-changelog-diff.sh"
       - name: Update changelog
-        uses: EndBug/add-and-commit@v8
+        uses: EndBug/add-and-commit@v9
         with:
           add: "."
           committer_name: Github Actions[bot]
@@ -52,9 +52,9 @@ jobs:
         os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
         with:
           python-version: 3.7
       - name: Install package
@@ -79,9 +79,9 @@ jobs:
       && (github.event.head_commit.message == 'Update OpenFisca-US')
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 3.7
       - name: Publish a git tag

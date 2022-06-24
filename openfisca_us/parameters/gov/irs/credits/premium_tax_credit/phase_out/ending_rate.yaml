@@ -1,0 +1,54 @@
+description: Ending rate of the phase-out of the Premium Tax Credit, by MAGI percentage of the federal poverty line.
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: 0.02
+      2021-01-01: 0
+      2023-01-01: 0.02
+  - threshold:
+      2015-01-01: 1.33
+      2021-01-01: null
+      2023-01-01: 1.33
+    amount:
+      2015-01-01: 0.04
+      2021-01-01: null
+      2023-01-01: 1.33
+  - threshold:
+      2015-01-01: 1.5
+    amount:
+      2015-01-01: 0.063
+      2021-01-01: 0.02
+      2023-01-01: 0.063
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2015-01-01: 0.0805
+      2021-01-01: 0.04
+      2023-01-01: 0.0805
+  - threshold:
+      2015-01-01: 2.5
+    amount:
+      2015-01-01: 0.0805
+      2021-01-01: 0.06
+      2023-01-01: 0.0805
+  - threshold:
+      2015-01-01: 3
+    amount:
+      2015-01-01: 0.095
+      2021-01-01: 0.085
+      2023-01-01: 0.095
+  - threshold:
+      2015-01-01: 4
+    amount:
+      2015-01-01: 0
+      2021-01-01: 0.085
+      2023-01-01: 0
+metadata:
+  type: single_amount
+  rate_unit: /1
+  threshold_unit: currency-USD
+  name: ptc_phase_out_end_rate
+  reference:
+    - title: 26 U.S. Code § 36B - Refundable credit for coverage under a qualified health plan
+      href: https://www.law.cornell.edu/uscode/text/26/36B

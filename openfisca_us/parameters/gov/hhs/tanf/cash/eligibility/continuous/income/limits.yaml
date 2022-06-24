@@ -1,0 +1,80 @@
+description: Payment levels for TANF benefit calculations.
+CA: # MBSAC; Non-exempt only for now, Region 1 only
+  1:
+    2021-07-01: 757
+  2:
+    2021-07-01: 1_242
+  3:
+    2021-07-01: 1_539
+  4:
+    2021-07-01: 1_826
+  5:
+    2021-07-01: 2_083
+  6:
+    2021-07-01: 2_343
+  7:
+    2021-07-01: 2_575
+  8:
+    2021-07-01: 2_802
+  9:
+    2021-07-01: 3_041
+  10:
+    2021-07-01: 3_300
+  metadata:
+    reference:
+      - title: "ARTICLE 6. Computation and Payment of Aid Grants [11450 - 11469.3]  ( Article 6 added by Stats. 1965, Ch. 1784. )"
+        href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=11452
+        date: 1996-27-06
+      - title: "CalWORKs -Minimum Basic Standard of Adequate Care (MBSAC) Levels"
+        href: https://cdss.ca.gov/Portals/13/SHD/MBSAC%20Levels.pdf?ver=2021-11-19-112347-167
+        date: 2021-07-01
+IL:
+  1:
+    2021-10-01: 322
+  2:
+    2021-10-01: 435
+  3:
+    2021-10-01: 549
+  4:
+    2021-10-01: 662
+  5:
+    2021-10-01: 776
+  6:
+    2021-10-01: 890
+  7:
+    2021-10-01: 1_003
+  8:
+    2021-10-01: 1_116
+  9:
+    2021-10-01: 1_230
+  10:
+    2021-10-01: 1_343
+  11:
+    2021-10-01: 1_457
+  12:
+    2021-10-01: 1_571
+  13:
+    2021-10-01: 1_684
+  14:
+    2021-10-01: 1_797
+  15:
+    2021-10-01: 1_911
+  16:
+    2021-10-01: 2_024
+  17:
+    2021-10-01: 2_138
+  18:
+    2021-10-01: 2_252
+  metadata:
+    reference:
+      - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25-03-05: Table of Monthly Allowances"
+        href: https://www.dhs.state.il.us/page.aspx?item=12673
+        date: 2021-10-01
+      - title: "Illinois TANF Eligibility and Benefit Amount: WAG 25: Manual Attachments [Find date next to WAG 25-03-05]"
+        href: https://www.dhs.state.il.us/page.aspx?item=12661
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - state_code
+    - range(1, 19)

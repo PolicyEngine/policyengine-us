@@ -6,5 +6,4 @@ class dividend_income(Variable):
     entity = Person
     label = "Dividend income"
     unit = USD
-    documentation = "Dividend income"
     definition_period = YEAR

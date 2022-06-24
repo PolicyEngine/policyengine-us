@@ -1,0 +1,23 @@
+description: Additional standard deduction for blind and aged
+SINGLE:
+  2018-01-01: 1600
+  2019-01-01: 1650
+JOINT:
+  2018-01-01: 1300
+  2019-01-01: 1300
+SEPARATE:
+  2018-01-01: 1300
+  2019-01-01: 1300
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 1600
+  2019-01-01: 1650
+WIDOW:
+  2018-01-01: 1300
+  2019-01-01: 1300
+metadata:
+  unit: currency-USD
+  name: aged_blind_std
+  breakdown:
+    - filing_status
+  label: Additional standard deduction for the blind and aged
+  period: year

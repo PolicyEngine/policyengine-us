@@ -1,0 +1,7 @@
+- name: PTC phase-out rate at 170% FPL
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    medicaid_income_level: 1.7
+  output:
+    ptc_phase_out_rate: 0.008

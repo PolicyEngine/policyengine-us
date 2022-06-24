@@ -1,0 +1,33 @@
+description: Requires all members in household to be elderly or disabled for the household to be classified as elderly or disabled for non-cash TANF benefit; otherwise any.
+# States without BBCE elderly/disabled rules skipped.
+AL:
+  2021-07-01: true
+GA:
+  2021-07-01: true
+IL:
+  2021-07-01: false
+IN:
+  2021-07-01: false
+LA:
+  2021-07-01: false
+NE:
+  2021-07-01: false
+OH:
+  2021-07-01: false
+OK:
+  2021-07-01: false
+PA:
+  2021-07-01: false
+RI:
+  2021-07-01: false
+SC:
+  2021-07-01: true
+VI:
+  2021-07-01: false
+
+metadata:
+  reference:
+    - title: SNAP Screener SNAP Eligibility Parameters
+      href: https://www.snapscreener.com/?p=table
+  breakdown:
+  - state_code

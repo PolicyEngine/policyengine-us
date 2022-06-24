@@ -11,7 +11,7 @@ class tax_unit_taxable_unemployment_compensation(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/85"
 
     def formula(tax_unit, period, parameters):
-        ui = parameters(period).irs.unemployment_compensation
+        ui = parameters(period).gov.irs.unemployment_compensation
         uc_amount = tax_unit("tax_unit_unemployment_compensation", period)
         agi = tax_unit("taxable_uc_agi", period)
         agi_over_uc = agi - uc_amount

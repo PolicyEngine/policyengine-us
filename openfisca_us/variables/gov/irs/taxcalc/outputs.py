@@ -7,10 +7,9 @@ class sey(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(person, period, parameters):
-        return add(
-            person, period, ["self_employment_income", "farm_income", "k1bx14"]
-        )
+    formula = sum_of_variables(
+        ["self_employment_income", "farm_income", "k1bx14"]
+    )
 
 
 class filer_sey(Variable):
@@ -72,14 +71,16 @@ class earned(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        misc = parameters(period).irs.ald.misc
+        misc = parameters(period).gov.irs.ald.misc
         adjustment = (
             (1 - misc.self_emp_tax_adj)
             * misc.employer_share
             * person("self_employment_tax", period)
         )
         return (
-            add(person, period, ["e00200", "self_employment_income"])
+            add(
+                person, period, ["employment_income", "self_employment_income"]
+            )
             - adjustment
         )
 
@@ -140,7 +141,7 @@ class c03260(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        misc = parameters(period).irs.ald.misc
+        misc = parameters(period).gov.irs.ald.misc
         setax = aggr(tax_unit, period, ["self_employment_tax"])
         return (1 - misc.self_emp_tax_adj) * misc.employer_share * setax
 

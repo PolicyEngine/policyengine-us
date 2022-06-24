@@ -710,3 +710,265 @@
     - MaritalUnit entity.
     - Massachusetts state supplement.
   date: 2022-05-19 12:47:08
+- bump: patch
+  changes:
+    added:
+    - WIC by earnings example in docs.
+    fixed:
+    - Made WIC categorical eligibility person-level and more accurate.
+    - Pointed TANF maximum benefit variable to the correct parameter.
+    - Bug preventing tax_unit_childcare_expenses from being calculated.
+    removed:
+    - Extraneous variable documentation fields.
+  date: 2022-05-24 15:20:46
+- bump: minor
+  changes:
+    added:
+    - CDCC integration tests.
+    changed:
+    - Re-implemented CDCC according to the U.S. code.
+  date: 2022-05-26 14:10:48
+- bump: minor
+  changes:
+    added:
+    - EITC parameters for 2017 and 2018.
+  date: 2022-05-28 06:59:45
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing the CDCC to not cap at the two-child childcare max expenses.
+  date: 2022-05-30 22:40:36
+- bump: minor
+  changes:
+    added:
+    - SSI deeming rules.
+  date: 2022-05-31 17:31:13
+- bump: patch
+  changes:
+    added:
+    - New `tax_unit_ssi` variable.
+    - Example of single parent with two disabled children in SSI documentation notebook.
+    fixed:
+    - Zeroed out `premium_tax_credit` in Massachusetts example notebook.
+  date: 2022-06-01 04:50:12
+- bump: patch
+  changes:
+    fixed:
+    - Typo in SSI notebook.
+  date: 2022-06-01 05:49:06
+- bump: patch
+  changes:
+    added:
+    - New `taxsim_tfica` variable for testing.
+  date: 2022-06-02 03:24:39
+- bump: minor
+  changes:
+    changed:
+    - Apply consistent CTC young child formula to all years.
+    - Move CTC variables into their own files and other minor refactoring.
+    fixed:
+    - Limit excess of Social Security taxes over EITC for refundable CTC to taxpayers
+      with a minimum number of children.
+  date: 2022-06-02 11:44:25
+- bump: patch
+  changes:
+    fixed:
+    - Fix EITC bug which applied the phase-out after, instead of before, the phase-in.
+  date: 2022-06-02 16:51:48
+- bump: patch
+  changes:
+    changed:
+    - Applied new openfisca-tools helper function `index_` to speed up SLSPC calculations.
+  date: 2022-06-02 17:01:01
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing UC- and SS-related MAGI to incorrectly overcount loss deductions.
+  date: 2022-06-02 17:03:08
+- bump: minor
+  changes:
+    added:
+    - Massachusetts State income tax.
+  date: 2022-06-06 13:50:33
+- bump: patch
+  changes:
+    changed:
+    - Reorganized state documentation.
+    fixed:
+    - Entered rent person-level in documentation to align with latest package update.
+  date: 2022-06-06 16:15:48
+- bump: patch
+  changes:
+    fixed:
+    - Medicaid benefit value per state.
+  date: 2022-06-07 09:54:21
+- bump: minor
+  changes:
+    added:
+    - New York State EITC.
+    - Longer history for the Massachusetts rental tax deduction.
+  date: 2022-06-07 18:04:31
+- bump: patch
+  changes:
+    fixed:
+    - Deduct government retirement contributions from MA taxable income on a per-person
+      basis.
+  date: 2022-06-07 20:27:48
+- bump: patch
+  changes:
+    added:
+    - Metadata for MA policy.
+  date: 2022-06-08 05:07:17
+- bump: patch
+  changes:
+    changed:
+    - Breakdowns always specified as a list.
+  date: 2022-06-08 10:45:48
+- bump: minor
+  changes:
+    added:
+    - Housing assistance and dependent variables.
+  date: 2022-06-09 03:20:13
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing itemisation logic to fail.
+  date: 2022-06-10 13:24:12
+- bump: patch
+  changes:
+    fixed:
+    - Point `cdcc_refund` to `cdcc` not the deprecated `c33200`.
+  date: 2022-06-12 20:17:09
+- bump: minor
+  changes:
+    added:
+    - New York State household credit.
+  date: 2022-06-13 15:06:03
+- bump: patch
+  changes:
+    fixed:
+    - Childcare expenses are now correctly loaded from the CPS.
+  date: 2022-06-13 21:56:08
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing the CDCC to have negative relevant expenses.
+  date: 2022-06-15 21:45:58
+- bump: minor
+  changes:
+    added:
+    - Basic income amounts for young children and young adults.
+    - Flat tax on AGI.
+    fixed:
+    - Three-digit zipcodes are generated with a fixed seed.
+    - Housing subsidies correctly included in benefits.
+    removed:
+    - An unused CDCC abolition parameter.
+  date: 2022-06-16 16:28:07
+- bump: patch
+  changes:
+    changed:
+    - Replace `phaseout` with `phase_out` or `phase-out` in variables and text.
+    - Reorganize variables into their own files.
+  date: 2022-06-16 16:58:09
+- bump: patch
+  changes:
+    fixed:
+    - Payroll taxable wages deduct pension contributions rather than adding them.
+    - Market income includes missing capital gains, farm, illicit and rental income.
+  date: 2022-06-17 16:36:16
+- bump: minor
+  changes:
+    added:
+    - Basic income phase-out parameters, logic and testing.
+  date: 2022-06-19 16:59:40
+- bump: patch
+  changes:
+    changed:
+    - Reorganize tax credits to skip the refundable/non-refundable distinction.
+    - Reorganize parameters to layer under gov.
+  date: 2022-06-20 13:24:54
+- bump: minor
+  changes:
+    added:
+    - UT taxpayer credit maximum.
+  date: 2022-06-20 22:23:30
+- bump: minor
+  changes:
+    added:
+    - UT total income.
+    - UT taxable income
+  date: 2022-06-21 22:53:46
+- bump: minor
+  changes:
+    added:
+    - UT taxpayer credit reduction.
+  date: 2022-06-21 23:13:24
+- bump: minor
+  changes:
+    added:
+    - UT taxpayer credit.
+  date: 2022-06-21 23:38:30
+- bump: minor
+  changes:
+    added:
+    - UT tax before credit
+    - UT tax rate
+  date: 2022-06-21 23:47:14
+- bump: patch
+  changes:
+    fixed:
+    - Bugs causing basic income to be NaN.
+  date: 2022-06-22 01:51:51
+- bump: patch
+  changes:
+    fixed:
+    - Tabs in parameter files removed.
+  date: 2022-06-22 03:04:03
+- bump: patch
+  changes:
+    fixed:
+    - Remove tab again.
+  date: 2022-06-22 03:55:59
+- bump: patch
+  changes:
+    fixed:
+    - Last lingering tab.
+  date: 2022-06-22 04:17:18
+- bump: patch
+  changes:
+    fixed:
+    - Really last tab.
+  date: 2022-06-22 04:36:30
+- bump: minor
+  changes:
+    added:
+    - Metadata for the standard and aged/blind deduction.
+  date: 2022-06-22 17:42:20
+- bump: minor
+  changes:
+    added:
+    - Filer and adult dependent credits for Rep Tlaib's End Child Poverty Act.
+  date: 2022-06-22 19:28:43
+- bump: patch
+  changes:
+    added:
+    - Metadata for the standard and aged/blind deduction.
+    changed:
+    - OpenFisca-Tools bumped to 0.12.0.
+  date: 2022-06-22 20:34:31
+- bump: patch
+  changes:
+    changed:
+    - Shortened End Child Poverty Act parameter names.
+  date: 2022-06-22 21:48:02
+- bump: patch
+  changes:
+    changed:
+    - Move End Child Poverty Act credits from benefits to refundable credits.
+  date: 2022-06-22 23:37:55
+- bump: patch
+  changes:
+    changed:
+    - Simplify SNAP deduction formulas.
+  date: 2022-06-23 05:01:22

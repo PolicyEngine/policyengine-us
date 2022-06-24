@@ -11,5 +11,5 @@ class eitc_maximum(Variable):
 
     def formula(tax_unit, period, parameters):
         child_count = tax_unit("eitc_child_count", period)
-        eitc = parameters(period).irs.credits.eitc
+        eitc = parameters(period).gov.irs.credits.eitc
         return eitc.max.calc(child_count)

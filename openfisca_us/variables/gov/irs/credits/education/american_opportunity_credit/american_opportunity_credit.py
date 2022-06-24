@@ -11,7 +11,7 @@ class american_opportunity_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#b"
 
     def formula(tax_unit, period, parameters):
-        education = parameters(period).irs.credits.education
+        education = parameters(period).gov.irs.credits.education
         aoc = education.american_opportunity_credit
         person = tax_unit.members
         is_eligible = person(
@@ -22,7 +22,7 @@ class american_opportunity_credit(Variable):
         )
         maximum_amount_per_student = aoc.amount.calc(tuition_expenses)
         maximum_amount = tax_unit.sum(maximum_amount_per_student)
-        phaseout = tax_unit("education_credit_phaseout", period)
+        phase_out = tax_unit("education_credit_phase_out", period)
         if aoc.abolition:
             return 0
-        return max_(0, maximum_amount * (1 - phaseout))
+        return max_(0, maximum_amount * (1 - phase_out))

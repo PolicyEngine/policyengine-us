@@ -163,7 +163,7 @@ class cdcc_qualified_dependent(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21"
 
     def formula(person, period, parameters):
-        cdcc = parameters(period).irs.credits.cdcc
+        cdcc = parameters(period).gov.irs.credits.cdcc
         meets_age_criteria = person("age", period) < cdcc.eligibility.child_age
         incapable_of_self_care = person("incapable_of_self_care", period)
         is_dependent = person("is_tax_unit_dependent", period)
@@ -184,7 +184,7 @@ class f2441(Variable):
         gross_num_eligible = tax_unit.sum(
             tax_unit.members("cdcc_qualified_dependent", period)
         )
-        cdcc = parameters(period).irs.credits.cdcc
+        cdcc = parameters(period).gov.irs.credits.cdcc
         return min_(gross_num_eligible, cdcc.eligibility.max)
 
 
