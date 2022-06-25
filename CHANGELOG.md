@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.84.1] - 2022-06-25 20:50:40
+
+### Added
+
+- Units for the ECPA variables.
+
 ## [0.84.0] - 2022-06-24 17:49:18
 
 ### Changed
@@ -1185,6 +1191,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.84.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.0...0.84.1
 [0.84.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.83.4...0.84.0
 [0.83.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.83.3...0.83.4
 [0.83.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.83.2...0.83.3
