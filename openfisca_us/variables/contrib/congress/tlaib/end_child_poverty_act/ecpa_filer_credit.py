@@ -5,6 +5,7 @@ class ecpa_filer_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    unit = USD
     label = "End Child Poverty Act Filer Credit"
     reference = "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
 
