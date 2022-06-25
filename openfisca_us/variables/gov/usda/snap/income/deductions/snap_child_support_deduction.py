@@ -17,5 +17,5 @@ class snap_child_support_deduction(Variable):
         state = spm_unit.household("state_code_str", period)
         is_deductible = parameters(
             period
-        ).usda.snap.income.deductions.child_support[state]
+        ).gov.usda.snap.income.deductions.child_support[state]
         return where(is_deductible, child_support, 0)

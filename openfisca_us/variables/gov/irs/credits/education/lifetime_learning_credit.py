@@ -11,7 +11,7 @@ class lifetime_learning_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#c"
 
     def formula(tax_unit, period, parameters):
-        education = parameters(period).irs.credits.education
+        education = parameters(period).gov.irs.credits.education
         llc = education.lifetime_learning_credit
         person = tax_unit.members
         is_aoc_eligible = person(
@@ -22,7 +22,7 @@ class lifetime_learning_credit(Variable):
         )
         capped_expenses = min_(llc.expense_limit, eligible_expenses)
         maximum_amount = llc.rate * capped_expenses
-        phaseout = tax_unit("education_credit_phaseout", period)
+        phase_out = tax_unit("education_credit_phase_out", period)
         if llc.abolition:
             return 0
-        return max_(0, maximum_amount * (1 - phaseout))
+        return max_(0, maximum_amount * (1 - phase_out))

@@ -1,0 +1,26 @@
+description: Phase-out start of the UT taxpayer credit.
+SINGLE:
+  values:
+    2021-01-01: 15_095
+JOINT:
+  values:
+    2021-01-01: 30_190
+SEPARATE:
+  values:
+    2021-01-01: 15_095
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 22_643
+WIDOW:
+  values:
+    2021-01-01: 30_190
+metadata:
+  unit: currency-USD
+  period: year
+  name: ut_taxpayer_credit_phase_out_start
+  label: UT taxpayer credit phase out start
+  uprating:
+    parameter: gov.bls.cpi.cpi_u
+  reference:
+    - title: Section 1018 Definitions -- Nonrefundable taxpayer tax credits. (Effective 5/5/2021)(4)(a)(b)(c)
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html?v=C59-10-S1018_2021050520210505

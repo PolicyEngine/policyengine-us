@@ -10,7 +10,7 @@ class ptc_phase_out_rate(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/36B#b_3_A"
 
     def formula(tax_unit, period, parameters):
-        ptc = parameters(period).irs.credits.premium_tax_credit
+        ptc = parameters(period).gov.irs.credits.premium_tax_credit
         income_level = tax_unit.value_from_first_person(
             tax_unit.members("medicaid_income_level", period)
         )

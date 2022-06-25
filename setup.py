@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.72.2",
+    version="0.84.1",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -30,7 +30,7 @@ setup(
         "h5py",
         "microdf_python",
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "OpenFisca-Tools>=0.11.0,<1.0.0",
+        "OpenFisca-Tools>=0.12.0,<1.0.0",
         "pandas",
         "pathlib",
         "pytest",

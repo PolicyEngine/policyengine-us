@@ -10,7 +10,7 @@ class is_ptc_eligible(Variable):
     def formula(tax_unit, period, parameters):
         eligibility = parameters(
             period
-        ).irs.credits.premium_tax_credit.eligibility
+        ).gov.irs.credits.premium_tax_credit.eligibility
         income_level = tax_unit("tax_unit_medicaid_income_level", period)
         on_marketplace = (
             add(tax_unit, period, ["has_marketplace_health_coverage"]) > 0

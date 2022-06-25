@@ -11,7 +11,7 @@ class ma_part_b_agi(Variable):
 
     def formula(tax_unit, period, parameters):
         part_b_gross_income = tax_unit("ma_part_b_gross_income", period)
-        parameters = parameters(period)
+        parameters = parameters(period).gov
         federal_deductions = parameters.irs.ald.deductions
         disallowed_deductions = parameters.states.ma.tax.income.ald.disallowed
         deductions = [

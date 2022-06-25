@@ -24,7 +24,7 @@ class ma_part_a_agi(Variable):
             part_a_gross_income - nonnegative_short_term_capital_gains
         )
 
-        tax = parameters(period).states.ma.tax.income
+        tax = parameters(period).gov.states.ma.tax.income
         interest_dividends_deduction_cap = (
             tax.capital_gains.deductible_against_interest_dividends
         )

@@ -38,7 +38,7 @@ class ssi_income_deemed_from_ineligible_spouse(Variable):
 
         spousal_deemed_income = income_if_combined - income_if_not_combined
 
-        ssi = parameters(period).ssa.ssi.amount
+        ssi = parameters(period).gov.ssa.ssi.amount
         person_rate = (
             person("is_ssi_ineligible_child", period)
             * (ssi.couple - ssi.individual)

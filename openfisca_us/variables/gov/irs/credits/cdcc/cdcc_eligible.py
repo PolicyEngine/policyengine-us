@@ -11,7 +11,7 @@ class is_cdcc_eligible(Variable):
     def formula(person, period, parameters):
         age = person("age", period)
         # Subsection A.
-        max_age = parameters(period).irs.credits.cdcc.eligibility.child_age
+        max_age = parameters(period).gov.irs.credits.cdcc.eligibility.child_age
         qualifies_by_age = age < max_age
         # Subsection B (dependent) and C (spouse).
         non_head = ~person("is_tax_unit_head", period)

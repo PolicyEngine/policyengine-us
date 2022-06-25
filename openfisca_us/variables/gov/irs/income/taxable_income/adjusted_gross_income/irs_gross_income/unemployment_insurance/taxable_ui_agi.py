@@ -13,7 +13,7 @@ class taxable_uc_agi(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/85"
 
     def formula(tax_unit, period, parameters):
-        irs = parameters(period).irs
+        irs = parameters(period).gov.irs
         gross_income_sources = irs.gross_income.sources
         income_sources_without_ss = [
             income_source

@@ -11,6 +11,6 @@ class meets_tanf_non_cash_asset_test(Variable):
     def formula(spm_unit, period, parameters):
         assets = spm_unit("snap_assets", period)
         state = spm_unit.household("state_code_str", period)
-        limits = parameters(period).hhs.tanf.non_cash
+        limits = parameters(period).gov.hhs.tanf.non_cash
         asset_limit = limits.asset_limit[state]
         return assets <= asset_limit

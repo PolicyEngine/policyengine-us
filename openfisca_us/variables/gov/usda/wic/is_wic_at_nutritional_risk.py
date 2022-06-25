@@ -16,7 +16,7 @@ class is_wic_at_nutritional_risk(Variable):
             "meets_wic_categorical_eligibility", period
         )
         category = person("wic_category", period)
-        risk = parameters(period).usda.wic.nutritional_risk
+        risk = parameters(period).gov.usda.wic.nutritional_risk
         imputed_risk = (random(person) < risk[category]) & (
             meets_income_test | meets_categorical_test
         )

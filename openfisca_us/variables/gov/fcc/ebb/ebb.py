@@ -13,7 +13,7 @@ class ebb(Variable):
         eligible = spm_unit("is_ebb_eligible", period)
         broadband_cost = spm_unit("broadband_cost_after_lifeline", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
-        amounts = parameters(period).fcc.ebb.amount
+        amounts = parameters(period).gov.fcc.ebb.amount
         max_amount = (
             where(tribal, amounts.tribal, amounts.standard) * MONTHS_IN_YEAR
         )

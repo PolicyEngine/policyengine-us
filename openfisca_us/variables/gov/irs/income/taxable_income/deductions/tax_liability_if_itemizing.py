@@ -1,5 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_core.tracers import SimpleTracer, FullTracer
 
 
 class tax_liability_if_itemizing(Variable):
@@ -11,21 +10,20 @@ class tax_liability_if_itemizing(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        old_tracer = simulation.tracer
-        simulation.tracer = SimpleTracer()
+        simulation.max_spiral_loops = 10
+        simulation._check_for_cycle = lambda *args: None
         simulation_if_itemizing = simulation.clone()
-        simulation_if_itemizing.tracer = SimpleTracer()
+        computed_variables = get_stored_variables(simulation)
+        simulation_if_itemizing.tracer = simulation.tracer
         simulation_if_itemizing.set_input(
             "tax_unit_itemizes", period, np.ones((tax_unit.count,), dtype=bool)
         )
-        # This fixes a memory bug, essentially taking
-        # the tracer out of reach of the new simulation (which somehow pollutes the old one)
-        try:
-            values = simulation_if_itemizing.calculate(
-                "federal_state_income_tax", period
-            )
-        except Exception as e:
-            simulation.tracer = old_tracer
-            raise e
-        simulation.tracer = old_tracer  # Re-attach the old tracer
+        values = simulation_if_itemizing.calculate(
+            "federal_state_income_tax", period
+        )
+        added_variables = set(
+            get_stored_variables(simulation_if_itemizing)
+        ) - set(computed_variables)
+        for variable in added_variables:
+            simulation.get_holder(variable).delete_arrays()
         return values

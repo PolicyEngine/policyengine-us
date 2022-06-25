@@ -1,0 +1,10 @@
+- name: $100 federal agi, $10 add backs, $10 deductions, $10 exemptions
+  period: 2021
+  input:
+    state_code: IN
+    adjusted_gross_income: 100
+    in_add_backs: 10
+    in_deductions: 10
+    in_exemptions: 10
+  output:
+    in_agi: 90

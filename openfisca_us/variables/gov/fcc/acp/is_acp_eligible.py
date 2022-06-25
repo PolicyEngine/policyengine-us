@@ -11,7 +11,7 @@ class is_acp_eligible(Variable):
     reference = "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim"
 
     def formula(spm_unit, period, parameters):
-        fcc = parameters(period).fcc
+        fcc = parameters(period).gov.fcc
         categorically_eligible = np.any(
             [
                 aggr(spm_unit, period, [program])

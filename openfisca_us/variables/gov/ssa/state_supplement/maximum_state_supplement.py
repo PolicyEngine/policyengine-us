@@ -17,7 +17,7 @@ class maximum_state_supplement(Variable):
         living_arrangement = person.household(
             "state_living_arrangement", period
         )
-        ss_amounts = parameters(period).ssa.state_supplement.amount
+        ss_amounts = parameters(period).gov.ssa.state_supplement.amount
         amounts = ss_amounts[state_code][living_arrangement]
         is_blind = person("is_blind", period)
         is_aged = person("is_ssi_aged", period)

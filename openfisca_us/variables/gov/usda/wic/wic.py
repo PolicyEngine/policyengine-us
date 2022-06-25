@@ -23,7 +23,7 @@ class wic(Variable):
         eligible = (
             meets_income_test | meets_categorical_test
         ) & nutritional_risk
-        values = parameters(period).usda.wic.value
+        values = parameters(period).gov.usda.wic.value
         value_if_eligible = values[category]
         would_takeup = person("would_claim_wic", period) | (
             len(eligible) < 1_000
