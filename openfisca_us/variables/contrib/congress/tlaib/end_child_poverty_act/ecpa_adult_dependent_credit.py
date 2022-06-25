@@ -5,6 +5,7 @@ class ecpa_adult_dependent_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
+    unit = USD
     label = "End Child Poverty Act Adult Dependent Credit"
 
     def formula(tax_unit, period, parameters):
