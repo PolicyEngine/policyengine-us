@@ -11,7 +11,12 @@ brackets:
         2018-01-01: 8_510
         2019-01-01: 8_650
         2020-01-01: 8_790
-        2021-01-01: 8_880
+        2021-01-01:
+          value: 11_610
+          metadata:
+            reference:
+              - title: 26 U.S. Code § 32(n)(4)(A)(ii)
+                href: https://www.law.cornell.edu/uscode/text/26/32#n_4_A_ii
         2022-01-01: 9_160
       metadata:
         unit: currency-USD
