@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.84.3] - 2022-06-26 05:11:41
+
+### Fixed
+
+- EITC parameters for childless tax units in 2021.
+
 ## [0.84.2] - 2022-06-25 23:09:20
 
 ### Fixed
@@ -1197,6 +1203,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.84.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.2...0.84.3
 [0.84.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.1...0.84.2
 [0.84.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.0...0.84.1
 [0.84.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.83.4...0.84.0
