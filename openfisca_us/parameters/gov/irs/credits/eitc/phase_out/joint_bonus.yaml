@@ -1,9 +1,9 @@
 description: Extra earned income credit phase-out start AGI for married filling jointly.
 metadata:
-  unit: currency-USD
-  period: year
-  name: eitc_phase_out_start_joint
-  label: EITC phase-out start (joint filers)
+  rate_unit: currency-USD
+  propagate_metadata_to_children: true
+  threshold_unit: child
+  type: single_amount
   reference:
     - title: 2022 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
@@ -17,41 +17,53 @@ metadata:
       href: https://www.taxpolicycenter.org/statistics/eitc-parameters
 brackets:
   - amount:
-      2002-01-01: 1_000
-      2005-01-01: 2_000
-      2008-01-01: 3_000
-      2009-01-01: 5_000
-      2010-01-01: 5_010
-      2011-01-01: 5_080
-      2012-01-01: 5_210
-      2013-01-01: 5_340
-      2014-01-01: 5_430
-      2015-01-01: 5_520
-      2016-01-01: 5_550
-      2017-01-01: 5_590
-      2018-01-01: 5_680
-      2019-01-01: 5_800
-      2020-01-01: 5_890
-      2021-01-01: 5_940
+      values:
+        2002-01-01: 1_000
+        2005-01-01: 2_000
+        2008-01-01: 3_000
+        2009-01-01: 5_000
+        2010-01-01: 5_010
+        2011-01-01: 5_080
+        2012-01-01: 5_210
+        2013-01-01: 5_340
+        2014-01-01: 5_430
+        2015-01-01: 5_520
+        2016-01-01: 5_550
+        2017-01-01: 5_590
+        2018-01-01: 5_680
+        2019-01-01: 5_800
+        2020-01-01: 5_890
+        2021-01-01: 5_940
+      metadata:
+        unit: currency-USD
+        period: year
+        name: eitc_phase_out_start_joint_bonus_childless
+        label: EITC phase-out start joint filer bonus (no children)
     threshold:
       2013-01-01: 0
   - amount:
-      2002-01-01: 1_000
-      2005-01-01: 2_000
-      2008-01-01: 3_000
-      2009-01-01: 5_000
-      2010-01-01: 5_010
-      2011-01-01: 5_080
-      2012-01-01: 5_210
-      2013-01-01: 5_340
-      2014-01-01: 5_430
-      2015-01-01: 5_520
-      2016-01-01: 5_550
-      2017-01-01: 5_590
-      2018-01-01: 5_690
-      2019-01-01: 5_790
-      2020-01-01: 5_890
-      2021-01-01: 5_950
-      2022-01-01: 6_130
+      values:
+        2002-01-01: 1_000
+        2005-01-01: 2_000
+        2008-01-01: 3_000
+        2009-01-01: 5_000
+        2010-01-01: 5_010
+        2011-01-01: 5_080
+        2012-01-01: 5_210
+        2013-01-01: 5_340
+        2014-01-01: 5_430
+        2015-01-01: 5_520
+        2016-01-01: 5_550
+        2017-01-01: 5_590
+        2018-01-01: 5_690
+        2019-01-01: 5_790
+        2020-01-01: 5_890
+        2021-01-01: 5_950
+        2022-01-01: 6_130
+      metadata:
+        unit: currency-USD
+        period: year
+        name: eitc_phase_out_start_joint_bonus_children
+        label: EITC phase-out start joint filer bonus (with children)
     threshold:
       2013-01-01: 1

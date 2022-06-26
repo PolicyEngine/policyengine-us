@@ -15,7 +15,4 @@ class eitc_phase_out_start(Variable):
         is_joint = tax_unit("tax_unit_is_joint", period)
         joint_bonus = eitc.phase_out.joint_bonus.calc(num_children)
         phase_out_start = eitc.phase_out.start.calc(num_children)
-        return (
-            phase_out_start
-            + is_joint * joint_bonus
-        )
+        return phase_out_start + is_joint * joint_bonus
