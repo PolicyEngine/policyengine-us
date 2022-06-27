@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.85.0] - 2022-06-27 05:43:48
+
+### Added
+
+- Recovery Rebate Credit.
+
 ## [0.84.5] - 2022-06-27 03:00:42
 
 ### Fixed
@@ -1215,6 +1221,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.85.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.5...0.85.0
 [0.84.5]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.4...0.84.5
 [0.84.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.3...0.84.4
 [0.84.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.2...0.84.3
