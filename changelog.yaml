@@ -998,3 +998,7 @@
     - EITC phase-out thresholds for filers with children corrected to be $10 larger
       for some years.
   date: 2022-06-26 20:58:23
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing excess MA Part B deductions to apply to Part A income.

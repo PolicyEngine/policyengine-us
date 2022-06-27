@@ -1,0 +1,42 @@
+- name: Tax unit with taxsimid 995 from m21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 38
+        short_term_capital_gains: 73000
+        rent: 8000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 11
+      person3:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    taxsim_tfica: 0.00
+    #tax_unit_taxable_unemployment_compensation: 0.00
+    #tax_unit_taxable_social_security: 0.00
+    #adjusted_gross_income: 73000.00
+    #taxable_income: 54200.00
+    #cdcc: 0.00
+    #non_refundable_ctc: 3500.00
+    #refundable_ctc: 3500.00
+    #eitc: 0.00
+    #income_tax: -1480.00
+    ma_income_tax: 7524.00

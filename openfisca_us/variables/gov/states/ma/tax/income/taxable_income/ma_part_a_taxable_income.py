@@ -15,5 +15,11 @@ class ma_part_a_taxable_income(Variable):
         part_b_deductions = tax_unit(
             "ma_part_b_taxable_income_deductions", period
         )
-        remaining_part_b_deductions = max_(0, part_b_deductions - part_b_agi)
-        return max_(0, part_a_agi - remaining_part_b_deductions)
+        part_b_exemptions = tax_unit(
+            "ma_part_b_taxable_income_exemptions", period
+        )
+        part_b_agi_less_deductions = max_(0, part_b_agi - part_b_deductions)
+        remaining_part_b_exemptions = max_(
+            0, part_b_exemptions - part_b_agi_less_deductions
+        )
+        return max_(0, part_a_agi - remaining_part_b_exemptions)
