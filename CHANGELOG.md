@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.84.5] - 2022-06-27 03:00:42
+
+### Fixed
+
+- A bug causing excess MA Part B deductions to apply to Part A income.
+
 ## [0.84.4] - 2022-06-26 20:58:23
 
 ### Fixed
@@ -1209,6 +1215,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.84.5]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.4...0.84.5
 [0.84.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.3...0.84.4
 [0.84.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.2...0.84.3
 [0.84.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.84.1...0.84.2
