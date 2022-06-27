@@ -9,7 +9,9 @@ class in_exemptions(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return (in_base_exemptions + 
-                in_additional_exemptions + 
-                in_aged_blind_exemptions + 
-                in_aged_low_agi_exemptions)
+        return (
+            in_base_exemptions
+            + in_additional_exemptions
+            + in_aged_blind_exemptions
+            + in_aged_low_agi_exemptions
+        )

@@ -6,7 +6,9 @@ class in_qualifying_child_count(Variable):
     entity = TaxUnit
     label = "IN qualifying depdendent child count"
     unit = USD
-    documentation = "Number of qualifying children for the IN additional exemption."
+    documentation = (
+        "Number of qualifying children for the IN additional exemption."
+    )
     definition_period = YEAR
 
     formula = sum_of_variables(["in_is_qualifying_dependent_child"])
