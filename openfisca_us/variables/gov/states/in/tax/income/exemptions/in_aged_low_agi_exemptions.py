@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class in_base_exemptions(Variable):
+class in_aged_low_agi_exemptions(Variable):
     value_type = float
     entity = TaxUnit
     label = "IN base exemptions"
