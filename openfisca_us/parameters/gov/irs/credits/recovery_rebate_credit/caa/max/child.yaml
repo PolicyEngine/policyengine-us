@@ -1,10 +1,10 @@
 description: Maximum credit per dependent child.
 values:
   0000-01-01: 0
-  2020-01-01: 500
+  2020-01-01: 600
   2021-01-01: 0
 metadata:
   unit: currency-USD
   period: year
-  name: rrc_first_child_max
-  label: First Recovery Rebate Credit maximum amount (dependent children)
+  name: rrc_caa_child_max
+  label: CAA Recovery Rebate Credit maximum amount (dependent children)

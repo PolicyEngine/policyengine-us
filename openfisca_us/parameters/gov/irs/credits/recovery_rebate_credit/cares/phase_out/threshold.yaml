@@ -1,4 +1,4 @@
-description: Phase-out starting threshold for the first Recovery Rebate Credit.
+description: Phase-out starting threshold for the CARES Recovery Rebate Credit.
 SINGLE:
   0000-01-01: 0
   2020-01-01: 75_000
@@ -24,5 +24,5 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  name: rrc_first_phase_out_threshold
-  label: First Recovery Rebate Credit phase-out starting threshold
+  name: rrc_cares_phase_out_threshold
+  label: CARES Recovery Rebate Credit phase-out starting threshold
