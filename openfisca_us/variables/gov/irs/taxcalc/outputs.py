@@ -247,7 +247,6 @@ class ctc_new(Variable):
     unit = USD
 
 
-
 class charity_credit(Variable):
     value_type = float
     entity = TaxUnit
