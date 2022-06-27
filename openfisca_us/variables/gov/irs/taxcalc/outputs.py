@@ -247,16 +247,6 @@ class ctc_new(Variable):
     unit = USD
 
 
-class recovery_rebate_credit(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Recovery Rebate Credit"
-    documentation = (
-        "Recovery Rebate Credit, from American Rescue Plan Act of 2021"
-    )
-    unit = USD
-
 
 class charity_credit(Variable):
     value_type = float
