@@ -1,0 +1,17 @@
+- name: Joint filers, two dependents
+  period: 2021
+  input:
+    state_code: IN
+    num: 2
+    tax_unit_dependents: 2
+  output:
+    in_base_exemptions: 4_000
+
+- name: Single filer, two dependents
+  period: 2021
+  input:
+    state_code: IN
+    num: 1
+    tax_unit_dependents: 2
+  output:
+    in_base_exemptions: 3_000

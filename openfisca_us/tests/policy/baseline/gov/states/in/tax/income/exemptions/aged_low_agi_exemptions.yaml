@@ -1,0 +1,27 @@
+- name: Separate, not-low-enough agi, one aged
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    age_head: 66
+    agi: 25_000
+  output:
+    in_aged_low_agi_exemptions: 0 
+
+- name: Separate, low-enough agi, one aged
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    age_head: 66
+    agi: 15_000
+  output:
+    in_aged_low_agi_exemptions: 500
+
+- name: Joint, low-enough agi, two aged
+  period: 2021
+  input:
+    filing_status: JOINT
+    age_head: 66
+    age_spouse: 
+    agi: 35_000
+  output:
+    in_aged_low_agi_exemptions: 1_000
