@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class rrc_second(Variable):
+class rrc_caa(Variable):
     value_type = float
     entity = TaxUnit
     label = "Recovery Rebate Credit (CAA)"
@@ -18,10 +18,10 @@ class rrc_second(Variable):
         )  # (a)(2) specifies CTC eligibility for children
         count_adults = where(tax_unit("tax_unit_is_joint", period), 2, 1)
         max_payment = (
-            rrc.second.max.adult * count_adults
-            + rrc.second.max.child * count_children
+            rrc.caa.max.adult * count_adults
+            + rrc.caa.max.child * count_children
         )
-        payment_reduction = rrc.second.phase_out.rate * max_(
-            0, agi - rrc.second.phase_out.threshold[filing_status]
+        payment_reduction = rrc.caa.phase_out.rate * max_(
+            0, agi - rrc.caa.phase_out.threshold[filing_status]
         )
         return max_(0, max_payment - payment_reduction)
