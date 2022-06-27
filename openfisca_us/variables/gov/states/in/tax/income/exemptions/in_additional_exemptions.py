@@ -12,6 +12,6 @@ class in_additional_exemptions(Variable):
         additional_exemptions_count = tax_unit("in_additional_exemptions_count", period)
         p = parameters(
             period
-            ).gov.states. in .tax.income.exemptions
+            ).gov.states["in"].tax.income.exemptions
         additional_exemption = p.additional_exemption.amount
         return additional_exemptions_count * additional_exemption

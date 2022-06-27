@@ -14,7 +14,7 @@ class in_is_qualifying_dependent_child(Variable):
         student = person("is_full_time_student", period)
         max_ages = parameters(
             period
-            ).gov.states. in .tax.income.exemptions.in_qualifying_dependent_child.max_ages
+            ).gov.states["in"].tax.income.exemptions.in_qualifying_dependent_child.max_ages
         max_age = where(student, max_ages.student, max_ages.non_student)
         age_qualifies = age <= max_age
         return dependent & age_qualifies

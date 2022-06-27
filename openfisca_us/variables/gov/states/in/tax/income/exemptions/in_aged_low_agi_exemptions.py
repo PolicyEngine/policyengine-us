@@ -9,7 +9,7 @@ class in_base_exemptions(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states. in .tax.income.exemptions
+        p = parameters(period).gov.states["in"].tax.income.exemptions
         filing_status = tax_unit("filing_status", period)
         threshold = p.aged_low_agi.threshold[filing_status]
         aged_low_agi_exemption = p.aged_low_agi.amount
