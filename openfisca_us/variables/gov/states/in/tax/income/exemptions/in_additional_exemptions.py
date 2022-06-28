@@ -10,7 +10,7 @@ class in_additional_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         additional_exemptions_count = tax_unit(
-            "in_additional_exemptions_count", period
+            "in_qualifying_child_count", period
         )
         p = parameters(period).gov.states["in"].tax.income.exemptions
         additional_exemption = p.additional_exemption.amount
