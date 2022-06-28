@@ -13,5 +13,5 @@ class in_additional_exemptions(Variable):
             "in_qualifying_child_count", period
         )
         p = parameters(period).gov.states["in"].tax.income.exemptions
-        additional_exemption = p.additional_exemption.amount
+        additional_exemption = p.additional.amount
         return additional_exemptions_count * additional_exemption
