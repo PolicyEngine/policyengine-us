@@ -1,6 +1,7 @@
 - name: Separate, not-low-enough agi, one aged
   period: 2021
   input:
+    state_code: IN  
     filing_status: SEPARATE
     age_head: 66
     adjusted_gross_income: 25_000
@@ -10,6 +11,7 @@
 - name: Separate, low-enough agi, one aged
   period: 2021
   input:
+    state_code: IN
     filing_status: SEPARATE
     age_head: 66
     adjusted_gross_income: 15_000
@@ -19,6 +21,7 @@
 - name: Joint, low-enough agi, two aged
   period: 2021
   input:
+    state_code: IN
     filing_status: JOINT
     age_head: 66
     age_spouse: 
