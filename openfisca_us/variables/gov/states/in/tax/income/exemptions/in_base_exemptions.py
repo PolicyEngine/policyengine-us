@@ -10,7 +10,6 @@ class in_base_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["in"].tax.income.exemptions
-        agi = tax_unit("adjusted_gross_income", period)
         num_filers = tax_unit("num", period)
         base_exemption = p.base_exemption.amount
         dependents = tax_unit("tax_unit_dependents", period)
