@@ -1,6 +1,9 @@
-description: Maximum income to be eligible for the California Clean Vehicle Rebate Project.
+description: Maximum income to be eligible for additional exemption for low-agi aged IN
 metadata:
-  unit: currency-USD
+  period: year
+  unit: currency-usd
+  breakdown:
+    - filing_status
 SINGLE:
   2021-01-01: 40_000
 HEAD_OF_HOUSEHOLD:
