@@ -1014,3 +1014,7 @@
     - Uprated parameters for the standard deduction additions in 2020 onwards.
     - References for the RRC parameters.
   date: 2022-06-27 20:18:27
+- bump: patch
+  changes:
+    changed:
+    - Tests now don't stop after the first failure.
