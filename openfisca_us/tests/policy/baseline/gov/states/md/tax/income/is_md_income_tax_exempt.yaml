@@ -1,0 +1,9 @@
+- name: Exempt if AGI below threshold
+  period: 2020
+  input:
+    md_agi: 1_000
+    md_income_tax_exemption_threshold: 3_200
+    state_code: MD
+  output:
+    is_md_income_tax_exempt: true
+
