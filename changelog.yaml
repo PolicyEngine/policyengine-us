@@ -1019,3 +1019,7 @@
     changed:
     - Tests now don't stop after the first failure.
   date: 2022-06-29 01:00:28
+- bump: patch
+  changes:
+    fixed:
+    - AMT income formula now uses a legislative source.
