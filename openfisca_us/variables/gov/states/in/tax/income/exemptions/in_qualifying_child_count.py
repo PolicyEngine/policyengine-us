@@ -10,5 +10,6 @@ class in_qualifying_child_count(Variable):
         "Number of qualifying children for the IN additional exemption."
     )
     definition_period = YEAR
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3"
 
     formula = sum_of_variables(["in_is_qualifying_dependent_child"])

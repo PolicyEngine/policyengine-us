@@ -7,6 +7,7 @@ class in_additional_exemptions(Variable):
     label = "IN additional exemptions"
     unit = USD
     definition_period = YEAR
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3"
 
     def formula(tax_unit, period, parameters):
         additional_exemptions_count = tax_unit(

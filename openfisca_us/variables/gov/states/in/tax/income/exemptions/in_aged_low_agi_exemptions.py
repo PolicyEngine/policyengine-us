@@ -7,6 +7,7 @@ class in_aged_low_agi_exemptions(Variable):
     label = "IN base exemptions"
     unit = USD
     definition_period = YEAR
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["in"].tax.income.exemptions
