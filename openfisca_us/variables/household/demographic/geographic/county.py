@@ -66,6 +66,7 @@ class County(Enum):
     WESTCHESTER_NY = "Westchester, NY"
     WYOMING_NY = "Wyoming, NY"
     YATES_NY = "Yates, NY"
+    UNKNOWN = "Unknown"
 
 
 class county(Variable):
