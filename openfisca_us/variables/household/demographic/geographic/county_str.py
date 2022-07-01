@@ -30,8 +30,6 @@ class county_str(Variable):
                         size=len(county_name[in_state & unknown_county]),
                         p=populations / populations.sum(),
                     )
-                    .astype(int)
-                    .astype(str)
                 )
 
         return county_name

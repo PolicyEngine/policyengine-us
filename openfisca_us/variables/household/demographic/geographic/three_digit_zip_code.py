@@ -8,7 +8,7 @@ class three_digit_zip_code(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        zip_code = np.array(household("zip_code", period))
+        zip_code = np.array(household("zip_code", period)).astype(str)
         if any(zip_code == "UNKNOWN"):
             # We don't have full zip codes - randomly assign zip codes
             population_data = parameters(
@@ -16,7 +16,7 @@ class three_digit_zip_code(Variable):
             ).demographic.geography.population_by_three_digit_zip_code
             np.random.seed(0)
             states = np.array(list(population_data._children.keys()))
-            state = household("state_code", period)
+            state = household("state_code_str", period)
             for possible_state in states:
                 in_state = state == possible_state
                 possible_zip_codes = np.array(list(population_data[possible_state]._children.keys()))

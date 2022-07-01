@@ -2,7 +2,7 @@ description: Per-person second-lowest silver plan cost component by Medicaid rat
 metadata:
   breakdown:
     - state_code
-    - list(range(-1, 8))
+    - list(range(-1, 70))
     - "['0-20'] + list(range(21, 64)) + ['64+']"
 AK:
   1:
