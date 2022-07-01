@@ -16,7 +16,7 @@ class in_aged_low_agi_exemptions(Variable):
         aged_low_agi_exemption = p.aged_low_agi.amount
         federal_agi = tax_unit("adjusted_gross_income", period)
         aged_head = tax_unit("aged_head", period)
-        aged_spouse = tax_unit("aged_spouse", period) 
+        aged_spouse = tax_unit("aged_spouse", period)
         income_eligible = where(federal_agi < threshold, 1, 0)
         return (
             income_eligible
