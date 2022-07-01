@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: IN
-    in_aged_blind_count: 4
+    aged_blind_count: 4
   output:
     in_aged_blind_exemptions: 4_000
 
@@ -10,6 +10,6 @@
   period: 2021
   input:
     state_code: IN
-    in_aged_blind_count: 0
+    aged_blind_count: 0
   output:
     in_aged_blind_exemptions: 0
