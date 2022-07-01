@@ -1,0 +1,35 @@
+- name: Joint filers are size 2
+  period: 2021
+  input:
+    filing_status: JOINT
+  output:
+    tax_unit_size: 2
+
+- name: HoH filers are size 1
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    tax_unit_size: 1
+
+- name: Single filers are size 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+  output:
+    tax_unit_size: 1
+
+- name: Separate filers are size 1
+  period: 2021
+  input:
+    filing_status: SEPARATE
+  output:
+    tax_unit_size: 1
+
+
+- name: Widow filers are size 1
+  period: 2021
+  input:
+    filing_status: WIDOW
+  output:
+    tax_unit_size: 1
