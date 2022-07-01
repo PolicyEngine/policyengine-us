@@ -19,6 +19,7 @@ class ma_income_tax(Variable):
             "ma_limited_income_tax_credit",
             "ma_eitc",
             "ma_dependent_credit",
+            "ma_senior_circuit_breaker",
         ]
         credit_value = add(tax_unit, period, CREDITS)
         return in_ma * (income_tax_before_credits - credit_value)
