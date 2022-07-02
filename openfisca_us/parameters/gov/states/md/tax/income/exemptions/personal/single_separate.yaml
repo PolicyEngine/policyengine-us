@@ -2,20 +2,28 @@ description: MD personal exemption for single and married filing separate tax un
 brackets:
   - threshold:
       2021-01-01: -.inf
+      2022-01-01: -.inf
     amount:
       2021-01-01: 3_200
+      2022-01-01: 3_200
   - threshold:
       2021-01-01: 100_000
+      2022-01-01: 100_000
     amount:
       2021-01-01: 1_600
+      2022-01-01: 1_600
   - threshold:
       2021-01-01: 125_000
+      2022-01-01: 125_000
     amount:
       2021-01-01: 800
+      2022-01-01: 800
   - threshold:
       2021-01-01: 150_000
+      2022-01-01: 150_000
     amount:
       2021-01-01: 0
+      2022-01-01: 0
 metadata:
   type: single_amount
   threshold_unit: currency-USD

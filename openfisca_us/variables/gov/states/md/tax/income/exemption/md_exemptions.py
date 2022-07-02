@@ -9,5 +9,5 @@ class md_exemptions(Variable):
     definition_period = YEAR
 
     formula = sum_of_variables(
-        ["md_personal_exemptions", "md_aged_blind_exemptions"]
+        ["md_total_personal_exemptions", "md_aged_blind_exemptions"]
     )
