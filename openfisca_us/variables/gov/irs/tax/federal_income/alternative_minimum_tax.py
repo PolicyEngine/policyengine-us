@@ -1,38 +1,26 @@
 from openfisca_us.model_api import *
 
 
-class c62100(Variable):
+class amt_income(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     label = "AMT taxable income"
     unit = USD
-    documentation = "Alternative Minimum Tax (AMT) taxable income"
+    reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
 
     def formula(tax_unit, period, parameters):
-        # Form 6251, Part I
-        adjusted_gross_income = tax_unit("adjusted_gross_income", period)
-        e00700 = add(tax_unit, period, ["salt_refund_income"])
-        c62100_if_no_standard = (
-            adjusted_gross_income
-            - e00700
-            - tax_unit("taxable_income_deductions_if_itemizing", period)
-            + max_(
-                0,
-                min_(
-                    tax_unit("medical_expense_deduction", period),
-                    0.025 * adjusted_gross_income,
-                ),
-            )
-            + tax_unit("salt_deduction", period)
+        taxable_income = tax_unit("taxable_income", period)
+        # Add back excluded deductions
+        itemizing = tax_unit("tax_unit_itemizes", period)
+        standard_deduction = tax_unit("standard_deduction", period)
+        salt_deduction = tax_unit("salt_deduction", period)
+        excluded_deductions = where(
+            itemizing,
+            salt_deduction,
+            standard_deduction,
         )
-        c62100 = where(
-            tax_unit("standard_deduction", period) == 0,
-            c62100_if_no_standard,
-            adjusted_gross_income - e00700,
-        ) + tax_unit(
-            "amt_non_agi_income", period
-        )  # add income not in AGI but considered income for AMT
+        amt_income = taxable_income + excluded_deductions
         amt = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
         separate_addition = max_(
@@ -40,13 +28,13 @@ class c62100(Variable):
             min_(
                 amt.exemption.amount[filing_status],
                 amt.exemption.phase_out.rate
-                * (c62100 - amt.exemption.separate_limit),
+                * max_(0, amt_income - amt.exemption.separate_limit),
             ),
         ) * (filing_status == filing_status.possible_values.SEPARATE)
-        return c62100 + separate_addition
+        return amt_income + separate_addition
 
 
-amt_income = variable_alias("amt_income", c62100)
+c62100 = variable_alias("c62100", amt_income)
 
 
 class c09600(Variable):

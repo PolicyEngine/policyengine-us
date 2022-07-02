@@ -8,3 +8,5 @@ It is supported by the [Center for Growth and Opportunity](https://thecgo.org) a
 To install, run `pip install git+https://github.com/policyengine/openfisca-us`.
 
 To contribute, please see the [wiki](https://github.com/PolicyEngine/openfisca-us/wiki).
+
+See our documentation with interactive notebooks at [openfisca.us](https://openfisca.us).

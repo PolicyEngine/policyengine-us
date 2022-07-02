@@ -1008,3 +1008,24 @@
     added:
     - Recovery Rebate Credit.
   date: 2022-06-27 05:43:48
+- bump: patch
+  changes:
+    added:
+    - Uprated parameters for the standard deduction additions in 2020 onwards.
+    - References for the RRC parameters.
+  date: 2022-06-27 20:18:27
+- bump: patch
+  changes:
+    changed:
+    - Tests now don't stop after the first failure.
+  date: 2022-06-29 01:00:28
+- bump: patch
+  changes:
+    fixed:
+    - AMT income formula now uses a legislative source.
+  date: 2022-06-29 03:38:34
+- bump: minor
+  changes:
+    added:
+    - MA Senior Circuit Breaker credit.
+  date: 2022-07-02 06:09:09
