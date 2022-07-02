@@ -10,17 +10,4 @@ class md_income_tax_exemption_threshold(Variable):
     definition_period = YEAR
     reference = ""
 
-    def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        dependents = tax_unit("tax_unit_dependents", period)
-        tax = parameters(period).gov.states.md.tax.income
-        exempt_status = tax.exempt_status.limit
-        personal_exemptions_added = (
-            exempt_status.personal_exemption_added[filing_status]
-            * tax.exemptions.personal[filing_status]
-        )
-        return (
-            exempt_status.base[filing_status]
-            + dependents * tax.exemptions.dependent
-            + personal_exemptions_added
-        )
+    

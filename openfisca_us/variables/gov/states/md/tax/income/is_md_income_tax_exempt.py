@@ -8,8 +8,3 @@ class is_md_income_tax_exempt(Variable):
     unit = USD
     definition_period = YEAR
     reference = ""
-
-    def formula(tax_unit, period, parameters):
-        agi = tax_unit("md_agi", period)
-        threshold = tax_unit("md_income_tax_exemption_threshold", period)
-        return agi <= threshold
