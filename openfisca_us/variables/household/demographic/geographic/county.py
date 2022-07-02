@@ -72,7 +72,7 @@ class County(Enum):
 class county(Variable):
     value_type = Enum
     possible_values = County
-    default_value = County.NEW_YORK_NY
+    default_value = County.UNKNOWN
     entity = Household
     label = "County"
     definition_period = ETERNITY

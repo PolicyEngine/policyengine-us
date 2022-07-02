@@ -32,4 +32,5 @@ class three_digit_zip_code(Variable):
                 )
         else:
             zip_code = (zip_code.astype(int) // 1e2).astype(int).astype(str)
-        return np.char.zfill(zip_code, 3)
+        zip_code = np.char.zfill(zip_code, 3)
+        return np.char.replace(zip_code, "UNK", "UNKNOWN")
