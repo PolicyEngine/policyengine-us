@@ -1029,3 +1029,7 @@
     added:
     - MA Senior Circuit Breaker credit.
   date: 2022-07-02 06:09:09
+- bump: patch
+  changes:
+    fixed:
+    - Fixed the CTC formula in 2021 (only) to correctly apply the income-based reduction.
