@@ -1,0 +1,29 @@
+age:
+  description: Minimum age a tax payer must be to claim the income-based age deduction
+  values:
+    2021-01-01: 65
+  metadata:
+    unit: year
+    label: VA income-based age deduction threshold
+income:
+  description: Income limit for VA income-based age deduction
+  single:
+    values:
+      2021-01-01: 50_000
+  joint:
+    values:
+      2021-01-01: 75_000
+  metadata:
+    unit: currency-USD
+    label: VA income-based age deduction income limits
+deduction:
+  description: Age deduction amount per claimant
+  values:
+    2021-01-01: 12_000
+  metadata:
+    unit: currency-USD
+    label: VA income-based age deduction amount
+metadata:
+  reference:
+    - title: "Code of Virginia § 58.1-322.03 (5)(b)"
+      href: "https://law.lis.virginia.gov/vacode/title58.1/chapter3/section58.1-322.03/"

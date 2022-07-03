@@ -1,0 +1,33 @@
+description: Income tax rates and brackets for Virginia
+rates:
+  description: Income tax rate by tax bracket
+  metadata:
+    unit: /1
+    breakdown:
+      - range(1, 6)
+    label: Individual income tax rates
+  1:
+    2021-01-01: 0.02
+  2:
+    2021-01-01: 0.03
+  3:
+    2021-01-01: 0.05
+  4:
+    2021-01-01: 0.0575
+thresholds:
+  description: The upper threshold for each income tax bracket
+  metadata:
+    unit: currency-USD
+    label: Individual income tax rate thresholds
+    breakdown:
+      - range(1, 4)
+    period: year
+    reference:
+      - title: Virginia 2021 resident individual income tax booklet
+        href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf
+  1:
+    2021-01-01: 3_000
+  2:
+    2021-01-01: 5_000
+  3:
+    2021-01-01: 17_000
