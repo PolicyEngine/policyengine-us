@@ -81,7 +81,9 @@ class refundable_ctc(Variable):
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
     def formula_2021(tax_unit, period, parameters):
-        maximum_amount = add(tax_unit, period, ["ctc_refundable_individual_maximum"])
+        maximum_amount = add(
+            tax_unit, period, ["ctc_refundable_individual_maximum"]
+        )
         reduction = tax_unit("ctc_reduction", period)
         return max_(0, maximum_amount - reduction)
 
