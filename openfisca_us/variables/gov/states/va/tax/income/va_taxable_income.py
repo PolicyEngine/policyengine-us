@@ -12,7 +12,7 @@ class va_taxable_income(Variable):
         va_deductions_path = (
             gov.states.va.tax.deductions.standard_deduction
         )
-        itemized = tax_unit("va_itemized_deductions")
+        itemized = tax_unit("va_itemized_deductions", period)
         standard = va_deductions_path[tax_unit("filing_status", period)]
         adj_deductions = tax_unit("va_adj_deductions")
         total_deductions = max(itemized, standard) + adj_deductions

@@ -1,0 +1,50 @@
+- name: VA age deduction test - no claimants
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    age_head: 35
+    age_spouse: 32
+  output:
+    va_age_deduction: 0
+
+- name: VA age deduction test - one claimant, joint filer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    age_head: 66
+    age_spouse: 60
+    filing_status: "joint"
+    adjusted_gross_income: 40_000
+  output:
+    va_age_deduction: 12_000
+
+- name: VA age deduction test - two claimants
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    age_head: 67
+    age_spouse: 67
+    filing_status: "joint"
+    adjusted_gross_income: 30_000
+  output:
+    va_age_deduction: 12_000 * 2
+
+- name: VA age deduction test - too much income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    age_head: 66
+    filing_status: "single"
+    adjusted_gross_income: 100_000
+  output:
+    va_age_deduction: 0
+
+- name: VA age deduction test - doesn't get full deduction
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    age_head: 66
+    filing_status: "single"
+    adjusted_gross_income: 55_000
+  output:
+    va_age_deduction: 55_000 - 50_000

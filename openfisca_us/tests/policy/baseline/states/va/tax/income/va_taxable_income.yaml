@@ -1,0 +1,65 @@
+- name: VA taxable income test - joint itemizer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_itemized_deductions: 10_000
+    filing_status: "joint"
+    va_adj_deductions: 5_000
+    va_adjusted_gross_income: 75_000
+  output:
+    va_taxable_income: 75_000 - 10_000 - 5_000
+
+- name: VA taxable income test - joint standard filer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_itemized_deductions: 7_000
+    filing_status: "joint"
+    va_adj_deductions: 0
+    va_adjusted_gross_income: 75_000
+  output:
+    va_taxable_income: 75_000 - 9_000
+
+- name: VA taxable income test - single itemizer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_itemized_deductions: 6_000
+    filing_status: "single"
+    va_adj_deductions: 0
+    va_adjusted_gross_income: 75_000
+  output:
+    va_taxable_income: 75_000 - 6_000
+
+- name: VA taxable income test - single standard filer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_itemized_deductions: 2_000
+    filing_status: "single"
+    va_adj_deductions: 1_000
+    va_adjusted_gross_income: 75_000
+  output:
+    va_taxable_income: 75_000 - 4_500 - 1_000
+
+- name: VA taxable income test - separate itemizer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_itemized_deductions: 5_000
+    filing_status: "separate"
+    va_adj_deductions: 5_000
+    va_adjusted_gross_income: 75_000
+  output:
+    va_taxable_income: 75_000 - 5_000 - 5_000
+
+- name: VA taxable income test - separate standard filer
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_itemized_deductions: 2_000
+    filing_status: "separate"
+    va_adj_deductions: 5_000
+    va_adjusted_gross_income: 75_000
+  output:
+    va_taxable_income: 75_000 - 4_500 - 5_000

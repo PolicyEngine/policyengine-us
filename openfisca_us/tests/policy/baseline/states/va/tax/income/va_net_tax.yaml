@@ -1,0 +1,9 @@
+- name: VA net tax test
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_sch_cr_credits: 500
+    va_tax_before_credits: 5_000
+    va_spouse_tax_adjustment: 500
+  output:
+    va_total_tax: 5_000 - 500 - 500

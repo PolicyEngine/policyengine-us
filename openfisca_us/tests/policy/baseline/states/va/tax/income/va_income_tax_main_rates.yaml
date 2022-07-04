@@ -1,0 +1,44 @@
+- name: VA income tax rates - AGI below filing threshold
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_adjusted_gross_income: 5_000
+    va_taxable_income: 100
+  output:
+    va_tax_before_credits: 0
+
+- name: VA income tax rates - first bracket
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_adjusted_gross_income: 15_000
+    va_taxable_income: 2_000
+  output:
+    va_tax_before_credits: round(2_000 * 0.02)
+
+- name: VA income tax rates - second bracket
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_adjusted_gross_income: 15_000
+    va_taxable_income: 4_000
+  output:
+    va_tax_before_credits: 60 + round(1_000 * 0.03)
+
+- name: VA income tax rates - third bracket
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_adjusted_gross_income: 15_000
+    va_taxable_income: 10_000
+  output:
+    va_tax_before_credits: 120 + round(5_000 * 0.05)
+
+- name: VA income tax rates - fourth bracket
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    va_adjusted_gross_income: 30_000
+    va_taxable_income: 20_000
+  output:
+    va_tax_before_credits: 720 + round(3_000 * 0.0575)
