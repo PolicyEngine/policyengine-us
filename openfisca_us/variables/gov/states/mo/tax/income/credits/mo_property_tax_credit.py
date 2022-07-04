@@ -7,8 +7,7 @@ class mo_property_tax_credit(Variable):
     label = "MO property tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-    )
+    reference = ()
 
     def formula(tax_unit, period, parameters):
-        return 0 
+        return 0
