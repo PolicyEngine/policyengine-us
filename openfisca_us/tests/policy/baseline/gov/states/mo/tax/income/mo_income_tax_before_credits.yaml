@@ -1,0 +1,47 @@
+- name: 1 adult, 3 children, no income
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      adult_1:
+        age: 30
+      child_1:
+        age: 7
+      child_2:
+        age: 7
+      child_3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [adult_1, child_1, child_2, child_3]
+    households:
+      household:
+        state_code: MO
+        members: [adult_1, child_1, child_2, child_3]
+  output:
+    mo_income_tax_before_credits: 0.0
+
+
+- name: 1 adult, 3 children, $9000 gross employment income
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      adult_1:
+        age: 30
+        agi: 8999
+      child_1:
+        age: 7
+      child_2:
+        age: 7
+      child_3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [adult_1, child_1, child_2, child_3]
+    households:
+      household:
+        state_code: MO
+        members: [adult_1, child_1, child_2, child_3]
+  output:
+    mo_income_tax_before_credits: 309.95
