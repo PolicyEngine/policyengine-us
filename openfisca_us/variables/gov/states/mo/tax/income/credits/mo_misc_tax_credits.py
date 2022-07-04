@@ -7,8 +7,7 @@ class mo_misc_tax_credit(Variable):
     label = "MO miscellaneous tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-    )
+    reference = ()
 
     def formula(tax_unit, period, parameters):
-        
+        return 0

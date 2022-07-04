@@ -7,8 +7,7 @@ class mo_resident_tax_credit(Variable):
     label = "MO resident tax credit"
     unit = USD
     definition_period = YEAR
-    reference = (
-    )
+    reference = ()
 
     def formula(tax_unit, period, parameters):
-        
+        return 0
