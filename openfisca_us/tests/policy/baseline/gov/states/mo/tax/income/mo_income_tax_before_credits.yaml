@@ -1,26 +1,34 @@
-- name: $0 gross employment income
+- name: 1 adult, 3 children, no income
   period: 2022
   absolute_error_margin: 0
   input:
-    tax_units:
-      tax_unit:
-        adjusted_gross_income: 0
+    people:
+      adult_1:
+      tax_units:
+        tax_unit:
+          members: [adult_1]
+          adjusted_gross_income: 0
     households:
       household:
         state_code: MO
+        members: [adult_1]
   output:
     mo_income_tax_before_credits: 0.0
 
 
-- name: $8999 gross employment income
+- name: 1 adult, 3 children, $8999 gross employment income
   period: 2022
   absolute_error_margin: 0
   input:
-    tax_units:
-      tax_unit:
-        adjusted_gross_income: 8999
+    people:
+      adult_1:
+      tax_units:
+        tax_unit:
+          members: [adult_1]
+          adjusted_gross_income: 8999    
     households:
       household:
         state_code: MO
+        members: [adult_1]
   output:
     mo_income_tax_before_credits: 0.0
