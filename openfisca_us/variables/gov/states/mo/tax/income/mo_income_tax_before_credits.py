@@ -12,5 +12,4 @@ class mo_income_tax_before_credits(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
         rates = parameters(period).gov.states.mo.tax.income.rates
-        tax_due = rates.calc(agi, right=True)
-        return tax_due
+        return rates.calc(agi)
