@@ -17,11 +17,12 @@ class mo_income_tax(Variable):
             "mo_income_tax_before_credits", period
         )
 
-        CREDITS = [
-            # "mo_resident_credit",  # this seems to relate to paying taxes in other states
-            # "mo_misc_tax_credits",  # sum of credits found here - https://dor.mo.gov/forms/MO-TC_2021.pdf
-            # "mo_property_tax_credit",
-        ]
+        CREDITS = 0
+        # [
+        #     # "mo_resident_credit",  # this seems to relate to paying taxes in other states
+        #     # "mo_misc_tax_credits",  # sum of credits found here - https://dor.mo.gov/forms/MO-TC_2021.pdf
+        #     # "mo_property_tax_credit",
+        # ]
 
         credit_value = add(tax_unit, period, CREDITS)
         return in_mo * (income_tax_before_credits - credit_value)
