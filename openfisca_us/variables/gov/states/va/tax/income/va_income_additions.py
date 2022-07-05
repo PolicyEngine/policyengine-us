@@ -7,4 +7,3 @@ class va_income_additions(Variable):
     label = "VA income additions"
     unit = USD
     definition_period = YEAR
-

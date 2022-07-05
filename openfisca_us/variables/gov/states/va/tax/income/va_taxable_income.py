@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class va_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
@@ -9,9 +10,7 @@ class va_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         gov = parameters(period).gov
-        va_deductions_path = (
-            gov.states.va.tax.deductions.standard_deduction
-        )
+        va_deductions_path = gov.states.va.tax.deductions.standard_deduction
         itemized = tax_unit("va_itemized_deductions", period)
         standard = va_deductions_path[tax_unit("filing_status", period)]
         adj_deductions = tax_unit("va_adj_deductions")

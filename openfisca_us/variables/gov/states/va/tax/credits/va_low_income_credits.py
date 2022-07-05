@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class va_low_income_credits(Variable):
     value_type = float
     entity = TaxUnit

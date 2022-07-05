@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class va_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
@@ -10,11 +11,11 @@ class va_tax_before_credits(Variable):
     def formula(tax_unit, period, parameters):
         va_income = parameters(period).gov.states.va.tax.income
         va_brackets = va_income.brackets
-        va_agi = tax_unit('va_adjusted_gross_income', period)
-        filing_status = tax_unit('filing_status', period)
+        va_agi = tax_unit("va_adjusted_gross_income", period)
+        filing_status = tax_unit("filing_status", period)
         if va_agi < va_income.va_filing_thresholds[filing_status]:
             return 0
-        va_taxable_income = tax_unit('va_taxable_income', period)
+        va_taxable_income = tax_unit("va_taxable_income", period)
 
         reg_tax = 0
         last_reg_threshold = 0
@@ -27,6 +28,8 @@ class va_tax_before_credits(Variable):
             last_reg_threshold = reg_threshold
 
         # calculate tax on income above the last threshold
-        reg_tax += va_brackets.rates["4"] * max_(va_taxable_income - last_reg_threshold, 0)
+        reg_tax += va_brackets.rates["4"] * max_(
+            va_taxable_income - last_reg_threshold, 0
+        )
 
         return round_(reg_tax, 0)

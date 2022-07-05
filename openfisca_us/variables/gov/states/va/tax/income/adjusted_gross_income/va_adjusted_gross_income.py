@@ -18,6 +18,10 @@ class va_adjusted_gross_income(Variable):
         subtractions = tax_unit("va_income_subtractions", period)
 
         return (
-            agi + additions - age_deduction - ss_railroad_ben - salt_refund -
-            subtractions
+            agi
+            + additions
+            - age_deduction
+            - ss_railroad_ben
+            - salt_refund
+            - subtractions
         )

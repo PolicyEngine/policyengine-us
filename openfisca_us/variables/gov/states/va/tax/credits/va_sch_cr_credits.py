@@ -7,4 +7,3 @@ class va_sch_cr_credits(Variable):
     label = "Virginia schedule CR credits"
     unit = USD
     definition_period = YEAR
-

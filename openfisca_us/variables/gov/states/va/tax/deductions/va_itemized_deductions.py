@@ -7,4 +7,3 @@ class va_itemized_deductions(Variable):
     label = "VA itemized deductions"
     unit = USD
     definition_period = YEAR
-

@@ -7,4 +7,3 @@ class va_income_substractions(Variable):
     label = "VA income substractions from schedule ADJ"
     unit = USD
     definition_period = YEAR
-

@@ -7,4 +7,3 @@ class va_adj_deductions(Variable):
     label = "VA deductions from schedule ADJ"
     unit = USD
     definition_period = YEAR
-
