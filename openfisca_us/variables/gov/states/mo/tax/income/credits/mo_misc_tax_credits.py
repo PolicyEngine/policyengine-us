@@ -8,6 +8,3 @@ class mo_misc_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = ()
-
-    def formula(tax_unit, period, parameters):
-        return 0
