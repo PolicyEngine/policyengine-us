@@ -16,8 +16,9 @@ class state_supplement(Variable):
         meets_resource_test = person("meets_ssi_resource_test", period)
         eligible = abd & meets_resource_test
         joint_claim = person("ssi_claim_is_joint", period)
-        return eligible * where(
+        amount_if_eligible = where(
             joint_claim,
             person.marital_unit.sum(state_supplement) / 2,
             state_supplement,
         )
+        return eligible * amount_if_eligible
