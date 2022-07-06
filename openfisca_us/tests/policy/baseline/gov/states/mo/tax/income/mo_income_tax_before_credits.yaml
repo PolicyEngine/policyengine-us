@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    adjusted_gross_income: 0
+    mo_taxable_income: 0
   output:
     mo_income_tax_before_credits: 0.0
 
@@ -11,6 +11,6 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    adjusted_gross_income: 8999
+    mo_taxable_income: 8999
   output:
     mo_income_tax_before_credits: 314.95
