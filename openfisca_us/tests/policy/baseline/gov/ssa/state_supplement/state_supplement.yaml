@@ -20,3 +20,12 @@
         state_code: MA
   output:
     state_supplement: [450, 450]
+
+- name: MA, fails resource test.
+  period: 2022
+  input:
+    is_ssi_disabled: true
+    ssi_countable_income: 0
+    meets_ssi_resource_test: false
+  output:
+    state_supplement: 0
