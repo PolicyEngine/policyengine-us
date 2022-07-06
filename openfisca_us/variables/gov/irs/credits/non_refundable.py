@@ -12,7 +12,7 @@ class c07100(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        credits = parameters(period).irs.credits.non_refundable
+        credits = parameters(period).gov.irs.credits.non_refundable
         return add(tax_unit, period, credits)
 
 

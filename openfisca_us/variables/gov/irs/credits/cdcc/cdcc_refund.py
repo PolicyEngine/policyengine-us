@@ -11,8 +11,8 @@ class cdcc_refund(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/21#g_1"
 
     def formula(tax_unit, period, parameters):
-        cdcc = parameters(period).irs.credits.cdcc
-        if cdcc.refundable and not cdcc.abolition:
-            return tax_unit("c33200", period)
+        cdcc = parameters(period).gov.irs.credits.cdcc
+        if cdcc.refundable:
+            return tax_unit("cdcc", period)
         else:
             return 0

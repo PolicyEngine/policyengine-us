@@ -1,0 +1,18 @@
+- name: No EITC, no matched credit
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    earned_income_tax_credit: 0
+  output:
+    ny_eitc: 0
+
+- name: 30% match, minus NY household credit
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    earned_income_tax_credit: 100
+    ny_household_credit: 10
+  output:
+    ny_eitc: 20

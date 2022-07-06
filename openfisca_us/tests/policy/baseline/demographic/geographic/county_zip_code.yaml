@@ -1,0 +1,6 @@
+- name: Massachusetts county zip code from zip code
+  period: 2020
+  input:
+    zip_code: "01001"
+  output:
+    county_zip_code: "10"

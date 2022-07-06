@@ -1,0 +1,9 @@
+- name: TTP is max of four inputs.
+  period: 2022
+  input:
+    hud_ttp_income_share: 1
+    hud_ttp_adjusted_income_share: 2
+    housing_designated_welfare: 3
+    hud_minimum_rent: 4
+  output:
+    hud_ttp: 4

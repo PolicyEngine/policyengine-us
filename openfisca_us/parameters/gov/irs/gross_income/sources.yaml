@@ -1,0 +1,25 @@
+description: Income sources counted as gross income for tax purposes.
+values:
+  2010-01-01:
+    - employment_income
+    - self_employment_income
+    - capital_gains
+    - taxable_interest_income
+    - rental_income
+    # Royalties included in rental income
+    - dividend_income
+    - pension_income 
+    # Pension income includes annuities and endowment contracts
+    - debt_relief
+    # Decedent income
+    # Estate interest income
+    - taxable_unemployment_compensation
+    - taxable_social_security
+    - illicit_income
+metadata:
+  unit: currency-USD
+  name: irs_gross_income_sources
+  label: Gross income sources
+  reference:
+    - title: 26 U.S. Code § 61 - Gross income defined
+      href: https://www.law.cornell.edu/uscode/text/26/61

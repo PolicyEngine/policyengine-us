@@ -9,5 +9,5 @@ class self_employment_medicare_tax(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.self_employment.medicare_rate
+        rate = parameters(period).gov.irs.self_employment.medicare_rate
         return rate * person("taxable_self_employment_income", period)

@@ -22,7 +22,7 @@ class snap_excess_medical_expense_deduction(Variable):
         elderly_disabled_moop = spm_unit.sum(moop * (elderly | disabled))
         p = parameters(
             period
-        ).usda.snap.income.deductions.excess_medical_expense
+        ).gov.usda.snap.income.deductions.excess_medical_expense
         disregard = p.disregard * MONTHS_IN_YEAR
         excess = max_(elderly_disabled_moop - disregard, 0)
         # Calculate standard medical deduction (SMD).

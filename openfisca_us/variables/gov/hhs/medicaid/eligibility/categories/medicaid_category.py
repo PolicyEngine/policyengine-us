@@ -25,7 +25,7 @@ class medicaid_category(Variable):
     def formula(person, period, parameters):
         categories = parameters(
             period
-        ).hhs.medicaid.eligibility.categories.covered
+        ).gov.hhs.medicaid.eligibility.categories.covered
 
         variable_to_category = dict(
             is_infant_for_medicaid=MedicaidCategory.INFANT,

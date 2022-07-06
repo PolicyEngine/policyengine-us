@@ -11,7 +11,7 @@ class irs_gross_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/61"
 
     def formula(person, period, parameters):
-        sources = parameters(period).irs.gross_income.sources
+        sources = parameters(period).gov.irs.gross_income.sources
         total = 0
         not_dependent = ~person("is_tax_unit_dependent", period)
         for source in sources:

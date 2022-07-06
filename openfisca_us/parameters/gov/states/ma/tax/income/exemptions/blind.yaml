@@ -1,0 +1,13 @@
+description: MA income tax exemption per blind head or spouse.
+values:
+  2021-01-01: 2_200
+metadata:
+  reference:
+    - title: "Taxable income: adjusted gross income less deductions and exemptions (b)(2)(B)"
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+    - title: Form 1 Massachusetts Resident Income Tax Return (box 2d)
+      href: https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download
+  unit: currency-USD
+  period: year
+  name: ma_income_tax_blind_exemption
+  label: MA income tax blind exemption

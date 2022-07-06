@@ -1,0 +1,63 @@
+description: Child tax credit phase-out MAGI start
+SINGLE:
+  values:
+    2013-01-01: 75_000
+    2014-01-01: 75_000
+    2015-01-01: 75_000
+    2016-01-01: 75_000
+    2017-01-01: 75_000
+    2018-01-01: 200_000
+    2019-01-01: 200_000
+    2026-01-01: 75_000
+JOINT:
+  values:
+    2013-01-01: 110_000
+    2014-01-01: 110_000
+    2015-01-01: 110_000
+    2016-01-01: 110_000
+    2017-01-01: 110_000
+    2018-01-01: 400_000
+    2019-01-01: 400_000
+    2026-01-01: 110_000
+SEPARATE:
+  values:
+    2013-01-01: 55_000
+    2014-01-01: 55_000
+    2015-01-01: 55_000
+    2016-01-01: 55_000
+    2017-01-01: 55_000
+    2018-01-01: 200_000
+    2019-01-01: 200_000
+    2026-01-01: 55_000
+HEAD_OF_HOUSEHOLD:
+  values:
+    2013-01-01: 75_000
+    2014-01-01: 75_000
+    2015-01-01: 75_000
+    2016-01-01: 75_000
+    2017-01-01: 75_000
+    2018-01-01: 200_000
+    2019-01-01: 200_000
+    2026-01-01: 75_000
+WIDOW:
+  values:
+    2013-01-01: 75_000
+    2014-01-01: 75_000
+    2015-01-01: 75_000
+    2016-01-01: 75_000
+    2017-01-01: 75_000
+    2018-01-01: 400_000
+    2019-01-01: 400_000
+    2026-01-01: 75_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_phase_out_threshold
+  label: CTC phase-out threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: Tax-Calculator
+      href: https://github.com/PSLmodels/Tax-Calculator/blob/6ab24023ed1b661a6dfdd4ce60301838c49536b1/taxcalc/policy_current_law.json#L14333
+    - title: U.S.C 26 U.S. Code § 24(b)
+      href: https://www.law.cornell.edu/uscode/text/26/24#a

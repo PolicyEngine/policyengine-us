@@ -1,0 +1,16 @@
+- name: Example 1 from Mass.gov # https://www.mass.gov/technical-information-release/tir-01-19-real-estate-tax-credit-for-certain-persons-age-65-and-older-as-revised
+  period: 2021
+  input:
+    people:
+      A:
+        age: 71
+        real_estate_taxes: 3_200 + 300 * 0.5
+        assessed_property_value: 400_000
+      B:
+        age: 64
+    tax_units:
+      tax_unit:
+        ma_scb_total_income: 30_000
+        members: [A, B]
+  output:
+    ma_senior_circuit_breaker: 350

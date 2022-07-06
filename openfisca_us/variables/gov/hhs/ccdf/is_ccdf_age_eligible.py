@@ -9,5 +9,5 @@ class is_ccdf_age_eligible(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        age_limit = parameters(period).hhs.ccdf.age_limit
+        age_limit = parameters(period).gov.hhs.ccdf.age_limit
         return age < age_limit

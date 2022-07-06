@@ -1,0 +1,31 @@
+description: Threshold of taxable income (excluding QBID) after which the QBI deduction is phased out.
+metadata:
+  unit: currency-USD
+  period: year
+  name: qbid_phase_out_start
+  label: Qualified business income deduction phase-out start
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 0.0
+  2018-01-01: 157500.0
+  2019-01-01: 160700.0
+  2026-01-01: 0.0
+JOINT:
+  2013-01-01: 0.0
+  2018-01-01: 315000.0
+  2019-01-01: 321400.0
+  2026-01-01: 0.0
+SEPARATE:
+  2013-01-01: 0.0
+  2018-01-01: 157500.0
+  2019-01-01: 160725.0
+  2026-01-01: 0.0
+SINGLE:
+  2013-01-01: 0.0
+  2018-01-01: 157500.0
+  2019-01-01: 160700.0
+  2026-01-01: 0.0
+WIDOW:
+  2013-01-01: 0.0
+  2018-01-01: 315000.0
+  2019-01-01: 321400.0
+  2026-01-01: 0.0

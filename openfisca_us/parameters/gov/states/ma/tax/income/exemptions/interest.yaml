@@ -1,0 +1,21 @@
+description: Exemption for interest from banks with a location in MA.
+SINGLE:
+  2002-01-01: 100
+JOINT:
+  2002-01-01: 200
+HEAD_OF_HOUSEHOLD:
+  2002-01-01: 100
+WIDOW:
+  2002-01-01: 100
+SEPARATE:
+  2002-01-01: 100
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  name: ma_interest_exemption
+  label: MA interest exemption
+  reference:
+    - title: Mass. General Laws c.62 § 3(B)(a)(6)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-3

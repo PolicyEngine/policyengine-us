@@ -1,0 +1,65 @@
+- name: Default will have zero income and be especially low.
+  period: 2022
+  input:
+    ami: 10_000
+  output:
+    hud_income_level: ESPECIALLY_LOW
+
+- name: 1-person household with 100% income/AMI.
+  period: 2022
+  input:
+    ami: 10_000
+    hud_annual_income: 10_000
+  output:
+    # Moderate threshold for a one-person household is 70% of AMI.
+    hud_income_level: ABOVE_MODERATE
+
+- name: 6-person household with 100% income/AMI.
+  period: 2022
+  input:
+    ami: 10_000
+    hud_annual_income: 10_000
+    spm_unit_size: 6
+  output:
+    # Low limit for 6 is 80% + 2 * 6.4% = 92.8%.
+    # Moderate limit is 100% + 2 * 8% = 116%.
+    hud_income_level: MODERATE
+
+- name: 4-person household with 80% income/AMI. 
+  period: 2022
+  input:
+    ami: 10_001 # Floating point issue causes it to fail is $10,000.
+    hud_annual_income: 7_000
+    spm_unit_size: 4
+  output:
+    # Low limit for 4 is 80%.
+    hud_income_level: LOW
+
+- name: 1-person household with 35% income/AMI. 
+  period: 2022
+  input:
+    ami: 10_001 # Floating point issue causes it to fail is $10,000.
+    hud_annual_income: 3_500
+  output:
+    # Limit is 35%.
+    hud_income_level: ESPECIALLY_LOW
+
+- name: 2-person household with 40% income/AMI. 
+  period: 2022
+  input:
+    ami: 10_001 # Floating point issue causes it to fail is $10,000.
+    hud_annual_income: 4_000
+    spm_unit_size: 2
+  output:
+    # Limit is 40%.
+    hud_income_level: ESPECIALLY_LOW
+
+- name: 3-person household with 45% income/AMI. 
+  period: 2022
+  input:
+    ami: 10_001 # Floating point issue causes it to fail is $10,000.
+    hud_annual_income: 4_500
+    spm_unit_size: 3
+  output:
+    # Limit is 45%.
+    hud_income_level: ESPECIALLY_LOW

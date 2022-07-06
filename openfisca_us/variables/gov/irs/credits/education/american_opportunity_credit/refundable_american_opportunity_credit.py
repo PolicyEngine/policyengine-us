@@ -15,7 +15,7 @@ class refundable_american_opportunity_credit(Variable):
     def formula(tax_unit, period, parameters):
         aoc = parameters(
             period
-        ).irs.credits.education.american_opportunity_credit
+        ).gov.irs.credits.education.american_opportunity_credit
         return aoc.refundability * tax_unit(
             "american_opportunity_credit", period
         )

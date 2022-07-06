@@ -9,5 +9,5 @@ class employee_social_security_tax(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        rate = parameters(period).irs.payroll.social_security.rate.employee
+        rate = parameters(period).gov.irs.payroll.social_security.rate.employee
         return rate * person("taxable_earnings_for_social_security", period)

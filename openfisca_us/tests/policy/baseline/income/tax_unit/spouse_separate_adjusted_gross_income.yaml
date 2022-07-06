@@ -1,0 +1,14 @@
+- name: Zero by default, since not married filing separate.
+  period: 2022
+  input:
+    adjusted_gross_income: 1.3
+  output:
+    spouse_separate_adjusted_gross_income: 0
+
+- name: Same value as own's AGI if married filing separately.
+  period: 2022
+  input:
+    adjusted_gross_income: 1.3
+    filing_status: SEPARATE
+  output:
+    spouse_separate_adjusted_gross_income: 1.3

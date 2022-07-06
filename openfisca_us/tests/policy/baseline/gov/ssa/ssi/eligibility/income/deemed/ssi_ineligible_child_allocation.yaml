@@ -1,0 +1,6 @@
+- name: Child with no income, full allocation
+  period: 2022
+  input:
+    age: 14
+  output:
+    ssi_ineligible_child_allocation: 5_040 # (1,261 - 841) * 12

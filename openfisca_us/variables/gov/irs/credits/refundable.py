@@ -10,5 +10,6 @@ class income_tax_refundable_credits(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        credits = parameters(period).irs.credits.refundable
-        return add(tax_unit, period, credits)
+        credits = parameters(period).gov.irs.credits.refundable
+        CONTRIB_CREDITS = ["ecpa_filer_credit", "ecpa_adult_dependent_credit"]
+        return add(tax_unit, period, credits + CONTRIB_CREDITS)

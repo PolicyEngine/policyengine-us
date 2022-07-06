@@ -1,0 +1,21 @@
+# NB: These aren't exactly unit tests. They reflect examples from the Housing Choice Voucher guidebook.
+
+- name: "PHI example 8: Calculating HAP when Gross Rent is at or Below Payment Standard"
+  # https://www.hud.gov/sites/dfiles/PIH/documents/HCV_Guidebook_Calculating_Rent_and_HAP_Payments.pdf#page=8
+  period: 2022
+  input:
+    pha_payment_standard: 450
+    hud_ttp: 210
+    hud_gross_rent: 425
+  output:
+    hud_hap: 215
+
+- name: "PHI example 9: Calculating HAP when Gross Rent Exceeds the Below Payment Standard"
+  # https://www.hud.gov/sites/dfiles/PIH/documents/HCV_Guidebook_Calculating_Rent_and_HAP_Payments.pdf#page=8
+  period: 2022
+  input:
+    pha_payment_standard: 450
+    hud_ttp: 210
+    hud_gross_rent: 500
+  output:
+    hud_hap: 240

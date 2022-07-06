@@ -7,3 +7,5 @@ class count_cdcc_eligible(Variable):
     label = "CDCC-eligible children"
     unit = USD
     definition_period = YEAR
+
+    formula = sum_of_variables(["is_cdcc_eligible"])

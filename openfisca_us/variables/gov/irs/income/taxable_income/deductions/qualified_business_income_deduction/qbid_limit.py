@@ -16,20 +16,21 @@ class qbid_limit(Variable):
             tax_unit, period, ["unadjusted_basis_qualified_property"]
         )
         taxable_income_less_qbid = tax_unit("taxable_income_less_qbid", period)
-        qbid = parameters(period).irs.deductions.qbi
+        qbid = parameters(period).gov.irs.deductions.qbi
         filing_status = tax_unit("filing_status", period)
-        phaseout_start = qbid.phaseout.start[filing_status]
-        phaseout_length = qbid.phaseout.length[filing_status]
-        capped_phaseout_income = min_(
-            phaseout_length, max_(0, taxable_income_less_qbid - phaseout_start)
+        phase_out_start = qbid.phase_out.start[filing_status]
+        phase_out_length = qbid.phase_out.length[filing_status]
+        capped_phase_out_income = min_(
+            phase_out_length,
+            max_(0, taxable_income_less_qbid - phase_out_start),
         )
-        percent_through_phaseout = capped_phaseout_income / phaseout_length
+        percent_through_phase_out = capped_phase_out_income / phase_out_length
         income_based_deduction = qbid.max.rate * qbi
         w2_and_property_based_deduction = (
             qbid.max.w2_wages.alt_rate * w2_wages
             + qbid.max.business_property.rate * qualified_property
         )
-        reduction = percent_through_phaseout * max_(
+        reduction = percent_through_phase_out * max_(
             0, income_based_deduction - w2_and_property_based_deduction
         )
         return tax_unit("maximum_qbid", period) - reduction

@@ -12,11 +12,11 @@ class is_wic_at_nutritional_risk(Variable):
     def formula(person, period, parameters):
         wic_reported = person("receives_wic", period)
         meets_income_test = person.spm_unit("meets_wic_income_test", period)
-        meets_categorical_test = person.spm_unit(
+        meets_categorical_test = person(
             "meets_wic_categorical_eligibility", period
         )
         category = person("wic_category", period)
-        risk = parameters(period).usda.wic.nutritional_risk
+        risk = parameters(period).gov.usda.wic.nutritional_risk
         imputed_risk = (random(person) < risk[category]) & (
             meets_income_test | meets_categorical_test
         )

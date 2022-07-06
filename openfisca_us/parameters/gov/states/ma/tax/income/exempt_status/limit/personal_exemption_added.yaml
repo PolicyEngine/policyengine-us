@@ -1,0 +1,21 @@
+description: Whether a filer can add personal exemptions to determine the AGI limit to be exempt from MA income tax.
+SINGLE:
+  2020-01-01: false
+JOINT:
+  2020-01-01: true
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: true
+WIDOW:
+  2020-01-01: false
+SEPARATE:
+  2020-01-01: false
+metadata:
+  reference:
+    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust 
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  name: ma_income_tax_no_tax_status_limit_personal_exemption_added
+  label: MA income tax exemption limit includes personal exemptions

@@ -10,10 +10,8 @@ class tax_unit_itemizes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        deductions_if_itemizing = tax_unit(
-            "taxable_income_deductions_if_itemizing", period
+        tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
+        tax_if_not_itemizing = tax_unit(
+            "tax_liability_if_not_itemizing", period
         )
-        deductions_if_not_itemizing = tax_unit(
-            "taxable_income_deductions_if_not_itemizing", period
-        )
-        return deductions_if_itemizing > deductions_if_not_itemizing
+        return tax_if_itemizing < tax_if_not_itemizing

@@ -1,0 +1,24 @@
+description: Child tax credit phase-out MAGI start for the ARPA CTC expansion
+SINGLE:
+  values:
+    2021-01-01: 75_000
+JOINT:
+  values:
+    2021-01-01: 150_000
+SEPARATE:
+  values:
+    2021-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 112_500
+WIDOW:
+  values:
+    2021-01-01: 150_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_arpa_phase_out_threshold
+  label: CTC phase-out threshold (ARPA)
+  reference:
+    - title: U.S.C 26 U.S. Code § 24(b)
+      href: https://www.law.cornell.edu/uscode/text/26/24#b

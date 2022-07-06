@@ -16,7 +16,7 @@ class is_medically_needy_for_medicaid(Variable):
         tax_unit = person.tax_unit
         income = tax_unit.sum(personal_income - medical_expenses)
         assets = tax_unit.sum(personal_assets)
-        ma = parameters(period).hhs.medicaid
+        ma = parameters(period).gov.hhs.medicaid
         mn = ma.eligibility.categories.medically_needy
         is_joint = person.tax_unit("tax_unit_is_joint", period)
         state = person.household("state_code_str", period)

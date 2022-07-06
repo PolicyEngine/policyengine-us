@@ -22,7 +22,9 @@ class section_22_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
     def formula(tax_unit, period, parameters):
-        elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
+        elderly_disabled = parameters(
+            period
+        ).gov.irs.credits.elderly_or_disabled
         # Calculate initial amount
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
@@ -63,14 +65,23 @@ class section_22_income(Variable):
         total_pensions = add(tax_unit, period, ["pension_income"])
         taxable_pensions = add(tax_unit, period, ["taxable_pension_income"])
         non_taxable_pensions = total_pensions - taxable_pensions
-        capped_reduced_amount = capped_amount - non_taxable_pensions
+        total_social_security = tax_unit("tax_unit_social_security", period)
+        taxable_social_security = tax_unit(
+            "tax_unit_taxable_social_security", period
+        )
+        non_taxable_social_security = (
+            total_social_security - taxable_social_security
+        )
+        capped_reduced_amount = (
+            capped_amount - non_taxable_pensions - non_taxable_social_security
+        )
         agi = tax_unit("adjusted_gross_income", period)
 
-        amount_over_phaseout = max_(
-            0, agi - elderly_disabled.phaseout.threshold[filing_status]
+        amount_over_phase_out = max_(
+            0, agi - elderly_disabled.phase_out.threshold[filing_status]
         )
-        phaseout_reduction = (
-            elderly_disabled.phaseout.rate * amount_over_phaseout
+        phase_out_reduction = (
+            elderly_disabled.phase_out.rate * amount_over_phase_out
         )
 
-        return max_(0, capped_reduced_amount - phaseout_reduction)
+        return max_(0, capped_reduced_amount - phase_out_reduction)

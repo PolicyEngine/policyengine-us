@@ -14,7 +14,7 @@ class tanf_initial_employment_deduction(Variable):
         state = spm_unit.household("state_code_str", period)
         ied = parameters(
             period
-        ).hhs.tanf.cash.eligibility.initial.deductions.employment
+        ).gov.hhs.tanf.cash.eligibility.initial.deductions.employment
         per_earner = ied.earner[state]
         per_household = ied.household[state][family_size]
         earners = spm_unit.members("market_income", period) > 0

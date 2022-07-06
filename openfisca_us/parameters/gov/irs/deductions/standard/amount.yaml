@@ -1,0 +1,47 @@
+description: Deduction from taxable income if not itemizing.
+SINGLE:
+  2018-01-01: 12_000
+  2019-01-01: 12_200
+  2020-01-01: 12_400
+  2021-01-01: 12_550
+  2022-01-01: 12_950
+JOINT:
+  2018-01-01: 24_000
+  2019-01-01: 24_400
+  2020-01-01: 24_800
+  2021-01-01: 25_100
+  2022-01-01: 25_900
+SEPARATE:
+  2018-01-01: 12_000
+  2019-01-01: 12_200
+  2020-01-01: 12_400
+  2021-01-01: 12_550
+  2022-01-01: 12_950
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 18_000
+  2019-01-01: 18_350
+  2020-01-01: 18_650
+  2021-01-01: 18_800
+  2022-01-01: 19_400
+WIDOW:
+  2018-01-01: 24_000
+  2019-01-01: 24_400
+  2020-01-01: 24_400
+  2021-01-01: 25_100
+  2022-01-01: 25_900
+metadata:
+  unit: currency-USD
+  label: Standard deduction
+  name: standard_deduction
+  period: year
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf

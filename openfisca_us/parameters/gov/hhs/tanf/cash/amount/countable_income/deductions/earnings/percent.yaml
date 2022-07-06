@@ -1,0 +1,22 @@
+description: Percent earned income deduction for Temporary Assistance for Needy Families.
+IL:
+  values:
+    2010-07-01: 0.75
+  metadata:
+    reference:
+      - title: "Illinois TANF Eligibility and Benefit Amount: WAG 10-02-03: Budgeting Income on Active Cases"
+        href: https://www.dhs.state.il.us/page.aspx?item=15868
+        date: 2021-10-01
+      - title: "Illinois TANF Eligibility and Benefit Amount: WAG 10: TANF Eligibility and Benefit Amount [Find date next to WAG 10-02-23]"
+        href: https://www.dhs.state.il.us/page.aspx?item=15815
+CA:
+  values:
+    2019-01-01: 0.5
+  metadata:
+    reference:
+      - title: Contra Costa County Employment & Human Services CalWorks Fact Sheet
+        href: https://ehsd.org/benefits/calworks-cash-aid/calworks-fact-sheet/
+metadata:
+  unit: /1
+  breakdown:
+  - state_code

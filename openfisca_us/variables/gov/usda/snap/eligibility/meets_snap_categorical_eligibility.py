@@ -10,5 +10,5 @@ class meets_snap_categorical_eligibility(Variable):
     reference = "https://fns-prod.azureedge.net/sites/default/files/resource-files/fna-2008-amended-through-pl-116-94.pdf#page=11"
 
     def formula(spm_unit, period, parameters):
-        programs = parameters(period).usda.snap.categorical_eligibility
+        programs = parameters(period).gov.usda.snap.categorical_eligibility
         return add(spm_unit, period, programs) > 0

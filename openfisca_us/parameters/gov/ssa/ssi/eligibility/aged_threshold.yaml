@@ -1,0 +1,11 @@
+description: Age to qualify for Supplemental Security Income.
+
+values:
+  1975-01-01: 65
+metadata:
+  label: Age to qualify for Supplemental Security Income
+  name: ssi_aged_threshold
+  unit: year
+  reference:
+    - title: 20 CFR § 416.202(a)(1)
+      href: https://www.law.cornell.edu/cfr/text/20/416.202#a_1

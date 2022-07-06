@@ -12,10 +12,10 @@ class hhs_smi(Variable):
     def formula(spm_unit, period, parameters):
         size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code_str", period)
-        four_person_smi = parameters(period).hhs.smi.amount[state]
+        four_person_smi = parameters(period).gov.hhs.smi.amount[state]
         adjustment_mapping = parameters(
             period
-        ).hhs.smi.household_size_adjustment
+        ).gov.hhs.smi.household_size_adjustment
         first_person_rate = adjustment_mapping.first_person
         second_to_sixth_additional_rate = (
             adjustment_mapping.second_to_sixth_person

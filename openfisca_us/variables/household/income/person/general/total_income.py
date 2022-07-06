@@ -6,5 +6,4 @@ class total_income(Variable):
     entity = Person
     label = "Total income"
     unit = USD
-    documentation = "Total of all income sources"
     definition_period = YEAR

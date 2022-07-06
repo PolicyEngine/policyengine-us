@@ -1,0 +1,11 @@
+- name: Default is false.
+  period: 2020
+  output:
+    has_phone_expense: false
+
+- name: Default is false.
+  period: 2020
+  input:
+    phone_expense: 2
+  output:
+    has_phone_expense: true

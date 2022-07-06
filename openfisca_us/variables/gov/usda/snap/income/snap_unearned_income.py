@@ -11,5 +11,5 @@ class snap_unearned_income(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        sources = parameters(period).usda.snap.income.sources.unearned
+        sources = parameters(period).gov.usda.snap.income.sources.unearned
         return aggr(spm_unit, period, sources)

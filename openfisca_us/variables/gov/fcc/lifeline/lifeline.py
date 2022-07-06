@@ -13,7 +13,7 @@ class lifeline(Variable):
     def formula(spm_unit, period, parameters):
         # NB: Only one Lifeline benefit is available per SPM unit, per:
         # https://www.law.cornell.edu/cfr/text/47/54.409#c
-        amounts = parameters(period).fcc.lifeline.amount
+        amounts = parameters(period).gov.fcc.lifeline.amount
         household = spm_unit.household
         is_rural_tribal = and_(
             household, period, ["is_rural", "is_on_tribal_land"]

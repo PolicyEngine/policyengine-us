@@ -20,7 +20,7 @@ class ca_cvrp(Variable):
         # Calculate increased rebate (more means-tested).
         p_increased_amount = parameters(
             period
-        ).states.ca.calepa.carb.cvrp.increased_rebate.amount
+        ).gov.states.ca.calepa.carb.cvrp.increased_rebate.amount
         increased_eligible = person(
             "is_ca_cvrp_increased_rebate_eligible", period
         )

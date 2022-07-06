@@ -90,7 +90,7 @@ def run_tests(tax_benefit_system, paths, options=None):
 
     """
 
-    argv = ["--capture", "no"]
+    argv = ["--capture", "no", "--maxfail", "0"]
 
     if options is not None and options.get("pdb"):
         argv.append("--pdb")

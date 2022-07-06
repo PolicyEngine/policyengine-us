@@ -1,0 +1,17 @@
+description: Refundable tax credits.
+values:
+  2013-01-01:
+    - eitc
+    - refundable_american_opportunity_credit
+    - cdcc_refund
+    - refundable_ctc
+    - recovery_rebate_credit
+    - refundable_payroll_tax_credit
+    - premium_tax_credit
+metadata:
+  unit: currency-USD
+  name: refundable_tax_credits
+  label: Refundable tax credits
+  reference:
+    - title: 26 U.S. Code Subpart C - Nonrefundable Personal Credits
+      href: https://www.law.cornell.edu/uscode/text/26/subtitle-A/chapter-1/subchapter-A/part-IV/subpart-C

@@ -1,0 +1,12 @@
+description: Phase-out rate for the CARES Recovery Rebate Credit.
+values:
+  0000-01-01: 0
+  2020-01-01: 0.05
+  2021-01-01: 0
+metadata:
+  unit: /1
+  name: rrc_cares_phase_out_rate
+  label: CARES Recovery Rebate Credit phase-out rate
+  reference:
+    - title: 26 U.S. Code § 6428(c)
+      href: https://www.law.cornell.edu/uscode/text/26/6428#c

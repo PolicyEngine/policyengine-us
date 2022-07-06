@@ -1,0 +1,68 @@
+- name: Example 1 from https://www.law.cornell.edu/cfr/text/20/416.1165#h
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      henry:
+        age: 12 # Assumed, just needs to be a child
+        is_ssi_disabled: true
+      henrys_brother:
+        age: 12
+      henrys_mother:
+        pension_income: 365 * 12
+      henrys_father:
+        employment_income: 1_165 * 12
+    tax_units:
+      tax_unit:
+        members: [henry, henrys_brother, henrys_mother, henrys_father]
+    marital_units:
+      marital_unit:
+        members: [henrys_mother, henrys_father]
+  output:
+    ssi_countable_income: [372, 0, 0, 0] # 31 * 12
+
+- name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1165#h
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      james:
+        is_ssi_disabled: true
+        age: 12
+      tony:
+        is_ssi_disabled: true
+        age: 12
+      mother:
+        ssi_unearned_income: 542 * 12
+    tax_units:
+      tax_unit:
+        members: [james, tony, mother]
+  output:
+    ssi_countable_income: [360, 360, 0] # 30 * 12
+
+# Skip Example 3 due to sponsored alien dependency
+
+- name: Example 4 from https://www.law.cornell.edu/cfr/text/20/416.1165#h
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      jack:
+        is_ssi_disabled: true
+        age: 12
+      jacks_first_brother:
+        age: 12
+      jacks_second_brother:
+        age: 12
+      jacks_mother:
+        pension_income: 350 * 12
+      jacks_father:
+        employment_income: 1_525 * 12
+    tax_units:
+      tax_unit:
+        members: [jack, jacks_first_brother, jacks_second_brother, jacks_mother, jacks_father]
+    marital_units:
+      marital_unit:
+        members: [jacks_mother, jacks_father]
+  output:
+    ssi_countable_income: [372, 0, 0, 0, 0] # 31 * 12

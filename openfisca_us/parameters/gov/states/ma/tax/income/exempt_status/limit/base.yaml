@@ -1,0 +1,25 @@
+description: AGI limit to be exempt from state income tax. Joint or head-of-household filers may add personal and dependent exemptions to this amount.
+SINGLE:
+  2020-01-01: 0
+  2021-01-01: 8_000
+WIDOW:
+  2020-01-01: 0
+  2021-01-01: 8_000
+SEPARATE:
+  2020-01-01: 0
+JOINT:
+  2020-01-01: 0
+  2021-01-01: 7_600
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 0
+  2021-01-01: 7_600
+metadata:
+  reference:
+    - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust 
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  name: ma_income_tax_no_tax_status_limit
+  label: AGI addition to limit to be exempt from MA income tax.

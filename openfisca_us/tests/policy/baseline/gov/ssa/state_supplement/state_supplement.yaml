@@ -1,0 +1,22 @@
+- name: MA, one aged, one blind, full cost household, SSI eliminated from income and SS partially eliminated
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      person_1:
+        age: 67
+        ssi_countable_income: 17_000
+      person_2:
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person_1, person_2]
+    tax_units:
+      tax_unit:
+        members: [person_1, person_2]
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MA
+  output:
+    state_supplement: [450, 450]

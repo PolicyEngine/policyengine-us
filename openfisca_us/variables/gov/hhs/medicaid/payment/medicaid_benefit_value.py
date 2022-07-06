@@ -13,5 +13,5 @@ class medicaid_benefit_value(Variable):
         state = person.household("state_code_str", period)
         calibration = parameters(period).calibration
         spending = calibration.programs.medicaid.budgetary_impact[state]
-        population = calibration.populations.by_state[state]
+        population = calibration.programs.medicaid.enrollment[state]
         return spending / population

@@ -1,0 +1,19 @@
+- name: Basic income with phase-out applied.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    contrib.ubi_center.basic_income.phase_out.rate: 0.1
+    contrib.ubi_center.basic_income.phase_out.threshold.HEAD_OF_HOUSEHOLD: 50_000
+    contrib.ubi_center.basic_income.amount_by_age[3].amount: 10_000
+    contrib.ubi_center.basic_income.amount_by_age[0].amount: 5_000
+    people:
+      adult:
+        employment_income: 100_000
+        age: 26
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+  output:
+    basic_income: [6_667, 3_333]

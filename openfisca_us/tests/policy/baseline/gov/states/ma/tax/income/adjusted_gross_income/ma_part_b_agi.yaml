@@ -1,0 +1,9 @@
+- name: IRA contributions not deducted from MA Part B AGI
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    employment_income: 10_000
+    ira_contributions: 1_000
+  output:
+    ma_part_b_agi: 10_000

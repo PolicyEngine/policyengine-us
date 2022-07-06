@@ -1,0 +1,33 @@
+- name: Tax unit with id 6
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 172_000
+        social_security: 47000
+      person2:
+        age: 32
+        employment_income: 114_000
+      person3:
+        age: 12
+      person4:
+        age: 12
+      person5:
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 8_000
+  output:
+    employee_payroll_tax: 19_499.80
+    adjusted_gross_income: 325_950.00
+    tax_unit_taxable_unemployment_compensation: 0.00
+    tax_unit_taxable_social_security: 39_950.00
+    taxable_income: 301_950.00
+    eitc: 0.00
+    non_refundable_ctc: 4_500.00
+    refundable_ctc: 0.00
+    cdcc: 1_200.00
+    income_tax: 55_347.00

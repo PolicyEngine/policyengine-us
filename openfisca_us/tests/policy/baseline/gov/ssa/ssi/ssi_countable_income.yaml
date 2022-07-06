@@ -1,0 +1,43 @@
+- name: Earned income only.
+  period: 2022
+  input:
+    ssi_earned_income: 100 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * (100 - 20 - 65) / 2
+
+- name: Unearned income only.
+  period: 2022
+  input:
+    ssi_unearned_income: 100 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * 80
+
+- name: Unearned income and earned income less than the earned exclusion.
+  period: 2022
+  input:
+    ssi_unearned_income: 100 * 12
+    ssi_earned_income: 50 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * 80
+
+- name: Unearned income and earned income more than the earned exclusion.
+  period: 2022
+  input:
+    ssi_unearned_income: 100 * 12
+    ssi_earned_income: 150 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    ssi_countable_income: 12 * (80 + (150 - 65) / 2)
+
+- name: Earned income and unearned income less than the general exclusion.
+  period: 2022
+  input:
+    ssi_unearned_income: 10 * 12
+    ssi_earned_income: 150 * 12
+    is_ssi_aged_blind_disabled: true
+  output:
+    # $10 of the general exclusion goes to unearned, the remainder goes to earned.
+    ssi_countable_income: 12 * (150 - 75) / 2

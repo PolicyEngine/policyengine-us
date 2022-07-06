@@ -1,0 +1,26 @@
+- name: Credit is reduced, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE 
+    ut_taxable_income: 16_000
+  output:
+    ut_taxpayer_credit_reduction: (16_000 - 15_095) * 0.013
+
+- name: Credit is reduced, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    filing_status: JOINT 
+    ut_taxable_income: 30_200
+  output:
+    ut_taxpayer_credit_reduction: (30_200 - 30_190) * 0.013
+
+- name: Credit is not reduced, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE 
+    ut_taxable_income: 10_000
+  output:
+    ut_taxpayer_credit_reduction: 0 # max((10_000 - 15_095),0) * 0.013

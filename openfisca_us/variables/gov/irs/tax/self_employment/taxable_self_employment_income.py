@@ -10,7 +10,7 @@ class taxable_self_employment_income(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/1402#a"
 
     def formula(person, period, parameters):
-        irs = parameters(period).irs
+        irs = parameters(period).gov.irs
         se = irs.self_employment
         combined_rate = se.social_security_rate + se.medicare_rate
         deduction_rate = irs.ald.misc.employer_share * combined_rate

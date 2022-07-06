@@ -16,6 +16,6 @@ class meets_wic_income_test(Variable):
         # (for WIC but not school meals).
         income = spm_unit("school_meal_countable_income", period)
         adj_fpg = spm_unit("wic_fpg", period)
-        limit = parameters(period).usda.school_meals.income.limit.REDUCED
+        limit = parameters(period).gov.usda.school_meals.income.limit.REDUCED
         income_fpg_ratio = income / adj_fpg
         return income_fpg_ratio <= limit

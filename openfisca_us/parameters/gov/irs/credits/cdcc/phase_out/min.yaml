@@ -1,0 +1,10 @@
+description: Child and dependent care credit phase-out percentage rate floor. The first phase-out does not reduce the childcare credit rate below this percentage.
+metadata:
+  unit: /1
+  name: cdcc_min_rate
+  label: CDCC minimum rate
+  reference:
+    - title: 26 U.S. Code § 21(a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/21#a_2
+values:
+  2013-01-01: 0.2

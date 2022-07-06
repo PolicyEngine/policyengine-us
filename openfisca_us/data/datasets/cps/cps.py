@@ -177,6 +177,8 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     )
     cps["own_children_in_household"] = tmp.children.fillna(0)
 
+    cps["has_marketplace_health_coverage"] = person.MRK == 1
+
 
 def add_personal_income_variables(cps: h5py.File, person: DataFrame):
     """Add income variables.
@@ -219,6 +221,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
         spm_unit_medical_expenses="SPM_MEDXPNS",
         spm_unit_spm_threshold="SPM_POVTHRESHOLD",
         spm_unit_net_income_reported="SPM_RESOURCES",
+        childcare_expenses="SPM_CHILDCAREXPNS",
     )
 
     for openfisca_variable, asec_variable in SPM_RENAMES.items():

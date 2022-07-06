@@ -9,5 +9,5 @@ class would_claim_wic(Variable):
 
     def formula(person, period, parameters):
         category = person("wic_category", period)
-        takeup = parameters(period).usda.wic.takeup
+        takeup = parameters(period).gov.usda.wic.takeup
         return random(person) < takeup[category]

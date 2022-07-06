@@ -1,0 +1,12 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    vehicles_owned: 0
+
+- name: If one vehicle in the household, one.
+  period: 2022
+  input:
+    household_vehicles_owned: 1
+  output:
+    vehicles_owned: 1
+# Other tests would need ranges, since vehicles are allocated randomly.

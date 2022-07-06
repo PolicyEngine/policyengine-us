@@ -10,7 +10,7 @@ class taxable_income_less_qbid(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        deductions = parameters(period).irs.deductions
+        deductions = parameters(period).gov.irs.deductions
         ded_if_itemizing = [
             deduction
             for deduction in deductions.deductions_if_itemizing

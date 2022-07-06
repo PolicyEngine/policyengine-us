@@ -1,0 +1,10 @@
+description: Child and dependent care credit phase-out percentage rate. In the law, the credit rate is reduced by 1 percentage point for every $2,000 of AGI over the limit.
+metadata:
+  unit: /1
+  name: cdcc_phase_out_rate
+  label: CDCC phase-out rate
+  reference:
+    - title: 26 U.S. Code § 21(a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/21#a_2
+values:
+  2013-01-01: 0.0005

@@ -1,0 +1,16 @@
+description: Annual payment per vehicle.
+CA:
+  2010-01-01: 0
+  2022-03-23:
+    value: 400
+    metadata:
+      reference:
+        - title: Governor Newsom Proposes $11 Billion Relief Package for Californians Facing Higher Gas Prices
+          href: https://www.gov.ca.gov/2022/03/23/governor-newsom-proposes-11-billion-relief-package-for-californians-facing-higher-gas-prices/
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - state_code
+  name: per_vehicle_payment_amount
+  label: Per-vehicle payment amount

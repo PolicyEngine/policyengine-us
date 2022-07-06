@@ -1,0 +1,11 @@
+description: Age at which children no longer qualify for the MA dependent tax credit.
+values:
+  2021-01-01: 12
+metadata:
+  reference:
+    - title: Form 1 2021 Massachusetts Resident Income Tax (line 46)
+      href: https://www.mass.gov/doc/2021-form-1-instructions/download#page=17
+  unit: years
+  period: year
+  name: ma_dependent_credit_child_age_limit
+  label: MA dependent credit child age limit

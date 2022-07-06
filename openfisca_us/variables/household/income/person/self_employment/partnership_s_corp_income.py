@@ -6,5 +6,4 @@ class partnership_s_corp_income(Variable):
     entity = Person
     label = "Partnership/S-corp income"
     unit = USD
-    documentation = "Income from partnerships or S-corporations."
     definition_period = YEAR

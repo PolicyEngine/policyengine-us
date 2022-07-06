@@ -1,0 +1,10 @@
+description: Minimum number of qualifying children to increase the refundable Child Tax Credit by Social Security taxes minus the Earned Income Tax Credit.
+values:
+  2013-01-01: 3
+metadata:
+  unit: person
+  name: ctc_refundable_min_children_for_ss_taxes
+  label: Minimum children to consider Social Security taxes minus EITC in refundable CTC
+  reference:
+    - title: 26 U.S. Code § 24(d)(1)(B)(i)
+      href: https://www.law.cornell.edu/uscode/text/26/24#d_1_B_ii

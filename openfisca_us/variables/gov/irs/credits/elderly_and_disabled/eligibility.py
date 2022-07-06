@@ -30,6 +30,8 @@ class qualifies_for_elderly_or_disabled_credit(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        elderly_disabled = parameters(period).irs.credits.elderly_or_disabled
+        elderly_disabled = parameters(
+            period
+        ).gov.irs.credits.elderly_or_disabled
         is_elderly = person("age", period) >= elderly_disabled.age
         return is_elderly | person("retired_on_total_disability", period)

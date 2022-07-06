@@ -11,5 +11,5 @@ class maximum_qbid(Variable):
 
     def formula(tax_unit, period, parameters):
         qbi = add(tax_unit, period, ["qualified_business_income"])
-        qbid = parameters(period).irs.deductions.qbi
+        qbid = parameters(period).gov.irs.deductions.qbi
         return qbid.max.rate * qbi

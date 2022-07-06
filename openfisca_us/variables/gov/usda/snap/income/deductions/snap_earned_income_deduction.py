@@ -15,5 +15,5 @@ class snap_earned_income_deduction(Variable):
     def formula(spm_unit, period, parameters):
         deduction_rate = parameters(
             period
-        ).usda.snap.income.deductions.earned_income
+        ).gov.usda.snap.income.deductions.earned_income
         return spm_unit("snap_earned_income", period) * deduction_rate

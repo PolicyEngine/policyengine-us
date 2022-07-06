@@ -1,0 +1,45 @@
+- name: Maximum of $75 for a single filer.
+  period: 2021
+  input:
+    state_code: NY
+  output:
+    ny_household_credit: 75
+
+- name: $50 for a single filer with $7,000 income.
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 7_000
+  output:
+    ny_household_credit: 50
+
+- name: Single filer is eligible until income exceeds $28,000
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 28_001
+  output:
+    ny_household_credit: 0
+
+- name: 4-person tax unit with $32,000 income receives $35.
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 32_000
+    filing_status: JOINT
+    tax_unit_size: 4
+  output:
+    ny_household_credit: 35
+
+- name: 2-person married filing separately tax unit with $16,000 income receives half of a 4-person's with $32,000 income (above), rounded up.
+  period: 2021
+  input:
+    state_code: NY
+    adjusted_gross_income: 16_000
+    spouse_separate_adjusted_gross_income: 16_000
+    filing_status: SEPARATE
+    tax_unit_size: 2
+    spouse_separate_tax_unit_size: 2
+  output:
+    ny_household_credit: 18
+

@@ -1,0 +1,7 @@
+- name: CA average payment
+  period: 2022
+  relative_error_margin: 0.05
+  input:
+    person_id: 1
+  output:
+    medicaid_benefit_value: 8_420

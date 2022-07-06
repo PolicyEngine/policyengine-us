@@ -1,0 +1,17 @@
+description: State income tax exemption per dependent.
+values:
+  # The law provides only one value.
+  # Tax Foundation confirms it's been $1,000 since at least 2015.
+  2015-01-01: 1_000
+metadata:
+  reference:
+    - title: "Taxable income: adjusted gross income less deductions and exemptions (b)(3)"
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+    - title: State Individual Income Tax Rates and Brackets (Tax Foundation)
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
+  unit: currency-USD
+  period: year
+  breakdown:
+  - state_code
+  name: ma_income_tax_dependent_exemption
+  label: MA income tax dependent exemption

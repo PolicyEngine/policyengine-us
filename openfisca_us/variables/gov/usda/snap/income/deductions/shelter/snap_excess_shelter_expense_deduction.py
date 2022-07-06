@@ -15,7 +15,7 @@ class snap_excess_shelter_expense_deduction(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(
             period
-        ).usda.snap.income.deductions.excess_shelter_expense
+        ).gov.usda.snap.income.deductions.excess_shelter_expense
         # Calculate uncapped shelter deduction as housing costs in excess of
         # income threshold.
         net_income_pre_shelter = spm_unit(

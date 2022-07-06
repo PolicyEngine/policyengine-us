@@ -1,0 +1,13 @@
+description: Maximum credit per non-dependent adult.
+values:
+  0000-01-01: 0
+  2021-01-01: 1_400
+  2022-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  name: rrc_arpa_adult_max
+  label: ARPA Recovery Rebate Credit maximum amount (non-dependent adults)
+  reference:
+    - title: 26 U.S. Code § 6428B(a)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/6428B#a_1
