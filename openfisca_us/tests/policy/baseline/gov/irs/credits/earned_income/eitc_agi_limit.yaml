@@ -1,0 +1,8 @@
+- name: Phase-out start + (maximum / phase-out rate)
+  period: 2022
+  input:
+    eitc_phase_out_start: 100
+    eitc_maximum: 50
+    eitc_phase_out_rate: 0.2
+  output:
+    eitc_agi_limit: 100 + (50 / 0.2) # 350.
