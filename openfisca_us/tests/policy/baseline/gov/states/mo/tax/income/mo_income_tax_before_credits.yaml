@@ -1,0 +1,15 @@
+- name: no income
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 0
+  output:
+    mo_income_tax_before_credits: 0.0
+
+- name:  $8999 adjusted gross income
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 8999
+  output:
+    mo_income_tax_before_credits: 314.95

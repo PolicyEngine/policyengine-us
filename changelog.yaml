@@ -1034,6 +1034,12 @@
     fixed:
     - Fixed the CTC formula in 2021 (only) to correctly apply the income-based reduction.
   date: 2022-07-03 21:47:43
+- bump: minor
+  changes:
+    added:
+    - MO Income Tax before credits.
+    - Parameters for MO Tax Schedule.
+  date: 2022-07-06 20:08:08
 - bump: patch
   changes:
     fixed:
