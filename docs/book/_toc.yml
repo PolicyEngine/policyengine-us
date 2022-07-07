@@ -32,6 +32,9 @@ parts:
           - file: programs/states/ny/index
             sections:
               - file: programs/states/ny/eitc
+          - file: programs/states/wa/index
+            sections:
+              - file: programs/states/wa/tax/income/credits/working-families-tax-credit
       - file: programs/usda/index
         sections:
           - file: programs/usda/snap

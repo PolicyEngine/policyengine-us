@@ -1040,6 +1040,17 @@
     - MO Income Tax before credits.
     - Parameters for MO Tax Schedule.
   date: 2022-07-06 20:08:08
+- bump: minor
+  changes:
+    added:
+    - Washington Working Families Tax Credit.
+    - EITC AGI limit variable.
+  date: 2022-07-07 07:15:06
+- bump: patch
+  changes:
+    fixed:
+    - Add resource test to SSI State Supplement.
+  date: 2022-07-07 17:09:07
 - bump: patch
   changes:
     fixed:
