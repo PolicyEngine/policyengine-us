@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class il_agi(Variable):
     value_type = float
     entity = TaxUnit
@@ -7,7 +8,7 @@ class il_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = ""
-    
+
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
         il_add_backs = tax_unit("il_add_backs", period)
