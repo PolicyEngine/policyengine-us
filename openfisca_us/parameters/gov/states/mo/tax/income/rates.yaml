@@ -1,0 +1,52 @@
+description: The tax rates for individual residents in Missouri. Thresholds are <=.
+brackets:
+  - rate:
+      2021-01-01: 0.015  
+    threshold:
+      2021-01-10: 0
+  - rate:
+      2021-01-10: 0.02  
+    threshold:
+      2021-01-10: 1_000
+  - rate:
+      2021-01-10: 0.025
+    threshold:
+      2021-01-10: 2_000
+  - rate:
+      2021-01-10: 0.03
+    threshold:
+      2021-01-10: 3_000
+  - rate:
+      2021-01-10: 0.035
+    threshold:
+      2021-01-10: 4_000
+  - rate:
+      2021-01-10: 0.04
+    threshold:
+      2021-01-10: 5_000
+  - rate:
+      2021-01-10: 0.045
+    threshold:
+      2021-01-10: 6_000
+  - rate:
+      2021-01-10: 0.05
+    threshold:
+      2021-01-10: 7_000
+  - rate:
+      2021-01-10: 0.055
+    threshold:
+      2021-01-10: 8_000
+  - rate:
+      2021-01-10: 0.06
+    threshold:
+      2021-01-10: 9_000
+metadata:
+  reference:
+    - title: "*143.011.  Resident individuals — tax rates."
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=35366&hl=
+  label: MO Resident Individual Tax Rates
+  name: mo_resident_individual_tax_rates
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year
