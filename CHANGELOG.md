@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.88.2] - 2022-07-07 17:39:36
+
+### Added
+
+- Notebook for Massachusetts Senior Circuit Breaker Credit.
+
+### Fixed
+
+- Include non-tax-exempt Social Security benefits in income for Massachusetts Senior Circuit Breaker Credit income definition.
+
 ## [0.88.1] - 2022-07-07 17:09:07
 
 ### Fixed
@@ -1272,6 +1282,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.88.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.1...0.88.2
 [0.88.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.0...0.88.1
 [0.88.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.87.0...0.88.0
 [0.87.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.86.1...0.87.0
