@@ -10,7 +10,7 @@ class il_income_tax(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        il_agi = tax_unit("il_add_backs", period)
+        il_agi = tax_unit("il_agi", period)
         rate = parameters(period).gov.states.il.tax.income.rate
 
         return il_agi * rate

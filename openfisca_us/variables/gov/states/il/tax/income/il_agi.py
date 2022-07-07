@@ -11,8 +11,8 @@ class il_agi(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
-        il_add_backs = tax_unit("il_add_backs", period)
-        il_deductions = tax_unit("il_deductions", period)
+        il_additions = tax_unit("il_additions", period)
+        il_subtractions = tax_unit("il_subtractions", period)
         il_exemptions = tax_unit("il_exemptions", period)
 
-        return federal_agi + il_add_backs - il_deductions - il_exemptions
+        return federal_agi + il_additions - il_subtractions - il_exemptions
