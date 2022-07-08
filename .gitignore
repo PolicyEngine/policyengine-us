@@ -43,4 +43,13 @@ docs/book/_build
 **/*.exe
 
 # Fedder's stuff
-feddertools/
+feddertools/*
+.history
+parameter_workspace*
+variable_workspace*
+*.py.md
+.*.py
+classes.png
+.fix_yaml.ipynb
+classes.dot
+.vscode/*
