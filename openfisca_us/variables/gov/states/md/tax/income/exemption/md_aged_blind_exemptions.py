@@ -1,5 +1,4 @@
 from openfisca_us.model_api import *
-from build.lib.openfisca_us.variables.irs.inputs import age_head
 
 
 class md_aged_blind_exemptions(Variable):
