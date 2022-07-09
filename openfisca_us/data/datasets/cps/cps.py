@@ -136,10 +136,11 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # 00-79 = 0-79 years of age
     # 80 = 80-84 years of age
     # 85 = 85+ years of age
-    # We assign the 80 ages randomly between 80 and 85
+    # We assign the 80 ages randomly between 80 and 84.
     # to avoid unrealistically bunching at 80.
     cps["age"] = np.where(
         person.A_AGE == 80,
+        # NB: randint is inclusive of first argument, exclusive of second.
         np.random.randint(80, 85, len(person)),
         person.A_AGE,
     )
