@@ -1,0 +1,18 @@
+- name: Empty input
+  period: 2020
+  input:
+    state_code: MD
+    people:
+      person1:
+        age: 67
+        is_tax_unit_head: 1
+        is_blind: 0
+      person2:
+        age: 64
+        is_spouse: 1
+        is_blind: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    md_aged_blind_exemptions: 2000
