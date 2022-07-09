@@ -22,7 +22,7 @@ class refundable_ctc(Variable):
 
         total_ctc = tax_unit("ctc", period)
         maximum_refundable_ctc = min_(
-            aggr(tax_unit, period, ["ctc_refundable_individual_maximum"]),
+            add(tax_unit, period, ["ctc_refundable_individual_maximum"]),
             total_ctc,
         )
 
@@ -32,7 +32,7 @@ class refundable_ctc(Variable):
         # - Social Security tax minus the EITC
         # First, we find tax_increase:
 
-        earnings = aggr(tax_unit, period, ["earned_income"])
+        earnings = add(tax_unit, period, ["earned_income"])
         earnings_over_threshold = max_(
             0, earnings - ctc.refundable.phase_in.threshold
         )
@@ -80,7 +80,12 @@ class refundable_ctc(Variable):
 
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
-    formula_2021 = sum_of_variables(["ctc_refundable_individual_maximum"])
+    def formula_2021(tax_unit, period, parameters):
+        maximum_amount = add(
+            tax_unit, period, ["ctc_refundable_individual_maximum"]
+        )
+        reduction = tax_unit("ctc_reduction", period)
+        return max_(0, maximum_amount - reduction)
 
     formula_2022 = formula
 

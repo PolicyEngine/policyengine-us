@@ -1,0 +1,76 @@
+# Published values from IRS:
+# https://www.irs.gov/credits-deductions/individuals/earned-income-tax-credit/earned-income-and-earned-income-tax-credit-eitc-tables
+
+- name: Zero children, filing non-joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 0
+    filing_status: SINGLE
+  output:
+    eitc_agi_limit: 21_430
+
+- name: Zero children, filing joint
+  period: 2021
+  absolute_error_margin: 14 # OFUS: 27366.992
+  input:
+    eitc_child_count: 0
+    filing_status: JOINT
+  output:
+    eitc_agi_limit: 27_380
+
+- name: One child, filing non-joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 1
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    eitc_agi_limit: 42_158
+
+- name: One child, filing joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 1
+    filing_status: JOINT
+  output:
+    eitc_agi_limit: 48_108
+
+
+- name: Two children, filing non-joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 2
+    filing_status: SEPARATE
+  output:
+    eitc_agi_limit: 47_915
+
+- name: Two children, filing joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 2
+    filing_status: JOINT
+  output:
+    eitc_agi_limit: 53_865
+
+- name: Three children, filing non-joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 3
+    filing_status: WIDOW
+  output:
+    eitc_agi_limit: 51_464
+
+
+- name: Three children, filing joint
+  period: 2021
+  absolute_error_margin: 4 # We're a bit off.
+  input:
+    eitc_child_count: 3
+    filing_status: JOINT
+  output:
+    eitc_agi_limit: 57_414
