@@ -132,15 +132,15 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
         person (DataFrame): The CPS person table.
     """
 
-    # The CPS edits age as follows:
-    # 0-79 => 0-79
-    # 80-84  => 80
-    # 85+ => 85
+    # The CPS provides age as follows:
+    # 00-79 = 0-79 years of age
+    # 80 = 80-84 years of age
+    # 85 = 85+ years of age
     # We assign the 80 ages randomly between 80 and 85
     # to avoid unrealistically bunching at 80.
     cps["age"] = np.where(
-        person.A_AGE.between(80, 85),
-        80 + 5 * np.random.rand(len(person)),
+        person.A_AGE == 80,
+        np.random.randint(80, 85, len(person)),
         person.A_AGE,
     )
     # A_SEX is 1 -> male, 2 -> female.
