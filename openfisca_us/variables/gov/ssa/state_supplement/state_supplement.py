@@ -12,10 +12,13 @@ class state_supplement(Variable):
         reduction_after_ssi = max_(0, -uncapped_ssi)
         maximum_ss = person("maximum_state_supplement", period)
         state_supplement = max_(0, maximum_ss - reduction_after_ssi)
-        eligible = person("is_ssi_aged_blind_disabled", period)
+        abd = person("is_ssi_aged_blind_disabled", period)
+        meets_resource_test = person("meets_ssi_resource_test", period)
+        eligible = abd & meets_resource_test
         joint_claim = person("ssi_claim_is_joint", period)
-        return eligible * where(
+        amount_if_eligible = where(
             joint_claim,
             person.marital_unit.sum(state_supplement) / 2,
             state_supplement,
         )
+        return eligible * amount_if_eligible

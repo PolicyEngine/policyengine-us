@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.89.0] - 2022-07-08 12:26:04
+
+### Added
+
+- MA COVID-19 Essential Employee Premium Pay Program.
+
+## [0.88.2] - 2022-07-07 17:39:36
+
+### Added
+
+- Notebook for Massachusetts Senior Circuit Breaker Credit.
+
+### Fixed
+
+- Include non-tax-exempt Social Security benefits in income for Massachusetts Senior Circuit Breaker Credit income definition.
+
+## [0.88.1] - 2022-07-07 17:09:07
+
+### Fixed
+
+- Add resource test to SSI State Supplement.
+
+## [0.88.0] - 2022-07-07 07:15:06
+
+### Added
+
+- Washington Working Families Tax Credit.
+- EITC AGI limit variable.
+
+## [0.87.0] - 2022-07-06 20:08:08
+
+### Added
+
+- MO Income Tax before credits.
+- Parameters for MO Tax Schedule.
+
+## [0.86.1] - 2022-07-03 21:47:43
+
+### Fixed
+
+- Fixed the CTC formula in 2021 (only) to correctly apply the income-based reduction.
+
 ## [0.86.0] - 2022-07-02 06:09:09
 
 ### Added
@@ -1246,6 +1288,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.89.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.2...0.89.0
+[0.88.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.1...0.88.2
+[0.88.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.0...0.88.1
+[0.88.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.87.0...0.88.0
+[0.87.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.86.1...0.87.0
+[0.86.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.86.0...0.86.1
 [0.86.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.85.3...0.86.0
 [0.85.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.85.2...0.85.3
 [0.85.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.85.1...0.85.2
