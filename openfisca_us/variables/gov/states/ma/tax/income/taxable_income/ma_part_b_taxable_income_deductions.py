@@ -47,4 +47,11 @@ class ma_part_b_taxable_income_deductions(Variable):
             rent_deduction,
             tax.deductions.rent.cap[filing_status],
         )
-        return fica + interest_and_dividends + rent_deduction
+        # (B)(a)(13): Charitable contributions deduction.
+        charitable_deduction = tax_unit("charitable_deduction", period)
+        return (
+            fica
+            + interest_and_dividends
+            + rent_deduction
+            + charitable_deduction
+        )
