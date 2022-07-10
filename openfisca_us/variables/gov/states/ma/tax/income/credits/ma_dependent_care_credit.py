@@ -22,21 +22,11 @@ class ma_dependent_care_credit(Variable):
         cap = p.amount.calc(count_cdcc_eligible)
         # Line 1.
         capped_expenses = min_(expenses, cap)
-        # Line 2: US Form 2441, line 4.
-        person = tax_unit.members
-        earned_income = max_(0, person("earned_income", period))
-        is_joint = tax_unit("tax_unit_is_joint", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        is_head = person("is_tax_unit_head", period)
-        head_earnings = tax_unit.sum(is_head * earned_income)
-        # Line 3: US Form 2441, line 5 (for joint filers).
-        spouse_earnings = tax_unit.sum(is_spouse * earned_income)
-        # Form 2441: "all others, enter the amount from line 4"
-        lower_earnings = where(
-            is_joint, min_(head_earnings, spouse_earnings), head_earnings
-        )
+        # Skip lines 2 and 3, which are done in intermediate steps.
         # Line 4: Smallest of lines 1, 2, 3.
-        amount_if_eligible = min_(capped_expenses, lower_earnings)
+        amount_if_eligible = min_(
+            capped_expenses, tax_unit("min_head_spouse_earned", period)
+        )
         # Skip line 5 for prior-year expenses.
         # Married filing separate are ineligible.
         filing_status = tax_unit("filing_status", period)
