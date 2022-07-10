@@ -1,0 +1,7 @@
+- name: Head's earnings
+  period: 2018
+  input:
+    is_tax_unit_head: true
+    earned: 1
+  output:
+    head_earned: 1

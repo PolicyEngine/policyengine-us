@@ -1,0 +1,12 @@
+description: Washington capital gains tax rate.
+metadata:
+  label: Washington capital gains tax rate
+  name: wa_ltcg_rate
+  unit: /1
+  period: year
+  reference:
+    - title: "RCW 82.87.040(1) Tax imposed—Long-term capital assets."
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.040
+values:
+  0000-01-01: 0
+  2022-01-01: 0.07
