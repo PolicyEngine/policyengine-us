@@ -8,5 +8,4 @@ class state_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula_2021(tax_unit, period, parameters):
-        return tax_unit("ma_income_tax", period)
+    formula_2021 = sum_of_variables(["ma_income_tax", "wa_income_tax"])
