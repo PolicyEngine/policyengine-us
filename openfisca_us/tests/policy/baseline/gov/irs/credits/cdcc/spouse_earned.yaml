@@ -1,0 +1,15 @@
+- name: Spouse's earnings
+  period: 2018
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        earned: 1
+      spouse:
+        is_tax_unit_spouse: true
+        earned: 2
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    spouse_earned: 2

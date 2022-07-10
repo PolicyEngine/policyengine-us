@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.90.0] - 2022-07-10 16:05:38
+
+### Added
+
+- MA dependent care tax credit.
+
+## [0.89.1] - 2022-07-10 10:45:23
+
+### Changed
+
+- Impute integer ages in CPS from 80 to 84.
+
 ## [0.89.0] - 2022-07-08 12:26:04
 
 ### Added
@@ -1288,6 +1300,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.90.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.89.1...0.90.0
+[0.89.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.89.0...0.89.1
 [0.89.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.2...0.89.0
 [0.88.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.1...0.88.2
 [0.88.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.0...0.88.1
