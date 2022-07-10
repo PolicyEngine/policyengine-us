@@ -1059,6 +1059,16 @@
     - Include non-tax-exempt Social Security benefits in income for Massachusetts
       Senior Circuit Breaker Credit income definition.
   date: 2022-07-07 17:39:36
+- bump: minor
+  changes:
+    added:
+    - MA COVID-19 Essential Employee Premium Pay Program.
+  date: 2022-07-08 12:26:04
+- bump: patch
+  changes:
+    changed:
+    - Impute integer ages in CPS from 80 to 84.
+  date: 2022-07-10 10:45:23
 - bump: patch
   changes:
     fixed:
