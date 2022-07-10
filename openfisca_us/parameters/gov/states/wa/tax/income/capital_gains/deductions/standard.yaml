@@ -1,0 +1,12 @@
+description: Washington capital gains standard deduction.
+metadata:
+  label: Washington capital gains standard deduction
+  name: wa_ltcg_standard_deduction
+  unit: currency-USD
+  period: year
+  reference:
+    - title: "RCW 82.87.060(1) Deductions"
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.060
+values:
+  0000-01-01: 0
+  2022-01-01: 250_000
