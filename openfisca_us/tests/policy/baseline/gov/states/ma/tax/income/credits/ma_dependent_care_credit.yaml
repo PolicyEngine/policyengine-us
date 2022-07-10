@@ -1,0 +1,37 @@
+- name: No CDCC-eligible people, no credit
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    count_cdcc_eligible: 0
+  output:
+    ma_dependent_care_credit: 0
+
+- name: One CDCC-eligible person, $240 credit, or less based on earnings.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 200
+    tax_unit_childcare_expenses: 300
+  output:
+    ma_dependent_care_credit: 200
+
+- name: Two CDCC-eligible people, $480 credit
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    count_cdcc_eligible: 2
+    tax_unit_childcare_expenses: 500
+    min_head_spouse_earned: 600
+  output:
+    ma_dependent_care_credit: 480
+
+- name: More than two CDCC-eligible people, up to $480 credit
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    count_cdcc_eligible: 4
+    tax_unit_childcare_expenses: 500
+    min_head_spouse_earned: 300
+  output:
+    ma_dependent_care_credit: 300

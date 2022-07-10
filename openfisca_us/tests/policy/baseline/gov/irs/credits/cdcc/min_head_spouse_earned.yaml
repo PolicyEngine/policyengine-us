@@ -1,0 +1,24 @@
+- name: Head earns less
+  period: 2018
+  input:
+    head_earned: 1
+    spouse_earned: 2
+    tax_unit_is_joint: true
+  output:
+    min_head_spouse_earned: 1
+
+- name: Spouse earns less
+  period: 2018
+  input:
+    head_earned: 2
+    spouse_earned: 1
+    tax_unit_is_joint: true
+  output:
+    min_head_spouse_earned: 1
+
+- name: Just head's earnings if not joint
+  period: 2018
+  input:
+    head_earned: 1
+  output:
+    min_head_spouse_earned: 1
