@@ -32,7 +32,7 @@ class md_aged_blind_exemptions(Variable):
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
         elderly = age >= age_for_exemption
-        eligible = dependent & (elderly)
+        eligible = dependent & elderly
         count_eligible = tax_unit.sum(eligible)
         aged_dependent_exemption = count_eligible * p.aged_dependent
 
