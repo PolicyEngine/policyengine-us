@@ -1,0 +1,15 @@
+metadata:
+  type: rate
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 15667
+    rate:
+      2021-01-01: 0.15
+  - threshold:
+      2021-01-01: 15667
+    rate:
+      2021-01-01: 0

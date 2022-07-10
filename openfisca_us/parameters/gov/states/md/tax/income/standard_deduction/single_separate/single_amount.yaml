@@ -1,0 +1,15 @@
+metadata:
+  type: single_amount
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 1550
+  - threshold:
+      2021-01-01: 15667
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 15667
+    amount:
+      2021-01-01: 2350
