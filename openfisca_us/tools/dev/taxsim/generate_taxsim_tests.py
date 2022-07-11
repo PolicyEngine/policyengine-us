@@ -102,6 +102,13 @@ class TaxSim35:
         "tax_unit_id",
         "person_tax_unit_id",
     ]
+    NEUTRALIZED_VARIABLES = [
+        "snap",
+        "ssi",
+        "state_supplement",
+        "tanf",
+        "wic",
+    ]
 
     def __init__(self):
         self.ensure_executable_is_ready()
@@ -178,6 +185,11 @@ class TaxSim35:
         drop_zeros: bool = False,
     ):
         sim = Microsimulation(dataset=dataset, year=2020)
+
+        # Neutralise benefit variables, since these are not simulated in TAXSIM
+        for variable in self.NEUTRALIZED_VARIABLES:
+            sim.simulation.tax_benefit_system.neutralize_variable(variable)
+
         system: TaxBenefitSystem = sim.simulation.tax_benefit_system
         openfisca_named_taxsim_input_variables = [
             f"taxsim_{variable}" for variable in self.INPUT_VARIABLES
