@@ -15,7 +15,7 @@ class md_income_tax_before_credits(Variable):
 
         taxable_income = tax_unit("md_taxable_income", period)
 
-        p = parameters(period).gov.states.md.tax.income
+        p = parameters(period).gov.states.md.tax.income.rate_schedule
 
         single_separate = p.single_separate.calc(taxable_income)
 
