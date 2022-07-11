@@ -5,7 +5,7 @@
 - name: Single filers with income of 20000 pay 897.50.
   period: 2020
   input:
-    md_taxable_income: 20000
+    md_taxable_income: 20_000
     filing_status: SINGLE
   output:
     md_income_tax_before_credits: 897.50
