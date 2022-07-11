@@ -1,14 +1,15 @@
 - name: Empty input
   period: 2020
   input:
-    state_code: MD
     people:
       person1:
         age: 67
+        state_code: MD
         is_tax_unit_head: 1
         is_blind: 0
       person2:
         age: 64
+        state_code: MD
         is_spouse: 1
         is_blind: 1
     tax_units:
