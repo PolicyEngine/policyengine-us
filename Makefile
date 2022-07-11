@@ -15,7 +15,7 @@ test:
 	coverage run --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline
 	coverage xml -i
 documentation:
-	jb build docs/book
+	jb build docs
 build:
 	rm openfisca_us/data/storage/*.h5 | true
 	python setup.py sdist bdist_wheel
