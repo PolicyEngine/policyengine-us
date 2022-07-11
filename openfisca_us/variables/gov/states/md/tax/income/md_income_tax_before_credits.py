@@ -1,9 +1,4 @@
-# from turtle import right
 from openfisca_us.model_api import *
-
-# from openfisca_us.variables.household.demographic.tax_unit.filing_status import (
-#     filing_status,
-# )
 
 
 class md_income_tax_before_credits(Variable):
