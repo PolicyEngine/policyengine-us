@@ -12,14 +12,14 @@
 - name: Single filers with income of 2000 pay 50.
   period: 2020
   input:
-    md_taxable_income: 2000
+    md_taxable_income: 2_000
     filing_status: SINGLE
   output:
     md_income_tax_before_credits: 50
 - name: Married filers with income of 2000 pay 50.
   period: 2020
   input:
-    md_taxable_income: 2000
+    md_taxable_income: 2_000
     filing_status: MARRIED
   output:
     md_income_tax_before_credits: 50
