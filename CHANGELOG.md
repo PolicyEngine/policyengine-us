@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.91.3] - 2022-07-11 05:30:45
+
+### Fixed
+
+- Includes TANF as a categorical eligibility program for free school meals.
+
 ## [0.91.2] - 2022-07-10 19:04:21
 
 ### Fixed
@@ -1319,6 +1325,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.91.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.2...0.91.3
 [0.91.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.1...0.91.2
 [0.91.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.0...0.91.1
 [0.91.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.90.0...0.91.0
