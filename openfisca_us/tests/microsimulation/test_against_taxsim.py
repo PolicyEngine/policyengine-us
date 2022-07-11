@@ -4,6 +4,7 @@ from openfisca_us.tools.dev.taxsim.generate_taxsim_tests import TaxSim35
 import numpy as np
 import pytest
 import pandas as pd
+import platform
 
 # Disable warnings
 import warnings
@@ -23,6 +24,9 @@ taxsim_df = taxsim.generate_from_microsimulation(
 
 
 def test_federal_tax_against_taxsim():
+    if platform.system() == "Windows":
+        warnings.warn("This test is not run on Windows")
+        raise pytest.skip()
     tax = sim.calc("income_tax")
     tax.index = sim.calc("tax_unit_id").values
     comparison_df = pd.DataFrame(index=sim.calc("tax_unit_id").values)
@@ -37,6 +41,9 @@ def test_federal_tax_against_taxsim():
 
 @pytest.mark.parametrize("state", STATES)
 def test_state_income_tax_against_taxsim(state: str):
+    if platform.system() == "Windows":
+        warnings.warn("This test is not run on Windows")
+        raise pytest.skip()
     in_state = sim.calc("tax_unit_state").values == state
     tax = sim.calc("state_income_tax")
     tax.index = sim.calc("tax_unit_id").values
