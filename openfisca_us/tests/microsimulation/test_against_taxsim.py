@@ -1,3 +1,4 @@
+import os
 from openfisca_us.api.microsimulation import Microsimulation
 from openfisca_us.data.datasets import CPS
 from openfisca_us.tools.dev.taxsim.generate_taxsim_tests import TaxSim35
@@ -23,6 +24,7 @@ taxsim_df = taxsim.generate_from_microsimulation(
 ).set_index("taxsim_taxsimid")
 
 
+@pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
 def test_federal_tax_against_taxsim():
     if platform.system() == "Windows":
         warnings.warn("This test is not run on Windows")
@@ -38,12 +40,9 @@ def test_federal_tax_against_taxsim():
     percent_close = (relative_distance < DISTANCE).mean()
     assert percent_close > MINIMUM_PERCENT_CLOSE
 
-
+@pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
 @pytest.mark.parametrize("state", STATES)
 def test_state_income_tax_against_taxsim(state: str):
-    if platform.system() == "Windows":
-        warnings.warn("This test is not run on Windows")
-        raise pytest.skip()
     in_state = sim.calc("tax_unit_state").values == state
     tax = sim.calc("state_income_tax")
     tax.index = sim.calc("tax_unit_id").values
