@@ -1,0 +1,48 @@
+description: MD State income single amounts added to rates for joint, head of household, and widow(er) filers
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label:
+  reference:
+    - title: Tax Foundation State Individual Income Tax Rates and Brackets
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/#Structures
+    - title: MD Tax_Computation
+      href: https://www.marylandtaxes.gov/forms/current_forms/Md_Tax_Computation.pdf
+    - title: MD resident booklet individual - instruction 17, 2021 - Form 502
+      href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf
+    - title: § 10-105 (a)(1). State income tax rates
+      href: https://govt.westlaw.com/mdc/Document/N5C14CC91D9D311E2A5EFA1428CB399FF?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)
+brackets:
+  - threshold:
+      2015-01-01: -.inf
+    amount:
+      2015-01-01: 0
+  - threshold:
+      2015-01-01: 1_000
+    amount:
+      2015-01-01: 20
+  - threshold:
+      2015-01-01: 2_000
+    amount:
+      2015-01-01: 50
+  - threshold:
+      2015-01-01: 3_000
+    amount:
+      2015-01-01: 90
+  - threshold:
+      2015-01-01: 150_000
+    amount:
+      2015-01-01: 7_072.50
+  - threshold:
+      2015-01-01: 175_000
+    amount:
+      2015-01-01: 8_322
+  - threshold:
+      2015-01-01: 225_000
+    amount:
+      2015-01-01: 10_947.50
+  - threshold:
+      2015-01-01: 300_000
+    amount:
+      2015-01-01: 15_072.50
