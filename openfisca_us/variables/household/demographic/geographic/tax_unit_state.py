@@ -1,4 +1,3 @@
-from xxlimited import Str
 from openfisca_us.model_api import *
 
 
