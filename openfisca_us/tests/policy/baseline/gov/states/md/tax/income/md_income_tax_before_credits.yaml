@@ -1,0 +1,28 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    md_income_tax_before_credits: 0
+- name: Single filers with income of 20000 pay 1040.
+  period: 2022
+  input:
+    md_taxable_income: 20000
+    state_code: MD
+    filing_status: single
+  output:
+    md_income_tax_before_credits: 1040
+- name: Single filers with income of 20000 pay 130.
+  period: 2022
+  input:
+    md_taxable_income: 20000
+    state_code: MD
+    filing_status: single
+  output:
+    md_income_tax_before_credits: 130
+- name: Married filers with income of 2000 pay 130.00.
+  period: 2022
+  input:
+    md_taxable_income: 2000
+    state_code: MD
+    filing_status: married
+  output:
+    md_income_tax_before_credits: 130.00
