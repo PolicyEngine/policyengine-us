@@ -1,0 +1,12 @@
+description: Washington capital gains charitable contribution cap.
+metadata:
+  label: Washington capital gains charitable contribution cap
+  name: wa_ltcg_charitable_contributions_cap
+  unit: currency-USD
+  period: year
+  reference:
+    - title: "RCW 82.87.080(2) Charitable donation deduction"
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.87.080
+values:
+  0000-01-01: 0
+  2022-01-01: 100_000

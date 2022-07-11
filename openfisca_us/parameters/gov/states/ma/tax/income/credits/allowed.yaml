@@ -1,0 +1,12 @@
+description: Allowed credits for MA income tax.
+values:
+  2020-01-01:
+  - ma_limited_income_tax_credit
+  - ma_eitc
+  - ma_dependent_or_dependent_care_credit
+  - ma_senior_circuit_breaker
+  - ma_covid_19_essential_employee_premium_pay_program
+metadata:
+  unit: program
+  name: ma_allowable_tax_credits
+  label: MA allowable tax credits

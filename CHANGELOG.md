@@ -5,6 +5,58 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.91.2] - 2022-07-10 19:04:21
+
+### Fixed
+
+- Separate WA WFTC parameter labels.
+
+## [0.91.1] - 2022-07-10 16:25:24
+
+### Fixed
+
+- Charitable deduction available for MA taxable income calculations.
+
+## [0.91.0] - 2022-07-10 16:19:30
+
+### Added
+
+- Washington capital gains tax.
+
+## [0.90.0] - 2022-07-10 16:05:38
+
+### Added
+
+- MA dependent care tax credit.
+
+## [0.89.1] - 2022-07-10 10:45:23
+
+### Changed
+
+- Impute integer ages in CPS from 80 to 84.
+
+## [0.89.0] - 2022-07-08 12:26:04
+
+### Added
+
+- MA COVID-19 Essential Employee Premium Pay Program.
+
+## [0.88.2] - 2022-07-07 17:39:36
+
+### Added
+
+- Notebook for Massachusetts Senior Circuit Breaker Credit.
+
+### Fixed
+
+- Include non-tax-exempt Social Security benefits in income for Massachusetts Senior Circuit Breaker Credit income definition.
+
+## [0.88.1] - 2022-07-07 17:09:07
+
+### Fixed
+
+- Add resource test to SSI State Supplement.
+
 ## [0.88.0] - 2022-07-07 07:15:06
 
 ### Added
@@ -1266,6 +1318,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.91.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.1...0.91.2
+[0.91.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.0...0.91.1
+[0.91.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.90.0...0.91.0
+[0.90.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.89.1...0.90.0
+[0.89.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.89.0...0.89.1
+[0.89.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.2...0.89.0
+[0.88.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.1...0.88.2
+[0.88.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.88.0...0.88.1
 [0.88.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.87.0...0.88.0
 [0.87.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.86.1...0.87.0
 [0.86.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.86.0...0.86.1
