@@ -1,7 +1,28 @@
 description: ""
 values:
   2010-01-01: false
+  2021-01-01:
+    - md_pass_through_not_attributable_to_decoupling
+    - md_trust_income
+    - md_s_corp_tax_credit
+    - md_oil_percentage_depletion_allowance
+    - md_income_exempt_from_federal_tax
+    - md_net_operating_loss_deduction
+    - md_taxable_tax_preference_items
+    - md_unlicensed_child_care_expenses
+    - md_refunds_of_advanced_tuition_payments
+    - md_decoupled_depreciation_allowances
+    - md_farming_loss_carryback
+    - md_domestic_production_activities
+    - md_tuition_and_related_expenses
+    - md_able_refunds
+    - md_property_subtraction_modification
+    - md_pass_through_member_share
+    - md_first_time_homebuyer_savings_withdrawn
+    - md_deferred_income_by_debt_reacquisition
+    - md_multiple_decoupling_modification
+    - md_pass_through_entity_decoupling_modification
 metadata:
   unit: addition
-  label: MD Other additions
-  name: md_other_additions
+  label: MD additions to agi
+  name: md_additions_to_agi
