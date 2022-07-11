@@ -13,12 +13,17 @@ from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 from openfisca_us.api.microsimulation import Microsimulation
 from tqdm import tqdm
 from argparse import ArgumentParser
+import platform
 
+if platform.system() == "Windows":
+    OS_NAME = "windows"
+else:
+    OS_NAME = "unix"
 
 class TaxSim35:
     """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
 
-    EXECUTABLE_URL = "https://taxsim.nber.org/stata/taxsim35/taxsim35-unix.exe"
+    EXECUTABLE_URL = f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{OS_NAME}.exe"
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
     INPUT_VARIABLES = [
