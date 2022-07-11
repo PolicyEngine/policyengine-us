@@ -40,6 +40,7 @@ def test_federal_tax_against_taxsim():
     percent_close = (relative_distance < DISTANCE).mean()
     assert percent_close > MINIMUM_PERCENT_CLOSE
 
+
 @pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
 @pytest.mark.parametrize("state", STATES)
 def test_state_income_tax_against_taxsim(state: str):
