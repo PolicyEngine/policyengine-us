@@ -20,10 +20,13 @@ if platform.system() == "Windows":
 else:
     OS_NAME = "unix"
 
+
 class TaxSim35:
     """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
 
-    EXECUTABLE_URL = f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{OS_NAME}.exe"
+    EXECUTABLE_URL = (
+        f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{OS_NAME}.exe"
+    )
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
     INPUT_VARIABLES = [
