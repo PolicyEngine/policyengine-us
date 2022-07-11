@@ -6,7 +6,6 @@ import numpy as np
 import pytest
 import pandas as pd
 import platform
-
 # Disable warnings
 import warnings
 
@@ -16,12 +15,13 @@ STATES = ["MA"]
 DISTANCE = 100
 MINIMUM_PERCENT_CLOSE = 0.75
 
-taxsim = TaxSim35()
-sim = Microsimulation()
+if os.name != "nt":
+    taxsim = TaxSim35()
+    sim = Microsimulation()
 
-taxsim_df = taxsim.generate_from_microsimulation(
-    CPS, 2022, None, True, False
-).set_index("taxsim_taxsimid")
+    taxsim_df = taxsim.generate_from_microsimulation(
+        CPS, 2022, None, True, False
+    ).set_index("taxsim_taxsimid")
 
 
 @pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
