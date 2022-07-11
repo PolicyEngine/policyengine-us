@@ -1,4 +1,7 @@
 from openfisca_us.model_api import *
+from openfisca_us.variables.household.demographic.tax_unit.filing_status import (
+    filing_status,
+)
 
 
 class md_income_tax_before_credits(Variable):
@@ -9,4 +12,25 @@ class md_income_tax_before_credits(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        filing_status = tax_unit("filing_status", period)
+        # Get possible values for filing_status
+        filing_statuses = filing_status.possible_values
+
         taxable_income = tax_unit("md_taxable_income", period)
+
+        p = parameters(period).gov.states.md.tax.income
+
+        single_separate = p.single_separate.single_amount.calc(
+            taxable_income
+        ) + p.single_separate.rates.calc(taxable_income)
+
+        joint_head_widow = p.joint_head_widow.single_amount.calc(
+            taxable_income
+        ) + p.joint_head_widow.rates.calc(taxable_income)
+
+        return where(
+            (filing_status == filing_statuses.SINGLE)
+            | (filing_status == filing_statuses.SEPARATE),
+            single_separate,
+            joint_head_widow,
+        )
