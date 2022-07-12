@@ -66,12 +66,13 @@ class County(Enum):
     WESTCHESTER_NY = "Westchester, NY"
     WYOMING_NY = "Wyoming, NY"
     YATES_NY = "Yates, NY"
+    UNKNOWN = "Unknown"
 
 
 class county(Variable):
     value_type = Enum
     possible_values = County
-    default_value = County.NEW_YORK_NY
+    default_value = County.UNKNOWN
     entity = Household
     label = "County"
     definition_period = ETERNITY
