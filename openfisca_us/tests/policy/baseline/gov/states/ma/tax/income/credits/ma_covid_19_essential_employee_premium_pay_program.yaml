@@ -1,0 +1,71 @@
+- name: Credit requires earnings.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    earned_income: 0
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: 0
+
+- name: Qualifying earnings.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    earned_income: 15_000
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: 500
+
+- name: Can't have claimed in 2020 to receive in 2021.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    state_code: MA
+    earned_income: 15_000
+    claimed_ma_covid_19_essential_employee_premium_pay_program_2020: true
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: 0
+
+- name: Unemployment compensation disqualifies.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        earned_income: 15_000
+      spouse:
+        earned_income: 20_000
+        unemployment_compensation: 1
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 3
+        tax_unit_fpg: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: [500, 0]
+
+- name: Exceeding the AGI threshold disqualifies.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        earned_income: 15_000
+      spouse:
+        earned_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 3.1
+        tax_unit_fpg: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    ma_covid_19_essential_employee_premium_pay_program: [0, 0]
+

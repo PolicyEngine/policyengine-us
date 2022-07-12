@@ -15,10 +15,6 @@ class ma_income_tax(Variable):
         income_tax_before_credits = tax_unit(
             "ma_income_tax_before_credits", period
         )
-        CREDITS = [
-            "ma_limited_income_tax_credit",
-            "ma_eitc",
-            "ma_dependent_credit",
-        ]
-        credit_value = add(tax_unit, period, CREDITS)
+        p = parameters(period).gov.states.ma.tax.income
+        credit_value = add(tax_unit, period, p.credits.allowed)
         return in_ma * (income_tax_before_credits - credit_value)

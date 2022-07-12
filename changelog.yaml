@@ -1027,4 +1027,80 @@
 - bump: minor
   changes:
     added:
+    - MA Senior Circuit Breaker credit.
+  date: 2022-07-02 06:09:09
+- bump: patch
+  changes:
+    fixed:
+    - Fixed the CTC formula in 2021 (only) to correctly apply the income-based reduction.
+  date: 2022-07-03 21:47:43
+- bump: minor
+  changes:
+    added:
+    - MO Income Tax before credits.
+    - Parameters for MO Tax Schedule.
+  date: 2022-07-06 20:08:08
+- bump: minor
+  changes:
+    added:
+    - Washington Working Families Tax Credit.
+    - EITC AGI limit variable.
+  date: 2022-07-07 07:15:06
+- bump: patch
+  changes:
+    fixed:
+    - Add resource test to SSI State Supplement.
+  date: 2022-07-07 17:09:07
+- bump: patch
+  changes:
+    added:
+    - Notebook for Massachusetts Senior Circuit Breaker Credit.
+    fixed:
+    - Include non-tax-exempt Social Security benefits in income for Massachusetts
+      Senior Circuit Breaker Credit income definition.
+  date: 2022-07-07 17:39:36
+- bump: minor
+  changes:
+    added:
+    - MA COVID-19 Essential Employee Premium Pay Program.
+  date: 2022-07-08 12:26:04
+- bump: patch
+  changes:
+    changed:
+    - Impute integer ages in CPS from 80 to 84.
+  date: 2022-07-10 10:45:23
+- bump: minor
+  changes:
+    added:
+    - MA dependent care tax credit.
+  date: 2022-07-10 16:05:38
+- bump: minor
+  changes:
+    added:
+    - Washington capital gains tax.
+  date: 2022-07-10 16:19:30
+- bump: patch
+  changes:
+    fixed:
+    - Charitable deduction available for MA taxable income calculations.
+  date: 2022-07-10 16:25:24
+- bump: patch
+  changes:
+    fixed:
+    - Separate WA WFTC parameter labels.
+  date: 2022-07-10 19:04:21
+- bump: patch
+  changes:
+    fixed:
+    - Includes TANF as a categorical eligibility program for free school meals.
+  date: 2022-07-11 05:30:45
+- bump: patch
+  changes:
+    added:
+    - Validation against TAXSIM using the CPS tax unit set.
+    - Validation results on the documentation.
+  date: 2022-07-12 11:00:29
+- bump: minor
+  changes:
+    added:
     - IN exemptions.

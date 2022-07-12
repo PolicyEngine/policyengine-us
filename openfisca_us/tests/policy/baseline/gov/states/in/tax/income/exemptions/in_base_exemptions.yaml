@@ -2,8 +2,7 @@
   period: 2021
   input:
     state_code: IN
-    filing_status: JOINT
-    tax_unit_dependents: 2
+    tax_unit_size: 4
   output:
     in_base_exemptions: 4_000
 
@@ -11,7 +10,6 @@
   period: 2021
   input:
     state_code: IN
-    filing_status: SINGLE
-    tax_unit_dependents: 2
+    tax_unit_size: 3
   output:
     in_base_exemptions: 3_000
