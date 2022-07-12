@@ -29,7 +29,6 @@ class md_aged_blind_exemptions(Variable):
 
         aged_amount = p.amount
 
-        # TODO add aged exemptions
         aged_head = (tax_unit("age_head", period) >= age_for_exemption) * 1
 
         aged_spouse = (
@@ -57,5 +56,3 @@ class md_aged_blind_exemptions(Variable):
             + aged_exemption_total
             + aged_dependent_exemption
         )
-
-    # Get blind exemption parameter
