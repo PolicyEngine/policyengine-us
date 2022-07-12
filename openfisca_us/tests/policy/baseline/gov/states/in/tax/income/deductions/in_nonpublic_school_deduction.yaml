@@ -1,0 +1,7 @@
+- name: 2 qualifying kids
+  period: 2021
+  input:
+    state_code: IN
+    in_num_children_public_school: 2
+  output:
+    in_nonpublic_school_deduction: 2_000

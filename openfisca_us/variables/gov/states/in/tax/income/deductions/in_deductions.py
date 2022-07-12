@@ -5,7 +5,7 @@ class in_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "IN deductions"
-    unit = USD
+    unit = currency - USD
     definition_period = YEAR
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3"
 
@@ -15,11 +15,11 @@ class in_deductions(Variable):
             "in_homeowners_property_tax_deduction",
             "salt_refund_last_year",
             "us_govt_interest",
-            "tax_unit_taxable_social_security", # includes railroad retirement benefits
+            "tax_unit_taxable_social_security",  # includes railroad retirement benefits
             "in_military_service_deduction",
-            "in_private_homeschool_deduction",
-            "in_nol_deduction",
-            "in_nontaxable_unemployment_deduction",
-            "in_other_deductions"
+            "in_nonpublic_school_deduction",
+            "in_nol",
+            "in_unemployment_deduction",
+            "in_other_deductions",
         ]
-    )    
+    )

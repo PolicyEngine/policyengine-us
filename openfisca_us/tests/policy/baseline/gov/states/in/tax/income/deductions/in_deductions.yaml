@@ -1,0 +1,16 @@
+- name: All IN deductions
+  period: 2021
+  input:
+    state_code: IN
+    in_renters_deduction: 100
+    in_home_owners_property_tax_deduction: 100
+    salt_refund_last_year: 100
+    us_govt_interest: 100
+    tax_unit_taxable_social_security: 100
+    in_military_service_deduction: 100
+    in_nonpublic_school_deduction: 100
+    in_nol: 100
+    in_unemployment_deduction: 100
+    in_other_deduction: 100
+  output:
+    in_deductions: 1_000
