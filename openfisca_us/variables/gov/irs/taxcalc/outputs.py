@@ -77,12 +77,7 @@ class earned(Variable):
             * misc.employer_share
             * person("self_employment_tax", period)
         )
-        return (
-            add(
-                person, period, ["employment_income", "self_employment_income"]
-            )
-            - adjustment
-        )
+        return person("earned_income", period) - adjustment
 
 
 class othertaxes(Variable):
