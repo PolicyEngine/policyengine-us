@@ -6,7 +6,7 @@ class in_nonpublic_school_deduction(Variable):
     entity = Person
     label = "Nonpublic school expenditures deduction for IN"
     definition_period = YEAR
-    unit = currency - USD
+    unit = USD
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4"  # (d)(1)
 
     def formula(tax_unit, period, parameters):

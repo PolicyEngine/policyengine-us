@@ -5,7 +5,7 @@ class in_nol(Variable):
     value_type = float
     entity = TaxUnit
     label = "IN nol"
-    unit = currency - USD
+    unit = USD
     definition_period = YEAR
     documentation = "Net operating losses allowable for deduction in Indiana."
     reference = (
