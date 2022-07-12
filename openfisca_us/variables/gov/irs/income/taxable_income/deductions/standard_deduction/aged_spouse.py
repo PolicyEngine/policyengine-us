@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class aged_spouse(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Aged and or blind head and spouse count"
     unit = USD
@@ -13,5 +13,4 @@ class aged_spouse(Variable):
         age_threshold = parameters(
             period
         ).gov.irs.deductions.standard.aged_or_blind.age_threshold
-        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold) * 1
-        return aged_spouse
+        return tax_unit("age_spouse", period) >= age_threshold

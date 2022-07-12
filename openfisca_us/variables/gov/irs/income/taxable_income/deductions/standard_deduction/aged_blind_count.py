@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class aged_blind_count(Variable):
-    value_type = float
+    value_type = int
     entity = TaxUnit
     label = "Aged and or blind head and spouse count"
     unit = USD

@@ -3,11 +3,11 @@
   input:
     age_head: 65
   output:
-    aged_head: 1
+    aged_head: true
 
 - name: Not aged head
   period: 2021
   input:
     age_head: 64
   output:
-    aged_head: 0
+    aged_head: false
