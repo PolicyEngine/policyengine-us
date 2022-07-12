@@ -17,7 +17,7 @@ class md_aged_blind_exemptions(Variable):
         # Count number of is_blind from tax_unit
         blind_head = tax_unit("blind_head", period) * 1
         blind_spouse = (
-            (tax_unit("blind_spouse", period))
+            tax_unit("blind_spouse", period)
             & (filing_status == filing_status_type.JOINT)
         ) * 1
 
