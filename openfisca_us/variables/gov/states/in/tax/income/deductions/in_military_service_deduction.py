@@ -1,3 +1,6 @@
+from openfisca_us.model_api import *
+
+
 class in_military_service_deduction(Variable):
     value_type = float
     entity = TaxUnit
