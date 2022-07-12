@@ -1,0 +1,12 @@
+description: Additional exemption amount for low-agi aged filers in IN.
+values:
+  2021-01-01: 500
+metadata:
+  unit: /1
+  period: year
+  name: in_exemptions_additional_amount_low_agi_aged
+  label: IN exemptions additional amount for low agi aged
+  reference:
+    - title: IC 6-3-1-3.5 "Adjusted gross income" (a)(5)(C)
+      href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5
+      # Points to IRS Code 63(f), which is aged and blind: https://www.law.cornell.edu/uscode/text/26/63#f

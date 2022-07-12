@@ -13,12 +13,20 @@ from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 from openfisca_us.api.microsimulation import Microsimulation
 from tqdm import tqdm
 from argparse import ArgumentParser
+import platform
+
+if platform.system() == "Windows":
+    OS_NAME = "windows"
+else:
+    OS_NAME = "unix"
 
 
 class TaxSim35:
     """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
 
-    EXECUTABLE_URL = "https://taxsim.nber.org/stata/taxsim35/taxsim35-unix.exe"
+    EXECUTABLE_URL = (
+        f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{OS_NAME}.exe"
+    )
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
     INPUT_VARIABLES = [
@@ -71,7 +79,8 @@ class TaxSim35:
         "mortgage",
     ]
     OUTPUT_VARIABLES = [
-        "v18",
+        "fiitax",
+        "siitax",
     ]
     OPENFISCA_US_INPUT_VARIABLES = [
         "mars",
@@ -92,6 +101,13 @@ class TaxSim35:
         "partnership_s_corp_income",
         "tax_unit_id",
         "person_tax_unit_id",
+    ]
+    NEUTRALIZED_VARIABLES = [
+        "snap",
+        "ssi",
+        "state_supplement",
+        "tanf",
+        "wic",
     ]
 
     def __init__(self):
@@ -161,9 +177,19 @@ class TaxSim35:
             return pd.DataFrame(output_data)
 
     def generate_from_microsimulation(
-        self, dataset: Dataset, year: int, number: int
+        self,
+        dataset: Dataset,
+        year: int,
+        number: int,
+        return_dataframe: bool = False,
+        drop_zeros: bool = False,
     ):
         sim = Microsimulation(dataset=dataset, year=2020)
+
+        # Neutralise benefit variables, since these are not simulated in TAXSIM
+        for variable in self.NEUTRALIZED_VARIABLES:
+            sim.simulation.tax_benefit_system.neutralize_variable(variable)
+
         system: TaxBenefitSystem = sim.simulation.tax_benefit_system
         openfisca_named_taxsim_input_variables = [
             f"taxsim_{variable}" for variable in self.INPUT_VARIABLES
@@ -171,11 +197,12 @@ class TaxSim35:
         openfisca_named_taxsim_output_variables = [
             f"taxsim_{variable}" for variable in self.OUTPUT_VARIABLES
         ]
-        input_df = (
+        full_input_df = pd.DataFrame(
             sim.df(openfisca_named_taxsim_input_variables, period=year)
-            .sample(n=number * 100)
-            .reset_index(drop=True)
         )
+        if number is not None:
+            full_input_df = full_input_df.sample(n=number * 100)
+        input_df = full_input_df.reset_index(drop=True)
         input_df.columns = self.INPUT_VARIABLES
         input_df["idtl"] = 2  # Set full output
         for variable in self.UNIMPLEMENTED_VARIABLES:
@@ -204,18 +231,18 @@ class TaxSim35:
         test_str = ""
         tax_unit_number = 1
         # Shuffle the dataframe
-        taxsim_df = (
-            taxsim_df[
-                taxsim_df[openfisca_named_taxsim_output_variables].sum(axis=1)
-                > 0
-            ]
-            .sample(frac=1)
-            .reset_index(drop=True)
+        is_non_zero = (
+            taxsim_df[openfisca_named_taxsim_output_variables].sum(axis=1) > 0
         )
+        if drop_zeros:
+            taxsim_df = taxsim_df[is_non_zero]
+        taxsim_df = taxsim_df.sample(frac=1).reset_index(drop=True)
+        if return_dataframe:
+            return taxsim_df
         for tax_unit_id in tqdm(
             taxsim_df.taxsim_taxsimid, desc="Writing YAML tests"
         ):
-            if i >= number:
+            if number is not None and i >= number:
                 break
             i += 1
             test_str += f"- name: Tax unit {tax_unit_number:,.0f} (CPS ID {tax_unit_id}) matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"

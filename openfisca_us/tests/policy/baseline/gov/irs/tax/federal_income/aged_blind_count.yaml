@@ -1,0 +1,9 @@
+- name: Aged head and spouse; blind head and spouse
+  period: 2021
+  input:
+    age_head: 70
+    blind_head: true
+    age_spouse: 70
+    blind_spouse: true
+  output:
+    aged_blind_count: 4
