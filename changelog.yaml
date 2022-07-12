@@ -1094,6 +1094,17 @@
     fixed:
       - Includes TANF as a categorical eligibility program for free school meals.
   date: 2022-07-11 05:30:45
+- bump: patch
+  changes:
+    added:
+      - Validation against TAXSIM using the CPS tax unit set.
+      - Validation results on the documentation.
+  date: 2022-07-12 11:00:29
+- bump: minor
+  changes:
+    added:
+      - IN exemptions.
+  date: 2022-07-12 15:03:47
 - bump: minor
   changes:
     added:

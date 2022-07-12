@@ -1,0 +1,13 @@
+- name: Aged spouse
+  period: 2021
+  input:
+    age_spouse: 65
+  output:
+    aged_spouse: true
+
+- name: Not aged head
+  period: 2021
+  input:
+    age_spouse: 64
+  output:
+    aged_spouse: false

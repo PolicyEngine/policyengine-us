@@ -1,0 +1,46 @@
+- name: Must be a dependent.
+  period: 2021
+  input:
+    state_code: IN
+    is_tax_unit_dependent: false
+  output:
+    in_is_qualifying_dependent_child: false
+
+- name: 18-year-old dependent qualifies.
+  period: 2021
+  input:
+    state_code: IN
+    is_tax_unit_dependent: true
+    age: 18
+  output:
+    in_is_qualifying_dependent_child: true
+
+- name: 19-year-old non-full-time-student dependent does not qualify.
+  period: 2021
+  input:
+    state_code: IN
+    is_tax_unit_dependent: true
+    is_full_time_student: false
+    age: 19
+  output:
+    in_is_qualifying_dependent_child: false
+
+- name: 23-year-old dependent student qualifies.
+  period: 2021
+  input:
+    state_code: IN
+    is_tax_unit_dependent: true
+    age: 23
+    is_full_time_student: true
+  output:
+    in_is_qualifying_dependent_child: true
+
+- name: 24-year-old dependent student doesn't qualify.
+  period: 2021
+  input:
+    state_code: IN
+    is_tax_unit_dependent: true
+    age: 24
+    is_full_time_student: true
+  output:
+    in_is_qualifying_dependent_child: false
