@@ -5,7 +5,7 @@ class zip_code(Variable):
     value_type = str
     entity = Household
     label = "ZIP code"
-    definition_period = YEAR
+    definition_period = ETERNITY
     default_value = "UNKNOWN"
 
     def formula(household, period, parameters):
