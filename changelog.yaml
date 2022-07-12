@@ -1094,3 +1094,8 @@
     fixed:
     - Includes TANF as a categorical eligibility program for free school meals.
   date: 2022-07-11 05:30:45
+- bump: minor
+  changes:
+    added:
+    - ZIP code random generation by population sizes.
+    - ZIP code -> county -> State mapping (~400kB).
