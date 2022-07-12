@@ -5,7 +5,6 @@ class in_qualifying_child_count(Variable):
     value_type = int
     entity = TaxUnit
     label = "IN qualifying depdendent child count"
-    unit = USD
     documentation = (
         "Number of qualifying children for the IN additional exemption."
     )
