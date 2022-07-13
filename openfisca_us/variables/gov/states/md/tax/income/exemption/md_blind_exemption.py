@@ -14,6 +14,6 @@ class md_blind_exemption(Variable):
         # Count number of is_blind from tax_unit
         blind_head = tax_unit("blind_head", period) * 1
         blind_spouse = tax_unit("blind_spouse", period) * 1
-        blind_exemption_total = (blind_head + blind_spouse) * blind
+        return (blind_head + blind_spouse) * blind
 
         return blind_exemption_total
