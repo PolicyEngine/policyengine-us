@@ -12,4 +12,4 @@ class in_military_service_deduction(Variable):
     def formula(tax_unit, period, parameters):
         deductions = tax_unit.members("in_person_military_service_deduction", period)
         sum_deductions = tax_unit.sum(deductions)
-        return sum(deductions)
+        return sum_deductions
