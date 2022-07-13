@@ -14,4 +14,4 @@ class in_renters_deductions(Variable):
         filing_status = tax_unit("filing_status", period)
         max_renters_deduction = p.renters.max[filing_status]
         in_rent = tax_unit("in_rent", period)
-        return min(in_rent, max_renters_deduction)
+        return min_(in_rent, max_renters_deduction)
