@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class in_renters_deductions(Variable):
+class in_renters_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "IN Renter's deductions"
