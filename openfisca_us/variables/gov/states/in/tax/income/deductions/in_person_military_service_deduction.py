@@ -10,10 +10,9 @@ class in_person_military_service_deduction(Variable):
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4"  # (a)(1)
 
     def formula(person, period, parameters):
-        cap = (
+        p = (
             parameters(period)
             .gov.states["in"]
-            .tax.income.deductions.military_service.max
+            .tax.income.deductions.military_service
         )
-        deduction = min_(person("military_service_income", period), cap)
-        return deduction
+        return min_(person("military_service_income", period), p.max) 
