@@ -19,16 +19,21 @@ class medicaid_rating_area(Variable):
         three_digit_zip_code = household("three_digit_zip_code", period)
         county_name = household("county_str", period)
         mra_values = np.ones_like(state) * -1
-        unknown_location = (county_name == "UNKNOWN") & (three_digit_zip_code == "UNKNOWN")
+        unknown_location = (county_name == "UNKNOWN") & (
+            three_digit_zip_code == "UNKNOWN"
+        )
         for individual_state in mra._children.keys():
             in_state = state == individual_state
             if any(in_state & ~unknown_location):
                 try:
                     mra_values[in_state & ~unknown_location] = getattr(
-                        mra, individual_state,
+                        mra,
+                        individual_state,
                     )[three_digit_zip_code[in_state & ~unknown_location]]
-                except: # State uses county names instead of zip code groups
+                except:  # State uses county names instead of zip code groups
+                    # Counties inconsistently use 'X County' vs. 'X'. If the initial lookup fails, try adding ' County'.
                     mra_values[in_state & ~unknown_location] = getattr(
-                        mra, individual_state,
+                        mra,
+                        individual_state,
                     )[county_name[in_state & ~unknown_location]]
-        return mra_values # We'd usually avoid the 'return variable' pattern, but it's unavoidable here.
+        return mra_values  # We'd usually avoid the 'return variable' pattern, but it's unavoidable here.

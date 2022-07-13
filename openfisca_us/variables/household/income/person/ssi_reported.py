@@ -7,4 +7,3 @@ class ssi_reported(Variable):
     label = "SSI (reported)"
     unit = USD
     definition_period = YEAR
-
