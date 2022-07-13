@@ -11,6 +11,8 @@ class md_aged_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.exemptions.aged
-        aged_head = (tax_unit("age_head", period) >= p.age).astype(int)
+        aged_head = (tax_unit("age_head", period) >= p.age) * 1
         aged_spouse = tax_unit("age_spouse", period) >= p.age * 1
-        return aged_head * p.amount + aged_spouse * p.amount
+        aged_exemption_total = aged_head * p.amount + aged_spouse * p.amount
+
+        return aged_exemption_total
