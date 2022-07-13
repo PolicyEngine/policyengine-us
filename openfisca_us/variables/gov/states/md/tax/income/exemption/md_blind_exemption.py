@@ -12,7 +12,7 @@ class md_blind_exemption(Variable):
     def formula(tax_unit, period, parameters):
         blind = parameters(period).gov.states.md.tax.income.exemptions.blind
         # Count number of is_blind from tax_unit
-        blind_head = tax_unit("blind_head", period) * 1
+        blind_head = tax_unit("blind_head", period).astype(int)
         blind_spouse = tax_unit("blind_spouse", period) * 1
         return (blind_head + blind_spouse) * blind
 
