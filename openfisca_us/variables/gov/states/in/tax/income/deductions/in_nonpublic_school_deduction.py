@@ -15,5 +15,6 @@ class in_nonpublic_school_deduction(Variable):
             .gov.states["in"]
             .tax.income.deductions.nonpublic_school
         )
-        return tax_unit("in_count_children_nonpublic_school", period) * p.amount
-
+        return (
+            tax_unit("in_count_children_nonpublic_school", period) * p.amount
+        )

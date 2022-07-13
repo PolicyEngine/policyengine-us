@@ -20,6 +20,6 @@ class in_deductions(Variable):
             "in_nonpublic_school_deduction",
             "in_nol",
             "in_unemployment_compensation_deduction",
-            "in_other_deductions"
+            "in_other_deductions",
         ]
     )
