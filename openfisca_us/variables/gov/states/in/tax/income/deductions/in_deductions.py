@@ -19,7 +19,7 @@ class in_deductions(Variable):
             "in_military_service_deduction",
             "in_nonpublic_school_deduction",
             "in_nol",
-            "in_unemployment_deduction",
+            "in_unemployment_compensation_deduction",
             "in_other_deductions",
         ]
     )
