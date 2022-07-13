@@ -1,9 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class other_add_backs(
-    Variable
-):  # use federal variables if they are added later
+class in_other_add_backs(Variable):
     value_type = float
     entity = TaxUnit
     label = "IN other add backs"
@@ -12,3 +10,4 @@ class other_add_backs(
     reference = (
         "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"
     )
+    # use federal variables if they are added later
