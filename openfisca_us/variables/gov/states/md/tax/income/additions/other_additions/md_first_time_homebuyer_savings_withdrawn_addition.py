@@ -1,0 +1,11 @@
+## md_first_time_homebuyer_savings_withdrawn_addition.py
+from openfisca_us.model_api import *
+
+class md_first_time_homebuyer_savings_withdrawn_addition(Variable):
+    # s. Amount of funds withdrawn from a first-time homebuyer savings account for a purpose other than eligible costs for the purchase of a home in the State. However, do not include any amount withdrawn by the account holder(s) for the purpose of rolling over earnings and principal into another designated account or a withdrawal protected by an account holder(s)’ bankruptcy filing. An account holder(s) must use the funds in the designated account within 15 years from the date on which the account was established. Include the amount of any funds remaining after the end of the 15-year period for which the firsttime home-buyer subtraction was claimed in a prior year and which were not withdrawn and applied to eligible costs related the purchase of a home by the account holder(s). The account holder(s) may be subject to a penalty of 10% of the amount withdrawn (see Instruction 22).
+    value_type = float
+    entity = TaxUnit
+    label = "MD first time homebuyer savings withdrawn"
+    documentation = "Amount of funds withdrawn from a first-time homebuyer savings account for a purpose other than eligible costs for the purchase of a home in the State. However, do not include any amount withdrawn by the account holder(s) for the purpose of rolling over earnings and principal into another designated account or a withdrawal protected by an account holder(s)’ bankruptcy filing. An account holder(s) must use the funds in the designated account within 15 years from the date on which the account was established. Include the amount of any funds remaining after the end of the 15-year period for which the firsttime home-buyer subtraction was claimed in a prior year and which were not withdrawn and applied to eligible costs related the purchase of a home by the account holder(s). The account holder(s) may be subject to a penalty of 10% of the amount withdrawn (see Instruction 22)."
+    unit = USD
+    definition_period = YEAR
