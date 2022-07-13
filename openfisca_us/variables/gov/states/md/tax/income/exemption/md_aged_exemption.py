@@ -15,7 +15,7 @@ class md_aged_exemption(Variable):
         aged_amount = p.amount
         aged_head = (tax_unit("age_head", period) >= age_for_exemption).astype(int)
         aged_spouse = tax_unit("age_spouse", period) >= age_for_exemption * 1
-        aged_exemption_total = (
+        return (
             aged_head * aged_amount + aged_spouse * aged_amount
         )
 
