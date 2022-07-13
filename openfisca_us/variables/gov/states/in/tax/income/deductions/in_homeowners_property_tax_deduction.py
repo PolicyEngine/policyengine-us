@@ -16,4 +16,4 @@ class in_homeowners_property_tax_deduction(Variable):
             filing_status
         ]
         property_tax = tax_unit("in_homeowners_property_tax", period)
-        return min(property_tax, max_homeowners_property_tax_deduction)
+        return min_(property_tax, max_homeowners_property_tax_deduction)
