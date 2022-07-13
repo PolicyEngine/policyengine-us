@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class in_nonpublic_school_deduction(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Nonpublic school expenditures deduction for IN"
     definition_period = YEAR
     unit = USD
