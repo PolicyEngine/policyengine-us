@@ -1,10 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class in_num_children_nonpublic_school(Variable):
+class in_count_children_nonpublic_school(Variable):
     value_type = int
     entity = TaxUnit
-    label = "IN rent"
+    label = "IN count children nonpublic school"
     definition_period = YEAR
     documentation = "Number of dependent children who attended a nonpublic school in Indiana for 180 days or more and for whom non-reimbursed education expenditures were made."
     reference = (

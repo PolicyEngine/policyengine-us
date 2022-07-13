@@ -1,8 +1,3 @@
-from gov.irs.income.taxable_income.adjusted_gross_income.adjusted_gross_income import (
-    adjusted_gross_income,
-)
-
-
 from openfisca_us.model_api import *
 
 
