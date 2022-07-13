@@ -11,13 +11,12 @@ class md_aged_dependent_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.exemptions.aged
-        age_for_exemption = p.age
 
         # These apply to dependents over the age of 65
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
-        elderly = age >= age_for_exemption
+        elderly = age >= p.age
         aged_dependents = tax_unit.sum(dependent & elderly)
         aged_dependent_exemption = aged_dependents * p.aged_dependent
 
