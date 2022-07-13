@@ -20,7 +20,6 @@
         in_person_military_service_deduction: 5_000
     tax_units:
       tax_unit:
-        members: person1
-        members: person2
+        members: ["person1", "person2"]
   output:
     in_military_service: 10_000
