@@ -15,4 +15,5 @@ class in_person_military_service_deduction(Variable):
             .gov.states["in"]
             .tax.income.deductions.military_service.max
         )
-        return min_(person("military_service_income", period), cap)
+        deduction = min_(person("military_service_income", period), cap)
+        return deduction
