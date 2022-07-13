@@ -18,6 +18,6 @@ class md_aged_dependent_exemption(Variable):
         age = person("age", period)
         elderly = age >= p.age
         aged_dependents = tax_unit.sum(dependent & elderly)
-        aged_dependent_exemption = aged_dependents * p.aged_dependent
+        return aged_dependents * p.aged_dependent
 
         return aged_dependent_exemption
