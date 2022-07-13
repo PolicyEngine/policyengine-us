@@ -17,6 +17,7 @@ class in_unemployment_compensation_deduction(Variable):
             "tax_unit_taxable_unemployment_compensation", period
         )
         federal_AGI = tax_unit("adjusted_gross_income", period)
+        filing_status = tax_unit("filing_status", period)
         AGI_reduction = p.unemployment_compensation.agi_reduction[
             filing_status
         ]
