@@ -31,7 +31,7 @@ class md_federal_eitc(Variable):
         ]
         for variable in EITC_VARIABLES:
             simulation.get_holder(variable).delete_arrays()
-        
+
         # Modify EITC age condition
         simulation.tax_benefit_system.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
             value=0,

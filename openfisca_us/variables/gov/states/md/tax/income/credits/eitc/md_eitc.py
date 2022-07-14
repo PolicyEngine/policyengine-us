@@ -8,4 +8,3 @@ class md_eitc(Variable):
     unit = USD
     documentation = "Maryland EITC"
     definition_period = YEAR
-
