@@ -1,8 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.gov.irs.income.taxable_income.deductions.standard_deduction.standard_deduction import (
-    standard_deduction,
-)
-
 
 class md_standard_deduction(Variable):
     value_type = float
@@ -15,8 +11,8 @@ class md_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         p = parameters(period).gov.states.md.tax.income.standard_deduction
-        # Start with md_agi
-        md_agi = tax_unit("md_agi", period)
+        # TODO fed agi in meantime
+        md_agi = tax_unit("adjusted_gross_income", period)
 
         # Caculate for single and separate depending on AGI.
         single_separate = max_(
