@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
@@ -20,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ZIP code random generation by population sizes.
 - ZIP code -> county -> State mapping (~400kB).
 
+=======
+<<<<<<< HEAD
+>>>>>>> md-credits
 ## [0.93.0] - 2022-07-14 01:03:39
 
 ### Added
@@ -49,7 +53,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Includes TANF as a categorical eligibility program for free school meals.
 
+<<<<<<< HEAD
 >>>>>>> e2331ceacbfaa7ec18a156fbd3fb7774a7da05a6
+=======
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> fedderw/issue1018
+>>>>>>> md-std-deduction
+>>>>>>> md-credits
 ## [0.91.2] - 2022-07-10 19:04:21
 
 ### Fixed
