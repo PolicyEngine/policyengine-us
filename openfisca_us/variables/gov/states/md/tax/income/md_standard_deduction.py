@@ -20,16 +20,22 @@ class md_standard_deduction(Variable):
 
         # Calculate for single and separate depending on AGI.
         p = parameters(period).gov.states.md.tax.income.standard_deduction
-        single_separate = p.single_separate.rate.calc(
-            md_agi,
-        ) + p.single_separate.single_amount.calc(
-            md_agi,
+        single_separate = sum(
+            p.single_separate.rate.calc(
+                md_agi,
+            ),
+            p.single_separate.single_amount.calc(
+                md_agi,
+            ),
         )
         # Calculate for joint, head of household, and widow based on AGI.
-        joint_head_widow = p.joint_head_widow.rate.calc(
-            md_agi,
-        ) + p.joint_head_widow.single_amount.calc(
-            md_agi,
+        joint_head_widow = sum(
+            p.joint_head_widow.rate.calc(
+                md_agi,
+            ),
+            p.joint_head_widow.single_amount.calc(
+                md_agi,
+            ),
         )
         # Return the value matching filing status.
 
