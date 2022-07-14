@@ -1,24 +1,13 @@
 metadata:
-  description: MD Standard deduction rate calculation for joint, head of household, and widow(er) filers
-  threshold_unit: currency-USD
-  amount_unit: currency-USD
-  period: year
-  name: md_joint_head_widow_standard_deduction_rate
+  description: MD Standard deduction max for single, married filing separately, or dependent taxpayers
+  name: md_single_separate_standard_deduction_max
   reference:
-    - title: "MD Code, Tax - General, § 10-217 (c)(2)-(c)(3)"
+    - title: "MD Code, Tax - General, § 10-217 (c)(1)"
       href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
     - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
       href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
-brackets:
-  - threshold:
-      2018-01-01: -.inf
-    rate:
-      2018-01-01: 0
-  - threshold:
-      2018-01-01: 20666
-    rate:
-      2018-01-01: 0.15
-  - threshold:
-      2018-01-01: 31333
-    rate:
-      2018-01-01: 0
+    - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+values:
+  2018-01-01: 2_250
+  2021-01-01: 2_350
