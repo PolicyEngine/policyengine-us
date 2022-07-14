@@ -10,7 +10,7 @@ class ccdf_county_cluster(Variable):
     def formula(household, period, parameters):
         county = household("county", period).decode_to_str()
         cluster_mapping = parameters(period).gov.hhs.ccdf.county_cluster
-        result = np.ones_like(county)
+        result = np.ones_like(county, dtype=int)
         valid_county = np.isin(
             county, np.array(list(cluster_mapping._children))
         )
