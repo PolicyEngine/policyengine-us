@@ -3,19 +3,26 @@ import pandas as pd
 # Per-ZCTA population dataset
 # ACS 5-year estimates, download URL: https://data.census.gov/cedsci/table?q=DP05%3A%20ACS%20DEMOGRAPHIC%20AND%20HOUSING%20ESTIMATES&g=0100000US%248600000&tid=ACSDP5Y2020.DP05
 
-zcta = pd.read_csv("zcta_2020_population.csv", low_memory=False)
-zcta = zcta[["DP05_0001E", "NAME"]]
-zcta = zcta.iloc[1:]
-zcta.columns = ["population", "zcta"]
+zcta = pd.read_csv(
+    "zcta_2020_population.csv",
+    low_memory=False,
+    usecols=["DP05_0001E", "NAME"],
+    skiprows=1,
+    header=0,
+    names=["population", "zcta"],
+)
 zcta.zcta = zcta.zcta.apply(lambda x: x.split(" ")[1])
 zcta.zcta = zcta.zcta.astype(int)
 zcta.population = zcta.population.astype(int)
 
 # ZCTA-county dataset
 # 2020 ZCTA to County Relationship File, download URL: https://www.census.gov/geographies/reference-files/time-series/geo/relationship-files.html#zcta
-zcta_to_county = pd.read_csv("zcta_2020_to_county_2020.csv", delimiter="|")
-zcta_to_county = zcta_to_county[["GEOID_ZCTA5_20", "NAMELSAD_COUNTY_20"]]
-zcta_to_county.columns = ["zcta", "county"]
+zcta_to_county = pd.read_csv(
+    "zcta_2020_to_county_2020.csv",
+    delimiter="|",
+    usecols=["GEOID_ZCTA5_20", "NAMELSAD_COUNTY_20"],
+    names=["zcta", "county"],
+)
 zcta_to_county = zcta_to_county.dropna()
 zcta_to_county.zcta = zcta_to_county.zcta.astype(int)
 # Some ZCTAs have more than one county - select a random one
@@ -23,9 +30,11 @@ zcta_to_county = zcta_to_county.groupby("zcta").apply(lambda x: x.sample(1))
 
 # ZIP code-ZCTA dataset
 # Download URL: https://udsmapper.org/zip-code-to-zcta-crosswalk/
-zip_code = pd.read_csv("zip_code_to_zcta.csv")
-zip_code = zip_code[["ZIP_CODE", "ZCTA", "STATE"]]
-zip_code.columns = ["zip_code", "zcta", "state"]
+zip_code = pd.read_csv(
+    "zip_code_to_zcta.csv",
+    usecols=["ZIP_CODE", "ZCTA", "STATE"],
+    names=["zip_code", "zcta", "state"],
+)
 zip_code.zip_code = zip_code.zip_code.astype(int)
 zip_code = zip_code[zip_code.zcta != "No ZCTA"]
 zip_code.zcta = zip_code.zcta.astype(int)

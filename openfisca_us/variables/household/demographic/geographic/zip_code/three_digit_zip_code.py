@@ -9,5 +9,5 @@ class three_digit_zip_code(Variable):
 
     def formula(household, period, parameters):
         zip_code = np.array(household("zip_code", period)).astype(str)
-        zip_code = (zip_code.astype(int) // 1e2).astype(int).astype(str)
-        return np.char.zfill(zip_code, 3)
+        zip_code_3 = (zip_code.astype(int) // 1e2).astype(int).astype(str)
+        return np.char.zfill(zip_code_3, 3)
