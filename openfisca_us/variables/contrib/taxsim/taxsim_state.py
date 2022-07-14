@@ -9,4 +9,14 @@ class taxsim_state(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return 0
+        state_code_str = tax_unit.household("state_code_str", period)
+        return select(
+            [
+                state_code_str == "MA",
+                True,
+            ],
+            [
+                22,
+                0,
+            ],
+        )

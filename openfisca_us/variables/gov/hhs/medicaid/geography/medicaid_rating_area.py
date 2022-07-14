@@ -11,10 +11,19 @@ class medicaid_rating_area(Variable):
         mra = parameters(
             period
         ).gov.hhs.medicaid.geography.medicaid_rating_area
-        state = household("state_code_str", period)
-        has_defined_mra = pd.Series(state).isin(mra._children)
-        state = where(
-            has_defined_mra, state, list(mra._children.keys())[0]
-        )  # Fill in with any valid State to avoid errors
         three_digit_zip_code = household("three_digit_zip_code", period)
-        return where(has_defined_mra, mra[state][three_digit_zip_code], -1)
+        county = household("county_str", period)
+        locations = np.array(list(mra._children))
+        county_in_locations = np.isin(county, locations)
+        location = where(
+            county_in_locations,
+            county,
+            three_digit_zip_code,
+        )
+        valid_location = np.isin(location, locations)
+        rating_areas = np.ones_like(
+            location
+        )  # ~2.8% of locations don't match with a a scraped MRA. For these, we assign to the State's first MRA.
+        if valid_location.sum() > 0:
+            rating_areas[valid_location] = mra[location[valid_location]]
+        return rating_areas

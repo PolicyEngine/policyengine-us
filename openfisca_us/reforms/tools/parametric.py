@@ -6,7 +6,10 @@ from typing import Union
 
 
 def set_parameter(
-    path: Union[Parameter, str], value: float, period: str = "year:2015:10"
+    path: Union[Parameter, str],
+    value: float,
+    period: str = "year:2015:10",
+    return_modifier=False,
 ) -> Reform:
     if isinstance(path, Parameter):
         path = path.name
@@ -32,6 +35,9 @@ def set_parameter(
                 )
         node.update(period=period, value=value)
         return parameters
+
+    if return_modifier:
+        return modifier
 
     class reform(Reform):
         def apply(self):

@@ -25,4 +25,3 @@ class md_personal_exemption(Variable):
             single_separate,
             joint_head_widow,
         )
-        # TODO: Add separate variable for md_total_personal_exemptions multiplied by tax_unit_size.
