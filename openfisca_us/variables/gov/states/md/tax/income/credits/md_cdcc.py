@@ -12,7 +12,6 @@ class md_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        is_joint = filing_status == filing_status.possible_values.JOINT
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.md.tax.income.credits.cdcc
         # Eligibility is based on AGI.
@@ -32,4 +31,7 @@ class md_cdcc(Variable):
             agi <= p.eligibility.refundable_agi_cap[filing_status]
         )
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
-        return where(refundable_eligible, cdcc, min_(cdcc, tax_before_credits))
+        amount_if_eligible = where(
+            refundable_eligible, cdcc, min_(cdcc, tax_before_credits)
+        )
+        return eligible * amount_if_eligible
