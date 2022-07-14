@@ -14,6 +14,10 @@ class earned_income_tax_credit(Variable):
         maximum = tax_unit("eitc_maximum", period)
         phased_in = tax_unit("eitc_phased_in", period)
         reduction = tax_unit("eitc_reduction", period)
+        print("eligible", eligible)
+        print("maximum", maximum)
+        print("phased_in", phased_in)
+        print("reduction", reduction)
         limitation = max_(0, maximum - reduction)
         return eligible * min_(phased_in, limitation)
 
