@@ -1089,6 +1089,7 @@
     fixed:
       - Separate WA WFTC parameter labels.
   date: 2022-07-10 19:04:21
+<<<<<<< HEAD
 - bump: minor
   changes:
     added:
@@ -1096,3 +1097,10 @@
       - MD personal Exemptions
       - MD income tax rates
       - MD placeholders for deductions, md_agi
+=======
+- bump: patch
+  changes:
+    fixed:
+    - Includes TANF as a categorical eligibility program for free school meals.
+  date: 2022-07-11 05:30:45
+>>>>>>> e2331ceacbfaa7ec18a156fbd3fb7774a7da05a6

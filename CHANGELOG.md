@@ -7,8 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <<<<<<< HEAD
 
+<<<<<<< HEAD
 =======
 >>>>>>> fedderw/issue1018
+=======
+## [0.91.3] - 2022-07-11 05:30:45
+
+### Fixed
+
+- Includes TANF as a categorical eligibility program for free school meals.
+
+>>>>>>> e2331ceacbfaa7ec18a156fbd3fb7774a7da05a6
 ## [0.91.2] - 2022-07-10 19:04:21
 
 ### Fixed
@@ -1322,6 +1331,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.91.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.2...0.91.3
 [0.91.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.1...0.91.2
 [0.91.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.0...0.91.1
 [0.91.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.90.0...0.91.0
