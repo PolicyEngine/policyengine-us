@@ -1,5 +1,10 @@
 from openfisca_us.model_api import *
 
+# Disable divide-by-zero warning for this file
+import warnings
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
+
 
 class rrc_arpa(Variable):
     value_type = float

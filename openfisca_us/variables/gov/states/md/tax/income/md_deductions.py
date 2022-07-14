@@ -1,9 +1,9 @@
 from openfisca_us.model_api import *
 
 
-class in_exemptions(Variable):
+class md_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IN exemptions"
+    label = "MD deductions"
     unit = USD
     definition_period = YEAR
