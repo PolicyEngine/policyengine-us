@@ -71,7 +71,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: docs/book/_build/html
+          FOLDER: docs/_build/html
   Publish:
     runs-on: ubuntu-latest
     if: |
