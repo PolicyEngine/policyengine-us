@@ -24,5 +24,6 @@ class medicaid_rating_area(Variable):
         rating_areas = np.ones_like(
             location
         )  # ~2.8% of locations don't match with a a scraped MRA. For these, we assign to the State's first MRA.
-        rating_areas[valid_location] = mra[location[valid_location]]
+        if valid_location.sum() > 0:
+            rating_areas[valid_location] = mra[location[valid_location]]
         return rating_areas
