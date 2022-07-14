@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
 ## [0.93.0] - 2022-07-14 01:03:39
 
 ### Added
@@ -33,6 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Includes TANF as a categorical eligibility program for free school meals.
 
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> fedderw/issue1018
+>>>>>>> md-std-deduction
 ## [0.91.2] - 2022-07-10 19:04:21
 
 ### Fixed

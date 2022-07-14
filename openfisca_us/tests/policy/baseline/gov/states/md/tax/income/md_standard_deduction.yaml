@@ -1,0 +1,16 @@
+- name: MD Standard deduction if single filer
+  period: 2021
+  input:
+    md_agi: 13_000
+    filing_status: single
+    state_code: MD
+  output:
+    md_standard_deduction: 1_950
+- name: MD Standard deduction if married filing jointly and above max threshold
+  period: 2021
+  input:
+    md_agi: 55_000
+    filing_status: married_jointly
+    state_code: MD
+  output:
+    md_standard_deduction: 4_700
