@@ -1,0 +1,25 @@
+- name: No Federal itemizations
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    casualty_loss_deduction: 0
+    charitable_deduction: 0
+    interest_deduction: 0
+    itemized_taxable_income_deduction: 0
+    medical_expense_deduction: 0
+    misc_deduction: 0
+  output:
+    federal_itemized_deductions: 0.0
+
+- name:  Greater than 0 in Federal itemizations
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    casualty_loss_deduction: 10
+    charitable_deduction: 10
+    interest_deduction: 10
+    itemized_taxable_income_deduction: 10
+    medical_expense_deduction: 10
+    misc_deduction: 10
+  output:
+    federal_itemized_deductions: 60.00
