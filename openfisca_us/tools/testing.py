@@ -197,17 +197,17 @@ class YamlItem(pytest.Item):
                 ]
             else:
                 input[key] = value
-        set_parameter
         self.tax_benefit_system = _get_tax_benefit_system(
             self.baseline_tax_benefit_system,
             self.test.get("reforms", []),
             self.test.get("extensions", []),
         )
-        parameters = self.tax_benefit_system.parameters
-        for reform in inline_reforms:
-            parameters = reform(parameters)
-        self.tax_benefit_system.parameters = parameters
-        self.tax_benefit_system._parameters_at_instant_cache = {}
+        if len(inline_reforms) > 0:
+            parameters = self.tax_benefit_system.parameters
+            for reform in inline_reforms:
+                parameters = reform(parameters)
+            self.tax_benefit_system.parameters = parameters
+            self.tax_benefit_system._parameters_at_instant_cache = {}
         verbose = self.options.get("verbose")
         performance_graph = self.options.get("performance_graph")
         performance_tables = self.options.get("performance_tables")
