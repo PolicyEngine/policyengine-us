@@ -9,9 +9,11 @@ class ccdf_county_cluster(Variable):
 
     def formula(household, period, parameters):
         county = household("county", period).decode_to_str()
-        is_unknown = county == "UNKNOWN"
         cluster_mapping = parameters(period).gov.hhs.ccdf.county_cluster
-        result = np.empty_like(county)
-        result[~is_unknown] = cluster_mapping[county[~is_unknown]]
-        result[is_unknown] = 1
+        result = np.ones_like(county)
+        valid_county = np.isin(
+            county, np.array(list(cluster_mapping._children))
+        )
+        if valid_county.sum() > 0:
+            result[valid_county] = cluster_mapping[county[valid_county]]
         return result
