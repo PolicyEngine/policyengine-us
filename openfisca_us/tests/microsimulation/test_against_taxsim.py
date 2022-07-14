@@ -17,6 +17,7 @@ DISTANCE = 100
 MINIMUM_PERCENT_CLOSE = 0.75
 
 if os.name != "nt":
+
     @pytest.fixture(scope="module")
     def taxsim():
         taxsim = TaxSim35()
@@ -28,6 +29,7 @@ if os.name != "nt":
     @pytest.fixture(scope="module")
     def sim():
         yield Microsimulation()
+
 
 @pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
 def test_federal_tax_against_taxsim(sim, taxsim):

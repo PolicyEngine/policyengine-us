@@ -26,6 +26,7 @@ system = CountryTaxBenefitSystem()
 
 simulation = SimulationBuilder().build_from_dict(system, DEFAULT_SITUATION)
 
+
 @pytest.mark.parametrize("variable", system.variables)
 def test_variable(variable: str) -> None:
     if variable not in EXEMPTIONS:

@@ -187,7 +187,14 @@ class YamlItem(pytest.Item):
         inline_reforms = []
         for key, value in unsafe_input.items():
             if "." in key:
-                inline_reforms += [set_parameter(key, value, return_modifier=True, period=f"year:2000:40")]
+                inline_reforms += [
+                    set_parameter(
+                        key,
+                        value,
+                        return_modifier=True,
+                        period=f"year:2000:40",
+                    )
+                ]
             else:
                 input[key] = value
         set_parameter
