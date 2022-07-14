@@ -11,29 +11,16 @@ class medicaid_rating_area(Variable):
         mra = parameters(
             period
         ).gov.hhs.medicaid.geography.medicaid_rating_area
-        state = household("state_code_str", period)
-        has_defined_mra = pd.Series(state).isin(mra._children)
-        state = where(
-            has_defined_mra, state, list(mra._children.keys())[0]
-        )  # Fill in with any valid State to avoid errors
         three_digit_zip_code = household("three_digit_zip_code", period)
-        county_name = household("county_str", period)
-        mra_values = np.ones_like(state) * -1
-        unknown_location = (county_name == "UNKNOWN") & (
-            three_digit_zip_code == "UNKNOWN"
+        county = household("county_str", period)
+        locations = np.array(list(mra._children))
+        county_in_locations = np.isin(county, locations)
+        location = where(
+            county_in_locations,
+            county,
+            three_digit_zip_code,
         )
-        for individual_state in mra._children.keys():
-            in_state = state == individual_state
-            if any(in_state & ~unknown_location):
-                try:
-                    mra_values[in_state & ~unknown_location] = getattr(
-                        mra,
-                        individual_state,
-                    )[three_digit_zip_code[in_state & ~unknown_location]]
-                except:  # State uses county names instead of zip code groups
-                    # Counties inconsistently use 'X County' vs. 'X'. If the initial lookup fails, try adding ' County'.
-                    mra_values[in_state & ~unknown_location] = getattr(
-                        mra,
-                        individual_state,
-                    )[county_name[in_state & ~unknown_location]]
-        return mra_values  # We'd usually avoid the 'return variable' pattern, but it's unavoidable here.
+        valid_location = np.isin(location, locations)
+        rating_areas = np.ones_like(location)  # ~2.8% of locations don't match with a a scraped MRA. For these, we assign to the State's first MRA.
+        rating_areas[valid_location] = mra[location[valid_location]]
+        return rating_areas
