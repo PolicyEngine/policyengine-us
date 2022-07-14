@@ -21,7 +21,7 @@ from openfisca_core.tools import (
 from openfisca_core.simulation_builder import SimulationBuilder
 from openfisca_core.errors import SituationParsingError, VariableNotFound
 from openfisca_core.scripts import build_tax_benefit_system
-
+from openfisca_core.reforms import Reform
 from openfisca_us.reforms import set_parameter
 
 log = logging.getLogger(__name__)
@@ -187,17 +187,20 @@ class YamlItem(pytest.Item):
         inline_reforms = []
         for key, value in unsafe_input.items():
             if "." in key:
-                inline_reforms += [set_parameter(key, value)]
+                inline_reforms += [set_parameter(key, value, return_modifier=True, period=f"year:2000:40")]
             else:
                 input[key] = value
-
+        set_parameter
         self.tax_benefit_system = _get_tax_benefit_system(
             self.baseline_tax_benefit_system,
             self.test.get("reforms", []),
             self.test.get("extensions", []),
         )
+        parameters = self.tax_benefit_system.parameters
         for reform in inline_reforms:
-            self.tax_benefit_system = reform(self.tax_benefit_system)
+            parameters = reform(parameters)
+        self.tax_benefit_system.parameters = parameters
+        self.tax_benefit_system._parameters_at_instant_cache = {}
         verbose = self.options.get("verbose")
         performance_graph = self.options.get("performance_graph")
         performance_tables = self.options.get("performance_tables")
