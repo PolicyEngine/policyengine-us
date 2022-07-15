@@ -2,16 +2,16 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    adjused_gross_income: 0
-    federal_itemized_deductions: 0
+    adjusted_gross_income: 0
+    mo_federal_itemized_deductions: 0
   output:
     mo_taxable_income: 0.0
 
 - name:  Greater than 0 in Federal itemizations
   period: 2022
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
-    adjused_gross_income: 60
-    total_itemized_federal_deductions: 0
-  output:
+    adjusted_gross_income: 60
+    mo_federal_itemized_deductions: 0
+  output: 
     mo_taxable_income: 60.00
