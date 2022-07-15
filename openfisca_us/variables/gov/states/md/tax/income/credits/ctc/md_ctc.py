@@ -12,16 +12,14 @@ class md_ctc(Variable):
     def formula(tax_unit, period, parameters):
         eligible = (
             tax_unit("adjusted_gross_income", period)
-            <= parameters(
-                period
-            ).gov.states.md.tax.income.credits.ctc.agi_cap
+            <= parameters(period).gov.states.md.tax.income.credits.ctc.agi_cap
         )
         person = tax_unit.members
         is_dependent_and_disabled = (
             person("is_tax_unit_dependent", period)
             * person("is_disabled", period)
             * (person("age", period) < 17)
-        ) 
+        )
         eligible_dependents = tax_unit.sum(is_dependent_and_disabled)
         refund_per_child = parameters(
             period
