@@ -1,6 +1,9 @@
 name: Low income earner with 1000 in earned income
 period: 2020
 input:
-  tax_unit_earned_income: 1000
+  adjusted_gross_income: 5000
+  md_total_additions: 0
+  md_income_tax_before_credits: 900
+  md_state_non_refundable_eitc: 200
 output:
-  md_poverty_line_credit: 50
+  md_poverty_line_credit: 250
