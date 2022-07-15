@@ -13,8 +13,7 @@ class md_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         p = parameters(period).gov.states.md.tax.income.standard_deduction
-        # TODO fed agi in meantime
-        md_agi = tax_unit("adjusted_gross_income", period)
+        md_agi = tax_unit("md_agi", period)
         # Standard deduction is a percentage of AGI, bounded by a min/max by filing status.
         # Calculate for single and separate depending on AGI.
         single_separate = max_(
