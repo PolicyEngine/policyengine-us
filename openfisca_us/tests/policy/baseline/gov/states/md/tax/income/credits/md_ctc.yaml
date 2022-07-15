@@ -4,15 +4,17 @@
     people:
       head:
         age: 36
-        is_tax_unit_head: True
-        is_tax_unit_dependent: False
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
         employment_income: 2_000
       child_1:
         age: 10
-        is_tax_unit_dependent: True
+        is_tax_unit_dependent: true
+        is_disabled: 1
       child_2:
         age: 5
-        is_tax_unit_dependent: True
+        is_tax_unit_dependent: true
+        is_disabled: 1
     tax_units:
       tax_unit:
         members: [head, child_1, child_2]
