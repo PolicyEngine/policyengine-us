@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.97.0] - 2022-07-15 07:47:31
+
+### Added
+
+- MD CDCC.
+- Notebook for federal and MD CDCCs.
+
+### Fixed
+
+- Phase out federal CDCC in steps.
+
+## [0.96.0] - 2022-07-15 07:04:51
+
+### Added
+
+- MD State income tax EITC.
+
+## [0.95.0] - 2022-07-15 05:42:48
+
+### Added
+
+- MD Standard deduction
+
+## [0.94.0] - 2022-07-14 14:33:19
+
+### Added
+
+- ZIP code random generation by population sizes.
+- ZIP code -> county -> State mapping (~400kB).
+
+## [0.93.0] - 2022-07-14 01:03:39
+
+### Added
+
+- MD aged, blind exemptions
+- MD personal Exemptions
+- MD income tax rates
+- MD placeholders for deductions, md_agi
+
 ## [0.92.0] - 2022-07-12 15:03:47
 
 ### Added
@@ -1337,6 +1376,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.97.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.96.0...0.97.0
+[0.96.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.95.0...0.96.0
+[0.95.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.94.0...0.95.0
+[0.94.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.93.0...0.94.0
+[0.93.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.92.0...0.93.0
 [0.92.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.4...0.92.0
 [0.91.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.3...0.91.4
 [0.91.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.2...0.91.3

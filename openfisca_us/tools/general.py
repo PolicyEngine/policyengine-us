@@ -2,6 +2,13 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_tools.model_api import *
 import numpy as np
+from pathlib import Path
+
+ZIP_CODE_DATASET_PATH = (
+    Path(__file__).parent.parent / "data" / "geography" / "zip_codes.csv.gz"
+)
+
+ZIP_CODE_DATASET = pd.read_csv(ZIP_CODE_DATASET_PATH, compression="gzip")
 
 USD = "currency-USD"
 

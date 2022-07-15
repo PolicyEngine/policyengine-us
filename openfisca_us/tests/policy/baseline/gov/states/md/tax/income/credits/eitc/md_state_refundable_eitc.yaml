@@ -1,0 +1,18 @@
+- name: Single adult with child, partial refund.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 26
+        employment_income: 5_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent]
+        state_code: MD
+  output:
+    md_state_refundable_eitc: 850 * 0.45
