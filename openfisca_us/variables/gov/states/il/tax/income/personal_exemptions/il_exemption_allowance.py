@@ -12,10 +12,10 @@ class il_exemption_allowance(Variable):
     def formula(tax_unit, period, parameters):
         personal_exemption_amount = parameters(
             period
-        ).gov.states.il.tax.personal_exemption.amount
+        ).gov.states.il.tax.income.personal_exemption.amount
         senior_and_blind_exemption_amount = parameters(
             period
-        ).gov.states.il.tax.personal_exemption.senior_and_blind_exemption
+        ).gov.states.il.tax.income.personal_exemption.senior_and_blind_exemption
 
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
