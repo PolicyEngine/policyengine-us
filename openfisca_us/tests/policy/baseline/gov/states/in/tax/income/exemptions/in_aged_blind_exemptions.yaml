@@ -1,0 +1,15 @@
+- name: Aged-blind exemption
+  period: 2021
+  input:
+    state_code: IN
+    aged_blind_count: 4
+  output:
+    in_aged_blind_exemptions: 4_000
+
+- name: No aged-blind exemption
+  period: 2021
+  input:
+    state_code: IN
+    aged_blind_count: 0
+  output:
+    in_aged_blind_exemptions: 0

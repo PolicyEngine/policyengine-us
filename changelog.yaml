@@ -1059,3 +1059,86 @@
     - Include non-tax-exempt Social Security benefits in income for Massachusetts
       Senior Circuit Breaker Credit income definition.
   date: 2022-07-07 17:39:36
+- bump: minor
+  changes:
+    added:
+    - MA COVID-19 Essential Employee Premium Pay Program.
+  date: 2022-07-08 12:26:04
+- bump: patch
+  changes:
+    changed:
+    - Impute integer ages in CPS from 80 to 84.
+  date: 2022-07-10 10:45:23
+- bump: minor
+  changes:
+    added:
+    - MA dependent care tax credit.
+  date: 2022-07-10 16:05:38
+- bump: minor
+  changes:
+    added:
+    - Washington capital gains tax.
+  date: 2022-07-10 16:19:30
+- bump: patch
+  changes:
+    fixed:
+    - Charitable deduction available for MA taxable income calculations.
+  date: 2022-07-10 16:25:24
+- bump: patch
+  changes:
+    fixed:
+    - Separate WA WFTC parameter labels.
+  date: 2022-07-10 19:04:21
+- bump: patch
+  changes:
+    fixed:
+    - Includes TANF as a categorical eligibility program for free school meals.
+  date: 2022-07-11 05:30:45
+- bump: patch
+  changes:
+    added:
+    - Validation against TAXSIM using the CPS tax unit set.
+    - Validation results on the documentation.
+  date: 2022-07-12 11:00:29
+- bump: minor
+  changes:
+    added:
+    - IN exemptions.
+  date: 2022-07-12 15:03:47
+- bump: minor
+  changes:
+    added:
+    - MD aged, blind exemptions
+    - MD personal Exemptions
+    - MD income tax rates
+    - MD placeholders for deductions, md_agi
+  date: 2022-07-14 01:03:39
+- bump: minor
+  changes:
+    added:
+    - ZIP code random generation by population sizes.
+    - ZIP code -> county -> State mapping (~400kB).
+  date: 2022-07-14 14:33:19
+- bump: minor
+  changes:
+    added:
+    - MD Standard deduction
+  date: 2022-07-15 05:42:48
+- bump: minor
+  changes:
+    added:
+    - MD State income tax EITC.
+  date: 2022-07-15 07:04:51
+- bump: minor
+  changes:
+    added:
+    - MD CDCC.
+    - Notebook for federal and MD CDCCs.
+    fixed:
+    - Phase out federal CDCC in steps.
+  date: 2022-07-15 07:47:31
+- bump: minor
+  changes:
+    added:
+    - Maryland adjusted gross income, with the dependent care subtraction.
+  date: 2022-07-15 18:49:51
