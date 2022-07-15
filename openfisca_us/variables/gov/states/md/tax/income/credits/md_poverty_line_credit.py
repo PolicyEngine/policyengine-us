@@ -43,9 +43,14 @@ class md_poverty_line_credit(Variable):
             period
         ).gov.states.md.tax.income.credits.poverty_line_credit
         uncapped_plc = eligible_income * rate
-        md_eitc = tax_unit("md_eitc", period)
+        md_state_non_refundable_eitc = tax_unit(
+            "md_state_non_refundable_eitc", period
+        )
         income_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period
         )
 
-        return min_(income_tax_before_credits - md_eitc, uncapped_plc)
+        return min_(
+            income_tax_before_credits - md_state_non_refundable_eitc,
+            uncapped_plc,
+        )
