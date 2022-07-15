@@ -13,7 +13,6 @@ class in_renters_deduction(Variable):
         p = parameters(period).gov.states["in"].tax.income.deductions
         filing_status = tax_unit("filing_status", period)
         max_renters_deduction = p.renters.max[filing_status]
-        in_rent = tax_unit(
-            "rent", period
-        )  # using national rent var to save mem but law specifices only IN rent allowed
+        in_rent = add(tax_unit, period, ["rent"])
+        # using national rent var to save mem but law specifices only IN rent allowed
         return min_(in_rent, max_renters_deduction)
