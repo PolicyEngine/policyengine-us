@@ -1,0 +1,610 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from openfisca_us import IndividualSim
+import pandas as pd
+import plotly.express as px
+
+
+def make_cdcc(children, year):
+    sim = IndividualSim(year=year)
+    sim.add_person(name="head", is_tax_unit_head=True)
+    members = ["head"]
+    for i in range(children):
+        child = "child{}".format(i)
+        sim.add_person(name=child, age=5)
+        members += [child]
+    sim.add_tax_unit(
+        name="tax_unit",
+        members=members,
+        tax_unit_childcare_expenses=8_000 * children,
+    )
+    sim.add_spm_unit(name="spm_unit", members=members)
+    sim.add_household(name="household", members=members, state_code="MD")
+    sim.vary("employment_income", max=100_000, step=100)
+    return pd.DataFrame(
+        dict(
+            employment_income=sim.calc("employment_income")[0],
+            md_cdcc=sim.calc("md_cdcc")[0].round(),
+            cdcc_mtr=-sim.deriv(
+                "md_cdcc",
+                "employment_income",
+                wrt_target="head",
+            ),
+            year=year,
+            children=children,
+        )
+    )
+
+
+# Make a table of state taxes for different numbers of adults and children.
+l = []
+for year in [2020, 2021, 2022]:
+    for children in range(1, 3):
+        l.append(make_cdcc(children, year))
+
+df = pd.concat(l)
+
+LABELS = dict(
+    employment_income="Employment income",
+    md_cdcc="MD CDCC",
+    scb_mtr="MD CDCC Marginal Tax Rate",
+    year="Year",
+    children="Children",
+)
+
+fig = px.line(
+    df,
+    "employment_income",
+    "md_cdcc",
+    color="children",
+    animation_frame="year",
+    labels=LABELS,
+    title="Maryland CDCC",
+)
+fig.update_layout(
+    xaxis_tickformat="$,",
+    yaxis_tickformat="$,",
+    yaxis_range=[0, df.md_cdcc.max() * 1.05],
+)
+fig.show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/hypothetical.py[0m in [0;36mcalc[0;34m(self, var, period, target, index, map_to, reform)[0m
+[1;32m    280[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 281[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvar[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    282[0m         [0;32mexcept[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/credits/md_cdcc.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     32[0m         [0mrefundable_eligible[0m [0;34m=[0m [0magi[0m [0;34m<=[0m [0mrefundable_cap[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 33[0;31m         [0mtax_before_credits[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_income_tax_before_credits"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     34[0m         amount_if_eligible = where(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/md_income_tax_before_credits.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     14[0m         [0mfiling_statuses[0m [0;34m=[0m [0mfiling_status[0m[0;34m.[0m[0mpossible_values[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m         [0mtaxable_income[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_taxable_income"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m         [0mp[0m [0;34m=[0m [0mparameters[0m[0;34m([0m[0mperiod[0m[0;34m)[0m[0;34m.[0m[0mgov[0m[0;34m.[0m[0mstates[0m[0;34m.[0m[0mmd[0m[0;34m.[0m[0mtax[0m[0;34m.[0m[0mincome[0m[0;34m.[0m[0mrate_schedule[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/md_taxable_income.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     13[0m         deductions_exemptions = add(
+[0;32m---> 14[0;31m             [0mtax_unit[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0;34m[[0m[0;34m"md_deductions"[0m[0;34m,[0m [0;34m"md_exemptions"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     15[0m         )
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/model_api/model_api.py[0m in [0;36madd[0;34m(entity, period, variables, options)[0m
+[1;32m    130[0m     return for_each_variable(
+[0;32m--> 131[0;31m         [0mentity[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mvariables[0m[0;34m,[0m [0magg_func[0m[0;34m=[0m[0;34m"add"[0m[0;34m,[0m [0moptions[0m[0;34m=[0m[0moptions[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    132[0m     )
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/model_api/model_api.py[0m in [0;36mfor_each_variable[0;34m(entity, period, variables, agg_func, group_agg_func, options)[0m
+[1;32m     85[0m         [0;32mif[0m [0mvariable_entity[0m[0;34m.[0m[0mkey[0m [0;34m==[0m [0mentity[0m[0;34m.[0m[0mentity[0m[0;34m.[0m[0mkey[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 86[0;31m             [0mvalues[0m [0;34m=[0m [0mentity[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0moptions[0m[0;34m=[0m[0moptions[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     87[0m         [0;32melif[0m [0mvariable_entity[0m[0;34m.[0m[0mis_person[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/deductions/md_deductions.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     14[0m         [0mtax_unit_itemizes[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"tax_unit_itemizes"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m         [0mstandard_deduction[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_standard_deduction"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m         federal_deductions_if_itemizing = tax_unit_itemizes * tax_unit(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    131[0m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_cast_formula_result[0m[0;34m([0m[0marray[0m[0;34m,[0m [0mvariable[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 132[0;31m             [0mholder[0m[0;34m.[0m[0mput_in_cache[0m[0;34m([0m[0marray[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    133[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36mput_in_cache[0;34m(self, value, period)[0m
+[1;32m    238[0m [0;34m[0m[0m
+[0;32m--> 239[0;31m         [0mself[0m[0;34m.[0m[0m_set[0m[0;34m([0m[0mperiod[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    240[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36m_set[0;34m(self, period, value)[0m
+[1;32m    198[0m     [0;32mdef[0m [0m_set[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 199[0;31m         [0mvalue[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_to_array[0m[0;34m([0m[0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    200[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mdefinition_period[0m [0;34m!=[0m [0mperiods[0m[0;34m.[0m[0mETERNITY[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36m_to_array[0;34m(self, value)[0m
+[1;32m    185[0m                 [0;34m'Unable to set value "{}" for variable "{}", as its length is {} while there are {} {} in the simulation.'[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 186[0;31m                 .format(value, self.variable.name, len(value), self.population.count, self.population.entity.plural))
+[0m[1;32m    187[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mvalue_type[0m [0;34m==[0m [0mEnum[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: Unable to set value "[[3000. 3000. 3000. ... 4500. 4500. 4500.]]" for variable "md_standard_deduction", as its length is 1 while there are 1001 tax_units in the simulation.
+
+During handling of the above exception, another exception occurred:
+
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/hypothetical.py[0m in [0;36mcalc[0;34m(self, var, period, target, index, map_to, reform)[0m
+[1;32m    283[0m             [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 284[0;31m                 [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0msim[0m[0;34m.[0m[0mcalculate_add[0m[0;34m([0m[0mvar[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    285[0m             [0;32mexcept[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate_add[0;34m(self, variable_name, period)[0m
+[1;32m    168[0m             [0mself[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0msub_period[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 169[0;31m             [0;32mfor[0m [0msub_period[0m [0;32min[0m [0mperiod[0m[0;34m.[0m[0mget_subperiods[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mdefinition_period[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    170[0m             )
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m<genexpr>[0;34m(.0)[0m
+[1;32m    168[0m             [0mself[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0msub_period[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 169[0;31m             [0;32mfor[0m [0msub_period[0m [0;32min[0m [0mperiod[0m[0;34m.[0m[0mget_subperiods[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mdefinition_period[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    170[0m             )
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/credits/md_cdcc.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     32[0m         [0mrefundable_eligible[0m [0;34m=[0m [0magi[0m [0;34m<=[0m [0mrefundable_cap[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 33[0;31m         [0mtax_before_credits[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_income_tax_before_credits"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     34[0m         amount_if_eligible = where(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/md_income_tax_before_credits.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     14[0m         [0mfiling_statuses[0m [0;34m=[0m [0mfiling_status[0m[0;34m.[0m[0mpossible_values[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m         [0mtaxable_income[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_taxable_income"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m         [0mp[0m [0;34m=[0m [0mparameters[0m[0;34m([0m[0mperiod[0m[0;34m)[0m[0;34m.[0m[0mgov[0m[0;34m.[0m[0mstates[0m[0;34m.[0m[0mmd[0m[0;34m.[0m[0mtax[0m[0;34m.[0m[0mincome[0m[0;34m.[0m[0mrate_schedule[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/md_taxable_income.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     13[0m         deductions_exemptions = add(
+[0;32m---> 14[0;31m             [0mtax_unit[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0;34m[[0m[0;34m"md_deductions"[0m[0;34m,[0m [0;34m"md_exemptions"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     15[0m         )
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/model_api/model_api.py[0m in [0;36madd[0;34m(entity, period, variables, options)[0m
+[1;32m    130[0m     return for_each_variable(
+[0;32m--> 131[0;31m         [0mentity[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mvariables[0m[0;34m,[0m [0magg_func[0m[0;34m=[0m[0;34m"add"[0m[0;34m,[0m [0moptions[0m[0;34m=[0m[0moptions[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    132[0m     )
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/model_api/model_api.py[0m in [0;36mfor_each_variable[0;34m(entity, period, variables, agg_func, group_agg_func, options)[0m
+[1;32m     85[0m         [0;32mif[0m [0mvariable_entity[0m[0;34m.[0m[0mkey[0m [0;34m==[0m [0mentity[0m[0;34m.[0m[0mentity[0m[0;34m.[0m[0mkey[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 86[0;31m             [0mvalues[0m [0;34m=[0m [0mentity[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0moptions[0m[0;34m=[0m[0moptions[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     87[0m         [0;32melif[0m [0mvariable_entity[0m[0;34m.[0m[0mis_person[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/deductions/md_deductions.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     14[0m         [0mtax_unit_itemizes[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"tax_unit_itemizes"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m         [0mstandard_deduction[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_standard_deduction"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m         federal_deductions_if_itemizing = tax_unit_itemizes * tax_unit(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    131[0m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_cast_formula_result[0m[0;34m([0m[0marray[0m[0;34m,[0m [0mvariable[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 132[0;31m             [0mholder[0m[0;34m.[0m[0mput_in_cache[0m[0;34m([0m[0marray[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    133[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36mput_in_cache[0;34m(self, value, period)[0m
+[1;32m    238[0m [0;34m[0m[0m
+[0;32m--> 239[0;31m         [0mself[0m[0;34m.[0m[0m_set[0m[0;34m([0m[0mperiod[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    240[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36m_set[0;34m(self, period, value)[0m
+[1;32m    198[0m     [0;32mdef[0m [0m_set[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 199[0;31m         [0mvalue[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_to_array[0m[0;34m([0m[0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    200[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mdefinition_period[0m [0;34m!=[0m [0mperiods[0m[0;34m.[0m[0mETERNITY[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36m_to_array[0;34m(self, value)[0m
+[1;32m    185[0m                 [0;34m'Unable to set value "{}" for variable "{}", as its length is {} while there are {} {} in the simulation.'[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 186[0;31m                 .format(value, self.variable.name, len(value), self.population.count, self.population.entity.plural))
+[0m[1;32m    187[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mvalue_type[0m [0;34m==[0m [0mEnum[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: Unable to set value "[[3000. 3000. 3000. ... 4500. 4500. 4500.]]" for variable "md_standard_deduction", as its length is 1 while there are 1001 tax_units in the simulation.
+
+During handling of the above exception, another exception occurred:
+
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2924/2003925071.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     39[0m [0;32mfor[0m [0myear[0m [0;32min[0m [0;34m[[0m[0;36m2020[0m[0;34m,[0m [0;36m2021[0m[0;34m,[0m [0;36m2022[0m[0;34m][0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     40[0m     [0;32mfor[0m [0mchildren[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m1[0m[0;34m,[0m [0;36m3[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 41[0;31m         [0ml[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mmake_cdcc[0m[0;34m([0m[0mchildren[0m[0;34m,[0m [0myear[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     42[0m [0;34m[0m[0m
+[1;32m     43[0m [0mdf[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mconcat[0m[0;34m([0m[0ml[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/tmp/ipykernel_2924/2003925071.py[0m in [0;36mmake_cdcc[0;34m(children, year)[0m
+[1;32m     23[0m         dict(
+[1;32m     24[0m             [0memployment_income[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"employment_income"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 25[0;31m             [0mmd_cdcc[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"md_cdcc"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mround[0m[0;34m([0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     26[0m             cdcc_mtr=-sim.deriv(
+[1;32m     27[0m                 [0;34m"md_cdcc"[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/hypothetical.py[0m in [0;36mcalc[0;34m(self, var, period, target, index, map_to, reform)[0m
+[1;32m    284[0m                 [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0msim[0m[0;34m.[0m[0mcalculate_add[0m[0;34m([0m[0mvar[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    285[0m             [0;32mexcept[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 286[0;31m                 [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate_divide[0m[0;34m([0m[0mvar[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    287[0m         if (
+[1;32m    288[0m             [0mtarget[0m [0;32mis[0m [0;32mnot[0m [0;32mNone[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate_divide[0;34m(self, variable_name, period)[0m
+[1;32m    189[0m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m [0;34m=[0m [0mcomputation_period[0m[0;34m)[0m [0;34m/[0m [0;36m12.[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    190[0m         [0;32melif[0m [0mperiod[0m[0;34m.[0m[0munit[0m [0;34m==[0m [0mperiods[0m[0;34m.[0m[0mYEAR[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 191[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    192[0m [0;34m[0m[0m
+[1;32m    193[0m         raise ValueError("Unable to divide the value of '{}' to match period {}.".format(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     93[0m [0;34m[0m[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     97[0m             [0;32mreturn[0m [0mresult[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    123[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+[1;32m    127[0m             [0;31m# If no result, use the default value and cache it[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    230[0m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+[1;32m    234[0m         [0;32mreturn[0m [0marray[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/credits/md_cdcc.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     31[0m         [0mrefundable_cap[0m [0;34m=[0m [0mp[0m[0;34m.[0m[0meligibility[0m[0;34m.[0m[0mrefundable_agi_cap[0m[0;34m[[0m[0mfiling_status[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m     32[0m         [0mrefundable_eligible[0m [0;34m=[0m [0magi[0m [0;34m<=[0m [0mrefundable_cap[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 33[0;31m         [0mtax_before_credits[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_income_tax_before_credits"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     34[0m         amount_if_eligible = where(
+[1;32m     35[0m             [0mrefundable_eligible[0m[0;34m,[0m [0mcdcc[0m[0;34m,[0m [0mmin_[0m[0;34m([0m[0mcdcc[0m[0;34m,[0m [0mtax_before_credits[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     83[0m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate_divide[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+[1;32m     87[0m     [0;31m# Helpers[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     93[0m [0;34m[0m[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     97[0m             [0;32mreturn[0m [0mresult[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    123[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+[1;32m    127[0m             [0;31m# If no result, use the default value and cache it[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    230[0m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+[1;32m    234[0m         [0;32mreturn[0m [0marray[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/md_income_tax_before_credits.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     13[0m         [0;31m# Get possible values for filing_status[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     14[0m         [0mfiling_statuses[0m [0;34m=[0m [0mfiling_status[0m[0;34m.[0m[0mpossible_values[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m         [0mtaxable_income[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_taxable_income"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m         [0mp[0m [0;34m=[0m [0mparameters[0m[0;34m([0m[0mperiod[0m[0;34m)[0m[0;34m.[0m[0mgov[0m[0;34m.[0m[0mstates[0m[0;34m.[0m[0mmd[0m[0;34m.[0m[0mtax[0m[0;34m.[0m[0mincome[0m[0;34m.[0m[0mrate_schedule[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     17[0m         [0msingle_separate[0m [0;34m=[0m [0mp[0m[0;34m.[0m[0msingle_separate[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0mtaxable_income[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     83[0m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate_divide[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+[1;32m     87[0m     [0;31m# Helpers[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     93[0m [0;34m[0m[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     97[0m             [0;32mreturn[0m [0mresult[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    123[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+[1;32m    127[0m             [0;31m# If no result, use the default value and cache it[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    230[0m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+[1;32m    234[0m         [0;32mreturn[0m [0marray[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/md_taxable_income.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     12[0m         [0mmd_agi[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_agi"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     13[0m         deductions_exemptions = add(
+[0;32m---> 14[0;31m             [0mtax_unit[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0;34m[[0m[0;34m"md_deductions"[0m[0;34m,[0m [0;34m"md_exemptions"[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     15[0m         )
+[1;32m     16[0m         [0;32mreturn[0m [0mmax_[0m[0;34m([0m[0;36m0[0m[0;34m,[0m [0mmd_agi[0m [0;34m-[0m [0mdeductions_exemptions[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/model_api/model_api.py[0m in [0;36madd[0;34m(entity, period, variables, options)[0m
+[1;32m    129[0m     """
+[1;32m    130[0m     return for_each_variable(
+[0;32m--> 131[0;31m         [0mentity[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mvariables[0m[0;34m,[0m [0magg_func[0m[0;34m=[0m[0;34m"add"[0m[0;34m,[0m [0moptions[0m[0;34m=[0m[0moptions[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    132[0m     )
+[1;32m    133[0m [0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_tools/model_api/model_api.py[0m in [0;36mfor_each_variable[0;34m(entity, period, variables, agg_func, group_agg_func, options)[0m
+[1;32m     84[0m         [0mvariable_entity[0m [0;34m=[0m [0mentity[0m[0;34m.[0m[0mentity[0m[0;34m.[0m[0mget_variable[0m[0;34m([0m[0mvariable[0m[0;34m)[0m[0;34m.[0m[0mentity[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     85[0m         [0;32mif[0m [0mvariable_entity[0m[0;34m.[0m[0mkey[0m [0;34m==[0m [0mentity[0m[0;34m.[0m[0mentity[0m[0;34m.[0m[0mkey[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 86[0;31m             [0mvalues[0m [0;34m=[0m [0mentity[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0moptions[0m[0;34m=[0m[0moptions[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     87[0m         [0;32melif[0m [0mvariable_entity[0m[0;34m.[0m[0mis_person[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     88[0m             values = group_agg_func(
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     83[0m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate_divide[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+[1;32m     87[0m     [0;31m# Helpers[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     93[0m [0;34m[0m[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     97[0m             [0;32mreturn[0m [0mresult[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    123[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    124[0m             [0mself[0m[0;34m.[0m[0m_check_for_cycle[0m[0;34m([0m[0mvariable[0m[0;34m.[0m[0mname[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 125[0;31m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_run_formula[0m[0;34m([0m[0mvariable[0m[0;34m,[0m [0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    126[0m [0;34m[0m[0m
+[1;32m    127[0m             [0;31m# If no result, use the default value and cache it[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    230[0m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    231[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 232[0;31m             [0marray[0m [0;34m=[0m [0mformula[0m[0;34m([0m[0mpopulation[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mparameters_at[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    233[0m [0;34m[0m[0m
+[1;32m    234[0m         [0;32mreturn[0m [0marray[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/work/openfisca-us/openfisca-us/openfisca_us/variables/gov/states/md/tax/income/deductions/md_deductions.py[0m in [0;36mformula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     13[0m         [0;31m# Check if the tax_unit itemized on their federal returns:[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     14[0m         [0mtax_unit_itemizes[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"tax_unit_itemizes"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 15[0;31m         [0mstandard_deduction[0m [0;34m=[0m [0mtax_unit[0m[0;34m([0m[0;34m"md_standard_deduction"[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m         federal_deductions_if_itemizing = tax_unit_itemizes * tax_unit(
+[1;32m     17[0m             [0;34m"taxable_income_deductions_if_itemizing"[0m[0;34m,[0m [0mperiod[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/populations/population.py[0m in [0;36m__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m     83[0m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate_divide[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     84[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 85[0;31m             [0;32mreturn[0m [0mself[0m[0;34m.[0m[0msimulation[0m[0;34m.[0m[0mcalculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     86[0m [0;34m[0m[0m
+[1;32m     87[0m     [0;31m# Helpers[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36mcalculate[0;34m(self, variable_name, period)[0m
+[1;32m     93[0m [0;34m[0m[0m
+[1;32m     94[0m         [0;32mtry[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 95[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_calculate[0m[0;34m([0m[0mvariable_name[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     96[0m             [0mself[0m[0;34m.[0m[0mtracer[0m[0;34m.[0m[0mrecord_calculation_result[0m[0;34m([0m[0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     97[0m             [0;32mreturn[0m [0mresult[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/simulations/simulation.py[0m in [0;36m_calculate[0;34m(self, variable_name, period)[0m
+[1;32m    130[0m [0;34m[0m[0m
+[1;32m    131[0m             [0marray[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_cast_formula_result[0m[0;34m([0m[0marray[0m[0;34m,[0m [0mvariable[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 132[0;31m             [0mholder[0m[0;34m.[0m[0mput_in_cache[0m[0;34m([0m[0marray[0m[0;34m,[0m [0mperiod[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    133[0m [0;34m[0m[0m
+[1;32m    134[0m         [0;32mexcept[0m [0mSpiralError[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36mput_in_cache[0;34m(self, value, period)[0m
+[1;32m    237[0m             [0;32mreturn[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    238[0m [0;34m[0m[0m
+[0;32m--> 239[0;31m         [0mself[0m[0;34m.[0m[0m_set[0m[0;34m([0m[0mperiod[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    240[0m [0;34m[0m[0m
+[1;32m    241[0m     [0;32mdef[0m [0mdefault_array[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36m_set[0;34m(self, period, value)[0m
+[1;32m    197[0m [0;34m[0m[0m
+[1;32m    198[0m     [0;32mdef[0m [0m_set[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mperiod[0m[0;34m,[0m [0mvalue[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 199[0;31m         [0mvalue[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_to_array[0m[0;34m([0m[0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    200[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mdefinition_period[0m [0;34m!=[0m [0mperiods[0m[0;34m.[0m[0mETERNITY[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    201[0m             [0;32mif[0m [0mperiod[0m [0;32mis[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/openfisca_core/holders/holder.py[0m in [0;36m_to_array[0;34m(self, value)[0m
+[1;32m    184[0m             raise ValueError(
+[1;32m    185[0m                 [0;34m'Unable to set value "{}" for variable "{}", as its length is {} while there are {} {} in the simulation.'[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 186[0;31m                 .format(value, self.variable.name, len(value), self.population.count, self.population.entity.plural))
+[0m[1;32m    187[0m         [0;32mif[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mvalue_type[0m [0;34m==[0m [0mEnum[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    188[0m             [0mvalue[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mvariable[0m[0;34m.[0m[0mpossible_values[0m[0;34m.[0m[0mencode[0m[0;34m([0m[0mvalue[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: Unable to set value "[[3000. 3000. 3000. ... 4500. 4500. 4500.]]" for variable "md_standard_deduction", as its length is 1 while there are 1001 tax_units in the simulation.
+ValueError: Unable to set value "[[3000. 3000. 3000. ... 4500. 4500. 4500.]]" for variable "md_standard_deduction", as its length is 1 while there are 1001 tax_units in the simulation.
+
