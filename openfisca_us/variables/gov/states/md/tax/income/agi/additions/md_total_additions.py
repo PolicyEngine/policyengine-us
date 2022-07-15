@@ -9,4 +9,3 @@ class md_total_additions(Variable):
     definition_period = YEAR
 
     formula = sum_of_variables(["md_qualified_tuition_expenses"])
-        
