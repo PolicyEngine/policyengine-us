@@ -10,18 +10,19 @@ class md_ctc(Variable):
     documentation = "Maryland Child Tax Credit"
 
     def formula(tax_unit, period, parameters):
-        eligible = (
+        p = parameters(period).gov.states.md.tax.income.credits.ctc
+        income_eligible = (
             tax_unit("adjusted_gross_income", period)
             <= parameters(period).gov.states.md.tax.income.credits.ctc.agi_cap
         )
         person = tax_unit.members
-        is_dependent_and_disabled = (
+        eligible_child = (
             person("is_tax_unit_dependent", period)
-            * person("is_disabled", period)
+            & person("is_disabled", period)
             * (person("age", period) < 17)
         )
-        eligible_dependents = tax_unit.sum(is_dependent_and_disabled)
-        refund_per_child = parameters(
+        eligible_children = tax_unit.sum(eligible_child)
+        return income_eligible * eligible_children * p.amount
             period
         ).gov.states.md.tax.income.credits.ctc.refund_per_child
 
