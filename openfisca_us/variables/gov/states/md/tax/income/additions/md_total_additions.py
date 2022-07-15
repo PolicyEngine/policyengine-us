@@ -8,7 +8,4 @@ class md_total_additions(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        additions = parameters(period).gov.states.md.tax.income.additions
-        # Add lines 3, 4, and 5.
-        return add(tax_unit, period, additions)
+
