@@ -1,0 +1,20 @@
+- name: MD Ctc
+  period: 2020
+  input:
+    people:
+      head:
+        age: 36
+        is_tax_unit_head: True
+        is_tax_unit_dependent: False
+        employment_income: 2_000
+      child_1:
+        age: 10
+        is_tax_unit_dependent: True
+      child_2:
+        age: 5
+        is_tax_unit_dependent: True
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+  output:
+    md_ctc: 1000
