@@ -17,10 +17,10 @@ class il_base_income(Variable):
             person("tax_exempt_interest_income", period)
         )
         dividend_income = sum(person("dividend_income", period))
-        social_security_income = sum(person("social_security", period))
+        social_security_benefits = sum(person("social_security", period))
 
-        schedule_m_additions = tax_unit("schedule_m_additions", period)
-        schedule_m_subtractions = tax_unit("schedule_m_subtractions", period)
+        schedule_m_additions = tax_unit("il_schedule_m_additions", period)
+        schedule_m_subtractions = tax_unit("il_schedule_m_subtractions", period)
 
         # TODO: add Illinois Income Tax overpayment, and other adjustments
 
@@ -29,6 +29,6 @@ class il_base_income(Variable):
             + federal_tax_exempt_interest
             + dividend_income
             + schedule_m_additions
-            - social_security_income
+            - social_security_benefits
             - schedule_m_subtractions
         )
