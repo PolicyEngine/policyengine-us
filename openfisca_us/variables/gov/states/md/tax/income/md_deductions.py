@@ -19,6 +19,6 @@ class md_deductions(Variable):
         md_deductions = federal_deductions_if_itemizing - salt
         return where(
             tax_unit_itemizes,
-            deductions_if_itemizing,
+            md_deductions,
             standard_deduction,
         )
