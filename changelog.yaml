@@ -1108,4 +1108,36 @@
 - bump: minor
   changes:
     added:
-    - IN deductions.
+    - MD aged, blind exemptions
+    - MD personal Exemptions
+    - MD income tax rates
+    - MD placeholders for deductions, md_agi
+  date: 2022-07-14 01:03:39
+- bump: minor
+  changes:
+    added:
+    - ZIP code random generation by population sizes.
+    - ZIP code -> county -> State mapping (~400kB).
+  date: 2022-07-14 14:33:19
+- bump: minor
+  changes:
+    added:
+    - MD Standard deduction
+  date: 2022-07-15 05:42:48
+- bump: minor
+  changes:
+    added:
+    - MD State income tax EITC.
+  date: 2022-07-15 07:04:51
+- bump: minor
+  changes:
+    added:
+    - MD CDCC.
+    - Notebook for federal and MD CDCCs.
+    fixed:
+    - Phase out federal CDCC in steps.
+  date: 2022-07-15 07:47:31
+- bump: minor
+  changes:
+    added:
+    - IN deductions
