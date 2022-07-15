@@ -1,0 +1,18 @@
+- name: MD Standard deduction if single filer
+  absolute_error_margin: 1
+  period: 2021
+  input:
+    adjusted_gross_income: 13_000
+    filing_status: SINGLE
+    state_code: MD
+  output:
+    md_standard_deduction: 1_950
+- name: MD Standard deduction if married filing jointly and above max threshold
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    adjusted_gross_income: 355_000
+    filing_status: JOINT
+    state_code: MD
+  output:  
+    md_standard_deduction: 4_700
