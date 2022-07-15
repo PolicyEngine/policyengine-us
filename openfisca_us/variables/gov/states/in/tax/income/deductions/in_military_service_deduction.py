@@ -10,8 +10,13 @@ class in_military_service_deduction(Variable):
     reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4"  # (a)(1)
 
     def formula(tax_unit, period, parameters):
-        deductions = tax_unit.members(
-            "in_person_military_service_deduction", period
+        person = tax_unit.members
+        p = (
+            parameters(period)
+            .gov.states["in"]
+            .tax.income.deductions.military_service
         )
-        sum_deductions = tax_unit.sum(deductions)
-        return sum_deductions
+        person_deduction = min_(
+            person("military_service_income", period), p.max
+        )
+        return tax_unit.sum(person_deduction)
