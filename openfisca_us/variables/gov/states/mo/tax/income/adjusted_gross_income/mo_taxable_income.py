@@ -40,4 +40,3 @@ class mo_taxable_income(Variable):
                 return agi - (items - net_state_income_taxes)
         else:
             return agi
-            
