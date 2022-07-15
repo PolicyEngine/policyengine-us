@@ -7,5 +7,3 @@ class md_total_additions(Variable):
     label = "MD Total Additions"
     unit = USD
     definition_period = YEAR
-
-
