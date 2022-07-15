@@ -41,7 +41,7 @@ class md_poverty_line_credit(Variable):
         # see Instruction 26(o))
         rate = parameters(
             period
-        ).gov.states.md.tax.income.credits.poverty_line_credit_rate
+        ).gov.states.md.tax.income.credits.poverty_line_credit
         uncapped_plc = eligible_income * rate
         md_eitc = tax_unit("md_eitc", period)
         income_tax_before_credits = tax_unit(
