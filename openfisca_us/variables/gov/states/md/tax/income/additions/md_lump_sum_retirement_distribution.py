@@ -1,7 +1,6 @@
 from openfisca_us.model_api import *
 
 
-
 class md_lump_sum_retirement_distribution(Variable):
     value_type = float
     entity = TaxUnit
@@ -11,16 +10,9 @@ class md_lump_sum_retirement_distribution(Variable):
     definition_period = YEAR
 
     # Ordinary income portion of distribution from Form 1099R reported on federal Form 4972 (taxable amount less capital gain amount - line 1) worksheet 12A
-    
-    # capital gain portion of distribution from Form 1099R 
-    
-    # 40% of capital gain portion of distribution from Form 1099R 
 
+    # capital gain portion of distribution from Form 1099R
+
+    # 40% of capital gain portion of distribution from Form 1099R
 
     # Add lines 1 and 2.
-        
-        
-
-
-
-   
