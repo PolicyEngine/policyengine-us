@@ -7,6 +7,7 @@ class ut_taxable_income(Variable):
     form) as Total income (line 6) minus Salt Refund (line 7) minus
     subtractions from income (line 8).
     """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxable income"

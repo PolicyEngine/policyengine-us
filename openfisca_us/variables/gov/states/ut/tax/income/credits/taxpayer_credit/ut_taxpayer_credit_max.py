@@ -9,6 +9,7 @@ class ut_taxpayer_credit_max(Variable):
     deductions minus state income tax included on federal itemized deductions,
     all multiplied by the Utah taxpayer credit full rate.
     """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxpayer credit maximum"

@@ -7,6 +7,7 @@ class ut_income_tax_before_credits(Variable):
     income tax return form, which multiplies Utah taxable income by the Utah
     individual income tax rate (with a minimum value of zero).
     """
+
     value_type = float
     entity = TaxUnit
     label = "Utah Income Tax Before Credits"

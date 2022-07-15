@@ -7,6 +7,7 @@ class ut_taxpayer_credit_reduction(Variable):
     of Utah TC-40 form), which we call the Utah taxpayer credit reduction. It
     is the income subject to phase-out multiplied by the phase out rate.
     """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxpayer credit reduction"

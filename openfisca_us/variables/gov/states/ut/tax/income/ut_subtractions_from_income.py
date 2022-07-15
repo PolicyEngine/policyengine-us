@@ -19,6 +19,7 @@ class ut_subtractions_from_income(Variable):
     90 - Qualified Retirement Plan Distributions
     SA - COVID-19 Utah Grant Funds Included in AGI
     """
+
     value_type = float
     entity = TaxUnit
     label = "UT subtractions from income"

@@ -7,6 +7,7 @@ class ut_total_income(Variable):
     return form. This line is the sum of Federal adjusted gross income (line 4)
     and additions to income from TC-40A Part 1 (line 5).
     """
+
     value_type = float
     entity = TaxUnit
     label = "UT total income"
