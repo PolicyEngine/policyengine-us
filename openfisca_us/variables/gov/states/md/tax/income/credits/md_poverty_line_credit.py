@@ -14,7 +14,7 @@ class md_poverty_line_credit(Variable):
         # Find the number of persons in your family/household from the chart that is the same as the number of persons entered on your federal tax return. Enter the income level that corresponds to the number of person
         fpg = tax_unit("tax_unit_fpg", period)
         # Get the tax unit's earned income
-        earned_income = tax_unit("earned_income", period)
+        earned_income = tax_unit("tax)unit_earned_income", period)
         # Get total of md_agi and md_total_additions
 
         agi_plus_md_additions = add(
