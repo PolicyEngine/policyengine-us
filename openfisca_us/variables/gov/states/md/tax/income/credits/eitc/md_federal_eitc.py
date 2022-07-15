@@ -15,9 +15,6 @@ class md_federal_eitc(Variable):
         simulation = tax_unit.simulation
         simulation.max_spiral_loops = 10
         simulation._check_for_cycle = lambda *args: None
-        simulation_if_itemizing = simulation.clone()
-        computed_variables = get_stored_variables(simulation)
-        simulation_if_itemizing.tracer = simulation.tracer
 
         EITC_VARIABLES = [
             "eitc_agi_limit",
@@ -33,17 +30,19 @@ class md_federal_eitc(Variable):
             simulation.get_holder(variable).delete_arrays()
 
         # Modify EITC age condition
+        original_value = simulation.tax_benefit_system.parameters.gov.irs.credits.eitc.eligibility.age.min(
+            period
+        )
         simulation.tax_benefit_system.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
             value=0,
             period=period,
         )
         simulation.tax_benefit_system._parameters_at_instant_cache = {}
         eitc = simulation.calculate("eitc", period)
-
-        # Ensure we don't modify any other variables
-        added_variables = set(
-            get_stored_variables(simulation_if_itemizing)
-        ) - set(computed_variables)
-        for variable in added_variables:
+        for variable in EITC_VARIABLES:
             simulation.get_holder(variable).delete_arrays()
+        simulation.tax_benefit_system.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
+            value=original_value,
+            period=period,
+        )
         return eitc
