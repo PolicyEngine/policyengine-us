@@ -1119,3 +1119,10 @@
     - ZIP code random generation by population sizes.
     - ZIP code -> county -> State mapping (~400kB).
   date: 2022-07-14 14:33:19
+- bump: minor
+  changes:
+    added:
+    - MD CDCC.
+    - Notebook for federal and MD CDCCs.
+    fixed:
+    - Phase out federal CDCC in steps.
