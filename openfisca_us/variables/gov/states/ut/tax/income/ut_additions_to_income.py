@@ -4,7 +4,7 @@ from openfisca_us.model_api import *
 class ut_additions_to_income(Variable):
     """
     Utah additions to income are listed on the Income Tax Supplemental Schedule
-    form TC-40A 2021 (https://tax.utah.gov/forms/current/tc-40.pdf) with
+    form TC-40A 2021 Part 1 (https://tax.utah.gov/forms/current/tc-40.pdf) with
     detailed codes at Utah Income Taxes: Additions to Income description page
     (https://incometax.utah.gov/additions). The codes include:
     51 - Lump Sum Distribution
