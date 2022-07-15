@@ -18,15 +18,19 @@ class md_standard_deduction(Variable):
         # Standard deduction is a percentage of AGI, bounded by a min/max by filing status.
         # Calculate for single and separate depending on AGI.
         single_separate = np.clip(
-            p.rate * md_agi, p.single_separate.min, p.single_separate.max
+            p.rate * md_agi,
+            p.single_separate.min_amount,
+            p.single_separate.max_amount,
         )
         # Calculate for joint, head of household, and widow based on AGI.
         joint_head_widow = np.clip(
-            p.rate * md_agi, p.joint_head_widow.min, p.joint_head_widow.max
+            p.rate * md_agi,
+            p.joint_head_widow.min_amount,
+            p.joint_head_widow.max_amount,
         )
         # Return the value matching filing status.
         is_single_separate = (
             (filing_status == filing_statuses.SINGLE)
             | (filing_status == filing_statuses.SEPARATE),
         )
-        return where(is_single_separate, single_separate, joint_head_widow)
+        return where(is_single_separate, single_separate, joint_head_widow)[0]
