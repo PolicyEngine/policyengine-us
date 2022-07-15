@@ -18,8 +18,4 @@ class md_deductions(Variable):
         )
         salt = tax_unit("salt_deduction", period)
         md_deductions = federal_deductions_if_itemizing - salt
-        return where(
-            tax_unit_itemizes,
-            md_deductions,
-            standard_deduction,
-        )
+        return where(tax_unit_itemizes, md_deductions, standard_deduction)
