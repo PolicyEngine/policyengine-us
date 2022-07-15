@@ -6,7 +6,6 @@
         age: 36
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        employment_income: 2_000
       child_1:
         age: 10
         is_tax_unit_dependent: true
@@ -18,5 +17,6 @@
     tax_units:
       tax_unit:
         members: [head, child_1, child_2]
+        adjusted_gross_income: 200
   output:
     md_ctc: 1000
