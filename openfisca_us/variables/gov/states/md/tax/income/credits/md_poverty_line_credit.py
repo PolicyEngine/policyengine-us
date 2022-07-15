@@ -29,11 +29,8 @@ class md_poverty_line_credit(Variable):
                 "md_total_additions",
             ],
         )
-        countable_income = max_(agi_plus_md_additions, earned_income)
         # Enter the amount from line 1 or 2, whichever is larger.
-        is_eligible = countable_income <= fpg
-
-        eligible_income = countable_income * is_eligible
+        eligible = max_(agi_plus_md_additions, earned_income) <= fpg
 
         # 5. Multiply line 2 by 5% (.05). This is your State Poverty Level
         # Credit. Enter that amount here and on line 23 of Form 502.
@@ -42,7 +39,7 @@ class md_poverty_line_credit(Variable):
         rate = parameters(
             period
         ).gov.states.md.tax.income.credits.poverty_line_credit
-        uncapped_plc = eligible_income * rate
+        uncapped_plc = earned_income * rate
         md_state_non_refundable_eitc = tax_unit(
             "md_state_non_refundable_eitc", period
         )
@@ -50,7 +47,9 @@ class md_poverty_line_credit(Variable):
             "md_income_tax_before_credits", period
         )
 
-        return min_(
+        plc = min_(
             income_tax_before_credits - md_state_non_refundable_eitc,
             uncapped_plc,
         )
+
+        return plc * eligible
