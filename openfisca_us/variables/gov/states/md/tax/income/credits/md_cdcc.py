@@ -27,9 +27,8 @@ class md_cdcc(Variable):
         percent_reduction = phase_out_increments * p.phase_out.percent
         cdcc = max_(0, max_cdcc * (1 - percent_reduction))
         # Refundability is based on AGI.
-        refundable_eligible = (
-            agi <= p.eligibility.refundable_agi_cap[filing_status]
-        )
+        refundable_cap = p.eligibility.refundable_agi_cap[filing_status]
+        refundable_eligible = agi <= refundable_cap
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
         amount_if_eligible = where(
             refundable_eligible, cdcc, min_(cdcc, tax_before_credits)
