@@ -8,4 +8,4 @@ class md_total_additions(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["md_qualified_tuition_expenses"])
+    formula = sum_of_variables(["md_qualified_tuition_expense_addition"])

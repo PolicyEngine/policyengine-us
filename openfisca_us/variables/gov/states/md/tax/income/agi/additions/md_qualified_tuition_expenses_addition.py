@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class md_qualified_tuition_exepenes_addition(Variable):
+class md_qualified_tuition_expense_addition(Variable):
     value_type = float
     entity = TaxUnit
     label = "MD qualified tuition expenses addition to agi"
