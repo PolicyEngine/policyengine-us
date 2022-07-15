@@ -15,6 +15,7 @@ class in_nonpublic_school_deduction(Variable):
             .gov.states["in"]
             .tax.income.deductions.nonpublic_school
         )
+        person = tax_unit.members
         child = person("is_in_k12_nonpublic_school", period) * 1
         children = tax_unit.sum(child)
         # Law specifices dependent children who attended a nonpublic school in Indiana
