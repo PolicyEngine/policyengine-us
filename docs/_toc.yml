@@ -16,6 +16,7 @@ parts:
       - file: programs/irs/index
         sections:
           - file: programs/irs/credits/eitc
+          - file: programs/irs/credits/cdcc
       - file: programs/ssa/index
         sections:
           - file: programs/ssa/ssi
@@ -41,7 +42,7 @@ parts:
       - file: programs/usda/index
         sections:
           - file: programs/usda/snap
-          - file: programs/usda/school_meals
+          - file: programs/usda/school-meals
           - file: programs/usda/wic
   - caption: Validation
     chapters:
