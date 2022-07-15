@@ -8,22 +8,21 @@ class md_ctc(Variable):
     definition_period = YEAR
     unit = USD
     documentation = "Maryland Child Tax Credit"
+    reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         income_eligible = (
             tax_unit("adjusted_gross_income", period)
-            <= parameters(period).gov.states.md.tax.income.credits.ctc.agi_cap
+            <= p.agi_cap
         )
         person = tax_unit.members
         eligible_child = (
             person("is_tax_unit_dependent", period)
             & person("is_disabled", period)
-            * (person("age", period) < 17)
+            * (person("age", period) < p.age_limit)
         )
         eligible_children = tax_unit.sum(eligible_child)
         return income_eligible * eligible_children * p.amount
-            period
-        ).gov.states.md.tax.income.credits.ctc.refund_per_child
+            
 
-        return eligible * (eligible_dependents * refund_per_child)
