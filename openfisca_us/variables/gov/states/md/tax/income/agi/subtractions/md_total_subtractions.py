@@ -1,9 +1,9 @@
 from openfisca_us.model_api import *
 
 
-class md_total_additions(Variable):
+class md_total_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD total additions to AGI"
+    label = "MD total subtractions from AGI"
     unit = USD
     definition_period = YEAR
