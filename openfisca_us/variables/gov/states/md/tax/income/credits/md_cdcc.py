@@ -23,7 +23,7 @@ class md_cdcc(Variable):
         phase_out_start = p.phase_out.start[filing_status]
         excess = max_(0, agi - phase_out_start)
         phase_out_increment = p.phase_out.increment[filing_status]
-        phase_out_increments = np.floor(excess / phase_out_increment)
+        phase_out_increments = np.ceil(excess / phase_out_increment)
         percent_reduction = phase_out_increments * p.phase_out.percent
         cdcc = max_(0, max_cdcc * (1 - percent_reduction))
         # Refundability is based on AGI.
