@@ -23,7 +23,7 @@ class md_poverty_line_credit(Variable):
         )
         countable_income = max_(agi_plus_md_additions, earned_income)
         # Enter the amount from line 1 or 2, whichever is larger.
-        is_eligible = countable_income < fpg
+        is_eligible = countable_income <= fpg
 
         eligible_income = countable_income * is_eligible
 
