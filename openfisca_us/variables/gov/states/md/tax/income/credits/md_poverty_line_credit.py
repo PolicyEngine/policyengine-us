@@ -16,10 +16,18 @@ class md_poverty_line_credit(Variable):
         # Get the tax unit's earned income
         earned_income = tax_unit("tax_unit_earned_income", period)
         # Get total of md_agi and md_total_additions
+        # From the law:
+        # (2)    “Applicable poverty income level” means the amount specified in the poverty income standard that corresponds to the number of exemptions which the individual is allowed and claims under § 10–211(b)(1) of this title.
 
+        # (3)    “Eligible low income taxpayer” means an individual, or an individual and the individual’s spouse if they file a joint income tax return:
+        #     (i)    whose federal adjusted gross income as modified under §§ 10–204 through 10–206 of this title does not exceed the applicable poverty income level;
         agi_plus_md_additions = add(
-            tax_unit("adjusted_gross_income", period),
-            tax_unit("md_total_additions", period),
+            tax_unit,
+            period,
+            [
+                "adjusted_gross_income",
+                "md_total_additions",
+            ],
         )
         countable_income = max_(agi_plus_md_additions, earned_income)
         # Enter the amount from line 1 or 2, whichever is larger.
