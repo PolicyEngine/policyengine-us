@@ -15,7 +15,7 @@ class md_standard_deduction(Variable):
         # TODO fed agi in meantime
         md_agi = tax_unit("adjusted_gross_income", period)
 
-        # Caculate for single and separate depending on AGI.
+        # Calculate for single and separate depending on AGI.
         single_separate = max_(
             min_(
                 p.rate * md_agi,
