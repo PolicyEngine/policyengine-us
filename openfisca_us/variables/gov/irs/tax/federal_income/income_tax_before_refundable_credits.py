@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class c09200(Variable):
+class income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -15,12 +15,11 @@ class c09200(Variable):
             "income_tax_capped_non_refundable_credits", period
         )
         taxes_net_nonrefundable_credits = income_tax_bc - capped_credits
-        other_taxes = add(
-            tax_unit, period, ["niit", "e09700", "e09800", "e09900"]
-        )
+        OTHER_TAXES = [
+            "niit",
+            "recapture_of_investment_credit",
+            "unreported_payroll_tax",
+            "qualified_retirement_penalty",
+        ]
+        other_taxes = add(tax_unit, period, OTHER_TAXES)
         return taxes_net_nonrefundable_credits + other_taxes
-
-
-income_tax_before_refundable_credits = variable_alias(
-    "income_tax_before_refundable_credits", c09200
-)
