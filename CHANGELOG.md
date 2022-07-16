@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.100.0] - 2022-07-16 11:16:19
+
+### Added
+
+- MD local income tax rates.
+
 ## [0.99.1] - 2022-07-16 04:19:02
 
 ### Changed
@@ -1400,6 +1406,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.100.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.99.1...0.100.0
 [0.99.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.99.0...0.99.1
 [0.99.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.98.1...0.99.0
 [0.98.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.98.0...0.98.1
