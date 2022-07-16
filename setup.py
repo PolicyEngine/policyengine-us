@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.100.0",
+    version="0.100.1",
     author="Nikhil Woodruff",
     author_email="nikhil@policyengine.org",
     classifiers=[
@@ -40,6 +40,7 @@ setup(
         "synthimpute",
         "tables",
         "tqdm",
+        "click>=8.0.0",
     ],
     extras_require={
         "dev": [
