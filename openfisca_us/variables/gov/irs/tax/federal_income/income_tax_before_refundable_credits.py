@@ -14,7 +14,11 @@ class c09200(Variable):
         capped_credits = tax_unit(
             "income_tax_capped_non_refundable_credits", period
         )
-        return income_tax_bc - capped_credits
+        taxes_net_nonrefundable_credits = income_tax_bc - capped_credits
+        other_taxes = add(
+            tax_unit, period, ["niit", "e09700", "e09800", "e09900"]
+        )
+        return taxes_net_nonrefundable_credits + other_taxes
 
 
 income_tax_before_refundable_credits = variable_alias(
