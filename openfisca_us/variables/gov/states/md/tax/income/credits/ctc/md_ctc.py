@@ -16,7 +16,10 @@ class md_ctc(Variable):
             tax_unit("adjusted_gross_income", period) <= p.agi_cap
         )
         person = tax_unit.members
-        eligible_child = person("is_tax_unit_dependent", period) & person(
+        dependent = person("is_tax_unit_dependent", period)
+        disabled = person("is_disabled", period)
+        meets_age_limit = person("age", period) < p.age_limit
+        eligible_child = dependent & disabled & meets_age_limit
             "is_disabled", period
         ) * (person("age", period) < p.age_limit)
         eligible_children = tax_unit.sum(eligible_child)

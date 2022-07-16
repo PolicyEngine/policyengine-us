@@ -1,8 +1,8 @@
 - name: Two eligible children.
-  period: 2020
+  period: 2021
   input:
     people:
-      head:
+      head: {}
         age: 36
         is_tax_unit_head: true
         is_tax_unit_dependent: false
@@ -19,4 +19,4 @@
         members: [head, child_1, child_2]
         adjusted_gross_income: 200
   output:
-    md_ctc: 1000
+    md_ctc: 1_000
