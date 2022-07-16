@@ -14,13 +14,15 @@ HEAD_OF_HOUSEHOLD:
   2021-01-01: 87_066
 
 metadata:
+  period: year
+  unit: currency-USD
   breakdown:
   - filing_status
   name: ca_renters_income_cap
   label: "California renters tax credit income cap"
   reference:
-    - title: Cal. Rev. & Tax. Code § 17053.5
-      href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter
-    - title: Nonrefundable renter’s credit
-      href: https://www.ftb.ca.gov/file/personal/credits/nonrefundable-renters-credit.html
+  - title: Cal. Rev. & Tax. Code § 17053.5
+    href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter
+  - title: Nonrefundable renter’s credit
+    href: https://www.ftb.ca.gov/file/personal/credits/nonrefundable-renters-credit.html
 
