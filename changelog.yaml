@@ -1142,6 +1142,21 @@
     added:
     - Maryland adjusted gross income, with the dependent care subtraction.
   date: 2022-07-15 18:49:51
+- bump: patch
+  changes:
+    fixed:
+    - Avoid double-counting CDCC when it was refundable in 2021.
+  date: 2022-07-15 21:50:01
+- bump: minor
+  changes:
+    added:
+    - MD CTC
+  date: 2022-07-16 03:04:11
+- bump: patch
+  changes:
+    changed:
+    - Change MA dependent care credit from a scale parameter to an amount/cap structure.
+  date: 2022-07-16 04:19:02
 - bump: minor
   changes:
     added:
