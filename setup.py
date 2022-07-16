@@ -40,6 +40,7 @@ setup(
         "synthimpute",
         "tables",
         "tqdm",
+        "click>=8.0.0",
     ],
     extras_require={
         "dev": [
