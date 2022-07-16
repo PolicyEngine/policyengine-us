@@ -16,7 +16,7 @@ class income_tax_before_refundable_credits(Variable):
         )
         taxes_net_nonrefundable_credits = income_tax_bc - capped_credits
         OTHER_TAXES = [
-            "niit",
+            "net_investment_income_tax",
             "recapture_of_investment_credit",
             "unreported_payroll_tax",
             "qualified_retirement_penalty",
