@@ -1140,9 +1140,14 @@
 - bump: minor
   changes:
     added:
-    - Maryland adjusted gross income, with the dependent care subtraction.
+      - Maryland adjusted gross income, with the dependent care subtraction.
   date: 2022-07-15 18:49:51
+- bump: patch
+  changes:
+    fixed:
+      - Avoid double-counting CDCC when it was refundable in 2021.
+  date: 2022-07-15 21:50:01
 - bump: minor
   changes:
     added:
-    - MD Poverty line credit
+      - MD Poverty Line Credit
