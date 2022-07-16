@@ -388,14 +388,14 @@ During handling of the above exception, another exception occurred:
 During handling of the above exception, another exception occurred:
 
 [0;31mValueError[0m                                Traceback (most recent call last)
-[0;32m/tmp/ipykernel_2732/2003925071.py[0m in [0;36m<module>[0;34m[0m
+[0;32m/tmp/ipykernel_2832/2003925071.py[0m in [0;36m<module>[0;34m[0m
 [1;32m     39[0m [0;32mfor[0m [0myear[0m [0;32min[0m [0;34m[[0m[0;36m2020[0m[0;34m,[0m [0;36m2021[0m[0;34m,[0m [0;36m2022[0m[0;34m][0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [1;32m     40[0m     [0;32mfor[0m [0mchildren[0m [0;32min[0m [0mrange[0m[0;34m([0m[0;36m1[0m[0;34m,[0m [0;36m3[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 41[0;31m         [0ml[0m[0;34m.[0m[0mappend[0m[0;34m([0m[0mmake_cdcc[0m[0;34m([0m[0mchildren[0m[0;34m,[0m [0myear[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m[1;32m     42[0m [0;34m[0m[0m
 [1;32m     43[0m [0mdf[0m [0;34m=[0m [0mpd[0m[0;34m.[0m[0mconcat[0m[0;34m([0m[0ml[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m/tmp/ipykernel_2732/2003925071.py[0m in [0;36mmake_cdcc[0;34m(children, year)[0m
+[0;32m/tmp/ipykernel_2832/2003925071.py[0m in [0;36mmake_cdcc[0;34m(children, year)[0m
 [1;32m     23[0m         dict(
 [1;32m     24[0m             [0memployment_income[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"employment_income"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m---> 25[0;31m             [0mmd_cdcc[0m[0;34m=[0m[0msim[0m[0;34m.[0m[0mcalc[0m[0;34m([0m[0;34m"md_cdcc"[0m[0;34m)[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m.[0m[0mround[0m[0;34m([0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
