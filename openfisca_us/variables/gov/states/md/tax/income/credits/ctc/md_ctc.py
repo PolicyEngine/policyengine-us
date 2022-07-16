@@ -20,7 +20,5 @@ class md_ctc(Variable):
         disabled = person("is_disabled", period)
         meets_age_limit = person("age", period) < p.age_limit
         eligible_child = dependent & disabled & meets_age_limit
-            "is_disabled", period
-        ) * (person("age", period) < p.age_limit)
         eligible_children = tax_unit.sum(eligible_child)
         return income_eligible * eligible_children * p.amount
