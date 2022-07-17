@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.100.2] - 2022-07-16 14:06:12
+
+### Added
+
+- Changelog entry file functionality.
+- Linecheck dev dependency.
+
+## [0.100.1] - 2022-07-16 12:30:48
+
+### Fixed
+
+- Click dependency limited to >=8.0.0.
+
+## [0.100.0] - 2022-07-16 11:16:19
+
+### Added
+
+- MD local income tax rates.
+
+## [0.99.1] - 2022-07-16 04:19:02
+
+### Changed
+
+- Change MA dependent care credit from a scale parameter to an amount/cap structure.
+
+## [0.99.0] - 2022-07-16 03:04:11
+
+### Added
+
+- MD CTC
+
+## [0.98.1] - 2022-07-15 21:50:01
+
+### Fixed
+
+- Avoid double-counting CDCC when it was refundable in 2021.
+
 ## [0.98.0] - 2022-07-15 18:49:51
 
 ### Added
@@ -1382,6 +1419,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.100.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.1...0.100.2
+[0.100.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.0...0.100.1
+[0.100.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.99.1...0.100.0
+[0.99.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.99.0...0.99.1
+[0.99.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.98.1...0.99.0
+[0.98.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.98.0...0.98.1
 [0.98.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.97.0...0.98.0
 [0.97.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.96.0...0.97.0
 [0.96.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.95.0...0.96.0
