@@ -10,7 +10,9 @@ class il_base_income(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+        ADDITIONS = ["adjusted_gross_income", "tax_exempt_interest_income", "dividend_income", "il_schedule_m_additions"]
+        SUBTRACTIONS = ["social_security_benefits", "schedule_m_subtractions"]
+        return add(tax_unit, period, ADDITIONS) - add(tax_unit, period, SUBTRACTIONS)
 
         federal_agi = tax_unit("adjusted_gross_income", period)
         federal_tax_exempt_interest = sum(
