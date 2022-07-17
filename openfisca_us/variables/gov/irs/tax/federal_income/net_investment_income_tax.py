@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class niit(Variable):
+class net_investment_income_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -17,9 +17,9 @@ class niit(Variable):
             "rental_income",
         ]
         nii = max_(0, add(tax_unit, period, NII_ELEMENTS))
-        niit = parameters(period).gov.irs.investment.net_inv_inc_tax
-        threshold = niit.threshold[tax_unit("filing_status", period)]
+        p = parameters(period).gov.irs.investment.net_investment_income_tax
+        threshold = p.threshold[tax_unit("filing_status", period)]
         base = min_(
             nii, max_(0, tax_unit("adjusted_gross_income", period) - threshold)
         )
-        return niit.rate * base
+        return p.rate * base
