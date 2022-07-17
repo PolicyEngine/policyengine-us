@@ -10,7 +10,7 @@ class il_exemption_allowance(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        personal_exemption_amount = parameters(
+        p = parameters(period).gov.states.il.tax.income.exemptions
             period
         ).gov.states.il.tax.income.personal_exemption.amount
         senior_and_blind_exemption_amount = parameters(
