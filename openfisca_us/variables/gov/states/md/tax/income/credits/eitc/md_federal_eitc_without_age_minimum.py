@@ -1,12 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class md_federal_eitc(Variable):
+class md_federal_eitc_without_age_minimum(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD modified federal EITC"
+    label = "Federal EITC without age minimum"
     unit = USD
-    documentation = "The federal EITC with the minimum age condition ignored."
+    documentation = "The federal EITC with the minimum age condition ignored, for the Maryland childless EITC."
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
 
