@@ -25,20 +25,22 @@ class il_exemption_allowance(Variable):
 
         person = tax_unit.members
         head = person("is_tax_unit_head", period)
-        over_65 = person("age", period) > 65
-        is_blind = person("is_blind", period)
         spouse = person("is_tax_unit_spouse", period)
         claimable = person("il_tax_unit_claimable", period)
 
-        number_of_dependents = tax_unit("tax_unit_dependents", period)
-
         claimable_count = sum(claimable & (head | spouse))
-        senior_count = sum(over_65 & (head | spouse))
-        blind_count = sum(is_blind & (head | spouse))
+        senior_count = sum(
+            [tax_unit("aged_head", period), tax_unit("aged_spouse", period)]
+        )
+        blind_count = sum(
+            [tax_unit("blind_head", period), tax_unit("blind_spouse", period)]
+        )
 
         senior_exemption = senior_and_blind_exemption_amount * senior_count
         blind_exemption = senior_and_blind_exemption_amount * blind_count
-        dependent_exemption = personal_exemption_amount * number_of_dependents
+        dependent_exemption = personal_exemption_amount * tax_unit(
+            "tax_unit_dependents", period
+        )
 
         base_exemption_allowance = where(
             joint,
@@ -63,9 +65,23 @@ class il_exemption_allowance(Variable):
             ),
         )
 
-        return (
+        total_amount = (
             base_exemption_allowance
             + senior_exemption
             + blind_exemption
             + dependent_exemption
+        )
+
+        return where(
+            joint,
+            where(
+                tax_unit("adjusted_gross_income", period) > 500000,
+                0,
+                total_amount,
+            ),
+            where(
+                tax_unit("adjusted_gross_income", period) > 250000,
+                0,
+                total_amount,
+            ),
         )
