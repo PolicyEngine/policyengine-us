@@ -29,7 +29,8 @@ class il_exemption_allowance(Variable):
         claimable = person("il_tax_unit_claimable", period)
 
         claimable_count = sum(claimable & (head | spouse))
-        senior_count = sum(
+        aged_blind_count = tax_unit("aged_blind_count", period)
+        aged_blind_exemption = aged_blind_count * p.aged_blind
             [tax_unit("aged_head", period), tax_unit("aged_spouse", period)]
         )
         blind_count = sum(
