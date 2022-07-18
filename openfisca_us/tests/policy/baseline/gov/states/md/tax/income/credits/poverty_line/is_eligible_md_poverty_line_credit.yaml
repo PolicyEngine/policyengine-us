@@ -20,7 +20,7 @@
     md_non_refundable_eitc: 9
     md_income_tax_before_credits: 10
   output:
-    is_eligible_md_poverty_line_credit: true
+    is_eligible_md_poverty_line_credit: false
 
 
 - name: Ineligible because earnings > FPG
@@ -33,7 +33,7 @@
     md_non_refundable_eitc: 9
     md_income_tax_before_credits: 10
   output:
-    is_eligible_md_poverty_line_credit: true
+    is_eligible_md_poverty_line_credit: false
 
 - name: Ineligible because non-refundable EITC >= tax before credits
   period: 2021
@@ -45,4 +45,4 @@
     md_non_refundable_eitc: 10
     md_income_tax_before_credits: 10
   output:
-    is_eligible_md_poverty_line_credit: true
+    is_eligible_md_poverty_line_credit: false
