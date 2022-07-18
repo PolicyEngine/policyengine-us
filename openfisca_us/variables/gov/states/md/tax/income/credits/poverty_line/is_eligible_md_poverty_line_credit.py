@@ -36,6 +36,8 @@ class is_eligible_md_poverty_line_credit(Variable):
         # This refers to the MD total EITC.
         # https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-704/
         md_eitc = tax_unit("md_eitc", period)
-        md_income_tax = tax_unit("md_income_tax", period)
-        eitc_less_than_income_tax = md_eitc < md_income_tax
+        md_income_tax_before_credits = tax_unit(
+            "md_income_tax_before_credits", period
+        )
+        eitc_less_than_income_tax = md_eitc < md_income_tax_before_credits
         return agi_below_fpg & earnings_below_fpg & eitc_less_than_income_tax

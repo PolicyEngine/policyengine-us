@@ -1,10 +1,93 @@
-name: Low income earner with 5000 in earned income an
-period: 2020
-input:
-  earned_income: 5000
-  # adjusted_gross_income: 5000
-  md_total_additions: 0
-  md_income_tax_before_credits: 900
-  md_state_non_refundable_eitc: 200
-output:
-  md_poverty_line_credit: 250
+- name: Low income earner with 5000 in earned income an
+  period: 2020
+  input:
+    earned_income: 5000
+    md_income_tax_before_credits: 900
+    md_state_non_refundable_eitc: 200
+  output:
+    md_poverty_line_credit: 250
+- name: /2 parents with 50_000 in employment income, 3_000 in md_income_tax_before_credits and 11 children
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 26
+        employment_income: 50_000
+      parent2:
+        age: 26
+        employment_income: 0
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 4
+      child4:
+        age: 13
+      child5:
+        age: 4
+      child6:
+        age: 4
+      child7:
+        age: 2
+      child8:
+        age: 4
+      child9:
+        age: 14
+      child10:
+        age: 4
+      child11:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
+        md_income_tax_before_credits: 3_000
+    households:
+      household:
+        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9,child10, child11]
+        state_code: MD
+  output:
+      md_poverty_line_credit: 2_500
+- name: /2 parents with 20_000 in employment income and 11 children
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 26
+        employment_income: 20_000
+      parent2:
+        age: 26
+        employment_income: 0
+      child1:
+        age: 3
+      child2:
+        age: 7
+      child3:
+        age: 4
+      child4:
+        age: 13
+      child5:
+        age: 4
+      child6:
+        age: 4
+      child7:
+        age: 2
+      child8:
+        age: 4
+      child9:
+        age: 14
+      child10:
+        age: 4
+      child11:
+        age: 14
+    tax_units:
+      tax_unit:
+        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
+        md_income_tax_before_credits: 3000
+        md_state_non_refundable_eitc: 2000
+    households:
+      household:
+        members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9,child10, child11]
+        state_code: MD
+  output:
+      md_poverty_line_credit: 1_000

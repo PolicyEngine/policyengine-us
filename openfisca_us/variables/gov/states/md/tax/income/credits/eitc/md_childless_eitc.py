@@ -12,7 +12,7 @@ class md_single_childless_eitc(Variable):
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("md_qualifies_for_single_childless_eitc", period)
         federal_eitc_without_age_minimum = tax_unit(
-            "federal_eitc_without_age_minimum", period
+            "md_federal_eitc_without_age_minimum", period
         )
         p = parameters(period).gov.states.md.tax.income.credits.eitc.childless
         match = p.percent_match * federal_eitc_without_age_minimum
