@@ -1,0 +1,9 @@
+- name: Low income earner with 5000 in earned income an
+  period: 2020
+  input:
+    is_eligible_md_poverty_line_credit: true
+    md_income_tax_before_credits: 900
+    md_non_refundable_eitc: 200
+    tax_unit_earned_income: 5_000
+  output:
+    md_poverty_line_credit: 250
