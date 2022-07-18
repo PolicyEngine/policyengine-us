@@ -1,10 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class md_federal_eitc(Variable):
+class federal_eitc_without_age_minimum(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD modified federal EITC"
+    label = "Federal EITC without age minimum"
     unit = USD
     documentation = "The federal EITC with the minimum age condition ignored."
     definition_period = YEAR
