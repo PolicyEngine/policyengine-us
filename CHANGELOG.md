@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.103.0] - 2022-07-18 02:56:11
+
+### Added
+
+- Non-qualified dividend income.
+
+### Fixed
+
+- Dividend income split into qualified and non-qualified correctly.
+
 ## [0.102.0] - 2022-07-18 02:28:29
 
 ### Added
@@ -1431,6 +1441,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.103.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.102.0...0.103.0
 [0.102.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.101.0...0.102.0
 [0.101.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.2...0.101.0
 [0.100.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.1...0.100.2
