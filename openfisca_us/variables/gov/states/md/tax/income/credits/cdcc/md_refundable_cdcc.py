@@ -1,5 +1,4 @@
 from openfisca_us.model_api import *
-import numpy as np
 
 
 class md_refundable_cdcc(Variable):
