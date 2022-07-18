@@ -4,12 +4,15 @@
     people:
       parent:
         age: 26
-        employment_income: 5_000
+        employment_income: 2_000
       child:
         age: 4
     tax_units:
       tax_unit:
         members: [parent, child]
+        # md_income_tax_before_credits: 2_000
+        md_qualifies_for_single_childless_eitc: false
+        # eitc: 1_425
     households:
       household:
         members: [parent, child]
