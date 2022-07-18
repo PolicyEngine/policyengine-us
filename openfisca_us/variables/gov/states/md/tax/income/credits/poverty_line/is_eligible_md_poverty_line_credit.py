@@ -34,9 +34,9 @@ class is_eligible_md_poverty_line_credit(Variable):
         # (iv)    for whom the credit allowed under § 10–704(a)(1) of this
         # subtitle is less than the State income tax.
         # This appears to refer to the MD total EITC per
-        # # https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-704/
-        # However, the tax form indicates it's only the non-refundable portion:
-        #
+        # https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-704/
+        # However, the tax form indicates it's only the non-refundable portion,
+        # because it gets pooled with other non-refundable credits.
         md_eitc = tax_unit("md_non_refundable_eitc", period)
         md_income_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period
