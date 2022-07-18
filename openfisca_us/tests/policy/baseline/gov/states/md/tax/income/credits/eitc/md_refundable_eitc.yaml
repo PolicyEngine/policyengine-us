@@ -1,18 +1,26 @@
-- name: Single adult with child, partial refund.
-  period: 2022
+- name: 45% of the excess in 2021.
+  period: 2021
   input:
-    people:
-      parent:
-        age: 26
-        employment_income: 5_000
-      child:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-    households:
-      household:
-        members: [parent, child]
-        state_code: MD
+    md_qualifies_for_single_childless_eitc: false
+    md_non_refundable_eitc: 150
+    md_income_tax_before_credits: 50
   output:
-    md_refundable_eitc: 850 * 0.45
+    md_refundable_eitc: 45
+
+- name: Zero if non-refundable EITC matches tax before credits.
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: false
+    md_non_refundable_eitc: 150
+    md_income_tax_before_credits: 150
+  output:
+    md_refundable_eitc: 0
+
+- name: Zero if single and childless (they receive a different variable).
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: true
+    md_non_refundable_eitc: 150
+    md_income_tax_before_credits: 50
+  output:
+    md_refundable_eitc: 0

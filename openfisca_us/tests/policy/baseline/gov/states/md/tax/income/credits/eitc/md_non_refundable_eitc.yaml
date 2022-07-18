@@ -1,20 +1,26 @@
-- name: Single adult with child, gets half EITC.
+- name: 50% of EITC capped at income tax before credits.
   period: 2022
   input:
-    people:
-      parent:
-        age: 26
-      child:
-        age: 4
-    tax_units:
-      tax_unit:
-        members: [parent, child]
-        md_income_tax_before_credits: 2_000
-        md_qualifies_for_single_childless_eitc: false
-        eitc: 1_150
-    households:
-      household:
-        members: [parent, child]
-        state_code: MD
+    md:qualifies_for_single_childless_eitc: false
+    eitc: 300
+    md_income_tax_before_credits: 100
   output:
-    md_non_refundable_eitc: 850
+    md_non_refundable_eitc: 100
+
+- name: Not capped.
+  period: 2022
+  input:
+    md:qualifies_for_single_childless_eitc: false
+    eitc: 300
+    md_income_tax_before_credits: 200
+  output:
+    md_non_refundable_eitc: 150
+
+- name: Single childless filers have a different program.
+  period: 2022
+  input:
+    md:qualifies_for_single_childless_eitc: true
+    eitc: 300
+    md_income_tax_before_credits: 200
+  output:
+    md_non_refundable_eitc: 0
