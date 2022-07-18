@@ -1,9 +1,10 @@
 - name: Low income earner with 5000 in earned income an
   period: 2020
   input:
-    earned_income: 5000
+    is_eligible_md_poverty_line_credit: true
     md_income_tax_before_credits: 900
     md_state_non_refundable_eitc: 200
+    tax_unit_earned_income: 5000
   output:
     md_poverty_line_credit: 250
 - name: /2 parents with 50_000 in employment income, 3_000 in md_income_tax_before_credits and 11 children
@@ -54,10 +55,8 @@
     people:
       parent:
         age: 26
-        employment_income: 20_000
       parent2:
         age: 26
-        employment_income: 0
       child1:
         age: 3
       child2:
@@ -85,6 +84,8 @@
         members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11]
         md_income_tax_before_credits: 3000
         md_state_non_refundable_eitc: 2000
+        tax_unit_earned_income: 20_000
+        is_eligible_md_poverty_line_credit: true
     households:
       household:
         members: [parent,parent2, child1, child2, child3, child4, child5, child6, child7, child8, child9,child10, child11]
