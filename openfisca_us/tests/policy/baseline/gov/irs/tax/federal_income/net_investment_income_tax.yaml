@@ -7,7 +7,7 @@
     rental_income: 0
     filing_status: SINGLE
   output:
-    niit: 0
+    net_investment_income_tax: 0
 
 - name: Rental income just under threshold
   period: 2019
@@ -18,7 +18,7 @@
     rental_income: 199_000
     filing_status: SINGLE
   output:
-    niit: 0
+    net_investment_income_tax: 0
 
 - name: Rental income just above threshold
   period: 2019
@@ -30,7 +30,7 @@
     rental_income: 205_000
     filing_status: SINGLE
   output:
-    niit: 190
+    net_investment_income_tax: 190
 
 - name: Rental income just above threshold
   period: 2019
@@ -42,4 +42,4 @@
     rental_income: 900_000
     filing_status: SINGLE
   output:
-    niit: 26_600
+    net_investment_income_tax: 26_600
