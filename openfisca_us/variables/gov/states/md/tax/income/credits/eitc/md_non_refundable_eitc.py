@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class md_state_non_refundable_eitc(Variable):
+class md_non_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "MD non-refundable EITC"
@@ -14,6 +14,6 @@ class md_state_non_refundable_eitc(Variable):
         p = parameters(period).gov.states.md.tax.income.credits.eitc
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
         # Limited to filers who are not single and childless.
-        eligible = tax_unit("md_qualifies_for_single_childless_eitc", period)
+        eligible = ~tax_unit("md_qualifies_for_single_childless_eitc", period)
         uncapped = p.non_refundable_match * federal_eitc
         return eligible * min_(tax_before_credits, uncapped)

@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class md_state_refundable_eitc(Variable):
+class md_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "MD EITC refundable State tax credit"
@@ -12,7 +12,7 @@ class md_state_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("md_qualifies_for_single_childless_eitc", period)
-        non_refundable_eitc = tax_unit("md_state_non_refundable_eitc", period)
+        non_refundable_eitc = tax_unit("md_non_refundable_eitc", period)
         p = parameters(period).gov.states.md.tax.income.credits.eitc
         income_tax = tax_unit("md_income_tax_before_credits", period)
         excess = max_(0, non_refundable_eitc - income_tax)

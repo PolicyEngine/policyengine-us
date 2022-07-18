@@ -12,8 +12,8 @@ class md_eitc(Variable):
 
     formula = sum_of_variables(
         [
-            "md_state_non_refundable_eitc",
-            "md_state_refundable_eitc",
+            "md_non_refundable_eitc",
+            "md_refundable_eitc",
             "md_single_childless_eitc",
         ]
     )

@@ -12,7 +12,7 @@
         members: [parent, child]
     households:
       household:
-        members: [parent]
+        members: [parent, child]
         state_code: MD
   output:
-    md_state_refundable_eitc: 850 * 0.45
+    md_refundable_eitc: 850 * 0.45

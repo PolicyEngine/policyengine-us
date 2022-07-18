@@ -20,9 +20,7 @@ class md_poverty_line_credit(Variable):
         income_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period
         )
-        md_non_refundable_eitc = tax_unit(
-            "md_state_non_refundable_eitc", period
-        )
+        md_non_refundable_eitc = tax_unit("md_non_refundable_eitc", period)
         tax_after_non_refundable_eitc = (
             income_tax_before_credits - md_non_refundable_eitc
         )
