@@ -21,5 +21,5 @@ class ma_dependent_credit(Variable):
         disabled = person("is_disabled", period)
         eligible = dependent & (child | elderly | disabled)
         count_eligible = tax_unit.sum(eligible)
-        capped_eligible = min_(count_eligible, p.cap)
+        capped_eligible = min_(count_eligible, p.dependent_cap)
         return capped_eligible * p.amount

@@ -16,10 +16,7 @@ class md_income_tax_before_credits(Variable):
         p = parameters(period).gov.states.md.tax.income.rate_schedule
         single_separate = p.single_separate.calc(taxable_income)
         joint_head_widow = p.joint_head_widow.calc(taxable_income)
-
-        return where(
-            (filing_status == filing_statuses.SINGLE)
-            | (filing_status == filing_statuses.SEPARATE),
-            single_separate,
-            joint_head_widow,
+        is_single_separate = (filing_status == filing_statuses.SINGLE) | (
+            filing_status == filing_statuses.SEPARATE
         )
+        return where(is_single_separate, single_separate, joint_head_widow)
