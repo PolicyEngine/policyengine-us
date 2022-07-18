@@ -10,10 +10,5 @@ class md_income_tax_after_non_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
-        non_refundable_credits = parameters(
-            period
-        ).gov.states.md.tax.income.credits.non_refundable
-        total_non_refundable_credits = add(
-            tax_unit, period, non_refundable_credits
-        )
-        return max_(0, tax_before_credits - total_non_refundable_credits)
+        non_refundable_credits = tax_unit("md_non_refundable_credits", period)
+        return max_(0, tax_before_credits - non_refundable_credits)

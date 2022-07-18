@@ -12,8 +12,5 @@ class md_income_tax(Variable):
         tax_after_non_refundable_credits = tax_unit(
             "md_income_tax_after_non_refundable_credits", period
         )
-        refundable_credits = parameters(
-            period
-        ).gov.states.md.tax.income.credits.refundable
-        total_refundable_credits = add(tax_unit, period, refundable_credits)
-        return tax_after_non_refundable_credits - total_refundable_credits
+        refundable_credits = tax_unit("md_refundable_credits", period)
+        return tax_after_non_refundable_credits - refundable_credits
