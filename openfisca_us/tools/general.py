@@ -87,6 +87,6 @@ def spouse(person: Population, period: int, variable: str) -> ArrayLike:
 
 def in_state(state):
     def is_eligible(population, period, parameters):
-        return population.household("state_code_str", period) == state
+        return population("state_code_str", period) == state
 
     return is_eligible
