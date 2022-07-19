@@ -20,7 +20,8 @@ class md_deductions(Variable):
         federal_deductions_if_itemizing = [
             deduction
             for deduction in federal_deductions_if_itemizing
-            if deduction not in [
+            if deduction
+            not in [
                 "salt_deduction",
                 "qualified_business_income_deduction",
             ]
