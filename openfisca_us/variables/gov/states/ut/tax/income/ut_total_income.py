@@ -7,6 +7,7 @@ class ut_total_income(Variable):
     label = "UT total income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
         federal_agi = tax_unit("adjusted_gross_income", period)
