@@ -1,10 +1,12 @@
 from openfisca_us.model_api import *
 
 
-class md_non_refundable_eitc(Variable):
+class md_non_single_childless_non_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD non-refundable EITC"
+    label = (
+        "MD non-refundable EITC for filers who are not single and childless"
+    )
     unit = USD
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(1)

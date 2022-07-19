@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class md_refundable_eitc(Variable):
+class md_non_single_childless_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "MD refundable EITC for filers who are not single and childless"
@@ -18,9 +18,12 @@ class md_refundable_eitc(Variable):
         md_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period
         )
-        md_non_refundable_eitc = tax_unit("md_non_refundable_eitc", period)
+        md_non_single_childless_non_refundable_eitc = tax_unit(
+            "md_non_single_childless_non_refundable_eitc", period
+        )
         md_tax_equals_non_refundable_eitc = (
-            md_tax_before_credits == md_non_refundable_eitc
+            md_tax_before_credits
+            == md_non_single_childless_non_refundable_eitc
         )
         eligible = (
             in_md & ~single_childless & md_tax_equals_non_refundable_eitc
