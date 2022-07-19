@@ -42,4 +42,10 @@ class is_eligible_md_poverty_line_credit(Variable):
             "md_income_tax_before_credits", period
         )
         eitc_less_than_income_tax = md_eitc < md_income_tax_before_credits
-        return agi_below_fpg & earnings_below_fpg & eitc_less_than_income_tax
+        in_md = tax_unit.household("state_code_str", period) == "MD"
+        return (
+            agi_below_fpg
+            & earnings_below_fpg
+            & eitc_less_than_income_tax
+            & in_md
+        )

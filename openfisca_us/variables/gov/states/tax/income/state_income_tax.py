@@ -8,6 +8,4 @@ class state_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula_2021 = sum_of_variables(
-        ["ma_income_tax", "wa_income_tax", "md_income_tax"]
-    )
+    formula_2021 = sum_of_variables(["ma_income_tax", "wa_income_tax"])

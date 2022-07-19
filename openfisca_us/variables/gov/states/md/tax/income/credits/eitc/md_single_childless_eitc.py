@@ -10,7 +10,11 @@ class md_single_childless_eitc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"  # (c)(3)
 
     def formula(tax_unit, period, parameters):
-        eligible = tax_unit("md_qualifies_for_single_childless_eitc", period)
+        single_childless = tax_unit(
+            "md_qualifies_for_single_childless_eitc", period
+        )
+        in_md = tax_unit.household("state_code_str", period) == "MD"
+        eligible = single_childless & in_md
         federal_eitc_without_age_minimum = tax_unit(
             "federal_eitc_without_age_minimum", period
         )

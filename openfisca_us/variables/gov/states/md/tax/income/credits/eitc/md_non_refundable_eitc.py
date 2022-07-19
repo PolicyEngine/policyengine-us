@@ -14,6 +14,10 @@ class md_non_refundable_eitc(Variable):
         p = parameters(period).gov.states.md.tax.income.credits.eitc
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
         # Limited to filers who are not single and childless.
-        eligible = ~tax_unit("md_qualifies_for_single_childless_eitc", period)
+        single_childless = tax_unit(
+            "md_qualifies_for_single_childless_eitc", period
+        )
+        in_md = tax_unit.household("state_code_str", period) == "MD"
+        eligible = ~single_childless & in_md
         uncapped = p.non_refundable_match * federal_eitc
         return eligible * min_(tax_before_credits, uncapped)

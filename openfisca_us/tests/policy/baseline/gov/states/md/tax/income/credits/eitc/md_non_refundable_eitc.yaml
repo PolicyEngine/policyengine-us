@@ -4,6 +4,7 @@
     md_qualifies_for_single_childless_eitc: false
     eitc: 300
     md_income_tax_before_credits: 100
+    state_code: MD
   output:
     md_non_refundable_eitc: 100
 
@@ -13,6 +14,7 @@
     md_qualifies_for_single_childless_eitc: false
     eitc: 300
     md_income_tax_before_credits: 200
+    state_code: MD
   output:
     md_non_refundable_eitc: 150
 
@@ -22,5 +24,6 @@
     md_qualifies_for_single_childless_eitc: true
     eitc: 300
     md_income_tax_before_credits: 200
+    state_code: MD
   output:
     md_non_refundable_eitc: 0
