@@ -29,4 +29,4 @@ class md_standard_deduction(Variable):
             (filing_status == filing_statuses.SINGLE)
             | (filing_status == filing_statuses.SEPARATE),
         )
-        return where(is_single_separate, single_separate, joint_head_widow)
+        return where(is_single_separate, single_separate, joint_head_widow)[0]
