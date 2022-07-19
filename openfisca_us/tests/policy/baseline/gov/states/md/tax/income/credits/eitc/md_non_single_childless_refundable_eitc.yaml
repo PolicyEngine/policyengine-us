@@ -1,0 +1,32 @@
+- name: 45% of the federal EITC, minus MD tax before credits.
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: false
+    md_non_single_childless_non_refundable_eitc: 100  # Would be $150 uncapped.
+    md_income_tax_before_credits: 100
+    federal_eitc_without_age_minimum: 300
+    state_code: MD
+  output:
+    md_non_single_childless_refundable_eitc: 300 * 0.45 - 100
+
+- name: Zero if non-refundable EITC matches tax before credits.
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: false
+    md_non_single_childless_non_refundable_eitc: 149
+    md_income_tax_before_credits: 150
+    federal_eitc_without_age_minimum: 298
+    state_code: MD
+  output:
+    md_non_single_childless_refundable_eitc: 0
+
+- name: Zero if single and childless (they receive a different variable).
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: true
+    md_non_single_childless_non_refundable_eitc: 150
+    md_income_tax_before_credits: 150
+    federal_eitc_without_age_minimum: 300
+    state_code: MD
+  output:
+    md_non_single_childless_refundable_eitc: 0
