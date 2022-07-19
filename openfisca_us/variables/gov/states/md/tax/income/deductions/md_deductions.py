@@ -8,6 +8,7 @@ class md_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://govt.westlaw.com/mdc/Document/N05479690A64A11DBB5DDAC3692B918BC?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         # Check if the tax_unit itemized on their federal returns:

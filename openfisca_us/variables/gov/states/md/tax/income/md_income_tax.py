@@ -7,6 +7,7 @@ class md_income_tax(Variable):
     label = "MD income tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         tax_after_non_refundable_credits = tax_unit(
