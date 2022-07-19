@@ -1,3 +1,6 @@
+from openfisca_us.variables.household.demographic.geographic.state_code import (
+    StateCode,
+)
 from functools import reduce
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
@@ -74,7 +77,3 @@ STATES = [
     "WI",
     "WY",
 ]
-
-from openfisca_us.variables.household.demographic.geographic.state_code import (
-    StateCode,
-)

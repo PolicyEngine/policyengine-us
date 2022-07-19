@@ -8,6 +8,7 @@ class is_ca_cvrp_increased_rebate_eligible(Variable):
     label = "Eligible for CVRP increased rebate"
     documentation = "Eligible for increased rebate for low- and middle-income participants in California's Clean Vehicle Rebate Project (CVRP)"
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
+    defined_for = StateCode.CA
 
     def formula(person, period, parameters):
         # Use school meal FPG ratio.
