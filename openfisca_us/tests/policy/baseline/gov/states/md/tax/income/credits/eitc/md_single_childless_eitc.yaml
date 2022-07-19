@@ -2,7 +2,7 @@
   period: 2021
   input:
     md_qualifies_for_single_childless_eitc: true
-    md_federal_eitc_without_age_minimum: 100
+    federal_eitc_without_age_minimum: 100
   output:
     md_single_childless_eitc: 100
 
@@ -10,7 +10,7 @@
   period: 2021
   input:
     md_qualifies_for_single_childless_eitc: true
-    md_federal_eitc_without_age_minimum: 531
+    federal_eitc_without_age_minimum: 531
   output:
     md_single_childless_eitc: 530
 
@@ -18,6 +18,6 @@
   period: 2021
   input:
     md_qualifies_for_single_childless_eitc: false
-    md_federal_eitc_without_age_minimum: 100
+    federal_eitc_without_age_minimum: 100
   output:
     md_single_childless_eitc: 0

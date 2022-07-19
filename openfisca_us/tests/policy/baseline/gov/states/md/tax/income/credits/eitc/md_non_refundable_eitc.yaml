@@ -1,7 +1,7 @@
 - name: 50% of EITC capped at income tax before credits.
   period: 2022
   input:
-    md:qualifies_for_single_childless_eitc: false
+    md_qualifies_for_single_childless_eitc: false
     eitc: 300
     md_income_tax_before_credits: 100
   output:
@@ -10,7 +10,7 @@
 - name: Not capped.
   period: 2022
   input:
-    md:qualifies_for_single_childless_eitc: false
+    md_qualifies_for_single_childless_eitc: false
     eitc: 300
     md_income_tax_before_credits: 200
   output:
@@ -19,7 +19,7 @@
 - name: Single childless filers have a different program.
   period: 2022
   input:
-    md:qualifies_for_single_childless_eitc: true
+    md_qualifies_for_single_childless_eitc: true
     eitc: 300
     md_income_tax_before_credits: 200
   output:
