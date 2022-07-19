@@ -16,7 +16,6 @@ class taxable_income_less_qbid(Variable):
             for deduction in deductions.deductions_if_itemizing
             if deduction
             not in [
-                "qualified_business_income_deduction",
                 "salt_deduction",
             ]
         ]
