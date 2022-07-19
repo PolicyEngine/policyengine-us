@@ -8,6 +8,7 @@ class ma_income_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section4"
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         part_a_interest_dividends = tax_unit(

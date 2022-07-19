@@ -10,6 +10,7 @@ class ma_income_tax(Variable):
     definition_period = YEAR
     reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
     defined_for = StateCode.MA
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         income_tax_before_credits = tax_unit(
