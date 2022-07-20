@@ -38,7 +38,9 @@ class ca_young_child(Variable):
         # Round increments to two decimal places.
         increments = np.round_(excess_earnings / p.phase_out.increment, 2)
         # Round reduction to two decimal places.
-        reduction = min_(p.amount, np.round_(increments * p.phase_out.amount, 2))
+        reduction = min_(
+            p.amount, np.round_(increments * p.phase_out.amount, 2)
+        )
         # Round final result to nearest dollar.
         # In reality, <$1 goes to $1.
         return eligible * np.rint(p.amount - reduction)
