@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.109.0] - 2022-07-20 19:59:29
+
+### Changed
+
+- Separate MD standard deduction parameters by filing status.
+- Add MD CTC to list of refundable credits.
+- Add MD notebooks to documentation table of contents.
+
+## [0.108.0] - 2022-07-20 11:58:26
+
+### Added
+
+- Caching of second-lowest silver plan cost in the CPS microdata.
+
+## [0.107.0] - 2022-07-20 11:57:02
+
+### Added
+
+- MD income tax to State income tax.
+
 ## [0.106.0] - 2022-07-19 14:26:52
 
 ### Added
@@ -1466,6 +1486,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.109.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.108.0...0.109.0
+[0.108.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.107.0...0.108.0
+[0.107.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.106.0...0.107.0
 [0.106.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.105.0...0.106.0
 [0.105.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.104.0...0.105.0
 [0.104.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.103.1...0.104.0

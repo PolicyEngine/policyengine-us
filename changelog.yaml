@@ -1211,3 +1211,20 @@
     - Maryland Earned Income Tax Credit.
     - Notebooks for Maryland tax programs.
   date: 2022-07-19 14:26:52
+- bump: minor
+  changes:
+    added:
+    - MD income tax to State income tax.
+  date: 2022-07-20 11:57:02
+- bump: minor
+  changes:
+    added:
+    - Caching of second-lowest silver plan cost in the CPS microdata.
+  date: 2022-07-20 11:58:26
+- bump: minor
+  changes:
+    changed:
+    - Separate MD standard deduction parameters by filing status.
+    - Add MD CTC to list of refundable credits.
+    - Add MD notebooks to documentation table of contents.
+  date: 2022-07-20 19:59:29
