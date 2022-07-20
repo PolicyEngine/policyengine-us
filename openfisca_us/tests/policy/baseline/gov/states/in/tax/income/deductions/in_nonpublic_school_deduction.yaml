@@ -6,6 +6,8 @@
         is_in_k12_nonpublic_school: true
       child2: 
         is_in_k12_nonpublic_school: true
+    tax_unit: 
+      members: [child1, child2]
   output:
     in_nonpublic_school_deduction: 2_000
 
@@ -15,5 +17,7 @@
     people:
       child1: 
         is_in_k12_nonpublic_school: true
+    tax_unit: 
+      members: [child1]
   output:
     in_nonpublic_school_deduction: 1_000
