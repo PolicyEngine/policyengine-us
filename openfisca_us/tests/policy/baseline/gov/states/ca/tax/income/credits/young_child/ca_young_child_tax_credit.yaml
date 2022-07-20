@@ -1,7 +1,115 @@
-- name: Placeholder
+- name: Earns same as the phase out start amount and has 1 eligible child
   period: 2021
   input:
-    state_code: CA
-    adjusted_gross_income: 0
+    people:
+      parent: {}
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_earned_income: 25_000
+        ca_eitc: 1
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
   output:
-    ca_young_child: 2500
+    ca_young_child: 1_000
+
+- name: Earns 100 over the phase out start amount and gets 20 less back
+  period: 2021
+  input:
+    people:
+      parent: {}
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_earned_income: 25_100
+        ca_eitc: 1
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_young_child: 980
+    
+- name: Earns 100 over the phase out start amount but child is 6, so recieves nothing
+  period: 2021
+  input:
+    people:
+      parent: {}
+      child:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_earned_income: 25_100
+        ca_eitc: 1
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_young_child: 0
+    
+- name: Earns 100 over the phase out start amount and gets 20 less
+  period: 2021
+  input:
+    people:
+      parent: {}
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_earned_income: 25_100
+        ca_eitc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_young_child: 0
+    
+- name: Earns 100 over the phase out start amount and gets 20 less
+  period: 2021
+  input:
+    people:
+      parent: {}
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_earned_income: 30_000
+        ca_eitc: 1
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_young_child: 0
+    
+- name: Earns 100 over the phase out start amount and gets 20 less
+  period: 2021
+  input:
+    people:
+      parent: {}
+      child1:
+        age: 5
+      child2:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        tax_unit_earned_income: 25_100
+        ca_eitc: 1
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: CA
+  output:
+    ca_young_child: 980
