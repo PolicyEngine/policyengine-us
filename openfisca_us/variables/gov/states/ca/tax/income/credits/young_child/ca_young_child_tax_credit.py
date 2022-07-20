@@ -15,7 +15,11 @@ class ca_young_child(Variable):
     label = "CA Young Child Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = ("https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3", "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1", "https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html")
+    reference = (
+        "https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3",
+        "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1",
+        "https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.young_child
@@ -26,7 +30,9 @@ class ca_young_child(Variable):
         # b) tax unit has at least one CalEITC-qualifying child under six
         person = tax_unit.members
         meets_age_limit = person("age", period) < p.max_age
-        is_qualifying_child_for_caleitc = person("ca_is_qualifying_child_for_caleitc", period)
+        is_qualifying_child_for_caleitc = person(
+            "ca_is_qualifying_child_for_caleitc", period
+        )
         is_eligible_child = meets_age_limit & is_qualifying_child_for_caleitc
         has_eligible_child = tax_unit.sum(is_eligible_child) > 0
         receives_ca_eitc = tax_unit("ca_eitc", period) > 0
@@ -42,9 +48,4 @@ class ca_young_child(Variable):
         reduction = np.round_(increments * p.phase_out.amount, 2)
         # Round final result to nearest dollar.
         # In reality, <$1 goes to $1.
-        return eligible * np.rint(p.amount -  reduction)
-        
-
-        
-
-        
+        return eligible * np.rint(p.amount - reduction)

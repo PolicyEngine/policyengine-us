@@ -6,9 +6,7 @@ class ca_renters_tax_credit(Variable):
     entity = TaxUnit
     label = "Renters Tax Credit"
     unit = USD
-    documentation = (
-        "https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter"
-    )
+    documentation = "https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class ca_is_qualifying_child_for_caleitc(Variable):
     value_type = bool
     entity = Person
