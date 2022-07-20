@@ -1147,3 +1147,67 @@
     fixed:
     - Avoid double-counting CDCC when it was refundable in 2021.
   date: 2022-07-15 21:50:01
+- bump: minor
+  changes:
+    added:
+    - MD CTC
+  date: 2022-07-16 03:04:11
+- bump: patch
+  changes:
+    changed:
+    - Change MA dependent care credit from a scale parameter to an amount/cap structure.
+  date: 2022-07-16 04:19:02
+- bump: minor
+  changes:
+    added:
+    - MD local income tax rates.
+  date: 2022-07-16 11:16:19
+- bump: patch
+  changes:
+    fixed:
+    - Click dependency limited to >=8.0.0.
+  date: 2022-07-16 12:30:48
+- bump: patch
+  changes:
+    added:
+    - Changelog entry file functionality.
+    - Linecheck dev dependency.
+  date: 2022-07-16 14:06:12
+- bump: minor
+  changes:
+    added:
+    - Net investment income tax and other taxes to tax before refundable credits.
+  date: 2022-07-17 21:38:27
+- bump: minor
+  changes:
+    added:
+    - California renters tax credit
+  date: 2022-07-18 02:28:29
+- bump: minor
+  changes:
+    added:
+    - Non-qualified dividend income.
+    fixed:
+    - Dividend income split into qualified and non-qualified correctly.
+  date: 2022-07-18 02:56:11
+- bump: patch
+  changes:
+    added:
+    - MD CTC notebook
+  date: 2022-07-18 20:44:57
+- bump: minor
+  changes:
+    added:
+    - Maryland refundable and non-refundable CDCC.
+  date: 2022-07-18 22:14:59
+- bump: minor
+  changes:
+    added:
+    - Maryland Poverty Line Credit.
+  date: 2022-07-18 23:24:42
+- bump: minor
+  changes:
+    added:
+    - Maryland Earned Income Tax Credit.
+    - Notebooks for Maryland tax programs.
+  date: 2022-07-19 14:26:52
