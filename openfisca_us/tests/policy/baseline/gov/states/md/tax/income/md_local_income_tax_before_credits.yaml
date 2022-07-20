@@ -1,0 +1,9 @@
+- name: Flat rate applied for Baltimore City.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    md_taxable_income: 100
+    county: BALTIMORE_CITY_MD
+    state_code: MD
+  output:
+    md_local_income_tax_before_credits: 100 * 0.032

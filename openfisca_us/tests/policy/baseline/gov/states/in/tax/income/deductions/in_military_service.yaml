@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        in_person_military_service_deduction: 5_000
+        military_service_income: 5_000
     tax_units:
       tax_unit:
         members: person1
@@ -15,9 +15,9 @@
   input:
     people:
       person1:
-        in_person_military_service_deduction: 5_000
+        military_service_income: 5_000
       person2:
-        in_person_military_service_deduction: 5_000
+        military_service_income: 5_000
     tax_units:
       tax_unit:
         members: ["person1", "person2"]

@@ -1,0 +1,16 @@
+description: MD Standard deduction max for single, married filing separately, or dependent taxpayers
+metadata:
+  name: md_single_separate_standard_deduction_max
+  label: MD maximum standard deduction for single and separate filers
+  unit: currency-USD
+  period: year
+  reference:
+    - title: "MD Code, Tax - General, § 10-217 (c)(1)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "Maryland new tax year update -exemptions and deductions"
+      href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+values:
+  2018-01-01: 2_250
+  2021-01-01: 2_350

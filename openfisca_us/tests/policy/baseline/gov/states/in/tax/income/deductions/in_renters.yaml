@@ -2,8 +2,8 @@
   period: 2021
   input:
     state_code: IN
+    rent: 2_000
     filing_status: JOINT
-    in_rent: 2_000
   output:
     in_renters_deduction: 2_000
 
@@ -12,6 +12,6 @@
   input:
     state_code: IN
     filing_status: SEPARATE
-    in_rent: 2_000
+    rent: 2_000
   output:
     in_renters_deduction: 1_500

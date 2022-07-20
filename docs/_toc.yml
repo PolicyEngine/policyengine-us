@@ -16,6 +16,7 @@ parts:
       - file: programs/irs/index
         sections:
           - file: programs/irs/credits/eitc
+          - file: programs/irs/credits/cdcc
       - file: programs/ssa/index
         sections:
           - file: programs/ssa/ssi
@@ -29,6 +30,9 @@ parts:
               - file: programs/states/ma/tax-benefit
               - file: programs/states/ma/tax/income/index
               - file: programs/states/ma/tax/income/credits/senior-circuit-breaker
+          - file: programs/states/md/index
+            sections:
+              - file: programs/states/ma/tax/income/credits/cdcc
           - file: programs/states/ny/index
             sections:
               - file: programs/states/ny/eitc
@@ -38,9 +42,12 @@ parts:
       - file: programs/usda/index
         sections:
           - file: programs/usda/snap
-          - file: programs/usda/school_meals
+          - file: programs/usda/school-meals
           - file: programs/usda/wic
   - caption: Validation
     chapters:
       - file: validation/taxsim
+  - caption: Usage
+    chapters:
+      - file: usage/speed
       

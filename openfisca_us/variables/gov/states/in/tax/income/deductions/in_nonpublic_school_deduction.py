@@ -7,7 +7,7 @@ class in_nonpublic_school_deduction(Variable):
     label = "Nonpublic school expenditures deduction for IN"
     definition_period = YEAR
     unit = USD
-    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-4"  # (d)(1)
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-22"  # (d)(1)
 
     def formula(tax_unit, period, parameters):
         p = (
@@ -15,6 +15,9 @@ class in_nonpublic_school_deduction(Variable):
             .gov.states["in"]
             .tax.income.deductions.nonpublic_school
         )
-        return (
-            tax_unit("in_count_children_nonpublic_school", period) * p.amount
-        )
+        children = add(tax_unit, period, ["is_in_k12_nonpublic_school"])
+        # Law specifices dependent children who attended a nonpublic school in Indiana
+        # for 180 days or more and for whom non-reimbursed education expenditures were made;
+        # using a national var here to save mem
+
+        return children * p.amount
