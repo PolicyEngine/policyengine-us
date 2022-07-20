@@ -1,10 +1,11 @@
-- name: Earns same as the phase out start amount and has 1 eligible child
+- name: Earns same as the phase out start amount and has 1 eligible child.
   period: 2021
   input:
     people:
       parent: {}
       child:
         age: 5
+        ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -17,13 +18,14 @@
   output:
     ca_young_child: 1_000
 
-- name: Earns 100 over the phase out start amount and gets 20 less back
+- name: Earns $100 over the phase out start amount and gets $20 less.
   period: 2021
   input:
     people:
       parent: {}
       child:
         age: 5
+        ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -36,13 +38,14 @@
   output:
     ca_young_child: 980
     
-- name: Earns 100 over the phase out start amount but child is 6, so recieves nothing
+- name: Earns $100 over the phase out start amount but child is 6, so ineligible.
   period: 2021
   input:
     people:
       parent: {}
       child:
         age: 6
+        ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -55,13 +58,14 @@
   output:
     ca_young_child: 0
     
-- name: Earns 100 over the phase out start amount and gets 20 less
+- name: Zero CalEITC so ineligible.
   period: 2021
   input:
     people:
       parent: {}
       child:
         age: 5
+        ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -74,13 +78,14 @@
   output:
     ca_young_child: 0
     
-- name: Earns 100 over the phase out start amount and gets 20 less
+- name: Earns the end of the phase-out window ($30,000) so gets $0.
   period: 2021
   input:
     people:
       parent: {}
       child:
         age: 5
+        ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child]
@@ -100,8 +105,10 @@
       parent: {}
       child1:
         age: 5
+        ca_is_qualifying_child_for_caleitc: true
       child2:
         age: 0
+        ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
