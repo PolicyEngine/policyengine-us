@@ -1,6 +1,8 @@
-description: MD Standard deduction maximum for single, married filing separately, or dependent taxpayers
+description: MD Standard deduction maximum for joint, head or widow taxpayers
 metadata:
-  name: md_single_separate_standard_deduction_max
+  name: md_joint_head_widow_standard_deduction_max
+  label: MD maximum standard deduction for joint, head and widow filers
+  unit: currency-USD
   period: year
   reference:
     - title: "MD Code, Tax - General, § 10-217 (c)(1)"
