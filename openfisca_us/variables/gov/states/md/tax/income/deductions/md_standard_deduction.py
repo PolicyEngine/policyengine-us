@@ -25,8 +25,7 @@ class md_standard_deduction(Variable):
             p.rate * md_agi, p.joint_head_widow.min, p.joint_head_widow.max
         )
         # Return the value matching filing status.
-        is_single_separate = (
-            (filing_status == filing_statuses.SINGLE)
-            | (filing_status == filing_statuses.SEPARATE),
+        is_single_separate = (filing_status == filing_statuses.SINGLE) | (
+            filing_status == filing_statuses.SEPARATE
         )
         return where(is_single_separate, single_separate, joint_head_widow)

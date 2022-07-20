@@ -1,0 +1,26 @@
+- name: 100% of federal EITC up to $530.
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: true
+    federal_eitc_without_age_minimum: 100
+    state_code: MD
+  output:
+    md_single_childless_eitc: 100
+
+- name: Capped by $530.
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: true
+    federal_eitc_without_age_minimum: 531
+    state_code: MD
+  output:
+    md_single_childless_eitc: 530
+
+- name: Requires eligibility.
+  period: 2021
+  input:
+    md_qualifies_for_single_childless_eitc: false
+    federal_eitc_without_age_minimum: 100
+    state_code: MD
+  output:
+    md_single_childless_eitc: 0

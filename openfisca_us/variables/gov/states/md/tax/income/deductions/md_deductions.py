@@ -13,9 +13,24 @@ class md_deductions(Variable):
         # Check if the tax_unit itemized on their federal returns:
         tax_unit_itemizes = tax_unit("tax_unit_itemizes", period)
         standard_deduction = tax_unit("md_standard_deduction", period)
-        federal_deductions_if_itemizing = tax_unit_itemizes * tax_unit(
-            "taxable_income_deductions_if_itemizing", period
+        gov = parameters(period).gov
+        federal_deductions_if_itemizing = (
+            gov.irs.deductions.deductions_if_itemizing
         )
-        salt = tax_unit("salt_deduction", period)
-        md_deductions = federal_deductions_if_itemizing - salt
-        return where(tax_unit_itemizes, md_deductions, standard_deduction)
+        federal_deductions_if_itemizing = [
+            deduction
+            for deduction in federal_deductions_if_itemizing
+            if deduction
+            not in [
+                "salt_deduction",
+                "qualified_business_income_deduction",
+            ]
+        ]
+        itemized_deductions_less_salt = add(
+            tax_unit, period, federal_deductions_if_itemizing
+        )
+        return where(
+            tax_unit_itemizes,
+            itemized_deductions_less_salt,
+            standard_deduction,
+        )
