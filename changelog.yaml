@@ -1221,3 +1221,10 @@
     added:
     - Caching of second-lowest silver plan cost in the CPS microdata.
   date: 2022-07-20 11:58:26
+- bump: minor
+  changes:
+    changed:
+    - Separate MD standard deduction parameters by filing status.
+    - Add MD CTC to list of refundable credits.
+    - Add MD notebooks to documentation table of contents.
+  date: 2022-07-20 19:59:29
