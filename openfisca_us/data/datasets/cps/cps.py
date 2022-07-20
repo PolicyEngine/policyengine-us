@@ -55,6 +55,25 @@ class CPS(PublicDataset):
         raw_data.close()
         cps.close()
 
+        cps = h5py.File(self.file(year), mode="a")
+        add_silver_plan_cost(cps, year)
+        cps.close()
+
+
+def add_silver_plan_cost(cps: h5py.File, year: int):
+    """Adds the second-lowest silver plan cost for each tax unit, based on geography.
+
+    Args:
+        cps (h5py.File): The CPS dataset file.
+        year (int): The year of the data.
+    """
+    from openfisca_us import Microsimulation
+
+    sim = Microsimulation(dataset=CPS, year=year)
+    slspc = sim.calc("second_lowest_silver_plan_cost").values
+
+    cps["second_lowest_silver_plan_cost"] = slspc
+
 
 def add_id_variables(
     cps: h5py.File,
