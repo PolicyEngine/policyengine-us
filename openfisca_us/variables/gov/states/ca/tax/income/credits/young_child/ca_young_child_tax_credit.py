@@ -1,10 +1,3 @@
-# Parameters: amount ($1,000 - verify), phase_out.start ($25,000), phase_out.increment ($100), phase_out.amount ($20), max_age (5)
-# Variables: tax/income/credits/earned_income/ca_is_eligible_for_caleitc.py - NO FORMULA
-# Formula: Involves parameters and ca_is_eligible_for_caleitc variable
-# Tests: ca_is_eligible_for_caleitc as input (along with earned_income, etc.)
-# Stepped phase out example:
-# https://github.com/PolicyEngine/openfisca-us/blob/master/openfisca_us/variables/gov/irs/credits/cdcc/cdcc_rate.py
-
 from openfisca_us.model_api import *
 import numpy as np
 
@@ -29,7 +22,7 @@ class ca_young_child(Variable):
         # a) tax unit receives CalEITC
         # b) tax unit has at least one CalEITC-qualifying child under six
         person = tax_unit.members
-        meets_age_limit = person("age", period) < p.max_age
+        meets_age_limit = person("age", period) < p.ineligible_age
         is_qualifying_child_for_caleitc = person(
             "ca_is_qualifying_child_for_caleitc", period
         )
@@ -45,7 +38,7 @@ class ca_young_child(Variable):
         # Round increments to two decimal places.
         increments = np.round_(excess_earnings / p.phase_out.increment, 2)
         # Round reduction to two decimal places.
-        reduction = np.round_(increments * p.phase_out.amount, 2)
+        reduction = min_(p.amount, np.round_(increments * p.phase_out.amount, 2))
         # Round final result to nearest dollar.
         # In reality, <$1 goes to $1.
         return eligible * np.rint(p.amount - reduction)
