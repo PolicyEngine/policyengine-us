@@ -1,0 +1,23 @@
+description: Amount an individual or couple can receive via standard deduction
+
+SINGLE:
+  2020-01-01: 4_803
+SEPARATE:
+  2020-01-01: 4_803
+WIDOW:
+  2020-01-01: 9_606
+JOINT:
+  2020-01-01: 9_606
+HEAD_OF_HOUSEHOLD:
+  2020-01-01: 9_606
+
+metadata:
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  name: ca_standard_deduction_amount
+  label: "California standard deduction amount"
+  reference:
+  - title: 2021 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf

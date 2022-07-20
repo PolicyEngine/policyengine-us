@@ -1,0 +1,17 @@
+- name: Single filer 
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 1
+    filing_status: SINGLE
+  output:
+    ca_renters_credit: 4_803
+
+- name: Joint filer 
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 1
+    filing_status: JOINT
+  output:
+    ca_renters_credit: 9_606
