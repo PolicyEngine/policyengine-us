@@ -4,7 +4,8 @@ from openfisca_us.model_api import *
 class in_qualifying_child_count(Variable):
     value_type = int
     entity = TaxUnit
-    label = "IN qualifying depdendent child count"
+    label = "IN qualifying dependent child count"
+    unit = "child"
     documentation = (
         "Number of qualifying children for the IN additional exemption."
     )
