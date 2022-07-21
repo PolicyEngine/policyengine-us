@@ -28,7 +28,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.7
       - name: Build changelog
@@ -54,14 +54,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.7
       - name: Install package
         run: make install
       - name: Run tests
         run: make test
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
       - name: Test documentation builds
         if: matrix.os == 'ubuntu-latest'
         run: make documentation
@@ -81,7 +81,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.7
       - name: Publish a git tag
