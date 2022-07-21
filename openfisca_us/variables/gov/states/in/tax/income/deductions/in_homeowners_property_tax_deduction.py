@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class in_homeowners_property_tax_deduction(Variable):
+class in_homeowners_property_tax_deductionBUG(Variable):
     value_type = float
     entity = TaxUnit
     label = "IN homeowner's residential property tax deduction"
