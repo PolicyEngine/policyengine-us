@@ -1,9 +1,12 @@
 from openfisca_us.model_api import *
 
+
 class md_ctc_without_federal(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MD CTC without ssubtracting the value of the federal child tax credit"
+    label = (
+        "MD CTC without ssubtracting the value of the federal child tax credit"
+    )
     definition_period = YEAR
     unit = USD
     documentation = "Maryland Child Tax Credit"
@@ -21,4 +24,3 @@ class md_ctc_without_federal(Variable):
         eligible_child = dependent & disabled & meets_age_limit
         eligible_children = tax_unit.sum(eligible_child)
         return income_eligible * eligible_children * p.amount
-        
