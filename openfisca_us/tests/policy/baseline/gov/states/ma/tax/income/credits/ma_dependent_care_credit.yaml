@@ -3,6 +3,7 @@
   absolute_error_margin: 0
   input:
     count_cdcc_eligible: 0
+    state_code: MA
   output:
     ma_dependent_care_credit: 0
 
@@ -13,6 +14,7 @@
     count_cdcc_eligible: 1
     min_head_spouse_earned: 200
     tax_unit_childcare_expenses: 300
+    state_code: MA
   output:
     ma_dependent_care_credit: 200
 
@@ -23,6 +25,7 @@
     count_cdcc_eligible: 2
     tax_unit_childcare_expenses: 500
     min_head_spouse_earned: 600
+    state_code: MA
   output:
     ma_dependent_care_credit: 480
 
@@ -33,5 +36,6 @@
     count_cdcc_eligible: 4
     tax_unit_childcare_expenses: 500
     min_head_spouse_earned: 300
+    state_code: MA
   output:
     ma_dependent_care_credit: 300

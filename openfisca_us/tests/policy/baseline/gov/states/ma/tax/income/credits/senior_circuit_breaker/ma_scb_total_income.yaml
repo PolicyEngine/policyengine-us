@@ -19,5 +19,9 @@
         snap: 0
         tanf: 0
         members: [A, B]
+    households:
+      household:
+        members: [A, B]
+        state_code: MA
   output:
     ma_scb_total_income: 30_000

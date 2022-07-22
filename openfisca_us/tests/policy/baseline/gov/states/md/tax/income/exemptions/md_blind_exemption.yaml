@@ -13,6 +13,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
   output:
     md_blind_exemption: 1_000
 - name: Dependent over 65
@@ -31,5 +35,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
   output:
     md_aged_blind_exemptions: 3_200

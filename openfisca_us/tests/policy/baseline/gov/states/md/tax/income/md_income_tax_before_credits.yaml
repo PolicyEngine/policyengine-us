@@ -8,6 +8,7 @@
   input:
     md_taxable_income: 20_000
     filing_status: SINGLE
+    state_code: MD
   output:
     md_income_tax_before_credits: 897.50
 
@@ -16,6 +17,7 @@
   input:
     md_taxable_income: 2_000
     filing_status: SINGLE
+    state_code: MD
   output:
     md_income_tax_before_credits: 50
 
@@ -24,5 +26,6 @@
   input:
     md_taxable_income: 2_000
     filing_status: MARRIED
+    state_code: MD
   output:
     md_income_tax_before_credits: 50

@@ -12,5 +12,9 @@
       tax_unit:
         ma_scb_total_income: 30_000
         members: [A, B]
+    households:
+      household:
+        members: [A, B]
+        state_code: MA
   output:
     ma_senior_circuit_breaker: 350
