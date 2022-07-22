@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.112.0] - 2022-07-22 20:16:52
+
+### Added
+
+- Performance improvements through partially-executed formulas from OpenFisca-Tools.
+
 ## [0.111.0] - 2022-07-22 15:07:46
 
 ### Added
@@ -1516,6 +1522,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.112.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.111.0...0.112.0
 [0.111.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.2...0.111.0
 [0.110.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.1...0.110.2
 [0.110.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.0...0.110.1
