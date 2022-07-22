@@ -8,13 +8,14 @@ GROUP_ENTITY_NAMES = (
 
 def test_variable_names():
     from openfisca_us import CountryTaxBenefitSystem
+    from openfisca_us.model_api import STATES
 
     system = CountryTaxBenefitSystem()
     for instance in system.variables.values():
         variable = type(instance)
+        if variable.__name__ in STATES:#
+            # State codes are allowed
+            continue
         assert (
             variable.__name__.islower()
         ), f"{variable.__name__} is not all lowercase"
-        if variable.entity.key in GROUP_ENTITY_NAMES:
-            pass
-            # assert variable.__name__[:len(variable.entity.key)] == variable.entity.key, f"{variable.__name__} does not begin with the specified group entity"
