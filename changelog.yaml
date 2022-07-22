@@ -1258,3 +1258,9 @@
     added:
     - Performance improvements through partially-executed formulas from OpenFisca-Tools.
   date: 2022-07-22 20:16:52
+- bump: patch
+  changes:
+    fixed:
+    - SNAP standard deductions and references.
+    - Count all non-shelter deductions in SNAP net income before shelter.
+  date: 2022-07-22 23:39:14
