@@ -8,6 +8,7 @@ class md_non_single_childless_refundable_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-704-effective-until-6302023-for-earned-income"
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         single_childless = tax_unit(

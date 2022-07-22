@@ -8,5 +8,6 @@ class md_refundable_credits(Variable):
     documentation = "Maryland refundable tax credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     formula = sum_of_variables("gov.states.md.tax.income.credits.refundable")

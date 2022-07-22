@@ -5,6 +5,69 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.112.1] - 2022-07-22 23:39:14
+
+### Fixed
+
+- SNAP standard deductions and references.
+- Count all non-shelter deductions in SNAP net income before shelter.
+
+## [0.112.0] - 2022-07-22 20:16:52
+
+### Added
+
+- Performance improvements through partially-executed formulas from OpenFisca-Tools.
+
+## [0.111.0] - 2022-07-22 15:07:46
+
+### Added
+
+- IN Add-Backs.
+
+## [0.110.2] - 2022-07-22 10:11:10
+
+### Added
+
+- Test that parameter files do not contain tabs with informative error messages.
+
+## [0.110.1] - 2022-07-22 08:25:43
+
+### Changed
+
+- Moved geographical Medicaid calculation parameters to an on-demand folder.
+
+## [0.110.0] - 2022-07-21 19:28:21
+
+### Added
+
+- IN deductions.
+
+## [0.109.1] - 2022-07-20 20:41:23
+
+### Fixed
+
+- Breakdown for two Maryland parameters.
+
+## [0.109.0] - 2022-07-20 19:59:29
+
+### Changed
+
+- Separate MD standard deduction parameters by filing status.
+- Add MD CTC to list of refundable credits.
+- Add MD notebooks to documentation table of contents.
+
+## [0.108.0] - 2022-07-20 11:58:26
+
+### Added
+
+- Caching of second-lowest silver plan cost in the CPS microdata.
+
+## [0.107.0] - 2022-07-20 11:57:02
+
+### Added
+
+- MD income tax to State income tax.
+
 ## [0.106.0] - 2022-07-19 14:26:52
 
 ### Added
@@ -1466,6 +1529,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.112.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.0...0.112.1
+[0.112.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.111.0...0.112.0
+[0.111.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.2...0.111.0
+[0.110.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.1...0.110.2
+[0.110.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.0...0.110.1
+[0.110.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.109.1...0.110.0
+[0.109.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.109.0...0.109.1
+[0.109.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.108.0...0.109.0
+[0.108.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.107.0...0.108.0
+[0.107.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.106.0...0.107.0
 [0.106.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.105.0...0.106.0
 [0.105.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.104.0...0.105.0
 [0.104.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.103.1...0.104.0

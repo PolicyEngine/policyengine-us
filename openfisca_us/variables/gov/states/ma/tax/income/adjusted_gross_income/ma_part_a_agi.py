@@ -10,6 +10,7 @@ class ma_part_a_agi(Variable):
     reference = (
         "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"  # (c)
     )
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         part_a_gross_income = tax_unit("ma_part_a_gross_income", period)

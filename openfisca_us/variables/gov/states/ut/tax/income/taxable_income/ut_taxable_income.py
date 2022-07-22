@@ -7,6 +7,7 @@ class ut_taxable_income(Variable):
     label = "UT taxable income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
         salt_refund = tax_unit("salt_refund_last_year", period)

@@ -6,7 +6,7 @@ class tax_unit_taxable_social_security(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Taxable Social Security benefits"
-    documentation = "Social security (OASDI) benefits included in AGI"
+    documentation = "Social security (OASDI) benefits included in AGI, including tier 1 railroad retirement benefits."
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/86"
 

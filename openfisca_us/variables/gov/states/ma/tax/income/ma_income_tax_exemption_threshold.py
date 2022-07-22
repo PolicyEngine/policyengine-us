@@ -9,6 +9,7 @@ class ma_income_tax_exemption_threshold(Variable):
     documentation = "MA AGI threshold below which an individual is exempt from State income tax."
     definition_period = YEAR
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5"
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)

@@ -1,4 +1,5 @@
 from openfisca_us.model_api import *
+import yaml
 
 
 class medicaid_rating_area(Variable):
@@ -8,7 +9,8 @@ class medicaid_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        mra = parameters(
+        parameter_tree = household.simulation.tax_benefit_system.parameters
+        mra = parameter_tree(
             period
         ).gov.hhs.medicaid.geography.medicaid_rating_area
         three_digit_zip_code = household("three_digit_zip_code", period)

@@ -3,6 +3,7 @@
   input:
     md_income_tax_before_credits: 5
     md_non_refundable_credits: 3
+    state_code: MD
   output:
     md_income_tax_after_non_refundable_credits: 2
 
@@ -11,5 +12,6 @@
   input:
     md_income_tax_before_credits: 5
     md_non_refundable_credits: 6
+    state_code: MD
   output:
     md_income_tax_after_non_refundable_credits: 0

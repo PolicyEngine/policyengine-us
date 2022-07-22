@@ -1,0 +1,21 @@
+description: Maximum Renter's deduction in IN.
+metadata:
+  period: year
+  unit: currency-USD
+  name: in_max_renters_deduction
+  label: IN max renter's deduction
+  breakdown:
+    - filing_status
+  reference:
+    - title: IC 6-3-2-6 Deduction; rent payments
+      href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-6
+SINGLE:
+  2021-01-01: 3_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 3_000
+JOINT:
+  2021-01-01: 3_000
+WIDOW:
+  2021-01-01: 3_000
+SEPARATE:
+  2021-01-01: 1_500

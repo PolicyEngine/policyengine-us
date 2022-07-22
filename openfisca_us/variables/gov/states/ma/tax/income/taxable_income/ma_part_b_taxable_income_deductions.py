@@ -8,6 +8,7 @@ class ma_part_b_taxable_income_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         tax = parameters(period).gov.states.ma.tax.income
