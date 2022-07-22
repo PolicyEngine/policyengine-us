@@ -46,4 +46,5 @@ class federal_eitc_without_age_minimum(Variable):
             value=original_value,
             period=period,
         )
+        simulation.tax_benefit_system._parameters_at_instant_cache = {}
         return eitc

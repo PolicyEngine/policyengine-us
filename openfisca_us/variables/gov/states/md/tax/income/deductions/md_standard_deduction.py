@@ -13,20 +13,9 @@ class md_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
         p = parameters(period).gov.states.md.tax.income.deductions.standard
         md_agi = tax_unit("md_agi", period)
         # Standard deduction is a percentage of AGI, bounded by a min/max by filing status.
-        # Calculate for single and separate depending on AGI.
-        single_separate = np.clip(
-            p.rate * md_agi, p.single_separate.min, p.single_separate.max
+        return np.clip(
+            p.rate * md_agi, p.min[filing_status], p.max[filing_status]
         )
-        # Calculate for joint, head of household, and widow based on AGI.
-        joint_head_widow = np.clip(
-            p.rate * md_agi, p.joint_head_widow.min, p.joint_head_widow.max
-        )
-        # Return the value matching filing status.
-        is_single_separate = (filing_status == filing_statuses.SINGLE) | (
-            filing_status == filing_statuses.SEPARATE
-        )
-        return where(is_single_separate, single_separate, joint_head_widow)
