@@ -1243,3 +1243,8 @@
     changed:
     - Moved geographical Medicaid calculation parameters to an on-demand folder.
   date: 2022-07-22 08:25:43
+- bump: patch
+  changes:
+    added:
+    - Test that parameter files do not contain tabs with informative error messages.
+  date: 2022-07-22 10:11:10
