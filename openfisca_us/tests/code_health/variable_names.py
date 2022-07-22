@@ -13,7 +13,7 @@ def test_variable_names():
     system = CountryTaxBenefitSystem()
     for instance in system.variables.values():
         variable = type(instance)
-        if variable.__name__ in STATES:#
+        if variable.__name__ in STATES:
             # State codes are allowed
             continue
         assert (
