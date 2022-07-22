@@ -1,0 +1,11 @@
+- name: "Default SPM unit meets California's income test"
+  period: 2022
+  output:
+    meets_tanf_non_cash_gross_income_test: true
+
+- name: "California gross income limit is 200% of FPL"
+  period: 2022
+  input:
+    snap_gross_income_fpg_ratio: 2.05
+  output:
+    meets_tanf_non_cash_gross_income_test: false

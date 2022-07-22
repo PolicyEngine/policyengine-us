@@ -1,0 +1,12 @@
+- name: Default person is not a mother.
+  period: 2020
+  input: {}
+  output:
+    is_mother: false
+
+- name: Breastfeeding people are mothers.
+  period: 2020
+  input:
+    is_breastfeeding: true
+  output:
+    is_mother: true

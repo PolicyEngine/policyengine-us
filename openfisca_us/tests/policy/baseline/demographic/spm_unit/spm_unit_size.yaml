@@ -1,0 +1,20 @@
+- name: Default should have one person
+  period: 2022
+  output:
+    spm_unit_size: 1
+
+- name: Three person SPM unit
+  period: 2022
+  input:
+    people:
+      p1:
+        age: 1
+      p2:
+        age: 2
+      p3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [p1, p2, p3]
+  output:
+    spm_unit_size: 3

@@ -1,0 +1,12 @@
+- name: Default is zero
+  period: 2022
+  output:
+    broadband_cost_after_lifeline: 0
+
+- name: Otherwise difference.
+  period: 2022
+  input:
+    broadband_cost: 10
+    lifeline: 9.25
+  output:
+    broadband_cost_after_lifeline: 0.75

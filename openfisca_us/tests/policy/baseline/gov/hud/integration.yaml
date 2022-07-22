@@ -1,0 +1,14 @@
+- name: Housing assistance for a one-person household in San Francisco.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    employment_income: 2_000 * 12
+    hud_gross_rent: 1_000 * 12
+    # 2022 AMI.
+    # https://sfmohcd.org/sites/default/files/Documents/MOH/BMR%20Ownership/2022%20AMI-IncomeLimits.pdf
+    ami: 138_550
+    # 2019 1BR payment standard.
+    # https://sfmohcd.org/sites/default/files/Documents/MOH/Asset%20Management/2019%20AMI_RentLimits-HMFA.pdf
+    pha_payment_standard: 2748 * 12
+  output:
+    housing_assistance: 400 * 12

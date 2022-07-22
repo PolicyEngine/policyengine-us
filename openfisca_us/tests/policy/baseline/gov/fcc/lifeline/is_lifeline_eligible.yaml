@@ -1,0 +1,22 @@
+- name: Default family qualifies because of low income and SNAP eligibility
+  period: 2022
+  output:
+    is_lifeline_eligible: true
+
+- name: Family with no SNAP and income >135% of FPG is ineligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    medicaid: 0
+  output:
+    is_lifeline_eligible: false
+
+- name: Family with income >135% of FPG that participates in SNAP is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 100
+    medicaid: 0
+  output:
+    is_lifeline_eligible: true

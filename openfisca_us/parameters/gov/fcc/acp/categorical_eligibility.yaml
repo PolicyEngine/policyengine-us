@@ -1,0 +1,18 @@
+description: Program eligibility or participation that entitles a household to the Affordable Connectivity Program (ACP)
+# This is categorical eligibility beyond Lifeline categorical eligibility,
+# which also entitles a household to ACP.
+values:
+  2022-01-01:
+    - lifeline # fcc.gov/acp
+    - free_school_meals # 47 USC 1752(a)(6)(B)
+    - reduced_price_school_meals # 47 USC 1752(a)(6)(B)
+    - pell_grant # 47 USC 1752(a)(6)(C)
+    # Also a broadband provider's existing low-income program.
+    - wic # 47 USC 1752(a)(6)(E)
+metadata:
+  period: month
+  reference:
+    - name: "47 USC 1752: Benefit for broadband service (a)(6)"
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim
+    - name: Affordable Connectivity Program
+      href: "https://www.fcc.gov/acp"

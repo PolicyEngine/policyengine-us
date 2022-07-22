@@ -1,0 +1,13 @@
+- name: No credit, no refundability
+  period: 2020
+  input:
+    american_opportunity_credit: 0
+  output:
+    refundable_american_opportunity_credit: 0
+
+- name: Refundable is 40% of AOC
+  period: 2020
+  input:
+    american_opportunity_credit: 1_000
+  output:
+    refundable_american_opportunity_credit: 400

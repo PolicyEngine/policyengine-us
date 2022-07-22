@@ -1,0 +1,9 @@
+description: Whether separate filers are eligibile for the EITC.
+metadata:
+  unit: bool
+  name: eitc_separate_eligible
+  label: EITC separate filers eligible
+values:
+  2013-01-01: true
+  2021-01-01: false
+  2022-01-01: true

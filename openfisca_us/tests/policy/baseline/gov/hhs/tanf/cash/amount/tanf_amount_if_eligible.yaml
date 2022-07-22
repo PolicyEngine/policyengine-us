@@ -1,0 +1,55 @@
+- name: "TANF: Has given maximum benefit amount and has smaller countable income"
+  period: 2022
+  input:
+    tanf_max_amount: 1000
+    tanf_countable_income: 750
+  output:
+    tanf_amount_if_eligible: 1000 - 750
+
+- name: "TANF: Has given maximum benefit amount and has larger countable income"
+  period: 2022
+  input:
+    tanf_max_amount: 1000
+    tanf_countable_income: 1500
+  output:
+    tanf_amount_if_eligible: 0
+
+- name: "TANF: Family of two in Illinois applying for TANF"
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf_countable_income: 3500
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_amount_if_eligible: (435 * 12) - 3500
+
+- name: "TANF: Family of four in Illinois applying for TANF"
+  period: 2022
+  input:
+    people:
+      parent1:
+        age: 30
+      parent2:
+        age: 45
+      child1:
+        age: 10
+      child2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        tanf_countable_income: 4500
+    households:
+      household:
+        state_code: IL
+  output:
+    tanf_amount_if_eligible: (662 * 12) - 4500

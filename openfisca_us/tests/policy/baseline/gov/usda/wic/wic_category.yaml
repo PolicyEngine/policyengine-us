@@ -1,0 +1,121 @@
+- name: Mother - pregnant eligible
+  period: 2022
+  input:
+    is_pregnant: true
+  output:
+    wic_category: PREGNANT
+
+- name: Mother - postpartum eligible (not breastfeeding)
+  period: 2022
+  input:
+    people:
+      mother:
+        is_mother: true
+        age: 29
+      child:
+        age: .3
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_category: [POSTPARTUM, INFANT]
+
+- name: Mother - breastfeeding eligible
+  period: 2022
+  input:
+    people:
+      mother:
+        is_mother: true
+        is_breastfeeding: true
+        age: 34
+      child:
+        age: .9
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_category: [BREASTFEEDING, INFANT]
+
+- name: Breastfeeding mother of younger child is also breastfeeding (not postpartum)
+  period: 2022
+  input:
+    people:
+      mother:
+        is_mother: true
+        is_breastfeeding: true
+        age: 34
+      child:
+        age: .2
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_category: [BREASTFEEDING, INFANT]
+
+- name: Breastfeeding mother of child over age 1 does not qualify
+  period: 2022
+  input:
+    people:
+      mother:
+        is_mother: true
+        is_breastfeeding: true
+        age: 34
+      child:
+        age: 1.2
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_category: [NONE, CHILD]
+
+- name: A pregnant mother also breastfeeding is categorized as pregnant
+  period: 2022
+  input:
+    people:
+      mother:
+        is_pregnant: true
+        is_mother: true
+        age: 34
+      child:
+        age: .95
+    families:
+      family:
+        members: [mother, child]
+    spm_units:
+      spm_unit:
+        members: [mother, child]
+  output:
+    wic_category: [PREGNANT, INFANT]
+
+- name: Child - child age eligible (1-4)
+  period: 2022
+  input:
+    age: 1
+  output:
+    wic_category: CHILD
+
+- name: Child - child age eligible (1-4)
+  period: 2022
+  input:
+    age: 4
+  output:
+    wic_category: CHILD
+
+- name: Children age 5+ are not eligible
+  period: 2022
+  input:
+    age: 5
+  output:
+    wic_category: NONE

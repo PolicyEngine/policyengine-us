@@ -1,0 +1,938 @@
+description: CCDF benefit rate by county cluster, provider type, duration of care, and child age
+
+1:
+  DCC_SACC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 364
+      TODDLER:
+        2021-10-01: 338
+      PRESCHOOLER:
+        2021-10-01: 310
+      SCHOOL_AGE:
+        2021-10-01: 317
+    DAILY:
+      INFANT:
+        2021-10-01: 65
+      TODDLER:
+        2021-10-01: 62
+      PRESCHOOLER:
+        2021-10-01: 55
+      SCHOOL_AGE:
+        2021-10-01: 65
+    PART_DAY:
+      INFANT:
+        2021-10-01: 43
+      TODDLER:
+        2021-10-01: 41
+      PRESCHOOLER:
+        2021-10-01: 37
+      SCHOOL_AGE:
+        2021-10-01: 43
+    HOURLY:
+      INFANT:
+        2021-10-01: 9.50
+      TODDLER:
+        2021-10-01: 11.00
+      PRESCHOOLER:
+        2021-10-01: 10.00
+      SCHOOL_AGE:
+        2021-10-01: 8.00
+  FDC_GFDC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 300
+      TODDLER:
+        2021-10-01: 295
+      PRESCHOOLER:
+        2021-10-01: 285
+      SCHOOL_AGE:
+        2021-10-01: 275
+    DAILY:
+      INFANT:
+        2021-10-01: 60
+      TODDLER:
+        2021-10-01: 60
+      PRESCHOOLER:
+        2021-10-01: 60
+      SCHOOL_AGE:
+        2021-10-01: 57
+    PART_DAY:
+      INFANT:
+        2021-10-01: 40
+      TODDLER:
+        2021-10-01: 40
+      PRESCHOOLER:
+        2021-10-01: 40
+      SCHOOL_AGE:
+        2021-10-01: 38
+    HOURLY:
+      INFANT:
+        2021-10-01: 10.00
+      TODDLER:
+        2021-10-01: 10.00
+      PRESCHOOLER:
+        2021-10-01: 10.00
+      SCHOOL_AGE:
+        2021-10-01: 10.00
+  LE_GC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 233
+      SCHOOL_AGE:
+        2021-10-01: 238
+    DAILY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 41
+      SCHOOL_AGE:
+        2021-10-01: 49
+    PART_DAY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 28
+      SCHOOL_AGE:
+        2021-10-01: 32
+    HOURLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 7.50
+      SCHOOL_AGE:
+        2021-10-01: 6.00
+  LE_STD:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 195
+      TODDLER:
+        2021-10-01: 192
+      PRESCHOOLER:
+        2021-10-01: 185
+      SCHOOL_AGE:
+        2021-10-01: 179
+    DAILY:
+      INFANT:
+        2021-10-01: 39
+      TODDLER:
+        2021-10-01: 39
+      PRESCHOOLER:
+        2021-10-01: 39
+      SCHOOL_AGE:
+        2021-10-01: 37
+    PART_DAY:
+      INFANT:
+        2021-10-01: 26
+      TODDLER:
+        2021-10-01: 26
+      PRESCHOOLER:
+        2021-10-01: 26
+      SCHOOL_AGE:
+        2021-10-01: 25
+    HOURLY:
+      INFANT:
+        2021-10-01: 6.50
+      TODDLER:
+        2021-10-01: 6.50
+      PRESCHOOLER:
+        2021-10-01: 6.50
+      SCHOOL_AGE:
+        2021-10-01: 6.50
+  LE_ENH:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 210
+      TODDLER:
+        2021-10-01: 207
+      PRESCHOOLER:
+        2021-10-01: 200
+      SCHOOL_AGE:
+        2021-10-01: 193
+    DAILY:
+      INFANT:
+        2021-10-01: 42
+      TODDLER:
+        2021-10-01: 42
+      PRESCHOOLER:
+        2021-10-01: 42
+      SCHOOL_AGE:
+        2021-10-01: 40
+    PART_DAY:
+      INFANT:
+        2021-10-01: 28
+      TODDLER:
+        2021-10-01: 28
+      PRESCHOOLER:
+        2021-10-01: 28
+      SCHOOL_AGE:
+        2021-10-01: 27
+    HOURLY:
+      INFANT:
+        2021-10-01: 7.00
+      TODDLER:
+        2021-10-01: 7.00
+      PRESCHOOLER:
+        2021-10-01: 7.00
+      SCHOOL_AGE:
+        2021-10-01: 7.00
+2:
+  DCC_SACC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 280
+      TODDLER:
+        2021-10-01: 264
+      PRESCHOOLER:
+        2021-10-01: 245
+      SCHOOL_AGE:
+        2021-10-01: 215
+    DAILY:
+      INFANT:
+        2021-10-01: 59
+      TODDLER:
+        2021-10-01: 55
+      PRESCHOOLER:
+        2021-10-01: 51
+      SCHOOL_AGE:
+        2021-10-01: 45
+    PART_DAY:
+      INFANT:
+        2021-10-01: 39
+      TODDLER:
+        2021-10-01: 37
+      PRESCHOOLER:
+        2021-10-01: 34
+      SCHOOL_AGE:
+        2021-10-01: 30
+    HOURLY:
+      INFANT:
+        2021-10-01: 9.75
+      TODDLER:
+        2021-10-01: 9.25
+      PRESCHOOLER:
+        2021-10-01: 9.00
+      SCHOOL_AGE:
+        2021-10-01: 9.00
+  FDC_GFDC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 190
+      TODDLER:
+        2021-10-01: 185
+      PRESCHOOLER:
+        2021-10-01: 180
+      SCHOOL_AGE:
+        2021-10-01: 175
+    DAILY:
+      INFANT:
+        2021-10-01: 40
+      TODDLER:
+        2021-10-01: 40
+      PRESCHOOLER:
+        2021-10-01: 38
+      SCHOOL_AGE:
+        2021-10-01: 35
+    PART_DAY:
+      INFANT:
+        2021-10-01: 27
+      TODDLER:
+        2021-10-01: 27
+      PRESCHOOLER:
+        2021-10-01: 25
+      SCHOOL_AGE:
+        2021-10-01: 23
+    HOURLY:
+      INFANT:
+        2021-10-01: 8.00
+      TODDLER:
+        2021-10-01: 8.00
+      PRESCHOOLER:
+        2021-10-01: 8.00
+      SCHOOL_AGE:
+        2021-10-01: 8.00
+  LE_GC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 184
+      SCHOOL_AGE:
+        2021-10-01: 161
+    DAILY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 38
+      SCHOOL_AGE:
+        2021-10-01: 34
+    PART_DAY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 26
+      SCHOOL_AGE:
+        2021-10-01: 23
+    HOURLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 6.75
+      SCHOOL_AGE:
+        2021-10-01: 6.75
+  LE_STD:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 124
+      TODDLER:
+        2021-10-01: 120
+      PRESCHOOLER:
+        2021-10-01: 117
+      SCHOOL_AGE:
+        2021-10-01: 114
+    DAILY:
+      INFANT:
+        2021-10-01: 26
+      TODDLER:
+        2021-10-01: 26
+      PRESCHOOLER:
+        2021-10-01: 25
+      SCHOOL_AGE:
+        2021-10-01: 23
+    PART_DAY:
+      INFANT:
+        2021-10-01: 18
+      TODDLER:
+        2021-10-01: 18
+      PRESCHOOLER:
+        2021-10-01: 16
+      SCHOOL_AGE:
+        2021-10-01: 15
+    HOURLY:
+      INFANT:
+        2021-10-01: 5.20
+      TODDLER:
+        2021-10-01: 5.20
+      PRESCHOOLER:
+        2021-10-01: 5.20
+      SCHOOL_AGE:
+        2021-10-01: 5.20
+  LE_ENH:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 133
+      TODDLER:
+        2021-10-01: 130
+      PRESCHOOLER:
+        2021-10-01: 126
+      SCHOOL_AGE:
+        2021-10-01: 123
+    DAILY:
+      INFANT:
+        2021-10-01: 28
+      TODDLER:
+        2021-10-01: 28
+      PRESCHOOLER:
+        2021-10-01: 27
+      SCHOOL_AGE:
+        2021-10-01: 25
+    PART_DAY:
+      INFANT:
+        2021-10-01: 19
+      TODDLER:
+        2021-10-01: 19
+      PRESCHOOLER:
+        2021-10-01: 18
+      SCHOOL_AGE:
+        2021-10-01: 16
+    HOURLY:
+      INFANT:
+        2021-10-01: 5.60
+      TODDLER:
+        2021-10-01: 5.60
+      PRESCHOOLER:
+        2021-10-01: 5.60
+      SCHOOL_AGE:
+        2021-10-01: 5.60
+3:
+  DCC_SACC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 220
+      TODDLER:
+        2021-10-01: 206
+      PRESCHOOLER:
+        2021-10-01: 195
+      SCHOOL_AGE:
+        2021-10-01: 180
+    DAILY:
+      INFANT:
+        2021-10-01: 48
+      TODDLER:
+        2021-10-01: 45
+      PRESCHOOLER:
+        2021-10-01: 44
+      SCHOOL_AGE:
+        2021-10-01: 39
+    PART_DAY:
+      INFANT:
+        2021-10-01: 32
+      TODDLER:
+        2021-10-01: 30
+      PRESCHOOLER:
+        2021-10-01: 29
+      SCHOOL_AGE:
+        2021-10-01: 26
+    HOURLY:
+      INFANT:
+        2021-10-01: 8.00
+      TODDLER:
+        2021-10-01: 8.00
+      PRESCHOOLER:
+        2021-10-01: 8.00
+      SCHOOL_AGE:
+        2021-10-01: 7.00
+  FDC_GFDC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 160
+      TODDLER:
+        2021-10-01: 150
+      PRESCHOOLER:
+        2021-10-01: 150
+      SCHOOL_AGE:
+        2021-10-01: 150
+    DAILY:
+      INFANT:
+        2021-10-01: 35
+      TODDLER:
+        2021-10-01: 35
+      PRESCHOOLER:
+        2021-10-01: 33
+      SCHOOL_AGE:
+        2021-10-01: 30
+    PART_DAY:
+      INFANT:
+        2021-10-01: 23
+      TODDLER:
+        2021-10-01: 23
+      PRESCHOOLER:
+        2021-10-01: 22
+      SCHOOL_AGE:
+        2021-10-01: 20
+    HOURLY:
+      INFANT:
+        2021-10-01: 5.00
+      TODDLER:
+        2021-10-01: 5.00
+      PRESCHOOLER:
+        2021-10-01: 5.00
+      SCHOOL_AGE:
+        2021-10-01: 5.00
+  LE_GC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 146
+      SCHOOL_AGE:
+        2021-10-01: 135
+    DAILY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 33
+      SCHOOL_AGE:
+        2021-10-01: 29
+    PART_DAY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 22
+      SCHOOL_AGE:
+        2021-10-01: 20
+    HOURLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 6.00
+      SCHOOL_AGE:
+        2021-10-01: 5.25
+  LE_STD:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 104
+      TODDLER:
+        2021-10-01: 98
+      PRESCHOOLER:
+        2021-10-01: 98
+      SCHOOL_AGE:
+        2021-10-01: 98
+    DAILY:
+      INFANT:
+        2021-10-01: 23
+      TODDLER:
+        2021-10-01: 23
+      PRESCHOOLER:
+        2021-10-01: 21
+      SCHOOL_AGE:
+        2021-10-01: 20
+    PART_DAY:
+      INFANT:
+        2021-10-01: 15
+      TODDLER:
+        2021-10-01: 15
+      PRESCHOOLER:
+        2021-10-01: 14
+      SCHOOL_AGE:
+        2021-10-01: 13
+    HOURLY:
+      INFANT:
+        2021-10-01: 3.25
+      TODDLER:
+        2021-10-01: 3.25
+      PRESCHOOLER:
+        2021-10-01: 3.25
+      SCHOOL_AGE:
+        2021-10-01: 3.25
+  LE_ENH:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 112
+      TODDLER:
+        2021-10-01: 105
+      PRESCHOOLER:
+        2021-10-01: 105
+      SCHOOL_AGE:
+        2021-10-01: 105
+    DAILY:
+      INFANT:
+        2021-10-01: 25
+      TODDLER:
+        2021-10-01: 25
+      PRESCHOOLER:
+        2021-10-01: 23
+      SCHOOL_AGE:
+        2021-10-01: 21
+    PART_DAY:
+      INFANT:
+        2021-10-01: 16
+      TODDLER:
+        2021-10-01: 16
+      PRESCHOOLER:
+        2021-10-01: 15
+      SCHOOL_AGE:
+        2021-10-01: 14
+    HOURLY:
+      INFANT:
+        2021-10-01: 3.50
+      TODDLER:
+        2021-10-01: 3.50
+      PRESCHOOLER:
+        2021-10-01: 3.50
+      SCHOOL_AGE:
+        2021-10-01: 3.50
+4:
+  DCC_SACC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 282
+      TODDLER:
+        2021-10-01: 265
+      PRESCHOOLER:
+        2021-10-01: 250
+      SCHOOL_AGE:
+        2021-10-01: 230
+    DAILY:
+      INFANT:
+        2021-10-01: 59
+      TODDLER:
+        2021-10-01: 55
+      PRESCHOOLER:
+        2021-10-01: 52
+      SCHOOL_AGE:
+        2021-10-01: 50
+    PART_DAY:
+      INFANT:
+        2021-10-01: 39
+      TODDLER:
+        2021-10-01: 37
+      PRESCHOOLER:
+        2021-10-01: 35
+      SCHOOL_AGE:
+        2021-10-01: 33
+    HOURLY:
+      INFANT:
+        2021-10-01: 8.50
+      TODDLER:
+        2021-10-01: 8.25
+      PRESCHOOLER:
+        2021-10-01: 9.00
+      SCHOOL_AGE:
+        2021-10-01: 9.75
+  FDC_GFDC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 225
+      TODDLER:
+        2021-10-01: 210
+      PRESCHOOLER:
+        2021-10-01: 200
+      SCHOOL_AGE:
+        2021-10-01: 200
+    DAILY:
+      INFANT:
+        2021-10-01: 45
+      TODDLER:
+        2021-10-01: 45
+      PRESCHOOLER:
+        2021-10-01: 45
+      SCHOOL_AGE:
+        2021-10-01: 40
+    PART_DAY:
+      INFANT:
+        2021-10-01: 30
+      TODDLER:
+        2021-10-01: 30
+      PRESCHOOLER:
+        2021-10-01: 30
+      SCHOOL_AGE:
+        2021-10-01: 27
+    HOURLY:
+      INFANT:
+        2021-10-01: 8.75
+      TODDLER:
+        2021-10-01: 8.75
+      PRESCHOOLER:
+        2021-10-01: 8.50
+      SCHOOL_AGE:
+        2021-10-01: 9.00
+  LE_GC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 188
+      SCHOOL_AGE:
+        2021-10-01: 173
+    DAILY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 39
+      SCHOOL_AGE:
+        2021-10-01: 38
+    PART_DAY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 26
+      SCHOOL_AGE:
+        2021-10-01: 25
+    HOURLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 6.75
+      SCHOOL_AGE:
+        2021-10-01: 7.31
+  LE_STD:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 146
+      TODDLER:
+        2021-10-01: 137
+      PRESCHOOLER:
+        2021-10-01: 130
+      SCHOOL_AGE:
+        2021-10-01: 130
+    DAILY:
+      INFANT:
+        2021-10-01: 29
+      TODDLER:
+        2021-10-01: 29
+      PRESCHOOLER:
+        2021-10-01: 29
+      SCHOOL_AGE:
+        2021-10-01: 26
+    PART_DAY:
+      INFANT:
+        2021-10-01: 20
+      TODDLER:
+        2021-10-01: 20
+      PRESCHOOLER:
+        2021-10-01: 20
+      SCHOOL_AGE:
+        2021-10-01: 18
+    HOURLY:
+      INFANT:
+        2021-10-01: 5.69
+      TODDLER:
+        2021-10-01: 5.69
+      PRESCHOOLER:
+        2021-10-01: 5.53
+      SCHOOL_AGE:
+        2021-10-01: 5.85
+  LE_ENH:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 158
+      TODDLER:
+        2021-10-01: 147
+      PRESCHOOLER:
+        2021-10-01: 140
+      SCHOOL_AGE:
+        2021-10-01: 140
+    DAILY:
+      INFANT:
+        2021-10-01: 32
+      TODDLER:
+        2021-10-01: 32
+      PRESCHOOLER:
+        2021-10-01: 32
+      SCHOOL_AGE:
+        2021-10-01: 28
+    PART_DAY:
+      INFANT:
+        2021-10-01: 21
+      TODDLER:
+        2021-10-01: 21
+      PRESCHOOLER:
+        2021-10-01: 21
+      SCHOOL_AGE:
+        2021-10-01: 19
+    HOURLY:
+      INFANT:
+        2021-10-01: 6.13
+      TODDLER:
+        2021-10-01: 6.13
+      PRESCHOOLER:
+        2021-10-01: 5.95
+      SCHOOL_AGE:
+        2021-10-01: 6.30
+5:
+  DCC_SACC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 406
+      TODDLER:
+        2021-10-01: 315
+      PRESCHOOLER:
+        2021-10-01: 289
+      SCHOOL_AGE:
+        2021-10-01: 236
+    DAILY:
+      INFANT:
+        2021-10-01: 69
+      TODDLER:
+        2021-10-01: 60
+      PRESCHOOLER:
+        2021-10-01: 54
+      SCHOOL_AGE:
+        2021-10-01: 47
+    PART_DAY:
+      INFANT:
+        2021-10-01: 46
+      TODDLER:
+        2021-10-01: 40
+      PRESCHOOLER:
+        2021-10-01: 36
+      SCHOOL_AGE:
+        2021-10-01: 31
+    HOURLY:
+      INFANT:
+        2021-10-01: 15.75
+      TODDLER:
+        2021-10-01: 17.00
+      PRESCHOOLER:
+        2021-10-01: 15.75
+      SCHOOL_AGE:
+        2021-10-01: 10.00
+  FDC_GFDC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 200
+      TODDLER:
+        2021-10-01: 196
+      PRESCHOOLER:
+        2021-10-01: 185
+      SCHOOL_AGE:
+        2021-10-01: 170
+    DAILY:
+      INFANT:
+        2021-10-01: 40
+      TODDLER:
+        2021-10-01: 40
+      PRESCHOOLER:
+        2021-10-01: 35
+      SCHOOL_AGE:
+        2021-10-01: 35
+    PART_DAY:
+      INFANT:
+        2021-10-01: 27
+      TODDLER:
+        2021-10-01: 27
+      PRESCHOOLER:
+        2021-10-01: 23
+      SCHOOL_AGE:
+        2021-10-01: 23
+    HOURLY:
+      INFANT:
+        2021-10-01: 16.00
+      TODDLER:
+        2021-10-01: 15.00
+      PRESCHOOLER:
+        2021-10-01: 15.00
+      SCHOOL_AGE:
+        2021-10-01: 15.00
+  LE_GC:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 217
+      SCHOOL_AGE:
+        2021-10-01: 177
+    DAILY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 41
+      SCHOOL_AGE:
+        2021-10-01: 35
+    PART_DAY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 27
+      SCHOOL_AGE:
+        2021-10-01: 23
+    HOURLY:
+      INFANT:
+        2021-10-01: 0
+      TODDLER:
+        2021-10-01: 0
+      PRESCHOOLER:
+        2021-10-01: 11.81
+      SCHOOL_AGE:
+        2021-10-01: 7.50
+  LE_STD:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 130
+      TODDLER:
+        2021-10-01: 127
+      PRESCHOOLER:
+        2021-10-01: 120
+      SCHOOL_AGE:
+        2021-10-01: 111
+    DAILY:
+      INFANT:
+        2021-10-01: 26
+      TODDLER:
+        2021-10-01: 26
+      PRESCHOOLER:
+        2021-10-01: 23
+      SCHOOL_AGE:
+        2021-10-01: 23
+    PART_DAY:
+      INFANT:
+        2021-10-01: 18
+      TODDLER:
+        2021-10-01: 18
+      PRESCHOOLER:
+        2021-10-01: 15
+      SCHOOL_AGE:
+        2021-10-01: 15
+    HOURLY:
+      INFANT:
+        2021-10-01: 10.40
+      TODDLER:
+        2021-10-01: 9.75
+      PRESCHOOLER:
+        2021-10-01: 9.75
+      SCHOOL_AGE:
+        2021-10-01: 9.75
+  LE_ENH:
+    WEEKLY:
+      INFANT:
+        2021-10-01: 140
+      TODDLER:
+        2021-10-01: 137
+      PRESCHOOLER:
+        2021-10-01: 130
+      SCHOOL_AGE:
+        2021-10-01: 119
+    DAILY:
+      INFANT:
+        2021-10-01: 28
+      TODDLER:
+        2021-10-01: 28
+      PRESCHOOLER:
+        2021-10-01: 25
+      SCHOOL_AGE:
+        2021-10-01: 25
+    PART_DAY:
+      INFANT:
+        2021-10-01: 19
+      TODDLER:
+        2021-10-01: 19
+      PRESCHOOLER:
+        2021-10-01: 16
+      SCHOOL_AGE:
+        2021-10-01: 16
+    HOURLY:
+      INFANT:
+        2021-10-01: 11.20
+      TODDLER:
+        2021-10-01: 10.50
+      PRESCHOOLER:
+        2021-10-01: 10.50
+      SCHOOL_AGE:
+        2021-10-01: 10.50
+
+metadata:
+  unit: currency-USD
+  reference:
+    - title: Child Care Market Rate Survey
+      href: https://ocfs.ny.gov/main/reports/2019-Child-Care-Market-Rate-Survey.pdf

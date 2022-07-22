@@ -1,0 +1,32 @@
+- name: Default family has no income and nonzero federal poverty guideline
+  period: 2022
+  output:
+    fcc_fpg_ratio: 0
+
+- name: Single person with $100 income and $200 FPG
+  period: 2022
+  input:
+    people:
+      person:
+        irs_gross_income: 100
+    spm_units:
+      spm_unit:
+        spm_unit_fpg: 200
+        members: [person]
+  output:
+    fcc_fpg_ratio: 0.5
+
+- name: Couple with $300 income and $100 FPG
+  period: 2022
+  input:
+    people:
+      p1:
+        irs_gross_income: 100
+      p2:
+        irs_gross_income: 200
+    spm_units:
+      spm_unit:
+        spm_unit_fpg: 100
+        members: [p1, p2]
+  output:
+    fcc_fpg_ratio: 3

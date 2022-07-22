@@ -1,0 +1,24 @@
+- name: Default is false.
+  period: 2022
+  output:
+    blind_spouse: false
+
+- name: Blind single person is not blind_spouse.
+  period: 2022
+  input:
+    is_blind: true
+  output:
+    blind_spouse: false
+
+- name: Blind spouse.
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+        is_blind: true
+    tax_unit:
+      members: [head, spouse]
+  output:
+    blind_spouse: true

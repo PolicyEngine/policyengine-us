@@ -1,0 +1,24 @@
+- name: Threshold is 400% of FPL.
+  period: 2022
+  input:
+    school_meal_fpg_ratio: 4
+    medicaid: 0
+  output:
+    is_ca_cvrp_increased_rebate_eligible: true
+
+- name: Threshold is 400% of FPL.
+  period: 2022
+  input:
+    school_meal_fpg_ratio: 4.01
+    medicaid: 0
+  output:
+    is_ca_cvrp_increased_rebate_eligible: false
+
+- name: Can also qualify via SSI.
+  period: 2022
+  input:
+    school_meal_fpg_ratio: 4.01
+    medicaid: 0
+    ssi: 1
+  output:
+    is_ca_cvrp_increased_rebate_eligible: true

@@ -1,0 +1,28 @@
+description: Washington Working Families Tax Credit maximum amount by number of children.
+metadata:
+  label: WA Working Families Tax Credit maximum amount by number of children
+  name: wa_wftc_max_amount
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  reference:
+    - title: "RCW 82.08.0206 Exemptions—Working families—Eligible low-income persons—Penalties. (3)(a)"
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 300
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 600
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 900
+  - threshold:
+      2022-01-01: 3
+    amount:
+      2022-01-01: 1_200

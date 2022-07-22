@@ -1,0 +1,56 @@
+description: Maximum amount of state and local income, sales and real estate tax deductions allowed.
+metadata:
+  unit: currency-USD
+  period: year
+  name: salt_cap
+  label: SALT cap
+HEAD_OF_HOUSEHOLD:
+  values:
+    2013-01-01: .inf
+    2014-01-01: .inf
+    2015-01-01: .inf
+    2016-01-01: .inf
+    2017-01-01: .inf
+    2018-01-01: 10_000
+    2019-01-01: 10_000
+    2026-01-01: .inf
+JOINT:
+  values:
+    2013-01-01: .inf
+    2014-01-01: .inf
+    2015-01-01: .inf
+    2016-01-01: .inf
+    2017-01-01: .inf
+    2018-01-01: 10_000
+    2019-01-01: 10_000
+    2026-01-01: .inf
+SEPARATE:
+  values:
+    2013-01-01: .inf
+    2014-01-01: .inf
+    2015-01-01: .inf
+    2016-01-01: .inf
+    2017-01-01: .inf
+    2018-01-01: 5_000
+    2019-01-01: 5_000
+    2026-01-01: .inf
+SINGLE:
+  values:
+    2013-01-01: .inf
+    2014-01-01: .inf
+    2015-01-01: .inf
+    2016-01-01: .inf
+    2017-01-01: .inf
+    2018-01-01: 10_000
+    2019-01-01: 10_000
+    2026-01-01: .inf
+WIDOW:
+  values:
+    2013-01-01: .inf
+    2014-01-01: .inf
+    2015-01-01: .inf
+    2016-01-01: .inf
+    2017-01-01: .inf
+    2018-01-01: 10_000
+    2019-01-01: 10_000
+    2026-01-01: .inf

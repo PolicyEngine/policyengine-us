@@ -1,0 +1,13 @@
+description: Maximum credit per dependent.
+values:
+  0000-01-01: 0
+  2021-01-01: 1_400
+  2022-01-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  name: rrc_arpa_dependent_max
+  label: ARPA Recovery Rebate Credit maximum amount (dependent children)
+  reference:
+    - title: 26 U.S. Code § 6428B(a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/6428B#a_2

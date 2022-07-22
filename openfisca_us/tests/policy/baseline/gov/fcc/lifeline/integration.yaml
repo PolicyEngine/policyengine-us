@@ -1,0 +1,17 @@
+- name: Individual who doesn't get SNAP but is below the poverty line and has phone cost can get full Lifeline benefit.
+  period: 2022
+  input:
+    phone_cost: 20 * 12
+    snap: 0
+    employment_income: 10_000 # Below the poverty line for one person.
+  output:
+    lifeline: 9.25 * 12
+
+- name: Individual who doesn't get SNAP but is below the poverty line and has phone cost can get full Lifeline benefit.
+  period: 2022
+  input:
+    phone_cost: 20 * 12
+    snap: 0
+    employment_income: 20_000 # Below the poverty line for one person.
+  output:
+    lifeline: 9.25 * 12

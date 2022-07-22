@@ -1,0 +1,7 @@
+- name: Single person with income of $50,000 gets increase benefit.
+  period: 2022
+  input:
+    ca_cvrp_vehicle_rebate_amount: 4_500
+    adjusted_gross_income: 50_000
+  output:
+    ca_cvrp: 7_000

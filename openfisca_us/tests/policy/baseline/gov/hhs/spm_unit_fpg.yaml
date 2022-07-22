@@ -1,0 +1,13 @@
+- name: One-person SPM unit in 2021 in contiguous US
+  period: 2021
+  input:
+    spm_unit_size: 1
+  output:
+    spm_unit_fpg: 12_880
+
+- name: Three-person SPM unit in 2021 in contiguous US
+  period: 2021
+  input:
+    spm_unit_size: 3
+  output:
+    spm_unit_fpg: 12_880 + 2 * 4_540

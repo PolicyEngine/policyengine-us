@@ -1,0 +1,18 @@
+- name: Default household meets California's BBCE net income test (100%).
+  period: 2022
+  output:
+    meets_tanf_non_cash_net_income_test: true
+
+- name: California household with 100% FPG income would barely meet the net income test.
+  period: 2022
+  input:
+    snap_net_income_fpg_ratio: 1
+  output:
+    meets_tanf_non_cash_net_income_test: true
+
+- name: California household with 101% FPG income would fail the net income test.
+  period: 2022
+  input:
+    snap_net_income_fpg_ratio: 1.01
+  output:
+    meets_tanf_non_cash_net_income_test: false

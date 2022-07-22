@@ -1,0 +1,90 @@
+- name: "Default SPM unit is ineligible because economic eligibility defaults to false"
+  period: 2022
+  input:
+    state_code: IL
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Unit test: two people, continued application, is eligible economically and demographically"
+  period: 2022
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        is_tanf_continuous_eligible: true
+        is_tanf_initial_eligible: false
+    households:
+      household:
+        state_code: IL
+  output:
+    is_tanf_eligible: true
+
+- name: "TANF: Unit test: two people, continued application, is not eligible demographically"
+  period: 2022
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        is_tanf_continuous_eligible: false
+        is_tanf_initial_eligible: false
+    households:
+      household:
+        state_code: IL
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Unit test: three people, initial application, is not eligible economically"
+  period: 2022
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: true
+      person3:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        is_tanf_continuous_eligible: false
+        is_tanf_initial_eligible: false
+    households:
+      household:
+        state_code: IL
+  output:
+    is_tanf_eligible: false
+
+- name: "TANF: Unit test: three people, initial application, is not eligible economically or demographically"
+  period: 2022
+  input:
+    people:
+      person1:
+        is_person_demographic_tanf_eligible: false
+      person2:
+        is_person_demographic_tanf_eligible: false
+      person3:
+        is_person_demographic_tanf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        is_tanf_enrolled: false
+        is_tanf_continuous_eligible: false
+        is_tanf_initial_eligible: false
+    households:
+      household:
+        state_code: IL
+  output:
+    is_tanf_eligible: false

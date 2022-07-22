@@ -1,0 +1,35 @@
+description: Maryland provides a personal exemption of this amount for filers filing as single or married filing separately, based on adjusted gross income.
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+      2022-01-01: -.inf
+    amount:
+      2021-01-01: 3_200
+      2022-01-01: 3_200
+  - threshold:
+      2021-01-01: 100_000
+      2022-01-01: 100_000
+    amount:
+      2021-01-01: 1_600
+      2022-01-01: 1_600
+  - threshold:
+      2021-01-01: 125_000
+      2022-01-01: 125_000
+    amount:
+      2021-01-01: 800
+      2022-01-01: 800
+  - threshold:
+      2021-01-01: 150_000
+      2022-01-01: 150_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  name: md_personal_exemption_single_separate
+  label: MD personal exemption for single and married filing separate tax units based on AGI
+  reference:
+    - title: Part III - Exemptions Section 10-211 Individuals Other Than Fiduciaries
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-iii-exemptions/section-10-211-individuals-other-than-fiduciaries?searchWithin=true&listingIndexId=code-of-maryland.article-tax-general&q=blind&type=statute&sort=relevance&p=1

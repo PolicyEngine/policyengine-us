@@ -1,0 +1,41 @@
+- name: Nassau
+  period: 2022
+  input:
+    county: NASSAU_COUNTY_NY
+  output:
+    ccdf_county_cluster: 1
+
+- name: Putnam
+  period: 2022
+  input:
+    county: PUTNAM_COUNTY_NY
+  output:
+    ccdf_county_cluster: 1
+
+- name: Columbia
+  period: 2022
+  input:
+    county: COLUMBIA_COUNTY_NY
+  output:
+    ccdf_county_cluster: 2
+
+- name: Allegany
+  period: 2022
+  input:
+    county: ALLEGANY_COUNTY_NY
+  output:
+    ccdf_county_cluster: 3
+
+- name: Albany
+  period: 2022
+  input:
+    county: ALBANY_COUNTY_NY
+  output:
+    ccdf_county_cluster: 4
+
+- name: New York
+  period: 2022
+  input:
+    county: NEW_YORK_COUNTY_NY
+  output:
+    ccdf_county_cluster: 5

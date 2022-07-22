@@ -1,0 +1,17 @@
+- name: Earnings too low
+  period: 2019
+  input:
+    filing_status: SINGLE
+    taxable_self_employment_income: 1_000
+    employment_income: 10_000
+  output:
+    additional_medicare_tax: 0
+
+- name: Earnings high enough to pay the Additional Medicare Tax
+  period: 2019
+  input:
+    filing_status: SINGLE
+    taxable_self_employment_income: 100_000
+    employment_income: 1_000_000
+  output:
+    additional_medicare_tax: 8_100 # (1.1M - 200k) * 0.9%

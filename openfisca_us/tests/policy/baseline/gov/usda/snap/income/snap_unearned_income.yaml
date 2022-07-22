@@ -1,0 +1,23 @@
+- name: Defaults to zero
+  period: 2022
+  output:
+    snap_unearned_income: 0
+
+- name: Otherwise sums across people. Employment income doesn't count.
+  period: 2022
+  input:
+    people:
+      person_1:
+        dividend_income: 1
+        interest_income: 2
+      person_2:
+        employment_income: 3
+        interest_income: 4
+        social_security: 5
+        ssi: 6
+        gi_cash_assistance: 7
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+  output:
+    snap_unearned_income: 1 + 2 + 4 + 5 + 6 + 7

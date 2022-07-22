@@ -1,0 +1,13 @@
+- name: Default is no children, so no subsidy.
+  period: 2022
+  output:
+    school_meal_net_subsidy: 0
+
+- name: One child in contiguous US with free tier.
+  period: 2022
+  input:
+    is_in_k12_school: true
+    school_meal_daily_subsidy: 3
+    school_meal_paid_daily_subsidy: 1
+  output:
+    school_meal_net_subsidy: (3 - 1) * 180

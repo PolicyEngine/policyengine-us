@@ -1,0 +1,14 @@
+description: Alternative QBID cap rate on pass-through business W-2 wages paid. QBID is capped at this fraction of W-2 wages paid by the pass-through business plus some fraction of business property if pre-QBID taxable income is above the QBID thresholds and the alternative cap is higher than the main wage-only cap.
+metadata:
+  name: qbid_w2_alt_rate
+  label: Alternative QBID rate on W-2 wages
+  unit: /1
+values:
+  2013-01-01: 0.0
+  2014-01-01: 0.0
+  2015-01-01: 0.0
+  2016-01-01: 0.0
+  2017-01-01: 0.0
+  2018-01-01: 0.25
+  2019-01-01: 0.25
+  2026-01-01: 0.0

@@ -1,0 +1,45 @@
+- name: Default is zero because zero housing costs.
+  period: 2022
+  output:
+    snap_excess_shelter_expense_deduction: 0
+
+- name: If net income pre-shelter is double housing cost, they only get the utility allowance, since 50% of the income is deducted.
+  period: 2022
+  input:
+    snap_net_income_pre_shelter: 12_000
+    housing_cost: 6_000
+    snap_utility_allowance: 100
+  output:
+    snap_excess_shelter_expense_deduction: 100
+
+- name: If net income pre-shelter equals housing cost, they get half the housing cost.
+  period: 2022
+  input:
+    snap_net_income_pre_shelter: 6_000
+    housing_cost: 6_000
+    snap_utility_allowance: 0
+  output:
+    snap_excess_shelter_expense_deduction: 3_000 # Uncapped since less than 597 * 12 = $7,164.
+
+- name: Caps at $597 per month in contiguous US.
+  period: 2022
+  input:
+    housing_cost: 600 * 12
+  output:
+    snap_excess_shelter_expense_deduction: 597 * 12
+
+- name: Uncapped if includes elderly or disabled people.
+  period: 2022
+  input:
+    housing_cost: 600 * 12
+    has_usda_elderly_disabled: true
+  output:
+    snap_excess_shelter_expense_deduction: 600 * 12
+
+- name: Homeless households get a flat benefit.
+  period: 2022
+  input:
+    is_homeless: true
+    housing_cost: 1
+  output:
+    snap_excess_shelter_expense_deduction: 159.73 * 12

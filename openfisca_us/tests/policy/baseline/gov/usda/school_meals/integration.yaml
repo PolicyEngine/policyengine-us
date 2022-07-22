@@ -1,0 +1,22 @@
+- name: No income, one parent, one child, contiguous_US
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      parent: {}
+      child:
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        school_meal_fpg_ratio: 0
+        snap: 0
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    school_meal_daily_subsidy: 3.66 + 1.97
+    school_meal_paid_daily_subsidy: 0.35 + 0.33
+    school_meal_net_subsidy: 180 * ((3.66 + 1.97) - (0.35 + 0.33))
+    free_school_meals: 180 * (3.66 + 1.97 - 0.35 - 0.33)
+    reduced_price_school_meals: 0

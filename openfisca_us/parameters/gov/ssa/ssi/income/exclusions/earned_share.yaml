@@ -1,0 +1,12 @@
+description: Share of earned income above the flat exclusion that is excluded from SSI countable income.
+
+values:
+  1975-01-01: 0.5
+metadata:
+  label: SSI earned income share excluded above flat exclusion
+  name: ssi_earned_income_exclusion_share
+  unit: /1
+  period: month
+  reference:
+    - title: 20 CFR § 416.1112 - Earned income we do not count.
+      href: https://www.law.cornell.edu/cfr/text/20/416.1112#c_7

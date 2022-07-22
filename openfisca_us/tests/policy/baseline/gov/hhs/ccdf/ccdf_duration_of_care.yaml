@@ -1,0 +1,35 @@
+- name: Weekly rate
+  period: 2022
+  input:
+    childcare_hours_per_week: 35
+    childcare_hours_per_day: 7
+    childcare_days_per_week: 5
+  output:
+    ccdf_duration_of_care: WEEKLY
+
+- name: Daily rate
+  period: 2022
+  input:
+    childcare_hours_per_week: 28
+    childcare_hours_per_day: 7
+    childcare_days_per_week: 4
+  output:
+    ccdf_duration_of_care: DAILY
+
+- name: Part-day rate
+  period: 2022
+  input:
+    childcare_hours_per_week: 25
+    childcare_hours_per_day: 5
+    childcare_days_per_week: 5
+  output:
+    ccdf_duration_of_care: PART_DAY
+
+- name: Hourly rate
+  period: 2022
+  input:
+    childcare_hours_per_week: 10
+    childcare_hours_per_day: 2
+    childcare_days_per_week: 5
+  output:
+    ccdf_duration_of_care: HOURLY

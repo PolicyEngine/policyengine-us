@@ -1,0 +1,265 @@
+- name: Tax unit with taxsimid 483 from f18.its.csv
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 41
+        employment_income: 292000
+        unemployment_compensation: 5000
+        social_security: 19000
+        pension_income: 43000
+        has_marketplace_health_coverage: false
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 45
+        employment_income: 139000
+        has_marketplace_health_coverage: false
+      person3:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+      person4:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+      person5:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+      person6:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+        has_marketplace_health_coverage: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        tax_unit_childcare_expenses: 10000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: TX
+  output:
+    tax_unit_taxable_unemployment_compensation: 5000.00
+    tax_unit_taxable_social_security: 16150.00
+    adjusted_gross_income: 495150.00
+    taxable_income: 471150.00
+    eitc: 0.00
+    non_refundable_ctc: 3242.50
+    refundable_ctc: 0.00
+    cdcc: 1200.00  # expected cdcc = 0.20 * 6000
+    income_tax: 111839.00
+
+# OpenFisca-US test file derived from the f19.its.csv and f19.ots.csv files
+# Expected test output from NBER TAXSIM Model v35 (05/18/22) With TCJA
+
+- name: Tax unit with taxsimid 26 from f19.its.csv
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 70
+        employment_income: 2000
+        unemployment_compensation: 1000
+        social_security: 36000
+        pension_income: 27000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 16
+      person3:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tax_unit_taxable_unemployment_compensation: 1000.00
+    tax_unit_taxable_social_security: 16400.00
+    adjusted_gross_income: 46400.00
+    taxable_income: 26400.00
+    refundable_ctc: 0.00
+    eitc: 63.88
+    income_tax: -63.88
+
+- name: Tax unit with taxsimid 3 from g19.its.csv
+  absolute_error_margin: 600 # TODO: investigate discrepancy
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 27
+        taxable_interest_income: 14000
+        short_term_capital_gains: -10000
+        long_term_capital_gains: -8000
+        pension_income: 38000
+        social_security: 1000
+        unemployment_compensation: 4000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 26
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    taxsim_tfica: 0.00
+    tax_unit_taxable_unemployment_compensation: 4000.00
+    tax_unit_taxable_social_security: 850.00
+    adjusted_gross_income: 53850.00
+    taxable_income: 29450.00
+    refundable_ctc: 0.00
+    eitc: 0.00
+    income_tax: 3146.00
+
+
+- name: Tax unit with taxsimid 663 from f19.its.csv
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 73
+        employment_income: 2000
+        pension_income: 11000
+        social_security: 3000
+        unemployment_compensation: 2000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 69
+        employment_income: 22000
+      person3:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 12
+      person4:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 17
+      person5:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        tax_unit_childcare_expenses: 8000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    taxsim_tfica: 1836.00
+    income_tax: -5075.99
+
+
+- name: Tax unit with taxsimid 2 from h19.its.csv
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 33
+        taxable_interest_income: 1000
+        long_term_capital_gains: -8000
+        pension_income: 31000
+        social_security: 1000
+        unemployment_compensation: 9000
+        real_estate_taxes: 22000
+        interest_expense: 36000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxsim_tfica: 0.00
+    income_tax: 0.00
+
+- name: Tax unit with taxsimid 11991 from q21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 39
+        employment_income: 160000
+        social_security: 19000
+        real_estate_taxes: 11000
+        interest_expense: 36000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    taxsim_tfica: 11173.60
+    #tax_unit_taxable_unemployment_compensation: 0.00
+    #tax_unit_taxable_social_security: 16150.00
+    #adjusted_gross_income: 176150.00
+    #taxable_income: 130150.00
+    #cdcc: 0.00
+    #non_refundable_ctc: 2000.00
+    #refundable_ctc: 2000.00
+    #eitc: 0.00
+    income_tax: 21805.00

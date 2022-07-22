@@ -1,0 +1,22 @@
+- name: "TANF: Eligible and has benefit"
+  period: 2022
+  input:
+    is_tanf_eligible: true
+    tanf_amount_if_eligible: 200
+  output:
+    tanf: 200
+
+- name: "TANF: Ineligible and does not receive benefit"
+  period: 2022
+  input:
+    is_tanf_eligible: false
+    tanf_amount_if_eligible: -100
+  output:
+    tanf: 0
+
+- name: "Has TANF reported"
+  period: 2022
+  input:
+    tanf_reported: 1
+  output:
+    tanf: 1

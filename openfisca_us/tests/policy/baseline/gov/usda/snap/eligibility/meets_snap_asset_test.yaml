@@ -1,0 +1,29 @@
+- name: No assets, passes test
+  period: 2022
+  input:
+    snap_assets: 0
+  output:
+    meets_snap_asset_test: true
+
+- name: Assets over limit for a non-elderly/disabled household
+  period: 2022
+  input:
+    snap_assets: 2_600
+  output:
+    meets_snap_asset_test: false
+
+- name: Assets under limit for an elderly/disabled household
+  period: 2022
+  input:
+    snap_assets: 2_600
+    has_usda_elderly_disabled: true
+  output:
+    meets_snap_asset_test: true
+
+- name: Assets over limit for an elderly/disabled household
+  period: 2022
+  input:
+    snap_assets: 3_800
+    has_usda_elderly_disabled: true
+  output:
+    meets_snap_asset_test: false

@@ -1,0 +1,7 @@
+- name: SNAP utility region string from utility region.
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    snap_utility_region: IL
+  output:
+    snap_utility_region_str: IL

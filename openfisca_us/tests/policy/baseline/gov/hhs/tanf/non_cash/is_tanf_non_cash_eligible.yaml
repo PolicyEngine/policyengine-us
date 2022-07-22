@@ -1,0 +1,4 @@
+- name: "Default SPM unit is eligible because they have no income and assets"
+  period: 2022
+  output:
+    is_tanf_non_cash_eligible: true

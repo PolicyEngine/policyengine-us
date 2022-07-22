@@ -1,0 +1,29 @@
+- name: Income-eligible but not asset-eligible.
+  period: 2022
+  input:
+    meets_snap_gross_income_test: true
+    meets_snap_net_income_test: true
+    meets_snap_asset_test: false
+    meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: false
+
+- name: Income-eligible but not asset-eligible, but categorically eligible.
+  period: 2022
+  input:
+    meets_snap_gross_income_test: true
+    meets_snap_net_income_test: true
+    meets_snap_asset_test: false
+    meets_snap_categorical_eligibility: true
+  output:
+    is_snap_eligible: true
+
+- name: Income- and asset-eligible.
+  period: 2022
+  input:
+    meets_snap_gross_income_test: true
+    meets_snap_net_income_test: true
+    meets_snap_asset_test: true
+    meets_snap_categorical_eligibility: false
+  output:
+    is_snap_eligible: true

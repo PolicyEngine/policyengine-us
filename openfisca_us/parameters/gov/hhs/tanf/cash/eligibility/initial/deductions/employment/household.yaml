@@ -1,0 +1,51 @@
+description: Initial employment deduction for TANF benefit calculations.
+IL:
+  1:
+    2021-10-01: 215
+  2:
+    2021-10-01: 291
+  3:
+    2021-10-01: 366
+  4:
+    2021-10-01: 442
+  5:
+    2021-10-01: 518
+  6:
+    2021-10-01: 593
+  7:
+    2021-10-01: 669
+  8:
+    2021-10-01: 745
+  9:
+    2021-10-01: 820
+  10:
+    2021-10-01: 896
+  11:
+    2021-10-01: 972
+  12:
+    2021-10-01: 1_047
+  13:
+    2021-10-01: 1_123
+  14:
+    2021-10-01: 1_199
+  15:
+    2021-10-01: 1_274
+  16:
+    2021-10-01: 1_350
+  17:
+    2021-10-01: 1_426
+  18:
+    2021-10-01: 1_501
+metadata:
+  unit: currency-USD
+  reference:
+    - title: "WAG 25-03-02: Standards and Allowances Overviews > WAG 25-03-02 SNAP; TANF INITIAL EMPLOYMENT DEDUCTION (IED)"
+      href: https://www.dhs.state.il.us/page.aspx?item=21738#a_toc3
+      date: 2021-10-01
+    - title: "Table I.E.2. Earned Income Disregards for Initial Income Eligibility Purposes, July 2019"
+      href: https://wrd.urban.org/wrd/tables.cfm
+      date: 2019-07-01
+  period: month
+  breakdown:
+    - state_code
+    - range(1, 19)

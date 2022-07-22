@@ -1,0 +1,11 @@
+description: Maximum percent of the federal poverty guideline to be eligible for the Affordable Connectivity Program
+values:
+  2022-01-01: 2
+metadata:
+  period: month
+  unit: /1
+  name: acp_income_fpl_limit
+  label: Affordable Connectivity Program income limit as a percent of the poverty line
+  reference:
+    - name: "47 USC 1752: Benefit for broadband service (a)(6)(A)"
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title47-section1752&edition=prelim

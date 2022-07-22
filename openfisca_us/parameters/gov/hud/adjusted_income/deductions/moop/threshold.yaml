@@ -1,0 +1,10 @@
+description: Percent of annual income beyond which medical expenses are deducted from HUD adjusted income.
+values:
+  2001-01-19: 0.03
+metadata:
+  unit: /1
+  name: hud_moop_deduction_income_threshold
+  label: HUD medical expense deduction income threshold
+  reference:
+    - title: 24 CFR § 5.611 - Adjusted income.
+      href: https://www.law.cornell.edu/cfr/text/24/5.611#a_3

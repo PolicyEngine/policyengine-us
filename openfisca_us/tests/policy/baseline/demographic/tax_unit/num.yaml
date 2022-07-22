@@ -1,0 +1,18 @@
+- name: Default is 1, since default filer status is single.
+  period: 2022
+  output:
+    num: 1
+
+- name: num is 2 if joint.
+  period: 2022
+  input:
+    filing_status: JOINT
+  output:
+    num: 2
+
+- name: num is 1 if married filing separately.
+  period: 2022
+  input:
+    filing_status: SEPARATE
+  output:
+    num: 1

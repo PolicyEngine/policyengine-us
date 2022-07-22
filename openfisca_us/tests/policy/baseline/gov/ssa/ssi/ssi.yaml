@@ -1,0 +1,28 @@
+- name: Default is ineligible
+  period: 2022
+  output:
+    ssi: 0
+
+- name: Eligible with small countable income
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 100 * 12
+  output:
+    ssi: 741 * 12 # 841 - 100
+
+- name: Disqualified by resources
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_resources: 2_001
+  output:
+    ssi: 0
+
+- name: Disqualified by income
+  period: 2022
+  input:
+    is_ssi_aged_blind_disabled: true
+    ssi_countable_income: 850 * 12
+  output:
+    ssi: 0

@@ -1,0 +1,88 @@
+description: SNAP standard deduction
+
+# NOTE: household sizes above 6 use the rate for a 6 member household in all states.
+CONTIGUOUS_US:
+  1:
+    2021-01-01: 167
+    2022-10-01: 177
+  2:
+    2021-01-01: 167
+    2022-10-01: 177
+  3:
+    2021-01-01: 167
+    2022-10-01: 177
+  4:
+    2021-01-01: 181
+    2022-10-01: 184
+  5:
+    2021-01-01: 212
+    2022-10-01: 215
+  6:
+    2021-01-01: 243
+    2022-10-01: 246
+AK:
+  1:
+    2021-01-01: 286
+  2:
+    2021-01-01: 286
+  3:
+    2021-01-01: 286
+  4:
+    2021-01-01: 286
+  5:
+    2021-01-01: 286
+  6:
+    2021-01-01: 304
+HI:
+  1:
+    2021-01-01: 236
+  2:
+    2021-01-01: 236
+  3:
+    2021-01-01: 236
+  4:
+    2021-01-01: 236
+  5:
+    2021-01-01: 244
+  6:
+    2021-01-01: 280
+VI:
+  1:
+    2021-01-01: 147
+  2:
+    2021-01-01: 147
+  3:
+    2021-01-01: 150
+  4:
+    2021-01-01: 181
+  5:
+    2021-01-01: 212
+  6:
+    2021-01-01: 243
+GU:
+  1:
+    2021-01-01: 336
+  2:
+    2021-01-01: 336
+  3:
+    2021-01-01: 336
+  4:
+    2021-01-01: 363
+  5:
+    2021-01-01: 425
+  6:
+    2021-01-01: 487
+
+metadata:
+  unit: currency-USD
+  reference:
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Income Eligibility Standards
+      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf#page=2
+    - title: USDA Cost of Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/COLA
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.net/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+  period: month
+  breakdown:
+    - state_group
+    - range(1, 7)

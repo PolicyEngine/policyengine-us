@@ -1,0 +1,20 @@
+- name: Child
+  period: 2020
+  input:
+    is_child: true
+  output:
+    age_group: CHILD
+
+- name: Working-age adult
+  period: 2020
+  input:
+    is_wa_adult: true
+  output:
+    age_group: WORKING_AGE
+
+- name: Senior.
+  period: 2020
+  input:
+    is_senior: true
+  output:
+    age_group: SENIOR

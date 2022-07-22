@@ -1,0 +1,47 @@
+- name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+        employment_income: 2_000 * 12
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_code_str: CA
+  output:
+    snap: 10_020 # Maximum due to emergency allotment.
+    snap_max_allotment: 10_020 # 12 * $835 (parameter for family of 4 in contiguous US).
+    snap_expected_contribution: 5_108.4 # 17028 * 0.3 (flat parameter).
+    snap_net_income: 17_028 # 17028 - 0.
+    snap_net_income_pre_shelter: 17_028 # 24000 - 2172 - 4800.
+    snap_excess_shelter_expense_deduction: 0 # No shelter costs reported.
+    snap_standard_deduction: 2_172 # 181 (parameter for family of 4 in contiguous US) * 12.
+    snap_earned_income_deduction: 4_800 # 2000 * 0.2 (flat 20% parameter) * 12.
+
+- name: Single person in CA at 200% of FPL meets BBCE gross income test but fails BBCE net income test.
+  period: 2022
+  input:
+    # Use 2021 FPL since 2022 technically takes effect on 2022-01-12.
+    employment_income: 12_880 * 2
+    state_code_str: CA
+  output:
+    snap: 0
+
+- name: Single person in CA at 200% of FPL + $1 is ineligible.
+  period: 2022
+  input:
+    employment_income: 12_880 * 2
+    gi_cash_assistance: 1
+    state_code_str: CA
+  output:
+    snap: 0

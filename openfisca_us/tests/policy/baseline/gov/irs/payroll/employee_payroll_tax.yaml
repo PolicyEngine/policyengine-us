@@ -1,0 +1,11 @@
+- name: Empty input
+  period: 2020
+  input:
+    people:
+      person:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: person
+  output:
+    employee_payroll_tax: 0

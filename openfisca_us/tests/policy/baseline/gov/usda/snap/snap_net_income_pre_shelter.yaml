@@ -1,0 +1,126 @@
+- name: Family of 4, no member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        snap_gross_income: 2000 * 12
+        snap_standard_deduction: 181 * 12
+        snap_earned_income_deduction: (2000 * 0.2) * 12
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
+
+- name: Family of 4, member(s) with disabilities or age >60 present, income of 24k/year (Standard Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        is_usda_disabled: true
+        age: 30
+      person_2:
+        age: 35
+      person_3:
+        age: 17
+      person_4:
+        age: 15
+    spm_units:
+      spm_unit:
+        snap_gross_income: 2000 * 12
+        snap_standard_deduction: 181 * 12
+        snap_earned_income_deduction: (2000 * 0.2) * 12
+        members: [person_1, person_2, person_3, person_4]
+    households:
+      household:
+        state_group: CONTIGUOUS_US
+  output:
+    snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
+
+- name: Individual, 10k income, GU (State Group Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 833 * 12
+        snap_standard_deduction: 336 * 12
+        snap_earned_income_deduction: (833 * 0.2) * 12
+        members: [person_1]
+    households:
+      household:
+        state_group: GU
+  output:
+    snap_net_income_pre_shelter: (833 - (833 * 0.2) - 336) * 12
+
+- name: Individual, 10k income, VI (State Group Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 833 * 12
+        snap_standard_deduction: 147 * 12
+        snap_earned_income_deduction: (833 * 0.2) * 12
+        members: [person_1]
+    households:
+      household:
+        state_group: VI
+  output:
+    snap_net_income_pre_shelter: (833 - (833 * 0.2) - 147) * 12
+
+- name: Individual, 10k income, AK (State Group Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 833 * 12
+        snap_standard_deduction: 286 * 12
+        snap_earned_income_deduction: (833 * 0.2) * 12
+        members: [person_1]
+    households:
+      household:
+        state_group: AK
+  output:
+    snap_net_income_pre_shelter: (833 - (833 * 0.2) - 286) * 12
+
+- name: Individual, 10k income, HI (State Group Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      person_1:
+        age: 30
+    spm_units:
+      spm_unit:
+        snap_gross_income: 833 * 12
+        snap_standard_deduction: 236 * 12
+        snap_earned_income_deduction: (833 * 0.2) * 12
+        members: [person_1]
+    households:
+      household:
+        state_group: HI
+  output:
+    snap_net_income_pre_shelter: (833 - (833 * 0.2) - 236) * 12

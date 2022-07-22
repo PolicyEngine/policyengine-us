@@ -1,0 +1,58 @@
+- name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3
+  period: 2022
+  input:
+    people:
+      child:
+        ccdf_market_rate: 21_112
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_total_ccdf_copay: 2_804
+  output:
+    spm_unit_ccdf_subsidy: 18_308
+
+- name: 1 Infant in DCC/SACC provider, 1 Toddler in FDC/GFDC provider, Nassau county, NY state, Daily rates with 3 days/week for both children, family income $60,000, family size 4
+  period: 2022
+  input:
+    people:
+      child1:
+        ccdf_market_rate: 10_140
+        is_ccdf_eligible: true
+      child2:
+        ccdf_market_rate: 9_360
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+        spm_unit_total_ccdf_copay: 6_850
+  output:
+    spm_unit_ccdf_subsidy: 12_650
+
+- name: 1 child in DCC/SACC provider, Queens county, NY state, family income $50,000, family size 3, family asset above $1,000,000
+  period: 2022
+  input:
+    people:
+      child:
+        ccdf_market_rate: 21_112
+        is_ccdf_eligible: false
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_total_ccdf_copay: 2_804
+  output:
+    spm_unit_ccdf_subsidy: 0
+
+- name: copay exceeding market rate
+  period: 2022
+  input:
+    people:
+      child:
+        ccdf_market_rate: 18_500
+        is_ccdf_eligible: true
+    spm_units:
+      spm_unit:
+        members: [child]
+        spm_unit_total_ccdf_copay: 20_000
+  output:
+    spm_unit_ccdf_subsidy: 0

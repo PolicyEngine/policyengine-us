@@ -1,0 +1,30 @@
+description: Phase-out thresholds and rates for the elderly or disabled credit
+threshold:
+  SINGLE:
+    values:
+      2010-01-01: 7_500
+  JOINT:
+    values:
+      2010-01-01: 10_000
+  SEPARATE:
+    values:
+      2010-01-01: 5_000
+  HEAD_OF_HOUSEHOLD:
+    values:
+      2010-01-01: 7_500
+  WIDOW:
+    values:
+      2010-01-01: 7_500
+  metadata:
+    unit: currency-USD
+    reference:
+      - title: 26 U.S. Code § 22(c)(3)(D)
+        href: https://www.law.cornell.edu/uscode/text/26/22#c_3_D
+rate:
+  values:
+    2010-01-01: 0.5
+  metadata:
+    unit: /1
+    reference:
+      - title: 26 U.S. Code § 22(c)(3)(D)
+        href: https://www.law.cornell.edu/uscode/text/26/22#c_3_D

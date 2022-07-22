@@ -1,0 +1,32 @@
+- name: Ineligible family gets $0
+  period: 2022
+  input:
+    is_acp_eligible: false
+  output:
+    acp: 0
+
+- name: Eligible non-tribal family with $20/mo cost gets full cost covered
+  period: 2022
+  input:
+    is_acp_eligible: true
+    broadband_cost_after_lifeline: 20 * 12
+  output:
+    acp: 20 * 12
+
+- name: Eligible tribal family with $100/mo gets capped at $75/mo
+  period: 2022
+  input:
+    people:
+      person:
+        age: 30
+    spm_units:
+      spm_unit:
+        is_acp_eligible: true
+        broadband_cost_after_lifeline: 100 * 12
+        members: person
+    households:
+      household:
+        is_on_tribal_land: true
+        members: person
+  output:
+    acp: 75 * 12

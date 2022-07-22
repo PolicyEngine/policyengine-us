@@ -1,0 +1,35 @@
+- name: Household size 4, State NY
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    ccdf_income: 85_000
+    hhs_smi: 104_972
+  output:
+    ccdf_income_to_smi_ratio: 85_000 / 104_972
+
+- name: Household size 1, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 85_000
+    hhs_smi: 54_585.44
+  output:
+    ccdf_income_to_smi_ratio: 85_000 / 54_585.44
+
+- name: Household size 6, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 100_000
+    hhs_smi: 138_563.04
+  output:
+    ccdf_income_to_smi_ratio: 100_000 / 138_563.04
+
+- name: Household size 7, State NY
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    ccdf_income: 100_000
+    hhs_smi: 141_712.2
+  output:
+    ccdf_income_to_smi_ratio: 100_000 / 141_712.2

@@ -1,0 +1,9 @@
+description: Maximum age for childless EITC eligibility.
+metadata:
+  unit: year
+  name: eitc_max_age_childless
+  label: EITC maximum childless age
+values:
+  2013-01-01: 64
+  2021-01-01: .inf
+  2022-01-01: 64

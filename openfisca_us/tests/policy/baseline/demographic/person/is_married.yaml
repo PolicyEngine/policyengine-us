@@ -1,0 +1,15 @@
+- name: Inference from tax units
+  period: 2022
+  input:
+    people:
+      head: {}
+      spouse: {}
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    families:
+      family:
+        members: [head, spouse]
+  output:
+    is_married: true

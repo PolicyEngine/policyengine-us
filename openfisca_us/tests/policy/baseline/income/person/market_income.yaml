@@ -1,0 +1,10 @@
+- name: Market income is non-benefit income.
+  period: 2021
+  input:
+    employment_income: 1
+    self_employment_income: 2
+    dividend_income: 3
+    interest_income: 4
+    gi_cash_assistance: 5
+  output:
+    market_income: 1 + 2 + 3 + 4 + 5

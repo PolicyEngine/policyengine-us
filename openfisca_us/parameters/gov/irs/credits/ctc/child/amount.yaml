@@ -1,0 +1,19 @@
+description: Maximum value of the CTC for qualifying children.
+values:
+  2013-01-01: 1_000
+  2018-01-01: 2_000
+  2021-01-01: 3_000
+  2022-01-01: 2_000
+  2026-01-01: 1_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_child
+  label: Child tax credit for qualifying children
+  reference:
+    - title: 26 U.S. Code § 24(a)
+      href: https://www.law.cornell.edu/uscode/text/26/24#a
+    - title: 26 U.S. Code § 24(h)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h
+    - title: 26 U.S. Code § 24(i)
+      href: https://www.law.cornell.edu/uscode/text/26/24#i

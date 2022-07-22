@@ -1,0 +1,17 @@
+- name: Nassau county, New York state, family size 4, family income $60,000
+  period: 2022
+  input:
+    county_str: NASSAU_COUNTY_NY
+    ccdf_income: 60_000
+    spm_unit_fpg: 25_750
+  output:
+    spm_unit_total_ccdf_copay: (60_000 - 25_750) * 0.2
+
+- name: Albany county, New York state, family size 3, family income $20,000
+  period: 2022
+  input:
+    county_str: ALBANY_COUNTY_NY
+    ccdf_income: 20_000
+    spm_unit_fpg: 21_330
+  output:
+    spm_unit_total_ccdf_copay: 52

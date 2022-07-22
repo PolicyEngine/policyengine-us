@@ -1,0 +1,17 @@
+description: Income sources that count as unearned income for Supplemental Security Income
+
+values:
+  1975-01-01:
+    - dividend_income
+    - interest_income
+    - gi_cash_assistance
+    - social_security
+    - alimony_income
+    - pension_income
+    - unemployment_compensation
+    # Also TANF, pensions, annuities, workers/unemployment benefits, etc.
+
+metadata:
+  reference:
+    - title: United States Code, Title 7, Subsection 273.9(b)(2)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2

@@ -1,0 +1,11 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    employee_social_security_tax: 0
+
+- name: Otherwise 6.2% of taxable_earnings_for_social_security.
+  period: 2022
+  input:
+    taxable_earnings_for_social_security: 100_000
+  output:
+    employee_social_security_tax: 6_200

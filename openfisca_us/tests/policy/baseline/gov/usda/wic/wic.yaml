@@ -1,0 +1,64 @@
+# WIC requires each of the following:
+# - Either meeting the income test or categorical eligibility,
+# - Meeting a demographic test (pregnancy, age, parental status), and
+# - Being assessed to be at nutritional risk.
+- name: Income-eligible and at nutritional risk.
+  period: 2018
+  input:
+    wic_category_str: PREGNANT
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: false
+    is_wic_at_nutritional_risk: true
+  output:
+    wic: 37.33 * 12 # Eligible.
+
+- name: Income-eligible and categorically eligible but not at nutritional risk.
+  period: 2022
+  input:
+    wic_category_str: INFANT
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: false
+  output:
+    wic: 0 # Ineligible.
+
+- name: At nutritional risk but not eligible via income or categorical eligibility.
+  period: 2022
+  input:
+    wic_category_str: CHILD
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: false
+    is_wic_at_nutritional_risk: true
+  output:
+    wic: 0 # Ineligible.
+
+- name: At nutritional risk and categorically eligible.
+  period: 2018
+  input:
+    wic_category_str: POSTPARTUM
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: true
+  output:
+    wic: 30.72 * 12
+
+- name: Meets income and categorical test but not one of the WIC demographic categories.
+  period: 2022
+  input:
+    wic_category_str: NONE
+    meets_wic_income_test: true
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: true
+  output:
+    wic: 0 # Ineligible.
+
+- name: At nutritional risk and categorically eligible, check uprating.
+  period: 2022
+  input:
+    wic_category_str: BREASTFEEDING
+    meets_wic_income_test: false
+    meets_wic_categorical_eligibility: true
+    is_wic_at_nutritional_risk: true
+  output:
+    # Multiply by ratio of 2022-01 to 2018-01 chained CPI-U.
+    wic: 37.76 * 12 * 157.581 / 140.239

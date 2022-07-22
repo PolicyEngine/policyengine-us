@@ -1,0 +1,27 @@
+- name: Default will be zero
+  period: 2022
+  output:
+    spm_unit_payroll_tax: 0
+
+- name: Otherwise sums from tax units in the SPM unit
+  period: 2022
+  input:
+    people:
+      p1:
+        age: 20
+      p2:
+        age: 30
+      p3:
+        age: 40
+    tax_units:
+      t1:
+        members: [p1, p2]
+        employee_payroll_tax: 2
+      t2:
+        members: [p3]
+        employee_payroll_tax: 4
+    spm_units:
+      spm_unit:
+        members: [p1, p2, p3]
+  output:
+    spm_unit_payroll_tax: 6

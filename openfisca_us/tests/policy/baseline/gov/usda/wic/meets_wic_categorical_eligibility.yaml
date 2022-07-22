@@ -1,0 +1,59 @@
+- name: SNAP entitles to WIC.
+  period: 2022
+  input:
+    snap: 1
+    medicaid: 0
+    tanf: 0
+  output:
+    meets_wic_categorical_eligibility: true
+
+- name: Without SNAP, no WIC categorical eligibility.
+  period: 2022
+  input:
+    snap: 0
+    medicaid: 0
+    tanf: 0
+  output:
+    meets_wic_categorical_eligibility: false
+
+- name: Medicaid entitles to WIC.
+  period: 2022
+  input:
+    snap: 0
+    medicaid: 1
+    tanf: 0
+  output:
+    meets_wic_categorical_eligibility: true
+
+- name: Being in the same household as a pregnant Medicaid recipient entitles to WIC.
+  period: 2022
+  input:
+    people:
+      pregnant:
+        medicaid: 1
+        is_pregnant: true
+      child:
+        medicaid: 0
+    spm_units:
+      spm_unit:
+        members: [pregnant, child]
+        snap: 0
+        tanf: 0
+  output:
+    meets_wic_categorical_eligibility: [true, true]
+
+- name: Being in the same household as a non-pregnant non-infant Medicaid recipient doesn't entitle to WIC.
+  period: 2022
+  input:
+    people:
+      father:
+        medicaid: 1
+      child:
+        medicaid: 0
+    spm_units:
+      spm_unit:
+        members: [father, child]
+        snap: 0
+        tanf: 0
+  output:
+    meets_wic_categorical_eligibility: [true, false]

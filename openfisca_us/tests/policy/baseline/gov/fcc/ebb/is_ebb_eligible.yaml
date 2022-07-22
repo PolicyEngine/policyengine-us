@@ -1,0 +1,25 @@
+# NB: Cannot currently test the variable when previous enrollment was not
+# required, since that was only the case from 2021-05-12 to 2021-12-31, and
+# tests operate as of January 1 of a given year.
+
+- name: Family with no qualifications is ineligible
+  period: 2022
+  input:
+    is_lifeline_eligible: false
+  output:
+    is_ebb_eligible: false
+
+- name: Family with Lifeline eligibility is ineligible unless previously enrolled
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+  output:
+    is_ebb_eligible: false
+
+- name: Family with Lifeline eligibility is eligible if previously enrolled
+  period: 2022
+  input:
+    is_lifeline_eligible: true
+    enrolled_in_ebb: true
+  output:
+    is_ebb_eligible: true

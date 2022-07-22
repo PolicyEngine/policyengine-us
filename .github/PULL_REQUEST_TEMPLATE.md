@@ -1,5 +1,7 @@
 Thanks for contributing! Please remove any top-level sections that do not apply to your changes.
 
+- [ ] `make format && make documentation` has been run.
+
 # New variable
 
 - [ ] Label field added
@@ -9,6 +11,7 @@ Thanks for contributing! Please remove any top-level sections that do not apply 
 - [ ] Variable name follows conventions
 - [ ] Unit test(s) added
 - [ ] Integration test(s) added if relevant
+- [ ] Issues this PR fixes linked
 
 ## What's changed
 
@@ -21,4 +24,4 @@ Description of the changes here.
 
 ## What this fixes and how it's fixed
 
-Description of how this fix works goes here.
+Description of how this fix works goes here. Link any issues this PR fixes.

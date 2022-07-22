@@ -1,0 +1,53 @@
+- name: Default (zero AGI) had a full 50% rate in 2021.
+  period: 2021
+  output:
+    cdcc_rate: 0.5
+
+- name: Still full 50% at the phase-out start of $125,000.
+  period: 2021
+  input:
+    adjusted_gross_income: 125_000
+  output:
+    cdcc_rate: 0.5
+
+- name: Falls by 49% at one dollar above the phase-out start of $125,000.
+  period: 2021
+  input:
+    adjusted_gross_income: 125_001
+  output:
+    cdcc_rate: 0.49
+
+- name: Still at 49% at $2,000 phase-out increment above the phase-out start of $125,000.
+  period: 2021
+  input:
+    adjusted_gross_income: 127_000
+  output:
+    cdcc_rate: 0.49
+
+- name: Falls to 20% by the first phase-out end of $183,001.
+  period: 2021
+  input:
+    adjusted_gross_income: 183_001
+  output:
+    cdcc_rate: 0.2
+
+- name: Still 20% by the second phase-out start of $400,000.
+  period: 2021
+  input:
+    adjusted_gross_income: 400_000
+  output:
+    cdcc_rate: 0.2
+
+- name: 19% at one dollar above the second phase-out start of $400,001.
+  period: 2021
+  input:
+    adjusted_gross_income: 400_001
+  output:
+    cdcc_rate: 0.19
+
+- name: Fully phased out by $438,000.
+  period: 2021
+  input:
+    adjusted_gross_income: 438_001
+  output:
+    cdcc_rate: 0

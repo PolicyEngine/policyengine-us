@@ -1,0 +1,30 @@
+- name: TCJA reduction, high income
+  period: 2020
+  input:
+    people:
+      child:
+        age: 4
+      parent:
+        age: 21
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [child, parent]
+        adjusted_gross_income: 220_000
+  output:
+    ctc_reduction: 1_000
+- name: ARPA reduction, high income
+  period: 2021
+  input:
+    people:
+      child:
+        age: 4
+      parent:
+        age: 21
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [child, parent]
+        adjusted_gross_income: 220_000
+  output:
+    ctc_reduction: 2_600

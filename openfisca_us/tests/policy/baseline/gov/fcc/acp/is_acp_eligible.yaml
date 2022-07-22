@@ -1,0 +1,58 @@
+- name: Family with no qualifications is ineligible
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 0
+    ebb: 0
+    medicaid: 0
+    fcc_fpg_ratio: 2.01
+  output:
+    is_acp_eligible: false
+
+- name: Family with no qualifications but income at or below 200% of FPG is eligible
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 0
+    ebb: 0
+    fcc_fpg_ratio: 2
+  output:
+    is_acp_eligible: true
+
+- name: Family with WIC is eligible if income is above 200% of FPG
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 0
+    ebb: 0
+    fcc_fpg_ratio: 2.1
+    wic: 1
+  output:
+    is_acp_eligible: true
+
+- name: Family with SNAP is eligible if income is above 200% of FPG, due to Lifeline categorical eligibility
+  period: 2022
+  input:
+    lifeline: 0
+    snap: 1
+    ebb: 0
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Family with Lifeline is eligible if income is above 200% of FPG
+  period: 2022
+  input:
+    lifeline: 1
+    snap: 0
+    ebb: 0
+    fcc_fpg_ratio: 2.1
+  output:
+    is_acp_eligible: true
+
+- name: Family with EBB is ineligible
+  period: 2022
+  input:
+    ebb: 1
+  output:
+    is_acp_eligible: false

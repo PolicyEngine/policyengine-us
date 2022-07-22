@@ -1,0 +1,49 @@
+- name: Single filer with zero income and some rental expenses receives the renters credit.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 0
+    filing_status: SINGLE
+    rent: 1
+  output:
+    ca_renters_credit: 60
+
+- name: Joint filer with income $1 above the threshold gets zero.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 87_067
+    filing_status: JOINT
+    rent: 1
+  output:
+    ca_renters_credit: 0
+
+- name: Joint filer with income equal to the threshold gets $120.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 87_066
+    filing_status: JOINT
+    rent: 1
+  output:
+    ca_renters_credit: 120
+
+- name: Joint filer with income $1 less than but pays no rents gets $0.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 87_065
+    filing_status: JOINT
+    rent: 0
+  output:
+    ca_renters_credit: 0
+
+- name: Single filer with income $1 less than but pays no rents gets $0.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 87_065
+    filing_status: SINGLE
+    rent: 0
+  output:
+    ca_renters_credit: 0
