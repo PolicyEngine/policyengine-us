@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.112.1",
+    version="0.113.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     classifiers=[
