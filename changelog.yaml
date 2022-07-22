@@ -1233,3 +1233,18 @@
     fixed:
     - Breakdown for two Maryland parameters.
   date: 2022-07-20 20:41:23
+- bump: minor
+  changes:
+    added:
+    - IN deductions.
+  date: 2022-07-21 19:28:21
+- bump: patch
+  changes:
+    changed:
+    - Moved geographical Medicaid calculation parameters to an on-demand folder.
+  date: 2022-07-22 08:25:43
+- bump: patch
+  changes:
+    added:
+    - Test that parameter files do not contain tabs with informative error messages.
+  date: 2022-07-22 10:11:10

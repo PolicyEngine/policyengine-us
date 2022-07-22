@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.110.2] - 2022-07-22 10:11:10
+
+### Added
+
+- Test that parameter files do not contain tabs with informative error messages.
+
+## [0.110.1] - 2022-07-22 08:25:43
+
+### Changed
+
+- Moved geographical Medicaid calculation parameters to an on-demand folder.
+
+## [0.110.0] - 2022-07-21 19:28:21
+
+### Added
+
+- IN deductions.
+
 ## [0.109.1] - 2022-07-20 20:41:23
 
 ### Fixed
@@ -1492,6 +1510,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.110.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.1...0.110.2
+[0.110.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.0...0.110.1
+[0.110.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.109.1...0.110.0
 [0.109.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.109.0...0.109.1
 [0.109.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.108.0...0.109.0
 [0.108.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.107.0...0.108.0
