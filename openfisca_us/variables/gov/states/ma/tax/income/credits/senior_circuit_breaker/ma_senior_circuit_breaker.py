@@ -47,7 +47,6 @@ class ma_senior_circuit_breaker(Variable):
         meets_max_property_value_condition = (
             assessed_value <= scb.eligibility.max_property_value
         )
-        print(meets_age_condition.shape, meets_max_income_condition.shape, meets_max_property_value_condition.shape)
         eligible = (
             meets_age_condition
             & meets_max_income_condition
