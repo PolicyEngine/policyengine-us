@@ -8,6 +8,7 @@ class ca_renters_credit(Variable):
     unit = USD
     documentation = "https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter"
     definition_period = YEAR
+    defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
         # Check eligibility based on state, rent, filing status, and income.

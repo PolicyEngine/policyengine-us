@@ -7,6 +7,7 @@ class md_income_tax(Variable):
     label = "MD income tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         in_md = tax_unit.household("state_code_str", period) == "MD"

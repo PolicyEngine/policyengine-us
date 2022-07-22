@@ -7,5 +7,6 @@ class md_tax_unit_earned_income(Variable):
     label = "MD tax unit earned income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     formula = sum_among_non_dependents("earned_income")

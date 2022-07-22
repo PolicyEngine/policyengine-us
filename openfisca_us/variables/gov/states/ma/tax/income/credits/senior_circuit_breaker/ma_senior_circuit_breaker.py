@@ -8,6 +8,7 @@ class ma_senior_circuit_breaker(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         scb = parameters(
@@ -46,7 +47,6 @@ class ma_senior_circuit_breaker(Variable):
         meets_max_property_value_condition = (
             assessed_value <= scb.eligibility.max_property_value
         )
-
         eligible = (
             meets_age_condition
             & meets_max_income_condition
