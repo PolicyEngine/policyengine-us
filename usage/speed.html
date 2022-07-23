@@ -629,6 +629,7 @@ title="Print to PDF"
 
 <span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="kn">from</span> <span class="nn">openfisca_us</span> <span class="kn">import</span> <span class="n">Microsimulation</span>
+
 <span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
 <span class="n">t3</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
@@ -636,12 +637,14 @@ title="Print to PDF"
 <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_taxes&quot;</span><span class="p">)</span>
 <span class="n">t4</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 
-<span class="n">Markdown</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The time to import `Microsimulation` from `openfisca_us` is </span><span class="si">{</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds. The time to initialise a `Microsimulation` object is </span><span class="si">{</span><span class="n">t3</span> <span class="o">-</span> <span class="n">t2</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds, and the time to complete simulation of taxes and benefits is </span><span class="si">{</span><span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="n">Markdown</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;The time to import `Microsimulation` from `openfisca_us` is </span><span class="si">{</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds. The time to initialise a `Microsimulation` object is </span><span class="si">{</span><span class="n">t3</span> <span class="o">-</span> <span class="n">t2</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds, and the time to complete simulation of taxes and benefits is </span><span class="si">{</span><span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<p>The time to import <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> from <code class="docutils literal notranslate"><span class="pre">openfisca_us</span></code> is 2.5 seconds. The time to initialise a <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> object is 6.4 seconds, and the time to complete simulation of taxes and benefits is 8.2 seconds.</p>
+<p>The time to import <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> from <code class="docutils literal notranslate"><span class="pre">openfisca_us</span></code> is 1.9 seconds. The time to initialise a <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> object is 5.1 seconds, and the time to complete simulation of taxes and benefits is 6.9 seconds.</p>
 </div>
 </div>
 </section>
