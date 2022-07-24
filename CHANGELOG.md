@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.114.0] - 2022-07-24 20:28:18
+
+### Added
+
+- IN adjusted gross income tax
+
 ## [0.113.0] - 2022-07-22 23:54:11
 
 ### Added
@@ -1535,6 +1541,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.114.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.113.0...0.114.0
 [0.113.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.1...0.113.0
 [0.112.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.0...0.112.1
 [0.112.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.111.0...0.112.0
