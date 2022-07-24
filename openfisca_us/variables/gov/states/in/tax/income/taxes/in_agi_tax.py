@@ -12,4 +12,4 @@ class in_agi_tax(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["in"].tax.income.taxes.agi
         in_agi = tax_unit("in_agi", period)
-        return in_agi * p.rates
+        return in_agi * p.rate
