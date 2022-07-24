@@ -5,7 +5,7 @@ class md_ctc_without_federal(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        "MD CTC without ssubtracting the value of the federal child tax credit"
+        "MD CTC without subtracting the value of the federal child tax credit"
     )
     definition_period = YEAR
     unit = USD
