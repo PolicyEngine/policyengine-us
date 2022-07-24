@@ -1,6 +1,8 @@
 description: IN adjusted gross income tax rate.
 values:
-  2021-01-01: 0.0323
+  2014-01-01: 0.034 # "For taxable years beginning before January 1, 2015"
+  2015-01-01: 0.033
+  2017-01-01: 0.0323
 metadata:
   period: year
   unit: /1
