@@ -1,0 +1,10 @@
+- name: IN county tax
+  period: 2021
+  input:
+    Households:
+      household1:
+        county_enum: MONROE_COUNTY_IN
+    tax_units:
+      tax_unit:
+        members: household1
+        in_agi: 1_000
