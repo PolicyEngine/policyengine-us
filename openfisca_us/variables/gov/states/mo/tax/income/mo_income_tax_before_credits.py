@@ -8,6 +8,7 @@ class mo_income_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://dor.mo.gov/forms/MO-1040%20Print%20Only_2021.pdf"
+    defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("mo_taxable_income", period)

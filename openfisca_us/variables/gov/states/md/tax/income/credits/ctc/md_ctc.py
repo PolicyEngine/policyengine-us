@@ -9,6 +9,7 @@ class md_ctc(Variable):
     unit = USD
     documentation = "Maryland Child Tax Credit"
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child"
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         md_ctc = tax_unit("md_ctc_without_federal", period)

@@ -4,5 +4,6 @@
   absolute_error_margin: 0
   input:
     ut_taxable_income: 50_000
+    state_code: UT
   output:
     ut_income_tax_before_credits: 50_000 * 0.0485

@@ -7,3 +7,4 @@ class md_total_additions(Variable):
     label = "MD total additions to AGI"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD

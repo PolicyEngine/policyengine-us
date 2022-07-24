@@ -1,4 +1,5 @@
 from openfisca_us.model_api import *
+from openfisca_tools import homogenize_parameter_structures
 
 
 class second_lowest_silver_plan_cost(Variable):
@@ -9,14 +10,32 @@ class second_lowest_silver_plan_cost(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        parameter_tree = tax_unit.simulation.tax_benefit_system.parameters
+        if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
+            medicaid_parameters = ParameterNode(
+                directory_path=REPO
+                / "data"
+                / "parameters"
+                / "gov"
+                / "hhs"
+                / "medicaid"
+                / "geography"
+            )
+            medicaid_parameters = homogenize_parameter_structures(
+                medicaid_parameters,
+                tax_unit.simulation.tax_benefit_system.variables,
+            )
+            parameter_tree.gov.hhs.medicaid.add_child(
+                "geography", medicaid_parameters
+            )
         person = tax_unit.members
         household = person.household
         area = household("medicaid_rating_area", period)
         state = household("state_code_str", period)
-        slspc = parameters(
+        age = person("age", period)
+        slspc = parameter_tree(
             period
         ).gov.hhs.medicaid.geography.second_lowest_silver_plan_cost
-        age = person("age", period)
         age_code = select(
             [
                 age < 21,

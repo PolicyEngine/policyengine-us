@@ -5,6 +5,7 @@
     tax_unit_count_dependents: 2
     standard_deduction: 0
     tax_unit_itemizes: false
+    state_code: UT
   output:
     ut_taxpayer_credit_max: 1750 * 0.06 * 2
 
@@ -19,5 +20,6 @@
     medical_expense_deduction: 0
     casualty_loss_deduction: 0
     qualified_business_income_deduction: 0
+    state_code: UT
   output:
     ut_taxpayer_credit_max: 200 * 0.06

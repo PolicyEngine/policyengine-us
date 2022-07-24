@@ -7,6 +7,7 @@ class md_personal_exemption(Variable):
     label = "MD value per personal exemption"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         # Get filing status and AGI.

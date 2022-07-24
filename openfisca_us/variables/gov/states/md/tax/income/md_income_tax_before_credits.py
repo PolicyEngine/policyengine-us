@@ -7,6 +7,7 @@ class md_income_tax_before_credits(Variable):
     label = "MD income tax before credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)

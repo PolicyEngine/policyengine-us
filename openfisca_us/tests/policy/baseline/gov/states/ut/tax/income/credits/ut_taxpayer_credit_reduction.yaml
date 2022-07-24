@@ -4,6 +4,7 @@
   input:
     filing_status: SINGLE 
     ut_taxable_income: 16_000
+    state_code: UT
   output:
     ut_taxpayer_credit_reduction: (16_000 - 15_095) * 0.013
 
@@ -13,6 +14,7 @@
   input:
     filing_status: JOINT 
     ut_taxable_income: 30_200
+    state_code: UT
   output:
     ut_taxpayer_credit_reduction: (30_200 - 30_190) * 0.013
 
@@ -22,5 +24,6 @@
   input:
     filing_status: SINGLE 
     ut_taxable_income: 10_000
+    state_code: UT
   output:
     ut_taxpayer_credit_reduction: 0 # max((10_000 - 15_095),0) * 0.013
