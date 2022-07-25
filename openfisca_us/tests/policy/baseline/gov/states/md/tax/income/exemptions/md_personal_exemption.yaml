@@ -7,11 +7,11 @@
   output:
     md_personal_exemption: 800
 
-- name: Joint filer with $150,000 AGI gets full $1,600
+- name: Joint filer with $150,000 AGI gets full $3,200
   period: 2021
   input:
     filing_status: JOINT
     adjusted_gross_income: 150_000
     state_code: MD
   output:
-    md_personal_exemption: 1_600
+    md_personal_exemption: 3_200
