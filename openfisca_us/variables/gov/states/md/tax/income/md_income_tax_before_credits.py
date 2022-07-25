@@ -11,13 +11,23 @@ class md_income_tax_before_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        # Get possible values for filing_status
         filing_statuses = filing_status.possible_values
         taxable_income = tax_unit("md_taxable_income", period)
+        # Calculate for each of the filing statuses.
         p = parameters(period).gov.states.md.tax.income.rate_schedule
-        single_separate = p.single_separate.calc(taxable_income)
-        joint_head_widow = p.joint_head_widow.calc(taxable_income)
-        is_single_separate = (filing_status == filing_statuses.SINGLE) | (
-            filing_status == filing_statuses.SEPARATE
+        single = p.single.calc(taxable_income)
+        separate = p.separate.calc(taxable_income)
+        joint = p.joint.calc(taxable_income)
+        head = p.head.calc(taxable_income)
+        widow = p.widow.calc(taxable_income)
+        # Return the appropriate one.
+        return select(
+            [
+                filing_status == filing_statuses.SINGLE,
+                filing_status == filing_statuses.SEPARATE,
+                filing_status == filing_statuses.JOINT,
+                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
+                filing_status == filing_statuses.WIDOW,
+            ],
+            [single, separate, joint, head, widow],
         )
-        return where(is_single_separate, single_separate, joint_head_widow)
