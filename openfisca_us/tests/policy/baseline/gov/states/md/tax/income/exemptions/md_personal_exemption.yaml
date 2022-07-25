@@ -1,0 +1,17 @@
+- name: Single filer with $150,000 AGI gets $800
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 150_000
+    state_code: MD
+  output:
+    md_personal_exemption: 800
+
+- name: Joint filer with $150,000 AGI gets full $3,200
+  period: 2021
+  input:
+    filing_status: JOINT
+    adjusted_gross_income: 150_000
+    state_code: MD
+  output:
+    md_personal_exemption: 3_200
