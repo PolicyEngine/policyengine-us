@@ -14,7 +14,7 @@ class md_income_tax_before_credits(Variable):
         filing_statuses = filing_status.possible_values
         taxable_income = tax_unit("md_taxable_income", period)
         # Calculate for each of the filing statuses.
-        p = parameters(period).gov.states.md.tax.income.rate_schedule
+        p = parameters(period).gov.states.md.tax.income.rates
         single = p.single.calc(taxable_income)
         separate = p.separate.calc(taxable_income)
         joint = p.joint.calc(taxable_income)
