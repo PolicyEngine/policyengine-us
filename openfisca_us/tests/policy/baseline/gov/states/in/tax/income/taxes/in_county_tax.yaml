@@ -7,7 +7,6 @@
         is_tax_unit_spouse: 0
         is_tax_unit_dependent: 0
         age: 50
-        employment_income: 1_000 
     households:
       household1:
         members: [person1]
@@ -16,5 +15,6 @@
     tax_units:
       tax_unit:
         members: [person1]
+        in_agi: 1_000
   output: 
     in_county_tax: 1_000 * 0.01345
