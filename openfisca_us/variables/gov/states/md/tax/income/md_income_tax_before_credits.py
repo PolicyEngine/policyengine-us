@@ -13,14 +13,8 @@ class md_income_tax_before_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         taxable_income = tax_unit("md_taxable_income", period)
-        # Calculate for each of the filing statuses.
+        # Calculate for each of the filing statuses and return the appropriate one.
         p = parameters(period).gov.states.md.tax.income.rates
-        single = p.single.calc(taxable_income)
-        separate = p.separate.calc(taxable_income)
-        joint = p.joint.calc(taxable_income)
-        head = p.head.calc(taxable_income)
-        widow = p.widow.calc(taxable_income)
-        # Return the appropriate one.
         return select(
             [
                 filing_status == filing_statuses.SINGLE,
@@ -29,5 +23,11 @@ class md_income_tax_before_credits(Variable):
                 filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
                 filing_status == filing_statuses.WIDOW,
             ],
-            [single, separate, joint, head, widow],
+            [
+                p.single.calc(taxable_income),
+                p.separate.calc(taxable_income),
+                p.joint.calc(taxable_income),
+                p.head.calc(taxable_income),
+                p.widow.calc(taxable_income),
+            ],
         )

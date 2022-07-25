@@ -14,13 +14,21 @@ class md_personal_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         agi = tax_unit("adjusted_gross_income", period)
-        # Calculate for single and separate depending on AGI.
+        # Calculate for each filing status depending on AGI.
         p = parameters(period).gov.states.md.tax.income.exemptions.personal
-        single_separate = p.single_separate.calc(agi, right=True)
-        # Calculate for joint, head of household, and widow based on AGI.
-        joint_head_widow = p.joint_head_widow.calc(agi, right=True)
-        # Return the value matching filing status.
-        is_single_separate = (filing_status == filing_statuses.SINGLE) | (
-            filing_status == filing_statuses.SEPARATE
+        return select(
+            [
+                filing_status == filing_statuses.SINGLE,
+                filing_status == filing_statuses.SEPARATE,
+                filing_status == filing_statuses.JOINT,
+                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
+                filing_status == filing_statuses.WIDOW,
+            ],
+            [
+                p.single.calc(agi, right=True),
+                p.separate.calc(agi, right=True),
+                p.joint.calc(agi, right=True),
+                p.head.calc(agi, right=True),
+                p.widow.calc(agi, right=True),
+            ],
         )
-        return where(is_single_separate, single_separate, joint_head_widow)
