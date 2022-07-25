@@ -13,5 +13,5 @@ class in_county_tax(Variable):
         p = parameters(period).gov.states["in"].tax.income.taxes.county
         in_agi = tax_unit("in_agi", period)
         # county calculations are at the person level for each taxpayer in the law
-        county = tax_unit.household("county_enum", period)
+        county = tax_unit.household("county_str", period)
         return in_agi * p.rates[county]
