@@ -8,4 +8,3 @@ class in_other_taxes(Variable):
     unit = USD
     definition_period = YEAR
     documentation = "Includes the use tax on out-of-state purchases, household employment taxes, and recapture of certain Indiana offset credits."
-
