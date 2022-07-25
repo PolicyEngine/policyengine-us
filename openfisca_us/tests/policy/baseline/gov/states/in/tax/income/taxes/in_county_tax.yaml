@@ -4,8 +4,6 @@
     households:
       household1:
         county: MONROE_COUNTY_IN
-    tax_units:
-      tax_unit:
-        in_agi: 1_000
+    in_agi: 1_000
   output: 
     in_county_tax: 1_000 * 0.01345
