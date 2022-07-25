@@ -1,28 +1,7 @@
 - name: Two eligible children.
   period: 2021
   input:
-<<<<<<< HEAD
     md_ctc_without_federal: 1_000
     ctc: 600
-=======
-    people:
-      head: {}
-      child_1:
-        age: 10
-        is_tax_unit_dependent: true
-        is_disabled: 1
-      child_2:
-        age: 5
-        is_tax_unit_dependent: true
-        is_disabled: 1
-    tax_units:
-      tax_unit:
-        members: [head, child_1, child_2]
-        adjusted_gross_income: 200
-    households:
-      household:
-        members: [head, child_1, child_2]
-        state_code: MD
->>>>>>> f3112b4d58d1ca68f1db2a36aaeef9500a3dd748
   output:
     md_ctc: 400
