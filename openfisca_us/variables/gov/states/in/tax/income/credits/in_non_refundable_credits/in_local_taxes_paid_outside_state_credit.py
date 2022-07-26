@@ -1,0 +1,10 @@
+from openfisca_us.model_api import *
+
+
+class in_local_taxes_paid_outside_state_credit(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "IN credit against county tax for local taxes paid outside the state"
+    definition_period = YEAR
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3.6-8-6" 
+    
