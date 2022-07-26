@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.116.0] - 2022-07-26 16:06:49
+
+### Added
+
+- IRS capital gains parameters for FY20-22.
+
 ## [0.115.0] - 2022-07-25 23:07:53
 
 ### Added
@@ -1553,6 +1559,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.116.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.115.0...0.116.0
 [0.115.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.114.1...0.115.0
 [0.114.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.114.0...0.114.1
 [0.114.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.113.0...0.114.0
