@@ -1274,3 +1274,18 @@
     added:
     - IN adjusted gross income tax
   date: 2022-07-24 20:28:18
+- bump: patch
+  changes:
+    changed:
+    - Split Maryland tax rates and personal exemptions by each filing status.
+  date: 2022-07-25 20:46:29
+- bump: minor
+  changes:
+    added:
+    - Indiana other taxes.
+  date: 2022-07-25 23:07:53
+- bump: minor
+  changes:
+    added:
+    - IRS capital gains parameters for FY20-22.
+  date: 2022-07-26 16:06:49

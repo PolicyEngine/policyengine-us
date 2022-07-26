@@ -1,0 +1,40 @@
+description: Maryland provides a personal exemption of this amount for single filers, based on adjusted gross income.
+brackets:
+  # Confirmed to be the same for 2022.
+  # "(1) $3,200 for each exemption that the individual may deduct under
+  #  subsection (a) of this section;"
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 3_200
+  # "If an individual other than one described in paragraph (2) of this
+  #  subsection has federal adjusted gross income for the taxable year greater
+  #  than $100,000, the amount allowed for each exemption under subsection
+  #  (b)(1) or (2) of this section is limited to:"
+  # (i) $1,600 if federal adjusted gross income for the taxable year does not
+  # exceed $125,000;
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 1_600
+  # (ii) $800 if federal adjusted gross income for the taxable year is greater
+  # than $125,000 but not greater than $150,000; and
+  - threshold:
+      2021-01-01: 125_000
+    amount:
+      2021-01-01: 800
+  # (iii) $0 if federal adjusted gross income for the taxable year is greater
+  # than $150,000.
+  - threshold:
+      2021-01-01: 150_000
+    amount:
+      2021-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  name: md_personal_exemption_single
+  label: MD personal exemption for single filers, based on AGI
+  reference:
+    - title: Part III - Exemptions Section 10-211 Individuals Other Than Fiduciaries (c)(1)
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-iii-exemptions/section-10-211-individuals-other-than-fiduciaries?searchWithin=true&listingIndexId=code-of-maryland.article-tax-general&q=blind&type=statute&sort=relevance&p=1
