@@ -6,4 +6,4 @@ class in_other_non_refundable_credits(Variable):
     entity = TaxUnit
     label = "IN other non-refundable credit that offset state AGI tax"
     definition_period = YEAR
-    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-3" 
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-3"
