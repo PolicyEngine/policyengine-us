@@ -8,6 +8,7 @@ class ma_part_a_gross_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         non_ma_interest = (

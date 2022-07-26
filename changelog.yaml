@@ -1211,3 +1211,76 @@
     - Maryland Earned Income Tax Credit.
     - Notebooks for Maryland tax programs.
   date: 2022-07-19 14:26:52
+- bump: minor
+  changes:
+    added:
+    - MD income tax to State income tax.
+  date: 2022-07-20 11:57:02
+- bump: minor
+  changes:
+    added:
+    - Caching of second-lowest silver plan cost in the CPS microdata.
+  date: 2022-07-20 11:58:26
+- bump: minor
+  changes:
+    changed:
+    - Separate MD standard deduction parameters by filing status.
+    - Add MD CTC to list of refundable credits.
+    - Add MD notebooks to documentation table of contents.
+  date: 2022-07-20 19:59:29
+- bump: patch
+  changes:
+    fixed:
+    - Breakdown for two Maryland parameters.
+  date: 2022-07-20 20:41:23
+- bump: minor
+  changes:
+    added:
+    - IN deductions.
+  date: 2022-07-21 19:28:21
+- bump: patch
+  changes:
+    changed:
+    - Moved geographical Medicaid calculation parameters to an on-demand folder.
+  date: 2022-07-22 08:25:43
+- bump: patch
+  changes:
+    added:
+    - Test that parameter files do not contain tabs with informative error messages.
+  date: 2022-07-22 10:11:10
+- bump: minor
+  changes:
+    added:
+    - IN Add-Backs.
+  date: 2022-07-22 15:07:46
+- bump: minor
+  changes:
+    added:
+    - Performance improvements through partially-executed formulas from OpenFisca-Tools.
+  date: 2022-07-22 20:16:52
+- bump: patch
+  changes:
+    fixed:
+    - SNAP standard deductions and references.
+    - Count all non-shelter deductions in SNAP net income before shelter.
+  date: 2022-07-22 23:39:14
+- bump: minor
+  changes:
+    added:
+    - California Young Child Tax Credit.
+  date: 2022-07-22 23:54:11
+- bump: minor
+  changes:
+    added:
+    - IN adjusted gross income tax
+  date: 2022-07-24 20:28:18
+- bump: patch
+  changes:
+    changed:
+    - Split Maryland tax rates and personal exemptions by each filing status.
+  date: 2022-07-25 20:46:29
+- bump: minor
+  changes:
+    added:
+    - Indiana other taxes.
+  date: 2022-07-25 23:07:53

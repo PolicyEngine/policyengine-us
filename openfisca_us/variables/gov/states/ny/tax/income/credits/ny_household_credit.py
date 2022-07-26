@@ -9,6 +9,7 @@ class ny_household_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (b)
+    defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
         in_ny = tax_unit.household("state_code_str", period) == "NY"

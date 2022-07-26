@@ -32,7 +32,11 @@ parts:
               - file: programs/states/ma/tax/income/credits/senior-circuit-breaker
           - file: programs/states/md/index
             sections:
-              - file: programs/states/ma/tax/income/credits/cdcc
+              - file: programs/states/md/tax/income/index
+              - file: programs/states/md/tax/income/credits/cdcc
+              - file: programs/states/md/tax/income/credits/ctc
+              - file: programs/states/md/tax/income/credits/eitc
+              - file: programs/states/md/tax/income/credits/poverty-line-credit
           - file: programs/states/ny/index
             sections:
               - file: programs/states/ny/eitc
@@ -47,4 +51,7 @@ parts:
   - caption: Validation
     chapters:
       - file: validation/taxsim
+  - caption: Usage
+    chapters:
+      - file: usage/speed
       

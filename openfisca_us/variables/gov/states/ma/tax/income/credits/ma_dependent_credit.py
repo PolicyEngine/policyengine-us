@@ -10,6 +10,7 @@ class ma_dependent_credit(Variable):
     reference = (
         "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
     )
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.tax.income.credits.dependent

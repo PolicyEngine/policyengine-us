@@ -1,4 +1,6 @@
-from openfisca_us.model_api import *
+from openfisca_core.model_api import *
+from openfisca_us.entities import *
+from openfisca_us.tools.general import *
 
 
 class StateCode(Enum):

@@ -23,3 +23,4 @@ class ut_additions_to_income(Variable):
     label = "UT additions to income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.UT
