@@ -7,6 +7,7 @@ class ut_exempt_taxpayer(Variable):
     Return form TC-40 2021 line 21
     (https://tax.utah.gov/forms/current/tc-40.pdf)
     """
+
     value_type = bool
     entity = TaxUnit
     label = "UT exempt taxpayer"
