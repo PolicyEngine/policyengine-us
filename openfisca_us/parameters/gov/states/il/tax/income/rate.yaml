@@ -1,26 +1,17 @@
 description: Illinois Individual Income Tax Rates
 values:
-  2017-07-01:
-    value: 0.0495
-  2015-07-01:
-    value: 0.0375
-  2011-07-01:
-    value: 0.05
-  1990-07-01:
-    value: 0.03
-  1989-07-01:
-    value: 0.0275
-  1985-07-01:
-    value: 0.025
-  1984-07-01:
-    value: 0.0275
-  1983-07-01:
-    value: 0.03
-  1969-07-01:
-    value: 0.025
+  2017-07-01: 0.0495
+  2015-07-01: 0.0375
+  2011-07-01: 0.05
+  1990-07-01: 0.03
+  1989-07-01: 0.0275
+  1985-07-01: 0.025
+  1984-07-01: 0.0275
+  1983-07-01: 0.03
+  1969-07-01: 0.025
 metadata:
   unit: /1
-  name: Illinois Tax Rate
+  name: il_tax_rate
   label: Illinois Tax Rate
   reference:
     - title: Income Tax Rates
