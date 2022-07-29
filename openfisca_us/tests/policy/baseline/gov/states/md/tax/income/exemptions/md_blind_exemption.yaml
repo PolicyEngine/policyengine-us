@@ -1,0 +1,43 @@
+- name: Blind spouse
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: 1
+        is_blind: 0
+      person2:
+        age: 64
+        is_tax_unit_spouse: 1
+        is_blind: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_blind_exemption: 1_000
+- name: Dependent over 65
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: 1
+        is_blind: 0
+      person2:
+        age: 65
+        is_tax_unit_dependent: 1
+        is_blind: 0
+        is_tax_unit_spouse: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_aged_blind_exemptions: 3_200

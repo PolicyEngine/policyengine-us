@@ -9,7 +9,11 @@ class dwks9(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p23250 = add(tax_unit, period, ["long_term_capital_gains"])
+        p23250 = add(
+            tax_unit,
+            period,
+            ["long_term_capital_gains", "qualified_dividend_income"],
+        )
         c23650 = tax_unit("c23650", period)
         dwks7 = min_(p23250, c23650)  # SchD lines 15 and 16, respectively
         # dwks8 = min(dwks3, dwks4)

@@ -10,6 +10,7 @@ class ma_dependent_credit(Variable):
     reference = (
         "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
     )
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ma.tax.income.credits.dependent
@@ -21,5 +22,5 @@ class ma_dependent_credit(Variable):
         disabled = person("is_disabled", period)
         eligible = dependent & (child | elderly | disabled)
         count_eligible = tax_unit.sum(eligible)
-        capped_eligible = min_(count_eligible, p.cap)
+        capped_eligible = min_(count_eligible, p.dependent_cap)
         return capped_eligible * p.amount

@@ -8,3 +8,4 @@ class mo_misc_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = ()
+    defined_for = StateCode.MO

@@ -1,0 +1,11 @@
+description: Maryland limits its Child Tax Credit to filers below this adjusted gross income.
+values:
+  2021-01-01: 6_000
+metadata:
+  reference:
+    - title: "Md. Code, Tax-Gen. § 10-751 (b)"
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child
+  unit: currency-USD
+  period: year
+  name: md_ctc_agi_cap
+  label: MD CTC AGI cap

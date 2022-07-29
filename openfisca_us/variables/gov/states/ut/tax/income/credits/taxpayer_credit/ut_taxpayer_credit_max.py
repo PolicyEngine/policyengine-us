@@ -7,6 +7,7 @@ class ut_taxpayer_credit_max(Variable):
     label = "UT taxpayer credit maximum"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
         gov = parameters(period).gov

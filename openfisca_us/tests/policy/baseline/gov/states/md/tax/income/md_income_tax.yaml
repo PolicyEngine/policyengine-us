@@ -1,0 +1,8 @@
+- name: Credits reduce tax liability but not below zero.
+  period: 2020
+  input:
+    md_income_tax_after_non_refundable_credits: 5
+    md_refundable_credits: 6
+    state_code: MD
+  output:
+    md_income_tax: -1

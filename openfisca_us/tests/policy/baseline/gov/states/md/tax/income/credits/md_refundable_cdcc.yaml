@@ -1,0 +1,21 @@
+- name: Single person at the AGI limit.
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 52_100
+    md_cdcc: 100
+    md_income_tax_before_credits: 50
+    state_code: MD
+  output:
+    md_refundable_cdcc: 50
+
+- name: Single person just over the AGI limit.
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 52_101
+    md_cdcc: 100
+    md_income_tax_before_credits: 50
+    state_code: MD
+  output:
+    md_refundable_cdcc: 0

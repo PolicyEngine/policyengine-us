@@ -8,3 +8,4 @@ class mo_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl="
+    defined_for = StateCode.MO

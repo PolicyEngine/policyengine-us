@@ -4,9 +4,9 @@ from setuptools import find_packages, setup
 
 setup(
     name="OpenFisca-US",
-    version="0.91.4",
-    author="Nikhil Woodruff",
-    author_email="nikhil@policyengine.org",
+    version="0.116.0",
+    author="PolicyEngine",
+    author_email="hello@policyengine.org",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
@@ -30,7 +30,7 @@ setup(
         "h5py",
         "microdf_python",
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "OpenFisca-Tools>=0.12.0,<1.0.0",
+        "OpenFisca-Tools>=0.13.2,<1.0.0",
         "pandas",
         "pathlib",
         "pytest",
@@ -40,6 +40,7 @@ setup(
         "synthimpute",
         "tables",
         "tqdm",
+        "click>=8.0.0",
     ],
     extras_require={
         "dev": [
@@ -51,7 +52,8 @@ setup(
             "pytest",
             "setuptools",
             "wheel",
-            "yaml-changelog>=0.1.6",
+            "yaml-changelog>=0.1.7",
+            "linecheck",
         ],
     },
     python_requires=">=3.7,<3.8",

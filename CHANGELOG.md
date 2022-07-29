@@ -5,6 +5,234 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.116.0] - 2022-07-26 16:06:49
+
+### Added
+
+- IRS capital gains parameters for FY20-22.
+
+## [0.115.0] - 2022-07-25 23:07:53
+
+### Added
+
+- Indiana other taxes.
+
+## [0.114.1] - 2022-07-25 20:46:29
+
+### Changed
+
+- Split Maryland tax rates and personal exemptions by each filing status.
+
+## [0.114.0] - 2022-07-24 20:28:18
+
+### Added
+
+- IN adjusted gross income tax
+
+## [0.113.0] - 2022-07-22 23:54:11
+
+### Added
+
+- California Young Child Tax Credit.
+
+## [0.112.1] - 2022-07-22 23:39:14
+
+### Fixed
+
+- SNAP standard deductions and references.
+- Count all non-shelter deductions in SNAP net income before shelter.
+
+## [0.112.0] - 2022-07-22 20:16:52
+
+### Added
+
+- Performance improvements through partially-executed formulas from OpenFisca-Tools.
+
+## [0.111.0] - 2022-07-22 15:07:46
+
+### Added
+
+- IN Add-Backs.
+
+## [0.110.2] - 2022-07-22 10:11:10
+
+### Added
+
+- Test that parameter files do not contain tabs with informative error messages.
+
+## [0.110.1] - 2022-07-22 08:25:43
+
+### Changed
+
+- Moved geographical Medicaid calculation parameters to an on-demand folder.
+
+## [0.110.0] - 2022-07-21 19:28:21
+
+### Added
+
+- IN deductions.
+
+## [0.109.1] - 2022-07-20 20:41:23
+
+### Fixed
+
+- Breakdown for two Maryland parameters.
+
+## [0.109.0] - 2022-07-20 19:59:29
+
+### Changed
+
+- Separate MD standard deduction parameters by filing status.
+- Add MD CTC to list of refundable credits.
+- Add MD notebooks to documentation table of contents.
+
+## [0.108.0] - 2022-07-20 11:58:26
+
+### Added
+
+- Caching of second-lowest silver plan cost in the CPS microdata.
+
+## [0.107.0] - 2022-07-20 11:57:02
+
+### Added
+
+- MD income tax to State income tax.
+
+## [0.106.0] - 2022-07-19 14:26:52
+
+### Added
+
+- Maryland Earned Income Tax Credit.
+- Notebooks for Maryland tax programs.
+
+## [0.105.0] - 2022-07-18 23:24:42
+
+### Added
+
+- Maryland Poverty Line Credit.
+
+## [0.104.0] - 2022-07-18 22:14:59
+
+### Added
+
+- Maryland refundable and non-refundable CDCC.
+
+## [0.103.1] - 2022-07-18 20:44:57
+
+### Added
+
+- MD CTC notebook
+
+## [0.103.0] - 2022-07-18 02:56:11
+
+### Added
+
+- Non-qualified dividend income.
+
+### Fixed
+
+- Dividend income split into qualified and non-qualified correctly.
+
+## [0.102.0] - 2022-07-18 02:28:29
+
+### Added
+
+- California renters tax credit
+
+## [0.101.0] - 2022-07-17 21:38:27
+
+### Added
+
+- Net investment income tax and other taxes to tax before refundable credits.
+
+## [0.100.2] - 2022-07-16 14:06:12
+
+### Added
+
+- Changelog entry file functionality.
+- Linecheck dev dependency.
+
+## [0.100.1] - 2022-07-16 12:30:48
+
+### Fixed
+
+- Click dependency limited to >=8.0.0.
+
+## [0.100.0] - 2022-07-16 11:16:19
+
+### Added
+
+- MD local income tax rates.
+
+## [0.99.1] - 2022-07-16 04:19:02
+
+### Changed
+
+- Change MA dependent care credit from a scale parameter to an amount/cap structure.
+
+## [0.99.0] - 2022-07-16 03:04:11
+
+### Added
+
+- MD CTC
+
+## [0.98.1] - 2022-07-15 21:50:01
+
+### Fixed
+
+- Avoid double-counting CDCC when it was refundable in 2021.
+
+## [0.98.0] - 2022-07-15 18:49:51
+
+### Added
+
+- Maryland adjusted gross income, with the dependent care subtraction.
+
+## [0.97.0] - 2022-07-15 07:47:31
+
+### Added
+
+- MD CDCC.
+- Notebook for federal and MD CDCCs.
+
+### Fixed
+
+- Phase out federal CDCC in steps.
+
+## [0.96.0] - 2022-07-15 07:04:51
+
+### Added
+
+- MD State income tax EITC.
+
+## [0.95.0] - 2022-07-15 05:42:48
+
+### Added
+
+- MD Standard deduction
+
+## [0.94.0] - 2022-07-14 14:33:19
+
+### Added
+
+- ZIP code random generation by population sizes.
+- ZIP code -> county -> State mapping (~400kB).
+
+## [0.93.0] - 2022-07-14 01:03:39
+
+### Added
+
+- MD aged, blind exemptions
+- MD personal Exemptions
+- MD income tax rates
+- MD placeholders for deductions, md_agi
+
+## [0.92.0] - 2022-07-12 15:03:47
+
+### Added
+
+- IN exemptions.
+
 ## [0.91.4] - 2022-07-12 11:00:29
 
 ### Added
@@ -1331,6 +1559,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.116.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.115.0...0.116.0
+[0.115.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.114.1...0.115.0
+[0.114.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.114.0...0.114.1
+[0.114.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.113.0...0.114.0
+[0.113.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.1...0.113.0
+[0.112.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.0...0.112.1
+[0.112.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.111.0...0.112.0
+[0.111.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.2...0.111.0
+[0.110.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.1...0.110.2
+[0.110.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.110.0...0.110.1
+[0.110.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.109.1...0.110.0
+[0.109.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.109.0...0.109.1
+[0.109.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.108.0...0.109.0
+[0.108.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.107.0...0.108.0
+[0.107.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.106.0...0.107.0
+[0.106.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.105.0...0.106.0
+[0.105.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.104.0...0.105.0
+[0.104.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.103.1...0.104.0
+[0.103.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.103.0...0.103.1
+[0.103.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.102.0...0.103.0
+[0.102.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.101.0...0.102.0
+[0.101.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.2...0.101.0
+[0.100.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.1...0.100.2
+[0.100.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.100.0...0.100.1
+[0.100.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.99.1...0.100.0
+[0.99.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.99.0...0.99.1
+[0.99.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.98.1...0.99.0
+[0.98.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.98.0...0.98.1
+[0.98.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.97.0...0.98.0
+[0.97.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.96.0...0.97.0
+[0.96.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.95.0...0.96.0
+[0.95.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.94.0...0.95.0
+[0.94.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.93.0...0.94.0
+[0.93.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.92.0...0.93.0
+[0.92.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.4...0.92.0
 [0.91.4]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.3...0.91.4
 [0.91.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.2...0.91.3
 [0.91.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.91.1...0.91.2

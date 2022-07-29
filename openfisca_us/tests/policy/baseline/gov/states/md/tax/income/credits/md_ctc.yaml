@@ -1,0 +1,23 @@
+- name: Two eligible children.
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: 1
+      child_2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: 1
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 200
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc: 1_000

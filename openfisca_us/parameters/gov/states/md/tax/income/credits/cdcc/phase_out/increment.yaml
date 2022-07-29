@@ -1,0 +1,21 @@
+description: Maryland reduces its Child and Dependent Care Credit by a percentage for each of these increments of a filer's income above its phase-out start.
+JOINT:
+  2019-01-01: 3_000
+SINGLE:
+  2019-01-01: 2_000
+SEPARATE:
+  2019-01-01: 2_000
+HEAD_OF_HOUSEHOLD:
+  2019-01-01: 2_000
+WIDOW:
+  2019-01-01: 2_000
+metadata:
+  breakdown:
+    - filing_status
+  reference:
+    - title: "Md. Code, Tax-Gen. § 10-716 (d)"
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care
+  unit: currency-USD
+  period: year
+  name: md_cdcc_phase_out_increment
+  label: MD CDCC phase-out increment

@@ -1,0 +1,9 @@
+- name: Unemployment compensation deduction, joint
+  period: 2021
+  input:
+    state_code: IN
+    filing_status: JOINT
+    adjusted_gross_income: 20_000
+    tax_unit_taxable_unemployment_compensation: 3_000
+  output:
+    in_unemployment_compensation_deduction: 2_000
