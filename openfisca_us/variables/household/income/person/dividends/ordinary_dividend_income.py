@@ -8,6 +8,7 @@ class ordinary_dividend_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(
-        ["qualified_dividend_income", "non_qualified_dividend_income"]
-    )
+    def formula(person, period, parameters):
+        total_dividends = person("dividend_income", period)
+        qualified_dividends = person("qualified_dividend_income", period)
+        return total_dividends - qualified_dividends
