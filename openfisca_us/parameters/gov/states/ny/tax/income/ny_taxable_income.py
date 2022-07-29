@@ -8,4 +8,3 @@ class ny_taxable_income(Variable):
     unit = USD
     documentation = "NY AGI less taxable income deductions"
     definition_period = YEAR
-
