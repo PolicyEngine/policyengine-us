@@ -9,6 +9,6 @@ class il_use_tax(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("agi", period)
+        agi = tax_unit("federal_agi", period)
         p = parameters(period).openfisca_us.gov.states.il.tax.income.use_tax
-        return where(agi > 100000, p.rate * agi, p.amount.calc(agi))
+        return p.amount.calc(agi) + (p.rate.calc(agi) * agi)
