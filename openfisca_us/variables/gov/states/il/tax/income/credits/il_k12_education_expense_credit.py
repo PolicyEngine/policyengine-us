@@ -9,5 +9,8 @@ class il_k12_education_expense_credit(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        tuition_and_fees = tax_unit("tuition_and_fees", period) - 250
-        return min(750, max(0, tuition_and_fees) * 0.25)
+        p = parameters(period).gov.states.il.tax.income.credits.k12
+        tuition_and_fees = tax_unit("k12_tuition_and_fees", period)
+        reduced_tuition_and_fees = max_(0, tuition_and_fees - p.reduction)
+        max_credit = reduced_tuition_and_fees * p.rate
+        return min_(max_credit, p.cap)
