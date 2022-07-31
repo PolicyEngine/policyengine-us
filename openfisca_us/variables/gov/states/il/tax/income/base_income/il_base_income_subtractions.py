@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class il_base_income_subtractions(Variable):
     value_type = float
     entity = TaxUnit

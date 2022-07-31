@@ -7,9 +7,7 @@ class il_eitc(Variable):
     label = "IL EITC"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx"
-    )
+    reference = "https://www2.illinois.gov/rev/programs/EIC/Pages/default.aspx"
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)

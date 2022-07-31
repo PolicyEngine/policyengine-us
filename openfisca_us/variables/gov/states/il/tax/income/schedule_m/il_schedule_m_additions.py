@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class il_schedule_m_additions(Variable):
     value_type = float
     entity = TaxUnit
