@@ -7,6 +7,7 @@ class wa_capital_gains_tax(Variable):
     label = "Washington capital gains tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wa.tax.income.capital_gains

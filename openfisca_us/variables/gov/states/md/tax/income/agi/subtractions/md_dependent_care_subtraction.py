@@ -8,6 +8,7 @@ class md_dependent_care_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-ii-maryland-adjusted-gross-income/section-10-208-effective-until-712024-subtractions-from-federal-adjusted-gross-income-state-adjustments"
+    defined_for = StateCode.MD
 
     """
     (e) The subtraction under subsection (a) of this section includes expenses

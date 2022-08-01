@@ -15,5 +15,9 @@
       tax_unit:
         members: [head, child_1, child_2]
         adjusted_gross_income: 200
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
   output:
     md_ctc: 1_000
