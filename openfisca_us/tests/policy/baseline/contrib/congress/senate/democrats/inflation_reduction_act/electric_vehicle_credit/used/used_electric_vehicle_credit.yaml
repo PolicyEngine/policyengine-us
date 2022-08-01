@@ -9,6 +9,7 @@
 
 - name: 30% of sale price up to $4,000.
   period: 2022
+  absolute_error_margin: 0.01
   input:
     contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     purchased_qualifying_used_electric_vehicle: true
@@ -18,6 +19,7 @@
 
 - name: 30% up to just below the cap.
   period: 2022
+  absolute_error_margin: 0.01
   input:
     contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     purchased_qualifying_used_electric_vehicle: true

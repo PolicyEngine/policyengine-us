@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class eligible_used_electric_vehicle_credit(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     definition_period = YEAR
     label = "Eligible for used electric vehicle credit"

@@ -35,6 +35,8 @@ values:
     - retirement_savings_credit
     - residential_energy_credit
     - new_electric_vehicle_credit
+    # Inflation Reduction Act would introduce a used EV credit.
+    - used_electric_vehicle_credit
 metadata:
   unit: program
   name: non_refundable_tax_credits
