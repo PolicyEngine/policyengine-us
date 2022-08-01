@@ -20,7 +20,8 @@ class new_electric_vehicle_credit_eligible(Variable):
             return True
         p = ira.electric_vehicle_credit.new.eligibility
         agi = tax_unit("adjusted_gross_income", period)
-        meets_income_limit = agi <= p.income_limit
+        filing_status = tax_unit("filing_status", period)
+        meets_income_limit = agi <= p.income_limit[filing_status]
         msrp = tax_unit("new_electric_vehicle_msrp", period)
         classification = tax_unit(
             "new_electric_vehicle_classification", period

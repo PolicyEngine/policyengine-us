@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class new_electric_vehicle_battery_percent_critical_minerals_extracted_in_trading_partner_country(
+class new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country(
     Variable
 ):
     value_type = float

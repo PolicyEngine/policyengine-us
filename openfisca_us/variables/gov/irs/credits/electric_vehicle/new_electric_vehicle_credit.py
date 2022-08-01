@@ -22,21 +22,21 @@ class new_electric_vehicle_credit(Variable):
         if ira.in_effect:
             p = ira.electric_vehicle_credit.new
             battery_component_percent = tax_unit(
-                "new_electric_vehicle_battery_percent_made_in_north_america",
+                "new_electric_vehicle_battery_components_made_in_north_america",
                 period,
             )
             meets_battery_component_test = (
                 battery_component_percent <= p.battery_components.threshold
             )
             critical_minerals_percent = tax_unit(
-                "new_electric_vehicle_battery_percent_critical_minerals_extracted_in_trading_partner_country",
+                "new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country",
                 period,
             )
             meets_critical_minerals_test = (
                 critical_minerals_percent <= p.critical_minerals.threshold
             )
             battery_components_credit = (
-                meets_battery_component_test * p.battery_component.amount
+                meets_battery_component_test * p.battery_components.amount
             )
             critical_minerals_credit = (
                 meets_critical_minerals_test * p.critical_minerals.amount

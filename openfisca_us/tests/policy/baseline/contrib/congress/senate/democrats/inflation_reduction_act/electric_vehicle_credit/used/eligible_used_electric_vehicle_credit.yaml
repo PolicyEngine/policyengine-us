@@ -39,3 +39,23 @@
     used_electric_vehicle_sale_price: 25_001
   output:
     eligible_used_electric_vehicle_credit: false
+
+- name: Single filer is eligible for income up to $75,000.
+  period: 2022
+  input:
+    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
+    purchased_qualifying_used_electric_vehicle: true
+    used_electric_vehicle_sale_price: 25_000
+    adjusted_gross_income: 75_000
+  output:
+    eligible_used_electric_vehicle_credit: true
+
+- name: Single filer is ineligible for income above $75,000.
+  period: 2022
+  input:
+    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
+    purchased_qualifying_used_electric_vehicle: true
+    used_electric_vehicle_sale_price: 25_000
+    adjusted_gross_income: 75_001
+  output:
+    eligible_used_electric_vehicle_credit: false
