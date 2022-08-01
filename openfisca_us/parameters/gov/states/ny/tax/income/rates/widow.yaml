@@ -1,0 +1,44 @@
+description: Progressive rate schedule for a single filer in NY. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  name: ny_income_tax_rate_single
+  label: NY State income tax rates for single filers.
+  reference:
+    - title: NY Form IT-201 Instructions, page 51
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=51
+brackets:
+  - threshold:
+      2013-01-01: 0
+    rate:
+      2013-01-01: .02
+  - threshold:
+      2013-01-01: 1_000
+    rate:
+      2013-01-01: .03
+  - threshold:
+      2013-01-01: 2_000
+    rate:
+      2013-01-01: .04
+  - threshold:
+      2013-01-01: 3_000
+    rate:
+      2013-01-01: .0475
+  - threshold:
+      2013-01-01: 100_000
+    rate:
+      2013-01-01: .05
+  - threshold:
+      2013-01-01: 125_000
+    rate:
+      2013-01-01: .0525
+  - threshold:
+      2013-01-01: 150_000
+    rate:
+      2013-01-01: .0550
+  - threshold:
+      2013-01-01: 250_000
+    rate:
+      2013-01-01: .0575
+
