@@ -1294,3 +1294,8 @@
     added:
     - NY taxable income variable.
   date: 2022-07-29 15:32:28
+- bump: minor
+  changes:
+    fixed:
+    - Dividend logic correctly handles qualified/non-qualified dividends.
+  date: 2022-08-02 10:35:25
