@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class ordinary_dividend_income(Variable):
+class non_qualified_dividend_income(Variable):
     value_type = float
     entity = Person
     label = "Ordinary dividend income"
