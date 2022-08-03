@@ -7,3 +7,4 @@ class used_electric_vehicle_sale_price(Variable):
     unit = USD
     label = "Sale price of newly purchased used electric vehicle"
     definition_period = YEAR
+    quantity_type = STOCK

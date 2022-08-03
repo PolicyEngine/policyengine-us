@@ -8,3 +8,4 @@ class new_electric_vehicle_msrp(Variable):
     documentation = "Manufacturer's suggested retail price of a newly purchased new electric vehicle"
     unit = USD
     definition_period = YEAR
+    quantity_type = STOCK

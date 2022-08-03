@@ -7,3 +7,4 @@ class new_electric_vehicle_battery_capacity(Variable):
     label = "Battery capacity of a purchased new electric vehicle"
     unit = "kWh"
     definition_period = YEAR
+    quantity_type = STOCK
