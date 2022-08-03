@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.119.1] - 2022-08-03 19:38:51
+
+### Added
+
+- Missing PolicyEngine metadata for electric vehicle variables and parameters.
+
 ## [0.119.0] - 2022-08-03 19:19:26
 
 ### Added
@@ -1577,6 +1583,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.119.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.119.0...0.119.1
 [0.119.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.118.0...0.119.0
 [0.118.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.117.0...0.118.0
 [0.117.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.116.0...0.117.0
