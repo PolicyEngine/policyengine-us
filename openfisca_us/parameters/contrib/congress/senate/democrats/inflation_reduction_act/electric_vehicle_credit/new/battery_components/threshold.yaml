@@ -1,0 +1,15 @@
+description: Share of new electric vehicle's battery components (by value) that must be made in North America to qualify for credit under the Inflation Reduction Act.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=373
+  label: Share of EV battery components made in North America to qualify for credit
+  unit: /1
+  name: inflation_reduction_act_ev_battery_components_threshold
+values:
+  2022-01-01: 0.5
+  2024-01-01: 0.6
+  2026-01-01: 0.7
+  2027-01-01: 0.8
+  2028-01-01: 0.9
+  2029-01-01: 1.0

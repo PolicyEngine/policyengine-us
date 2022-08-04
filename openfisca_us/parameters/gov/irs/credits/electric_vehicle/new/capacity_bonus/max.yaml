@@ -1,0 +1,10 @@
+description: New electric vehicle credit maximum amount for capacity bonus based on battery kilowatt-hours.
+values:
+  2021-01-01: 5_000
+metadata:
+  unit: currency-USD
+  name: new_ev_credit_max_amount_for_capacity_bonus
+  label: New electric vehicle credit maximum amount for capacity bonus.
+  reference:
+    - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (b)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/30D#b_3

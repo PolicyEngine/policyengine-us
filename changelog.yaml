@@ -1294,3 +1294,19 @@
     added:
     - NY taxable income variable.
   date: 2022-07-29 15:32:28
+- bump: minor
+  changes:
+    fixed:
+    - Dividend logic correctly handles qualified/non-qualified dividends.
+  date: 2022-08-02 10:35:25
+- bump: minor
+  changes:
+    added:
+    - Federal electric vehicle credits under current law and the Inflation Reduction
+      Act.
+  date: 2022-08-03 19:19:26
+- bump: patch
+  changes:
+    added:
+    - Missing PolicyEngine metadata for electric vehicle variables and parameters.
+  date: 2022-08-03 19:38:51
