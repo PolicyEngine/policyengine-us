@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class long_term_capital_loss(Variable):
+class long_term_capital_losses(Variable):
     value_type = float
     entity = TaxUnit
     label = "Long-term capital losses"
