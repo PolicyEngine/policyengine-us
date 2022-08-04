@@ -2,7 +2,6 @@
   period: 2021
   input:
     state_code: CA
-    adjusted_gross_income: 1
     filing_status: SINGLE
   output:
     ca_standard_deduction: 4_803
@@ -11,7 +10,6 @@
   period: 2021
   input:
     state_code: CA
-    adjusted_gross_income: 1
     filing_status: JOINT
   output:
     ca_standard_deduction: 9_606
