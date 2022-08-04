@@ -1284,3 +1284,34 @@
     added:
     - Indiana other taxes.
   date: 2022-07-25 23:07:53
+- bump: minor
+  changes:
+    added:
+    - IRS capital gains parameters for FY20-22.
+  date: 2022-07-26 16:06:49
+- bump: minor
+  changes:
+    added:
+    - NY taxable income variable.
+  date: 2022-07-29 15:32:28
+- bump: minor
+  changes:
+    fixed:
+    - Dividend logic correctly handles qualified/non-qualified dividends.
+  date: 2022-08-02 10:35:25
+- bump: minor
+  changes:
+    added:
+    - Federal electric vehicle credits under current law and the Inflation Reduction
+      Act.
+  date: 2022-08-03 19:19:26
+- bump: patch
+  changes:
+    added:
+    - Missing PolicyEngine metadata for electric vehicle variables and parameters.
+  date: 2022-08-03 19:38:51
+- bump: minor
+  changes:
+    added:
+    - California standard deduction.
+  date: 2022-08-04 14:53:40
