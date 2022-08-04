@@ -93,6 +93,7 @@ def in_state(state):
 
     return is_eligible
 
+
 def excess(of: str, over: str) -> Formula:
     def formula(person, period, parameters):
         of_variable = person(of, period)

@@ -10,5 +10,5 @@ class long_term_capital_losses(Variable):
     definition_period = YEAR
     reference = dict(
         title="26 U.S. Code § 1222(4)",
-        href="https://www.law.cornell.edu/uscode/text/26/1222#4"
+        href="https://www.law.cornell.edu/uscode/text/26/1222#4",
     )
