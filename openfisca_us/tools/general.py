@@ -95,9 +95,9 @@ def in_state(state):
 
 
 def excess(of: str, over: str) -> Formula:
-    def formula(person, period, parameters):
-        of_variable = person(of, period)
-        over_variable = person(over, period)
+    def formula(entity, period, parameters):
+        of_variable = add(entity, period, [of])
+        over_variable = add(entity, period, [over])
         return max_(of_variable - over_variable, 0)
 
     return formula

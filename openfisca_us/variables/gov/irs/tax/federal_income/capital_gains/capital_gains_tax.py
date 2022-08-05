@@ -1,3 +1,4 @@
+from numpy import clip
 from openfisca_us.model_api import *
 
 
@@ -80,15 +81,6 @@ class capital_gains_tax(Variable):
             cg.unrecaptured_s_1250_gain_rate * taxable_unrecaptured_gain
         )
 
-        total_taxed_cg = (
-            cg_in_first_bracket + cg_in_second_bracket + cg_in_third_bracket
-        )
-
-        remaining_cg = min_(
-            taxable_income - (total_taxed_cg + unrecaptured_gain_tax),
-            0,
-        )
-
-        remaining_cg_tax = remaining_cg * cg.other_cg_rate
+        remaining_cg_tax = tax_unit("capital_gains_28_percent_rate_gain", period) * cg.other_cg_rate
 
         return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax

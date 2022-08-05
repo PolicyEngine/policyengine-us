@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class long_term_capital_gains(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Long-term capital gains"
     unit = USD
     documentation = "The sum of all gains made from (profitable) sales of assets held for more than one year."

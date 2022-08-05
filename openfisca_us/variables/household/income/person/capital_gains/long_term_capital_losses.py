@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class long_term_capital_losses(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Long-term capital losses"
     unit = USD
     documentation = "The sum of all losses from (loss-generating) sales of assets held for more than one year."

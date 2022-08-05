@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class short_term_capital_losses(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Short-term capital losses"
     unit = USD
     documentation = "The sum of all losses from (loss-generating) sales of assets held for one year or less."
