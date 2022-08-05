@@ -14,4 +14,19 @@ class capital_gains_excluded_from_taxable_income(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        pass
+        net_capital_gain = tax_unit("net_capital_gain", period)
+        adjusted_net_capital_gain = tax_unit(
+            "adjusted_net_capital_gain", period
+        )
+        taxable_income = tax_unit("taxable_income", period)
+        cg = parameters(period).gov.irs.capital_gains.brackets
+        income_taxed_below_first_rate = clip(
+            taxable_income, 0, cg.thresholds[0]
+        )
+        return max_(
+            taxable_income - net_capital_gain,
+            min_(
+                income_taxed_below_first_rate,
+                taxable_income - adjusted_net_capital_gain,
+            ),
+        )
