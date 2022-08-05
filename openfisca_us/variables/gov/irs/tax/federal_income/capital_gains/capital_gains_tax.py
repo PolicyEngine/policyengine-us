@@ -12,7 +12,7 @@ class capital_gains_tax(Variable):
     def formula(tax_unit, period, parameters):
         net_cg = tax_unit("net_capital_gain", period)
         taxable_income = tax_unit("taxable_income", period)
-        adjusted_net_cg = min(
+        adjusted_net_cg = min_(
             tax_unit("adjusted_net_capital_gain", period),
             taxable_income,
         )  # ANCG is referred to in all cases as ANCG or taxable income if less.
