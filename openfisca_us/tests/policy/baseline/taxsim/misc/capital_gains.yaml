@@ -1,0 +1,85 @@
+- name: Tax unit with taxsimid 184 from h19.its.csv
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 27
+        taxable_interest_income: 14000
+        short_term_capital_gains: 10000
+        long_term_capital_gains: 10000
+        pension_income: 51000
+        social_security: 53000
+        unemployment_compensation: 6000
+        real_estate_taxes: 20000
+        interest_expense: 39000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxsim_tfica: 0.00
+    #tax_unit_taxable_unemployment_compensation: 6000.00
+    #tax_unit_taxable_social_security: 45050.00
+    #adjusted_gross_income: 136050.00
+    #taxable_income: 87050.00
+    #cdcc: 0.00
+    #non_refundable_ctc: 0.00
+    #refundable_ctc: 0.00
+    #eitc: 0.00
+    income_tax: 14309.50
+
+# OpenFisca-US test file derived from t21.its.csv and t21.ota.csv files
+- name: Tax unit with taxsimid 95009 from t21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 40
+        employment_income: 49000
+        taxable_interest_income: 9000
+        long_term_capital_gains: 10000
+        social_security: 21000
+        real_estate_taxes: 17000
+        #interest_expense: 25000
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+        ma_covid_19_essential_employee_premium_pay_program: 0
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 1
+        age: 11
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+        ma_covid_19_essential_employee_premium_pay_program: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 9000
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    taxsim_tfica: 3748.50
+    income_tax: -1453
