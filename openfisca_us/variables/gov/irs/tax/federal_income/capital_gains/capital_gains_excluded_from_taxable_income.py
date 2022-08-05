@@ -24,10 +24,11 @@ class capital_gains_excluded_from_taxable_income(Variable):
         income_taxed_below_first_rate = clip(
             taxable_income, 0, cg.thresholds["1"][filing_status]
         )
-        return max_(
+        reduced_taxable_income = max_(
             taxable_income - net_capital_gain,
             min_(
                 income_taxed_below_first_rate,
                 taxable_income - adjusted_net_capital_gain,
             ),
         )
+        return taxable_income - reduced_taxable_income
