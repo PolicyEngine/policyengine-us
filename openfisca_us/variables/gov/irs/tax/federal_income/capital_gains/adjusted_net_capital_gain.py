@@ -22,8 +22,8 @@ class adjusted_net_capital_gain(Variable):
         # definition here, but it's a good enough approximation. See 26 U.S. Code § 1(h)(11)(B) for the
         # definition of 'net capital gain' for the above variable, and 26 U.S. Code § 1(h)(3) for the definition
         # of adjusted net capital gain (this variable).
-        qualified_dividend_income = tax_unit(
-            "qualified_dividend_income", period
+        qualified_dividend_income = add(
+            tax_unit, period, ["qualified_dividend_income"]
         )
         unrecaptured_s_1250_gain = tax_unit(
             "unrecaptured_section_1250_gain", period
