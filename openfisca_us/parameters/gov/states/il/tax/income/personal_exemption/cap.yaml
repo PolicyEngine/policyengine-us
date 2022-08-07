@@ -1,0 +1,15 @@
+description: IL Exemption Cap
+joint:
+  values:
+    2021-01-01: 500_000
+nonjoint:
+  values:
+    2021-01-01: 250_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: il_exemption_cap
+  label: IL Exemption Cap
+  reference:
+    - title: Illinois Department of Revenue 2021 Form IL-1040 Instructions; Step 4 - Exemptions
+      href: https://www2.illinois.gov/rev/forms/incometax/Documents/currentyear/individual/il-1040-instr.pdf#page=8

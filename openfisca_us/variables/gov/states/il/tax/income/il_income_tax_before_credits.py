@@ -10,7 +10,7 @@ class il_income_tax_before_credits(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        exemption_allowance = tax_unit("il_exemption_allowance", period)
+        exemption_allowance = tax_unit("il_total_exemption", period)
         base_income = tax_unit("il_base_income", period)
         recapture_of_investment_credit = tax_unit(
             "recapture_of_investment_credit", period
