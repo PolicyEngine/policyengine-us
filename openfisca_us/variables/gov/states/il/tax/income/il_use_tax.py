@@ -12,4 +12,4 @@ class il_use_tax(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("federal_agi", period)
         p = parameters(period).openfisca_us.gov.states.il.tax.income.use_tax
-        return p.amount.calc(agi) + (p.rate.calc(agi) * agi)
+        return p.amount.calc(agi) + p.rate.calc(agi)
