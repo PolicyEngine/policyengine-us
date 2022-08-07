@@ -16,11 +16,11 @@ thresholds:
     period: year
     reference:
       - title: 2022 IRS data release
-        href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+        href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=8
       - title: 2021 IRS data release
-        href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+        href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=8
       - title: 2020 IRS data release
-        href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
+        href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=8
   1:
     HEAD_OF_HOUSEHOLD:
       values:
@@ -31,9 +31,9 @@ thresholds:
         2017-01-01: 50_800
         2018-01-01: 51_700
         2019-01-01: 52_750
-        2020-01-01: 40_000
-        2021-01-01: 40_400
-        2022-01-01: 41_675
+        2020-01-01: 53_600
+        2021-01-01: 54_100
+        2022-01-01: 55_800
     JOINT:
       values:
         2013-01-01: 72_500
