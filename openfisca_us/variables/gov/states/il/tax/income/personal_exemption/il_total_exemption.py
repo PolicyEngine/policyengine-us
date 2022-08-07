@@ -16,4 +16,6 @@ class il_total_exemption(Variable):
             + tax_unit("il_dependent_exemption", period)
         )
 
-        return where(tax_unit("il_is_exemption_eligible", period), total_amount, 0)
+        return where(
+            tax_unit("il_is_exemption_eligible", period), total_amount, 0
+        )
