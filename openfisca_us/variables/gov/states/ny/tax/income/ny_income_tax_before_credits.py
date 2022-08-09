@@ -7,6 +7,7 @@ class ny_income_tax_before_credits(Variable):
     label = "NY income tax before credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("ny_taxable_income", period)
