@@ -10,3 +10,5 @@ class ny_deduction(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/613"
     defined_for = StateCode.NY
 
+    def formula(tax_unit, period, parameters):
+        itemizes = tax_unit("tax_unit_itemizes", period)
