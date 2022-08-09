@@ -26,7 +26,9 @@ class residential_energy_efficient_property_credit(Variable):
         fuel_cell_expenditures = tax_unit(
             "fuel_cell_property_expenditures", period
         )
-        p = parameters(period).gov.irs.credits.residential_energy
+        p = parameters(
+            period
+        ).gov.irs.credits.residential_energy.efficient_property
         fuel_cell_cap = p.fuel_cell_cap_per_kw * tax_unit(
             "fuel_cell_property_capacity", period
         )
