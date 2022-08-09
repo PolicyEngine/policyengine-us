@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.124.1] - 2022-08-09 15:41:14
+
+### Fixed
+
+- A bug causing qualified dividends to not be counted as 'net capital gain'.
+
 ## [0.124.0] - 2022-08-09 13:21:28
 
 ### Fixed
@@ -1625,6 +1631,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.124.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.0...0.124.1
 [0.124.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.123.0...0.124.0
 [0.123.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.122.0...0.123.0
 [0.122.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.2...0.122.0
