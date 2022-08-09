@@ -14,7 +14,7 @@ class ny_agi_subtractions(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        taxable_ss = tax_unit("taxable_social_security", period)
+        taxable_ss = add(tax_unit, period, ["taxable_social_security"])
         us_govt_interest = tax_unit("us_govt_interest", period)
         investment_in_529_plan = tax_unit("investment_in_529_plan", period)
         person = tax_unit.members
