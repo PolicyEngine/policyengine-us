@@ -10,25 +10,20 @@ class residential_energy_efficient_property_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25D"
 
     def formula(tax_unit, period, parameters):
+        p = parameters(
+            period
+        ).gov.irs.credits.residential_energy.efficient_property
         # Get total expenditures except fuel cell.
-        EXPENDITURES_LESS_FUEL_CELL = [
-            "biomass_fuel_property_expenditures",
-            "geothermal_heat_pump_property_expenditures",
-            "small_wind_energy_property_expenditures",
-            "solar_electric_property_expenditures",
-            "solar_water_heating_property_expenditures",
-        ]
         expenditures_less_fuel_cell = add(
-            tax_unit, period, EXPENDITURES_LESS_FUEL_CELL
+            tax_unit,
+            period,
+            [i for i in p.elements if i != "fuel_cell_property_expenditures"],
         )
         # Get qualifying expenditures for fuel cell.
         # These are capped based on the kilowatts.
         fuel_cell_expenditures = tax_unit(
             "fuel_cell_property_expenditures", period
         )
-        p = parameters(
-            period
-        ).gov.irs.credits.residential_energy.efficient_property
         fuel_cell_cap = p.fuel_cell_cap_per_kw * tax_unit(
             "fuel_cell_property_capacity", period
         )

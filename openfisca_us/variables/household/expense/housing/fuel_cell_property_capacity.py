@@ -6,7 +6,7 @@ class fuel_cell_property_capacity(Variable):
     entity = TaxUnit
     label = "Capacity of purchased fuel cells"
     documentation = (
-        "Kilowatts of capacity of qualified fuel cel properties purchased."
+        "Kilowatts of capacity of qualified fuel cell properties purchased."
     )
     unit = "kW"
     definition_period = YEAR
