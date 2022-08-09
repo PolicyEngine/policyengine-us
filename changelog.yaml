@@ -1294,3 +1294,39 @@
     added:
     - NY taxable income variable.
   date: 2022-07-29 15:32:28
+- bump: minor
+  changes:
+    fixed:
+    - Dividend logic correctly handles qualified/non-qualified dividends.
+  date: 2022-08-02 10:35:25
+- bump: minor
+  changes:
+    added:
+    - Federal electric vehicle credits under current law and the Inflation Reduction
+      Act.
+  date: 2022-08-03 19:19:26
+- bump: patch
+  changes:
+    added:
+    - Missing PolicyEngine metadata for electric vehicle variables and parameters.
+  date: 2022-08-03 19:38:51
+- bump: minor
+  changes:
+    added:
+    - California standard deduction.
+  date: 2022-08-04 14:53:40
+- bump: minor
+  changes:
+    added:
+    - Re-implementation of capital gains law.
+  date: 2022-08-05 12:29:00
+- bump: patch
+  changes:
+    changed:
+    - Bump openfisca-tools to 0.13.3.
+  date: 2022-08-05 16:24:00
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect head of household capital gains thresholds.
+  date: 2022-08-07 16:48:06
