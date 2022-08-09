@@ -1,9 +1,10 @@
 from openfisca_us.model_api import *
 
 
-class residential_energy_efficient_property_credit(Variable):
+class nonbusiness_energy_property_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Residential energy efficient property tax credit"
+    documentation = "Nonbusiness energy property credit"
     unit = USD
+    reference = "https://www.law.cornell.edu/uscode/text/26/25C"
