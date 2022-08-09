@@ -1,12 +1,16 @@
 from openfisca_us.model_api import *
 
 
-class e07260(Variable):
+class residential_energy_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
     documentation = "Residential energy credit from Form 5695"
     unit = USD
 
-
-residential_energy_credit = variable_alias("residential_energy_credit", e07260)
+    formula = sum_of_variables(
+        [
+            "residential_energy_efficient_property_credit",
+            "nonbusiness_energy_property_credit",
+        ]
+    )
