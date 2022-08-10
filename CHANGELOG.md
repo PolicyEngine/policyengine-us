@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.126.0] - 2022-08-10 12:47:25
+
+### Added
+
+- Logic pathway to NY income tax from income.
+
 ## [0.125.0] - 2022-08-09 16:00:40
 
 ### Added
@@ -1637,6 +1643,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.126.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.125.0...0.126.0
 [0.125.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.1...0.125.0
 [0.124.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.0...0.124.1
 [0.124.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.123.0...0.124.0
