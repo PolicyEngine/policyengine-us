@@ -9,7 +9,3 @@ class ny_itemized_deductions_reduction(Variable):
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/615"
     defined_for = StateCode.NY
-
-    def formula(tax_unit, period, parameters):
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        

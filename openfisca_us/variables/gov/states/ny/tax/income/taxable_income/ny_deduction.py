@@ -11,4 +11,7 @@ class ny_deduction(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        itemizes = tax_unit("tax_unit_itemizes", period)
+        return max_(
+            tax_unit("ny_itemized_deductions", period),
+            tax_unit("ny_standard_deduction", period),
+        )

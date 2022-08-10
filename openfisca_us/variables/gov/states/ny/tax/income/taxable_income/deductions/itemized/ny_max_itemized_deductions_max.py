@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class ny_itemized_deductions(Variable):
+class ny_itemized_deductions_max(Variable):
     value_type = float
     entity = TaxUnit
     label = "NY uncapped itemized deductions"
