@@ -15,4 +15,4 @@ class ny_exemptions(Variable):
         dependent_exemption = parameters(
             period
         ).gov.states.ny.tax.income.exemptions.dependent
-        return dependent_exemption.amount * count_dependents
+        return dependent_exemption * count_dependents
