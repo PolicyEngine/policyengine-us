@@ -1345,3 +1345,13 @@
     fixed:
     - Refactored pension income to exclude IRA calculations.
   date: 2022-08-09 13:21:28
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing qualified dividends to not be counted as 'net capital gain'.
+  date: 2022-08-09 15:41:14
+- bump: minor
+  changes:
+    added:
+    - Residential energy efficient property credit.
+  date: 2022-08-09 16:00:40

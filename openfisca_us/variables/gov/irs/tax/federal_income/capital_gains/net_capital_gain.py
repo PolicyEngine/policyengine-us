@@ -23,9 +23,7 @@ class net_capital_gain(Variable):
         net_capital_gains = max_(
             0, net_long_term_capital_gain - net_short_term_capital_loss
         )
-        qualified_dividends = tax_unit("qualified_dividend_income", period)
+        qualified_dividends = add(
+            tax_unit, period, ["qualified_dividend_income"]
+        )
         return net_capital_gains + qualified_dividends
-
-    formula = excess(
-        of="net_long_term_capital_gain", over="net_short_term_capital_loss"
-    )
