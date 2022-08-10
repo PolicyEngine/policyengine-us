@@ -12,7 +12,9 @@ class ny_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         dependent_elsewhere = tax_unit("tax_unit_dependent_elsewhere", period)
-        standard_deduction = parameters(period).gov.states.ny.tax.income.deductions.standard
+        standard_deduction = parameters(
+            period
+        ).gov.states.ny.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         return where(
             dependent_elsewhere,

@@ -24,6 +24,4 @@ class ny_itemized_deductions_max(Variable):
                 "qualified_business_income_deduction",
             ]
         ]
-        return add(
-            tax_unit, period, federal_deductions_if_itemizing
-        )
+        return add(tax_unit, period, federal_deductions_if_itemizing)

@@ -17,4 +17,3 @@ class ny_itemized_deductions(Variable):
         # There are some other specific details about some types of itemized deductions
         # likely non-modellable in the CPS. Requires further investigation.
         return itemizes * (max_deductions - reduction)
-

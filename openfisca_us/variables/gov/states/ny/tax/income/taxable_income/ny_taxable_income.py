@@ -11,7 +11,6 @@ class ny_taxable_income(Variable):
     reference = "https://www.nysenate.gov/legislation/laws/TAX/611"
     defined_for = StateCode.NY
 
-
     def formula(tax_unit, period, parameters):
         agi = tax_unit("ny_agi", period)
         deductions = tax_unit("ny_deduction", period)
