@@ -28,11 +28,11 @@ class ny_cdcc_rate(Variable):
         interpolated_first_phase_out_rate = multiplier_max + (
             percent_along_first_phase_out * (1 - multiplier_max)
         )
-        second_phase_out_rate = ny_cdcc.phase_out.second.rate
+        second_phase_out_rate = ny_cdcc.multiplier.phase_out.second.rate
         multiplier_floor = ny_cdcc.multiplier.addition
-        additional_multiplier = ny_cdcc.additional_multiplier.calc(ny_agi)
+        additional_multiplier = ny_cdcc.multiplier.additional_multiplier.calc(ny_agi)
 
-        return select(
+        ny_multiplier = additional_multiplier * select(
             [
                 below_main_phase_out,
                 in_main_phase_out,
@@ -47,3 +47,5 @@ class ny_cdcc_rate(Variable):
                 ),
             ],
         )
+
+        return federal_rate * ny_multiplier
