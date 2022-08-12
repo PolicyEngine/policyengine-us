@@ -1,6 +1,4 @@
 import collections
-from typing import Union
-import numpy as np
 import requests
 from pathlib import Path
 import pandas as pd
@@ -15,18 +13,19 @@ from tqdm import tqdm
 from argparse import ArgumentParser
 import platform
 
-if platform.system() == "Windows":
-    OS_NAME = "windows"
-else:
-    OS_NAME = "unix"
+PLATFORM_MAPPING = {
+    "Windows": "windows",
+    "Linux": "unix",
+    "Darwin": "osx",
+}
+
+taxsim_platform = PLATFORM_MAPPING[platform.system()]
 
 
 class TaxSim35:
     """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
 
-    EXECUTABLE_URL = (
-        f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{OS_NAME}.exe"
-    )
+    EXECUTABLE_URL = f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{taxsim_platform}.exe"
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
     INPUT_VARIABLES = [
