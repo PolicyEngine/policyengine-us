@@ -215,16 +215,11 @@ class TaxSim35:
         ).T.drop(
             taxsim_df.columns[0], axis=1
         )  # Some issue with the TAXSIM dataframe now coming out in the right format
-        input_df = input_df.rename(
-            columns={col: f"taxsim_{col}" for col in input_df.columns}
+        input_df.rename(
+            columns={col: f"taxsim_{col}" for col in input_df.columns},
+            inplace=True,
         )
-        taxsim_df = pd.concat(
-            [
-                input_df,
-                taxsim_df,
-            ],
-            axis=1,
-        )
+        taxsim_df = pd.concat([input_df, taxsim_df], axis=1)
         variables = system.variables
         i = 0
         test_str = ""
