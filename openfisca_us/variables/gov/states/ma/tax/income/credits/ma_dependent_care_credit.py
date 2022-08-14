@@ -13,6 +13,7 @@ class ma_dependent_care_credit(Variable):
     reference = (
         "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
     )
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         # Expenses capped by number of qualifying individuals.

@@ -17,6 +17,8 @@ parts:
         sections:
           - file: programs/irs/credits/eitc
           - file: programs/irs/credits/cdcc
+          - file: programs/irs/credits/electric-vehicle-credit
+          - file: gov/irs/tax/federal_income/capital_gains
       - file: programs/ssa/index
         sections:
           - file: programs/ssa/ssi
@@ -32,7 +34,11 @@ parts:
               - file: programs/states/ma/tax/income/credits/senior-circuit-breaker
           - file: programs/states/md/index
             sections:
-              - file: programs/states/ma/tax/income/credits/cdcc
+              - file: programs/states/md/tax/income/index
+              - file: programs/states/md/tax/income/credits/cdcc
+              - file: programs/states/md/tax/income/credits/ctc
+              - file: programs/states/md/tax/income/credits/eitc
+              - file: programs/states/md/tax/income/credits/poverty-line-credit
           - file: programs/states/ny/index
             sections:
               - file: programs/states/ny/eitc
@@ -44,7 +50,13 @@ parts:
           - file: programs/usda/snap
           - file: programs/usda/school-meals
           - file: programs/usda/wic
+  - caption: Contrib
+    chapters:
+      - file: contrib/congress/senate/democrats/inflation-reduction-act/electric-vehicle-credit
   - caption: Validation
     chapters:
       - file: validation/taxsim
+  - caption: Usage
+    chapters:
+      - file: usage/speed
       

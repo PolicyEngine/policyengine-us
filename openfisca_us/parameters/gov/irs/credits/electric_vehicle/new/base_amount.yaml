@@ -1,0 +1,10 @@
+description: Base amount of new electric vehicle credit.
+values:
+  2021-01-01: 2_500
+metadata:
+  unit: currency-USD
+  name: new_ev_credit_base_amount
+  label: New electric vehicle credit base amount
+  reference:
+    - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (b)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/30D#b_2

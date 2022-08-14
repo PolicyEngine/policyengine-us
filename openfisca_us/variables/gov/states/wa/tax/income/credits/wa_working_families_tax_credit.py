@@ -8,6 +8,7 @@ class wa_working_families_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://app.leg.wa.gov/RCW/default.aspx?cite=82.08.0206"
+    defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
         # Filers must claim EITC and be in Washington to be eligible.
@@ -31,7 +32,10 @@ class wa_working_families_tax_credit(Variable):
             eitc_child_count
         )
         phase_out_start = eitc_agi_limit - phase_out_start_reduction
-        phase_out_rate = p.phase_out.rate.calc(eitc_child_count)
+        # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
+        # instructs DOR to revise it to get to zero by the EITC AGI limit.
+        # https://app.leg.wa.gov/billsummary?BillNumber=1888&Year=2021&Initiative=false
+        phase_out_rate = max_amount / phase_out_start_reduction
         earnings = tax_unit("filer_earned", period)
         excess = max_(0, earnings - phase_out_start)
         reduction = max_(0, excess * phase_out_rate)

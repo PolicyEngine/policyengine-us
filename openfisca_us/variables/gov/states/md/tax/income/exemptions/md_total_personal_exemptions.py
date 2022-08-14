@@ -7,6 +7,7 @@ class md_total_personal_exemptions(Variable):
     label = "MD total personal exemptions"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         # Get md_personal_exemption from tax_unit multiplied by tax_unit_size

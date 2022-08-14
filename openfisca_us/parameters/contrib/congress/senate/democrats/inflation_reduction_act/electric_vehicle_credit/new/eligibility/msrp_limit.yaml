@@ -1,0 +1,18 @@
+description: MSRP limit to qualify for the new electric vehicle credit under the Inflation Reduction Act.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=377
+  label: MSRP limit for new EV credit under the IRA
+  unit: currency-USD
+  name: inflation_reduction_act_ev_new_msrp_limit
+  breakdown:
+  - new_electric_vehicle_classification
+VAN:
+  2022-01-01: 80_000
+SUV:
+  2022-01-01: 80_000
+PICKUP:
+  2022-01-01: 80_000
+OTHER:
+  2022-01-01: 55_000

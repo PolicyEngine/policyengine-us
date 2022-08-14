@@ -1,0 +1,15 @@
+- name: 1,000 AGI
+  period: 2021
+  input:
+    state_code: IN
+    in_agi: 1_000
+  output:
+    in_agi_tax: 1_000 * 0.0323
+
+- name: 10,000 AGI
+  period: 2021
+  input:
+    state_code: IN
+    in_agi: 10_000
+  output:
+    in_agi_tax: 10_000 * 0.0323

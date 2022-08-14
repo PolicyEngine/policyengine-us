@@ -1,0 +1,26 @@
+- name: Has to be single and have no EITC children.
+  period: 2021
+  input:
+    filing_status: SINGLE
+    eitc_child_count: 0
+    state_code: MD
+  output:
+    md_qualifies_for_single_childless_eitc: true
+
+- name: Has to be single and have no EITC children.
+  period: 2021
+  input:
+    filing_status: JOINT
+    eitc_child_count: 0
+    state_code: MD
+  output:
+    md_qualifies_for_single_childless_eitc: false
+
+- name: Has to be single and have no EITC children.
+  period: 2021
+  input:
+    filing_status: SINGLE
+    eitc_child_count: 1
+    state_code: MD
+  output:
+    md_qualifies_for_single_childless_eitc: false

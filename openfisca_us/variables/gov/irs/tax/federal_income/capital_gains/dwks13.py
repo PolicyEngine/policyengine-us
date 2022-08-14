@@ -14,7 +14,7 @@ class dwks13(Variable):
     def formula(tax_unit, period, parameters):
         e24515 = add(tax_unit, period, ["unrecaptured_section_1250_gain"])
         dwks11 = e24515 + add(
-            tax_unit, period, ["capital_gain_28_percent"]
+            tax_unit, period, ["capital_gains_28_percent_rate_gain"]
         )  # Sch D lines 18 and 19, respectively
         dwks9 = tax_unit("dwks9", period)
         dwks12 = min_(dwks9, dwks11)

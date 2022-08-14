@@ -16,7 +16,11 @@ class dwks10(Variable):
         dwks10_if_no_gains = max_(
             0,
             min_(
-                add(tax_unit, period, ["long_term_capital_gains"]),
+                add(
+                    tax_unit,
+                    period,
+                    ["long_term_capital_gains", "qualified_dividend_income"],
+                ),
                 tax_unit("c23650", period),
             ),
         ) + add(tax_unit, period, ["non_sch_d_capital_gains"])

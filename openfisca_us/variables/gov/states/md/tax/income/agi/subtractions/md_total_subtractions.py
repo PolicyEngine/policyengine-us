@@ -7,5 +7,6 @@ class md_total_subtractions(Variable):
     label = "MD total subtractions from AGI"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     formula = sum_of_variables(["md_dependent_care_subtraction"])

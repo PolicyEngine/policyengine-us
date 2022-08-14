@@ -1,0 +1,13 @@
+description: IN adjusted gross income tax rate.
+values:
+  2014-01-01: 0.034 # "For taxable years beginning before January 1, 2015"
+  2015-01-01: 0.033
+  2017-01-01: 0.0323
+metadata:
+  period: year
+  unit: /1
+  name: in_agi_tax_rate
+  label: IN AGI tax rate
+  reference:
+    - title: IC 6-3-2-1 Tax rate (a)(3)
+      href: http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-1
