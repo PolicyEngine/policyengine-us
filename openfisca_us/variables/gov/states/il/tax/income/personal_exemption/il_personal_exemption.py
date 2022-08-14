@@ -12,7 +12,7 @@ class il_personal_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.il.tax.income.personal_exemption.personal_exemption
+        ).gov.states.il.tax.income.exemption.personal
 
         filing_status = tax_unit("filing_status", period)
         joint = where(

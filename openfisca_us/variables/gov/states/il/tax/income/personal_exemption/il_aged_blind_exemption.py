@@ -15,5 +15,5 @@ class il_aged_blind_exemption(Variable):
             aged_blind_count
             * parameters(
                 period
-            ).gov.states.il.tax.income.personal_exemption.senior_and_blind_exemption
+            ).gov.states.il.tax.income.exemption.aged_and_blind
         )

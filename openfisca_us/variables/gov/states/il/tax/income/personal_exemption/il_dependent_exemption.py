@@ -12,6 +12,6 @@ class il_dependent_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.il.tax.income.personal_exemption.dependent_exemption
+        ).gov.states.il.tax.income.exemption.dependent
 
         return p * tax_unit("tax_unit_dependents", period)
