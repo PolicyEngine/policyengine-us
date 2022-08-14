@@ -8,6 +8,9 @@ class il_total_exemption(Variable):
     unit = USD
     definition_period = YEAR
     reference = ""
+    defined_for = "il_is_exemption_eligible"
+    
+    formula = sum_of_variables(["il_personal_exemption","il_aged_blind_exemption", "il_dependent_exemption"])
 
     def formula(tax_unit, period, parameters):
         total_amount = (
