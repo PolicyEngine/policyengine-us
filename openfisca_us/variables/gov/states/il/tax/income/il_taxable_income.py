@@ -1,0 +1,12 @@
+from openfisca_us.model_api import *
+
+class il_total_exemption(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "IL taxable income"
+    unit = USD
+    definition_period = YEAR
+    reference = ""
+    
+    def formula(tax_unit, period, parameters):
+        return max_(0, tax_unit("il_base_income", period) - tax_unit("il_total_exemption", period))
