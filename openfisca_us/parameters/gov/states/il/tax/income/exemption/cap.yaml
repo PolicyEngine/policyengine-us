@@ -1,8 +1,17 @@
 description: IL Exemption Cap
-joint:
+Joint:
   values:
     2021-01-01: 500_000
-nonjoint:
+Single:
+  values:
+    2021-01-01: 250_000
+Separate:
+  values:
+    2021-01-01: 250_000
+Head of household:
+  values:
+    2021-01-01: 250_000
+Widow(er):
   values:
     2021-01-01: 250_000
 metadata:
