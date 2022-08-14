@@ -4,7 +4,7 @@
     cdcc: 100
     filing_status: SINGLE
     adjusted_gross_income: 95_901  # $95,900 is the limit.
-    state_code_str: MD
+    state_code: MD
   output:
     md_cdcc: 0
 
@@ -14,7 +14,7 @@
     cdcc: 100
     filing_status: JOINT
     adjusted_gross_income: 149_051  # $149,050 is the limit.
-    state_code_str: MD
+    state_code: MD
   output:
     md_cdcc: 0
   
@@ -24,7 +24,7 @@
     cdcc: 100
     filing_status: SINGLE
     adjusted_gross_income: 0
-    state_code_str: MD
+    state_code: MD
   output:
     md_cdcc: 32
 
@@ -34,7 +34,7 @@
     cdcc: 100
     filing_status: JOINT
     adjusted_gross_income: 0
-    state_code_str: MD
+    state_code: MD
   output:
     md_cdcc: 32
 
@@ -44,7 +44,7 @@
     cdcc: 100
     filing_status: JOINT
     adjusted_gross_income: 0
-    state_code_str: MD
+    state_code: MD
   output:
     md_cdcc: 32
 

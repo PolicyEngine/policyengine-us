@@ -15,5 +15,6 @@
       tax_unit:
         members: [head, child_1, child_2]
         adjusted_gross_income: 200
+    state_code: MD
   output:
     md_ctc_without_federal: 1_000
