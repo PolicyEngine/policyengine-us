@@ -8,6 +8,7 @@ class il_income_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = ""
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         exemption_allowance = tax_unit("il_total_exemption", period)
