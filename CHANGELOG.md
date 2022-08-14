@@ -5,6 +5,138 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.128.3] - 2022-08-13 01:27:00
+
+### Changed
+
+- Formatting improvements in documentation.
+
+## [0.128.2] - 2022-08-12 17:54:09
+
+### Fixed
+
+- Use Mac version of taxsim.
+
+## [0.128.1] - 2022-08-12 13:45:51
+
+### Changed
+
+- Adjust logic for Washington Working Families Tax Credit based on recent legislation.
+
+## [0.128.0] - 2022-08-10 20:37:56
+
+### Added
+
+- SSTB business variable.
+
+## [0.127.0] - 2022-08-10 12:48:17
+
+### Added
+
+- Taxable income deductions for NY State tax.
+
+## [0.126.0] - 2022-08-10 12:47:25
+
+### Added
+
+- Logic pathway to NY income tax from income.
+
+## [0.125.0] - 2022-08-09 16:00:40
+
+### Added
+
+- Residential energy efficient property credit.
+
+## [0.124.1] - 2022-08-09 15:41:14
+
+### Fixed
+
+- A bug causing qualified dividends to not be counted as 'net capital gain'.
+
+## [0.124.0] - 2022-08-09 13:21:28
+
+### Fixed
+
+- Refactored pension income to exclude IRA calculations.
+
+## [0.123.0] - 2022-08-09 12:06:14
+
+### Added
+
+- NY AGI adjustments.
+
+## [0.122.0] - 2022-08-09 11:08:16
+
+### Added
+
+- NY income tax before credits (without high-income adjustment).
+
+## [0.121.2] - 2022-08-07 16:48:06
+
+### Fixed
+
+- Incorrect head of household capital gains thresholds.
+
+## [0.121.1] - 2022-08-05 16:24:00
+
+### Changed
+
+- Bump openfisca-tools to 0.13.3.
+
+## [0.121.0] - 2022-08-05 12:29:00
+
+### Added
+
+- Re-implementation of capital gains law.
+
+## [0.120.0] - 2022-08-04 14:53:40
+
+### Added
+
+- California standard deduction.
+
+## [0.119.1] - 2022-08-03 19:38:51
+
+### Added
+
+- Missing PolicyEngine metadata for electric vehicle variables and parameters.
+
+## [0.119.0] - 2022-08-03 19:19:26
+
+### Added
+
+- Federal electric vehicle credits under current law and the Inflation Reduction Act.
+
+## [0.118.0] - 2022-08-02 10:35:25
+
+### Fixed
+
+- Dividend logic correctly handles qualified/non-qualified dividends.
+
+## [0.117.0] - 2022-07-29 15:32:28
+
+### Added
+
+- NY taxable income variable.
+
+## [0.116.0] - 2022-07-26 16:06:49
+
+### Added
+
+- IRS capital gains parameters for FY20-22.
+
+## [0.115.0] - 2022-07-25 23:07:53
+
+### Added
+
+- Indiana other taxes.
+
+## [0.114.1] - 2022-07-25 20:46:29
+
+### Changed
+
+- Split Maryland tax rates and personal exemptions by each filing status.
+
 ## [0.114.0] - 2022-07-24 20:28:18
 
 ### Added
@@ -1541,6 +1673,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.128.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.2...0.128.3
+[0.128.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.1...0.128.2
+[0.128.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.0...0.128.1
+[0.128.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.127.0...0.128.0
+[0.127.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.126.0...0.127.0
+[0.126.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.125.0...0.126.0
+[0.125.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.1...0.125.0
+[0.124.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.0...0.124.1
+[0.124.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.123.0...0.124.0
+[0.123.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.122.0...0.123.0
+[0.122.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.2...0.122.0
+[0.121.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.1...0.121.2
+[0.121.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.0...0.121.1
+[0.121.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.120.0...0.121.0
+[0.120.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.119.1...0.120.0
+[0.119.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.119.0...0.119.1
+[0.119.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.118.0...0.119.0
+[0.118.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.117.0...0.118.0
+[0.117.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.116.0...0.117.0
+[0.116.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.115.0...0.116.0
+[0.115.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.114.1...0.115.0
+[0.114.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.114.0...0.114.1
 [0.114.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.113.0...0.114.0
 [0.113.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.1...0.113.0
 [0.112.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.112.0...0.112.1

@@ -12,7 +12,7 @@ class net_investment_income_tax(Variable):
     def formula(tax_unit, period, parameters):
         NII_ELEMENTS = [
             "taxable_interest_income",
-            "non_qualified_dividend_income",
+            "dividend_income",
             "c01000",
             "rental_income",
         ]

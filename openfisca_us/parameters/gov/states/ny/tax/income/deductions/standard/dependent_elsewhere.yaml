@@ -1,0 +1,11 @@
+description: NY standard deduction for filers who can be claimed as a dependent elsewhere.
+values:
+  2020-01-01: 3_100
+metadata:
+  unit: currency-USD
+  period: year
+  name: ny_standard_deduction_dependent_elsewhere
+  label: NY standard deduction for dependent filers
+  reference:
+    - title: NY Form IT-201 Instructions, page 19
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=19
