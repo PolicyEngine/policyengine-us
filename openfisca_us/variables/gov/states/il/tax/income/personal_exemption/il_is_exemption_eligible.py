@@ -8,6 +8,7 @@ class il_is_exemption_eligible(Variable):
     unit = USD
     definition_period = YEAR
     reference = ""
+    defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.il.tax.income.personal_exemption.cap
