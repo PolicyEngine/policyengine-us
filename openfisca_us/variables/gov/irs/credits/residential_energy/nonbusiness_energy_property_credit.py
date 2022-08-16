@@ -11,3 +11,11 @@ class nonbusiness_energy_property_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         
+        uncapped_credit = 
+        # Apply lifetime limitation.
+        prior_credits = tax_unit("prior_nonbusiness_energy_property_credits", period)
+        lifetime_limit = parameters(
+            period
+        ).gov.irs.credits.residential_energy.nonbusiness.limit.lifetime
+        remaining_credit = lifetime_limit - prior_credits
+        return min_(remaining_credit, uncapped_credit)
