@@ -8,3 +8,6 @@ class nonbusiness_energy_property_credit(Variable):
     documentation = "Nonbusiness energy property credit"
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25C"
+
+    def formula(tax_unit, period, parameters):
+        
