@@ -16,11 +16,11 @@ class nonbusiness_energy_property_credit(Variable):
         improvements = tax_unit(
             "qualified_energy_efficiency_improvements_expenditures", period
         )
-        improvements_credit = improvements * p.improvements.rate
-        # Full property expenditures count for the credit.
-        property_credit = tax_unit(
+        improvements_credit = improvements * p.rates.improvements
+        property_expenditures = tax_unit(
             "capped_residential_energy_property_expenditures", period
         )
+        property_credit = property_expenditures * p.rates.property
         uncapped_credit = improvements_credit + property_credit
         # Apply lifetime limitation.
         prior_credits = tax_unit(
