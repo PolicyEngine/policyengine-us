@@ -14,4 +14,4 @@ class capped_advanced_main_air_circulating_fan_expenditures(Variable):
             "advanced_main_air_circulating_fan_expenditures", period
         )
         p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
-        return min_(uncapped, p.cap.advanced_main_air_circulating_fan)
+        return min_(uncapped, p.cap.annual.advanced_main_air_circulating_fan)

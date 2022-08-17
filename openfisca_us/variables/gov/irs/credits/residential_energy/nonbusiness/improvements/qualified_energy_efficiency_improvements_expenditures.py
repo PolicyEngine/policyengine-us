@@ -11,9 +11,9 @@ class qualified_energy_efficiency_improvements_expenditures(Variable):
 
     formula = sum_of_variables(
         [
-            "energy_efficient_door_expenditures",
+            "capped_energy_efficient_door_expenditures",
             "energy_efficient_insulation_expenditures",
             "energy_efficient_roof_expenditures",
-            "energy_efficient_window_expenditures",
+            "capped_energy_efficient_window_expenditures",
         ]
     )

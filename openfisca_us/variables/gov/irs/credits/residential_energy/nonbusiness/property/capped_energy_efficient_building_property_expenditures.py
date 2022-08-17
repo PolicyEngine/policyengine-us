@@ -14,4 +14,4 @@ class capped_energy_efficient_building_property_expenditures(Variable):
             "energy_efficient_building_property_expenditures", period
         )
         p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
-        return min_(uncapped, p.cap.energy_efficient_building_property)
+        return min_(uncapped, p.cap.annual.energy_efficient_building_property)
