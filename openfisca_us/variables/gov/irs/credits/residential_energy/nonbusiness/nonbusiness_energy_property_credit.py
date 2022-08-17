@@ -10,10 +10,12 @@ class nonbusiness_energy_property_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25C"
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
+        if not p.in_effect:
+            return 0
         improvements = tax_unit(
             "qualified_energy_efficiency_improvements_expenditures", period
         )
-        p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
         improvements_credit = improvements * p.improvements.rate
         # Full property expenditures count for the credit.
         property_credit = tax_unit(
