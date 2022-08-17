@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.129.1] - 2022-08-17 15:46:46
+
+### Added
+
+- 2022 value of EITC joint bonus for couples without children.
+
 ## [0.129.0] - 2022-08-17 05:44:08
 
 ### Added
@@ -1679,6 +1685,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.129.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.0...0.129.1
 [0.129.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.3...0.129.0
 [0.128.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.2...0.128.3
 [0.128.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.1...0.128.2
