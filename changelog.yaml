@@ -1395,3 +1395,8 @@
     added:
     - 2022 value of EITC joint bonus for couples without children.
   date: 2022-08-17 15:46:46
+- bump: patch
+  changes:
+    fixed:
+    - Don't reduce CTC by more than the maximum in 2021.
+  date: 2022-08-18 09:15:19
