@@ -1,6 +1,4 @@
 import collections
-from typing import Union
-import numpy as np
 import requests
 from pathlib import Path
 import pandas as pd
@@ -15,18 +13,19 @@ from tqdm import tqdm
 from argparse import ArgumentParser
 import platform
 
-if platform.system() == "Windows":
-    OS_NAME = "windows"
-else:
-    OS_NAME = "unix"
+PLATFORM_MAPPING = {
+    "Windows": "windows",
+    "Linux": "unix",
+    "Darwin": "osx",
+}
+
+taxsim_platform = PLATFORM_MAPPING[platform.system()]
 
 
 class TaxSim35:
     """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
 
-    EXECUTABLE_URL = (
-        f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{OS_NAME}.exe"
-    )
+    EXECUTABLE_URL = f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{taxsim_platform}.exe"
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
     INPUT_VARIABLES = [
@@ -216,16 +215,11 @@ class TaxSim35:
         ).T.drop(
             taxsim_df.columns[0], axis=1
         )  # Some issue with the TAXSIM dataframe now coming out in the right format
-        input_df = input_df.rename(
-            columns={col: f"taxsim_{col}" for col in input_df.columns}
+        input_df.rename(
+            columns={col: f"taxsim_{col}" for col in input_df.columns},
+            inplace=True,
         )
-        taxsim_df = pd.concat(
-            [
-                input_df,
-                taxsim_df,
-            ],
-            axis=1,
-        )
+        taxsim_df = pd.concat([input_df, taxsim_df], axis=1)
         variables = system.variables
         i = 0
         test_str = ""
