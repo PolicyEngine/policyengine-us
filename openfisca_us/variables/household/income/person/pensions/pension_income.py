@@ -9,4 +9,6 @@ class pension_income(Variable):
     documentation = "Income from pensions, annuitities, life insurance or endowment contracts."
     definition_period = YEAR
 
-    formula = sum_of_variables(["ira_income"])  # TODO: add other pensions
+    formula = sum_of_variables(
+        ["tax_exempt_pension_income", "taxable_pension_income"]
+    )

@@ -13,6 +13,9 @@ from openfisca_us.tools.backdate_parameters import backdate_parameters
 from openfisca_us.tools.dev.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
 )
+from openfisca_us.variables.household.demographic.geographic.state.in_state import (
+    create_50_state_variables,
+)
 
 COUNTRY_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -30,6 +33,8 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_variables_from_directory(
             os.path.join(COUNTRY_DIR, "variables")
         )
+
+        self.add_variables(*create_50_state_variables())
 
         # We add to our tax and benefit system all the legislation parameters defined in the  parameters files
         param_path = os.path.join(COUNTRY_DIR, "parameters")

@@ -1,0 +1,45 @@
+- name: No tax for no income
+  period: 2019
+  input:
+    taxable_interest_income: 0
+    dividend_income: 0
+    c01000: 0
+    rental_income: 0
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 0
+
+- name: Rental income just under threshold
+  period: 2019
+  input:
+    taxable_interest_income: 0
+    dividend_income: 0
+    c01000: 0
+    rental_income: 199_000
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 0
+
+- name: Rental income just above threshold
+  period: 2019
+  input:
+    taxable_interest_income: 0
+    dividend_income: 0
+    c01000: 0
+    adjusted_gross_income: 205_000
+    rental_income: 205_000
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 190
+
+- name: Rental income just above threshold
+  period: 2019
+  input:
+    taxable_interest_income: 0
+    dividend_income: 0
+    c01000: 0
+    adjusted_gross_income: 900_000
+    rental_income: 900_000
+    filing_status: SINGLE
+  output:
+    net_investment_income_tax: 26_600

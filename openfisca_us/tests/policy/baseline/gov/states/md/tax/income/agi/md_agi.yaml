@@ -1,0 +1,9 @@
+- name: Maryland AGI equals federal AGI plus additions minus subtractions
+  period: 2021
+  input:
+    adjusted_gross_income: 3
+    md_total_additions: 2
+    md_total_subtractions: 1
+    state_code: MD
+  output:
+    md_agi: 3 + 2 - 1

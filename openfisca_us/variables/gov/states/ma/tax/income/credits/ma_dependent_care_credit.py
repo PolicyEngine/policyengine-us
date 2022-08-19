@@ -13,15 +13,17 @@ class ma_dependent_care_credit(Variable):
     reference = (
         "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
     )
+    defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
         # Expenses capped by number of qualifying individuals.
         expenses = tax_unit("tax_unit_childcare_expenses", period)
-        count_cdcc_eligible = tax_unit("count_cdcc_eligible", period)
         p = parameters(period).gov.states.ma.tax.income.credits.dependent_care
-        cap = p.amount.calc(count_cdcc_eligible)
+        count_cdcc_eligible = min_(
+            tax_unit("count_cdcc_eligible", period), p.dependent_cap
+        )
         # Line 1.
-        capped_expenses = min_(expenses, cap)
+        capped_expenses = min_(expenses, p.amount * count_cdcc_eligible)
         # Skip lines 2 and 3, which are done in intermediate steps.
         # Line 4: Smallest of lines 1, 2, 3.
         amount_if_eligible = min_(

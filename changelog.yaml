@@ -1108,6 +1108,300 @@
 - bump: minor
   changes:
     added:
-    - MO taxable income
-    - MO federal itemized deductions
-    - Unit tests for both variables
+    - MD aged, blind exemptions
+    - MD personal Exemptions
+    - MD income tax rates
+    - MD placeholders for deductions, md_agi
+  date: 2022-07-14 01:03:39
+- bump: minor
+  changes:
+    added:
+    - ZIP code random generation by population sizes.
+    - ZIP code -> county -> State mapping (~400kB).
+  date: 2022-07-14 14:33:19
+- bump: minor
+  changes:
+    added:
+    - MD Standard deduction
+  date: 2022-07-15 05:42:48
+- bump: minor
+  changes:
+    added:
+    - MD State income tax EITC.
+  date: 2022-07-15 07:04:51
+- bump: minor
+  changes:
+    added:
+    - MD CDCC.
+    - Notebook for federal and MD CDCCs.
+    fixed:
+    - Phase out federal CDCC in steps.
+  date: 2022-07-15 07:47:31
+- bump: minor
+  changes:
+    added:
+    - Maryland adjusted gross income, with the dependent care subtraction.
+  date: 2022-07-15 18:49:51
+- bump: patch
+  changes:
+    fixed:
+    - Avoid double-counting CDCC when it was refundable in 2021.
+  date: 2022-07-15 21:50:01
+- bump: minor
+  changes:
+    added:
+    - MD CTC
+  date: 2022-07-16 03:04:11
+- bump: patch
+  changes:
+    changed:
+    - Change MA dependent care credit from a scale parameter to an amount/cap structure.
+  date: 2022-07-16 04:19:02
+- bump: minor
+  changes:
+    added:
+    - MD local income tax rates.
+  date: 2022-07-16 11:16:19
+- bump: patch
+  changes:
+    fixed:
+    - Click dependency limited to >=8.0.0.
+  date: 2022-07-16 12:30:48
+- bump: patch
+  changes:
+    added:
+    - Changelog entry file functionality.
+    - Linecheck dev dependency.
+  date: 2022-07-16 14:06:12
+- bump: minor
+  changes:
+    added:
+    - Net investment income tax and other taxes to tax before refundable credits.
+  date: 2022-07-17 21:38:27
+- bump: minor
+  changes:
+    added:
+    - California renters tax credit
+  date: 2022-07-18 02:28:29
+- bump: minor
+  changes:
+    added:
+    - Non-qualified dividend income.
+    fixed:
+    - Dividend income split into qualified and non-qualified correctly.
+  date: 2022-07-18 02:56:11
+- bump: patch
+  changes:
+    added:
+    - MD CTC notebook
+  date: 2022-07-18 20:44:57
+- bump: minor
+  changes:
+    added:
+    - Maryland refundable and non-refundable CDCC.
+  date: 2022-07-18 22:14:59
+- bump: minor
+  changes:
+    added:
+    - Maryland Poverty Line Credit.
+  date: 2022-07-18 23:24:42
+- bump: minor
+  changes:
+    added:
+    - Maryland Earned Income Tax Credit.
+    - Notebooks for Maryland tax programs.
+  date: 2022-07-19 14:26:52
+- bump: minor
+  changes:
+    added:
+    - MD income tax to State income tax.
+  date: 2022-07-20 11:57:02
+- bump: minor
+  changes:
+    added:
+    - Caching of second-lowest silver plan cost in the CPS microdata.
+  date: 2022-07-20 11:58:26
+- bump: minor
+  changes:
+    changed:
+    - Separate MD standard deduction parameters by filing status.
+    - Add MD CTC to list of refundable credits.
+    - Add MD notebooks to documentation table of contents.
+  date: 2022-07-20 19:59:29
+- bump: patch
+  changes:
+    fixed:
+    - Breakdown for two Maryland parameters.
+  date: 2022-07-20 20:41:23
+- bump: minor
+  changes:
+    added:
+    - IN deductions.
+  date: 2022-07-21 19:28:21
+- bump: patch
+  changes:
+    changed:
+    - Moved geographical Medicaid calculation parameters to an on-demand folder.
+  date: 2022-07-22 08:25:43
+- bump: patch
+  changes:
+    added:
+    - Test that parameter files do not contain tabs with informative error messages.
+  date: 2022-07-22 10:11:10
+- bump: minor
+  changes:
+    added:
+    - IN Add-Backs.
+  date: 2022-07-22 15:07:46
+- bump: minor
+  changes:
+    added:
+    - Performance improvements through partially-executed formulas from OpenFisca-Tools.
+  date: 2022-07-22 20:16:52
+- bump: patch
+  changes:
+    fixed:
+    - SNAP standard deductions and references.
+    - Count all non-shelter deductions in SNAP net income before shelter.
+  date: 2022-07-22 23:39:14
+- bump: minor
+  changes:
+    added:
+    - California Young Child Tax Credit.
+  date: 2022-07-22 23:54:11
+- bump: minor
+  changes:
+    added:
+    - IN adjusted gross income tax
+  date: 2022-07-24 20:28:18
+- bump: patch
+  changes:
+    changed:
+    - Split Maryland tax rates and personal exemptions by each filing status.
+  date: 2022-07-25 20:46:29
+- bump: minor
+  changes:
+    added:
+    - Indiana other taxes.
+  date: 2022-07-25 23:07:53
+- bump: minor
+  changes:
+    added:
+    - IRS capital gains parameters for FY20-22.
+  date: 2022-07-26 16:06:49
+- bump: minor
+  changes:
+    added:
+    - NY taxable income variable.
+  date: 2022-07-29 15:32:28
+- bump: minor
+  changes:
+    fixed:
+    - Dividend logic correctly handles qualified/non-qualified dividends.
+  date: 2022-08-02 10:35:25
+- bump: minor
+  changes:
+    added:
+    - Federal electric vehicle credits under current law and the Inflation Reduction
+      Act.
+  date: 2022-08-03 19:19:26
+- bump: patch
+  changes:
+    added:
+    - Missing PolicyEngine metadata for electric vehicle variables and parameters.
+  date: 2022-08-03 19:38:51
+- bump: minor
+  changes:
+    added:
+    - California standard deduction.
+  date: 2022-08-04 14:53:40
+- bump: minor
+  changes:
+    added:
+    - Re-implementation of capital gains law.
+  date: 2022-08-05 12:29:00
+- bump: patch
+  changes:
+    changed:
+    - Bump openfisca-tools to 0.13.3.
+  date: 2022-08-05 16:24:00
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect head of household capital gains thresholds.
+  date: 2022-08-07 16:48:06
+- bump: minor
+  changes:
+    added:
+    - NY income tax before credits (without high-income adjustment).
+  date: 2022-08-09 11:08:16
+- bump: minor
+  changes:
+    added:
+    - NY AGI adjustments.
+  date: 2022-08-09 12:06:14
+- bump: minor
+  changes:
+    fixed:
+    - Refactored pension income to exclude IRA calculations.
+  date: 2022-08-09 13:21:28
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing qualified dividends to not be counted as 'net capital gain'.
+  date: 2022-08-09 15:41:14
+- bump: minor
+  changes:
+    added:
+    - Residential energy efficient property credit.
+  date: 2022-08-09 16:00:40
+- bump: minor
+  changes:
+    added:
+    - Logic pathway to NY income tax from income.
+  date: 2022-08-10 12:47:25
+- bump: minor
+  changes:
+    added:
+    - Taxable income deductions for NY State tax.
+  date: 2022-08-10 12:48:17
+- bump: minor
+  changes:
+    added:
+    - SSTB business variable.
+  date: 2022-08-10 20:37:56
+- bump: patch
+  changes:
+    changed:
+    - Adjust logic for Washington Working Families Tax Credit based on recent legislation.
+  date: 2022-08-12 13:45:51
+- bump: patch
+  changes:
+    fixed:
+    - Use Mac version of taxsim.
+  date: 2022-08-12 17:54:09
+- bump: patch
+  changes:
+    changed:
+    - Formatting improvements in documentation.
+  date: 2022-08-13 01:27:00
+- bump: minor
+  changes:
+    added:
+    - Nonbusiness energy property credit.
+  date: 2022-08-17 05:44:08
+- bump: patch
+  changes:
+    added:
+    - 2022 value of EITC joint bonus for couples without children.
+  date: 2022-08-17 15:46:46
+- bump: patch
+  changes:
+    fixed:
+    - Don't reduce CTC by more than the maximum in 2021.
+  date: 2022-08-18 09:15:19
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania income tax before forgiveness.
+  date: 2022-08-18 17:24:10

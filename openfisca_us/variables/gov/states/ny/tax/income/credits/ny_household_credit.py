@@ -9,12 +9,13 @@ class ny_household_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/606"  # (b)
+    defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
         in_ny = tax_unit.household("state_code_str", period) == "NY"
         p = parameters(
             period
-        ).gov.states.ny.tax.income.credits.nonrefundable.household_credit
+        ).gov.states.ny.tax.income.credits.household_credit
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         # Include spouse's AGI if filing separately.

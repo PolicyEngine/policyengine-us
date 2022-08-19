@@ -21,7 +21,7 @@ from openfisca_core.tools import (
 from openfisca_core.simulation_builder import SimulationBuilder
 from openfisca_core.errors import SituationParsingError, VariableNotFound
 from openfisca_core.scripts import build_tax_benefit_system
-
+from openfisca_core.reforms import Reform
 from openfisca_us.reforms import set_parameter
 
 log = logging.getLogger(__name__)
@@ -185,19 +185,34 @@ class YamlItem(pytest.Item):
         period = self.test.get("period")
         input = {}
         inline_reforms = []
+        parametric_reform_items = []
         for key, value in unsafe_input.items():
             if "." in key:
-                inline_reforms += [set_parameter(key, value)]
+                inline_reforms += [
+                    set_parameter(
+                        key,
+                        value,
+                        return_modifier=True,
+                        period=f"year:2000:40",
+                    )
+                ]
+                parametric_reform_items.append((key, value))
             else:
                 input[key] = value
 
+        class inline_reform(Reform):
+            def apply(self):
+                for modifier in inline_reforms:
+                    self.parameters = modifier(self.parameters)
+
         self.tax_benefit_system = _get_tax_benefit_system(
             self.baseline_tax_benefit_system,
-            self.test.get("reforms", []),
+            self.test.get("reforms", []) + [inline_reform],
             self.test.get("extensions", []),
+            reform_key="=".join(
+                [f"{key}:{value}" for key, value in parametric_reform_items]
+            ),
         )
-        for reform in inline_reforms:
-            self.tax_benefit_system = reform(self.tax_benefit_system)
         verbose = self.options.get("verbose")
         performance_graph = self.options.get("performance_graph")
         performance_tables = self.options.get("performance_tables")
@@ -361,23 +376,46 @@ class OpenFiscaPlugin(object):
             )
 
 
-def _get_tax_benefit_system(baseline, reforms, extensions):
+def _get_tax_benefit_system(
+    baseline,
+    reforms,
+    extensions,
+    reform_key=None,
+):
     if not isinstance(reforms, list):
         reforms = [reforms]
     if not isinstance(extensions, list):
         extensions = [extensions]
 
     # keep reforms order in cache, ignore extensions order
-    key = hash((id(baseline), ":".join(reforms), frozenset(extensions)))
+    key = hash(
+        (
+            id(baseline),
+            ":".join(
+                [
+                    reform if isinstance(reform, str) else ""
+                    for reform in reforms
+                ]
+            ),
+            reform_key,
+            frozenset(extensions),
+        )
+    )
     if _tax_benefit_system_cache.get(key):
         return _tax_benefit_system_cache.get(key)
 
-    current_tax_benefit_system = baseline
+    current_tax_benefit_system = baseline.clone()
 
     for reform_path in reforms:
-        current_tax_benefit_system = current_tax_benefit_system.apply_reform(
-            reform_path
-        )
+        if isinstance(reform_path, type):
+            current_tax_benefit_system = reform_path(
+                current_tax_benefit_system
+            )
+        else:
+            current_tax_benefit_system = (
+                current_tax_benefit_system.apply_reform(reform_path)
+            )
+        current_tax_benefit_system._parameters_at_instant_cache = {}
 
     for extension in extensions:
         current_tax_benefit_system = current_tax_benefit_system.clone()

@@ -1,0 +1,35 @@
+description: Maryland limits its Child and Dependent Care Credit to filers with adjusted gross income below these thresholds.
+JOINT:
+  2019-01-01: 143_000
+  2020-01-01: 144_450
+  2021-01-01: 149_050
+SINGLE:
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+SEPARATE:
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+HEAD_OF_HOUSEHOLD:
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+WIDOW:
+  2019-01-01: 92_000
+  2020-01-01: 92_950
+  2021-01-01: 95_900
+metadata:
+  breakdown:
+    - filing_status
+  reference:
+    - title: "Md. Code, Tax-Gen. § 10-716 (b)"
+      href: https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-716-for-child-care-or-dependent-care
+    - title: "Maryland form 502CR 2020"
+      href: https://www.marylandtaxes.gov/forms/20_forms/502CR.pdf#page=6
+    - title: "Maryland form 502CR 2021"
+      href: https://www.marylandtaxes.gov/forms/21_forms/502CR.pdf#page=6
+  unit: currency-USD
+  period: year
+  name: md_cdcc_agi_cap
+  label: MD CDCC AGI cap

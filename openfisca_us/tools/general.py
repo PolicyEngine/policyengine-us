@@ -2,6 +2,15 @@ from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_tools.model_api import *
 import numpy as np
+from pathlib import Path
+
+from openfisca_us.typing import Formula
+
+ZIP_CODE_DATASET_PATH = (
+    Path(__file__).parent.parent / "data" / "geography" / "zip_codes.csv.gz"
+)
+
+ZIP_CODE_DATASET = pd.read_csv(ZIP_CODE_DATASET_PATH, compression="gzip")
 
 USD = "currency-USD"
 
@@ -80,6 +89,15 @@ def spouse(person: Population, period: int, variable: str) -> ArrayLike:
 
 def in_state(state):
     def is_eligible(population, period, parameters):
-        return population.household("state_code_str", period) == state
+        return population("state_code_str", period) == state
 
     return is_eligible
+
+
+def excess(of: str, over: str) -> Formula:
+    def formula(entity, period, parameters):
+        of_variable = add(entity, period, [of])
+        over_variable = add(entity, period, [over])
+        return max_(of_variable - over_variable, 0)
+
+    return formula

@@ -1,0 +1,32 @@
+description: Maryland provides a standard deduction of up to this amount.
+metadata:
+  name: md_max_standard_deduction
+  label: MD maximum standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: "MD Code, Tax - General, § 10-217 (c)(1)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "MD Code, Tax - General, § 10-217 (d)(1)-(d)(3)"
+      href: https://govt.westlaw.com/mdc/Document/NC8EB19606F6911E8A99BCF2C90B83D38?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)#co_anchor_I552E3B107DF711ECA8F2FF3A9E62BB69
+    - title: "Maryland new tax year update -exemptions and deductions"
+      href: https://www.marylandtaxes.gov/new-tax-year-update.php#:~:text=Standard%20Deduction%20%2D%20The%20tax%20year,spouse%2C%20and%20taxpayers%20filing%20jointly.
+JOINT:
+  2018-01-01: 4_500
+  2021-01-01: 4_700
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 4_500
+  2021-01-01: 4_700
+WIDOW:
+  2018-01-01: 4_500
+  2021-01-01: 4_700
+SINGLE:
+  2018-01-01: 2_250
+  2021-01-01: 2_350
+SEPARATE:
+  2018-01-01: 2_250
+  2021-01-01: 2_350

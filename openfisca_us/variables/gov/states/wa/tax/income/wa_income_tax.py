@@ -7,6 +7,7 @@ class wa_income_tax(Variable):
     label = "Washington income tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.WA
 
     def formula(tax_unit, period, parameters):
         in_wa = tax_unit.household("state_code_str", period) == "WA"

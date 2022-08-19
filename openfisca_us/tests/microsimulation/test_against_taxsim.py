@@ -14,19 +14,25 @@ warnings.filterwarnings("ignore")
 
 STATES = ["MA"]
 DISTANCE = 100
-MINIMUM_PERCENT_CLOSE = 0.75
+MINIMUM_PERCENT_CLOSE = 0.7
 
 if os.name != "nt":
-    taxsim = TaxSim35()
-    sim = Microsimulation()
 
-    taxsim_df = taxsim.generate_from_microsimulation(
-        CPS, 2022, None, True, False
-    ).set_index("taxsim_taxsimid")
+    @pytest.fixture(scope="module")
+    def taxsim():
+        taxsim = TaxSim35()
+
+        yield taxsim.generate_from_microsimulation(
+            CPS, 2022, None, True, False
+        ).set_index("taxsim_taxsimid")
+
+    @pytest.fixture(scope="module")
+    def sim():
+        yield Microsimulation()
 
 
 @pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
-def test_federal_tax_against_taxsim():
+def test_federal_tax_against_taxsim(sim, taxsim):
     if platform.system() == "Windows":
         warnings.warn("This test is not run on Windows")
         raise pytest.skip()
@@ -34,7 +40,7 @@ def test_federal_tax_against_taxsim():
     tax.index = sim.calc("tax_unit_id").values
     comparison_df = pd.DataFrame(index=sim.calc("tax_unit_id").values)
     comparison_df["openfisca_us"] = tax
-    comparison_df["taxsim"] = taxsim_df.taxsim_fiitax
+    comparison_df["taxsim"] = taxsim.taxsim_fiitax
     relative_distance = np.absolute(
         comparison_df.openfisca_us - comparison_df.taxsim
     )
@@ -44,14 +50,14 @@ def test_federal_tax_against_taxsim():
 
 @pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
 @pytest.mark.parametrize("state", STATES)
-def test_state_income_tax_against_taxsim(state: str):
+def test_state_income_tax_against_taxsim(state: str, sim, taxsim):
     in_state = sim.calc("tax_unit_state").values == state
     tax = sim.calc("state_income_tax")
     tax.index = sim.calc("tax_unit_id").values
     comparison_df = pd.DataFrame(
         dict(
             openfisca_us=tax,
-            taxsim=taxsim_df.taxsim_siitax,
+            taxsim=taxsim.taxsim_siitax,
         ),
         index=sim.calc("tax_unit_id").values,
     )
