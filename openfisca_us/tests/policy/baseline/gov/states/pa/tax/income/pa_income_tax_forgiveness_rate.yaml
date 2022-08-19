@@ -1,0 +1,19 @@
+- name: PA income tax forgiveness rate is .
+  period: 2021
+  input:
+    state_code: PA
+    pa_poverty_income: 6_500
+  output:
+    pa_income_tax_forgiveness_rate: 1
+
+- name: PA income tax forgiveness rate is .
+  period: 2021
+  input:
+    state_code: PA
+    pa_poverty_income: 16_250
+    tax_unit_dependents: 1
+    filing_status: SINGLE # JOINT for joint filers
+  output:
+    pa_income_tax_forgiveness_rate: 0.9
+
+# TODO: a few more.
