@@ -6,12 +6,12 @@ values:
     - capped_energy_efficient_window_expenditures
     - energy_efficient_roof_expenditures
   # Inflation Reduction Act removed roof expenditures.
-  2022-01-01:
+  2023-01-01:
     - capped_energy_efficient_door_expenditures
     - energy_efficient_insulation_expenditures
     - capped_energy_efficient_window_expenditures
 metadata:
-  name: nonbusiness_energy_property_credit_in_effect
+  name: nonbusiness_energy_property_credit_qualifying_energy_efficiency_improvements
   label: Energy efficiency improvements that qualify for nonbusiness energy property tax credit
   reference:
     - title: 26 U.S.C. § 25C(g)

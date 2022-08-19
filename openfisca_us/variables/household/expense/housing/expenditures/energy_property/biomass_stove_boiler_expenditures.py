@@ -8,4 +8,4 @@ class biomass_stove_boiler_expenditures(Variable):
     documentation = "Expenditures on biomass stoves and boilers"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/25C#d_4"
+    reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339#342"

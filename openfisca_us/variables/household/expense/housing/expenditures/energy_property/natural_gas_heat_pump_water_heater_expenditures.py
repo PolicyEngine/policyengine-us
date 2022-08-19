@@ -10,5 +10,7 @@ class natural_gas_heat_pump_water_heater_expenditures(Variable):
     )
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/25C#d_3"
-    reference
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/25C#d_3",
+        "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339#342",
+    )

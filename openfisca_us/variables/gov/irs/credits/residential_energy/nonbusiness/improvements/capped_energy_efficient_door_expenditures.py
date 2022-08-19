@@ -12,4 +12,4 @@ class capped_energy_efficient_door_expenditures(Variable):
     def formula(tax_unit, period, parameters):
         uncapped = tax_unit("energy_efficient_door_expenditures", period)
         p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
-        return min_(uncapped, p.cap.annual.doors)
+        return min_(uncapped, p.cap.annual.door)
