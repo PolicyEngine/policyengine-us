@@ -15,10 +15,10 @@ class energy_efficient_home_improvement_credit(Variable):
         ).gov.irs.credits.energy_efficient_home_improvement
         if not p.in_effect:
             return 0
+
         improvements = tax_unit(
             "qualified_energy_efficiency_improvements_expenditures", period
         )
-        improvements_credit = improvements * p.rates.improvements
         property_expenditures = tax_unit(
             "capped_residential_energy_property_expenditures", period
         )
@@ -30,3 +30,9 @@ class energy_efficient_home_improvement_credit(Variable):
         )
         remaining_credit = p.cap.lifetime.total - prior_credits
         return min_(remaining_credit, uncapped_credit)
+
+    # TODO:
+    # - Make capped credits for each expenditure category.
+    # - Make parameter that sums all the capped credits.
+    # - Sum that in the main variable, but allow for higher amount for
+    #   heat pump / heater / biomass.
