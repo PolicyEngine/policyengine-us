@@ -1,16 +1,16 @@
 from openfisca_us.model_api import *
 
 
-class electric_heat_pump_water_heater_expenditures(Variable):
+class heat_pump_expenditures(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Electric heat pump water heater expenditures"
-    documentation = (
-        "Expenditures on qualified electric heat pump water heaters"
-    )
+    label = "Heat pump expenditures"
+    documentation = "Expenditures on qualified heat pumps"
     unit = USD
     definition_period = YEAR
     reference = (
+        # Pre-IRA: Electric only.
         "https://www.law.cornell.edu/uscode/text/26/25C#d_3",
+        # Post-IRA: Electric or natural gas.
         "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339#342",
     )

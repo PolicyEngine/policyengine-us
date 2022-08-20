@@ -1,15 +1,13 @@
 description: The US provides a energy efficient property tax credit for these energy efficiency improvements.
 values:
   2006-01-01:
-    - electric_heat_pump_expenditures
-    - electric_heat_pump_water_heater_expenditures
+    - heat_pump_expenditures
+    - heat_pump_water_heater_expenditures
   # Inflation Reduction Act adds natural gas heat pumps and heat pump water
   # heaters, and biomass stoves and boilers.
   2023-01-01:
-    - electric_heat_pump_expenditures
-    - natural_gas_heat_pump_expenditures
-    - electric_heat_pump_water_heater_expenditures
-    - natural_gas_heat_pump_water_heater_expenditures
+    - heat_pump_expenditures
+    - heat_pump_water_heater_expenditures
     - biomass_stove_boiler_expenditures
 metadata:
   name: Energy_efficient_property_credit_qualifying_heat_pump_heat_pump_water_heater_biomass_stove_boiler_expenditures
