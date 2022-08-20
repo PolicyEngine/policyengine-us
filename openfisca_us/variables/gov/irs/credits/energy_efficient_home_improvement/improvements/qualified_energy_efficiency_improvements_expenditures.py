@@ -13,5 +13,5 @@ class qualified_energy_efficiency_improvements_expenditures(Variable):
     )
 
     formula = sum_of_variables(
-        "gov.irs.credits.residential_energy.nonbusiness.qualified_expenditures.energy_efficiency_improvements"
+        "gov.irs.credits.energy_efficient_home_improvement.improvements"
     )
