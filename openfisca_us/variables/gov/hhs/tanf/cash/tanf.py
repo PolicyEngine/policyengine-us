@@ -10,13 +10,10 @@ class tanf(Variable):
         "Amount of Temporary Assistance for Needy Families benefit received."
     )
     unit = USD
+    defined_for = "is_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
         tanf_reported = add(spm_unit, period, ["tanf_reported"])
         if tanf_reported.sum() > 0:
             return tanf_reported
-        # Obtain eligibility.
-        eligible = spm_unit("is_tanf_eligible", period)
-        # Obtain amount they would receive if they were eligible.
-        amount_if_eligible = spm_unit("tanf_amount_if_eligible", period)
-        return where(eligible, amount_if_eligible, 0)
+        return spm_unit("tanf_amount_if_eligible", period)
