@@ -9,10 +9,10 @@ class maximum_state_supplement(Variable):
     label = "Maximum State Supplement"
     unit = USD
     definition_period = YEAR
+    defined_for = "is_ssi_eligible_individual"
 
     def formula(person, period, parameters):
         marital_unit = person.marital_unit
-        eligible = person("is_ssi_eligible_individual", period)
         state_code = person.household("state_code_str", period)
         living_arrangement = person.household(
             "state_living_arrangement", period
@@ -44,4 +44,4 @@ class maximum_state_supplement(Variable):
             * MONTHS_IN_YEAR
         )
         combined_amount = marital_unit.sum(per_person_amount)
-        return eligible * combined_amount * where(joint_claim, 1 / 2, 1)
+        return combined_amount * where(joint_claim, 1 / 2, 1)

@@ -20,7 +20,6 @@ class md_non_single_childless_non_refundable_eitc(Variable):
         single_childless = tax_unit(
             "md_qualifies_for_single_childless_eitc", period
         )
-        in_md = tax_unit.household("state_code_str", period) == "MD"
-        eligible = ~single_childless & in_md
+        eligible = ~single_childless
         uncapped = p.non_refundable_match * federal_eitc
         return eligible * min_(tax_before_credits, uncapped)

@@ -13,6 +13,7 @@ class ca_young_child(Variable):
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1",
         "https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html",
     )
+    defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.young_child

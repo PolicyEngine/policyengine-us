@@ -6,5 +6,4 @@ class housing_designated_welfare(Variable):
     entity = SPMUnit
     label = "Housing designated welfare"
     unit = USD
-    documentation = "Housing designated welfare"
     definition_period = YEAR

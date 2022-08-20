@@ -14,7 +14,6 @@ class md_non_single_childless_refundable_eitc(Variable):
         single_childless = tax_unit(
             "md_qualifies_for_single_childless_eitc", period
         )
-        in_md = tax_unit.household("state_code_str", period) == "MD"
         # Must have zeroed out MD tax liability with non-refundable EITC.
         md_tax_before_credits = tax_unit(
             "md_income_tax_before_credits", period
@@ -26,9 +25,7 @@ class md_non_single_childless_refundable_eitc(Variable):
             md_tax_before_credits
             == md_non_single_childless_non_refundable_eitc
         )
-        eligible = (
-            in_md & ~single_childless & md_tax_equals_non_refundable_eitc
-        )
+        eligible = ~single_childless & md_tax_equals_non_refundable_eitc
         federal_eitc_without_age_minimum = tax_unit(
             "federal_eitc_without_age_minimum", period
         )

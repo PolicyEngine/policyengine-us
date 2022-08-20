@@ -9,8 +9,6 @@ class ut_total_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.UT
 
-    def formula(tax_unit, period, parameters):
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        ut_additions = tax_unit("ut_additions_to_income", period)
-
-        return federal_agi + ut_additions
+    formula = sum_of_variables(
+        ["adjusted_gross_income", "ut_additions_to_income"]
+    )

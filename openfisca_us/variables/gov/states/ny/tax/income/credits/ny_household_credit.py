@@ -12,7 +12,6 @@ class ny_household_credit(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        in_ny = tax_unit.household("state_code_str", period) == "NY"
         p = parameters(
             period
         ).gov.states.ny.tax.income.credits.household_credit
@@ -46,4 +45,4 @@ class ny_household_credit(Variable):
             total_amount_if_not_single / where(separate, 2, 1)
         )
         non_single_amount = amount_if_not_single * ~single
-        return in_ny * (single_amount + non_single_amount)
+        return single_amount + non_single_amount

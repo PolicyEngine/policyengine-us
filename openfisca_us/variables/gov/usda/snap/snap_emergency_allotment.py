@@ -9,11 +9,11 @@ class snap_emergency_allotment(Variable):
     label = "SNAP emergency allotment"
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = USD
+    defined_for = "is_snap_eligible"
 
     def formula(spm_unit, period, parameters):
         # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which also
         # defines state powers to modify the rules.
-        eligible = spm_unit("is_snap_eligible", period)
         max_allotment = spm_unit("snap_max_allotment", period)
         normal_allotment = spm_unit("snap_normal_allotment", period)
         # Calculate emergency allotment, which provides all eligible households the maximum.
@@ -24,4 +24,4 @@ class snap_emergency_allotment(Variable):
         ea_amount_if_in_effect = max_(
             ea_minimum, max_allotment - normal_allotment
         )
-        return eligible * ea_in_effect * ea_amount_if_in_effect
+        return ea_in_effect * ea_amount_if_in_effect

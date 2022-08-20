@@ -9,7 +9,6 @@ class meets_ssi_resource_test(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        abd = person("is_ssi_aged_blind_disabled", period)
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)
         countable_resources = where(

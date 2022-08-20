@@ -8,7 +8,7 @@ class is_ssi_ineligible_spouse(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#b"
+    defined_for = "is_tax_unit_spouse"
 
     def formula(person, period, parameters):
-        spouse = person("is_tax_unit_spouse", period)
-        return spouse & ~person("is_ssi_eligible_spouse", period)
+        return ~person("is_ssi_eligible_spouse", period)

@@ -6,7 +6,6 @@ class hud_adjusted_income(Variable):
     entity = SPMUnit
     label = "HUD adjusted income"
     unit = USD
-    documentation = "Adjusted income for HUD programs"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/24/5.611"
 
