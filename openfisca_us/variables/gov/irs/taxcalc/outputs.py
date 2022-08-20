@@ -32,16 +32,14 @@ class combined(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        TAX_UNIT_COMPONENTS = ["iitax", "additional_medicare_tax"]
+        TAX_UNIT_COMPONENTS = ["income_tax", "additional_medicare_tax"]
         PERSON_COMPONENTS = [
             "self_employment_medicare_tax",
             "self_employment_social_security_tax",
             "employee_medicare_tax",
             "employee_social_security_tax",
         ]
-        tax_unit_components = add(tax_unit, period, TAX_UNIT_COMPONENTS)
-        person_components = aggr(tax_unit, period, PERSON_COMPONENTS)
-        return tax_unit_components + person_components
+        return add(tax_unit, period, PERSON_COMPONENTS + TAX_UNIT_COMPONENTS)
 
 
 tax = variable_alias("tax", combined)

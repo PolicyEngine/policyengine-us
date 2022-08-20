@@ -124,10 +124,10 @@ class regular_tax_before_credits(Variable):
                 lowest_rate_tax,
             ]
         )
-        c05200 = tax_unit("income_tax_main_rates", period)
-        dwks44 = c05200
+        income_tax_main_rates = tax_unit("income_tax_main_rates", period)
+        dwks44 = income_tax_main_rates
         dwks45 = min_(dwks43, dwks44)
 
         hasqdivltcg = tax_unit("hasqdivltcg", period)
 
-        return where(hasqdivltcg, dwks45, c05200)
+        return where(hasqdivltcg, dwks45, income_tax_main_rates)
