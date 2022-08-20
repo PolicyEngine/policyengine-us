@@ -16,6 +16,3 @@ class c05800(Variable):
             "alternative_minimum_tax",
         ]
     )
-
-
-income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)

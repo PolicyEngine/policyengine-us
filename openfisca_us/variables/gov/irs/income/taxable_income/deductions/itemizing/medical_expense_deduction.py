@@ -14,7 +14,4 @@ class medical_expense_deduction(Variable):
         expense = add(tax_unit, period, ["medical_expense"])
         medical = parameters(period).gov.irs.deductions.itemized.medical
         medical_floor = medical.floor * tax_unit("positive_agi", period)
-        return max_(
-            0,
-            expense - medical_floor,
-        )
+        return max_(0, expense - medical_floor)
