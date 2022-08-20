@@ -10,9 +10,7 @@ class residential_energy_efficient_property_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25D"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.irs.credits.residential_energy.efficient_property
+        p = parameters(period).gov.irs.credits.residential_clean_energy
         # Get total expenditures except fuel cell.
         expenditures_less_fuel_cell = add(
             tax_unit,

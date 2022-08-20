@@ -13,7 +13,9 @@ class capped_qualified_furnace_or_hot_water_boiler_expenditures(Variable):
         uncapped = tax_unit(
             "qualified_furnace_or_hot_water_boiler_expenditures", period
         )
-        p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
+        p = parameters(
+            period
+        ).gov.irs.credits.energy_efficient_home_improvement
         return min_(
             uncapped, p.cap.annual.qualified_furnace_or_hot_water_boiler
         )

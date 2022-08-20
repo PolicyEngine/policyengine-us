@@ -12,7 +12,9 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_expenditures(
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=340"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
+        p = parameters(
+            period
+        ).gov.irs.credits.energy_efficient_home_improvement
         uncapped = add(
             tax_unit,
             p.qualifying_expenditures.heat_pump_heat_pump_water_heater_biomass_stove_boiler,

@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class nonbusiness_energy_property_credit(Variable):
+class energy_efficient_home_improvement_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -10,7 +10,9 @@ class nonbusiness_energy_property_credit(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/25C"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.irs.credits.residential_energy.nonbusiness
+        p = parameters(
+            period
+        ).gov.irs.credits.energy_efficient_home_improvement
         if not p.in_effect:
             return 0
         improvements = tax_unit(
@@ -24,7 +26,7 @@ class nonbusiness_energy_property_credit(Variable):
         uncapped_credit = improvements_credit + property_credit
         # Apply lifetime limitation.
         prior_credits = tax_unit(
-            "prior_nonbusiness_energy_property_credits", period
+            "prior_energy_efficient_home_improvement_credits", period
         )
         remaining_credit = p.cap.lifetime.total - prior_credits
         return min_(remaining_credit, uncapped_credit)
