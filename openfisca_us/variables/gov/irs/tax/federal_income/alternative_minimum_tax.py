@@ -115,7 +115,7 @@ class alternative_minimum_tax(Variable):
             - max_(
                 0,
                 (
-                    tax_unit("taxbc", period)
+                    tax_unit("regular_tax_before_credits", period)
                     - foreign_tax_credit
                     - tax_unit("c05700", period)
                 ),
