@@ -14,6 +14,4 @@ class employee_payroll_tax(Variable):
             "employee_medicare_tax",
         ]
         TAX_UNIT_ELEMENTS = ["additional_medicare_tax"]
-        person_elements = aggr(tax_unit, period, PERSON_ELEMENTS)
-        tax_unit_elements = add(tax_unit, period, TAX_UNIT_ELEMENTS)
-        return person_elements + tax_unit_elements
+        return add(tax_unit, period, PERSON_ELEMENTS + TAX_UNIT_ELEMENTS)

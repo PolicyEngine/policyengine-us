@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class c05800(Variable):
+class income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR

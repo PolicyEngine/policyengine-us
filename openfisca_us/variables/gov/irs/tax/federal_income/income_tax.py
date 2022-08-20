@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class iitax(Variable):
+class income_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -15,6 +15,3 @@ class iitax(Variable):
         )
         refundable_credits = tax_unit("income_tax_refundable_credits", period)
         return before_refundable_credits - refundable_credits
-
-
-income_tax = variable_alias("income_tax", iitax)

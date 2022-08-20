@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class c05200(Variable):
+class income_tax_main_rates(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -79,6 +79,3 @@ class c05200(Variable):
             pt_taxinc - last_pt_threshold, 0
         )
         return reg_tax + pt_tax
-
-
-income_tax_main_rates = variable_alias("income_tax_main_rates", c05200)

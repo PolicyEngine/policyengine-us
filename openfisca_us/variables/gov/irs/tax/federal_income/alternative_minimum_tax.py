@@ -1,52 +1,15 @@
 from openfisca_us.model_api import *
 
 
-class amt_income(Variable):
+class alternative_minimum_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "AMT taxable income"
+    label = "Alternative minimum tax"
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/55#b_2"
 
     def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("taxable_income", period)
-        # Add back excluded deductions
-        itemizing = tax_unit("tax_unit_itemizes", period)
-        standard_deduction = tax_unit("standard_deduction", period)
-        salt_deduction = tax_unit("salt_deduction", period)
-        excluded_deductions = where(
-            itemizing,
-            salt_deduction,
-            standard_deduction,
-        )
-        amt_income = taxable_income + excluded_deductions
-        amt = parameters(period).gov.irs.income.amt
-        filing_status = tax_unit("filing_status", period)
-        separate_addition = max_(
-            0,
-            min_(
-                amt.exemption.amount[filing_status],
-                amt.exemption.phase_out.rate
-                * max_(0, amt_income - amt.exemption.separate_limit),
-            ),
-        ) * (filing_status == filing_status.possible_values.SEPARATE)
-        return amt_income + separate_addition
-
-
-c62100 = variable_alias("c62100", amt_income)
-
-
-class c09600(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    label = "Alternative Minimum Tax"
-    unit = USD
-    documentation = "Alternative Minimum Tax (AMT) liability"
-
-    def formula(tax_unit, period, parameters):
-        c62100 = tax_unit("c62100", period)
+        amt_income = tax_unit("amt_income", period)
         # Form 6251, Part II top
         amt = parameters(period).gov.irs.income.amt
         phase_out = amt.exemption.phase_out
@@ -56,7 +19,7 @@ class c09600(Variable):
             (
                 amt.exemption.amount[filing_status]
                 - phase_out.rate
-                * max_(0, c62100 - phase_out.start[filing_status])
+                * max_(0, amt_income - phase_out.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)
@@ -68,7 +31,7 @@ class c09600(Variable):
             min_(line29, tax_unit("filer_earned", period) + child.amount),
             line29,
         )
-        line30 = max_(0, c62100 - line29)
+        line30 = max_(0, amt_income - line29)
         brackets = amt.brackets
         amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
             "sep", period
@@ -158,6 +121,3 @@ class c09600(Variable):
                 ),
             ),
         )
-
-
-alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)
