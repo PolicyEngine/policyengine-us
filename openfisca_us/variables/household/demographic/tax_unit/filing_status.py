@@ -21,12 +21,9 @@ class filing_status(Variable):
         has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
         has_dependents = tax_unit("tax_unit_dependents", period) > 0
         return select(
-            [has_spouse, has_dependents, True],
-            [
-                FilingStatus.JOINT,
-                FilingStatus.HEAD_OF_HOUSEHOLD,
-                FilingStatus.SINGLE,
-            ],
+            [has_spouse, has_dependents],
+            [FilingStatus.JOINT, FilingStatus.HEAD_OF_HOUSEHOLD],
+            default=FilingStatus.SINGLE,
         )
 
 

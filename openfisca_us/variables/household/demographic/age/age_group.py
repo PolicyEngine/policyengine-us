@@ -17,10 +17,7 @@ class age_group(Variable):
 
     def formula(person, period, parameters):
         return select(
-            [
-                person("is_child", period),
-                person("is_wa_adult", period),
-                person("is_senior", period),
-            ],
-            [AgeGroup.CHILD, AgeGroup.WORKING_AGE, AgeGroup.SENIOR],
+            [person("is_child", period), person("is_wa_adult", period)],
+            [AgeGroup.CHILD, AgeGroup.WORKING_AGE],
+            default=AgeGroup.SENIOR,
         )

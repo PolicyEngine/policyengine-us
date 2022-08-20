@@ -37,16 +37,9 @@ class second_lowest_silver_plan_cost(Variable):
             period
         ).gov.hhs.medicaid.geography.second_lowest_silver_plan_cost
         age_code = select(
-            [
-                age < 21,
-                age < 64,
-                age >= 64,
-            ],
-            [
-                "0-20",
-                age.astype(int).astype(str),
-                "64+",
-            ],
+            [age < 21, age < 64],
+            ["0-20", age.astype(int).astype(str)],
+            default="64+",
         )
         eligible = person.tax_unit("is_ptc_eligible", period)
         per_person_cost = index_(

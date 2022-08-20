@@ -55,13 +55,12 @@ class hud_income_level(Variable):
                 income_ami_ratio <= very_low_threshold,
                 income_ami_ratio <= low_threshold,
                 income_ami_ratio <= moderate_threshold,
-                True,
             ],
             [
                 HUDIncomeLevel.ESPECIALLY_LOW,
                 HUDIncomeLevel.VERY_LOW,
                 HUDIncomeLevel.LOW,
                 HUDIncomeLevel.MODERATE,
-                HUDIncomeLevel.ABOVE_MODERATE,
             ],
+            default=HUDIncomeLevel.ABOVE_MODERATE,
         )

@@ -23,16 +23,11 @@ class ccdf_duration_of_care(Variable):
         days_per_week = person("childcare_days_per_week", period)
         hours_per_week = hours_per_day * days_per_week
         return select(
-            [
-                hours_per_week >= 30,
-                hours_per_day >= 6,
-                hours_per_day >= 3,
-                True,
-            ],
+            [hours_per_week >= 30, hours_per_day >= 6, hours_per_day >= 3],
             [
                 CCDFDurationOfCare.WEEKLY,
                 CCDFDurationOfCare.DAILY,
                 CCDFDurationOfCare.PART_DAY,
-                CCDFDurationOfCare.HOURLY,
             ],
+            default=CCDFDurationOfCare.HOURLY,
         )
