@@ -5,8 +5,5 @@ class refundable_payroll_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Refundable Payroll Tax Credit"
+    label = "Refundable payroll tax credit"
     unit = USD
-
-
-rptc = variable_alias("rptc", refundable_payroll_tax_credit)

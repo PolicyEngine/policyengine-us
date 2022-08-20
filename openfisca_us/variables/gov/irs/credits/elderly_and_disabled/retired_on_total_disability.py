@@ -18,20 +18,3 @@ class retired_on_total_disability(Variable):
     # less than 12 months. An individual shall not be considered to be permanently
     # and totally disabled unless he furnishes proof of the existence thereof in
     # such form and manner, and at such times, as the Secretary may require.
-
-
-class qualifies_for_elderly_or_disabled_credit(Variable):
-    value_type = bool
-    entity = Person
-    label = "Qualifies for elderly or disabled credit"
-    documentation = (
-        "Whether this tax unit qualifies for the elderly or disabled credit"
-    )
-    definition_period = YEAR
-
-    def formula(person, period, parameters):
-        elderly_disabled = parameters(
-            period
-        ).gov.irs.credits.elderly_or_disabled
-        is_elderly = person("age", period) >= elderly_disabled.age
-        return is_elderly | person("retired_on_total_disability", period)

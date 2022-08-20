@@ -12,6 +12,3 @@ class income_tax_non_refundable_credits(Variable):
     unit = USD
 
     formula = sum_of_variables("gov.irs.credits.non_refundable")
-
-
-c07100 = variable_alias("c07100", income_tax_non_refundable_credits)
