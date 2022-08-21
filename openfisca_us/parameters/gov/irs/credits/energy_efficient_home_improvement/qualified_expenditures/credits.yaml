@@ -5,14 +5,25 @@ values:
     - capped_energy_efficient_insulation_credits
     - capped_energy_efficient_window_credits
     - capped_energy_efficient_roof_credits
-  # Inflation Reduction Act removed roof credits.
+    - capped_advanced_main_air_circulating_fan_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credits
+    - capped_central_air_conditioner_credit
+    - capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credit
+  # Inflation Reduction Act removed roof credits and added audit credits.
+  # It also adds biomass stoves and boilers, but that is taken care of in 
+  # heat_pump_heat_pump_water_heater_biomass_stove_boiler.yaml.
   2023-01-01:
     - capped_energy_efficient_door_credits
     - capped_energy_efficient_insulation_credits
     - capped_energy_efficient_window_credits
     - capped_advanced_main_air_circulating_fan_credits
     - capped_qualified_furnace_or_hot_water_boiler_credits
-    
+    - capped_advanced_main_air_circulating_fan_credit
+    - capped_central_air_conditioner_credit
+    - capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credit
+    - capped_home_energy_audit_credit
 metadata:
   name: Energy_efficient_property_credit_qualifying_energy_efficiency_improvements
   label: Energy efficiency improvements that qualify for energy efficient property tax credit
