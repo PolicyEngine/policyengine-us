@@ -1,9 +1,13 @@
 description: Illinois Use Tax Rate (if greater than $100,000)
 brackets:
-  - amount: 0
-    threshold: 0
-  - amount: 0.0005
-    threshold: 100_001
+  - amount:
+      2021-01-01: 0
+    threshold:
+      2021-01-01: 0
+  - amount:
+      2021-01-01: 0.0005
+    threshold:
+      2021-01-01: 100_001
 metadata:
   type: single_amount
   threshold_unit: currency-USD
