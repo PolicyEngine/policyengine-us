@@ -15,12 +15,12 @@ class il_k12_education_expense_credit(Variable):
         reduced_tuition_and_fees = max_(0, tuition_and_fees - p.reduction)
         max_credit = reduced_tuition_and_fees * p.rate
 
-        il_income_tax_before_credits = tax_unit(
-            "il_income_tax_before_credits", period
+        il_income_tax_before_nonrefundable_credits = tax_unit(
+            "il_income_tax_before_nonrefundable_credits", period
         )
         il_property_tax_credit = tax_unit("il_property_tax_credit", period)
 
         return min_(
-            il_income_tax_before_credits - il_property_tax_credit,
+            il_income_tax_before_nonrefundable_credits - il_property_tax_credit,
             min_(max_credit, p.cap),
         )
