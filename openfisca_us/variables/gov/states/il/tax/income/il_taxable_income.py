@@ -1,6 +1,6 @@
 from openfisca_us.model_api import *
 
-class il_total_exemption(Variable):
+class il_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "IL taxable income"
