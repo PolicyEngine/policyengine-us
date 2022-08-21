@@ -7,10 +7,7 @@ class EligibilityStatus(Enum):
     NOT_ELIGIBLE = 3
 
 
-# TODO: actually finish this variable
-
-
-class il_is_exemption_eligible(Variable):
+class il_is_personal_exemption_eligible(Variable):
     value_type = Enum
     possible_values = EligibilityStatus
     entity = TaxUnit
