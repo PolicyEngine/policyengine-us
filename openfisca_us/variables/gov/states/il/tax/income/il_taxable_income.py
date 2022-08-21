@@ -9,4 +9,4 @@ class il_taxable_income(Variable):
     reference = ""
     
     def formula(tax_unit, period, parameters):
-        return max_(0, tax_unit("il_base_income", period) - tax_unit("il_total_exemption", period))
+        return max_(0, tax_unit("il_base_income", period) - tax_unit("il_total_exemptions", period))
