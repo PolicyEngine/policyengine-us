@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.130.0] - 2022-08-18 17:24:10
+
+### Added
+
+- Pennsylvania income tax before forgiveness.
+
+## [0.129.2] - 2022-08-18 09:15:19
+
+### Fixed
+
+- Don't reduce CTC by more than the maximum in 2021.
+
+## [0.129.1] - 2022-08-17 15:46:46
+
+### Added
+
+- 2022 value of EITC joint bonus for couples without children.
+
+## [0.129.0] - 2022-08-17 05:44:08
+
+### Added
+
+- Nonbusiness energy property credit.
+
 ## [0.128.3] - 2022-08-13 01:27:00
 
 ### Changed
@@ -1673,6 +1697,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.130.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.2...0.130.0
+[0.129.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.1...0.129.2
+[0.129.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.0...0.129.1
+[0.129.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.3...0.129.0
 [0.128.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.2...0.128.3
 [0.128.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.1...0.128.2
 [0.128.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.0...0.128.1
