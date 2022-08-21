@@ -16,23 +16,18 @@ class energy_efficient_home_improvement_credit(Variable):
         if not p.in_effect:
             return 0
 
-        improvements = tax_unit(
-            "qualified_energy_efficiency_improvements_expenditures", period
+        heat_pump_etc = tax_unit(
+            "capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit",
+            period,
         )
-        property_expenditures = tax_unit(
-            "capped_residential_energy_property_expenditures", period
-        )
-        property_credit = property_expenditures * p.rates.property
-        uncapped_credit = improvements_credit + property_credit
+        total = add(tax_unit, p.qualifying_expenditures.credits, period)
+        # Cap the total.
+        capped_total = min_(total, p.cap.annual.total)
+        # Before the lifetime limit, it can either be the total or the heat pump/etc.
+        pre_lifetime_limit = max_(capped_total, heat_pump_etc)
         # Apply lifetime limitation.
         prior_credits = tax_unit(
             "prior_energy_efficient_home_improvement_credits", period
         )
         remaining_credit = p.cap.lifetime.total - prior_credits
-        return min_(remaining_credit, uncapped_credit)
-
-    # TODO:
-    # - Make capped credits for each expenditure category.
-    # - Make parameter that sums all the capped credits.
-    # - Sum that in the main variable, but allow for higher amount for
-    #   heat pump / heater / biomass.
+        return min_(remaining_credit, pre_lifetime_limit)

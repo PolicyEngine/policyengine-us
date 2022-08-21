@@ -3,8 +3,9 @@ values:
   2006-01-01:
     - heat_pump_expenditures
     - heat_pump_water_heater_expenditures
-  # Inflation Reduction Act adds natural gas heat pumps and heat pump water
-  # heaters, and biomass stoves and boilers.
+  # Inflation Reduction Act adds biomass stoves and boilers.
+  # It also includes natural gas heat pumps and heat pump water heaters,
+  # but we lump those together.
   2023-01-01:
     - heat_pump_expenditures
     - heat_pump_water_heater_expenditures
