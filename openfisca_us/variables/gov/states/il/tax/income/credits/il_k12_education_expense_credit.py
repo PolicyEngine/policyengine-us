@@ -14,4 +14,13 @@ class il_k12_education_expense_credit(Variable):
         tuition_and_fees = tax_unit("k12_tuition_and_fees", period)
         reduced_tuition_and_fees = max_(0, tuition_and_fees - p.reduction)
         max_credit = reduced_tuition_and_fees * p.rate
-        return min_(max_credit, p.cap)
+
+        il_income_tax_before_credits = tax_unit(
+            "il_income_tax_before_credits", period
+        )
+        il_property_tax_credit = tax_unit("il_property_tax_credit", period)
+
+        return min_(
+            il_income_tax_before_credits - il_property_tax_credit,
+            min_(max_credit, p.cap),
+        )
