@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class il_final_taxation_amount(Variable):
     value_type = float
     entity = TaxUnit
@@ -10,4 +11,6 @@ class il_final_taxation_amount(Variable):
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("il_total_tax", period) - tax_unit("il_total_payments_and_refundable_credit", period)
+        return tax_unit("il_total_tax", period) - tax_unit(
+            "il_total_payments_and_refundable_credit", period
+        )

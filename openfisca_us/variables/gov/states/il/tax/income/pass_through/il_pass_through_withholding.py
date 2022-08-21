@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class il_pass_through_withholding(Variable):
     value_type = float
     entity = TaxUnit

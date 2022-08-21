@@ -9,4 +9,6 @@ class il_nonrefundable_credits(Variable):
     definition_period = YEAR
     reference = ""
 
-    formula = sum_of_variables("gov.states.il.tax.income.credits.list_of_nonrefundable_credits")
+    formula = sum_of_variables(
+        "gov.states.il.tax.income.credits.list_of_nonrefundable_credits"
+    )
