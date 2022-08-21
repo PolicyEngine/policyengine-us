@@ -1,19 +1,14 @@
 description: IL Exemption Cap
-Joint:
-  values:
-    2021-01-01: 500_000
-Single:
-  values:
-    2021-01-01: 250_000
-Separate:
-  values:
-    2021-01-01: 250_000
-Head of household:
-  values:
-    2021-01-01: 250_000
-Widow(er):
-  values:
-    2021-01-01: 250_000
+JOINT:
+  2021-01-01: 500_000
+SINGLE:
+  2021-01-01: 250_000
+SEPARATE:
+  2021-01-01: 250_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 250_000
+WIDOW:
+  2021-01-01: 250_000
 metadata:
   unit: currency-USD
   period: year
