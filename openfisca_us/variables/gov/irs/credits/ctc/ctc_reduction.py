@@ -87,6 +87,6 @@ class ctc_reduction(Variable):
 
         arpa_reduction = min_(arpa_phase_out_max_reduction, arpa_reduction_max)
 
-        return original_phase_out + arpa_reduction
+        return min_(original_phase_out + arpa_reduction, maximum_ctc)
 
     formula_2022 = formula
