@@ -20,7 +20,7 @@ class energy_efficient_home_improvement_credit(Variable):
             "capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit",
             period,
         )
-        total = add(tax_unit, p.qualifying_expenditures.credits, period)
+        total = add(tax_unit, period, p.qualified_expenditures.credits)
         # Cap the total.
         capped_total = min_(total, p.cap.annual.total)
         # Before the lifetime limit, it can either be the total or the heat pump/etc.

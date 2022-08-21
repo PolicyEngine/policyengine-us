@@ -17,8 +17,8 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
         ).gov.irs.credits.energy_efficient_home_improvement
         expenditure = add(
             tax_unit,
-            p.qualifying_expenditures.heat_pump_heat_pump_water_heater_biomass_stove_boiler,
             period,
+            p.qualified_expenditures.heat_pump_heat_pump_water_heater_biomass_stove_boiler,
         )
         rate = p.rates.property
         uncapped = expenditure * rate
