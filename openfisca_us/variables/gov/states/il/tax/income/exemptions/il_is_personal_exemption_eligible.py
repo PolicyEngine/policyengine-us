@@ -10,6 +10,7 @@ class EligibilityStatus(Enum):
 class il_is_personal_exemption_eligible(Variable):
     value_type = Enum
     possible_values = EligibilityStatus
+    default_value = EligibilityStatus.NOT_ELIGIBLE
     entity = TaxUnit
     label = "Whether The Tax Unit Is Eligible For The Illinois Personal Exemption"
     definition_period = YEAR
