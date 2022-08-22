@@ -1,9 +1,15 @@
-- name: Cap at $500.
+- name: Cap at $1,200 in 2023
+  period: 2023
+  input:
+    capped_energy_efficient_window_credit: 1_300
+  output:
+    energy_efficient_home_improvement_credit: 1_200
+
+- name: Cap at $500 in 2021
   period: 2021
   input:
-    qualified_energy_efficiency_improvements_expenditures: 1_000
-    capped_residential_energy_property_expenditures: 300
-    prior_nonbusiness_energy_property_credits: 200
+    capped_energy_efficient_window_credit: 400
+    prior_energy_efficient_home_improvement_credits: 200
   output:
     # Would be $400, but capped at $500-200=300.
     energy_efficient_home_improvement_credit: 300
