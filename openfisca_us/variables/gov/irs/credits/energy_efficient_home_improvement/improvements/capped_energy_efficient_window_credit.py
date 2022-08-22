@@ -18,4 +18,9 @@ class capped_energy_efficient_window_credit(Variable):
         ).gov.irs.credits.energy_efficient_home_improvement
         rate = p.rates.improvements
         uncapped = expenditure * rate
-        return min_(uncapped, p.cap.annual.window)
+        # First cap by year, then lifetime.
+        capped_annual = min_(uncapped, p.cap.annual.window)
+        prior_credits = tax_unit(
+            "prior_energy_efficient_window_credits", period
+        )
+        return min_(capped_annual, p.cap.lifetime.window - prior_credits)

@@ -1,0 +1,13 @@
+- name: Uncapped.
+  period: 2021
+  input:
+    energy_efficient_central_air_conditioner_expenditures: 40
+  output:
+    capped_energy_efficient_central_air_conditioner_credit: 40
+
+- name: Capped.
+  period: 2021
+  input:
+    energy_efficient_central_air_conditioner_expenditures: 60
+  output:
+    capped_energy_efficient_central_air_conditioner_credit: 50
