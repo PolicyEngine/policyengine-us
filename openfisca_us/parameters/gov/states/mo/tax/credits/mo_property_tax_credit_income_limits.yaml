@@ -1,0 +1,21 @@
+description: Income limits for MO Property Tax Credit eligibility
+#for renting joint filers the amount is technically $27_200 at first but $2000 is subtracted due to
+#their particular status. $4000 is subtracted for owning joint filers. See Line 9 of MO-PTS.
+RENTER:
+  SINGLE: 
+    2021-01-01: 27_200
+  JOINT: 
+    2021-01-01: 29_200
+OWNER:
+  SINGLE: 
+    2021-01-01: 30_000
+  JOINT: 
+    2021-01-01: 34_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_property_tax_credit_income_limits
+  label: MO Property Tax Credit Income Limits
+  reference:
+    - title: MO Property Tax Credit Schedule
+      href: https://dor.mo.gov/forms/MO-PTS_2021.pdf

@@ -3,7 +3,10 @@
   absolute_error_margin: 0
   input:
     adjusted_gross_income: 0
-    mo_federal_itemized_deductions: 0
+    tax_unit_itemizes: 0
+    mo_agi: 0
+    mo_standard_deduction: 0
+    mo_itemized_deductions: 0
   output:
     mo_taxable_income: 0.0
 
@@ -12,6 +15,9 @@
   absolute_error_margin: 0
   input:
     adjusted_gross_income: 60
-    mo_federal_itemized_deductions: 0
+    tax_unit_itemizes: 0
+    mo_agi: 0
+    mo_standard_deduction: 0
+    mo_itemized_deductions: 0
   output: 
     mo_taxable_income: 60.00
