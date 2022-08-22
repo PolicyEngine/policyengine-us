@@ -18,4 +18,4 @@ class capped_energy_efficient_insulation_credit(Variable):
         ).gov.irs.credits.energy_efficient_home_improvement
         rate = p.rates.improvements
         uncapped = expenditure * rate
-        return min_(uncapped, p.cap.annual.insulation)
+        return min_(uncapped, p.cap.annual.insulation_material)
