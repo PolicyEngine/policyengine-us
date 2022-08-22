@@ -14,8 +14,8 @@ class capped_home_energy_audit_credit(Variable):
             period
         ).gov.irs.credits.energy_efficient_home_improvement
         expenditure = tax_unit("home_energy_audit_expenditures", period)
-        rate = p.rates.audit
+        rate = p.rates.home_energy_audit
         uncapped = expenditure * rate
         # Cap at either the fan cap (pre-IRA) or total property cap (post-IRA).
-        cap = p.cap.annual.audit
+        cap = p.cap.annual.home_energy_audit
         return min_(uncapped, cap)
