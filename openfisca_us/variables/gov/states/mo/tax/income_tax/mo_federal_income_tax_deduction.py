@@ -21,4 +21,3 @@ class mo_federal_income_tax_deduction(Variable):
         federal_income_tax_deduction_amount = federal_tax * rate
         
         return where(federal_income_tax_deduction_amount > federal_income_tax_deduction_cap, federal_income_tax_deduction_cap, federal_income_tax_deduction_amount)
-        
