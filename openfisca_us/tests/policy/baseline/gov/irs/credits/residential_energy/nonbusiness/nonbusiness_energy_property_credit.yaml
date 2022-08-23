@@ -1,9 +1,0 @@
-- name: Cap at $500.
-  period: 2021
-  input:
-    qualified_energy_efficiency_improvements_expenditures: 1_000
-    capped_residential_energy_property_expenditures: 300
-    prior_nonbusiness_energy_property_credits: 200
-  output:
-    # Would be $400, but capped at $500-200=300.
-    nonbusiness_energy_property_credit: 300
