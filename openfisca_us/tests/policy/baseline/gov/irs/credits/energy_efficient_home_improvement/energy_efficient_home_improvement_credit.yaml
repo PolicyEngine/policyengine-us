@@ -28,7 +28,7 @@
   output:
     energy_efficient_home_improvement_credit: 100
 
-- name: Cap at $500 in 2021
+- name: Cap at $500 in 2021.
   period: 2021
   input:
     capped_energy_efficient_window_credit: 400
@@ -36,3 +36,10 @@
   output:
     # Would be $400, but capped at $500-200=300.
     energy_efficient_home_improvement_credit: 300
+
+- name: Expires 2032-12-31.
+  period: 2033
+  input:
+    capped_energy_efficient_door_credit: 1
+  output:
+    energy_efficient_home_improvement_credit: 0
