@@ -45,11 +45,7 @@ def variable_alias(name: str, variable_cls: type) -> type:
     class_dict["formula"] = lambda entity, period: entity(
         variable_cls.__name__, period
     )
-    return type(
-        name,
-        variable_cls.__bases__,
-        class_dict,
-    )
+    return type(name, variable_cls.__bases__, class_dict,)
 
 
 def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:

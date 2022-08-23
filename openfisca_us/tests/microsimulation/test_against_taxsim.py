@@ -55,10 +55,7 @@ def test_state_income_tax_against_taxsim(state: str, sim, taxsim):
     tax = sim.calc("state_income_tax")
     tax.index = sim.calc("tax_unit_id").values
     comparison_df = pd.DataFrame(
-        dict(
-            openfisca_us=tax,
-            taxsim=taxsim.taxsim_siitax,
-        ),
+        dict(openfisca_us=tax, taxsim=taxsim.taxsim_siitax,),
         index=sim.calc("tax_unit_id").values,
     )
     comparison_df = comparison_df[in_state]

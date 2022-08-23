@@ -22,10 +22,7 @@ class md_deductions(Variable):
             deduction
             for deduction in federal_deductions_if_itemizing
             if deduction
-            not in [
-                "salt_deduction",
-                "qualified_business_income_deduction",
-            ]
+            not in ["salt_deduction", "qualified_business_income_deduction",]
         ]
         itemized_deductions_less_salt = add(
             tax_unit, period, federal_deductions_if_itemizing

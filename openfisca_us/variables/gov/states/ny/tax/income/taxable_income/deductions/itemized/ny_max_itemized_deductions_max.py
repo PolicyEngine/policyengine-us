@@ -19,9 +19,6 @@ class ny_itemized_deductions_max(Variable):
             deduction
             for deduction in federal_deductions_if_itemizing
             if deduction
-            not in [
-                "salt_deduction",
-                "qualified_business_income_deduction",
-            ]
+            not in ["salt_deduction", "qualified_business_income_deduction",]
         ]
         return add(tax_unit, period, federal_deductions_if_itemizing)
