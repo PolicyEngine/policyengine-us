@@ -30,5 +30,9 @@ class rrc_arpa(Variable):
             / phase_out_length
             * max_payment
         )
-        payment_reduction = where(phase_out_length == 0, 0, payment_reduction,)
+        payment_reduction = where(
+            phase_out_length == 0,
+            0,
+            payment_reduction,
+        )
         return max_(0, max_payment - payment_reduction)

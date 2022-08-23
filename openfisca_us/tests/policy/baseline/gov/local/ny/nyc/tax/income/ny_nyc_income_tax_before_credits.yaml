@@ -4,7 +4,7 @@
     county: NEW_YORK_COUNTY_NY
     ny_taxable_income: 0
   output:
-    ny_nyc_income_tax: 0
+    ny_nyc_income_tax_before_credits: 0
 
 - name: 0 tax if 0 taxable income.
   period: 2021
@@ -12,7 +12,7 @@
     county: ALBANY_COUNTY_NY
     ny_taxable_income: 1_000
   output:
-    ny_nyc_income_tax: 0
+    ny_nyc_income_tax_before_credits: 0
 
 - name: 0 tax if 0 taxable income.
   period: 2021
@@ -20,4 +20,5 @@
     county: NEW_YORK_COUNTY_NY
     ny_taxable_income: 100
   output:
-    ny_nyc_income_tax: 3.00 #it would be 3.078 but incorporated rounding rules (below and after 50 cents)
+    # It would be 3.078 but incorporated rounding rules (below and after 50 cents).
+    ny_nyc_income_tax_before_credits: 3 

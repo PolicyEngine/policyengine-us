@@ -115,7 +115,14 @@ class taxbc(Variable):
         dwks42 = reg_tax + pt_tax
 
         dwks43 = sum(
-            [dwks29, dwks32, dwks38, dwks41, dwks42, lowest_rate_tax,]
+            [
+                dwks29,
+                dwks32,
+                dwks38,
+                dwks41,
+                dwks42,
+                lowest_rate_tax,
+            ]
         )
         c05200 = tax_unit("income_tax_main_rates", period)
         dwks44 = c05200

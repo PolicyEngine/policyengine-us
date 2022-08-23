@@ -377,7 +377,10 @@ class OpenFiscaPlugin(object):
 
 
 def _get_tax_benefit_system(
-    baseline, reforms, extensions, reform_key=None,
+    baseline,
+    reforms,
+    extensions,
+    reform_key=None,
 ):
     if not isinstance(reforms, list):
         reforms = [reforms]
@@ -409,8 +412,8 @@ def _get_tax_benefit_system(
                 current_tax_benefit_system
             )
         else:
-            current_tax_benefit_system = current_tax_benefit_system.apply_reform(
-                reform_path
+            current_tax_benefit_system = (
+                current_tax_benefit_system.apply_reform(reform_path)
             )
         current_tax_benefit_system._parameters_at_instant_cache = {}
 

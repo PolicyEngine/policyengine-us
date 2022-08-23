@@ -16,7 +16,9 @@ class amt_income(Variable):
         standard_deduction = tax_unit("standard_deduction", period)
         salt_deduction = tax_unit("salt_deduction", period)
         excluded_deductions = where(
-            itemizing, salt_deduction, standard_deduction,
+            itemizing,
+            salt_deduction,
+            standard_deduction,
         )
         amt_income = taxable_income + excluded_deductions
         amt = parameters(period).gov.irs.income.amt
@@ -87,7 +89,13 @@ class c09600(Variable):
         form_6251_part_iii_required = np.any(
             [
                 variable > 0
-                for variable in [dwks10, dwks13, dwks14, dwks19, e24515,]
+                for variable in [
+                    dwks10,
+                    dwks13,
+                    dwks14,
+                    dwks19,
+                    e24515,
+                ]
             ]
         )
 

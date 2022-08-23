@@ -23,7 +23,10 @@ class ctc_individual_maximum(Variable):
         return add(
             person,
             period,
-            ["ctc_child_individual_maximum", "ctc_adult_individual_maximum",],
+            [
+                "ctc_child_individual_maximum",
+                "ctc_adult_individual_maximum",
+            ],
         )
 
     formula_2026 = formula
