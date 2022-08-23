@@ -12,9 +12,17 @@
   output:
     capped_qualified_furnace_or_hot_water_boiler_credit: 150
 
-- name: 30% uncapped after the Inflation Reduction Act.
+- name: 30% capped at $600 after the Inflation Reduction Act.
   period: 2023
   input:
     qualified_furnace_or_hot_water_boiler_expenditures: 1_000_000
   output:
-    capped_qualified_furnace_or_hot_water_boiler_credit: 300_000
+    capped_qualified_furnace_or_hot_water_boiler_credit: 600
+
+- name: 30% capped at $600 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    qualified_furnace_or_hot_water_boiler_expenditures: 1_000
+  output:
+    capped_qualified_furnace_or_hot_water_boiler_credit: 300
+  

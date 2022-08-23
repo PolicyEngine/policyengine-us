@@ -1,4 +1,5 @@
 from openfisca_us.model_api import *
+import numpy as np
 
 
 class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
@@ -22,7 +23,13 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
         )
         rate = p.rates.property
         uncapped = expenditure * rate
-        return min_(
-            uncapped,
-            p.cap.annual.heat_pump_heat_pump_water_heater_biomass_stove_boiler,
+        # Cap at either the total property cap (pre-IRA) or heat pump etc. cap (post-IRA).
+        # We represent pre-IRA as an infinite heat pump cap.
+        heat_pump_etc_cap = (
+            p.cap.annual.heat_pump_heat_pump_water_heater_biomass_stove_boiler
         )
+        if heat_pump_etc_cap == np.inf:
+            cap = p.cap.annual.energy_efficient_building_property
+        else:
+            cap = heat_pump_etc_cap
+        return min_(uncapped, cap)
