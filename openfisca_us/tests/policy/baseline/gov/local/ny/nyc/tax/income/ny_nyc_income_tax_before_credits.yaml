@@ -1,6 +1,7 @@
 - name: 0 tax if 0 taxable income.
   period: 2021
   input:
+    state_code: NY
     county: NEW_YORK_COUNTY_NY
     ny_taxable_income: 0
   output:
@@ -9,6 +10,7 @@
 - name: 0 tax if 0 taxable income.
   period: 2021
   input:
+    state_code: NY
     county: ALBANY_COUNTY_NY
     ny_taxable_income: 1_000
   output:
@@ -17,6 +19,7 @@
 - name: 0 tax if 0 taxable income.
   period: 2021
   input:
+    state_code: NY
     county: NEW_YORK_COUNTY_NY
     ny_taxable_income: 100
   output:
