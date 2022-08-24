@@ -10,7 +10,13 @@ class capped_heat_pump_water_heater_rebate(Variable):
     unit = USD
 
     def formula(household, period, parameters):
-        percent_covered = household("high_efficiency_electric_home_rebate_percent_covered", period)
-        expenditures = household("heat_pump_water_heater_expenditures", period)
-        cap = parameters(period).gov.doe.high_efficiency_electric_home_rebate.cap.heat_pump_water_heater
+        percent_covered = household(
+            "high_efficiency_electric_home_rebate_percent_covered", period
+        )
+        expenditures = add(
+            household, period, ["heat_pump_water_heater_expenditures"]
+        )
+        cap = parameters(
+            period
+        ).gov.doe.high_efficiency_electric_home_rebate.cap.heat_pump_water_heater
         return min_(expenditures * percent_covered, cap)

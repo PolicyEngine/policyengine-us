@@ -10,7 +10,11 @@ class capped_electric_wiring_rebate(Variable):
     unit = USD
 
     def formula(household, period, parameters):
-        percent_covered = household("high_efficiency_electric_home_rebate_percent_covered", period)
-        expenditures = household("electric_wiring_expenditures", period)
-        cap = parameters(period).gov.doe.high_efficiency_electric_home_rebate.cap.electric_wiring
+        percent_covered = household(
+            "high_efficiency_electric_home_rebate_percent_covered", period
+        )
+        expenditures = add(household, period, ["electric_wiring_expenditures"])
+        cap = parameters(
+            period
+        ).gov.doe.high_efficiency_electric_home_rebate.cap.electric_wiring
         return min_(expenditures * percent_covered, cap)

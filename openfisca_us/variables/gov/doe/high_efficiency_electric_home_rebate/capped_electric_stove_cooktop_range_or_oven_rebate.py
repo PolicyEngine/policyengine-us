@@ -10,7 +10,15 @@ class capped_electric_stove_cooktop_range_or_oven_rebate(Variable):
     unit = USD
 
     def formula(household, period, parameters):
-        percent_covered = household("high_efficiency_electric_home_rebate_percent_covered", period)
-        expenditures = household("electric_stove_cooktop_range_or_oven_expenditures", period)
-        cap = parameters(period).gov.doe.high_efficiency_electric_home_rebate.cap.electric_stove_cooktop_range_or_oven
+        percent_covered = household(
+            "high_efficiency_electric_home_rebate_percent_covered", period
+        )
+        expenditures = add(
+            household,
+            period,
+            ["electric_stove_cooktop_range_or_oven_expenditures"],
+        )
+        cap = parameters(
+            period
+        ).gov.doe.high_efficiency_electric_home_rebate.cap.electric_stove_cooktop_range_or_oven
         return min_(expenditures * percent_covered, cap)

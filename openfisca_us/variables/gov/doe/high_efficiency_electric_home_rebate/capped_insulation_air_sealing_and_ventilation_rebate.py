@@ -10,7 +10,15 @@ class capped_insulation_air_sealing_and_ventilation_rebate(Variable):
     unit = USD
 
     def formula(household, period, parameters):
-        percent_covered = household("high_efficiency_electric_home_rebate_percent_covered", period)
-        expenditures = household("insulation_air_sealing_and_ventilation_expenditures", period)
-        cap = parameters(period).gov.doe.high_efficiency_electric_home_rebate.cap.insulation_air_sealing_and_ventilation
+        percent_covered = household(
+            "high_efficiency_electric_home_rebate_percent_covered", period
+        )
+        expenditures = add(
+            household,
+            period,
+            ["insulation_air_sealing_and_ventilation_expenditures"],
+        )
+        cap = parameters(
+            period
+        ).gov.doe.high_efficiency_electric_home_rebate.cap.insulation_air_sealing_and_ventilation
         return min_(expenditures * percent_covered, cap)

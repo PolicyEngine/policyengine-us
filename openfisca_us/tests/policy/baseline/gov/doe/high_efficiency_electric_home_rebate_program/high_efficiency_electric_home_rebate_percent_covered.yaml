@@ -1,0 +1,41 @@
+- name: 100% covered if zero income.
+  period: 2023
+  input:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+
+- name: 100% covered if zero income.
+  period: 2023
+  input:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+
+- name: 100% covered if zero income.
+  period: 2023
+  input:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+
+- name: 50% covered if 80% of AMI.
+  period: 2023
+  input:
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+
+- name: 50% covered if up to 150% of AMI.
+  period: 2023
+  input:
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+
+- name: 0% covered if above 150% of AMI.
+  period: 2023
+  input:
+    high_efficiency_electric_home_rebate_percent_covered: 0
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 0

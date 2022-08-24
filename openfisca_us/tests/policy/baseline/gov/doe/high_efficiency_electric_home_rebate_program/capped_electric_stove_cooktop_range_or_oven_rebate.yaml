@@ -2,7 +2,7 @@
   period: 2023
   input:
     electric_stove_cooktop_range_or_oven_expenditures: 600
-    household_income_ami_ratio: 0.79
+    high_efficiency_electric_home_rebate_percent_covered: 1
   output:
     capped_electric_stove_cooktop_range_or_oven_rebate: 600
 
@@ -10,7 +10,7 @@
   period: 2023
   input:
     electric_stove_cooktop_range_or_oven_expenditures: 600
-    household_income_ami_ratio: 0.8
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
   output:
     capped_electric_stove_cooktop_range_or_oven_rebate: 300
 
@@ -18,7 +18,7 @@
   period: 2023
   input:
     electric_stove_cooktop_range_or_oven_expenditures: 9_000
-    household_income_ami_ratio: 1.5
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
   output:
     capped_electric_stove_cooktop_range_or_oven_rebate: 840
 
@@ -26,7 +26,7 @@
   period: 2023
   input:
     electric_stove_cooktop_range_or_oven_expenditures: 9_000
-    household_income_ami_ratio: 1.51
+    high_efficiency_electric_home_rebate_percent_covered: 0
   output:
     capped_electric_stove_cooktop_range_or_oven_rebate: 0
 
@@ -34,7 +34,7 @@
   period: 2022
   input:
     electric_stove_cooktop_range_or_oven_expenditures: 9_000
-    household_income_ami_ratio: 1
+    high_efficiency_electric_home_rebate_percent_covered: 1
   output:
     capped_electric_stove_cooktop_range_or_oven_rebate: 0
 
@@ -42,6 +42,6 @@
   period: 2032
   input:
     electric_stove_cooktop_range_or_oven_expenditures: 9_000
-    household_income_ami_ratio: 1
+    high_efficiency_electric_home_rebate_percent_covered: 1
   output:
     capped_electric_stove_cooktop_range_or_oven_rebate: 0
