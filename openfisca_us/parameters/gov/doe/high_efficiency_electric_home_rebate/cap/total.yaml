@@ -1,8 +1,9 @@
 description: The US caps high-efficiency home program rebates at this amount per year for appliance and non-appliance upgrades.
 values:
-  2017-01-01: .inf 
+  0000-01-01: 0
   # Inflation Reduction Act
   2023-01-01: 14_000
+  2032-01-01: 0
 metadata:
   unit: currency-USD
   name: high_efficiency_electric_home_rebate_annual_cap
