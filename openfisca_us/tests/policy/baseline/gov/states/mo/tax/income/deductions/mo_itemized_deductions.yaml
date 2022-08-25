@@ -9,7 +9,7 @@
     medical_expense_deduction: 0
     misc_deduction: 0
   output:
-    mo_federal_itemized_deductions: 0.0
+    mo_itemized_deductions: 0.0
 
 - name:  Greater than 0 in Federal itemizations
   period: 2022
@@ -22,4 +22,4 @@
     medical_expense_deduction: 10
     misc_deduction: 10
   output:
-    mo_federal_itemized_deductions: 60.00
+    mo_itemized_deductions: 60.00
