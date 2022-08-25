@@ -4,8 +4,7 @@ from openfisca_us.model_api import *
 class heat_pump_water_heater_expenditures(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Heat pump water heater expenditures"
-    documentation = "Expenditures on qualified heat pump water heaters"
+    label = "Expenditures on heat pump water heaters"
     unit = USD
     definition_period = YEAR
     reference = (

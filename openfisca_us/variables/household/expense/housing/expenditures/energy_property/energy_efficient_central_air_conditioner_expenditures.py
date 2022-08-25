@@ -5,7 +5,6 @@ class energy_efficient_central_air_conditioner_expenditures(Variable):
     value_type = float
     entity = TaxUnit
     label = "Expenditures on energy efficient central air conditioners"
-    documentation = "Expenditures on energy-efficient central air conditioners"
     # Before the Inflation Reduction Act, these had to be the highest
     # efficiency tier established by the Consortium for Energy Efficiency as
     # of 2009.

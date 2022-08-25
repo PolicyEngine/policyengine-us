@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.132.0] - 2022-08-25 00:48:25
+
+### Added
+
+- High Efficiency Electric Home Rebate Program.
+
 ## [0.131.0] - 2022-08-23 04:58:33
 
 ### Added
@@ -1703,6 +1709,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.132.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.131.0...0.132.0
 [0.131.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.130.0...0.131.0
 [0.130.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.2...0.130.0
 [0.129.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.1...0.129.2
