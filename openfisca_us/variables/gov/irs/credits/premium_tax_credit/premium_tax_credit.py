@@ -8,10 +8,10 @@ class premium_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/36B"
-    defined_for = "is_ptc_eligible"
 
     def formula(tax_unit, period, parameters):
+        eligible = tax_unit("is_ptc_eligible", period)
         applicable_percentage = tax_unit("ptc_phase_out_rate", period)
         plan_cost = tax_unit("second_lowest_silver_plan_cost", period)
         income = tax_unit("medicaid_income", period)
-        return max_(0, plan_cost - income * applicable_percentage)
+        return max_(0, plan_cost - income * applicable_percentage) * eligible

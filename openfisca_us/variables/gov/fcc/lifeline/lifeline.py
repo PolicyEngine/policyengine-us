@@ -9,9 +9,9 @@ class lifeline(Variable):
     definition_period = YEAR
     unit = USD
     reference = "https://www.law.cornell.edu/cfr/text/47/54.403"
-    defined_for = "is_lifeline_eligible"
 
     def formula(spm_unit, period, parameters):
+        eligible = spm_unit("is_lifeline_eligible", period)
         # NB: Only one Lifeline benefit is available per SPM unit, per:
         # https://www.law.cornell.edu/cfr/text/47/54.409#c
         amounts = parameters(period).gov.fcc.lifeline.amount
@@ -26,4 +26,4 @@ class lifeline(Variable):
         phone_broadband_cost = add(
             spm_unit, period, ["phone_cost", "broadband_cost"]
         )
-        return min_(phone_broadband_cost, max_amount)
+        return min_(phone_broadband_cost, max_amount) * eligible
