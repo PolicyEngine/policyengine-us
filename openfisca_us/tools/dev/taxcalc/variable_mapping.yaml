@@ -65,7 +65,6 @@ separate_filer_itemizes: midr
 amt_non_agi_income: cmbtp
 income_tax_before_refundable_credits: c09200
 net_investment_income_tax: niit
-residential_energy_credit: e07260
 retirement_savings_credit: e07240
 income_tax_non_refundable_credits: c07100
 refundable_payroll_tax_credit: rptc
@@ -75,3 +74,7 @@ income_tax_main_rates: c05200
 amt_income: c62100
 alternative_minimum_tax: c09600
 income_tax: iitax
+# We disaggregate the Residential Energy Credit into:
+# a) Residential Clean Energy Credit, and
+# b) Energy Efficient Home Improvement Credit
+# residential_energy_credit: e07260
