@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.134.0] - 2022-08-27 20:34:55
+
+### Changed
+
+- Apply energy efficient home improvement tax credits to post-rebate expenditures.
+
 ## [0.133.0] - 2022-08-27 17:41:38
 
 ### Changed
@@ -1715,6 +1721,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.134.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.133.0...0.134.0
 [0.133.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.132.0...0.133.0
 [0.132.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.131.0...0.132.0
 [0.131.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.130.0...0.131.0
