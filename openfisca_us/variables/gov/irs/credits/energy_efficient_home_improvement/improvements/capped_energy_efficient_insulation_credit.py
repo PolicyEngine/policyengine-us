@@ -27,6 +27,6 @@ class capped_energy_efficient_insulation_credit(Variable):
         # Cap at zero in case they have a rebate from air sealing and ventilation
         # but no insulation expenditures.
         post_rebate_expenditure = max_(0, pre_rebate_expenditure - rebate)
-        rate = p.rates.property
+        rate = p.rates.improvements
         uncapped = post_rebate_expenditure * rate
         return min_(uncapped, p.cap.annual.insulation_material)
