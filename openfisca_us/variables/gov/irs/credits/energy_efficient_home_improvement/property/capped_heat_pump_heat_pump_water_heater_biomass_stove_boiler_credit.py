@@ -20,7 +20,7 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
             tax_unit,
             period,
             [
-                i + "_expenditure"
+                i + "_expenditures"
                 for i in p.qualified_expenditures.heat_pump_heat_pump_water_heater_biomass_stove_boiler
             ],
         )
