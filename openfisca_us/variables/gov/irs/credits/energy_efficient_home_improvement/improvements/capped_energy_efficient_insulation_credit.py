@@ -21,7 +21,7 @@ class capped_energy_efficient_insulation_credit(Variable):
         # We also assume all rebates for insulation, air sealing, and ventilation
         # are for insulation. Otherwise would require allocating the rebate
         # across subcategories.
-        rebate = tax_unit.household(
+        rebate = tax_unit(
             "capped_insulation_air_sealing_and_ventilation_rebate", period
         )
         # Cap at zero in case they have a rebate from air sealing and ventilation
