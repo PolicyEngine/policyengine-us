@@ -16,7 +16,11 @@ class capped_insulation_air_sealing_and_ventilation_rebate(Variable):
         expenditures = add(
             household,
             period,
-            ["insulation_air_sealing_and_ventilation_expenditures"],
+            # NB: Separated because insulation also receives a tax credit.
+            [
+                "energy_efficiency_insulation_expenditures",
+                "air_sealing_and_ventilation_expenditures",
+            ],
         )
         cap = parameters(
             period
