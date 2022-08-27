@@ -26,14 +26,13 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
         )
         # NB: We assume that the credit is based on after-rebate expenditures,
         # where rebates are per-item before the total rebate cap is applied.
-        rebates = add(
-            tax_unit,
-            period,
-            [
-                "capped_heat_pump_rebate",
-                "capped_heat_pump_water_heater_rebate",
-            ],
+        heat_pump_rebate = tax_unit.household(
+            "capped_heat_pump_rebate", period
         )
+        heat_pump_water_heater_rebate = tax_unit.household(
+            "capped_heat_pump_water_heater_rebate", period
+        )
+        rebates = heat_pump_rebate + heat_pump_water_heater_rebate
         post_rebate_expenditure = pre_rebate_expenditure - rebates
         rate = p.rates.property
         uncapped = post_rebate_expenditure * rate
