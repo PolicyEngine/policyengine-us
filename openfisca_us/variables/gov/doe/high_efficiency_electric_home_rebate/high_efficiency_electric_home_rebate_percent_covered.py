@@ -11,4 +11,4 @@ class high_efficiency_electric_home_rebate_percent_covered(Variable):
     def formula(tax_unit, period, parameters):
         income_ami_ratio = tax_unit("tax_unit_income_ami_ratio", period)
         p = parameters(period).gov.doe.high_efficiency_electric_home_rebate
-        return p.percent_covered.calc(income_ami_ratio)
+        return p.percent_covered.calc(income_ami_ratio, right=True)
