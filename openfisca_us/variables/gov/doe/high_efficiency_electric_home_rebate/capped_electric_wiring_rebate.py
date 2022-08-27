@@ -10,7 +10,7 @@ class capped_electric_wiring_rebate(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        percent_covered = atx_unit(
+        percent_covered = tax_unit(
             "high_efficiency_electric_home_rebate_percent_covered", period
         )
         expenditures = tax_unit("electric_wiring_expenditures", period)
