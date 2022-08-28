@@ -1,5 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.gov.states.mo.tax.income_tax.mo_federal_income_tax_deduction import mo_federal_income_tax_deduction
 
 
 class mo_taxable_income(Variable):

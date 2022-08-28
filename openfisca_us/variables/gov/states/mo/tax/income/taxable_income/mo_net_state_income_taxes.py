@@ -11,7 +11,7 @@ class mo_net_state_income_taxes(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        adjustment_base_amount = parameters(period).gov.states.mo.tax.income.taxable_income.mo_salt_cap[filing_status]
+        adjustment_base_amount = parameters(period).gov.states.mo.tax.income.taxable_income.salt_cap[filing_status]
         
         #taxes/income
         state_and_local_sales_or_income_tax = tax_unit("state_and_local_sales_or_income_tax", period)

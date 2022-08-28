@@ -15,19 +15,20 @@ class mo_property_tax_credit_demographic_tests(Variable):
         #vars for age test
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        head_age_test = age_head >= 65
-        spouse_age_test = age_spouse >= 65
-        age_test = (head_age_test + spouse_age_test) >= 1
+        age_threshold = parameters(period).gov.states.mo.tax.credits.property_tax.age_threshold
+        elderly_head = age_head >= age_threshold
+        elderly_spouse = age_spouse >= age_threshold
+        age_test = elderly_head | elderly_spouse
 
         #vars for disabled test
         disabled_head = tax_unit("disabled_head", period)
         disabled_spouse = tax_unit("disabled_spouse", period)
-        disabled_test = (disabled_head + disabled_spouse) >= 1
+        disabled_test = disabled_head | disabled_spouse
 
         #vars for military disabled test
         military_disabled_head = tax_unit("military_disabled_head", period)
         military_disabled_spouse = tax_unit("military_disabled_spouse", period)
-        military_disabled_test = (military_disabled_head + military_disabled_spouse) >= 1
+        military_disabled_test = military_disabled_head | military_disabled_spouse
 
         #vars for surviving spouse benefits test
         #might need to check for only head? not sure how this would work in practice, could more than the head have suvivor benefits in a tax_unit?

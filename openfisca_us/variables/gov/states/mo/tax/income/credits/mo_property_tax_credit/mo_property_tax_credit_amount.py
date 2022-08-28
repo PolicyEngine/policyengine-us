@@ -1,5 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.gov.states.mo.tax.income.credits.mo_property_tax_credit.mo_property_tax_credit_public_assistance import mo_property_tax_credit_public_assistance
 
 
 class mo_property_tax_credit_demographic_tests(Variable):
@@ -22,11 +21,13 @@ class mo_property_tax_credit_demographic_tests(Variable):
         income_threshold = p.income_limits[rent_or_own][living_arrangement]
         meets_income_test = total_household_income <= income_threshold
 
+        person = tax_unit.members
+        pension_income = person("pension_income", period)
         rent = add(tax_unit, period, ["rent"])
         property_tax = tax_unit.household("real_estate_taxes", period)
         agi = tax_unit("adjusted_gross_income")
         benefits = tax_unit("mo_property_tax_credit_public_assistance", period)
-        total_household_income = agi + benefits
+        total_household_income = agi + benefits + pension_income
 
         placeholder_param = 'test'
         rent_total = min_(rent, 750)

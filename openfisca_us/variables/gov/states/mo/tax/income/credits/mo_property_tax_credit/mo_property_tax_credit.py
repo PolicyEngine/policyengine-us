@@ -15,10 +15,10 @@ class mo_property_tax_credit(Variable):
         demographic_qualification = tax_unit("mo_property_tax_credit_demographic_tests", period)
         
         #rent or property_tax test
-        any_housing_cost = tax_unit("mo_property_tax_credit_housing_payment_test", period)
-        housing_and_demographic_test = (any_housing_cost + demographic_qualification) == 2
+        any_housing_cost = tax_unit.household("pays_property_tax_or_rent", period)
+        
         
         #calculate credit amount
         credit = tax_unit("mo_property_tax_credit_amount", period)
         
-        return where(housing_and_demographic_test == 1, credit, 0)
+        return demographic_qualification * any_housing_cost * credit
