@@ -40,7 +40,7 @@ class il_personal_exemption_eligibility_status(Variable):
             & (
                 il_base_income
                 > personal_eligiblity_amounts[
-                    EligibilityStatus.PARTNER_INELIGIBLE
+                    "PARTNER_INELIGIBLE"
                 ]
             )
         ) | (
@@ -48,7 +48,7 @@ class il_personal_exemption_eligibility_status(Variable):
             & (claimable_count > 1)
             & (
                 il_base_income
-                > personal_eligiblity_amounts[EligibilityStatus.ELIGIBLE]
+                > personal_eligiblity_amounts["ELIGIBLE"]
             )
         )
 
@@ -59,7 +59,7 @@ class il_personal_exemption_eligibility_status(Variable):
             & (
                 il_base_income
                 > personal_eligiblity_amounts[
-                    EligibilityStatus.PARTNER_INELIGIBLE
+                    "PARTNER_INELIGIBLE"
                 ]
             )
         )
