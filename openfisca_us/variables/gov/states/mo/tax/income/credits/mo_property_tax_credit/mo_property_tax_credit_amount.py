@@ -1,4 +1,5 @@
 from openfisca_us.model_api import *
+from openfisca_us.variables.gov.states.mo.tax.income.credits.mo_property_tax_credit.mo_property_tax_credit_public_assistance import mo_property_tax_credit_public_assistance
 
 
 class mo_property_tax_credit_demographic_tests(Variable):
@@ -19,12 +20,12 @@ class mo_property_tax_credit_demographic_tests(Variable):
         living_arrangement = "SINGLE" if lives_separately > 0 else "JOINT"
         p = parameters(period).gov.states.mo.tax.credits.property_tax
         income_threshold = p.income_limits[rent_or_own][living_arrangement]
-        income_test = total_household_income <= income_threshold
+        meets_income_test = total_household_income <= income_threshold
 
         rent = add(tax_unit, period, ["rent"])
         property_tax = tax_unit.household("real_estate_taxes", period)
         agi = tax_unit("adjusted_gross_income")
-        benefits = tax_unit.spm_unit("spm_unit_benefits", period)
+        benefits = tax_unit("mo_property_tax_credit_public_assistance", period)
         total_household_income = agi + benefits
 
         placeholder_param = 'test'
