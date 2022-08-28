@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class mo_property_tax_credit_housing_payment_test(Variable):
     value_type = float
     entity = TaxUnit
@@ -13,4 +14,3 @@ class mo_property_tax_credit_housing_payment_test(Variable):
         rent = add(tax_unit, period, ["rent"])
         property_tax = tax_unit.household("real_estate_taxes", period)
         return rent + property_tax > 0
-        
