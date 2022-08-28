@@ -11,14 +11,16 @@ class mo_property_tax_credit_demographic_tests(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        # Currently not including railroad retirement or veterans benefits. 
-        rent_or_own = tax_unit("mo_property_tax_credit_rent_or_own", period)
+        # Currently not including railroad retirement or veterans benefits.
+        rents = tax_unit.household("rents", period)
+        cohabitates = tax_unit("lives_with_joint_filing_spouse", period)
+        p = parameters(period).gov.states.mo.tax.credits.property_tax
+        income_threshold = select([rents & cohabitates, rents & ~cohabitates,
+                                  ~rents & cohabitates, ~rents & ~cohabitates],
+                                  [p.rent_cohabitating, p.own_cohabitating,
+                                   p.rent_separate, p.own_cohabitating])
 
         # Determine if the tax unit head and spouse co-habitate
-        lives_with_joint_filing_spouse = tax_unit("lives_with_joint_filing_spouse", period)
-        living_arrangement = "SINGLE" if lives_with_joint_filing_spouse > 0 else "JOINT"
-        p = parameters(period).gov.states.mo.tax.credits.property_tax
-        income_threshold = p.income_limits[rent_or_own][living_arrangement]
         meets_income_test = total_household_income <= income_threshold
 
         person = tax_unit.members
