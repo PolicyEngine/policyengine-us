@@ -1,6 +1,8 @@
 from openfisca_us.model_api import *
 
 # TODO: Rename to something more specific, like
+
+
 class EligibilityStatus(Enum):
     ELIGIBLE = 1
     PARTNER_INELIGIBLE = 2
