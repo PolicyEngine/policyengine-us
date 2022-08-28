@@ -8,4 +8,4 @@ class k12_tuition_and_fees(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("tuition_and_fees")
+    formula = sum_of_variables(["tuition_and_fees"])
