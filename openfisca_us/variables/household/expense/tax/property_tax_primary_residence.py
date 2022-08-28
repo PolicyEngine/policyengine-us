@@ -8,5 +8,4 @@ class property_tax_primary_residence(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return tax_unit.sum(tax_unit.members("property_tax", period))
+    formula = sum_of_variables(["real_estate_taxes"])
