@@ -11,12 +11,12 @@ class mo_property_tax_credit_demographic_tests(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        #currently not including railroad retirement or veterans benefits. 
+        # Currently not including railroad retirement or veterans benefits. 
         rent_or_own = tax_unit("mo_property_tax_credit_rent_or_own", period)
 
-        #determine if the tax unit head and spouse co-habitate
-        lives_separately = tax_unit("lives_separately", period)
-        living_arrangement = "SINGLE" if lives_separately > 0 else "JOINT"
+        # Determine if the tax unit head and spouse co-habitate
+        lives_with_joint_filing_spouse = tax_unit("lives_with_joint_filing_spouse", period)
+        living_arrangement = "SINGLE" if lives_with_joint_filing_spouse > 0 else "JOINT"
         p = parameters(period).gov.states.mo.tax.credits.property_tax
         income_threshold = p.income_limits[rent_or_own][living_arrangement]
         meets_income_test = total_household_income <= income_threshold
@@ -28,13 +28,16 @@ class mo_property_tax_credit_demographic_tests(Variable):
         agi = tax_unit("adjusted_gross_income")
         benefits = tax_unit("mo_property_tax_credit_public_assistance", period)
         total_household_income = agi + benefits + pension_income
-
-        placeholder_param = 'test'
-        rent_total = min_(rent, 750)
         
-        property_tax_total = where(rent >= 1100, 1100, property_tax)
-        total_credit_basis = where((rent_total + property_tax_total >= 1100), 1100, (rent_total + property_tax_total))
+        rent_expense_limit = p.rental_expense_cap
+        rent_total = min_(rent, rent_expense_limit)
+        
+        property_tax_expense_limit = p.property_tax_expense_cap
+        property_tax_total = min_(property_tax, property_tax_expense_limit)
+
+        # Total credit basis comes from line 13 of MO-PTS, not in legislation, proscribes $1,100 cap just as property tax expense cap
+        total_credit_basis = where((rent_total + property_tax_total >= property_tax_expense_limit), property_tax_expense_limit, (rent_total + property_tax_total))
 
         minimum_base = p.minimum_base
         
-        #check if rent/property tax > 1100
+        # Check if rent/property tax > 1100

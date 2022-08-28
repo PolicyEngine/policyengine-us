@@ -1,6 +1,4 @@
 description: Minimum base for calculation of MO Property Tax Credit Schedule
-#for renting joint filers the amount is technically $27_200 at first but $2000 is subtracted due to
-#their particular status. $4000 is subtracted for owning joint filers. See Line 9 of MO-PTS.
 values:
   1997-01-01: 13_000
   2008-01-01: 14_300
@@ -10,5 +8,7 @@ metadata:
   name: mo_property_tax_credit_minimum_base
   label: MO Property Tax Credit Minimum Base
   reference:
-    - title: MO Rev Stat § 135.030 (2018)
-      href: https://law.justia.com/codes/missouri/2018/title-x/chapter-135/section-135.030/
+    - title: MO-1040 Book - Individual Income Tax Long Form, pg. 46-47
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
+    - title: MO Rev Stat § 135.030
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030

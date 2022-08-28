@@ -12,27 +12,26 @@ class mo_property_tax_credit_demographic_tests(Variable):
 
     def formula(tax_unit, period, parameters):
         ##Eligibility
-        #vars for age test
+        # Check for age eligiblity
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         age_threshold = parameters(period).gov.states.mo.tax.credits.property_tax.age_threshold
         elderly_head = age_head >= age_threshold
         elderly_spouse = age_spouse >= age_threshold
-        age_test = elderly_head | elderly_spouse
+        elderly_head_or_spouse = elderly_head | elderly_spouse
 
-        #vars for disabled test
+        # Check for disability eligibility
         disabled_head = tax_unit("disabled_head", period)
         disabled_spouse = tax_unit("disabled_spouse", period)
-        disabled_test = disabled_head | disabled_spouse
+        disabled_head_or_spouse = disabled_head | disabled_spouse
 
-        #vars for military disabled test
+        # Check for military disabled eligibility
         military_disabled_head = tax_unit("military_disabled_head", period)
         military_disabled_spouse = tax_unit("military_disabled_spouse", period)
-        military_disabled_test = military_disabled_head | military_disabled_spouse
+        military_disabled_head_or_spouse = military_disabled_head | military_disabled_spouse
 
-        #vars for surviving spouse benefits test
-        #might need to check for only head? not sure how this would work in practice, could more than the head have suvivor benefits in a tax_unit?
+        # Check for receipt of surviving spouse benefits
         surivor_benefits = tax_unit.members("social_security_survivors", period)
-        survivor_benefit_test = surivor_benefits > 0
+        receives_survivor_benefits = add(tax_unit, period, ["social_security_survivors"]) > 0
 
-        return (age_test + disabled_test + military_disabled_test + survivor_benefit_test) >= 1
+        return elderly_head_or_spouse | disabled_head_or_spouse | military_disabled_head_or_spouse | receives_survivor_benefits
