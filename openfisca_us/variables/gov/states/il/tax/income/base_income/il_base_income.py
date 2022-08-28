@@ -11,7 +11,7 @@ class il_base_income(Variable):
 
     def formula(tax_unit, period, parameters):
         return (
-            tax_unit("federal_agi", period)
+            tax_unit("adjusted_gross_income", period)
             + tax_unit("il_base_income_additions", period)
             - tax_unit("il_base_income_subtractions", period)
         )

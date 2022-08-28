@@ -11,6 +11,6 @@ class il_use_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         # Tiered amount if income below a threshold, otherwise a percentage of AGI.
-        agi = tax_unit("federal_agi", period)
+        agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).openfisca_us.gov.states.il.tax.income.use_tax
         return p.amount.calc(agi) + (p.rate.calc(agi) * agi)
