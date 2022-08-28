@@ -1,6 +1,4 @@
 from openfisca_us.model_api import *
-from openfisca_us.variables.gov.states.mo.tax.income.credits.mo_property_tax_credit_housing_payment_test import mo_property_tax_credit_housing_payment_test
-from openfisca_us.variables.gov.states.mo.tax.income.credits.mo_property_tax_credit_rent_or_own import mo_property_tax_credit_rent_or_own
 
 class mo_property_tax_credit(Variable):
     value_type = float

@@ -34,5 +34,3 @@ class mo_property_tax_credit_demographic_tests(Variable):
         minimum_base = parameters(period).gov.states.mo.tax.credits.mo_property_tax_credit_minimum_base
         maximum_upper_limit = parameters(period).gov.states.mo.tax.credits.mo_property_tax_credit_income_limits
         #check if rent/property tax > 1100
-
-        

@@ -11,7 +11,5 @@ class mo_property_tax_credit_rent_or_own(Variable):
 
     def formula(tax_unit, period, parameters):
         rent = add(tax_unit, period, ["rent"])
-        property_tax = tax_unit.household("real_estate_taxes", period)
-        #determine which income test to use. 1 is "OWNER", 0 is "RENTER"
-        
+        property_tax = tax_unit.household("real_estate_taxes", period)      
         return where(property_tax > rent, 'OWNER', 'RENTER')
