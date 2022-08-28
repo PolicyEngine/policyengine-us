@@ -1,13 +1,13 @@
 from openfisca_us.model_api import *
 
-
+# TODO: Rename to something more specific, like 
 class EligibilityStatus(Enum):
     ELIGIBLE = 1
     PARTNER_INELIGIBLE = 2
     NOT_ELIGIBLE = 3
 
 
-class il_is_personal_exemption_eligible(Variable):
+class il_personal_exemption_eligibility_status(Variable):
     value_type = Enum
     possible_values = EligibilityStatus
     default_value = EligibilityStatus.NOT_ELIGIBLE

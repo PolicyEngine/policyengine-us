@@ -10,7 +10,7 @@ class il_property_tax_credit(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        property_tax = tax_unit("il_property_tax", period)
+        property_tax = tax_unit("property_tax_primary_residence", period)
         qbid = tax_unit("qualified_business_income_deduction", period)
         income_tax_before_credits = tax_unit(
             "il_income_tax_before_nonrefundable_credits", period

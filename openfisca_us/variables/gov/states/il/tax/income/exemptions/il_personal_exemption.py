@@ -10,7 +10,7 @@ class il_personal_exemption(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        il_is_personal_exemption_eligible = tax_unit("il_is_personal_exemption_eligible", period)
+        il_is_personal_exemption_eligible = tax_unit("il_personal_exemption_eligibility_status", period)
         personal_exemption_amounts = parameters(
             period
         ).gov.states.il.tax.income.exemption.personal
