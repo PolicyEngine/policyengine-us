@@ -20,7 +20,7 @@ class mo_property_tax_credit_demographic_tests(Variable):
         living_arrangement = "SINGLE" if lives_separately > 0 else "JOINT"
         p = parameters(period).gov.states.mo.tax.credits.property_tax
         income_threshold = p.income_limits[rent_or_own][living_arrangement]
-        meets_income_test = total_household_income <= income_threshold
+        meets_income_test = total_household_income <= income_limit
 
         rent = add(tax_unit, period, ["rent"])
         property_tax = tax_unit.household("real_estate_taxes", period)
