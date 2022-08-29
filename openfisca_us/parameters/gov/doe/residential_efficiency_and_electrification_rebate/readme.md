@@ -1,0 +1,13 @@
+- amount
+  - cap
+    - high.yaml (scale)
+    - medium.yaml (scale)
+    - low?
+  - percent
+    - high.yaml (scale)
+    - medium.yaml (scale)
+    - low.yaml (scale)
+- threshold
+  - high.yaml: 35%
+  - medium.yaml: 20%
+  - low: 15%

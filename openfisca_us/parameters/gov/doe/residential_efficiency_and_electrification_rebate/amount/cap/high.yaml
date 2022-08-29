@@ -1,15 +1,23 @@
-description: The US caps residential efficiency and electrification program rebates at this amount per year for over 20% and under 35% retrofits, households over 80% AMI.
-values:
-  0000-01-01: 0
-  # Inflation Reduction Act
-  2023-01-01: 2_000
-  2032-01-01: 0
+description: The US caps residential efficiency and electrification program rebates at this amount per year for for retrofits achieving over 35% energy savings by income AMI ratio.
+brackets:
+  - threshold:
+      0000-01-01: -.inf
+    rate:
+      0000-01-01: 0
+      2023-01-01: 8_000
+      2031-10-01: 0
+  - threshold:
+      0000-01-01: 0.8
+    rate:
+      0000-01-01: 0
+      2023-01-01: 4_000
+      2031-10-01: 0
 metadata:
-  unit: currency-USD
-  name: residential_efficiency_and_electrification_rebate_cap_retrofit_20_35
-  label: Residential Efficiency and Electrification rebate cap for Retrofit over 20% and under 35%.
+  threshold_unit: /1
+  rate_unit: currency_USD
+  type: single_amount
+  name: residential_efficiency_electrification_rebate_cap_high
+  label: Residential efficiency and electrification rebate cap for retrofits that achieve modeled energy savings of at least the high threshold, by income to AMI ratio.
   reference:
     - title: Inflation Reduction Act, part 2, Section 50121 (c)
       href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=587
-
-  
