@@ -15,9 +15,16 @@ class residential_efficiency_and_electrification_rebate(Variable):
         income_ami = tax_unit("tax_unit_income_ami_ratio", period)
         high_cap = p.amount.cap.high.calc(income_ami)
         medium_cap = p.amount.cap.medium.calc(income_ami)
+        # Low cap is a dollar amount per given percentage reduction of energy use
+        # per dwelling unit for the average home in the state. 
+        average_energy_use_per_home_in_state = tax_unit.household("average_energy_use_per_home_in_state", period)
+        low_cap_per_percent = p.amount.cap.low.amount.calc(income_ami) / p.amount.cap.low.percent
+        low_cap_per_kwh_reduction = low_cap_per_percent * average_energy_use_per_home_in_state
+        low_cap = low_cap_per_kwh_reduction * savings
+        # Uncapped amount is a percent of project costs.
         percent = p.amount.percent.calc(income_ami)
         uncapped = percent * expenditures
         cap = select([savings >= p.threshold.high, 
             savings >= p.threshold.medium, savings >= p.threshold.low],
-            [high_cap, medium_cap, 0], default = 0)
+            [high_cap, medium_cap, low_cap], default = 0)
         return min_(uncapped, cap)
