@@ -13,5 +13,5 @@ class mo_income_tax(Variable):
     def formula(tax_unit, period, parameters):
         mo_income_tax_before_credits = tax_unit("mo_income_tax_before_credits", period)
         #mo_property_tax_credit is refundable, per pg.17 of: https://dor.mo.gov/forms/4711_2021.pdf
-        mo_property_tax_credit = tax_unit("mo_property_tax_credit", period)
-        return mo_income_tax_before_credits - mo_property_tax_credit
+        #mo_property_tax_credit = tax_unit("mo_property_tax_credit", period)
+        return mo_income_tax_before_credits #- mo_property_tax_credit

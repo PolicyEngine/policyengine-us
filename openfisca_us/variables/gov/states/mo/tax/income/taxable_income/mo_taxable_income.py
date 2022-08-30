@@ -1,3 +1,4 @@
+from numpy import float64
 from openfisca_us.model_api import *
 
 
@@ -21,4 +22,4 @@ class mo_taxable_income(Variable):
         mo_itemized_deductions = tax_unit("mo_itemized_deductions", period)
         
         # NB: The federal income tax deduction applies regardless of itemization.
-        return (mo_agi - where(tax_unit_itemizes,mo_itemized_deductions, mo_standard_deduction ) - mo_federal_income_tax_deduction)
+        return (mo_agi - float64(where(tax_unit_itemizes,mo_itemized_deductions, mo_standard_deduction)) - mo_federal_income_tax_deduction)
