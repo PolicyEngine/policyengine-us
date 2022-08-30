@@ -7,9 +7,9 @@ class mo_itemized_deductions(Variable):
     label = "Sum of Federal itemized deductions applicable to MO taxable income calculation"
     unit = USD
     definition_period = YEAR
-    tax_ref = "https://dor.mo.gov/forms/MO-A_2021.pdf"
-    tax_ref2 = "https://dor.mo.gov/forms/4711_2021.pdf"
-    leg_ref = "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212"
+    reference = "https://dor.mo.gov/forms/MO-A_2021.pdf"
+    # tax_ref2 = "https://dor.mo.gov/forms/4711_2021.pdf"
+    # leg_ref = "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212"
 
     def formula(tax_unit, period, parameters):
         total_itemized_federal_deductions = add(tax_unit, period, ["casualty_loss_deduction", "charitable_deduction", "interest_deduction", "itemized_taxable_income_deductions", "medical_expense_deduction", "misc_deduction"])
