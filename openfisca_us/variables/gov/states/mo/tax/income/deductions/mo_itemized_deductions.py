@@ -18,4 +18,4 @@ class mo_itemized_deductions(Variable):
         medicare_tax = person("employee_medicare_tax", period)
         self_employment_tax = person("self_employment_tax", period)
         net_state_income_taxes = tax_unit("mo_net_state_income_taxes", period)
-        return sum_of_variables(total_itemized_federal_deductions, social_security_tax, medicare_tax, self_employment_tax) -  net_state_income_taxes
+        return sum_of_variables(["total_itemized_federal_deductions", "social_security_tax", "medicare_tax", "self_employment_tax"]) -  net_state_income_taxes
