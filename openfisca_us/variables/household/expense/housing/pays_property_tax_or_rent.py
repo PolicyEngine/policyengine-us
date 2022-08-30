@@ -11,5 +11,5 @@ class pays_property_tax_or_rent(Variable):
 
     def formula(tax_unit, period, parameters):
         rent = add(tax_unit, period, ["rent"])
-        property_tax = tax_unit.household("real_estate_taxes", period)
+        property_tax = tax_unit.members("real_estate_taxes", period)
         return (rent + property_tax) > 0
