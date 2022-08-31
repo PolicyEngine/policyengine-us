@@ -19,4 +19,5 @@ class basic_income(Variable):
             tax_unit_phase_out / tax_unit_basic_income,
             0,
         )
-        return basic_income * (1 - percent_reduction)
+        eligible = tax_unit("basic_income_eligible", period)
+        return basic_income * (1 - percent_reduction) * eligible
