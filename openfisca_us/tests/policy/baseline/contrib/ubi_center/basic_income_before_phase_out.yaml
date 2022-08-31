@@ -1,0 +1,15 @@
+- name: $10,000 older adult BI and $5,000 young child BI.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.amount_by_age[3].amount: 10_000
+    contrib.ubi_center.basic_income.amount_by_age[0].amount: 5_000
+    people:
+      adult:
+        age: 26
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+  output:
+    basic_income_before_phase_out: [10_000, 5_000]
