@@ -22,7 +22,7 @@ class residential_efficiency_and_electrification_rebate(Variable):
         )
         current_kwh = tax_unit.household("current_home_energy_use", period)
         savings_pct = savings_kwh / current_kwh
-        income_ami = tax_unit("tax_unit_income_ami_ratio", period)
+        income_ami = tax_unit.household("household_income_ami_ratio", period)
         high_cap = p.amount.cap.high.calc(income_ami)
         medium_cap = p.amount.cap.medium.calc(income_ami)
         # Low cap is a dollar amount per given percentage reduction of energy use
