@@ -2,7 +2,14 @@
   period: 2022
   absolute_error_margin: 1
   input:
-    basic_income_before_phase_out: 15_000
-    basic_income_phase_out: 5_000
+    people:
+      adult:
+        basic_income_before_phase_out: 10_000
+      child:
+        basic_income_before_phase_out: 5_000
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+        basic_income_phase_out: 5_000
   output:
     basic_income: [6_667, 3_333]
