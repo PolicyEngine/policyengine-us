@@ -1,7 +1,9 @@
 from openfisca_us.model_api import *
 
 
-class residential_efficiency_and_electrification_retrofit_energy_savings(Variable):
+class residential_efficiency_and_electrification_retrofit_energy_savings(
+    Variable
+):
     value_type = float
     entity = TaxUnit
     label = "Modeled energy system savings from a residential efficiency and electrification retrofit"

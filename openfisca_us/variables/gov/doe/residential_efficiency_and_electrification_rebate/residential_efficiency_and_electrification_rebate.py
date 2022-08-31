@@ -9,24 +9,44 @@ class residential_efficiency_and_electrification_rebate(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.doe.residential_efficiency_and_electrification_rebate
-        expenditures = tax_unit("residential_efficiency_and_electrification_retrofit_expenditures", period)
-        savings_kwh = tax_unit("residential_efficiency_and_electrification_retrofit_energy_savings", period)
+        p = parameters(
+            period
+        ).gov.doe.residential_efficiency_and_electrification_rebate
+        expenditures = tax_unit(
+            "residential_efficiency_and_electrification_retrofit_expenditures",
+            period,
+        )
+        savings_kwh = tax_unit(
+            "residential_efficiency_and_electrification_retrofit_energy_savings",
+            period,
+        )
         current_kwh = tax_unit.household("current_home_energy_use", period)
         savings_pct = savings_kwh / current_kwh
         income_ami = tax_unit("tax_unit_income_ami_ratio", period)
         high_cap = p.amount.cap.high.calc(income_ami)
         medium_cap = p.amount.cap.medium.calc(income_ami)
         # Low cap is a dollar amount per given percentage reduction of energy use
-        # per dwelling unit for the average home in the state. 
-        average_energy_use_per_home_in_state = tax_unit.household("average_energy_use_per_home_in_state", period)
-        low_cap_per_percent = p.amount.cap.low.amount.calc(income_ami) / p.amount.cap.low.percent
-        low_cap_per_kwh_reduction = low_cap_per_percent * average_energy_use_per_home_in_state
+        # per dwelling unit for the average home in the state.
+        average_energy_use_per_home_in_state = tax_unit.household(
+            "average_energy_use_per_home_in_state", period
+        )
+        low_cap_per_percent = (
+            p.amount.cap.low.amount.calc(income_ami) / p.amount.cap.low.percent
+        )
+        low_cap_per_kwh_reduction = (
+            low_cap_per_percent * average_energy_use_per_home_in_state
+        )
         low_cap = low_cap_per_kwh_reduction * savings_kwh
         # Uncapped amount is a percent of project costs.
         percent = p.amount.percent.calc(income_ami)
         uncapped = percent * expenditures
-        cap = select([savings_pct >= p.threshold.high, 
-            savings_pct >= p.threshold.medium, savings_pct >= p.threshold.low],
-            [high_cap, medium_cap, low_cap], default = 0)
+        cap = select(
+            [
+                savings_pct >= p.threshold.high,
+                savings_pct >= p.threshold.medium,
+                savings_pct >= p.threshold.low,
+            ],
+            [high_cap, medium_cap, low_cap],
+            default=0,
+        )
         return min_(uncapped, cap)
