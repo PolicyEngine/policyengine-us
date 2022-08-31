@@ -11,41 +11,55 @@ class ny_cdcc_rate(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
+        # Under the law (s. 606(1)), the NY CDCC defined at its core as:
+        # (federal CDCC) x (some percentage)
+        # There is also another important part: s. (1-b), which amends this to:
+        # (federal CDCC) x (some percentage) x (some other percentage based on NY AGI)
+        # The last complication is that in (1) people with income under $40,000 are
+        # treated differently than people with income over $40,000.
+
+        # First, we'll calculate the first percentage. We calculate the percentage
+        # for people under $40k, and then the percentage if over $40k, and then use the
+        # correct one with a final check.
+
+        # The core logic for both income groups is the same:
+        # percentage = "A%" + (greater of: $B or ($C - NY AGI)) / $D
+        # where A, B, C and D are parameters set by law. The law doesn't give
+        # any intuitive names for these parameters.
+
         ny_agi = tax_unit("ny_agi", period)
-        federal_rate = tax_unit("cdcc_rate", period)
-
-        ny_cdcc = parameters(period).gov.states.ny.tax.income.credits.cdcc
-        first_threshold = ny_cdcc.multiplier.phase_out.first.start
-        second_threshold = ny_cdcc.multiplier.phase_out.first.end
-        below_main_phase_out = ny_agi <= first_threshold
-        in_main_phase_out = ny_agi > first_threshold
-        in_second_phase_out = ny_agi > second_threshold
-        percent_along_first_phase_out = (ny_agi - first_threshold) / (
-            second_threshold - first_threshold
+        percentage = parameters(
+            period
+        ).gov.states.ny.tax.income.credits.cdcc.percentage
+        main = percentage.main
+        main_numerator = main.fraction.numerator
+        fraction = (
+            max_(0, min_(main_numerator.min, main_numerator.top - ny_agi))
+            / main.fraction.denominator
         )
-        multiplier_max = ny_cdcc.multiplier.max
-        # Interpolate between the max and 1
-        interpolated_first_phase_out_rate = multiplier_max + (
-            percent_along_first_phase_out * (1 - multiplier_max)
-        )
-        second_phase_out_rate = ny_cdcc.multiplier.phase_out.second.rate
-        multiplier_floor = ny_cdcc.multiplier.addition
-        additional_multiplier = ny_cdcc.multiplier.additional_multiplier.calc(ny_agi)
+        main_percentage = main.base_percentage + fraction * main.multiplier
 
-        ny_multiplier = additional_multiplier * select(
-            [
-                below_main_phase_out,
-                in_main_phase_out,
-                in_second_phase_out,
-            ],
-            [
-                multiplier_max,
-                interpolated_first_phase_out_rate,
+        alternate = percentage.alternate
+        alternate_numerator = alternate.fraction.numerator
+        fraction = (
+            max_(
+                0,
                 min_(
-                    multiplier_floor,
-                    1 - second_phase_out_rate * ny_agi / 1_000,
+                    alternate_numerator.min, alternate_numerator.top - ny_agi
                 ),
-            ],
+            )
+            / alternate.fraction.denominator
+        )
+        alternate_percentage = (
+            alternate.base_percentage + fraction * alternate.multiplier
         )
 
-        return federal_rate * ny_multiplier
+        ny_percentage = where(
+            ny_agi < alternate.max_agi,
+            alternate_percentage,
+            main_percentage,
+        )
+
+        s_1_b_multiplier = percentage.multiplier.calc(ny_agi)
+
+        return ny_percentage * s_1_b_multiplier
