@@ -30,3 +30,21 @@
   output:
     ssi_countable_income: 116 * 12
     ssi: 678 * 12 # 794 - 116
+
+- name: Single parent of blind child with $2,000 monthly earnings.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 2_000 * 12
+      child:
+        age: 10
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    # This is what we currently produce ($744.50 * 12).
+    # TODO: Check what it should be by hand.
+    ssi: [0, 8_934]
