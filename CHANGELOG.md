@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.136.0] - 2022-09-01 11:46:59
+
+### Added
+
+- NY CDCC.
+
+## [0.135.1] - 2022-09-01 00:47:34
+
+### Fixed
+
+- Breakdown format in basic income parameters.
+
+## [0.135.0] - 2022-08-31 23:58:28
+
+### Added
+
+- AGI limit for basic income.
+- Dollar-range basic income phase-out option.
+
+## [0.134.0] - 2022-08-27 20:34:55
+
+### Changed
+
+- Apply energy efficient home improvement tax credits to post-rebate expenditures.
+
+## [0.133.0] - 2022-08-27 17:41:38
+
+### Changed
+
+- Updated Residential Clean Energy Credit for the Inflation Reduction Act.
+
 ## [0.132.0] - 2022-08-25 00:48:25
 
 ### Added
@@ -1709,6 +1740,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.136.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.1...0.136.0
+[0.135.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.0...0.135.1
+[0.135.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.134.0...0.135.0
+[0.134.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.133.0...0.134.0
+[0.133.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.132.0...0.133.0
 [0.132.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.131.0...0.132.0
 [0.131.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.130.0...0.131.0
 [0.130.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.2...0.130.0
