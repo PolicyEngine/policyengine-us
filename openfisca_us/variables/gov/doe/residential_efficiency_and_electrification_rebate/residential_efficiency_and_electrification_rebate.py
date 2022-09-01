@@ -30,13 +30,13 @@ class residential_efficiency_and_electrification_rebate(Variable):
         average_home_energy_use_in_state = tax_unit.household(
             "average_home_energy_use_in_state", period
         )
-        low_cap_per_percent = (
+        low_cap_per_100_percent = (
             p.cap.low.amount.calc(income_ami) / p.cap.low.percent
         )
         low_cap_per_kwh_reduction = (
-            low_cap_per_percent * average_home_energy_use_in_state
+            low_cap_per_100_percent / average_home_energy_use_in_state
         )
-        low_cap = low_cap_per_kwh_reduction * savings_pct
+        low_cap = low_cap_per_kwh_reduction * savings_kwh
         # Uncapped amount is a percent of project costs.
         percent = p.percent.calc(income_ami)
         uncapped = percent * expenditures
