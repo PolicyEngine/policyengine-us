@@ -4,17 +4,19 @@
   input:
     filing_status: SINGLE
     state_and_local_sales_or_income_tax: 0
+    state_income_tax: 0
     local_income_tax: 0
     state_code: MO
   output:
     mo_net_state_income_taxes: 0.0
 
-- name:  $8999 MO taxable income
+- name: $13,000 state/local income/sales tax, 2,000 local earnings tax
   period: 2022
   absolute_error_margin: 0.01
   input:
     filing_status: SINGLE
     state_and_local_sales_or_income_tax: 13_000
+    state_income_tax: 11_000
     local_income_tax: 2_000
     state_code: MO
   output:
