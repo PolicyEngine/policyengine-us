@@ -15,11 +15,17 @@ class mo_taxable_income(Variable):
         # MO agi is defined as federal_agi + mo_additions - mo_subtractions. Since there are no subtractions
         # or additions of note that we model at this time, mo_agi = federal_agi
         mo_agi = tax_unit("adjusted_gross_income", period)
-        mo_federal_income_tax_deduction = tax_unit("mo_federal_income_tax_deduction", period)
+        mo_federal_income_tax_deduction = tax_unit(
+            "mo_federal_income_tax_deduction", period
+        )
 
         # MO standard deduction is set equal to the Federal standard deduction https://revisor.mo.gov/main/OneSection.aspx?section=143.131
         mo_standard_deduction = tax_unit("standard_deduction", period)
         mo_itemized_deductions = tax_unit("mo_itemized_deductions", period)
-        mo_itemized_or_standard = where(tax_unit_itemizes,mo_itemized_deductions, mo_standard_deduction)
+        mo_itemized_or_standard = where(
+            tax_unit_itemizes, mo_itemized_deductions, mo_standard_deduction
+        )
         # NB: The federal income tax deduction applies regardless of itemization.
-        return (mo_agi - mo_itemized_or_standard - mo_federal_income_tax_deduction)
+        return (
+            mo_agi - mo_itemized_or_standard - mo_federal_income_tax_deduction
+        )
