@@ -1,0 +1,30 @@
+description: Description
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 80_650
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 215_400
+    amount:
+      2022-01-01: 526
+  - threshold:
+      2022-01-01: 1_077_550
+    amount:
+      2022-01-01: 1_646
+  - threshold:
+      2022-01-01: 5_000_000
+    amount:
+      2022-01-01: 31_817
+  - threshold:
+      2022-01-01: 25_000_000
+    amount:
+      2022-01-01: 64_317
+
+metadata:
+  unit: currency-USD
+  type: marginal_amount
