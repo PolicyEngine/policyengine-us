@@ -40,6 +40,8 @@ class residential_efficiency_and_electrification_rebate(Variable):
         # Uncapped amount is a percent of project costs.
         percent = p.percent.calc(income_ami)
         uncapped = percent * expenditures
+        print(savings_pct)
+        print(uncapped)
         cap = select(
             [
                 savings_pct >= p.threshold.high,

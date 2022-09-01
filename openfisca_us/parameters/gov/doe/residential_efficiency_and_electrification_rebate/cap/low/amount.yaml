@@ -2,19 +2,19 @@ description: The US caps residential efficiency and electrification program reba
 brackets:
   - threshold:
       0000-01-01: -.inf
-    rate:
+    amount:
       0000-01-01: 0
       2023-01-01: 4_000
       2031-10-01: 0
   - threshold:
       0000-01-01: 0.8
-    rate:
+    amount:
       0000-01-01: 0
       2023-01-01: 2_000
       2031-10-01: 0
 metadata:
   threshold_unit: /1
-  rate_unit: currency_USD
+  amount_unit: currency_USD
   type: single_amount
   name: residential_efficiency_electrification_rebate_cap_low_amount
   label: Residential efficiency and electrification rebate cap for retrofits that achieve modeled energy savings under the medium threshold.
