@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class average_energy_use_per_home_in_state(Variable):
+class average_home_energy_use_in_state(Variable):
     value_type = float
     entity = Household
     definition_period = YEAR
