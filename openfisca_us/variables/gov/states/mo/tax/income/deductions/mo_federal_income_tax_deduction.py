@@ -21,5 +21,5 @@ class mo_federal_income_tax_deduction(Variable):
         federal_income_tax_deduction_amount = federal_tax * rate
 
         federal_income_tax_deduction_cap = parameters(period).gov.states.mo.tax.income.deductions.mo_federal_income_tax_deduction_caps[filing_status]        
-        #min_(federal_income_tax_deduction_amount, federal_income_tax_deduction_cap)
-        return federal_tax
+        
+        return min_(federal_income_tax_deduction_amount, federal_income_tax_deduction_cap)

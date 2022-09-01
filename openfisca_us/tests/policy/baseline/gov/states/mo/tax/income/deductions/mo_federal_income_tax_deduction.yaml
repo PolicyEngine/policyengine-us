@@ -5,6 +5,7 @@
     adjusted_gross_income: 1_000
     income_tax: 0
     filing_status: SINGLE
+    state_code: MO
   output:
     mo_federal_income_tax_deduction: 0.0
 
@@ -15,5 +16,6 @@
     adjusted_gross_income: 30_000
     income_tax: 1_840
     filing_status: SINGLE
+    state_code: MO
   output:
     mo_federal_income_tax_deduction: 460
