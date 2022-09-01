@@ -36,12 +36,10 @@ class residential_efficiency_and_electrification_rebate(Variable):
         low_cap_per_kwh_reduction = (
             low_cap_per_percent * average_home_energy_use_in_state
         )
-        low_cap = low_cap_per_kwh_reduction * savings_kwh
+        low_cap = low_cap_per_kwh_reduction * savings_pct
         # Uncapped amount is a percent of project costs.
         percent = p.percent.calc(income_ami)
         uncapped = percent * expenditures
-        print(savings_pct)
-        print(uncapped)
         cap = select(
             [
                 savings_pct >= p.threshold.high,
