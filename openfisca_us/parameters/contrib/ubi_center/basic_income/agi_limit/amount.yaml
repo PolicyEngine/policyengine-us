@@ -1,4 +1,4 @@
-description: The basic income phases out for adjusted gross income above this value.
+description: Tax units are eligible for basic income payments unless their adjusted gross income exceeds this threshold.
 SINGLE:
   0000-01-01: 0
 JOINT:
@@ -12,7 +12,7 @@ WIDOW:
 metadata:
   unit: currency-USD
   period: year
-  name: bi_phase_out_threshold
-  label: Basic income phase-out threshold
+  name: bi_agi_limit_amount
+  label: Basic income AGI limit
   breakdown:
     - filing_status
