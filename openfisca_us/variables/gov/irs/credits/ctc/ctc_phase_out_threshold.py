@@ -9,6 +9,6 @@ class ctc_phase_out_threshold(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        ctc = parameters(period).irs.credits.ctc
+        ctc = parameters(period).gov.irs.credits.ctc
         filing_status = tax_unit("filing_status", period)
-        return ctc.phaseout.threshold[filing_status]
+        return ctc.phase_out.threshold[filing_status]
