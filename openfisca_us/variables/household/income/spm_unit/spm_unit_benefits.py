@@ -25,6 +25,6 @@ class spm_unit_benefits(Variable):
             # Contributed.
             "basic_income",
             "high_efficiency_electric_home_rebate",
-            "residential_efficiency_and_electrification_rebate",
+            "residential_efficiency_electrification_rebate",
         ]
     )
