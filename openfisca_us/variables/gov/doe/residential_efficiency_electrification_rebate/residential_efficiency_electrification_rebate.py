@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class residential_efficiency_and_electrification_rebate(Variable):
+class residential_efficiency_electrification_rebate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Residential efficiency and electrification rebate"
