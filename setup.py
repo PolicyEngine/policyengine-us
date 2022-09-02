@@ -30,7 +30,7 @@ setup(
         "h5py",
         "microdf_python",
         "OpenFisca-Core[web-api] >= 35.0.0",
-        "OpenFisca-Tools>=0.13.3,<1.0.0",
+        "OpenFisca-Tools>=0.13.6,<1.0.0",
         "pandas",
         "pathlib",
         "pytest",
