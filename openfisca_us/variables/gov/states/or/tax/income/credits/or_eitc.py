@@ -9,7 +9,7 @@ class or_eitc(Variable):
     definition_period = YEAR
     reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=18",
-        "https://www.oregonlegislature.gov/bills_laws/ors/ors315.html" # Subsection 315.266
+        "https://www.oregonlegislature.gov/bills_laws/ors/ors315.html",  # Subsection 315.266
     )
     defined_for = StateCode.OR
 
@@ -24,5 +24,7 @@ class or_eitc(Variable):
         # Re-aggregate to the tax unit level.
         has_young_child = tax_unit.any(young_child)
         # Multiply by the relevant factor.
-        rate = where(has_young_child, p.match.has_young_child, p.match.no_young_child)
+        rate = where(
+            has_young_child, p.match.has_young_child, p.match.no_young_child
+        )
         return eitc * rate
