@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.137.0] - 2022-09-02 00:53:29
+
+### Changed
+
+- Apply residential efficiency and electrifaction rebates to perfromance based retrofit expenditures.
+
 ## [0.136.0] - 2022-09-01 11:46:59
 
 ### Added
@@ -1740,6 +1746,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.137.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.136.0...0.137.0
 [0.136.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.1...0.136.0
 [0.135.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.0...0.135.1
 [0.135.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.134.0...0.135.0
