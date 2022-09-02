@@ -1,0 +1,11 @@
+description: Filers with AGI over this limit pay a flat rate on taxable income.
+values:
+  2022-01-01: 25_000_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ny_sup_agi_limit_max
+  label: NY State supplemental tax high-income AGI limit
+  reference:
+    - title: Section 601 Imposition of tax (d-4)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

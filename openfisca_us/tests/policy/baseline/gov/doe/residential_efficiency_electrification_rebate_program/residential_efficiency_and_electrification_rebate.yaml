@@ -1,0 +1,66 @@
+- name: 50% for over 80% of AMI, energy savings over 35%, capped at $4,000.
+  period: 2023
+  input:
+    residential_efficiency_electrification_retrofit_expenditures : 10_000
+    residential_efficiency_electrification_retrofit_energy_savings: 50
+    current_home_energy_use: 100
+    household_income_ami_ratio: 1
+  output:
+    residential_efficiency_electrification_rebate: 4_000
+
+- name: 50% for over 80% of AMI, energy savings over 35%, below cap.
+  period: 2023
+  input:
+    residential_efficiency_electrification_retrofit_expenditures : 7_000
+    residential_efficiency_electrification_retrofit_energy_savings: 50
+    current_home_energy_use: 100
+    household_income_ami_ratio: 1
+  output:
+    residential_efficiency_electrification_rebate: 3_500
+
+- name: 50% for over 80% of AMI, energy savings of 15%, below cap. $100 per 1% savings relative to average in state.
+  period: 2023
+  input:
+    residential_efficiency_electrification_retrofit_expenditures: 7_000
+    residential_efficiency_electrification_retrofit_energy_savings: 15
+    current_home_energy_use: 100
+    average_home_energy_use_in_state: 100
+    household_income_ami_ratio: 1
+  output:
+    residential_efficiency_electrification_rebate: 1_500
+
+
+- name: 50% for over 80% of AMI, energy savings of 15%, below cap. $100 per 1% savings relative to average in state.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    residential_efficiency_electrification_retrofit_expenditures: 7_000
+    residential_efficiency_electrification_retrofit_energy_savings: 19
+    current_home_energy_use: 100
+    average_home_energy_use_in_state: 100
+    household_income_ami_ratio: 1
+  output:
+    residential_efficiency_electrification_rebate: 1_900
+
+
+- name: 50% for over 80% of AMI, energy savings of 15%, below cap. $100 per 1% savings relative to average in state.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    residential_efficiency_electrification_retrofit_expenditures: 2_000
+    residential_efficiency_electrification_retrofit_energy_savings: 19
+    current_home_energy_use: 100
+    average_home_energy_use_in_state: 100
+    household_income_ami_ratio: 1
+  output:
+    residential_efficiency_electrification_rebate: 1_000
+
+- name: 80% for under 80% of AMI, energy savings 20-35%, capped at $4,000.
+  period: 2023
+  input:
+    residential_efficiency_electrification_retrofit_expenditures : 10_000
+    residential_efficiency_electrification_retrofit_energy_savings: 30
+    current_home_energy_use: 100
+    household_income_ami_ratio: 0.7
+  output:
+    residential_efficiency_electrification_rebate: 4_000

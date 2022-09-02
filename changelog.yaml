@@ -1365,3 +1365,85 @@
     added:
     - Taxable income deductions for NY State tax.
   date: 2022-08-10 12:48:17
+- bump: minor
+  changes:
+    added:
+    - SSTB business variable.
+  date: 2022-08-10 20:37:56
+- bump: patch
+  changes:
+    changed:
+    - Adjust logic for Washington Working Families Tax Credit based on recent legislation.
+  date: 2022-08-12 13:45:51
+- bump: patch
+  changes:
+    fixed:
+    - Use Mac version of taxsim.
+  date: 2022-08-12 17:54:09
+- bump: patch
+  changes:
+    changed:
+    - Formatting improvements in documentation.
+  date: 2022-08-13 01:27:00
+- bump: minor
+  changes:
+    added:
+    - Nonbusiness energy property credit.
+  date: 2022-08-17 05:44:08
+- bump: patch
+  changes:
+    added:
+    - 2022 value of EITC joint bonus for couples without children.
+  date: 2022-08-17 15:46:46
+- bump: patch
+  changes:
+    fixed:
+    - Don't reduce CTC by more than the maximum in 2021.
+  date: 2022-08-18 09:15:19
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania income tax before forgiveness.
+  date: 2022-08-18 17:24:10
+- bump: minor
+  changes:
+    added:
+    - Energy efficient home improvements credit post-Inflation Reduction Act.
+  date: 2022-08-23 04:58:33
+- bump: minor
+  changes:
+    added:
+    - High Efficiency Electric Home Rebate Program.
+  date: 2022-08-25 00:48:25
+- bump: minor
+  changes:
+    changed:
+    - Updated Residential Clean Energy Credit for the Inflation Reduction Act.
+  date: 2022-08-27 17:41:38
+- bump: minor
+  changes:
+    changed:
+    - Apply energy efficient home improvement tax credits to post-rebate expenditures.
+  date: 2022-08-27 20:34:55
+- bump: minor
+  changes:
+    added:
+    - AGI limit for basic income.
+    - Dollar-range basic income phase-out option.
+  date: 2022-08-31 23:58:28
+- bump: patch
+  changes:
+    fixed:
+    - Breakdown format in basic income parameters.
+  date: 2022-09-01 00:47:34
+- bump: minor
+  changes:
+    added:
+    - NY CDCC.
+  date: 2022-09-01 11:46:59
+- bump: minor
+  changes:
+    changed:
+    - Apply residential efficiency and electrifaction rebates to perfromance based
+      retrofit expenditures.
+  date: 2022-09-02 00:53:29

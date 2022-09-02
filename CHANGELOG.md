@@ -5,6 +5,103 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.137.0] - 2022-09-02 00:53:29
+
+### Changed
+
+- Apply residential efficiency and electrifaction rebates to perfromance based retrofit expenditures.
+
+## [0.136.0] - 2022-09-01 11:46:59
+
+### Added
+
+- NY CDCC.
+
+## [0.135.1] - 2022-09-01 00:47:34
+
+### Fixed
+
+- Breakdown format in basic income parameters.
+
+## [0.135.0] - 2022-08-31 23:58:28
+
+### Added
+
+- AGI limit for basic income.
+- Dollar-range basic income phase-out option.
+
+## [0.134.0] - 2022-08-27 20:34:55
+
+### Changed
+
+- Apply energy efficient home improvement tax credits to post-rebate expenditures.
+
+## [0.133.0] - 2022-08-27 17:41:38
+
+### Changed
+
+- Updated Residential Clean Energy Credit for the Inflation Reduction Act.
+
+## [0.132.0] - 2022-08-25 00:48:25
+
+### Added
+
+- High Efficiency Electric Home Rebate Program.
+
+## [0.131.0] - 2022-08-23 04:58:33
+
+### Added
+
+- Energy efficient home improvements credit post-Inflation Reduction Act.
+
+## [0.130.0] - 2022-08-18 17:24:10
+
+### Added
+
+- Pennsylvania income tax before forgiveness.
+
+## [0.129.2] - 2022-08-18 09:15:19
+
+### Fixed
+
+- Don't reduce CTC by more than the maximum in 2021.
+
+## [0.129.1] - 2022-08-17 15:46:46
+
+### Added
+
+- 2022 value of EITC joint bonus for couples without children.
+
+## [0.129.0] - 2022-08-17 05:44:08
+
+### Added
+
+- Nonbusiness energy property credit.
+
+## [0.128.3] - 2022-08-13 01:27:00
+
+### Changed
+
+- Formatting improvements in documentation.
+
+## [0.128.2] - 2022-08-12 17:54:09
+
+### Fixed
+
+- Use Mac version of taxsim.
+
+## [0.128.1] - 2022-08-12 13:45:51
+
+### Changed
+
+- Adjust logic for Washington Working Families Tax Credit based on recent legislation.
+
+## [0.128.0] - 2022-08-10 20:37:56
+
+### Added
+
+- SSTB business variable.
+
 ## [0.127.0] - 2022-08-10 12:48:17
 
 ### Added
@@ -1649,6 +1746,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.137.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.136.0...0.137.0
+[0.136.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.1...0.136.0
+[0.135.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.0...0.135.1
+[0.135.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.134.0...0.135.0
+[0.134.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.133.0...0.134.0
+[0.133.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.132.0...0.133.0
+[0.132.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.131.0...0.132.0
+[0.131.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.130.0...0.131.0
+[0.130.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.2...0.130.0
+[0.129.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.1...0.129.2
+[0.129.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.0...0.129.1
+[0.129.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.3...0.129.0
+[0.128.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.2...0.128.3
+[0.128.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.1...0.128.2
+[0.128.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.0...0.128.1
+[0.128.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.127.0...0.128.0
 [0.127.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.126.0...0.127.0
 [0.126.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.125.0...0.126.0
 [0.125.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.1...0.125.0
