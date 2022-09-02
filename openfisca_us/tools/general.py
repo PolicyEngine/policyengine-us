@@ -102,16 +102,24 @@ def excess(of: str, over: str) -> Formula:
 
     return formula
 
+
 def get_next_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:
     """
     Return the next threshold in the sequence of thresholds.
     """
     t = np.array(thresholds)
-    return t[min_((t <= values.reshape((1, len(values))).T).sum(axis=1), len(t) - 1)]
+    return t[
+        min_((t <= values.reshape((1, len(values))).T).sum(axis=1), len(t) - 1)
+    ]
 
-def get_previous_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:
+
+def get_previous_threshold(
+    values: ArrayLike, thresholds: ArrayLike
+) -> ArrayLike:
     """
     Return the previous threshold in the sequence of thresholds.
     """
     t = np.array(thresholds)
-    return t[max_((t <= values.reshape((1, len(values))).T).sum(axis=1) - 1, 0)]
+    return t[
+        max_((t <= values.reshape((1, len(values))).T).sum(axis=1) - 1, 0)
+    ]
