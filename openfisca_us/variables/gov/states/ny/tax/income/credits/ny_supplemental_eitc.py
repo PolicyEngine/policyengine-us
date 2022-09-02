@@ -14,5 +14,5 @@ class ny_supplemental_eitc(Variable):
         eitc = tax_unit("earned_income_tax_credit", period)
         rate = parameters(
             period
-        ).gov.states.ny.tax.income.credits.eitc.supplemental_eitc_match
+        ).gov.states.ny.tax.income.credits.eitc.supplemental_match
         return eitc * rate
