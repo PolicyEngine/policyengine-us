@@ -13,11 +13,11 @@ class residential_efficiency_and_electrification_rebate(Variable):
             period
         ).gov.doe.residential_efficiency_and_electrification_rebate
         expenditures = tax_unit(
-            "residential_efficiency_and_electrification_retrofit_expenditures",
+            "residential_efficiency_electrification_retrofit_expenditures",
             period,
         )
         savings_kwh = tax_unit(
-            "residential_efficiency_and_electrification_retrofit_energy_savings",
+            "residential_efficiency_electrification_retrofit_energy_savings",
             period,
         )
         current_kwh = tax_unit.household("current_home_energy_use", period)

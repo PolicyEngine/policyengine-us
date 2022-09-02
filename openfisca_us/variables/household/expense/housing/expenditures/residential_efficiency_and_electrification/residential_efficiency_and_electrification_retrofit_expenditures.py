@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class residential_efficiency_and_electrification_retrofit_expenditures(
+class residential_efficiency_electrification_retrofit_expenditures(
     Variable
 ):
     value_type = float
