@@ -36,7 +36,7 @@ class ctc_reduction(Variable):
         filing_status = tax_unit("filing_status", period)
         phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
         income_over_threshold = max_(0, income - phase_out_threshold)
-        reduction = ctc.phaseout.rate * income_over_threshold
+        reduction = ctc.phase_out.rate * income_over_threshold
         maximum_ctc = tax_unit("ctc_maximum", period)
 
         # Calculate the original phase-out
@@ -72,7 +72,7 @@ class ctc_reduction(Variable):
         arpa_increase = maximum_ctc - ctc_without_arpa
 
         arpa_phase_out_range = (
-            phase_out_threshold - ctc.phaseout.arpa.threshold[filing_status]
+            phase_out_threshold - ctc.phase_out.arpa.threshold[filing_status]
         )
 
         # Apply the phase-out
