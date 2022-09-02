@@ -1,0 +1,38 @@
+description: Recapture base for NY State supplemental tax for head-of-household filers.
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 107_650
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 269_300
+    amount:
+      2022-01-01: 787
+  - threshold:
+      2022-01-01: 1_616_450
+    amount:
+      2022-01-01: 3_076
+  - threshold:
+      2022-01-01: 5_000_000
+    amount:
+      2022-01-01: 48_337
+  - threshold:
+      2022-01-01: 25_000_000
+    amount:
+      2022-01-01: 80_837
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: currency-USD
+  period: year
+  name: ny_sup_recap_base_hoh
+  label: NY State supplemental tax recapture base schedule (head of household)
+  reference:
+    - title: Section 601 Imposition of tax (d-4)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

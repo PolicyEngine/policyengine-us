@@ -1,0 +1,41 @@
+description: Recapture base for NY State supplemental tax for joint filers.
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 27_900
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 161_550
+    amount:
+      2022-01-01: 333
+  - threshold:
+      2022-01-01: 323_200
+    amount:
+      2022-01-01: 1_140
+  - threshold:
+      2022-01-01: 2_155_350
+    amount:
+      2022-01-01: 3_887
+  - threshold:
+      2022-01-01: 5_000_000
+    amount:
+      2022-01-01: 64_237
+  - threshold:
+      2022-01-01: 25_000_000
+    amount:
+      2022-01-01: 96_737
+
+metadata:
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: currency-USD
+  period: year
+  name: ny_sup_recap_base_joint
+  label: NY State supplemental tax recapture base schedule (joint)
+  reference:
+    - title: Section 601 Imposition of tax (d-4)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
