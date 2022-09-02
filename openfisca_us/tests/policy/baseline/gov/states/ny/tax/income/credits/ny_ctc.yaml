@@ -1,0 +1,62 @@
+- name: Default is zero
+  period: 2022
+  input:
+    state_code: NY
+  output:
+    ny_ctc: 0
+
+- name: Three-year old child doesn't get credit
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 0
+
+- name: Parent of four-year old child with no income gets minimum credit
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        ctc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
+
+- name: Parent of four-year old child with no income gets minimum credit
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        ctc: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ctc: 100
