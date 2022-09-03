@@ -1,0 +1,7 @@
+- name: $6k tuition, doesn't itemize.
+  period: 2022
+  input:
+    state_code: NY
+    qualified_tuition_expenses: 6_000
+  output:
+    ny_college_tuition_credit: 200 + 0.04 * 1000

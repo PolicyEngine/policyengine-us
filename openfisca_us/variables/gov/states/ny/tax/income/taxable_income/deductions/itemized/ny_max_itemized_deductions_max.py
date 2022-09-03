@@ -29,6 +29,6 @@ class ny_itemized_deductions_max(Variable):
         itemized = parameters(period).gov.states.ny.tax.income.deductions.itemized
         capped_tuition = min_(
             itemized.college_tuition_max, 
-            tax_unit("qualified_tuition_expenses", period)
+            add(tax_unit, period, ["qualified_tuition_expenses"])
         )
         return add(tax_unit, period, federal_deductions_if_itemizing) + capped_tuition
