@@ -14,15 +14,8 @@ class new_electric_vehicle_credit_eligible(Variable):
     def formula(tax_unit, period, parameters):
         # Capacity limit applies with and without the Inflation Reduction Act.
         capacity = tax_unit("new_electric_vehicle_battery_capacity", period)
-        p = parameters(period).gov.irs.credits.electric_vehicle.new
+        p = parameters(period).gov.irs.credits.electric_vehicle.new.eligibility
         meets_capacity_requirement = capacity >= p.min_kwh
-        ira = parameters(
-            period
-        ).contrib.congress.senate.democrats.inflation_reduction_act
-        # The Inflation Reduction Act introduces income and MSRP limits.
-        if not ira.in_effect:
-            return meets_capacity_requirement
-        p = ira.electric_vehicle_credit.new.eligibility
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         meets_income_limit = agi <= p.income_limit[filing_status]

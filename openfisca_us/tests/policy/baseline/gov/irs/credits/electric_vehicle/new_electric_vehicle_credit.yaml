@@ -46,7 +46,6 @@
 - name: Vehicle 50% made in North America and with 40% critical minerals from a trading partner eligible for full $7,500 under IRA.
   period: 2022
   input:
-    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     new_electric_vehicle_credit_eligible: true
     new_electric_vehicle_battery_components_made_in_north_america: 0.5
     new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country: 0.4
@@ -56,7 +55,6 @@
 - name: Vehicle 50% made in North America and with 39% critical minerals from a trading partner eligible for $3,750 under IRA.
   period: 2022
   input:
-    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     new_electric_vehicle_credit_eligible: true
     new_electric_vehicle_battery_components_made_in_north_america: 0.5
     new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country: 0.39
@@ -66,7 +64,6 @@
 - name: Vehicle 49% made in North America and with 39% critical minerals from a trading partner ineligible under IRA.
   period: 2022
   input:
-    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     new_electric_vehicle_credit_eligible: true
     new_electric_vehicle_battery_components_made_in_north_america: 0.49
     new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country: 0.39

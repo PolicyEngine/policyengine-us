@@ -1,5 +1,5 @@
 - name: Current law only requires that the battery is at least 4 kWh.
-  period: 2022
+  period: 2021
   input:
     purchased_qualifying_new_electric_vehicle: true
     new_electric_vehicle_battery_capacity: 4
@@ -7,7 +7,7 @@
     new_electric_vehicle_credit_eligible: true
 
 - name: Current law only requires that the battery is at least 4 kWh.
-  period: 2022
+  period: 2021
   input:
     purchased_qualifying_new_electric_vehicle: true
     new_electric_vehicle_battery_capacity: 3.9
@@ -19,7 +19,6 @@
   input:
     purchased_qualifying_new_electric_vehicle: true
     new_electric_vehicle_battery_capacity: 4
-    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     new_electric_vehicle_classification: VAN
     new_electric_vehicle_msrp: 80_000
     adjusted_gross_income: 150_000
@@ -31,7 +30,6 @@
   input:
     purchased_qualifying_new_electric_vehicle: true
     new_electric_vehicle_battery_capacity: 4
-    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     new_electric_vehicle_classification: VAN
     new_electric_vehicle_msrp: 80_000
     adjusted_gross_income: 150_001
@@ -43,7 +41,6 @@
   input:
     purchased_qualifying_new_electric_vehicle: true
     new_electric_vehicle_battery_capacity: 4
-    contrib.congress.senate.democrats.inflation_reduction_act.in_effect: true
     new_electric_vehicle_classification: VAN
     new_electric_vehicle_msrp: 80_001
     adjusted_gross_income: 150_000

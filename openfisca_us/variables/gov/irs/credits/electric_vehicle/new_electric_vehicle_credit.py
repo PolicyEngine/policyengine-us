@@ -11,39 +11,35 @@ class new_electric_vehicle_credit(Variable):
         "Nonrefundable credit for the purchase of a new electric vehicle"
     )
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/30D"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/30D",
+        "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=373",
+    )
     defined_for = "new_electric_vehicle_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        ira = parameters(
-            period
-        ).contrib.congress.senate.democrats.inflation_reduction_act
-        # The Inflation Reduction Act changes the credit structure.
-        if ira.in_effect:
-            p = ira.electric_vehicle_credit.new
-            battery_component_percent = tax_unit(
-                "new_electric_vehicle_battery_components_made_in_north_america",
-                period,
-            )
-            meets_battery_component_test = (
-                battery_component_percent >= p.battery_components.threshold
-            )
-            critical_minerals_percent = tax_unit(
-                "new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country",
-                period,
-            )
-            meets_critical_minerals_test = (
-                critical_minerals_percent >= p.critical_minerals.threshold
-            )
-            battery_components_credit = (
-                meets_battery_component_test * p.battery_components.amount
-            )
-            critical_minerals_credit = (
-                meets_critical_minerals_test * p.critical_minerals.amount
-            )
-            return battery_components_credit + critical_minerals_credit
-        # Otherwise compute under current law.
         p = parameters(period).gov.irs.credits.electric_vehicle.new
+        battery_component_percent = tax_unit(
+            "new_electric_vehicle_battery_components_made_in_north_america",
+            period,
+        )
+        meets_battery_component_test = (
+            battery_component_percent >= p.battery_components.threshold
+        )
+        critical_minerals_percent = tax_unit(
+            "new_electric_vehicle_battery_critical_minerals_extracted_in_trading_partner_country",
+            period,
+        )
+        meets_critical_minerals_test = (
+            critical_minerals_percent >= p.critical_minerals.threshold
+        )
+        battery_components_credit = (
+            meets_battery_component_test * p.battery_components.amount
+        )
+        critical_minerals_credit = (
+            meets_critical_minerals_test * p.critical_minerals.amount
+        )
+        # PRE-IRA POLICY:
         # Amount per kWh of EV battery capacity.
         # "In the case of a vehicle which draws propulsion energy from a
         # battery with not less than 5 kilowatt hours of capacity, the amount
@@ -55,4 +51,10 @@ class new_electric_vehicle_credit(Variable):
             p.capacity_bonus.amount * np.floor(kwh_excess),
             p.capacity_bonus.max,
         )
-        return p.base_amount + kwh_bonus
+        # Sum all elements.
+        return (
+            p.base_amount
+            + kwh_bonus
+            + battery_components_credit
+            + critical_minerals_credit
+        )

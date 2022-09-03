@@ -11,10 +11,14 @@ metadata:
 # In effect as of 2022-08-16, but backdating so it shows up as current policy
 # in PolicyEngine.
 VAN:
+  0000-01-01: .inf
   2022-01-01: 80_000
 SUV:
+  0000-01-01: .inf
   2022-01-01: 80_000
 PICKUP:
+  0000-01-01: .inf
   2022-01-01: 80_000
 OTHER:
+  0000-01-01: .inf
   2022-01-01: 55_000

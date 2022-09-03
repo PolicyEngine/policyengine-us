@@ -12,12 +12,17 @@ metadata:
 # In effect as of 2022-08-16, but backdating so it shows up as current policy
 # in PolicyEngine.
 JOINT:
+  0000-01-01: .inf
   2022-01-01: 300_000
 WIDOW:
+  0000-01-01: .inf
   2022-01-01: 300_000
 HEAD_OF_HOUSEHOLD:
+  0000-01-01: .inf
   2022-01-01: 225_000
 SINGLE:
+  0000-01-01: .inf
   2022-01-01: 150_000
 SEPARATE:
+  0000-01-01: .inf
   2022-01-01: 150_000

@@ -12,13 +12,7 @@ class eligible_used_electric_vehicle_credit(Variable):
     defined_for = "purchased_qualifying_used_electric_vehicle"
 
     def formula(tax_unit, period, parameters):
-        ira = p = parameters(
-            period
-        ).contrib.congress.senate.democrats.inflation_reduction_act
-        # Current law does not allow a used EV credit.
-        if not ira.in_effect:
-            return False
-        p = ira.electric_vehicle_credit.used
+        p = parameters(period).gov.irs.credit.electric_vehicle.used
         # Income eligibility based on lesser of MAGI in current and prior year.
         # Assume AGI in current year for now.
         agi = tax_unit("adjusted_gross_income", period)
