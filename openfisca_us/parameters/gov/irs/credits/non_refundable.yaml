@@ -24,7 +24,7 @@ values:
     - retirement_savings_credit
     - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
-    - new_electric_vehicle_credit
+    - new_clean_vehicle_credit
   # CDCC became non-refundable again in 2022.
   2022-01-01:
     - cdcc
@@ -37,9 +37,9 @@ values:
     - retirement_savings_credit
     - residential_clean_energy_credit
     - energy_efficient_home_improvement_credit
-    - new_electric_vehicle_credit
+    - new_clean_vehicle_credit
     # Inflation Reduction Act introduces a used EV credit.
-    - used_electric_vehicle_credit
+    - used_clean_vehicle_credit
 metadata:
   unit: program
   name: non_refundable_tax_credits
