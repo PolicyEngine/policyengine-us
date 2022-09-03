@@ -1,10 +1,12 @@
-description: Percent of sale price of the used electric vehicle credit under the Inflation Reduction Act.
+description: Percent of sale price of the used electric vehicle credit.
 metadata:
   reference:
     - title: Inflation Reduction Act 13402(b)(2)
       href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=387
   label: Used EV credit as a percent of sale price under the IRA
   unit: /1
-  name: inflation_reduction_act_ev_used_sale_price_percent
+  name: used_ev_credit_sale_price_percent
 values:
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
   2022-01-01: 0.3

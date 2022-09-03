@@ -1,4 +1,4 @@
-description: Maximum amount of the used electric vehicle credit under the Inflation Reduction Act.
+description: Maximum amount of the used electric vehicle credit.
 metadata:
   reference:
     - title: Inflation Reduction Act 13402(b)(1)
@@ -6,6 +6,8 @@ metadata:
   label: Maximum amount of used EV credit under the IRA
   unit: currency-USD
   period: year
-  name: inflation_reduction_act_ev_used_max_amount
+  name: used_ev_credit_max_amount
 values:
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
   2022-01-01: 4_000

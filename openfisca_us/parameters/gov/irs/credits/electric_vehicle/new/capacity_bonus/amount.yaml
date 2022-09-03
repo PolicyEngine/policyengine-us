@@ -1,6 +1,10 @@
 description: New electric vehicle credit amount per kilowatt-hour of battery capacity in excess of the threshold.
 values:
   2021-01-01: 417
+  # End with Inflation Reduction Act.
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 0
 metadata:
   unit: currency-USD
   name: new_ev_credit_amount_per_kwh

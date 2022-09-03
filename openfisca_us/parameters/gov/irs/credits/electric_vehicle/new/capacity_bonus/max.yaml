@@ -1,6 +1,10 @@
 description: New electric vehicle credit maximum amount for capacity bonus based on battery kilowatt-hours.
 values:
   2021-01-01: 5_000
+  # End with Inflation Reduction Act.
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 0
 metadata:
   unit: currency-USD
   name: new_ev_credit_max_amount_for_capacity_bonus

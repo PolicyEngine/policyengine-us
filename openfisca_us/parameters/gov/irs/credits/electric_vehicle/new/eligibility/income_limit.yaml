@@ -1,4 +1,4 @@
-description: Income limit to qualify for the new electric vehicle credit under the Inflation Reduction Act.
+description: Income limit to qualify for the new electric vehicle credit.
 metadata:
   reference:
     - title: Inflation Reduction Act
@@ -6,9 +6,11 @@ metadata:
   label: Income limit for new EV credit under the IRA
   unit: currency-USD
   period: year
-  name: inflation_reduction_act_ev_new_income_limit
+  name: new_ev_credit_income_limit
   breakdown:
   - filing_status
+# In effect as of 2022-08-16, but backdating so it shows up as current policy
+# in PolicyEngine.
 JOINT:
   2022-01-01: 300_000
 WIDOW:
