@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class air_sealing_and_ventilation_expenditures(Variable):
+class air_sealing_ventilation_expenditures(Variable):
     value_type = float
     entity = TaxUnit
     label = "Expenditures on air sealing and ventilation"

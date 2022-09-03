@@ -9,7 +9,7 @@
   period: 2023
   input:
     energy_efficient_insulation_expenditures: 1_000
-    capped_insulation_air_sealing_and_ventilation_rebate: 0
+    capped_insulation_air_sealing_ventilation_rebate: 0
   output:
     capped_energy_efficient_insulation_credit: 300
 
@@ -18,6 +18,6 @@
   input: 
     energy_efficient_insulation_expenditures: 2_600
     # Rebate capped at $1,600.
-    capped_insulation_air_sealing_and_ventilation_rebate: 1_600
+    capped_insulation_air_sealing_ventilation_rebate: 1_600
   output:
     capped_energy_efficient_insulation_credit: 300 # 30% of $1,000.
