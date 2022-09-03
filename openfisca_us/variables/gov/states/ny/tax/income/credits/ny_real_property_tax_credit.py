@@ -25,7 +25,7 @@ class ny_real_property_tax_credit(Variable):
         # Real-estate-based phase-in.
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
-        equivalent_rent = rent * rptc.amount.rent_tax_equivalent
+        equivalent_rent = rent * rptc.rent_tax_equivalent
         real_estate_tax_or_equiv = real_estate_tax + equivalent_rent
 
         # Comparison to income for maximum credit determination.
@@ -36,8 +36,12 @@ class ny_real_property_tax_credit(Variable):
         # Means-tested conditions based on property value (cliff).
         assessed_value = add(tax_unit, period, ["assessed_property_value"])
         meets_value_conditions = (
-            assessed_value <= rptc.eligibility.max_property_value
-        ) & (equivalent_rent <= rptc.eligibility.max_rent)
+            assessed_value <= rptc.max_property_value
+        ) & (equivalent_rent <= rptc.max_rent)
+
+        meets_income_condition = agi < rptc.max_agi
+
+        eligible = meets_value_conditions & meets_income_condition
 
         maximum_credit = where(
             meets_age_condition,
@@ -47,4 +51,4 @@ class ny_real_property_tax_credit(Variable):
 
         credit_amount = rptc.rate * excess_rpt
 
-        return min_(meets_value_conditions * credit_amount, maximum_credit)
+        return min_(eligible * credit_amount, maximum_credit)

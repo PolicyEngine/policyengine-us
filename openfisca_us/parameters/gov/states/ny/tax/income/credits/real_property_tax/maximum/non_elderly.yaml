@@ -73,12 +73,9 @@ brackets:
       2000-01-01: 17_000
     amount:
       2000-01-01: 41
-  - threshold:
-      2000-01-01: 18_000
-    amount:
-      2000-01-01: 0
 
 metadata:
+  type: single_amount
   threshold_unit: currency-USD
   threshold_period: year
   amount_unit: currency-USD
