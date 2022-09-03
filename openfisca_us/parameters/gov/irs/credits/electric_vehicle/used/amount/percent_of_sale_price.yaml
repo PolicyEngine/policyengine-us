@@ -1,12 +1,11 @@
-description: Percent of sale price of the used electric vehicle credit.
+description: The IRS provides a tax credit for up to this percentage of a used clean vehicle's purchase price.
 metadata:
   reference:
     - title: Inflation Reduction Act 13402(b)(2)
       href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=387
-  label: Used EV credit as a percent of sale price under the IRA
+  label: Used clean vehicle credit as a percent of sale price
   unit: /1
-  name: used_ev_credit_sale_price_percent
+  name: used_clean_vehicle_credit_sale_price_percent
 values:
-  # In effect as of 2022-08-16, but backdating so it shows up as current policy
-  # in PolicyEngine.
-  2022-01-01: 0.3
+  0000-01-01: 0
+  2023-01-01: 0.3

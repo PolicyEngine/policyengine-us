@@ -1,4 +1,4 @@
-description: Credit for electric vehicles meeting the critical mineral requirement.
+description: The IRS provides a credit of this amount to filers purchasing new clean vehicles meeting the critical mineral requirement.
 metadata:
   reference:
     - title: Inflation Reduction Act
@@ -6,8 +6,9 @@ metadata:
   label: Credit for electric vehicles meeting the critical mineral requirement.
   unit: currency-USD
   period: year
-  name: new_ev_credit_critical_minerals_amount
+  name: new_clean_vehicle_credit_critical_minerals_amount
 values:
+  0000-01-01: 0
   # In effect as of 2022-08-16, but backdating so it shows up as current policy
   # in PolicyEngine.
   2022-01-01: 3_750

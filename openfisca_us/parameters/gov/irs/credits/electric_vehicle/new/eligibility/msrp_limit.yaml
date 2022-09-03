@@ -1,11 +1,11 @@
-description: MSRP limit to qualify for the new electric vehicle credit.
+description: The IRS limits the new clean vehicle credit to vehicles with MSRP below this value.
 metadata:
   reference:
     - title: Inflation Reduction Act
-      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=377
-  label: MSRP limit for new EV credit under the IRA
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=384
+  label: MSRP limit for new clean vehicle credit
   unit: currency-USD
-  name: new_ev_credit_msrp_limit
+  name: new_clean_vehicle_credit_msrp_limit
   breakdown:
   - new_electric_vehicle_classification
 # In effect as of 2022-08-16, but backdating so it shows up as current policy
