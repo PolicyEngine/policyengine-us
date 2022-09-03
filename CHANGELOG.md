@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.142.0] - 2022-09-03 09:17:20
+
+### Added
+
+- NY real property tax credit.
+
 ## [0.141.0] - 2022-09-02 20:26:10
 
 ### Added
@@ -1770,6 +1776,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.142.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.141.0...0.142.0
 [0.141.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.140.0...0.141.0
 [0.140.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.139.0...0.140.0
 [0.139.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.138.0...0.139.0
