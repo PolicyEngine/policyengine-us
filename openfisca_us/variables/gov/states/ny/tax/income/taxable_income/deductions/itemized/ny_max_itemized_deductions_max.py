@@ -26,9 +26,14 @@ class ny_itemized_deductions_max(Variable):
         ]
         # There are some other specific details about some types of itemized deductions
         # likely non-modellable in the CPS. Requires further investigation.
-        itemized = parameters(period).gov.states.ny.tax.income.deductions.itemized
+        itemized = parameters(
+            period
+        ).gov.states.ny.tax.income.deductions.itemized
         capped_tuition = min_(
-            itemized.college_tuition_max, 
-            add(tax_unit, period, ["qualified_tuition_expenses"])
+            itemized.college_tuition_max,
+            add(tax_unit, period, ["qualified_tuition_expenses"]),
         )
-        return add(tax_unit, period, federal_deductions_if_itemizing) + capped_tuition
+        return (
+            add(tax_unit, period, federal_deductions_if_itemizing)
+            + capped_tuition
+        )
