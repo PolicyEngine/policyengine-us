@@ -1,0 +1,71 @@
+- name: Zero by default.
+  period: 2021
+  output:
+    new_clean_vehicle_credit: 0
+
+- name: $2,500 for baseline EV with no kWh specified.
+  period: 2021
+  input:
+    new_clean_vehicle_credit_eligible: true
+  output:
+    new_clean_vehicle_credit: 2_500
+
+- name: No extra until 5 kWh.
+  period: 2021
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_capacity: 4.9
+  output:
+    new_clean_vehicle_credit: 2_500
+
+- name: $417 extra for 5 kWh.
+  period: 2021
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_capacity: 5
+  output:
+    new_clean_vehicle_credit: 2_917
+
+- name: Still $417 extra for 5.9 kWh.
+  period: 2021
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_capacity: 5.9
+  output:
+    new_clean_vehicle_credit: 2_917
+
+- name: Maxes out at $7,500.
+  period: 2021
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_capacity: 1_000
+  output:
+    new_clean_vehicle_credit: 7_500
+
+# Inflation Reduction Act.
+- name: Vehicle 50% made in North America and with 40% critical minerals from a trading partner eligible for full $7,500 under IRA.
+  period: 2022
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_components_made_in_north_america: 0.5
+    new_clean_vehicle_battery_critical_minerals_extracted_in_trading_partner_country: 0.4
+  output:
+    new_clean_vehicle_credit: 7_500
+
+- name: Vehicle 50% made in North America and with 39% critical minerals from a trading partner eligible for $3,750 under IRA.
+  period: 2022
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_components_made_in_north_america: 0.5
+    new_clean_vehicle_battery_critical_minerals_extracted_in_trading_partner_country: 0.39
+  output:
+    new_clean_vehicle_credit: 3_750
+
+- name: Vehicle 49% made in North America and with 39% critical minerals from a trading partner ineligible under IRA.
+  period: 2022
+  input:
+    new_clean_vehicle_credit_eligible: true
+    new_clean_vehicle_battery_components_made_in_north_america: 0.49
+    new_clean_vehicle_battery_critical_minerals_extracted_in_trading_partner_country: 0.39
+  output:
+    new_clean_vehicle_credit: 0
