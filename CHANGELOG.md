@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.143.0] - 2022-09-03 09:33:08
+
+### Added
+
+- NY college tuition credit and itemized deduction.
+
+## [0.142.0] - 2022-09-03 09:17:20
+
+### Added
+
+- NY real property tax credit.
+
+## [0.141.0] - 2022-09-02 20:26:10
+
+### Added
+
+- Oregon EITC match.
+
+## [0.140.0] - 2022-09-02 20:09:49
+
+### Added
+
+- NY CTC.
+
+## [0.139.0] - 2022-09-02 14:29:45
+
+### Added
+
+- NY Supplemental EITC.
+
+## [0.138.0] - 2022-09-02 13:00:55
+
+### Added
+
+- NY supplemental income tax.
+
+## [0.137.0] - 2022-09-02 00:53:29
+
+### Changed
+
+- Apply residential efficiency and electrifaction rebates to perfromance based retrofit expenditures.
+
 ## [0.136.0] - 2022-09-01 11:46:59
 
 ### Added
@@ -1740,6 +1782,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.143.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.142.0...0.143.0
+[0.142.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.141.0...0.142.0
+[0.141.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.140.0...0.141.0
+[0.140.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.139.0...0.140.0
+[0.139.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.138.0...0.139.0
+[0.138.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.137.0...0.138.0
+[0.137.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.136.0...0.137.0
 [0.136.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.1...0.136.0
 [0.135.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.0...0.135.1
 [0.135.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.134.0...0.135.0

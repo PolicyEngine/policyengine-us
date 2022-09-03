@@ -1,0 +1,36 @@
+description: Recapture base for NY State supplemental tax for separate filers.
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 80_650
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 215_400
+    amount:
+      2022-01-01: 526
+  - threshold:
+      2022-01-01: 1_077_550
+    amount:
+      2022-01-01: 1_646
+  - threshold:
+      2022-01-01: 5_000_000
+    amount:
+      2022-01-01: 31_817
+  - threshold:
+      2022-01-01: 25_000_000
+    amount:
+      2022-01-01: 64_317
+
+metadata:
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: currency-USD
+  name: ny_sup_recap_base_separate
+  label: NY State supplemental tax recapture base schedule (separate)
+  reference:
+    - title: Section 601 Imposition of tax (d-4)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
