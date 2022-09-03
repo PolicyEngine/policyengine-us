@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.143.0] - 2022-09-03 09:33:08
+
+### Added
+
+- NY college tuition credit and itemized deduction.
+
 ## [0.142.0] - 2022-09-03 09:17:20
 
 ### Added
@@ -1776,6 +1782,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.143.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.142.0...0.143.0
 [0.142.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.141.0...0.142.0
 [0.141.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.140.0...0.141.0
 [0.140.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.139.0...0.140.0
