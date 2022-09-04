@@ -39,20 +39,36 @@ class il_personal_exemption_eligibility_status(Variable):
 
         # Criteria for complete ineligibility.
         ineligible = (
-            (not joint)
-            & (claimable_count > 0)
-            & (il_base_income > tax_unit_personal_eligibility_amount)
-        ) | (
-            joint
-            & (claimable_count > 1)
-            & (il_base_income > tax_unit_personal_eligibility_amount)
+            (
+                (not joint)
+                & (claimable_count > 0)
+                & (il_base_income > tax_unit_personal_eligibility_amount)
+            )
+            | (
+                joint
+                & (claimable_count > 1)
+                & (il_base_income > tax_unit_personal_eligibility_amount)
+            )
+            | (
+                joint
+                & (claimable_count == 2)
+                & (il_base_income > tax_unit_personal_eligibility_amount * 2)
+            )
         )
 
         # Criteria for partial ineligibility.
         partner_ineligible = (
-            joint
-            & (claimable_count == 1)
-            & (il_base_income > tax_unit_personal_eligibility_amount)
+            (
+                joint
+                & (claimable_count == 1)
+                & (il_base_income > tax_unit_personal_eligibility_amount)
+            )
+            | ((not joint) & (claimable_count == 0))
+            | (
+                (not joint)
+                & (claimable_count == 1)
+                & (il_base_income < tax_unit_personal_eligibility_amount)
+            )
         )
 
         # Based on the criteria, return the eligibility status.
