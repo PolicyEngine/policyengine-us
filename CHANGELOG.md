@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.145.0] - 2022-09-04 19:09:21
+
+### Added
+
+- Calculations for the tax forgiveness rate in Pennsylvania
+
 ## [0.144.1] - 2022-09-04 06:22:00
 
 ### Changed
@@ -1795,6 +1801,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.145.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.1...0.145.0
 [0.144.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.0...0.144.1
 [0.144.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.143.0...0.144.0
 [0.143.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.142.0...0.143.0
