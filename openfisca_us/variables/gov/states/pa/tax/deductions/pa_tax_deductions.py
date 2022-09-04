@@ -2,6 +2,7 @@ from openfisca_us.model_api import *
 
 # PA allows for four (4) deductions against income: Medical, Health, Tuition, and ABLE savings
 
+
 class pa_tax_deductions(Variable):
     value_type = float
     entity = TaxUnit
