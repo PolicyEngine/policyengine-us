@@ -12,7 +12,7 @@ class pa_tax_forgiveness_rate(Variable):
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("pa_adjusted_taxable_income", period)
+        taxable_income = tax_unit("pa_eligibility_income", period)
         person = tax_unit.members
         is_child_dependent = person("is_child_of_tax_head", period) & person(
             "is_tax_unit_dependent", period
