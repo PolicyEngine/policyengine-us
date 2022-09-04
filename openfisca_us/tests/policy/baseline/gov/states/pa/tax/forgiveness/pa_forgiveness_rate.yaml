@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: PA
-    pa_adjusted_taxable_income: 7_700
+    pa_eligibility_income: 7_700
   output:
     pa_tax_forgiveness_rate: 0.5
 
@@ -11,7 +11,7 @@
   period: 2021
   input:
     state_code: PA
-    pa_adjusted_taxable_income: 0
+    pa_eligibility_income: 0
   output:
     pa_tax_forgiveness_rate: 1
 
@@ -20,7 +20,7 @@
   period: 2021
   input:
     state_code: PA
-    pa_adjusted_taxable_income: 90_000
+    pa_eligibility_income: 90_000
   output:
     pa_tax_forgiveness_rate: 0
 
@@ -39,7 +39,7 @@
     tax_units:
       tax_unit:
         members: [filer, grandparent, child]
-        pa_adjusted_taxable_income: 16_300
+        pa_eligibility_income: 16_300
         filing_status: SINGLE
     households:
       households:
@@ -59,7 +59,7 @@
     tax_units:
       tax_unit:
         members: [father, mother, child]
-        pa_adjusted_taxable_income: 24_300
+        pa_eligibility_income: 24_300
         filing_status: JOINT
     households:
       households:
@@ -82,7 +82,7 @@
     tax_units:
       tax_unit:
         members: [father, mother, child 1, child 2]
-        pa_adjusted_taxable_income: 34_100
+        pa_eligibility_income: 34_100
         filing_status: SEPARATE
     households:
       households:
