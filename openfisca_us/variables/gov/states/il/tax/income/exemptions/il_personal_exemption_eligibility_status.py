@@ -21,13 +21,15 @@ class il_personal_exemption_eligibility_status(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        personal_eligiblity_amounts = parameters(
+        personal_eligiblity_amount = parameters(
             period
         ).gov.states.il.tax.income.exemption.personal
 
         # First, determine whether the tax unit is filing jointly or not.
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
+
+        tax_unit_personal_eligibility_amount = personal_eligiblity_amount * where(joint, 2, 1)
 
         # Then, determine whether either the head or the spouse of the tax unit is claimable as a dependent in another unit.
         claimable_count = add(tax_unit, period, ["dsi_spouse", "dsi"])
@@ -39,16 +41,14 @@ class il_personal_exemption_eligibility_status(Variable):
             & (claimable_count > 0)
             & (
                 il_base_income
-                > personal_eligiblity_amounts[
-                    "PARTNER_INELIGIBLE"
-                ]
+                > tax_unit_personal_eligibility_amount
             )
         ) | (
             joint
             & (claimable_count > 1)
             & (
                 il_base_income
-                > personal_eligiblity_amounts["ELIGIBLE"]
+                > tax_unit_personal_eligibility_amount
             )
         )
 
@@ -58,9 +58,7 @@ class il_personal_exemption_eligibility_status(Variable):
             & (claimable_count == 1)
             & (
                 il_base_income
-                > personal_eligiblity_amounts[
-                    "PARTNER_INELIGIBLE"
-                ]
+                > tax_unit_personal_eligibility_amount
             )
         )
 

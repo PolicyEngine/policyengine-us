@@ -13,8 +13,21 @@ class il_personal_exemption(Variable):
         il_is_personal_exemption_eligible = tax_unit(
             "il_personal_exemption_eligibility_status", period
         )
-        personal_exemption_amounts = parameters(
+
+        eligibility_status = il_is_personal_exemption_eligible.possible_values
+
+        personal_exemption_amount = parameters(
             period
         ).gov.states.il.tax.income.exemption.personal
 
-        return personal_exemption_amounts[il_is_personal_exemption_eligible]
+        return select(
+            [
+                il_is_personal_exemption_eligible
+                == eligibility_status.ELIGIBLE,
+                il_is_personal_exemption_eligible
+                == eligibility_status.PARTNER_INELIGIBLE,
+                il_is_personal_exemption_eligible
+                == eligibility_status.NOT_ELIGIBLE,
+            ],
+            [personal_exemption_amount * 2, personal_exemption_amount, 0],
+        )

@@ -1,8 +1,12 @@
 - name: "Joint household, both claimable elsewhere, base income less than $4,750"
   period: 2021
   input:
+    people:
+      person_1:
+        age: 30
     tax_units:
       tax_unit:
+        members: [person_1]
         filing_status: JOINT
         tax_unit_dependent_elsewhere: true
         tax_unit_spouse_dependent_elsewhere: true
@@ -15,8 +19,12 @@
 - name: "Joint household, both claimable elsewhere, base income greater than $4,750"
   period: 2021
   input:
+    people:
+        person_1:
+          age: 30
     tax_units:
       tax_unit:
+        members: [person_1]
         filing_status: JOINT
         tax_unit_dependent_elsewhere: true
         tax_unit_spouse_dependent_elsewhere: true

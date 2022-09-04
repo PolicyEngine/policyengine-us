@@ -1,18 +1,11 @@
 description: Illinois personal exemption allowance
-ELIGIBLE:
-  2021-01-01: 4_750
-  2020-01-01: 4_650
-PARTNER_INELIGIBLE:
+values:
   2021-01-01: 2_375
-  2020-01-01: 2_325
-NOT_ELIGIBLE:
-  2021-01-01: 0
-  2020-01-01: 0
 metadata:
   unit: currency-USD
   period: year
   name: il_personal_exemption
   label: IL personal exemption
   reference:
-    - title: What is the Illinois exemption allowance? 
-      href: https://www2.illinois.gov/rev/QuestionsAndAnswers/pages/851.aspx
+    - title: Illinois Income Tax Act, 35 ILCS 5/204 (b)
+      href: https://witnessslips.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8
