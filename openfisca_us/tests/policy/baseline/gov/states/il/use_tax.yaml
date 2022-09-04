@@ -1,0 +1,15 @@
+- name: "Illinois Use Tax: Basic Test"
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_1]
+        adjusted_gross_income: 43_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_use_tax: 31
