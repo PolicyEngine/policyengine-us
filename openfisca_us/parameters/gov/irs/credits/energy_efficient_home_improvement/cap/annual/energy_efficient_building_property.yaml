@@ -1,10 +1,11 @@
-description: The US caps energy efficient home improvement credits on energy-efficient building property at this amount.
+description: The IRS caps energy efficient home improvement credits on energy efficient building property at this amount per year.
 values:
   2017-01-01: 300
   # Inflation Reduction Act sets the cap at $600 for any item of qualified energy property.
   2023-01-01: 600
 metadata:
   unit: currency-USD
+  period: year
   name: energy_efficient_home_improvement_credit_energy_efficient_building_property_cap
   label: Energy efficient home improvement credit cap on energy-efficient building property
   reference:

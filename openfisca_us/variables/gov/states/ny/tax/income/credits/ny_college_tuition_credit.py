@@ -12,9 +12,7 @@ class ny_college_tuition_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         tuition = add(tax_unit, period, ["qualified_tuition_expenses"])
-        ctc = parameters(
-            period
-        ).gov.states.ny.tax.income.credits.college_tuition
-        amount = ctc.rate.calc(tuition)
+        p = parameters(period).gov.states.ny.tax.income.credits.college_tuition
+        amount = p.rate.calc(tuition) * p.applicable_percentage
         itemizes = tax_unit("ny_itemizes", period)
         return ~itemizes * amount
