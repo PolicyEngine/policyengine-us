@@ -1,0 +1,11 @@
+description: The IRS limits the used clean vehicle credit to vehicle purchases below this threshold.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=390
+  label: Sale price limit for used clean vehicle credit
+  unit: currency-USD
+  name: used_clean_vehicle_credit_sale_price_limit
+values:
+  0000-01-01: 0
+  2023-01-01: 25_000

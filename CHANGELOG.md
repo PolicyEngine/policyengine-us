@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.144.1] - 2022-09-04 06:22:00
+
+### Changed
+
+- Refer consistently to the new name, the "Energy Efficient Home Improvement Tax Credit".
+
+## [0.144.0] - 2022-09-03 20:54:46
+
+### Changed
+
+- Made the electric vehicle credit under the Inflation Reduction Act into current policy.
+- Revised text of IRA rebate and credit parameters and variables.
+
 ## [0.143.0] - 2022-09-03 09:33:08
 
 ### Added
@@ -1782,6 +1795,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.144.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.0...0.144.1
+[0.144.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.143.0...0.144.0
 [0.143.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.142.0...0.143.0
 [0.142.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.141.0...0.142.0
 [0.141.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.140.0...0.141.0
