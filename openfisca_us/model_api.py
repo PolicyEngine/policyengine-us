@@ -9,6 +9,7 @@ from pathlib import Path
 from openfisca_us.typing import *
 import warnings
 from openfisca_us.tools.cloning import get_stored_variables
+from openfisca_tools.model_api.branched_simulation import BranchedSimulation
 
 warnings.filterwarnings("ignore")
 

@@ -1,6 +1,7 @@
 from openfisca_us.model_api import *
 from openfisca_core.taxbenefitsystems import TaxBenefitSystem
 
+
 class ctc_limiting_tax_liability(Variable):
     value_type = float
     entity = TaxUnit
@@ -17,10 +18,24 @@ class ctc_limiting_tax_liability(Variable):
             [
                 tax_unit(credit, period)
                 for credit in non_refundable_credits
-                if credit != "non_refundable_ctc"
+                if credit
+                not in (
+                    "non_refundable_ctc",
+                    "refundable_ctc",
+                )
             ]
         )
-        simulation = tax_unit.simulation.clone()
-        simulation.tax_benefit_system.neutralize_variable("salt_deduction")
-        tax_liability = simulation.calculate("income_tax_before_credits", period)
+        with BranchedSimulation(tax_unit) as simulation:
+            simulation.tax_benefit_system.neutralize_variable(
+                "state_income_tax"
+            )
+            simulation.get_holder(
+                "state_income_tax"
+            ).variable = simulation.tax_benefit_system.variables[
+                "state_income_tax"
+            ]  # This is needed because neutralize_variable is only designed to work *before* simulations have started.
+            tax_liability = simulation.calculate(
+                "income_tax_before_credits", period
+            )
+
         return max_(0, tax_liability - total_credits)

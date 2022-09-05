@@ -1,6 +1,7 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_tools.model_api import *
+from openfisca_us.tools.branched_simulation import BranchedSimulation
 import numpy as np
 from pathlib import Path
 
