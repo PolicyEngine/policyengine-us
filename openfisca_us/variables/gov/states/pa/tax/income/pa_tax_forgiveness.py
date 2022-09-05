@@ -40,9 +40,5 @@ class pa_tax_forgiveness_rate(Variable):
             period
         ).gov.states.pa.tax.forgiveness.rate_increment
         increments = np.ceil(excess / forgiveness_increment)
-        print(filing_status)
-        print(joint_separate)
-        print(base_multiplier)
-        print(base)
         percent = parameters(period).gov.states.pa.tax.forgiveness.tax_back
         return min_(max_(1 - percent * increments, 0), 1)

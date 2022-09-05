@@ -3,3 +3,9 @@ values:
   2019-01-01: 5_400
 metadata:
   unit: currency-USD
+  period: year
+  name: ny_max_rent
+  label: NY real property tax maximum rent
+  reference:
+    - title: Section 606 Credits against tax (e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
