@@ -21,7 +21,6 @@ class ctc_limiting_tax_liability(Variable):
                 if credit
                 not in (
                     "non_refundable_ctc",
-                    "refundable_ctc",
                 )
             ]
         )
@@ -37,5 +36,8 @@ class ctc_limiting_tax_liability(Variable):
             tax_liability = simulation.calculate(
                 "income_tax_before_credits", period
             )
+            simulation.get_holder(
+                "state_income_tax"
+            ).variable.is_neutralized = False
 
         return max_(0, tax_liability - total_credits)

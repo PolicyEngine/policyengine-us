@@ -1,6 +1,5 @@
 from openfisca_us.model_api import *
 
-
 class taxsim_state(Variable):
     value_type = float
     entity = TaxUnit
@@ -12,11 +11,17 @@ class taxsim_state(Variable):
         state_code_str = tax_unit.household("state_code_str", period)
         return select(
             [
+                state_code_str == "MD",
                 state_code_str == "MA",
+                state_code_str == "NY",
+                state_code_str == "WA",
                 True,
             ],
             [
+                21,
                 22,
+                33,
+                48,
                 0,
             ],
         )
