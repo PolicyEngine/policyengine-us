@@ -18,10 +18,7 @@ class ctc_limiting_tax_liability(Variable):
             [
                 tax_unit(credit, period)
                 for credit in non_refundable_credits
-                if credit
-                not in (
-                    "non_refundable_ctc",
-                )
+                if credit not in ("non_refundable_ctc",)
             ]
         )
         with BranchedSimulation(tax_unit) as simulation:

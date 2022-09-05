@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class taxsim_state(Variable):
     value_type = float
     entity = TaxUnit
