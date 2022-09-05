@@ -1,17 +1,17 @@
 description: Marginal percentage of college tuition which is credited.
 brackets:
   - threshold:
-      2022-01-01: 0
+      2001-01-01: 0
     rate:
-      2022-01-01: 1
+      2001-01-01: 1
   - threshold:
-      2022-01-01: 200
+      2001-01-01: 200
     rate:
-      2022-01-01: 0
+      2001-01-01: 0
   - threshold:
-      2022-01-01: 5_000
+      2001-01-01: 5_000
     rate:
-      2022-01-01: 0.04
+      2001-01-01: 0.04
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
@@ -20,5 +20,5 @@ metadata:
   name: ny_college_tuition_credit_rate
   label: NY college tuition credit rate
   reference:
-    - title: Section 606 Credits against tax (t)
+    - title: Section 606 Credits against tax (t)(4)
       href: https://www.nysenate.gov/legislation/laws/TAX/606

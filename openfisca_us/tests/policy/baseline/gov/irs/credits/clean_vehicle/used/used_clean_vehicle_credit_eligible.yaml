@@ -1,0 +1,47 @@
+- name: Ineligible if IRA is in effect and hasn't bought a used EV.
+  period: 2022
+  input:
+    purchased_qualifying_used_clean_vehicle: false
+  output:
+    used_clean_vehicle_credit_eligible: false
+
+- name: Eligible if the household has a qualifying used clean vehicle and IRA is in effect (default sale price is $0).
+  period: 2023
+  input:
+    purchased_qualifying_used_clean_vehicle: true
+  output:
+    used_clean_vehicle_credit_eligible: true
+
+- name: Eligible if the household bought a qualifying used clean vehicle for $25,000 and IRA is in effect.
+  period: 2023
+  input:
+    purchased_qualifying_used_clean_vehicle: true
+    used_clean_vehicle_sale_price: 25_000
+  output:
+    used_clean_vehicle_credit_eligible: true
+
+- name: Ineligible if the household bought a qualifying used clean vehicle for $25,001 and IRA is in effect.
+  period: 2023
+  input:
+    purchased_qualifying_used_clean_vehicle: true
+    used_clean_vehicle_sale_price: 25_001
+  output:
+    used_clean_vehicle_credit_eligible: false
+
+- name: Single filer is eligible for income up to $75,000.
+  period: 2023
+  input:
+    purchased_qualifying_used_clean_vehicle: true
+    used_clean_vehicle_sale_price: 25_000
+    adjusted_gross_income: 75_000
+  output:
+    used_clean_vehicle_credit_eligible: true
+
+- name: Single filer is ineligible for income above $75,000.
+  period: 2023
+  input:
+    purchased_qualifying_used_clean_vehicle: true
+    used_clean_vehicle_sale_price: 25_000
+    adjusted_gross_income: 75_001
+  output:
+    used_clean_vehicle_credit_eligible: false

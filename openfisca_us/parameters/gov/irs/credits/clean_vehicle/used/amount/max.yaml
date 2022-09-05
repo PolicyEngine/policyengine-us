@@ -1,0 +1,12 @@
+description: The IRS caps the used clean vehicle credit at this amount.
+metadata:
+  reference:
+    - title: Inflation Reduction Act 13402(b)(1)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=387
+  label: Maximum amount of used clean vehicle credit
+  unit: currency-USD
+  period: year
+  name: used_clean_vehicle_credit_max_amount
+values:
+  0000-01-01: 0
+  2023-01-01: 4_000
