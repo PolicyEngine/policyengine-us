@@ -10,7 +10,7 @@ class basic_income(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        eligible = person("basic_income_eligible", period)
+        eligible = person.tax_unit("basic_income_eligible", period)
         basic_income = person("basic_income_before_phase_out", period)
         tax_unit = person.tax_unit
         tax_unit_basic_income = tax_unit.sum(basic_income)
