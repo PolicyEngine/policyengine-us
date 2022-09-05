@@ -9,7 +9,7 @@ class ny_supplemental_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    def formula(tax_unit, period, parameters):
+    def formula_2022(tax_unit, period, parameters):
         ny_taxable_income = tax_unit("ny_taxable_income", period)
         ny_agi = tax_unit("ny_agi", period)
         sup_tax = parameters(period).gov.states.ny.tax.income.supplemental
