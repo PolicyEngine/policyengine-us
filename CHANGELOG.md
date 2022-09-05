@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.147.0] - 2022-09-05 16:50:53
+
+### Added
+
+- NY State income tax.
+
 ## [0.146.0] - 2022-09-04 19:15:21
 
 ### Added
@@ -1808,6 +1814,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.147.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.146.0...0.147.0
 [0.146.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.145.0...0.146.0
 [0.145.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.1...0.145.0
 [0.144.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.0...0.144.1
