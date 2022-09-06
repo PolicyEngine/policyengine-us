@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.147.2] - 2022-09-06 10:51:59
+
+### Added
+
+- NY tax-benefit page to the documentation.
+
+### Fixed
+
+- NY college tuition and CDCC credits added as refundable.
+
 ## [0.147.1] - 2022-09-05 18:14:55
 
 ### Fixed
@@ -1820,6 +1830,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.147.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.1...0.147.2
 [0.147.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.0...0.147.1
 [0.147.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.146.0...0.147.0
 [0.146.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.145.0...0.146.0
