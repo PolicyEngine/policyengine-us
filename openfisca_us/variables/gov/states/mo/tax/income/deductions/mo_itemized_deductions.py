@@ -15,7 +15,7 @@ class mo_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         total_itemized_federal_deductions = (
-            parameters.states.mo.tax.income.deductions.itemized
+            parameters(period).states.mo.tax.income.deductions.itemized
         )
         deductions = [
             deduction for deduction in total_itemized_federal_deductions
