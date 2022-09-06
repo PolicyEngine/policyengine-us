@@ -7,7 +7,7 @@ class mo_income_tax_before_credits(Variable):
     label = "Missouri income tax before credits"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.mo.gov/forms/MO-1040%20Print%20Only_2021.pdf"
+    reference = ("https://dor.mo.gov/forms/MO-1040%20Print%20Only_2021.pdf", "https://www.revisor.mo.gov/main/OneChapter.aspx?chapter=143"
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):

@@ -7,34 +7,22 @@ class mo_itemized_deductions(Variable):
     label = "Sum of Federal itemized deductions applicable to MO taxable income calculation"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.mo.gov/forms/MO-A_2021.pdf"
-    # tax_ref2 = "https://dor.mo.gov/forms/4711_2021.pdf"
-    # leg_ref = "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212"
+    reference = (
+        "https://dor.mo.gov/forms/MO-A_2021.pdf",
+        "https://dor.mo.gov/forms/4711_2021.pdf#page=11",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212",
+    )
 
     def formula(tax_unit, period, parameters):
-        total_itemized_federal_deductions = add(
-            tax_unit,
-            period,
-            [
-                "casualty_loss_deduction",
-                "charitable_deduction",
-                "interest_deduction",
-                "itemized_taxable_income_deductions",
-                "medical_expense_deduction",
-                "misc_deduction",
-            ],
+        total_itemized_federal_deductions= (
+            parameters.states.mo.tax.income.deductions.itemized
         )
-        person = tax_unit.members
-        deduction_sum = add(
-            person,
-            period,
-            [
-                "employee_social_security_tax",
-                "employee_medicare_tax",
-                "self_employment_tax",
-            ],
-        )
+        deductions = [
+            deduction
+            for deduction in total_itemized_federal_deductions
+        ]
+        deduction_value = add(tax_unit, period, deductions)
         net_state_income_taxes = tax_unit("mo_net_state_income_taxes", period)
         return (
-            total_itemized_federal_deductions + deduction_sum
+            deduction_value
         ) - net_state_income_taxes

@@ -8,6 +8,8 @@
     itemized_taxable_income_deductions: 0
     medical_expense_deduction: 0
     misc_deduction: 0
+    mo_net_state_income_taxes: 0
+    state_code: MO
   output:
     mo_itemized_deductions: 0.0
 
@@ -21,5 +23,7 @@
     itemized_taxable_income_deductions: 10
     medical_expense_deduction: 10
     misc_deduction: 10
+    mo_net_state_income_taxes: 10
+    state_code: MO
   output:
-    mo_itemized_deductions: 60.00
+    mo_itemized_deductions: 50.00

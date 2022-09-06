@@ -7,7 +7,7 @@ class mo_net_state_income_taxes(Variable):
     label = "Missouri net state income taxes"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.mo.gov/forms/MO-A_2021.pdf"
+    reference = ("https://dor.mo.gov/forms/MO-A_2021.pdf", "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212")
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
@@ -19,15 +19,14 @@ class mo_net_state_income_taxes(Variable):
         state_and_local_sales_or_income_tax = tax_unit(
             "state_and_local_sales_or_income_tax", period
         )
-        state_and_local_income_tax = add(
-            tax_unit, period, ["state_income_tax", "local_income_tax"]
-        )
-        # Defined as local income tax from the Federal W2 on page 26 here: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
-        earnings_tax = tax_unit("local_income_tax", period)
 
-        # Logic here is redundant (local income tax is part of state_and_local_income_tax
-        # as well as the entirety of earnings_tax, but I feel this represents the true logic better)
-        net_state_income_taxes = state_and_local_income_tax - earnings_tax
+        # Technically, state and local income tax could include the "local_earnings_tax" variable,
+        # but because the definition of net_state_income_taxes is simply (state_tax + local_tax) - local_tax,
+        # it is redundant to keep it
+        # More info about local income tax from the Federal W2 on page 26 here: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
+
+        net_state_income_taxes = tax_unit("state_income_tax", period)
+
         income_tax_to_total_ratio = (
             net_state_income_taxes / state_and_local_sales_or_income_tax
         )
