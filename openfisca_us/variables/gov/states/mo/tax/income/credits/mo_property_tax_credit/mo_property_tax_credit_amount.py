@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class mo_property_tax_credit_demographic_tests(Variable):
+class mo_property_tax_credit_demographic_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "MO property tax credit demographic eligiblity test"
