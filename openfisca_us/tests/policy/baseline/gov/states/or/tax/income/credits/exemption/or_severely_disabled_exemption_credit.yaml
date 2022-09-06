@@ -1,0 +1,16 @@
+- name: $100,000 income (threshold), 1 (normal) exemptions, plus one severely disabled person.
+  period: 2021
+  input:
+    state_code: OR
+    adjusted_gross_income: 100_000
+    filing_status: SINGLE
+    exemptions: 1
+    is_severely_disabled: true
+  output:
+    or_exemption_credit: 213 * 2
+
+"""
+normal exemption (100k/200k income limit) 316.085(5)
+severely disabled exemption (100k income limit)
+disabled child exemption (100k income limit)
+"""
