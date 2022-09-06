@@ -8,7 +8,8 @@ class mo_federal_income_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        ("https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8", "https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044")
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044",
     )
     defined_for = StateCode.MO
 

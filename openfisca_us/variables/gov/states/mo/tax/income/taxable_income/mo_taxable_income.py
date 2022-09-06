@@ -7,7 +7,10 @@ class mo_taxable_income(Variable):
     label = "Missouri AGI minus deductions"
     unit = USD
     definition_period = YEAR
-    reference = ("https://dor.mo.gov/forms/MO-A_2021.pdf", "https://www.revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl=")
+    reference = (
+        "https://dor.mo.gov/forms/MO-A_2021.pdf",
+        "https://www.revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl=",
+    )
 
     def formula(tax_unit, period, parameters):
         tax_unit_itemizes = tax_unit("tax_unit_itemizes", period)

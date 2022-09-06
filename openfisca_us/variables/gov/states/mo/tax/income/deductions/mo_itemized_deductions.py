@@ -14,15 +14,12 @@ class mo_itemized_deductions(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        total_itemized_federal_deductions= (
+        total_itemized_federal_deductions = (
             parameters.states.mo.tax.income.deductions.itemized
         )
         deductions = [
-            deduction
-            for deduction in total_itemized_federal_deductions
+            deduction for deduction in total_itemized_federal_deductions
         ]
         deduction_value = add(tax_unit, period, deductions)
         net_state_income_taxes = tax_unit("mo_net_state_income_taxes", period)
-        return (
-            deduction_value
-        ) - net_state_income_taxes
+        return (deduction_value) - net_state_income_taxes

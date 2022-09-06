@@ -7,7 +7,10 @@ class mo_net_state_income_taxes(Variable):
     label = "Missouri net state income taxes"
     unit = USD
     definition_period = YEAR
-    reference = ("https://dor.mo.gov/forms/MO-A_2021.pdf", "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212")
+    reference = (
+        "https://dor.mo.gov/forms/MO-A_2021.pdf",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212",
+    )
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
