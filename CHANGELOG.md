@@ -5,6 +5,117 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.147.1] - 2022-09-05 18:14:55
+
+### Fixed
+
+- Use manual eligibility in basic income eligibility.
+
+## [0.147.0] - 2022-09-05 16:50:53
+
+### Added
+
+- NY State income tax.
+
+## [0.146.0] - 2022-09-04 19:15:21
+
+### Added
+
+- Historical parameters to NY college tuition credit.
+- Year period to energy efficient home improvement credit parameters.
+
+## [0.145.0] - 2022-09-04 19:09:21
+
+### Added
+
+- Calculations for the tax forgiveness rate in Pennsylvania
+
+## [0.144.1] - 2022-09-04 06:22:00
+
+### Changed
+
+- Refer consistently to the new name, the "Energy Efficient Home Improvement Tax Credit".
+
+## [0.144.0] - 2022-09-03 20:54:46
+
+### Changed
+
+- Made the electric vehicle credit under the Inflation Reduction Act into current policy.
+- Revised text of IRA rebate and credit parameters and variables.
+
+## [0.143.0] - 2022-09-03 09:33:08
+
+### Added
+
+- NY college tuition credit and itemized deduction.
+
+## [0.142.0] - 2022-09-03 09:17:20
+
+### Added
+
+- NY real property tax credit.
+
+## [0.141.0] - 2022-09-02 20:26:10
+
+### Added
+
+- Oregon EITC match.
+
+## [0.140.0] - 2022-09-02 20:09:49
+
+### Added
+
+- NY CTC.
+
+## [0.139.0] - 2022-09-02 14:29:45
+
+### Added
+
+- NY Supplemental EITC.
+
+## [0.138.0] - 2022-09-02 13:00:55
+
+### Added
+
+- NY supplemental income tax.
+
+## [0.137.0] - 2022-09-02 00:53:29
+
+### Changed
+
+- Apply residential efficiency and electrifaction rebates to perfromance based retrofit expenditures.
+
+## [0.136.0] - 2022-09-01 11:46:59
+
+### Added
+
+- NY CDCC.
+
+## [0.135.1] - 2022-09-01 00:47:34
+
+### Fixed
+
+- Breakdown format in basic income parameters.
+
+## [0.135.0] - 2022-08-31 23:58:28
+
+### Added
+
+- AGI limit for basic income.
+- Dollar-range basic income phase-out option.
+
+## [0.134.0] - 2022-08-27 20:34:55
+
+### Changed
+
+- Apply energy efficient home improvement tax credits to post-rebate expenditures.
+
+## [0.133.0] - 2022-08-27 17:41:38
+
+### Changed
+
+- Updated Residential Clean Energy Credit for the Inflation Reduction Act.
+
 ## [0.132.0] - 2022-08-25 00:48:25
 
 ### Added
@@ -1709,6 +1820,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.147.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.0...0.147.1
+[0.147.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.146.0...0.147.0
+[0.146.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.145.0...0.146.0
+[0.145.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.1...0.145.0
+[0.144.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.0...0.144.1
+[0.144.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.143.0...0.144.0
+[0.143.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.142.0...0.143.0
+[0.142.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.141.0...0.142.0
+[0.141.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.140.0...0.141.0
+[0.140.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.139.0...0.140.0
+[0.139.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.138.0...0.139.0
+[0.138.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.137.0...0.138.0
+[0.137.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.136.0...0.137.0
+[0.136.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.1...0.136.0
+[0.135.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.0...0.135.1
+[0.135.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.134.0...0.135.0
+[0.134.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.133.0...0.134.0
+[0.133.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.132.0...0.133.0
 [0.132.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.131.0...0.132.0
 [0.131.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.130.0...0.131.0
 [0.130.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.2...0.130.0

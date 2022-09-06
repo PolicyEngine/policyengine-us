@@ -1,0 +1,44 @@
+description: PA main Use Tax amount for Philadelphia, by total PA taxable income
+brackets:
+  - amount:
+      2021-01-01: 8
+    threshold:
+      2021-01-01: 0
+  - amount:
+      2021-01-01: 17
+    threshold:
+      2021-01-01: 15_000
+  - amount:
+      2021-01-01: 22
+    threshold:
+      2021-01-01: 30_000
+  - amount:
+      2021-01-01: 30
+    threshold:
+      2021-01-01: 50_000
+  - amount:
+      2021-01-01: 43
+    threshold:
+      2021-01-01: 75_000
+  - amount:
+      2021-01-01: 59
+    threshold:
+      2021-01-01: 100_000
+  - amount:
+      2021-01-01: 76
+    threshold:
+      2021-01-01: 150_000
+  - amount:
+      2021-01-01: 0
+    threshold:
+      2021-01-01: 200_000
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  name: pa_phildelphia_use_tax_amount
+  label: PA main Use Tax for Philadelphia
+  reference:
+    - title: PA Form PA-40 Instructions, page 22
+      href: https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=22

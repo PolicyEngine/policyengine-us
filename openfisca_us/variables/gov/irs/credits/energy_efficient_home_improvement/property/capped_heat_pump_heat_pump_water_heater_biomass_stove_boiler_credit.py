@@ -16,13 +16,25 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
         p = parameters(
             period
         ).gov.irs.credits.energy_efficient_home_improvement
-        expenditure = add(
+        pre_rebate_expenditure = add(
             tax_unit,
             period,
-            p.qualified_expenditures.heat_pump_heat_pump_water_heater_biomass_stove_boiler,
+            [
+                i + "_expenditures"
+                for i in p.qualified_expenditures.heat_pump_heat_pump_water_heater_biomass_stove_boiler
+            ],
         )
+        # NB: We assume that the credit is based on after-rebate expenditures,
+        # where rebates are per-item before the total rebate cap is applied.
+        REBATE_ELEMENTS = ["heat_pump", "heat_pump_water_heater"]
+        rebates = add(
+            tax_unit,
+            period,
+            ["capped_" + i + "_rebate" for i in REBATE_ELEMENTS],
+        )
+        post_rebate_expenditure = pre_rebate_expenditure - rebates
         rate = p.rates.property
-        uncapped = expenditure * rate
+        uncapped = post_rebate_expenditure * rate
         # Cap at either the total property cap (pre-IRA) or heat pump etc. cap (post-IRA).
         # We represent pre-IRA as an infinite heat pump cap.
         heat_pump_etc_cap = (
