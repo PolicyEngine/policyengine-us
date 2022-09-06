@@ -16,7 +16,7 @@
     mo_property_tax_credit: 1_100
     state_code: MO
   output:
-    mo_income_tax_before_credits: 7_900
+    mo_income_tax: 7_900
 
 - name:  $2000 in income_tax, $3000 in mo_property_tax_credit
   period: 2022
@@ -26,4 +26,4 @@
     mo_property_tax_credit: 1_100
     state_code: MO
   output:
-    mo_income_tax_before_credits: -100
+    mo_income_tax: -100
