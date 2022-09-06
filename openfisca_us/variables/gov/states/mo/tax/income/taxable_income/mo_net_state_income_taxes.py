@@ -11,6 +11,7 @@ class mo_net_state_income_taxes(Variable):
         "https://dor.mo.gov/forms/MO-A_2021.pdf",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212",
     )
+    defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)

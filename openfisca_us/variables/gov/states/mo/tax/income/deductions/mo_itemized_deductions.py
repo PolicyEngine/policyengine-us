@@ -12,6 +12,7 @@ class mo_itemized_deductions(Variable):
         "https://dor.mo.gov/forms/4711_2021.pdf#page=11",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212",
     )
+    defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
         total_itemized_federal_deductions = parameters(
