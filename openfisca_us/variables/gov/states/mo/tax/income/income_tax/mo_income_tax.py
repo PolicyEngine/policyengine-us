@@ -14,5 +14,5 @@ class mo_income_tax(Variable):
         mo_income_tax_before_credits = tax_unit(
             "mo_income_tax_before_credits", period
         )
-        # mo_property_tax_credit = tax_unit("mo_property_tax_credit", period)
-        return mo_income_tax_before_credits  # - mo_property_tax_credit
+        mo_property_tax_credit = tax_unit("mo_property_tax_credit", period)
+        return mo_income_tax_before_credits  - mo_property_tax_credit
