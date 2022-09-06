@@ -12,6 +12,7 @@ class mo_taxable_income(Variable):
         "https://www.revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl=",
     )
     defined_for = StateCode.MO
+
     def formula(tax_unit, period, parameters):
         tax_unit_itemizes = tax_unit("tax_unit_itemizes", period)
         # MO agi is defined as federal_agi + mo_additions - mo_subtractions. Since there are no subtractions
