@@ -6,7 +6,6 @@ class or_severely_disabled_exemptions(Variable):
     entity = TaxUnit
     label = "OR severely disabled exemptions for tax head or spouse"
     definition_period = YEAR
-    # TODO: update
     reference = (
         "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=17"
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"  # Subsection 316.758(1)(b)
