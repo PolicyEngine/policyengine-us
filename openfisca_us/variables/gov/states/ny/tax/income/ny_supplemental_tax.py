@@ -1,6 +1,7 @@
 from openfisca_us.model_api import *
 from openfisca_core.taxscales import MarginalRateTaxScale
 
+
 class ny_supplemental_tax(Variable):
     value_type = float
     entity = TaxUnit
@@ -42,7 +43,9 @@ class ny_supplemental_tax(Variable):
             ],
         )
 
-        applicable_amount = max_(0, ny_agi - max_(previous_agi_threshold, sup_tax.min_agi))
+        applicable_amount = max_(
+            0, ny_agi - max_(previous_agi_threshold, sup_tax.min_agi)
+        )
 
         phase_in_fraction = min_(
             1,
@@ -52,14 +55,13 @@ class ny_supplemental_tax(Variable):
         rate = select(
             in_each_status,
             [
-                scale.marginal_rates(max_(sup_tax.min_agi + 1, ny_taxable_income))
+                scale.marginal_rates(
+                    max_(sup_tax.min_agi + 1, ny_taxable_income)
+                )
                 for scale in scales
             ],
         )
 
         target_tax = rate * ny_taxable_income
         difference = target_tax - tax_unit("ny_main_income_tax", period)
-        print(f"target_tax: {target_tax}, difference: {difference}, phase_in_fraction: {phase_in_fraction}, rate: {rate}, previous_agi_threshold: {previous_agi_threshold}, applicable_amount: {applicable_amount}, ny_taxable_income: {ny_taxable_income}, ny_agi: {ny_agi}, sup_tax.min_agi: {sup_tax.min_agi}")
         return phase_in_fraction * difference
-
-        
