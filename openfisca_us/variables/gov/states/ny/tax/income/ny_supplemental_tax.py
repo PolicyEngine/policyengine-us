@@ -1,5 +1,5 @@
 from openfisca_us.model_api import *
-
+from openfisca_core.taxscales import MarginalRateTaxScale
 
 class ny_supplemental_tax(Variable):
     value_type = float
@@ -12,7 +12,8 @@ class ny_supplemental_tax(Variable):
     def formula_2022(tax_unit, period, parameters):
         ny_taxable_income = tax_unit("ny_taxable_income", period)
         ny_agi = tax_unit("ny_agi", period)
-        sup_tax = parameters(period).gov.states.ny.tax.income.supplemental
+        tax = parameters(period).gov.states.ny.tax.income
+        sup_tax = tax.supplemental
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
@@ -25,58 +26,40 @@ class ny_supplemental_tax(Variable):
         ]
         in_each_status = [filing_status == s for s in statuses]
 
-        recap_base = sup_tax.recapture_base
-        single = recap_base.single
-        joint = recap_base.joint
-        hoh = recap_base.head_of_household
-        widow = recap_base.widow
-        separate = recap_base.separate
+        rates = tax.main
+        single = rates.single
+        joint = rates.joint
+        hoh = rates.head_of_household
+        widow = rates.widow
+        separate = rates.separate
         scales = [single, joint, hoh, widow, separate]
 
-        recapture_base = select(
-            in_each_status,
-            [scale.calc(ny_taxable_income) for scale in scales],
-        )
-
-        previous_threshold = select(
+        previous_agi_threshold = select(
             in_each_status,
             [
-                get_previous_threshold(ny_taxable_income, scale.thresholds)
+                get_previous_threshold(ny_agi, scale.thresholds)
                 for scale in scales
             ],
         )
 
-        next_threshold = select(
-            in_each_status,
-            [
-                get_next_threshold(ny_taxable_income, scale.thresholds)
-                for scale in scales
-            ],
-        )
-
-        incremental_benefit = select(
-            in_each_status,
-            [
-                scale.calc(next_threshold + 1) - recapture_base
-                for scale in scales
-            ],
-        )
-
-        applicable_amount = ny_agi - max_(previous_threshold, sup_tax.min_agi)
+        applicable_amount = max_(0, ny_agi - max_(previous_agi_threshold, sup_tax.min_agi))
 
         phase_in_fraction = min_(
             1,
             applicable_amount / sup_tax.phase_in_length,
         )
 
-        over_max_agi = ny_agi > sup_tax.agi_limit.max
-        main_tax = tax_unit("ny_main_income_tax", period)
-        target_tax_if_over_max_agi = (
-            ny_taxable_income * sup_tax.agi_limit.tax_rate
+        rate = select(
+            in_each_status,
+            [
+                scale.marginal_rates(max_(sup_tax.min_agi + 1, ny_taxable_income))
+                for scale in scales
+            ],
         )
 
-        return where(
-            over_max_agi,
-            target_tax_if_over_max_agi - main_tax,
-            recapture_base + incremental_benefit * phase_in_fraction,
-        )
+        target_tax = rate * ny_taxable_income
+        difference = target_tax - tax_unit("ny_main_income_tax", period)
+        print(f"target_tax: {target_tax}, difference: {difference}, phase_in_fraction: {phase_in_fraction}, rate: {rate}, previous_agi_threshold: {previous_agi_threshold}, applicable_amount: {applicable_amount}, ny_taxable_income: {ny_taxable_income}, ny_agi: {ny_agi}, sup_tax.min_agi: {sup_tax.min_agi}")
+        return phase_in_fraction * difference
+
+        
