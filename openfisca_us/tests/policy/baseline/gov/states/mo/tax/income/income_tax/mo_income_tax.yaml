@@ -1,5 +1,5 @@
 - name: no income
-  period: 2022
+  period: 2021
   absolute_error_margin: 0
   input:
     mo_income_tax_before_credits: 0
@@ -9,7 +9,7 @@
     mo_income_tax: 0.0
 
 - name:  $9000 in income_tax, $3000 in mo_property_tax_credit
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     mo_income_tax_before_credits: 9_000
@@ -19,7 +19,7 @@
     mo_income_tax: 7_900
 
 - name:  $2000 in income_tax, $3000 in mo_property_tax_credit
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     mo_income_tax_before_credits: 1_000

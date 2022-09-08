@@ -1,5 +1,5 @@
 - name: No itemization, health_insurance_premiums > taxable_income
-  period: 2022
+  period: 2021
   absolute_error_margin: 0
   input:
     health_insurance_premiums: 12_000
@@ -12,7 +12,7 @@
     mo_qualified_health_insurance_premiums: 10_000
 
 - name: Itemization, whole amount already fedeally deducted
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     health_insurance_premiums: 5_000
@@ -25,7 +25,7 @@
     mo_qualified_health_insurance_premiums: 0
 
 - name: 
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     health_insurance_premiums: 12_000
@@ -38,7 +38,7 @@
     mo_qualified_health_insurance_premiums: 885
 
 - name: 
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     health_insurance_premiums: 6_000

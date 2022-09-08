@@ -1,5 +1,5 @@
 - name: No Federal itemizations
-  period: 2022
+  period: 2021
   absolute_error_margin: 0
   input:
     casualty_loss_deduction: 0
@@ -14,7 +14,7 @@
     mo_itemized_deductions: 0.0
 
 - name: 60 in Federal itemizations, 10 in net_state_income_taxes
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     casualty_loss_deduction: 10
@@ -29,7 +29,7 @@
     mo_itemized_deductions: 50.00
 
 - name:  6000 in Federal itemizations, 1000 in net_state_income_taxes
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     casualty_loss_deduction: 1000
