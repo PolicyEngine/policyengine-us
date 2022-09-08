@@ -26,15 +26,29 @@ class pa_use_tax(Variable):
         # Compute main amount.
         main_amount = select(
             geo_list,
-            [p.main.philadelphia_county.calc(income), p.main.allegheny_county.calc(income)], p.main.rest_of_pa.calc(income)
+            [
+                p.main.philadelphia_county.calc(income),
+                p.main.allegheny_county.calc(income),
+            ],
+            p.main.rest_of_pa.calc(income),
         )
         # Compute the uncapped amount based on the higher threshold.
         excess_over_higher_threshold = max_(income - p.higher.threshold, 0)
-        higher_rate = select(geo_list, [p.higher.rate.philadelphia_county, p.higher.rate.allegheny_county], p.higher.rate.rest_of_pa)
+        higher_rate = select(
+            geo_list,
+            [
+                p.higher.rate.philadelphia_county,
+                p.higher.rate.allegheny_county,
+            ],
+            p.higher.rate.rest_of_pa,
+        )
         uncapped_higher_amount = excess_over_higher_threshold * higher_rate
         # Cap that amount.
-        higher_cap = select(geo_list, [p.higher.cap.philadelphia_county, p.higher.cap.allegheny_county], p.higher.cap.rest_of_pa)
+        higher_cap = select(
+            geo_list,
+            [p.higher.cap.philadelphia_county, p.higher.cap.allegheny_county],
+            p.higher.cap.rest_of_pa,
+        )
         higher_amount = min_(uncapped_higher_amount, higher_cap)
         # Return main or higher amount depending on if income exceeds the higher threshold.
         return main_amount + higher_amount
-    

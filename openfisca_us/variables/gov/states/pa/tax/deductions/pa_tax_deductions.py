@@ -2,6 +2,7 @@ from openfisca_us.model_api import *
 
 # PA law does not allow standard deductions, deductions for personal exemptions, itemized deductions or deductions for personal expenses.
 
+
 class pa_tax_deductions(Variable):
     value_type = float
     entity = TaxUnit
