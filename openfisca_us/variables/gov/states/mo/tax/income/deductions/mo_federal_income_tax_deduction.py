@@ -14,14 +14,14 @@ class mo_federal_income_tax_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        mo_agi = tax_unit("mo_adjusted_gross_income", period)
+        mo_adjusted_gross_income = tax_unit("mo_adjusted_gross_income", period)
         federal_tax = tax_unit("income_tax", period)
         filing_status = tax_unit("filing_status", period)
 
         federal_income_tax_deduction_rates = parameters(
             period
         ).gov.states.mo.tax.income.deductions.federal_income_tax_deduction_rates
-        rate = federal_income_tax_deduction_rates.calc(mo_agi)
+        rate = federal_income_tax_deduction_rates.calc(mo_adjusted_gross_income)
         federal_income_tax_deduction_amount = federal_tax * rate
 
         federal_income_tax_deduction_cap = parameters(

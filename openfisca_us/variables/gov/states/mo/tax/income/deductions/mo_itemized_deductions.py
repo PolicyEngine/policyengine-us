@@ -23,4 +23,4 @@ class mo_itemized_deductions(Variable):
         ]
         deduction_value = add(tax_unit, period, deductions)
         net_state_income_taxes = tax_unit("mo_net_state_income_taxes", period)
-        return (deduction_value) - net_state_income_taxes
+        return deduction_value - net_state_income_taxes
