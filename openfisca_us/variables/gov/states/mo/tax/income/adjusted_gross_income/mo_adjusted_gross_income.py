@@ -15,5 +15,7 @@ class mo_adjusted_gross_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        subtractions = tax_unit("mo_qualified_health_insurance_premiums", period)
+        subtractions = tax_unit(
+            "mo_qualified_health_insurance_premiums", period
+        )
         return max_(agi - subtractions, 0)
