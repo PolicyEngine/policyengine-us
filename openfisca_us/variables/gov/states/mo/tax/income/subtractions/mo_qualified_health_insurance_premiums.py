@@ -36,10 +36,9 @@ class mo_qualified_health_insurance_premiums(Variable):
         # the ratio of federal medical expense deduction to total medical expenses (out of pocket + premiums)
         med_expense_deducted_ratio = where(
             (med_dental_out_of_pocket + total_health_insurance_premiums) > 0,
-            round(
+            (
                 med_expense_deduction
-                / (med_dental_out_of_pocket + total_health_insurance_premiums),
-                2,
+                / (med_dental_out_of_pocket + total_health_insurance_premiums)
             ),
             0,
         )
@@ -54,11 +53,10 @@ class mo_qualified_health_insurance_premiums(Variable):
         )
 
         itemizes = tax_unit("itemizes", period)
-        itemized_premiums = itemizes * total_health_insurance_premiums
         taxable_income = tax_unit("taxable_income", period)
 
         return where(
-            itemized_premiums > 0,
+            itemizes,
             min_(itemized_premiums_amount, taxable_income),
             min_(total_health_insurance_premiums, taxable_income),
         )
