@@ -18,7 +18,7 @@
     filing_status: SINGLE
     state_code: MO
   output:
-    mo_federal_income_tax_deduction: 644
+    mo_federal_income_tax_deduction: 460
 #value should be 35% of income tax (based on AGI), up to a cap of $5,000
 
 - name:  High income, single
@@ -30,7 +30,7 @@
     filing_status: SINGLE
     state_code: MO
   output:
-    mo_federal_income_tax_deduction: 2_215.2
+    mo_federal_income_tax_deduction: 738.4
 
 - name:  Capped out Federal income tax_deduction, single, ineligible
   period: 2022
@@ -47,7 +47,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    mo_adjusted_gross_income: 100_000
+    mo_adjusted_gross_income: 99_999
     income_tax: 40_000
     filing_status: SINGLE
     state_code: MO
@@ -58,9 +58,9 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    mo_adjusted_gross_income: 100_000
-    income_tax: 40_000
-    filing_status: SINGLE
+    mo_adjusted_gross_income: 50_000
+    income_tax: 45_000
+    filing_status: MARRIED
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 10_000
