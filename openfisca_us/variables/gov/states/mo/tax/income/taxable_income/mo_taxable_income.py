@@ -15,9 +15,8 @@ class mo_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         tax_unit_itemizes = tax_unit("tax_unit_itemizes", period)
-        # MO agi is defined as federal_agi + mo_additions - mo_subtractions. Since there are no subtractions
-        # or additions of note that we model at this time, mo_agi = federal_agi
-        mo_agi = tax_unit("adjusted_gross_income", period)
+
+        mo_agi = tax_unit("mo_adjusted_gross_income", period)
         mo_federal_income_tax_deduction = tax_unit(
             "mo_federal_income_tax_deduction", period
         )

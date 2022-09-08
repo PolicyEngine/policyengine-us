@@ -31,7 +31,7 @@ class mo_property_tax_credit_demographic_amount(Variable):
     #     pension_income = person("pension_income", period)
     #     rent = add(tax_unit, period, ["rent"])
     #     property_tax = tax_unit.household("real_estate_taxes", period)
-    #     agi = tax_unit("adjusted_gross_income")
+    #     agi = tax_unit("mo_adjusted_gross_income")
     #     benefits = tax_unit("mo_property_tax_credit_public_assistance", period)
     #     total_household_income = agi + benefits + pension_income
 

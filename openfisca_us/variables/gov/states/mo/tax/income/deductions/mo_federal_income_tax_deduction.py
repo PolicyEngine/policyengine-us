@@ -14,8 +14,7 @@ class mo_federal_income_tax_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        # without any additions or subtractions, mo_agi is the same as adjusted_gross_income, the Federal AGI measure
-        mo_agi = tax_unit("adjusted_gross_income", period)
+        mo_agi = tax_unit("mo_adjusted_gross_income", period)
         federal_tax = tax_unit("income_tax", period)
         filing_status = tax_unit("filing_status", period)
 
