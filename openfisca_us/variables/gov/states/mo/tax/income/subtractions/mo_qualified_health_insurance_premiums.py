@@ -52,7 +52,7 @@ class mo_qualified_health_insurance_premiums(Variable):
             total_health_insurance_premiums - deducted_portion
         )
 
-        itemizes = tax_unit("itemizes", period)
+        itemizes = tax_unit("tax_unit_itemizes", period)
         taxable_income = tax_unit("taxable_income", period)
 
         return where(
