@@ -11,6 +11,6 @@ class pa_adjusted_taxable_income(Variable):
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("pa_taxable_income", period)
+        taxable_income = tax_unit("pa_total_taxable_income", period)
         deductions = tax_unit("pa_tax_deductions", period)
         return taxable_income - deductions
