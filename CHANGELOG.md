@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.150.0] - 2022-09-09 15:39:41
+
+### Added
+
+- Pennsylvania use tax
+
 ## [0.149.0] - 2022-09-07 23:07:57
 
 ### Added
@@ -1849,6 +1855,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.150.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.149.0...0.150.0
 [0.149.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.148.0...0.149.0
 [0.148.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.3...0.148.0
 [0.147.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.2...0.147.3
