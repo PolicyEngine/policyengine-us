@@ -21,7 +21,9 @@ class mo_federal_income_tax_deduction(Variable):
         federal_income_tax_deduction_rates = parameters(
             period
         ).gov.states.mo.tax.income.deductions.federal_income_tax_deduction_rates
-        rate = federal_income_tax_deduction_rates.calc(mo_adjusted_gross_income)
+        rate = federal_income_tax_deduction_rates.calc(
+            mo_adjusted_gross_income
+        )
         federal_income_tax_deduction_amount = federal_tax * rate
 
         federal_income_tax_deduction_cap = parameters(
