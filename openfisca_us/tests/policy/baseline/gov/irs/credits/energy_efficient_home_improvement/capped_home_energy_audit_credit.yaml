@@ -1,0 +1,21 @@
+- name: No home energy audit credit allowed before the Inflation Reduction Act.
+  period: 2022
+  input:
+    home_energy_audit_expenditures: 100
+  output:
+    capped_home_energy_audit_credit: 0
+
+- name: 30% up to $150 after the Inflation Reduction Act.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    home_energy_audit_expenditures: 100
+  output:
+    capped_home_energy_audit_credit: 30
+
+- name: 30% up to $150 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    home_energy_audit_expenditures: 500
+  output:
+    capped_home_energy_audit_credit: 150

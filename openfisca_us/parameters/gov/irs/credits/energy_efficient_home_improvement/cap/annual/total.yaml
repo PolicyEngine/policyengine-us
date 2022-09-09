@@ -1,0 +1,12 @@
+description: The IRS caps energy efficient total home improvement credits at this amount per year (the cap on heat pumps, heat pump water heaters, and biomass stoves and boilers supersedes this cap).
+values:
+  2017-01-01: .inf
+  2023-01-01: 1_200
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_annual_cap_total
+  label: Energy efficient home improvement credit total cap
+  reference:
+    - title: Inflation Reduction Act, Part 3, Section 13301 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339

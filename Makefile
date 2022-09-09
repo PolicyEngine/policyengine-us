@@ -7,7 +7,8 @@ install:
 	pip install -e .[dev]
 	pip install --upgrade jupyter-book
 test-policy:
-	openfisca-us test openfisca_us/tests/policy
+	openfisca-us test openfisca_us/tests/policy/baseline
+	openfisca-us test openfisca_us/tests/policy/contrib
 test-variables:
 	openfisca-us test openfisca_us/tests/test_variables.py
 test:

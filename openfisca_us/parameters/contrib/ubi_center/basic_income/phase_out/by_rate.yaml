@@ -1,0 +1,7 @@
+description: Basic incomes phase out as a rate above a threshold if this is selected; otherwise, they phase out between the threshold and a phase-out end.
+values:
+  0000-01-01: true
+metadata:
+  unit: bool
+  name: bi_phase_out_by_rate
+  label: Phase out basic income as a rate

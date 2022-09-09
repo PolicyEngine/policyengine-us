@@ -1,0 +1,14 @@
+description: The IRS provides an energy efficient home improvement tax credit for this share of residential energy property expenditures.
+values:
+  2017-01-01: 1.0
+  # Since Inflation Reduction Act.
+  2023-01-01: 0.3
+metadata:
+  unit: /1
+  name: energy_efficient_home_improvement_credit_property_rate
+  label: Energy efficient home improvement credit rate on property
+  reference:
+    - title: 26 U.S.C. § 25C(a)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#a_2
+    - title: Inflation Reduction Act, Part 3, Section 13301 (b)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=338
