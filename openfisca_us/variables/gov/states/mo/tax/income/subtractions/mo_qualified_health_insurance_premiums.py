@@ -30,6 +30,8 @@ class mo_qualified_health_insurance_premiums(Variable):
         med_expense_deduction = tax_unit("medical_expense_deduction", period)
 
         # the ratio of federal medical expense deduction to total medical expenses (out of pocket + premiums)
+        # need division because med_dental_out_of_pocket is in federal tax, but no MO tax
+        # this ratio is then used to scale the health_insurance_premium amount that can be claimed
         med_expense_deducted_ratio = where(
             (med_dental_out_of_pocket + total_health_insurance_premiums) > 0,
             (
