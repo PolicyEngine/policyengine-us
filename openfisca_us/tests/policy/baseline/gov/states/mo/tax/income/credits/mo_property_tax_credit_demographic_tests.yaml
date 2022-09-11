@@ -1,0 +1,65 @@
+- name: Head of household disability qualification
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    age_head: 50
+    age_spouse: 50
+    disabled_head: True
+    disabled_spouse: False
+    military_disabled_head: False
+    military_disabled_spouse: False
+  output:
+    mo_property_tax_credit_demographic_tests: True
+
+- name: Head of household age qualification
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    age_head: 66
+    age_spouse: 64
+    disabled_head: False 
+    disabled_spouse: False
+    military_disabled_head: False
+    military_disabled_spouse: False
+  output:
+    mo_property_tax_credit_demographic_tests: True
+
+- name: Military disabled spouse qualfication
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age_head: 29
+    age_spouse: 35
+    disabled_head: False 
+    disabled_spouse: False
+    military_disabled_head: False
+    military_disabled_spouse: True
+  output:
+    mo_property_tax_credit_demographic_tests: True
+
+- name: Both qualifying, all counts
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age_head: 66
+    age_spouse: 66
+    disabled_head: True 
+    disabled_spouse: True
+    military_disabled_head: True
+    military_disabled_spouse: True
+  output:
+    mo_property_tax_credit_demographic_tests: True
+
+- name: Both not qualifying
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    age_head: 29
+    age_spouse: 35
+    disabled_head: False 
+    disabled_spouse: False
+    military_disabled_head: False
+    military_disabled_spouse: False
+  output:
+    mo_property_tax_credit_demographic_tests: False
+
