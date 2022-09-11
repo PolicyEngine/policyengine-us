@@ -2,8 +2,8 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    mo_property_tax_demographic_tests: True
-    pays_property_tax_or_rent: True
+    mo_property_tax_credit_demographic_tests: true
+    pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 750
     state_code: MO
   output:
@@ -13,8 +13,8 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    mo_property_tax_demographic_tests: True
-    pays_property_tax_or_rent: True
+    mo_property_tax_credit_demographic_tests: true
+    pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 1_100
     state_code: MO
   output:
@@ -24,8 +24,8 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    mo_property_tax_demographic_tests: False
-    pays_property_tax_or_rent: True
+    mo_property_tax_credit_demographic_tests: false
+    pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 1_100
     state_code: MO
   output:
