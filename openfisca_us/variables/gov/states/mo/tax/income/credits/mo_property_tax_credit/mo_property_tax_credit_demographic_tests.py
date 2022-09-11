@@ -14,11 +14,13 @@ class mo_property_tax_credit_demographic_tests(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        ##Eligibility
+        # Eligibility
         # Check for age eligiblity
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        age_threshold = parameters(period).gov.states.mo.tax.credits.property_tax.age_threshold
+        age_threshold = parameters(
+            period
+        ).gov.states.mo.tax.credits.property_tax.age_threshold
         elderly_head = age_head >= age_threshold
         elderly_spouse = age_spouse >= age_threshold
         elderly_head_or_spouse = elderly_head | elderly_spouse
@@ -31,9 +33,18 @@ class mo_property_tax_credit_demographic_tests(Variable):
         # Check for military disabled eligibility
         military_disabled_head = tax_unit("military_disabled_head", period)
         military_disabled_spouse = tax_unit("military_disabled_spouse", period)
-        military_disabled_head_or_spouse = military_disabled_head | military_disabled_spouse
+        military_disabled_head_or_spouse = (
+            military_disabled_head | military_disabled_spouse
+        )
 
         # Check for receipt of surviving spouse benefits
-        receives_survivor_benefits = add(tax_unit, period, ["social_security_survivors"]) > 0
+        receives_survivor_benefits = (
+            add(tax_unit, period, ["social_security_survivors"]) > 0
+        )
 
-        return elderly_head_or_spouse | disabled_head_or_spouse | military_disabled_head_or_spouse | receives_survivor_benefits
+        return (
+            elderly_head_or_spouse
+            | disabled_head_or_spouse
+            | military_disabled_head_or_spouse
+            | receives_survivor_benefits
+        )

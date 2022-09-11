@@ -18,7 +18,7 @@ class mo_property_tax_credit_public_assistance(Variable):
         # The second reference specifies that food stamps are not counted as income for this form.
         # Form also specifies that verterans payments and benefits are included unless an individual
         # is 100% disabled as a result of military service
-        #fully_disabled_service_connected_veteran = person("is_fully_disabled_service_connected_veteran", period)
-        #unclear if we currently model veterans benefits
+        # fully_disabled_service_connected_veteran = person("is_fully_disabled_service_connected_veteran", period)
+        # unclear if we currently model veterans benefits
         spm_unit = tax_unit.spm_unit
         return add(spm_unit, period, ["tanf", "ssi", "child_support_received"])

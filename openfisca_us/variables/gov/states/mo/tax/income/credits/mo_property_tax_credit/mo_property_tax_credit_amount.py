@@ -19,13 +19,22 @@ class mo_property_tax_credit_demographic_amount(Variable):
         rents = tax_unit.household("rents", period)
         cohabitates = tax_unit("lives_with_joint_filing_spouse", period)
         p = parameters(period).gov.states.mo.tax.credits.property_tax
-        income_threshold = select([rents & cohabitates, rents & ~cohabitates,
-                                  ~rents & cohabitates, ~rents & ~cohabitates],
-                                  [p.rent_cohabitating, p.own_cohabitating,
-                                   p.rent_separate, p.own_cohabitating])
+        income_threshold = select(
+            [
+                rents & cohabitates,
+                rents & ~cohabitates,
+                ~rents & cohabitates,
+                ~rents & ~cohabitates,
+            ],
+            [
+                p.rent_cohabitating,
+                p.own_cohabitating,
+                p.rent_separate,
+                p.own_cohabitating,
+            ],
+        )
 
         # Determine if the tax unit head and spouse co-habitate
-        
 
         person = tax_unit.members
         pension_income = person("pension_income", period)
@@ -35,7 +44,7 @@ class mo_property_tax_credit_demographic_amount(Variable):
         benefits = tax_unit("mo_property_tax_credit_public_assistance", period)
         total_household_income = agi + benefits + pension_income
         meets_income_test = total_household_income <= income_threshold
-        
+
         rent_expense_limit = p.rental_expense_cap
         rent_total = min_(rent, rent_expense_limit)
 
@@ -43,7 +52,11 @@ class mo_property_tax_credit_demographic_amount(Variable):
         property_tax_total = min_(property_tax, property_tax_expense_limit)
 
         # Total credit basis comes from line 13 of MO-PTS, not in legislation, proscribes $1,100 cap just as property tax expense cap
-        total_credit_basis = where((rent_total + property_tax_total >= property_tax_expense_limit), property_tax_expense_limit, (rent_total + property_tax_total))
+        total_credit_basis = where(
+            (rent_total + property_tax_total >= property_tax_expense_limit),
+            property_tax_expense_limit,
+            (rent_total + property_tax_total),
+        )
 
         minimum_base = p.minimum_base
 
