@@ -18,7 +18,7 @@ class mo_property_tax_credit_amount(Variable):
         # Currently not including railroad retirement or veterans benefits.
         rents = tax_unit("rents", period)
         cohabitates = tax_unit("lives_with_joint_filing_spouse", period)
-        p = parameters(period).gov.states.mo.tax.credits.property_tax
+        p = parameters(period).gov.states.mo.tax.income.credits.property_tax
         income_threshold = select(
             [
                 rents & cohabitates,
