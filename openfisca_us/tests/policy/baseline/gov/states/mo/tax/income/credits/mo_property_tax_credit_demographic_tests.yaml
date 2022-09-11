@@ -8,6 +8,8 @@
     disabled_spouse: false
     military_disabled_head: false
     military_disabled_spouse: false
+    social_security_survivors: false
+    state_code: MO
   output:
     mo_property_tax_credit_demographic_tests: true
 
@@ -20,9 +22,9 @@
     disabled_head: false 
     disabled_spouse: false
     military_disabled_head: false
-    military_disabled_spouse: fals
+    military_disabled_spouse: false
     social_security_survivors: false
-    state_code: MOe
+    state_code: MO
   output:
     mo_property_tax_credit_demographic_tests: true
 
