@@ -6,10 +6,10 @@
     output:
       military_disabled_head: true
 
-- name: Neither disabled
+- name: Not disabled
   period: 2021
   input:
     is_tax_unit_head: true
-    is_fully_disabled_service_connected_veteran: true
+    is_fully_disabled_service_connected_veteran: false
   output:
-    military_disabled_head: true
+    military_disabled_head: false
