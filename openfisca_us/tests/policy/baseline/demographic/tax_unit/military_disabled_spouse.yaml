@@ -1,0 +1,27 @@
+- name: Disabled spouse and non-disabled head test
+  period: 2021
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+        is_full_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    military_disabled_spouse: [false, true]
+
+- name: Neither disabled
+  period: 2021
+  input:
+    people:
+      head: {}
+      spouse:
+        is_tax_unit_spouse: true
+        is_full_disabled_service_connected_veteran: False
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    military_disabled_spouse: [false, false]
