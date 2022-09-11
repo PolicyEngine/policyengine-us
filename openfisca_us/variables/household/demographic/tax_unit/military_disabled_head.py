@@ -9,6 +9,6 @@ class military_disabled_head(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        military_disabled = person("is_permanently_disabled_veteran", period)
+        military_disabled = person("is_fully_disabled_service_connected_veteran", period)
         head = person("is_tax_unit_head", period)
         return tax_unit.any(military_disabled & head)
