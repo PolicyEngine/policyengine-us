@@ -20,7 +20,7 @@ class mo_property_tax_credit_demographic_tests(Variable):
         age_spouse = tax_unit("age_spouse", period)
         age_threshold = parameters(
             period
-        ).gov.states.mo.tax.credits.property_tax.age_threshold
+        ).gov.states.mo.tax.income.credits.property_tax.age_threshold
         elderly_head = age_head >= age_threshold
         elderly_spouse = age_spouse >= age_threshold
         elderly_head_or_spouse = elderly_head | elderly_spouse

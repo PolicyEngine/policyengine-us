@@ -19,7 +19,7 @@
       head: {}
       spouse:
         is_tax_unit_spouse: true
-        is_ssi_disabled: False
+        is_ssi_disabled: false
     tax_units:
       tax_unit:
         members: [head, spouse]

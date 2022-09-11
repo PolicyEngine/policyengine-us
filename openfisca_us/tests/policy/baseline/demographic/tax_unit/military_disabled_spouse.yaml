@@ -19,7 +19,7 @@
       head: {}
       spouse:
         is_tax_unit_spouse: true
-        is_full_disabled_service_connected_veteran: False
+        is_full_disabled_service_connected_veteran: false
     tax_units:
       tax_unit:
         members: [head, spouse]

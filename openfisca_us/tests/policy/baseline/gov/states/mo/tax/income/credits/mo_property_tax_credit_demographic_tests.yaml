@@ -4,12 +4,12 @@
   input:
     age_head: 50
     age_spouse: 50
-    disabled_head: True
-    disabled_spouse: False
-    military_disabled_head: False
-    military_disabled_spouse: False
+    disabled_head: true
+    disabled_spouse: false
+    military_disabled_head: false
+    military_disabled_spouse: false
   output:
-    mo_property_tax_credit_demographic_tests: True
+    mo_property_tax_credit_demographic_tests: true
 
 - name: Head of household age qualification
   period: 2022
@@ -17,12 +17,12 @@
   input:
     age_head: 66
     age_spouse: 64
-    disabled_head: False 
-    disabled_spouse: False
-    military_disabled_head: False
-    military_disabled_spouse: False
+    disabled_head: false 
+    disabled_spouse: false
+    military_disabled_head: false
+    military_disabled_spouse: false
   output:
-    mo_property_tax_credit_demographic_tests: True
+    mo_property_tax_credit_demographic_tests: true
 
 - name: Military disabled spouse qualfication
   period: 2022
@@ -30,12 +30,12 @@
   input:
     age_head: 29
     age_spouse: 35
-    disabled_head: False 
-    disabled_spouse: False
-    military_disabled_head: False
-    military_disabled_spouse: True
+    disabled_head: false 
+    disabled_spouse: false
+    military_disabled_head: false
+    military_disabled_spouse: true
   output:
-    mo_property_tax_credit_demographic_tests: True
+    mo_property_tax_credit_demographic_tests: true
 
 - name: Both qualifying, all counts
   period: 2022
@@ -43,12 +43,12 @@
   input:
     age_head: 66
     age_spouse: 66
-    disabled_head: True 
-    disabled_spouse: True
-    military_disabled_head: True
-    military_disabled_spouse: True
+    disabled_head: true 
+    disabled_spouse: true
+    military_disabled_head: true
+    military_disabled_spouse: true
   output:
-    mo_property_tax_credit_demographic_tests: True
+    mo_property_tax_credit_demographic_tests: true
 
 - name: Both not qualifying
   period: 2022
@@ -56,10 +56,10 @@
   input:
     age_head: 29
     age_spouse: 35
-    disabled_head: False 
-    disabled_spouse: False
-    military_disabled_head: False
-    military_disabled_spouse: False
+    disabled_head: false 
+    disabled_spouse: false
+    military_disabled_head: false
+    military_disabled_spouse: false
   output:
-    mo_property_tax_credit_demographic_tests: False
+    mo_property_tax_credit_demographic_tests: false
 
