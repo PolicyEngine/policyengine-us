@@ -20,7 +20,7 @@ class mo_qualified_health_insurance_premiums(Variable):
         # 'self_employed_health_insurance_premiums'
 
         # Federal Schedule A, Line 1
-        med_dental_out_of_pocket = add(person, period
+        med_dental_out_of_pocket = add(person, period,
             ["medical_out_of_pocket_expenses"])
         total_health_insurance_premiums = add(
             person, period, ["health_insurance_premiums"]
