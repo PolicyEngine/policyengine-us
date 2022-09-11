@@ -42,9 +42,4 @@ class mo_property_tax_credit_demographic_tests(Variable):
             add(tax_unit, period, ["social_security_survivors"]) > 0
         )
 
-        return (
-            elderly_head_or_spouse
-            | disabled_head_or_spouse
-            | military_disabled_head_or_spouse
-            | receives_survivor_benefits
-        )
+        return tax_unit.any(elderly_head_or_spouse | disabled_head_or_spouse | military_disabled_head_or_spouse | receives_survivor_benefits)
