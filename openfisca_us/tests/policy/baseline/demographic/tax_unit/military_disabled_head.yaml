@@ -1,10 +1,10 @@
 - name: Disabled head and non-disabled spouse test
   period: 2021
-    input:
-      is_tax_unit_head: true
-      is_fully_disabled_service_connected_veteran: true
-    output:
-      military_disabled_head: true
+  input:
+    is_tax_unit_head: true
+    is_fully_disabled_service_connected_veteran: true
+  output:
+    military_disabled_head: true
 
 - name: Not disabled
   period: 2021
