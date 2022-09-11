@@ -4,7 +4,7 @@
   input:
     tanf: 100
     ssi: 100
-    child_support_recieved: 100
+    child_support_received: 100
     state_code: MO
   output:
     mo_property_tax_credit_public_assistance: 300
@@ -15,7 +15,7 @@
   input:
     tanf: 50
     ssi: 0
-    child_support_recieved: 50
+    child_support_received: 50
     state_code: MO
   output:
     mo_property_tax_credit_public_assistance: 100
@@ -26,7 +26,7 @@
   input:
     tanf: 0
     ssi: 0
-    child_support_recieved: 0
+    child_support_received: 0
     state_code: MO
   output:
     mo_property_tax_credit_public_assistance: 0
