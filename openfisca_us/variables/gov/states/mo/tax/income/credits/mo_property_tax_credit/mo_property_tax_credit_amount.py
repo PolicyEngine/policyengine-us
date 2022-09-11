@@ -16,7 +16,7 @@ class mo_property_tax_credit_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         # Currently not including railroad retirement or veterans benefits.
-        rents = tax_unit.household("rents", period)
+        rents = tax_unit("rents", period)
         cohabitates = tax_unit("lives_with_joint_filing_spouse", period)
         p = parameters(period).gov.states.mo.tax.credits.property_tax
         income_threshold = select(
