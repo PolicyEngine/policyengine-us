@@ -20,7 +20,8 @@ class mo_property_tax_credit(Variable):
             "mo_property_tax_credit_demographic_tests", period
         )
         # Check for housing expense eligibility
-        any_housing_cost = tax_unit.household(
+        person = tax_unit.members
+        any_housing_cost = person.household(
             "pays_property_tax_or_rent", period
         )
         # Check demographic eligibility.

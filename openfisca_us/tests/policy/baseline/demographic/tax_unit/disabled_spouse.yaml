@@ -1,27 +1,15 @@
-- name: Disabled spouse and non-disabled head test
-  period: 20221
+- name: Disabled spouse 
+  period: 2022
   input:
-    people:
-      head: {}
-      spouse:
-        is_tax_unit_spouse: true
-        is_ssi_disabled: true
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
+    is_tax_unit_spouse: true
+    is_ssi_disabled: true
   output:
-    disabled_spouse: [false, true]
+    disabled_spouse: true
 
-- name: Neither disabled
-  period: 20221
+- name: Non-disabled
+  period: 2022
   input:
-    people:
-      head: {}
-      spouse:
-        is_tax_unit_spouse: true
-        is_ssi_disabled: false
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
+    is_tax_unit_spouse: true
+    is_ssi_disabled: false
   output:
-    disabled_spouse: [false, false]
+    disabled_spouse: false
