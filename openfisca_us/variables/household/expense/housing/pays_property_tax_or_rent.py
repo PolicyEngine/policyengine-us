@@ -10,6 +10,6 @@ class pays_property_tax_or_rent(Variable):
     reference = "https://dor.mo.gov/forms/MO-PTS_2021.pdf"
 
     def formula(tax_unit, period, parameters):
-        rent = add(tax_unit, period, ["rent"])
+        return add(tax_unit, period, ["rent", "real_estate_taxes"]) > 0
         property_tax = tax_unit.members("real_estate_taxes", period)
         return (rent + property_tax) > 0
