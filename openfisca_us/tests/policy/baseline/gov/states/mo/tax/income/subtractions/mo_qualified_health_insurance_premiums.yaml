@@ -11,7 +11,7 @@
   output:
     mo_qualified_health_insurance_premiums: 10_000
 
-- name: Itemization, max amount already fedeally deducted, residual amount under 7.5% of agi
+- name: Itemization, max amount already federally deducted, residual amount under 7.5% of agi
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -24,7 +24,7 @@
   output:
     mo_qualified_health_insurance_premiums: 375
 
-- name: 
+- name: Itemizes, more health expenses than taxable income, max federal itemized health deduction
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -37,7 +37,7 @@
   output:
     mo_qualified_health_insurance_premiums: 525
 
-- name: 
+- name: Itemizes, equal amounts of medical out of pocket expenses and health insurance premiums
   period: 2021
   absolute_error_margin: 0.01
   input:

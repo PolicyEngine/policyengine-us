@@ -15,10 +15,6 @@ class mo_qualified_health_insurance_premiums(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        # This logic is only required if we have a concept of premiums withheld from social security
-        # social_security_benefits = tax_unit("tax_unit_ssi", period)
-        # taxable_ss_benefits = tax_unit("tax_unit_taxable_social_security")
-        # taxable_ss_ratio = taxable_ss_benefits / social_security_benefits
 
         person = tax_unit.members
         # 'self_employed_health_insurance_premiums'
