@@ -53,6 +53,7 @@ class mo_qualified_health_insurance_premiums(Variable):
         )
 
         itemizes = tax_unit("tax_unit_itemizes", period)
+        # Cap at federal taxable income.
         taxable_income = tax_unit("taxable_income", period)
 
         return where(
