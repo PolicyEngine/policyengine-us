@@ -20,8 +20,9 @@ class mo_qualified_health_insurance_premiums(Variable):
         # 'self_employed_health_insurance_premiums'
 
         # Federal Schedule A, Line 1
-        med_dental_out_of_pocket = add(person, period,
-            ["medical_out_of_pocket_expenses"])
+        med_dental_out_of_pocket = add(
+            person, period, ["medical_out_of_pocket_expenses"]
+        )
         total_health_insurance_premiums = add(
             person, period, ["health_insurance_premiums"]
         )  # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
@@ -31,13 +32,14 @@ class mo_qualified_health_insurance_premiums(Variable):
         # the ratio of federal medical expense deduction to total medical expenses (out of pocket + premiums)
         # need division because med_dental_out_of_pocket is in federal tax, but no MO tax
         # this ratio is then used to scale the health_insurance_premium amount that can be claimed
-        total_health_expenses = add(tax_unit, period, ["medical_out_of_pocket_expenses", "health_insurance_premiums"])
+        total_health_expenses = add(
+            tax_unit,
+            period,
+            ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
+        )
         med_expense_deducted_ratio = where(
             (total_health_expenses) > 0,
-            (
-                med_expense_deduction
-                / (total_health_expenses)
-            ),
+            (med_expense_deduction / (total_health_expenses)),
             0,
         )
 
