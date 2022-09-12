@@ -20,5 +20,5 @@ class mo_property_tax_credit_public_assistance(Variable):
         # is 100% disabled as a result of military service
         # fully_disabled_service_connected_veteran = person("is_fully_disabled_service_connected_veteran", period)
         # unclear if we currently model veterans benefits
-        spm_unit = tax_unit.spm_unit
-        return add(spm_unit, period, ["tanf", "ssi", "child_support_received"])
+        # tanf is currently not included in this formula, issue here: https://github.com/PolicyEngine/openfisca-us/issues/1361
+        return add(tax_unit, period, ["ssi", "child_support_received"])

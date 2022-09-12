@@ -36,13 +36,19 @@ class mo_property_tax_credit_amount(Variable):
 
         # Determine if the tax unit head and spouse co-habitate
 
-        person = tax_unit.members
-        pension_income = person("pension_income", period)
         rent = add(tax_unit, period, ["rent"])
-        property_tax = add(person, period, ["real_estate_taxes"])
-        agi = tax_unit("mo_adjusted_gross_income", period)
-        benefits = tax_unit("mo_property_tax_credit_public_assistance", period)
-        total_household_income = agi + benefits + pension_income
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+
+        total_household_income = add(
+            tax_unit,
+            period,
+            [
+                "mo_adjusted_gross_income",
+                "pension_income",
+                "mo_property_tax_credit_public_assistance",
+            ],
+        )
+
         meets_income_test = total_household_income <= income_threshold
 
         rent_expense_limit = p.rental_expense_cap
