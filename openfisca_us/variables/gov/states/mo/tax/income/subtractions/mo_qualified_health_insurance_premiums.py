@@ -15,16 +15,8 @@ class mo_qualified_health_insurance_premiums(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-
-        person = tax_unit.members
-        # 'self_employed_health_insurance_premiums'
-
-        # Federal Schedule A, Line 1
-        med_dental_out_of_pocket = add(
-            person, period, ["medical_out_of_pocket_expenses"]
-        )
         total_health_insurance_premiums = add(
-            person, period, ["health_insurance_premiums"]
+            tax_unit, period, ["health_insurance_premiums"]
         )  # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
         # Federal Schedule A, Line 4
         med_expense_deduction = tax_unit("medical_expense_deduction", period)
@@ -38,8 +30,8 @@ class mo_qualified_health_insurance_premiums(Variable):
             ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
         )
         med_expense_deducted_ratio = where(
-            (total_health_expenses) > 0,
-            (med_expense_deduction / (total_health_expenses)),
+            total_health_expenses > 0,
+            med_expense_deduction / total_health_expenses,
             0,
         )
 
