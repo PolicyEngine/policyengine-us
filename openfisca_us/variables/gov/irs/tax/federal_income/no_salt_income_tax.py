@@ -10,17 +10,13 @@ class no_salt_income_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         with BranchedSimulation(tax_unit) as simulation:
-            simulation.tax_benefit_system.neutralize_variable(
-                "salt_deduction"
-            )
+            simulation.tax_benefit_system.neutralize_variable("salt_deduction")
             simulation.get_holder(
                 "salt_deduction"
             ).variable = simulation.tax_benefit_system.variables[
                 "salt_deduction"
             ]  # This is needed because neutralize_variable is only designed to work *before* simulations have started.
-            tax_liability = simulation.calculate(
-                "income_tax", period
-            )
+            tax_liability = simulation.calculate("income_tax", period)
             simulation.get_holder(
                 "salt_deduction"
             ).variable.is_neutralized = False
