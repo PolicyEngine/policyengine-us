@@ -1,0 +1,32 @@
+- name: Renter, $750 credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    mo_property_tax_credit_demographic_tests: true
+    pays_property_tax_or_rent: true
+    mo_property_tax_credit_amount: 750
+    state_code: MO
+  output:
+    mo_property_tax_credit: 750
+
+- name: Owner, $1,100 credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    mo_property_tax_credit_demographic_tests: true
+    pays_property_tax_or_rent: true
+    mo_property_tax_credit_amount: 1_100
+    state_code: MO
+  output:
+    mo_property_tax_credit: 1_100
+
+- name:  Owner, does not meet demographic eligibility
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    mo_property_tax_credit_demographic_tests: false
+    pays_property_tax_or_rent: true
+    mo_property_tax_credit_amount: 1_100
+    state_code: MO
+  output:
+    mo_property_tax_credit: 0

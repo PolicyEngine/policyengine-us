@@ -1,0 +1,30 @@
+- name: $100 of each benefit/child support
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    ssi: 100
+    child_support_received: 100
+    state_code: MO
+  output:
+    mo_property_tax_credit_public_assistance: 200
+
+- name: 2/3 benefits
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    ssi: 0
+    child_support_received: 50
+    state_code: MO
+  output:
+    mo_property_tax_credit_public_assistance: 50
+
+- name:  No benefits
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    ssi: 0
+    child_support_received: 0
+    state_code: MO
+  output:
+    mo_property_tax_credit_public_assistance: 0
+
