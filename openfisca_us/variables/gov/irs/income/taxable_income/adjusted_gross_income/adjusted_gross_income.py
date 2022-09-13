@@ -14,4 +14,7 @@ class adjusted_gross_income(Variable):
         above_the_line_deductions = tax_unit(
             "above_the_line_deductions", period
         )
-        return max_(gross_income - above_the_line_deductions, 0)
+        agi = max_(gross_income - above_the_line_deductions, 0)
+        if parameters(period).contrib.ubi_center.basic_income.taxable:
+            agi += add(tax_unit, period, ["basic_income"])
+        return agi
