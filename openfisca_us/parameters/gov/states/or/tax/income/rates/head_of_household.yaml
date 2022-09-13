@@ -1,0 +1,45 @@
+description: Oregon taxes income at these rates for individuals filing as head of household.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  name: or_income_tax_rate_head
+  label: OR State income tax rate for head of household filers.
+  reference:
+    - title: Chapter 316 - Personal Income Tax
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.037 (1)(a)
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=27
+brackets:
+  - threshold:
+      1993-01-01: 0
+    rate:
+      2017-01-01: .05
+      2020-01-01: .0475
+  - threshold:
+      # All thresholds are double that of single.
+      1993-01-01: 4_000
+      # We do not show inflation-adjusted values from 1994 to 2016.
+      2017-01-01: 6_800
+      2018-01-01: 6_900
+      2019-01-01: 7_100
+      2020-01-01: 7_200
+      2021-01-01: 7_300
+    rate:
+      2017-01-01: .07
+      2020-01-01: .0675
+  - threshold:
+      1993-01-01: 10_000
+      2017-01-01: 17_000
+      2018-01-01: 17_400
+      2019-01-01: 17_800
+      2020-01-01: 18_100
+      2021-01-01: 18_400
+    rate:
+      2017-01-01: .09
+      2020-01-01: .0875
+  - threshold:
+      # Top threshold doesn't change.
+      1993-01-01: 250_000
+    rate:
+      2017-01-01: .099
