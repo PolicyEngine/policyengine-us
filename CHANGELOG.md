@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.154.0] - 2022-09-13 05:13:03
+
+### Added
+
+- OR income tax before credits.
+
 ## [0.153.0] - 2022-09-12 22:24:35
 
 ### Added
@@ -1875,6 +1881,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.154.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.153.0...0.154.0
 [0.153.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.152.0...0.153.0
 [0.152.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.151.0...0.152.0
 [0.151.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.150.0...0.151.0
