@@ -10,7 +10,10 @@ class basic_income_phase_out(Variable):
 
     def formula(tax_unit, period, parameters):
         basic_income = add(tax_unit, period, ["basic_income_before_phase_out"])
-        p = parameters(period).contrib.ubi_center.basic_income.phase_out
+        bi = parameters(period).contrib.ubi_center.basic_income
+        if bi.taxable:
+            return 0
+        p = bi.phase_out
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         threshold = p.threshold[filing_status]
