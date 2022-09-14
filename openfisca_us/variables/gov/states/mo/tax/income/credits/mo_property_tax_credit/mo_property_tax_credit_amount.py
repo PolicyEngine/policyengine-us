@@ -28,9 +28,9 @@ class mo_property_tax_credit_amount(Variable):
             ],
             [
                 p.rent_cohabitating,
-                p.own_cohabitating,
                 p.rent_separate,
                 p.own_cohabitating,
+                p.own_separate
             ],
         )
 
