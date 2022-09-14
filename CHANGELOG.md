@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.155.1] - 2022-09-14 12:41:59
+
+### Fixed
+
+- Basic income taxability interaction with other phase-outs.
+
 ## [0.155.0] - 2022-09-13 19:33:43
 
 ### Added
@@ -1887,6 +1893,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.155.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.0...0.155.1
 [0.155.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.154.0...0.155.0
 [0.154.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.153.0...0.154.0
 [0.153.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.152.0...0.153.0
