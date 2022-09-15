@@ -5,6 +5,7 @@
     people:
       person1:
         age: 72
+        rent: 12_000
         employment_income: 16_000
         is_tax_unit_head: true
       person2:
@@ -14,10 +15,10 @@
         age: 5
     tax_units:
       tax_unit:
+        premium_tax_credit: 0
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]
-      rent: 12_000
       state_code: MO
   output:
     #taxsim output
@@ -31,6 +32,7 @@
       person1:
         age: 72
         employment_income: 16_000
+        real_estate_taxes: 12_000
         is_tax_unit_head: true
       person2:
         age: 32
@@ -39,10 +41,10 @@
         age: 5
     tax_units:
       tax_unit:
+        premium_tax_credit: 0
         members: [person1, person2, person3]
     household:
       members: [person1, person2, person3]
-      real_estate_taxes: 12_000
       state_code: MO
   output:
     #taxsim output
