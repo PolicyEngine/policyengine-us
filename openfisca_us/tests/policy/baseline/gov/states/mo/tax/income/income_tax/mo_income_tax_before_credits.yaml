@@ -33,3 +33,69 @@
     state_code: MO
   output:
     mo_income_tax_before_credits: 555
+
+- name:  Dependent Integration Test, 1 dependent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 32
+      person3:
+        age: 33
+      person4:
+        age: 33
+      person5:
+        age: 5
+    tax_units:
+      tax_unit:
+        mo_taxable_income: 13_000
+        members: [person1, person2, person3, person4, person5]
+  output:
+    mo_income_tax_before_credits: 555
+
+- name:  Dependent Integration Test, 2 dependents
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 32
+      person3:
+        age: 33
+      person4:
+        age: 3
+      person5:
+        age: 3
+    tax_units:
+      tax_unit:
+        mo_taxable_income: 13_000
+        members: [person1, person2, person3, person4, person5]
+  output:
+    mo_income_tax_before_credits: 555
+
+- name:  Dependent Integration Test, 3 dependents
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+      person2:
+        age: 32
+      person3:
+        age: 12
+      person4:
+        age: 12
+      person5:
+        age: 12
+    tax_units:
+      tax_unit:
+        mo_taxable_income: 13_000
+        members: [person1, person2, person3, person4, person5]
+  output:
+    mo_income_tax_before_credits: 555
