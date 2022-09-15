@@ -1,0 +1,35 @@
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 0
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 0.0
+
+- name:  $8,999 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 8_999
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 314.95
+
+- name:  $9,500 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 9_500
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 345
+
+- name:  $13,000 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 13_000
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 555

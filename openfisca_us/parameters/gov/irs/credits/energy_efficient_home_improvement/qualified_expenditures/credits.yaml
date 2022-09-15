@@ -1,0 +1,34 @@
+description: The US includes these capped credits in determining the total energy efficient home improvement tax credit.
+values:
+  2006-01-01:
+    - capped_energy_efficient_door_credit
+    - capped_energy_efficient_insulation_credit
+    - capped_energy_efficient_window_credit
+    - capped_energy_efficient_roof_credit
+    - capped_advanced_main_air_circulating_fan_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credit
+    - capped_energy_efficient_central_air_conditioner_credit
+    - capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credit
+  # Inflation Reduction Act removed roof credits and added audit credits.
+  # It also adds biomass stoves and boilers, but that is taken care of in 
+  # heat_pump_heat_pump_water_heater_biomass_stove_boiler.yaml.
+  2023-01-01:
+    - capped_energy_efficient_door_credit
+    - capped_energy_efficient_insulation_credit
+    - capped_energy_efficient_window_credit
+    - capped_advanced_main_air_circulating_fan_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credit
+    - capped_advanced_main_air_circulating_fan_credit
+    - capped_energy_efficient_central_air_conditioner_credit
+    - capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit
+    - capped_qualified_furnace_or_hot_water_boiler_credit
+    - capped_home_energy_audit_credit
+metadata:
+  name: energy_efficient_home_improvement_credit_qualifying_energy_efficiency_improvements
+  label: Energy efficiency improvements that qualify for energy efficient home improvement credit
+  reference:
+    - title: 26 U.S.C. § 25C(g)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#c_3
+    - title: Inflation Reduction Act, Part 3, Section 13301
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=341

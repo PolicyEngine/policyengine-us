@@ -1,0 +1,13 @@
+description: The IRS caps energy efficient home improvement credits on exterior doors at this amount per year.
+values:
+  2017-01-01: .inf
+  # Inflation Reduction Act
+  2023-01-01: 500 # Also $250 for a single exterior door, not modeled here.
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_annual_cap_doors
+  label: Energy efficient home improvement credit cap on exterior doors
+  reference:
+    - title: Inflation Reduction Act, Part 3, Section 13301 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339

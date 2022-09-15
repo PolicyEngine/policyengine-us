@@ -7,3 +7,4 @@ class ut_subtractions_from_income(Variable):
     label = "UT subtractions from income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.UT

@@ -1,0 +1,34 @@
+- name: Default is zero.
+  period: 2022
+  output:
+    residential_clean_energy_credit: 0
+
+- name: 30% in 2022.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    biomass_stove_boiler_expenditures: 1_000
+    geothermal_heat_pump_property_expenditures: 1_000
+    small_wind_energy_property_expenditures: 1_000
+    solar_electric_property_expenditures: 1_000
+    solar_water_heating_property_expenditures: 1_000
+    # Fuel cell capped at $1,000 if 1 kW capacity.
+    fuel_cell_property_expenditures: 1_100
+    fuel_cell_property_capacity: 1
+  output:
+    residential_clean_energy_credit: 1_800  # 30% of $6,000.
+
+- name: 26% in 2033.
+  period: 2033
+  absolute_error_margin: 0.01
+  input:
+    qualified_battery_storage_technology_expenditures: 1_000
+    geothermal_heat_pump_property_expenditures: 1_000
+    small_wind_energy_property_expenditures: 1_000
+    solar_electric_property_expenditures: 1_000
+    solar_water_heating_property_expenditures: 1_000
+    # Fuel cell capped at $1,000 if 1 kW capacity.
+    fuel_cell_property_expenditures: 1_100
+    fuel_cell_property_capacity: 1
+  output:
+    residential_clean_energy_credit: 1_560  # 26% of $6,000.

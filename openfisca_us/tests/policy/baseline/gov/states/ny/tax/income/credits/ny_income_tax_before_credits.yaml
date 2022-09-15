@@ -1,0 +1,9 @@
+- name: Single filer with 10k of income
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    employment_income: 10_000
+    filing_status: SINGLE
+  output:
+    ny_income_tax_before_credits: 80

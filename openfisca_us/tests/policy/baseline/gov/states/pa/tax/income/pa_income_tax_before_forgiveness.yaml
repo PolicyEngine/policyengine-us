@@ -1,0 +1,7 @@
+- name: PA income tax before forgiveness is 3.07%.
+  period: 2021
+  input:
+    state_code: PA
+    pa_total_taxable_income: 100
+  output:
+    pa_income_tax_before_forgiveness: 3.07

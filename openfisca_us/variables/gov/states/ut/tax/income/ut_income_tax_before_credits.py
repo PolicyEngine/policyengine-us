@@ -7,6 +7,7 @@ class ut_income_tax_before_credits(Variable):
     label = "Utah Income Tax Before Credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
         rate = parameters(period).gov.states.ut.tax.income.rate

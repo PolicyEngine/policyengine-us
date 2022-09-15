@@ -1,0 +1,52 @@
+description: Progressive rate schedule for a head-of-household filer in NY. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  name: ny_income_tax_rate_hoh
+  label: NY State income tax rates for head-of-household filers
+  reference:
+    - title: NY Form IT-201 Instructions, page 51
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=51
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 12_800
+    rate:
+      2021-01-01: 0.045
+  - threshold:
+      2021-01-01: 17_650
+    rate:
+      2021-01-01: 0.0525
+  - threshold:
+      2021-01-01: 20_900
+    rate:
+      2021-01-01: 0.059
+  - threshold:
+      2021-01-01: 32_200
+    rate:
+      2021-01-01: 0.0597
+  - threshold:
+      2021-01-01: 107_650
+    rate:
+      2021-01-01: 0.0633
+  - threshold:
+      2021-01-01: 269_300
+    rate:
+      2021-01-01: 0.0685
+  - threshold:
+      2021-01-01: 1_616_450
+    rate:
+      2021-01-01: 0.0965
+  - threshold:
+      2021-01-01: 5_000_000
+    rate:
+      2021-01-01: 0.103
+  - threshold:
+      2021-01-01: 25_000_000
+    rate:
+      2021-01-01: 0.109
+

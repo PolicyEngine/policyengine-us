@@ -10,6 +10,7 @@ class per_vehicle_payment(Variable):
         "Payment to vehicle owners in respect of each owned vehicle."
     )
     definition_period = YEAR
+    defined_for = StateCode.CA
 
     def formula(person, period, parameters):
         per_vehicle = parameters(period).gov.states.ca.per_vehicle_payment

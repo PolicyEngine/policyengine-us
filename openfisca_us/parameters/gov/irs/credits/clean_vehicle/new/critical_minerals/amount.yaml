@@ -1,0 +1,14 @@
+description: The IRS provides a credit of this amount to filers purchasing new clean vehicles meeting the critical mineral requirement.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=366
+  label: Credit for clean vehicles meeting the critical mineral requirement.
+  unit: currency-USD
+  period: year
+  name: new_clean_vehicle_credit_critical_minerals_amount
+values:
+  0000-01-01: 0
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 3_750

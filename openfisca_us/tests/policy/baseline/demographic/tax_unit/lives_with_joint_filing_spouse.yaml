@@ -1,0 +1,13 @@
+- name: Single, false
+  period: 2021
+  input:
+    filing_status: SINGLE
+  output:
+    lives_with_joint_filing_spouse: false
+
+- name: Joint, true
+  period: 2021
+  input:
+    filing_status: JOINT
+  output:
+    lives_with_joint_filing_spouse: true

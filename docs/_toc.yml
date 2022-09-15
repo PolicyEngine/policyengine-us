@@ -17,6 +17,8 @@ parts:
         sections:
           - file: programs/irs/credits/eitc
           - file: programs/irs/credits/cdcc
+          - file: programs/irs/credits/clean-vehicle
+          - file: programs/irs/capital-gains
       - file: programs/ssa/index
         sections:
           - file: programs/ssa/ssi
@@ -32,10 +34,18 @@ parts:
               - file: programs/states/ma/tax/income/credits/senior-circuit-breaker
           - file: programs/states/md/index
             sections:
-              - file: programs/states/ma/tax/income/credits/cdcc
+              - file: programs/states/md/tax/income/index
+              - file: programs/states/md/tax/income/credits/cdcc
+              - file: programs/states/md/tax/income/credits/ctc
+              - file: programs/states/md/tax/income/credits/eitc
+              - file: programs/states/md/tax/income/credits/poverty-line-credit
           - file: programs/states/ny/index
             sections:
+              - file: programs/states/ny/cdcc
+              - file: programs/states/ny/ctc
               - file: programs/states/ny/eitc
+              - file: programs/states/ny/tax
+              - file: programs/states/ny/tax-benefit
           - file: programs/states/wa/index
             sections:
               - file: programs/states/wa/tax/income/credits/working-families-tax-credit
@@ -47,4 +57,7 @@ parts:
   - caption: Validation
     chapters:
       - file: validation/taxsim
+  - caption: Usage
+    chapters:
+      - file: usage/speed
       

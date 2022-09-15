@@ -22,6 +22,8 @@ class spm_unit_benefits(Variable):
             "ebb",
             "spm_unit_capped_housing_subsidy",
             "tanf",
+            "high_efficiency_electric_home_rebate",
+            "residential_efficiency_electrification_rebate",
             # Contributed.
             "basic_income",
         ]

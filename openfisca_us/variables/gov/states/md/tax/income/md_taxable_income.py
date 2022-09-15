@@ -7,6 +7,7 @@ class md_taxable_income(Variable):
     label = "MD taxable income"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         md_agi = tax_unit("md_agi", period)

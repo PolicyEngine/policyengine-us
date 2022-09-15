@@ -1,0 +1,6 @@
+- name: Some State tax liability, calculation finishes
+  period: 2022
+  input:
+    state_income_tax: 1_000
+  output:
+    no_salt_income_tax: 0

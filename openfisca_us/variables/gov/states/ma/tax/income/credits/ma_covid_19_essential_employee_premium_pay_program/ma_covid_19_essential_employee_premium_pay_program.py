@@ -8,6 +8,7 @@ class ma_covid_19_essential_employee_premium_pay_program(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/covid-19-essential-employee-premium-pay-program"
+    defined_for = StateCode.MA
 
     def formula(person, period, parameters):
         earnings = person("earned_income", period)

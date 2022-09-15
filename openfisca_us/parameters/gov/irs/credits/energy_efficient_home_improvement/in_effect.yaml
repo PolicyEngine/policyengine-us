@@ -1,0 +1,14 @@
+description: The IRS provides the energy efficient home improvement tax credit when this is true.
+values:
+  2006-01-01: true
+  2008-01-01: false
+  2009-01-01: true
+  2033-01-01: false
+  # Pre-Infation Reduction Act law terminated it on 2022-01-01.
+  # However, the Inflation Reduction Act extended it retroactively.
+metadata:
+  name: energy_efficient_home_improvement_credit_in_effect
+  label: Energy efficient home improvement tax credit in effect
+  reference:
+    - title: 26 U.S.C. § 25C(g)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#g
