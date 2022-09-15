@@ -16,6 +16,7 @@
       tax_unit:
         members: [person1, person2, person3]
     household:
+      members: [person1, person2, person3]
       rent: 12_000
       state_code: MO
   output:
@@ -40,6 +41,7 @@
       tax_unit:
         members: [person1, person2, person3]
     household:
+      members: [person1, person2, person3]
       real_estate_taxes: 12_000
       state_code: MO
   output:
