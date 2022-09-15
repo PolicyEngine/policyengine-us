@@ -41,18 +41,14 @@
     people:
       person1:
         age: 38
-      person2:
-        age: 32
-      person3:
-        age: 33
-      person4:
-        age: 33
-      person5:
-        age: 5
+        employment_income: 30_000
     tax_units:
       tax_unit:
-        mo_taxable_income: 13_000
-        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        members: [person1,]
+    household:
+      state_code: MO
+      members: [person1,]
   output:
     mo_income_tax_before_credits: 555
 
@@ -63,18 +59,16 @@
     people:
       person1:
         age: 38
+        employment_income: 30_000
       person2:
-        age: 32
-      person3:
-        age: 33
-      person4:
-        age: 3
-      person5:
-        age: 3
+        age: 5
     tax_units:
       tax_unit:
-        mo_taxable_income: 13_000
-        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      state_code: MO
+      members: [person1, person2,]
   output:
     mo_income_tax_before_credits: 555
 
@@ -85,17 +79,19 @@
     people:
       person1:
         age: 38
+        employment_income: 30_000
+        is_tax_unit_head: true
       person2:
         age: 32
+        is_tax_unit_spouse: true
       person3:
-        age: 12
-      person4:
-        age: 12
-      person5:
         age: 12
     tax_units:
       tax_unit:
-        mo_taxable_income: 13_000
-        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+      members: [person1, person2, person3]
   output:
     mo_income_tax_before_credits: 555

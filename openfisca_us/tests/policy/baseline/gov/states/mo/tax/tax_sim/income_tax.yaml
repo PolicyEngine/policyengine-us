@@ -1,0 +1,137 @@
+- name:  Taxsim integration test, 50k income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+  output:
+    #taxsim output
+    mo_income_tax: 1_076
+
+- name:  Taxsim integration test, no liability
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 15_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+  output:
+    #taxsim output
+    mo_income_tax: 0
+
+- name:  Taxsim integration test, low tax
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 30_500
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+  output:
+    #taxsim output
+    mo_income_tax: 101
+
+- name:  Taxsim integration test, average household income, per https://www.census.gov/quickfacts/MO
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 57_290
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+  output:
+    #taxsim output
+    mo_income_tax: 1_476
+
+- name:  Taxsim integration test, high income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 115_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+  output:
+    #taxsim output
+    mo_income_tax: 4_590
+
+- name:  Taxsim integration test, very high income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 400_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      state_code: MO
+  output:
+    #taxsim output
+    mo_income_tax: 20_009

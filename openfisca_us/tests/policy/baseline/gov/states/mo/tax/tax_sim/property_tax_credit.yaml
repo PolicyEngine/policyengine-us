@@ -1,0 +1,47 @@
+- name:  Taxsim integration test, 16k income, 12k rent
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 16_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      rent: 12_000
+      state_code: MO
+  output:
+    #taxsim output
+    mo_property_tax_credit: 750
+
+- name:  Taxsim integration test, 16k income, 12k real estate taxes
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        employment_income: 16_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    household:
+      real_estate_taxes: 12_000
+      state_code: MO
+  output:
+    #taxsim output
+    mo_property_tax_credit: 1_100
