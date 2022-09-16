@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.156.0] - 2022-09-16 03:02:08
+
+### Added
+
+- Add taxsim comparisons to MO state tax system.
+- Add notebook documentation showcasing tax/tax and benefits systems.
+- Disabled mo_property_tax_credit until output schedule can be modeled.
+
 ## [0.155.2] - 2022-09-16 00:15:33
 
 ### Added
@@ -1899,6 +1907,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.156.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.2...0.156.0
 [0.155.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.1...0.155.2
 [0.155.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.0...0.155.1
 [0.155.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.154.0...0.155.0
