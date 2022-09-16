@@ -6,8 +6,6 @@
       person1:
         age: 38
         employment_income: 115_000
-        employee_social_security_tax:
-        employee_medicare_tax:
         is_tax_unit_head: true
       person2:
         age: 32
@@ -25,19 +23,18 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output
-    mo_itemized_deductions: 37_851.22 #unclear how this value could be reached in this scenario
+    #taxsim output: 37_851.22
+    mo_itemized_deductions: 38_797.5
 
 - name:  Taxsim integration test, very high income
   period: 2021
   absolute_error_margin: 0.01
   input:
+   # 40_000 (itemized_taxable_income_deductions) should be input into taxsim, fica will be calced automatically
     people:
       person1:
         age: 38
         employment_income: 400_000
-        employee_social_security_tax: 0
-        employee_medicare_tax: 0
         is_tax_unit_head: true
       person2:
         age: 32
@@ -55,8 +52,5 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output
-    # 45_000 (itemized_taxable_income_deductions + misc_deduction) - 5_000 (mo_net_state_income_taxes) =
-    # 40_000 should be input into taxsim
-    mo_itemized_deductions: 46_279.49
-    # this value seems to closely correspond to a situation where mo_net_state_income_taxes is not calculated
+    #taxsim output: 46_279.49
+    mo_itemized_deductions: 46_200 #need to update

@@ -31,6 +31,6 @@ class mo_taxable_income(Variable):
         # Note: There would also be a personal and/or dependent exemptions as part of
         # this formula, but they are legally based on eligibility for the federal
         # versions of those exemptions, both of which are suspended through 2025 federally.
-        return (
-            mo_agi - mo_itemized_or_standard - mo_federal_income_tax_deduction
+        return max_(
+            mo_agi - mo_itemized_or_standard - mo_federal_income_tax_deduction,0
         )

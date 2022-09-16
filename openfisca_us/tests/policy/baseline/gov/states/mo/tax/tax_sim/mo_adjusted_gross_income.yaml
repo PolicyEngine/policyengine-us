@@ -20,8 +20,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output
-    mo_adjusted_gross_income: 19_512
+    #taxsim output: 20_000
+    mo_adjusted_gross_income: 20_000
 
 - name:  Taxsim integration test, 50k employment income
   period: 2021
@@ -45,8 +45,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output
-    mo_adjusted_gross_income: 48_780
+    #taxsim output: 50_000
+    mo_adjusted_gross_income: 50_000
 
 - name:  Taxsim integration test, 100k employment income
   period: 2021
@@ -70,5 +70,5 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output
-    mo_adjusted_gross_income: 97_560
+    #taxsim output: 100_000
+    mo_adjusted_gross_income: 100_000
