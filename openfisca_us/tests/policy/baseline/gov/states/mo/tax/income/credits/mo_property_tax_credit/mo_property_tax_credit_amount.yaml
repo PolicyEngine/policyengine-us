@@ -11,7 +11,7 @@
     mo_property_tax_credit_public_assistance: 0
     state_code: MO
   output:
-    mo_property_tax_credit_amount: 750
+    mo_property_tax_credit_amount: 0 #zeroed out until fully modeled
 
 - name: Owner, $1,100 credit
   period: 2022
@@ -26,4 +26,4 @@
     mo_property_tax_credit_public_assistance: 0
     state_code: MO
   output:
-    mo_property_tax_credit_amount: 1_100
+    mo_property_tax_credit_amount: 0 #zeroed out until fully modeled
