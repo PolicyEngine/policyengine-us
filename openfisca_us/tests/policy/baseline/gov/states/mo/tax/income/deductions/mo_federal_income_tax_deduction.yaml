@@ -4,6 +4,7 @@
   input:
     mo_adjusted_gross_income: 1_000
     income_tax: 0
+    rrc_cares: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -15,6 +16,7 @@
   input:
     mo_adjusted_gross_income: 30_000
     income_tax: 1_840
+    rrc_cares: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -27,6 +29,7 @@
   input:
     mo_adjusted_gross_income: 100_000
     income_tax: 14_768
+    rrc_cares: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -38,6 +41,7 @@
   input:
     mo_adjusted_gross_income: 200_000
     income_tax: 40_087
+    rrc_cares: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -49,17 +53,19 @@
   input:
     mo_adjusted_gross_income: 105_000
     income_tax: 100_000
+    rrc_cares: 0
     filing_status: SINGLE
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 5_000
 
-- name:  Cap test, married
+- name:  Cap test, married (check that value can't go above 10k, this is a ridiculous scenario)
   period: 2022
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 24_000
     income_tax: 110_000
+    rrc_cares: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -71,7 +77,32 @@
   input:
     mo_adjusted_gross_income: 51_000
     income_tax: 45_000
+    rrc_cares: 0
     filing_status: MARRIED
     state_code: MO
   output:
     mo_federal_income_tax_deduction: 6_750
+
+- name:  Cap test, married (see if value can go above 5k)
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 51_000
+    income_tax: 45_000
+    rrc_cares: 2_200
+    filing_status: MARRIED
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 6_420
+
+- name:  High income, single
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 100_000
+    income_tax: 14_768
+    rrc_cares: 1_200
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_federal_income_tax_deduction: 678.4

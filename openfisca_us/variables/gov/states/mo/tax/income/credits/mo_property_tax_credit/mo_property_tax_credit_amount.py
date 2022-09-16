@@ -15,6 +15,8 @@ class mo_property_tax_credit_amount(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
+        return 0
+        # short circuit until fully modeled
         # Currently not including railroad retirement or veterans benefits.
         rents = tax_unit("rents", period)
         cohabitates = tax_unit("lives_with_joint_filing_spouse", period)
@@ -28,9 +30,9 @@ class mo_property_tax_credit_amount(Variable):
             ],
             [
                 p.rent_cohabitating,
-                p.own_cohabitating,
                 p.rent_separate,
                 p.own_cohabitating,
+                p.own_separate,
             ],
         )
 
