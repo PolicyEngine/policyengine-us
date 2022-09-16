@@ -17,7 +17,7 @@ class mo_federal_income_tax_deduction(Variable):
         mo_adjusted_gross_income = tax_unit("mo_adjusted_gross_income", period)
         federal_tax = tax_unit("income_tax", period)
 
-        #subtract CARES act credits, only affects year 2020, source: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
+        # subtract CARES act credits, only affects year 2020, source: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
         cares_rebate = tax_unit("rrc_cares", period)
         federal_tax_less_cares = federal_tax - cares_rebate
 

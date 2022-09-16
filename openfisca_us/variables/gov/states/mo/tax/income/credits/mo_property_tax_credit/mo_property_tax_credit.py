@@ -16,7 +16,7 @@ class mo_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         return 0
-        #short circuit until fully modeled
+        # short circuit until fully modeled
         # Check demographic eligibility
         demographic_qualification = tax_unit(
             "mo_property_tax_credit_demographic_tests", period
