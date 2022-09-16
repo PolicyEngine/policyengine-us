@@ -8,8 +8,8 @@ class spm_unit_benefits(Variable):
     definition_period = YEAR
     unit = USD
 
-    formula = sum_of_variables(
-        [
+    def formula(spm_unit, period, parameters):
+        BENEFITS = [
             "social_security",
             "ssi",
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
@@ -27,4 +27,6 @@ class spm_unit_benefits(Variable):
             # Contributed.
             "basic_income",
         ]
-    )
+        if parameters(period).contrib.ubi_center.flat_tax.deduct_ptc:
+            BENEFITS.append("premium_tax_credit")
+        return add(spm_unit, period, BENEFITS)
