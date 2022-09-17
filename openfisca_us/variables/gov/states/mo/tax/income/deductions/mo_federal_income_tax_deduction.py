@@ -14,7 +14,9 @@ class mo_federal_income_tax_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        federal_tax = tax_unit("income_tax", period)
+        # Deduct a capped share of federal income tax liability.
+        # Use a version that assumes no SALT deduction to avoid circularity.
+        federal_tax = tax_unit("no_salt_income_tax", period)
         # Subtract CARES act credits, only affects year 2020.
         # https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
         cares_rebate = tax_unit("rrc_cares", period)
