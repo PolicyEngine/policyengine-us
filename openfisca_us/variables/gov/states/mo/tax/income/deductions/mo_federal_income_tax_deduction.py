@@ -14,30 +14,23 @@ class mo_federal_income_tax_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        mo_adjusted_gross_income = tax_unit("mo_adjusted_gross_income", period)
         federal_tax = tax_unit("income_tax", period)
-
-        # subtract CARES act credits, only affects year 2020, source: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
+        # Subtract CARES act credits, only affects year 2020.
+        # https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
         cares_rebate = tax_unit("rrc_cares", period)
-        federal_tax_less_cares = federal_tax - cares_rebate
-
-        filing_status = tax_unit("filing_status", period)
-
-        federal_income_tax_deduction_rates = parameters(
+        # Law is vague, but for now, limit to nonnegative income tax.
+        federal_tax_less_cares = max_(federal_tax - cares_rebate, 0)
+        # Apply rate based on AGI.
+        rate = parameters(
             period
-        ).gov.states.mo.tax.income.deductions.federal_income_tax_deduction_rates
-        rate = federal_income_tax_deduction_rates.calc(
-            mo_adjusted_gross_income
+        ).gov.states.mo.tax.income.deductions.federal_income_tax.rate.calc(
+            tax_unit("mo_adjusted_gross_income", period)
         )
-        federal_income_tax_deduction_amount = federal_tax_less_cares * rate
-
-        federal_income_tax_deduction_cap = parameters(
+        uncapped = federal_tax_less_cares * rate
+        # Apply cap based on filing status.
+        cap = parameters(
             period
-        ).gov.states.mo.tax.income.deductions.federal_income_tax_deduction_caps[
-            filing_status
+        ).gov.states.mo.tax.income.deductions.federal_income_tax.cap[
+            tax_unit("filing_status", period)
         ]
-
-        return min_(
-            federal_income_tax_deduction_amount,
-            federal_income_tax_deduction_cap,
-        )
+        return min_(uncapped, cap)
