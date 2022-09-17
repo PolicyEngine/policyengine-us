@@ -11,9 +11,10 @@ class state_income_tax(Variable):
     formula_2021 = sum_of_variables(
         [
             "ma_income_tax",
-            "wa_income_tax",
             "md_income_tax",
+            "mo_income_tax",
             "ny_income_tax",
             "pa_income_tax_after_forgiveness",
+            "wa_income_tax",
         ]
     )
