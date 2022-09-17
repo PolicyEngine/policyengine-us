@@ -39,6 +39,9 @@ parts:
               - file: programs/states/md/tax/income/credits/ctc
               - file: programs/states/md/tax/income/credits/eitc
               - file: programs/states/md/tax/income/credits/poverty-line-credit
+          - file: programs/states/mo/tax-benefit
+            sections:
+              - file: programs/states/mo/tax/income/index
           - file: programs/states/ny/index
             sections:
               - file: programs/states/ny/cdcc
