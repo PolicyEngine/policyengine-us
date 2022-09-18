@@ -6,7 +6,7 @@ class fill_in_eitc_ctc(Variable):
     entity = TaxUnit
     label = "Tax credit filling in the phase-in of the EITC and CTC"
     unit = USD
-    reference = "https://www.peoplespolicyproject.org/projects/extending-child-benefits/"
+    reference = "https://www.peoplespolicyproject.org/projects/extending-child-benefits"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
