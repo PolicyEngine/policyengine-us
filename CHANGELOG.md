@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.158.0] - 2022-09-18 16:29:13
+
+### Added
+
+- Federal poverty guideline-based basic income element.
+
+### Changed
+
+- Made all basic income variables tax unit-level.
+
 ## [0.157.0] - 2022-09-16 15:22:22
 
 ### Added
@@ -1913,6 +1923,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.158.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.157.0...0.158.0
 [0.157.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.156.0...0.157.0
 [0.156.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.2...0.156.0
 [0.155.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.1...0.155.2
