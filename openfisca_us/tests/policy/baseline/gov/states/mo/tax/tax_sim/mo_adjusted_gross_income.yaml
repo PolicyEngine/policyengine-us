@@ -1,0 +1,74 @@
+- name:  Taxsim integration test, 20k employment income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 20_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    #taxsim output: 20_000
+    mo_adjusted_gross_income: 20_000
+
+- name:  Taxsim integration test, 50k employment income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    #taxsim output: 50_000
+    mo_adjusted_gross_income: 50_000
+
+- name:  Taxsim integration test, 100k employment income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 100_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    #taxsim output: 100_000
+    mo_adjusted_gross_income: 100_000

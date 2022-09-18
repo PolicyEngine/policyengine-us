@@ -1,0 +1,9 @@
+- name: NY income tax subtracts credits.
+  period: 2022
+  input:
+    state_code: NY
+    ny_household_credit: 2
+    ny_eitc: 1
+    ny_income_tax_before_credits: 1
+  output:
+    ny_income_tax: -1

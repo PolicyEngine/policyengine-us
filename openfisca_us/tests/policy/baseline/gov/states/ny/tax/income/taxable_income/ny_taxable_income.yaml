@@ -1,0 +1,8 @@
+- name: NY taxable income under the standard deduction.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    employment_income: 6_000
+    state_code: NY
+  output:
+    ny_taxable_income: 0

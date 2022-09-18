@@ -1,8 +1,11 @@
 from openfisca_core.model_api import *
 from openfisca_us.entities import *
 from openfisca_tools.model_api import *
+from openfisca_us.tools.branched_simulation import BranchedSimulation
 import numpy as np
 from pathlib import Path
+
+from openfisca_us.typing import Formula
 
 ZIP_CODE_DATASET_PATH = (
     Path(__file__).parent.parent / "data" / "geography" / "zip_codes.csv.gz"
@@ -90,3 +93,34 @@ def in_state(state):
         return population("state_code_str", period) == state
 
     return is_eligible
+
+
+def excess(of: str, over: str) -> Formula:
+    def formula(entity, period, parameters):
+        of_variable = add(entity, period, [of])
+        over_variable = add(entity, period, [over])
+        return max_(of_variable - over_variable, 0)
+
+    return formula
+
+
+def get_next_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:
+    """
+    Return the next threshold in the sequence of thresholds.
+    """
+    t = np.array(thresholds)
+    return t[
+        min_((t <= values.reshape((1, len(values))).T).sum(axis=1), len(t) - 1)
+    ]
+
+
+def get_previous_threshold(
+    values: ArrayLike, thresholds: ArrayLike
+) -> ArrayLike:
+    """
+    Return the previous threshold in the sequence of thresholds.
+    """
+    t = np.array(thresholds)
+    return t[
+        max_((t <= values.reshape((1, len(values))).T).sum(axis=1) - 1, 0)
+    ]

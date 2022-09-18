@@ -1,18 +1,22 @@
-description: Extra earned income credit phase-out start AGI for married filling jointly.
+description: Extra earned income credit phase-out start AGI for married filing jointly.
 metadata:
   rate_unit: currency-USD
   propagate_metadata_to_children: true
   threshold_unit: child
   type: single_amount
   reference:
+    # Recorded in IRS data releases as the difference between
+    # Row 3: Threshold Phaseout Amount (Single, Surviving Spouse, or Head of 
+    #        Household), and
+    # Row 5: Threshold Phaseout Amount (Married Filing Jointly)
     - title: 2022 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
     - title: 2021 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
     - title: 2020 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
     - title: 2019 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=13
     - title: EITC Parameters | TPC
       href: https://www.taxpolicycenter.org/statistics/eitc-parameters
 brackets:
@@ -34,6 +38,7 @@ brackets:
         2019-01-01: 5_800
         2020-01-01: 5_890
         2021-01-01: 5_940
+        2022-01-01: 6_130
       metadata:
         unit: currency-USD
         period: year

@@ -7,5 +7,3 @@ class taxable_pension_income(Variable):
     label = "Taxable pension income"
     unit = USD
     definition_period = YEAR
-
-    formula = sum_of_variables(["taxable_ira_income"])

@@ -1,0 +1,27 @@
+- name: 100% capped at $300 before the Inflation Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_central_air_conditioner_expenditures: 40
+  output:
+    capped_energy_efficient_central_air_conditioner_credit: 40
+
+- name: 100% capped at $300 before the Inflation Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_central_air_conditioner_expenditures: 330
+  output:
+    capped_energy_efficient_central_air_conditioner_credit: 300
+
+- name: 30% capped at $600 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_central_air_conditioner_expenditures: 1_000
+  output:
+    capped_energy_efficient_central_air_conditioner_credit: 300
+
+- name: 30% capped at $600 (for all energy efficient building property) after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_central_air_conditioner_expenditures: 10_000
+  output:
+    capped_energy_efficient_central_air_conditioner_credit: 600

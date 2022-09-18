@@ -1,0 +1,19 @@
+- name: $100,000 income (threshold) one severely disabled person.
+  period: 2021
+  input:
+    state_code: OR
+    adjusted_gross_income: 100_000
+    is_tax_unit_dependent: false
+    is_severely_disabled: true
+  output:
+    or_severely_disabled_exemptions: 1
+
+- name: One severely disabled non-dependent disqualified due to income.
+  period: 2021
+  input:
+    state_code: OR
+    adjusted_gross_income: 100_001
+    is_tax_unit_dependent: false
+    is_severely_disabled: true
+  output:
+    or_severely_disabled_exemptions: 0

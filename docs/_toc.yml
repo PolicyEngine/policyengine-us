@@ -13,11 +13,12 @@ parts:
       - file: programs/hud/index
         sections:
           - file: programs/hud/housing-assistance
-      - file: programs/irs/index
+      - file: programs/irs/tax
         sections:
           - file: programs/irs/credits/eitc
           - file: programs/irs/credits/cdcc
-          - file: programs/irs/credits/electric-vehicle-credit
+          - file: programs/irs/credits/clean-vehicle
+          - file: programs/irs/capital-gains
       - file: programs/ssa/index
         sections:
           - file: programs/ssa/ssi
@@ -40,7 +41,11 @@ parts:
               - file: programs/states/md/tax/income/credits/poverty-line-credit
           - file: programs/states/ny/index
             sections:
+              - file: programs/states/ny/cdcc
+              - file: programs/states/ny/ctc
               - file: programs/states/ny/eitc
+              - file: programs/states/ny/tax
+              - file: programs/states/ny/tax-benefit
           - file: programs/states/wa/index
             sections:
               - file: programs/states/wa/tax/income/credits/working-families-tax-credit
@@ -49,9 +54,6 @@ parts:
           - file: programs/usda/snap
           - file: programs/usda/school-meals
           - file: programs/usda/wic
-  - caption: Contrib
-    chapters:
-      - file: contrib/congress/senate/democrats/inflation-reduction-act/electric-vehicle-credit
   - caption: Validation
     chapters:
       - file: validation/taxsim

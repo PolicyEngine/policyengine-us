@@ -1,0 +1,23 @@
+description: Federal income tax deduction caps by filing status.
+SINGLE: 
+  2021-01-01: 10_000
+JOINT:
+  2021-01-01: 10_000
+SEPARATE:
+  2021-01-01: 5_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 10_000
+WIDOW:
+  2021-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_federal_income_tax_deduction_caps
+  label: MO Federal income tax deduction caps
+  reference:
+    - title: Form MO-1040
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
+    - title: MO Revenue Chapter 143.171
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044
+  breakdown:
+  - filing_status

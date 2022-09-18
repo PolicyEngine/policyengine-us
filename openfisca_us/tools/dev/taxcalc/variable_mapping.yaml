@@ -9,7 +9,6 @@ alimony_income: e00800
 self_employment_income: e00900
 non_sch_d_capital_gains: e01100
 other_net_gain: e01200
-taxable_ira_income: e01400
 pension_income: e01500
 taxable_pension_income: e01700
 rental_income: e02000
@@ -38,7 +37,7 @@ charitable_non_cash_donations: e20100
 casualty_loss: e20400
 misc_deduction: g20500
 unrecaptured_section_1250_gain: e24515
-capital_gain_28_percent: e24518
+capital_gains_28_percent_rate_gain: e24518
 partnership_s_corp_income: e26270
 farm_rent_income: e27200
 tax_unit_childcare_expenses: e32800
@@ -66,3 +65,7 @@ separate_filer_itemizes: midr
 amt_non_agi_income: cmbtp
 income_tax_before_refundable_credits: c09200
 net_investment_income_tax: niit
+# We disaggregate the Residential Energy Credit into:
+# a) Residential Clean Energy Credit, and
+# b) Energy Efficient Home Improvement Credit
+# residential_energy_credit: e07260

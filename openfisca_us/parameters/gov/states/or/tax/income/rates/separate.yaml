@@ -1,0 +1,49 @@
+description: Oregon taxes income at these rates for filers that are married filing separately.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  name: or_income_tax_rate_separate
+  label: OR State income tax rate for married filing separate filers
+  reference:
+    - title: Chapter 316 - Personal Income Tax
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.037 (1)(a)
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=27
+    - title: 2020 Publication OR-17, Oregon Individual Income Tax Guide
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2020.pdf#page=138
+brackets:
+  # "* Since 1993 the tax brackets have been indexed for inflation.
+  #  ** In 2002, the inflation index changed from the Portland CPI to the U.S. city average CPI."
+  # Top threshold is not indexed to inflation.
+  # https://www.oregon.gov/DOR/programs/gov-research/Documents/10_income_brackets.pdf
+  - threshold:
+      1993-01-01: 0
+    rate:
+      2017-01-01: .05
+      2020-01-01: .0475
+  - threshold:
+      1993-01-01: 2_000
+      # We do not show inflation-adjusted values from 1994 to 2016.
+      2017-01-01: 3_400
+      2018-01-01: 3_450
+      2019-01-01: 3_550
+      2020-01-01: 3_600
+      2021-01-01: 3_650
+    rate:
+      2017-01-01: .07
+      2020-01-01: .0675
+  - threshold:
+      1993-01-01: 5_000
+      2017-01-01: 8_500
+      2018-01-01: 8_700
+      2019-01-01: 8_900
+      2020-01-01: 9_050
+      2021-01-01: 9_200
+    rate:
+      2017-01-01: .09
+      2020-01-01: .0875
+  - threshold:
+      1993-01-01: 125_000
+    rate:
+      2017-01-01: .099

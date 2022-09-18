@@ -1,0 +1,36 @@
+# OpenFisca-US test file derived from f21.its.csv and f21.ota.csv files
+- name: Tax unit with taxsimid 5832 from f21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 53
+        employment_income: 159000
+        qualified_dividend_income: 20000
+        taxable_interest_income: 3000
+        social_security: 20000
+        real_estate_taxes: 8000
+        interest_expense: 2000
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxsim_tfica: 11159.10
+    income_tax: 37091.00

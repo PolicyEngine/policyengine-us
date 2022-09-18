@@ -1,0 +1,10 @@
+description: Multiplier for the main NY CDCC parameters, including income.
+values:
+  2000-01-01: 0.80
+metadata:
+  unit: /1
+  name: ny_cdcc_main_multiplier
+  label: NY CDCC main maximum AGI
+  reference:
+    - title: Section 606 Credits against tax (c)(1)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

@@ -1,0 +1,18 @@
+description: The IRS limits its clean vehicle credit battery component amount to filers purchasing vehicles with this share of battery components (by value) made in North America.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=373
+  label: Share of clean vehicle battery components made in North America to qualify for credit
+  unit: /1
+  name: new_clean_vehicle_credit_battery_components_threshold
+values:
+  0000-01-01: 0
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 0.5
+  2024-01-01: 0.6
+  2026-01-01: 0.7
+  2027-01-01: 0.8
+  2028-01-01: 0.9
+  2029-01-01: 1.0

@@ -19,10 +19,8 @@ class ctc_reduction(Variable):
     def formula(tax_unit, period, parameters):
         income = tax_unit("adjusted_gross_income", period)
         ctc = parameters(period).gov.irs.credits.ctc
-        filing_status = tax_unit("filing_status", period)
-        income_over_threshold = max_(
-            0, income - ctc.phase_out.threshold[filing_status]
-        )
+        phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
+        income_over_threshold = max_(0, income - phase_out_threshold)
         reduction = ctc.phase_out.rate * income_over_threshold
         maximum_ctc = tax_unit("ctc_maximum", period)
         return min_(reduction, maximum_ctc)
@@ -36,9 +34,8 @@ class ctc_reduction(Variable):
         income = tax_unit("adjusted_gross_income", period)
         ctc = parameters(period).gov.irs.credits.ctc
         filing_status = tax_unit("filing_status", period)
-        income_over_threshold = max_(
-            0, income - ctc.phase_out.threshold[filing_status]
-        )
+        phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
+        income_over_threshold = max_(0, income - phase_out_threshold)
         reduction = ctc.phase_out.rate * income_over_threshold
         maximum_ctc = tax_unit("ctc_maximum", period)
 
@@ -75,8 +72,7 @@ class ctc_reduction(Variable):
         arpa_increase = maximum_ctc - ctc_without_arpa
 
         arpa_phase_out_range = (
-            ctc.phase_out.threshold[filing_status]
-            - ctc.phase_out.arpa.threshold[filing_status]
+            phase_out_threshold - ctc.phase_out.arpa.threshold[filing_status]
         )
 
         # Apply the phase-out
@@ -87,6 +83,6 @@ class ctc_reduction(Variable):
 
         arpa_reduction = min_(arpa_phase_out_max_reduction, arpa_reduction_max)
 
-        return original_phase_out + arpa_reduction
+        return min_(original_phase_out + arpa_reduction, maximum_ctc)
 
     formula_2022 = formula

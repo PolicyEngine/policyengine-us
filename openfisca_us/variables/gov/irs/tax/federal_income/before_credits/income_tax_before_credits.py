@@ -10,7 +10,11 @@ class c05800(Variable):
     documentation = "Total (regular + AMT) income tax liability before credits"
 
     formula = sum_of_variables(
-        ["regular_tax_before_credits", "alternative_minimum_tax"]
+        [
+            "income_tax_main_rates",
+            "capital_gains_tax",
+            "alternative_minimum_tax",
+        ]
     )
 
 

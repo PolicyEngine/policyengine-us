@@ -22,7 +22,17 @@ class c05200(Variable):
         pt_active = pt_active_gross
         pt_active = min_(pt_active, e00900 + e26270)
         pt_taxinc = max_(0, pt_active)
-        taxable_income = tax_unit("taxable_income", period)
+        full_taxable_income = tax_unit("taxable_income", period)
+
+        # 1(h) describes a mechanism for capital gains tax that caps income tax
+        # at an amount which includes 'as if income tax rates were applied on taxable
+        # income excluding some definiton of capital gains'. Instead of calculating
+        # both income tax and this hypothetical income tax, we'll just calculate the latter.
+
+        cg_exclusion = tax_unit(
+            "capital_gains_excluded_from_taxable_income", period
+        )
+        taxable_income = max_(0, full_taxable_income - cg_exclusion)
 
         pt_taxinc = min_(pt_taxinc, taxable_income)
         reg_taxinc = max_(0, taxable_income - pt_taxinc)

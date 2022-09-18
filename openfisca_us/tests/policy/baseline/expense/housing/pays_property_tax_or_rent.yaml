@@ -1,0 +1,31 @@
+- name: Positive rent value
+  period: 2021
+  input:
+    rent: 2
+    real_estate_taxes: 0
+  output:
+    pays_property_tax_or_rent: true
+
+- name: Positive property_tax value
+  period: 2021
+  input:
+    rent: 0
+    real_estate_taxes: 2
+  output:
+    pays_property_tax_or_rent: true
+
+- name: Neither
+  period: 2021
+  input:
+    rent: 0
+    real_estate_taxes: 0
+  output:
+    pays_property_tax_or_rent: false
+
+- name: Both
+  period: 2021
+  input:
+    rent: 2
+    real_estate_taxes: 2
+  output:
+    pays_property_tax_or_rent: true

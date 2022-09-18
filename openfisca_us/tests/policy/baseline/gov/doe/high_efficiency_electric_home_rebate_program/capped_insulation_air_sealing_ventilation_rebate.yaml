@@ -1,0 +1,48 @@
+- name: 100% for up to 80% of AMI (exclusive), capped at $1,600.
+  period: 2023
+  input:
+    energy_efficient_insulation_expenditures: 1_000
+    air_sealing_ventilation_expenditures: 500
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_insulation_air_sealing_ventilation_rebate: 1_500
+
+- name: 50% for 80-150% of AMI (inclusive on both ends), capped at $1,600.
+  period: 2023
+  input:
+    air_sealing_ventilation_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    capped_insulation_air_sealing_ventilation_rebate: 1_600
+
+- name: 50% for 80-150% of AMI (inclusive on both ends), capped at $1,600.
+  period: 2023
+  input:
+    air_sealing_ventilation_expenditures: 3_000
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    capped_insulation_air_sealing_ventilation_rebate: 1_500
+
+- name: 50% for 80-150% of AMI (inclusive on both ends), capped at $1,600.
+  period: 2023
+  input:
+    air_sealing_ventilation_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 0
+  output:
+    capped_insulation_air_sealing_ventilation_rebate: 0
+
+- name: Not available pre-2023.
+  period: 2022
+  input:
+    air_sealing_ventilation_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    capped_insulation_air_sealing_ventilation_rebate: 0
+
+- name: Not available after September 30, 2031.
+  period: 2032
+  input:
+    air_sealing_ventilation_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    capped_insulation_air_sealing_ventilation_rebate: 0

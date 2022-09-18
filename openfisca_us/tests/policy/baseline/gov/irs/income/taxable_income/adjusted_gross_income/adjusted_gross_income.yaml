@@ -1,0 +1,26 @@
+- name: AGI subtracts above-the-line deductions from gross income and by default does not include basic income.
+  period: 2022
+  input:
+    irs_gross_income: 3
+    above_the_line_deductions: 1
+    basic_income: 10
+  output:
+    adjusted_gross_income: 2
+
+- name: Add basic income to AGI if specified.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.taxable: true
+    irs_gross_income: 3
+    above_the_line_deductions: 1
+    basic_income: 10
+  output:
+    adjusted_gross_income: 12
+
+- name: Net income runs without circular dependency.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.taxable: true
+  output:
+    basic_income: 0
+    adjusted_gross_income: 0

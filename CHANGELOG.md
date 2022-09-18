@@ -5,6 +5,330 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.157.0] - 2022-09-16 15:22:22
+
+### Added
+
+- PTC deduction switch for the UBI Center flat tax.
+
+## [0.156.0] - 2022-09-16 03:02:08
+
+### Added
+
+- Add taxsim comparisons to MO state tax system.
+- Add notebook documentation showcasing tax/tax and benefits systems.
+- Disabled mo_property_tax_credit until output schedule can be modeled.
+
+## [0.155.2] - 2022-09-16 00:15:33
+
+### Added
+
+- Federal income tax documentation page.
+
+## [0.155.1] - 2022-09-14 12:41:59
+
+### Fixed
+
+- Basic income taxability interaction with other phase-outs.
+
+## [0.155.0] - 2022-09-13 19:33:43
+
+### Added
+
+- Basic income taxability.
+
+## [0.154.0] - 2022-09-13 05:13:03
+
+### Added
+
+- OR income tax before credits.
+
+## [0.153.0] - 2022-09-12 22:24:35
+
+### Added
+
+- Add MO agi, subtractions (mo_qualified_health_insurance_premiums)
+- Add MO taxable income and deductions
+- Add variables required for MO Property Tax Credit demographic tests
+
+## [0.152.0] - 2022-09-12 22:06:22
+
+### Added
+
+- Variable computing federal tax liability without SALT.
+
+## [0.151.0] - 2022-09-10 00:00:24
+
+### Added
+
+- OR kicker credit.
+
+## [0.150.0] - 2022-09-09 15:39:41
+
+### Added
+
+- Pennsylvania use tax
+
+## [0.149.0] - 2022-09-07 23:07:57
+
+### Added
+
+- Oregon personal exemption credit.
+
+## [0.148.0] - 2022-09-07 20:29:32
+
+### Fixed
+
+- Re-implemented NY supplemental tax to fix mistaken cliffs.
+
+## [0.147.3] - 2022-09-06 15:31:51
+
+### Added
+
+- NY tax documentation page.
+- NY documentation pages to table of contents.
+
+## [0.147.2] - 2022-09-06 10:51:59
+
+### Added
+
+- NY tax-benefit page to the documentation.
+
+### Fixed
+
+- NY college tuition and CDCC credits added as refundable.
+
+## [0.147.1] - 2022-09-05 18:14:55
+
+### Fixed
+
+- Use manual eligibility in basic income eligibility.
+
+## [0.147.0] - 2022-09-05 16:50:53
+
+### Added
+
+- NY State income tax.
+
+## [0.146.0] - 2022-09-04 19:15:21
+
+### Added
+
+- Historical parameters to NY college tuition credit.
+- Year period to energy efficient home improvement credit parameters.
+
+## [0.145.0] - 2022-09-04 19:09:21
+
+### Added
+
+- Calculations for the tax forgiveness rate in Pennsylvania
+
+## [0.144.1] - 2022-09-04 06:22:00
+
+### Changed
+
+- Refer consistently to the new name, the "Energy Efficient Home Improvement Tax Credit".
+
+## [0.144.0] - 2022-09-03 20:54:46
+
+### Changed
+
+- Made the electric vehicle credit under the Inflation Reduction Act into current policy.
+- Revised text of IRA rebate and credit parameters and variables.
+
+## [0.143.0] - 2022-09-03 09:33:08
+
+### Added
+
+- NY college tuition credit and itemized deduction.
+
+## [0.142.0] - 2022-09-03 09:17:20
+
+### Added
+
+- NY real property tax credit.
+
+## [0.141.0] - 2022-09-02 20:26:10
+
+### Added
+
+- Oregon EITC match.
+
+## [0.140.0] - 2022-09-02 20:09:49
+
+### Added
+
+- NY CTC.
+
+## [0.139.0] - 2022-09-02 14:29:45
+
+### Added
+
+- NY Supplemental EITC.
+
+## [0.138.0] - 2022-09-02 13:00:55
+
+### Added
+
+- NY supplemental income tax.
+
+## [0.137.0] - 2022-09-02 00:53:29
+
+### Changed
+
+- Apply residential efficiency and electrifaction rebates to perfromance based retrofit expenditures.
+
+## [0.136.0] - 2022-09-01 11:46:59
+
+### Added
+
+- NY CDCC.
+
+## [0.135.1] - 2022-09-01 00:47:34
+
+### Fixed
+
+- Breakdown format in basic income parameters.
+
+## [0.135.0] - 2022-08-31 23:58:28
+
+### Added
+
+- AGI limit for basic income.
+- Dollar-range basic income phase-out option.
+
+## [0.134.0] - 2022-08-27 20:34:55
+
+### Changed
+
+- Apply energy efficient home improvement tax credits to post-rebate expenditures.
+
+## [0.133.0] - 2022-08-27 17:41:38
+
+### Changed
+
+- Updated Residential Clean Energy Credit for the Inflation Reduction Act.
+
+## [0.132.0] - 2022-08-25 00:48:25
+
+### Added
+
+- High Efficiency Electric Home Rebate Program.
+
+## [0.131.0] - 2022-08-23 04:58:33
+
+### Added
+
+- Energy efficient home improvements credit post-Inflation Reduction Act.
+
+## [0.130.0] - 2022-08-18 17:24:10
+
+### Added
+
+- Pennsylvania income tax before forgiveness.
+
+## [0.129.2] - 2022-08-18 09:15:19
+
+### Fixed
+
+- Don't reduce CTC by more than the maximum in 2021.
+
+## [0.129.1] - 2022-08-17 15:46:46
+
+### Added
+
+- 2022 value of EITC joint bonus for couples without children.
+
+## [0.129.0] - 2022-08-17 05:44:08
+
+### Added
+
+- Nonbusiness energy property credit.
+
+## [0.128.3] - 2022-08-13 01:27:00
+
+### Changed
+
+- Formatting improvements in documentation.
+
+## [0.128.2] - 2022-08-12 17:54:09
+
+### Fixed
+
+- Use Mac version of taxsim.
+
+## [0.128.1] - 2022-08-12 13:45:51
+
+### Changed
+
+- Adjust logic for Washington Working Families Tax Credit based on recent legislation.
+
+## [0.128.0] - 2022-08-10 20:37:56
+
+### Added
+
+- SSTB business variable.
+
+## [0.127.0] - 2022-08-10 12:48:17
+
+### Added
+
+- Taxable income deductions for NY State tax.
+
+## [0.126.0] - 2022-08-10 12:47:25
+
+### Added
+
+- Logic pathway to NY income tax from income.
+
+## [0.125.0] - 2022-08-09 16:00:40
+
+### Added
+
+- Residential energy efficient property credit.
+
+## [0.124.1] - 2022-08-09 15:41:14
+
+### Fixed
+
+- A bug causing qualified dividends to not be counted as 'net capital gain'.
+
+## [0.124.0] - 2022-08-09 13:21:28
+
+### Fixed
+
+- Refactored pension income to exclude IRA calculations.
+
+## [0.123.0] - 2022-08-09 12:06:14
+
+### Added
+
+- NY AGI adjustments.
+
+## [0.122.0] - 2022-08-09 11:08:16
+
+### Added
+
+- NY income tax before credits (without high-income adjustment).
+
+## [0.121.2] - 2022-08-07 16:48:06
+
+### Fixed
+
+- Incorrect head of household capital gains thresholds.
+
+## [0.121.1] - 2022-08-05 16:24:00
+
+### Changed
+
+- Bump openfisca-tools to 0.13.3.
+
+## [0.121.0] - 2022-08-05 12:29:00
+
+### Added
+
+- Re-implementation of capital gains law.
+
 ## [0.120.0] - 2022-08-04 14:53:40
 
 ### Added
@@ -1589,6 +1913,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.157.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.156.0...0.157.0
+[0.156.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.2...0.156.0
+[0.155.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.1...0.155.2
+[0.155.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.0...0.155.1
+[0.155.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.154.0...0.155.0
+[0.154.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.153.0...0.154.0
+[0.153.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.152.0...0.153.0
+[0.152.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.151.0...0.152.0
+[0.151.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.150.0...0.151.0
+[0.150.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.149.0...0.150.0
+[0.149.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.148.0...0.149.0
+[0.148.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.3...0.148.0
+[0.147.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.2...0.147.3
+[0.147.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.1...0.147.2
+[0.147.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.0...0.147.1
+[0.147.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.146.0...0.147.0
+[0.146.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.145.0...0.146.0
+[0.145.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.1...0.145.0
+[0.144.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.144.0...0.144.1
+[0.144.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.143.0...0.144.0
+[0.143.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.142.0...0.143.0
+[0.142.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.141.0...0.142.0
+[0.141.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.140.0...0.141.0
+[0.140.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.139.0...0.140.0
+[0.139.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.138.0...0.139.0
+[0.138.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.137.0...0.138.0
+[0.137.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.136.0...0.137.0
+[0.136.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.1...0.136.0
+[0.135.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.135.0...0.135.1
+[0.135.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.134.0...0.135.0
+[0.134.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.133.0...0.134.0
+[0.133.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.132.0...0.133.0
+[0.132.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.131.0...0.132.0
+[0.131.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.130.0...0.131.0
+[0.130.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.2...0.130.0
+[0.129.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.1...0.129.2
+[0.129.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.129.0...0.129.1
+[0.129.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.3...0.129.0
+[0.128.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.2...0.128.3
+[0.128.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.1...0.128.2
+[0.128.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.128.0...0.128.1
+[0.128.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.127.0...0.128.0
+[0.127.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.126.0...0.127.0
+[0.126.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.125.0...0.126.0
+[0.125.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.1...0.125.0
+[0.124.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.124.0...0.124.1
+[0.124.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.123.0...0.124.0
+[0.123.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.122.0...0.123.0
+[0.122.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.2...0.122.0
+[0.121.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.1...0.121.2
+[0.121.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.121.0...0.121.1
+[0.121.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.120.0...0.121.0
 [0.120.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.119.1...0.120.0
 [0.119.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.119.0...0.119.1
 [0.119.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.118.0...0.119.0
