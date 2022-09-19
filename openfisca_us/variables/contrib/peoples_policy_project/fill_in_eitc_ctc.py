@@ -19,4 +19,11 @@ class fill_in_eitc_ctc(Variable):
         maximum_eitc_ctc = add(
             tax_unit, period, ["eitc_maximum", "ctc_maximum"]
         )
-        return maximum_eitc_ctc - current_eitc_ctc
+        # Subtract the phase-out reductions so it only fills in the
+        # phase-in.
+        phase_out_reductions = add(
+            tax_unit, period, ["eitc_reduction", "ctc_reduction"]
+        )
+        return max_(
+            0, maximum_eitc_ctc - current_eitc_ctc - phase_out_reductions
+        )
