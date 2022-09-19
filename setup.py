@@ -41,6 +41,7 @@ setup(
         "tables",
         "tqdm",
         "click>=8.0.0",
+        "tabulate",
     ],
     extras_require={
         "dev": [

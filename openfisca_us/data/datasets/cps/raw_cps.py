@@ -26,7 +26,8 @@ class RawCPS(PublicDataset):
         file_year_code = str(file_year)[-2:]
 
         CPS_URL_BY_YEAR = {
-            2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip"
+            2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip",
+            2021: "https://www2.census.gov/programs-surveys/cps/datasets/2022/march/asecpub22csv.zip",
         }
 
         if year not in CPS_URL_BY_YEAR:
@@ -92,7 +93,6 @@ class RawCPS(PublicDataset):
             "AGI",
             "CTC_CRD",
             "EIT_CRED",
-            "FED_RET",
             "FEDTAX_AC",
             "FEDTAX_BC",
             "MARG_TAX",
