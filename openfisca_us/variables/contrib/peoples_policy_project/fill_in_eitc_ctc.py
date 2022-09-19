@@ -15,15 +15,21 @@ class fill_in_eitc_ctc(Variable):
             period
         ).contrib.peoples_policy_project.fill_in_eitc_ctc:
             return 0
-        current_eitc_ctc = add(tax_unit, period, ["eitc", "ctc"])
-        maximum_eitc_ctc = add(
-            tax_unit, period, ["eitc_maximum", "ctc_maximum"]
+        eitc = tax_unit("eitc", period)
+        eitc_maximum = tax_unit("eitc_maximum", period)
+        eitc_reduction = tax_unit("eitc_reduction", period)
+        eitc_fill_in = (eitc_maximum - eitc_reduction) - eitc
+
+        ctc_maximum = tax_unit("ctc_maximum", period)
+        ctc_reduction = tax_unit("ctc_reduction", period)
+        ctc_limiting_tax_liability = tax_unit(
+            "ctc_limiting_tax_liability", period
         )
-        # Subtract the phase-out reductions so it only fills in the
-        # phase-in.
-        phase_out_reductions = add(
-            tax_unit, period, ["eitc_reduction", "ctc_reduction"]
+        refundable_ctc = tax_unit("refundable_ctc", period)
+        non_refundable_ctc = tax_unit("non_refundable_ctc", period)
+        ctc_value_received = refundable_ctc + min_(
+            non_refundable_ctc, ctc_limiting_tax_liability
         )
-        return max_(
-            0, maximum_eitc_ctc - current_eitc_ctc - phase_out_reductions
-        )
+        ctc_fill_in = (ctc_maximum - ctc_reduction) - ctc_value_received
+
+        return eitc_fill_in + ctc_fill_in
