@@ -18,7 +18,7 @@ class fill_in_eitc_ctc(Variable):
         eitc = tax_unit("eitc", period)
         eitc_maximum = tax_unit("eitc_maximum", period)
         eitc_reduction = tax_unit("eitc_reduction", period)
-        eitc_fill_in = (eitc_maximum - eitc_reduction) - eitc
+        eitc_fill_in = max_(eitc_maximum - eitc_reduction, 0) - eitc
 
         ctc_maximum = tax_unit("ctc_maximum", period)
         ctc_reduction = tax_unit("ctc_reduction", period)
@@ -30,6 +30,6 @@ class fill_in_eitc_ctc(Variable):
         ctc_value_received = refundable_ctc + min_(
             non_refundable_ctc, ctc_limiting_tax_liability
         )
-        ctc_fill_in = (ctc_maximum - ctc_reduction) - ctc_value_received
+        ctc_fill_in = max_(ctc_maximum - ctc_reduction, 0) - ctc_value_received
 
-        return eitc_fill_in + ctc_fill_in
+        return max_(eitc_fill_in + ctc_fill_in, 0)
