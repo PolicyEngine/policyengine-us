@@ -1,12 +1,7 @@
 description: Federal deductions allowed in Missouri income tax.
 values:
   1993-01-01:
-    - salt_deduction # this ends up being subtracted out by net_state_income_taxes
-    - casualty_loss_deduction
-    - charitable_deduction
-    - interest_deduction
-    - itemized_taxable_income_deductions
-    - medical_expense_deduction
+    - itemized_taxable_income_deductions # includes casualty_loss_deduction, charitable_deduction, interest_deduction, salt_deduction ,and medical_expense_deduction
     - misc_deduction
     - employee_social_security_tax
     - employee_medicare_tax

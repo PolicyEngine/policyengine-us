@@ -1,25 +1,25 @@
-description: The Federal income tax deduction rates from Form MO-1040, Line 12. Thresholds are <=.
+description: The Federal income tax deduction rates from Form MO-1040, Line 12. Thresholds are >=.
 brackets:
   - amount:
-      2021-07-01: 0.35  
+      2021-01-01: 0.35  
     threshold:
-      2021-07-01: 0
+      2021-01-01: 0
   - amount:
-      2021-07-01: 0.25  
+      2021-01-01: 0.25  
     threshold:
-      2021-07-01: 25_000
+      2021-01-01: 25_000
   - amount:
-      2021-07-01: 0.15
+      2021-01-01: 0.15
     threshold:
-      2021-07-01: 50_000
+      2021-01-01: 50_000
   - amount:
-      2021-07-01: 0.05
+      2021-01-01: 0.05
     threshold:
-      2021-07-01: 100_000
+      2021-01-01: 100_000
   - amount:
-      2021-07-01: 0.00
+      2021-01-01: 0.00
     threshold:
-      2021-07-01: 125_000
+      2021-01-01: 125_000
 metadata:
   reference:
     - title: Form MO-1040

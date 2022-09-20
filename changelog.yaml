@@ -1571,3 +1571,27 @@
     fixed:
     - Basic income taxability interaction with other phase-outs.
   date: 2022-09-14 12:41:59
+- bump: patch
+  changes:
+    added:
+    - Federal income tax documentation page.
+  date: 2022-09-16 00:15:33
+- bump: minor
+  changes:
+    added:
+    - Add taxsim comparisons to MO state tax system.
+    - Add notebook documentation showcasing tax/tax and benefits systems.
+    - Disabled mo_property_tax_credit until output schedule can be modeled.
+  date: 2022-09-16 03:02:08
+- bump: minor
+  changes:
+    added:
+    - PTC deduction switch for the UBI Center flat tax.
+  date: 2022-09-16 15:22:22
+- bump: minor
+  changes:
+    added:
+    - Federal poverty guideline-based basic income element.
+    changed:
+    - Made all basic income variables tax unit-level.
+  date: 2022-09-18 16:29:13
