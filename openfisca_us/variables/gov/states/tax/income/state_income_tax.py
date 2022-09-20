@@ -14,7 +14,7 @@ class state_income_tax(Variable):
             "md_income_tax",
             "mo_income_tax",
             "ny_income_tax",
-            "pa_income_tax_after_forgiveness",
+            "pa_income_tax",
             "wa_income_tax",
         ]
     )
