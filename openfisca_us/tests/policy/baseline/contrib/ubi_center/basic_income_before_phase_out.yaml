@@ -12,4 +12,12 @@
       tax_unit:
         members: [adult, child]
   output:
-    basic_income_before_phase_out: [10_000, 5_000]
+    basic_income_before_phase_out: 15_000
+
+- name: 100% of FPG.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.fpg_percent: 1
+    tax_unit_fpg: 10_000
+  output:
+    basic_income_before_phase_out: 10_000
