@@ -6,7 +6,7 @@
     medical_out_of_pocket_expenses: 0
     medical_expense_deduction: 0
     tax_unit_itemizes: False
-    taxable_income: 10_000
+    no_salt_taxable_income: 10_000
     state_code: MO
   output:
     mo_qualified_health_insurance_premiums: 10_000
@@ -19,7 +19,7 @@
     medical_out_of_pocket_expenses: 0
     medical_expense_deduction: 4_625 #medical expenses over 7.5% of taxable_income, equals to 92.5% of income and insurance_premiums
     tax_unit_itemizes: True
-    taxable_income: 5_000
+    no_salt_taxable_income: 5_000
     state_code: MO
   output:
     mo_qualified_health_insurance_premiums: 375
@@ -32,7 +32,7 @@
     medical_out_of_pocket_expenses: 0
     medical_expense_deduction: 11_475
     tax_unit_itemizes: True
-    taxable_income: 7_000
+    no_salt_taxable_income: 7_000
     state_code: MO
   output:
     mo_qualified_health_insurance_premiums: 525
@@ -45,7 +45,7 @@
     medical_out_of_pocket_expenses: 6_000
     medical_expense_deduction: 11_475
     tax_unit_itemizes: True
-    taxable_income: 7_000
+    no_salt_taxable_income: 7_000
     state_code: MO
   output:
     mo_qualified_health_insurance_premiums: 262.5
