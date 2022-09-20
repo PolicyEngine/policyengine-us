@@ -1,133 +1,41 @@
 - name: Earns less than phase out, single, no dependents, not senior or blind
   period: 2021
   input:
-    people:
-      single: 
-        age: 25
-    tax_units:
-      tax_unit:
-        members: [single]
-        adjusted_gross_income: 1
-        blind_head: False
-        blind_spouse: False
-        filing_status: SINGLE
-    households:
-      household:
-        members: [single]
-        state_code: CA
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    filing_status: SINGLE
+    state_code: CA
   output:
     ca_exemptions: 129
 
 - name: Earns less than phase out, single, no dependents, senior and blind
   period: 2021
   input:
-    people:
-      single: 
-        age: 80
-    tax_units:
-      tax_unit:
-        members: [single]
-        adjusted_gross_income: 1
-        blind_head: True
-        blind_spouse: False
-        filing_status: SINGLE
-    households:
-      household:
-        members: [single]
-        state_code: CA
+    aged_blind_count: 1
+    adjusted_gross_income: 1
+    filing_status: SINGLE
+    state_code: CA
   output:
     ca_exemptions: 258
 
-- name: single, no dependents, senior and blind, earns two increments + 1 (2500 * 2 + 1) more than phase out (212288),
+- name: Joint, no dependents, senior and blind, earns two increments + 1 (2500 * 2 + 1) more than phase out (212288),
   period: 2021
   input:
-    people:
-      single: 
-        age: 80
-    tax_units:
-      tax_unit:
-        members: [single]
-        adjusted_gross_income: 217289
-        blind_head: True
-        blind_spouse: False
-        filing_status: SINGLE
-    households:
-      household:
-        members: [single]
-        state_code: CA
+    aged_blind_count: 2
+    adjusted_gross_income: 430_000
+    filing_status: JOINT
+    state_code: CA
   output:
-    ca_exemptions: 222
+    ca_exemptions: 444
 
 
 - name: Earns less than phase out, married, 1 dependents, not senior or blind
   period: 2021
   input:
-    people:
-      parent: 
-        age: 25
-      spouse: 
-        age: 25
-      child: 
-        age: 4
-        is_tax_unit_dependent: True 
-      tax_unit:
-        members: [parent, spouse, child]
-        adjusted_gross_income: 1
-        blind_head: False
-        blind_spouse: False
-        filing_status: JOINT
-    households:
-      household:
-        members: [parent, spouse, child]
-        state_code: CA
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    tax_unit_dependents: 1
+    filing_status: JOINT
+    state_code: CA
   output:
-    ca_young_child: 658
-
-
-- name: Earns less than phase out, married, 1 dependents, not senior or blind
-  period: 2021
-  input:
-    people:
-      parent: 
-        age: 25
-      spouse: 
-        age: 25
-      child: 
-        age: 4
-        is_tax_unit_dependent: True 
-      tax_unit:
-        members: [parent, spouse, child]
-        adjusted_gross_income: 1
-        blind_head: False
-        blind_spouse: False
-        filing_status: JOINT
-    households:
-      household:
-        members: [parent, child]
-        state_code: CA
-  output:
-    ca_young_child: 658
-
-- name: married, 1 dependents, not senior or blind, earns two increments + 1 (2500 * 2 + 1) more than phase out (424581)
-  period: 2021
-  input:
-    people:
-      parent: 
-        age: 25
-      spouse: 
-        age: 25
-      child: 
-        age: 4
-        is_tax_unit_dependent: True 
-      tax_unit:
-        members: [parent, spouse, child]
-        adjusted_gross_income: 429582
-        blind_head: False
-        blind_spouse: False
-        filing_status: JOINT
-    households:
-      household:
-        members: [parent, spouse, child]
-        state_code: CA
-  output:
-    ca_young_child: 604
+    ca_exemptions: 658

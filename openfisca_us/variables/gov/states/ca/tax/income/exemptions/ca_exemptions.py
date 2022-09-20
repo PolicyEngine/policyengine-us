@@ -6,6 +6,7 @@ class ca_exemptions(Variable):
     value_type = float
     entity = TaxUnit
     label = "CA Exemptions"
+    defined_for = StateCode.CA
     unit = USD
     definition_period = YEAR
     reference = "https://www.ftb.ca.gov/forms/2021/2021-540.pdf"
@@ -20,35 +21,24 @@ class ca_exemptions(Variable):
         increments = np.ceil(
             over_agi_threshold / p.phase_out.increment[filing_status]
         )
-        exemption_reduction = increments * p.phase_out.amount[filing_status]
+        exemption_reduction = increments * p.phase_out.amount
 
         # Personal Exemptions
-        personal_exemption = p.personal_scale[filing_status] * p.amount
-        personal_exemption = max_(0, personal_exemption - exemption_reduction)
-
-        # Blind and Senior Exemptions
-        aged_blind_count = tax_unit("aged_blind_count", period)
-        blind_senior_exemption = aged_blind_count * (
-            p.amount - exemption_reduction
+        personal_exemption_count = p.personal_scale[filing_status]
+        personal_aged_blind_exemption_count = (
+            personal_exemption_count + tax_unit("aged_blind_count", period)
         )
-        blind_senior_exemption = max_(0, blind_senior_exemption)
+        personal_aged_blind_exemption = max_(
+            0,
+            personal_aged_blind_exemption_count
+            * (p.amount - exemption_reduction),
+        )
 
         # Dependent exemptions
-        person = tax_unit.members
-        is_dependent = person("is_tax_unit_dependent", period)
-        num_dependent = tax_unit.sum(is_dependent, period)
-        dependent_exemptions = num_dependent * (
-            p.dependent_amount - exemption_reduction
+        dependents = tax_unit("tax_unit_dependents", period)
+        dependent_exemptions = max_(
+            0, dependents * (p.dependent_amount - exemption_reduction)
         )
-        dependent_exemptions = max_(0, dependent_exemptions)
 
         # total exemptions
-        exemptions = (
-            personal_exemption + blind_senior_exemption + dependent_exemptions
-        )
-
-        # eligibility
-        in_ca = tax_unit.household("state_code_str", period) == "CA"
-        eligibility = in_ca
-
-        return eligibility * exemptions
+        return personal_aged_blind_exemption + dependent_exemptions

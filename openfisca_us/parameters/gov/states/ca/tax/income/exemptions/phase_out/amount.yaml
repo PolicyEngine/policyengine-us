@@ -1,25 +1,14 @@
 description: Amount to phase california exemption out by
 
-SINGLE:
+values:
   2021-01-01: 6
-SEPARATE:
-  2021-01-01: 6
-WIDOW:
-  2021-01-01: 12 # got these numbers from www.caltax.com, not mentioned in instruction booklet
-JOINT:
-  2021-01-01: 6
-HEAD_OF_HOUSEHOLD: 
-  2021-01-01: 12 # got these numbers from www.caltax.com, not mentioned in instruction booklet
-
 metadata:
   period: year
   unit: currency-USD
-  breakdown:
-  - filing_status
   name: ca_exemption_phase_out_amount
   label: "California exemption phase out amount"
   reference:
-  - title: 2021 California Tax Rates, Exemptions, and Credits
-    href: https://www.caltax.com/spidellweb/public/editorial/cat/1021-tax-rates-2021.pdf
   - title: 2021 Instructions for Form 540 Personal Income Tax Booklet
     href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+  - title: 2021 Form 540 California Resident Income Tax Return  
+    href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf 
