@@ -15,21 +15,15 @@ class fill_in_eitc_ctc(Variable):
             period
         ).contrib.peoples_policy_project.fill_in_eitc_ctc:
             return 0
+        # Start with EITC fill-in.
         eitc = tax_unit("eitc", period)
         eitc_maximum = tax_unit("eitc_maximum", period)
         eitc_reduction = tax_unit("eitc_reduction", period)
         eitc_fill_in = max_(eitc_maximum - eitc_reduction, 0) - eitc
-
+        # Add CTC fill-in based on value received.
         ctc_maximum = tax_unit("ctc_maximum", period)
         ctc_reduction = tax_unit("ctc_reduction", period)
-        ctc_limiting_tax_liability = tax_unit(
-            "ctc_limiting_tax_liability", period
-        )
-        refundable_ctc = tax_unit("refundable_ctc", period)
-        non_refundable_ctc = tax_unit("non_refundable_ctc", period)
-        ctc_value_received = refundable_ctc + min_(
-            non_refundable_ctc, ctc_limiting_tax_liability
-        )
+        ctc_value_received = tax_unit("ctc_value_received", period)
         ctc_fill_in = max_(ctc_maximum - ctc_reduction, 0) - ctc_value_received
-
+        # TODO: Calculate the maximum of the combined credits.
         return max_(eitc_fill_in + ctc_fill_in, 0)
