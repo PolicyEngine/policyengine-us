@@ -1,4 +1,3 @@
-
 from openfisca_us.model_api import *
 
 
@@ -9,7 +8,7 @@ class or_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     documentation = "Oregon standard deduction, including bonus for aged or blind and special rules for filers who are claimable as dependents."
-    reference = ( # TODO: update
+    reference = (  # TODO: update
         "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=18",
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # Subsection 316.695 (7)
     )
@@ -22,16 +21,24 @@ class or_standard_deduction(Variable):
         initial_core_deduction = p.amount[filing_status]
         # Replace if claimable as a dependent.
         earned_income = tax_unit("tax_unit_earned_income", period)
-        claimable_dep_floor = p.dependent.min
-        claimable_dep_earned_amount = earned_income + p.claimable_as_dependent.earned_income_addition
-        tax_unit_dependent_elsewhere = tax_unit("tax_unit_dependent_elsewhere", period)
+        claimable_dep_floor = p.claimable_as_dependent.min
+        claimable_dep_earned_amount = (
+            earned_income + p.claimable_as_dependent.earned_income_addition
+        )
+        tax_unit_dependent_elsewhere = tax_unit(
+            "tax_unit_dependent_elsewhere", period
+        )
         # Set floor and ceiling around earned income plus additional amount.
-        floored_claimable_dep_amount = max_(claimable_dep_earned_amount, claimable_dep_floor)
-        capped_claimable_dep_amount = min_(floored_claimable_dep_amount, initial_core_deduction)
+        floored_claimable_dep_amount = max_(
+            claimable_dep_earned_amount, claimable_dep_floor
+        )
+        capped_claimable_dep_amount = min_(
+            floored_claimable_dep_amount, initial_core_deduction
+        )
         core_deduction = where(
             tax_unit_dependent_elsewhere,
             capped_claimable_dep_amount,
-            initial_core_deduction
+            initial_core_deduction,
         )
         # Aged/blind extra standard deduction.
         blind_head = tax_unit("blind_head", period).astype(int)
