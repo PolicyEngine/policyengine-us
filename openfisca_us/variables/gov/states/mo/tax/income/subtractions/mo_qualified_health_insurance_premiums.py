@@ -35,18 +35,19 @@ class mo_qualified_health_insurance_premiums(Variable):
             0,
         )
 
-        # Line 13 of MO Form 5695, represents the portion of medical expenses already deducted via federal tax itemization
+        # Line 13 of MO Form 5695, represents the portion of medical expenses
+        # already deducted via federal tax itemization.
         deducted_portion = (
             total_health_insurance_premiums * med_expense_deducted_ratio
         )
-        # subtracts the portion of premiums already deducted from federal tax
+        # Subtract the portion of premiums already deducted from federal tax.
         itemized_premiums_amount = (
             total_health_insurance_premiums - deducted_portion
         )
 
         itemizes = tax_unit("tax_unit_itemizes", period)
-        # Cap at federal taxable income.
-        taxable_income = tax_unit("taxable_income", period)
+        # Cap at federal taxable income, assuming no SALT to avoid circularity.
+        taxable_income = tax_unit("no_salt_taxable_income", period)
 
         return where(
             itemizes,
