@@ -1,0 +1,20 @@
+description: 
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      2021-01-01: 0.01
+  - threshold:
+      0000-01-01: 9_325
+    rate:
+      2023-01-01: 0.02
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  name: 
+  label: 
+  reference:
+    - title: 
+      href: 
