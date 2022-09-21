@@ -183,7 +183,7 @@ class TaxSim35:
         return_dataframe: bool = False,
         drop_zeros: bool = False,
     ):
-        sim = Microsimulation(dataset=dataset, year=2020)
+        sim = Microsimulation(dataset=dataset, year=2021)
 
         # Neutralise benefit variables, since these are not simulated in TAXSIM
         for variable in self.NEUTRALIZED_VARIABLES:
