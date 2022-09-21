@@ -1,0 +1,41 @@
+- name: Earns less than phase out, single, no dependents, not senior or blind
+  period: 2021
+  input:
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    ca_exemptions: 129
+
+- name: Earns less than phase out, single, no dependents, senior and blind
+  period: 2021
+  input:
+    aged_blind_count: 1
+    adjusted_gross_income: 1
+    filing_status: SINGLE
+    state_code: CA
+  output:
+    ca_exemptions: 258
+
+- name: Joint, no dependents, senior and blind, earns two increments + 1 (2500 * 2 + 1) more than phase out (212288),
+  period: 2021
+  input:
+    aged_blind_count: 2
+    adjusted_gross_income: 430_000
+    filing_status: JOINT
+    state_code: CA
+  output:
+    ca_exemptions: 444
+
+
+- name: Earns less than phase out, married, 1 dependents, not senior or blind
+  period: 2021
+  input:
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    tax_unit_dependents: 1
+    filing_status: JOINT
+    state_code: CA
+  output:
+    ca_exemptions: 658
