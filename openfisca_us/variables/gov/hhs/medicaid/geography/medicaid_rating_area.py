@@ -9,6 +9,7 @@ class medicaid_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
+        parameter_tree = household.simulation.tax_benefit_system.parameters
         if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
             medicaid_parameters = ParameterNode(
                 directory_path=REPO
@@ -26,7 +27,6 @@ class medicaid_rating_area(Variable):
             parameter_tree.gov.hhs.medicaid.add_child(
                 "geography", medicaid_parameters
             )
-        parameter_tree = household.simulation.tax_benefit_system.parameters
         mra = parameter_tree(
             period
         ).gov.hhs.medicaid.geography.medicaid_rating_area
