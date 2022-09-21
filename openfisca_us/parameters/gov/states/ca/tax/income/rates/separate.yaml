@@ -1,4 +1,4 @@
-description: CA single filing income tax rate
+description: CA separate filing income tax rate
 brackets:
   - threshold:
       0000-01-01: 0
@@ -41,8 +41,8 @@ metadata:
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
-  name: ca_single_income_tax_rate
-  label: CA single income tax rate
+  name: ca_separate_income_tax_rate
+  label: CA separate income tax rate
   reference: 
     - title: California Tax Rate Schedules
       href: https://www.ftb.ca.gov/forms/Search/Home/FormRequest/4798
