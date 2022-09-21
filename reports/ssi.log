@@ -1,0 +1,112 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from openfisca_us import IndividualSim
+import pandas as pd
+import plotly.express as px
+
+LIGHT_GRAY = "#F5F5F5"
+GRAY = "#BDBDBD"
+BLUE = "#5091cc"
+LIGHT_BLUE = "lightblue"
+DARK_BLUE = "darkblue"
+
+
+def make_ssi(social_security=0, vary="employment_income"):
+    sim = IndividualSim(year=2022)
+    sim.add_person(
+        name="head", is_ssi_disabled=True, social_security=social_security
+    )
+    sim.vary(vary, max=30_000, step=120)
+    employment_income = sim.calc("employment_income")[0]
+    ssi = sim.calc("ssi")[0]
+    mtr = -sim.deriv("ssi", "employment_income", wrt_target="head")
+    return pd.DataFrame(
+        dict(
+            employment_income=employment_income,
+            ssi=ssi,
+            mtr=mtr,
+            social_security=social_security,
+        )
+    )
+
+
+# Compute for different values of Social Security income.
+l = []
+for ss in [0, 500 * 12]:
+    l.append(make_ssi(social_security=ss))
+
+df = pd.concat(l)
+
+# Make monthly.
+df[["employment_income", "ssi", "social_security"]] /= 12
+df.social_security = "$" + df.social_security.astype(int).astype(str)
+
+LABELS = dict(
+    employment_income="Monthly employment income",
+    ssi="Monthly Supplemental Security Income",
+    mtr="SSI marginal tax rate",
+    social_security="Monthly Social Security",
+)
+
+COLOR_MAP = {"$0": DARK_BLUE, "$500": BLUE}
+
+fig = px.line(
+    df,
+    "employment_income",
+    "ssi",
+    color="social_security",
+    labels=LABELS,
+    title="Supplemental Security Income for a single person",
+    color_discrete_map=COLOR_MAP,
+)
+fig.update_layout(
+    xaxis_tickformat="$,",
+    yaxis_tickformat="$,",
+    plot_bgcolor="white",
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
+fig.show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_2665/3439832239.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     65[0m     [0myaxis_gridcolor[0m[0;34m=[0m[0mLIGHT_GRAY[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     66[0m )
+[0;32m---> 67[0;31m [0mfig[0m[0;34m.[0m[0mshow[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/plotly/basedatatypes.py[0m in [0;36mshow[0;34m(self, *args, **kwargs)[0m
+[1;32m   3396[0m         [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mio[0m [0;32mas[0m [0mpio[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   3397[0m [0;34m[0m[0m
+[0;32m-> 3398[0;31m         [0;32mreturn[0m [0mpio[0m[0;34m.[0m[0mshow[0m[0;34m([0m[0mself[0m[0;34m,[0m [0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   3399[0m [0;34m[0m[0m
+[1;32m   3400[0m     [0;32mdef[0m [0mto_json[0m[0;34m([0m[0mself[0m[0;34m,[0m [0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/plotly/io/_renderers.py[0m in [0;36mshow[0;34m(fig, renderer, validate, **kwargs)[0m
+[1;32m    395[0m         [0;32mif[0m [0;32mnot[0m [0mnbformat[0m [0;32mor[0m [0mLooseVersion[0m[0;34m([0m[0mnbformat[0m[0;34m.[0m[0m__version__[0m[0;34m)[0m [0;34m<[0m [0mLooseVersion[0m[0;34m([0m[0;34m"4.2.0"[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    396[0m             raise ValueError(
+[0;32m--> 397[0;31m                 [0;34m"Mime type rendering requires nbformat>=4.2.0 but it is not installed"[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    398[0m             )
+[1;32m    399[0m [0;34m[0m[0m
+
+[0;31mValueError[0m: Mime type rendering requires nbformat>=4.2.0 but it is not installed
+ValueError: Mime type rendering requires nbformat>=4.2.0 but it is not installed
+

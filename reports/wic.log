@@ -1,0 +1,87 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/jupyter_cache/executors/utils.py", line 56, in single_nb_execution
+    record_timing=False,
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/asyncio/base_events.py", line 587, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 664, in async_execute
+    cell, index, execution_count=self.code_cells_executed + 1
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from openfisca_us import IndividualSim
+import numpy as np
+import pandas as pd
+import plotly.express as px
+
+sim = IndividualSim(year=2022)
+sim.add_person(
+    name="mother",
+    is_pregnant=True,
+    is_wic_at_nutritional_risk=True,
+    would_claim_wic=True,
+)
+sim.add_person(name="father")
+sim.add_spm_unit(members=["mother", "father"])
+sim.add_household(members=["mother", "father"], state_code="OR")
+
+sim.vary("employment_income", max=4_000 * 12)
+
+df = pd.DataFrame(
+    dict(
+        employment_income=sim.calc("employment_income")[0] / 12,
+        wic=sim.calc("wic")[0] / 12,
+    )
+)
+
+
+LABELS = dict(
+    age="Child age",
+    is_breastfeeding="Breastfeeding",
+    wic="Monthly WIC benefit value",
+    employment_income="Monthly earnings",
+)
+
+fig = px.line(
+    df,
+    "employment_income",
+    "wic",
+    labels=LABELS,
+    title="WIC benefits by earnings for a married pregnant woman in Oregon",
+)
+fig.update_layout(xaxis_tickformat="$,", yaxis_tickformat="$,")
+fig.show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/tmp/ipykernel_3648/1159176446.py[0m in [0;36m<module>[0;34m[0m
+[1;32m     40[0m )
+[1;32m     41[0m [0mfig[0m[0;34m.[0m[0mupdate_layout[0m[0;34m([0m[0mxaxis_tickformat[0m[0;34m=[0m[0;34m"$,"[0m[0;34m,[0m [0myaxis_tickformat[0m[0;34m=[0m[0;34m"$,"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 42[0;31m [0mfig[0m[0;34m.[0m[0mshow[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/plotly/basedatatypes.py[0m in [0;36mshow[0;34m(self, *args, **kwargs)[0m
+[1;32m   3396[0m         [0;32mimport[0m [0mplotly[0m[0;34m.[0m[0mio[0m [0;32mas[0m [0mpio[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   3397[0m [0;34m[0m[0m
+[0;32m-> 3398[0;31m         [0;32mreturn[0m [0mpio[0m[0;34m.[0m[0mshow[0m[0;34m([0m[0mself[0m[0;34m,[0m [0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   3399[0m [0;34m[0m[0m
+[1;32m   3400[0m     [0;32mdef[0m [0mto_json[0m[0;34m([0m[0mself[0m[0;34m,[0m [0;34m*[0m[0margs[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m/opt/hostedtoolcache/Python/3.7.13/x64/lib/python3.7/site-packages/plotly/io/_renderers.py[0m in [0;36mshow[0;34m(fig, renderer, validate, **kwargs)[0m
+[1;32m    395[0m         [0;32mif[0m [0;32mnot[0m [0mnbformat[0m [0;32mor[0m [0mLooseVersion[0m[0;34m([0m[0mnbformat[0m[0;34m.[0m[0m__version__[0m[0;34m)[0m [0;34m<[0m [0mLooseVersion[0m[0;34m([0m[0;34m"4.2.0"[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    396[0m             raise ValueError(
+[0;32m--> 397[0;31m                 [0;34m"Mime type rendering requires nbformat>=4.2.0 but it is not installed"[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    398[0m             )
+[1;32m    399[0m [0;34m[0m[0m
+
+[0;31mValueError[0m: Mime type rendering requires nbformat>=4.2.0 but it is not installed
+ValueError: Mime type rendering requires nbformat>=4.2.0 but it is not installed
+
