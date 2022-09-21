@@ -20,8 +20,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output: 1_136.49
-    mo_income_tax: 1_315.89
+    # TAXSIM: 1_136.49
+    mo_income_tax: 1_269
 
 - name:  Taxsim integration test, no liability
   period: 2021
@@ -45,7 +45,7 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output: 0
+    # TAXSIM: 0
     mo_income_tax: 0
 
 - name:  Taxsim integration test, low tax
@@ -70,8 +70,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output: 129
-    mo_income_tax: 255.92758
+    # TAXSIM: 129
+    mo_income_tax: 141
 
 - name:  Taxsim integration test, average household income, per https://www.census.gov/quickfacts/MO
   period: 2021
@@ -95,8 +95,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output: 1_523.06
-    mo_income_tax: 1_745.4169
+    # TAXSIM: 1_523.06
+    mo_income_tax: 1_706.40
 
 - name:  Taxsim integration test, high income
   period: 2021
@@ -145,5 +145,5 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    #taxsim output: 20_057
+    # TAXSIM: 20_057
     mo_income_tax: 22_269
