@@ -14,4 +14,14 @@ class mo_itemized_deductions(Variable):
     )
     defined_for = StateCode.MO
 
-    formula = sum_of_variables("gov.states.mo.tax.income.deductions.itemized")
+    def formula(tax_unit, period, parameters):
+        gov = parameters(period).gov
+        federal_deductions = [
+            deduction
+            for deduction in gov.irs.deductions.itemized_deductions
+            if deduction != "salt_deduction"
+        ]
+        federal_deductions_value = add(tax_unit, period, federal_deductions)
+        added_deductions = gov.states.mo.tax.income.deductions.extra_itemized
+        added_deductions_value = add(tax_unit, period, added_deductions)
+        return federal_deductions_value + added_deductions_value

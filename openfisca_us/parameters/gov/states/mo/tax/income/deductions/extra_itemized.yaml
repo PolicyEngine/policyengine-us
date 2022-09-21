@@ -1,14 +1,13 @@
-description: Federal deductions allowed in Missouri income tax.
+description: Deductions allowed in Missouri income tax in addition to federal deductions (excluding SALT).
 values:
   1993-01-01:
-    - itemized_taxable_income_deductions # includes casualty_loss_deduction, charitable_deduction, interest_deduction, salt_deduction ,and medical_expense_deduction
     - misc_deduction
     - employee_social_security_tax
     - employee_medicare_tax
     - self_employment_tax
 metadata:
   unit: variable
-  name: mo_itemized_deductions
+  name: mo_extra_itemized_deductions
   label: MO itemized tax unit-level deductions
   reference:
     - title: 2021 Schedule A (Form 1040)
