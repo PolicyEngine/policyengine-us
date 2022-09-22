@@ -23,7 +23,5 @@ class mo_itemized_deductions(Variable):
             # SALT and QBID both cause circular references.
             not in ["salt_deduction", "qualified_business_income_deduction"]
         ]
-        federal_deductions_value = add(tax_unit, period, federal_deductions)
         added_deductions = gov.states.mo.tax.income.deductions.extra_itemized
-        added_deductions_value = add(tax_unit, period, added_deductions)
-        return federal_deductions_value + added_deductions_value
+        return add(tax_unit, period, federal_deductions + added_deductions)
