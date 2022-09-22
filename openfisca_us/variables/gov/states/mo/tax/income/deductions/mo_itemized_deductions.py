@@ -19,7 +19,9 @@ class mo_itemized_deductions(Variable):
         federal_deductions = [
             deduction
             for deduction in gov.irs.deductions.itemized_deductions
-            if deduction != "salt_deduction"
+            if deduction
+            # SALT and QBID both cause circular references.
+            not in ["salt_deduction", "qualified_business_income_deduction"]
         ]
         federal_deductions_value = add(tax_unit, period, federal_deductions)
         added_deductions = gov.states.mo.tax.income.deductions.extra_itemized
