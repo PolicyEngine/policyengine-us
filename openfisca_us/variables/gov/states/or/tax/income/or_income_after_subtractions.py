@@ -10,4 +10,6 @@ class or_income_after_subtractions(Variable):
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("or_income_after_additions", period) - tax_unit("or_subtractions", period)
+        income_after_additions = tax_unit("or_income_after_additions", period)
+        subtractions = tax_unit("or_subtractions", period)
+        return income_after_additions - subtractions

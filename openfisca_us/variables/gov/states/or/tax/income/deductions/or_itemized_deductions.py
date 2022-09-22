@@ -7,13 +7,13 @@ class or_itemized_deductions(Variable):
     label = "OR itemized deductions"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html" #316.695 (1)(d)
+    reference = "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"  # 316.695 (1)(d)
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
-        federal_deductions_if_itemizing = (
-            parameters(period).gov.irs.deductions.deductions_if_itemizing
-        )
+        federal_deductions_if_itemizing = parameters(
+            period
+        ).gov.irs.deductions.deductions_if_itemizing
         or_deductions_if_itemizing = [
             deduction
             for deduction in federal_deductions_if_itemizing
@@ -24,6 +24,4 @@ class or_itemized_deductions(Variable):
                 "qualified_business_income_deduction",
             ]
         ]
-        return add(
-            tax_unit, period, or_deductions_if_itemizing
-        )
+        return add(tax_unit, period, or_deductions_if_itemizing)
