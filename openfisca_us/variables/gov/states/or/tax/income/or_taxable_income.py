@@ -8,3 +8,6 @@ class or_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OR
+
+    def formula(tax_unit, period, parameters):
+        return tax_unit("or_income_after_subtractions", period) - tax_unit("or_deductions", period) - 
