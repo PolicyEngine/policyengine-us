@@ -15,9 +15,9 @@ class basic_income_before_phase_out(Variable):
         # Add per-age person-level amount.
         person = tax_unit.members
         age = person("age", period)
-        amount_by_age = p.by_age.calc(age)
+        amount_by_age = p.person.by_age.calc(age)
         total_amount_by_age = tax_unit.sum(amount_by_age)
         # Now compute FPG amount.
         fpg = tax_unit("tax_unit_fpg", period)
-        fpg_amount = p.fpg_percent * fpg
+        fpg_amount = p.tax_unit.fpg_percent * fpg
         return total_flat_amount + total_amount_by_age + fpg_amount
