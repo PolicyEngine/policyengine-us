@@ -28,5 +28,7 @@ class county(Variable):
             .upper()
         )
         county_state = county_key.str.cat(state_code, sep="_")
-        county_names = pd.Series(np.arange(len(County._member_names_)), index=County._member_names_)
+        county_names = pd.Series(
+            np.arange(len(County._member_names_)), index=County._member_names_
+        )
         return county_names[county_state]
