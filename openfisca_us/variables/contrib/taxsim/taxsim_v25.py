@@ -9,4 +9,4 @@ class taxsim_v25(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return tax_unit("earned_income_tax_credit", period)
+        return tax_unit("eitc", period)

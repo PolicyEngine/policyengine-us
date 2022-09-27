@@ -13,7 +13,7 @@ class md_non_single_childless_non_refundable_eitc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
+        federal_eitc = tax_unit("eitc", period)
         p = parameters(period).gov.states.md.tax.income.credits.eitc
         tax_before_credits = tax_unit("md_income_tax_before_credits", period)
         # Limited to filers who are not single and childless.

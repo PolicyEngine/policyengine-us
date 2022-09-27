@@ -13,6 +13,6 @@ class ma_eitc(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        eitc = tax_unit("earned_income_tax_credit", period)
+        eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.ma.tax.income.credits.eitc.match
         return eitc * rate

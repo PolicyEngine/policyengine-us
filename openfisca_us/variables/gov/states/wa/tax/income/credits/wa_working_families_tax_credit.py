@@ -14,7 +14,7 @@ class wa_working_families_tax_credit(Variable):
         # Filers must claim EITC and be in Washington to be eligible.
         # TODO: Include ITIN children.
         in_wa = tax_unit.household("state_code_str", period) == "WA"
-        claims_eitc = tax_unit("earned_income_tax_credit", period) > 0
+        claims_eitc = tax_unit("eitc", period) > 0
         eligible = in_wa & claims_eitc
         # Parameters are based on EITC-eligible children.
         p = parameters(

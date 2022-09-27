@@ -58,7 +58,7 @@ class refundable_ctc(Variable):
             + add(tax_unit, period, TAX_UNIT_VARIABLES)
             - add(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
         )
-        eitc = tax_unit("earned_income_tax_credit", period)
+        eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
         qualifying_children = add(
             tax_unit, period, ["is_ctc_qualifying_child"]

@@ -38,7 +38,7 @@ casualty_loss: e20400
 misc_deduction: g20500
 unrecaptured_section_1250_gain: e24515
 capital_gains_28_percent_rate_gain: e24518
-partnership_s_corp_income: e26270
+partnership_s_corp_income: e26270f
 farm_rent_income: e27200
 tax_unit_childcare_expenses: e32800
 investment_income_form_4952: e58990
@@ -74,7 +74,7 @@ income_tax_main_rates: c05200
 amt_income: c62100
 alternative_minimum_tax: c09600
 income_tax: iitax
-earned_income_tax_credit: c59660
+eitc: c59660
 # We disaggregate the Residential Energy Credit into:
 # a) Residential Clean Energy Credit, and
 # b) Energy Efficient Home Improvement Credit

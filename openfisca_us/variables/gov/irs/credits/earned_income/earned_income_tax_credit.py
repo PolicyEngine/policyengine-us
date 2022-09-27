@@ -1,7 +1,7 @@
 from openfisca_us.model_api import *
 
 
-class earned_income_tax_credit(Variable):
+class eitc(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
