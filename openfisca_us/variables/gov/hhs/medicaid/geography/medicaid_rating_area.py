@@ -1,4 +1,5 @@
 from openfisca_us.model_api import *
+from openfisca_tools import homogenize_parameter_structures
 
 
 class medicaid_rating_area(Variable):
@@ -9,6 +10,23 @@ class medicaid_rating_area(Variable):
 
     def formula(household, period, parameters):
         parameter_tree = household.simulation.tax_benefit_system.parameters
+        if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
+            medicaid_parameters = ParameterNode(
+                directory_path=REPO
+                / "data"
+                / "parameters"
+                / "gov"
+                / "hhs"
+                / "medicaid"
+                / "geography"
+            )
+            medicaid_parameters = homogenize_parameter_structures(
+                medicaid_parameters,
+                household.simulation.tax_benefit_system.variables,
+            )
+            parameter_tree.gov.hhs.medicaid.add_child(
+                "geography", medicaid_parameters
+            )
         mra = parameter_tree(
             period
         ).gov.hhs.medicaid.geography.medicaid_rating_area

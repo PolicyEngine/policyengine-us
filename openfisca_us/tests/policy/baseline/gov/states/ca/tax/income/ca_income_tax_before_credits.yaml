@@ -1,0 +1,23 @@
+- name: Single filing, income in 3rd tax bracket 
+  period: 2021
+  input:
+    ca_taxable_income: 25_000
+    filing_status: SINGLE
+    state_code: CA
+  output:
+  # (1% of 9_325) = 93.25
+  # + 2% of (22_107 - 9_325) = 255.64
+  # + 4% of (25_000 - 22_107) = 115.72
+    ca_income_tax_before_credits: 464.61
+
+
+- name: Single filing, income in 3rd tax bracket 
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    ca_taxable_income: 1_000_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: CA
+  output:
+  # 82_046.3 + (12.30% of (1_000_000 - 850_503)) = 100_434.131
+    ca_income_tax_before_credits: 100_434.131

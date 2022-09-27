@@ -1,12 +1,12 @@
-description: The US caps lifetime energy efficient property tax credits on windows at this amount.
+description: The IRS caps lifetime energy efficient home improvement credits on windows at this amount.
 values:
   2017-01-01: 200
   # Since Inflation Reduction Act
   2023-01-01: .inf
 metadata:
   unit: currency-USD
-  name: Energy_efficient_property_credit_lifetime_window_cap
-  label: Energy efficient property tax credit lifetime window limit
+  name: energy_efficient_home_improvement_credit_lifetime_window_cap
+  label: Energy efficient home improvement credit lifetime window limit
   reference:
     - title: 26 U.S.C. § 25C(b)(2)
       href: https://www.law.cornell.edu/uscode/text/26/25C#b_2

@@ -1,12 +1,12 @@
-description: The US provides a tax credit for this share of qualified energy efficiency improvements.
+description: The IRS provides an energy efficient home improvement tax credit for this share of qualified energy efficiency improvements.
 values:
   2017-01-01: 0.1
   # Since Inflation Reduction Act.
   2023-01-01: 0.3
 metadata:
   unit: /1
-  name: Energy_efficient_property_credit_improvements_rate
-  label: Energy efficient property tax credit rate on improvements
+  name: energy_efficient_home_improvement_credit_improvements_rate
+  label: Energy efficient home improvement credit rate on improvements
   reference:
     - title: 26 U.S.C. § 25C(a)(1)
       href: https://www.law.cornell.edu/uscode/text/26/25C#a_1

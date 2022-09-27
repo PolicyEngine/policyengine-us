@@ -1,10 +1,11 @@
-description: The US caps energy efficient property tax credits on energy-efficient central air conditioners at this amount.
+description: The IRS caps energy efficient home improvement credits on energy efficient central air conditioners at this amount per year.
 values:
   2017-01-01: .inf
 metadata:
   unit: currency-USD
-  name: energy_efficient_property_credit_energy_efficient_central_air_conditioner_cap
-  label: Energy efficient property tax credit cap on energy-efficient central air conditioners
+  period: year
+  name: energy_efficient_home_improvement_credit_energy_efficient_central_air_conditioner_cap
+  label: Energy efficient home improvement credit cap on energy-efficient central air conditioners
   reference:
     - title: 26 U.S.C. § 25C(b)(3)(C)
       href: https://www.law.cornell.edu/uscode/text/26/25C#b_3_C

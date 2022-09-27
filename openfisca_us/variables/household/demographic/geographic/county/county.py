@@ -2,6 +2,7 @@ from openfisca_us.model_api import *
 from openfisca_us.variables.household.demographic.geographic.county.county_enum import (
     County,
 )
+import numpy as np
 
 
 class county(Variable):
@@ -26,11 +27,8 @@ class county(Variable):
             .strip()
             .upper()
         )
-        return np.array(
-            [
-                getattr(County, f"{county_key}_{state}")
-                if hasattr(County, f"{county_key}_{state}")
-                else County.UNKNOWN
-                for county_key, state in zip(county_key, state_code)
-            ]
+        county_state = county_key.str.cat(state_code, sep="_")
+        county_names = pd.Series(
+            np.arange(len(County._member_names_)), index=County._member_names_
         )
+        return county_names[county_state]

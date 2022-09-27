@@ -1,0 +1,14 @@
+description: Minimum base for calculation of MO Property Tax Credit Schedule
+values:
+  1997-01-01: 13_000
+  2008-08-28: 14_300
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_property_tax_credit_minimum_base
+  label: MO Property Tax Credit Minimum Base
+  reference:
+    - title: MO-1040 Book - Individual Income Tax Long Form, pg. 46-47
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
+    - title: MO Rev Stat § 135.030
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030

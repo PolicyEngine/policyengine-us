@@ -1,0 +1,11 @@
+description: Each bracket of the NY supplemental tax phases in over this length.
+values:
+  2022-01-01: 50_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ny_sup_phase_in_length
+  label: NY State supplemental tax phase-in length
+  reference:
+    - title: Section 601 Imposition of tax (d-4)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

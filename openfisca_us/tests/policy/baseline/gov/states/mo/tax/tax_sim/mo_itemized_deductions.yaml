@@ -1,0 +1,56 @@
+- name:  Taxsim integration test, high income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 115_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        itemized_taxable_income_deductions: 30_000
+        misc_deduction: 0
+        mo_net_state_income_taxes: 0
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    #taxsim output: 37_851.22
+    mo_itemized_deductions: 38_797.5
+
+- name:  Taxsim integration test, very high income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+   # 40_000 (itemized_taxable_income_deductions) should be input into taxsim, fica will be calced automatically
+    people:
+      person1:
+        age: 38
+        employment_income: 400_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit: 
+        itemized_taxable_income_deductions: 40_000 
+        misc_deduction: 0 #unclear where taxsim includes this, leaving empty
+        mo_net_state_income_taxes: 0 #taxsim does not include this in the calculation
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    #taxsim output: 46_279.49
+    mo_itemized_deductions: 54_653.6
