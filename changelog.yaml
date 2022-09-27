@@ -1625,3 +1625,8 @@
     added:
     - Flat per-person UBI amount.
   date: 2022-09-27 02:30:33
+- bump: patch
+  changes:
+    fixed:
+    - County selection now is vectorised, cutting runtimes by 20%.
+  date: 2022-09-27 22:17:57
