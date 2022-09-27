@@ -10,7 +10,7 @@ brackets:
         label: Young child basic income
         unit: currency-USD
         period: year
-        name: young_child_bi
+        name: young_child_bi_amount
   - threshold:
       values:
         2010-01-01: 6
@@ -26,7 +26,7 @@ brackets:
         label: Older child basic income
         unit: currency-USD
         period: year
-        name: older_child_bi
+        name: older_child_bi_amount
   - threshold:
       description: Age at which individuals receive the young adult payment, rather than the older child payment.
       values:
@@ -43,7 +43,7 @@ brackets:
         label: Young adult basic income
         unit: currency-USD
         period: year
-        name: young_adult_bi
+        name: young_adult_bi_amount
   - threshold:
       description: Age at which individuals receive the older adult payment, rather than the young adult payment.
       values:
@@ -60,7 +60,7 @@ brackets:
         label: Older adult basic income
         unit: currency-USD
         period: year
-        name: older_adult_bi
+        name: older_adult_bi_amount
   - threshold:
       description: Age at which individuals receive the senior citizen payment, rather than the working-age adult payment.
       values:
@@ -77,6 +77,6 @@ brackets:
         label: Senior citizen basic income
         unit: currency-USD
         period: year
-        name: senior_bi
+        name: senior_bi_amount
 metadata:
   type: single_amount
