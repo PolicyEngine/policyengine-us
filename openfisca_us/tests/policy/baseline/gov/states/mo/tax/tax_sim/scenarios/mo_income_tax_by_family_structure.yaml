@@ -14,7 +14,7 @@
       members: [person1]
       state_code: MO
   output:
-    income_tax_before_credits: 4_240
+    income_tax_before_credits: 4_295
     #taxsim output: 4_295
     income_tax: 2_895
     #taxsim output: 2_895
@@ -47,7 +47,7 @@
       members: [person1, person2]
       state_code: MO
   output:
-    income_tax_before_credits: 2_481
+    income_tax_before_credits: 2_590
     #taxsim output: 2_590
     income_tax: -210
     #taxsim output: -210
@@ -81,7 +81,7 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    income_tax_before_credits: 2_481
+    income_tax_before_credits: 2_590
     #taxsim output: 2_590
     income_tax: -5_210
     #taxsim output: -4_610
@@ -94,7 +94,7 @@
     #taxsim output: 1_136
 
 - name:  Taxsim integration test, 50k income, single parent, one child
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     people:
@@ -124,7 +124,7 @@
     #taxsim output: 1_469.64
 
 - name:  Taxsim integration test, 50k income, single parent, two children
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     people:
@@ -156,7 +156,7 @@
     #taxsim output: 1_469.64
 
 - name:  Taxsim integration test, 50k income, single parent, three children
-  period: 2022
+  period: 2021
   absolute_error_margin: 0.01
   input:
     people:
