@@ -165,16 +165,16 @@
         employment_income: 50_000
       person2:
         age: 4
-      person2:
-        age: 4
       person3:
+        age: 4
+      person4:
         age: 4    
     tax_units:
       tax_unit:
         premium_tax_credit: 0
-        members: [person1, person2, person3]
+        members: [person1, person2, person3, person4]
     household:
-      members: [person1, person2, person3]
+      members: [person1, person2, person3, person4]
       state_code: MO
   output:
     income_tax_before_credits: 3_379
