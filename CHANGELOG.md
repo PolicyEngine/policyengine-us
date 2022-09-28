@@ -5,6 +5,154 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
+=======
+## [0.163.1] - 2022-09-27 22:17:57
+
+### Fixed
+
+- County selection now is vectorised, cutting runtimes by 20%.
+
+## [0.163.0] - 2022-09-27 02:30:33
+
+### Added
+
+- Flat per-person UBI amount.
+
+## [0.162.0] - 2022-09-21 20:07:25
+
+### Added
+
+- 2021 ASEC.
+
+## [0.161.0] - 2022-09-21 01:52:55
+
+### Added
+
+- California income tax rates.
+
+## [0.160.0] - 2022-09-20 17:04:16
+
+### Added
+
+- Oregon standard deduction.
+
+## [0.159.1] - 2022-09-20 05:11:32
+
+### Added
+
+- Budgetary impacts of some NY and PA programs to documentation notebooks.
+
+## [0.159.0] - 2022-09-20 02:29:55
+
+### Added
+
+- California tax exemptions
+
+## [0.158.0] - 2022-09-18 16:29:13
+
+### Added
+
+- Federal poverty guideline-based basic income element.
+
+### Changed
+
+- Made all basic income variables tax unit-level.
+
+## [0.157.0] - 2022-09-16 15:22:22
+
+### Added
+
+- PTC deduction switch for the UBI Center flat tax.
+
+## [0.156.0] - 2022-09-16 03:02:08
+
+### Added
+
+- Add taxsim comparisons to MO state tax system.
+- Add notebook documentation showcasing tax/tax and benefits systems.
+- Disabled mo_property_tax_credit until output schedule can be modeled.
+
+## [0.155.2] - 2022-09-16 00:15:33
+
+### Added
+
+- Federal income tax documentation page.
+
+## [0.155.1] - 2022-09-14 12:41:59
+
+### Fixed
+
+- Basic income taxability interaction with other phase-outs.
+
+## [0.155.0] - 2022-09-13 19:33:43
+
+### Added
+
+- Basic income taxability.
+
+## [0.154.0] - 2022-09-13 05:13:03
+
+### Added
+
+- OR income tax before credits.
+
+## [0.153.0] - 2022-09-12 22:24:35
+
+### Added
+
+- Add MO agi, subtractions (mo_qualified_health_insurance_premiums)
+- Add MO taxable income and deductions
+- Add variables required for MO Property Tax Credit demographic tests
+
+## [0.152.0] - 2022-09-12 22:06:22
+
+### Added
+
+- Variable computing federal tax liability without SALT.
+
+## [0.151.0] - 2022-09-10 00:00:24
+
+### Added
+
+- OR kicker credit.
+
+## [0.150.0] - 2022-09-09 15:39:41
+
+### Added
+
+- Pennsylvania use tax
+
+## [0.149.0] - 2022-09-07 23:07:57
+
+### Added
+
+- Oregon personal exemption credit.
+
+## [0.148.0] - 2022-09-07 20:29:32
+
+### Fixed
+
+- Re-implemented NY supplemental tax to fix mistaken cliffs.
+
+## [0.147.3] - 2022-09-06 15:31:51
+
+### Added
+
+- NY tax documentation page.
+- NY documentation pages to table of contents.
+
+## [0.147.2] - 2022-09-06 10:51:59
+
+### Added
+
+- NY tax-benefit page to the documentation.
+
+### Fixed
+
+- NY college tuition and CDCC credits added as refundable.
+
+>>>>>>> 32731216fc851e6adc043ee79ded21fad318b131
 ## [0.147.1] - 2022-09-05 18:14:55
 
 ### Fixed
@@ -1820,6 +1968,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+<<<<<<< HEAD
+=======
+[0.163.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.163.0...0.163.1
+[0.163.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.162.0...0.163.0
+[0.162.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.161.0...0.162.0
+[0.161.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.160.0...0.161.0
+[0.160.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.159.1...0.160.0
+[0.159.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.159.0...0.159.1
+[0.159.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.158.0...0.159.0
+[0.158.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.157.0...0.158.0
+[0.157.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.156.0...0.157.0
+[0.156.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.2...0.156.0
+[0.155.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.1...0.155.2
+[0.155.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.155.0...0.155.1
+[0.155.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.154.0...0.155.0
+[0.154.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.153.0...0.154.0
+[0.153.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.152.0...0.153.0
+[0.152.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.151.0...0.152.0
+[0.151.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.150.0...0.151.0
+[0.150.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.149.0...0.150.0
+[0.149.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.148.0...0.149.0
+[0.148.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.3...0.148.0
+[0.147.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.2...0.147.3
+[0.147.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.1...0.147.2
+>>>>>>> 32731216fc851e6adc043ee79ded21fad318b131
 [0.147.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.147.0...0.147.1
 [0.147.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.146.0...0.147.0
 [0.146.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.145.0...0.146.0

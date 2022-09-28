@@ -1,7 +1,7 @@
 - name: Basic income with phase-out applied.
   period: 2022
-  absolute_error_margin: 1
   input:
+<<<<<<< HEAD
     people:
       adult:
         basic_income_before_phase_out: 10_000
@@ -11,5 +11,10 @@
       tax_unit:
         members: [adult, child]
         basic_income_phase_out: 5_000
+=======
+    basic_income_before_phase_out: 10_000
+    basic_income_phase_out: 4_000
+    basic_income_eligible: true
+>>>>>>> 32731216fc851e6adc043ee79ded21fad318b131
   output:
-    basic_income: [6_667, 3_333]
+    basic_income: 6_000

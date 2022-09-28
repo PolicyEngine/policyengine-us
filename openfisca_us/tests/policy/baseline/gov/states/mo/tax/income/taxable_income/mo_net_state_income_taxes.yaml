@@ -1,0 +1,32 @@
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE
+    state_and_local_sales_or_income_tax: 0
+    state_income_tax: 0
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 0.0
+
+- name: $13,000 state/local income/sales tax, 2,000 local earnings tax
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    state_and_local_sales_or_income_tax: 13_000
+    state_income_tax: 11_000
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 8_461.538462
+
+- name: $23,000 state/local income/sales tax, 0 local earnings tax
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    state_and_local_sales_or_income_tax: 23_000
+    state_income_tax: 23_000
+    state_code: MO
+  output:
+    mo_net_state_income_taxes: 10_000

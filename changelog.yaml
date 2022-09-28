@@ -1511,3 +1511,125 @@
     fixed:
     - Use manual eligibility in basic income eligibility.
   date: 2022-09-05 18:14:55
+<<<<<<< HEAD
+=======
+- bump: patch
+  changes:
+    added:
+    - NY tax-benefit page to the documentation.
+    fixed:
+    - NY college tuition and CDCC credits added as refundable.
+  date: 2022-09-06 10:51:59
+- bump: patch
+  changes:
+    added:
+    - NY tax documentation page.
+    - NY documentation pages to table of contents.
+  date: 2022-09-06 15:31:51
+- bump: minor
+  changes:
+    fixed:
+    - Re-implemented NY supplemental tax to fix mistaken cliffs.
+  date: 2022-09-07 20:29:32
+- bump: minor
+  changes:
+    added:
+    - Oregon personal exemption credit.
+  date: 2022-09-07 23:07:57
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania use tax
+  date: 2022-09-09 15:39:41
+- bump: minor
+  changes:
+    added:
+    - OR kicker credit.
+  date: 2022-09-10 00:00:24
+- bump: minor
+  changes:
+    added:
+    - Variable computing federal tax liability without SALT.
+  date: 2022-09-12 22:06:22
+- bump: minor
+  changes:
+    added:
+    - Add MO agi, subtractions (mo_qualified_health_insurance_premiums)
+    - Add MO taxable income and deductions
+    - Add variables required for MO Property Tax Credit demographic tests
+  date: 2022-09-12 22:24:35
+- bump: minor
+  changes:
+    added:
+    - OR income tax before credits.
+  date: 2022-09-13 05:13:03
+- bump: minor
+  changes:
+    added:
+    - Basic income taxability.
+  date: 2022-09-13 19:33:43
+- bump: patch
+  changes:
+    fixed:
+    - Basic income taxability interaction with other phase-outs.
+  date: 2022-09-14 12:41:59
+- bump: patch
+  changes:
+    added:
+    - Federal income tax documentation page.
+  date: 2022-09-16 00:15:33
+- bump: minor
+  changes:
+    added:
+    - Add taxsim comparisons to MO state tax system.
+    - Add notebook documentation showcasing tax/tax and benefits systems.
+    - Disabled mo_property_tax_credit until output schedule can be modeled.
+  date: 2022-09-16 03:02:08
+- bump: minor
+  changes:
+    added:
+    - PTC deduction switch for the UBI Center flat tax.
+  date: 2022-09-16 15:22:22
+- bump: minor
+  changes:
+    added:
+    - Federal poverty guideline-based basic income element.
+    changed:
+    - Made all basic income variables tax unit-level.
+  date: 2022-09-18 16:29:13
+- bump: minor
+  changes:
+    added:
+    - California tax exemptions
+  date: 2022-09-20 02:29:55
+- bump: patch
+  changes:
+    added:
+    - Budgetary impacts of some NY and PA programs to documentation notebooks.
+  date: 2022-09-20 05:11:32
+- bump: minor
+  changes:
+    added:
+    - Oregon standard deduction.
+  date: 2022-09-20 17:04:16
+- bump: minor
+  changes:
+    added:
+    - California income tax rates.
+  date: 2022-09-21 01:52:55
+- bump: minor
+  changes:
+    added:
+    - 2021 ASEC.
+  date: 2022-09-21 20:07:25
+- bump: minor
+  changes:
+    added:
+    - Flat per-person UBI amount.
+  date: 2022-09-27 02:30:33
+- bump: patch
+  changes:
+    fixed:
+    - County selection now is vectorised, cutting runtimes by 20%.
+  date: 2022-09-27 22:17:57
+>>>>>>> 32731216fc851e6adc043ee79ded21fad318b131

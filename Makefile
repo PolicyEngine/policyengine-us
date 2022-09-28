@@ -13,7 +13,21 @@ test-variables:
 	openfisca-us test openfisca_us/tests/test_variables.py
 test:
 	pytest openfisca_us/tests/ --maxfail=0
-	coverage run --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/calcfunctions
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/contrib
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/demographic
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/expense
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/doe
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/fcc
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/hhs
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/hud
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/irs
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/ssa
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/states
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/gov/usda
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/baseline/income
+	coverage run -a --branch -m openfisca_us.tools.cli test openfisca_us/tests/policy/contrib
+
 	coverage xml -i
 documentation:
 	jb build docs

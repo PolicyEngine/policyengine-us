@@ -1,0 +1,49 @@
+description: CA widow filing income tax rate
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      2021-01-01: 0.01
+  - threshold:
+      0000-01-01: 18_650
+    rate:
+      2021-01-01: 0.02
+  - threshold:
+      0000-01-01: 44_214
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      0000-01-01: 69_784
+    rate:
+      2021-01-01: 0.06
+  - threshold:
+      0000-01-01: 96_870
+    rate:
+      2021-01-01: 0.08
+  - threshold:
+      0000-01-01: 122_428
+    rate:
+      2021-01-01: 0.093
+  - threshold:
+      0000-01-01: 625_372
+    rate:
+      2021-01-01: 0.103
+  - threshold:
+      0000-01-01: 750_442
+    rate:
+      2021-01-01: 0.113
+  - threshold:
+      0000-01-01: 1_250_738
+    rate:
+      2021-01-01: 0.123
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  name: ca_widow_income_tax_rate
+  label: CA widow income tax rate
+  reference: 
+    - title: California Tax Rate Schedules
+      href: https://www.ftb.ca.gov/forms/Search/Home/FormRequest/4798
