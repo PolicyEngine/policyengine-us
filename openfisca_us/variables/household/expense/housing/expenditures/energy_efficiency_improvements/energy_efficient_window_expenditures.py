@@ -12,3 +12,4 @@ class energy_efficient_window_expenditures(Variable):
         "https://www.law.cornell.edu/uscode/text/26/25C#c_3_B",
         "https://www.law.cornell.edu/uscode/text/26/25C#c_2_B",
     )
+    question = "How much do you spend on energy efficient windows?"

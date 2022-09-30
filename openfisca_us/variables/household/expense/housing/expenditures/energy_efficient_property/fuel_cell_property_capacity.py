@@ -11,3 +11,4 @@ class fuel_cell_property_capacity(Variable):
     unit = "kW"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25D#b_1"
+    question = "How much do you spend on energy efficient fuel cells?"

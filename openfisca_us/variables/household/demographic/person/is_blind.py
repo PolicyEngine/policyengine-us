@@ -6,3 +6,4 @@ class is_blind(Variable):
     entity = Person
     label = "Is blind"
     definition_period = YEAR
+    question = "Are you blind?"

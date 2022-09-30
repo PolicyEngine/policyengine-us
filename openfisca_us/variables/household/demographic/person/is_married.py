@@ -7,6 +7,7 @@ class is_married(Variable):
     label = "Married"
     documentation = "Whether the adults in this family are married."
     definition_period = YEAR
+    question = "Are you married?"
 
     def formula(family, period, parameters):
         # If any tax unit is a married filer, assume the family is.

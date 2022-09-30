@@ -6,6 +6,7 @@ class is_full_time_student(Variable):
     entity = Person
     label = "Is a full time student"
     definition_period = YEAR
+    question = "Are you a full time student?"
 
     def formula(person, period, parameters):
         in_college = person("is_full_time_college_student", period)

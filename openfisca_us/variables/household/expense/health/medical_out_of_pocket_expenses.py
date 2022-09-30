@@ -7,3 +7,4 @@ class medical_out_of_pocket_expenses(Variable):
     label = "Medical out of pocket expenses"
     unit = USD
     definition_period = YEAR
+    question = "How much do you spend on out of pocket medical costs?"

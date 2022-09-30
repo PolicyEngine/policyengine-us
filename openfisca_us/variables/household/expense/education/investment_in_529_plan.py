@@ -8,3 +8,4 @@ class investment_in_529_plan(Variable):
     unit = USD
     documentation = "Amount invested in a 529 savings plan."
     definition_period = YEAR
+    question = "How much do you invest in a 529 savings plan?"

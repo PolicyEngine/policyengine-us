@@ -6,3 +6,6 @@ class is_fully_disabled_service_connected_veteran(Variable):
     entity = Person
     label = "Is a fully disabled veteran who became so as a result of an injury during service"
     definition_period = YEAR
+    question = (
+        "Are you fully disabled due to an injury during military service?"
+    )

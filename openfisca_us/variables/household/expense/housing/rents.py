@@ -9,5 +9,4 @@ class rents(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-
         return add(tax_unit, period, ["rent"]) > 0

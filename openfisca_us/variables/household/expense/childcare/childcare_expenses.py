@@ -7,3 +7,4 @@ class childcare_expenses(Variable):
     label = "Child care expenses"
     definition_period = YEAR
     unit = USD
+    question = "How much do you spend on childcare?"

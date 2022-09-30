@@ -6,3 +6,4 @@ class is_permanently_disabled_veteran(Variable):
     entity = Person
     definition_period = YEAR
     label = "Permanently disabled veteran"
+    question = "Are you a permanently disabled veteran?"

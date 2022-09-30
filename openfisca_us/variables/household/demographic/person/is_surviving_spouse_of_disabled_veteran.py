@@ -6,3 +6,4 @@ class is_surviving_spouse_of_disabled_veteran(Variable):
     entity = Person
     definition_period = YEAR
     label = "Surviving spouse of disabled veteran"
+    question = "Are you a surviving spouse of a disabled veteran?"

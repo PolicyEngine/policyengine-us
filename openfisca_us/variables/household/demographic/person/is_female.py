@@ -6,3 +6,4 @@ class is_female(Variable):
     entity = Person
     label = "Is female"
     definition_period = YEAR
+    question = "Are you female?"

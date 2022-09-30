@@ -6,6 +6,7 @@ class is_mother(Variable):
     entity = Person
     label = "Is a mother"
     definition_period = YEAR
+    question = "Are you a mother?"
 
     def formula(person, period, parameters):
         # In the absence of relationship identifiers, check one of two

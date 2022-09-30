@@ -8,4 +8,5 @@ class average_home_energy_use_in_state(Variable):
     documentation = (
         "Average energy use per home in household's state, in kilowatt hours"
     )
-    label = "Average energy use per in state"
+    label = "Average energy use per home in state"
+    question = "What is the average energy use per home in your state?"

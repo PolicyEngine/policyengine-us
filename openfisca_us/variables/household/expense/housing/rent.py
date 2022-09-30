@@ -7,3 +7,4 @@ class rent(Variable):
     label = "Rent"
     unit = USD
     definition_period = YEAR
+    question = "How much do you spend in rent?"

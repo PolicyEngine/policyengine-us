@@ -71,6 +71,7 @@ class state_code(Variable):
     default_value = StateCode.CA
     entity = Household
     label = "State code"
+    question = "What state do you live in?"
     definition_period = ETERNITY
 
     def formula(household, period, parameters):

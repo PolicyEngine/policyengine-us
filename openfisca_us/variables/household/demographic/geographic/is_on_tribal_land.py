@@ -6,3 +6,4 @@ class is_on_tribal_land(Variable):
     entity = Household
     definition_period = ETERNITY
     label = "Is on tribal land"
+    question = "Do you live on tribal land?"

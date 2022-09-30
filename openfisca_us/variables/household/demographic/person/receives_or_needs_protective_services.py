@@ -6,3 +6,4 @@ class receives_or_needs_protective_services(Variable):
     entity = Person
     definition_period = YEAR
     label = "Child receiving or needs protective services"
+    question = "Are you a child receiving or needing protective services?"

@@ -6,3 +6,4 @@ class own_children_in_household(Variable):
     entity = Person
     label = "Count of one's own children in the household"
     definition_period = YEAR
+    question = "How many of your own children live in your household?"

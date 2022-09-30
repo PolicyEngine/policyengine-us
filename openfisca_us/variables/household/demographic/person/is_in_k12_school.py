@@ -6,3 +6,4 @@ class is_in_k12_school(Variable):
     entity = Person
     label = "Is in a K-12 school"
     definition_period = YEAR
+    question = "Are you enrolled in a K-12 school?"

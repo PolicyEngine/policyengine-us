@@ -7,6 +7,7 @@ class zip_code(Variable):
     label = "ZIP code"
     definition_period = ETERNITY
     default_value = "UNKNOWN"
+    question = "What is your ZIP code?"
 
     def formula(household, period, parameters):
         numeric_zip_code = ZIP_CODE_DATASET.zip_code.sample(

@@ -9,3 +9,4 @@ class energy_efficient_insulation_expenditures(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25C#c_3_A"
+    question = "How much do you spend on energy efficient insulation?"

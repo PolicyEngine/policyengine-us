@@ -6,6 +6,7 @@ class is_father(Variable):
     entity = Person
     label = "Is a father"
     definition_period = YEAR
+    question = "Are you a father?"
 
     def formula(person, period, parameters):
         # In the absence of relationship identifiers, check if the person is

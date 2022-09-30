@@ -6,3 +6,4 @@ class is_disabled(Variable):
     entity = Person
     label = "Is disabled"
     definition_period = YEAR
+    question = "Do you have a disability?"

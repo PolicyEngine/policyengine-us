@@ -7,3 +7,4 @@ class charitable_cash_donations(Variable):
     label = "Charitable donations (cash)"
     unit = USD
     definition_period = YEAR
+    question = "How much do you donate to charity in cash?"

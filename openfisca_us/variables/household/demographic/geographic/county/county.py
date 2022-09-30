@@ -10,6 +10,7 @@ class county(Variable):
     default_value = County.UNKNOWN
     entity = Household
     label = "County"
+    question = "What county do you live in?"
     definition_period = ETERNITY
 
     def formula(household, period, parameters):

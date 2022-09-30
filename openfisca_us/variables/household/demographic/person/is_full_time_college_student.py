@@ -6,3 +6,4 @@ class is_full_time_college_student(Variable):
     entity = Person
     label = "Is a full time college student"
     definition_period = YEAR
+    question = "Are you a full time college student?"

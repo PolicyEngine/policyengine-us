@@ -6,3 +6,4 @@ class is_breastfeeding(Variable):
     entity = Person
     label = "Is breastfeeding"
     definition_period = YEAR
+    question = "Are you breastfeeding?"

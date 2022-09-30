@@ -8,3 +8,4 @@ class child_support_received(Variable):
     unit = USD
     documentation = "Value of child support benefits received."
     definition_period = YEAR
+    question = "How much do you receive in child support?"

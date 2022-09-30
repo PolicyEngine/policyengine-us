@@ -5,5 +5,6 @@ class age(Variable):
     value_type = float
     entity = Person
     label = "Age"
+    question = "How old are you?"
     definition_period = YEAR
     default_value = 18

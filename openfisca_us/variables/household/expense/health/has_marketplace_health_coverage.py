@@ -7,3 +7,4 @@ class has_marketplace_health_coverage(Variable):
     label = "Receives health insurance from a Marketplace plan."
     definition_period = YEAR
     default_value = True
+    question = "Do you receive health insurance from a Marketplace plan?"

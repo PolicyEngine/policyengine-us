@@ -6,3 +6,4 @@ class is_permanently_and_totally_disabled(Variable):
     entity = Person
     label = "Is permanently and totally disabled"
     definition_period = YEAR
+    question = "Are you permanently and totally disabled?"

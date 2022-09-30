@@ -7,6 +7,7 @@ class vehicles_owned(Variable):
     entity = Person
     label = "Vehicles owned"
     definition_period = YEAR
+    question = "How many vehicles do you own?"
 
     def formula(person, period, parameters):
         # We randomly split the household's vehicles between its adults
