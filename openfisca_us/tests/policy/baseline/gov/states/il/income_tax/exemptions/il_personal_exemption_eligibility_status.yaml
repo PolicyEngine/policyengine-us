@@ -40,7 +40,8 @@
     il_base_income: 5_000 # More than $2,375 personal exemption.
     state_code: IL
   output:
-    il_personal_exemption: 2_375
+    il_personal_exemption_eligibility_status: SINGLE_ELIGIBLE
+
 - name: "Joint household, neither claimable elsewhere, base income less than $4,750"
   period: 2021
   input:
@@ -71,7 +72,7 @@
     il_base_income: 2_000 # Less than $2,375 personal exemption.
     state_code: IL
   output:
-    il_personal_exemption_eligibility_status: 2_375
+    il_personal_exemption_eligibility_status: SINGLE_ELIGIBLE
 
 - name: "Single household, claimable elsewhere, base income greater than $2,375"
   period: 2021
