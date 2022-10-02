@@ -1,0 +1,16 @@
+- name: 
+  period: 2021
+  input:
+    ca_taxable_income: 1_000_000
+    state_code: CA
+  output:
+    ca_mental_health_services_tax: 0
+
+
+- name: 
+  period: 2021
+  input:
+    ca_taxable_income: 2_000_000
+    state_code: CA
+  output:
+    ca_mental_health_services_tax: 10_000
