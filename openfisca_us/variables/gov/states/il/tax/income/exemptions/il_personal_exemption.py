@@ -20,14 +20,12 @@ class il_personal_exemption(Variable):
             period
         ).gov.states.il.tax.income.exemption.personal
 
-        return select(
+        return personal_exemption_amount * select(
             [
                 il_is_personal_exemption_eligible
-                == eligibility_status.ELIGIBLE,
+                == eligibility_status.BOTH_ELIGIBLE,
                 il_is_personal_exemption_eligible
-                == eligibility_status.PARTNER_INELIGIBLE,
-                il_is_personal_exemption_eligible
-                == eligibility_status.NOT_ELIGIBLE,
+                == eligibility_status.SINGLE_ELIGIBLE
             ],
-            [personal_exemption_amount * 2, personal_exemption_amount, 0],
+            [2, 1], 0
         )

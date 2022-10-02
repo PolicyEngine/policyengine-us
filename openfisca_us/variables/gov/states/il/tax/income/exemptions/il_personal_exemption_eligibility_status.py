@@ -1,18 +1,15 @@
 from openfisca_us.model_api import *
 
-# TODO: Rename to something more specific, like
-
-
-class EligibilityStatus(Enum):
-    ELIGIBLE = 1
-    PARTNER_INELIGIBLE = 2
+class ILPersonalExemptionEligibilityStatus(Enum):
+    BOTH_ELIGIBLE = 1
+    SINGLE_ELIGIBLE = 2
     NOT_ELIGIBLE = 3
 
 
 class il_personal_exemption_eligibility_status(Variable):
     value_type = Enum
-    possible_values = EligibilityStatus
-    default_value = EligibilityStatus.NOT_ELIGIBLE
+    possible_values = ILPersonalExemptionEligibilityStatus
+    default_value = ILPersonalExemptionEligibilityStatus.NOT_ELIGIBLE
     entity = TaxUnit
     label = (
         "Whether The Tax Unit Is Eligible For The Illinois Personal Exemption"
@@ -21,7 +18,7 @@ class il_personal_exemption_eligibility_status(Variable):
     reference = ""
 
     def formula(tax_unit, period, parameters):
-        personal_eligiblity_amount = parameters(
+        personal_eligibility_amount = parameters(
             period
         ).gov.states.il.tax.income.exemption.personal
 
@@ -30,7 +27,7 @@ class il_personal_exemption_eligibility_status(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
 
         tax_unit_personal_eligibility_amount = (
-            personal_eligiblity_amount * where(joint, 2, 1)
+            personal_eligibility_amount * where(joint, 2, 1)
         )
 
         # Then, determine whether either the head or the spouse of the tax unit is claimable as a dependent in another unit.
@@ -75,8 +72,8 @@ class il_personal_exemption_eligibility_status(Variable):
         return select(
             [ineligible, partner_ineligible],
             [
-                EligibilityStatus.NOT_ELIGIBLE,
-                EligibilityStatus.PARTNER_INELIGIBLE,
+                ILPersonalExemptionEligibilityStatus.NOT_ELIGIBLE,
+                ILPersonalExemptionEligibilityStatus.SINGLE_ELIGIBLE,
             ],
-            EligibilityStatus.ELIGIBLE,
+            ILPersonalExemptionEligibilityStatus.BOTH_ELIGIBLE,
         )
