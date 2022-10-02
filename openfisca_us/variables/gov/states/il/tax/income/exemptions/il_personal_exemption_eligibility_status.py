@@ -1,5 +1,6 @@
 from openfisca_us.model_api import *
 
+
 class ILPersonalExemptionEligibilityStatus(Enum):
     BOTH_ELIGIBLE = 1
     SINGLE_ELIGIBLE = 2

@@ -1,196 +1,104 @@
 - name: "Joint household, both claimable elsewhere, base income less than $4,750"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-      person_2:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-        filing_status: JOINT
-        tax_unit_dependent_elsewhere: true
-        tax_unit_spouse_dependent_elsewhere: true
-        il_base_income: 2_000 # Less than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: true
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
 - name: "Joint household, both claimable elsewhere, base income greater than $4,750"
   period: 2021
   input:
-    people:
-        person_1:
-          age: 30
-        person_2:
-          age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-        filing_status: JOINT
-        tax_unit_dependent_elsewhere: true
-        tax_unit_spouse_dependent_elsewhere: true
-        il_base_income: 5_000 # Less than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: true
+    il_base_income: 5_000 # Less than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
 - name: "Joint household, one claimable elsewhere, base income less than $2,375"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-      person_2:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-        filing_status: JOINT
-        tax_unit_dependent_elsewhere: true
-        tax_unit_spouse_dependent_elsewhere: false
-        il_base_income: 2_000 # Less than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: false
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
 - name: "Joint household, one claimable elsewhere, base income greater than $2,375"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-      person_2:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-        filing_status: JOINT
-        tax_unit_dependent_elsewhere: true
-        tax_unit_spouse_dependent_elsewhere: false
-        il_base_income: 5_000 # More than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: false
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption: 2_375
 - name: "Joint household, neither claimable elsewhere, base income less than $4,750"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-      person_2:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-        filing_status: JOINT
-        tax_unit_dependent_elsewhere: false
-        tax_unit_spouse_dependent_elsewhere: false
-        il_base_income: 2_000 # Less than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: false
+    tax_unit_spouse_dependent_elsewhere: false
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
 - name: "Joint household, neither claimable elsewhere, base income greater than $4,750"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-      person_2:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1, person_2]
-        filing_status: JOINT
-        tax_unit_dependent_elsewhere: false
-        tax_unit_spouse_dependent_elsewhere: false
-        il_base_income: 5_000 # More than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: false
+    tax_unit_spouse_dependent_elsewhere: false
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: BOTH_ELIGIBLE
 
 - name: "Single household, claimable elsewhere, base income less than $2,375"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        filing_status: SINGLE
-        tax_unit_dependent_elsewhere: true
-        il_base_income: 2_000 # Less than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: true
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: 2_375
 
 - name: "Single household, claimable elsewhere, base income greater than $2,375"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        filing_status: SINGLE
-        tax_unit_dependent_elsewhere: true
-        il_base_income: 5_000 # More than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: true
+    il_base_income: 5_000 # More than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: NOT_ELIGIBLE
 
 - name: "Single household, not claimable elsewhere, base income less than $2,375"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        filing_status: SINGLE
-        tax_unit_dependent_elsewhere: false
-        il_base_income: 2_000 # Less than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: false
+    il_base_income: 2_000 # Less than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: SINGLE_ELIGIBLE
 
 - name: "Single household, not claimable elsewhere, base income greater than $2,375"
   period: 2021
   input:
-    people:
-      person_1:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person_1]
-        filing_status: SINGLE
-        tax_unit_dependent_elsewhere: false
-        il_base_income: 5_000  # More than $2,375 personal exemption.
-    households:
-      household:
-        state_code: IL
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: false
+    il_base_income: 5_000  # More than $2,375 personal exemption.
+    state_code: IL
   output:
     il_personal_exemption_eligibility_status: SINGLE_ELIGIBLE
