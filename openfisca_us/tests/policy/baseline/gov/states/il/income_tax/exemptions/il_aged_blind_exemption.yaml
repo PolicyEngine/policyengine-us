@@ -5,6 +5,7 @@
     state_code: IL
   output:
     il_aged_blind_exemption: 0
+
 - name: "Test #2"
   period: 2021
   input:
@@ -12,6 +13,7 @@
     state_code: IL
   output:
     il_aged_blind_exemption: 1_000
+
 - name: "Test #3"
   period: 2021
   input:
