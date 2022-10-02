@@ -1,4 +1,4 @@
-- name: 
+- name: 0 tax for under 1_000_000 of taxable income
   period: 2021
   input:
     ca_taxable_income: 1_000_000
@@ -7,7 +7,7 @@
     ca_mental_health_services_tax: 0
 
 
-- name: 
+- name: 1% tax on excess over 1_000_000 taxable income
   period: 2021
   input:
     ca_taxable_income: 2_000_000
