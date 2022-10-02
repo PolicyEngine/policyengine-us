@@ -1,0 +1,28 @@
+- name: 100% covered if zero income.
+  period: 2023
+  input:
+    tax_unit_income_ami_ratio: 0
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 1
+
+# TODO: Identify why 0.8 doesn't work here, given we're passing `right=True`.
+- name: 100% covered if up to 80% of AMI.
+  period: 2023
+  input:
+    tax_unit_income_ami_ratio: 0.799999
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 1.0
+
+- name: 50% covered if up to 150% of AMI.
+  period: 2023
+  input:
+    tax_unit_income_ami_ratio: 1.5
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+
+- name: 0% covered if above 150% of AMI.
+  period: 2023
+  input:
+    tax_unit_income_ami_ratio: 1.51
+  output:
+    high_efficiency_electric_home_rebate_percent_covered: 0

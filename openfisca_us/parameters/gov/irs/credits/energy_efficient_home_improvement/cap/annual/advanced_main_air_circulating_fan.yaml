@@ -1,0 +1,15 @@
+description: The IRS caps energy efficient home improvement credits on advance main air circulating fans at this amount per year.
+values:
+  2017-01-01: 50
+  # Inflation Reduction Act sets the cap at $600 for any item of qualified energy property.
+  2023-01-01: .inf
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_advanced_main_air_circulating_fan_cap
+  label: Energy efficient home improvement credit cap on advanced main air circulating fans
+  reference:
+    - title: 26 U.S.C. § 25C(b)(3)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#b_3_A
+    - title: Inflation Reduction Act, Part 3, Section 13301 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339

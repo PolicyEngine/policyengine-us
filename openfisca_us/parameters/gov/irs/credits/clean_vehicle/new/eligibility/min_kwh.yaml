@@ -1,0 +1,10 @@
+description: The IRS limits the new clean vehicle credit to vehicles with at least this battery capacity, in kilowatt hours.
+values:
+  2021-01-01: 4
+metadata:
+  unit: kilowatt-hour
+  name: new_clean_vehicle_credit_min_kwh
+  label: Minimum kWh of battery capacity for new clean vehicle to be eligible for credit
+  reference:
+    - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (d)(1)(F)(i)
+      href: https://www.law.cornell.edu/uscode/text/26/30D#d_1_F_i

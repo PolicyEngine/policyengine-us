@@ -1,0 +1,33 @@
+- name: No credit if no sale price.
+  period: 2022
+  input:
+    used_clean_vehicle_credit_eligible: true
+    used_clean_vehicle_sale_price: 0
+  output:
+    used_clean_vehicle_credit: 0
+
+- name: 30% of sale price up to $4,000.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    used_clean_vehicle_credit_eligible: true
+    used_clean_vehicle_sale_price: 100
+  output:
+    used_clean_vehicle_credit: 30
+
+- name: 30% up to just below the cap.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    used_clean_vehicle_credit_eligible: true
+    used_clean_vehicle_sale_price: 13_333
+  output:
+    used_clean_vehicle_credit: 3_999.9
+
+- name: Capped at $4,000.
+  period: 2023
+  input:
+    used_clean_vehicle_credit_eligible: true
+    used_clean_vehicle_sale_price: 13_334
+  output:
+    used_clean_vehicle_credit: 4_000

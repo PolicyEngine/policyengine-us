@@ -1,0 +1,9 @@
+- name: 3 exemptions.
+  period: 2021
+  input:
+    state_code: OR
+    or_regular_exemptions: 1
+    or_severely_disabled_exemptions: 1
+    or_disabled_child_dependent_exemptions: 1
+  output:
+    or_exemption_credit: 213 * 3

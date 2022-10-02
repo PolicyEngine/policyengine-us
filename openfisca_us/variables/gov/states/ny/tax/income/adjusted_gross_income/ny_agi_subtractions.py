@@ -33,5 +33,5 @@ class ny_agi_subtractions(Variable):
             taxable_ss
             + us_govt_interest
             + investment_in_529_plan
-            + deductible_pensions
+            + tax_unit.sum(deductible_pensions)
         )

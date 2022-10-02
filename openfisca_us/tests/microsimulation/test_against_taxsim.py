@@ -12,9 +12,9 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-STATES = ["MA"]
+STATES = ["MD", "MA", "NY", "WA"]
 DISTANCE = 100
-MINIMUM_PERCENT_CLOSE = 0.7
+MINIMUM_PERCENT_CLOSE = 0.65
 
 if os.name != "nt":
 

@@ -1,0 +1,27 @@
+- name: 2021 single filer with $300,000 taxable income
+  period: 2021
+  input:
+    state_code: OR
+    or_taxable_income: 300_000
+    filing_status: SINGLE
+  output:
+    # 4.75% * $3,650 = $173.375
+    # 6.75% * ($9,200 - $3,650) = $374.625
+    # 8.75% * ($125,000 - $9,200) = $10,132.50
+    # 9.90% * ($300,000 - $125,000) = $17,325
+    # Total = $173.375 + $374.625 + 10,132.50 + 17,325 = $28,005.5
+    or_income_tax_before_credits: 28_005.5
+
+- name: 2021 joint filer with $300,000 taxable income
+  period: 2021
+  input:
+    state_code: OR
+    or_taxable_income: 300_000
+    filing_status: JOINT
+  output:
+    # 4.75% * $7,300 = $346.75
+    # 6.75% * ($18,400 - $7,300) = $749.25
+    # 8.75% * ($250,000 - $18,400) = $20,265
+    # 9.90% * ($300,000 - $250,000) = $4,950
+    # Total = $346.75 + $749.25 + $20,265 + $4,950 = $26,311
+    or_income_tax_before_credits: 26_311

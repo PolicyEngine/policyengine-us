@@ -1,0 +1,17 @@
+description: The IRS limits the new clean vehicle tax credit to vehicles with at least this share of battery critical minerals (by value) extracted or processed in a country with which the United States has a free trade agreement in effect, or recycled in North America.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=371
+  label: Share of clean vehicle battery critical minerals made in North America to qualify for credit
+  unit: /1
+  name: new_clean_vehicle_credit_critical_minerals_threshold
+values:
+  0000-01-01: 0
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 0.4
+  2024-01-01: 0.5
+  2025-01-01: 0.6
+  2026-01-01: 0.7
+  2027-01-01: 0.8

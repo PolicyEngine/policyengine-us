@@ -2,7 +2,7 @@ from openfisca_us.model_api import *
 
 
 class ny_itemizes(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Itemizes NY deductions"
     unit = USD

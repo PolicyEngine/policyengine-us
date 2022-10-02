@@ -1,0 +1,28 @@
+- name: 100% capped at $50 before the Inflation Reduction Act.
+  period: 2021
+  input:
+    advanced_main_air_circulating_fan_expenditures: 40
+  output:
+    capped_advanced_main_air_circulating_fan_credit: 40
+
+- name: 100% capped at $50 before the Inflation Reduction Act.
+  period: 2022
+  input:
+    advanced_main_air_circulating_fan_expenditures: 60
+  output:
+    capped_advanced_main_air_circulating_fan_credit: 50
+
+- name: 30% capped at $600 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    advanced_main_air_circulating_fan_expenditures: 1_000
+  output:
+    capped_advanced_main_air_circulating_fan_credit: 300
+
+- name: 30% capped at $600 (for all energy efficient building property) after the Inflation Reduction Act.
+  period: 2023
+  input:
+    advanced_main_air_circulating_fan_expenditures: 10_000
+  output:
+    capped_advanced_main_air_circulating_fan_credit: 600
+
