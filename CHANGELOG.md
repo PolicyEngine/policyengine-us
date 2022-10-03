@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.165.0] - 2022-10-03 22:56:42
+
+### Added
+
+- California mental health services tax
+
 ## [0.164.0] - 2022-10-03 18:29:29
 
 ### Added
@@ -1971,6 +1977,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.165.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.164.0...0.165.0
 [0.164.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.163.1...0.164.0
 [0.163.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.163.0...0.163.1
 [0.163.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.162.0...0.163.0
