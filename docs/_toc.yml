@@ -46,6 +46,7 @@ parts:
               - file: programs/states/ny/eitc
               - file: programs/states/ny/tax
               - file: programs/states/ny/tax-benefit
+          - file: programs/states/pa/tax
           - file: programs/states/wa/index
             sections:
               - file: programs/states/wa/tax/income/credits/working-families-tax-credit
