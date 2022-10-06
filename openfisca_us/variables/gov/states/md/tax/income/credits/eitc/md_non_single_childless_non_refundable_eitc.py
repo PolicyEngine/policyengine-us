@@ -20,7 +20,12 @@ class md_non_single_childless_non_refundable_eitc(Variable):
         single_childless = tax_unit(
             "md_qualifies_for_single_childless_eitc", period
         )
-        in_md = tax_unit.household("state_code_str", period) == "MD"
-        eligible = ~single_childless & in_md
+        eligible = ~single_childless
         uncapped = p.non_refundable_match * federal_eitc
-        return eligible * min_(tax_before_credits, uncapped)
+        amount = eligible * min_(tax_before_credits, uncapped)
+        has_children = add(tax_unit, period, ["is_child"]) > 0
+        mca = parameters(period).contrib.maryland_child_alliance
+        if mca.abolish_non_refundable_child_eitc:
+            return amount * ~has_children
+        else:
+            return amount
