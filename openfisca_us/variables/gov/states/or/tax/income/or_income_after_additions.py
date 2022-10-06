@@ -9,7 +9,6 @@ class or_income_after_additions(Variable):
     definition_period = YEAR
     defined_for = StateCode.OR
 
-    def formula(tax_unit, period, parameters):
-        agi = tax_unit("adjusted_gross_income", period)
-        additions = tax_unit("or_income_additions", period)
-        return agi + additions
+    formula = sum_of_variables(
+        ["adjusted_gross_income", "or_income_additions"]
+    )
