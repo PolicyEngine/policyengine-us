@@ -11,5 +11,5 @@ class or_income_after_subtractions(Variable):
 
     def formula(tax_unit, period, parameters):
         income_after_additions = tax_unit("or_income_after_additions", period)
-        subtractions = tax_unit("or_subtractions", period)
+        subtractions = tax_unit("or_income_subtractions", period)
         return income_after_additions - subtractions
