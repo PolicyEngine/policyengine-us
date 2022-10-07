@@ -1,0 +1,23 @@
+description: Social Security Benefit Exemption Thresholds by Filing Status
+SINGLE: 
+  2021-01-01: 85_000
+JOINT:
+  2021-01-01: 100_000
+SEPARATE:
+  2021-01-01: 85_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 85_000
+WIDOW:
+  2021-01-01: 85_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: social_security_benefit_exemption_thresholds
+  label: MO Social Security Benefit Exemption Thresholds
+  reference:
+    - title: Form MO-A
+      href: https://dor.mo.gov/forms/MO-A_2021.pdf
+    - title: MO Revenue Chapter 143.124
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.124
+  breakdown:
+  - filing_status
