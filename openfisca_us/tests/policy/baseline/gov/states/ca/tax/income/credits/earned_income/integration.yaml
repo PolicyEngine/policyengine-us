@@ -2,15 +2,7 @@
   period: 2019
   input:
     state_code: CA
-    employment_income: 0
-  output:
-    ca_eitc: 0
-
-- name: Phases out fully by $30k earned income.
-  period: 2019
-  input:
-    state_code: CA
-    employment_income: 30_000
+    earned_income: 0
   output:
     ca_eitc: 0
 
@@ -18,18 +10,36 @@
   period: 2019
   input:
     state_code: CA
-    employment_income: 7_796
+    earned_income: 7_796
     filing_status: JOINT
     eitc_child_count: 3
   output:
     ca_eitc: 2_982
 
+- name: Joint filer with three children in phase-in range gets 45% * 85% of earned income.
+  period: 2019
+  input:
+    state_code: CA
+    earned_income: 7_000
+    filing_status: JOINT
+    eitc_child_count: 3
+  output:
+    ca_eitc: 2_677.5 # 7000 * .45 * .85
+
 - name: Married with three children hits the second kink point roughly at $14,302 earnings, $493 benefit amount, per Cal Budget Center (true kink CalEITC amount is $505).
   period: 2019
   input:
     state_code: CA
-    employment_income: 14_302
+    earned_income: 14_302
     filing_status: JOINT
     eitc_child_count: 3
   output:
     ca_eitc: 493
+
+- name: Phases out fully by $30k earned income.
+  period: 2019
+  input:
+    state_code: CA
+    earned_income: 30_000
+  output:
+    ca_eitc: 0
