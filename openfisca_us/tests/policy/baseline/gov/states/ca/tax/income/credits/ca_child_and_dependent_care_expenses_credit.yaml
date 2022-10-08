@@ -1,0 +1,26 @@
+- name: "AGI >100,000 then not eligible"
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 100_001
+    cdcc: 1_000
+  output:
+    ca_child_and_dependent_care_expenses_credit: 0
+
+- name: "AGI 35% and 50% multiplier"
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 1_000
+    cdcc: 1_000
+  output:
+    ca_child_and_dependent_care_expenses_credit: 175
+
+- name: "AGI 20% and 43% multiplier"
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 50_000
+    cdcc: 1_000
+  output:
+    ca_child_and_dependent_care_expenses_credit: 86
