@@ -1,0 +1,29 @@
+name: Family of 3, no member(s) with disabilities, income of 50k/year (Standard Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 50_000
+      spouse:
+        age: 35
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        state_code_str: CA
+        members: [head, spouse, child]
+  output:
+    filing_status: JOINT 
+    # (129 * 2) + 400, income is below the phase-out threshold
+    ca_exemptions: 658 
+    ca_agi: 50_000
+    ca_standard_deduction: 9_606
+    ca_taxable_income: 40_394
+    ca_income_tax_before_credits: 1_191
+    ca_young_child_tax_credit: 0 # Child is 10, and the age limit is 6.
+    ca_use_tax: 4
