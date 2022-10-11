@@ -19,11 +19,79 @@ name: Family of 3, no member(s) with disabilities, income of 50k/year (Standard 
         members: [head, spouse, child]
   output:
     filing_status: JOINT 
-    # (129 * 2) + 400, income is below the phase-out threshold
     ca_exemptions: 658 
     ca_agi: 50_000
     ca_standard_deduction: 9_606
     ca_taxable_income: 40_394
-    ca_income_tax_before_credits: 1_191
+    ca_income_tax_before_credits: 622
+    ca_eitc: 0 # I calculated this using the online calculator
     ca_young_child_tax_credit: 0 # Child is 10, and the age limit is 6.
     ca_use_tax: 4
+  
+
+name: Single-Parent household with 2 children, Young Child Tax Credit and CA renter credit and CDCC
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 26_000
+        rent: 10_000
+      child_1:
+        age: 5
+      child_2:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, child, child]
+        cdcc: 1000
+    households:
+      household:
+        state_code_str: CA
+        members: [head, child, child]
+  output:
+    filing_status: JOINT 
+    ca_exemptions: 
+    ca_agi: 
+    ca_child_and_dependent_care_expenses_credit:
+    ca_renters_credit: 
+    ca_standard_deduction: 
+    ca_taxable_income: 
+    ca_income_tax_before_credits: 
+    ca_young_child_tax_credit: 
+    ca_use_tax: 
+
+name: Childless couple with lots of money and some itemized deductions. 
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 500_000
+        charitable_cash_donations: 50_000
+      spouse:
+        age: 70
+        employment_income: 600_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        state_code_str: CA
+        members: [head, spouse]
+  output:
+    filing_status: JOINT 
+    ca_exemptions: 
+    ca_agi: 
+    ca_mental_health_services_tax:
+    ca_use_tax:
+    ca_child_and_dependent_care_expenses_credit:
+    ca_renters_credit: 
+    ca_standard_deduction: 
+    ca_taxable_income: 
+    ca_income_tax_before_credits: 
+    ca_young_child_tax_credit: 
+    ca_use_tax: 
+
