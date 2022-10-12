@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class mo_qualified_health_insurance_premiums(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "MO qualified healh insurance premiums"
     unit = USD
     definition_period = YEAR

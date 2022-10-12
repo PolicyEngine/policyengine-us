@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class mo_income_tax_before_credits(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Missouri income tax before credits"
     unit = USD
     definition_period = YEAR

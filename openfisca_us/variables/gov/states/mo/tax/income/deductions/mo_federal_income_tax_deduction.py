@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class mo_federal_income_tax_deduction(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "MO Federal income tax deduction"
     unit = USD
     definition_period = YEAR
@@ -13,8 +13,8 @@ class mo_federal_income_tax_deduction(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(person, period, parameters):
-        tax_unit = person.tax_unit
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         mo_adjusted_gross_income = person("mo_adjusted_gross_income", period)
         federal_tax = tax_unit("income_tax", period)
 
