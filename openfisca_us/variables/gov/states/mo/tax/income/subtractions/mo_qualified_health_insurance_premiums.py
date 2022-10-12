@@ -14,9 +14,10 @@ class mo_qualified_health_insurance_premiums(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
+        tax_unit = person.tax_unit
         total_health_insurance_premiums = add(
-            tax_unit, period, ["health_insurance_premiums"]
+            person, period, ["health_insurance_premiums"]
         )  # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
         # Federal Schedule A, Line 4
         med_expense_deduction = tax_unit("medical_expense_deduction", period)
@@ -25,7 +26,7 @@ class mo_qualified_health_insurance_premiums(Variable):
         # need division because med_dental_out_of_pocket is in federal tax, but no MO tax
         # this ratio is then used to scale the health_insurance_premium amount that can be claimed
         total_health_expenses = add(
-            tax_unit,
+            person,
             period,
             ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
         )
@@ -48,8 +49,15 @@ class mo_qualified_health_insurance_premiums(Variable):
         # Cap at federal taxable income.
         taxable_income = tax_unit("taxable_income", period)
 
+        total_tax_unit_med_expenses = add(
+            tax_unit,
+            period,
+            ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
+        )
+        health_expense_person_share = total_health_expenses/total_tax_unit_med_expenses
+
         return where(
             itemizes,
-            min_(itemized_premiums_amount, taxable_income),
-            min_(total_health_insurance_premiums, taxable_income),
+            min_(itemized_premiums_amount * health_expense_person_share, taxable_income * health_expense_person_share),
+            min_(total_health_insurance_premiums * health_expense_person_share, taxable_income * health_expense_person_share),
         )

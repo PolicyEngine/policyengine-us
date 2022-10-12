@@ -13,7 +13,7 @@ class mo_income_tax_before_credits(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("mo_taxable_income", period)
+    def formula(person, period, parameters):
+        taxable_income = person("mo_taxable_income", period)
         rates = parameters(period).gov.states.mo.tax.income.rates
         return rates.calc(taxable_income)
