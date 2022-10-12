@@ -18,7 +18,7 @@ class mo_taxable_income(Variable):
         tax_unit_itemizes = tax_unit("tax_unit_itemizes", period)
 
         mo_agi = person("mo_adjusted_gross_income", period)
-        tax_unit_mo_agi = add(tax_unit, period, "mo_adjusted_gross_income")
+        tax_unit_mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
         mo_federal_income_tax_deduction = tax_unit(
             "mo_federal_income_tax_deduction", period
         )
