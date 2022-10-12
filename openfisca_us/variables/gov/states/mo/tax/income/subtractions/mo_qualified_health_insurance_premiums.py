@@ -16,9 +16,8 @@ class mo_qualified_health_insurance_premiums(Variable):
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
-        total_health_insurance_premiums = add(
-            person, period, ["health_insurance_premiums"]
-        )  # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
+
+        # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
         # Federal Schedule A, Line 4
         med_expense_deduction = tax_unit("medical_expense_deduction", period)
 
@@ -36,6 +35,11 @@ class mo_qualified_health_insurance_premiums(Variable):
             0,
         )
 
+
+        total_health_insurance_premiums = person("health_insurance_premiums",period)
+        moop_expenses = person("medical_out_of_pocket_expenses", period)
+        total_tax_unit_med_expenses = tax_unit.sum(total_health_insurance_premiums) + tax_unit.sum(moop_expenses)
+
         # Line 13 of MO Form 5695, represents the portion of medical expenses already deducted via federal tax itemization
         deducted_portion = (
             total_health_insurance_premiums * med_expense_deducted_ratio
@@ -49,11 +53,8 @@ class mo_qualified_health_insurance_premiums(Variable):
         # Cap at federal taxable income.
         taxable_income = tax_unit("taxable_income", period)
 
-        total_tax_unit_med_expenses = add(
-            tax_unit,
-            period,
-            ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
-        )
+
+        
         health_expense_person_share = total_health_expenses/total_tax_unit_med_expenses
 
         return where(
