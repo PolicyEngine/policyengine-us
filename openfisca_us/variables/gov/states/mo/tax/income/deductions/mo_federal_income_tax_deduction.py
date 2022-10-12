@@ -14,7 +14,8 @@ class mo_federal_income_tax_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        mo_adjusted_gross_income = tax_unit("mo_adjusted_gross_income", period)
+        person = tax_unit.members
+        mo_adjusted_gross_income = person("mo_adjusted_gross_income", period)
         federal_tax = tax_unit("income_tax", period)
 
         # subtract CARES act credits, only affects year 2020, source: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
