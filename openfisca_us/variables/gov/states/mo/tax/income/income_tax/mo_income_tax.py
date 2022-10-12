@@ -17,7 +17,7 @@ class mo_income_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         mo_income_tax_before_credits = add(tax_unit,period,
-            "mo_income_tax_before_credits"
+            ["mo_income_tax_before_credits"]
         )
         mo_property_tax_credit = tax_unit("mo_property_tax_credit", period)
         return mo_income_tax_before_credits - mo_property_tax_credit

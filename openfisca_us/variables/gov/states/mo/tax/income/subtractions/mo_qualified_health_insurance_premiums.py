@@ -37,8 +37,7 @@ class mo_qualified_health_insurance_premiums(Variable):
 
 
         total_health_insurance_premiums = person("health_insurance_premiums",period)
-        moop_expenses = person("medical_out_of_pocket_expenses", period)
-        total_tax_unit_med_expenses = tax_unit.sum(total_health_insurance_premiums) + tax_unit.sum(moop_expenses)
+        total_tax_unit_premiums = add(tax_unit, period, "health_insurance_premiums")
 
         # Line 13 of MO Form 5695, represents the portion of medical expenses already deducted via federal tax itemization
         deducted_portion = (
@@ -55,10 +54,10 @@ class mo_qualified_health_insurance_premiums(Variable):
 
 
         
-        health_expense_person_share = total_health_expenses/total_tax_unit_med_expenses
+        health_premium_person_share = total_health_insurance_premiums/total_tax_unit_premiums
 
         return where(
             itemizes,
-            min_(itemized_premiums_amount * health_expense_person_share, taxable_income * health_expense_person_share),
-            min_(total_health_insurance_premiums * health_expense_person_share, taxable_income * health_expense_person_share),
+            min_(itemized_premiums_amount * health_premium_person_share, taxable_income * health_premium_person_share),
+            min_(total_health_insurance_premiums * health_premium_person_share, taxable_income * health_premium_person_share),
         )
