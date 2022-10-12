@@ -1,3 +1,3 @@
-# OpenFisca-US microdata
+# PolicyEngine US microdata
 
-This folder will contain microdata files (.h5) to support OpenFisca-US's microsimulation runs.
+This folder will contain microdata files (.h5) to support PolicyEngine US's microsimulation runs.

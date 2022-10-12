@@ -7,10 +7,10 @@ install:
 	pip install -e .[dev]
 	pip install --upgrade jupyter-book
 test-policy:
-	openfisca-us test policyengine_us/tests/policy/baseline
-	openfisca-us test policyengine_us/tests/policy/contrib
+	policyengine-us test policyengine_us/tests/policy/baseline
+	policyengine-us test policyengine_us/tests/policy/contrib
 test-variables:
-	openfisca-us test policyengine_us/tests/test_variables.py
+	policyengine-us test policyengine_us/tests/test_variables.py
 test:
 	pytest policyengine_us/tests/ --maxfail=0
 	coverage run -a --branch -m policyengine_us.tools.cli test policyengine_us/tests/policy/baseline/calcfunctions
@@ -36,7 +36,7 @@ build:
 	python setup.py sdist bdist_wheel
 changelog:
 	build-changelog changelog.yaml --output changelog.yaml --update-last-date --start-from 0.0.1 --append-file changelog_entry.yaml
-	build-changelog changelog.yaml --org PolicyEngine --repo openfisca-us --output CHANGELOG.md --template .github/changelog_template.md
+	build-changelog changelog.yaml --org PolicyEngine --repo policyengine-us --output CHANGELOG.md --template .github/changelog_template.md
 	bump-version changelog.yaml setup.py
 	rm changelog_entry.yaml || true
 	touch changelog_entry.yaml

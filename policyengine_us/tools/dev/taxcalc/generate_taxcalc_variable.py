@@ -23,7 +23,7 @@ def create_taxcalc_alias(name: str, variable: Type[Variable]):
 
     Args:
         name (str): The name of the equivalent Tax-Calculator variable.
-        variable (Type[Variable]): The OpenFisca-US variable class.
+        variable (Type[Variable]): The PolicyEngine US variable class.
     """
 
     full_name = "taxcalc_" + name
@@ -44,7 +44,7 @@ def create_taxcalc_alias(name: str, variable: Type[Variable]):
         variable.documentation if hasattr(variable, "documentation") else None
     )
     addition_to_documentation = (
-        "This is a read-only variable alias returning the OpenFisca-US variable "
+        "This is a read-only variable alias returning the PolicyEngine US variable "
         + name
         + " under the (prefixed) name for its equivalent in Tax-Calculator, "
         + full_name

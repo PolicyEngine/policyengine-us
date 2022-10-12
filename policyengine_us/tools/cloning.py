@@ -1,4 +1,4 @@
-from openfisca_core.simulations import Simulation
+from policyengine_core.simulations import Simulation
 
 
 def get_stored_variables(simulation: Simulation) -> list:

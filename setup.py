@@ -3,7 +3,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="OpenFisca-US",
+    name="PolicyEngine US",
     version="0.170.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
@@ -18,7 +18,7 @@ setup(
     description="OpenFisca tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url="https://github.com/PolicyEngine/openfisca-us",
+    url="https://github.com/PolicyEngine/policyengine-us",
     include_package_data=True,  # Will read MANIFEST.in
     data_files=[
         (
@@ -57,11 +57,11 @@ setup(
             "linecheck",
         ],
     },
-    python_requires=">=3.7,<3.8",
+    python_requires=">=3.7,<3.10",
     entry_points={
         "console_scripts": [
-            "openfisca-us = policyengine_us.tools.cli:main",
-            "openfisca-us-data = policyengine_us.data.cli:cli",
+            "policyengine-us = policyengine_us.tools.cli:main",
+            "policyengine-us-data = policyengine_us.data.cli:cli",
         ],
     },
     packages=find_packages(),

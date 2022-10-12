@@ -63,7 +63,7 @@
     cdcc: 1200.00  # expected cdcc = 0.20 * 6000
     income_tax: 111839.00
 
-# OpenFisca-US test file derived from the f19.its.csv and f19.ots.csv files
+# PolicyEngine US test file derived from the f19.its.csv and f19.ots.csv files
 # Expected test output from NBER TAXSIM Model v35 (05/18/22) With TCJA
 
 - name: Tax unit with taxsimid 26 from f19.its.csv

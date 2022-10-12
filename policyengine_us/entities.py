@@ -1,4 +1,4 @@
-from openfisca_core.entities import build_entity
+from policyengine_core.entities import build_entity
 
 
 Household = build_entity(

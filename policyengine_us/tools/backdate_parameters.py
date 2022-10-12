@@ -1,5 +1,5 @@
-from openfisca_core.model_api import *
-from openfisca_core import periods
+from policyengine_core.model_api import *
+from policyengine_core import periods
 
 
 def str_to_instant(s):

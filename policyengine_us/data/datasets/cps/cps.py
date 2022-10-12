@@ -15,12 +15,12 @@ class CPS(PublicDataset):
     folder_path = policyengine_us_MICRODATA_FOLDER
 
     url_by_year = {
-        2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5",
-        2021: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-2021-v0/cps_2021.h5",
+        2020: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-v0/cps_2020.h5",
+        2021: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2021.h5",
     }
 
     def generate(self, year: int):
-        """Generates the Current Population Survey dataset for OpenFisca-US microsimulations.
+        """Generates the Current Population Survey dataset for PolicyEngine US microsimulations.
         Technical documentation and codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
 
         Args:

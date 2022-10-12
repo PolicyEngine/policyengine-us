@@ -1,5 +1,5 @@
-from openfisca_core.populations import Population
-from openfisca_core.simulations import Simulation
+from policyengine_core.populations import Population
+from policyengine_core.simulations import Simulation
 
 
 def get_stored_variables(simulation: Simulation) -> list:
