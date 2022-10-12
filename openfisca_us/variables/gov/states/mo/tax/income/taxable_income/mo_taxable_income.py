@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class mo_taxable_income(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Missouri AGI minus deductions"
     unit = USD
     definition_period = YEAR

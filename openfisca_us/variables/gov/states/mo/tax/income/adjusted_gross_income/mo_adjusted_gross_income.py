@@ -3,7 +3,7 @@ from openfisca_us.model_api import *
 
 class mo_adjusted_gross_income(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Missouri adjusted gross income"
     unit = USD
     definition_period = YEAR
