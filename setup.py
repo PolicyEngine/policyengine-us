@@ -60,8 +60,8 @@ setup(
     python_requires=">=3.7,<3.8",
     entry_points={
         "console_scripts": [
-            "openfisca-us = openfisca_us.tools.cli:main",
-            "openfisca-us-data = openfisca_us.data.cli:cli",
+            "openfisca-us = policyengine_us.tools.cli:main",
+            "openfisca-us-data = policyengine_us.data.cli:cli",
         ],
     },
     packages=find_packages(),

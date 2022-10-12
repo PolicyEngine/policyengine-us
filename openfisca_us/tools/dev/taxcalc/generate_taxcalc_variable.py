@@ -1,7 +1,7 @@
 from matplotlib import units
 import yaml
-from openfisca_us.model_api import *
-from openfisca_core.taxbenefitsystems import TaxBenefitSystem
+from policyengine_us.model_api import *
+from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
 
 def import_yaml():
@@ -83,13 +83,13 @@ def add_taxcalc_variable_aliases(system: TaxBenefitSystem):
     with open(Path(__file__).parent / "variable_mapping.yaml") as f:
         variable_map = yaml.load(f, Loader=Loader)
 
-    for openfisca_us_name, taxcalc_name in variable_map.items():
+    for policyengine_us_name, taxcalc_name in variable_map.items():
         try:
             system.add_variable(
                 create_taxcalc_alias(
-                    taxcalc_name, type(system.variables[openfisca_us_name])
+                    taxcalc_name, type(system.variables[policyengine_us_name])
                 )
             )
         except Exception as e:
-            print("Error adding alias for {}: {}".format(openfisca_us_name, e))
+            print("Error adding alias for {}: {}".format(policyengine_us_name, e))
             raise e

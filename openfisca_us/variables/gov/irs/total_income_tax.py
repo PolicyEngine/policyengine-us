@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class federal_state_income_tax(Variable):

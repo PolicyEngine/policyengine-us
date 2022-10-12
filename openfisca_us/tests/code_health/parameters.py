@@ -1,13 +1,13 @@
 """
-This module contains a test that iterates through all parameter files in the openfisca_us/parameters directory and asserts that none of them contain the '\t' character.
+This module contains a test that iterates through all parameter files in the policyengine_us/parameters directory and asserts that none of them contain the '\t' character.
 """
 
-from openfisca_us.model_api import REPO
+from policyengine_us.model_api import REPO
 
 
 def test_parameter_files_do_not_contain_tabs():
     """
-    This test iterates through all parameter files in the openfisca_us/parameters directory and asserts that none of them contain the '\t' character.
+    This test iterates through all parameter files in the policyengine_us/parameters directory and asserts that none of them contain the '\t' character.
     """
     errors = []
     for file_name in (REPO / "parameters").glob("**/*.yaml"):

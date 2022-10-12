@@ -5,10 +5,10 @@ import pandas as pd
 import subprocess
 import stat
 from io import StringIO
-from openfisca_us.data.datasets.cps.cps import CPS
+from policyengine_us.data.datasets.cps.cps import CPS
 from openfisca_tools.data import Dataset
-from openfisca_core.taxbenefitsystems import TaxBenefitSystem
-from openfisca_us.api.microsimulation import Microsimulation
+from policyengine_core.taxbenefitsystems import TaxBenefitSystem
+from policyengine_us.api.microsimulation import Microsimulation
 from tqdm import tqdm
 from argparse import ArgumentParser
 import platform
@@ -81,7 +81,7 @@ class TaxSim35:
         "fiitax",
         "siitax",
     ]
-    OPENFISCA_US_INPUT_VARIABLES = [
+    policyengine_us_INPUT_VARIABLES = [
         "mars",
         "employment_income",
         "age",
@@ -252,7 +252,7 @@ class TaxSim35:
                 test_str += f"      person_{person_number}:\n"
                 person_number += 1
                 for variable_name in (
-                    self.OPENFISCA_US_INPUT_VARIABLES
+                    self.policyengine_us_INPUT_VARIABLES
                     + openfisca_named_taxsim_input_variables
                 ):
                     if variables[variable_name].entity.key == "person":
@@ -267,7 +267,7 @@ class TaxSim35:
                             test_str += f"        {variable_name}: {value}\n"
             test_str += f"    tax_units:\n      tax_unit:\n        members: [{','.join(['person_' + str(p) for p in range(1, person_number)])}]\n"
             for variable_name in (
-                self.OPENFISCA_US_INPUT_VARIABLES
+                self.policyengine_us_INPUT_VARIABLES
                 + openfisca_named_taxsim_input_variables
             ):
                 if variables[variable_name].entity.key == "tax_unit":

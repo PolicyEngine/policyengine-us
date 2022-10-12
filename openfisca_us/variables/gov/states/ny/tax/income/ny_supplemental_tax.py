@@ -1,5 +1,5 @@
-from openfisca_us.model_api import *
-from openfisca_core.taxscales import MarginalRateTaxScale
+from policyengine_us.model_api import *
+from policyengine_core.taxscales import MarginalRateTaxScale
 
 
 class ny_supplemental_tax(Variable):

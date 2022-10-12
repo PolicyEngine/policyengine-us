@@ -1,11 +1,11 @@
-from openfisca_core.model_api import *
-from openfisca_us.entities import *
+from policyengine_core.model_api import *
+from policyengine_us.entities import *
 from openfisca_tools.model_api import *
-from openfisca_us.tools.branched_simulation import BranchedSimulation
+from policyengine_us.tools.branched_simulation import BranchedSimulation
 import numpy as np
 from pathlib import Path
 
-from openfisca_us.typing import Formula
+from policyengine_us.typing import Formula
 
 ZIP_CODE_DATASET_PATH = (
     Path(__file__).parent.parent / "data" / "geography" / "zip_codes.csv.gz"

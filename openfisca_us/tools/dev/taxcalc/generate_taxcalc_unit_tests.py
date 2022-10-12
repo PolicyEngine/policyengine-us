@@ -2,14 +2,14 @@ from time import time
 from pathlib import Path
 from typing import Callable, Dict, List, Tuple
 from taxcalc import Calculator, Policy, Records
-from openfisca_us.tools.dev.calcfunctions import *
-from openfisca_us.system import CountryTaxBenefitSystem
+from policyengine_us.tools.dev.calcfunctions import *
+from policyengine_us.system import CountryTaxBenefitSystem
 import pandas as pd
 import ast
 import yaml
 import argparse
 
-from openfisca_us.variables.irs.income.sources import nu06
+from policyengine_us.variables.irs.income.sources import nu06
 
 np.random.seed(int(time()))
 variables = CountryTaxBenefitSystem().variables
@@ -392,6 +392,6 @@ if __name__ == "__main__":
         # An example of debugging a unit test
         debug_test_yaml(
             "ChildDepTaxCredit",
-            "openfisca_us/tests/policy/baseline/calcfunctions/childdeptaxcredit.yaml",
+            "policyengine_us/tests/policy/baseline/calcfunctions/childdeptaxcredit.yaml",
             1,
         )

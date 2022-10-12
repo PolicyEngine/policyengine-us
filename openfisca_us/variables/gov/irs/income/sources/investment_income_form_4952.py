@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class investment_income_form_4952(Variable):

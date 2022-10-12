@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 # Disable divide-by-zero warning for this file
 import warnings

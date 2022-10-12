@@ -1,5 +1,5 @@
-from openfisca_us.model_api import *
-from openfisca_us.variables.gov.irs.credits.cdcc.count_cdcc_eligible import (
+from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.credits.cdcc.count_cdcc_eligible import (
     count_cdcc_eligible,
 )
 

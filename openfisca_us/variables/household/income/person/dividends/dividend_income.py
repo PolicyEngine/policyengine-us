@@ -1,5 +1,5 @@
-from openfisca_us.model_api import *
-from openfisca_us import CountryTaxBenefitSystem
+from policyengine_us.model_api import *
+from policyengine_us import CountryTaxBenefitSystem
 
 
 class dividend_income(Variable):

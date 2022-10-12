@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class is_optional_senior_or_disabled_for_medicaid(Variable):

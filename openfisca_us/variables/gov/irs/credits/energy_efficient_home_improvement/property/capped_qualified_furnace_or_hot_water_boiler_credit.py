@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class capped_qualified_furnace_or_hot_water_boiler_credit(Variable):

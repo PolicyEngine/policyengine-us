@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class is_ca_cvrp_increased_rebate_eligible(Variable):

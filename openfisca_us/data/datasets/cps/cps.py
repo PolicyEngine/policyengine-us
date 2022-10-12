@@ -1,8 +1,8 @@
 import logging
 from openfisca_tools.data import PublicDataset
 import h5py
-from openfisca_us.data.datasets.cps.raw_cps import RawCPS
-from openfisca_us.data.storage import OPENFISCA_US_MICRODATA_FOLDER
+from policyengine_us.data.datasets.cps.raw_cps import RawCPS
+from policyengine_us.data.storage import policyengine_us_MICRODATA_FOLDER
 from pandas import DataFrame, Series
 import numpy as np
 import pandas as pd
@@ -11,8 +11,8 @@ import pandas as pd
 class CPS(PublicDataset):
     name = "cps"
     label = "CPS"
-    model = "openfisca_us"
-    folder_path = OPENFISCA_US_MICRODATA_FOLDER
+    model = "policyengine_us"
+    folder_path = policyengine_us_MICRODATA_FOLDER
 
     url_by_year = {
         2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5",
@@ -68,7 +68,7 @@ def add_silver_plan_cost(cps: h5py.File, year: int):
         cps (h5py.File): The CPS dataset file.
         year (int): The year of the data.
     """
-    from openfisca_us import Microsimulation
+    from policyengine_us import Microsimulation
 
     sim = Microsimulation(dataset=CPS, year=year)
     slspc = sim.calc("second_lowest_silver_plan_cost").values

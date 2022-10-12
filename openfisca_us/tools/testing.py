@@ -12,17 +12,17 @@ import pytest
 
 import numexpr
 
-from openfisca_core.indexed_enums import EnumArray
-from openfisca_core.tools import (
+from policyengine_core.indexed_enums import EnumArray
+from policyengine_core.tools import (
     assert_enum_equals,
     assert_datetime_equals,
     eval_expression,
 )
-from openfisca_core.simulation_builder import SimulationBuilder
-from openfisca_core.errors import SituationParsingError, VariableNotFound
-from openfisca_core.scripts import build_tax_benefit_system
-from openfisca_core.reforms import Reform
-from openfisca_us.reforms import set_parameter
+from policyengine_core.simulation_builder import SimulationBuilder
+from policyengine_core.errors import SituationParsingError, VariableNotFound
+from policyengine_core.scripts import build_tax_benefit_system
+from policyengine_core.reforms import Reform
+from policyengine_us.reforms import set_parameter
 
 log = logging.getLogger(__name__)
 

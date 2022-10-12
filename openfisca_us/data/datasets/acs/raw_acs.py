@@ -6,7 +6,7 @@ import pandas as pd
 from openfisca_tools.data import PublicDataset
 import requests
 from tqdm import tqdm
-from openfisca_us.data.storage import OPENFISCA_US_MICRODATA_FOLDER
+from policyengine_us.data.storage import policyengine_us_MICRODATA_FOLDER
 
 
 logging.getLogger().setLevel(logging.INFO)
@@ -58,7 +58,7 @@ class RawACS(PublicDataset):
     name = "raw_acs"
     label = "Raw ACS"
     is_openfisca_compatible = False
-    folder_path = OPENFISCA_US_MICRODATA_FOLDER
+    folder_path = policyengine_us_MICRODATA_FOLDER
 
     def generate(self, year: int) -> None:
         year = int(year)

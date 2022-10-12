@@ -1,5 +1,5 @@
-from openfisca_us.model_api import *
-from openfisca_core.taxbenefitsystems import TaxBenefitSystem
+from policyengine_us.model_api import *
+from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
 
 class ctc_limiting_tax_liability(Variable):

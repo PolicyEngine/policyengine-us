@@ -1,4 +1,4 @@
-from openfisca_us.system import CountryTaxBenefitSystem
+from policyengine_us.system import CountryTaxBenefitSystem
 
 baseline_variables = {
     name: type(variable)

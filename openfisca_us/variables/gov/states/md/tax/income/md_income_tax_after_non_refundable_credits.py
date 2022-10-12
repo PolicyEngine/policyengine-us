@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class md_income_tax_after_non_refundable_credits(Variable):
