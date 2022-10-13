@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.171.0] - 2022-10-13 02:52:46
+
+### Added
+
+- Total US population.
+
 ## [0.170.0] - 2022-10-10 20:55:47
 
 ### Added
@@ -2007,6 +2013,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.171.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.170.0...0.171.0
 [0.170.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.169.0...0.170.0
 [0.169.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.168.0...0.169.0
 [0.168.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.167.0...0.168.0
