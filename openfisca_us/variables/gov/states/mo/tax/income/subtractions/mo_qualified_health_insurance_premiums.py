@@ -19,7 +19,7 @@ class mo_qualified_health_insurance_premiums(Variable):
 
         # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
         # Federal Schedule A, Line 4
-        med_expense_deduction = tax_unit("medical_expense_deduction", period)
+        med_expense_deduction = add(tax_unit, period, ["medical_expense_deduction"])
 
         # the ratio of federal medical expense deduction to total medical expenses (out of pocket + premiums)
         # need division because med_dental_out_of_pocket is in federal tax, but no MO tax
@@ -37,7 +37,7 @@ class mo_qualified_health_insurance_premiums(Variable):
 
 
         total_health_insurance_premiums = person("health_insurance_premiums",period)
-        total_tax_unit_premiums = add(tax_unit, period, "health_insurance_premiums")
+        total_tax_unit_premiums = add(tax_unit, period, ["health_insurance_premiums"])
 
         # Line 13 of MO Form 5695, represents the portion of medical expenses already deducted via federal tax itemization
         deducted_portion = (
