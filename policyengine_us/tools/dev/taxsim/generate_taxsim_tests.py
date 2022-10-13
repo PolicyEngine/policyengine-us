@@ -6,7 +6,7 @@ import subprocess
 import stat
 from io import StringIO
 from policyengine_us.data.datasets.cps.cps import CPS
-from openfisca_tools.data import Dataset
+from policyengine_core.data import Dataset
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us.api.microsimulation import Microsimulation
 from tqdm import tqdm

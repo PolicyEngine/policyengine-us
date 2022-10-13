@@ -2,7 +2,7 @@ from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us.entities import *
 from policyengine_us.parameters.gov.irs.uprating import set_irs_uprating_parameter
 from policyengine_us.situation_examples import single_filer
-from openfisca_tools import (
+from policyengine_core.parameters import (
     homogenize_parameter_structures,
     uprate_parameters,
     propagate_parameter_metadata,

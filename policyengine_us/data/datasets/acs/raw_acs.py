@@ -3,7 +3,7 @@ import logging
 from typing import List
 from zipfile import ZipFile
 import pandas as pd
-from openfisca_tools.data import PublicDataset
+from policyengine_core.data import PublicDataset
 import requests
 from tqdm import tqdm
 from policyengine_us.data.storage import policyengine_us_MICRODATA_FOLDER

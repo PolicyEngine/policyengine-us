@@ -1,6 +1,6 @@
 from io import BytesIO
 from zipfile import ZipFile
-from openfisca_tools.data import PublicDataset
+from policyengine_core.data import PublicDataset
 import pandas as pd
 import requests
 from tqdm import tqdm
