@@ -12,13 +12,13 @@ import pytest
 
 import numexpr
 
-from policyengine_core.indexed_enums import EnumArray
+from policyengine_core.enums import EnumArray
 from policyengine_core.tools import (
     assert_enum_equals,
     assert_datetime_equals,
     eval_expression,
 )
-from policyengine_core.simulation_builder import SimulationBuilder
+from policyengine_core import SimulationBuilder
 from policyengine_core.errors import SituationParsingError, VariableNotFound
 from policyengine_core.scripts import build_tax_benefit_system
 from policyengine_core.reforms import Reform
