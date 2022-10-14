@@ -3,8 +3,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="PolicyEngine US",
-    version="0.170.0",
+    name="PolicyEngine-US",
+    version="0.172.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     classifiers=[
