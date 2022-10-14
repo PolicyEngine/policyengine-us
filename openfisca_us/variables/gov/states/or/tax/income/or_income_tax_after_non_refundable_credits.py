@@ -2,7 +2,7 @@
 # - parameter for credits
 
 
-# 
+#
 
 from openfisca_us.model_api import *
 
@@ -15,7 +15,8 @@ class or_income_tax_after_non_refundable_credits(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        income_tax_before_credits = tax_unit("or_income_tax_before_credits", period)
+        income_tax_before_credits = tax_unit(
+            "or_income_tax_before_credits", period
+        )
         non_refundable_credits = tax_unit("or_non_refundable_credits", period)
         return max_(income_tax_before_credits - non_refundable_credits, 0)
-        

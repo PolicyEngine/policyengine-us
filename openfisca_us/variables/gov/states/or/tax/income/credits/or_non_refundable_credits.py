@@ -8,4 +8,6 @@ class or_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("gov.states.or.tax.income.credits.nonrefundable")
+    formula = sum_of_variables(
+        "gov.states.or.tax.income.credits.nonrefundable"
+    )
