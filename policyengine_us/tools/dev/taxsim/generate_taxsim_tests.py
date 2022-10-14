@@ -8,7 +8,7 @@ from io import StringIO
 from policyengine_us.data.datasets.cps.cps import CPS
 from policyengine_core.data import Dataset
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
-from policyengine_us.api.microsimulation import Microsimulation
+from policyengine_us import Microsimulation
 from tqdm import tqdm
 from argparse import ArgumentParser
 import platform
@@ -183,13 +183,13 @@ class TaxSim35:
         return_dataframe: bool = False,
         drop_zeros: bool = False,
     ):
-        sim = Microsimulation(dataset=dataset, year=2021)
+        sim = Microsimulation(dataset=dataset, dataset_year=2021)
 
         # Neutralise benefit variables, since these are not simulated in TAXSIM
         for variable in self.NEUTRALIZED_VARIABLES:
-            sim.simulation.tax_benefit_system.neutralize_variable(variable)
+            sim.tax_benefit_system.neutralize_variable(variable)
 
-        system: TaxBenefitSystem = sim.simulation.tax_benefit_system
+        system: TaxBenefitSystem = sim.tax_benefit_system
         openfisca_named_taxsim_input_variables = [
             f"taxsim_{variable}" for variable in self.INPUT_VARIABLES
         ]

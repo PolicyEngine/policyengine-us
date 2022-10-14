@@ -70,7 +70,7 @@ def add_silver_plan_cost(cps: h5py.File, year: int):
     """
     from policyengine_us import Microsimulation
 
-    sim = Microsimulation(dataset=CPS, year=year)
+    sim = Microsimulation(dataset=CPS, dataset_year=year)
     slspc = sim.calc("second_lowest_silver_plan_cost").values
 
     cps["second_lowest_silver_plan_cost"] = slspc

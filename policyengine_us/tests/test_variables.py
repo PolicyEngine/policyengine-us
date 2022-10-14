@@ -1,6 +1,5 @@
 import pytest
-from policyengine_us import CountryTaxBenefitSystem
-from policyengine_core import SimulationBuilder
+from policyengine_us import CountryTaxBenefitSystem, Simulation
 
 DEFAULT_SITUATION = {
     "people": {"person": {}},
@@ -24,7 +23,10 @@ EXEMPTIONS = (
 
 system = CountryTaxBenefitSystem()
 
-simulation = SimulationBuilder().build_from_dict(system, DEFAULT_SITUATION)
+simulation = Simulation(
+    tax_benefit_system=system,
+    situation=DEFAULT_SITUATION,
+)
 
 
 @pytest.mark.parametrize("variable", system.variables)
