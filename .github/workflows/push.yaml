@@ -30,7 +30,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Build changelog
         run: pip install yaml-changelog && make changelog
       - name: Preview changelog update
@@ -56,7 +56,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Install package
         run: make install
       - name: Run tests
