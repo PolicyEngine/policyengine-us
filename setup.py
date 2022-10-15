@@ -3,8 +3,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="PolicyEngine-US",
-    version="0.172.0",
+    name="policyengine-us",
+    version="0.173.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     classifiers=[
@@ -29,7 +29,7 @@ setup(
     install_requires=[
         "h5py",
         "microdf_python",
-        "OpenFisca-Core[web-api] >= 35.0.0",
+        "policyengine-core >= 1.3.0",
         "OpenFisca-Tools>=0.13.6,<1.0.0",
         "pandas",
         "pathlib",
