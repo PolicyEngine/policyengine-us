@@ -21,7 +21,7 @@
       state_code: MO
   output:
     #taxsim output: 0
-    mo_taxable_income: 0 
+    mo_taxable_income: [0, 0, 0]
 
 - name:  Taxsim integration test, 50k employment income
   period: 2021
@@ -46,7 +46,7 @@
       state_code: MO
   output:
     #taxsim output: 24_511
-    mo_taxable_income: 25_681.5
+    mo_taxable_income: [25_681.5, 0, 0]
 
 - name:  Taxsim integration test, 100k employment income
   period: 2021
@@ -71,4 +71,4 @@
       state_code: MO
   output:
     #taxsim output: 74_470
-    mo_taxable_income: 74_860.5
+    mo_taxable_income: [74_860.5, 0, 0]

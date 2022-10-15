@@ -15,7 +15,5 @@ class mo_adjusted_gross_income(Variable):
 
     def formula(person, period, parameters):
         agi = person("irs_gross_income", period)
-        subtractions = person(
-            "mo_qualified_health_insurance_premiums", period
-        )
+        subtractions = person("mo_qualified_health_insurance_premiums", period)
         return max_(agi - subtractions, 0)
