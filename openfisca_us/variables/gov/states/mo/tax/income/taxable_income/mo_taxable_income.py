@@ -35,10 +35,6 @@ class mo_taxable_income(Variable):
         # versions of those exemptions, both of which are suspended through 2025 federally.
         person_share = where(tax_unit_mo_agi > 0, mo_agi / tax_unit_mo_agi, 0)
         return max_(
-            (mo_agi)
-            - (
-                (mo_itemized_or_standard + mo_federal_income_tax_deduction)
-                * (person_share)
-            ),
+            (mo_agi) - ((mo_itemized_or_standard + mo_federal_income_tax_deduction) * (person_share)),
             0,
         )
