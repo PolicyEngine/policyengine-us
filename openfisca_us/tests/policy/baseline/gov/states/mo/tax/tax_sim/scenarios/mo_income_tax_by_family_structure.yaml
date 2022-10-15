@@ -14,7 +14,7 @@
       members: [person1]
       state_code: MO
   output:
-    income_tax_before_credits: 4_295
+    mo_income_tax_before_credits: 4_295
     #taxsim output: 4_295
     income_tax: 2_895
     #taxsim output: 2_895
@@ -47,7 +47,7 @@
       members: [person1, person2]
       state_code: MO
   output:
-    income_tax_before_credits: [1_295, 1_295]
+    mo_income_tax_before_credits: [1_295, 1_295]
     #taxsim output: 2_590
     income_tax: -210
     #taxsim output: -210
@@ -81,7 +81,7 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    income_tax_before_credits: [2_590, 0, 0]
+    mo_income_tax_before_credits: [2_590, 0, 0]
     #taxsim output: 2_590
     income_tax: -5_210
     #taxsim output: -4_610
@@ -111,7 +111,7 @@
       members: [person1, person2]
       state_code: MO
   output:
-    income_tax_before_credits: [3_460, 0, 0]
+    mo_income_tax_before_credits: [3_460, 0, 0]
     #taxsim output: 3_460
     income_tax: -2_940
     #taxsim output: -2,340
@@ -143,7 +143,7 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-    income_tax_before_credits: [3_460, 0, 0]
+    mo_income_tax_before_credits: [3_460, 0, 0]
     #taxsim output: 3_460
     income_tax: -7_940
     #taxsim output: 6_740
@@ -177,7 +177,7 @@
       members: [person1, person2, person3, person4]
       state_code: MO
   output:
-    income_tax_before_credits: [3_460, 0, 0]
+    mo_income_tax_before_credits: [3_460, 0, 0]
     #taxsim output: 3_460
     income_tax: -13_249.15
     #taxsim output: -6_740
