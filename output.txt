@@ -3,6 +3,7 @@ platform darwin -- Python 3.7.13, pytest-5.4.3, py-1.11.0, pluggy-0.13.1
 rootdir: /Users/nick/policyengine/openfisca-us, inifile: setup.cfg
 plugins: anyio-3.6.1, dependency-0.5.1
 <<<<<<< HEAD
+<<<<<<< HEAD
 collected 6 items
 
 openfisca_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/scenarios/mo_income_tax_by_family_structure.yaml Computation log:
@@ -3987,6 +3988,8 @@ FComputation log:
       MO<2021> >> [ True]
       mo_taxable_income<2021> >> [25681.5     0.      0. ]
 =======
+=======
+>>>>>>> parent of 28ba9bda (delete test output)
 collected 16 items
 
 openfisca_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/mo_adjusted_gross_income.yaml [0. 0. 0.]
@@ -8404,6 +8407,7 @@ Computation log:
             filing_status<2021> >> ['JOINT']
             state_and_local_sales_or_income_tax<2021> >> [0.]
             state_income_tax<2021> >> [0.]
+<<<<<<< HEAD
 >>>>>>> parent of 28ba9bda (delete test output)
     mo_property_tax_credit<2021> >> [0.]
       MO<2021> >> [ True]
@@ -9776,6 +9780,32 @@ FComputation log:
                             is_tax_unit_dependent<2021> >> [False  True  True]
                             employment_income<2021> >> [50000.     0.     0.]
 =======
+=======
+    mo_property_tax_credit<2021> >> [0.]
+      MO<2021> >> [ True]
+      mo_property_tax_credit_demographic_tests<2021> >> [0.]
+        MO<2021> >> [ True]
+        age_head<2021> >> [38]
+        age_spouse<2021> >> [32]
+        disabled_head<2021> >> [False]
+          is_ssi_disabled<2021> >> [False False False]
+          is_tax_unit_head<2021> >> [ True False False]
+        disabled_spouse<2021> >> [False]
+          is_ssi_disabled<2021> >> [False False False]
+          is_tax_unit_spouse<2021> >> [False  True False]
+        military_disabled_head<2021> >> [False]
+          is_fully_disabled_service_connected_veteran<2021> >> [False False False]
+          is_tax_unit_head<2021> >> [ True False False]
+        military_disabled_spouse<2021> >> [False]
+          is_fully_disabled_service_connected_veteran<2021> >> [False False False]
+          is_tax_unit_spouse<2021> >> [False  True False]
+        social_security_survivors<2021> >> [0. 0. 0.]
+      pays_property_tax_or_rent<2021> >> [0.]
+        rent<2021> >> [0. 0. 0.]
+        real_estate_taxes<2021> >> [0. 0. 0.]
+      mo_property_tax_credit_amount<2021> >> [0.]
+        MO<2021> >> [ True]
+>>>>>>> parent of 28ba9bda (delete test output)
 .[0. 0. 0.]
 Computation log:
   mo_income_tax<2021> >> [0.]
@@ -10975,6 +11005,7 @@ Computation log:
                             qualified_dividend_income<2021> >> [0. 0. 0.]
                         dwks13<2021> >> [0.]
                           unrecaptured_section_1250_gain<2021> >> [0.]
+<<<<<<< HEAD
                           capital_gains_28_percent_rate_gain<2021> >> [0.]
                           dwks9<2021> >> [0.]
                           dwks10<2021> >> [0.]
@@ -14630,6 +14661,77 @@ FAILED openfisca_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/scenarios/mo
 FAILED openfisca_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/scenarios/mo_income_tax_by_family_structure.yaml::
 ========================= 4 failed, 2 passed in 3.63s ==========================
 =======
+=======
+                          capital_gains_28_percent_rate_gain<2021> >> [0.]
+                          dwks9<2021> >> [0.]
+                          dwks10<2021> >> [0.]
+                          hasqdivltcg<2021> >> [False]
+                        dwks14<2021> >> [0.]
+                          taxable_income<2021> >> [0.]
+                          dwks13<2021> >> [0.]
+                          hasqdivltcg<2021> >> [False]
+                        dwks19<2021> >> [0.]
+                          dwks14<2021> >> [0.]
+                          filing_status<2021> >> ['JOINT']
+                          taxable_income<2021> >> [0.]
+                          dwks10<2021> >> [0.]
+                          hasqdivltcg<2021> >> [False]
+                        unrecaptured_section_1250_gain<2021> >> [0.]
+                        sep<2021> >> [1]
+                        foreign_tax_credit<2021> >> [0.]
+                        amt_form_completed<2021> >> [False]
+                        foreign_tax_credit<2021> >> [0.]
+                        taxbc<2021> >> [0.]
+                          filing_status<2021> >> ['JOINT']
+                          taxable_income<2021> >> [0.]
+                          dwks14<2021> >> [0.]
+                          dwks13<2021> >> [0.]
+                          dwks19<2021> >> [0.]
+                          dwks9<2021> >> [0.]
+                          unrecaptured_section_1250_gain<2021> >> [0.]
+                          dwks10<2021> >> [0.]
+                          partnership_s_corp_income<2021> >> [0. 0. 0.]
+                          self_employment_income<2021> >> [0. 0. 0.]
+                          filing_status<2021> >> ['JOINT']
+                          income_tax_main_rates<2021> >> [0.]
+                          hasqdivltcg<2021> >> [False]
+                        c05700<2021> >> [0.]
+                income_tax_capped_non_refundable_credits<2021> >> [0.]
+                  income_tax_before_credits<2021> >> [0.]
+                  income_tax_non_refundable_credits<2021> >> [0.]
+                    elderly_disabled_credit<2021> >> [0.]
+                      section_22_income<2021> >> [0.]
+                        filing_status<2021> >> ['JOINT']
+                        qualifies_for_elderly_or_disabled_credit<2021> >> [False False False]
+                        age<2021> >> [38. 32.  5.]
+                        is_tax_unit_dependent<2021> >> [False False  True]
+                        total_disability_payments<2021> >> [0. 0. 0.]
+                        pension_income<2021> >> [0. 0. 0.]
+                        taxable_pension_income<2021> >> [0. 0. 0.]
+                        tax_unit_social_security<2021> >> [0.]
+                          social_security<2021> >> [0. 0. 0.]
+                        tax_unit_taxable_social_security<2021> >> [0.]
+                          tax_unit_social_security<2021> >> [0.]
+                          taxable_ss_magi<2021> >> [15000.]
+                            is_tax_unit_dependent<2021> >> [False False  True]
+                            employment_income<2021> >> [15000.     0.     0.]
+                            self_employment_income<2021> >> [0. 0. 0.]
+                            capital_gains<2021> >> [0. 0. 0.]
+                            taxable_interest_income<2021> >> [0. 0. 0.]
+                            rental_income<2021> >> [0. 0. 0.]
+                            dividend_income<2021> >> [0. 0. 0.]
+                            pension_income<2021> >> [0. 0. 0.]
+                            debt_relief<2021> >> [0. 0. 0.]
+                            illicit_income<2021> >> [0. 0. 0.]
+                            unemployment_compensation<2021> >> [0. 0. 0.]
+                            loss_ald<2021> >> [0.]
+                            self_employment_tax_ald<2021> >> [0.]
+                            early_withdrawal_penalty<2021> >> [0. 0. 0.]
+                            alimony_income<2021> >> [0. 0. 0.]
+                            educator_expense<2021> >> [0. 0. 0.]
+                            health_savings_account_ald<2021> >> [0.]
+                            self_employed_health_insurance_ald<2021> >> [0.]
+>>>>>>> parent of 28ba9bda (delete test output)
                             ira_contributions<2021> >> [0. 0. 0.]
                             sep_simple_qualified_plan_contributions<2021> >> [0. 0. 0.]
                           filing_status<2021> >> ['JOINT']
@@ -25236,4 +25338,7 @@ Computation log:
 .
 
 ============================== 16 passed in 6.29s ==============================
+<<<<<<< HEAD
+>>>>>>> parent of 28ba9bda (delete test output)
+=======
 >>>>>>> parent of 28ba9bda (delete test output)
