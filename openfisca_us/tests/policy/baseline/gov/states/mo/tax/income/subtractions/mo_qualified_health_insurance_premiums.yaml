@@ -49,3 +49,46 @@
     state_code: MO
   output:
     mo_qualified_health_insurance_premiums: 262.5
+
+- name: Head and spouse have different amounts, no itemizing.
+  period: 2021
+  input:
+    people:
+      head:
+        health_insurance_premiums: 100
+      spouse:
+        health_insurance_premiums: 300
+    tax_units:
+      tax_unit:
+        tax_unit_itemizes: False
+        taxable_income: 1_000
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MO
+  output:
+    # Equal to premiums if not itemizing.
+    mo_qualified_health_insurance_premiums: [100, 300]
+
+- name: Head and spouse have different amounts, itemizes.
+  period: 2021
+  input:
+    people:
+      head:
+        health_insurance_premiums: 100
+      spouse:
+        health_insurance_premiums: 300
+    tax_units:
+      tax_unit:
+        medical_expense_deduction: 200
+        tax_unit_itemizes: True
+        taxable_income: 1_000
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MO
+  output:
+    # Half of their expenses were deducted from federal return.
+    mo_qualified_health_insurance_premiums: [50, 150]

@@ -51,13 +51,13 @@
     #taxsim output: 2_590
     income_tax: -210
     #taxsim output: -210
-    mo_adjusted_gross_income: 50_000
+    mo_adjusted_gross_income: [25_000, 25_000]
     #taxsim output: 50_000
     mo_federal_income_tax_deduction: -31.5
-    mo_taxable_income: 24_931.5
+    mo_taxable_income: [12_465.75, 12_465.75]
     #taxsim output: 24_511.51
-    mo_income_tax: 1270.89
-    #taxsim output: 949 #we are missing logic regarding how MO splits tax liability between couples
+    mo_income_tax: 1_045.89
+    #taxsim output: 949
 
 - name:  Taxsim integration test, 50k income, couple, one child
   period: 2021
@@ -85,10 +85,10 @@
     #taxsim output: 2_590
     income_tax: -5_210
     #taxsim output: -4_610
-    mo_adjusted_gross_income: 50_000
+    mo_adjusted_gross_income: [50_000, 0, 0] 
     #taxsim output: 50_000
     mo_federal_income_tax_deduction: -781.5
-    mo_taxable_income: 25_681.5
+    mo_taxable_income: [25_681.5, 0, 0]
     #taxsim output: 24_511.51
     mo_income_tax: 1_315.89
     #taxsim output: 1_136
@@ -115,10 +115,10 @@
     #taxsim output: 3_460
     income_tax: -2_940
     #taxsim output: -2,340
-    mo_adjusted_gross_income: 50_000
+    mo_adjusted_gross_income: [50_000, 0]
     #taxsim output: 50_000
     mo_federal_income_tax_deduction: -441
-    mo_taxable_income: 31_641
+    mo_taxable_income: [31_641, 0]
     #taxsim output: 30_681
     mo_income_tax: 1_673.46
     #taxsim output: 1_469.64
@@ -147,10 +147,10 @@
     #taxsim output: 3_460
     income_tax: -7_940
     #taxsim output: 6_740
-    mo_adjusted_gross_income: 50_000
+    mo_adjusted_gross_income: [50_000, 0, 0]
     #taxsim output: 50_000
     mo_federal_income_tax_deduction: -1_191
-    mo_taxable_income: 32_391
+    mo_taxable_income: [32_391, 0, 0]
     #taxsim output: 30_681
     mo_income_tax: 1_718.46
     #taxsim output: 1_469.64
@@ -181,10 +181,10 @@
     #taxsim output: 3_460
     income_tax: -13_249.15
     #taxsim output: -6_740
-    mo_adjusted_gross_income: 50_000
+    mo_adjusted_gross_income: [50_000, 0, 0, 0]
     #taxsim output: 50_000
     mo_federal_income_tax_deduction: -1_987.35
-    mo_taxable_income: 33_187.35
+    mo_taxable_income: [33_187.35, 0, 0, 0]
     #taxsim output: 30_681
     mo_income_tax: 1_766.235
     #taxsim output: 1_469.64
