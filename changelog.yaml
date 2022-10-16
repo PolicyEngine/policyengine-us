@@ -1685,3 +1685,9 @@
     changed:
     - Text and PolicyEngine names for some OR and PA parameters.
   date: 2022-10-15 22:44:42
+- bump: patch
+  changes:
+    added:
+    - Change logic for MO tax system to calculate AGI, qualified_health_insurance_premiums,
+      taxable_income at person level.
+  date: 2022-10-16 15:58:42
