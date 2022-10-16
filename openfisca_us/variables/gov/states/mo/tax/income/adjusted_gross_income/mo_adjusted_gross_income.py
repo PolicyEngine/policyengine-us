@@ -8,8 +8,8 @@ class mo_adjusted_gross_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "",
-        "",
+        "https://dor.mo.gov/forms/MO-1040%20Fillable%20Calculating_2021.pdf",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=143.121",
     )
     defined_for = StateCode.MO
 
