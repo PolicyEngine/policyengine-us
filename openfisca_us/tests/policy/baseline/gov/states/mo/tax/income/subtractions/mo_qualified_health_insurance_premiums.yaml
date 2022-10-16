@@ -69,7 +69,6 @@
         state_code: MO
   output:
     # Equal to premiums if not itemizing.
-    # [25, 225]
     mo_qualified_health_insurance_premiums: [100, 300]
 
 - name: Head and spouse have different amounts, itemizes.
