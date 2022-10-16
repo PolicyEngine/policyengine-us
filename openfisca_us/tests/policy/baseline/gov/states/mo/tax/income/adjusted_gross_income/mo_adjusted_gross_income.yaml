@@ -6,7 +6,7 @@
     mo_qualified_health_insurance_premiums: 500
     state_code: MO
   output:
-    mo_adjusted_gross_income: 0
+    mo_adjusted_gross_income: -500
 
 - name: 1,000 Federal AGI, 500 in subtractable health insurance premiums
   period: 2021
@@ -46,4 +46,4 @@
     mo_qualified_health_insurance_premiums: 3_000
     state_code: MO
   output:
-    mo_adjusted_gross_income: 0
+    mo_adjusted_gross_income: -1_000
