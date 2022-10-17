@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.173.2] - 2022-10-16 15:58:42
+
+### Added
+
+- Change logic for MO tax system to calculate AGI, qualified_health_insurance_premiums, taxable_income at person level.
+
+## [0.173.1] - 2022-10-15 22:44:42
+
+### Changed
+
+- Text and PolicyEngine names for some OR and PA parameters.
+
 ## [0.173.0] - 2022-10-14 22:12:28
 
 ### Added
@@ -2025,6 +2037,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.173.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.173.1...0.173.2
+[0.173.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.173.0...0.173.1
 [0.173.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.172.0...0.173.0
 [0.172.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.171.0...0.172.0
 [0.171.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.170.0...0.171.0
