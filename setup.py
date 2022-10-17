@@ -54,6 +54,7 @@ setup(
             "wheel",
             "yaml-changelog>=0.1.7",
             "linecheck",
+            "furo>=2022,<2023",
         ],
     },
     python_requires=">=3.7,<3.10",
