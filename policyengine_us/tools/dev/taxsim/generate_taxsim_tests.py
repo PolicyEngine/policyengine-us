@@ -36,9 +36,9 @@ class TaxSim35:
         "page",
         "sage",
         "depx",
-        "age1",
-        "age2",
-        "age3",
+        # "age1",
+        # "age2",
+        # "age3",
         "dep13",
         "dep17",
         "dep18",
@@ -209,15 +209,6 @@ class TaxSim35:
         taxsim_df = self.calculate(input_df).reset_index(drop=True)
         taxsim_df = taxsim_df.rename(
             columns={col: f"taxsim_{col}" for col in taxsim_df.columns}
-        )
-        taxsim_df = taxsim_df.T.apply(
-            lambda row: [0] + list(row.values[:-1])
-        ).T.drop(
-            taxsim_df.columns[0], axis=1
-        )  # Some issue with the TAXSIM dataframe now coming out in the right format
-        input_df.rename(
-            columns={col: f"taxsim_{col}" for col in input_df.columns},
-            inplace=True,
         )
         taxsim_df = pd.concat([input_df, taxsim_df], axis=1)
         variables = system.variables
