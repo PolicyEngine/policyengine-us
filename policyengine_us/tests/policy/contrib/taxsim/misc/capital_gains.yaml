@@ -36,7 +36,7 @@
     #eitc: 0.00
     income_tax: 14309.50
 
-# PolicyEngine US test file derived from t21.its.csv and t21.ota.csv files
+# OpenFisca-US test file derived from t21.its.csv and t21.ota.csv files
 - name: Tax unit with taxsimid 95009 from t21.its.csv
   absolute_error_margin: 0.01
   period: 2021

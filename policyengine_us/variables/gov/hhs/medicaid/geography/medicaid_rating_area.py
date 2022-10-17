@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_core.parameters import homogenize_parameter_structures
+from openfisca_tools import homogenize_parameter_structures
 
 
 class medicaid_rating_area(Variable):

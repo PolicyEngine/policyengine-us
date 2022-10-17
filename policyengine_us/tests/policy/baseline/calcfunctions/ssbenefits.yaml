@@ -1,5 +1,5 @@
 # Tests were generated from Tax-Calculator, but were amended after refactoring and editing variable names. 
-# `taxable_ss_magi` previously was `ymod`, which contains 50% of Social Security (in PolicyEngine US, this is
+# `taxable_ss_magi` previously was `ymod`, which contains 50% of Social Security (in OpenFisca-US, this is
 # added separately). Therefore, all `taxable_ss_magi` values have been corrected by removing half of social
 # security inputs.
 

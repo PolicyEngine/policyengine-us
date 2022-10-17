@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_core.parameters.operations import (
-    homogenize_parameter_structures,
-)
+from openfisca_tools import homogenize_parameter_structures
 
 
 class second_lowest_silver_plan_cost(Variable):
