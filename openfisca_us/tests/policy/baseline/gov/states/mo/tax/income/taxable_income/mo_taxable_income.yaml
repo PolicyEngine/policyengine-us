@@ -1,4 +1,4 @@
-- name: No adjused gross income
+- name: No adjusted gross income
   period: 2021
   absolute_error_margin: 0
   input:
@@ -11,7 +11,7 @@
   output:
     mo_taxable_income: 0.0
 
-- name:  Greater than 0 in Federal itemizations
+- name:  Low agi
   period: 2021
   absolute_error_margin: 0
   input:
