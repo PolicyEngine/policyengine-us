@@ -1,6 +1,6 @@
 import pytest
 from policyengine_us import CountryTaxBenefitSystem
-from policyengine_core.simulation_builder import SimulationBuilder
+from policyengine_core.simulations import SimulationBuilder
 
 DEFAULT_SITUATION = {
     "people": {"person": {}},

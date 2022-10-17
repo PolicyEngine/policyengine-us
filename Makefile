@@ -1,6 +1,5 @@
 all: build
 format:
-	autopep8 -r .
 	black . -l 79
 	linecheck . --fix
 install:
