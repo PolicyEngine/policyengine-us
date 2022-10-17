@@ -1,7 +1,28 @@
-- name: Zero employment income.
-  period: 2021
+ name: Family of 3, no member(s) with disabilities, income of 50k/year (Standard Test)
+  period: 2022
+  absolute_error_margin: 0.01 # Floating point issue.
   input:
-    employment_income: 0
-    state_code: OR
+    people:
+      head:
+        age: 30
+        employment_income: 50_000
+      spouse:
+        age: 35
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        state_code_str: OR
+        members: [head, spouse, child]
   output:
-    or_income_tax_after_refundable_credits: 0
+    filing_status: JOINT 
+    or_deductions: 
+    or_taxable_income:
+    or_income_tax_before_credits: 
+    or_eitc: 
+    or_standard_deduction: 
+    or_income_subtractions:
+    or_exemption_credit:
