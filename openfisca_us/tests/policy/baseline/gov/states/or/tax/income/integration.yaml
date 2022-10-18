@@ -19,10 +19,24 @@ input:
       members: [head, spouse, child]
 output:
   filing_status: JOINT 
-  # or_deductions: 
-  or_taxable_income: 
-  # or_income_tax_before_credits: 
-  # or_eitc: 
-  # or_standard_deduction: 
-  # or_income_subtractions:
-  # or_exemption_credit:
+  or_regular_exemptions:
+  or_severely_disabled_exemptions:
+  or_disabled_child_dependent_exemptions:
+  or_taxable_income:
+  or_income_additions:
+  or_income_after_additions:
+  or_federal_tax_liability_subtraction:
+  or_income_subtractions:
+  or_income_after_subtractions:
+  or_itemized_deductions:
+  or_standard_deduction:
+  or_deductions:
+  or_income_tax_before_credits:
+  or_exemption_credit:
+  or_non_refundable_credits:
+  or_income_tax_after_non_refundable_credits:
+  or_eitc:
+  or_tax_before_credits_in_prior_year:
+  or_kicker:
+  or_refundable_credits:
+  or_income_tax_after_refundable_credits:
