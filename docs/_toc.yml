@@ -1,60 +1,12 @@
 format: jb-book
 root: index
 parts:
-  - caption: Programs
+  - caption: Government programs
     chapters:
-      - file: programs/fcc/index
+      - file: gov/fcc/index
         sections:
-          - file: programs/fcc/lifeline
-          - file: programs/fcc/acp
-      - file: programs/hhs/index
-        sections:
-          - file: programs/hhs/tanf
-      - file: programs/hud/index
-        sections:
-          - file: programs/hud/housing-assistance
-      - file: programs/irs/tax
-        sections:
-          - file: programs/irs/credits/eitc
-          - file: programs/irs/credits/cdcc
-          - file: programs/irs/credits/clean-vehicle
-          - file: programs/irs/capital-gains
-      - file: programs/ssa/index
-        sections:
-          - file: programs/ssa/ssi
-      - file: programs/states/index
-        sections:
-          - file: programs/states/ca/index
-            sections:
-              - file: programs/states/ca/calepa/carb/cvrp
-          - file: programs/states/ma/index
-            sections:
-              - file: programs/states/ma/tax-benefit
-              - file: programs/states/ma/tax/income/index
-              - file: programs/states/ma/tax/income/credits/senior-circuit-breaker
-          - file: programs/states/md/index
-            sections:
-              - file: programs/states/md/tax/income/index
-              - file: programs/states/md/tax/income/credits/cdcc
-              - file: programs/states/md/tax/income/credits/ctc
-              - file: programs/states/md/tax/income/credits/eitc
-              - file: programs/states/md/tax/income/credits/poverty-line-credit
-          - file: programs/states/ny/index
-            sections:
-              - file: programs/states/ny/cdcc
-              - file: programs/states/ny/ctc
-              - file: programs/states/ny/eitc
-              - file: programs/states/ny/tax
-              - file: programs/states/ny/tax-benefit
-          - file: programs/states/pa/tax
-          - file: programs/states/wa/index
-            sections:
-              - file: programs/states/wa/tax/income/credits/working-families-tax-credit
-      - file: programs/usda/index
-        sections:
-          - file: programs/usda/snap
-          - file: programs/usda/school-meals
-          - file: programs/usda/wic
+          - file: gov/fcc/acp
+          - file: gov/fcc/lifeline
   - caption: Validation
     chapters:
       - file: validation/taxsim

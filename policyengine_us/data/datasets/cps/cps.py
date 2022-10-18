@@ -29,6 +29,29 @@ class CPS(PublicDataset):
 
         # Prepare raw CPS tables
         year = int(year)
+
+        if year == 2022:
+            print(
+                "Currently, only the 2021 ASEC is available. Uprating the 2021 ASEC to 2022..."
+            )
+            if 2021 not in CPS.years:
+                print("Didn't find the 2021 CPS dataset. Generating...")
+                CPS.generate(2021)
+
+            from policyengine_us import Microsimulation
+
+            sim = Microsimulation(dataset=CPS, dataset_year=2021)
+            cps_22 = h5py.File(self.file(2022), mode="w")
+            cps_21 = h5py.File(self.file(2021), mode="r")
+            for variable in cps_21:
+                if variable in sim.tax_benefit_system.variables:
+                    cps_22.create_dataset(
+                        variable, data=sim.calculate(variable, 2022).values
+                    )
+            cps_22.close()
+            cps_21.close()
+            return
+
         if year not in RawCPS.years:
             logging.info(f"Generating raw CPS for year {year}.")
             RawCPS.generate(year)

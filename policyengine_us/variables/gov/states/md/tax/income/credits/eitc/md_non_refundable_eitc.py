@@ -17,6 +17,6 @@ class md_non_refundable_eitc(Variable):
         childless = tax_unit("eitc_child_count", period) == 0
         return where(
             childless,
-            min_(md_eitc.childless_max, federal_eitc),
+            min_(md_eitc.childless.max_amount, federal_eitc),
             md_eitc.non_refundable_match * federal_eitc,
         )

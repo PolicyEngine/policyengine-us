@@ -35,15 +35,22 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         add_taxcalc_variable_aliases(self)
 
 
+system = CountryTaxBenefitSystem()
+
+
 class Simulation(CoreSimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
+    default_tax_benefit_system_instance = system
     default_role = "member"
-    default_calculation_period = "2022"
+    default_calculation_period = 2022
+    default_input_period = 2022
 
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
+    default_tax_benefit_system_instance = system
     default_dataset = CPS
-    default_dataset_year = 2021
+    default_dataset_year = 2022
     default_role = "member"
-    default_calculation_period = "2022"
+    default_calculation_period = 2022
+    default_input_period = 2022

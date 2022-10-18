@@ -16,7 +16,7 @@ warnings.filterwarnings("ignore")
 
 STATES = ["MD", "MA", "NY", "WA"]
 DISTANCE = 100
-MINIMUM_PERCENT_CLOSE = 0.65
+MINIMUM_PERCENT_CLOSE = 0
 
 if os.name != "nt":
 

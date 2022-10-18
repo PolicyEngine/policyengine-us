@@ -29,6 +29,7 @@ test:
 
 	coverage xml -i
 documentation:
+	jb clean docs
 	jb build docs
 build:
 	rm policyengine_us/data/storage/*.h5 | true
