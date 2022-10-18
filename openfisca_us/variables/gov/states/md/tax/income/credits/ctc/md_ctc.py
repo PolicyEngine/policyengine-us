@@ -12,14 +12,8 @@ class md_ctc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.md.tax.income.credits.ctc
-        income_eligible = (
-            tax_unit("adjusted_gross_income", period) <= p.agi_cap
-        )
-        person = tax_unit.members
-        dependent = person("is_tax_unit_dependent", period)
-        disabled = person("is_disabled", period)
-        meets_age_limit = person("age", period) < p.age_limit
-        eligible_child = dependent & disabled & meets_age_limit
-        eligible_children = tax_unit.sum(eligible_child)
-        return income_eligible * eligible_children * p.amount
+        "Md. Code, Tax-Gen. § 10-751 (c) The amount of the credit allowed under subsection (b) of this section for a qualified child shall be reduced, but not below zero, by the amount of any federal child tax credit claimed against the federal income tax for the qualified child under § 24 of the Internal Revenue Code. (d) If the credit allowed under this section in any taxable year exceeds the State income tax for that taxable year, the taxpayer may claim a refund in the amount of the excess."
+        # See 2021 Residential Instruction Booklet worksheet 21C https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf
+        md_ctc = tax_unit("md_ctc_without_federal", period)
+        federal_non_refundable_ctc = tax_unit("non_refundable_ctc", period)
+        return max_(md_ctc - federal_non_refundable_ctc, 0)
