@@ -10,7 +10,7 @@ class maximum_state_supplement(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula_2022(person, period, parameters):
         marital_unit = person.marital_unit
         eligible = person("is_ssi_eligible_individual", period)
         state_code = person.household("state_code_str", period)

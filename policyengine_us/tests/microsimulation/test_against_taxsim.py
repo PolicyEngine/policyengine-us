@@ -1,7 +1,7 @@
 import os
 from policyengine_us import Microsimulation
 from policyengine_us.data.datasets import CPS
-from policyengine_us.tools.dev.taxsim.generate_taxsim_tests import (
+from policyengine_us.tools.taxsim.generate_taxsim_tests import (
     TaxSim35,
 )
 import numpy as np
@@ -13,6 +13,7 @@ import platform
 import warnings
 
 warnings.filterwarnings("ignore")
+warnings.simplefilter("ignore")
 
 STATES = ["MD", "MA", "NY", "WA"]
 DISTANCE = 100

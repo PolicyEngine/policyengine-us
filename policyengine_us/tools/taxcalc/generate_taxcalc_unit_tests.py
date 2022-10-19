@@ -2,14 +2,14 @@ from time import time
 from pathlib import Path
 from typing import Callable, Dict, List, Tuple
 from taxcalc import Calculator, Policy, Records
-from policyengine_us.tools.dev.calcfunctions import *
+from policyengine_us.tools.taxcalc.calcfunctions import *
 from policyengine_us.system import CountryTaxBenefitSystem
 import pandas as pd
 import ast
 import yaml
 import argparse
 
-from policyengine_us.variables.irs.income.sources import nu06
+from policyengine_us.variables.gov.irs.income.sources import nu06
 
 np.random.seed(int(time()))
 variables = CountryTaxBenefitSystem().variables

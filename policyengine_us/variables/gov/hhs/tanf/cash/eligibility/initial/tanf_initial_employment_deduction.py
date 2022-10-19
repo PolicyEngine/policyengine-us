@@ -9,7 +9,7 @@ class tanf_initial_employment_deduction(Variable):
     documentation = "The amount deducted from the countable earnings of a TANF application when calculating initial eligibility."
     unit = USD
 
-    def formula(spm_unit, period, parameters):
+    def formula_2022(spm_unit, period, parameters):
         family_size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code_str", period)
         ied = parameters(

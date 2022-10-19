@@ -9,7 +9,7 @@ from policyengine_core.simulations import (
     Microsimulation as CoreMicrosimulation,
 )
 from policyengine_us.data import CPS
-from policyengine_us.tools.dev.taxcalc.generate_taxcalc_variable import (
+from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
 )
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (

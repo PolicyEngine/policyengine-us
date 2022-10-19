@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 
 
 class ctc_limiting_tax_liability(Variable):
@@ -11,6 +10,12 @@ class ctc_limiting_tax_liability(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        simulation = tax_unit.simulation
+        no_salt_branch = simulation.get_branch("no_salt")
+        no_salt_branch.tax_benefit_system.variables["salt_deduction"].is_neutralized = True
+        tax_liability_before_credits = no_salt_branch.calculate(
+            "income_tax_before_credits", period
+        )
         non_refundable_credits = parameters(
             period
         ).gov.irs.credits.non_refundable
@@ -21,20 +26,6 @@ class ctc_limiting_tax_liability(Variable):
                 if credit not in ("non_refundable_ctc",)
             ]
         )
-        with BranchedSimulation(tax_unit) as simulation:
-            simulation.tax_benefit_system.neutralize_variable(
-                "state_income_tax"
-            )
-            simulation.get_holder(
-                "state_income_tax"
-            ).variable = simulation.tax_benefit_system.variables[
-                "state_income_tax"
-            ]  # This is needed because neutralize_variable is only designed to work *before* simulations have started.
-            tax_liability = simulation.calculate(
-                "income_tax_before_credits", period
-            )
-            simulation.get_holder(
-                "state_income_tax"
-            ).variable.is_neutralized = False
+        simulation.tax_benefit_system.variables["salt_deduction"].is_neutralized = False
 
-        return max_(0, tax_liability - total_credits)
+        return max_(0, tax_liability_before_credits - total_credits)

@@ -6,6 +6,7 @@
     state_code: MA
     medicaid_income: 13_590 * 2
     age: 21
+    second_lowest_silver_plan_cost: 4_133
   output:
     premium_tax_credit: 301 * 12
 
@@ -21,6 +22,7 @@
     tax_units:
       tax_unit:
         medicaid_income: 45_775
+        second_lowest_silver_plan_cost: 7_118
         members: [parent, child]
     people:
       parent:

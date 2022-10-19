@@ -9,13 +9,14 @@ class tax_liability_if_itemizing(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        with BranchedSimulation(tax_unit) as simulation_if_itemizing:
-            simulation_if_itemizing.set_input(
-                "tax_unit_itemizes",
-                period,
-                np.ones((tax_unit.count,), dtype=bool),
-            )
-            values = simulation_if_itemizing.calculate(
-                "federal_state_income_tax", period
-            )
+        simulation = tax_unit.simulation
+        itemized_branch = simulation.get_branch("itemizing")
+        itemized_branch.set_input(
+            "tax_unit_itemizes",
+            period,
+            np.ones((tax_unit.count,), dtype=bool),
+        )
+        values = itemized_branch.calculate(
+            "federal_state_income_tax", period
+        )
         return values

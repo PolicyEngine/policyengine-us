@@ -6,12 +6,15 @@
       mr_todd:
         age: 70
       mrs_todd:
+        age: 70
         ssi_unearned_income: 252 * 12
+      mike:
+        age: 10
     marital_units:
       marital_unit:
         members: [mr_todd, mrs_todd]
   output:
-    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
 
 - name: Example 2 from https://www.law.cornell.edu/cfr/text/20/416.1163#g
   period: 1986
