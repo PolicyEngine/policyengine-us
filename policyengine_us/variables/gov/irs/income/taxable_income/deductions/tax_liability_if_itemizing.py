@@ -16,7 +16,5 @@ class tax_liability_if_itemizing(Variable):
             period,
             np.ones((tax_unit.count,), dtype=bool),
         )
-        values = itemized_branch.calculate(
-            "federal_state_income_tax", period
-        )
+        values = itemized_branch.calculate("federal_state_income_tax", period)
         return values

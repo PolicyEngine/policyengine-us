@@ -14,9 +14,7 @@ class tax_unit_itemizes(Variable):
         # First, apply a shortcut. We can't simulate SALT before federal income tax
         # (due to circular dependencies), but we can compare the deduction sizes assuming
         # the SALT is maxed out at its cap.
-        ded = parameters(
-            period
-        ).gov.irs.deductions
+        ded = parameters(period).gov.irs.deductions
         federal_deductions_if_itemizing = ded.deductions_if_itemizing
         deductions_if_itemizing = [
             deduction
@@ -30,12 +28,15 @@ class tax_unit_itemizes(Variable):
         ]
         filing_status = tax_unit("filing_status", period)
         salt_cap = ded.itemized.salt_and_real_estate.cap[filing_status]
-        itemized_deductions = add(tax_unit, period, deductions_if_itemizing) + salt_cap
-        deductions_if_not_itemizing = tax_unit("standard_deduction", period) # Ignore QBID here, it requires SALT.
+        itemized_deductions = (
+            add(tax_unit, period, deductions_if_itemizing) + salt_cap
+        )
+        deductions_if_not_itemizing = tax_unit(
+            "standard_deduction", period
+        )  # Ignore QBID here, it requires SALT.
         if all(itemized_deductions < deductions_if_not_itemizing):
             return False
 
-        
         tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
         tax_if_not_itemizing = tax_unit(
             "tax_liability_if_not_itemizing", period

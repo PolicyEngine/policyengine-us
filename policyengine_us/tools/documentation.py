@@ -79,14 +79,16 @@ def variation_chart(
                 people[f"adult_{i}"] = adult_template
             for i in range(children):
                 people[f"child_{i}"] = child_template
-            situation=dict(
+            situation = dict(
                 people=people,
                 household=dict(
                     state_code=state,
                 ),
                 axes=[[dict(name=axis, min=0, max=100_000, count=101)]],
             )
-            entities_by_plural = {entity.plural: entity for entity in system.entities}
+            entities_by_plural = {
+                entity.plural: entity for entity in system.entities
+            }
             for entity_plural in additional_data:
                 for entity_instance in additional_data[entity_plural]:
                     if entity_plural not in situation:
@@ -94,8 +96,12 @@ def variation_chart(
                     if entity_instance not in situation[entity_plural]:
                         situation[entity_plural][entity_instance] = {}
                         if not entities_by_plural[entity_plural].is_person:
-                            situation[entity_plural][entity_instance]["members"] = list(people.keys())
-                    situation[entity_plural][entity_instance].update(additional_data[entity_plural][entity_instance])
+                            situation[entity_plural][entity_instance][
+                                "members"
+                            ] = list(people.keys())
+                    situation[entity_plural][entity_instance].update(
+                        additional_data[entity_plural][entity_instance]
+                    )
             sim = Simulation(situation=situation)
             earnings = sim.calc(axis, map_to="spm_unit")
             values = sim.calculate(variable, map_to="spm_unit")
