@@ -5,6 +5,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.173.3] - 2022-10-17 23:08:54
+
+### Fixed
+
+- Bug in MD EITC where chlidless_max parameter was called instead of childless.max_amount.
+
+## [0.173.2] - 2022-10-16 15:58:42
+
+### Added
+
+- Change logic for MO tax system to calculate AGI, qualified_health_insurance_premiums, taxable_income at person level.
+
+## [0.173.1] - 2022-10-15 22:44:42
+
+### Changed
+
+- Text and PolicyEngine names for some OR and PA parameters.
+
+## [0.173.0] - 2022-10-14 22:12:28
+
+### Added
+
+- Oregon tax after credits
+
+## [0.172.0] - 2022-10-13 03:39:19
+
+### Added
+
+- Changed 2021 to 2020 in MD refundable/non-refundable tax credit parameters
+
+## [0.171.0] - 2022-10-13 02:52:46
+
+### Added
+
+- Total US population.
+
+## [0.170.0] - 2022-10-10 20:55:47
+
+### Added
+
+- California use tax.
+
+## [0.169.0] - 2022-10-10 19:12:57
+
+### Added
+
+- Oregon federal tax liability income subtraction.
+
+## [0.168.0] - 2022-10-08 19:33:26
+
+### Added
+
+- California Child and Dependent Care Expenses Credit.
+
+## [0.167.0] - 2022-10-07 22:41:57
+
+### Added
+
+- Add MO state tax integration tests, illustrating different calculation methods.
+
+## [0.166.0] - 2022-10-07 03:01:19
+
+### Added
+
+- Oregon taxable income deductions.
+
+## [0.165.0] - 2022-10-03 22:56:42
+
+### Added
+
+- California mental health services tax
+
+## [0.164.0] - 2022-10-03 18:29:29
+
+### Added
+
+- Maryland Child Alliance EITC abolition switches.
+
 ## [0.163.1] - 2022-09-27 22:17:57
 
 ### Fixed
@@ -1965,6 +2043,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.173.3]: https://github.com/PolicyEngine/openfisca-us/compare/0.173.2...0.173.3
+[0.173.2]: https://github.com/PolicyEngine/openfisca-us/compare/0.173.1...0.173.2
+[0.173.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.173.0...0.173.1
+[0.173.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.172.0...0.173.0
+[0.172.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.171.0...0.172.0
+[0.171.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.170.0...0.171.0
+[0.170.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.169.0...0.170.0
+[0.169.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.168.0...0.169.0
+[0.168.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.167.0...0.168.0
+[0.167.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.166.0...0.167.0
+[0.166.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.165.0...0.166.0
+[0.165.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.164.0...0.165.0
+[0.164.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.163.1...0.164.0
 [0.163.1]: https://github.com/PolicyEngine/openfisca-us/compare/0.163.0...0.163.1
 [0.163.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.162.0...0.163.0
 [0.162.0]: https://github.com/PolicyEngine/openfisca-us/compare/0.161.0...0.162.0
