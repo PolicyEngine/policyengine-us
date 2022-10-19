@@ -17,6 +17,7 @@ test:
 documentation:
 	jb clean docs
 	jb build docs
+	python policyengine_us/tools/add_plotly_to_book.py docs/build
 build:
 	rm policyengine_us/data/storage/*.h5 | true
 	python setup.py sdist bdist_wheel
