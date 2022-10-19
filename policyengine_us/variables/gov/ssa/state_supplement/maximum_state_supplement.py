@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
 
-from openfisca_core.parameters import VectorialParameterNodeAtInstant
-
 
 class maximum_state_supplement(Variable):
     value_type = float
