@@ -61,7 +61,6 @@ setup(
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
-            "policyengine-us-data = policyengine_us.data.cli:cli",
         ],
     },
     packages=find_packages(),
