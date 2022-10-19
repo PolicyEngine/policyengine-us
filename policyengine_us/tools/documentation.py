@@ -58,18 +58,25 @@ def variation_chart(
     y_axis_max: float = None,
     state: str = "CA",
     in_notebook: bool = False,
-    additional_data: dict = None,
+    additional_adult_data: dict = None,
+    additional_child_data: dict = None,
 ):
-    if additional_data is None:
-        additional_data = {}
     dfs = []
+
+    if additional_adult_data is None:
+        additional_adult_data = {}
+
+    if additional_child_data is None:
+        additional_child_data = {}
 
     adult_template = dict(
         age=30,
+        **additional_adult_data,
     )
 
     child_template = dict(
         age=10,
+        **additional_child_data,
     )
 
     for adults in [1, 2]:
@@ -86,24 +93,8 @@ def variation_chart(
                 ),
                 axes=[[dict(name=axis, min=0, max=100_000, count=101)]],
             )
-            entities_by_plural = {
-                entity.plural: entity for entity in system.entities
-            }
-            for entity_plural in additional_data:
-                for entity_instance in additional_data[entity_plural]:
-                    if entity_plural not in situation:
-                        situation[entity_plural] = {}
-                    if entity_instance not in situation[entity_plural]:
-                        situation[entity_plural][entity_instance] = {}
-                        if not entities_by_plural[entity_plural].is_person:
-                            situation[entity_plural][entity_instance][
-                                "members"
-                            ] = list(people.keys())
-                    situation[entity_plural][entity_instance].update(
-                        additional_data[entity_plural][entity_instance]
-                    )
             sim = Simulation(situation=situation)
-            earnings = sim.calc(axis, map_to="spm_unit")
+            earnings = sim.calculate(axis, map_to="spm_unit")
             values = sim.calculate(variable, map_to="spm_unit")
             dfs += [
                 pd.DataFrame(

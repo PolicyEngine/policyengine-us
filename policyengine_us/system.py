@@ -7,6 +7,7 @@ from policyengine_us.parameters.gov.irs.uprating import (
 from policyengine_core.simulations import (
     Simulation as CoreSimulation,
     Microsimulation as CoreMicrosimulation,
+    IndividualSim as CoreIndividualSim,
 )
 from policyengine_us.data import CPS
 from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
@@ -54,3 +55,22 @@ class Microsimulation(CoreMicrosimulation):
     default_role = "member"
     default_calculation_period = 2022
     default_input_period = 2022
+
+
+class IndividualSim(CoreIndividualSim):  # Deprecated
+    tax_benefit_system = CountryTaxBenefitSystem
+    entities = {entity.key: entity for entity in entities}
+    default_dataset = CPS
+
+    default_roles = dict(
+        tax_unit="member",
+        spm_unit="member",
+        household="member",
+        family="member",
+    )
+    required_entities = [
+        "tax_unit",
+        "spm_unit",
+        "household",
+        "family",
+    ]

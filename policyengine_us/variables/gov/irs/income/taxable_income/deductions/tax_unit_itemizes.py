@@ -10,7 +10,6 @@ class tax_unit_itemizes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-
         # First, apply a shortcut. We can't simulate SALT before federal income tax
         # (due to circular dependencies), but we can compare the deduction sizes assuming
         # the SALT is maxed out at its cap.

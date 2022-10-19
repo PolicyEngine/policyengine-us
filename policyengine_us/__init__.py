@@ -11,7 +11,9 @@ from policyengine_us.system import (
     CountryTaxBenefitSystem,
     Simulation,
     Microsimulation,
+    IndividualSim,
 )
+
 from policyengine_us.data import ACS, CPS
 
 DATASETS = [ACS, CPS]
