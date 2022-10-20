@@ -34,11 +34,8 @@ if os.name != "nt":
         yield Microsimulation()
 
 
-@pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
+@pytest.mark.skipif(True, reason="This test temporarily suspended.")
 def test_federal_tax_against_taxsim(sim, taxsim):
-    if platform.system() == "Windows":
-        warnings.warn("This test is not run on Windows")
-        raise pytest.skip()
     tax = sim.calc("income_tax")
     tax.index = sim.calc("tax_unit_id").values
     comparison_df = pd.DataFrame(index=sim.calc("tax_unit_id").values)
@@ -51,7 +48,7 @@ def test_federal_tax_against_taxsim(sim, taxsim):
     assert percent_close > MINIMUM_PERCENT_CLOSE
 
 
-@pytest.mark.skipif(os.name == "nt", reason="This test is not run on Windows")
+@pytest.mark.skipif(True, reason="This test temporarily suspended.")
 @pytest.mark.parametrize("state", STATES)
 def test_state_income_tax_against_taxsim(state: str, sim, taxsim):
     in_state = sim.calc("tax_unit_state").values == state
