@@ -3,7 +3,8 @@ from policyengine_us.model_api import *
 # Disable divide-by-zero warning for this file
 import warnings
 
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+warnings.filterwarnings("ignore")
+warnings.simplefilter("ignore")
 
 
 class rrc_arpa(Variable):
