@@ -74,3 +74,7 @@ class IndividualSim(CoreIndividualSim):  # Deprecated
         "household",
         "family",
     ]
+
+
+if 2022 not in CPS.years:
+    CPS.download(2022)
