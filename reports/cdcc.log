@@ -1,0 +1,82 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from policyengine_us.model_api import *
+
+
+def budgetary_impacts(
+    variable: str, data_year: int = 2020, policy_year: int = 2022
+) -> Tuple:
+    """Calculates the budgetary impact of a variable for a given policy year.
+
+    Args:
+        variable (str): The variable to calculate the budgetary impact of.
+        data_year (int): The year of the data to use.
+        policy_year (int): The year of the policy to use.
+
+    Returns:
+        Tuple: A tuple of the total cost and budgetary impact of repealing the variable,
+        respectively, in millions.
+    """
+
+    class ignore_reported(Reform):
+        def apply(self):
+            self.neutralize_variable("spm_unit_net_income_reported")
+
+    class neutralize(Reform):
+        def apply(self):
+            self.neutralize_variable(variable)
+
+    sim = Microsimulation(ignore_reported, year=data_year)
+    sim_neutralized = Microsimulation(
+        (ignore_reported, neutralize), year=data_year
+    )
+    program_value = sim.calc(variable, period=policy_year).sum()
+    baseline_net_income = sim.calc(
+        "spm_unit_net_income", period=policy_year
+    ).sum()
+    neutralized_net_income = sim_neutralized.calc(
+        "spm_unit_net_income", period=policy_year
+    ).sum()
+    budgetary_impact = neutralized_net_income - baseline_net_income
+    return round(program_value / 1e6), round(budgetary_impact / 1e6)
+
+
+budgetary_impacts("ny_cdcc")
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn [3], line 42[0m
+[1;32m     38[0m     budgetary_impact [38;5;241m=[39m neutralized_net_income [38;5;241m-[39m baseline_net_income
+[1;32m     39[0m     [38;5;28;01mreturn[39;00m [38;5;28mround[39m(program_value [38;5;241m/[39m [38;5;241m1e6[39m), [38;5;28mround[39m(budgetary_impact [38;5;241m/[39m [38;5;241m1e6[39m)
+[0;32m---> 42[0m [43mbudgetary_impacts[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mny_cdcc[39;49m[38;5;124;43m"[39;49m[43m)[49m
+
+Cell [0;32mIn [3], line 27[0m, in [0;36mbudgetary_impacts[0;34m(variable, data_year, policy_year)[0m
+[1;32m     24[0m     [38;5;28;01mdef[39;00m [38;5;21mapply[39m([38;5;28mself[39m):
+[1;32m     25[0m         [38;5;28mself[39m[38;5;241m.[39mneutralize_variable(variable)
+[0;32m---> 27[0m sim [38;5;241m=[39m [43mMicrosimulation[49m[43m([49m[43mignore_reported[49m[43m,[49m[43m [49m[43myear[49m[38;5;241;43m=[39;49m[43mdata_year[49m[43m)[49m
+[1;32m     28[0m sim_neutralized [38;5;241m=[39m Microsimulation(
+[1;32m     29[0m     (ignore_reported, neutralize), year[38;5;241m=[39mdata_year
+[1;32m     30[0m )
+[1;32m     31[0m program_value [38;5;241m=[39m sim[38;5;241m.[39mcalc(variable, period[38;5;241m=[39mpolicy_year)[38;5;241m.[39msum()
+
+[0;31mTypeError[0m: __init__() got an unexpected keyword argument 'year'
+TypeError: __init__() got an unexpected keyword argument 'year'
+

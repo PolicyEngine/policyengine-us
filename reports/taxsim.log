@@ -1,0 +1,99 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from policyengine_us import Microsimulation
+from policyengine_us.data.datasets import CPS
+from policyengine_us.tools.dev.taxsim.generate_taxsim_tests import TaxSim35
+import numpy as np
+import pandas as pd
+
+# Disable warnings
+import warnings
+
+warnings.filterwarnings("ignore")
+
+STATES = ["MA", "MA", "NY", "WA"]
+DISTANCE = 100
+
+taxsim = TaxSim35()
+sim = Microsimulation()
+
+taxsim_df = taxsim.generate_from_microsimulation(
+    CPS, 2022, None, True, False
+).set_index("taxsim_taxsimid")
+
+
+def get_federal_tax_against_taxsim_results():
+    tax = sim.calc("income_tax")
+    tax.index = sim.calc("tax_unit_id").values
+    comparison_df = pd.DataFrame(index=sim.calc("tax_unit_id").values)
+    comparison_df["policyengine_us"] = tax
+    comparison_df["taxsim"] = taxsim_df.taxsim_fiitax
+    relative_distance = np.absolute(
+        comparison_df.policyengine_us - comparison_df.taxsim
+    )
+    return (relative_distance < DISTANCE).mean()
+
+
+def get_state_income_tax_against_taxsim_results(state: str):
+    in_state = sim.calc("tax_unit_state").values == state
+    tax = sim.calc("state_income_tax")
+    tax.index = sim.calc("tax_unit_id").values
+    comparison_df = pd.DataFrame(
+        dict(
+            policyengine_us=tax,
+            taxsim=taxsim_df.taxsim_siitax,
+        ),
+        index=sim.calc("tax_unit_id").values,
+    )
+    comparison_df = comparison_df[in_state]
+    relative_distance = np.absolute(
+        comparison_df.policyengine_us - comparison_df.taxsim
+    )
+    return (relative_distance < DISTANCE).mean()
+
+
+results_df = pd.DataFrame(
+    {
+        "Region": ["Federal"] + STATES,
+        "Percent close": [get_federal_tax_against_taxsim_results()]
+        + [
+            get_state_income_tax_against_taxsim_results(state)
+            for state in STATES
+        ],
+    }
+)
+results_df["Percent close"] = results_df["Percent close"].apply(
+    lambda x: f"{x:.1%}"
+)
+results_df.set_index("Region")
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [0;32mIn [1], line 3[0m
+[1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mpolicyengine_us[39;00m [38;5;28;01mimport[39;00m Microsimulation
+[1;32m      2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mpolicyengine_us[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdata[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdatasets[39;00m [38;5;28;01mimport[39;00m CPS
+[0;32m----> 3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mpolicyengine_us[39;00m[38;5;21;01m.[39;00m[38;5;21;01mtools[39;00m[38;5;21;01m.[39;00m[38;5;21;01mdev[39;00m[38;5;21;01m.[39;00m[38;5;21;01mtaxsim[39;00m[38;5;21;01m.[39;00m[38;5;21;01mgenerate_taxsim_tests[39;00m [38;5;28;01mimport[39;00m TaxSim35
+[1;32m      4[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[1;32m      5[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
+
+[0;31mModuleNotFoundError[0m: No module named 'policyengine_us.tools.dev'
+ModuleNotFoundError: No module named 'policyengine_us.tools.dev'
+
