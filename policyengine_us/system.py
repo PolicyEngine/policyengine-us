@@ -78,3 +78,6 @@ class IndividualSim(CoreIndividualSim):  # Deprecated
 
 if 2022 not in CPS.years:
     CPS.download(2022)
+
+if 2021 not in CPS.years:
+    CPS.download(2021)
