@@ -1424,7 +1424,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Microdata now handled entirely within OpenFisca-US.
+- Microdata now handled entirely within PolicyEngine US.
 
 ## [0.44.0] - 2022-04-13 12:58:29
 
