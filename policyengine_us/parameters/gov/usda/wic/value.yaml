@@ -1,0 +1,57 @@
+description: Average monthly pre-rebate value of WIC packages.
+
+# High level categories currently in implementation.
+PREGNANT:
+  2018-01-01: 37.33
+BREASTFEEDING:
+  2018-01-01: 37.76
+POSTPARTUM:
+  2018-01-01: 30.72
+INFANT:
+  2018-01-01: 138.64
+CHILD:
+  2018-01-01: 31.78
+# More detailed categories - currently unused.
+I-FF-A:
+  2018-01-01: 175.27
+I-FF-B:
+  2018-01-01: 188.54
+I-BF/FF-A:
+  2018-01-01: 81.88
+I-BF/FF-B:
+  2018-01-01: 119.73
+I-BF/FF-C:
+  2018-01-01: 142.96
+I-BF-A:
+  2018-01-01: 0.00
+I-BF-B:
+  2018-01-01: 0.00
+II-FF:
+  2018-01-01: 157.16
+II-BF/FF:
+  2018-01-01: 135.79
+II-BF:
+  2018-01-01: 44.00
+IV-A:
+  2018-01-01: 33.64
+IV-B:
+  2018-01-01: 33.65
+V:
+  2018-01-01: 39.12
+VI:
+  2018-01-01: 32.27
+VII:
+  2018-01-01: 48.92
+# Ineligible people get nothing.
+NONE:
+  2018-01-01: 0
+
+metadata:
+  propagate_metadata_to_children: true
+  uprating: gov.bls.cpi.c_cpi_u
+  unit: currency-USD
+  period: month
+  reference:
+    - title: "WIC Participant and Program Characteristics 2018 Food Packages and Costs Report"
+      href: https://fns-prod.azureedge.net/sites/default/files/resource-files/WICPC2018FoodPackage-Summary.pdf#page=2
+      # More detailed values are on page 52.

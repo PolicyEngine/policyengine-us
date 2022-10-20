@@ -3,8 +3,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="OpenFisca-US",
-    version="0.165.0",
+    name="policyengine-us",
+    version="0.174.1",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     classifiers=[
@@ -18,7 +18,7 @@ setup(
     description="OpenFisca tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url="https://github.com/PolicyEngine/openfisca-us",
+    url="https://github.com/PolicyEngine/policyengine-us",
     include_package_data=True,  # Will read MANIFEST.in
     data_files=[
         (
@@ -29,8 +29,7 @@ setup(
     install_requires=[
         "h5py",
         "microdf_python",
-        "OpenFisca-Core[web-api] >= 35.0.0",
-        "OpenFisca-Tools>=0.13.6,<1.0.0",
+        "policyengine-core >= 1.3.0",
         "pandas",
         "pathlib",
         "pytest",
@@ -55,13 +54,17 @@ setup(
             "wheel",
             "yaml-changelog>=0.1.7",
             "linecheck",
+            "furo<2023",
+            "markupsafe==2.0.1",
+            "sphinx>=4.5.0,<5",
+            "sphinx-argparse>=0.3.2,<1",
+            "sphinx-math-dollar>=1.2.1,<2",
         ],
     },
-    python_requires=">=3.7,<3.8",
+    python_requires=">=3.7,<3.10",
     entry_points={
         "console_scripts": [
-            "openfisca-us = openfisca_us.tools.cli:main",
-            "openfisca-us-data = openfisca_us.data.cli:cli",
+            "policyengine-us = policyengine_us.tools.cli:main",
         ],
     },
     packages=find_packages(),

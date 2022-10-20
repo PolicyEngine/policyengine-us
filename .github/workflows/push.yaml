@@ -6,8 +6,8 @@ jobs:
   Lint:
     runs-on: ubuntu-latest
     if: |
-      (github.repository == 'PolicyEngine/openfisca-us')
-      && (github.event.head_commit.message == 'Update OpenFisca-US')
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
       - uses: actions/checkout@v3
       - name: Check formatting
@@ -17,8 +17,8 @@ jobs:
   versioning:
     name: Update versioning
     if: |
-      (github.repository == 'PolicyEngine/openfisca-us')
-      && !(github.event.head_commit.message == 'Update OpenFisca-US')
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -30,7 +30,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Build changelog
         run: pip install yaml-changelog && make changelog
       - name: Preview changelog update
@@ -41,12 +41,12 @@ jobs:
           add: "."
           committer_name: Github Actions[bot]
           author_name: Github Actions[bot]
-          message: Update OpenFisca-US
+          message: Update PolicyEngine US
   Test:
     runs-on: ${{ matrix.os }}
     if: |
-      (github.repository == 'PolicyEngine/openfisca-us')
-      && (github.event.head_commit.message == 'Update OpenFisca-US')
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -56,7 +56,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Install package
         run: make install
       - name: Run tests
@@ -75,15 +75,15 @@ jobs:
   Publish:
     runs-on: ubuntu-latest
     if: |
-      (github.repository == 'PolicyEngine/openfisca-us')
-      && (github.event.head_commit.message == 'Update OpenFisca-US')
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Publish a git tag
         run: ".github/publish-git-tag.sh || true"
       - name: Install package
