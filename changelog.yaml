@@ -1696,3 +1696,8 @@
     fixed:
     - Bug in MD EITC where chlidless_max parameter was called instead of childless.max_amount.
   date: 2022-10-17 23:08:54
+- bump: minor
+  changes:
+    changed:
+    - Moved to PolicyEngine Core.
+  date: 2022-10-20 13:13:35
