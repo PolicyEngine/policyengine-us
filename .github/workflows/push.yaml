@@ -83,7 +83,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Publish a git tag
         run: ".github/publish-git-tag.sh || true"
       - name: Install package
