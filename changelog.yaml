@@ -1701,3 +1701,8 @@
     changed:
     - Moved to PolicyEngine Core.
   date: 2022-10-20 13:13:35
+- bump: patch
+  changes:
+    fixed:
+    - GH actions now run on Python 3.9.
+  date: 2022-10-20 13:40:02

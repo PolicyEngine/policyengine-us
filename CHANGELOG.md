@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.174.1] - 2022-10-20 13:40:02
+
+### Fixed
+
+- GH actions now run on Python 3.9.
+
 ## [0.174.0] - 2022-10-20 13:13:35
 
 ### Changed
@@ -2049,6 +2055,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.174.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.174.0...0.174.1
 [0.174.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.173.3...0.174.0
 [0.173.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.173.2...0.173.3
 [0.173.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.173.1...0.173.2
