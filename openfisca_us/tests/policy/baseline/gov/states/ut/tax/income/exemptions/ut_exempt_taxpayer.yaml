@@ -1,0 +1,30 @@
+
+- name: Utah Exempt Taxpayer
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    federal_agi: 22_000
+    standard_deduction: 25_100
+    state_code: UT
+  output:
+    ut_exempt_taxpayer: true
+
+- name: Utah Exempt Taxpayer exact
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    federal_agi: 25_100
+    standard_deduction: 25_100
+    state_code: UT
+  output:
+    ut_exempt_taxpayer: true
+
+- name: Utah Non-exempt Taxpayer
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    federal_agi: 30_000
+    standard_deduction: 25_100
+    state_code: UT
+  output:
+    ut_exempt_taxpayer: false

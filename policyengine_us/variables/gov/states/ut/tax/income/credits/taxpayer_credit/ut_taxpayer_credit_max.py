@@ -2,6 +2,14 @@ from policyengine_us.model_api import *
 
 
 class ut_taxpayer_credit_max(Variable):
+    """
+    This variable computes the Initial credit before phase-out (line 16 of Utah
+    TC-40 form), which we call the Utah taxpayer credit maximum. It is total
+    personal exemptions plus the maximum of federal standard or itemized
+    deductions minus state income tax included on federal itemized deductions,
+    all multiplied by the Utah taxpayer credit full rate.
+    """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxpayer credit maximum"

@@ -2,6 +2,12 @@ from policyengine_us.model_api import *
 
 
 class ut_taxpayer_credit_reduction(Variable):
+    """
+    This variable computes the phase-out amount of the Utah tax credit (line 19
+    of Utah TC-40 form), which we call the Utah taxpayer credit reduction. It
+    is the income subject to phase-out multiplied by the phase out rate.
+    """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxpayer credit reduction"

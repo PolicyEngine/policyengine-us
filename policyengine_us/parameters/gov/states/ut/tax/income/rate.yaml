@@ -1,11 +1,23 @@
-description: Utah Tax Rate
+description: Utah household income tax rate
 values:
-  2021-01-01:
+  2008-01-01:
+    value: 0.05
+    metadata:
+      reference:
+        - title: Utah individual income tax rates
+          href: https://incometax.utah.gov/paying/tax-rates
+  2018-01-01:
+    value: 0.0495
+    metadata:
+      reference:
+        - title: Utah individual income tax rates
+          href: https://incometax.utah.gov/paying/tax-rates
+  2022-01-01:
     value: 0.0485
 metadata:
   unit: /1
-  name: Utah Tax Rate
-  label: Utah Tax Rate
+  name: ut_tax_rate
+  label: Utah tax rate
   reference:
     - title: Section 104 Tax basis -- Tax rate -- Exemption. (2b) (Effective 5/4/2022)
       href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S104.html?v=C59-10-S104_2022050420220504

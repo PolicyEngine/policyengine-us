@@ -2,6 +2,12 @@ from policyengine_us.model_api import *
 
 
 class ut_taxable_income(Variable):
+    """
+    This variable computes Utah taxable income (line 9 of the Utah 2021 TC-40
+    form) as Total income (line 6) minus Salt Refund (line 7) minus
+    subtractions from income (line 8).
+    """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxable income"

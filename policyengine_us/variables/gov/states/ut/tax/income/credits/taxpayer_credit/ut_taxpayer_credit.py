@@ -2,6 +2,11 @@ from policyengine_us.model_api import *
 
 
 class ut_taxpayer_credit(Variable):
+    """
+    The Utah taxpayer tax credit (line 20 on 2021 TC-40 form) is the initial
+    credit before phaseout (line 16) minus the phase-out amount (line 19).
+    """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxpayer credit"
