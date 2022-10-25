@@ -1,4 +1,5 @@
 description: The EITC phase-out start.
+# Described in IRS data release as "Threshold Phaseout Amount".
 brackets:
   - threshold:
       values:
@@ -18,6 +19,7 @@ brackets:
               - title: 26 U.S. Code § 32(n)(4)(A)(ii)
                 href: https://www.law.cornell.edu/uscode/text/26/32#n_4_A_ii
         2022-01-01: 9_160
+        2023-01-01: 9_800
       metadata:
         unit: currency-USD
   - threshold:
@@ -33,6 +35,7 @@ brackets:
         2020-01-01: 19_330
         2021-01-01: 19_520
         2022-01-01: 20_130
+        2023-01-01: 21_560
       metadata:
         unit: currency-USD
   - threshold:
@@ -48,6 +51,7 @@ brackets:
         2020-01-01: 19_330
         2021-01-01: 19_520
         2022-01-01: 20_130
+        2023-01-01: 21_560
       metadata:
         unit: currency-USD
   - threshold:
@@ -63,11 +67,14 @@ brackets:
         2020-01-01: 19_330
         2021-01-01: 19_520
         2022-01-01: 20_130
+        2023-01-01: 21_560
       metadata:
         unit: currency-USD
 metadata:
   type: single_amount
   reference:
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
     - title: 2022 IRS data release
       href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
     - title: 2021 IRS data release
