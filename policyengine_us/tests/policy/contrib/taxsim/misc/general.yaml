@@ -194,3 +194,45 @@
   output:
     taxsim_tfica: 1836.00
     income_tax: -5075.99
+
+# OpenFisca-US test file derived from r21.ita.csv and r21.ota.csv files
+- name: Tax unit with recid 12233 from r21.ita.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 55
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+        employment_income: 177_000
+        long_term_capital_gains: 100_000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 58
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+        employment_income: 176_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    taxsim_tfica: 23_752.70
+    income_tax: 85_538.00
