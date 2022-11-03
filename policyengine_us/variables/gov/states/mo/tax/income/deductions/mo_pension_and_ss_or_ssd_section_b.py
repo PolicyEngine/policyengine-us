@@ -15,6 +15,7 @@ class mo_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         #variables and params needed for all sections
+        person = tax_unit.members
         mo_agi =  person('mo_adjusted_gross_income', period)
         tax_unit_mo_agi = tax_unit.sum(mo_agi)
         taxable_social_security_benefits = tax_unit("tax_unit_taxable_social_security")

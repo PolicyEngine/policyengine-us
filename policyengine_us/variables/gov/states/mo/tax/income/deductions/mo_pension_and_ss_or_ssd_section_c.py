@@ -13,7 +13,8 @@ class mo_itemized_deductions(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):   
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         mo_agi =  person('mo_adjusted_gross_income', period)
         tax_unit_mo_agi = tax_unit.sum(mo_agi)
         taxable_social_security_benefits = tax_unit("tax_unit_taxable_social_security")
