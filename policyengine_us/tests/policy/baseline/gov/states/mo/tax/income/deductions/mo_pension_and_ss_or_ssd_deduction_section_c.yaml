@@ -2,10 +2,10 @@
   period: 2021
   absolute_error_margin: 0
   input:
-    mo_adjusted_gross_income:
-    tax_unit_taxable_social_security:
-    filing_status:
-    social_security_disability:
+    mo_adjusted_gross_income: 0
+    tax_unit_taxable_social_security: 0
+    filing_status: 0
+    social_security_disability: 0
     state_code: MO
   output:
     mo_pension_and_ss_or_ssd_section_c: 0.0

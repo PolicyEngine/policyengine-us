@@ -23,10 +23,7 @@ class mo_itemized_deductions(Variable):
         p = parameters(period).gov.states.mo.tax.income.deductions
 
         #Section A, Public Pension Amounts
-        #need section c finished to get to this part
-        ###requires extra logic from Public Pension Calculation, Line 8: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=17
         #TODO:
-        #needs additional logic to account for each individuals share of taxable social security being accounted for separately
         #unclear reference to "See instructions if Line 3 of Section C is more than $0" here: https://dor.mo.gov/forms/MO-A_2021.pdf#page=3
 
         public_pension_allowance = p.mo_public_pension_deduction_allowance[filing_status]
