@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mo_itemized_deductions(Variable):
+class mo_pension_and_ss_or_ssd_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "MO Pension and Social Security or SS Disability Deduction"
@@ -14,18 +14,18 @@ class mo_itemized_deductions(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-
+        person = tax_unit.members
         #Section C, SS or SSD Amounts
         #We start with section C because, in situations where someone receives both a pension and taxable
         #Social Security, Section A requires information from Section C to be completed.
-        eligible_ss_or_ssd = tax_unit('mo_pension_and_ss_or_ssd_section_c', period)
-
+        eligible_ss_or_ssd = person('mo_pension_and_ss_or_ssd_section_c', period)
+        tax_unit_eligible_ss_or_ssd = tax_unit.sum(eligible_ss_or_ssd)
         #Section A, Public Pension Amounts
         #TODO:
         #unclear reference to "See instructions if Line 3 of Section C is more than $0" here: https://dor.mo.gov/forms/MO-A_2021.pdf#page=3
-        total_public_pensions = tax_unit.sum(('mo_pension_and_ss_or_ssd_section_a', period))
-
+        public_pensions = person('mo_pension_and_ss_or_ssd_section_a', period)
+        tax_unit_eligible_total_public_pensions = tax_unit.sum(public_pensions)
         # Section B, Private Pension Amounts
-        total_private_pensions =  tax_unit('mo_pension_and_ss_or_ssd_section_b', period)
+        tax_unit_total_private_pensions =  tax_unit('mo_pension_and_ss_or_ssd_section_b', period)
 
-        return total_private_pensions + total_public_pensions + eligible_ss_or_ssd
+        return tax_unit_total_private_pensions + tax_unit_eligible_total_public_pensions + tax_unit_eligible_ss_or_ssd
