@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class mo_itemized_deductions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "MO Pension and Social Security or SS Disability Deduction"
     unit = USD
     definition_period = YEAR
@@ -13,8 +13,8 @@ class mo_itemized_deductions(Variable):
     )
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+    def formula(person, period, parameters):
+        tax_unit = person.tax_unit
         mo_agi =  person('mo_adjusted_gross_income', period)
         tax_unit_mo_agi = tax_unit.sum(mo_agi)
         taxable_social_security_benefits = tax_unit("tax_unit_taxable_social_security")
