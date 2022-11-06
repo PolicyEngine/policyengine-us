@@ -64,7 +64,7 @@ class ctc_reduction(Variable):
             ctc_child_individual_maximum.formula(
                 tax_unit.members, period, no_arpa_parameters
             )
-            + ctc_adult_individual_maximum.formula_2018(
+            + ctc_adult_individual_maximum.formula(
                 tax_unit.members, period, no_arpa_parameters
             )
         )
