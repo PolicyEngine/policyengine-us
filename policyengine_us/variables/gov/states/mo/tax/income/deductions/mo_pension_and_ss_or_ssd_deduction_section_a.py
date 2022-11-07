@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mo_itemized_deductions(Variable):
+class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
     value_type = float
     entity = Person
     label = "MO Pension and Social Security or SS Disability Deduction"
@@ -35,7 +35,7 @@ class mo_itemized_deductions(Variable):
 
         ssd_amount = person("social_security_disability", period)
         ss_or_ssd = max(taxable_social_security_benefits, ssd_amount) 
-        eligible_ss_or_ssd = tax_unit('mo_pension_and_ss_or_ssd_section_c', period)
+        eligible_ss_or_ssd = person('mo_pension_and_ss_or_ssd_deduction_section_c', period)
         
 
         #From instructions here: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=17

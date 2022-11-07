@@ -18,7 +18,7 @@ class mo_pension_and_ss_or_ssd_deduction(Variable):
         #Section C, SS or SSD Amounts
         #We start with section C because, in situations where someone receives both a pension and taxable
         #Social Security, Section A requires information from Section C to be completed.
-        eligible_ss_or_ssd = person('mo_pension_and_ss_or_ssd_section_c', period)
+        eligible_ss_or_ssd = person('mo_pension_and_ss_or_ssd_deduction_section_c', period)
         tax_unit_eligible_ss_or_ssd = tax_unit.sum(eligible_ss_or_ssd)
         #Section A, Public Pension Amounts
         #TODO:
@@ -26,6 +26,6 @@ class mo_pension_and_ss_or_ssd_deduction(Variable):
         public_pensions = person('mo_pension_and_ss_or_ssd_section_a', period)
         tax_unit_eligible_total_public_pensions = tax_unit.sum(public_pensions)
         # Section B, Private Pension Amounts
-        tax_unit_total_private_pensions =  tax_unit('mo_pension_and_ss_or_ssd_section_b', period)
-
+        total_private_pensions =  person('mo_pension_and_ss_or_ssd_section_b', period)
+        tax_unit_total_private_pensions = tax_unit.sum(total_private_pensions)
         return tax_unit_total_private_pensions + tax_unit_eligible_total_public_pensions + tax_unit_eligible_ss_or_ssd

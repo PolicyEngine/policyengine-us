@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class pension_income(Variable):
+class public_pension_income(Variable):
     value_type = float
     entity = Person
-    label = "Pension income"
+    label = "Public pension income"
     unit = USD
-    documentation = "Income from pensions, annuitities, life insurance or endowment contracts."
+    documentation = "Income from government pensions."
     definition_period = YEAR
 

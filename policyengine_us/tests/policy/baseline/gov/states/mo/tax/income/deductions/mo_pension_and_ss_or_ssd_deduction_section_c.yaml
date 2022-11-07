@@ -8,7 +8,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
 - name: AGI below threshold, private pension income, taxable social security income, single
   period: 2021
@@ -20,7 +20,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 5_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
 - name: AGI below threshold, private pension income, without taxable social security income, single
   period: 2021
@@ -32,7 +32,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
 - name: AGI above threshold, private pension income, taxable social security income, single
   period: 2021
@@ -44,7 +44,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 5_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
 - name: AGI above threshold, private pension income, without taxable social security income, single
   period: 2021
@@ -56,7 +56,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
 - name: AGI above threshold, private pension income, taxable social security income, joint
   period: 2021
@@ -68,7 +68,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 5_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
 - name: AGI above threshold, private pension income, without taxable social security income, joint
   period: 2021
@@ -80,7 +80,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
 - name: AGI below threshold, private pension income, taxable social security income, single
   period: 2021
@@ -92,7 +92,7 @@
     social_security_disability: 5_000
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 5_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
 - name: AGI below threshold, private pension income, without taxable social security income, single
   period: 2021
@@ -104,7 +104,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
 - name: AGI above threshold, private pension income, taxable social security income, single
   period: 2021
@@ -116,7 +116,7 @@
     social_security_disability: 15_000
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 5_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
 - name: AGI above threshold, private pension income, without taxable social security income, single
   period: 2021
@@ -128,7 +128,7 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
 
 - name: AGI above threshold, private pension income, taxable social security income, joint
   period: 2021
@@ -140,7 +140,7 @@
     social_security_disability: 10_000
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 5_000
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
 
 - name: AGI above threshold, private pension income, without taxable social security income, joint
   period: 2021
@@ -152,4 +152,4 @@
     social_security_disability: 0
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_section_c: 0.0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
