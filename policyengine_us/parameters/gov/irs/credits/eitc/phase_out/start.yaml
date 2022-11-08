@@ -1,4 +1,10 @@
 description: The EITC phase-out start.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  name: eitc_phase_out_start
+  label: EITC phase-out start by number of children
 # Described in IRS data release as "Threshold Phaseout Amount".
 brackets:
   - threshold:

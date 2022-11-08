@@ -68,7 +68,9 @@ brackets:
 metadata:
   type: single_amount
   threshold_unit: child
-  rate_unit: currency-USD
+  amount_unit: currency-USD
+  name: eitc_max
+  label: EITC maximum amount by number of children
   propagate_metadata_to_children: true
   reference:
     - title: 2023 IRS data release
