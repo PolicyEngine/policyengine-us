@@ -1,6 +1,7 @@
 # PolicyEngine US
 
 [![codecov](https://codecov.io/gh/PolicyEngine/policyengine-us/branch/master/graph/badge.svg?token=BLoCjCf5Qr)](https://codecov.io/gh/PolicyEngine/policyengine-us)
+[![PyPI version](https://badge.fury.io/py/policyengine-us.svg)](https://badge.fury.io/py/policyengine-us)
 
 PolicyEngine US is a microsimulation model of the US state and federal tax and benefit system.
 It is built and primarily supported by [PolicyEngine](https://policyengine.org).
