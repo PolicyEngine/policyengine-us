@@ -3,11 +3,11 @@ brackets:
   - rate:
       2019-01-01: 0.015
     threshold:
-      2019-01-01: 104
-      2020-01-01: 107
-      2021-01-01: 109
+      2019-01-01: 0
+    # NB: Technically, there's a further exemption for the first $100 of income or so
+    # but this is essentially a rounding choice that we ignore ($1-2 impact).
   - rate:
-      2019-01-01: 0.02  
+      2019-01-01: 0.02
     threshold:
       2019-01-01: 1_053
       2020-01-01: 1_073
