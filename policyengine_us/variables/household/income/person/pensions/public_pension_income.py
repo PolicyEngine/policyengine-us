@@ -8,4 +8,3 @@ class public_pension_income(Variable):
     unit = USD
     documentation = "Income from government pensions."
     definition_period = YEAR
-

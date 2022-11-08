@@ -8,4 +8,3 @@ class tax_exempt_public_pension_income(Variable):
     unit = USD
     documentation = "Tax-exempt income from government pensions."
     definition_period = YEAR
-
