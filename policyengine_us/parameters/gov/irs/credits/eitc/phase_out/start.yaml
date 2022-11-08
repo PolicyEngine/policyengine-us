@@ -1,4 +1,26 @@
 description: The EITC phase-out start.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  name: eitc_phase_out_start
+  label: EITC phase-out start by number of children
+  reference:
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
+    - title: 2018 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=10
+    - title: 2017 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=11
+
 # Described in IRS data release as "Threshold Phaseout Amount".
 brackets:
   - threshold:
@@ -70,20 +92,3 @@ brackets:
         2023-01-01: 21_560
       metadata:
         unit: currency-USD
-metadata:
-  type: single_amount
-  reference:
-    - title: 2023 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
-    - title: 2022 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
-    - title: 2021 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
-    - title: 2020 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
-    - title: 2019 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
-    - title: 2018 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=10
-    - title: 2017 IRS data release
-      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=11

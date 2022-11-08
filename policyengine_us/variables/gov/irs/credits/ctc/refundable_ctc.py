@@ -20,11 +20,16 @@ class refundable_ctc(Variable):
 
         ctc = parameters(period).gov.irs.credits.ctc
 
-        total_ctc = tax_unit("ctc", period)
-        maximum_refundable_ctc = min_(
-            add(tax_unit, period, ["ctc_refundable_individual_maximum"]),
-            total_ctc,
+        maximum_amount = add(
+            tax_unit, period, ["ctc_refundable_individual_maximum"]
         )
+
+        if ctc.refundable.fully_refundable:
+            reduction = tax_unit("ctc_reduction", period)
+            return max_(0, maximum_amount - reduction)
+
+        total_ctc = tax_unit("ctc", period)
+        maximum_refundable_ctc = min_(maximum_amount, total_ctc)
 
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
         # would increase if [tax liability] increased by tax_increase", where tax_increase is the greater of:
@@ -43,20 +48,18 @@ class refundable_ctc(Variable):
         # Compute "Social Security taxes" as defined in the US Code for the ACTC.
         # This includes OASDI and Medicare payroll taxes, as well as half
         # of self-employment taxes.
-        PERSON_VARIABLES = [
+        SS_ADD_VARIABLES = [
+            # Person:
             "employee_social_security_tax",
             "employee_medicare_tax",
             "unreported_payroll_tax",
-        ]
-        PERSON_VARIABLES_SUBTRACT = ["excess_payroll_tax_withheld"]
-        TAX_UNIT_VARIABLES = [
+            # Tax unit:
             "c03260",  # Deductible portion of the self-employed tax.
             "additional_medicare_tax",
         ]
-        social_security_tax = (
-            add(tax_unit, period, PERSON_VARIABLES)
-            + add(tax_unit, period, TAX_UNIT_VARIABLES)
-            - add(tax_unit, period, PERSON_VARIABLES_SUBTRACT)
+        SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
+        social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
+            tax_unit, period, SS_SUBTRACT_VARIABLES
         )
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
@@ -79,15 +82,6 @@ class refundable_ctc(Variable):
         )
 
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
-
-    def formula_2021(tax_unit, period, parameters):
-        maximum_amount = add(
-            tax_unit, period, ["ctc_refundable_individual_maximum"]
-        )
-        reduction = tax_unit("ctc_reduction", period)
-        return max_(0, maximum_amount - reduction)
-
-    formula_2022 = formula
 
 
 c11070 = variable_alias("c11070", refundable_ctc)
