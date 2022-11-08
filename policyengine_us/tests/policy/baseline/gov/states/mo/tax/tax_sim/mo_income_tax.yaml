@@ -147,3 +147,44 @@
   output:
     #taxsim output: 20_057
     mo_income_tax: 20_055.83
+
+# PolicyEngine US test file derived from p21.its.csv and p21.ots.csv files
+
+- name: Tax unit with taxsimid 5363 from p21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 37
+        employment_income: 160000
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 39
+        employment_income: 160000
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_income_tax: 15550.33
