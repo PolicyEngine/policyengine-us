@@ -23,7 +23,7 @@
     mo_federal_income_tax_deduction: 434.25
     mo_taxable_income: 37_015.75
     #taxsim output: 36_805.76
-    mo_income_tax: 1_810.08
+    mo_income_tax: 1_811.71
     #taxsim output: 1_800
 
 - name:  Taxsim integration test, 50k income, childless couple, evenly split income
@@ -56,7 +56,7 @@
     mo_federal_income_tax_deduction: -31.5
     mo_taxable_income: [12_465.75, 12_465.75]
     #taxsim output: 24_511.51
-    mo_income_tax: 968.759
+    mo_income_tax: 972.03
     #taxsim output: 949
 
 - name:  Taxsim integration test, 50k income, couple, one child
@@ -90,7 +90,7 @@
     mo_federal_income_tax_deduction: -781.5
     mo_taxable_income: [25_681.5, 0, 0]
     #taxsim output: 24_511.51
-    mo_income_tax: 1_198.03
+    mo_income_tax: 1_199.67
     #taxsim output: 1_136
 
 - name:  Taxsim integration test, 50k income, single parent, one child
@@ -120,7 +120,7 @@
     mo_federal_income_tax_deduction: -441
     mo_taxable_income: [31_641, 0]
     #taxsim output: 30_681
-    mo_income_tax: 1_519.84
+    mo_income_tax: 1_521.48
     #taxsim output: 1_469.64
 
 - name:  Taxsim integration test, 50k income, single parent, two children
@@ -152,7 +152,7 @@
     mo_federal_income_tax_deduction: -1_191
     mo_taxable_income: [32_391, 0, 0]
     #taxsim output: 30_681
-    mo_income_tax: 1_560.34
+    mo_income_tax: 1_561.978
     #taxsim output: 1_469.64
 
 - name:  Taxsim integration test, 50k income, single parent, three children
@@ -186,5 +186,5 @@
     mo_federal_income_tax_deduction: -1_987.35
     mo_taxable_income: [33_187.35, 0, 0, 0]
     #taxsim output: 30_681
-    mo_income_tax: 1_603.35
+    mo_income_tax: 1_604.98
     #taxsim output: 1_469.64
