@@ -1,0 +1,44 @@
+- name: People who don't qualify get $0.
+  period: 2017
+  input:
+    is_ctc_qualifying_child: false
+  output:
+    ctc_child_individual_maximum: 0
+
+- name: CTC was $1,000 pre-TCJA.
+  period: 2017
+  input:
+    is_ctc_qualifying_child: true
+  output:
+    ctc_child_individual_maximum: 1_000
+
+- name: CTC rose to $2,000 post-TCJA.
+  period: 2018
+  input:
+    is_ctc_qualifying_child: true
+  output:
+    ctc_child_individual_maximum: 2_000
+
+- name: ARP provided $3,000 to non-young children.
+  period: 2021
+  input:
+    is_ctc_qualifying_child: true
+    is_ctc_qualifying_young_child: false
+  output:
+    ctc_child_individual_maximum: 3_000
+
+- name: ARP provided $3,600 to young children.
+  period: 2021
+  input:
+    is_ctc_qualifying_child: true
+    is_ctc_qualifying_young_child: true
+  output:
+    ctc_child_individual_maximum: 3_600
+
+- name: Post-ARP CTC provided $2,000 to young and non-young children.
+  period: 2022
+  input:
+    is_ctc_qualifying_child: true
+    is_ctc_qualifying_young_child: true
+  output:
+    ctc_child_individual_maximum: 2_000
