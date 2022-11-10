@@ -2,3 +2,8 @@
   changes:
     fixed:
       - Child Tax Credit full refundability bug.
+    added:
+      - Unit tests for Child Tax Credit variables.
+      - Intermediate ARPA CTC reduction variable.
+    changed:
+      - Refactor Child Tax Credit reduction, including no longer capping at maximum.

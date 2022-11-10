@@ -13,4 +13,4 @@ class ctc(Variable):
     def formula(tax_unit, period, parameters):
         maximum_amount = tax_unit("ctc_maximum", period)
         reduction = tax_unit("ctc_reduction", period)
-        return maximum_amount - reduction
+        return max_(0, maximum_amount - reduction)
