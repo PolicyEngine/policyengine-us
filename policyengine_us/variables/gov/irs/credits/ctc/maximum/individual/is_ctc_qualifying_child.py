@@ -9,5 +9,7 @@ class is_ctc_qualifying_child(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        age = person("age", period)
-        return age <= parameters(period).gov.irs.credits.ctc.child.max_age
+        return (
+            person("age", period)
+            < parameters(period).gov.irs.credits.ctc.child.ineligible_age
+        )

@@ -1,20 +1,20 @@
-- name: Young children are those age six or under, as defined by ARPA in 2021.
+- name: Young children are those under age six, as defined by ARPA in 2021.
   period: 2021
   input:
-    age: 6
+    age: 5
   output:
     is_ctc_qualifying_young_child: true
 
-- name: Seven-year-olds aren't.
+- name: Six-year-olds aren't.
   period: 2022
   input:
-    age: 7
+    age: 6
   output:
     is_ctc_qualifying_young_child: false
 
 - name: Not defined before 2021.
   period: 2020
   input:
-    age: 6
+    age: 5
   output:
     is_ctc_qualifying_young_child: false
