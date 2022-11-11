@@ -17,13 +17,13 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         tax_unit = person.tax_unit
         mo_agi =  person('mo_adjusted_gross_income', period)
         tax_unit_mo_agi = tax_unit.sum(mo_agi)
-        taxable_social_security_benefits = tax_unit("tax_unit_taxable_social_security", period)
-        agi_in_excess_of_taxable_social_security = tax_unit_mo_agi - taxable_social_security_benefits #Equivalent to Line 3 of section A and B
+        
         filing_status = tax_unit('filing_status',period)
         p = parameters(period).gov.states.mo.tax.income.deductions
-        ss_or_ssd_allowance = p.mo_ss_or_ssd_deduction_allowance[filing_status]
-        agi_over_ss_or_ssd_allowance = max(agi_in_excess_of_taxable_social_security - ss_or_ssd_allowance, 0) #different from Sections A and B, Line 3, floor at 0.
+        ss_or_ssd_agi_allowance = p.mo_ss_or_ssd_deduction_allowance[filing_status]
+        agi_over_ss_or_ssd_allowance = max(tax_unit_mo_agi - ss_or_ssd_agi_allowance, 0) #different from Sections A and B, Line 3, floor at 0.
+        taxable_social_security_benefits = tax_unit("tax_unit_taxable_social_security", period)
         ssd_amount = person("social_security_disability", period)
-        ss_or_ssd = max(taxable_social_security_benefits, ssd_amount) #need logic for both of these being present, each spouse can claim one
+        ss_or_ssd = max(taxable_social_security_benefits, ssd_amount)
         eligible_ss_or_ssd = max(ss_or_ssd - agi_over_ss_or_ssd_allowance, 0)
         return eligible_ss_or_ssd

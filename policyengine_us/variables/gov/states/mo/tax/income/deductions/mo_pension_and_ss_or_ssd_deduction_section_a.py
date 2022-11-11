@@ -34,7 +34,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         ss_or_ssdi_exemption_threshold = p.mo_ss_or_ssdi_exemption_threshold[filing_status]
 
         ssd_amount = person("social_security_disability", period)
-        ss_or_ssd = max(taxable_social_security_benefits, ssd_amount) 
+        ss_or_ssd = max(taxable_social_security_benefits, ssd_amount) #currently assuming the spouse will take the max of ss or ssd
         eligible_ss_or_ssd = person('mo_pension_and_ss_or_ssd_deduction_section_c', period)
         
 
@@ -44,6 +44,6 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
             ss_or_ssd,)
       
         ss_less_public_pension_allowance = max(adjusted_ss_or_ssdi_value - public_pension_value, 0)
-        total_public_pensions = ss_less_public_pension_allowance - agi_over_public_pension__allowance
+        total_public_pensions = max(ss_less_public_pension_allowance - agi_over_public_pension__allowance, 0)
 
         return total_public_pensions

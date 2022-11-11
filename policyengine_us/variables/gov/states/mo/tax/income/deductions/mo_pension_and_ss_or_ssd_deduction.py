@@ -23,9 +23,9 @@ class mo_pension_and_ss_or_ssd_deduction(Variable):
         #Section A, Public Pension Amounts
         #TODO:
         #unclear reference to "See instructions if Line 3 of Section C is more than $0" here: https://dor.mo.gov/forms/MO-A_2021.pdf#page=3
-        public_pensions = person('mo_pension_and_ss_or_ssd_section_a', period)
+        public_pensions = person('mo_pension_and_ss_or_ssd_deduction_section_a', period)
         tax_unit_eligible_total_public_pensions = tax_unit.sum(public_pensions)
         # Section B, Private Pension Amounts
-        total_private_pensions =  person('mo_pension_and_ss_or_ssd_section_b', period)
+        total_private_pensions =  person('mo_pension_and_ss_or_ssd_deduction_section_b', period)
         tax_unit_total_private_pensions = tax_unit.sum(total_private_pensions)
         return tax_unit_total_private_pensions + tax_unit_eligible_total_public_pensions + tax_unit_eligible_ss_or_ssd
