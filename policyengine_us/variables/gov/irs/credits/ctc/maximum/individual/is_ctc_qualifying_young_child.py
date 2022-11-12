@@ -11,7 +11,8 @@ class is_ctc_qualifying_young_child(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        return (
-            person("age", period)
-            < parameters(period).gov.irs.credits.ctc.child.young.ineligible_age
-        )
+        dependent = person("is_tax_unit_dependent", period)
+        age = person("age", period)
+        p = parameters(period).policyengine_us.gov.irs.credits.ctc
+        qualifies_age = age <= p.child.young.ineligible_age
+        return dependent & qualifies_age

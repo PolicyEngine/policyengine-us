@@ -18,8 +18,6 @@ class ctc_maximum_without_arpa(Variable):
 
     def formula(tax_unit, period, parameters):
         ctc = parameters(period).gov.irs.credits.ctc
-        # defined_for didn't work.
-        # We only
         if not ctc.phase_out.arpa.in_effect:
             return 0
         # Calculate the increase - do this by finding the original CTC if
