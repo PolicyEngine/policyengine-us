@@ -25,7 +25,7 @@
     filing_status: JOINT
     ctc_maximum_without_arpa: 2_000
   output:
-    ctc_reduction: 500 # $10k excess above $150k ARPA threshold * 5%.
+    ctc_arpa_reduction: 500 # $10k excess above $150k ARPA threshold * 5%.
 
 - name: 10 kids, single parent, $210k income.
   period: 2021

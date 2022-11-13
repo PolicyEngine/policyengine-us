@@ -22,4 +22,8 @@ class ctc_arpa_max_addition(Variable):
         filing_status = tax_unit("filing_status", period)
         arpa_threshold = p.arpa.threshold[filing_status]
         original_threshold = tax_unit("ctc_phase_out_threshold", period)
-        return (original_threshold - arpa_threshold) * p.arpa.rate
+        cap = (original_threshold - arpa_threshold) * p.arpa.rate
+        ctc_maximum = tax_unit("ctc_maximum", period)
+        ctc_maximum_without_arpa = tax_unit("ctc_maximum_without_arpa", period)
+        arpa_increase = ctc_maximum - ctc_maximum_without_arpa
+        return min_(cap, arpa_increase)
