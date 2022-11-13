@@ -15,9 +15,11 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
 
     def formula(person, period, parameters):
         #NOTE: Excludes military pensions, per: https://dor.mo.gov/forms/Military%20Reference%20Guide.pdf#page=11
-        mo_agi =  person('mo_adjusted_gross_income', period)
+        #mo_agi =  person('mo_adjusted_gross_income', period)
         tax_unit = person.tax_unit
-        tax_unit_mo_agi = tax_unit.sum(mo_agi)
+        #tax_unit_mo_agi = tax_unit.sum(mo_agi)
+        tax_unit_mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
+        print(tax_unit_mo_agi)
         taxable_social_security_benefits = person("taxable_social_security", period)
         agi_in_excess_of_taxable_social_security = tax_unit_mo_agi - taxable_social_security_benefits #Equivalent to Line 3 of section A and B
         filing_status = tax_unit('filing_status',period)
