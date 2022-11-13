@@ -1,7 +1,8 @@
-- bump: patch
+- bump: minor
   changes:
     fixed:
       - Child Tax Credit full refundability bug.
+      - Child Tax Credit now steps down rather than phases out.
     added:
       - Unit tests for Child Tax Credit variables.
       - Intermediate ARPA CTC reduction variable.
