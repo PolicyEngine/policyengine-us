@@ -14,6 +14,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
+        #NOTE: Excludes military pensions, per: https://dor.mo.gov/forms/Military%20Reference%20Guide.pdf#page=11
         mo_agi =  person('mo_adjusted_gross_income', period)
         tax_unit = person.tax_unit
         tax_unit_mo_agi = tax_unit.sum(mo_agi)

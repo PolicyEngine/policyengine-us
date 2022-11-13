@@ -1,0 +1,252 @@
+- name:  70k income, childless couple, evenly split income, one with SS, one with public pension
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        taxable_social_security: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        filing_status: JOINT
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [35_000, 35_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 0]
+    mo_pension_and_ss_or_ssd_deduction: 10_000
+
+- name:  70k income, childless couple, evenly split income, one with SS, one with SSD
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        taxable_social_security: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        social_security_disability: 10_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [35_000, 25_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction: 20_000
+
+- name:  70k income, childless couple, evenly split income, both with SS and SSD
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        taxable_social_security: 5_000
+        social_security_disability: 6_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        taxable_social_security: 6_000
+        social_security_disability: 5_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [30_000, 31_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [6_000, 6_000]
+    mo_pension_and_ss_or_ssd_deduction: 12_000
+
+- name:  70k income, childless couple, evenly split income, one with SS, one with private pension
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        taxable_social_security: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        pension_income: 10_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [35_000, 35_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 0]
+    mo_pension_and_ss_or_ssd_deduction: 10_000
+
+- name:  90k income, childless couple, evenly split income, both with public + private pensions, and SS
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        taxable_social_security: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        taxable_social_security: 10_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [45_000, 45_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction: 20_000
+
+- name:  90k income, childless couple, evenly split income, both with public + private pensions, and SSD 
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        social_security_disability: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        social_security_disability: 10_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [52_000, 35_000]
+    # mo_pension_and_ss_or_ssd_deduction_section_a: []
+    # mo_pension_and_ss_or_ssd_deduction_section_b: []
+    # mo_pension_and_ss_or_ssd_deduction_section_c: []
+    # mo_pension_and_ss_or_ssd_deduction:
+
+- name:  90k income, childless couple, evenly split income, both with public + private pensions, one with SS and the other with SSD 
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        taxable_social_security: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        social_security_disability: 10_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [45_000, 35_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction: [20_000]
+
+- name:  100k income, childless couple, evenly split income, both with public + private pensions, both with SS and SSD 
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 78
+        employment_income: 25_000
+        is_tax_unit_head: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        taxable_social_security: 11_000
+        social_security_disability: 10_000
+      person2:
+        age: 72
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+        public_pension_income: 5_000
+        pension_income: 5_000
+        taxable_social_security: 10_000
+        social_security_disability: 11_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    mo_adjusted_gross_income: [46_000, 45_000]
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [11_000, 11_000]
+    mo_pension_and_ss_or_ssd_deduction: 22_000
