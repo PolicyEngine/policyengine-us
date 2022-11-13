@@ -25,5 +25,5 @@ class ctc_arpa_reduction(Variable):
         arpa_threshold = p.threshold[filing_status]
         agi = tax_unit("adjusted_gross_income", period)
         excess = max_(0, agi - arpa_threshold)
-        increments = p.increment * ceil(excess / p.increment)
+        increments = ceil(excess / p.increment)
         return increments * p.amount

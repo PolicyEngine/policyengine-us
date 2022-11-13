@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import ceil
 
 
 class ctc_reduction(Variable):
@@ -18,8 +19,9 @@ class ctc_reduction(Variable):
 
         # Start with the normal phase-out.
         income = tax_unit("adjusted_gross_income", period)
-        ctc = parameters(period).gov.irs.credits.ctc
+        p = parameters(period).gov.irs.credits.ctc.phase_out
         phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
-        income_over_threshold = max_(0, income - phase_out_threshold)
-        reduction = ctc.phase_out.rate * income_over_threshold
-        return reduction + tax_unit("ctc_arpa_reduction", period)
+        excess = max_(0, income - phase_out_threshold)
+        increments = ceil(excess / p.increment)
+        base_reduction = increments * p.amount
+        return base_reduction + tax_unit("ctc_arpa_reduction", period)
