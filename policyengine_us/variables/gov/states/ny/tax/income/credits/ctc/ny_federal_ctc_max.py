@@ -14,7 +14,8 @@ class ny_federal_ctc_max(Variable):
         ctc = parameters(
             "2017-01-01"
         ).gov.irs.credits.ctc  # Uses pre-TCJA parameters
-        count_children = add(tax_unit, period, ["is_ctc_qualifying_child"])
+        # TODO: Count qualifying children using pre-TCJA rules (e.g. for age).
+        count_children = tax_unit("ctc_qualifying_children", period)
         filing_status = tax_unit("filing_status", period)
         maximum_amount = ctc.child.amount * count_children
         phase_out_threshold = ctc.phase_out.threshold[filing_status]

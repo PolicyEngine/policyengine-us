@@ -1,11 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.irs.credits.ctc.maximum.individual.ctc_child_individual_maximum import (
-    ctc_child_individual_maximum,
-)
-from policyengine_us.variables.gov.irs.credits.ctc.maximum.individual.ctc_adult_individual_maximum import (
-    ctc_adult_individual_maximum,
-)
-from policyengine_us.parameters import default_parameters
 
 
 class ctc_maximum_without_arpa(Variable):

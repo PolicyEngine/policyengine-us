@@ -55,9 +55,7 @@ class ny_federal_actc(Variable):
         )
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
-        qualifying_children = add(
-            tax_unit, period, ["is_ctc_qualifying_child"]
-        )
+        qualifying_children = tax_unit("ctc_qualifying_children", period)
         tax_increase = where(
             qualifying_children
             < ctc.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,

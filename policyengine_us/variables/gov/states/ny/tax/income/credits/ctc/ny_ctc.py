@@ -19,7 +19,9 @@ class ny_ctc(Variable):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         # Qualifying children.
         person = tax_unit.members
-        qualifies_for_federal_ctc = person("is_ctc_qualifying_child", period)
+        qualifies_for_federal_ctc = (
+            person("ctc_child_individual_maximum", period) > 0
+        )
         age = person("age", period)
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
         qualifying_children = tax_unit.sum(qualifies)
