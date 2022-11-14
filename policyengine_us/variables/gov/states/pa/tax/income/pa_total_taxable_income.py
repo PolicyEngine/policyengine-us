@@ -15,5 +15,4 @@ class pa_total_taxable_income(Variable):
         p = parameters(period).gov.states.pa.tax.income
         sources = p.nontaxable_income_sources
         pa_nontaxable_income = add(tax_unit, period, sources)
-        pa_agi = us_agi - pa_nontaxable_income
-        return pa_agi
+        return us_agi - pa_nontaxable_income
