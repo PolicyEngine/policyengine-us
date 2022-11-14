@@ -21,9 +21,9 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         filing_status = tax_unit('filing_status',period)
         p = parameters(period).gov.states.mo.tax.income.deductions
         ss_or_ssd_agi_allowance = p.mo_ss_or_ssd_deduction_allowance[filing_status]
-        agi_over_ss_or_ssd_allowance = max(tax_unit_mo_agi - ss_or_ssd_agi_allowance, 0) #different from Sections A and B, Line 3, floor at 0.
-        taxable_social_security_benefits = tax_unit("tax_unit_taxable_social_security", period)
+        agi_over_ss_or_ssd_allowance = max_(tax_unit_mo_agi - ss_or_ssd_agi_allowance, 0) #different from Sections A and B, Line 3, floor at 0.
+        taxable_social_security_benefits = person("taxable_social_security", period)
         ssd_amount = person("social_security_disability", period)
-        ss_or_ssd = max(taxable_social_security_benefits, ssd_amount)
-        eligible_ss_or_ssd = max(ss_or_ssd - agi_over_ss_or_ssd_allowance, 0)
+        ss_or_ssd = max_(taxable_social_security_benefits, ssd_amount)
+        eligible_ss_or_ssd = max_(ss_or_ssd - agi_over_ss_or_ssd_allowance, 0)
         return eligible_ss_or_ssd
