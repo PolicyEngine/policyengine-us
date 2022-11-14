@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.177.1] - 2022-11-14 20:57:48
+
+### Fixed
+
+- Missing 2021 NY supplemental income tax parameters.
+
 ## [0.177.0] - 2022-11-08 12:25:49
 
 ### Changed
@@ -2080,6 +2086,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.177.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.0...0.177.1
 [0.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.176.0...0.177.0
 [0.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.175.0...0.176.0
 [0.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.174.2...0.175.0
