@@ -42,6 +42,7 @@ jobs:
           committer_name: Github Actions[bot]
           author_name: Github Actions[bot]
           message: Update PolicyEngine US
+          github_token: ${{ secrets.POLICYENGINE_GITHUB }}
   Test:
     runs-on: ${{ matrix.os }}
     if: |
