@@ -88,6 +88,18 @@
     # 1: Enter the amount from line 18 of your Form 1040.
     #    This is tax (https://www.irs.gov/pub/irs-pdf/f1040.pdf#page=2)
     income_tax_before_credits: 37_361 # From taxsim.app
+    # 2: Add the following amounts (if applicable) from:
+    #    Schedule 3, line 1 (foreign tax credit per https://www.irs.gov/pub/irs-pdf/f1040s3.pdf)
+    #    Schedule 3, line 2 (CDCTC)
+    #    Schedule 3, line 3 (Education credits)
+    #    Schedule 3, line 4 (Retirement savings contributions credit)
+    #    Schedule 3, line 61 (?)
+    #    Form 5695, line 30 (Nonbusiness energy property credit https://www.irs.gov/pub/irs-pdf/f5695.pdf)
+    #    Form 8910, line 15 (Personal use part of alternative motor vehicle credit https://www.irs.gov/pub/irs-access/f8910_accessible.pdf)
+    #    Form 8936, line 23 (Personal part of plug in vehicle credit https://www.irs.gov/pub/irs-pdf/f8936.pdf)
+    #    Schedule R, line 22 (Credit for elderly or disabled https://www.irs.gov/pub/irs-pdf/f1040sr.pdf)
+    
+
 
 
     

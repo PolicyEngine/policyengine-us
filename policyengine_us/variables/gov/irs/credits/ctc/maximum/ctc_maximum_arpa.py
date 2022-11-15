@@ -6,7 +6,9 @@ class ctc_maximum_arpa(Variable):
     entity = TaxUnit
     label = "Maximum CTC for ARPA"
     unit = USD
-    documentation = "Maximum value of the Child Tax Credit, before phase-out."
+    documentation = (
+        "Maximum value of the Child Tax Credit, before phase-out, under ARPA."
+    )
     definition_period = YEAR
 
-    formula = sum_of_variables(["ctc_individual_maximum"])
+    formula = sum_of_variables(["ctc_individual_maximum_arpa"])
