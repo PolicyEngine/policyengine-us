@@ -1,4 +1,4 @@
-- name: Single parent of 10 children aged 6 to 17, $160k income during ARP.
+- name: Single parent of 10 children aged 6 to 17, $200k income during ARP.
   period: 2021
   absolute_error_margin: 0
   input:
@@ -6,7 +6,7 @@
       parent:
         age: 40
         filing_status: SINGLE
-        employment_income: 160_000
+        employment_income: 200_000
       child1:
         age: 6
       child2:
@@ -32,13 +32,13 @@
     # https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf
     # Line 1: Line 11 from Form 1040
     # This is AGI per https://www.irs.gov/pub/irs-pdf/f1040.pdf
-    adjusted_gross_income: 160_000
+    adjusted_gross_income: 200_000
     # Line 2: Puerto Rico income = $0
     # Line 3: Line 1 plus Line 2 = $160,000
     # Line 4a: Kids under 18 = 10
-    is_ctc_qualifying_child: [True, True, True, True, True, True, True, True, True, True]
+    is_ctc_qualifying_child: [False, True, True, True, True, True, True, True, True, True, True]
     # Line 4b: Kids under 6 = 0
-    is_ctc_qualifying_young_child: [False, False, False, False, False, False, False, False, False, False]
+    is_ctc_qualifying_young_child: [False, False, False, False, False, False, False, False, False, False, False]
     # Line 4c: 4a - 4b = 10
     # Line 5 worksheet
     # https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4
@@ -53,5 +53,41 @@
     # Line 7: Enter smaller of lines 5 and 6 = $4,375
     ctc_arpa_max_addition: 4_375
     # Line 8: Enter amount from filing status. HOH = $112,500.
-    # Line 9: Enter smaller of lines 3 and 8 = $160,000
+    # Line 9: Subtract line 8 from AGI, rounding to next multiple of $1,000
+    # $200,000 - $112,500 = $87,500 ~ $88,000
+    # Line 10: Multiply line 9 by 5% = $4,400
+    # Line 11: Enter smaller of lines 7 and 10 = $4,375
+    ctc_arpa_reduction: 4_375
+    # Line 12: Line 3 minus Line 11 = $27,600
+    # BACK TO SCHEDULE 8812
+    # Line 5: Line 12 from Line 5 worksheet = $27,600
+    # Line 6: Other dependents (we don't model SSNs, so just adult dependents)
+    # Line 7: Multiply line 6 by $500 = $0
+    ctc_adult_individual_maximum: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Line 8: Add lines 5 and 7.
+    #         27,600 + 0 = $27,600
+    # Line 9: Enter $400,000 for married jointly, $200,000 for all others.
+    #         200_000
+    # Line 10: Subtract line 9 from line 3.
+    # If zero less, enter 0.
+    # If more than zero and not a multiple of $1,000, enter the next multiple of $1,000.
+    # 200_000 - 200_000 = 0
+    # Line 11: Multiply line 10 by 5%.
+    #          0
+    # Line 12: Subtract line 11 from line 8. If zero or less, enter 0.
+    #          27,600 - 0 = $27,600
+    # Line 13: Lived in the US for more than half the year.
+    #          True - move to Part I-B.
+    # Line 14a: Enter the smaller of line 7 or line 12.
+    #           min(0, 27,600) = 0
+    # Line 14b: Subtract line 14a from line 12.
+    #           27,600 - 0 = 27,600
+    # Line 14c: If line 14a is zero, enter 0. Otherwise, enter the amount from
+    #           the Credit Limit Worksheet A.
+    # CREDIT LIMIT WORKSHEET A: Page 5 of 8812 instructions.
+    # 1: Enter the amount from line 18 of your Form 1040.
+    #    This is tax (https://www.irs.gov/pub/irs-pdf/f1040.pdf#page=2)
+    income_tax_before_credits: 37_361 # From taxsim.app
+
+
     
