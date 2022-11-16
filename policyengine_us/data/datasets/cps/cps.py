@@ -228,7 +228,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
 
 
 def add_personal_income_variables(
-        cps: h5py.File, person: DataFrame, year: int
+    cps: h5py.File, person: DataFrame, year: int
 ):
     """Add income variables.
 
@@ -239,10 +239,9 @@ def add_personal_income_variables(
     """
     # get income imputation parameters
     yamlfilename = os.path.join(
-        os.path.abspath(os.path.dirname(__file__)),
-        'income_parameters.yaml'
+        os.path.abspath(os.path.dirname(__file__)), "income_parameters.yaml"
     )
-    with open(yamlfilename, 'r', encoding='utf-8') as yamlfile:
+    with open(yamlfilename, "r", encoding="utf-8") as yamlfile:
         p = yaml.safe_load(yamlfile)
     assert isinstance(p, dict)
 
