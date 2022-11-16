@@ -27,6 +27,7 @@ def taxsim():
         CPS, 2022, None, True, False
     ).set_index("taxsim_taxsimid")
 
+
 @pytest.fixture(scope="module")
 def sim():
     yield Microsimulation()
