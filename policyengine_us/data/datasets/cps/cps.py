@@ -232,22 +232,46 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
         cps (h5py.File): The CPS dataset file.
         person (DataFrame): The CPS person table.
     """
+    # Following parameters should eventually be put in the data/parameter tree
+    taxable_interest_fraction = 1.000
+    # arbitrary assumption
+    qualified_dividend_fraction = 0.448  # SOI value for 2018?
+    # reference:
+    #   title: SOI Tax Stats - Individual Statistical Tables by
+    #                          Size of Adjusted Gross Income | IRS.GOV
+    #   href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    taxable_pension_fraction = 1.000
+    # arbitrary assumption
+    long_term_gains_fraction = 1.000
+    # arbitrary assumption
+
     cps["employment_income"] = person.WSAL_VAL
-    cps["interest_income"] = person.INT_VAL
+    cps["taxable_interest_income"] = person.INT_VAL * taxable_interest_fraction
+    cps["tax_exempt_interest_income"] = person.INT_VAL * (
+        1 - taxable_interest_fraction
+    )
     cps["self_employment_income"] = person.SEMP_VAL
     cps["farm_income"] = person.FRSE_VAL
-    cps["dividend_income"] = person.DIV_VAL
+    cps["qualified_dividend_income"] = person.DIV_VAL * (
+        qualified_dividend_fraction
+    )
+    cps["non_qualified_dividend_income"] = person.DIV_VAL * 0.448
     cps["rental_income"] = person.RNT_VAL
     cps["social_security"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
-    cps["pension_income"] = person.PNSN_VAL + person.ANN_VAL
+    cps_pensions = person.PNSN_VAL + person.ANN_VAL
+    cps["taxable_pension_income"] = cps_pensions * taxable_pension_fraction
+    cps["tax_exempt_pension_income"] = cps_pensions * (
+        1 - taxable_pension_fraction
+    )
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
-    cps[
-        "long_term_capital_gains"
-    ] = person.CAP_VAL  # Assume all CPS capital gains are long-term
+    cps["long_term_capital_gains"] = person.CAP_VAL * long_term_gains_fraction
+    cps["short_term_capital_gains"] = person.CAP_VAL * (
+        1 - long_term_gains_fraction
+    )
     cps["receives_wic"] = person.WICYN == 1
 
 
