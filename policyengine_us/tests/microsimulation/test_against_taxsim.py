@@ -7,7 +7,6 @@ from policyengine_us.tools.taxsim.generate_taxsim_tests import (
 import numpy as np
 import pytest
 import pandas as pd
-import platform
 
 # Disable warnings
 import warnings
@@ -19,22 +18,20 @@ STATES = ["MD", "MA", "NY", "WA"]
 DISTANCE = 100
 MINIMUM_PERCENT_CLOSE = 0
 
-if os.name != "nt":
 
-    @pytest.fixture(scope="module")
-    def taxsim():
-        taxsim = TaxSim35()
+@pytest.fixture(scope="module")
+def taxsim():
+    taxsim = TaxSim35()
 
-        yield taxsim.generate_from_microsimulation(
-            CPS, 2022, None, True, False
-        ).set_index("taxsim_taxsimid")
+    yield taxsim.generate_from_microsimulation(
+        CPS, 2022, None, True, False
+    ).set_index("taxsim_taxsimid")
 
-    @pytest.fixture(scope="module")
-    def sim():
-        yield Microsimulation()
+@pytest.fixture(scope="module")
+def sim():
+    yield Microsimulation()
 
 
-@pytest.mark.skipif(True, reason="This test temporarily suspended.")
 def test_federal_tax_against_taxsim(sim, taxsim):
     tax = sim.calc("income_tax")
     tax.index = sim.calc("tax_unit_id").values
@@ -48,7 +45,6 @@ def test_federal_tax_against_taxsim(sim, taxsim):
     assert percent_close > MINIMUM_PERCENT_CLOSE
 
 
-@pytest.mark.skipif(True, reason="This test temporarily suspended.")
 @pytest.mark.parametrize("state", STATES)
 def test_state_income_tax_against_taxsim(state: str, sim, taxsim):
     in_state = sim.calc("tax_unit_state").values == state
