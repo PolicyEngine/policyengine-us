@@ -6,6 +6,8 @@ from policyengine_us.data.storage import policyengine_us_MICRODATA_FOLDER
 from pandas import DataFrame, Series
 import numpy as np
 import pandas as pd
+import os
+import yaml
 
 
 class CPS(PublicDataset):
@@ -73,7 +75,7 @@ class CPS(PublicDataset):
 
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
         add_personal_variables(cps, person)
-        add_personal_income_variables(cps, person)
+        add_personal_income_variables(cps, person, year)
         add_spm_variables(cps, spm_unit)
         add_household_variables(cps, household)
 
@@ -225,51 +227,60 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     cps["has_marketplace_health_coverage"] = person.MRK == 1
 
 
-def add_personal_income_variables(cps: h5py.File, person: DataFrame):
+def add_personal_income_variables(
+        cps: h5py.File, person: DataFrame, year: int
+):
     """Add income variables.
 
     Args:
         cps (h5py.File): The CPS dataset file.
         person (DataFrame): The CPS person table.
+        year (int): The CPS year
     """
-    # Following parameters should eventually be put in the data/parameter tree
-    # these simple average fractions are calculated from information at:
-    #   title: SOI Tax Stats - Individual Statistical Tables by
-    #                          Size of Adjusted Gross Income | IRS.GOV
-    #   href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
-    taxable_interest_fraction = 0.68  # SOI 2020 data
-    qualified_dividend_fraction = 0.448  # SOI 2018 data
-    taxable_pension_fraction = 1.00  # no SOI data, so arbitrary assumption
-    long_term_gains_fraction = 0.88  # SOI 2012 data
+    # get income imputation parameters
+    yamlfilename = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)),
+        'income_parameters.yaml'
+    )
+    with open(yamlfilename, 'r', encoding='utf-8') as yamlfile:
+        p = yaml.safe_load(yamlfile)
+    assert isinstance(p, dict)
 
+    # assign CPS variables
     cps["employment_income"] = person.WSAL_VAL
-    cps["taxable_interest_income"] = person.INT_VAL * taxable_interest_fraction
+    cps["taxable_interest_income"] = person.INT_VAL * (
+        p["taxable_interest_fraction"][year]
+    )
     cps["tax_exempt_interest_income"] = person.INT_VAL * (
-        1 - taxable_interest_fraction
+        1 - p["taxable_interest_fraction"][year]
     )
     cps["self_employment_income"] = person.SEMP_VAL
     cps["farm_income"] = person.FRSE_VAL
     cps["qualified_dividend_income"] = person.DIV_VAL * (
-        qualified_dividend_fraction
+        p["qualified_dividend_fraction"][year]
     )
     cps["non_qualified_dividend_income"] = person.DIV_VAL * (
-        1 - qualified_dividend_fraction
+        1 - p["qualified_dividend_fraction"][year]
     )
     cps["rental_income"] = person.RNT_VAL
     cps["social_security"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
-    cps["taxable_pension_income"] = cps_pensions * taxable_pension_fraction
+    cps["taxable_pension_income"] = cps_pensions * (
+        p["taxable_pension_fraction"][year]
+    )
     cps["tax_exempt_pension_income"] = cps_pensions * (
-        1 - taxable_pension_fraction
+        1 - p["taxable_pension_fraction"][year]
     )
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
-    cps["long_term_capital_gains"] = person.CAP_VAL * long_term_gains_fraction
+    cps["long_term_capital_gains"] = person.CAP_VAL * (
+        p["long_term_capgain_fraction"][year]
+    )
     cps["short_term_capital_gains"] = person.CAP_VAL * (
-        1 - long_term_gains_fraction
+        1 - p["long_term_capgain_fraction"][year]
     )
     cps["receives_wic"] = person.WICYN == 1
 
