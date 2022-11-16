@@ -233,17 +233,14 @@ def add_personal_income_variables(cps: h5py.File, person: DataFrame):
         person (DataFrame): The CPS person table.
     """
     # Following parameters should eventually be put in the data/parameter tree
-    taxable_interest_fraction = 1.000
-    # arbitrary assumption
-    qualified_dividend_fraction = 0.448  # SOI value for 2018?
-    # reference:
+    # these simple average fractions are calculated from information at:
     #   title: SOI Tax Stats - Individual Statistical Tables by
     #                          Size of Adjusted Gross Income | IRS.GOV
     #   href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
-    taxable_pension_fraction = 1.000
-    # arbitrary assumption
-    long_term_gains_fraction = 1.000
-    # arbitrary assumption
+    taxable_interest_fraction = 0.68  # SOI 2020 data
+    qualified_dividend_fraction = 0.448  # SOI 2018 data
+    taxable_pension_fraction = 1.00  # no SOI data, so arbitrary assumption
+    long_term_gains_fraction = 0.88  # SOI 2012 data
 
     cps["employment_income"] = person.WSAL_VAL
     cps["taxable_interest_income"] = person.INT_VAL * taxable_interest_fraction
