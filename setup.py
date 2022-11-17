@@ -37,7 +37,7 @@ setup(
         "pyyaml",
         "requests",
         "synthimpute",
-        "tables",
+        "tables==3.6.1",
         "tqdm",
         "click>=8.0.0",
         "tabulate",
