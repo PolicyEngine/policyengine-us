@@ -53,6 +53,7 @@
     households:
       household:
         members: [person1, person2, person3, person4]
+        state_code: TX  # suppress all state income tax calculations
   output:  # expected results from online TAXSIM35 10/24/22 version
     taxsim_tfica: 11173.60
     income_tax: 29499.40
