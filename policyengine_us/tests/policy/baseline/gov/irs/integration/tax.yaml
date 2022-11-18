@@ -59,6 +59,7 @@
     households:
       household:
         members: [person1]
+        state_code: TX  # suppress all state income tax calculations
   output:  # expected results from USI-Tax-Analyzer 2.35.0 version
     taxsim_tfica: 0.00
     income_tax: 1923.00
