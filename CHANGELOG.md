@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.178.5] - 2022-11-19 21:33:23
+
+### Fixed
+
+- MA income tax Part A AGI calculation.
+
 ## [0.178.4] - 2022-11-19 21:10:44
 
 ### Fixed
@@ -2128,6 +2134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.178.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.4...0.178.5
 [0.178.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.3...0.178.4
 [0.178.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.2...0.178.3
 [0.178.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.1...0.178.2
