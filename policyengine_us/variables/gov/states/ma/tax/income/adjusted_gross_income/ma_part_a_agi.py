@@ -70,7 +70,7 @@ class ma_part_a_agi(Variable):
             0, long_term_capital_gains_on_collectibles
         )
         long_term_gains_on_collectibles_deduction = (
-            tax.capital_gains.long_term_deduction
+            tax.capital_gains.long_term_collectibles_deduction
             * nonnegative_long_term_capital_gains_on_collectibles
         )
 

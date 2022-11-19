@@ -16,6 +16,6 @@ class capital_gains_28_percent_rate_gain(Variable):
     formula = sum_of_variables(
         [
             "long_term_capital_gains_on_collectibles",
-            "long_term_capital_gains_like_collectibles",
+            "long_term_capital_gains_on_small_business_stock",
         ]
     )

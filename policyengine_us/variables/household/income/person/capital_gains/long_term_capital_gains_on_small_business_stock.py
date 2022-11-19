@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class long_term_capital_gains_like_collectibles(Variable):
+class long_term_capital_gains_on_small_business_stock(Variable):
     value_type = float
     entity = Person
     label = "Long-term capital gains on small business stock sales, etc"
