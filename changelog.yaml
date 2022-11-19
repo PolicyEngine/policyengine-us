@@ -1762,3 +1762,8 @@
     fixed:
     - Absence of non-refundable American Opportunity Credit calculation.
   date: 2022-11-19 21:07:36
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect inclusion of tax-exempt pension income in US AGI.
+  date: 2022-11-19 21:10:44
