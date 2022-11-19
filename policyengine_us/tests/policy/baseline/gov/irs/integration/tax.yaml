@@ -69,3 +69,35 @@
     refundable_american_opportunity_credit: 1000.0
     rrc_arpa: 1400.0
     income_tax: 3167.5
+
+- name: Tax unit with just tax-exempt interest and social security as income
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 70
+        tax_exempt_interest_income: 50000
+        social_security: 60000
+        ssi: 0  # not in USI-Tax-Analyzer
+        state_supplement: 0  # not in USI-Tax-Analyzer
+        wic: 0  # not in USI-Tax-Analyzer
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in USI-Tax-Analyzer
+        tanf: 0  # not in USI-Tax-Analyzer
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in USI-Tax-Analyzer
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # suppress all state income tax calculations
+  output:  # expected results from USI-Tax-Analyzer 2.35.0 version
+    taxsim_tfica: 0.00
+    income_tax: 1923.00
