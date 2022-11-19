@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.178.0] - 2022-11-19 20:41:19
+
+### Added
+
+- Simple splitting of CPS income variables into PolicyEngine-US variables.
+
 ## [0.177.3] - 2022-11-15 05:45:33
 
 ### Added
@@ -2098,6 +2104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.3...0.178.0
 [0.177.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.2...0.177.3
 [0.177.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.1...0.177.2
 [0.177.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.0...0.177.1
