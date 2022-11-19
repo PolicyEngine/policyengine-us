@@ -32,6 +32,44 @@
     cdcc: 1_200.00
     income_tax: 55_347.00
 
+- name: Simplified tax unit with recid 99970 from m21.ita.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 27
+        ssi: 0  # not in USI-Tax-Analyzer
+        state_supplement: 0  # not in USI-Tax-Analyzer
+        wic: 0  # not in USI-Tax-Analyzer
+        employment_income: 64000
+        qualified_tuition_expenses: 11000
+        is_eligible_for_american_opportunity_credit: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in USI-Tax-Analyzer
+        tanf: 0  # not in USI-Tax-Analyzer
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in USI-Tax-Analyzer
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # skip all state income tax calculations'
+  output:  # expected results from USI-Tax-Analyzer 2.35.0 version
+    taxsim_tfica: 4896.00
+    income_tax_before_credits: 7067.5
+    american_opportunity_credit: 2500.0
+    non_refundable_american_opportunity_credit: 1500.0
+    refundable_american_opportunity_credit: 1000.0
+    rrc_arpa: 1400.0
+    income_tax: 3167.5
+
 - name: Tax unit with just tax-exempt interest and social security as income
   absolute_error_margin: 0.01
   period: 2021

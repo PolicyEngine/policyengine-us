@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.178.5] - 2022-11-19 21:33:23
+
+### Fixed
+
+- MA income tax Part A AGI calculation.
+
+## [0.178.4] - 2022-11-19 21:10:44
+
+### Fixed
+
+- Incorrect inclusion of tax-exempt pension income in US AGI.
+
+## [0.178.3] - 2022-11-19 21:07:36
+
+### Fixed
+
+- Absence of non-refundable American Opportunity Credit calculation.
+
+## [0.178.2] - 2022-11-19 21:01:42
+
+### Fixed
+
+- Inability of data tests to work without a policyengine_us package.
+
+## [0.178.1] - 2022-11-19 20:54:31
+
+### Fixed
+
+- Calculation of dividend income from qualified and non-qualified.
+
+## [0.178.0] - 2022-11-19 20:41:19
+
+### Added
+
+- Simple splitting of CPS income variables into PolicyEngine-US variables.
+
 ## [0.177.3] - 2022-11-15 05:45:33
 
 ### Added
@@ -2098,6 +2134,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.178.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.4...0.178.5
+[0.178.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.3...0.178.4
+[0.178.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.2...0.178.3
+[0.178.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.1...0.178.2
+[0.178.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.0...0.178.1
+[0.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.3...0.178.0
 [0.177.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.2...0.177.3
 [0.177.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.1...0.177.2
 [0.177.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.0...0.177.1

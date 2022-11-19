@@ -36,12 +36,10 @@ class ma_part_a_agi(Variable):
                 short_term_capital_loss,
             ),
         )
-
         long_term_capital_gains = add(
             tax_unit, period, ["long_term_capital_gains"]
         )
         long_term_capital_loss = max_(0, -long_term_capital_gains)
-        nonnegative_long_term_capital_gains = max_(0, long_term_capital_gains)
 
         long_term_loss_against_short_term_gain = min_(
             long_term_capital_loss,
@@ -65,15 +63,21 @@ class ma_part_a_agi(Variable):
             ),
         )
 
-        long_term_gains_deduction = (
-            tax.capital_gains.long_term_deduction
-            * nonnegative_long_term_capital_gains
+        long_term_capital_gains_on_collectibles = add(
+            tax_unit, period, ["long_term_capital_gains_on_collectibles"]
+        )
+        nonnegative_long_term_capital_gains_on_collectibles = max_(
+            0, long_term_capital_gains_on_collectibles
+        )
+        long_term_gains_on_collectibles_deduction = (
+            tax.capital_gains.long_term_collectibles_deduction
+            * nonnegative_long_term_capital_gains_on_collectibles
         )
 
         deductions = (
             short_term_loss_against_interest_dividends
             + long_term_loss_against_interest_dividends
             + long_term_loss_against_short_term_gain
-            + long_term_gains_deduction
+            + long_term_gains_on_collectibles_deduction
         )
         return max_(0, part_a_gross_income - deductions)
