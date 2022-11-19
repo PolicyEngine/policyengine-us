@@ -6,9 +6,9 @@ class long_term_capital_gains_on_collectibles(Variable):
     entity = Person
     label = "Long-term capital gains on collectibles"
     unit = USD
-    documentation = "The sum of all gains on collectibles made from (profitable) sales of assets held for more than one year."
+    documentation = "Portion of capital_gains_28_percent_rate_gain associated with collectibles."
     definition_period = YEAR
     reference = dict(
-        title="IRS Topic No. 409 Capital Gains and Losses",
-        href="https://www.irs.gov/taxtopics/tc409",
+        title="26 U.S. Code § 1(h)(4)",
+        href="https://www.law.cornell.edu/uscode/text/26/1#h_4",
     )
