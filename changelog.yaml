@@ -1752,3 +1752,8 @@
     fixed:
     - Calculation of dividend income from qualified and non-qualified.
   date: 2022-11-19 20:54:31
+- bump: patch
+  changes:
+    fixed:
+    - Inability of data tests to work without a policyengine_us package.
+  date: 2022-11-19 21:01:42

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.178.2] - 2022-11-19 21:01:42
+
+### Fixed
+
+- Inability of data tests to work without a policyengine_us package.
+
 ## [0.178.1] - 2022-11-19 20:54:31
 
 ### Fixed
@@ -2110,6 +2116,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.178.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.1...0.178.2
 [0.178.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.0...0.178.1
 [0.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.3...0.178.0
 [0.177.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.2...0.177.3
