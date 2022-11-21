@@ -41,7 +41,7 @@ class ma_part_b_taxable_income_exemptions(Variable):
         )
         medical_dental_exemption = itemizes * federal_medical_expense_deduction
         return (
-            +personal_exemptions
+            personal_exemptions
             + dependent_exemption
             + aged_exemption
             + blind_exemption

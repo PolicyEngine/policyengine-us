@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ma_part_a_taxable_capital_gains_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA Part A taxable income from capital gains"
+    label = "MA Part A taxable income from short-term capital gains"
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
