@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ma_part_a_taxable_interest_dividend_income(Variable):
+class ma_part_a_taxable_dividend_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "MA Part A taxable income from dividends"
