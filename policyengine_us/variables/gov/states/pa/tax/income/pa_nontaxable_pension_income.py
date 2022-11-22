@@ -11,6 +11,6 @@ class pa_nontaxable_pension_income(Variable):
     reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=8"
 
     def formula(person, period, parameters):
-        age = person("age", period)
+        retired = person("is_retired", period)
         us_taxable_pension = person("taxable_pension_income", period)
-        return where(age >= 65, us_taxable_pension, 0)
+        return where(retired, us_taxable_pension, 0)
