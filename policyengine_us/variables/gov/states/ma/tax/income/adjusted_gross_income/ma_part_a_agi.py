@@ -21,8 +21,8 @@ class ma_part_a_agi(Variable):
         nonnegative_short_term_capital_gains = max_(
             0, short_term_capital_gains
         )
-        interest_and_dividends = (
-            part_a_gross_income - nonnegative_short_term_capital_gains
+        interest_and_dividends = add(
+            tax_unit, period, ["taxable_interest_income", "dividend_income"]
         )
 
         tax = parameters(period).gov.states.ma.tax.income
