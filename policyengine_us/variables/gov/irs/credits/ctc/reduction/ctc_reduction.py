@@ -23,5 +23,4 @@ class ctc_reduction(Variable):
         phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
         excess = max_(0, income - phase_out_threshold)
         increments = ceil(excess / p.increment)
-        base_reduction = increments * p.amount
-        return base_reduction + tax_unit("ctc_arpa_reduction", period)
+        return increments * p.amount

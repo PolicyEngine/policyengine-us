@@ -19,7 +19,6 @@ class ctc_arpa_max_addition(Variable):
         # defined_for didn't work.
         if not p.arpa.in_effect:
             return 0
-        cap = tax_unit("ctc_arpa_addition_cap", period)
         # Do not use ctc_maximum, which includes adult dependents.
         ctc_maximum_base = add(
             tax_unit, period, ["ctc_child_individual_maximum"]
@@ -27,5 +26,4 @@ class ctc_arpa_max_addition(Variable):
         ctc_maximum_arpa = add(
             tax_unit, period, ["ctc_child_individual_maximum_arpa"]
         )
-        arpa_increase = ctc_maximum_arpa - ctc_maximum_base
-        return min_(cap, arpa_increase)
+        return ctc_maximum_arpa - ctc_maximum_base

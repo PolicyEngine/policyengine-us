@@ -37,7 +37,7 @@
     # This is AGI per https://www.irs.gov/pub/irs-pdf/f1040.pdf
     adjusted_gross_income: 200_000
     # Line 2: Puerto Rico income = $0
-    # Line 3: Line 1 plus Line 2 = $160,000
+    # Line 3: Line 1 plus Line 2 = $200,000
     # Line 4a: Kids under 18 = 10
     # Line 4c: 4a - 4b = 10
     # Line 5 worksheet
@@ -49,17 +49,18 @@
     # Line 4: Multiply 4a from Schedule 8812 by $2,000 = $20,000
     ctc_maximum: 20_000
     # Line 5: Line 3 minus Line 4 = $10,000
+    ctc_arpa_max_addition: 10_000
     # Line 6: Enter amount from filing status. HOH = $4,375.
     filing_status: HEAD_OF_HOUSEHOLD
+    ctc_arpa_phase_out_cap: 4_375
     # Line 7: Enter smaller of lines 5 and 6 = $4,375
-    ctc_arpa_max_addition: 4_375
     # Line 8: Enter amount from filing status. HOH = $112,500.
     # Line 9: Subtract line 8 from AGI, rounding to next multiple of $1,000
     # $200,000 - $112,500 = $87,500 -> $88,000
     # Line 10: Multiply line 9 by 5% = $4,400
-    ctc_arpa_reduction: 4_400
+    ctc_arpa_uncapped_phase_out: 4_400
     # Line 11: Enter smaller of lines 7 and 10 = $4,375
-    ctc_arpa_addition: 4_375
+    ctc_arpa_phase_out: 4_375
     # Line 12: Line 3 minus Line 11 = $30,000 - $4,375 = $25,625
     # BACK TO SCHEDULE 8812
     # Line 5: Line 12 from Line 5 worksheet = $25,625

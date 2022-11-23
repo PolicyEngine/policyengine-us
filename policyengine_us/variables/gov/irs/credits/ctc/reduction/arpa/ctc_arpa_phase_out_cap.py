@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ctc_arpa_addition_cap(Variable):
+class ctc_arpa_phase_out_cap(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Cap on additional CTC from ARPA"
+    label = "Cap on phase-out of ARPA CTC expansion"
     unit = USD
     documentation = (
         "ARPA capped the additional amount based on the phase-out thresholds."
@@ -22,7 +22,9 @@ class ctc_arpa_addition_cap(Variable):
         arpa_threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
         original_threshold = tax_unit("ctc_phase_out_threshold", period)
         threshold_diff = original_threshold - arpa_threshold
-        return (
+        cap = (
             threshold_diff
             * p.amount.arpa_expansion_cap_percent_of_threshold_diff
         )
+        # Form limits the cap to the amount of the increase in the maximum CTC.
+        return min_(cap, tax_unit("ctc_arpa_max_addition", period))

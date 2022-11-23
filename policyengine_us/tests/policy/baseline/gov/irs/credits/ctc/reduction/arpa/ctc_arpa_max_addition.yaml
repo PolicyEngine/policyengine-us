@@ -3,16 +3,5 @@
   input:
     ctc_child_individual_maximum: 2_000
     ctc_child_individual_maximum_arpa: 3_600
-    ctc_arpa_addition_cap: 12_500
   output:
     ctc_arpa_max_addition: 1_600
-
-- name: Ten children, joint filer.
-  period: 2021
-  input:
-    ctc_child_individual_maximum: 20_000
-    ctc_child_individual_maximum_arpa: 36_000
-    ctc_arpa_addition_cap: 12_500
-  output:
-    # Min of difference and cap.
-    ctc_arpa_max_addition: 12_500

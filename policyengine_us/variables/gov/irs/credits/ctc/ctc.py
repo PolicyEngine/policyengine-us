@@ -13,4 +13,5 @@ class ctc(Variable):
     def formula(tax_unit, period, parameters):
         maximum_amount = tax_unit("ctc_maximum", period)
         reduction = tax_unit("ctc_reduction", period)
-        return max_(0, maximum_amount - reduction)
+        base = max_(0, maximum_amount - reduction)
+        return base + tax_unit("ctc_arpa_addition", period)

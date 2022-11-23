@@ -2,15 +2,12 @@ from policyengine_us.model_api import *
 from numpy import ceil
 
 
-class ctc_arpa_reduction(Variable):
+class ctc_arpa_uncapped_phase_out(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Additional CTC ARPA reduction"
+    label = "Uncapped phase-out of ARPA CTC increase"
     unit = USD
-    documentation = "Additional ARPA reduction of the total CTC due to income."
     definition_period = YEAR
-    # Defined on Line 5 worksheet of 2021 Instructions for Schedule 8812.
-    reference = "https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4"
 
     def formula(tax_unit, period, parameters):
         # Logic sequence follows the form, which is clearer than the IRC.

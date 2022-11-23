@@ -4,4 +4,4 @@
     ctc_arpa_phase_out_threshold: 150_000
     ctc_phase_out_threshold: 400_000
   output:
-    ctc_arpa_addition_cap: 12_500 # 400k - 150k = 250k * 0.05 = 12.5k
+    ctc_arpa_phase_out_cap: 12_500 # 400k - 150k = 250k * 0.05 = 12.5k
