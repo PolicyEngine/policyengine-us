@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class or_income_tax_after_refundable_credits(Variable):
+class or_income_tax(Variable):
     value_type = float
     entity = TaxUnit
     label = "OR income tax after refundable credits"
