@@ -19,9 +19,7 @@ class ny_ctc(Variable):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
         # Qualifying children.
         person = tax_unit.members
-        qualifies_for_federal_ctc = (
-            person("ctc_child_individual_maximum", period) > 0
-        )
+        qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         age = person("age", period)
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
         qualifying_children = tax_unit.sum(qualifies)
@@ -38,11 +36,10 @@ class ny_ctc(Variable):
         # minimum amount per child.
         minimum = p.amount.minimum * qualifying_children
         agi = tax_unit("adjusted_gross_income", period)
-        ctc = parameters(
-            "2017-01-01"
-        ).gov.irs.credits.ctc  # Uses pre-TCJA parameters
+        # Uses pre-TCJA parameters.
+        pre_tcja_ctc = parameters("2017-01-01").gov.irs.credits.ctc
         filing_status = tax_unit("filing_status", period)
-        federal_threshold = ctc.phase_out.threshold[filing_status]
+        federal_threshold = pre_tcja_ctc.phase_out.threshold[filing_status]
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
         eligible = qualifying_children > 0

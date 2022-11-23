@@ -21,9 +21,8 @@ class ctc_arpa_reduction(Variable):
         # The ARPA CTC has two phase-outs: the original, and a new phase-out
         # applying before and only to the increase in the maximum CTC under ARPA.
         # Calculate the income used to assess the new phase-out.
-        filing_status = tax_unit("filing_status", period)
-        arpa_threshold = p.threshold[filing_status]
+        threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
         agi = tax_unit("adjusted_gross_income", period)
-        excess = max_(0, agi - arpa_threshold)
+        excess = max_(0, agi - threshold)
         increments = ceil(excess / p.increment)
         return increments * p.amount

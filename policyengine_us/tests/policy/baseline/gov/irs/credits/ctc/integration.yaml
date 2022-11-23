@@ -5,7 +5,6 @@
     people:
       parent:
         age: 40
-        filing_status: SINGLE
         employment_income: 200_000
       child1:
         age: 6
@@ -27,6 +26,10 @@
         age: 6
       child10:
         age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10]
+        filing_status: SINGLE
   output:
     # SCHEDULE 8812
     # https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf
@@ -36,18 +39,15 @@
     # Line 2: Puerto Rico income = $0
     # Line 3: Line 1 plus Line 2 = $160,000
     # Line 4a: Kids under 18 = 10
-    is_ctc_qualifying_child: [False, True, True, True, True, True, True, True, True, True, True]
-    # Line 4b: Kids under 6 = 0
-    is_ctc_qualifying_young_child: [False, False, False, False, False, False, False, False, False, False, False]
     # Line 4c: 4a - 4b = 10
     # Line 5 worksheet
     # https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4
     # Line 1: Multiply 4b from Schedule 8812 by $3,600 = $0
     # Line 2: Multiply 4c from Schedule 8812 by $3,000 = $30,000
     # Line 3: Line 1 plus Line 2 = $30,000
-    ctc_maximum: 30_000
+    ctc_maximum_arpa: 30_000
     # Line 4: Multiply 4a from Schedule 8812 by $2,000 = $20,000
-    ctc_maximum_without_arpa: 20_000
+    ctc_maximum: 20_000
     # Line 5: Line 3 minus Line 4 = $10,000
     # Line 6: Enter amount from filing status. HOH = $4,375.
     # Line 7: Enter smaller of lines 5 and 6 = $4,375

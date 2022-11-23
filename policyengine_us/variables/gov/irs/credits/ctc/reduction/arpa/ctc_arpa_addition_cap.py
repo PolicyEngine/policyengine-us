@@ -19,8 +19,7 @@ class ctc_arpa_addition_cap(Variable):
         # defined_for didn't work.
         if not p.phase_out.arpa.in_effect:
             return 0
-        filing_status = tax_unit("filing_status", period)
-        arpa_threshold = p.phase_out.arpa.threshold[filing_status]
+        arpa_threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
         original_threshold = tax_unit("ctc_phase_out_threshold", period)
         threshold_diff = original_threshold - arpa_threshold
         return (

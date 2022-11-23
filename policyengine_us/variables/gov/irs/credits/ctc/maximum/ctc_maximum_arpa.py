@@ -11,4 +11,6 @@ class ctc_maximum_arpa(Variable):
     )
     definition_period = YEAR
 
-    formula = sum_of_variables(["ctc_individual_maximum_arpa"])
+    formula = sum_of_variables(
+        ["ctc_child_individual_maximum_arpa", "ctc_adult_individual_maximum"]
+    )

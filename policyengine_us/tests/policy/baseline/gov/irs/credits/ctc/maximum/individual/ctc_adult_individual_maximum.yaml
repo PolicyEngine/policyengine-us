@@ -15,7 +15,7 @@
   period: 2018
   input:
     is_tax_unit_dependent: true
-    is_ctc_qualifying_child: true
+    ctc_child_individual_maximum: 1
   output:
     ctc_adult_individual_maximum: 0
 
@@ -23,7 +23,7 @@
   period: 2018
   input:
     is_tax_unit_dependent: true
-    is_ctc_qualifying_child: false
+    ctc_child_individual_maximum: 0
   output:
     ctc_adult_individual_maximum: 500
 
@@ -31,6 +31,6 @@
   period: 2026
   input:
     is_tax_unit_dependent: true
-    is_ctc_qualifying_child: false
+    ctc_child_individual_maximum: 0
   output:
     ctc_adult_individual_maximum: 0
