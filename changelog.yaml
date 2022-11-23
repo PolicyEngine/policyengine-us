@@ -1793,3 +1793,10 @@
     - Renamed `or_income_tax_after_refundable_credits` to `or_income_tax` for consistency
       with other state income tax variables.
   date: 2022-11-23 00:34:40
+- bump: minor
+  changes:
+    added:
+    - TAXSIM35 emulation parameter.
+    - TAXSIM35 emulation logic to PA income tax forgiveness calculations.
+    - Test of PA income tax calculations using TAXSIM35 emulation.
+  date: 2022-11-23 16:11:34
