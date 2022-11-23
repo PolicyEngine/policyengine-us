@@ -149,10 +149,10 @@
     #taxsim output: 6_740
     mo_adjusted_gross_income: [50_000, 0, 0]
     #taxsim output: 50_000
-    mo_federal_income_tax_deduction: -1_191
-    mo_taxable_income: [32_391, 0, 0]
+    mo_federal_income_tax_deduction: -1_050
+    mo_taxable_income: [32_250, 0, 0]
     #taxsim output: 30_681
-    mo_income_tax: 1_561.978
+    mo_income_tax: 1_554.36
     #taxsim output: 1_469.64
 
 - name:  Taxsim integration test, 50k income, single parent, three children
@@ -183,9 +183,8 @@
     #taxsim output: -6_740
     mo_adjusted_gross_income: [50_000, 0, 0, 0]
     #taxsim output: 50_000
-    mo_federal_income_tax_deduction: -1_987.35
-    mo_taxable_income: [33_187.35, 0, 0, 0]
+    mo_federal_income_tax_deduction: -1_516.34
+    mo_taxable_income: [32_716.34, 0, 0, 0]
     #taxsim output: 30_681
-    mo_income_tax: 1_604.98
+    mo_income_tax: 1_579.55
     #taxsim output: 1_469.64
-
