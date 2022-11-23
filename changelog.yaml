@@ -1787,3 +1787,9 @@
     fixed:
     - Logic of pension income exclusion from PA AGI.
   date: 2022-11-22 06:40:01
+- bump: patch
+  changes:
+    changed:
+    - Renamed `or_income_tax_after_refundable_credits` to `or_income_tax` for consistency
+      with other state income tax variables.
+  date: 2022-11-23 00:34:40

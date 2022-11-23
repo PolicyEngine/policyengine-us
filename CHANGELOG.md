@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.178.9] - 2022-11-23 00:34:40
+
+### Changed
+
+- Renamed `or_income_tax_after_refundable_credits` to `or_income_tax` for consistency with other state income tax variables.
+
 ## [0.178.8] - 2022-11-22 06:40:01
 
 ### Fixed
@@ -2152,6 +2158,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.178.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.8...0.178.9
 [0.178.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.7...0.178.8
 [0.178.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.6...0.178.7
 [0.178.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.5...0.178.6
