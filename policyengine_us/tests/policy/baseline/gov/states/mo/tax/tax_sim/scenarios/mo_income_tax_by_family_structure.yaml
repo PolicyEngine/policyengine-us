@@ -1,4 +1,4 @@
-- name:  Taxsim integration test, 50k income, no children, single filer
+- name: Taxsim integration test, 50k income, no children, single filer
   period: 2021
   absolute_error_margin: 0.05
   input:
@@ -26,7 +26,7 @@
     mo_income_tax: 1_811.71
     #taxsim output: 1_800
 
-- name:  Taxsim integration test, 50k income, childless couple, evenly split income
+- name: Taxsim integration test, 50k income, childless couple, evenly split income
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -59,7 +59,7 @@
     mo_income_tax: 972.03
     #taxsim output: 949
 
-- name:  Taxsim integration test, 50k income, couple, one child
+- name: Taxsim integration test, 50k income, couple, one child
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -93,7 +93,7 @@
     mo_income_tax: 1_199.67
     #taxsim output: 1_136
 
-- name:  Taxsim integration test, 50k income, single parent, one child
+- name: Taxsim integration test, 50k income, single parent, one child
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -188,3 +188,4 @@
     #taxsim output: 30_681
     mo_income_tax: 1_604.98
     #taxsim output: 1_469.64
+
