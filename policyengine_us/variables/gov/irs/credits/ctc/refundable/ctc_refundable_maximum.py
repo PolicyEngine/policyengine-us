@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class ctc_refundable_individual_maximum(Variable):
+class ctc_refundable_maximum(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Maximum refundable CTC"
     unit = USD
     documentation = "The maximum refundable CTC for this person."
@@ -14,9 +14,10 @@ class ctc_refundable_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#i",
     )
 
-    def formula(person, period, parameters):
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         amount = person("ctc_child_individual_maximum", period)
         ctc = parameters(period).gov.irs.credits.ctc
         if ctc.refundable.fully_refundable:
-            return amount
-        return min_(amount, ctc.refundable.individual_max)
+            return tax_unit.sum(amount)
+        return tax_unit.sum(min_(amount, ctc.refundable.individual_max))

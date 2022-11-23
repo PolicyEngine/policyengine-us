@@ -17,8 +17,7 @@ class ny_federal_actc(Variable):
 
         total_ctc = tax_unit("ctc", period)
         maximum_refundable_ctc = min_(
-            add(tax_unit, period, ["ctc_refundable_individual_maximum"]),
-            total_ctc,
+            tax_unit("ctc_refundable_maximum", period), total_ctc
         )
 
         # The other part of the "lesser of" statement is: "the amount by which [the non-refundable CTC]
