@@ -7,10 +7,10 @@ class ma_part_a_taxable_dividend_income(Variable):
     label = "MA Part A taxable income from dividends"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
+    reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        part_a_taxable_income = tax_unit("ma_part_a_taxable_income", period)
         dividends = add(tax_unit, period, ["dividend_income"])
-        return min_(part_a_taxable_income, dividends)
+        partb_excess_exemption = tax_unit("ma_part_b_excess_exemption", period)
+        return max_(0, dividends - partb_excess_exemption)
