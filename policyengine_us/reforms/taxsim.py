@@ -8,6 +8,6 @@ class taxsim(Reform):
 
 def modify_parameters(parameters):
     parameters.contrib.nber.taxsim35_emulation.update(
-        period="2019-01-01", value=True
+        start="2019-01-01", value=True
     )
     return parameters
