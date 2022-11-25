@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ctc_maximum_arpa(Variable):
+class ctc_maximum_with_arpa_addition(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maximum CTC for ARPA"
@@ -13,6 +13,4 @@ class ctc_maximum_arpa(Variable):
 
     # TODO: Remove from here, follow the form in calculating additional from children
     # then using the post-ARPA-phase-out amount as the maximum before phasing out again.
-    formula = sum_of_variables(
-        ["ctc_child_individual_maximum_arpa", "ctc_adult_individual_maximum"]
-    )
+    formula = sum_of_variables(["ctc_maximum", "ctc_arpa_addition"])
