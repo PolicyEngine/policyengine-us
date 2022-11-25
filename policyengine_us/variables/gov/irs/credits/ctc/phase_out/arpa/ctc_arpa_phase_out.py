@@ -9,7 +9,7 @@ class ctc_arpa_phase_out(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-    return min_(
+        return min_(
             tax_unit("ctc_arpa_phase_out_cap", period),
             tax_unit("ctc_arpa_uncapped_phase_out", period),
         )
