@@ -2,8 +2,7 @@ from policyengine_us.model_api import *
 from numpy import ceil
 
 
-# TODO: Rename to phase-out and phase out from after-ARPA maximum (ARPA max minus ARPA phase-out)
-class ctc_reduction(Variable):
+class ctc_phase_out(Variable):
     value_type = float
     entity = TaxUnit
     label = "CTC reduction from income"

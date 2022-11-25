@@ -23,7 +23,7 @@ class refundable_ctc(Variable):
         maximum_amount = tax_unit("ctc_refundable_maximum", period)
 
         if ctc.refundable.fully_refundable:
-            reduction = tax_unit("ctc_reduction", period)
+            reduction = tax_unit("ctc_phase_out", period)
             return max_(0, maximum_amount - reduction)
 
         total_ctc = tax_unit("ctc", period)
