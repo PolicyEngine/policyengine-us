@@ -21,7 +21,7 @@
       state_code: MO
   output:
     #taxsim output: 1_136.49
-    mo_income_tax: 1_315.89
+    mo_income_tax: 1_199.67
 
 - name:  Taxsim integration test, no liability
   period: 2021
@@ -48,6 +48,31 @@
     #taxsim output: 0
     mo_income_tax: 0
 
+- name:  Taxsim integration test, low tax
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 30_500
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    #taxsim output: 129
+    mo_income_tax: 223.42
+
 - name:  Taxsim integration test, average household income, per https://www.census.gov/quickfacts/MO
   period: 2021
   absolute_error_margin: 0.01
@@ -71,7 +96,7 @@
       state_code: MO
   output:
     #taxsim output: 1_523.06
-    mo_income_tax: 1_745.4169
+    mo_income_tax: 1_586.24
 
 - name:  Taxsim integration test, high income
   period: 2021
@@ -96,7 +121,7 @@
       state_code: MO
   output:
     #taxsim output: 4_637.02
-    mo_income_tax: 5_158.575
+    mo_income_tax: 4_658.08
 
 - name:  Taxsim integration test, very high income
   period: 2021
@@ -121,4 +146,45 @@
       state_code: MO
   output:
     #taxsim output: 20_057
-    mo_income_tax: 22_269
+    mo_income_tax: 20_057.47
+
+# PolicyEngine US test file derived from p21.its.csv and p21.ots.csv files
+
+- name: Tax unit with taxsimid 5363 from p21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 37
+        employment_income: 160000
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 39
+        employment_income: 160000
+        ssi: 0
+        state_supplement: 0
+        wic: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_income_tax: 15550.33

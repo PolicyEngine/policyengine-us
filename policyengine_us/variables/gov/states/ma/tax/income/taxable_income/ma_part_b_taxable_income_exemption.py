@@ -1,13 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class ma_part_b_taxable_income_exemptions(Variable):
+class ma_part_b_taxable_income_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA Part B taxable income exemptions"
+    label = "MA Part B taxable income exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
+    reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemption"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
@@ -19,7 +19,7 @@ class ma_part_b_taxable_income_exemptions(Variable):
         filing_status = tax_unit("filing_status", period)
         # (B)(b): Exemptions.
         # (1A) and (2A): Personal exemption based on filing status.
-        personal_exemptions = tax.exemptions.personal[filing_status]
+        personal_exemption = tax.exemptions.personal[filing_status]
         # (1B) and (2B): Blind exemptions.
         blind = person("is_blind", period)
         dependent = person("is_tax_unit_dependent", period)
@@ -41,7 +41,7 @@ class ma_part_b_taxable_income_exemptions(Variable):
         )
         medical_dental_exemption = itemizes * federal_medical_expense_deduction
         return (
-            +personal_exemptions
+            personal_exemption
             + dependent_exemption
             + aged_exemption
             + blind_exemption
