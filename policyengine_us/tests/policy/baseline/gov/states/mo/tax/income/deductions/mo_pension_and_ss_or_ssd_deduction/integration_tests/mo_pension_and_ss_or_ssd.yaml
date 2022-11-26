@@ -42,7 +42,7 @@
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        social_security_disability: 10_000
+        taxable_social_security: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -67,14 +67,12 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        taxable_social_security: 5_000
-        social_security_disability: 6_000
+        taxable_social_security: 6_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
         taxable_social_security: 6_000
-        social_security_disability: 5_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -172,7 +170,7 @@
         is_tax_unit_spouse: true
         public_pension_income: 5_000
         pension_income: 5_000
-        social_security_disability: 10_000
+        taxable_social_security: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -200,7 +198,6 @@
         public_pension_income: 5_000
         pension_income: 5_000
         taxable_social_security: 11_000
-        social_security_disability: 10_000
       person2:
         age: 72
         employment_income: 25_000
@@ -208,7 +205,6 @@
         public_pension_income: 5_000
         pension_income: 5_000
         taxable_social_security: 10_000
-        social_security_disability: 11_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
