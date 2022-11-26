@@ -50,7 +50,8 @@ jobs:
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
+        # os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
