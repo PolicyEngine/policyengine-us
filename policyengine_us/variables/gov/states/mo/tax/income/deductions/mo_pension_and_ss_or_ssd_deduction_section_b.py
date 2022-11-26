@@ -44,8 +44,8 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
         private_pension_value = min_(
             private_pension_amount, max_private_pension_amount
         )
-        total_private_pensions = max_(
+        
+        return max_(
             private_pension_value - agi_over_private_pension_allowance, 0
         )
 
-        return total_private_pensions

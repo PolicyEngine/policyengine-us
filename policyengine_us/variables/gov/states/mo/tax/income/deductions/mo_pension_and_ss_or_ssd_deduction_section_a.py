@@ -67,10 +67,10 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         public_pension_less_ss_deduction = max_(
             public_pension_value - adjusted_ss_or_ssdi_value, 0
         )
-        total_public_pensions = max_(
-            public_pension_less_ss_deduction
-            - agi_over_public_pension__allowance,
-            0,
+        
+        return max_(
+                    public_pension_less_ss_deduction
+                    - agi_over_public_pension__allowance,
+                    0,
         )
 
-        return total_public_pensions

@@ -42,6 +42,7 @@ jobs:
           committer_name: Github Actions[bot]
           author_name: Github Actions[bot]
           message: Update PolicyEngine US
+          github_token: ${{ secrets.POLICYENGINE_GITHUB }}
   Test:
     runs-on: ${{ matrix.os }}
     if: |
@@ -67,7 +68,7 @@ jobs:
         run: make documentation
       - name: Deploy documentation
         if: matrix.os == 'ubuntu-latest'
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages

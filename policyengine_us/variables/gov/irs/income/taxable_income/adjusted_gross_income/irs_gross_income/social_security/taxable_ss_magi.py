@@ -27,6 +27,7 @@ class taxable_ss_magi(Variable):
             # Reforms which drop the UI variable from gross income should
             # trigger SS-related MAGI to drop it too.
             income_sources_without_ss.append("unemployment_compensation")
+        income_sources_without_ss.append("tax_exempt_interest_income")
         gross_income = 0
         person = tax_unit.members
         not_dependent = ~person("is_tax_unit_dependent", period)
