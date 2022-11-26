@@ -1717,3 +1717,96 @@
     - IRS parameters for 2023 tax year.
     - Some missing IRS parameters for 2020-2022 tax years.
   date: 2022-10-25 17:49:04
+- bump: minor
+  changes:
+    added:
+    - AMT parameters for 2020-2022.
+  date: 2022-10-29 03:44:55
+- bump: minor
+  changes:
+    changed:
+    - Made CTC formulas year-agnostic.
+  date: 2022-11-08 12:25:49
+- bump: patch
+  changes:
+    fixed:
+    - Missing 2021 NY supplemental income tax parameters.
+  date: 2022-11-14 20:57:48
+- bump: patch
+  changes:
+    fixed:
+    - Missing 2021 parameters for nontaxable income under PA income tax.
+  date: 2022-11-14 22:37:20
+- bump: patch
+  changes:
+    added:
+    - Maryland standard deduction documentation
+  date: 2022-11-15 05:45:33
+- bump: minor
+  changes:
+    added:
+    - Simple splitting of CPS income variables into PolicyEngine-US variables.
+  date: 2022-11-19 20:41:19
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of dividend income from qualified and non-qualified.
+  date: 2022-11-19 20:54:31
+- bump: patch
+  changes:
+    fixed:
+    - Inability of data tests to work without a policyengine_us package.
+  date: 2022-11-19 21:01:42
+- bump: patch
+  changes:
+    fixed:
+    - Absence of non-refundable American Opportunity Credit calculation.
+  date: 2022-11-19 21:07:36
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect inclusion of tax-exempt pension income in US AGI.
+  date: 2022-11-19 21:10:44
+- bump: patch
+  changes:
+    fixed:
+    - MA income tax Part A AGI calculation.
+  date: 2022-11-19 21:33:23
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect calculation of taxable social security benefits.
+  date: 2022-11-19 23:04:41
+- bump: patch
+  changes:
+    fixed:
+    - MA short-term capital gains taxation logic.
+  date: 2022-11-22 00:54:01
+- bump: patch
+  changes:
+    fixed:
+    - Logic of pension income exclusion from PA AGI.
+  date: 2022-11-22 06:40:01
+- bump: patch
+  changes:
+    changed:
+    - Renamed `or_income_tax_after_refundable_credits` to `or_income_tax` for consistency
+      with other state income tax variables.
+  date: 2022-11-23 00:34:40
+- bump: minor
+  changes:
+    added:
+    - TAXSIM35 emulation parameter.
+    - TAXSIM35 emulation logic to PA income tax forgiveness calculations.
+    - Test of PA income tax calculations using TAXSIM35 emulation.
+  date: 2022-11-23 16:11:34
+- bump: minor
+  changes:
+    added:
+    - Missouri tax rates for 2020 and 2021.
+  date: 2022-11-24 05:45:06
+- bump: patch
+  changes:
+    fixed:
+    - MA excess exemption logic.
+  date: 2022-11-26 05:21:06

@@ -1,0 +1,12 @@
+description: The IRS adds a second phase-out when this is in effect.
+values:
+  0000-01-01: false
+  2021-01-01: true
+  2022-01-01: false
+metadata:
+  unit: bool
+  name: ctc_arpa_phase_out_in_effect
+  label: CTC ARPA phase-out in effect
+  reference:
+    - title: U.S.C 26 U.S. Code § 24(i)(4)
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_4

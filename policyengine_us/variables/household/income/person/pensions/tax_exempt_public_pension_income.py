@@ -1,11 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class pension_income(Variable):
+class tax_exempt_public_pension_income(Variable):
     value_type = float
     entity = Person
     label = "Pension income"
     unit = USD
-    documentation = "Income from pensions, annuitities, life insurance or endowment contracts."
+    documentation = "Tax-exempt income from government employee pensions."
     definition_period = YEAR
-

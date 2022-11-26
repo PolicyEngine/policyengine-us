@@ -1,11 +1,5 @@
 from policyengine_us.model_api import *
 
-# Disable divide-by-zero warning for this file
-import warnings
-
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
-
 
 class rrc_arpa(Variable):
     value_type = float
@@ -26,14 +20,7 @@ class rrc_arpa(Variable):
             + rrc.arpa.max.dependent * count_dependents
         )
         phase_out_length = rrc.arpa.phase_out.length[filing_status]
-        payment_reduction = (
-            max_(0, agi - rrc.arpa.phase_out.threshold[filing_status])
-            / phase_out_length
-            * max_payment
-        )
-        payment_reduction = where(
-            phase_out_length == 0,
-            0,
-            payment_reduction,
-        )
+        excess = max_(0, agi - rrc.arpa.phase_out.threshold[filing_status])
+        payment_reduction_percent = excess / phase_out_length
+        payment_reduction = max_payment * payment_reduction_percent
         return max_(0, max_payment - payment_reduction)
