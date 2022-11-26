@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.periods import instant
 import warnings
 
 warnings.filterwarnings("ignore")
@@ -17,21 +18,47 @@ class ny_ctc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ny.tax.income.credits.ctc
-        # Qualifying children.
         person = tax_unit.members
-        qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         age = person("age", period)
+        if not p.pre_tcja:
+            federal_ctc = tax_unit("ctc", period)
+        else:
+            # Initialise pre-TCJA CTC branch
+
+            simulation = tax_unit.simulation
+            pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
+
+            for (
+                ctc_parameter
+            ) in (
+                pre_tcja_ctc.tax_benefit_system.parameters.gov.irs.credits.ctc.get_descendants()
+            ):
+                if isinstance(ctc_parameter, Parameter):
+                    ctc_parameter.update(
+                        start=instant("2017-01-01"),
+                        stop=instant("2026-01-01"),
+                        value=ctc_parameter("2017-01-01"),
+                    )
+
+            for variable in pre_tcja_ctc.tax_benefit_system.variables:
+                if "ctc" in variable:
+                    pre_tcja_ctc.delete_arrays(variable)
+
+            maximum_ctc = pre_tcja_ctc.calculate(
+                "ctc_individual_maximum", period
+            )
+            meets_ny_minimum_age = age >= p.minimum_age
+            pre_tcja_ctc.set_input(
+                "ctc_individual_maximum",
+                period,
+                maximum_ctc * meets_ny_minimum_age,
+            )
+            federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
+
+        qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
         qualifying_children = tax_unit.sum(qualifies)
-        # First calculate federal match.
-        federal_match = tax_unit("ny_federal_ctc", period) * p.amount.percent
-        # Scale federal match by number of qualifying children.
-        federal_qualifying_children = tax_unit.sum(qualifies_for_federal_ctc)
-        qualifying_federal_match = where(
-            federal_qualifying_children > 0,
-            federal_match * qualifying_children / federal_qualifying_children,
-            0,
-        )
+        federal_match = federal_ctc * p.amount.percent
         # Filers with income below the CTC phase-out threshold receive a
         # minimum amount per child.
         minimum = p.amount.minimum * qualifying_children
@@ -43,4 +70,4 @@ class ny_ctc(Variable):
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
         eligible = qualifying_children > 0
-        return eligible * max_(applicable_minimum, qualifying_federal_match)
+        return eligible * max_(applicable_minimum, federal_match)
