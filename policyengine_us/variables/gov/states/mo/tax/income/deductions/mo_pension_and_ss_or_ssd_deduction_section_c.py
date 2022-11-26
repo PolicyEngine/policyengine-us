@@ -31,5 +31,4 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
             "taxable_social_security", period
         )
 
-        eligible_ss_or_ssd = max_(taxable_social_security_benefits - agi_over_ss_or_ssd_allowance, 0)
-        return eligible_ss_or_ssd
+        return max_(taxable_social_security_benefits - agi_over_ss_or_ssd_allowance, 0)
