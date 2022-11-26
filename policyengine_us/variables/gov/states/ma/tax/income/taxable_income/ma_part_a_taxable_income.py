@@ -7,20 +7,12 @@ class ma_part_a_taxable_income(Variable):
     label = "MA Part A taxable income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
+    reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
-    def formula(tax_unit, period, parameters):
-        part_a_agi = tax_unit("ma_part_a_agi", period)
-        part_b_agi = tax_unit("ma_part_b_agi", period)
-        part_b_deductions = tax_unit(
-            "ma_part_b_taxable_income_deductions", period
-        )
-        part_b_exemptions = tax_unit(
-            "ma_part_b_taxable_income_exemptions", period
-        )
-        part_b_agi_less_deductions = max_(0, part_b_agi - part_b_deductions)
-        remaining_part_b_exemptions = max_(
-            0, part_b_exemptions - part_b_agi_less_deductions
-        )
-        return max_(0, part_a_agi - remaining_part_b_exemptions)
+    formula = sum_of_variables(
+        [
+            "ma_part_a_taxable_dividend_income",
+            "ma_part_a_taxable_capital_gains_income",
+        ]
+    )
