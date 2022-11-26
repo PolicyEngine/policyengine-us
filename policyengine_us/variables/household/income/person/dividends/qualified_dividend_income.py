@@ -7,10 +7,3 @@ class qualified_dividend_income(Variable):
     label = "Qualified dividend income"
     unit = USD
     definition_period = YEAR
-
-    def formula(person, period, parameters):
-        qualified_percentage = parameters(
-            period
-        ).calibration.programs.income.dividends.qualified_percentage
-        total_dividends = person("dividend_income", period)
-        return total_dividends * qualified_percentage
