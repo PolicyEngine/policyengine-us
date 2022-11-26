@@ -3,7 +3,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 0
-    tax_unit_taxable_social_security: 0
+    taxable_social_security: 0
     filing_status: 0
     state_code: MO
   output:
@@ -14,7 +14,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 30_000
-    tax_unit_taxable_social_security: 5_000
+    taxable_social_security: 5_000
     filing_status: SINGLE
     state_code: MO
   output:
@@ -25,7 +25,7 @@
   absolute_error_margin: 30_000
   input:
     mo_adjusted_gross_income: 30_000
-    tax_unit_taxable_social_security: 0
+    taxable_social_security: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -36,7 +36,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 95_000
-    tax_unit_taxable_social_security: 15_000
+    taxable_social_security: 15_000
     filing_status: SINGLE
     state_code: MO
   output:
@@ -47,7 +47,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 95_000
-    tax_unit_taxable_social_security: 0
+    taxable_social_security: 0
     filing_status: SINGLE
     state_code: MO
   output:
@@ -58,7 +58,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 105_000
-    tax_unit_taxable_social_security: 10_000
+    taxable_social_security: 10_000
     filing_status: JOINT
     state_code: MO
   output:
@@ -69,7 +69,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 105_000
-    tax_unit_taxable_social_security: 0
+    taxable_social_security: 0
     filing_status: JOINT
     state_code: MO
   output:
@@ -80,7 +80,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 30_000
-    tax_unit_taxable_social_security: 0 
+    taxable_social_security: 5_000 
     filing_status: SINGLE
     state_code: MO
   output:
@@ -91,7 +91,7 @@
   absolute_error_margin: 30_000
   input:
     mo_adjusted_gross_income: 30_000
-    tax_unit_taxable_social_security: 0 
+    taxable_social_security: 0 
     filing_status: SINGLE
     state_code: MO
   output:
@@ -102,7 +102,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 95_000
-    tax_unit_taxable_social_security: 0 
+    taxable_social_security: 15_000 
     filing_status: SINGLE
     state_code: MO
   output:
@@ -113,7 +113,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 95_000
-    tax_unit_taxable_social_security: 0 
+    taxable_social_security: 0 
     filing_status: SINGLE
     state_code: MO
   output:
@@ -124,7 +124,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 105_000
-    tax_unit_taxable_social_security: 0 
+    taxable_social_security: 10_000 
     filing_status: JOINT
     state_code: MO
   output:
@@ -135,7 +135,7 @@
   absolute_error_margin: 0
   input:
     mo_adjusted_gross_income: 105_000
-    tax_unit_taxable_social_security: 0 
+    taxable_social_security: 0 
     filing_status: JOINT
     state_code: MO
   output:

@@ -39,7 +39,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
             - private_pension_allowance,
             0,
         )
-        private_pension_amount = person("pension_income", period)
+        private_pension_amount = person("taxable_pension_income", period)
         max_private_pension_amount = p.mo_max_private_pension
         private_pension_value = min_(
             private_pension_amount, max_private_pension_amount
