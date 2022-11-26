@@ -5,6 +5,110 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.180.1] - 2022-11-26 05:21:06
+
+### Fixed
+
+- MA excess exemption logic.
+
+## [0.180.0] - 2022-11-24 05:45:06
+
+### Added
+
+- Missouri tax rates for 2020 and 2021.
+
+## [0.179.0] - 2022-11-23 16:11:34
+
+### Added
+
+- TAXSIM35 emulation parameter.
+- TAXSIM35 emulation logic to PA income tax forgiveness calculations.
+- Test of PA income tax calculations using TAXSIM35 emulation.
+
+## [0.178.9] - 2022-11-23 00:34:40
+
+### Changed
+
+- Renamed `or_income_tax_after_refundable_credits` to `or_income_tax` for consistency with other state income tax variables.
+
+## [0.178.8] - 2022-11-22 06:40:01
+
+### Fixed
+
+- Logic of pension income exclusion from PA AGI.
+
+## [0.178.7] - 2022-11-22 00:54:01
+
+### Fixed
+
+- MA short-term capital gains taxation logic.
+
+## [0.178.6] - 2022-11-19 23:04:41
+
+### Fixed
+
+- Incorrect calculation of taxable social security benefits.
+
+## [0.178.5] - 2022-11-19 21:33:23
+
+### Fixed
+
+- MA income tax Part A AGI calculation.
+
+## [0.178.4] - 2022-11-19 21:10:44
+
+### Fixed
+
+- Incorrect inclusion of tax-exempt pension income in US AGI.
+
+## [0.178.3] - 2022-11-19 21:07:36
+
+### Fixed
+
+- Absence of non-refundable American Opportunity Credit calculation.
+
+## [0.178.2] - 2022-11-19 21:01:42
+
+### Fixed
+
+- Inability of data tests to work without a policyengine_us package.
+
+## [0.178.1] - 2022-11-19 20:54:31
+
+### Fixed
+
+- Calculation of dividend income from qualified and non-qualified.
+
+## [0.178.0] - 2022-11-19 20:41:19
+
+### Added
+
+- Simple splitting of CPS income variables into PolicyEngine-US variables.
+
+## [0.177.3] - 2022-11-15 05:45:33
+
+### Added
+
+- Maryland standard deduction documentation
+
+## [0.177.2] - 2022-11-14 22:37:20
+
+### Fixed
+
+- Missing 2021 parameters for nontaxable income under PA income tax.
+
+## [0.177.1] - 2022-11-14 20:57:48
+
+### Fixed
+
+- Missing 2021 NY supplemental income tax parameters.
+
+## [0.177.0] - 2022-11-08 12:25:49
+
+### Changed
+
+- Made CTC formulas year-agnostic.
+
 ## [0.176.0] - 2022-10-29 03:44:55
 
 ### Added
@@ -2074,6 +2178,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.180.0...0.180.1
+[0.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.179.0...0.180.0
+[0.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.9...0.179.0
+[0.178.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.8...0.178.9
+[0.178.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.7...0.178.8
+[0.178.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.6...0.178.7
+[0.178.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.5...0.178.6
+[0.178.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.4...0.178.5
+[0.178.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.3...0.178.4
+[0.178.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.2...0.178.3
+[0.178.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.1...0.178.2
+[0.178.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.0...0.178.1
+[0.178.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.3...0.178.0
+[0.177.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.2...0.177.3
+[0.177.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.1...0.177.2
+[0.177.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.177.0...0.177.1
+[0.177.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.176.0...0.177.0
 [0.176.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.175.0...0.176.0
 [0.175.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.174.2...0.175.0
 [0.174.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.174.1...0.174.2

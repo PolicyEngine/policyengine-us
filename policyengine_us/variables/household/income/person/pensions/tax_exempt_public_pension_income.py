@@ -6,6 +6,5 @@ class tax_exempt_public_pension_income(Variable):
     entity = Person
     label = "Pension income"
     unit = USD
-    documentation = "Tax-exempt income from government pensions."
+    documentation = "Tax-exempt income from government employee pensions."
     definition_period = YEAR
-

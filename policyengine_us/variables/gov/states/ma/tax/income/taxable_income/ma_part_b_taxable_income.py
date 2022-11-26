@@ -7,15 +7,14 @@ class ma_part_b_taxable_income(Variable):
     label = "MA Part B taxable income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
+    reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        part_b_agi = tax_unit("ma_part_b_agi", period)
-        part_b_deductions = tax_unit(
-            "ma_part_b_taxable_income_deductions", period
+        taxinc_before_exemption = tax_unit(
+            "ma_part_b_taxable_income_before_exemption", period
         )
-        part_b_exemptions = tax_unit(
-            "ma_part_b_taxable_income_exemptions", period
+        total_exemption = tax_unit(
+            "ma_part_b_taxable_income_exemption", period
         )
-        return max_(0, part_b_agi - part_b_deductions - part_b_exemptions)
+        return max_(0, taxinc_before_exemption - total_exemption)
