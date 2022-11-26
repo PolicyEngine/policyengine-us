@@ -1,0 +1,25 @@
+description: mo_ss_or_ssd_deduction_allowance
+SINGLE: 
+  2021-01-01: 85_000
+JOINT:
+  2021-01-01: 100_000
+SEPARATE:
+  2021-01-01: 85_000
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 85_000
+WIDOW:
+  2021-01-01: 85_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_ss_or_ssd_deduction_allowance
+  label: MO Social Security or Social Security Disability Deduction Allowance
+  reference:
+    - title: Form MO-A
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=3
+    - title: Form MO-1040
+      href: https://dor.mo.gov/forms/MO-1040%20Fillable%20Calculating_2021.pdf#page=2
+    - title: MO Revisor  143.124
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.124
+  breakdown:
+  - filing_status
