@@ -50,8 +50,7 @@ jobs:
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        # os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -69,7 +68,7 @@ jobs:
         run: make documentation
       - name: Deploy documentation
         if: matrix.os == 'ubuntu-latest'
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: JamesIves/github-pages-deploy-action@releases/v4
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
