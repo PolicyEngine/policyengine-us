@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.180.1] - 2022-11-26 05:21:06
+
+### Fixed
+
+- MA excess exemption logic.
+
 ## [0.180.0] - 2022-11-24 05:45:06
 
 ### Added
@@ -2172,6 +2178,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.180.0...0.180.1
 [0.180.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.179.0...0.180.0
 [0.179.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.9...0.179.0
 [0.178.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.178.8...0.178.9
