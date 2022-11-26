@@ -15,6 +15,6 @@ class state_income_tax(Variable):
             "md_income_tax",
             "ny_income_tax",
             "pa_income_tax",
-            "or_income_tax_after_refundable_credits",
+            "or_income_tax",
         ]
     )

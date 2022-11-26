@@ -1,6 +1,6 @@
 description: MA income tax rates.
-part_a_interest_dividends:
-  description: The tax rate on interest and dividend income (Part A income).
+part_a_dividends:
+  description: The tax rate on Part A dividend income.
   values:
     2002-01-01: 0.053
     # Amount started falling in 2004.
@@ -10,11 +10,11 @@ part_a_interest_dividends:
     2019-01-01: 0.0505
     2020-01-01: 0.05
   metadata:
-    label: MA Interest and dividends tax rate
-    name: ma_part_a_int_div_rate
+    label: MA dividend tax rate
+    name: ma_part_a_div_rate
     unit: /1
 part_a_capital_gains:
-  description: The tax rate on short-term capital gains (Part A income).
+  description: The tax rate on Part A short-term capital gains.
   values:
     2002-01-01: 0.12
   metadata:
@@ -22,7 +22,7 @@ part_a_capital_gains:
     name: ma_part_a_stcg_rate
     unit: /1
 part_b:
-  description: The tax rate on all taxable income that is not interest, dividends or capital gains.
+  description: The tax rate on all taxable income that is not dividends or capital gains.
   values:
     2002-01-01: 0.053
     2015-01-01: 0.0515
