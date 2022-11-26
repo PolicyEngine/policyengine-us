@@ -34,7 +34,6 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         # Section A, Public Pension Amounts
         # TODO:
         # unclear reference to "See instructions if Line 3 of Section C is more than $0" here: https://dor.mo.gov/forms/MO-A_2021.pdf#page=3
-
         public_pension_allowance = p.mo_public_pension_deduction_allowance[
             filing_status
         ]
@@ -50,25 +49,21 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         public_pension_value = min_(
             public_pension_amount, max_social_security_benefit
         )
-
         ss_or_ssdi_exemption_threshold = p.mo_ss_or_ssdi_exemption_threshold[
             filing_status
         ]
-        ssd_amount = person("social_security_disability", period)
-        ss_or_ssd = max_(
-            taxable_social_security_benefits, ssd_amount
-        )  # currently assuming the spouse will take the max of ss or ssd
+        
+        
         eligible_ss_or_ssd = person(
             "mo_pension_and_ss_or_ssd_deduction_section_c", period
         )
 
-        # From instructions here: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=17
+        # From instructions here: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=17 
         adjusted_ss_or_ssdi_value = where(
-            (ss_or_ssd - ss_or_ssdi_exemption_threshold) > 0,
-            eligible_ss_or_ssd,
-            ss_or_ssd,
+            (mo_agi - ss_or_ssdi_exemption_threshold) > 0,
+            eligible_ss_or_ssd, #this comes froms the result of section c
+            taxable_social_security_benefits, # this is the unmodified benefits value, from Part 3 - Section C, Line 6
         )
-
         public_pension_less_ss_deduction = max_(
             public_pension_value - adjusted_ss_or_ssdi_value, 0
         )
