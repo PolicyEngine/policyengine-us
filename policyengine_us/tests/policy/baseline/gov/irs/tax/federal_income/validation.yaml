@@ -1,7 +1,9 @@
 - name: Tax unit with taxsimid 4608 from g21.its.csv
+  # Single parent with $203k income and three children.
   absolute_error_margin: 0.01
   period: 2021
   input:
+    contrib.nber.taxsim35_emulation: true
     people:
       person1:
         is_tax_unit_head: 1
