@@ -23,16 +23,11 @@ class mo_federal_income_tax_deduction(Variable):
         # Law is vague, but for now, limit to nonnegative income tax.
         federal_tax_less_cares = max_(federal_tax - cares_rebate, 0)
         # Apply rate based on AGI.
-        rate = parameters(
+        p = parameters(
             period
-        ).gov.states.mo.tax.income.deductions.federal_income_tax.rate.calc(
-            tax_unit("mo_adjusted_gross_income", period)
-        )
+        ).gov.states.mo.tax.income.deductions.federal_income_tax
+        rate = p.rate.calc(tax_unit("mo_adjusted_gross_income", period))
         uncapped = federal_tax_less_cares * rate
         # Apply cap based on filing status.
-        cap = parameters(
-            period
-        ).gov.states.mo.tax.income.deductions.federal_income_tax.cap[
-            tax_unit("filing_status", period)
-        ]
+        cap = p.cap[tax_unit("filing_status", period)]
         return min_(uncapped, cap)
