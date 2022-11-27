@@ -20,8 +20,7 @@ class no_salt_taxable_income(Variable):
         ]
         itemized_value = add(tax_unit, period, federal_itemized_deductions)
         agi = tax_unit("adjusted_gross_income", period)
-        return where(
-            itemizes,
-            agi - itemized_value,
-            agi - tax_unit("standard_deduction", period),
+        deduction = where(
+            itemizes, itemized_value, tax_unit("standard_deduction", period)
         )
+        return agi - deduction
