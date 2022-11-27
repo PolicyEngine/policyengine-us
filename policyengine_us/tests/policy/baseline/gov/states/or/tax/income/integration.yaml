@@ -1,0 +1,7 @@
+- name: Zero employment income.
+  period: 2021
+  input:
+    employment_income: 0
+    state_code: OR
+  output:
+    or_income_tax: 0

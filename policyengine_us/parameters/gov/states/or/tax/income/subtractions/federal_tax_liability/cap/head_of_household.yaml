@@ -1,0 +1,37 @@
+description: Oregon caps its federal tax liability subtraction for head of household filers at this amount, depending on federal AGI.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  name: or_federal_tax_liability_subtraction_cap_head
+  label: OR federal tax liability subtraction cap for head of household filers
+  reference:
+    - title: Chapter 316 - Personal Income Tax
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.800
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=13
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 7_050
+  - threshold:
+      2021-01-01: 250_000
+    amount:
+      2021-01-01: 5_650
+  - threshold:
+      2021-01-01: 260_000
+    amount:
+      2021-01-01: 4_200
+  - threshold:
+      2021-01-01: 270_000
+    amount:
+      2021-01-01: 2_800
+  - threshold:
+      2021-01-01: 280_000
+    amount:
+      2021-01-01: 1_400
+  - threshold:
+      2021-01-01: 290_000
+    amount:
+      2021-01-01: 0

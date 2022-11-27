@@ -1,0 +1,23 @@
+description: Oregon limits its regular exemption credit to filers with adjusted gross income below this threshold.
+JOINT:
+  1986-01-01: 200_000
+WIDOW:
+  1986-01-01: 200_000
+HEAD_OF_HOUSEHOLD:
+  1986-01-01: 200_000
+SINGLE:
+  1986-01-01: 100_000
+SEPARATE:
+  1986-01-01: 100_000
+metadata:
+  unit: currency-USD
+  name: or_exemption_credit_income_limit_regular
+  label: OR exemption credit income limit (regular)
+  breakdown:
+    - filing_status
+  reference: 
+    - title: Chapter 316 — Personal Income Tax 316.085(5)
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=17
+

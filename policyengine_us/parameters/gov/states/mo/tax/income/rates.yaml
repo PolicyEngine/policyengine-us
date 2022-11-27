@@ -1,0 +1,71 @@
+description: The tax rates for individual residents in Missouri. Thresholds are <=.
+brackets:
+  - rate:
+      2019-01-01: 0.015
+    threshold:
+      2019-01-01: 0
+    # NB: Technically, there's a further exemption for the first $100 of income or so
+    # but this is essentially a rounding choice that we ignore ($1-2 impact).
+  - rate:
+      2019-01-01: 0.02
+    threshold:
+      2019-01-01: 1_053
+      2020-01-01: 1_073
+      2021-01-01: 1_088
+  - rate:
+      2019-01-01: 0.025
+    threshold:
+      2019-01-01: 2_106
+      2020-01-01: 2_146
+      2021-01-01: 2_176
+  - rate:
+      2019-01-01: 0.03
+    threshold:
+      2019-01-01: 3_159
+      2020-01-01: 3_219
+      2021-01-01: 3_264
+  - rate:
+      2019-01-01: 0.035
+    threshold:
+      2019-01-01: 4_212
+      2020-01-01: 4_292
+      2021-01-01: 4_352
+  - rate:
+      2019-01-01: 0.04
+    threshold:
+      2019-01-01: 5_265
+      2020-01-01: 5_365
+      2021-01-01: 5_440
+  - rate:
+      2019-01-01: 0.045
+    threshold:
+      2019-01-01: 6_318
+      2020-01-01: 6_438
+      2021-01-01: 6_528
+  - rate:
+      2019-01-01: 0.05
+    threshold:
+      2019-01-01: 7_371
+      2020-01-01: 7_511
+      2021-01-01: 7_616
+  - rate:
+      2019-01-01: 0.054
+    threshold:
+      2019-01-01: 8_424
+      2020-01-01: 8_584
+      2021-01-01: 8_704
+      
+metadata:
+  reference:
+    - title: MO 2019 Income Tax Chart
+      href: https://dor.mo.gov/forms/2019%20Tax%20Chart_2019.pdf
+    - title: MO 2020 Income Tax Chart
+      href: https://dor.mo.gov/forms/2020%20Tax%20Chart_2020.pdf
+    - title: MO 2021 Income Tax Chart
+      href: https://dor.mo.gov/forms/2021%20Tax%20Chart_2021.pdf
+  label: MO Resident Individual Tax Rates
+  name: mo_resident_individual_tax_rates
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year

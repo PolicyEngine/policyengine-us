@@ -1,0 +1,28 @@
+description: Maximum refundable amount of the CTC for qualifying children.
+values:
+  # Full amount is refundable pre-TCJA.
+  2013-01-01: 1_000
+  2018-01-01: 1_400
+  2022-01-01: 1_500
+  2023-01-01: 1_600
+  2026-01-01: 1_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_refundable_child_max
+  label: Child tax credit refundable maximum amount
+  reference:
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=9
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=9
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=9
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
+    - title: 2019 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=12
+    # NB: Not specified in prior IRS data releases.
+    # Indexed to inflation with respect to 2017, rounding down by $100.
+    - title: 26 U.S. Code § 24(h)(5)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_5_A

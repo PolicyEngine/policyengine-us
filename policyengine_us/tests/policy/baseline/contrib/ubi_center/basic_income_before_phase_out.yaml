@@ -1,0 +1,31 @@
+- name: $100 per person with two people.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.amount.person.flat: 100
+    tax_unit_size: 2
+  output:
+    basic_income_before_phase_out: 200
+
+- name: $10,000 older adult BI and $5,000 young child BI.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.amount.person.by_age[3].amount: 10_000
+    contrib.ubi_center.basic_income.amount.person.by_age[0].amount: 5_000
+    people:
+      adult:
+        age: 26
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+  output:
+    basic_income_before_phase_out: 15_000
+
+- name: 100% of FPG.
+  period: 2022
+  input:
+    contrib.ubi_center.basic_income.amount.tax_unit.fpg_percent: 1
+    tax_unit_fpg: 10_000
+  output:
+    basic_income_before_phase_out: 10_000

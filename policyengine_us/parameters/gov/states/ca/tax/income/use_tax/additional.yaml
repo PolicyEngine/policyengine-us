@@ -1,0 +1,21 @@
+description: California levies its use tax as a proportional income tax for income above the provided threshold.
+brackets:
+  - amount:
+      2021-01-01: 0
+    threshold:
+      2021-01-01: 0
+  - amount:
+      2021-01-01: 0.00008
+    threshold:
+      2021-01-01: 200_000
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  name: ca_use_tax_additional
+  label: CA additional use tax
+  reference:
+    - title: CA personal income tax booklet (2021 instructions for form 540)
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html

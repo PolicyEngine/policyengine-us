@@ -1,0 +1,13 @@
+description: Oregon provides a nonrefundable tax credit of this amount per exemption.
+values:
+  # Defined in the law as $90 in 1986, indexed by CPI-U.
+  2021-01-01: 213
+metadata:
+  unit: currency-USD
+  name: or_exemption_credit_amount
+  label: OR exemption amount
+  reference:
+    - title: Chapter 316 — Personal Income Tax 316.085 (1)(a)
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=17
