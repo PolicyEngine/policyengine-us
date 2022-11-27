@@ -26,7 +26,8 @@ class mo_federal_income_tax_deduction(Variable):
         p = parameters(
             period
         ).gov.states.mo.tax.income.deductions.federal_income_tax
-        rate = p.rate.calc(tax_unit("mo_adjusted_gross_income", period))
+        tax_unit_mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
+        rate = p.rate.calc(tax_unit_mo_agi)
         uncapped = federal_tax_less_cares * rate
         # Apply cap based on filing status.
         cap = p.cap[tax_unit("filing_status", period)]
