@@ -16,7 +16,11 @@ class ctc_refundable_maximum(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        amount = person("ctc_child_individual_maximum", period)
+        # Use either normal or ARPA CTC maximums.
+        amount = max_(
+            person("ctc_child_individual_maximum", period),
+            person("ctc_child_individual_maximum_arpa", period),
+        )
         ctc = parameters(period).gov.irs.credits.ctc
         if ctc.refundable.fully_refundable:
             return tax_unit.sum(amount)
