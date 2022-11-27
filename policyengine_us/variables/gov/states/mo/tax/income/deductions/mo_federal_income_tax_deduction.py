@@ -19,7 +19,10 @@ class mo_federal_income_tax_deduction(Variable):
         # (see second reference above for the legislative language)
         fitax = tax_unit("income_tax", period)
         ignored_credit_types = [
-            "rrc_cares", "rrc_caa", "rrc_arpa", "earned_income_tax_credit",
+            "rrc_cares",
+            "rrc_caa",
+            "rrc_arpa",
+            "earned_income_tax_credit",
         ]
         ignored_credits = add(tax_unit, period, ignored_credit_types)
         fitax_ignoring_credits = max_(0, fitax + ignored_credits)
@@ -37,4 +40,7 @@ class mo_federal_income_tax_deduction(Variable):
         fstatus = tax_unit("filing_status", period)
         fitax_deduction_cap = p.federal_income_tax_deduction_caps[fstatus]
 
-        return min_(fitax_deduction_amt, fitax_deduction_cap,)
+        return min_(
+            fitax_deduction_amt,
+            fitax_deduction_cap,
+        )
