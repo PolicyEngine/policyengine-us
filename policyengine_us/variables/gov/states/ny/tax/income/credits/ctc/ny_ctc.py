@@ -28,24 +28,27 @@ class ny_ctc(Variable):
             simulation = tax_unit.simulation
             pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
 
+            parameters = pre_tcja_ctc.tax_benefit_system.parameters
+
             for (
                 ctc_parameter
-            ) in (
-                pre_tcja_ctc.tax_benefit_system.parameters.gov.irs.credits.ctc.get_descendants()
-            ):
+            ) in parameters.gov.irs.credits.ctc.get_descendants():
                 if isinstance(ctc_parameter, Parameter):
                     ctc_parameter.update(
                         start=instant("2017-01-01"),
                         stop=instant("2026-01-01"),
                         value=ctc_parameter("2017-01-01"),
                     )
+                pre_tcja_ctc.tax_benefit_system._parameters_at_instant_cache = (
+                    {}
+                )
 
             for variable in pre_tcja_ctc.tax_benefit_system.variables:
                 if "ctc" in variable:
                     pre_tcja_ctc.delete_arrays(variable)
 
             maximum_ctc = pre_tcja_ctc.calculate(
-                "ctc_individual_maximum", period
+                "ctc_child_individual_maximum", period
             )
             meets_ny_minimum_age = age >= p.minimum_age
             pre_tcja_ctc.set_input(
@@ -53,7 +56,7 @@ class ny_ctc(Variable):
                 period,
                 maximum_ctc * meets_ny_minimum_age,
             )
-            federal_ctc = pre_tcja_ctc.tax_unit("ctc", period)
+            federal_ctc = pre_tcja_ctc.tax_unit("ctc_value", period)
 
         qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
