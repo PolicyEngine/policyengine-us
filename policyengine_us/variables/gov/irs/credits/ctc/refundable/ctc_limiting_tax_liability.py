@@ -15,7 +15,9 @@ class ctc_limiting_tax_liability(Variable):
             trace["name"] for trace in simulation.tracer.stack
         ]
         if "ctc_limiting_tax_liability" in variables_in_stack:
-            income_tax_before_credits = tax_unit("income_tax_before_credits", period)
+            income_tax_before_credits = tax_unit(
+                "income_tax_before_credits", period
+            )
         else:
             no_salt_branch = simulation.get_branch("no_salt")
             no_salt_branch.tax_benefit_system.variables[
