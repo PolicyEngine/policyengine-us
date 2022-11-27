@@ -9,16 +9,19 @@ class no_salt_taxable_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        with BranchedSimulation(tax_unit) as simulation:
-            simulation.tax_benefit_system.neutralize_variable("salt_deduction")
-            simulation.get_holder(
-                "salt_deduction"
-            ).variable = simulation.tax_benefit_system.variables[
-                "salt_deduction"
-            ]  # This is needed because neutralize_variable is only designed to work *before* simulations have started.
-            taxable_income = simulation.calculate("taxable_income", period)
-            simulation.get_holder(
-                "salt_deduction"
-            ).variable.is_neutralized = False
-
-        return taxable_income
+        itemizes = tax_unit("tax_unit_itemizes", period)
+        gov = parameters(period).gov
+        federal_itemized_deductions = [
+            deduction
+            for deduction in gov.irs.deductions.itemized_deductions
+            if deduction
+            # SALT and QBID both cause circular references.
+            not in ["salt_deduction", "qualified_business_income_deduction"]
+        ]
+        itemized_value = add(tax_unit, period, federal_itemized_deductions)
+        agi = tax_unit("adjusted_gross_income", period)
+        return where(
+            itemizes,
+            agi - itemized_value,
+            agi - tax_unit("standard_deduction", period),
+        )
