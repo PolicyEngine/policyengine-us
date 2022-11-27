@@ -8,40 +8,33 @@ class mo_federal_income_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8",
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=7",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044",
     )
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
 
-        mo_adjusted_gross_income = add(
-            tax_unit, period, ["mo_adjusted_gross_income"]
-        )
-        federal_tax = tax_unit("income_tax", period)
-
-        # subtract CARES act credits, only affects year 2020, source: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=48731
-        cares_rebate = tax_unit("rrc_cares", period)
-        federal_tax_less_cares = federal_tax - cares_rebate
-
-        filing_status = tax_unit("filing_status", period)
-
-        federal_income_tax_deduction_rates = parameters(
-            period
-        ).gov.states.mo.tax.income.deductions.federal_income_tax_deduction_rates
-
-        rate = federal_income_tax_deduction_rates.calc(
-            mo_adjusted_gross_income
-        )
-        federal_income_tax_deduction_amount = federal_tax_less_cares * rate
-
-        federal_income_tax_deduction_cap = parameters(
-            period
-        ).gov.states.mo.tax.income.deductions.federal_income_tax_deduction_caps[
-            filing_status
+        # compute federal income tax ignoring COVID-19 rebates and federal EITC
+        # (see second reference above for the legislative language)
+        fitax = tax_unit("income_tax", period)
+        ignored_credit_types = [
+            "rrc_cares", "rrc_caa", "rrc_arpa", "earned_income_tax_credit",
         ]
+        ignored_credits = add(tax_unit, period, ignored_credit_types)
+        fitax_ignoring_credits = max_(0, fitax + ignored_credits)
 
-        return min_(
-            federal_income_tax_deduction_amount,
-            federal_income_tax_deduction_cap,
-        )
+        # compute deduction rate based on MO AGI
+        p = parameters(period).gov.states.mo.tax.income.deductions
+        fitax_deduction_rates = p.federal_income_tax_deduction_rates
+        mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
+        rate = fitax_deduction_rates.calc(mo_agi)
+
+        # compute uncapped deduction amount
+        fitax_deduction_amt = fitax_ignoring_credits * rate
+
+        # compute deduction cap based on filing status
+        fstatus = tax_unit("filing_status", period)
+        fitax_deduction_cap = p.federal_income_tax_deduction_caps[fstatus]
+
+        return min_(fitax_deduction_amt, fitax_deduction_cap,)
