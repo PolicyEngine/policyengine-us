@@ -11,6 +11,11 @@ class ctc_limiting_tax_liability(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
+        variables_in_stack = [
+            trace["name"] for trace in simulation.tracer.stack
+        ]
+        if "ctc_limiting_tax_liability" in variables_in_stack:
+            return 0
         no_salt_branch = simulation.get_branch("no_salt")
         no_salt_branch.tax_benefit_system.variables[
             "salt_deduction"
