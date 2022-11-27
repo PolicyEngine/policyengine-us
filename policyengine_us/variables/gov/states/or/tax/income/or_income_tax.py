@@ -7,6 +7,7 @@ class or_income_tax(Variable):
     label = "OR income tax after refundable credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
         income_tax_after_non_refundable_credits = tax_unit(

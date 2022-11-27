@@ -11,13 +11,21 @@ class ctc_limiting_tax_liability(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        no_salt_branch = simulation.get_branch("no_salt")
-        no_salt_branch.tax_benefit_system.variables[
-            "salt_deduction"
-        ].is_neutralized = True
-        tax_liability_before_credits = no_salt_branch.calculate(
-            "income_tax_before_credits", period
-        )
+        variables_in_stack = [
+            trace["name"] for trace in simulation.tracer.stack
+        ]
+        if "ctc_limiting_tax_liability" in variables_in_stack:
+            income_tax_before_credits = tax_unit(
+                "income_tax_before_credits", period
+            )
+        else:
+            no_salt_branch = simulation.get_branch("no_salt")
+            no_salt_branch.tax_benefit_system.variables[
+                "salt_deduction"
+            ].is_neutralized = True
+            income_tax_before_credits = no_salt_branch.calculate(
+                "income_tax_before_credits", period
+            )
         non_refundable_credits = parameters(
             period
         ).gov.irs.credits.non_refundable
@@ -32,4 +40,4 @@ class ctc_limiting_tax_liability(Variable):
             "salt_deduction"
         ].is_neutralized = False
 
-        return max_(0, tax_liability_before_credits - total_credits)
+        return max_(0, income_tax_before_credits - total_credits)
