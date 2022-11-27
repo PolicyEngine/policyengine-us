@@ -11,4 +11,6 @@ class ctc_child_individual_maximum_arpa(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        return parameters(period).gov.irs.credits.ctc.amount.arpa.calc(age)
+        is_dependent = person("is_tax_unit_dependent", period)
+        amount = parameters(period).gov.irs.credits.ctc.amount.arpa.calc(age)
+        return is_dependent * amount
