@@ -18,14 +18,14 @@ class mo_federal_income_tax_deduction(Variable):
         # compute federal income tax ignoring COVID-19 rebates and federal EITC
         # (see second reference above for the legislative language)
         fitax = tax_unit("income_tax", period)
-        ignored_credit_types = [
+        ignored_credits = [
             "rrc_cares",
             "rrc_caa",
             "rrc_arpa",
             "earned_income_tax_credit",
         ]
-        ignored_credits = add(tax_unit, period, ignored_credit_types)
-        fitax_ignoring_credits = max_(0, fitax + ignored_credits)
+        ignored_credits_total = add(tax_unit, period, ignored_credits)
+        fitax_ignoring_credits = max_(0, fitax + ignored_credits_total)
 
         # compute deduction rate based on MO AGI
         p = parameters(period).gov.states.mo.tax.income.deductions
