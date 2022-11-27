@@ -28,9 +28,16 @@ class mo_taxable_income(Variable):
         mo_itemized_or_standard = where(
             tax_unit_itemizes, mo_itemized_deductions, mo_standard_deduction
         )
+        # MO Pension, Social Security, and Social Security Disability Exemption
+        mo_pension_and_ss_or_ssd_deduction = tax_unit(
+            "mo_pension_and_ss_or_ssd_deduction", period
+        )
+
         # NB: The federal income tax deduction applies regardless of itemization.
         all_deductions_tax_unit = (
-            mo_itemized_or_standard + mo_federal_income_tax_deduction
+            mo_itemized_or_standard
+            + mo_federal_income_tax_deduction
+            + mo_pension_and_ss_or_ssd_deduction
         )
         # Note: There would also be a personal and/or dependent exemptions as part of
         # this formula, but they are legally based on eligibility for the federal
