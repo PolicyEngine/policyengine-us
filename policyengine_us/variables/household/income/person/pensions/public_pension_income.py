@@ -6,5 +6,5 @@ class public_pension_income(Variable):
     entity = Person
     label = "Public pension income"
     unit = USD
-    documentation = "Income from government pensions."
+    documentation = "Income from government employee pensions."
     definition_period = YEAR
