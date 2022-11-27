@@ -20,13 +20,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-<<<<<<<< HEAD:openfisca_us/tests/policy/baseline/gov/states/mo/tax/taxsim/mo_income_tax.yaml
     # TAXSIM: 1_136.49
     mo_income_tax: 1_269
-========
-    #taxsim output: 1_136.49
-    mo_income_tax: 1_199.67
->>>>>>>> 3b55b212a130dede7e53d15783ed7e302589e4fb:policyengine_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/mo_income_tax.yaml
 
 - name:  Taxsim integration test, no liability
   period: 2021
@@ -75,13 +70,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-<<<<<<<< HEAD:openfisca_us/tests/policy/baseline/gov/states/mo/tax/taxsim/mo_income_tax.yaml
     # TAXSIM: 129
     mo_income_tax: 141
-========
-    #taxsim output: 129
-    mo_income_tax: 223.42
->>>>>>>> 3b55b212a130dede7e53d15783ed7e302589e4fb:policyengine_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/mo_income_tax.yaml
 
 - name:  Taxsim integration test, average household income, per https://www.census.gov/quickfacts/MO
   period: 2021
@@ -105,13 +95,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-<<<<<<<< HEAD:openfisca_us/tests/policy/baseline/gov/states/mo/tax/taxsim/mo_income_tax.yaml
     # TAXSIM: 1_523.06
     mo_income_tax: 1_706.40
-========
-    #taxsim output: 1_523.06
-    mo_income_tax: 1_586.24
->>>>>>>> 3b55b212a130dede7e53d15783ed7e302589e4fb:policyengine_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/mo_income_tax.yaml
 
 - name:  Taxsim integration test, high income
   period: 2021
@@ -160,12 +145,8 @@
       members: [person1, person2, person3]
       state_code: MO
   output:
-<<<<<<<< HEAD:openfisca_us/tests/policy/baseline/gov/states/mo/tax/taxsim/mo_income_tax.yaml
     # TAXSIM: 20_057
     mo_income_tax: 22_269
-========
-    #taxsim output: 20_057
-    mo_income_tax: 20_057.47
 
 # PolicyEngine US test file derived from p21.its.csv and p21.ots.csv files
 
@@ -207,4 +188,3 @@
         state_code: MO
   output:
     mo_income_tax: 15550.33
->>>>>>>> 3b55b212a130dede7e53d15783ed7e302589e4fb:policyengine_us/tests/policy/baseline/gov/states/mo/tax/tax_sim/mo_income_tax.yaml
