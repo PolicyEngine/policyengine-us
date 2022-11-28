@@ -15,7 +15,8 @@ class mo_federal_income_tax_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # Deduct a capped share of federal income tax liability.
-        # Ignore refundable credits (including COVID-19 rebates).
+        # Ignore certain refundable credits: recovery rebates and EITC.
+        # See #1528 for uncertainty around these credits.
         p = parameters(
             period
         ).gov.states.mo.tax.income.deductions.federal_income_tax
