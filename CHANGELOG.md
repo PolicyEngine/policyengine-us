@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.181.2] - 2022-11-28 04:33:20
+
+### Fixed
+
+- Move MO federal income tax deduction ignored credits list to a parameter.
+
 ## [0.181.1] - 2022-11-27 22:47:33
 
 ### Fixed
@@ -2191,6 +2197,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.181.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.1...0.181.2
 [0.181.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.0...0.181.1
 [0.181.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.180.1...0.181.0
 [0.180.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.180.0...0.180.1
