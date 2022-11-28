@@ -15,7 +15,6 @@ class mo_federal_income_tax_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # Deduct a capped share of federal income tax liability.
-        # Use a version that assumes no SALT deduction to avoid circularity.
         # Ignore refundable credits (including COVID-19 rebates).
         p = parameters(
             period
@@ -23,11 +22,11 @@ class mo_federal_income_tax_deduction(Variable):
         uncapped_federal_income_tax_ignoring_credits = add(
             tax_unit, period, ["income_tax"] + p.ignored_credits
         )
-        # Law is vague, but for now, limit to nonnegative tax.
+        # Limit to nonnegative tax.
         federal_income_tax_ignoring_credits = max_(
             0, uncapped_federal_income_tax_ignoring_credits
         )
-        # Apply rate based on AGI.
+        # Apply rate based on MO AGI.
         tax_unit_mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
         rate = p.rate.calc(tax_unit_mo_agi)
         uncapped = federal_income_tax_ignoring_credits * rate
