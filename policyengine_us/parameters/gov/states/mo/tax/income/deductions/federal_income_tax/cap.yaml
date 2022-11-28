@@ -1,4 +1,4 @@
-description: Federal income tax deduction caps by filing status.
+description: Missouri allows filers to deduct up to this amount in federal income taxes, after applying the rate.
 SINGLE: 
   2021-01-01: 10_000
 JOINT:
@@ -13,7 +13,7 @@ metadata:
   unit: currency-USD
   period: year
   name: mo_federal_income_tax_deduction_caps
-  label: MO Federal income tax deduction caps
+  label: Missouri federal income tax deduction caps
   reference:
     - title: Form MO-1040
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
