@@ -12,6 +12,5 @@ class self_employed_health_insurance_ald(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        earnings = max_(0, person("self_employment_income", period))
-        premiums = person("self_employed_health_insurance_premiums", period)
-        return tax_unit.sum(min_(earnings, premiums))
+        ald = person("self_employed_health_insurance_ald_person", period)
+        return tax_unit.sum(ald)
