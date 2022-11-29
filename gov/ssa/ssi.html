@@ -279,73 +279,73 @@ Their benefit phases out with earned income until the person earns $1,770 per mo
 <p>If they have $500 per month in unearned income (for example, Social Security), they will receive $361 if they have no earned income, and will continue to receive some benefit until they earn $790 per month.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim
+import pandas as pd
+import plotly.express as px
 
-<span class="n">LIGHT_GRAY</span> <span class="o">=</span> <span class="s2">&quot;#F5F5F5&quot;</span>
-<span class="n">GRAY</span> <span class="o">=</span> <span class="s2">&quot;#BDBDBD&quot;</span>
-<span class="n">BLUE</span> <span class="o">=</span> <span class="s2">&quot;#5091cc&quot;</span>
-<span class="n">LIGHT_BLUE</span> <span class="o">=</span> <span class="s2">&quot;lightblue&quot;</span>
-<span class="n">DARK_BLUE</span> <span class="o">=</span> <span class="s2">&quot;darkblue&quot;</span>
-
-
-<span class="k">def</span> <span class="nf">make_ssi</span><span class="p">(</span><span class="n">social_security</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="s2">&quot;employment_income&quot;</span><span class="p">):</span>
-    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span> <span class="n">is_ssi_disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">social_security</span><span class="o">=</span><span class="n">social_security</span>
-    <span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="n">vary</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">30_000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
-    <span class="n">employment_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">ssi</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;ssi&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">mtr</span> <span class="o">=</span> <span class="o">-</span><span class="n">sim</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;ssi&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="n">wrt_target</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-        <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">employment_income</span><span class="o">=</span><span class="n">employment_income</span><span class="p">,</span>
-            <span class="n">ssi</span><span class="o">=</span><span class="n">ssi</span><span class="p">,</span>
-            <span class="n">mtr</span><span class="o">=</span><span class="n">mtr</span><span class="p">,</span>
-            <span class="n">social_security</span><span class="o">=</span><span class="n">social_security</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+LIGHT_GRAY = &quot;#F5F5F5&quot;
+GRAY = &quot;#BDBDBD&quot;
+BLUE = &quot;#5091cc&quot;
+LIGHT_BLUE = &quot;lightblue&quot;
+DARK_BLUE = &quot;darkblue&quot;
 
 
-<span class="c1"># Compute for different values of Social Security income.</span>
-<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span> <span class="o">*</span> <span class="mi">12</span><span class="p">]:</span>
-    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_ssi</span><span class="p">(</span><span class="n">social_security</span><span class="o">=</span><span class="n">ss</span><span class="p">))</span>
+def make_ssi(social_security=0, vary=&quot;employment_income&quot;):
+    sim = IndividualSim(year=2022)
+    sim.add_person(
+        name=&quot;head&quot;, is_ssi_disabled=True, social_security=social_security
+    )
+    sim.vary(vary, max=30_000, step=120)
+    employment_income = sim.calc(&quot;employment_income&quot;)[0]
+    ssi = sim.calc(&quot;ssi&quot;)[0]
+    mtr = -sim.deriv(&quot;ssi&quot;, &quot;employment_income&quot;, wrt_target=&quot;head&quot;)
+    return pd.DataFrame(
+        dict(
+            employment_income=employment_income,
+            ssi=ssi,
+            mtr=mtr,
+            social_security=social_security,
+        )
+    )
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
 
-<span class="c1"># Make monthly.</span>
-<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;ssi&quot;</span><span class="p">,</span> <span class="s2">&quot;social_security&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="mi">12</span>
-<span class="n">df</span><span class="o">.</span><span class="n">social_security</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">social_security</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+# Compute for different values of Social Security income.
+l = []
+for ss in [0, 500 * 12]:
+    l.append(make_ssi(social_security=ss))
 
-<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Monthly employment income&quot;</span><span class="p">,</span>
-    <span class="n">ssi</span><span class="o">=</span><span class="s2">&quot;Monthly Supplemental Security Income&quot;</span><span class="p">,</span>
-    <span class="n">mtr</span><span class="o">=</span><span class="s2">&quot;SSI marginal tax rate&quot;</span><span class="p">,</span>
-    <span class="n">social_security</span><span class="o">=</span><span class="s2">&quot;Monthly Social Security&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+df = pd.concat(l)
 
-<span class="n">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;$0&quot;</span><span class="p">:</span> <span class="n">DARK_BLUE</span><span class="p">,</span> <span class="s2">&quot;$500&quot;</span><span class="p">:</span> <span class="n">BLUE</span><span class="p">}</span>
+# Make monthly.
+df[[&quot;employment_income&quot;, &quot;ssi&quot;, &quot;social_security&quot;]] /= 12
+df.social_security = &quot;$&quot; + df.social_security.astype(int).astype(str)
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ssi&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;social_security&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Supplemental Security Income for a single person&quot;</span><span class="p">,</span>
-    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
-    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+LABELS = dict(
+    employment_income=&quot;Monthly employment income&quot;,
+    ssi=&quot;Monthly Supplemental Security Income&quot;,
+    mtr=&quot;SSI marginal tax rate&quot;,
+    social_security=&quot;Monthly Social Security&quot;,
+)
+
+COLOR_MAP = {&quot;$0&quot;: DARK_BLUE, &quot;$500&quot;: BLUE}
+
+fig = px.line(
+    df,
+    &quot;employment_income&quot;,
+    &quot;ssi&quot;,
+    color=&quot;social_security&quot;,
+    labels=LABELS,
+    title=&quot;Supplemental Security Income for a single person&quot;,
+    color_discrete_map=COLOR_MAP,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;,
+    yaxis_tickformat=&quot;$,&quot;,
+    plot_bgcolor=&quot;white&quot;,
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -355,23 +355,23 @@ Their benefit phases out with earned income until the person earns $1,770 per mo
 <p>SSI phases out at 50% with respect to employment income, after exemptions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;social_security&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SSI marginal tax rate for a single eligible person&quot;</span><span class="p">,</span>
-    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span>
-    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
-    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    df,
+    &quot;employment_income&quot;,
+    &quot;mtr&quot;,
+    color=&quot;social_security&quot;,
+    labels=LABELS,
+    title=&quot;SSI marginal tax rate for a single eligible person&quot;,
+    color_discrete_map=COLOR_MAP,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;,
+    yaxis_tickformat=&quot;.0%&quot;,
+    plot_bgcolor=&quot;white&quot;,
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -383,54 +383,54 @@ Their benefit phases out with earned income until the person earns $1,770 per mo
 <p>With no Social Security, the household will receive the maximum combined SSI payment of $1,682 until the parent’s income reaches $1,840, at which point it starts phasing out at 50 cents on the dollar until it’s fully phased out at $5,220 monthly income.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_ssi</span><span class="p">(</span><span class="n">social_security</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vary</span><span class="o">=</span><span class="s2">&quot;employment_income&quot;</span><span class="p">):</span>
-    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">social_security</span><span class="o">=</span><span class="n">social_security</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;child1&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">is_ssi_disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;child2&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">is_ssi_disabled</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="s2">&quot;child1&quot;</span><span class="p">,</span> <span class="s2">&quot;child2&quot;</span><span class="p">])</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="n">vary</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">72_000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
-    <span class="n">employment_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">ssi</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;tax_unit_ssi&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">mtr</span> <span class="o">=</span> <span class="o">-</span><span class="n">sim</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;tax_unit_ssi&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="n">wrt_target</span><span class="o">=</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-        <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">employment_income</span><span class="o">=</span><span class="n">employment_income</span><span class="p">,</span>
-            <span class="n">ssi</span><span class="o">=</span><span class="n">ssi</span><span class="p">,</span>
-            <span class="n">mtr</span><span class="o">=</span><span class="n">mtr</span><span class="p">,</span>
-            <span class="n">social_security</span><span class="o">=</span><span class="n">social_security</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def make_ssi(social_security=0, vary=&quot;employment_income&quot;):
+    sim = IndividualSim(year=2022)
+    sim.add_person(name=&quot;parent&quot;, social_security=social_security)
+    sim.add_person(name=&quot;child1&quot;, age=10, is_ssi_disabled=True)
+    sim.add_person(name=&quot;child2&quot;, age=8, is_ssi_disabled=True)
+    sim.add_tax_unit(name=&quot;tax_unit&quot;, members=[&quot;parent&quot;, &quot;child1&quot;, &quot;child2&quot;])
+    sim.vary(vary, max=72_000, step=120)
+    employment_income = sim.calc(&quot;employment_income&quot;)[0]
+    ssi = sim.calc(&quot;tax_unit_ssi&quot;)[0]
+    mtr = -sim.deriv(&quot;tax_unit_ssi&quot;, &quot;employment_income&quot;, wrt_target=&quot;parent&quot;)
+    return pd.DataFrame(
+        dict(
+            employment_income=employment_income,
+            ssi=ssi,
+            mtr=mtr,
+            social_security=social_security,
+        )
+    )
 
 
-<span class="c1"># Compute for different values of Social Security income.</span>
-<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span> <span class="o">*</span> <span class="mi">12</span><span class="p">]:</span>
-    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_ssi</span><span class="p">(</span><span class="n">social_security</span><span class="o">=</span><span class="n">ss</span><span class="p">))</span>
+# Compute for different values of Social Security income.
+l = []
+for ss in [0, 500 * 12]:
+    l.append(make_ssi(social_security=ss))
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+df = pd.concat(l)
 
-<span class="c1"># Make monthly.</span>
-<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;ssi&quot;</span><span class="p">,</span> <span class="s2">&quot;social_security&quot;</span><span class="p">]]</span> <span class="o">/=</span> <span class="mi">12</span>
-<span class="n">df</span><span class="o">.</span><span class="n">social_security</span> <span class="o">=</span> <span class="s2">&quot;$&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="o">.</span><span class="n">social_security</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+# Make monthly.
+df[[&quot;employment_income&quot;, &quot;ssi&quot;, &quot;social_security&quot;]] /= 12
+df.social_security = &quot;$&quot; + df.social_security.astype(int).astype(str)
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ssi&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;social_security&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Supplemental Security Income for a single parent and two disabled children&quot;</span><span class="p">,</span>
-    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
-    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+fig = px.line(
+    df,
+    &quot;employment_income&quot;,
+    &quot;ssi&quot;,
+    color=&quot;social_security&quot;,
+    labels=LABELS,
+    title=&quot;Supplemental Security Income for a single parent and two disabled children&quot;,
+    color_discrete_map=COLOR_MAP,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;,
+    yaxis_tickformat=&quot;$,&quot;,
+    plot_bgcolor=&quot;white&quot;,
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -440,23 +440,23 @@ Their benefit phases out with earned income until the person earns $1,770 per mo
 <p>The parent faces a 50% marginal tax rate over the phase-out range.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;social_security&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SSI marginal tax rate for a single parent of two disabled children&quot;</span><span class="p">,</span>
-    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span>
-    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
-    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    df,
+    &quot;employment_income&quot;,
+    &quot;mtr&quot;,
+    color=&quot;social_security&quot;,
+    labels=LABELS,
+    title=&quot;SSI marginal tax rate for a single parent of two disabled children&quot;,
+    color_discrete_map=COLOR_MAP,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;,
+    yaxis_tickformat=&quot;.0%&quot;,
+    plot_bgcolor=&quot;white&quot;,
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
+fig.show()
 </pre></div>
 </div>
 </div>

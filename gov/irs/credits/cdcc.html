@@ -278,73 +278,73 @@ Since the CDCC is capped at the lower of head and spouse’s earnings, this exam
 In 2020, the CDCC phased out only at one level; in 2021 only, it phased out twice, and in 2022 and beyond, it returns to 2020 law.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim
+import pandas as pd
+import plotly.express as px
 
 
-<span class="k">def</span> <span class="nf">make_cdcc</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
-    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span> <span class="n">is_tax_unit_head</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">children</span><span class="p">):</span>
-        <span class="n">child</span> <span class="o">=</span> <span class="s2">&quot;child</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-        <span class="n">members</span> <span class="o">+=</span> <span class="p">[</span><span class="n">child</span><span class="p">]</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span>
-        <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span>
-        <span class="n">tax_unit_childcare_expenses</span><span class="o">=</span><span class="mi">8_000</span> <span class="o">*</span> <span class="n">children</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;household&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;MD&quot;</span><span class="p">)</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">500_000</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-        <span class="nb">dict</span><span class="p">(</span>
-            <span class="n">employment_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">cdcc</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;cdcc&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span>
-            <span class="n">cdcc_mtr</span><span class="o">=-</span><span class="n">sim</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span>
-                <span class="s2">&quot;cdcc&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-                <span class="n">wrt_target</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span>
-            <span class="p">),</span>
-            <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">,</span>
-            <span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
+def make_cdcc(children, year):
+    sim = IndividualSim(year=year)
+    sim.add_person(name=&quot;head&quot;, is_tax_unit_head=True)
+    members = [&quot;head&quot;]
+    for i in range(children):
+        child = &quot;child{}&quot;.format(i)
+        sim.add_person(name=child, age=5)
+        members += [child]
+    sim.add_tax_unit(
+        name=&quot;tax_unit&quot;,
+        members=members,
+        tax_unit_childcare_expenses=8_000 * children,
+    )
+    sim.add_spm_unit(name=&quot;spm_unit&quot;, members=members)
+    sim.add_household(name=&quot;household&quot;, members=members, state_code=&quot;MD&quot;)
+    sim.vary(&quot;employment_income&quot;, max=500_000)
+    return pd.DataFrame(
+        dict(
+            employment_income=sim.calc(&quot;employment_income&quot;)[0],
+            cdcc=sim.calc(&quot;cdcc&quot;)[0].round(),
+            cdcc_mtr=-sim.deriv(
+                &quot;cdcc&quot;,
+                &quot;employment_income&quot;,
+                wrt_target=&quot;head&quot;,
+            ),
+            children=children,
+            year=year,
+        )
+    )
 
 
-<span class="c1"># Make a table of CDCC amounts for different numbers of adults and children.</span>
-<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">2020</span><span class="p">,</span> <span class="mi">2021</span><span class="p">,</span> <span class="mi">2022</span><span class="p">]:</span>
-    <span class="k">for</span> <span class="n">children</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
-        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_cdcc</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="n">year</span><span class="p">))</span>
+# Make a table of CDCC amounts for different numbers of adults and children.
+l = []
+for year in [2020, 2021, 2022]:
+    for children in range(1, 3):
+        l.append(make_cdcc(children, year))
 
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+df = pd.concat(l)
 
-<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Employment income&quot;</span><span class="p">,</span>
-    <span class="n">cdcc</span><span class="o">=</span><span class="s2">&quot;CDCC&quot;</span><span class="p">,</span>
-    <span class="n">cdcc_mtr</span><span class="o">=</span><span class="s2">&quot;CDCC Marginal Tax Rate&quot;</span><span class="p">,</span>
-    <span class="n">children</span><span class="o">=</span><span class="s2">&quot;Children&quot;</span><span class="p">,</span>
-    <span class="n">year</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+LABELS = dict(
+    employment_income=&quot;Employment income&quot;,
+    cdcc=&quot;CDCC&quot;,
+    cdcc_mtr=&quot;CDCC Marginal Tax Rate&quot;,
+    children=&quot;Children&quot;,
+    year=&quot;Year&quot;,
+)
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cdcc&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
-    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Child and Dependent Care Credit&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">cdcc</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">],</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+fig = px.line(
+    df,
+    &quot;employment_income&quot;,
+    &quot;cdcc&quot;,
+    color=&quot;children&quot;,
+    animation_frame=&quot;year&quot;,
+    labels=LABELS,
+    title=&quot;Child and Dependent Care Credit&quot;,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;,
+    yaxis_tickformat=&quot;$,&quot;,
+    yaxis_range=[0, df.cdcc.max() * 1.05],
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -354,19 +354,19 @@ In 2020, the CDCC phased out only at one level; in 2021 only, it phased out twic
 <p>The credit phases in at 50% of income and then phases out in a stepwise fashion that produces many small cliffs (infinite marginal tax rates).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cdcc_mtr&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
-    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CDCC marginal tax rate&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.1%&quot;</span><span class="p">,</span> <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    df,
+    &quot;employment_income&quot;,
+    &quot;cdcc_mtr&quot;,
+    color=&quot;children&quot;,
+    animation_frame=&quot;year&quot;,
+    labels=LABELS,
+    title=&quot;CDCC marginal tax rate&quot;,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;.1%&quot;, yaxis_range=[-1, 1]
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -379,11 +379,11 @@ In 2020, the CDCC phased out only at one level; in 2021 only, it phased out twic
 <p>Applying 2022 rules to the 2020 Current Population Survey, OpenFisca US estimates that the CDCC pays out $4.0 billion.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">Microsimulation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import Microsimulation
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">dataset_year</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
+sim = Microsimulation(dataset_year=2020)
 
-<span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;cdcc&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="mf">1e6</span>
+sim.calc(&quot;cdcc&quot;, period=2022).sum() / 1e6
 </pre></div>
 </div>
 </div>
@@ -397,26 +397,26 @@ In 2020, the CDCC phased out only at one level; in 2021 only, it phased out twic
 Applying this method yields a lower $3.8 billion.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us.model_api</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us.model_api import *
 
 
-<span class="k">class</span> <span class="nc">ignore_reported</span><span class="p">(</span><span class="n">Reform</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">neutralize_variable</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income_reported&quot;</span><span class="p">)</span>
+class ignore_reported(Reform):
+    def apply(self):
+        self.neutralize_variable(&quot;spm_unit_net_income_reported&quot;)
 
 
-<span class="k">class</span> <span class="nc">neutralize_cdcc</span><span class="p">(</span><span class="n">Reform</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">neutralize_variable</span><span class="p">(</span><span class="s2">&quot;cdcc&quot;</span><span class="p">)</span>
+class neutralize_cdcc(Reform):
+    def apply(self):
+        self.neutralize_variable(&quot;cdcc&quot;)
 
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">ignore_reported</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
-<span class="n">sim_no_cdcc</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">((</span><span class="n">ignore_reported</span><span class="p">,</span> <span class="n">neutralize_cdcc</span><span class="p">),</span> <span class="n">year</span><span class="o">=</span><span class="mi">2020</span><span class="p">)</span>
+sim = Microsimulation(ignore_reported, year=2020)
+sim_no_cdcc = Microsimulation((ignore_reported, neutralize_cdcc), year=2020)
 
-<span class="p">(</span>
-    <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="o">-</span> <span class="n">sim_no_cdcc</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="p">)</span> <span class="o">/</span> <span class="mf">1e6</span>
+(
+    sim.calc(&quot;spm_unit_net_income&quot;, period=2022).sum()
+    - sim_no_cdcc.calc(&quot;spm_unit_net_income&quot;, period=2022).sum()
+) / 1e6
 </pre></div>
 </div>
 </div>

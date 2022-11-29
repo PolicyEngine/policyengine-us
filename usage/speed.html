@@ -272,27 +272,27 @@
 <h1>Speed<a class="headerlink" href="#speed" title="Permalink to this headline">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from IPython.display import Markdown
+from time import time
 
-<span class="n">t1</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">Microsimulation</span>
+t1 = time()
+from policyengine_us import Microsimulation
 
-<span class="n">t2</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
-<span class="n">t3</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_benefits&quot;</span><span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_taxes&quot;</span><span class="p">)</span>
-<span class="n">t4</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+t2 = time()
+sim = Microsimulation()
+t3 = time()
+sim.calc(&quot;spm_unit_benefits&quot;)
+sim.calc(&quot;spm_unit_taxes&quot;)
+t4 = time()
 
-<span class="n">Markdown</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;The time to import `Microsimulation` from `policyengine_us` is </span><span class="si">{</span><span class="n">t2</span> <span class="o">-</span> <span class="n">t1</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds. The time to initialise a `Microsimulation` object is </span><span class="si">{</span><span class="n">t3</span> <span class="o">-</span> <span class="n">t2</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds, and the time to complete simulation of taxes and benefits is </span><span class="si">{</span><span class="n">t4</span> <span class="o">-</span> <span class="n">t3</span><span class="si">:</span><span class="s2">.01f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
-<span class="p">)</span>
+Markdown(
+    f&quot;The time to import `Microsimulation` from `policyengine_us` is {t2 - t1:.01f} seconds. The time to initialise a `Microsimulation` object is {t3 - t2:.01f} seconds, and the time to complete simulation of taxes and benefits is {t4 - t3:.01f} seconds.&quot;
+)
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<p>The time to import <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> from <code class="docutils literal notranslate"><span class="pre">policyengine_us</span></code> is 4.0 seconds. The time to initialise a <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> object is 0.2 seconds, and the time to complete simulation of taxes and benefits is 7.3 seconds.</p>
+<p>The time to import <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> from <code class="docutils literal notranslate"><span class="pre">policyengine_us</span></code> is 3.0 seconds. The time to initialise a <code class="docutils literal notranslate"><span class="pre">Microsimulation</span></code> object is 0.1 seconds, and the time to complete simulation of taxes and benefits is 5.0 seconds.</p>
 </div>
 </div>
 </section>

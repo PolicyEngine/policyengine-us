@@ -283,25 +283,25 @@ This tops up every eligible household to the maximum allotment for their househo
 They would be eligible for $145 per month in SNAP allotments, or a top-up to the full $250 with the emergency allotment. Since the top-up is $105, less than the $95 emergency allotment minimum, they would not receive more than the maximum allotment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim
+import pandas as pd
+import plotly.express as px
 
-<span class="n">sim_emp</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-<span class="n">sim_emp</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;person&quot;</span><span class="p">,</span> <span class="n">employment_income</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">sim_emp</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">],</span> <span class="n">housing_cost</span><span class="o">=</span><span class="mi">600</span> <span class="o">*</span> <span class="mi">12</span>
-<span class="p">)</span>
+sim_emp = IndividualSim(year=2022)
+sim_emp.add_person(name=&quot;person&quot;, employment_income=1000 * 12)
+sim_emp.add_spm_unit(
+    name=&quot;spm_unit&quot;, members=[&quot;person&quot;], housing_cost=600 * 12
+)
 
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;SNAP normal allotment: &quot;</span><span class="p">,</span>
-    <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;SNAP emergency allotment: &quot;</span><span class="p">,</span>
-    <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_emergency_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total SNAP: &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">))</span>
+print(
+    &quot;SNAP normal allotment: &quot;,
+    round(sim_emp.calc(&quot;snap_normal_allotment&quot;)[0] / 12),
+)
+print(
+    &quot;SNAP emergency allotment: &quot;,
+    round(sim_emp.calc(&quot;snap_emergency_allotment&quot;)[0] / 12),
+)
+print(&quot;Total SNAP: &quot;, round(sim_emp.calc(&quot;snap&quot;)[0] / 12))
 </pre></div>
 </div>
 </div>
@@ -320,53 +320,53 @@ The normal allotment then continues to fall until their earnings reach $1,350, a
 At 200% of the poverty line, both their normal and full allotment fall to $0.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_emp</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">2500</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sim_emp.vary(&quot;employment_income&quot;, max=2500 * 12, step=120)
 
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+import plotly.express as px
 
-<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Monthly employment income&quot;</span><span class="p">,</span>
-    <span class="n">dividend_income</span><span class="o">=</span><span class="s2">&quot;Monthly dividend income&quot;</span><span class="p">,</span>
-    <span class="n">income</span><span class="o">=</span><span class="s2">&quot;Monthly income&quot;</span><span class="p">,</span>
-    <span class="n">income_source</span><span class="o">=</span><span class="s2">&quot;Income source&quot;</span><span class="p">,</span>
-    <span class="n">housing_cost</span><span class="o">=</span><span class="s2">&quot;Monthly housing cost&quot;</span><span class="p">,</span>
-    <span class="n">snap</span><span class="o">=</span><span class="s2">&quot;Monthly SNAP allotment&quot;</span><span class="p">,</span>
-    <span class="n">mtr</span><span class="o">=</span><span class="s2">&quot;Marginal tax rate from SNAP&quot;</span><span class="p">,</span>
-    <span class="n">housing_subsidy_rate</span><span class="o">=</span><span class="s2">&quot;Housing subsidy rate from SNAP&quot;</span><span class="p">,</span>
-    <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;SNAP allotment&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+LABELS = dict(
+    employment_income=&quot;Monthly employment income&quot;,
+    dividend_income=&quot;Monthly dividend income&quot;,
+    income=&quot;Monthly income&quot;,
+    income_source=&quot;Income source&quot;,
+    housing_cost=&quot;Monthly housing cost&quot;,
+    snap=&quot;Monthly SNAP allotment&quot;,
+    mtr=&quot;Marginal tax rate from SNAP&quot;,
+    housing_subsidy_rate=&quot;Housing subsidy rate from SNAP&quot;,
+    allotment=&quot;SNAP allotment&quot;,
+)
 
-<span class="n">emp_df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">employment_income</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Full&quot;</span><span class="p">,</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">mtr</span><span class="o">=-</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">emp_df_normal</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">employment_income</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Normal&quot;</span><span class="p">,</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">mtr</span><span class="o">=-</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">emp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">emp_df_full</span><span class="p">,</span> <span class="n">emp_df_normal</span><span class="p">])</span>
-<span class="n">emp_df</span><span class="p">[[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">emp_df</span><span class="p">[[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">/</span> <span class="mi">12</span>
-<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+emp_df_full = pd.DataFrame(
+    dict(
+        employment_income=sim_emp.calc(&quot;employment_income&quot;)[0],
+        allotment=&quot;Full&quot;,
+        snap=sim_emp.calc(&quot;snap&quot;)[0],
+        mtr=-sim_emp.deriv(&quot;snap&quot;, &quot;employment_income&quot;),
+    )
+)
+emp_df_normal = pd.DataFrame(
+    dict(
+        employment_income=sim_emp.calc(&quot;employment_income&quot;)[0],
+        allotment=&quot;Normal&quot;,
+        snap=sim_emp.calc(&quot;snap_normal_allotment&quot;)[0],
+        mtr=-sim_emp.deriv(&quot;snap_normal_allotment&quot;, &quot;employment_income&quot;),
+    )
+)
+emp_df = pd.concat([emp_df_full, emp_df_normal])
+emp_df[[&quot;employment_income&quot;, &quot;snap&quot;]] = (
+    emp_df[[&quot;employment_income&quot;, &quot;snap&quot;]] / 12
+).round()
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;snap&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;allotment&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SNAP allotment for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+fig = px.line(
+    emp_df,
+    &quot;employment_income&quot;,
+    &quot;snap&quot;,
+    color=&quot;allotment&quot;,
+    labels=LABELS,
+    title=&quot;SNAP allotment for a one-person household in California with $600 monthly housing costs&quot;,
+)
+fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -378,18 +378,18 @@ The emergency allotment shrinks this region.
 The person also experiences a cliff (infinite marginal tax rate) when they hit 200% of the poverty line.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;allotment&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span> <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    emp_df,
+    &quot;employment_income&quot;,
+    &quot;mtr&quot;,
+    color=&quot;allotment&quot;,
+    labels=LABELS,
+    title=&quot;SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;.0%&quot;, yaxis_range=[0, 1]
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -405,55 +405,55 @@ For example, what if we vary the housing costs of a four-person household with $
 <p>However, because their maximum allotment exceeds their normal allotment by at least $95 regardless of their housing costs, they will receive the maximum allotment regardless of housing costs as a result of the emergency allotment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_rent</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-<span class="n">sim_rent</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;parent1&quot;</span><span class="p">,</span> <span class="n">employment_income</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">sim_rent</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;parent2&quot;</span><span class="p">,</span> <span class="n">employment_income</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">sim_rent</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;child1&quot;</span><span class="p">)</span>
-<span class="n">sim_rent</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;child2&quot;</span><span class="p">)</span>
-<span class="n">sim_rent</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span>
-    <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parent1&quot;</span><span class="p">,</span> <span class="s2">&quot;parent2&quot;</span><span class="p">,</span> <span class="s2">&quot;child1&quot;</span><span class="p">,</span> <span class="s2">&quot;child2&quot;</span><span class="p">],</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sim_rent = IndividualSim(year=2022)
+sim_rent.add_person(name=&quot;parent1&quot;, employment_income=1000 * 12)
+sim_rent.add_person(name=&quot;parent2&quot;, employment_income=1000 * 12)
+sim_rent.add_person(name=&quot;child1&quot;)
+sim_rent.add_person(name=&quot;child2&quot;)
+sim_rent.add_spm_unit(
+    name=&quot;spm_unit&quot;,
+    members=[&quot;parent1&quot;, &quot;parent2&quot;, &quot;child1&quot;, &quot;child2&quot;],
+)
 
-<span class="n">sim_rent</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;housing_cost&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">2000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+sim_rent.vary(&quot;housing_cost&quot;, max=2000 * 12, step=120)
 
-<span class="n">rent_df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Full&quot;</span><span class="p">,</span>
-        <span class="n">housing_cost</span><span class="o">=</span><span class="n">sim_rent</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;housing_cost&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_rent</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">housing_subsidy_rate</span><span class="o">=</span><span class="n">sim_rent</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">,</span> <span class="s2">&quot;housing_cost&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">rent_df_normal</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Normal&quot;</span><span class="p">,</span>
-        <span class="n">housing_cost</span><span class="o">=</span><span class="n">sim_rent</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;housing_cost&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_rent</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">housing_subsidy_rate</span><span class="o">=</span><span class="n">sim_rent</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span>
-            <span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">,</span> <span class="s2">&quot;housing_cost&quot;</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">rent_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">rent_df_full</span><span class="p">,</span> <span class="n">rent_df_normal</span><span class="p">])</span>
-<span class="n">rent_df</span><span class="p">[[</span><span class="s2">&quot;housing_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">rent_df</span><span class="p">[[</span><span class="s2">&quot;housing_cost&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">/</span> <span class="mi">12</span>
-<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+rent_df_full = pd.DataFrame(
+    dict(
+        allotment=&quot;Full&quot;,
+        housing_cost=sim_rent.calc(&quot;housing_cost&quot;)[0],
+        snap=sim_rent.calc(&quot;snap&quot;)[0],
+        housing_subsidy_rate=sim_rent.deriv(&quot;snap&quot;, &quot;housing_cost&quot;),
+    )
+)
+rent_df_normal = pd.DataFrame(
+    dict(
+        allotment=&quot;Normal&quot;,
+        housing_cost=sim_rent.calc(&quot;housing_cost&quot;)[0],
+        snap=sim_rent.calc(&quot;snap_normal_allotment&quot;)[0],
+        housing_subsidy_rate=sim_rent.deriv(
+            &quot;snap_normal_allotment&quot;, &quot;housing_cost&quot;
+        ),
+    )
+)
+rent_df = pd.concat([rent_df_full, rent_df_normal])
+rent_df[[&quot;housing_cost&quot;, &quot;snap&quot;]] = (
+    rent_df[[&quot;housing_cost&quot;, &quot;snap&quot;]] / 12
+).round()
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">rent_df</span><span class="p">,</span>
-    <span class="s2">&quot;housing_cost&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;snap&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;allotment&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SNAP allotment for a four-person household in California with $1,000 monthly earnings&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">rent_df</span><span class="o">.</span><span class="n">snap</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">],</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+fig = px.line(
+    rent_df,
+    &quot;housing_cost&quot;,
+    &quot;snap&quot;,
+    color=&quot;allotment&quot;,
+    labels=LABELS,
+    title=&quot;SNAP allotment for a four-person household in California with $1,000 monthly earnings&quot;,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;,
+    yaxis_tickformat=&quot;$,&quot;,
+    yaxis_range=[0, rent_df.snap.max() * 1.1],
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -465,16 +465,16 @@ For this household, the normal SNAP allotment subsidizes housing costs at a rate
 The emergency allotment nullifies this effect.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">rent_df</span><span class="p">,</span>
-    <span class="s2">&quot;housing_cost&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;housing_subsidy_rate&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;allotment&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SNAP housing subsidy rate for a one-person household in California with $1,000 monthly earnings&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    rent_df,
+    &quot;housing_cost&quot;,
+    &quot;housing_subsidy_rate&quot;,
+    color=&quot;allotment&quot;,
+    labels=LABELS,
+    title=&quot;SNAP housing subsidy rate for a one-person household in California with $1,000 monthly earnings&quot;,
+)
+fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;.0%&quot;)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -491,21 +491,21 @@ When their income was earned, they received a normal allotment of $145, plus a $
 If their income is unearned, for example if it’s from dividends, their normal allotment falls to $55, though the emergency allotment fills the gap, bringing their total allotment again to $250.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_div</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-<span class="n">sim_div</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;person&quot;</span><span class="p">,</span> <span class="n">dividend_income</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">sim_div</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">],</span> <span class="n">housing_cost</span><span class="o">=</span><span class="mi">600</span> <span class="o">*</span> <span class="mi">12</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sim_div = IndividualSim(year=2022)
+sim_div.add_person(name=&quot;person&quot;, dividend_income=1000 * 12)
+sim_div.add_spm_unit(
+    name=&quot;spm_unit&quot;, members=[&quot;person&quot;], housing_cost=600 * 12
+)
 
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;SNAP normal allotment: &quot;</span><span class="p">,</span>
-    <span class="nb">round</span><span class="p">(</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;SNAP emergency allotment: &quot;</span><span class="p">,</span>
-    <span class="nb">round</span><span class="p">(</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_emergency_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span>
-<span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total SNAP: &quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">))</span>
+print(
+    &quot;SNAP normal allotment: &quot;,
+    round(sim_div.calc(&quot;snap_normal_allotment&quot;)[0] / 12),
+)
+print(
+    &quot;SNAP emergency allotment: &quot;,
+    round(sim_div.calc(&quot;snap_emergency_allotment&quot;)[0] / 12),
+)
+print(&quot;Total SNAP: &quot;, round(sim_div.calc(&quot;snap&quot;)[0] / 12))
 </pre></div>
 </div>
 </div>
@@ -520,49 +520,49 @@ Total SNAP:  250
 <p>As a result of the earned income deduction, this household will have a larger SNAP benefit if their income comes from employment, if their monthly income is between $570 and $980.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_div</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;dividend_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">2500</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sim_div.vary(&quot;dividend_income&quot;, max=2500 * 12, step=120)
 
-<span class="n">div_df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">dividend_income</span><span class="o">=</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;dividend_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Full&quot;</span><span class="p">,</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">mtr</span><span class="o">=-</span><span class="n">sim_div</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">,</span> <span class="s2">&quot;dividend_income&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">div_df_normal</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">dividend_income</span><span class="o">=</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;dividend_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Normal&quot;</span><span class="p">,</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_div</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">mtr</span><span class="o">=-</span><span class="n">sim_div</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">,</span> <span class="s2">&quot;dividend_income&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">div_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">div_df_full</span><span class="p">,</span> <span class="n">div_df_normal</span><span class="p">])</span>
-<span class="n">div_df</span><span class="p">[[</span><span class="s2">&quot;dividend_income&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">div_df</span><span class="p">[[</span><span class="s2">&quot;dividend_income&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">/</span> <span class="mi">12</span>
-<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+div_df_full = pd.DataFrame(
+    dict(
+        dividend_income=sim_div.calc(&quot;dividend_income&quot;)[0],
+        allotment=&quot;Full&quot;,
+        snap=sim_div.calc(&quot;snap&quot;)[0],
+        mtr=-sim_div.deriv(&quot;snap&quot;, &quot;dividend_income&quot;),
+    )
+)
+div_df_normal = pd.DataFrame(
+    dict(
+        dividend_income=sim_div.calc(&quot;dividend_income&quot;)[0],
+        allotment=&quot;Normal&quot;,
+        snap=sim_div.calc(&quot;snap_normal_allotment&quot;)[0],
+        mtr=-sim_div.deriv(&quot;snap_normal_allotment&quot;, &quot;dividend_income&quot;),
+    )
+)
+div_df = pd.concat([div_df_full, div_df_normal])
+div_df[[&quot;dividend_income&quot;, &quot;snap&quot;]] = (
+    div_df[[&quot;dividend_income&quot;, &quot;snap&quot;]] / 12
+).round()
 
-<span class="c1"># Combine employment and dividend income DataFrames.</span>
-<span class="n">emp_df</span><span class="p">[</span><span class="s2">&quot;income_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Earned&quot;</span>
-<span class="n">div_df</span><span class="p">[</span><span class="s2">&quot;income_source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Unearned&quot;</span>
-<span class="n">emp_div_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
-    <span class="p">[</span>
-        <span class="n">emp_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;income&quot;</span><span class="p">)),</span>
-        <span class="n">div_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">dividend_income</span><span class="o">=</span><span class="s2">&quot;income&quot;</span><span class="p">)),</span>
-    <span class="p">]</span>
-<span class="p">)</span>
+# Combine employment and dividend income DataFrames.
+emp_df[&quot;income_source&quot;] = &quot;Earned&quot;
+div_df[&quot;income_source&quot;] = &quot;Unearned&quot;
+emp_div_df = pd.concat(
+    [
+        emp_df.rename(columns=dict(employment_income=&quot;income&quot;)),
+        div_df.rename(columns=dict(dividend_income=&quot;income&quot;)),
+    ]
+)
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_div_df</span><span class="p">[</span><span class="n">emp_div_df</span><span class="o">.</span><span class="n">allotment</span> <span class="o">==</span> <span class="s2">&quot;Full&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;snap&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;income_source&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Full SNAP allotment for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+fig = px.line(
+    emp_div_df[emp_div_df.allotment == &quot;Full&quot;],
+    &quot;income&quot;,
+    &quot;snap&quot;,
+    color=&quot;income_source&quot;,
+    labels=LABELS,
+    title=&quot;Full SNAP allotment for a one-person household in California with $600 monthly housing costs&quot;,
+)
+fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -572,18 +572,18 @@ Total SNAP:  250
 <p>While the SNAP marginal tax rate is 36% for employment income between $710 and $960, it is 45% for dividend income between $570 and $760.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_div_df</span><span class="p">[</span><span class="n">emp_div_df</span><span class="o">.</span><span class="n">allotment</span> <span class="o">==</span> <span class="s2">&quot;Full&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;income_source&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Full SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span> <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    emp_div_df[emp_div_df.allotment == &quot;Full&quot;],
+    &quot;income&quot;,
+    &quot;mtr&quot;,
+    color=&quot;income_source&quot;,
+    labels=LABELS,
+    title=&quot;Full SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;.0%&quot;, yaxis_range=[0, 1]
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -593,16 +593,16 @@ Total SNAP:  250
 <p>In the absence of the emergency allotment, SNAP allotments differ between earned and unearned income over larger income ranges.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_div_df</span><span class="p">[</span><span class="n">emp_div_df</span><span class="o">.</span><span class="n">allotment</span> <span class="o">==</span> <span class="s2">&quot;Normal&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;snap&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;income_source&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Normal SNAP allotment for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    emp_div_df[emp_div_df.allotment == &quot;Normal&quot;],
+    &quot;income&quot;,
+    &quot;snap&quot;,
+    color=&quot;income_source&quot;,
+    labels=LABELS,
+    title=&quot;Normal SNAP allotment for a one-person household in California with $600 monthly housing costs&quot;,
+)
+fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -612,18 +612,18 @@ Total SNAP:  250
 <p>Without emergency allotments, the marginal tax rates remain at 36% and 45% for earned and unearned income, respectively, over larger income ranges.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_div_df</span><span class="p">[</span><span class="n">emp_div_df</span><span class="o">.</span><span class="n">allotment</span> <span class="o">==</span> <span class="s2">&quot;Normal&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;income_source&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Normal SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span> <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
+    emp_div_df[emp_div_df.allotment == &quot;Normal&quot;],
+    &quot;income&quot;,
+    &quot;mtr&quot;,
+    color=&quot;income_source&quot;,
+    labels=LABELS,
+    title=&quot;Normal SNAP marginal tax rate for a one-person household in California with $600 monthly housing costs&quot;,
+)
+fig.update_layout(
+    xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;.0%&quot;, yaxis_range=[0, 1]
+)
+fig.show()
 </pre></div>
 </div>
 </div>
@@ -636,60 +636,60 @@ Total SNAP:  250
 <h2>Massachusetts<a class="headerlink" href="#massachusetts" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_emp</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
-<span class="n">sim_emp</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;person&quot;</span><span class="p">,</span> <span class="n">employment_income</span><span class="o">=</span><span class="mi">1000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
-<span class="n">sim_emp</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">],</span> <span class="n">housing_cost</span><span class="o">=</span><span class="mi">600</span> <span class="o">*</span> <span class="mi">12</span>
-<span class="p">)</span>
-<span class="n">sim_emp</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;household&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;person&quot;</span><span class="p">],</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;MA&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sim_emp = IndividualSim(year=2022)
+sim_emp.add_person(name=&quot;person&quot;, employment_income=1000 * 12)
+sim_emp.add_spm_unit(
+    name=&quot;spm_unit&quot;, members=[&quot;person&quot;], housing_cost=600 * 12
+)
+sim_emp.add_household(name=&quot;household&quot;, members=[&quot;person&quot;], state_code=&quot;MA&quot;)
 
-<span class="n">sim_emp</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">2500</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+sim_emp.vary(&quot;employment_income&quot;, max=2500 * 12, step=120)
 
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+import plotly.express as px
 
-<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Monthly employment income&quot;</span><span class="p">,</span>
-    <span class="n">dividend_income</span><span class="o">=</span><span class="s2">&quot;Monthly dividend income&quot;</span><span class="p">,</span>
-    <span class="n">income</span><span class="o">=</span><span class="s2">&quot;Monthly income&quot;</span><span class="p">,</span>
-    <span class="n">income_source</span><span class="o">=</span><span class="s2">&quot;Income source&quot;</span><span class="p">,</span>
-    <span class="n">housing_cost</span><span class="o">=</span><span class="s2">&quot;Monthly housing cost&quot;</span><span class="p">,</span>
-    <span class="n">snap</span><span class="o">=</span><span class="s2">&quot;Monthly SNAP allotment&quot;</span><span class="p">,</span>
-    <span class="n">mtr</span><span class="o">=</span><span class="s2">&quot;Marginal tax rate from SNAP&quot;</span><span class="p">,</span>
-    <span class="n">housing_subsidy_rate</span><span class="o">=</span><span class="s2">&quot;Housing subsidy rate from SNAP&quot;</span><span class="p">,</span>
-    <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;SNAP allotment&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+LABELS = dict(
+    employment_income=&quot;Monthly employment income&quot;,
+    dividend_income=&quot;Monthly dividend income&quot;,
+    income=&quot;Monthly income&quot;,
+    income_source=&quot;Income source&quot;,
+    housing_cost=&quot;Monthly housing cost&quot;,
+    snap=&quot;Monthly SNAP allotment&quot;,
+    mtr=&quot;Marginal tax rate from SNAP&quot;,
+    housing_subsidy_rate=&quot;Housing subsidy rate from SNAP&quot;,
+    allotment=&quot;SNAP allotment&quot;,
+)
 
-<span class="n">emp_df_full</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">employment_income</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Full&quot;</span><span class="p">,</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">mtr</span><span class="o">=-</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">emp_df_normal</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-    <span class="nb">dict</span><span class="p">(</span>
-        <span class="n">employment_income</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">allotment</span><span class="o">=</span><span class="s2">&quot;Normal&quot;</span><span class="p">,</span>
-        <span class="n">snap</span><span class="o">=</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-        <span class="n">mtr</span><span class="o">=-</span><span class="n">sim_emp</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;snap_normal_allotment&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">),</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-<span class="n">emp_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">emp_df_full</span><span class="p">,</span> <span class="n">emp_df_normal</span><span class="p">])</span>
-<span class="n">emp_df</span><span class="p">[[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">emp_df</span><span class="p">[[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;snap&quot;</span><span class="p">]]</span> <span class="o">/</span> <span class="mi">12</span>
-<span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+emp_df_full = pd.DataFrame(
+    dict(
+        employment_income=sim_emp.calc(&quot;employment_income&quot;)[0],
+        allotment=&quot;Full&quot;,
+        snap=sim_emp.calc(&quot;snap&quot;)[0],
+        mtr=-sim_emp.deriv(&quot;snap&quot;, &quot;employment_income&quot;),
+    )
+)
+emp_df_normal = pd.DataFrame(
+    dict(
+        employment_income=sim_emp.calc(&quot;employment_income&quot;)[0],
+        allotment=&quot;Normal&quot;,
+        snap=sim_emp.calc(&quot;snap_normal_allotment&quot;)[0],
+        mtr=-sim_emp.deriv(&quot;snap_normal_allotment&quot;, &quot;employment_income&quot;),
+    )
+)
+emp_df = pd.concat([emp_df_full, emp_df_normal])
+emp_df[[&quot;employment_income&quot;, &quot;snap&quot;]] = (
+    emp_df[[&quot;employment_income&quot;, &quot;snap&quot;]] / 12
+).round()
 
-<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">emp_df</span><span class="p">,</span>
-    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;snap&quot;</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;allotment&quot;</span><span class="p">,</span>
-    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;SNAP allotment for a one-person household in MA with $600 monthly housing costs&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+fig = px.line(
+    emp_df,
+    &quot;employment_income&quot;,
+    &quot;snap&quot;,
+    color=&quot;allotment&quot;,
+    labels=LABELS,
+    title=&quot;SNAP allotment for a one-person household in MA with $600 monthly housing costs&quot;,
+)
+fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
+fig.show()
 </pre></div>
 </div>
 </div>

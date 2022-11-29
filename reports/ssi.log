@@ -248,7 +248,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 2. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
+[0;31mValueError[0m: Input [0. 2. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -454,19 +454,19 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 2. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
+[0;31mValueError[0m: Input [0. 2. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
 
 During handling of the above exception, another exception occurred:
 
 [0;31mValueError[0m                                Traceback (most recent call last)
-Cell [0;32mIn [3], line 24[0m
+Cell [0;32mIn[3], line 24[0m
 [1;32m     22[0m l [38;5;241m=[39m []
 [1;32m     23[0m [38;5;28;01mfor[39;00m ss [38;5;129;01min[39;00m [[38;5;241m0[39m, [38;5;241m500[39m [38;5;241m*[39m [38;5;241m12[39m]:
 [0;32m---> 24[0m     l[38;5;241m.[39mappend([43mmake_ssi[49m[43m([49m[43msocial_security[49m[38;5;241;43m=[39;49m[43mss[49m[43m)[49m)
 [1;32m     26[0m df [38;5;241m=[39m pd[38;5;241m.[39mconcat(l)
 [1;32m     28[0m [38;5;66;03m# Make monthly.[39;00m
 
-Cell [0;32mIn [3], line 9[0m, in [0;36mmake_ssi[0;34m(social_security, vary)[0m
+Cell [0;32mIn[3], line 9[0m, in [0;36mmake_ssi[0;34m(social_security, vary)[0m
 [1;32m      7[0m sim[38;5;241m.[39mvary(vary, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m72_000[39m, step[38;5;241m=[39m[38;5;241m120[39m)
 [1;32m      8[0m employment_income [38;5;241m=[39m sim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m]
 [0;32m----> 9[0m ssi [38;5;241m=[39m [43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mtax_unit_ssi[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m]
@@ -745,6 +745,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 2. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
-ValueError: Input [0. 0. 2. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
+[0;31mValueError[0m: Input [0. 2. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
+ValueError: Input [0. 2. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1801 != 1803 = count)
 

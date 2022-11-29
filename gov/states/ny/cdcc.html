@@ -273,31 +273,31 @@
 <p>The NY CDCC is a percentage of the federal CDCC with one modification: the maximum allowable childcare expenses under federal rules are replaced with NY-specific maximums (still dependent on the number of children).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span><span class="p">,</span> <span class="n">Microsimulation</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim, Microsimulation
+import plotly.express as px
 
-<span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">()</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;child&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span>
-    <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="s2">&quot;child&quot;</span><span class="p">],</span> <span class="n">tax_unit_childcare_expenses</span><span class="o">=</span><span class="mi">10_000</span>
-<span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;parent&quot;</span><span class="p">,</span> <span class="s2">&quot;child&quot;</span><span class="p">],</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;NY&quot;</span><span class="p">)</span>
-<span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)</span>
+sim = IndividualSim()
+sim.add_person(name=&quot;parent&quot;, age=30)
+sim.add_person(name=&quot;child&quot;, age=6)
+sim.add_tax_unit(
+    members=[&quot;parent&quot;, &quot;child&quot;], tax_unit_childcare_expenses=10_000
+)
+sim.add_household(members=[&quot;parent&quot;, &quot;child&quot;], state_code=&quot;NY&quot;)
+sim.vary(&quot;employment_income&quot;)
 
-<span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">y</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;ny_cdcc&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-<span class="p">)</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,.0f&quot;</span><span class="p">,</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,.0f&quot;</span><span class="p">,</span>
-    <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
-    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
-    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Earnings&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;NY CDCC&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;NY CDCC by employment income ($10k childcare expenses, 1 child)&quot;</span><span class="p">,</span>
-    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;plotly_white&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+px.line(
+    y=sim.calc(&quot;ny_cdcc&quot;)[0],
+    x=sim.calc(&quot;employment_income&quot;)[0],
+).update_layout(
+    yaxis_tickformat=&quot;$,.0f&quot;,
+    xaxis_tickformat=&quot;$,.0f&quot;,
+    height=800,
+    width=800,
+    xaxis_title=&quot;Earnings&quot;,
+    yaxis_title=&quot;NY CDCC&quot;,
+    title=&quot;NY CDCC by employment income ($10k childcare expenses, 1 child)&quot;,
+    template=&quot;plotly_white&quot;,
+)
 </pre></div>
 </div>
 </div>
@@ -331,19 +331,19 @@ if (outputEl) {{
 <p>The reason for the highly irregular shape of the credit is mostly due to NY legislative decisions. The percentage of the federal credit that defines the NY credit is as shown below. This is the same as the table on <a class="reference external" href="https://www.tax.ny.gov/pdf/current_forms/it/it216i.pdf#page=8">the Form IT-216 instructions</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
-    <span class="n">y</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;ny_cdcc_rate&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-    <span class="n">x</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
-<span class="p">)</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.0%&quot;</span><span class="p">,</span>
-    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,.0f&quot;</span><span class="p">,</span>
-    <span class="n">height</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
-    <span class="n">width</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span>
-    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Earnings&quot;</span><span class="p">,</span>
-    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;NY CDCC percentage&quot;</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;NY CDCC percentage by employment income ($10k childcare expenses, 1 child)&quot;</span><span class="p">,</span>
-    <span class="n">template</span><span class="o">=</span><span class="s2">&quot;plotly_white&quot;</span><span class="p">,</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>px.line(
+    y=sim.calc(&quot;ny_cdcc_rate&quot;)[0],
+    x=sim.calc(&quot;employment_income&quot;)[0],
+).update_layout(
+    yaxis_tickformat=&quot;.0%&quot;,
+    xaxis_tickformat=&quot;$,.0f&quot;,
+    height=800,
+    width=800,
+    xaxis_title=&quot;Earnings&quot;,
+    yaxis_title=&quot;NY CDCC percentage&quot;,
+    title=&quot;NY CDCC percentage by employment income ($10k childcare expenses, 1 child)&quot;,
+    template=&quot;plotly_white&quot;,
+)
 </pre></div>
 </div>
 </div>
@@ -378,48 +378,48 @@ if (outputEl) {{
 It does not interact with other programs, so this is also the total value of the program.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us.model_api</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us.model_api import *
 
 
-<span class="k">def</span> <span class="nf">budgetary_impacts</span><span class="p">(</span>
-    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2020</span><span class="p">,</span> <span class="n">policy_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2022</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Calculates the budgetary impact of a variable for a given policy year.</span>
+def budgetary_impacts(
+    variable: str, data_year: int = 2020, policy_year: int = 2022
+) -&gt; Tuple:
+    &quot;&quot;&quot;Calculates the budgetary impact of a variable for a given policy year.
 
-<span class="sd">    Args:</span>
-<span class="sd">        variable (str): The variable to calculate the budgetary impact of.</span>
-<span class="sd">        data_year (int): The year of the data to use.</span>
-<span class="sd">        policy_year (int): The year of the policy to use.</span>
+    Args:
+        variable (str): The variable to calculate the budgetary impact of.
+        data_year (int): The year of the data to use.
+        policy_year (int): The year of the policy to use.
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Tuple: A tuple of the total cost and budgetary impact of repealing the variable,</span>
-<span class="sd">        respectively, in millions.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    Returns:
+        Tuple: A tuple of the total cost and budgetary impact of repealing the variable,
+        respectively, in millions.
+    &quot;&quot;&quot;
 
-    <span class="k">class</span> <span class="nc">ignore_reported</span><span class="p">(</span><span class="n">Reform</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">neutralize_variable</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income_reported&quot;</span><span class="p">)</span>
+    class ignore_reported(Reform):
+        def apply(self):
+            self.neutralize_variable(&quot;spm_unit_net_income_reported&quot;)
 
-    <span class="k">class</span> <span class="nc">neutralize</span><span class="p">(</span><span class="n">Reform</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">neutralize_variable</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+    class neutralize(Reform):
+        def apply(self):
+            self.neutralize_variable(variable)
 
-    <span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">ignore_reported</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">data_year</span><span class="p">)</span>
-    <span class="n">sim_neutralized</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">ignore_reported</span><span class="p">,</span> <span class="n">neutralize</span><span class="p">),</span> <span class="n">year</span><span class="o">=</span><span class="n">data_year</span>
-    <span class="p">)</span>
-    <span class="n">program_value</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">policy_year</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">baseline_net_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span>
-        <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">policy_year</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">neutralized_net_income</span> <span class="o">=</span> <span class="n">sim_neutralized</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span>
-        <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">policy_year</span>
-    <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">budgetary_impact</span> <span class="o">=</span> <span class="n">neutralized_net_income</span> <span class="o">-</span> <span class="n">baseline_net_income</span>
-    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">program_value</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">budgetary_impact</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">)</span>
+    sim = Microsimulation(ignore_reported, year=data_year)
+    sim_neutralized = Microsimulation(
+        (ignore_reported, neutralize), year=data_year
+    )
+    program_value = sim.calc(variable, period=policy_year).sum()
+    baseline_net_income = sim.calc(
+        &quot;spm_unit_net_income&quot;, period=policy_year
+    ).sum()
+    neutralized_net_income = sim_neutralized.calc(
+        &quot;spm_unit_net_income&quot;, period=policy_year
+    ).sum()
+    budgetary_impact = neutralized_net_income - baseline_net_income
+    return round(program_value / 1e6), round(budgetary_impact / 1e6)
 
 
-<span class="n">budgetary_impacts</span><span class="p">(</span><span class="s2">&quot;ny_cdcc&quot;</span><span class="p">)</span>
+budgetary_impacts(&quot;ny_cdcc&quot;)
 </pre></div>
 </div>
 </div>
