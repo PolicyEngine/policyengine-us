@@ -12,9 +12,7 @@ class self_employment_tax_ald_person(Variable):
 
     def formula(person, period, parameters):
         self_employment_tax = person("self_employment_tax", period)
-        is_dependent = person("is_tax_unit_dependent", period)
-        total_tax = self_employment_tax * ~is_dependent
         percent_deductible = parameters(
             period
         ).gov.irs.ald.self_employment_tax.percent_deductible
-        return total_tax * percent_deductible
+        return self_employment_tax * percent_deductible

@@ -16,6 +16,6 @@ class qualified_business_income(Variable):
         gross_qbi = add(person, period, income_components)
         deduction_components = p.deduction_definition
         qbi_deductions = add(person, period, deduction_components)
-        adjusted_income = max_(0, gross_qbi - qbi_deductions)
+        adjusted_qbi = max_(0, gross_qbi - qbi_deductions)
         qualified = person("business_is_qualified", period)
-        return adjusted_income * qualified
+        return adjusted_qbi * qualified
