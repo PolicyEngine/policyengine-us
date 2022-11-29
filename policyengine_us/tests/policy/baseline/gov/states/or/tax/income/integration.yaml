@@ -5,3 +5,34 @@
     state_code: OR
   output:
     or_income_tax: 0
+
+- name: Single earner with $20,000 income.
+  # Form: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40_101-040_2021.pdf
+  period: 2021
+  input:
+    employment_income: 20_000
+    state_code: OR
+    eitc: 0
+    adjusted_gross_income: 20_000
+    no_salt_income_tax: 1_000
+  output:
+    # Income below $100,000, so they get the full exemption credit.
+    or_regular_exemptions: 1
+    # Line 23 says to multiply by $213.
+    or_exemption_credit: 213
+    or_income_tax: 0
+    # Line 8 is additions.
+    or_income_additions: 0
+    # Line 9 is income (federal AGI) after additions.
+    or_income_after_additions: 20_000
+    # Line 10 is federal tax liability from the worksheet.
+    # Federal tax liability is $1,000.
+    # No EITC.
+    # So tax liability is $1,000.
+    # Capped at $7,050 per Table 5 of instructions.
+    # https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page14
+    # So full $1,000 is used.
+    or_federal_tax_liability_subtraction: 1_000
+
+# See these examples for 2020 integration tests.
+# https://www.oregon.gov/dor/SiteAssets/Lists/FAQ%20Center/AllItems/federal-tax-subtraction-examples%2002_09_21.pdf
