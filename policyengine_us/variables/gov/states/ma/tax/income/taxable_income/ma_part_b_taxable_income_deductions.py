@@ -32,14 +32,12 @@ class ma_part_b_taxable_income_deductions(Variable):
             fica_person * person("is_tax_unit_spouse", period),
         )
         fica = tax_unit.sum(fica_head) + tax_unit.sum(fica_spouse)
-        # (B)(a)(6): Interest and dividends deduction.
-        interest_and_dividends = add(
-            tax_unit, period, ["interest_income", "dividend_income"]
-        )
+        # Bank interest deduction.
+        bank_interest = add(tax_unit, period, ["taxable_interest_income"])
         filing_status = tax_unit("filing_status", period)
-        interest_and_dividends = min_(
+        bank_interest_deduction = min_(
             tax.exemptions.interest[filing_status],
-            interest_and_dividends,
+            bank_interest,
         )
         # (B)(a)(9): Rent deduction.
         rent = add(tax_unit, period, ["rent"])
@@ -52,7 +50,7 @@ class ma_part_b_taxable_income_deductions(Variable):
         charitable_deduction = tax_unit("charitable_deduction", period)
         return (
             fica
-            + interest_and_dividends
+            + bank_interest_deduction
             + rent_deduction
             + charitable_deduction
         )
