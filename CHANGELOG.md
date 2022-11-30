@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.181.5] - 2022-11-30 04:19:57
+
+### Changed
+
+- Qualified business income to be a personal variable.
+- Qualified business income to be net of several personal deductions.
+
 ## [0.181.4] - 2022-11-29 19:54:07
 
 ### Fixed
@@ -2209,6 +2216,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.181.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.4...0.181.5
 [0.181.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.3...0.181.4
 [0.181.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.2...0.181.3
 [0.181.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.1...0.181.2
