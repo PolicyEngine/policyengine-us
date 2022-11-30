@@ -1805,3 +1805,34 @@
     added:
     - Missouri tax rates for 2020 and 2021.
   date: 2022-11-24 05:45:06
+- bump: patch
+  changes:
+    fixed:
+    - MA excess exemption logic.
+  date: 2022-11-26 05:21:06
+- bump: minor
+  changes:
+    added:
+    - Add MO Pension and SS or SSD Deduction variable
+    - Add Public Pension Income variable
+  date: 2022-11-27 18:39:07
+- bump: patch
+  changes:
+    fixed:
+    - MO federal income tax deduction logic.
+  date: 2022-11-27 22:47:33
+- bump: patch
+  changes:
+    fixed:
+    - Move MO federal income tax deduction ignored credits list to a parameter.
+  date: 2022-11-28 04:33:20
+- bump: patch
+  changes:
+    changed:
+    - Simplify MO federal income tax deduction code.
+  date: 2022-11-28 05:19:48
+- bump: patch
+  changes:
+    fixed:
+    - MA bank interest deduction logic.
+  date: 2022-11-29 19:54:07
