@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class pa_forgiveness_amount(Variable):
+class pa_tax_forgiveness_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "PA forgiveness amount"
