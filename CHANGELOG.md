@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.181.6] - 2022-11-30 14:51:01
+
+### Fixed
+
+- MO income tax debugging print is converted to a comment.
+
 ## [0.181.5] - 2022-11-30 04:19:57
 
 ### Changed
@@ -2216,6 +2222,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.181.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.5...0.181.6
 [0.181.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.4...0.181.5
 [0.181.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.3...0.181.4
 [0.181.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.2...0.181.3
