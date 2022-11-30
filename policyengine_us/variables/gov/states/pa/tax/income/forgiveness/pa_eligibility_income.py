@@ -12,4 +12,4 @@ class pa_eligibility_income(Variable):
     reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40sp.pdf"
     defined_for = StateCode.PA
 
-    formula = sum_of_variables(["pa_total_taxable_income"])
+    formula = sum_of_variables("gov.states.pa.tax.forgiveness.eligibility_income_sources")
