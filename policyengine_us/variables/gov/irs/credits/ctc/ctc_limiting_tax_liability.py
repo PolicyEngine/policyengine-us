@@ -12,9 +12,7 @@ class ctc_limiting_tax_liability(Variable):
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
         no_salt_branch = simulation.get_branch("no_salt")
-        no_salt_branch.tax_benefit_system.variables[
-            "salt_deduction"
-        ].is_neutralized = True
+        no_salt_branch.set_input("salt_deduction", period, np.zeros(tax_unit.count))
         tax_liability_before_credits = no_salt_branch.calculate(
             "income_tax_before_credits", period
         )
@@ -28,8 +26,5 @@ class ctc_limiting_tax_liability(Variable):
                 if credit not in ("non_refundable_ctc",)
             ]
         )
-        simulation.tax_benefit_system.variables[
-            "salt_deduction"
-        ].is_neutralized = False
 
         return max_(0, tax_liability_before_credits - total_credits)
