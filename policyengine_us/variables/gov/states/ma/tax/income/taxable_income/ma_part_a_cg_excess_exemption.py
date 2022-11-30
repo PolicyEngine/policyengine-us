@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ma_part_a_taxable_capital_gains_income(Variable):
+class ma_part_a_cg_excess_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA Part A taxable income from short-term capital gains"
+    label = "MA Part A (short-term) capital gains excess exemption"
     unit = USD
     definition_period = YEAR
     reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
@@ -17,4 +17,4 @@ class ma_part_a_taxable_capital_gains_income(Variable):
         div_excess_exemption = tax_unit(
             "ma_part_a_div_excess_exemption", period
         )
-        return max_(0, stcg_agi - div_excess_exemption)
+        return max_(0, div_excess_exemption - stcg_agi)

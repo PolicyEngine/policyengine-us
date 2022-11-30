@@ -7,17 +7,10 @@ class ma_part_c_taxable_income(Variable):
     label = "MA Part C taxable income"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-3"
+    reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        part_a_agi = tax_unit("ma_part_a_agi", period)
-        part_b_agi = tax_unit("ma_part_b_agi", period)
         part_c_agi = tax_unit("ma_part_c_agi", period)
-        part_b_deductions = tax_unit(
-            "ma_part_b_taxable_income_deductions", period
-        )
-        remaining_part_b_deductions = max_(
-            0, part_b_deductions - part_b_agi - part_a_agi
-        )
-        return max_(0, part_c_agi - remaining_part_b_deductions)
+        cg_excess_exemption = tax_unit("ma_part_a_cg_excess_exemption", period)
+        return max_(0, part_c_agi - cg_excess_exemption)
