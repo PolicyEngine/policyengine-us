@@ -1,7 +1,7 @@
 description: Pennsylvania defines eligibility income based on these sources
 values:
   2004-01-01:
-    - pa_taxable_income
+    - pa_total_taxable_income # Not adjusted, i.e. no deductions.s
     - alimony_income
     - tax_exempt_interest_income
     # non-taxable dividends and gains
