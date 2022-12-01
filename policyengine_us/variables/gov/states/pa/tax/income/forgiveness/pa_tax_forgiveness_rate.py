@@ -25,17 +25,17 @@ class pa_tax_forgiveness_rate(Variable):
             filing_status == filing_statuses.SEPARATE
         )
         base_multiplier = where(joint_separate, 2, 1)
-        p = parameters(period)
-        base = p.gov.states.pa.tax.forgiveness.base * base_multiplier
-        rate_per_dependent = p.gov.states.pa.tax.forgiveness.dependent_rate
+        p = parameters(period).gov.states.pa.tax.income.forgiveness
+        base = p.base * base_multiplier
+        rate_per_dependent = p.dependent_rate
         eligibility_income_increment = base + (
             rate_per_dependent * child_dependents
         )
         excess = eligibility_income - eligibility_income_increment
-        forgiveness_increment = p.gov.states.pa.tax.forgiveness.rate_increment
-        if p.contrib.nber.taxsim35_emulation:
+        forgiveness_increment = p.rate_increment
+        if parameters(period).contrib.nber.taxsim35_emulation:
             increments = excess / forgiveness_increment
         else:
             increments = np.ceil(excess / forgiveness_increment)
-        percent = p.gov.states.pa.tax.forgiveness.tax_back
+        percent = p.tax_back
         return min_(max_(1 - percent * increments, 0), 1)
