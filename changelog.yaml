@@ -1852,3 +1852,9 @@
     fixed:
     - Absence of OR income subtraction for federally taxable social security benefits.
   date: 2022-12-01 23:07:54
+- bump: minor
+  changes:
+    added:
+    - pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+    - Other sources to PA tax forgiveness eligibility income.
+  date: 2022-12-01 23:15:49
