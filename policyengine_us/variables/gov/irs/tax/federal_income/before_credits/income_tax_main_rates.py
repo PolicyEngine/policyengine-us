@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class c05200(Variable):
+class income_tax_main_rates(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -25,10 +25,10 @@ class c05200(Variable):
         full_taxable_income = tax_unit("taxable_income", period)
 
         # 1(h) describes a mechanism for capital gains tax that caps income tax
-        # at an amount which includes 'as if income tax rates were applied on taxable
-        # income excluding some definiton of capital gains'. Instead of calculating
-        # both income tax and this hypothetical income tax, we'll just calculate the latter.
-
+        # at an amount which includes 'as if income tax rates were applied on
+        # taxable income excluding some definiton of capital gains'. Instead
+        # of calculating both income tax and this hypothetical income tax,
+        # we'll just calculate the latter.
         cg_exclusion = tax_unit(
             "capital_gains_excluded_from_taxable_income", period
         )
@@ -79,6 +79,3 @@ class c05200(Variable):
             pt_taxinc - last_pt_threshold, 0
         )
         return reg_tax + pt_tax
-
-
-income_tax_main_rates = variable_alias("income_tax_main_rates", c05200)
