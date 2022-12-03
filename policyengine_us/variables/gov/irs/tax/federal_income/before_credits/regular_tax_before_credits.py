@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class taxbc(Variable):
+class regular_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -133,6 +133,4 @@ class taxbc(Variable):
         return where(hasqdivltcg, dwks45, c05200)
 
 
-regular_tax_before_credits = variable_alias(
-    "regular_tax_before_credits", taxbc
-)
+taxbc = variable_alias("taxbc", regular_tax_before_credits)
