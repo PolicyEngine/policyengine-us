@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class c05800(Variable):
+class income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -16,6 +16,3 @@ class c05800(Variable):
             "alternative_minimum_tax",
         ]
     )
-
-
-income_tax_before_credits = variable_alias("income_tax_before_credits", c05800)
