@@ -10,11 +10,7 @@ class income_tax_main_rates(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        # 1(h) describes a mechanism for capital gains tax that caps income tax
-        # at an amount which includes 'as if income tax rates were applied on
-        # taxable income excluding some definiton of capital gains'. Instead
-        # of calculating both income tax and this hypothetical income tax,
-        # we'll just calculate the latter.
+        # Define taxable income taxed at main (i.e., regular) rates
         full_taxable_income = tax_unit("taxable_income", period)
         cg_exclusion = tax_unit(
             "capital_gains_excluded_from_taxable_income", period
