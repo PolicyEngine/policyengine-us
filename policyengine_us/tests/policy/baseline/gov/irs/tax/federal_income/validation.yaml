@@ -78,7 +78,7 @@
       household:
         members: [person1]
         state_code: TX  # no state income tax
-  output:  # expected results from online TAXSIM35 12/03/22 version
+  output:  # expected results from online TAXSIM35 12/02/22 version
     taxsim_tfica: 16_110.35
     adjusted_gross_income: 185_387.33
     taxable_income: 172_837.33
