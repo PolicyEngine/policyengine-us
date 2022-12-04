@@ -48,35 +48,23 @@ class regular_tax_before_credits(Variable):
         dwks40 = dwks1 - dwks39
         dwks41 = 0.28 * dwks40
 
-        # SchXYZ call in Tax-Calculator
-
+        # Compute regular tax using bracket rates and thresholds
         reg_taxinc = max_(0, dwks19)
-
-        # Initialise regular income tax to zero
+        p = parameters(period).gov.irs.income
+        bracket_tops = p.bracket.thresholds
+        bracket_rates = p.bracket.rates
         reg_tax = 0
-        last_reg_threshold = 0
-        individual_income = parameters(period).gov.irs.income
-        for i in range(1, 7):
-            # Calculate rate applied to regular income up to the current
-            # threshold (on income above the last threshold)
-            reg_threshold = individual_income.bracket.thresholds[str(i)][
-                filing_status
-            ]
-            amount_in_bracket = amount_between(
-                reg_taxinc, last_reg_threshold, reg_threshold
+        bracket_bottom = 0
+        for i in range(1, len(list(bracket_rates.__iter__())) + 1):
+            b = str(i)
+            bracket_top = bracket_tops[b][filing_status]
+            reg_tax += bracket_rates[b] * amount_between(
+                reg_taxinc, bracket_bottom, bracket_top
             )
-            reg_tax += (
-                individual_income.bracket.rates[str(i)] * amount_in_bracket
-            )
-            last_reg_threshold = reg_threshold
+            bracket_bottom = bracket_top
 
-        # Calculate regular tax above the last threshold
-        reg_tax += individual_income.bracket.rates["7"] * max_(
-            reg_taxinc - last_reg_threshold, 0
-        )
-
+        # Return to worksheet lines
         dwks42 = reg_tax
-
         dwks43 = sum(
             [
                 dwks29,

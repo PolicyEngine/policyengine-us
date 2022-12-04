@@ -10,31 +10,24 @@ class income_tax_main_rates(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        # Define taxable income taxed at main (i.e., regular) rates
+        # compute taxable income that is taxed at the main rates
         full_taxable_income = tax_unit("taxable_income", period)
         cg_exclusion = tax_unit(
             "capital_gains_excluded_from_taxable_income", period
         )
-        reg_taxinc = max_(0, full_taxable_income - cg_exclusion)
-
-        # Initialise regular income tax to zero
-        reg_tax = 0
-        last_reg_threshold = 0
-        individual_income = parameters(period).gov.irs.income
+        taxinc = max_(0, full_taxable_income - cg_exclusion)
+        # compute tax using bracket rates and thresholds
+        p = parameters(period).gov.irs.income
+        bracket_tops = p.bracket.thresholds
+        bracket_rates = p.bracket.rates
         filing_status = tax_unit("filing_status", period)
-        for i in range(1, 7):
-            # Calculate rate applied to regular income up to the current
-            # threshold (on income above the last threshold)
-            reg_threshold = individual_income.bracket.thresholds[str(i)][
-                filing_status
-            ]
-            reg_tax += individual_income.bracket.rates[
-                str(i)
-            ] * amount_between(reg_taxinc, last_reg_threshold, reg_threshold)
-            last_reg_threshold = reg_threshold
-
-        # Calculate regular income tax above the last threshold
-        reg_tax += individual_income.bracket.rates["7"] * max_(
-            reg_taxinc - last_reg_threshold, 0
-        )
-        return reg_tax
+        tax = 0
+        bracket_bottom = 0
+        for i in range(1, len(list(bracket_rates.__iter__())) + 1):
+            b = str(i)
+            bracket_top = bracket_tops[b][filing_status]
+            tax += bracket_rates[b] * amount_between(
+                taxinc, bracket_bottom, bracket_top
+            )
+            bracket_bottom = bracket_top
+        return tax
