@@ -1847,3 +1847,14 @@
     fixed:
     - MO income tax debugging print is converted to a comment.
   date: 2022-11-30 14:51:01
+- bump: patch
+  changes:
+    fixed:
+    - Absence of OR income subtraction for federally taxable social security benefits.
+  date: 2022-12-01 23:07:54
+- bump: minor
+  changes:
+    added:
+    - pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+    - Other sources to PA tax forgiveness eligibility income.
+  date: 2022-12-01 23:15:49

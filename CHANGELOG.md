@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.182.0] - 2022-12-01 23:15:49
+
+### Added
+
+- pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+- Other sources to PA tax forgiveness eligibility income.
+
+## [0.181.7] - 2022-12-01 23:07:54
+
+### Fixed
+
+- Absence of OR income subtraction for federally taxable social security benefits.
+
 ## [0.181.6] - 2022-11-30 14:51:01
 
 ### Fixed
@@ -2222,6 +2235,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.7...0.182.0
+[0.181.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.6...0.181.7
 [0.181.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.5...0.181.6
 [0.181.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.4...0.181.5
 [0.181.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.3...0.181.4
