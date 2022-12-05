@@ -16,6 +16,7 @@ from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
 from policyengine_us.variables.household.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
+from policyengine_us.tools.parameters import backdate_parameters
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -32,6 +33,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.add_variables(*create_50_state_variables())
 
         self.parameters = set_irs_uprating_parameter(self.parameters)
+        self.parameters = backdate_parameters(self.parameters)
 
         add_taxcalc_variable_aliases(self)
 
