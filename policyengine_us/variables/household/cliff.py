@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class cliff_evaluated(Variable):
     value_type = bool
     entity = Person
@@ -12,6 +13,7 @@ class cliff_evaluated(Variable):
         adult_index_values = person("adult_index", period)
         cliff_adult_count = parameters(period).simulation.cliff_adults
         return adult_index_values <= cliff_adult_count
+
 
 class cliff_gap(Variable):
     value_type = float
@@ -29,7 +31,8 @@ class cliff_gap(Variable):
             if variable not in simulation.input_variables:
                 alt_simulation.delete_arrays(variable)
         alt_simulation.set_input(
-            "employment_income", period, 
+            "employment_income",
+            period,
             person("employment_income", period)
             + person("is_adult", period) * delta,
         )
@@ -40,6 +43,7 @@ class cliff_gap(Variable):
         )
         increase = household_net_income_higher_earnings - household_net_income
         return where(person("is_adult", period) & (increase < 0), -increase, 0)
+
 
 class is_on_cliff(Variable):
     value_type = bool

@@ -10,6 +10,7 @@ class spm_unit_size(Variable):
     def formula(spm_unit, period, parameters):
         return spm_unit.nb_persons()
 
+
 class spm_unit_count_adults(Variable):
     value_type = float
     entity = SPMUnit

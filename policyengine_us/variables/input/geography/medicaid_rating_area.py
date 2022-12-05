@@ -11,7 +11,10 @@ class medicaid_rating_area(Variable):
 
     def formula(household, period, parameters):
         simulation: Simulation = household.simulation
-        if simulation.get_holder("reported_slspc").get_array(period) is not None:
+        if (
+            simulation.get_holder("reported_slspc").get_array(period)
+            is not None
+        ):
             # If the user has provided a value for the second-lowest silver plan
             # cost, skip.
             return 0

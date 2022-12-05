@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from microdf import MicroSeries
 
+
 class household_net_income(Variable):
     value_type = float
     entity = Household
@@ -15,6 +16,7 @@ class household_net_income(Variable):
         "household_tax",
     ]
 
+
 class equiv_household_net_income(Variable):
     value_type = float
     entity = Household
@@ -24,6 +26,7 @@ class equiv_household_net_income(Variable):
     adds = [
         "spm_unit_oecd_equiv_net_income",
     ]
+
 
 class household_market_income(Variable):
     value_type = float
@@ -35,6 +38,7 @@ class household_market_income(Variable):
         "spm_unit_market_income",
     ]
 
+
 class household_tax(Variable):
     value_type = float
     entity = Household
@@ -45,6 +49,7 @@ class household_tax(Variable):
         "spm_unit_taxes",
     ]
 
+
 class household_benefits(Variable):
     value_type = float
     entity = Household
@@ -54,6 +59,7 @@ class household_benefits(Variable):
     adds = [
         "spm_unit_benefits",
     ]
+
 
 class household_income_decile(Variable):
     label = "household income decile"
@@ -66,8 +72,11 @@ class household_income_decile(Variable):
         income = household("household_net_income", period)
         count_people = household("household_count_people", period)
         household_weight = household("household_weight", period)
-        weighted_income = MicroSeries(income, weights=household_weight * count_people)
+        weighted_income = MicroSeries(
+            income, weights=household_weight * count_people
+        )
         return weighted_income.decile_rank().values
+
 
 class in_poverty(Variable):
     label = "in poverty"
@@ -79,15 +88,17 @@ class in_poverty(Variable):
         "spm_unit_is_in_spm_poverty",
     ]
 
+
 class person_in_poverty(Variable):
     label = "person in poverty"
     documentation = "Whether person is in poverty"
     entity = Person
     definition_period = YEAR
     value_type = bool
-    
+
     def formula(person, period, parameters):
         return person.household("in_poverty", period)
+
 
 class poverty_gap(Variable):
     label = "poverty gap"
@@ -96,6 +107,7 @@ class poverty_gap(Variable):
     definition_period = YEAR
     value_type = float
     unit = USD
+
 
 class income_decile(Variable):
     label = "income decile"
@@ -106,6 +118,7 @@ class income_decile(Variable):
 
     def formula(person, period, parameters):
         return person.household("household_income_decile", period)
+
 
 class household_count_people(Variable):
     value_type = int

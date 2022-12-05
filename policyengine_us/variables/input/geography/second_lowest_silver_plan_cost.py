@@ -4,6 +4,7 @@ from policyengine_core.parameters.operations import (
 )
 from policyengine_core.simulations import Simulation
 
+
 class reported_slspc(Variable):
     value_type = float
     entity = TaxUnit
@@ -22,7 +23,10 @@ class second_lowest_silver_plan_cost(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation: Simulation = tax_unit.simulation
-        if simulation.get_holder("reported_slspc").get_array(period) is not None:
+        if (
+            simulation.get_holder("reported_slspc").get_array(period)
+            is not None
+        ):
             # If the user has provided a value for the second-lowest silver plan
             # cost, use that.
             return simulation.calculate("reported_slspc", period)
