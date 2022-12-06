@@ -7,9 +7,20 @@ class qualified_business_income_deduction(Variable):
     label = "Qualified business income deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/199A#b_1"
+        "https://www.irs.gov/pub/irs-prior/p535--2018.pdf"
+    )
 
     def formula(tax_unit, period, parameters):
-        max_qbid = tax_unit("maximum_qbid", period)
-        limit = tax_unit("qbid_limit", period)
-        return min_(max_qbid, limit)
+        # compute sum of personal QBID amounts in TaxUnit
+        person = tax_unit.members
+        qbid_amt = person("qbid_amount", period)
+        uncapped_qbid = tax_unit.sum(qbid_amt)
+        # apply taxinc cap at the TaxUnit level following logic
+        # in 2018 Publication 535, Wks 12-A, line 34 and line 37
+        taxinc_less_qbid = tax_unit("taxable_income_less_qbid", period)
+        netcg_qdiv = tax_unit("adjusted_net_capital_gain", period)
+        rate = parameters(period).gov.irs.deductions.qbi.max.rate
+        taxinc_cap = rate * max_(0., taxinc_less_qbid - netcg_qdiv)
+        return min_(uncapped_qbid, taxinc_cap)
