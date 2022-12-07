@@ -23,5 +23,5 @@ class qualified_business_income_deduction(Variable):
         taxinc_less_qbid = tax_unit("taxable_income_less_qbid", period)
         netcg_qdiv = tax_unit("adjusted_net_capital_gain", period)
         rate = parameters(period).gov.irs.deductions.qbi.max.rate
-        taxinc_cap = rate * max_(0., taxinc_less_qbid - netcg_qdiv)
+        taxinc_cap = rate * max_(0, taxinc_less_qbid - netcg_qdiv)
         return min_(uncapped_qbid, taxinc_cap)

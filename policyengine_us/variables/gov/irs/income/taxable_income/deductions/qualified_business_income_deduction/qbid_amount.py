@@ -22,9 +22,7 @@ class qbid_amount(Variable):
         # compute caps
         w2_wages = person("w2_wages_from_qualified_business", period)
         b_property = person("unadjusted_basis_qualified_property", period)
-        wage_cap = (  # Worksheet 12-A, line 5
-            w2_wages * p.qbi.max.w2_wages.rate
-        )
+        wage_cap = w2_wages * p.qbi.max.w2_wages.rate  # Worksheet 12-A, line 5
         alt_cap = (  # Worksheet 12-A, line 9
             w2_wages * p.qbi.max.w2_wages.alt_rate
             + b_property * p.qbi.max.business_property.rate
@@ -45,17 +43,17 @@ class qbid_amount(Variable):
         adj_qbid_max = where(
             is_sstb,
             qbid_max * applicable_rate,  # Schedule A, line 11
-            qbid_max
+            qbid_max,
         )
         adj_cap = where(
             is_sstb,
             full_cap * applicable_rate,  # Schedule A, line 12 and line 13
-            full_cap
+            full_cap,
         )
         line11 = min_(adj_qbid_max, adj_cap)  # Worksheet 12-A, line 11
         # compute phased reduction
-        reduction = (  # Worksheet 12-A, line 25
-            reduction_rate * max_(0, adj_qbid_max - adj_cap)
+        reduction = reduction_rate * max_(  # Worksheet 12-A, line 25
+            0, adj_qbid_max - adj_cap
         )
         line26 = max_(0, adj_qbid_max - reduction)
         line12 = where(adj_cap < adj_qbid_max, line26, 0)
