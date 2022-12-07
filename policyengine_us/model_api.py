@@ -1,4 +1,4 @@
-from policyengine_us.variables.household.demographic.geographic.state_code import (
+from policyengine_us.variables.input.demographic.geographic.state_code import (
     StateCode,
 )
 from functools import reduce
