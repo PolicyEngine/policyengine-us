@@ -468,3 +468,19 @@ thresholds:
           rounding:
             type: nearest
             interval: 50
+  7:
+    SINGLE:
+      values:
+        2018-01-01: .inf
+    JOINT:
+      values:
+        2018-01-01: .inf
+    SEPARATE:
+      values:
+        2018-01-01: .inf
+    HEAD_OF_HOUSEHOLD:
+      values:
+        2018-01-01: .inf
+    WIDOW:
+      values:
+        2018-01-01: .inf
