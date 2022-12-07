@@ -18,7 +18,7 @@ class qualified_business_income_deduction(Variable):
         qbid_amt = person("qbid_amount", period)
         uncapped_qbid = tax_unit.sum(qbid_amt)
         # apply taxinc cap at the TaxUnit level following logic
-        # in 2018 Publication 535, Wks 12-A, line 34 and line 37
+        # in 2018 IRS Publication 535, Wks 12-A, line 34 and line 37
         taxinc_less_qbid = tax_unit("taxable_income_less_qbid", period)
         netcg_qdiv = tax_unit("adjusted_net_capital_gain", period)
         rate = parameters(period).gov.irs.deductions.qbi.max.rate
