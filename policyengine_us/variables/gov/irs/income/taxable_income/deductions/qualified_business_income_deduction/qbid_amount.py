@@ -59,19 +59,4 @@ class qbid_amount(Variable):
         )
         line26 = max_(0, adj_qbid_max - reduction)
         line12 = where(adj_cap < adj_qbid_max, line26, 0)
-        qbid_limited = max_(line11, line12)  # Worksheet 12-A, line 13
-        # compute QBID amount
-        return where(
-            taxinc_less_qbid <= po_start,
-            qbid_max,
-            where(
-                np.logical_and(is_sstb, taxinc_less_qbid >= po_end),
-                0,
-                where(
-                    np.logical_and(~is_sstb, taxinc_less_qbid >= po_end),
-                    min_(qbid_max, full_cap),
-                    qbid_limited
-                )
-            )
-        )
-
+        return max_(line11, line12)  # Worksheet 12-A, line 13
