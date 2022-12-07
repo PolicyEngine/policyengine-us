@@ -1869,3 +1869,10 @@
     fixed:
     - PolicyEngine-Core pinned to a minor version.
   date: 2022-12-07 13:35:40
+- bump: patch
+  changes:
+    changed:
+    - Remove parameters representing a set of complex tax reforms.
+    fixed:
+    - Calculation of federal income tax with self-employment income.
+  date: 2022-12-07 19:52:54
