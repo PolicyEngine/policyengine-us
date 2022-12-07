@@ -1847,3 +1847,25 @@
     fixed:
     - MO income tax debugging print is converted to a comment.
   date: 2022-11-30 14:51:01
+- bump: patch
+  changes:
+    fixed:
+    - Absence of OR income subtraction for federally taxable social security benefits.
+  date: 2022-12-01 23:07:54
+- bump: minor
+  changes:
+    added:
+    - pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+    - Other sources to PA tax forgiveness eligibility income.
+  date: 2022-12-01 23:15:49
+- bump: minor
+  changes:
+    changed:
+    - Input folder structure and other new PolicyEngine app updates.
+    - Now dependent on PolicyEngine-Core v0.10.10
+  date: 2022-12-05 17:46:08
+- bump: patch
+  changes:
+    fixed:
+    - PolicyEngine-Core pinned to a minor version.
+  date: 2022-12-07 13:35:40

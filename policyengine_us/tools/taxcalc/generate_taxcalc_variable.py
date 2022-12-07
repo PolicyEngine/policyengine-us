@@ -69,6 +69,7 @@ def create_taxcalc_alias(name: str, variable: Type[Variable]):
             documentation=documentation,
             value_type=variable.value_type,
             formula=formula,
+            module_name="tools.taxcalc",
         ),
     )
 

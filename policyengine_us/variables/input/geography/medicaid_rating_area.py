@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_core.parameters import homogenize_parameter_structures
+from policyengine_core.simulations import Simulation
 
 
 class medicaid_rating_area(Variable):
@@ -9,6 +10,14 @@ class medicaid_rating_area(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
+        simulation: Simulation = household.simulation
+        if (
+            simulation.get_holder("reported_slspc").get_array(period)
+            is not None
+        ):
+            # If the user has provided a value for the second-lowest silver plan
+            # cost, skip.
+            return 0
         parameter_tree = household.simulation.tax_benefit_system.parameters
         if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
             medicaid_parameters = ParameterNode(
