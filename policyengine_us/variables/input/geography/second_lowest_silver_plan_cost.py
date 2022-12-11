@@ -2,6 +2,15 @@ from policyengine_us.model_api import *
 from policyengine_core.parameters.operations import (
     homogenize_parameter_structures,
 )
+from policyengine_core.simulations import Simulation
+
+
+class reported_slspc(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "reported second lowest silver plan cost"
+    unit = USD
+    definition_period = YEAR
 
 
 class second_lowest_silver_plan_cost(Variable):
@@ -13,6 +22,14 @@ class second_lowest_silver_plan_cost(Variable):
     defined_for = "is_ptc_eligible"
 
     def formula(tax_unit, period, parameters):
+        simulation: Simulation = tax_unit.simulation
+        if (
+            simulation.get_holder("reported_slspc").get_array(period)
+            is not None
+        ):
+            # If the user has provided a value for the second-lowest silver plan
+            # cost, use that.
+            return simulation.calculate("reported_slspc", period)
         parameter_tree = tax_unit.simulation.tax_benefit_system.parameters
         if not hasattr(parameter_tree.gov.hhs.medicaid, "geography"):
             medicaid_parameters = ParameterNode(

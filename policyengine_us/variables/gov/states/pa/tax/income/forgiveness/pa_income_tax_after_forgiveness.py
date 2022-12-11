@@ -11,6 +11,8 @@ class pa_income_tax_after_forgiveness(Variable):
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):
-        income_tax = tax_unit("pa_income_tax_before_forgiveness", period)
-        rate = tax_unit("pa_tax_forgiveness_rate", period)
-        return income_tax * (1 - rate)
+        tax_before_forgiveness = tax_unit(
+            "pa_income_tax_before_forgiveness", period
+        )
+        forgiveness = tax_unit("pa_tax_forgiveness_amount", period)
+        return tax_before_forgiveness - forgiveness

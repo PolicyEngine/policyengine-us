@@ -1831,3 +1831,58 @@
     changed:
     - Simplify MO federal income tax deduction code.
   date: 2022-11-28 05:19:48
+- bump: patch
+  changes:
+    fixed:
+    - MA bank interest deduction logic.
+  date: 2022-11-29 19:54:07
+- bump: patch
+  changes:
+    changed:
+    - Qualified business income to be a personal variable.
+    - Qualified business income to be net of several personal deductions.
+  date: 2022-11-30 04:19:57
+- bump: patch
+  changes:
+    fixed:
+    - MO income tax debugging print is converted to a comment.
+  date: 2022-11-30 14:51:01
+- bump: patch
+  changes:
+    fixed:
+    - Absence of OR income subtraction for federally taxable social security benefits.
+  date: 2022-12-01 23:07:54
+- bump: minor
+  changes:
+    added:
+    - pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+    - Other sources to PA tax forgiveness eligibility income.
+  date: 2022-12-01 23:15:49
+- bump: minor
+  changes:
+    changed:
+    - Input folder structure and other new PolicyEngine app updates.
+    - Now dependent on PolicyEngine-Core v0.10.10
+  date: 2022-12-05 17:46:08
+- bump: patch
+  changes:
+    fixed:
+    - PolicyEngine-Core pinned to a minor version.
+  date: 2022-12-07 13:35:40
+- bump: patch
+  changes:
+    changed:
+    - Remove parameters representing a set of complex tax reforms.
+    fixed:
+    - Calculation of federal income tax with self-employment income.
+  date: 2022-12-07 19:52:54
+- bump: minor
+  changes:
+    added:
+    - SNAP FY2023 parameters.
+  date: 2022-12-07 20:55:22
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of qualified business income deduction.
+  date: 2022-12-08 16:18:25

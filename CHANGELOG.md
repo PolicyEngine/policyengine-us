@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.184.1] - 2022-12-08 16:18:25
+
+### Fixed
+
+- Calculation of qualified business income deduction.
+
+## [0.184.0] - 2022-12-07 20:55:22
+
+### Added
+
+- SNAP FY2023 parameters.
+
+## [0.183.2] - 2022-12-07 19:52:54
+
+### Changed
+
+- Remove parameters representing a set of complex tax reforms.
+
+### Fixed
+
+- Calculation of federal income tax with self-employment income.
+
+## [0.183.1] - 2022-12-07 13:35:40
+
+### Fixed
+
+- PolicyEngine-Core pinned to a minor version.
+
+## [0.183.0] - 2022-12-05 17:46:08
+
+### Changed
+
+- Input folder structure and other new PolicyEngine app updates.
+- Now dependent on PolicyEngine-Core v0.10.10
+
+## [0.182.0] - 2022-12-01 23:15:49
+
+### Added
+
+- pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+- Other sources to PA tax forgiveness eligibility income.
+
+## [0.181.7] - 2022-12-01 23:07:54
+
+### Fixed
+
+- Absence of OR income subtraction for federally taxable social security benefits.
+
+## [0.181.6] - 2022-11-30 14:51:01
+
+### Fixed
+
+- MO income tax debugging print is converted to a comment.
+
+## [0.181.5] - 2022-11-30 04:19:57
+
+### Changed
+
+- Qualified business income to be a personal variable.
+- Qualified business income to be net of several personal deductions.
+
+## [0.181.4] - 2022-11-29 19:54:07
+
+### Fixed
+
+- MA bank interest deduction logic.
+
 ## [0.181.3] - 2022-11-28 05:19:48
 
 ### Changed
@@ -2203,6 +2270,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.184.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.184.0...0.184.1
+[0.184.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.183.2...0.184.0
+[0.183.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.183.1...0.183.2
+[0.183.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.183.0...0.183.1
+[0.183.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.182.0...0.183.0
+[0.182.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.7...0.182.0
+[0.181.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.6...0.181.7
+[0.181.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.5...0.181.6
+[0.181.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.4...0.181.5
+[0.181.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.3...0.181.4
 [0.181.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.2...0.181.3
 [0.181.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.1...0.181.2
 [0.181.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.181.0...0.181.1
