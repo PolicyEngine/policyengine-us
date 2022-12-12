@@ -12,6 +12,7 @@ def create_in_state_variable(state: str) -> Type[Variable]:
             "entity": Household,
             "formula": in_state(state),
             "module_name": "input.household.demographic.geographic.state.in_state",
+            "hidden_input": True,
         },
     )
 

@@ -8,6 +8,7 @@ class medicaid_rating_area(Variable):
     entity = Household
     label = "Medicaid rating area"
     definition_period = YEAR
+    
 
     def formula(household, period, parameters):
         simulation: Simulation = household.simulation
