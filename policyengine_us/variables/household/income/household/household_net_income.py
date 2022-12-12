@@ -32,10 +32,20 @@ class household_market_income(Variable):
     value_type = float
     entity = Household
     label = "market income"
+    documentation = "Income from non-government sources."
     definition_period = YEAR
     unit = USD
     adds = [
-        "spm_unit_market_income",
+        "employment_income",
+        "self_employment_income",
+        "pension_income",
+        "dividend_income",
+        "interest_income",
+        "gi_cash_assistance",
+        "capital_gains",
+        "rental_income",
+        "illicit_income",
+        "farm_income",
     ]
 
 
@@ -43,10 +53,15 @@ class household_tax(Variable):
     value_type = float
     entity = Household
     label = "tax"
+    documentation = "Total tax liability."
     unit = USD
     definition_period = YEAR
     adds = [
-        "spm_unit_taxes",
+        "employee_payroll_tax",
+        "self_employment_tax",
+        "income_tax",
+        "state_income_tax",
+        "flat_tax",
     ]
 
 
@@ -57,7 +72,22 @@ class household_benefits(Variable):
     unit = USD
     definition_period = YEAR
     adds = [
-        "spm_unit_benefits",
+        "social_security",
+        "ssi",
+        "ca_cvrp",  # California Clean Vehicle Rebate Project.
+        "snap",
+        "wic",
+        "free_school_meals",
+        "reduced_price_school_meals",
+        "lifeline",
+        "acp",
+        "ebb",
+        "spm_unit_capped_housing_subsidy",
+        "tanf",
+        "high_efficiency_electric_home_rebate",
+        "residential_efficiency_electrification_rebate",
+        # Contributed.
+        "basic_income",
     ]
 
 
