@@ -5,7 +5,7 @@ class income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Income tax before credits"
+    label = "income tax before credits"
     unit = USD
     documentation = "Total (regular + AMT) income tax liability before credits"
 

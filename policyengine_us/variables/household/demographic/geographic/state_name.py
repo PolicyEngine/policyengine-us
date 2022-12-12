@@ -64,4 +64,3 @@ class StateName(Enum):
     AA = "Armed Forces Americas (Except Canada)"
     AE = "Armed Forces Africa/Canada/Europe/Middle East"
     AP = "Armed Forces Pacific"
-
