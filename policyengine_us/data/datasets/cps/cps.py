@@ -18,8 +18,8 @@ class CPS(PublicDataset):
 
     url_by_year = {
         2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5",
-        2021: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-2021-v0/cps_2021.h5",
-        2022: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-2021-v0/cps_2022.h5",
+        2021: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2021.h5",
+        2022: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2022.h5",
     }
 
     def generate(self, year: int):
@@ -262,7 +262,7 @@ def add_personal_income_variables(
         1 - p["qualified_dividend_fraction"][year]
     )
     cps["rental_income"] = person.RNT_VAL
-    cps["social_security"] = person.SS_VAL
+    cps["social_security_reported"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
     cps["taxable_pension_income"] = cps_pensions * (

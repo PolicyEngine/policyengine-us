@@ -29,10 +29,10 @@ class pension_income(Variable):
     unit = USD
     documentation = "Income from pensions, annuitities, life insurance or endowment contracts."
     definition_period = YEAR
-
-    formula = sum_of_variables(
-        ["tax_exempt_pension_income", "taxable_pension_income"]
-    )
+    adds = [
+        "tax_exempt_pension_income",
+        "taxable_pension_income",
+    ]
 
 
 class interest_income(Variable):
@@ -42,10 +42,10 @@ class interest_income(Variable):
     documentation = "Interest income from bonds, savings accounts, CDs, etc."
     unit = USD
     definition_period = YEAR
-
-    formula = sum_of_variables(
-        ["taxable_interest_income", "tax_exempt_interest_income"]
-    )
+    adds = [
+        "tax_exempt_interest_income",
+        "taxable_interest_income",
+    ]
 
 
 class farm_income(Variable):
@@ -64,10 +64,10 @@ class dividend_income(Variable):
     documentation = "Qualified and non-qualified dividends"
     unit = USD
     definition_period = YEAR
-
-    formula = sum_of_variables(
-        ["qualified_dividend_income", "non_qualified_dividend_income"]
-    )
+    adds = [
+        "qualified_dividend_income",
+        "non_qualified_dividend_income",
+    ]
 
 
 class capital_gains(Variable):
@@ -77,7 +77,7 @@ class capital_gains(Variable):
     unit = USD
     documentation = "Net gain from disposition of property."
     definition_period = YEAR
-
-    formula = sum_of_variables(
-        ["short_term_capital_gains", "long_term_capital_gains"]
-    )
+    adds = [
+        "short_term_capital_gains",
+        "long_term_capital_gains",
+    ]
