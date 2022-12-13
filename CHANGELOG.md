@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.185.2] - 2022-12-13 07:57:02
+
+### Changed
+
+- Model PA's increased SNAP gross income limit.
+
+## [0.185.1] - 2022-12-13 07:05:42
+
+### Fixed
+
+- End SNAP emergency allotments in GA and NV.
+
+## [0.185.0] - 2022-12-13 05:53:30
+
+### Added
+
+- Unit tests for Child Tax Credit variables.
+- Intermediate ARPA CTC reduction variable.
+
+### Changed
+
+- Refactor Child Tax Credit reduction, including no longer capping at maximum.
+
+### Fixed
+
+- Child Tax Credit full refundability bug.
+- Child Tax Credit now steps down rather than phases out.
+
+## [0.184.2] - 2022-12-12 16:32:33
+
+### Added
+
+- Metadata for PolicyEngine.
+
 ## [0.184.1] - 2022-12-08 16:18:25
 
 ### Fixed
@@ -2270,6 +2304,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.185.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.185.1...0.185.2
+[0.185.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.185.0...0.185.1
+[0.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.184.2...0.185.0
+[0.184.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.184.1...0.184.2
 [0.184.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.184.0...0.184.1
 [0.184.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.183.2...0.184.0
 [0.183.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.183.1...0.183.2

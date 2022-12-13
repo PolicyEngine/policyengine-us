@@ -1,0 +1,12 @@
+description: Age at which a child becomes ineligible for the Child Tax Credit.
+values:
+  2013-01-01: 17
+  2021-01-01: 18
+  2022-01-01: 17
+metadata:
+  unit: year
+  name: ctc_child_age
+  label: CTC ineligible age
+  reference:
+    - title: 26 U.S. Code § 24(c)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/24#c_1

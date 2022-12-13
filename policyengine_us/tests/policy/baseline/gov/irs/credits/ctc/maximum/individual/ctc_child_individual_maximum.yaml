@@ -1,0 +1,34 @@
+- name: People who don't qualify get $0.
+  period: 2017
+  input:
+    age: 18
+  output:
+    ctc_child_individual_maximum: 0
+
+- name: CTC was $1,000 pre-TCJA.
+  period: 2017
+  input:
+    age: 10
+  output:
+    ctc_child_individual_maximum: 1_000
+
+- name: CTC rose to $2,000 post-TCJA.
+  period: 2018
+  input:
+    age: 16
+  output:
+    ctc_child_individual_maximum: 2_000
+
+- name: Main ARPA CTC was still $2,000 (mostly see ctc_child_individual_maximum_arpa).
+  period: 2021
+  input:
+    age: 12
+  output:
+    ctc_child_individual_maximum: 2_000
+
+- name: Post-ARP CTC provided $2,000 to young and non-young children.
+  period: 2022
+  input:
+    age: 12
+  output:
+    ctc_child_individual_maximum: 2_000

@@ -11,6 +11,6 @@ class ctc(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/24#a"
 
     def formula(tax_unit, period, parameters):
-        maximum_amount = tax_unit("ctc_maximum", period)
-        reduction = tax_unit("ctc_reduction", period)
-        return maximum_amount - reduction
+        maximum_amount = tax_unit("ctc_maximum_with_arpa_addition", period)
+        reduction = tax_unit("ctc_phase_out", period)
+        return max_(0, maximum_amount - reduction)

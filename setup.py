@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="policyengine-us",
-    version="0.184.1",
+    version="0.185.2",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     classifiers=[
@@ -12,10 +12,10 @@ setup(
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: POSIX",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
-    description="OpenFisca tax and benefit system for the US",
+    description="PolicyEngine tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
     url="https://github.com/PolicyEngine/policyengine-us",
@@ -29,7 +29,7 @@ setup(
     install_requires=[
         "h5py",
         "microdf_python",
-        "policyengine-core>=1.10,<1.11",
+        "policyengine-core==1.10.15",
         "pandas",
         "pathlib",
         "pytest",

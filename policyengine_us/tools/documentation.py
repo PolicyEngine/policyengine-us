@@ -60,6 +60,7 @@ def variation_chart(
     in_notebook: bool = False,
     additional_adult_data: dict = None,
     additional_child_data: dict = None,
+    child_count_list: list = [0, 1, 2, 3],
 ):
     dfs = []
 
@@ -80,7 +81,7 @@ def variation_chart(
     )
 
     for adults in [1, 2]:
-        for children in [0, 1, 2, 3]:
+        for children in child_count_list:
             people = dict()
             for i in range(adults):
                 people[f"adult_{i}"] = adult_template

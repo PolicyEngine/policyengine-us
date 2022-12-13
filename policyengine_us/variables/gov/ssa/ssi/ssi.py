@@ -5,6 +5,7 @@ class ssi(Variable):
     value_type = float
     entity = Person
     label = "SSI"
+    documentation = "Supplemental Security Income"
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/42/1382"
