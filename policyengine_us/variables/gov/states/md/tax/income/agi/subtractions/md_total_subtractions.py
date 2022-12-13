@@ -9,8 +9,6 @@ class md_total_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
-        subtractions = parameters(
-            period
-        ).gov.states.md.tax.income.agi.subtractions.sources
-        return add(tax_unit, period, subtractions)
+    formula = sum_of_variables(
+        "gov.states.md.tax.income.agi.subtractions.sources"
+    )
