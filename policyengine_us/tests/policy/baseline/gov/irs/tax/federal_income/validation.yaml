@@ -53,11 +53,6 @@
         state_code: TX  # no state income tax
   output:  # expected results from online TAXSIM35 10/24/22 version
     taxsim_tfica: 11_173.60
-<<<<<<< HEAD
-    income_tax_before_credits: 35_473
-    ctc: 5_985
-    income_tax: 29_499.40
-=======
     income_tax: 29_499.40
 
 - name: Single taxpayer with both wage and self-employment income
@@ -93,4 +88,3 @@
     adjusted_gross_income: 185_387.33
     taxable_income: 172_837.33
     income_tax: 36_134.94
->>>>>>> cf1ebef93eacb24ec693d0e6b03d22e719e103d6
