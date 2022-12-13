@@ -1917,3 +1917,8 @@
     fixed:
     - Social Security input in the CPS dataset.
   date: 2022-12-13 19:01:41
+- bump: patch
+  changes:
+    changed:
+    - Moved `contrib` parameters to `gov.contrib`.
+  date: 2022-12-13 20:11:11
