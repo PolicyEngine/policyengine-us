@@ -14,33 +14,23 @@ class mo_federal_income_tax_deduction(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-
-        # compute federal income tax ignoring COVID-19 rebates and federal EITC
-        # (see second reference above for the legislative language)
-        fitax = tax_unit("income_tax", period)
-        ignored_credits = [
-            "rrc_cares",
-            "rrc_caa",
-            "rrc_arpa",
-            "earned_income_tax_credit",
-        ]
-        ignored_credits_total = add(tax_unit, period, ignored_credits)
-        fitax_ignoring_credits = max_(0, fitax + ignored_credits_total)
-
-        # compute deduction rate based on MO AGI
-        p = parameters(period).gov.states.mo.tax.income.deductions
-        fitax_deduction_rates = p.federal_income_tax_deduction_rates
-        mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
-        rate = fitax_deduction_rates.calc(mo_agi)
-
-        # compute uncapped deduction amount
-        fitax_deduction_amt = fitax_ignoring_credits * rate
-
-        # compute deduction cap based on filing status
-        fstatus = tax_unit("filing_status", period)
-        fitax_deduction_cap = p.federal_income_tax_deduction_caps[fstatus]
-
-        return min_(
-            fitax_deduction_amt,
-            fitax_deduction_cap,
+        # Deduct a capped share of federal income tax liability.
+        # Ignore certain refundable credits: recovery rebates and EITC.
+        # See #1528 for uncertainty around these credits.
+        p = parameters(
+            period
+        ).gov.states.mo.tax.income.deductions.federal_income_tax
+        uncapped_federal_income_tax_ignoring_credits = add(
+            tax_unit, period, ["income_tax"] + p.ignored_credits
         )
+        # Limit to nonnegative tax.
+        federal_income_tax_ignoring_credits = max_(
+            0, uncapped_federal_income_tax_ignoring_credits
+        )
+        # Apply rate based on MO AGI.
+        tax_unit_mo_agi = add(tax_unit, period, ["mo_adjusted_gross_income"])
+        rate = p.rate.calc(tax_unit_mo_agi)
+        uncapped = federal_income_tax_ignoring_credits * rate
+        # Apply cap based on filing status.
+        cap = p.cap[tax_unit("filing_status", period)]
+        return min_(uncapped, cap)

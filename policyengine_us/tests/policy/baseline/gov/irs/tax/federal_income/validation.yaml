@@ -10,37 +10,29 @@
     people:
       person1:
         is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
-        age: 24 # page
-        employment_income: 160_000 # pwages
-        taxable_interest_income: 10_000 # intrec
-        non_qualified_dividend_income: 15_000 # otherprop
-        social_security: 18_000 # gssi
-        rent: 15_000 # rentpaid - does not affect federal taxes.
-        interest_expense: 25_000 # mortgage
+        age: 24
+        employment_income: 160_000
+        taxable_interest_income: 10_000
+        non_qualified_dividend_income: 15_000
+        social_security: 18_000
+        rent: 15_000
+        interest_expense: 25_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
         age: 16 # age1
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
         age: 16 # age2
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
         is_tax_unit_dependent: 1
         age: 16 # age3
         ssi: 0  # not in TAXSIM35
@@ -58,9 +50,47 @@
     households:
       household:
         members: [person1, person2, person3, person4]
-        state_code: TX  # suppress all state income tax calculations
+        state_code: TX  # no state income tax
   output:  # expected results from online TAXSIM35 10/24/22 version
     taxsim_tfica: 11_173.60
+<<<<<<< HEAD
     income_tax_before_credits: 35_473
     ctc: 5_985
     income_tax: 29_499.40
+=======
+    income_tax: 29_499.40
+
+- name: Single taxpayer with both wage and self-employment income
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 50
+        employment_income: 90_000
+        self_employment_income: 100_000
+        business_is_qualified: false
+        business_is_sstb: false
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:  # expected results from online TAXSIM35 12/02/22 version
+    taxsim_tfica: 16_110.35
+    adjusted_gross_income: 185_387.33
+    taxable_income: 172_837.33
+    income_tax: 36_134.94
+>>>>>>> cf1ebef93eacb24ec693d0e6b03d22e719e103d6

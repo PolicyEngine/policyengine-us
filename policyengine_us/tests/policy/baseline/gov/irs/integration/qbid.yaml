@@ -1,0 +1,290 @@
+- name: Tax unit illustrating problem highlighted in GitHub issue 903
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 60
+        self_employment_income: 200_000
+        business_is_qualified: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:  # expected results from TAXSIM35
+    adjusted_gross_income: 189_082.05
+    qualified_business_income: 189_082.05
+
+- name: Tax unit with taxsimid 95033 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 67
+        self_employment_income: 136_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:  # expected results from TAXSIM35 12/02/22 version
+    taxsim_tfica: 19_217.60
+    income_tax: 15_554.03
+
+- name: Tax unit with taxsimid 9498 in d21.its.csv and d21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 65
+        self_employment_income: 150_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: 1
+        age: 65
+        self_employment_income: 75_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX  # no state income tax
+  output:  # expected results from TAXSIM35 12/02/22 version
+    taxsim_tfica: 31_794.31
+    income_tax: 23_409.82
+
+# -----------------------------------------------------------------------------
+# BEGIN : PolicyEngineUS test cases derived from TPC publication test cases
+#
+# Test PolicyEngineUS QBID calculations using the six tax units specified in
+# Table 1 of this TPC publication: "Navigating the New Pass-Through Provisions:
+# A Technical Explanation" by William G. Gale and Aaron Krupkin
+# (January 31, 2018), which is available at this URL:
+# https://www.taxpolicycenter.org/publications/navigating-new-pass-through-provisions-technical-explanation/full
+#
+# In constructing the TPC publication tax units, assume that the taxpayer
+# has business income in the form of S-corporation income and no earnings,
+# and that the spouse has no business income and only wage earnings.
+# Assume that the taxpayer's share of the S corporation W2 wages is always
+# $20,000 and that the taxpayer's share of the S corporation property is
+# always $90,000.
+
+- name: TPC QBID publication tax unit 1 with SSTB and low taxable income
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 40
+        partnership_s_corp_income: 75_000
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 20_000
+        unadjusted_basis_qualified_property: 90_000
+      person2:
+        is_tax_unit_spouse: 1
+        age: 40
+        employment_income: 99_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    qualified_business_income_deduction: 15_000
+
+- name: TPC QBID publication tax unit 2 with SSTB and medium taxable income
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 40
+        partnership_s_corp_income: 75_000
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 20_000
+        unadjusted_basis_qualified_property: 90_000
+      person2:
+        is_tax_unit_spouse: 1
+        age: 40
+        employment_income: 349_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    qualified_business_income_deduction: 1_612.50
+
+- name: TPC QBID publication tax unit 3 with SSTB and high taxable income
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 40
+        partnership_s_corp_income: 75_000
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 20_000
+        unadjusted_basis_qualified_property: 90_000
+      person2:
+        is_tax_unit_spouse: 1
+        age: 40
+        employment_income: 524_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    qualified_business_income_deduction: 0
+
+- name: TPC QBID publication tax unit 4 with non-SSTB and low taxable income
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 40
+        partnership_s_corp_income: 75_000
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 20_000
+        unadjusted_basis_qualified_property: 90_000
+      person2:
+        is_tax_unit_head: 0
+        is_tax_unit_spouse: 1
+        is_tax_unit_dependent: 0
+        age: 40
+        employment_income: 99_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    qualified_business_income_deduction: 15_000
+
+- name: TPC QBID publication tax unit 5 with non-SSTB and medium taxable income
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 40
+        partnership_s_corp_income: 75_000
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 20_000
+        unadjusted_basis_qualified_property: 90_000
+      person2:
+        is_tax_unit_spouse: 1
+        age: 40
+        employment_income: 349_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    qualified_business_income_deduction: 10_750
+
+- name: TPC QBID publication tax unit 6 with non-SSTB and high taxable income
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        age: 40
+        partnership_s_corp_income: 75_000
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 20_000
+        unadjusted_basis_qualified_property: 90_000
+      person2:
+        is_tax_unit_spouse: 1
+        age: 40
+        employment_income: 524_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    qualified_business_income_deduction: 10_000
+
+# END : PolicyEngineUS test cases derived from TPC publication test cases
+# -----------------------------------------------------------------------------

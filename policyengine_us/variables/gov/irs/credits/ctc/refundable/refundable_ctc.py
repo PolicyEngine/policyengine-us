@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Refundable CTC"
+    label = "refundable CTC"
     unit = USD
     documentation = "The portion of the Child Tax Credit that is refundable."
     definition_period = YEAR
