@@ -15,8 +15,8 @@ class md_two_income_subtraction(Variable):
         # compute head and spouse US AGI portions using irs_gross_income shares
         us_agi = tax_unit("adjusted_gross_income", period)
         gross_income = person("irs_gross_income", period)
-        is_head = person("is_tax_unit_head", period) == 1
-        is_spouse = person("is_tax_unit_spouse", period) == 1
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
         head_gross_income = tax_unit.sum(where(is_head, gross_income, 0))
         couple_gross_income = tax_unit.sum(
             where(is_head | is_spouse, gross_income, 0)
@@ -34,6 +34,8 @@ class md_two_income_subtraction(Variable):
 
         # compute head and spouse MD AGI subtractions
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
+        filing_status = tax_unit("filing_status", period)
+        joint = filing_status == filing_status.possible_values.JOINT
         head_subs = 0
         spouse_subs = 0
         for subtraction in p.sources:
@@ -41,9 +43,7 @@ class md_two_income_subtraction(Variable):
                 continue
             if subtraction == "md_dependent_care_subtraction":
                 unit_care_amt = tax_unit(subtraction, period)
-                head_frac = where(
-                    tax_unit("filing_status", period) == "Joint", 0.5, 1.0
-                )
+                head_frac = where(joint, 0.5, 1.0)
                 head_subs += head_frac * unit_care_amt
                 spouse_subs += (1 - head_frac) * unit_care_amt
             else:
