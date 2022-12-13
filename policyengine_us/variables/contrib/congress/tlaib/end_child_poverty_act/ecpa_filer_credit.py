@@ -16,7 +16,7 @@ class ecpa_filer_credit(Variable):
         age_spouse = tax_unit("age_spouse", period)
         p = parameters(
             period
-        ).contrib.congress.tlaib.end_child_poverty_act.filer_credit
+        ).gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit
 
         head_qualifies = (age_head >= p.eligibility.min_age) & (
             age_head <= p.eligibility.max_age

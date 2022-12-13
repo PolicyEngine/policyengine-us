@@ -22,7 +22,7 @@ class ctc_arpa_uncapped_phase_out(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         excess = max_(0, agi - threshold)
         # TAXSIM phases out the CTC smoothly rather than in increments.
-        if parameters(period).contrib.nber.taxsim35_emulation:
+        if parameters(period).gov.contrib.nber.taxsim35_emulation:
             return excess * p.amount / p.increment
         increments = ceil(excess / p.increment)
         return increments * p.amount
