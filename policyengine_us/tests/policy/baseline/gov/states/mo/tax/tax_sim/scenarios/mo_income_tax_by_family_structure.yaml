@@ -131,7 +131,8 @@
     #mo_income_tax: 1_521.48
     #taxsim output: 1_469.64
 
-- name:  Taxsim integration test, 50k income, single parent, two children
+- name: Taxsim integration test, 50k income, single parent, two children
+  # https://taxsim.app/?year=2021&mstat=headOfHousehold&state=26&page=38&depx=2&age1=4&age2=4&settings.numeric=1&debug=1&pwages=50000
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -152,51 +153,12 @@
       state_code: MO
   output:
     income_tax_before_credits: 3_460
-    #taxsim output: 3_460
-    income_tax: -7_000
-    #taxsim output: 6_740
+    # taxsim incorrectly says $6,000, doesn't capture the young child element.
+    ctc: 7_200
+    income_tax: -7_940
+    #taxsim output: $6,740 ("Income Tax Balance"), offset by $1,200 error.
     mo_adjusted_gross_income: [50_000, 0, 0]
-    #taxsim output: 50_000
-    # disable test:
-    state_code: MO
-    #mo_federal_income_tax_deduction: -1_050
-    #mo_taxable_income: [32_250, 0, 0]
+    mo_taxable_income: [31_200, 0, 0]
     #taxsim output: 30_681
-    #mo_income_tax: 1_554.36
-    #taxsim output: 1_469.64
-
-- name:  Taxsim integration test, 50k income, single parent, three children
-  period: 2021
-  absolute_error_margin: 0.5
-  input:
-    people:
-      person1:
-        age: 38
-        employment_income: 50_000
-      person2:
-        age: 4
-      person3:
-        age: 4
-      person4:
-        age: 4    
-    tax_units:
-      tax_unit:
-        premium_tax_credit: 0
-        members: [person1, person2, person3, person4]
-    household:
-      members: [person1, person2, person3, person4]
-      state_code: MO
-  output:
-    income_tax_before_credits: 3_460
-    #taxsim output: 3_460
-    income_tax: -10_108.91
-    #taxsim output: -6_740
-    mo_adjusted_gross_income: [50_000, 0, 0, 0]
-    #taxsim output: 50_000
-    # disable test:
-    state_code: MO
-    #mo_federal_income_tax_deduction: -1_516.34
-    #mo_taxable_income: [32_716.34, 0, 0, 0]
-    #taxsim output: 30_681
-    #mo_income_tax: 1_579.55
+    mo_income_tax: 1_497.66
     #taxsim output: 1_469.64

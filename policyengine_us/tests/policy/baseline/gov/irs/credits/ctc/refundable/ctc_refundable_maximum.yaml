@@ -1,0 +1,27 @@
+- name: None is refundable if none exists.
+  period: 2020
+  input:
+    ctc_child_individual_maximum: 0
+  output:
+    ctc_refundable_maximum: 0
+
+- name: $1,500 was refundable in 2020.
+  period: 2020
+  input:
+    ctc_child_individual_maximum: 2_000
+  output:
+    ctc_refundable_maximum: 1_400
+
+- name: Fully refundable in 2021.
+  period: 2021
+  input:
+    ctc_child_individual_maximum: 3_600
+  output:
+    ctc_refundable_maximum: 3_600
+
+- name: $1,500 was refundable in 2022.
+  period: 2022
+  input:
+    ctc_child_individual_maximum: 2_000
+  output:
+    ctc_refundable_maximum: 1_500

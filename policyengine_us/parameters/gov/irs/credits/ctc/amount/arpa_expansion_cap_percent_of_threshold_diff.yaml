@@ -1,0 +1,10 @@
+description: The IRS caps the American Rescue Plan Act Child Tax Credit expansion by this percentage of the difference in phase-out thresholds between base and ARPA.
+values:
+  0000-01-01: 0.05
+metadata:
+  unit: /1
+  name: ctc_arpa_expansion_cap_percent_of_threshold_diff
+  label: ARPA CTC expansion cap as percent of threshold difference
+  reference:
+    - title: U.S.C 26 U.S. Code § 24(i)(4)(C)(i)(II)
+      href: https://www.law.cornell.edu/uscode/text/26/24#i_4_C_i_II

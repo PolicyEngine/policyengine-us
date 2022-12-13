@@ -20,12 +20,10 @@ class refundable_ctc(Variable):
 
         ctc = parameters(period).gov.irs.credits.ctc
 
-        maximum_amount = add(
-            tax_unit, period, ["ctc_refundable_individual_maximum"]
-        )
+        maximum_amount = tax_unit("ctc_refundable_maximum", period)
 
         if ctc.refundable.fully_refundable:
-            reduction = tax_unit("ctc_reduction", period)
+            reduction = tax_unit("ctc_phase_out", period)
             return max_(0, maximum_amount - reduction)
 
         total_ctc = tax_unit("ctc", period)
@@ -37,7 +35,7 @@ class refundable_ctc(Variable):
         # - Social Security tax minus the EITC
         # First, we find tax_increase:
 
-        earnings = add(tax_unit, period, ["earned_income"])
+        earnings = tax_unit("tax_unit_earned_income", period)
         earnings_over_threshold = max_(
             0, earnings - ctc.refundable.phase_in.threshold
         )
@@ -63,9 +61,7 @@ class refundable_ctc(Variable):
         )
         eitc = tax_unit("eitc", period)
         social_security_excess = max_(0, social_security_tax - eitc)
-        qualifying_children = add(
-            tax_unit, period, ["is_ctc_qualifying_child"]
-        )
+        qualifying_children = tax_unit("ctc_qualifying_children", period)
         tax_increase = where(
             qualifying_children
             < ctc.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
