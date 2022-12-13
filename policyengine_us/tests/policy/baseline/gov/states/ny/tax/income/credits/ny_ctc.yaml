@@ -60,14 +60,3 @@
         state_code: NY
   output:
     ny_ctc: 100
-
-- name: Simpler calculation if not set to pre-TCJA.
-  period: 2022
-  input:
-    gov.states.ny.tax.income.credits.ctc.pre_tcja: false
-    ctc: 1_000
-    ctc_qualifying_child: true
-    state_code: NY
-    age: 5 # Must be 4+ to be eligible.
-  output:
-    ny_ctc: 330
