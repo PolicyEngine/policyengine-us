@@ -1902,3 +1902,8 @@
     - Child Tax Credit full refundability bug.
     - Child Tax Credit now steps down rather than phases out.
   date: 2022-12-13 05:53:30
+- bump: patch
+  changes:
+    fixed:
+    - End SNAP emergency allotments in GA and NV.
+  date: 2022-12-13 07:05:42
