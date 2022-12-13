@@ -1891,3 +1891,14 @@
     added:
     - Metadata for PolicyEngine.
   date: 2022-12-12 16:32:33
+- bump: minor
+  changes:
+    added:
+    - Unit tests for Child Tax Credit variables.
+    - Intermediate ARPA CTC reduction variable.
+    changed:
+    - Refactor Child Tax Credit reduction, including no longer capping at maximum.
+    fixed:
+    - Child Tax Credit full refundability bug.
+    - Child Tax Credit now steps down rather than phases out.
+  date: 2022-12-13 05:53:30

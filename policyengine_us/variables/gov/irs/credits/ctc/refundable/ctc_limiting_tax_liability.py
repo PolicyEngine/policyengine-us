@@ -21,12 +21,9 @@ class ctc_limiting_tax_liability(Variable):
         non_refundable_credits = parameters(
             period
         ).gov.irs.credits.non_refundable
-        total_credits = sum(
-            [
-                tax_unit(credit, period)
-                for credit in non_refundable_credits
-                if credit not in ("non_refundable_ctc",)
-            ]
-        )
+        non_refundable_credits_ex_ctc = [
+            x for x in non_refundable_credits if x != "non_refundable_ctc"
+        ]
+        total_credits = add(tax_unit, period, non_refundable_credits_ex_ctc)
 
         return max_(0, tax_liability_before_credits - total_credits)

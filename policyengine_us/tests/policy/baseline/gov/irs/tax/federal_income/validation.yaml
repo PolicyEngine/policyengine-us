@@ -1,7 +1,12 @@
 - name: Tax unit with taxsimid 4608 from g21.its.csv
+  # Single parent with $203k income and three children.
+  # taxsim.app doesn't support rent and interest expense, but here is the
+  # partial specification there, which gives different results:
+  # https://taxsim.app/?year=2021&mstat=headOfHousehold&depx=3&age1=16&age2=16&age3=16&settings.numeric=1&debug=1&pwages=160000&intrec=10000&otherprop=15000&gssi=18000&page=24
   absolute_error_margin: 0.01
   period: 2021
   input:
+    contrib.nber.taxsim35_emulation: true
     people:
       person1:
         is_tax_unit_head: 1
@@ -17,19 +22,19 @@
         wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_dependent: 1
-        age: 16
+        age: 16 # age1
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
         is_tax_unit_dependent: 1
-        age: 16
+        age: 16 # age2
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
         is_tax_unit_dependent: 1
-        age: 16
+        age: 16 # age3
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35

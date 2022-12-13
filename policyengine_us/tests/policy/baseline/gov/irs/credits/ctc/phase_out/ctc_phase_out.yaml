@@ -1,0 +1,15 @@
+- name: Head of household with $219.1k income has a $1,000 CTC reduction under TCJA.
+  period: 2020
+  input:
+    adjusted_gross_income: 219_100
+    ctc_phase_out_threshold: 200_000 # HOH.
+  output:
+    ctc_phase_out: 1_000 # $20,000 (rounded up from $19,100) * 5%.
+
+- name: Head of household with $400k income has CTC reduction capped at maximum under TCJA.
+  period: 2020
+  input:
+    adjusted_gross_income: 400_000
+    ctc_phase_out_threshold: 200_000 # HOH.
+  output:
+    ctc_phase_out: 10_000 # $200k * 5%. Gets capped at maximum.
