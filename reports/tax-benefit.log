@@ -305,7 +305,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -537,7 +537,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -653,7 +653,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m    694[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:32[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
-[1;32m     30[0m [38;5;28;01mif[39;00m parameters(period)[38;5;241m.[39mcontrib[38;5;241m.[39mubi_center[38;5;241m.[39mflat_tax[38;5;241m.[39mdeduct_ptc:
+[1;32m     30[0m [38;5;28;01mif[39;00m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39mcontrib[38;5;241m.[39mubi_center[38;5;241m.[39mflat_tax[38;5;241m.[39mdeduct_ptc:
 [1;32m     31[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mpremium_tax_credit[39m[38;5;124m"[39m)
 [0;32m---> 32[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
 
@@ -874,6 +874,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.15/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
-ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
+ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
