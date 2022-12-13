@@ -5,14 +5,6 @@ from policyengine_core.parameters.operations import (
 from policyengine_core.simulations import Simulation
 
 
-class reported_slspc(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "reported second lowest silver plan cost"
-    unit = USD
-    definition_period = YEAR
-
-
 class second_lowest_silver_plan_cost(Variable):
     value_type = float
     entity = TaxUnit
@@ -20,6 +12,7 @@ class second_lowest_silver_plan_cost(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "is_ptc_eligible"
+    hidden_input = True
 
     def formula(tax_unit, period, parameters):
         simulation: Simulation = tax_unit.simulation
