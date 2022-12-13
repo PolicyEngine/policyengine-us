@@ -32,6 +32,7 @@ jobs:
         run: .github/is-version-number-acceptable.sh
   Test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]

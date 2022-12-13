@@ -13,9 +13,8 @@ class rrc_cares(Variable):
         rrc = parameters(period).gov.irs.credits.recovery_rebate_credit
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
-        count_children = add(
-            tax_unit, period, ["is_ctc_qualifying_child"]
-        )  # (a)(2) specifies CTC eligibility for children
+        count_children = tax_unit("ctc_qualifying_children", period)
+        # (a)(2) specifies CTC eligibility for children
         count_adults = where(tax_unit("tax_unit_is_joint", period), 2, 1)
         max_payment = (
             rrc.cares.max.adult * count_adults

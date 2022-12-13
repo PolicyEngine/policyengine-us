@@ -12,6 +12,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
+    contrib.nber.taxsim35_emulation: true
     people:
       person1:
         is_tax_unit_head: 1
