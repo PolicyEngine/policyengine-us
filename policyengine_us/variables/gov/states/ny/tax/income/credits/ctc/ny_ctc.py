@@ -22,7 +22,7 @@ class ny_ctc(Variable):
         age = person("age", period)
         if not p.pre_tcja:
             federal_ctc = tax_unit("ctc", period)
-            federal_ctc_p = parameters(period).gov.irs.credits.ctc
+            gov = parameters(period).gov
             qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         else:
             # Initialise pre-TCJA CTC branch and parameters.
@@ -32,9 +32,10 @@ class ny_ctc(Variable):
                 simulation.tax_benefit_system.clone()
             )
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
-            federal_ctc_p = branch_parameters.gov.irs.credits.ctc
             # Update parameters to pre-TCJA values.
-            for ctc_parameter in federal_ctc_p.get_descendants():
+            for (
+                ctc_parameter
+            ) in branch_parameters.gov.irs.credits.ctc.get_descendants():
                 if isinstance(ctc_parameter, Parameter):
                     ctc_parameter.update(
                         start=instant("2017-01-01"),
@@ -59,6 +60,7 @@ class ny_ctc(Variable):
             qualifies_for_federal_ctc = pre_tcja_ctc.person(
                 "ctc_qualifying_child", period
             )
+            gov = branch_parameters(period).gov
         # Remaining logic is based on NY parameters.
         qualifies = qualifies_for_federal_ctc & (age >= p.minimum_age)
         qualifying_children = tax_unit.sum(qualifies)
@@ -67,8 +69,9 @@ class ny_ctc(Variable):
         # minimum amount per child.
         minimum = p.amount.minimum * qualifying_children
         agi = tax_unit("adjusted_gross_income", period)
-        filing_status = tax_unit("filing_status", period)
-        federal_threshold = federal_ctc_p.phase_out.threshold[filing_status]
+        federal_threshold = gov.irs.credits.ctc.phase_out.threshold[
+            tax_unit("filing_status", period)
+        ]
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
         eligible = qualifying_children > 0
