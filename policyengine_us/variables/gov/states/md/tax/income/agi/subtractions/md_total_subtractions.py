@@ -12,5 +12,5 @@ class md_total_subtractions(Variable):
     def formula(tax_unit, period, parameters):
         subtractions = parameters(
             period
-        ).gov.states.md.tax.income.agi.subtractions.subtractions
+        ).gov.states.md.tax.income.agi.subtractions.sources
         return add(tax_unit, period, subtractions)
