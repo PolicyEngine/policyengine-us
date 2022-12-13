@@ -29,7 +29,7 @@ setup(
     install_requires=[
         "h5py",
         "microdf_python",
-        "policyengine-core>=1.10,<1.11",
+        "policyengine-core=1.10.15",
         "pandas",
         "pathlib",
         "pytest",
