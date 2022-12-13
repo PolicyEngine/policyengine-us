@@ -5,7 +5,7 @@ class free_school_meals(Variable):
     value_type = float
     entity = SPMUnit
     definition_period = YEAR
-    label = "Free school meals"
+    label = "free school meals"
     unit = USD
     documentation = "Value of free school meals"
 
