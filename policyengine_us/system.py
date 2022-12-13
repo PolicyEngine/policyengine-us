@@ -13,7 +13,7 @@ from policyengine_us.data import CPS
 from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
 )
-from policyengine_us.variables.household.demographic.geographic.state.in_state import (
+from policyengine_us.variables.input.demographic.geographic.state.in_state import (
     create_50_state_variables,
 )
 from policyengine_us.tools.parameters import backdate_parameters
