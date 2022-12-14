@@ -20,6 +20,7 @@ class CPS(PublicDataset):
         2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5",
         2021: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2021.h5",
         2022: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2022.h5",
+        2023: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2023.h5",
     }
 
     def generate(self, year: int):
@@ -33,26 +34,31 @@ class CPS(PublicDataset):
         # Prepare raw CPS tables
         year = int(year)
 
-        if year == 2022:
+        LATEST_YEAR = 2021
+
+        if year > LATEST_YEAR:
             print(
-                "Currently, only the 2021 ASEC is available. Uprating the 2021 ASEC to 2022..."
+                f"Currently, only the {LATEST_YEAR} ASEC is available. ",
+                f"Uprating the {LATEST_YEAR} ASEC to {year}...",
             )
-            if 2021 not in CPS.years:
-                print("Didn't find the 2021 CPS dataset. Generating...")
-                CPS.generate(2021)
+            if LATEST_YEAR not in CPS.years:
+                print(
+                    f"Didn't find the {LATEST_YEAR} CPS dataset. Generating..."
+                )
+                CPS.generate(LATEST_YEAR)
 
             from policyengine_us import Microsimulation
 
-            sim = Microsimulation(dataset=CPS, dataset_year=2021)
-            cps_22 = h5py.File(self.file(2022), mode="w")
-            cps_21 = h5py.File(self.file(2021), mode="r")
-            for variable in cps_21:
+            sim = Microsimulation(dataset=CPS, dataset_year=LATEST_YEAR)
+            uprated_cps = h5py.File(self.file(year), mode="w")
+            latest_cps = h5py.File(self.file(LATEST_YEAR), mode="r")
+            for variable in latest_cps:
                 if variable in sim.tax_benefit_system.variables:
-                    cps_22.create_dataset(
-                        variable, data=sim.calculate(variable, 2022).values
+                    uprated_cps.create_dataset(
+                        variable, data=sim.calculate(variable, year).values
                     )
-            cps_22.close()
-            cps_21.close()
+            uprated_cps.close()
+            latest_cps.close()
             return
 
         if year not in RawCPS.years:
