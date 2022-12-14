@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.188.0] - 2022-12-14 16:50:18
+
+### Added
+
+- 2023 CPS, uprated from 2021.
+
 ## [0.187.0] - 2022-12-14 06:38:16
 
 ### Added
@@ -2328,6 +2334,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.187.0...0.188.0
 [0.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.186.2...0.187.0
 [0.186.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.186.1...0.186.2
 [0.186.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.186.0...0.186.1
