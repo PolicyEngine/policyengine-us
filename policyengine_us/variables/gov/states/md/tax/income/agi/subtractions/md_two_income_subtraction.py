@@ -47,7 +47,9 @@ class md_two_income_subtraction(Variable):
                 head_subs += head_frac * unit_care_amt
                 spouse_subs += (1 - head_frac) * unit_care_amt
             else:
-                print("MD ERROR")
+                raise ValueError(
+                    f"{subtraction} not handled by md_two_income_subtraction"
+                )
 
         # compute MD two-income subtraction
         min_agi_add_sub = min_(
