@@ -12,37 +12,26 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 38
-        employment_income: 117000
+        employment_income: 117_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: true
         age: 44
-        employment_income: 139000
+        employment_income: 139_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 11
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -53,10 +42,9 @@
         members: [person1, person2, person3]
         premium_tax_credit: 0  # not in TAXSIM35
         ny_supplemental_eitc: 0  # not in TAXSIM35
-        pa_use_tax: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
         state_code: NY
   output:  # expected from TAXSIM35
-    ny_income_tax: 15125.54
+    ny_income_tax: 15_125.54
