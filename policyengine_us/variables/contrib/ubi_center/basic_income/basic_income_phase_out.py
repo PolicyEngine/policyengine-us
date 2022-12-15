@@ -10,7 +10,7 @@ class basic_income_phase_out(Variable):
 
     def formula(tax_unit, period, parameters):
         basic_income = add(tax_unit, period, ["basic_income_before_phase_out"])
-        bi = parameters(period).contrib.ubi_center.basic_income
+        bi = parameters(period).gov.contrib.ubi_center.basic_income
         if bi.taxable:
             return 0
         p = bi.phase_out

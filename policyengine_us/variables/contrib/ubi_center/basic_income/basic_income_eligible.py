@@ -12,7 +12,7 @@ class basic_income_eligible(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).contrib.ubi_center.basic_income.agi_limit
+        p = parameters(period).gov.contrib.ubi_center.basic_income.agi_limit
         if not p.in_effect:
             return True
         agi_limit = p.amount[tax_unit("filing_status", period)]

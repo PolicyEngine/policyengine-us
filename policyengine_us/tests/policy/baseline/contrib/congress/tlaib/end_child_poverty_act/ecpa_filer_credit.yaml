@@ -1,21 +1,21 @@
 - name: Seniors do not qualify for the ECPA filer credit
   period: 2022
   input:
-    contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.amount: 600
-    contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.min_age: 19
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.JOINT: 1_200
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.SINGLE: 600
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.SEPARATE: 600
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.HEAD_OF_HOUSEHOLD: 600
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.WIDOW: 600
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.min_age: 19
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.max_age: 64
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.rate: 0.05
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.JOINT: 40_000
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.SINGLE: 20_000
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.SEPARATE: 20_000
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.HEAD_OF_HOUSEHOLD: 20_000
-    contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.WIDOW: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.amount: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.min_age: 19
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.JOINT: 1_200
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.SINGLE: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.SEPARATE: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.HEAD_OF_HOUSEHOLD: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.WIDOW: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.min_age: 19
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.max_age: 64
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.rate: 0.05
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.JOINT: 40_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.SINGLE: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.SEPARATE: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.HEAD_OF_HOUSEHOLD: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.WIDOW: 20_000
     # Household.
     people:
       head:

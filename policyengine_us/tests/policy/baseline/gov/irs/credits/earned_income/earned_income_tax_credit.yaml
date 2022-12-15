@@ -5,7 +5,7 @@
   absolute_error_margin: 1300 # TODO: investigate discrepancy
   period: 2019
   input:
-    contrib.nber.taxsim35_emulation: true
+    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
         is_tax_unit_head: 1

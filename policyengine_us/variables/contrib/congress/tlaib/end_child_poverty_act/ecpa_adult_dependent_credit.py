@@ -12,7 +12,7 @@ class ecpa_adult_dependent_credit(Variable):
         person = tax_unit.members
         p = parameters(
             period
-        ).contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit
+        ).gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit
         # Adult dependent credit.
         dependent = person("is_tax_unit_dependent", period)
         adult = person("age", period) >= p.min_age

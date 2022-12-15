@@ -9,7 +9,7 @@ class basic_income_before_phase_out(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).contrib.ubi_center.basic_income.amount
+        p = parameters(period).gov.contrib.ubi_center.basic_income.amount
         # Start with flat person-level amount.
         total_flat_amount = p.person.flat * tax_unit("tax_unit_size", period)
         # Add per-age person-level amount.

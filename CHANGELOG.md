@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.188.2] - 2022-12-15 16:10:56
+
+### Changed
+
+- Bumped PolicyEngine Core.
+
+## [0.188.1] - 2022-12-14 16:54:06
+
+### Added
+
+- Metadata for PolicyEngine
+
+## [0.188.0] - 2022-12-14 16:50:18
+
+### Added
+
+- 2023 CPS, uprated from 2021.
+
+## [0.187.0] - 2022-12-14 06:38:16
+
+### Added
+
+- 2023 SSI amounts.
+
+## [0.186.2] - 2022-12-13 22:32:28
+
+### Fixed
+
+- Apply pre-TCJA qualifying rules to NY CTC.
+
+## [0.186.1] - 2022-12-13 20:11:11
+
+### Changed
+
+- Moved `contrib` parameters to `gov.contrib`.
+
+## [0.186.0] - 2022-12-13 19:01:41
+
+### Fixed
+
+- Social Security input in the CPS dataset.
+
 ## [0.185.2] - 2022-12-13 07:57:02
 
 ### Changed
@@ -2304,6 +2346,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.188.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.1...0.188.2
+[0.188.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.0...0.188.1
+[0.188.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.187.0...0.188.0
+[0.187.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.186.2...0.187.0
+[0.186.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.186.1...0.186.2
+[0.186.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.186.0...0.186.1
+[0.186.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.185.2...0.186.0
 [0.185.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.185.1...0.185.2
 [0.185.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.185.0...0.185.1
 [0.185.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.184.2...0.185.0

@@ -27,6 +27,6 @@ class spm_unit_benefits(Variable):
             # Contributed.
             "basic_income",
         ]
-        if parameters(period).contrib.ubi_center.flat_tax.deduct_ptc:
+        if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
             BENEFITS.append("premium_tax_credit")
         return add(spm_unit, period, BENEFITS)
