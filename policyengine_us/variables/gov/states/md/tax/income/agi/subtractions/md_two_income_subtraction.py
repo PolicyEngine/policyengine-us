@@ -60,4 +60,4 @@ class md_two_income_subtraction(Variable):
             p.max_two_income_subtraction,
             min_agi_add_sub,
         )
-        return max_(0, capped_min_agi_add_sub)
+        return is_joint * max_(0, capped_min_agi_add_sub)
