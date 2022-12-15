@@ -35,7 +35,7 @@ class md_two_income_subtraction(Variable):
         # compute head and spouse MD AGI subtractions
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
         filing_status = tax_unit("filing_status", period)
-        joint = filing_status == filing_status.possible_values.JOINT
+        is_joint = filing_status == filing_status.possible_values.JOINT
         head_subs = 0
         spouse_subs = 0
         for subtraction in p.sources:
@@ -43,7 +43,7 @@ class md_two_income_subtraction(Variable):
                 continue
             if subtraction == "md_dependent_care_subtraction":
                 unit_care_amt = tax_unit(subtraction, period)
-                head_frac = where(joint, 0.5, 1.0)
+                head_frac = where(is_joint, 0.5, 1.0)
                 head_subs += head_frac * unit_care_amt
                 spouse_subs += (1 - head_frac) * unit_care_amt
             else:
