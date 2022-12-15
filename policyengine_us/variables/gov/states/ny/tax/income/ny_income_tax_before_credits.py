@@ -9,9 +9,4 @@ class ny_income_tax_before_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    formula = sum_of_variables(
-        [
-            "ny_main_income_tax",
-            "ny_supplemental_tax",
-        ]
-    )
+    formula = sum_of_variables(["ny_main_income_tax", "ny_supplemental_tax"])
