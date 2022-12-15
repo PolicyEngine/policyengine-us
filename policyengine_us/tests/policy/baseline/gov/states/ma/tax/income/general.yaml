@@ -2,17 +2,14 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 52
-        employment_income: 74000
-        short_term_capital_gains: 25000
-        long_term_capital_gains: 35000
-        rent: 7000
+        employment_income: 74_000
+        short_term_capital_gains: 25_000
+        long_term_capital_gains: 35_000
+        rent: 7_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -31,33 +28,24 @@
         members: [person1]
         state_code: MA
   output:  # expected results from TAXSIM35 10/24/22 version
-    ma_income_tax: 7980.00
+    ma_income_tax: 7_980.00
 
 - name: Tax unit with taxsimid 995 from m21.its.csv
   absolute_error_margin: 0.01
   period: 2022
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 38
-        short_term_capital_gains: 73000
-        rent: 8000
+        short_term_capital_gains: 73_000
+        rent: 8_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 11
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 17
     spm_units:
       spm_unit:
@@ -73,22 +61,19 @@
         members: [person1, person2, person3]
         state_code: MA
   output:  # expected results from TAXSIM35 10/24/22 version
-    ma_income_tax: 7524.00
+    ma_income_tax: 7_524.00
 
 - name: Simplified tax unit like those in the s21 sample
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 40
-        employment_income: 40000
-        taxable_interest_income: 20000
-        short_term_capital_gains: 10000
+        employment_income: 40_000
+        taxable_interest_income: 20_000
+        short_term_capital_gains: 10_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -107,25 +92,22 @@
         members: [person1]
         state_code: MA
   output:  # expected results from TAXSIM35 10/24/22 version
-    ma_income_tax: 3875.00
+    ma_income_tax: 3_875.00
 
 - name: Tax unit with taxsimid 86195 in t21.its.csv and t21.ots.csv
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 27
-        employment_income: 1000
-        taxable_interest_income: 2010
-        short_term_capital_gains: 2010
-        long_term_capital_gains: 10010
-        social_security: 22000
-        rent: 17000
+        employment_income: 1_000
+        taxable_interest_income: 2_010
+        short_term_capital_gains: 2_010
+        long_term_capital_gains: 10_010
+        social_security: 22_000
+        rent: 17_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
@@ -143,28 +125,8 @@
       household:
         members: [person1]
         state_code: MA
-  output:  # expected results from MAI-Tax-Analyzer (given TAXSIM35 bug)
+  output:  # expected results from TAXSIM35 12/08/22 version
     ma_income_tax: 381.00
-    #
-    # For info on the MA Income Tax Analyzer, browse the following URL:
-    # https://chiselapp.com/user/PSG/repository/Tax-Analyzer-Framework/
-    # TAXSIM35 10/24/22 version generates for this case a MA income tax
-    # of zero, which is clearly incorrect.
-    #
-    # DETAILS:
-    # Deductions reduce PartB taxable income (on wages and interest) to
-    # zero, leaving the $4400 personal exemption completely unused.
-    # Under MA law, the unused (or excess) exemption if first used
-    # to reduce the $2010 in PartA STCG to zero.  But that leaves a
-    # $2390 unused exemption, which can then be used to reduce the
-    # $10,010 in LTCG to $7620 in PartC taxable income.  The flat PartC
-    # tax rate is 5.00% in 2021, so the MA income tax amount for this case
-    # is $381.  It is this last reduction that is missing in PolicyEngineUS.
-    #
-    # REFERENCE:
-    # That an unused (or excess) PartB exemption can be used to reduce BOTH
-    # PartA and PartC income is described in the document at this URL:
-    # https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemption
 
 - name: Tax unit that illustrates problem described in GitHub issue 1354
   absolute_error_margin: 0.01
@@ -172,9 +134,7 @@
   input:
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 60
         employment_income: 40_000
         qualified_dividend_income: 20_000
