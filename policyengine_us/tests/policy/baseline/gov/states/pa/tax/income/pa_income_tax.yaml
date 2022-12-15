@@ -2,67 +2,44 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 72
-        employment_income: 20000
-        social_security: 24000
-        real_estate_taxes: 8000
-        interest_expense: 10000
+        employment_income: 20_000
+        social_security: 24_000
+        real_estate_taxes: 8_000
+        interest_expense: 10_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: true
         age: 74
-        employment_income: 30000
+        employment_income: 30_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 11
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 11
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person5:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
       person6:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
-        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5, person6]
@@ -72,7 +49,6 @@
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
         premium_tax_credit: 0  # not in TAXSIM35
-        ny_supplemental_eitc: 0  # not in TAXSIM35
         pa_use_tax: 0  # not in TAXSIM35
     households:
       household:
@@ -85,53 +61,38 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 34
-        employment_income: 18000
-        qualified_dividend_income: 4000
-        taxable_interest_income: 3000
-        short_term_capital_gains: 10000
-        long_term_capital_gains: 9000
-        taxable_pension_income: 12000
-        social_security: 3000
-        real_estate_taxes: 23000
-        interest_expense: 25000
+        employment_income: 18_000
+        qualified_dividend_income: 4_000
+        taxable_interest_income: 3_000
+        short_term_capital_gains: 10_000
+        long_term_capital_gains: 9_000
+        taxable_pension_income: 12_000
+        social_security: 3_000
+        real_estate_taxes: 23_000
+        interest_expense: 25_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
@@ -158,57 +119,43 @@
   period: 2021
   input:
     gov.contrib.nber.taxsim35_emulation: true
+    # emulate TAXSIM35's smoother phase-out of PA tax forgiveness
+    # no emulation implies a PA income tax difference of $156.23
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 74
-        employment_income: 26000
-        taxable_interest_income: 5010
-        social_security: 24000
-        real_estate_taxes: 23000
-        interest_expense: 17000
+        employment_income: 26_000
+        taxable_interest_income: 5_010
+        social_security: 24_000
+        real_estate_taxes: 23_000
+        interest_expense: 17_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: true
         age: 74
-        employment_income: 22000
+        employment_income: 22_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 11
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person5:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person6:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
@@ -221,7 +168,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        tax_unit_childcare_expenses: 1000
+        tax_unit_childcare_expenses: 1_000
         premium_tax_credit: 0  # not in TAXSIM35
         pa_use_tax: 0  # not in TAXSIM35
     households:
