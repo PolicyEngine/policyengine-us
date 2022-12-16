@@ -1,39 +1,34 @@
 - name: Tax unit with taxsimid 4608 from g21.its.csv
   # Single parent with $203k income and three children.
-  # taxsim.app doesn't support rent and interest expense, but here is the
-  # partial specification there, which gives different results:
-  # https://taxsim.app/?year=2021&mstat=headOfHousehold&depx=3&age1=16&age2=16&age3=16&settings.numeric=1&debug=1&pwages=160000&intrec=10000&otherprop=15000&gssi=18000&page=24
   absolute_error_margin: 0.01
   period: 2021
   input:
     gov.contrib.nber.taxsim35_emulation: true
+    # if no emulation of CTC phase-out logic, there is a $35 income tax diff
     people:
       person1:
-        is_tax_unit_head: 1
+        is_tax_unit_head: true
         age: 24
         employment_income: 160_000
         taxable_interest_income: 10_000
         non_qualified_dividend_income: 15_000
         social_security: 18_000
-        rent: 15_000
+        # rent: 15_000  # not used in federal income tax calculations
         interest_expense: 25_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_dependent: 1
         age: 16 # age1
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_dependent: 1
         age: 16 # age2
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
         wic: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_dependent: 1
         age: 16 # age3
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
@@ -61,7 +56,7 @@
   input:
     people:
       person1:
-        is_tax_unit_head: 1
+        is_tax_unit_head: true
         age: 50
         employment_income: 90_000
         self_employment_income: 100_000
