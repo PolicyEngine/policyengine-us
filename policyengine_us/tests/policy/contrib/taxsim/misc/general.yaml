@@ -4,198 +4,216 @@
   period: 2018
   input:
     gov.contrib.nber.taxsim35_emulation: true
+    # emulate TAXSIM35 smooth CTC phase-out
+    # no emulation implies non_refundable_ctc has a $42.50 difference, and
+    # therefore, income_tax has a $42.50 difference (see output section below)
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 41
-        employment_income: 292000
-        unemployment_compensation: 5000
-        social_security: 19000
-        taxable_pension_income: 43000
-        has_marketplace_health_coverage: false
+        employment_income: 292_000
+        unemployment_compensation: 5_000
+        social_security: 19_000
+        taxable_pension_income: 43_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: true
         age: 45
-        employment_income: 139000
-        has_marketplace_health_coverage: false
+        employment_income: 139_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 12
-        has_marketplace_health_coverage: false
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 12
-        has_marketplace_health_coverage: false
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person5:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 12
-        has_marketplace_health_coverage: false
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person6:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 12
-        has_marketplace_health_coverage: false
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5, person6]
-        tax_unit_childcare_expenses: 10000
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4, person5, person6]
-        state_code: TX
-  output:
-    tax_unit_taxable_unemployment_compensation: 5000.00
-    tax_unit_taxable_social_security: 16150.00
-    adjusted_gross_income: 495150.00
-    taxable_income: 471150.00
+        state_code: TX  # no state income tax
+  output:  # expected from TAXSIM35
+    tax_unit_taxable_unemployment_compensation: 5_000.00
+    tax_unit_taxable_social_security: 16_150.00
+    adjusted_gross_income: 495_150.00
+    taxable_income: 471_150.00
     eitc: 0.00
-    non_refundable_ctc: 3_242.5 # Should be 3_200 given the $50 phase-out increment.
+    non_refundable_ctc: 3_242.50  # correct $3,200 (see emulation note above)
     refundable_ctc: 0.00
-    cdcc: 1200.00  # expected cdcc = 0.20 * 6000
-    income_tax: 111839 # Should be 111_881.5, given the CTC phase-out increment.
-
-# OpenFisca-US test file derived from the f19.its.csv and f19.ots.csv files
-# Expected test output from NBER TAXSIM Model v35 (05/18/22) With TCJA
+    cdcc: 1_200.00  # expected cdcc = 0.20 * 6000
+    income_tax: 111_839.00  # correct $111,881.50 (see emulation note above)
 
 - name: Tax unit with taxsimid 26 from f19.its.csv
   absolute_error_margin: 0.01
   period: 2019
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 70
-        employment_income: 2000
-        unemployment_compensation: 1000
-        social_security: 36000
-        taxable_pension_income: 27000
+        employment_income: 2_000
+        unemployment_compensation: 1_000
+        social_security: 36_000
+        taxable_pension_income: 27_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        premium_tax_credit: 0
+        premium_tax_credit: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
-        state_code: TX
-  output:
-    tax_unit_taxable_unemployment_compensation: 1000.00
-    tax_unit_taxable_social_security: 16400.00
-    adjusted_gross_income: 46400.00
-    taxable_income: 26400.00
+        state_code: TX  # no state income tax
+  output:  # expected from TAXSIM35 05/18/22 version
+    tax_unit_taxable_unemployment_compensation: 1_000.00
+    tax_unit_taxable_social_security: 16_400.00
+    adjusted_gross_income: 46_400.00
+    taxable_income: 26_400.00
     refundable_ctc: 0.00
     eitc: 63.88
     income_tax: -63.88
 
 - name: Tax unit with taxsimid 3 from g19.its.csv
-  absolute_error_margin: 600 # TODO: investigate discrepancy
+  absolute_error_margin: 0.01
   period: 2019
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 27
-        taxable_interest_income: 14000
-        short_term_capital_gains: -10000
-        long_term_capital_gains: -8000
-        taxable_pension_income: 38000
-        social_security: 1000
-        unemployment_compensation: 4000
+        taxable_interest_income: 14_000
+        short_term_capital_gains: -10_000
+        long_term_capital_gains: -8_000
+        taxable_pension_income: 38_000
+        social_security: 1_000
+        unemployment_compensation: 4_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: true
         age: 26
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2]
-        premium_tax_credit: 0
+        premium_tax_credit: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2]
-        state_code: TX
+        state_code: TX  # no state income tax
   output:
     taxsim_tfica: 0.00
-    tax_unit_taxable_unemployment_compensation: 4000.00
+    tax_unit_taxable_unemployment_compensation: 4_000.00
     tax_unit_taxable_social_security: 850.00
-    adjusted_gross_income: 53850.00
-    taxable_income: 29450.00
+    adjusted_gross_income: 53_850.00
+    taxable_income: 29_450.00
     refundable_ctc: 0.00
     eitc: 0.00
-    income_tax: 3146.00
-
+    income_tax: 3_146.00
 
 - name: Tax unit with taxsimid 663 from f19.its.csv
   absolute_error_margin: 0.01
   period: 2019
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
-        is_tax_unit_head: 1
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 0
+        is_tax_unit_head: true
         age: 73
-        employment_income: 2000
-        taxable_pension_income: 11000
-        social_security: 3000
-        unemployment_compensation: 2000
+        employment_income: 2_000
+        taxable_pension_income: 11_000
+        social_security: 3_000
+        unemployment_compensation: 2_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person2:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 1
-        is_tax_unit_dependent: 0
+        is_tax_unit_spouse: true
         age: 69
-        employment_income: 22000
+        employment_income: 22_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person3:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 12
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person4:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 17
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
       person5:
-        is_tax_unit_head: 0
-        is_tax_unit_spouse: 0
-        is_tax_unit_dependent: 1
         age: 17
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
-        premium_tax_credit: 0
-        tax_unit_childcare_expenses: 8000
+        tax_unit_childcare_expenses: 8_000
+        premium_tax_credit: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3, person4, person5]
-        state_code: TX
-  output:
-    taxsim_tfica: 1836.00
-    income_tax: -5075.99
+        state_code: TX  # no state income tax
+  output:  # expected from TAXSIM35
+    taxsim_tfica: 1_836.00
+    income_tax: -5_075.99
