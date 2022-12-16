@@ -11,7 +11,7 @@ class md_agi(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        with_additions = add(
-            tax_unit, period, ["adjusted_gross_income", "md_total_additions"]
-        )
-        return with_additions - tax_unit("md_total_subtractions", period)
+        us_agi = tax_unit("adjusted_gross_income", period)
+        md_adds = tax_unit("md_total_additions", period)
+        md_subs = tax_unit("md_total_subtractions", period)
+        return max_(0, us_agi + md_adds - md_subs)
