@@ -7,10 +7,15 @@ class md_two_income_subtraction(Variable):
     label = "MD two-income married couple subtraction from AGI"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=16"
+    reference = (
+        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=16"
+        "https://govt.westlaw.com/mdc/Document/NF93A7BD2E6C811ECA065A3F5EAA0E5C9?viewType=FullText&originationContext=documenttoc&transitionType=CategoryPageItem&contextData=(sc.Default)"
+    )
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
+        filing_status = tax_unit("filing_status", period)
+        is_joint = filing_status == filing_status.possible_values.JOINT
         person = tax_unit.members
         # compute head and spouse US AGI portions using irs_gross_income shares
         us_agi = tax_unit("adjusted_gross_income", period)
@@ -32,24 +37,14 @@ class md_two_income_subtraction(Variable):
         head_adds = 0.5 * total_additions
         spouse_adds = 0.5 * total_additions
 
-        # compute head and spouse MD AGI subtractions
+        # compute head and spouse MD AGI subtractions (other than two-income)
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
-        filing_status = tax_unit("filing_status", period)
-        is_joint = filing_status == filing_status.possible_values.JOINT
-        head_subs = 0
-        spouse_subs = 0
-        for subtraction in p.sources:
-            if subtraction == "md_two_income_subtraction":
-                continue
-            if subtraction == "md_dependent_care_subtraction":
-                unit_care_amt = tax_unit(subtraction, period)
-                head_frac = where(is_joint, 0.5, 1.0)
-                head_subs += head_frac * unit_care_amt
-                spouse_subs += (1 - head_frac) * unit_care_amt
-            else:
-                raise ValueError(
-                    f"{subtraction} not handled by md_two_income_subtraction"
-                )
+        subs_except_twoinc = [
+            sub for sub in p.sources if sub != "md_two_income_subtraction"
+        ]
+        total_subs_except_twoinc = add(tax_unit, period, subs_except_twoinc)
+        head_subs = 0.5 * total_subs_except_twoinc
+        spouse_subs = 0.5 * total_subs_except_twoinc
 
         # compute MD two-income subtraction
         min_agi_add_sub = min_(
