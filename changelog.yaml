@@ -1957,3 +1957,10 @@
     fixed:
     - Absence of MD two-income AGI subtraction.
   date: 2022-12-16 15:02:28
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect labels for new CTC parameters.
+    removed:
+    - Duplicate CTC parameters.
+  date: 2022-12-17 07:29:38
