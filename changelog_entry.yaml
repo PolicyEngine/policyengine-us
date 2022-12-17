@@ -1,1 +1,6 @@
-
+- bump: patch
+  changes:
+    removed:
+      - Duplicate CTC parameters.
+    fixed:
+      - Incorrect labels for new CTC parameters.
