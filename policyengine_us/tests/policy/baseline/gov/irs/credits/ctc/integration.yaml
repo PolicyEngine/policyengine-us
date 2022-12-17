@@ -103,3 +103,49 @@
     # ... Skip the rest for now.
     # Not phased out since income is the threshold, so same as ctc_maximum_with_arpa_addition.
     ctc: 25_625
+
+- name: Adult dependent CTC is fully refundable in 2021.
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 500
+
+- name: Adult dependent CTC is non-refundable in 2022.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 0
+
+- name: Adult dependent CTC is non-refundable in 2022 with earnings.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 0
