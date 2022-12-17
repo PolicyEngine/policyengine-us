@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = "Percent of marginal income gains that do not increase household net income."
+    documentation = "Percent of marginal earnings that the government takes in taxes or reduced benefits."
     entity = Person
     definition_period = YEAR
     value_type = float

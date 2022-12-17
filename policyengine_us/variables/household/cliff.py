@@ -11,7 +11,7 @@ class cliff_evaluated(Variable):
 
     def formula(person, period, parameters):
         adult_index_values = person("adult_index", period)
-        cliff_adult_count = parameters(period).simulation.cliff_adults
+        cliff_adult_count = parameters(period).simulation.cliff.adults
         return adult_index_values <= cliff_adult_count
 
 
@@ -25,8 +25,8 @@ class cliff_gap(Variable):
 
     def formula(person, period, parameters):
         simulation = person.simulation
-        alt_simulation = simulation.get_branch(f"all_adults_2k_pay_rise")
-        delta = parameters(period).simulation.cliff_threshold
+        alt_simulation = simulation.get_branch(f"all_adults_pay_rise")
+        delta = parameters(period).simulation.cliff.earnings_rise
         for variable in simulation.tax_benefit_system.variables:
             if variable not in simulation.input_variables:
                 alt_simulation.delete_arrays(variable)
