@@ -25,6 +25,11 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     parameters_dir = COUNTRY_DIR / "parameters"
     variables_dir = COUNTRY_DIR / "variables"
     auto_carry_over_input_variables = True
+    basic_inputs = [
+        "state_name",
+        "employment_income",
+        "age",
+    ]
 
     def __init__(self):
         # We initialize our tax and benefit system with the general constructor

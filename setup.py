@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="policyengine-us",
-    version="0.186.2",
+    version="0.188.5",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     classifiers=[
@@ -29,7 +29,7 @@ setup(
     install_requires=[
         "h5py",
         "microdf_python",
-        "policyengine-core==1.10.15",
+        "policyengine-core==1.10.18",
         "pandas",
         "pathlib",
         "pytest",
