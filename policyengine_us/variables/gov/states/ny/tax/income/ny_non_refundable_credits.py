@@ -14,7 +14,4 @@ class ny_non_refundable_credits(Variable):
         ).gov.states.ny.tax.income.credits.non_refundable
         income_tax = tax_unit("ny_income_tax_before_credits", period)
         total_credit_value = add(tax_unit, period, credits)
-        return min_(
-            income_tax,
-            total_credit_value,
-        )
+        return min_(income_tax, total_credit_value)
