@@ -1927,3 +1927,33 @@
     fixed:
     - Apply pre-TCJA qualifying rules to NY CTC.
   date: 2022-12-13 22:32:28
+- bump: minor
+  changes:
+    added:
+    - 2023 SSI amounts.
+  date: 2022-12-14 06:38:16
+- bump: minor
+  changes:
+    added:
+    - 2023 CPS, uprated from 2021.
+  date: 2022-12-14 16:50:18
+- bump: patch
+  changes:
+    added:
+    - Metadata for PolicyEngine
+  date: 2022-12-14 16:54:06
+- bump: patch
+  changes:
+    changed:
+    - Bumped PolicyEngine Core.
+  date: 2022-12-15 16:10:56
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxsim35_emulation statements in the tests.
+  date: 2022-12-16 05:36:42
+- bump: patch
+  changes:
+    fixed:
+    - Absence of MD two-income AGI subtraction.
+  date: 2022-12-16 15:02:28

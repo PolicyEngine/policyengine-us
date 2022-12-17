@@ -9,4 +9,6 @@ class md_total_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    formula = sum_of_variables(["md_dependent_care_subtraction"])
+    formula = sum_of_variables(
+        "gov.states.md.tax.income.agi.subtractions.sources"
+    )

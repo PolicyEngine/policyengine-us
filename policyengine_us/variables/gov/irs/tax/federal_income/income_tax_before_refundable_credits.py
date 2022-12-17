@@ -7,7 +7,7 @@ class income_tax_before_refundable_credits(Variable):
     definition_period = YEAR
     unit = USD
     label = "Income tax before refundable credits"
-    documentation = "Income tax liability (including othertaxes) after non-refundable credits are used, but before refundable credits are applied"
+    documentation = "Income tax liability (including other taxes) after non-refundable credits are used, but before refundable credits are applied"
 
     def formula(tax_unit, period, parameters):
         income_tax_bc = tax_unit("income_tax_before_credits", period)
