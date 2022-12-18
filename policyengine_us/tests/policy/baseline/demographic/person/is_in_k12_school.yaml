@@ -1,0 +1,27 @@
+- name: 4-year-olds aren't in K-12 school.
+  period: 2022
+  input:
+    age: 4
+  output:
+    is_in_k12_school: false
+
+- name: 5-year-olds are in K-12 school.
+  period: 2022
+  input:
+    age: 5
+  output:
+    is_in_k12_school: true
+
+- name: 17-year-olds are in K-12 school.
+  period: 2022
+  input:
+    age: 17
+  output:
+    is_in_k12_school: true
+
+- name: 18-year-olds aren't in K-12 school.
+  period: 2022
+  input:
+    age: 18
+  output:
+    is_in_k12_school: false
