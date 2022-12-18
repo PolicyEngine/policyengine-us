@@ -4,16 +4,12 @@ brackets:
   - threshold:
       values:
         2013-01-01: 0
-      metadata:
-        unit: year
     amount:
       values:
         2013-01-01: 0
         2021-01-01: 3_600
         2022-01-01: 0
       metadata:
-        unit: currency-USD
-        period: year
         reference:
           - title: 26 U.S. Code § 24(i)(3)
             href: https://www.law.cornell.edu/uscode/text/26/24#i_3
@@ -21,7 +17,6 @@ brackets:
       values:
         2013-01-01: 6
       metadata:
-        unit: year
         reference:
         - title: 26 U.S. Code § 24(i)(3)
           href: https://www.law.cornell.edu/uscode/text/26/24#i_3
@@ -30,25 +25,20 @@ brackets:
         2013-01-01: 0
         2021-01-01: 3_000
         2022-01-01: 0
-      metadata:
-        unit: currency-USD
   - threshold:
       values:
         2013-01-01: 18
       metadata:
-        unit: year
         reference:
         - title: 26 U.S. Code § 24(c)(1)
           href: https://www.law.cornell.edu/uscode/text/26/24#c_1
     amount:
       values:
         2013-01-01: 0
-      metadata:
-        unit: currency-USD
 metadata:
   type: single_amount
   threshold_unit: year
   amount_unit: currency-USD
+  amount_period: year
   name: ctc_amount_arpa
-  label: Child Tax Credit amount
-  propagate_metadata_to_children: true
+  label: Child Tax Credit ARPA amount
