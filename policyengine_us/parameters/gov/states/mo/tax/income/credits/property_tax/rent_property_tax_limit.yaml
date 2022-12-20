@@ -1,0 +1,11 @@
+description: Maximum claimable property tax associated with a rented property.
+values:
+  2008-08-28: 750
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_property_tax_credit_rent_property_tax_limit
+  label: Rent property tax limit
+  reference:
+    - title: MO-PTS Property Tax Credit Schedule, Line 12
+      href: https://dor.mo.gov/forms/MO-PTS_2021.pdf
