@@ -19,9 +19,9 @@ class mo_ptc_gross_income(Variable):
             tax_unit,
             period,
             [
-                "mo_adjusted_gross_income",    # Form MO-PTS, line 1
+                "mo_adjusted_gross_income",  # Form MO-PTS, line 1
                 "tax_exempt_social_security",  # Form MO-PTS, line 2
-                "tax_exempt_pension_income",   # Form MO-PTS, line 3
+                "tax_exempt_pension_income",  # Form MO-PTS, line 3
                 "tax_exempt_interest_income",  # Form MO-PTS, line 3
             ],
         )
