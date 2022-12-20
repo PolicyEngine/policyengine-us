@@ -37,19 +37,11 @@ class mo_property_tax_credit_amount(Variable):
         # OLD CODE
 
         # determine gross household income
-        gross_hh_income = add(
-            tax_unit,
-            period,
-            [  # TODO: review all this
-                "mo_adjusted_gross_income",
-                "pension_income",  # TODO: fix
-                "mo_property_tax_credit_public_assistance",  # TODO: fix
-            ],
-        )
+        gross_income = tax_unit("mo_ptc_gross_income", period)
         # determine household income offset
         # TODO: add code
         # determine net household income
-        net_hh_income = gross_hh_income  # TODO: fix
+        net_income = gross_income  # TODO: fix
 
         # compute credit basis
         rent = add(tax_unit, period, ["rent"])
@@ -68,10 +60,10 @@ class mo_property_tax_credit_amount(Variable):
         minimum_base = p.minimum_base
         phaseout_fraction = 0  # TODO: add calculation of fraction
         credit_amount = where(
-            net_hh_income <= minimum_base,
+            net_income <= minimum_base,
             credit_basis,  # full credit
             where(
-                net_hh_income > hh_income_threshold,
+                net_income > hh_income_threshold,
                 0,  # no credit
                 credit_basis * (1 - phaseout_fraction),
             ),

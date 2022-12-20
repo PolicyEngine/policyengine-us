@@ -8,7 +8,6 @@
     rent: 500 * 12
     real_estate_taxes: 0
     mo_adjusted_gross_income: 10_000
-    mo_property_tax_credit_public_assistance: 0
     state_code: MO
   output:
     mo_property_tax_credit_amount: 750
@@ -23,7 +22,6 @@
     rent: 0
     real_estate_taxes: 10_000
     mo_adjusted_gross_income: 29_999
-    mo_property_tax_credit_public_assistance: 0
     state_code: MO
   output:
     mo_property_tax_credit_amount: 1_100
