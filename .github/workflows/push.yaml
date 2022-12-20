@@ -99,8 +99,8 @@ jobs:
           skip_existing: true
   Deploy:
     if: |
-      (github.repository == 'PolicyEngine/policyengine-uk')
-      && (github.event.head_commit.message == 'Update PolicyEngine UK')
+      (github.repository == 'PolicyEngine/policyengine-us')
+      && (github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
