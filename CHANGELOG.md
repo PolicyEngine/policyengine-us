@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.190.2] - 2022-12-20 10:50:45
+
+### Added
+
+- API auto-deployment.
+
 ## [0.190.1] - 2022-12-20 08:13:53
 
 ### Fixed
@@ -2394,6 +2400,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.190.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.1...0.190.2
 [0.190.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.0...0.190.1
 [0.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.189.0...0.190.0
 [0.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.7...0.189.0
