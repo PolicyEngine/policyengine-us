@@ -16,8 +16,5 @@ class mo_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("mo_ptc_taxunit_eligibility", period)
-        # check for housing expense eligibility
-        any_housing_cost = tax_unit("pays_property_tax_or_rent", period)
-        # return credit amount if eligible
         credit = tax_unit("mo_property_tax_credit_amount", period)
-        return eligible * any_housing_cost * credit
+        return eligible * credit

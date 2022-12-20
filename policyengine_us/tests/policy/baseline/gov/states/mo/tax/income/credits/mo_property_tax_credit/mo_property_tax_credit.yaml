@@ -35,7 +35,6 @@
   absolute_error_margin: 0
   input:
     mo_ptc_taxunit_eligibility: true
-    pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 750
     state_code: MO
   output:
@@ -46,7 +45,6 @@
   absolute_error_margin: 0
   input:
     mo_ptc_taxunit_eligibility: true
-    pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 1_100
     state_code: MO
   output:
@@ -57,7 +55,6 @@
   absolute_error_margin: 0.01
   input:
     mo_ptc_taxunit_eligibility: false
-    pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 1_100
     state_code: MO
   output:
