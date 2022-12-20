@@ -99,15 +99,27 @@ jobs:
           skip_existing: true
   Deploy:
     if: |
-      (github.repository == 'PolicyEngine/policyengine-us')
-      && (github.event.head_commit.message == 'Update PolicyEngine US')
+      (github.repository == 'PolicyEngine/policyengine-uk')
+      && (github.event.head_commit.message == 'Update PolicyEngine UK')
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.POLICYENGINE_GITHUB }}
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+      - name: Install Wheel and Pytest
+        run: pip3 install wheel setuptools pytest==5.4.3
+      - name: Install package
+        run: make install
       - name: Update API
         run: python .github/update_api.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.POLICYENGINE_GITHUB }}
