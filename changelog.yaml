@@ -1984,3 +1984,9 @@
     added:
     - SMI for each state in FY2022 and FY2023.
   date: 2022-12-20 07:55:11
+- bump: patch
+  changes:
+    fixed:
+    - Apply ARPA's fully refundable CTC to the child CTC only, not the adult dependent
+      CTC.
+  date: 2022-12-20 08:13:53
