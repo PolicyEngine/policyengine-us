@@ -104,9 +104,25 @@
     # Not phased out since income is the threshold, so same as ctc_maximum_with_arpa_addition.
     ctc: 25_625
 
-- name: Adult dependent CTC is fully refundable in 2021.
+- name: The adult dependent CTC was not fully refundable in 2021 (only child CTC was).
   period: 2021
   input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 0
+
+- name: TAXSIM erroneously considers the adult dependent CTC to be fully refundable in 2021.
+  period: 2021
+  input:
+    gov.contrib.nber.taxsim35_emulation: true
     people:
       head:
         age: 40
