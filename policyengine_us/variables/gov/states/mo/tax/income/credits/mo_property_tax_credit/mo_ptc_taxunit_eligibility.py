@@ -32,9 +32,11 @@ class mo_ptc_taxunit_eligibility(Variable):
             military_disabled_head | military_disabled_spouse
         )
         # check social security survivor benefits eligibility
-        survivor_benefits_eligibility = (
-            add(tax_unit, period, ["social_security_survivors"]) > 0
-        ) & (age_head >= 60 | age_spouse >= 60)
+        survivor_ben = add(tax_unit, period, ["social_security_survivors"]) > 0
+        aged_head = age_head >= 60
+        aged_spouse = age_spouse >= 60
+        aged_head_or_spouse = aged_head | aged_spouse
+        survivor_benefits_eligibility = survivor_ben & aged_head_or_spouse
         return (
             elderly_head_or_spouse
             | disabled_head_or_spouse
