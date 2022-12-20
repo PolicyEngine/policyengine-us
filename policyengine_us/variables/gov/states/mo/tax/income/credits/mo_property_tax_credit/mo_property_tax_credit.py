@@ -15,12 +15,9 @@ class mo_property_tax_credit(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        # check demographic eligibility
-        demographic_qualification = tax_unit(
-            "mo_property_tax_credit_demographic_tests", period
-        )
+        eligible = tax_unit("mo_ptc_taxunit_eligibility", period)
         # check for housing expense eligibility
         any_housing_cost = tax_unit("pays_property_tax_or_rent", period)
         # return credit amount if eligible
         credit = tax_unit("mo_property_tax_credit_amount", period)
-        return demographic_qualification * any_housing_cost * credit
+        return eligible * any_housing_cost * credit

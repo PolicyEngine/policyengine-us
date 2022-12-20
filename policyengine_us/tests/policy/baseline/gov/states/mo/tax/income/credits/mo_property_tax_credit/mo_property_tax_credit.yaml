@@ -27,13 +27,14 @@
         members: [person1]
         state_code: MO
   output:  # expected results from TAXSIM35 12/08/22 version
+    mo_property_tax_credit: 1_100
     mo_income_tax: -1_100.00
 
 - name: Renter, $750 credit
   period: 2022
   absolute_error_margin: 0
   input:
-    mo_property_tax_credit_demographic_tests: true
+    mo_ptc_taxunit_eligibility: true
     pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 750
     state_code: MO
@@ -44,7 +45,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    mo_property_tax_credit_demographic_tests: true
+    mo_ptc_taxunit_eligibility: true
     pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 1_100
     state_code: MO
@@ -55,7 +56,7 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    mo_property_tax_credit_demographic_tests: false
+    mo_ptc_taxunit_eligibility: false
     pays_property_tax_or_rent: true
     mo_property_tax_credit_amount: 1_100
     state_code: MO
