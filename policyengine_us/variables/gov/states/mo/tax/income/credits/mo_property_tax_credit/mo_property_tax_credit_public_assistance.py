@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_property_tax_credit_public_assistance(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO property tax credit demographic eligiblity test"
+    label = "MO property tax credit public assistance income"
     unit = USD
     definition_period = YEAR
     reference = (

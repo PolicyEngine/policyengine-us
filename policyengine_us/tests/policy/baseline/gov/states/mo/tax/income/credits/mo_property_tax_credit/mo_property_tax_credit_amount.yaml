@@ -1,6 +1,6 @@
 - name: Renter, $750 credit
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     rents: true
     lives_with_joint_filing_spouse: 0
@@ -11,11 +11,11 @@
     mo_property_tax_credit_public_assistance: 0
     state_code: MO
   output:
-    mo_property_tax_credit_amount: 0 #zeroed out until fully modeled
+    mo_property_tax_credit_amount: 750
 
 - name: Owner, $1,100 credit
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     rents: false
     lives_with_joint_filing_spouse: 0
@@ -26,4 +26,4 @@
     mo_property_tax_credit_public_assistance: 0
     state_code: MO
   output:
-    mo_property_tax_credit_amount: 0 #zeroed out until fully modeled
+    mo_property_tax_credit_amount: 1_100

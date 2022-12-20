@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mo_property_tax_credit_amount(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO property tax credit demographic eligiblity test"
+    label = "MO property tax credit amount"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,13 +15,12 @@ class mo_property_tax_credit_amount(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        return 0
-        # short circuit until fully modeled
-        # Currently not including railroad retirement or veterans benefits.
+
+        # OLD CODE
         rents = tax_unit("rents", period)
         cohabitates = tax_unit("lives_with_joint_filing_spouse", period)
         p = parameters(period).gov.states.mo.tax.income.credits.property_tax
-        income_threshold = select(
+        hh_income_threshold = select(
             [
                 rents & cohabitates,
                 rents & ~cohabitates,
@@ -35,39 +34,46 @@ class mo_property_tax_credit_amount(Variable):
                 p.own_separate,
             ],
         )
+        # OLD CODE
 
-        # Determine if the tax unit head and spouse co-habitate
-
-        rent = add(tax_unit, period, ["rent"])
-        property_tax = add(tax_unit, period, ["real_estate_taxes"])
-
-        total_household_income = add(
+        # determine gross household income
+        gross_hh_income = add(
             tax_unit,
             period,
-            [
+            [  # TODO: review all this
                 "mo_adjusted_gross_income",
-                "pension_income",
-                "mo_property_tax_credit_public_assistance",
+                "pension_income",  # TODO: fix
+                "mo_property_tax_credit_public_assistance",  # TODO: fix
             ],
         )
+        # determine household income offset
+        # TODO: add code
+        # determine net household income
+        net_hh_income = gross_hh_income  # TODO: fix
 
-        meets_income_test = total_household_income <= income_threshold
-
+        # compute credit basis
+        rent = add(tax_unit, period, ["rent"])
+        rent_fraction = 0.20  # TODO: make 0.20 be a parameter
         rent_expense_limit = p.rental_expense_cap
-        rent_total = min_(rent, rent_expense_limit)
-
+        rent_amount = min_(rent * rent_fraction, rent_expense_limit)
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
         property_tax_expense_limit = p.property_tax_expense_cap
-        property_tax_total = min_(property_tax, property_tax_expense_limit)
-
-        # Total credit basis comes from line 13 of MO-PTS, not in legislation, proscribes $1,100 cap just as property tax expense cap
-        total_credit_basis = where(
-            (rent_total + property_tax_total >= property_tax_expense_limit),
+        property_tax_amount = min_(property_tax, property_tax_expense_limit)
+        credit_basis = where(
+            rent_amount + property_tax_amount >= property_tax_expense_limit,
             property_tax_expense_limit,
-            (rent_total + property_tax_total),
+            rent_amount + property_tax_amount,
         )
-
+        # compute credit amount using legislative formula (not form table)
         minimum_base = p.minimum_base
-
-        # Check if rent/property tax > 1100
-        # placehold to complete unit testing while waiting for comment from MO dept of revenue
-        return total_credit_basis
+        phaseout_fraction = 0  # TODO: add calculation of fraction
+        credit_amount = where(
+            net_hh_income <= minimum_base,
+            credit_basis,  # full credit
+            where(
+                net_hh_income > hh_income_threshold,
+                0,  # no credit
+                credit_basis * (1 - phaseout_fraction),
+            ),
+        )
+        return credit_amount
