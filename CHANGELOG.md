@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.190.0] - 2022-12-20 07:55:11
+
+### Added
+
+- SMI for each state in FY2022 and FY2023.
+
 ## [0.189.0] - 2022-12-18 17:05:58
 
 ### Added
@@ -2382,6 +2388,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.189.0...0.190.0
 [0.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.7...0.189.0
 [0.188.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.6...0.188.7
 [0.188.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.5...0.188.6
