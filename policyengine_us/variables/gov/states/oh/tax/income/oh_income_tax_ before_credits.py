@@ -10,25 +10,8 @@ class oh_income_tax_before_credits(Variable):
     reference = "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf"
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
         taxable_income = tax_unit("oh_taxable_income", period)
         p = parameters(period).gov.states.oh.tax.income.rates
 
-        statuses = filing_status.possible_values
-
-        return select(
-            [
-                filing_status == statuses.SINGLE,
-                filing_status == statuses.SEPARATE,
-                filing_status == statuses.JOINT,
-                filing_status == statuses.WIDOW,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                p.single.calc(taxable_income),
-                p.separate.calc(taxable_income),
-                p.joint.calc(taxable_income),
-                p.widow.calc(taxable_income),
-                p.head_of_household.calc(taxable_income),
-            ],
-        )
+        return p.calc(taxable_income)
+        
