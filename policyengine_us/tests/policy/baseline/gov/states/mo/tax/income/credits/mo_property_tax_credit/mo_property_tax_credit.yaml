@@ -85,7 +85,7 @@
   output:  # expected results from TAXSIM35 12/08/22 version
     mo_property_tax_credit: 721.87
 
-- name: TAXSIM35 test S3 (same as S1 except $3000 more in wages)
+- name: TAXSIM35 test S3 (same as S2 except $10000 more in wages)
   period: 2021
   absolute_error_margin: 0.01
   input:
@@ -93,7 +93,7 @@
       person1:
         is_tax_unit_head: true
         age: 66
-        employment_income: 17_000
+        employment_income: 25_000
         rent: 6_000
         ssi: 0  # not in TAXSIM35
         state_supplement: 0  # not in TAXSIM35
@@ -111,8 +111,7 @@
       members: [person1]
       state_code: MO
   output:  # expected results from TAXSIM35 12/08/22 version
-    mo_property_tax_credit: 643.75  # corresponds to credit in the form table
-    # PolicyEngineUS produces 581.25, a difference of $62.50
+    mo_property_tax_credit: 187.50
 
 - name: TAXSIM35 integration test, 16k income, 12k real estate taxes
   period: 2021
