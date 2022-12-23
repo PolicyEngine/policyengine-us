@@ -41,3 +41,13 @@
     state_code_str: CA
   output:
     snap_emergency_allotment: 95 * 12
+
+- name: SNAP emergency allotments end in March 2023. A California eligible household should not get an EA in 2024.
+  period: 2024
+  input:
+    is_snap_eligible: true
+    snap_normal_allotment: 1
+    snap_max_allotment: 3
+    state_code_str: CA
+  output:
+    snap_emergency_allotment: 0
