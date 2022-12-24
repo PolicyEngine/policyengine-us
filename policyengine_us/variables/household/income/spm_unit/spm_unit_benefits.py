@@ -28,6 +28,6 @@ class spm_unit_benefits(Variable):
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:
             BENEFITS.append("premium_tax_credit")
-        if parameters(period).gov.hud.abolition:
+        if not parameters(period).gov.hud.abolition:
             BENEFITS.append("spm_unit_capped_housing_subsidy")
         return add(spm_unit, period, BENEFITS)
