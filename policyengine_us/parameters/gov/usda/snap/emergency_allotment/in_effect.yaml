@@ -2,14 +2,15 @@ description: Whether a SNAP emergency allotment is in effect; that is, whether a
 
 AK:
   2020-03-01: true
-  2022-05-01: false
+  2022-09-01: false
 AL:
   2020-03-01: true
 AR:
   2020-03-01: true
-  2021-06-01: false
+  2021-07-01: false
 AZ:
   2020-03-01: true
+  2022-04-01: false
 CA:
   2020-03-01: true
 CO:
@@ -25,23 +26,27 @@ FL:
   2021-08-01: false
 GA:
   2020-03-01: true
-  2022-06-01: false
+  2022-07-01: false
 GU:
   2020-03-01: true
 HI:
   2020-03-01: true
 IA:
   2020-03-01: true
+  2022-03-01: false
 ID:
   2020-03-01: true
+  2021-04-01: false
 IL:
   2020-03-01: true
 IN:
   2020-03-01: true
+  2022-06-01: false
 KS:
   2020-03-01: true
 KY:
   2020-03-01: true
+  2022-05-01: false
 LA:
   2020-03-01: true
 MA:
@@ -51,23 +56,23 @@ MD:
 ME:
   2020-03-01: true
 MI:
-  2021-10-01: true
+  2020-03-01: true
 MN:
-  2021-10-01: true
+  2020-04-01: true
 MO:
   2020-03-01: true
-  2021-08-01: false
+  2021-09-01: false
 MS:
   2020-03-01: true
-  2021-09-01: false
+  2021-12-01: false
 MT:
   2020-03-01: true
   2021-08-01: false
 NC:
-  2021-10-01: true
+  2020-03-01: true
 ND:
   2020-03-01: true
-  2021-07-01: false
+  2021-06-01: false
 NE:
   2020-03-01: true
   2021-08-01: false
@@ -79,7 +84,7 @@ NM:
   2020-03-01: true
 NV:
   2020-03-01: true
-  2022-08-01: false
+  2022-09-01: false
 NY:
   2020-03-01: true
 OH:
@@ -99,7 +104,7 @@ SD:
   2021-08-01: false
 TN:
   2020-03-01: true
-  2021-08-01: false
+  2021-12-01: false
 TX:
   2020-03-01: true
 UT:
@@ -118,12 +123,13 @@ WV:
   2020-03-01: true
 WY:
   2020-03-01: true
+  2021-05-01: false
 
 metadata:
   reference:
     - title: SNAP COVID-19 Emergency Allotments Guidance
       href: https://www.fns.usda.gov/snap/covid-19-emergency-allotments-guidance
-    - title: SNAP Screener Eligibility Parameters
-      href: https://www.snapscreener.com/?p=table
+    - title: "SNAP Screener: SNAP Emergency Allotments & Maximum Benefit Amounts"
+      href: https://www.snapscreener.com/blog/emergency-allotments
   breakdown:
   - state_code
