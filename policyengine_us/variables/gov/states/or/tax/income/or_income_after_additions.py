@@ -8,7 +8,4 @@ class or_income_after_additions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OR
-
-    formula = sum_of_variables(
-        ["adjusted_gross_income", "or_income_additions"]
-    )
+    adds = ["adjusted_gross_income", "or_income_additions"]

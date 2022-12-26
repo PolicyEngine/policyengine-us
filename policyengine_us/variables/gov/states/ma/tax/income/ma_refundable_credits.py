@@ -1,14 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class ma_income_tax(Variable):
+class ma_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MA income tax"
+    label = "MA refundable credits"
     unit = USD
-    documentation = "Massachusetts State income tax."
     definition_period = YEAR
     reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
     defined_for = StateCode.MA
-    adds = ["ma_income_tax_before_refundable_credits"]
-    subtracts = ["ma_refundable_credits"]
+
+    formula = sum_of_variables("gov.states.ma.tax.income.credits.refundable")

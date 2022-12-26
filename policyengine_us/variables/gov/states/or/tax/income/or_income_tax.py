@@ -8,10 +8,5 @@ class or_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.OR
-
-    def formula(tax_unit, period, parameters):
-        income_tax_after_non_refundable_credits = tax_unit(
-            "or_income_tax_after_non_refundable_credits", period
-        )
-        refundable_credits = tax_unit("or_refundable_credits", period)
-        return income_tax_after_non_refundable_credits - refundable_credits
+    adds = ["or_income_tax_before_refundable_credits"]
+    subtracts = ["or_refundable_credits"]
