@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.193.1] - 2022-12-26 22:38:38
+
+### Added
+
+- Household tax including refundable credits.
+
 ## [0.193.0] - 2022-12-26 20:39:39
 
 ### Changed
@@ -2425,6 +2431,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.193.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.193.0...0.193.1
 [0.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.192.0...0.193.0
 [0.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.191.0...0.192.0
 [0.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.3...0.191.0
