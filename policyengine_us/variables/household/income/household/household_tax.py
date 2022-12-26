@@ -5,7 +5,7 @@ class household_tax(Variable):
     value_type = float
     entity = Household
     label = "tax"
-    documentation = "Total tax liability."
+    documentation = "Total tax liability before refundable credits."
     unit = USD
     definition_period = YEAR
     adds = [

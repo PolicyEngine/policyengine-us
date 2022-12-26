@@ -7,7 +7,7 @@ class reduced_price_school_meals(Variable):
     definition_period = YEAR
     label = "reduced price school meals"
     unit = USD
-    documentation = "Value of reduced price school meals"
+    documentation = "Value of reduced price school meals."
 
     def formula(spm_unit, period, parameters):
         tier = spm_unit("school_meal_tier", period)
