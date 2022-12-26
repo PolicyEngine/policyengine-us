@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.192.0] - 2022-12-26 20:04:44
+
+### Added
+
+- Switch to abolish housing subsidies.
+
 ## [0.191.0] - 2022-12-24 16:15:15
 
 ### Added
@@ -2412,6 +2418,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.191.0...0.192.0
 [0.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.3...0.191.0
 [0.190.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.2...0.190.3
 [0.190.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.1...0.190.2
