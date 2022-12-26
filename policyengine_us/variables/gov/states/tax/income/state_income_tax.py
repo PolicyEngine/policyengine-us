@@ -5,7 +5,6 @@ class state_income_tax(Variable):
     value_type = float
     entity = TaxUnit
     label = "state income tax"
-    description = "State income tax, including refundable credits"
     unit = USD
     definition_period = YEAR
     adds = [
