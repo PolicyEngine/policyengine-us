@@ -2010,3 +2010,10 @@
     added:
     - Switch to abolish housing subsidies.
   date: 2022-12-26 20:04:44
+- bump: minor
+  changes:
+    changed:
+    - Moved state refundable credits into a total refundable credits variable with
+      federal.
+    - Reorganized state income tax variables.
+  date: 2022-12-26 20:39:39
