@@ -5,8 +5,7 @@ class income_tax_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "refundable tax credits"
-    documentation = "Total refundable income tax credits"
+    label = "federal refundable tax credits"
     unit = USD
     adds = [
         "eitc",

@@ -7,14 +7,11 @@ class state_income_tax(Variable):
     label = "State income tax"
     unit = USD
     definition_period = YEAR
-
-    formula_2021 = sum_of_variables(
-        [
-            "ma_income_tax",
-            "wa_income_tax",
-            "md_income_tax",
-            "ny_income_tax",
-            "pa_income_tax",
-            "or_income_tax",
-        ]
-    )
+    adds = [
+        "ma_income_tax",
+        "wa_income_tax",
+        "md_income_tax",
+        "ny_income_tax",
+        "pa_income_tax",
+        "or_income_tax_before_refundable_credits",
+    ]

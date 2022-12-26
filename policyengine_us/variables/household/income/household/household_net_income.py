@@ -10,6 +10,6 @@ class household_net_income(Variable):
     adds = [
         "household_market_income",
         "household_benefits",
-        "income_tax_refundable_credits",
+        "household_income_tax_refundable_credits",
     ]
     subtracts = ["household_tax"]
