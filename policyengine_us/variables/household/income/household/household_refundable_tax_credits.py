@@ -9,7 +9,8 @@ class household_refundable_tax_credits(Variable):
     unit = USD
     adds = [
         "income_tax_refundable_credits",  # Federal.
+        "ma_refundable_credits",  # Massachusetts.
+        "md_refundable_credits",  # Maryland.
         "or_refundable_credits",  # Oregon.
         "ny_refundable_credits",  # New York.
-        "md_refundable_credits",  # Maryland.
     ]
