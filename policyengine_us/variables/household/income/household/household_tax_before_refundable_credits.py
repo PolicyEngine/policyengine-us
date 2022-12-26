@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class household_tax(Variable):
+class household_tax_before_refundable_credits(Variable):
     value_type = float
     entity = Household
     label = "tax"
