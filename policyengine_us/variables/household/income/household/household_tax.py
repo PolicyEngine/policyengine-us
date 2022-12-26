@@ -11,7 +11,7 @@ class household_tax(Variable):
     adds = [
         "employee_payroll_tax",
         "self_employment_tax",
-        "income_tax_before_refundable_credits",
-        "state_income_tax",
+        "income_tax_before_refundable_credits",  # Federal.
+        "state_income_tax_before_refundable_credits",
         "flat_tax",
     ]
