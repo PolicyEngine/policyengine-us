@@ -10,7 +10,7 @@ class state_income_tax_before_refundable_credits(Variable):
     adds = [
         "ma_income_tax",
         "wa_income_tax",
-        "md_income_tax",
+        "md_income_tax_before_refundable_credits",
         "ny_income_tax_before_refundable_credits",
         "pa_income_tax",
         "or_income_tax_before_refundable_credits",
