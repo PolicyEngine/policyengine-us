@@ -1,12 +1,3 @@
-- name: Income after subtractions equals income after additions minus subtractions
-  period: 2021
-  input:
-    state_code: OR
-    or_income_after_additions: 2
-    or_income_subtractions: 1
-  output:
-    or_income_after_subtractions: 1
-
 - name: Simplified tax unit from the OR q21 validation sample
   absolute_error_margin: 0.01
   period: 2021

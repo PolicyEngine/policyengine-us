@@ -1,16 +1,10 @@
-# Total credits
-# - parameter for credits
-
-
-#
-
 from policyengine_us.model_api import *
 
 
-class or_income_tax_after_non_refundable_credits(Variable):
+class or_income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OR income tax after non-refundable credits"
+    label = "OR income tax before refundable credits"
     unit = USD
     definition_period = YEAR
 
