@@ -9,4 +9,4 @@ class person_in_poverty(Variable):
     value_type = bool
 
     def formula(person, period, parameters):
-        return person.household("in_poverty", period)
+        return person.spm_unit("in_poverty", period)
