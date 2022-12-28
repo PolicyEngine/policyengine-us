@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.194.3] - 2022-12-28 21:05:37
+
+### Fixed
+
+- Household benefits are now back to using `adds`.
+
 ## [0.194.2] - 2022-12-28 14:47:16
 
 ### Fixed
@@ -2445,6 +2451,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.194.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.2...0.194.3
 [0.194.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.1...0.194.2
 [0.194.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.0...0.194.1
 [0.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.193.1...0.194.0
