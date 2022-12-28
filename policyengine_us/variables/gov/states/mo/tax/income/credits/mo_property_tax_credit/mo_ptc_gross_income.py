@@ -39,12 +39,11 @@ class mo_ptc_gross_income(Variable):
             #   public assistance income for the MO property tax credit
             tax_unit,
             period,
-            # TANF is currently not included in public assistance income: see
-            #   https://github.com/PolicyEngine/policyengine-us/issues/1361
             [
                 "ssi",
                 "state_supplement",
                 "child_support_received",
+                "tanf_person"
             ],
         )
         # compute nonbusiness capital losses that are included in gross income

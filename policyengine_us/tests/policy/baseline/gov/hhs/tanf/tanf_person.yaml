@@ -1,0 +1,22 @@
+- name: Unit test of tanf_person variable
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 20
+      person3:
+        age: 1
+    spm_units:
+      spmunitA:
+        members: [person1]
+        tanf: 0
+      spmunitB:
+        members: [person2, person3]
+        tanf: 6_000
+    tax_units:
+      taxunit:
+         members: [person1, person2, person3]
+  output:
+    tanf_person: [0, 3_000, 3_000]
