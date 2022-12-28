@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_income_tax_after_non_refundable_credits(Variable):
+class md_income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "MD income tax after non-refundable credits"

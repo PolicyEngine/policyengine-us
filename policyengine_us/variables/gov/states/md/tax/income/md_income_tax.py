@@ -8,11 +8,5 @@ class md_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
-
-    def formula(tax_unit, period, parameters):
-        in_md = tax_unit.household("state_code_str", period) == "MD"
-        tax_after_non_refundable_credits = tax_unit(
-            "md_income_tax_after_non_refundable_credits", period
-        )
-        refundable_credits = tax_unit("md_refundable_credits", period)
-        return in_md * (tax_after_non_refundable_credits - refundable_credits)
+    adds = ["md_income_tax_before_refundable_credits"]
+    subtracts = ["md_refundable_credits"]

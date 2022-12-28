@@ -1979,3 +1979,62 @@
     added:
     - Formula for is_in_k12_school based on age.
   date: 2022-12-18 17:05:58
+- bump: minor
+  changes:
+    added:
+    - SMI for each state in FY2022 and FY2023.
+  date: 2022-12-20 07:55:11
+- bump: patch
+  changes:
+    fixed:
+    - Apply ARPA's fully refundable CTC to the child CTC only, not the adult dependent
+      CTC.
+  date: 2022-12-20 08:13:53
+- bump: patch
+  changes:
+    added:
+    - API auto-deployment.
+  date: 2022-12-20 10:50:45
+- bump: patch
+  changes:
+    fixed:
+    - Error in filter for deployment action.
+  date: 2022-12-20 16:01:23
+- bump: minor
+  changes:
+    added:
+    - SNAP emergency allotment end dates per Consolidated Appropriations Act of 2023.
+  date: 2022-12-24 16:15:15
+- bump: minor
+  changes:
+    added:
+    - Switch to abolish housing subsidies.
+  date: 2022-12-26 20:04:44
+- bump: minor
+  changes:
+    changed:
+    - Moved state refundable credits into a total refundable credits variable with
+      federal.
+    - Reorganized state income tax variables.
+  date: 2022-12-26 20:39:39
+- bump: patch
+  changes:
+    added:
+    - Household tax including refundable credits.
+  date: 2022-12-26 22:38:38
+- bump: minor
+  changes:
+    added:
+    - Normalised poverty variables.
+  date: 2022-12-27 17:07:33
+- bump: patch
+  changes:
+    removed:
+    - Child Tax Credit ineligible age parameters, which have been superseded by scale
+      parameters.
+  date: 2022-12-27 17:26:14
+- bump: patch
+  changes:
+    fixed:
+    - Household benefits now behave correctly with housing subsidy reforms.
+  date: 2022-12-28 14:47:16

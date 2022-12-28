@@ -5,6 +5,69 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.194.2] - 2022-12-28 14:47:16
+
+### Fixed
+
+- Household benefits now behave correctly with housing subsidy reforms.
+
+## [0.194.1] - 2022-12-27 17:26:14
+
+## [0.194.0] - 2022-12-27 17:07:33
+
+### Added
+
+- Normalised poverty variables.
+
+## [0.193.1] - 2022-12-26 22:38:38
+
+### Added
+
+- Household tax including refundable credits.
+
+## [0.193.0] - 2022-12-26 20:39:39
+
+### Changed
+
+- Moved state refundable credits into a total refundable credits variable with federal.
+- Reorganized state income tax variables.
+
+## [0.192.0] - 2022-12-26 20:04:44
+
+### Added
+
+- Switch to abolish housing subsidies.
+
+## [0.191.0] - 2022-12-24 16:15:15
+
+### Added
+
+- SNAP emergency allotment end dates per Consolidated Appropriations Act of 2023.
+
+## [0.190.3] - 2022-12-20 16:01:23
+
+### Fixed
+
+- Error in filter for deployment action.
+
+## [0.190.2] - 2022-12-20 10:50:45
+
+### Added
+
+- API auto-deployment.
+
+## [0.190.1] - 2022-12-20 08:13:53
+
+### Fixed
+
+- Apply ARPA's fully refundable CTC to the child CTC only, not the adult dependent CTC.
+
+## [0.190.0] - 2022-12-20 07:55:11
+
+### Added
+
+- SMI for each state in FY2022 and FY2023.
+
 ## [0.189.0] - 2022-12-18 17:05:58
 
 ### Added
@@ -2382,6 +2445,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.194.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.1...0.194.2
+[0.194.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.0...0.194.1
+[0.194.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.193.1...0.194.0
+[0.193.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.193.0...0.193.1
+[0.193.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.192.0...0.193.0
+[0.192.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.191.0...0.192.0
+[0.191.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.3...0.191.0
+[0.190.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.2...0.190.3
+[0.190.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.1...0.190.2
+[0.190.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.190.0...0.190.1
+[0.190.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.189.0...0.190.0
 [0.189.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.7...0.189.0
 [0.188.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.6...0.188.7
 [0.188.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.188.5...0.188.6

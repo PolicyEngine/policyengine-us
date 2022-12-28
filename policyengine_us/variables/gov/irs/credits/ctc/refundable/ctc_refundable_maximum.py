@@ -12,6 +12,8 @@ class ctc_refundable_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
+        "https://www.irs.gov/pub/irs-prior/f1040--2021.pdf",
+        "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf",
     )
 
     def formula(tax_unit, period, parameters):
@@ -23,8 +25,11 @@ class ctc_refundable_maximum(Variable):
         )
         ctc = parameters(period).gov.irs.credits.ctc
         if ctc.refundable.fully_refundable:
-            # Adult CTC is only refundable if the full credit is.
-            adult_amount = person("ctc_adult_individual_maximum", period)
-            amount = child_amount + adult_amount
-            return tax_unit.sum(amount)
+            # Fully refundable CTC does not affect the adult CTC.
+            # TAXSIM erroneously makes the adult CTC refundable as well.
+            if parameters(period).gov.contrib.nber.taxsim35_emulation:
+                adult_amount = person("ctc_adult_individual_maximum", period)
+                amount = child_amount + adult_amount
+                return tax_unit.sum(amount)
+            return tax_unit.sum(child_amount)
         return tax_unit.sum(min_(child_amount, ctc.refundable.individual_max))

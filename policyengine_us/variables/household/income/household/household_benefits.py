@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class spm_unit_benefits(Variable):
+class household_benefits(Variable):
     value_type = float
-    entity = SPMUnit
-    label = "Benefits"
-    definition_period = YEAR
+    entity = Household
+    label = "benefits"
     unit = USD
+    definition_period = YEAR
 
     def formula(spm_unit, period, parameters):
         BENEFITS = [
