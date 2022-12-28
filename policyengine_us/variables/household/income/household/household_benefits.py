@@ -23,5 +23,5 @@ class household_benefits(Variable):
         "residential_efficiency_electrification_rebate",
         # Contributed.
         "basic_income",
-        "spm_unit_capped_housing_subsidy"
+        "spm_unit_capped_housing_subsidy",
     ]
