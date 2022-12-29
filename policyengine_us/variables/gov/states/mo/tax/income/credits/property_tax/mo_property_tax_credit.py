@@ -38,5 +38,5 @@ class mo_property_tax_credit(Variable):
         phaseout_amount = po_rate * po_steps * net_income
         credit = max_(0, max_credit - phaseout_amount)
         # allow credit only for eligible tax units
-        eligible = tax_unit("mo_ptc_taxunit_eligibility", period)
+        eligible = tax_unit("mo_ptc_taxunit_eligible", period)
         return eligible * credit

@@ -11,7 +11,7 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_ptc_taxunit_eligibility: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Head of household age qualification
   period: 2022
@@ -26,7 +26,7 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_ptc_taxunit_eligibility: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Military disabled spouse qualfication
   period: 2022
@@ -41,7 +41,7 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_ptc_taxunit_eligibility: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Both qualifying, all counts
   period: 2022
@@ -56,7 +56,7 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_ptc_taxunit_eligibility: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Both not qualifying
   period: 2022
@@ -71,4 +71,4 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_ptc_taxunit_eligibility: false
+    mo_ptc_taxunit_eligible: false

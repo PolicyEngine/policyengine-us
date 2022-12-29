@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mo_ptc_taxunit_eligibility(Variable):
+class mo_ptc_taxunit_eligible(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MO property tax credit taxunit eligiblity"
+    label = "MO property tax credit taxunit eligible"
     unit = USD
     definition_period = YEAR
     reference = (
