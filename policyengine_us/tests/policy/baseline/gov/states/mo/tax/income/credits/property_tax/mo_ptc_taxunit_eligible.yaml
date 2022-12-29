@@ -11,7 +11,7 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_property_tax_credit_demographic_tests: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Head of household age qualification
   period: 2022
@@ -26,11 +26,11 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_property_tax_credit_demographic_tests: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Military disabled spouse qualfication
   period: 2022
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     age_head: 29
     age_spouse: 35
@@ -41,11 +41,11 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_property_tax_credit_demographic_tests: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Both qualifying, all counts
   period: 2022
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     age_head: 66
     age_spouse: 66
@@ -56,11 +56,11 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_property_tax_credit_demographic_tests: true
+    mo_ptc_taxunit_eligible: true
 
 - name: Both not qualifying
   period: 2022
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     age_head: 29
     age_spouse: 35
@@ -71,5 +71,4 @@
     social_security_survivors: false
     state_code: MO
   output:
-    mo_property_tax_credit_demographic_tests: false
-
+    mo_ptc_taxunit_eligible: false
