@@ -37,7 +37,7 @@ class mo_ptc_taxunit_eligible(Variable):
         # Quote from legislation:
         #  the claimant has reached the age of sixty on or before the
         #  last day of the calendar year and such claimant received
-        #  surviving spouse Social Security benefits during the calendar year 
+        #  surviving spouse Social Security benefits during the calendar year
         survivor_ben = add(tax_unit, period, ["social_security_survivors"]) > 0
         aged_survivors_benefit_min_age = 60
         aged_head = age_head >= aged_survivors_benefit_min_age
