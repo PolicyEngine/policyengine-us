@@ -21,10 +21,10 @@ class mo_ptc_income_offset(Variable):
         p = parameters(period).gov.states.mo.tax.income.credits.property_tax
         return where(
             ~joint,
-            p.non_joint_income_offset,
+            p.income_offset.non_joint,
             where(
                 rents,
-                p.joint_renter_income_offset,
-                p.joint_owner_income_offset,
+                p.income_offset.joint_renter,
+                p.income_offset.joint_owner,
             ),
         )
