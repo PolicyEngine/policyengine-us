@@ -15,38 +15,44 @@ class mo_ptc_gross_income(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        core_income = add(
-            tax_unit,
+        person = tax_unit.members
+        # compute core person-level income included in PTC gross income
+        core_inc = add(
+            person,
             period,
             [
                 "mo_adjusted_gross_income",  # Form MO-PTS, line 1
-                "tax_exempt_social_security",  # Form MO-PTS, line 2
                 "tax_exempt_pension_income",  # Form MO-PTS, line 3
                 "tax_exempt_interest_income",  # Form MO-PTS, line 3
             ],
         )
-        # compute veterans benefits that are included in gross income
-        person = tax_unit.members
+        core_income = tax_unit.sum(core_inc)
+        tax_exempt_socsec_benefits = tax_unit(
+            "tax_exempt_social_security",  # Form MO-PTS, line 2
+            period,
+        )
+        # compute veterans benefits included in PTC gross income
         veterans_benefits = person("veterans_benefits", period)
         exclude = person("is_fully_disabled_service_connected_veteran", period)
         included_veterans_benefits = ~exclude * veterans_benefits
-        veterans_benefits_income = tax_unit.sum(  # Form MO-PTS, line 5
+        veterans_benefits_income = tax_unit.sum(
+            # Form MO-PTS, line 5
             included_veterans_benefits
         )
-        # compute public assistance that is included in gross income
-        public_assistance_income = add(  # Form MO-PTS, line 6
-            # The second reference above says that SNAP is not counted as
-            #   public assistance income for the MO property tax credit
-            tax_unit,
+        # compute public assistance included in PTC gross income
+        pa_inc = add(
+            person,
             period,
             [
+                # Form MO-PTS, line 6
                 "ssi",
                 "state_supplement",
                 "child_support_received",
-                "tanf_person"
+                "tanf_person",
             ],
         )
-        # compute nonbusiness capital losses that are included in gross income
+        public_assistance_income = tax_unit.sum(pa_inc)
+        # compute nonbusiness capital losses included in PTC gross income
         nonbusiness_losses = add(  # Form MO-PTS, line 7
             tax_unit,
             period,
@@ -57,6 +63,7 @@ class mo_ptc_gross_income(Variable):
         )
         return (  # Form MO-PTS, line 8
             core_income
+            + tax_exempt_socsec_benefits
             + veterans_benefits_income
             + public_assistance_income
             + nonbusiness_losses
