@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.194.5] - 2022-12-29 22:51:36
+
+### Changed
+
+- Fix EITC parameter metadata propagation.
+
 ## [0.194.4] - 2022-12-29 21:18:40
 
 ### Fixed
@@ -2457,6 +2463,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.194.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.4...0.194.5
 [0.194.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.3...0.194.4
 [0.194.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.2...0.194.3
 [0.194.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.194.1...0.194.2
