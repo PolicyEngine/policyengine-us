@@ -1,0 +1,11 @@
+description: Step size by which maximum MO property tax credit is phased out.
+values:
+  2021-01-01: 300
+metadata:
+  unit: currency-USD
+  period: year
+  name: mo_property_tax_credit_phaseout_step
+  label: MO Property Tax Credit phaseout step
+  reference:
+    - title: MO Rev Stat § 135.030
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=6439

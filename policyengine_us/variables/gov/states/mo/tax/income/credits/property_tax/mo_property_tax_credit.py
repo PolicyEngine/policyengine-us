@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class mo_property_tax_credit(Variable):
@@ -29,9 +30,12 @@ class mo_property_tax_credit(Variable):
         max_credit = min_(rent_amount + ptax_amount, ptax_limit)
         # phase out credit amount using legislative formula (not form table)
         po_start = p.phaseout_threshold
+        po_step = p.phaseout_step
         po_rate = p.phaseout_rate
-        excess_income = tax_unit("mo_ptc_net_income", period) - po_start
-        phaseout_amount = po_rate * max_(0, excess_income)
+        net_income = tax_unit("mo_ptc_net_income", period)
+        excess_income = max_(0, net_income - po_start)
+        po_steps = np.ceil(excess_income / po_step)
+        phaseout_amount = po_rate * po_steps * net_income
         credit = max_(0, max_credit - phaseout_amount)
         # allow credit only for eligible tax units
         eligible = tax_unit("mo_ptc_taxunit_eligibility", period)
