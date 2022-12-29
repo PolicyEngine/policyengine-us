@@ -1,4 +1,4 @@
-- name: Unit test for MO property tax credit gross income
+- name: Unit test for MO property tax credit gross income that includes employment income, OASDI, SSI, and TANF, but not veterans benefits
   absolute_error_margin: 0.01
   period: 2021
   input:

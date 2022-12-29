@@ -31,15 +31,22 @@ class mo_ptc_taxunit_eligible(Variable):
         military_disabled_head_or_spouse = (
             military_disabled_head | military_disabled_spouse
         )
-        # check social security survivor benefits eligibility
+        # check aged social security survivor benefits eligibility
+        # MO legislation:
+        #  https://revisor.mo.gov/main/OneSection.aspx?section=135.010&bid=6435
+        # Quote from legislation:
+        #  the claimant has reached the age of sixty on or before the
+        #  last day of the calendar year and such claimant received
+        #  surviving spouse Social Security benefits during the calendar year 
         survivor_ben = add(tax_unit, period, ["social_security_survivors"]) > 0
-        aged_head = age_head >= 60
-        aged_spouse = age_spouse >= 60
+        aged_survivors_benefit_min_age = 60
+        aged_head = age_head >= aged_survivors_benefit_min_age
+        aged_spouse = age_spouse >= aged_survivors_benefit_min_age
         aged_head_or_spouse = aged_head | aged_spouse
-        survivor_benefits_eligibility = survivor_ben & aged_head_or_spouse
+        survivor_benefits_eligible = survivor_ben & aged_head_or_spouse
         return (
             elderly_head_or_spouse
             | disabled_head_or_spouse
             | military_disabled_head_or_spouse
-            | survivor_benefits_eligibility
+            | survivor_benefits_eligible
         )
