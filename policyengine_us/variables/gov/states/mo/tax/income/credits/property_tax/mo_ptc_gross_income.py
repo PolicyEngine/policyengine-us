@@ -15,58 +15,35 @@ class mo_ptc_gross_income(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
+        # line numbers in comments below refer to 2021 Form MO-PTS
         person = tax_unit.members
         # compute core person-level income included in PTC gross income
-        core_income = tax_unit.sum(
-            add(
-                person,
-                period,
-                [
-                    "mo_adjusted_gross_income",  # Form MO-PTS, line 1
-                    "tax_exempt_pension_income",  # Form MO-PTS, line 3
-                    "tax_exempt_interest_income",  # Form MO-PTS, line 3
-                ],
-            )
-        )
-        # compute core taxunit-level income included in PTC gross income
-        tax_exempt_socsec_benefits = tax_unit(
-            "tax_exempt_social_security",  # Form MO-PTS, line 2
-            period,
-        )
-        # compute veterans benefits included in PTC gross income
+        sources = [
+            "mo_adjusted_gross_income",  # line 1
+            "tax_exempt_pension_income",  # line 3
+            "tax_exempt_interest_income",  # line 3
+        ]
+        core_income = tax_unit.sum(add(person, period, sources))
+        # compute social security included in PTC gross income (line 2)
+        exempt_socsec_benefits = tax_unit("tax_exempt_social_security", period)
+        # compute veterans benefits included in PTC gross income (line 5)
         veterans_benefits = person("veterans_benefits", period)
         exclude = person("is_fully_disabled_service_connected_veteran", period)
         included_veterans_benefits = ~exclude * veterans_benefits
-        veterans_benefits_income = tax_unit.sum(
-            # Form MO-PTS, line 5
-            included_veterans_benefits
-        )
+        veterans_benefits_income = tax_unit.sum(included_veterans_benefits)
         # compute person-level public assistance included in PTC gross income
+        pa_sources = parameters(
+            period
+        ).gov.states.mo.tax.income.credits.property_tax.public_assistance_types
         public_assistance_income = tax_unit.sum(
-            add(
-                person,
-                period,
-                [
-                    # Form MO-PTS, line 6
-                    "ssi",
-                    "state_supplement",
-                    "child_support_received",
-                    "tanf_person",
-                ],
-            )
+            add(person, period, pa_sources)  # line 6
         )
-        # compute nonbusiness capital losses included in PTC gross income
-        nonbusiness_losses = add(  # Form MO-PTS, line 7
-            tax_unit,
-            period,
-            [
-                "short_term_capital_losses",
-                "long_term_capital_losses",
-            ],
-        )
-        return (  # Form MO-PTS, line 8
+        # compute nonbusiness capital losses in PTC gross income (line 7)
+        losses = ["short_term_capital_losses", "long_term_capital_losses"]
+        nonbusiness_losses = add(tax_unit, period, losses)
+        return (  # line 8
             core_income
-            + tax_exempt_socsec_benefits
+            + exempt_socsec_benefits
             + veterans_benefits_income
             + public_assistance_income
             + nonbusiness_losses
