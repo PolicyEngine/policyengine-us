@@ -1,10 +1,10 @@
 from policyengine_us.data import CPS
 import pytest
 from policyengine_us import Microsimulation
-import warnings
+import logging
 
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
+logging.captureWarnings(True)
+
 
 CPS_YEARS = [2020]
 
