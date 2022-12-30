@@ -11,7 +11,7 @@ class meets_ssi_resource_test(Variable):
 
     def formula(person, period, parameters):
         simulation: Simulation = person.simulation
-        if simulation.dataset is not None:
+        if hasattr(simulation, "dataset"):
             pass_rate = parameters(
                 period
             ).gov.ssa.ssi.eligibility.resources.pass_rate
