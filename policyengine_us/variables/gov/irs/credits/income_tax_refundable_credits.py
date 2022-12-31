@@ -9,4 +9,4 @@ class income_tax_refundable_credits(Variable):
     unit = USD
 
     formula = sum_of_variables("gov.irs.credits.refundable")
-    # formula must use parameters list that varies by period
+    # formula must use a parameter list that varies by period
