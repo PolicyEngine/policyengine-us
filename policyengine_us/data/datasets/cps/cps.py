@@ -293,6 +293,9 @@ def add_personal_income_variables(
     )
     cps["receives_wic"] = person.WICYN == 1
     cps["veterans_benefits"] = person.VET_VAL
+    # Expenses.
+    # "What is the annual amount of child support paid?"
+    person["child_support_expense"] = person.CHSP_VAL
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
