@@ -281,6 +281,7 @@ def add_personal_income_variables(
         1 - p["taxable_pension_fraction"][year]
     )
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
+    cps["child_support_received"] = person.CSP_VAL
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
