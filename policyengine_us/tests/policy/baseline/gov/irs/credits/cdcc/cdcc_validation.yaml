@@ -1,0 +1,91 @@
+- name: Tax unit with taxsimid 80649 in r21.its.csv and r21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 58
+        employment_income: 21_010
+        taxable_interest_income: 1_010
+        social_security: 23_000
+        real_estate_taxes: 14_000
+        interest_expense: 22_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:  # expected results from TAXSIM35 12/08/22 version
+    taxsim_tfica: 1_607.26
+    income_tax: -19_756.34
+
+- name: Tax unit with taxsimid 16112 in a21.its.csv and a21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    gov.contrib.nber.taxsim35_emulation: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 32
+        employment_income: 157_010
+        qualified_dividend_income: 9_010
+        taxable_interest_income: 9_010
+        long_term_capital_gains: 1_010
+        non_qualified_dividend_income: 1_010
+        taxable_pension_income: 4_000
+        real_estate_taxes: 24_000
+        interest_expense: 2_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 10_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:  # expected results from TAXSIM35 12/08/22 version
+    taxsim_tfica: 11_130.24
+    income_tax: 24_409.70
