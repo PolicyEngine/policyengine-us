@@ -292,6 +292,7 @@ def add_personal_income_variables(
         1 - p["long_term_capgain_fraction"][year]
     )
     cps["receives_wic"] = person.WICYN == 1
+    cps["veterans_benefits"] = person.VET_VAL
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
