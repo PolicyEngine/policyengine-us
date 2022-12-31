@@ -198,6 +198,9 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     )
     # A_SEX is 1 -> male, 2 -> female.
     cps["is_female"] = person.A_SEX == 2
+    # "Is...blind or does...have serious difficulty seeing even when Wearing
+    #  glasses?" 1 -> Yes
+    cps["is_blind"] = person.PEDISEYE == 1
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
