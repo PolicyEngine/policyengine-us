@@ -30,7 +30,7 @@ class cdcc_rate(Variable):
             phased_out_rate = where(
                 (phased_out_rate - phase_out_min) < 0.01,
                 phase_out_min,
-                phased_out_rate
+                phased_out_rate,
             )
         # second phase-out
         excess_agi = max_(0, agi - pcdcc.phase_out.second_start)
