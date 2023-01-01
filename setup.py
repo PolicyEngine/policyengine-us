@@ -51,13 +51,13 @@ setup(
             "linecheck==0.1.0",
             "jupyter-book==0.13.1",
             "markupsafe==2.0.1",
-            "plotly==5.11.0",
+            "plotly",
             "setuptools==65.6.3",
             "wheel==0.38.4",
             "yaml-changelog==0.3.0",
         ],
     },
-    python_requires=">=3.7,<3.10",
+    python_requires="==3.9",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
