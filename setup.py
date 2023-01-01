@@ -49,7 +49,6 @@ setup(
             "coverage==6.5.0",
             "jupyter-book==0.13.1",
             "plotly==5.11.0",
-            "pytest==5.4.3",
             "setuptools==65.6.3",
             "wheel==0.38.4",
             "yaml-changelog==0.3.0",
