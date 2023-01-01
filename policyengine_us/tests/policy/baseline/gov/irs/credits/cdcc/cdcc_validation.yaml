@@ -145,3 +145,67 @@
   output:  # expected results from TAXSIM35 12/30/22 version
     taxsim_tfica: 9_870.03
     income_tax: 18_839.00
+
+- name: Tax unit with taxsimid 24559 in b21.its.csv and b21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 74
+        employment_income: 6_010
+        qualified_dividend_income: 4_010
+        taxable_interest_income: 3_010
+        short_term_capital_gains: 1_010
+        long_term_capital_gains: 6_010
+        non_qualified_dividend_income: 1_010
+        taxable_pension_income: 5_000
+        social_security: 12_000
+        real_estate_taxes: 2_000
+        interest_expense: 1_000
+        self_employment_income: 76_010
+        business_is_qualified: false
+        business_is_sstb: false
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 74
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 4_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX  # no state income tax
+  output:  # expected results from TAXSIM35 12/30/22 version
+    taxsim_tfica: 11_199.64
+    # income_tax: -10_108.39 <--- TAXSIM35 bug allowing $2000 CDCC
+    income_tax: -8_108.39  # corrected TAXSIM35 result

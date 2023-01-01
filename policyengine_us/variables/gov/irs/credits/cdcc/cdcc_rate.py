@@ -28,7 +28,7 @@ class cdcc_rate(Variable):
         phased_out_rate = max_(phase_out_min, phase_out_max - reduction)
         if taxsim_emulation:
             phased_out_rate = where(
-                (phased_out_rate - phase_out_min) < 0.01,
+                (phased_out_rate - phase_out_min) <= 0.010001,
                 phase_out_min,
                 phased_out_rate,
             )
