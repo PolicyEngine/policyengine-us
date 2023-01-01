@@ -16,13 +16,22 @@ class cdcc_rate(Variable):
         # First phase-out
         excess_agi = max_(0, agi - p.phase_out.start)
         increments = np.ceil(excess_agi / p.phase_out.increment)
+        if parameters(period).gov.contrib.nber.taxsim35_emulation:
+            increments = excess_agi / p.phase_out.increment
         percentage_reduction = increments * p.phase_out.rate
         phased_out_rate = max_(
             p.phase_out.min, p.phase_out.max - percentage_reduction
         )
-
+        if parameters(period).gov.contrib.nber.taxsim35_emulation:
+            phased_out_rate = where(
+                (phased_out_rate - p.phase_out.min) <= 0.010001,
+                p.phase_out.min,
+                phased_out_rate,
+            )
         # Second phase-out
         second_excess_agi = max_(0, agi - p.phase_out.second_start)
         second_increments = np.ceil(second_excess_agi / p.phase_out.increment)
+        if parameters(period).gov.contrib.nber.taxsim35_emulation:
+            second_increments = second_excess_agi / p.phase_out.increment
         second_percentage_reduction = second_increments * p.phase_out.rate
         return max_(0, phased_out_rate - second_percentage_reduction)
