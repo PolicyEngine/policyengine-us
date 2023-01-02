@@ -57,7 +57,8 @@ setup(
             "yaml-changelog==0.3.0",
         ],
     },
-    python_requires="==3.9.16",
+    # Windows requires Python 3.9.13 on CI.
+    python_requires=">=3.9.13, <=3.9.16",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",
