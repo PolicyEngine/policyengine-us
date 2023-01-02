@@ -201,6 +201,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # "Is...blind or does...have serious difficulty seeing even when Wearing
     #  glasses?" 1 -> Yes
     cps["is_blind"] = person.PEDISEYE == 1
+    cps["is_ssi_disabled"] = person.DIS_HP == 1
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
