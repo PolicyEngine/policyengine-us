@@ -2,25 +2,38 @@
 # in the cps.py add_personal_income_variables function.
 
 taxable_interest_fraction:
-  2020: 0.680  # SOI 2020 data
-  2021: 0.680  # SOI 2020 data
-  2022: 0.680  # SOI 2020 data
-  2023: 0.680  # SOI 2020 data
+  # Publication 1304, Table 1.4 reports $127,375,994,000 taxable interest
+  # income and $59,449,107,000 tax-exempt interest income in 2020.
+  # Set the taxable fraction to
+  # $127,375,994,000 / ($127,375,994,000 + $59,449,107,000) = 0.68.
+  # https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income#_grp1
+  2020: 0.68
+  2021: 0.68
+  2022: 0.68
+  2023: 0.68
 
 qualified_dividend_fraction:
-  2020: 0.448  # SOI 2018 data
-  2021: 0.448  # SOI 2018 data
-  2022: 0.448  # SOI 2018 data
-  2023: 0.448  # SOI 2018 data
+  # Apply 2018 SOI data for all years.
+  2020: 0.448
+  2021: 0.448
+  2022: 0.448
+  2023: 0.448
 
 taxable_pension_fraction:
-  2020: 1.000  # no SOI data, so arbitrary assumption
-  2021: 1.000  # no SOI data, so arbitrary assumption
-  2022: 1.000  # no SOI data, so arbitrary assumption
-  2023: 1.000  # no SOI data, so arbitrary assumption
+  # Apply an arbitrary assumption for all years, given the absence of SOI data.
+  2020: 1  
+  2021: 1
+  2022: 1
+  2023: 1
 
 long_term_capgain_fraction:
-  2020: 0.880  # SOI 2012 data
-  2021: 0.880  # SOI 2012 data
-  2022: 0.880  # SOI 2012 data
-  2023: 0.880  # SOI 2012 data
+  # Use SOI data from 2012 for all years.
+  # https://www.irs.gov/statistics/soi-tax-stats-sales-of-capital-assets-reported-on-individual-tax-returns
+  # $98,678,301,211 and $745,745,186,120 in short- and long-term capital gains,
+  # respectively.
+  # So we can set the long-term fraction to
+  # $745,745,186,120 / ($745,745,186,120 + $98,678,301,211) = 0.88.
+  2020: 0.88
+  2021: 0.88
+  2022: 0.88
+  2023: 0.88
