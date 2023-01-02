@@ -11,5 +11,8 @@ class snap(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        ALLOTMENTS = ["snap_normal_allotment", "snap_emergency_allotment"]
-        return add(spm_unit, period, ALLOTMENTS)
+        emergency_allotment_months = spm_unit(
+            "snap_emergency_allotment_monthly", period, options=[ADD]
+        )
+        normal_allotment = spm_unit("snap_normal_allotment", period)
+        return normal_allotment + emergency_allotment_months
