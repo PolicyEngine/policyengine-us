@@ -25,7 +25,7 @@ class il_personal_exemption(Variable):
                 il_is_personal_exemption_eligible
                 == eligibility_status.BOTH_ELIGIBLE,
                 il_is_personal_exemption_eligible
-                == eligibility_status.SINGLE_ELIGIBLE,
+                == eligibility_status.PARTIALLY_ELIGIBLE,
             ],
             [2, 1],
             0,

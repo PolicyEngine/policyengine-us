@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ILPersonalExemptionEligibilityStatus(Enum):
     BOTH_ELIGIBLE = 1
-    SINGLE_ELIGIBLE = 2
+    PARTIALLY_ELIGIBLE = 2
     NOT_ELIGIBLE = 3
 
 
@@ -74,7 +74,7 @@ class il_personal_exemption_eligibility_status(Variable):
             [ineligible, partner_ineligible],
             [
                 ILPersonalExemptionEligibilityStatus.NOT_ELIGIBLE,
-                ILPersonalExemptionEligibilityStatus.SINGLE_ELIGIBLE,
+                ILPersonalExemptionEligibilityStatus.PARTIALLY_ELIGIBLE,
             ],
             ILPersonalExemptionEligibilityStatus.BOTH_ELIGIBLE,
         )
