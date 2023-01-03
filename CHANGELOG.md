@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.197.3] - 2023-01-03 23:24:30
+
+### Changed
+
+- Widened Python dependency.
+
 ## [0.197.2] - 2023-01-03 23:13:23
 
 ### Fixed
@@ -2505,6 +2511,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.197.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.2...0.197.3
 [0.197.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.1...0.197.2
 [0.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.0...0.197.1
 [0.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.196.1...0.197.0
