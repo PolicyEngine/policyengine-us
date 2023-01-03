@@ -2,12 +2,15 @@
 
 from setuptools import find_packages, setup
 
+with open("README.md", "r") as readme_file:
+    readme = readme_file.read()
+
 setup(
     name="policyengine-us",
     version="0.197.1",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
-    long_description="",
+    long_description=readme,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
