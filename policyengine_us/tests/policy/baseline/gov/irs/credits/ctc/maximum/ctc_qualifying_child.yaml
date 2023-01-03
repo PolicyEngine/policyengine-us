@@ -1,0 +1,15 @@
+- name: Count those with nonzero amounts.
+  period: 2021
+  input:
+    people:
+      adult:
+        ctc_child_individual_maximum: 0
+      child:
+        ctc_child_individual_maximum: 1
+      child2:
+        ctc_child_individual_maximum: 10
+    tax_units:
+      tax_unit:
+        members: [adult, child, child2]
+  output:
+    ctc_qualifying_child: [False, True, True]

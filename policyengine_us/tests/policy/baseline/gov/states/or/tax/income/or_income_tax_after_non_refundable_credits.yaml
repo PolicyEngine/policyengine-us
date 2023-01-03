@@ -1,0 +1,17 @@
+- name: Oregon Income tax after non refundable credits equals income tax before credits minus non-refundable credits, capped at 0
+  period: 2021
+  input:
+    state_code: OR
+    or_income_tax_before_credits: 2
+    or_non_refundable_credits: 1
+  output:
+    or_income_tax_before_refundable_credits: 1
+
+- name: Oregon Income tax after non refundable credits equals income tax before credits minus non-refundable credits, capped at 0
+  period: 2021
+  input:
+    state_code: OR
+    or_income_tax_before_credits: 2
+    or_non_refundable_credits: 3
+  output:
+    or_income_tax_before_refundable_credits: 0

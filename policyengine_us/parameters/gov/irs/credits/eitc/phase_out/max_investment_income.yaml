@@ -1,0 +1,29 @@
+description: Maximum investment income for EITC.
+metadata:
+  unit: currency-USD
+  period: year
+  name: eitc_max_inv_income
+  label: EITC maximum investment income
+  reference:
+    - title: 2023 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=10
+    - title: 2022 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=10
+    - title: 2021 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=10
+    - title: 26 U.S. Code § 32 - Earned income (i)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/32#i_1
+    - title: 2020 IRS data release
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=10
+values:
+  2013-01-01: 3_300
+  2014-01-01: 3_350
+  2015-01-01: 3_400
+  2017-01-01: 3_450
+  2018-01-01: 3_500
+  2019-01-01: 3_600
+  2020-01-01: 3_650
+  # IRS data release said $3,650 in 2021, but ARPA changed to $10,000.
+  2021-01-01: 10_000
+  2022-01-01: 10_300
+  2023-01-01: 11_000

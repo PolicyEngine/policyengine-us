@@ -513,7 +513,7 @@
 - bump: minor
   changes:
     added:
-    - Microdata now handled entirely within OpenFisca-US.
+    - Microdata now handled entirely within PolicyEngine US.
   date: 2022-04-14 08:19:40
 - bump: patch
   changes:
@@ -1696,3 +1696,380 @@
     fixed:
     - Bug in MD EITC where chlidless_max parameter was called instead of childless.max_amount.
   date: 2022-10-17 23:08:54
+- bump: minor
+  changes:
+    changed:
+    - Moved to PolicyEngine Core.
+  date: 2022-10-20 13:13:35
+- bump: patch
+  changes:
+    fixed:
+    - GH actions now run on Python 3.9.
+  date: 2022-10-20 13:40:02
+- bump: patch
+  changes:
+    fixed:
+    - Charts in documentation render.
+  date: 2022-10-22 18:25:44
+- bump: minor
+  changes:
+    added:
+    - IRS parameters for 2023 tax year.
+    - Some missing IRS parameters for 2020-2022 tax years.
+  date: 2022-10-25 17:49:04
+- bump: minor
+  changes:
+    added:
+    - AMT parameters for 2020-2022.
+  date: 2022-10-29 03:44:55
+- bump: minor
+  changes:
+    changed:
+    - Made CTC formulas year-agnostic.
+  date: 2022-11-08 12:25:49
+- bump: patch
+  changes:
+    fixed:
+    - Missing 2021 NY supplemental income tax parameters.
+  date: 2022-11-14 20:57:48
+- bump: patch
+  changes:
+    fixed:
+    - Missing 2021 parameters for nontaxable income under PA income tax.
+  date: 2022-11-14 22:37:20
+- bump: patch
+  changes:
+    added:
+    - Maryland standard deduction documentation
+  date: 2022-11-15 05:45:33
+- bump: minor
+  changes:
+    added:
+    - Simple splitting of CPS income variables into PolicyEngine-US variables.
+  date: 2022-11-19 20:41:19
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of dividend income from qualified and non-qualified.
+  date: 2022-11-19 20:54:31
+- bump: patch
+  changes:
+    fixed:
+    - Inability of data tests to work without a policyengine_us package.
+  date: 2022-11-19 21:01:42
+- bump: patch
+  changes:
+    fixed:
+    - Absence of non-refundable American Opportunity Credit calculation.
+  date: 2022-11-19 21:07:36
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect inclusion of tax-exempt pension income in US AGI.
+  date: 2022-11-19 21:10:44
+- bump: patch
+  changes:
+    fixed:
+    - MA income tax Part A AGI calculation.
+  date: 2022-11-19 21:33:23
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect calculation of taxable social security benefits.
+  date: 2022-11-19 23:04:41
+- bump: patch
+  changes:
+    fixed:
+    - MA short-term capital gains taxation logic.
+  date: 2022-11-22 00:54:01
+- bump: patch
+  changes:
+    fixed:
+    - Logic of pension income exclusion from PA AGI.
+  date: 2022-11-22 06:40:01
+- bump: patch
+  changes:
+    changed:
+    - Renamed `or_income_tax_after_refundable_credits` to `or_income_tax` for consistency
+      with other state income tax variables.
+  date: 2022-11-23 00:34:40
+- bump: minor
+  changes:
+    added:
+    - TAXSIM35 emulation parameter.
+    - TAXSIM35 emulation logic to PA income tax forgiveness calculations.
+    - Test of PA income tax calculations using TAXSIM35 emulation.
+  date: 2022-11-23 16:11:34
+- bump: minor
+  changes:
+    added:
+    - Missouri tax rates for 2020 and 2021.
+  date: 2022-11-24 05:45:06
+- bump: patch
+  changes:
+    fixed:
+    - MA excess exemption logic.
+  date: 2022-11-26 05:21:06
+- bump: minor
+  changes:
+    added:
+    - Add MO Pension and SS or SSD Deduction variable
+    - Add Public Pension Income variable
+  date: 2022-11-27 18:39:07
+- bump: patch
+  changes:
+    fixed:
+    - MO federal income tax deduction logic.
+  date: 2022-11-27 22:47:33
+- bump: patch
+  changes:
+    fixed:
+    - Move MO federal income tax deduction ignored credits list to a parameter.
+  date: 2022-11-28 04:33:20
+- bump: patch
+  changes:
+    changed:
+    - Simplify MO federal income tax deduction code.
+  date: 2022-11-28 05:19:48
+- bump: patch
+  changes:
+    fixed:
+    - MA bank interest deduction logic.
+  date: 2022-11-29 19:54:07
+- bump: patch
+  changes:
+    changed:
+    - Qualified business income to be a personal variable.
+    - Qualified business income to be net of several personal deductions.
+  date: 2022-11-30 04:19:57
+- bump: patch
+  changes:
+    fixed:
+    - MO income tax debugging print is converted to a comment.
+  date: 2022-11-30 14:51:01
+- bump: patch
+  changes:
+    fixed:
+    - Absence of OR income subtraction for federally taxable social security benefits.
+  date: 2022-12-01 23:07:54
+- bump: minor
+  changes:
+    added:
+    - pa_income_tax_forgiveness_amount variable for breaking down tax in app table.
+    - Other sources to PA tax forgiveness eligibility income.
+  date: 2022-12-01 23:15:49
+- bump: minor
+  changes:
+    changed:
+    - Input folder structure and other new PolicyEngine app updates.
+    - Now dependent on PolicyEngine-Core v0.10.10
+  date: 2022-12-05 17:46:08
+- bump: patch
+  changes:
+    fixed:
+    - PolicyEngine-Core pinned to a minor version.
+  date: 2022-12-07 13:35:40
+- bump: patch
+  changes:
+    changed:
+    - Remove parameters representing a set of complex tax reforms.
+    fixed:
+    - Calculation of federal income tax with self-employment income.
+  date: 2022-12-07 19:52:54
+- bump: minor
+  changes:
+    added:
+    - SNAP FY2023 parameters.
+  date: 2022-12-07 20:55:22
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of qualified business income deduction.
+  date: 2022-12-08 16:18:25
+- bump: patch
+  changes:
+    added:
+    - Metadata for PolicyEngine.
+  date: 2022-12-12 16:32:33
+- bump: minor
+  changes:
+    added:
+    - Unit tests for Child Tax Credit variables.
+    - Intermediate ARPA CTC reduction variable.
+    changed:
+    - Refactor Child Tax Credit reduction, including no longer capping at maximum.
+    fixed:
+    - Child Tax Credit full refundability bug.
+    - Child Tax Credit now steps down rather than phases out.
+  date: 2022-12-13 05:53:30
+- bump: patch
+  changes:
+    fixed:
+    - End SNAP emergency allotments in GA and NV.
+  date: 2022-12-13 07:05:42
+- bump: patch
+  changes:
+    changed:
+    - Model PA's increased SNAP gross income limit.
+  date: 2022-12-13 07:57:02
+- bump: minor
+  changes:
+    fixed:
+    - Social Security input in the CPS dataset.
+  date: 2022-12-13 19:01:41
+- bump: patch
+  changes:
+    changed:
+    - Moved `contrib` parameters to `gov.contrib`.
+  date: 2022-12-13 20:11:11
+- bump: patch
+  changes:
+    fixed:
+    - Apply pre-TCJA qualifying rules to NY CTC.
+  date: 2022-12-13 22:32:28
+- bump: minor
+  changes:
+    added:
+    - 2023 SSI amounts.
+  date: 2022-12-14 06:38:16
+- bump: minor
+  changes:
+    added:
+    - 2023 CPS, uprated from 2021.
+  date: 2022-12-14 16:50:18
+- bump: patch
+  changes:
+    added:
+    - Metadata for PolicyEngine
+  date: 2022-12-14 16:54:06
+- bump: patch
+  changes:
+    changed:
+    - Bumped PolicyEngine Core.
+  date: 2022-12-15 16:10:56
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unneeded taxsim35_emulation statements in the tests.
+  date: 2022-12-16 05:36:42
+- bump: patch
+  changes:
+    fixed:
+    - Absence of MD two-income AGI subtraction.
+  date: 2022-12-16 15:02:28
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect labels for new CTC parameters.
+    removed:
+    - Duplicate CTC parameters.
+  date: 2022-12-17 07:29:38
+- bump: patch
+  changes:
+    fixed:
+    - Apply full refundability logic to adult dependent CTC.
+  date: 2022-12-17 15:43:50
+- bump: patch
+  changes:
+    fixed:
+    - Metadata for CTC ARPA amount parameter.
+  date: 2022-12-18 16:50:59
+- bump: minor
+  changes:
+    added:
+    - Formula for is_in_k12_school based on age.
+  date: 2022-12-18 17:05:58
+- bump: minor
+  changes:
+    added:
+    - SMI for each state in FY2022 and FY2023.
+  date: 2022-12-20 07:55:11
+- bump: patch
+  changes:
+    fixed:
+    - Apply ARPA's fully refundable CTC to the child CTC only, not the adult dependent
+      CTC.
+  date: 2022-12-20 08:13:53
+- bump: patch
+  changes:
+    added:
+    - API auto-deployment.
+  date: 2022-12-20 10:50:45
+- bump: patch
+  changes:
+    fixed:
+    - Error in filter for deployment action.
+  date: 2022-12-20 16:01:23
+- bump: minor
+  changes:
+    added:
+    - SNAP emergency allotment end dates per Consolidated Appropriations Act of 2023.
+  date: 2022-12-24 16:15:15
+- bump: minor
+  changes:
+    added:
+    - Switch to abolish housing subsidies.
+  date: 2022-12-26 20:04:44
+- bump: minor
+  changes:
+    changed:
+    - Moved state refundable credits into a total refundable credits variable with
+      federal.
+    - Reorganized state income tax variables.
+  date: 2022-12-26 20:39:39
+- bump: patch
+  changes:
+    added:
+    - Household tax including refundable credits.
+  date: 2022-12-26 22:38:38
+- bump: minor
+  changes:
+    added:
+    - Normalised poverty variables.
+  date: 2022-12-27 17:07:33
+- bump: patch
+  changes:
+    removed:
+    - Child Tax Credit ineligible age parameters, which have been superseded by scale
+      parameters.
+  date: 2022-12-27 17:26:14
+- bump: patch
+  changes:
+    fixed:
+    - Household benefits now behave correctly with housing subsidy reforms.
+  date: 2022-12-28 14:47:16
+- bump: patch
+  changes:
+    fixed:
+    - Household benefits are now back to using `adds`.
+  date: 2022-12-28 21:05:37
+- bump: patch
+  changes:
+    fixed:
+    - Incompleteness of MO property tax credit logic.
+  date: 2022-12-29 21:18:40
+- bump: patch
+  changes:
+    changed:
+    - Fix EITC parameter metadata propagation.
+  date: 2022-12-29 22:51:36
+- bump: minor
+  changes:
+    added:
+    - Imputation for non-aged SSI recipients.
+  date: 2022-12-30 18:52:00
+- bump: patch
+  changes:
+    fixed:
+    - Printing of annoying coverage warning messages.
+  date: 2022-12-30 21:26:54
+- bump: minor
+  changes:
+    added:
+    - Blindness, veterans benefits, and child support paid and received from the CPS.
+  date: 2022-12-31 19:09:37
+- bump: patch
+  changes:
+    changed:
+    - Pin and alphabetize dependencies, and pin Python 3.9.
+  date: 2023-01-02 21:05:11

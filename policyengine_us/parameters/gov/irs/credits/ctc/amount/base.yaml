@@ -1,0 +1,39 @@
+description: The IRS provides a maximum Child Tax Credit of this amount, depending on the child's age.
+
+brackets:
+  - threshold:
+      values:
+        2013-01-01: 0
+    amount:
+      values:
+        2013-01-01: 1_000
+        2018-01-01: 2_000
+        # Rose to $3,000/$3,600 in 2021. See arpa.yaml.
+        2026-01-01: 1_000
+      metadata:
+        reference:
+          - title: 26 U.S. Code § 24(a)
+            href: https://www.law.cornell.edu/uscode/text/26/24#a
+          - title: 26 U.S. Code § 24(h)
+            href: https://www.law.cornell.edu/uscode/text/26/24#h
+          - title: 26 U.S. Code § 24(i)
+            href: https://www.law.cornell.edu/uscode/text/26/24#i
+  - threshold:
+      values:
+        2013-01-01: 17
+        2021-01-01: 18
+        2022-01-01: 17
+      metadata:
+        reference:
+        - title: 26 U.S. Code § 24(c)(1)
+          href: https://www.law.cornell.edu/uscode/text/26/24#c_1
+    amount:
+      values:
+        2013-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  amount_period: year
+  name: ctc_amount
+  label: Child Tax Credit amount

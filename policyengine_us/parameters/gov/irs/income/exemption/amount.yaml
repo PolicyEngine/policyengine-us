@@ -1,0 +1,18 @@
+description: Personal and dependent exemption amount
+metadata:
+  unit: currency-USD
+  period: year
+  reference:
+    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/151#d_1
+    # TCJA sets to zero.
+    - title: 26 U.S. Code § 151 - Allowance of deductions for personal exemptions (d)(5)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/151#d_5_A
+values:
+  2013-01-01: 3_900
+  2014-01-01: 3_950
+  2015-01-01: 4_000
+  2016-01-01: 4_050
+  2017-01-01: 4_050
+  2018-01-01: 0
+  2026-01-01: 4_691

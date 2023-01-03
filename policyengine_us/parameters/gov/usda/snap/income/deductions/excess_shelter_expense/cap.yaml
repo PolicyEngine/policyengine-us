@@ -1,0 +1,90 @@
+description: The USDA allows an excess shelter deduction of up to this amount when computing SNAP benefits.
+
+CONTIGUOUS_US:
+  1996-08-22: 247
+  1997-01-01: 250
+  1998-10-01: 275
+  1999-10-01: 280
+  2000-10-01: 340
+  # Subsequent: Updated based on CPI-U.
+  2020-10-01: 586
+  2021-10-01: 597
+  2022-10-01: 624
+AK_URBAN:
+  1996-08-22: 429
+  1997-01-01: 434
+  1998-10-01: 478
+  1999-10-01: 483
+  2000-10-01: 543
+  # Subsequent: Updated based on CPI-U.
+  2020-01-01: 936
+  2021-10-01: 954
+  2022-10-01: 996
+AK_RURAL_1:
+  1996-08-22: 429
+  1997-01-01: 434
+  1998-10-01: 478
+  1999-10-01: 483
+  2000-10-01: 543
+  # Subsequent: Updated based on CPI-U.
+  2020-10-01: 936
+  2021-10-01: 954
+  2022-10-01: 996
+AK_RURAL_2:
+  1996-08-22: 429
+  1997-01-01: 434
+  1998-10-01: 478
+  1999-10-01: 483
+  2000-10-01: 543
+  # Subsequent: Updated based on CPI-U.
+  2020-10-01: 936
+  2021-10-01: 954
+  2022-10-01: 996
+GU:
+  1996-08-22: 300
+  1997-01-01: 304
+  1998-10-01: 334
+  1999-10-01: 339
+  2000-10-01: 399
+  # Subsequent: Updated based on CPI-U.
+  2020-10-01: 688
+  2021-10-01: 701
+  2022-10-01: 732
+HI:
+  1996-08-22: 353
+  1997-01-01: 357
+  1998-10-01: 393
+  1999-10-01: 398
+  2000-10-01: 458
+  # Subsequent: Updated based on CPI-U.
+  2020-10-01: 790
+  2021-10-01: 805
+  2022-10-01: 840
+VI:
+  1996-08-22: 182
+  1997-01-01: 184
+  1998-10-01: 203
+  1999-10-01: 208
+  2000-10-01: 268
+  # Subsequent: Updated based on CPI-U.
+  2020-10-01: 462
+  2021-10-01: 471
+  2022-10-01: 492
+
+metadata:
+  unit: currency-USD
+  period: month
+  name: snap_maximum_shelter_deduction
+  label: SNAP maximum shelter deduction
+  reference:
+    - title: 7 U.S. Code § 2014(e)(6)(B) # Values from 1996-08-22 to 2000-10-01.
+      href: https://www.law.cornell.edu/uscode/text/7/2014#e_6_B
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+    # This page links to other PDFs.
+    - title: USDA Cost of Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/COLA
+  breakdown:
+    - snap_region

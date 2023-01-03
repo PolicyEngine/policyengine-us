@@ -1,0 +1,21 @@
+description: Phase-out length for the third Recovery Rebate Credit.
+SINGLE:
+  0000-01-01: 5_000
+JOINT:
+  0000-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: 7_500
+WIDOW:
+  0000-01-01: 5_000
+SEPARATE:
+  0000-01-01: 5_000
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  name: rrc_arpa_phase_out_length
+  label: ARPA Recovery Rebate Credit phase-out length
+  reference:
+    - title: 26 U.S. Code § 6428B(c)
+      href: https://www.law.cornell.edu/uscode/text/26/6428B#c

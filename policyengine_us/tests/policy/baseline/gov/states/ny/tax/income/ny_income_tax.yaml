@@ -1,0 +1,50 @@
+- name: NY income tax subtracts credits.
+  period: 2022
+  input:
+    state_code: NY
+    ny_household_credit: 2
+    ny_eitc: 1
+    ny_income_tax_before_credits: 1
+  output:
+    ny_income_tax: -1
+
+- name: Tax unit with taxsimid 99902 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 38
+        employment_income: 117_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 44
+        employment_income: 139_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+        ny_supplemental_eitc: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:  # expected from TAXSIM35
+    ny_income_tax: 15_125.54

@@ -1,0 +1,37 @@
+description: Refundable tax credits.
+values:
+  2013-01-01:
+    - eitc
+    - refundable_american_opportunity_credit
+    - refundable_ctc
+    - recovery_rebate_credit
+    - refundable_payroll_tax_credit
+    - premium_tax_credit
+  # Add CDCC in 2021.
+  2021-01-01:
+    - eitc
+    - refundable_american_opportunity_credit
+    - refundable_ctc
+    - recovery_rebate_credit
+    - refundable_payroll_tax_credit
+    - premium_tax_credit
+    - cdcc
+  # Remove CDCC in 2022.
+  2022-01-01:
+    - eitc
+    - refundable_american_opportunity_credit
+    - refundable_ctc
+    - recovery_rebate_credit
+    - refundable_payroll_tax_credit
+    - premium_tax_credit
+    - ecpa_filer_credit
+    - ecpa_adult_dependent_credit
+metadata:
+  unit: program
+  name: refundable_tax_credits
+  label: Refundable tax credits
+  reference:
+    - title: 26 U.S. Code Subpart C - Refundable Credits
+      href: https://www.law.cornell.edu/uscode/text/26/subtitle-A/chapter-1/subchapter-A/part-IV/subpart-C
+    - title: 26 U.S. Code § 21 - Expenses for household and dependent care services necessary for gainful employment (g)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/21#g_1

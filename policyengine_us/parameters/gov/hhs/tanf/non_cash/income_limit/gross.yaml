@@ -1,0 +1,119 @@
+description: Gross income limit as a percent of the poverty line for TANF non-cash benefit used for SNAP BBCE, by state.
+
+AL:
+  2020-07-01: 1.3
+AK:
+  # Alaska is not in the list, indicating it has not elected to BBCE.
+  # Non-BBCE states are entered as negative .infinity asset limit.
+  2020-07-01: -.inf
+AZ:
+  2020-07-01: 1.85
+AR:
+  2020-07-01: -.inf # Non-BBCE.
+CA:
+  2020-07-01: 2
+CO:
+  2020-07-01: -.inf # Non-BBCE.
+CT:
+  2020-07-01: 1.85
+DE:
+  2020-07-01: 2
+DC:
+  2020-07-01: 2
+FL:
+  2020-07-01: 2
+GA:
+  2020-07-01: 1.3
+GU:
+  2020-07-01: 1.65
+HI:
+  2020-07-01: 2
+ID:
+  2020-07-01: 1.3
+IL:
+  2020-07-01: 1.65
+IN:
+  2020-07-01: 1.3
+IA:
+  2020-07-01: 1.6
+KS:
+  2020-07-01: -.inf # Non-BBCE.
+KY:
+  2020-07-01: 2
+LA:
+  2020-07-01: 1.3
+ME:
+  2020-07-01: 1.85
+MD:
+  2020-07-01: 2
+MA:
+  2020-07-01: 2
+MI:
+  2020-07-01: 2
+MN:
+  2020-07-01: 1.65
+MS:
+  2020-07-01: -.inf # Non-BBCE.
+MT:
+  2020-07-01: 2
+NE:
+  2020-07-01: 1.3
+NV:
+  2020-07-01: 2
+NH:
+  # Only households with at least one dependent child and a specified relative to that child.
+  # (Not currently modeled.)
+  2020-07-01: 1.85
+NJ:
+  2020-07-01: 1.85
+NM:
+  2020-07-01: 1.65
+NY:
+  # 150% for those with earned income.
+  # 200% for those with dependent care expenses, not currently entered.
+  2020-07-01: 1.5
+NC:
+  2020-07-01: 2
+ND:
+  2020-07-01: 2
+OH:
+  2020-07-01: 1.3
+OK:
+  2020-07-01: 1.3
+OR:
+  2020-07-01: 1.85
+PA:
+  2020-07-01: 1.6
+  # https://www.snapscreener.com/blog/pennsylvania-snap-increase
+  2022-10-01: 2
+RI:
+  2020-07-01: 1.85
+SC:
+  2020-07-01: 1.3
+TX:
+  2020-07-01: 1.65
+UT:
+  2020-07-01: -.inf # Non-BBCE.
+VT:
+  2020-07-01: 1.85
+VI:
+  2020-07-01: 1.75
+VA:
+  2020-07-01: 2
+WA:
+  2020-07-01: 2
+WV:
+  2020-07-01: 2
+WI:
+  2020-07-01: 2
+WY:
+  2020-07-01: -.inf # Non-BBCE.
+
+metadata:
+  unit: /1
+  reference:
+    - title: "USDA: Broad-based Categorical Eligibility"
+      href: https://fns-prod.azureedge.net/sites/default/files/resource-files/BBCE%20States%20Chart%20(July%202020).pdf
+      date: 2020-07-01
+  breakdown:
+  - state_code

@@ -1,37 +1,26 @@
-title: OpenFisca-US documentation
+title: PolicyEngine US documentation
 author: PolicyEngine
 copyright: "2022"
+
 execute:
-  execute_notebooks: "force"
-  jupyter_execute_notebooks: "force"
+  execute_notebooks: cache
   timeout: -1
-html:
-  use_edit_page_button: true # Whether to add an "edit this page" button to pages. If `true`, repository information in repository: must be filled in
-  use_repository_button: true # Whether to add a link to your repository button
-  use_issues_button: true # Whether to add an "open an issue" button
-  google_analytics_id: "G-TYHPWJGXW8" # A GA id that can be used to track book views.
-  home_page_in_navbar: true # Whether to include your home page in the left Navigation Bar
-notebook_interface: "notebook"
-binder:
-  binderhub_url: "https://mybinder.org"
-  text: "Launch binder"
-launch_buttons:
-  notebook_interface: "classic"
+
 repository:
-  url: https://github.com/PolicyEngine/openfisca-us
+  url: https://github.com/policyengine/policyengine-us
   branch: master
-  path_to_book: docs/book
-# This enables plotly's JavaScript
-# See https://github.com/executablebooks/jupyter-book/issues/954#issuecomment-688220038
+  path_to_book: docs
+
 sphinx:
-  extra_extensions:
-    [
-      "sphinx.ext.autodoc",
-      "sphinx.ext.mathjax",
-      "sphinx.ext.viewcode",
-      "sphinx.ext.napoleon",
-      "alabaster",
-    ]
   config:
     html_js_files:
       - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+    html_theme: furo
+    pygments_style: default
+  extra_extensions:
+    - "sphinx.ext.autodoc"
+    - "sphinxarg.ext"
+    - "sphinx.ext.viewcode"
+    - "sphinx.ext.napoleon"
+    - "sphinx.ext.mathjax"
+

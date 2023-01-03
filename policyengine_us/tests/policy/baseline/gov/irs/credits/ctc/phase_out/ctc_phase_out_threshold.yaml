@@ -1,0 +1,13 @@
+- name: CTC phases out at $200,000 for singles while TCJA is active.
+  period: 2020
+  input:
+    filing_status: SINGLE
+  output:
+    ctc_phase_out_threshold: 200_000
+
+- name: CTC phases out at $400,000 for singles while TCJA is active.
+  period: 2022
+  input:
+    filing_status: JOINT
+  output:
+    ctc_phase_out_threshold: 400_000
