@@ -1,4 +1,4 @@
-description: IL Exemption Cap
+description: Maximum AGI to be eligible for Illinois exemptions.
 JOINT:
   2021-01-01: 500_000
 SINGLE:
@@ -12,8 +12,8 @@ WIDOW:
 metadata:
   unit: currency-USD
   period: year
-  name: il_exemption_cap
-  label: IL Exemption Cap
+  name: il_exemption_income_limit
+  label: IL Exemption Income Limit
   reference:
     - title: Illinois Department of Revenue 2021 Form IL-1040 Instructions; Step 4 - Exemptions
       href: https://www2.illinois.gov/rev/forms/incometax/Documents/currentyear/individual/il-1040-instr.pdf#page=8
