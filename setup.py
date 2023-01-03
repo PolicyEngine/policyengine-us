@@ -7,6 +7,7 @@ setup(
     version="0.197.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
+    long_description="",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
