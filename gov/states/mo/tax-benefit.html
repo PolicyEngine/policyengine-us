@@ -277,85 +277,85 @@
 Their net income—after state and federal taxes and benefits modeled by OpenFisca US—is shown in the graph below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim
-import pandas as pd
-import plotly.express as px
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 
-LIGHT_GRAY = &quot;#F5F5F5&quot;
-GRAY = &quot;#BDBDBD&quot;
-BLUE = &quot;#5091cc&quot;
-LIGHT_BLUE = &quot;lightblue&quot;
-DARK_BLUE = &quot;darkblue&quot;
-
-
-def make_tax(adults, children):
-    sim = IndividualSim(year=2022)
-    sim.add_person(name=&quot;head&quot;, age=70, rent=12_000)
-    members = [&quot;head&quot;]
-    if adults == 2:
-        sim.add_person(name=&quot;spouse&quot;, age=25)
-        members += [&quot;spouse&quot;]
-    for i in range(children):
-        child = &quot;child{}&quot;.format(i)
-        sim.add_person(name=child, age=6)
-        members += [child]
-    sim.add_tax_unit(name=&quot;tax_unit&quot;, members=members, premium_tax_credit=0)
-    # $1,000 monthly rent, $50 monthly broadband.
-    sim.add_spm_unit(name=&quot;spm_unit&quot;, members=members, broadband_cost=600)
-    sim.add_household(name=&quot;household&quot;, members=members, state_code=&quot;MO&quot;)
-    sim.vary(&quot;employment_income&quot;, max=100_000, step=100)
-    employment_income = sim.calc(&quot;employment_income&quot;)[0]
-    spm_unit_net_income = sim.calc(&quot;spm_unit_net_income&quot;)[0].round()
-    mtr = 1 - sim.deriv(
-        &quot;spm_unit_net_income&quot;, &quot;employment_income&quot;, wrt_target=&quot;head&quot;
-    )
-    return pd.DataFrame(
-        dict(
-            employment_income=employment_income,
-            spm_unit_net_income=spm_unit_net_income,
-            mtr=mtr,
-            adults=adults,
-            children=str(children),
-        )
-    )
+<span class="n">LIGHT_GRAY</span> <span class="o">=</span> <span class="s2">&quot;#F5F5F5&quot;</span>
+<span class="n">GRAY</span> <span class="o">=</span> <span class="s2">&quot;#BDBDBD&quot;</span>
+<span class="n">BLUE</span> <span class="o">=</span> <span class="s2">&quot;#5091cc&quot;</span>
+<span class="n">LIGHT_BLUE</span> <span class="o">=</span> <span class="s2">&quot;lightblue&quot;</span>
+<span class="n">DARK_BLUE</span> <span class="o">=</span> <span class="s2">&quot;darkblue&quot;</span>
 
 
-# Make a table of state taxes for different numbers of adults and children.
-l = []
-for adults in range(1, 3):
-    for children in range(0, 4):
-        l.append(make_tax(adults, children))
+<span class="k">def</span> <span class="nf">make_tax</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">):</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="n">rent</span><span class="o">=</span><span class="mi">12_000</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">adults</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spouse&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+        <span class="n">members</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;spouse&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">children</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="s2">&quot;child</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+        <span class="n">members</span> <span class="o">+=</span> <span class="p">[</span><span class="n">child</span><span class="p">]</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">premium_tax_credit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># $1,000 monthly rent, $50 monthly broadband.</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">broadband_cost</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;household&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;MO&quot;</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">employment_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">spm_unit_net_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+    <span class="n">mtr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">sim</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span>
+        <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="n">wrt_target</span><span class="o">=</span><span class="s2">&quot;head&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">employment_income</span><span class="o">=</span><span class="n">employment_income</span><span class="p">,</span>
+            <span class="n">spm_unit_net_income</span><span class="o">=</span><span class="n">spm_unit_net_income</span><span class="p">,</span>
+            <span class="n">mtr</span><span class="o">=</span><span class="n">mtr</span><span class="p">,</span>
+            <span class="n">adults</span><span class="o">=</span><span class="n">adults</span><span class="p">,</span>
+            <span class="n">children</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">children</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
-df = pd.concat(l)
 
-LABELS = dict(
-    employment_income=&quot;Employment income&quot;,
-    spm_unit_net_income=&quot;Net income&quot;,
-    mtr=&quot;Marginal tax rate&quot;,
-    adults=&quot;Adults&quot;,
-    children=&quot;Children&quot;,
-)
+<span class="c1"># Make a table of state taxes for different numbers of adults and children.</span>
+<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">adults</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">children</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_tax</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">))</span>
 
-COLOR_MAP = {&quot;0&quot;: GRAY, &quot;1&quot;: LIGHT_BLUE, &quot;2&quot;: BLUE, &quot;3&quot;: DARK_BLUE}
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
 
-fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;spm_unit_net_income&quot;,
-    color=&quot;children&quot;,
-    animation_frame=&quot;adults&quot;,
-    labels=LABELS,
-    title=&quot;Net income for a Missouri household&quot;,
-    color_discrete_map=COLOR_MAP,
-)
-fig.update_layout(
-    xaxis_tickformat=&quot;$,&quot;,
-    yaxis_tickformat=&quot;$,&quot;,
-    plot_bgcolor=&quot;white&quot;,
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
-fig.show()
+<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Employment income&quot;</span><span class="p">,</span>
+    <span class="n">spm_unit_net_income</span><span class="o">=</span><span class="s2">&quot;Net income&quot;</span><span class="p">,</span>
+    <span class="n">mtr</span><span class="o">=</span><span class="s2">&quot;Marginal tax rate&quot;</span><span class="p">,</span>
+    <span class="n">adults</span><span class="o">=</span><span class="s2">&quot;Adults&quot;</span><span class="p">,</span>
+    <span class="n">children</span><span class="o">=</span><span class="s2">&quot;Children&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="n">GRAY</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="n">LIGHT_BLUE</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="n">BLUE</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="n">DARK_BLUE</span><span class="p">}</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
+    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;adults&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Net income for a Missouri household&quot;</span><span class="p">,</span>
+    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -365,25 +365,25 @@ fig.show()
 <p>Total marginal tax rates range from below -50% to above 50%.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;mtr&quot;,
-    color=&quot;children&quot;,
-    animation_frame=&quot;adults&quot;,
-    labels=LABELS,
-    title=&quot;Marginal tax rate for a Missouri household&quot;,
-    color_discrete_map=COLOR_MAP,
-)
-fig.update_layout(
-    xaxis_tickformat=&quot;$,&quot;,
-    yaxis_tickformat=&quot;.1%&quot;,
-    yaxis_range=[-1, 5],
-    plot_bgcolor=&quot;white&quot;,
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
-fig.show()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
+    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;adults&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Marginal tax rate for a Missouri household&quot;</span><span class="p">,</span>
+    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.1%&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -395,46 +395,46 @@ fig.show()
 <p>A single person who is age 65 and holds less than $2,000 in assets will be eligible for additional tax exemptions and federal Supplemental Security Income (SSI).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sim = IndividualSim(year=2022)
-sim.add_person(
-    name=&quot;head&quot;,
-    age=65,
-    rent=1_000,
-)
-sim.add_tax_unit(name=&quot;tax_unit&quot;, members=[&quot;head&quot;], premium_tax_credit=0)
-sim.add_spm_unit(name=&quot;spmu&quot;, members=[&quot;head&quot;])
-sim.add_household(name=&quot;h&quot;, members=[&quot;head&quot;], state_code=&quot;MO&quot;)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span>
+    <span class="n">age</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span>
+    <span class="n">rent</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">],</span> <span class="n">premium_tax_credit</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spmu&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">])</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">],</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;MO&quot;</span><span class="p">)</span>
 
-sim.vary(&quot;employment_income&quot;, max=100_000, step=100)
-employment_income = sim.calc(&quot;employment_income&quot;)[0]
-spm_unit_net_income = sim.calc(&quot;spm_unit_net_income&quot;)[0].round()
-mtr = 1 - sim.deriv(
-    &quot;spm_unit_net_income&quot;, &quot;employment_income&quot;, wrt_target=&quot;head&quot;
-)
-df = pd.DataFrame(
-    dict(
-        employment_income=employment_income,
-        spm_unit_net_income=spm_unit_net_income,
-        mtr=mtr,
-    )
-)
+<span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">employment_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">spm_unit_net_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">()</span>
+<span class="n">mtr</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">sim</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span>
+    <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="n">wrt_target</span><span class="o">=</span><span class="s2">&quot;head&quot;</span>
+<span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">employment_income</span><span class="o">=</span><span class="n">employment_income</span><span class="p">,</span>
+        <span class="n">spm_unit_net_income</span><span class="o">=</span><span class="n">spm_unit_net_income</span><span class="p">,</span>
+        <span class="n">mtr</span><span class="o">=</span><span class="n">mtr</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
-fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;spm_unit_net_income&quot;,
-    labels=LABELS,
-    title=&quot;Net income for a single person aged 65 in Missouri&quot;,
-)
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Net income for a single person aged 65 in Missouri&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-fig.update_layout(
-    xaxis_tickformat=&quot;$,&quot;,
-    yaxis_tickformat=&quot;$,&quot;,
-    plot_bgcolor=&quot;white&quot;,
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
-fig.show()
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -443,23 +443,23 @@ fig.show()
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;mtr&quot;,
-    labels=LABELS,
-    title=&quot;Marginal tax rate for a single person aged 65 in Missouri&quot;,
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Marginal tax rate for a single person aged 65 in Missouri&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-fig.update_layout(
-    xaxis_tickformat=&quot;$,&quot;,
-    yaxis_tickformat=&quot;.1%&quot;,
-    yaxis_range=[0, 1],
-    plot_bgcolor=&quot;white&quot;,
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
-fig.show()
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.1%&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

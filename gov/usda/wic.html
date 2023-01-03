@@ -279,48 +279,48 @@ The <a class="reference external" href="https://www.fns.usda.gov">Food and Nutri
 <p>Consider a pregnant woman in Oregon whose husband has no income, and whom a WIC office has deemed to be at nutritional risk.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim
-import numpy as np
-import pandas as pd
-import plotly.express as px
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 
-sim = IndividualSim(year=2022)
-sim.add_person(
-    name=&quot;mother&quot;,
-    is_pregnant=True,
-    is_wic_at_nutritional_risk=True,
-    would_claim_wic=True,
-)
-sim.add_person(name=&quot;father&quot;)
-sim.add_spm_unit(members=[&quot;mother&quot;, &quot;father&quot;])
-sim.add_household(members=[&quot;mother&quot;, &quot;father&quot;], state_code=&quot;OR&quot;)
+<span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span>
+    <span class="n">is_pregnant</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">would_claim_wic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;father&quot;</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;father&quot;</span><span class="p">])</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;father&quot;</span><span class="p">],</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;OR&quot;</span><span class="p">)</span>
 
-sim.vary(&quot;employment_income&quot;, max=4_000 * 12)
+<span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">4_000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span>
 
-df = pd.DataFrame(
-    dict(
-        employment_income=sim.calc(&quot;employment_income&quot;)[0] / 12,
-        wic=sim.calc(&quot;wic&quot;)[0] / 12,
-    )
-)
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">employment_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">wic</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;wic&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">12</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 
 
-LABELS = dict(
-    age=&quot;Child age&quot;,
-    is_breastfeeding=&quot;Breastfeeding&quot;,
-    wic=&quot;Monthly WIC benefit value&quot;,
-    employment_income=&quot;Monthly earnings&quot;,
-)
+<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">age</span><span class="o">=</span><span class="s2">&quot;Child age&quot;</span><span class="p">,</span>
+    <span class="n">is_breastfeeding</span><span class="o">=</span><span class="s2">&quot;Breastfeeding&quot;</span><span class="p">,</span>
+    <span class="n">wic</span><span class="o">=</span><span class="s2">&quot;Monthly WIC benefit value&quot;</span><span class="p">,</span>
+    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Monthly earnings&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;wic&quot;,
-    labels=LABELS,
-    title=&quot;WIC benefits by earnings for a married pregnant woman in Oregon&quot;,
-)
-fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
-fig.show()
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wic&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;WIC benefits by earnings for a married pregnant woman in Oregon&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -336,44 +336,44 @@ A WIC office has deemed both to be at nutritional risk.
 They will receive WIC vouchers until the child reaches age five, though their benefit will vary with the child’s age and whether the mother breastfeeds.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def wic_by_child_age(is_breastfeeding):
-    sim = IndividualSim(year=2022)
-    sim.add_person(name=&quot;child&quot;, is_wic_at_nutritional_risk=True)
-    sim.add_person(
-        name=&quot;mother&quot;,
-        employment_income=2_000 * 12,
-        # is_mother defaults to is_breastfeeding, but we need to set it
-        # explicitly for non-breastfeeding mothers.
-        is_mother=True,
-        is_breastfeeding=is_breastfeeding,
-        is_wic_at_nutritional_risk=True,
-    )
-    sim.add_family(members=[&quot;mother&quot;, &quot;child&quot;])
-    sim.add_spm_unit(members=[&quot;mother&quot;, &quot;child&quot;])
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wic_by_child_age</span><span class="p">(</span><span class="n">is_breastfeeding</span><span class="p">):</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2022</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;child&quot;</span><span class="p">,</span> <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span>
+        <span class="n">employment_income</span><span class="o">=</span><span class="mi">2_000</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="c1"># is_mother defaults to is_breastfeeding, but we need to set it</span>
+        <span class="c1"># explicitly for non-breastfeeding mothers.</span>
+        <span class="n">is_mother</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">is_breastfeeding</span><span class="o">=</span><span class="n">is_breastfeeding</span><span class="p">,</span>
+        <span class="n">is_wic_at_nutritional_risk</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_family</span><span class="p">(</span><span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;child&quot;</span><span class="p">])</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">members</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mother&quot;</span><span class="p">,</span> <span class="s2">&quot;child&quot;</span><span class="p">])</span>
 
-    sim.vary(&quot;age&quot;, max=6, step=0.1)
+    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
-    return pd.DataFrame(
-        dict(
-            is_breastfeeding=np.where(is_breastfeeding, &quot;Yes&quot;, &quot;No&quot;),
-            age=sim.calc(&quot;age&quot;)[0],
-            wic=(sim.calc(&quot;wic&quot;).sum(axis=0) / 12).round(),
-        )
-    )
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">is_breastfeeding</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_breastfeeding</span><span class="p">,</span> <span class="s2">&quot;Yes&quot;</span><span class="p">,</span> <span class="s2">&quot;No&quot;</span><span class="p">),</span>
+            <span class="n">age</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">wic</span><span class="o">=</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;wic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">12</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
 
-df = pd.concat([wic_by_child_age(True), wic_by_child_age(False)])
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">wic_by_child_age</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span> <span class="n">wic_by_child_age</span><span class="p">(</span><span class="kc">False</span><span class="p">)])</span>
 
-fig = px.line(
-    df,
-    &quot;age&quot;,
-    &quot;wic&quot;,
-    color=&quot;is_breastfeeding&quot;,
-    labels=LABELS,
-    title=&quot;Total WIC benefit value for a single mother of one based on the child&#39;s age&quot;,
-)
-fig.update_layout(yaxis_tickformat=&quot;$,&quot;)
-fig.show()
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wic&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;is_breastfeeding&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Total WIC benefit value for a single mother of one based on the child&#39;s age&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

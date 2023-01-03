@@ -279,86 +279,86 @@ The IRA adds new requirements to the credit around the manufacturer retail selli
 It leaves the credit non-refundable, producing a phase-in.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span>
 
-import pandas as pd
-import plotly.express as px
-
-
-def make(adults, children, purchased_qualifying_new_clean_vehicle):
-    sim = IndividualSim(year=2023)
-    # Specify age 25 to qualify for EITC.
-    sim.add_person(name=&quot;head&quot;, age=25, is_tax_unit_head=True)
-    members = [&quot;head&quot;]
-    if adults == 2:
-        sim.add_person(name=&quot;spouse&quot;)
-        members.append(&quot;spouse&quot;)
-    for i in range(children):
-        child = &quot;child{}&quot;.format(i)
-        sim.add_person(name=child, age=5)
-        members.append(child)
-    sim.add_tax_unit(
-        name=&quot;tax_unit&quot;,
-        members=members,
-        purchased_qualifying_new_clean_vehicle=purchased_qualifying_new_clean_vehicle,
-        new_clean_vehicle_battery_capacity=70,
-        # Assume it meets both requirements.
-        new_clean_vehicle_battery_critical_minerals_extracted_in_trading_partner_country=0.5,
-        new_clean_vehicle_battery_components_made_in_north_america=0.5,
-        new_clean_vehicle_classification=&quot;SUV&quot;,
-        new_clean_vehicle_msrp=65_990,  # Per Google.
-        premium_tax_credit=0,
-    )
-    sim.add_spm_unit(name=&quot;spm_unit&quot;, members=members)
-    sim.add_household(name=&quot;household&quot;, members=members, state_code=&quot;MA&quot;)
-    sim.vary(&quot;employment_income&quot;, max=350_000)
-    return pd.DataFrame(
-        dict(
-            employment_income=sim.calc(&quot;employment_income&quot;)[0],
-            spm_unit_net_income=sim.calc(&quot;spm_unit_net_income&quot;)[0],
-            credit=sim.calc(&quot;new_clean_vehicle_credit&quot;)[0],
-            adults=adults,
-            children=children,
-            purchased_qualifying_new_clean_vehicle=purchased_qualifying_new_clean_vehicle,
-        )
-    )
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 
 
-l = []
-for adults in [1, 2]:
-    for children in range(0, 4):
-        for purchased_qualifying_new_clean_vehicle in [True, False]:
-            l.append(
-                make(adults, children, purchased_qualifying_new_clean_vehicle)
-            )
+<span class="k">def</span> <span class="nf">make</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">purchased_qualifying_new_clean_vehicle</span><span class="p">):</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2023</span><span class="p">)</span>
+    <span class="c1"># Specify age 25 to qualify for EITC.</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">is_tax_unit_head</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">adults</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spouse&quot;</span><span class="p">)</span>
+        <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;spouse&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">children</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="s2">&quot;child</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span>
+        <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span>
+        <span class="n">purchased_qualifying_new_clean_vehicle</span><span class="o">=</span><span class="n">purchased_qualifying_new_clean_vehicle</span><span class="p">,</span>
+        <span class="n">new_clean_vehicle_battery_capacity</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
+        <span class="c1"># Assume it meets both requirements.</span>
+        <span class="n">new_clean_vehicle_battery_critical_minerals_extracted_in_trading_partner_country</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">new_clean_vehicle_battery_components_made_in_north_america</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">new_clean_vehicle_classification</span><span class="o">=</span><span class="s2">&quot;SUV&quot;</span><span class="p">,</span>
+        <span class="n">new_clean_vehicle_msrp</span><span class="o">=</span><span class="mi">65_990</span><span class="p">,</span>  <span class="c1"># Per Google.</span>
+        <span class="n">premium_tax_credit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;household&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;MA&quot;</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">350_000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">employment_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">spm_unit_net_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">credit</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;new_clean_vehicle_credit&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">adults</span><span class="o">=</span><span class="n">adults</span><span class="p">,</span>
+            <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">,</span>
+            <span class="n">purchased_qualifying_new_clean_vehicle</span><span class="o">=</span><span class="n">purchased_qualifying_new_clean_vehicle</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
-df = pd.concat(l)
 
-wide = df.pivot(
-    index=[&quot;employment_income&quot;, &quot;adults&quot;, &quot;children&quot;],
-    columns=&quot;purchased_qualifying_new_clean_vehicle&quot;,
-    values=&quot;spm_unit_net_income&quot;,
-).reset_index()
-wide[&quot;benefit&quot;] = wide[True] - wide[False]
+<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">adults</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">children</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">purchased_qualifying_new_clean_vehicle</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]:</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">make</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">purchased_qualifying_new_clean_vehicle</span><span class="p">)</span>
+            <span class="p">)</span>
 
-LABELS = dict(
-    employment_income=&quot;Employment income&quot;,
-    benefit=&quot;Net clean vehicle credit&quot;,
-    children=&quot;Children&quot;,
-    adults=&quot;Adults&quot;,
-)
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
 
-fig = px.line(
-    wide,
-    &quot;employment_income&quot;,
-    &quot;benefit&quot;,
-    color=&quot;children&quot;,
-    animation_frame=&quot;adults&quot;,
-    labels=LABELS,
-    title=&quot;Net benefit from clean vehicle credit under Inflation Reduction Act&quot;,
-)
-fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
-fig.show()
+<span class="n">wide</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;adults&quot;</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;purchased_qualifying_new_clean_vehicle&quot;</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">wide</span><span class="p">[</span><span class="s2">&quot;benefit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wide</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">-</span> <span class="n">wide</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span>
+
+<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Employment income&quot;</span><span class="p">,</span>
+    <span class="n">benefit</span><span class="o">=</span><span class="s2">&quot;Net clean vehicle credit&quot;</span><span class="p">,</span>
+    <span class="n">children</span><span class="o">=</span><span class="s2">&quot;Children&quot;</span><span class="p">,</span>
+    <span class="n">adults</span><span class="o">=</span><span class="s2">&quot;Adults&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">wide</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;benefit&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
+    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;adults&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Net benefit from clean vehicle credit under Inflation Reduction Act&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -370,80 +370,80 @@ For example, a single filer purchasing a used clean vehicle will receive the ful
 Married filers and those with children have to earn more to receive the full benefit, and continue to receive the benefit with higher incomes before losing it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def make_used(adults, children, purchased_qualifying_used_clean_vehicle):
-    sim = IndividualSim(year=2023)
-    # Specify age 25 to qualify for EITC.
-    sim.add_person(name=&quot;head&quot;, age=25, is_tax_unit_head=True)
-    members = [&quot;head&quot;]
-    if adults == 2:
-        sim.add_person(name=&quot;spouse&quot;)
-        members.append(&quot;spouse&quot;)
-    for i in range(children):
-        child = &quot;child{}&quot;.format(i)
-        sim.add_person(name=child, age=5)
-        members.append(child)
-    sim.add_tax_unit(
-        name=&quot;tax_unit&quot;,
-        members=members,
-        purchased_qualifying_used_clean_vehicle=purchased_qualifying_used_clean_vehicle,
-        used_clean_vehicle_sale_price=20_000,
-        premium_tax_credit=0,
-    )
-    sim.add_spm_unit(name=&quot;spm_unit&quot;, members=members)
-    sim.add_household(name=&quot;household&quot;, members=members, state_code=&quot;MA&quot;)
-    sim.vary(&quot;employment_income&quot;, max=350_000)
-    return pd.DataFrame(
-        dict(
-            employment_income=sim.calc(&quot;employment_income&quot;)[0],
-            spm_unit_net_income=sim.calc(&quot;spm_unit_net_income&quot;)[0],
-            credit=sim.calc(&quot;used_clean_vehicle_credit&quot;)[0],
-            adults=adults,
-            children=children,
-            purchased_qualifying_used_clean_vehicle=purchased_qualifying_used_clean_vehicle,
-        )
-    )
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_used</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">purchased_qualifying_used_clean_vehicle</span><span class="p">):</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2023</span><span class="p">)</span>
+    <span class="c1"># Specify age 25 to qualify for EITC.</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">is_tax_unit_head</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">adults</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spouse&quot;</span><span class="p">)</span>
+        <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;spouse&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">children</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="s2">&quot;child</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">members</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span>
+        <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span>
+        <span class="n">purchased_qualifying_used_clean_vehicle</span><span class="o">=</span><span class="n">purchased_qualifying_used_clean_vehicle</span><span class="p">,</span>
+        <span class="n">used_clean_vehicle_sale_price</span><span class="o">=</span><span class="mi">20_000</span><span class="p">,</span>
+        <span class="n">premium_tax_credit</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;household&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;MA&quot;</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">350_000</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">employment_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">spm_unit_net_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">credit</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;used_clean_vehicle_credit&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">adults</span><span class="o">=</span><span class="n">adults</span><span class="p">,</span>
+            <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">,</span>
+            <span class="n">purchased_qualifying_used_clean_vehicle</span><span class="o">=</span><span class="n">purchased_qualifying_used_clean_vehicle</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
 
-l = []
-for adults in [1, 2]:
-    for children in range(0, 4):
-        for purchased_qualifying_used_clean_vehicle in [True, False]:
-            l.append(
-                make_used(
-                    adults,
-                    children,
-                    purchased_qualifying_used_clean_vehicle,
-                )
-            )
+<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">adults</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">children</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">purchased_qualifying_used_clean_vehicle</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]:</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">make_used</span><span class="p">(</span>
+                    <span class="n">adults</span><span class="p">,</span>
+                    <span class="n">children</span><span class="p">,</span>
+                    <span class="n">purchased_qualifying_used_clean_vehicle</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
 
-df = pd.concat(l)
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
 
-wide = df.pivot(
-    index=[&quot;employment_income&quot;, &quot;adults&quot;, &quot;children&quot;],
-    columns=&quot;purchased_qualifying_used_clean_vehicle&quot;,
-    values=&quot;spm_unit_net_income&quot;,
-).reset_index()
+<span class="n">wide</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="s2">&quot;adults&quot;</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">],</span>
+    <span class="n">columns</span><span class="o">=</span><span class="s2">&quot;purchased_qualifying_used_clean_vehicle&quot;</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
-wide[&quot;benefit&quot;] = wide[True] - wide[False]
+<span class="n">wide</span><span class="p">[</span><span class="s2">&quot;benefit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wide</span><span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">-</span> <span class="n">wide</span><span class="p">[</span><span class="kc">False</span><span class="p">]</span>
 
-LABELS = dict(
-    employment_income=&quot;Employment income&quot;,
-    benefit=&quot;Net used clean vehicle credit&quot;,
-    children=&quot;Children&quot;,
-    adults=&quot;Adults&quot;,
-)
+<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Employment income&quot;</span><span class="p">,</span>
+    <span class="n">benefit</span><span class="o">=</span><span class="s2">&quot;Net used clean vehicle credit&quot;</span><span class="p">,</span>
+    <span class="n">children</span><span class="o">=</span><span class="s2">&quot;Children&quot;</span><span class="p">,</span>
+    <span class="n">adults</span><span class="o">=</span><span class="s2">&quot;Adults&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-fig = px.line(
-    wide,
-    &quot;employment_income&quot;,
-    &quot;benefit&quot;,
-    color=&quot;children&quot;,
-    animation_frame=&quot;adults&quot;,
-    labels=LABELS,
-    title=&quot;Net benefit from used clean vehicle credit under Inflation Reduction Act&quot;,
-)
-fig.update_layout(xaxis_tickformat=&quot;$,&quot;, yaxis_tickformat=&quot;$,&quot;)
-fig.show()
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">wide</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;benefit&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
+    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;adults&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Net benefit from used clean vehicle credit under Inflation Reduction Act&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span> <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

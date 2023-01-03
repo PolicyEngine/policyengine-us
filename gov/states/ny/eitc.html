@@ -277,80 +277,80 @@
 It is not smooth because it subtracts the New York household credit, which falls with income in a stepped manner.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import IndividualSim, Microsimulation
-import pandas as pd
-import plotly.express as px
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">IndividualSim</span><span class="p">,</span> <span class="n">Microsimulation</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 
 
-LIGHT_GRAY = &quot;#F5F5F5&quot;
-GRAY = &quot;#BDBDBD&quot;
-BLUE = &quot;#5091cc&quot;
-LIGHT_BLUE = &quot;lightblue&quot;
-DARK_BLUE = &quot;darkblue&quot;
+<span class="n">LIGHT_GRAY</span> <span class="o">=</span> <span class="s2">&quot;#F5F5F5&quot;</span>
+<span class="n">GRAY</span> <span class="o">=</span> <span class="s2">&quot;#BDBDBD&quot;</span>
+<span class="n">BLUE</span> <span class="o">=</span> <span class="s2">&quot;#5091cc&quot;</span>
+<span class="n">LIGHT_BLUE</span> <span class="o">=</span> <span class="s2">&quot;lightblue&quot;</span>
+<span class="n">DARK_BLUE</span> <span class="o">=</span> <span class="s2">&quot;darkblue&quot;</span>
 
-COLOR_MAP = {&quot;0&quot;: GRAY, &quot;1&quot;: LIGHT_BLUE, &quot;2&quot;: BLUE, &quot;3&quot;: DARK_BLUE}
-
-
-def make_eitc(adults, children):
-    sim = IndividualSim(year=2021)
-    sim.add_person(name=&quot;head&quot;, age=25)
-    members = [&quot;head&quot;]
-    if adults == 2:
-        sim.add_person(name=&quot;spouse&quot;)
-        members += [&quot;spouse&quot;]
-    for i in range(children):
-        child = &quot;child{}&quot;.format(i)
-        sim.add_person(name=child, age=6)
-        members += [child]
-    sim.add_tax_unit(name=&quot;tax_unit&quot;, members=members)
-    sim.add_spm_unit(name=&quot;spm_unit&quot;, members=members)
-    sim.add_household(name=&quot;household&quot;, members=members, state_code=&quot;NY&quot;)
-    sim.vary(&quot;employment_income&quot;, max=60_000, step=100)
-    return pd.DataFrame(
-        dict(
-            employment_income=sim.calc(&quot;employment_income&quot;)[0],
-            ny_eitc=sim.calc(&quot;ny_eitc&quot;)[0].round(),
-            mtr=-sim.deriv(&quot;ny_eitc&quot;, &quot;employment_income&quot;, wrt_target=&quot;head&quot;),
-            adults=adults,
-            children=str(children),
-        )
-    )
+<span class="n">COLOR_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;0&quot;</span><span class="p">:</span> <span class="n">GRAY</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="n">LIGHT_BLUE</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="n">BLUE</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="n">DARK_BLUE</span><span class="p">}</span>
 
 
-# Make a table of EITCs for different numbers of adults and children.
-l = []
-for adults in range(1, 3):
-    for children in range(0, 4):
-        l.append(make_eitc(adults, children))
+<span class="k">def</span> <span class="nf">make_eitc</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">):</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">IndividualSim</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="mi">2021</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;head&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">adults</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spouse&quot;</span><span class="p">)</span>
+        <span class="n">members</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;spouse&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">children</span><span class="p">):</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="s2">&quot;child</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">sim</span><span class="o">.</span><span class="n">add_person</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">child</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+        <span class="n">members</span> <span class="o">+=</span> <span class="p">[</span><span class="n">child</span><span class="p">]</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_tax_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;tax_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_spm_unit</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;spm_unit&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_household</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;household&quot;</span><span class="p">,</span> <span class="n">members</span><span class="o">=</span><span class="n">members</span><span class="p">,</span> <span class="n">state_code</span><span class="o">=</span><span class="s2">&quot;NY&quot;</span><span class="p">)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">vary</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">60_000</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">employment_income</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;employment_income&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">ny_eitc</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;ny_eitc&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(),</span>
+            <span class="n">mtr</span><span class="o">=-</span><span class="n">sim</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="s2">&quot;ny_eitc&quot;</span><span class="p">,</span> <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span> <span class="n">wrt_target</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">),</span>
+            <span class="n">adults</span><span class="o">=</span><span class="n">adults</span><span class="p">,</span>
+            <span class="n">children</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">children</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
 
-df = pd.concat(l)
 
-LABELS = dict(
-    employment_income=&quot;Employment income&quot;,
-    mtr=&quot;Marginal tax rate of NY EITC&quot;,
-    adults=&quot;Adults&quot;,
-    children=&quot;Children&quot;,
-    ny_eitc=&quot;New York EITC&quot;,
-)
+<span class="c1"># Make a table of EITCs for different numbers of adults and children.</span>
+<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">adults</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">children</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_eitc</span><span class="p">(</span><span class="n">adults</span><span class="p">,</span> <span class="n">children</span><span class="p">))</span>
 
-fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;ny_eitc&quot;,
-    color=&quot;children&quot;,
-    animation_frame=&quot;adults&quot;,
-    labels=LABELS,
-    title=&quot;New York Earned Income Tax Credit&quot;,
-    color_discrete_map=COLOR_MAP,
-)
-fig.update_layout(
-    xaxis_tickformat=&quot;$,&quot;,
-    yaxis_tickformat=&quot;$,&quot;,
-    plot_bgcolor=&quot;white&quot;,
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
-fig.show()
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+<span class="n">LABELS</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">employment_income</span><span class="o">=</span><span class="s2">&quot;Employment income&quot;</span><span class="p">,</span>
+    <span class="n">mtr</span><span class="o">=</span><span class="s2">&quot;Marginal tax rate of NY EITC&quot;</span><span class="p">,</span>
+    <span class="n">adults</span><span class="o">=</span><span class="s2">&quot;Adults&quot;</span><span class="p">,</span>
+    <span class="n">children</span><span class="o">=</span><span class="s2">&quot;Children&quot;</span><span class="p">,</span>
+    <span class="n">ny_eitc</span><span class="o">=</span><span class="s2">&quot;New York EITC&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ny_eitc&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
+    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;adults&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;New York Earned Income Tax Credit&quot;</span><span class="p">,</span>
+    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -360,24 +360,24 @@ fig.show()
 <p>The NY EITC creates marginal tax rates ranging from -13.5 percent to +6.3 percent, plus downward spikes corresponding to the NY household credit cliffs.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>fig = px.line(
-    df,
-    &quot;employment_income&quot;,
-    &quot;mtr&quot;,
-    color=&quot;children&quot;,
-    animation_frame=&quot;adults&quot;,
-    labels=LABELS,
-    title=&quot;NY EITC marginal tax rate&quot;,
-    color_discrete_map=COLOR_MAP,
-)
-fig.update_layout(
-    xaxis_tickformat=&quot;$,&quot;,
-    yaxis_tickformat=&quot;.1%&quot;,
-    plot_bgcolor=&quot;white&quot;,
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
-fig.show()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="s2">&quot;employment_income&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mtr&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;children&quot;</span><span class="p">,</span>
+    <span class="n">animation_frame</span><span class="o">=</span><span class="s2">&quot;adults&quot;</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">LABELS</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;NY EITC marginal tax rate&quot;</span><span class="p">,</span>
+    <span class="n">color_discrete_map</span><span class="o">=</span><span class="n">COLOR_MAP</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">xaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;$,&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_tickformat</span><span class="o">=</span><span class="s2">&quot;.1%&quot;</span><span class="p">,</span>
+    <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+    <span class="n">yaxis_gridcolor</span><span class="o">=</span><span class="n">LIGHT_GRAY</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -390,48 +390,48 @@ fig.show()
 <p>Applying the New York EITC logic to the 2020 Current Population Survey March Supplement shows that the program cost an estimated $533 million in 2020.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us.model_api import *
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us.model_api</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-def budgetary_impacts(
-    variable: str, data_year: int = 2020, policy_year: int = 2022
-) -&gt; Tuple:
-    &quot;&quot;&quot;Calculates the budgetary impact of a variable for a given policy year.
+<span class="k">def</span> <span class="nf">budgetary_impacts</span><span class="p">(</span>
+    <span class="n">variable</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">data_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2020</span><span class="p">,</span> <span class="n">policy_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2022</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates the budgetary impact of a variable for a given policy year.</span>
 
-    Args:
-        variable (str): The variable to calculate the budgetary impact of.
-        data_year (int): The year of the data to use.
-        policy_year (int): The year of the policy to use.
+<span class="sd">    Args:</span>
+<span class="sd">        variable (str): The variable to calculate the budgetary impact of.</span>
+<span class="sd">        data_year (int): The year of the data to use.</span>
+<span class="sd">        policy_year (int): The year of the policy to use.</span>
 
-    Returns:
-        Tuple: A tuple of the total cost and budgetary impact of repealing the variable,
-        respectively, in millions.
-    &quot;&quot;&quot;
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple: A tuple of the total cost and budgetary impact of repealing the variable,</span>
+<span class="sd">        respectively, in millions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    class ignore_reported(Reform):
-        def apply(self):
-            self.neutralize_variable(&quot;spm_unit_net_income_reported&quot;)
+    <span class="k">class</span> <span class="nc">ignore_reported</span><span class="p">(</span><span class="n">Reform</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">neutralize_variable</span><span class="p">(</span><span class="s2">&quot;spm_unit_net_income_reported&quot;</span><span class="p">)</span>
 
-    class neutralize(Reform):
-        def apply(self):
-            self.neutralize_variable(variable)
+    <span class="k">class</span> <span class="nc">neutralize</span><span class="p">(</span><span class="n">Reform</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">neutralize_variable</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
 
-    sim = Microsimulation(ignore_reported, year=data_year)
-    sim_neutralized = Microsimulation(
-        (ignore_reported, neutralize), year=data_year
-    )
-    program_value = sim.calc(variable, period=policy_year).sum()
-    baseline_net_income = sim.calc(
-        &quot;spm_unit_net_income&quot;, period=policy_year
-    ).sum()
-    neutralized_net_income = sim_neutralized.calc(
-        &quot;spm_unit_net_income&quot;, period=policy_year
-    ).sum()
-    budgetary_impact = neutralized_net_income - baseline_net_income
-    return round(program_value / 1e6), round(budgetary_impact / 1e6)
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span><span class="n">ignore_reported</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="n">data_year</span><span class="p">)</span>
+    <span class="n">sim_neutralized</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">ignore_reported</span><span class="p">,</span> <span class="n">neutralize</span><span class="p">),</span> <span class="n">year</span><span class="o">=</span><span class="n">data_year</span>
+    <span class="p">)</span>
+    <span class="n">program_value</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">policy_year</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">baseline_net_income</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span>
+        <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">policy_year</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">neutralized_net_income</span> <span class="o">=</span> <span class="n">sim_neutralized</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span>
+        <span class="s2">&quot;spm_unit_net_income&quot;</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">policy_year</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">budgetary_impact</span> <span class="o">=</span> <span class="n">neutralized_net_income</span> <span class="o">-</span> <span class="n">baseline_net_income</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">program_value</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">budgetary_impact</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">)</span>
 
 
-budgetary_impacts(&quot;ny_eitc&quot;)
+<span class="n">budgetary_impacts</span><span class="p">(</span><span class="s2">&quot;ny_eitc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

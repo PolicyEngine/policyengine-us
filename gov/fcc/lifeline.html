@@ -284,12 +284,12 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 <h2>Variable<a class="headerlink" href="#variable" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us.tools.documentation import (
-    variable_summary,
-    variation_chart,
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us.tools.documentation</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">variable_summary</span><span class="p">,</span>
+    <span class="n">variation_chart</span><span class="p">,</span>
+<span class="p">)</span>
 
-variable_summary(&quot;lifeline&quot;)
+<span class="n">variable_summary</span><span class="p">(</span><span class="s2">&quot;lifeline&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -373,16 +373,16 @@ variable_summary(&quot;lifeline&quot;)
 <h2>Values by income<a class="headerlink" href="#values-by-income" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>variation_chart(
-    &quot;lifeline&quot;,
-    additional_data=dict(
-        spm_units=dict(
-            spm_unit=dict(
-                broadband_cost=40 * 12,
-            )
-        )
-    ),
-)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variation_chart</span><span class="p">(</span>
+    <span class="s2">&quot;lifeline&quot;</span><span class="p">,</span>
+    <span class="n">additional_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">spm_units</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">spm_unit</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">broadband_cost</span><span class="o">=</span><span class="mi">40</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>

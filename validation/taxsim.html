@@ -273,72 +273,72 @@
 <p>Validation tests are carried out on every new version update against TAXSIM35, developed by NBER. We primarily test that tax units in the Current Population Survey have tax liabilities close to PolicyEngine US (‘close’ defined as within $100).</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from policyengine_us import Microsimulation
-from policyengine_us.data.datasets import CPS
-from policyengine_us.tools.dev.taxsim.generate_taxsim_tests import TaxSim35
-import numpy as np
-import pandas as pd
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">Microsimulation</span>
+<span class="kn">from</span> <span class="nn">policyengine_us.data.datasets</span> <span class="kn">import</span> <span class="n">CPS</span>
+<span class="kn">from</span> <span class="nn">policyengine_us.tools.dev.taxsim.generate_taxsim_tests</span> <span class="kn">import</span> <span class="n">TaxSim35</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-# Disable warnings
-import warnings
+<span class="c1"># Disable warnings</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
-warnings.filterwarnings(&quot;ignore&quot;)
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
-STATES = [&quot;MA&quot;, &quot;MA&quot;, &quot;NY&quot;, &quot;WA&quot;]
-DISTANCE = 100
+<span class="n">STATES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MA&quot;</span><span class="p">,</span> <span class="s2">&quot;MA&quot;</span><span class="p">,</span> <span class="s2">&quot;NY&quot;</span><span class="p">,</span> <span class="s2">&quot;WA&quot;</span><span class="p">]</span>
+<span class="n">DISTANCE</span> <span class="o">=</span> <span class="mi">100</span>
 
-taxsim = TaxSim35()
-sim = Microsimulation()
+<span class="n">taxsim</span> <span class="o">=</span> <span class="n">TaxSim35</span><span class="p">()</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Microsimulation</span><span class="p">()</span>
 
-taxsim_df = taxsim.generate_from_microsimulation(
-    CPS, 2022, None, True, False
-).set_index(&quot;taxsim_taxsimid&quot;)
-
-
-def get_federal_tax_against_taxsim_results():
-    tax = sim.calc(&quot;income_tax&quot;)
-    tax.index = sim.calc(&quot;tax_unit_id&quot;).values
-    comparison_df = pd.DataFrame(index=sim.calc(&quot;tax_unit_id&quot;).values)
-    comparison_df[&quot;policyengine_us&quot;] = tax
-    comparison_df[&quot;taxsim&quot;] = taxsim_df.taxsim_fiitax
-    relative_distance = np.absolute(
-        comparison_df.policyengine_us - comparison_df.taxsim
-    )
-    return (relative_distance &lt; DISTANCE).mean()
+<span class="n">taxsim_df</span> <span class="o">=</span> <span class="n">taxsim</span><span class="o">.</span><span class="n">generate_from_microsimulation</span><span class="p">(</span>
+    <span class="n">CPS</span><span class="p">,</span> <span class="mi">2022</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;taxsim_taxsimid&quot;</span><span class="p">)</span>
 
 
-def get_state_income_tax_against_taxsim_results(state: str):
-    in_state = sim.calc(&quot;tax_unit_state&quot;).values == state
-    tax = sim.calc(&quot;state_income_tax&quot;)
-    tax.index = sim.calc(&quot;tax_unit_id&quot;).values
-    comparison_df = pd.DataFrame(
-        dict(
-            policyengine_us=tax,
-            taxsim=taxsim_df.taxsim_siitax,
-        ),
-        index=sim.calc(&quot;tax_unit_id&quot;).values,
-    )
-    comparison_df = comparison_df[in_state]
-    relative_distance = np.absolute(
-        comparison_df.policyengine_us - comparison_df.taxsim
-    )
-    return (relative_distance &lt; DISTANCE).mean()
+<span class="k">def</span> <span class="nf">get_federal_tax_against_taxsim_results</span><span class="p">():</span>
+    <span class="n">tax</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;income_tax&quot;</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;tax_unit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">comparison_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;tax_unit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">comparison_df</span><span class="p">[</span><span class="s2">&quot;policyengine_us&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tax</span>
+    <span class="n">comparison_df</span><span class="p">[</span><span class="s2">&quot;taxsim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxsim_df</span><span class="o">.</span><span class="n">taxsim_fiitax</span>
+    <span class="n">relative_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span>
+        <span class="n">comparison_df</span><span class="o">.</span><span class="n">policyengine_us</span> <span class="o">-</span> <span class="n">comparison_df</span><span class="o">.</span><span class="n">taxsim</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">relative_distance</span> <span class="o">&lt;</span> <span class="n">DISTANCE</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 
-results_df = pd.DataFrame(
-    {
-        &quot;Region&quot;: [&quot;Federal&quot;] + STATES,
-        &quot;Percent close&quot;: [get_federal_tax_against_taxsim_results()]
-        + [
-            get_state_income_tax_against_taxsim_results(state)
-            for state in STATES
-        ],
-    }
-)
-results_df[&quot;Percent close&quot;] = results_df[&quot;Percent close&quot;].apply(
-    lambda x: f&quot;{x:.1%}&quot;
-)
-results_df.set_index(&quot;Region&quot;)
+<span class="k">def</span> <span class="nf">get_state_income_tax_against_taxsim_results</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">in_state</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;tax_unit_state&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="n">state</span>
+    <span class="n">tax</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;state_income_tax&quot;</span><span class="p">)</span>
+    <span class="n">tax</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;tax_unit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">comparison_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">policyengine_us</span><span class="o">=</span><span class="n">tax</span><span class="p">,</span>
+            <span class="n">taxsim</span><span class="o">=</span><span class="n">taxsim_df</span><span class="o">.</span><span class="n">taxsim_siitax</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">index</span><span class="o">=</span><span class="n">sim</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="s2">&quot;tax_unit_id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">comparison_df</span> <span class="o">=</span> <span class="n">comparison_df</span><span class="p">[</span><span class="n">in_state</span><span class="p">]</span>
+    <span class="n">relative_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span>
+        <span class="n">comparison_df</span><span class="o">.</span><span class="n">policyengine_us</span> <span class="o">-</span> <span class="n">comparison_df</span><span class="o">.</span><span class="n">taxsim</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">relative_distance</span> <span class="o">&lt;</span> <span class="n">DISTANCE</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+
+<span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;Region&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Federal&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">STATES</span><span class="p">,</span>
+        <span class="s2">&quot;Percent close&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">get_federal_tax_against_taxsim_results</span><span class="p">()]</span>
+        <span class="o">+</span> <span class="p">[</span>
+            <span class="n">get_state_income_tax_against_taxsim_results</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">STATES</span>
+        <span class="p">],</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;Percent close&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;Percent close&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">results_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Region&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
