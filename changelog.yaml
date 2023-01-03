@@ -2083,3 +2083,9 @@
     fixed:
     - PyPI deployments.
   date: 2023-01-03 21:24:39
+- bump: patch
+  changes:
+    fixed:
+    - Use parameter to define refundable and non-refundable credits, fixing CDCC refundability
+      under ARPA.
+  date: 2023-01-03 23:13:23
