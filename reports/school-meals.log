@@ -65,10 +65,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_net_subsidy.py:15[0m, in [0;36mschool_meal_net_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -93,10 +93,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_daily_subsidy.py:15[0m, in [0;36mschool_meal_daily_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     14[0m state_group [38;5;241m=[39m spm_unit[38;5;241m.[39mhousehold([38;5;124m"[39m[38;5;124mstate_group_str[39m[38;5;124m"[39m, period)
@@ -119,10 +119,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py:19[0m, in [0;36mschool_meal_tier.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     18[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -145,10 +145,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_fpg_ratio.py:12[0m, in [0;36mschool_meal_fpg_ratio.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -171,10 +171,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py:14[0m, in [0;36mschool_meal_countable_income.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     13[0m sources [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mincome[38;5;241m.[39msources
@@ -219,10 +219,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
 [1;32m     13[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -244,10 +244,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/uncapped_ssi.py:13[0m, in [0;36muncapped_ssi.formula[0;34m(person, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -270,10 +270,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_amount_if_eligible.py:16[0m, in [0;36mssi_amount_if_eligible.formula[0;34m(person, period, parameters)[0m
 [1;32m     13[0m ssi [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39mssa[38;5;241m.[39mssi[38;5;241m.[39mamount
@@ -302,10 +302,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py:12[0m, in [0;36mssi_claim_is_joint.formula[0;34m(person, period, parameters)[0m
 [1;32m     11[0m eligible [38;5;241m=[39m person([38;5;124m"[39m[38;5;124mis_ssi_aged_blind_disabled[39m[38;5;124m"[39m, period)
@@ -415,10 +415,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_net_subsidy.py:15[0m, in [0;36mschool_meal_net_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -443,10 +443,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_daily_subsidy.py:15[0m, in [0;36mschool_meal_daily_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     14[0m state_group [38;5;241m=[39m spm_unit[38;5;241m.[39mhousehold([38;5;124m"[39m[38;5;124mstate_group_str[39m[38;5;124m"[39m, period)
@@ -469,10 +469,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py:19[0m, in [0;36mschool_meal_tier.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     18[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -495,10 +495,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_fpg_ratio.py:12[0m, in [0;36mschool_meal_fpg_ratio.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -521,10 +521,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py:14[0m, in [0;36mschool_meal_countable_income.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     13[0m sources [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mincome[38;5;241m.[39msources
@@ -569,10 +569,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
 [1;32m     13[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -594,10 +594,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/uncapped_ssi.py:13[0m, in [0;36muncapped_ssi.formula[0;34m(person, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -620,10 +620,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_amount_if_eligible.py:16[0m, in [0;36mssi_amount_if_eligible.formula[0;34m(person, period, parameters)[0m
 [1;32m     13[0m ssi [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39mssa[38;5;241m.[39mssi[38;5;241m.[39mamount
@@ -652,10 +652,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 470[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    472[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py:12[0m, in [0;36mssi_claim_is_joint.formula[0;34m(person, period, parameters)[0m
 [1;32m     11[0m eligible [38;5;241m=[39m person([38;5;124m"[39m[38;5;124mis_ssi_aged_blind_disabled[39m[38;5;124m"[39m, period)
@@ -790,11 +790,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_net_subsidy.py:15[0m, in [0;36mschool_meal_net_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -830,11 +830,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_daily_subsidy.py:15[0m, in [0;36mschool_meal_daily_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -870,11 +870,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py:19[0m, in [0;36mschool_meal_tier.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     18[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -908,11 +908,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_fpg_ratio.py:12[0m, in [0;36mschool_meal_fpg_ratio.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -945,11 +945,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_countable_income.py:14[0m, in [0;36mschool_meal_countable_income.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
@@ -1010,11 +1010,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
 [1;32m     13[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -1046,11 +1046,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/uncapped_ssi.py:13[0m, in [0;36muncapped_ssi.formula[0;34m(person, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -1084,11 +1084,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_amount_if_eligible.py:16[0m, in [0;36mssi_amount_if_eligible.formula[0;34m(person, period, parameters)[0m
 [1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
@@ -1128,11 +1128,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    473[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
 [1;32m    474[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:687[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
-[1;32m    685[0m     array [38;5;241m=[39m formula(population, period)
-[1;32m    686[0m [38;5;28;01melse[39;00m:
-[0;32m--> 687[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
-[1;32m    689[0m [38;5;28;01mreturn[39;00m array
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:713[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    711[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    712[0m [38;5;28;01melse[39;00m:
+[0;32m--> 713[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    715[0m [38;5;28;01mreturn[39;00m array
 
 File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py:12[0m, in [0;36mssi_claim_is_joint.formula[0;34m(person, period, parameters)[0m
 [1;32m     10[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
