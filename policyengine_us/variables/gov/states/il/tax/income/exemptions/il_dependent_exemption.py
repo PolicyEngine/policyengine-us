@@ -9,6 +9,8 @@ class il_dependent_exemption(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        amount = parameters(period).gov.states.il.tax.income.exemption.dependent
+        amount = parameters(
+            period
+        ).gov.states.il.tax.income.exemption.dependent
 
         return amount * tax_unit("tax_unit_dependents", period)

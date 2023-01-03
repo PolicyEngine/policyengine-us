@@ -12,5 +12,7 @@ class il_aged_blind_exemption(Variable):
         aged_blind_count = tax_unit("aged_blind_count", period)
         return (
             aged_blind_count
-            * parameters(period).gov.states.il.tax.income.exemption.aged_and_blind
+            * parameters(
+                period
+            ).gov.states.il.tax.income.exemption.aged_and_blind
         )

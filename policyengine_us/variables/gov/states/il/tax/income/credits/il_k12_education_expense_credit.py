@@ -20,6 +20,7 @@ class il_k12_education_expense_credit(Variable):
         il_property_tax_credit = tax_unit("il_property_tax_credit", period)
 
         return min_(
-            il_income_tax_before_nonrefundable_credits - il_property_tax_credit,
+            il_income_tax_before_nonrefundable_credits
+            - il_property_tax_credit,
             min_(max_credit, p.cap),
         )

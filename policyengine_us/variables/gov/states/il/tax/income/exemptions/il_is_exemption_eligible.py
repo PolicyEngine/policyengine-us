@@ -12,8 +12,8 @@ class il_is_exemption_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        cap = parameters(period).gov.states.il.tax.income.exemption.income_limit[
-            filing_status
-        ]
+        cap = parameters(
+            period
+        ).gov.states.il.tax.income.exemption.income_limit[filing_status]
 
         return tax_unit("adjusted_gross_income", period) < cap
