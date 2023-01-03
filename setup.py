@@ -36,7 +36,7 @@ setup(
         "microdf_python==0.3.0",
         "pandas==1.5.2",
         "pathlib==1.0.1",
-        "policyengine-core==1.10.24",
+        "policyengine-core==1.11.0",
         "pytest==5.4.3",
         "pytest-dependency==0.5.1",
         "pyyaml==6.0",
