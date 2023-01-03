@@ -22,7 +22,7 @@ class snap_emergency_allotment_monthly(Variable):
         # Calculate emergency allotment, which provides all eligible households the maximum.
         state = spm_unit.household("state_code", period.this_year)
         ea_in_effect = p.in_effect[state]
-        ea_minimum = p.minimum * MONTHS_IN_YEAR
+        ea_minimum = p.minimum
         ea_amount_if_in_effect = max_(
             ea_minimum, max_allotment - normal_allotment
         )
