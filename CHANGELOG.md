@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.197.0] - 2023-01-03 21:17:57
+
+### Changed
+
+- SNAP EAs are calculated monthly.
+
 ## [0.196.1] - 2023-01-02 21:05:11
 
 ### Changed
@@ -2487,6 +2493,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.196.1...0.197.0
 [0.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.196.0...0.196.1
 [0.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.195.1...0.196.0
 [0.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.195.0...0.195.1
