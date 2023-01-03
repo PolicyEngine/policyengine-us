@@ -5,12 +5,12 @@
     state_code: CA
     spm_unit_size: 3
   output:
-    # Assert that Jan/Feb/Mar/Apr are all $1,140, and following months are $0.
+    # Assert that Jan/Feb/Mar/Apr are all $95, and following months are $0.
     snap_emergency_allotment_monthly:
-      2022-01: 1_140
-      2022-02: 1_140
-      2022-03: 1_140
-      2022-04: 1_140
+      2022-01: 95
+      2022-02: 95
+      2022-03: 95
+      2022-04: 95
       2022-05: 0
       2022-06: 0
       2022-07: 0
