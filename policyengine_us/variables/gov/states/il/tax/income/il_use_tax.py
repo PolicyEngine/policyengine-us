@@ -7,7 +7,6 @@ class il_use_tax(Variable):
     label = "IL use tax"
     unit = USD
     definition_period = YEAR
-    reference = ""
 
     def formula(tax_unit, period, parameters):
         # Tiered amount if income below a threshold, otherwise a percentage of AGI.

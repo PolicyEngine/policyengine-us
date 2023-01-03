@@ -7,7 +7,7 @@ class il_income_tax_before_nonrefundable_credits(Variable):
     label = "IL income tax before credits"
     unit = USD
     definition_period = YEAR
-    reference = ""
+
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):

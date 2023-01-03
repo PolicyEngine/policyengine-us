@@ -1,13 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class il_total_payments_and_refundable_credit(Variable):
+class il_total_payments_and_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Il Total Payments And Refundable Credit"
     unit = USD
     definition_period = YEAR
-    reference = ""
+
     defined_for = StateCode.IL
 
     formula = sum_of_variables(

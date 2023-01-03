@@ -7,7 +7,7 @@ class il_total_exemptions(Variable):
     label = "IL total exemption allowance"
     unit = USD
     definition_period = YEAR
-    reference = ""
+
     defined_for = "il_is_exemption_eligible"
 
     formula = sum_of_variables(

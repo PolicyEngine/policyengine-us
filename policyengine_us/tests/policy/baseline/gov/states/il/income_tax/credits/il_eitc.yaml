@@ -7,13 +7,13 @@
         age: 30
     tax_units:
       tax_unit:
-        earned_income_tax_credit: 1000
+        earned_income_tax_credit: 1_000
     households:
       household:
         members: [person_1]
         state_code: IL
   output:
-    il_eitc: 1000 * 0.18
+    il_eitc: 1_000 * 0.18
 - name: "IL EITC Match #2"
   period: 2021
   absolute_error_margin: 0.0001
@@ -23,10 +23,10 @@
         age: 30
     tax_units:
       tax_unit:
-        earned_income_tax_credit: 5000
+        earned_income_tax_credit: 5_000
     households:
       household:
         members: [person_1]
         state_code: IL
   output:
-    il_eitc: 5000 * 0.18
+    il_eitc: 5_000 * 0.18

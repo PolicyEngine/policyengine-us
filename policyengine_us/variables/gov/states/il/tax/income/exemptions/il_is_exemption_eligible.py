@@ -7,12 +7,12 @@ class il_is_exemption_eligible(Variable):
     label = "Whether this tax unit is eligible for any exemptions"
     unit = USD
     definition_period = YEAR
-    reference = ""
+
     defined_for = StateCode.IL
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        cap = parameters(period).gov.states.il.tax.income.exemption.cap[
+        cap = parameters(period).gov.states.il.tax.income.exemption.income_limit[
             filing_status
         ]
 

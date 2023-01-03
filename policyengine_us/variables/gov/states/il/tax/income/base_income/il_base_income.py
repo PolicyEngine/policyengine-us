@@ -7,7 +7,6 @@ class il_base_income(Variable):
     label = "IL base income"
     unit = USD
     definition_period = YEAR
-    reference = ""
 
     def formula(tax_unit, period, parameters):
         return (

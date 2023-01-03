@@ -1,11 +1,11 @@
 - name: "Base income greater than total personal exemptions"
   period: 2021
   input:
-    il_base_income: 5000
+    il_base_income: 5_000
     il_total_exemptions: 750
     state_code: IL
   output:
-    il_taxable_income: 5000 - 750
+    il_taxable_income: 5_000 - 750
 - name: "Base income less than total personal exemptions"
   period: 2021
   input:

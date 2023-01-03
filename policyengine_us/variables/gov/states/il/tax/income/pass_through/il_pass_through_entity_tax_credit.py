@@ -7,4 +7,3 @@ class il_pass_through_entity_tax_credit(Variable):
     label = "IL Pass-Through Entity Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = ""

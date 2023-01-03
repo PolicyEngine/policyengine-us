@@ -7,7 +7,7 @@ class il_total_tax(Variable):
     label = "IL total tax"
     unit = USD
     definition_period = YEAR
-    reference = ""
+
     defined_for = StateCode.IL
 
     formula = sum_of_variables(

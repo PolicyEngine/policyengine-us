@@ -7,7 +7,6 @@ class il_k12_education_expense_credit(Variable):
     label = "IL K-12 Education Expense Credit"
     unit = USD
     definition_period = YEAR
-    reference = ""
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.il.tax.income.credits.k12
@@ -21,7 +20,6 @@ class il_k12_education_expense_credit(Variable):
         il_property_tax_credit = tax_unit("il_property_tax_credit", period)
 
         return min_(
-            il_income_tax_before_nonrefundable_credits
-            - il_property_tax_credit,
+            il_income_tax_before_nonrefundable_credits - il_property_tax_credit,
             min_(max_credit, p.cap),
         )

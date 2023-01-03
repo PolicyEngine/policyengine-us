@@ -1,13 +1,13 @@
 - name: "Is eligible for exemptions; Test #1"
   period: 2021
   input:
-    il_personal_exemption: 5000
+    il_personal_exemption: 5_000
     il_aged_blind_exemption: 750
     il_dependent_exemption: 499
     il_is_exemption_eligible: true
     state_code: IL
   output:
-    il_total_exemptions: 5000 + 750 + 499
+    il_total_exemptions: 5_000 + 750 + 499
 - name: "Is eligible for exemptions; Test #2"
   period: 2021
   input:
@@ -21,7 +21,7 @@
 - name: "Is not eligible for exemptions; Test #1"
   period: 2021
   input:
-    il_personal_exemption: 5000
+    il_personal_exemption: 5_000
     il_aged_blind_exemption: 750
     il_dependent_exemption: 500
     il_is_exemption_eligible: false

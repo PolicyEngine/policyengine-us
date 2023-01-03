@@ -7,7 +7,6 @@ class il_taxable_income(Variable):
     label = "IL taxable income"
     unit = USD
     definition_period = YEAR
-    reference = ""
 
     def formula(tax_unit, period, parameters):
         return max_(

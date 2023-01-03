@@ -7,7 +7,6 @@ class il_property_tax_credit(Variable):
     label = "IL Property Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = ""
 
     def formula(tax_unit, period, parameters):
         property_tax = tax_unit("property_tax_primary_residence", period)
@@ -15,8 +14,6 @@ class il_property_tax_credit(Variable):
         income_tax_before_credits = tax_unit(
             "il_income_tax_before_nonrefundable_credits", period
         )
-        rate = parameters(
-            period
-        ).gov.states.il.tax.income.credits.property_tax.rate
+        rate = parameters(period).gov.states.il.tax.income.credits.property_tax.rate
 
         return min_((property_tax - qbid) * rate, income_tax_before_credits)
