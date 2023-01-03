@@ -1,4 +1,4 @@
-from openfisca_us.model_api import *
+from policyengine_us.model_api import *
 
 
 class il_income_tax_before_nonrefundable_credits(Variable):
