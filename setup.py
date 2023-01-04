@@ -2,11 +2,15 @@
 
 from setuptools import find_packages, setup
 
+with open("README.md", "r") as readme_file:
+    readme = readme_file.read()
+
 setup(
     name="policyengine-us",
-    version="0.196.1",
+    version="0.197.4",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
+    long_description=readme,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
@@ -32,7 +36,7 @@ setup(
         "microdf_python==0.3.0",
         "pandas==1.5.2",
         "pathlib==1.0.1",
-        "policyengine-core==1.10.24",
+        "policyengine-core==1.11.0",
         "pytest==5.4.3",
         "pytest-dependency==0.5.1",
         "pyyaml==6.0",
@@ -60,8 +64,8 @@ setup(
             "yaml-changelog==0.3.0",
         ],
     },
-    # Windows requires Python 3.9.13 on CI.
-    python_requires=">=3.9.13, <=3.9.16",
+    # Windows CI requires Python 3.9.
+    python_requires=">=3.7,<3.10",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",

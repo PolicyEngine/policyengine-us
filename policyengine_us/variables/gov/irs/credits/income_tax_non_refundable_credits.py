@@ -10,9 +10,7 @@ class income_tax_non_refundable_credits(Variable):
         "Total non-refundable credits used to reduce positive tax liability"
     )
     unit = USD
-
-    formula = sum_of_variables("gov.irs.credits.non_refundable")
-    # formula must use a parameter list that varies by period
+    adds = "gov.irs.credits.non_refundable"
 
 
 c07100 = variable_alias("c07100", income_tax_non_refundable_credits)

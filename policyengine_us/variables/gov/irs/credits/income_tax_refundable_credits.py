@@ -7,6 +7,4 @@ class income_tax_refundable_credits(Variable):
     definition_period = YEAR
     label = "federal refundable tax credits"
     unit = USD
-
-    formula = sum_of_variables("gov.irs.credits.refundable")
-    # formula must use a parameter list that varies by period
+    adds = "gov.irs.credits.refundable"
