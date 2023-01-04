@@ -21,7 +21,7 @@ class md_standard_deduction(Variable):
             wrong_min_std_ded = where(
                 np.logical_or(
                     filing_status == filing_status.possible_values.SINGLE,
-                    filing_status == filing_status.possible_values.SEPARATE
+                    filing_status == filing_status.possible_values.SEPARATE,
                 ),
                 2300,
                 4650,
