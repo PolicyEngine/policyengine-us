@@ -1,0 +1,18 @@
+core:
+  modelled:
+    - Federal income tax
+    - Payroll taxes
+    - SSI
+    - SNAP
+    - ACP
+    - EBB
+    - Lifeline
+    - Free school meals
+    - WIC
+filtered:
+  state_code:
+    ma:
+      modelled:
+      - Massachusetts State income tax
+      not_modelled:
+      - Massachusetts TANF
