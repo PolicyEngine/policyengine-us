@@ -2099,3 +2099,8 @@
     changed:
     - Update default year to 2023.
   date: 2023-01-04 00:33:41
+- bump: patch
+  changes:
+    added:
+    - Test to guard against inadvertently making 2021 CDCC non-refundable.
+  date: 2023-01-04 19:50:05
