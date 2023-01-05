@@ -2,14 +2,10 @@ description: OH individual tax on nonbusiness income
 brackets:
   - threshold:
       0000-01-01: 0
-    base_amount: 
-      0
     rate:
       2021-01-01: 0
   - threshold: 
       0000-01-01: 25_001
-    base_amount:
-      2021-01-01: 346.16
     rate:
       2021-01-01: 0.02765
   - threshold:
@@ -28,12 +24,9 @@ metadata:
   threshold_unit: currency_USD
   threshold_period: year
   type: marginal_rate
-  name: oh_income_tax_rate
   label: OH AGI Income Tax Rate
   reference:
     - title: Ohio Tax Rate Schedule
       href: https://codes.ohio.gov/ohio-revised-code/section-5747.02
     - title: Ohio Income Tax Form
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=31
-
-
