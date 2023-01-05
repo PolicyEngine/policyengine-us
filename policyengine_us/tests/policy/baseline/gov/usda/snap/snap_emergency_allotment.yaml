@@ -2,9 +2,9 @@
   period: 2022
   input:
     is_snap_eligible: true
-    snap_expected_contribution: 1
     snap_max_allotment: 3
-    snap_min_allotment: 1
+    snap_normal_allotment: 1
+    state_code: CA
   output:
     snap_emergency_allotment: 95 * 12
 
@@ -12,28 +12,38 @@
   period: 2022
   input:
     is_snap_eligible: false
-    snap_expected_contribution: 1
     snap_max_allotment: 3
-    snap_min_allotment: 1
+    snap_normal_allotment: 1
+    state_code: CA
   output:
     snap_emergency_allotment: 0
 
-- name: SNAP-eligible with no minimum and max < contribution normally returns emergency allotment.
+- name: SNAP-eligible with max > normal gets emergency allotment.
   period: 2022
   input:
     is_snap_eligible: true
-    snap_expected_contribution: 2
-    snap_max_allotment: 1
-    snap_min_allotment: 0
+    snap_max_allotment: 2
+    snap_normal_allotment: 1
+    state_code: CA
   output:
     snap_emergency_allotment: 95 * 12
 
-- name: SNAP-eligible with max < contribution gets emergency allotment.
+- name: SNAP-eligible with (max - normal) > minimum gets emergency allotment.
   period: 2022
   input:
     is_snap_eligible: true
-    snap_expected_contribution: 4
-    snap_max_allotment: 1
-    snap_min_allotment: 1
+    snap_max_allotment: 101 * 12
+    snap_normal_allotment: 1 * 12
+    state_code: CA
   output:
-    snap_emergency_allotment: 95 * 12
+    snap_emergency_allotment: 100 * 12
+
+- name: SNAP emergency allotments end in March 2023. A California eligible household should not get an EA in 2024.
+  period: 2024
+  input:
+    is_snap_eligible: true
+    snap_max_allotment: 3
+    snap_normal_allotment: 1
+    state_code: CA
+  output:
+    snap_emergency_allotment: 0

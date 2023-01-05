@@ -1969,3 +1969,138 @@
     fixed:
     - Apply full refundability logic to adult dependent CTC.
   date: 2022-12-17 15:43:50
+- bump: patch
+  changes:
+    fixed:
+    - Metadata for CTC ARPA amount parameter.
+  date: 2022-12-18 16:50:59
+- bump: minor
+  changes:
+    added:
+    - Formula for is_in_k12_school based on age.
+  date: 2022-12-18 17:05:58
+- bump: minor
+  changes:
+    added:
+    - SMI for each state in FY2022 and FY2023.
+  date: 2022-12-20 07:55:11
+- bump: patch
+  changes:
+    fixed:
+    - Apply ARPA's fully refundable CTC to the child CTC only, not the adult dependent
+      CTC.
+  date: 2022-12-20 08:13:53
+- bump: patch
+  changes:
+    added:
+    - API auto-deployment.
+  date: 2022-12-20 10:50:45
+- bump: patch
+  changes:
+    fixed:
+    - Error in filter for deployment action.
+  date: 2022-12-20 16:01:23
+- bump: minor
+  changes:
+    added:
+    - SNAP emergency allotment end dates per Consolidated Appropriations Act of 2023.
+  date: 2022-12-24 16:15:15
+- bump: minor
+  changes:
+    added:
+    - Switch to abolish housing subsidies.
+  date: 2022-12-26 20:04:44
+- bump: minor
+  changes:
+    changed:
+    - Moved state refundable credits into a total refundable credits variable with
+      federal.
+    - Reorganized state income tax variables.
+  date: 2022-12-26 20:39:39
+- bump: patch
+  changes:
+    added:
+    - Household tax including refundable credits.
+  date: 2022-12-26 22:38:38
+- bump: minor
+  changes:
+    added:
+    - Normalised poverty variables.
+  date: 2022-12-27 17:07:33
+- bump: patch
+  changes:
+    removed:
+    - Child Tax Credit ineligible age parameters, which have been superseded by scale
+      parameters.
+  date: 2022-12-27 17:26:14
+- bump: patch
+  changes:
+    fixed:
+    - Household benefits now behave correctly with housing subsidy reforms.
+  date: 2022-12-28 14:47:16
+- bump: patch
+  changes:
+    fixed:
+    - Household benefits are now back to using `adds`.
+  date: 2022-12-28 21:05:37
+- bump: patch
+  changes:
+    fixed:
+    - Incompleteness of MO property tax credit logic.
+  date: 2022-12-29 21:18:40
+- bump: patch
+  changes:
+    changed:
+    - Fix EITC parameter metadata propagation.
+  date: 2022-12-29 22:51:36
+- bump: minor
+  changes:
+    added:
+    - Imputation for non-aged SSI recipients.
+  date: 2022-12-30 18:52:00
+- bump: patch
+  changes:
+    fixed:
+    - Printing of annoying coverage warning messages.
+  date: 2022-12-30 21:26:54
+- bump: minor
+  changes:
+    added:
+    - Blindness, veterans benefits, and child support paid and received from the CPS.
+  date: 2022-12-31 19:09:37
+- bump: patch
+  changes:
+    changed:
+    - Pin and alphabetize dependencies, and pin Python 3.9.
+  date: 2023-01-02 21:05:11
+- bump: minor
+  changes:
+    changed:
+    - SNAP EAs are calculated monthly.
+  date: 2023-01-03 21:17:57
+- bump: patch
+  changes:
+    fixed:
+    - PyPI deployments.
+  date: 2023-01-03 21:24:39
+- bump: patch
+  changes:
+    fixed:
+    - Use parameter to define refundable and non-refundable credits, fixing CDCC refundability
+      under ARPA.
+  date: 2023-01-03 23:13:23
+- bump: patch
+  changes:
+    changed:
+    - Widened Python dependency.
+  date: 2023-01-03 23:24:30
+- bump: patch
+  changes:
+    changed:
+    - Update default year to 2023.
+  date: 2023-01-04 00:33:41
+- bump: patch
+  changes:
+    added:
+    - Test to guard against inadvertently making 2021 CDCC non-refundable.
+  date: 2023-01-04 19:50:05

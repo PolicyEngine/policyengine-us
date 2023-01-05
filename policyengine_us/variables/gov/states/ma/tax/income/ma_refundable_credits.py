@@ -1,0 +1,13 @@
+from policyengine_us.model_api import *
+
+
+class ma_refundable_credits(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "MA refundable credits"
+    unit = USD
+    definition_period = YEAR
+    reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
+    defined_for = StateCode.MA
+
+    formula = sum_of_variables("gov.states.ma.tax.income.credits.refundable")

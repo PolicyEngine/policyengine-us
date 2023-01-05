@@ -19,4 +19,4 @@ class mo_adjusted_gross_income(Variable):
             "public_pension_income", period
         )  # only a concept that exists for Missouri currently
         subtractions = person("mo_qualified_health_insurance_premiums", period)
-        return (gross_income + public_pension_income) - subtractions
+        return max_(0, gross_income + public_pension_income - subtractions)

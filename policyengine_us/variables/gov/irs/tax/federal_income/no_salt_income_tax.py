@@ -14,5 +14,4 @@ class no_salt_income_tax(Variable):
         no_salt_branch.set_input(
             "salt_deduction", period, np.zeros(tax_unit.count)
         )
-        tax_liability = no_salt_branch.calculate("income_tax", period)
-        return tax_liability
+        return no_salt_branch.calculate("income_tax", period)

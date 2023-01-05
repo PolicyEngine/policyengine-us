@@ -19,6 +19,7 @@ EXEMPTIONS = (
     "is_tanf_initial_eligible",
     "is_tanf_continuous_eligible",
     "is_tanf_eligible",
+    "snap_emergency_allotment_monthly",
 )
 
 

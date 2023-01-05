@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_core.simulations import Simulation
 
 
 class meets_ssi_resource_test(Variable):
@@ -9,7 +10,12 @@ class meets_ssi_resource_test(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        abd = person("is_ssi_aged_blind_disabled", period)
+        simulation: Simulation = person.simulation
+        if hasattr(simulation, "dataset"):
+            pass_rate = parameters(
+                period
+            ).gov.ssa.ssi.eligibility.resources.pass_rate
+            return random(person) < pass_rate
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)
         countable_resources = where(

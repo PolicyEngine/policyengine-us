@@ -198,6 +198,22 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     )
     # A_SEX is 1 -> male, 2 -> female.
     cps["is_female"] = person.A_SEX == 2
+    # "Is...blind or does...have serious difficulty seeing even when Wearing
+    #  glasses?" 1 -> Yes
+    cps["is_blind"] = person.PEDISEYE == 1
+    cps["is_ssi_disabled"] = (
+        person[
+            [
+                "PEDISDRS",
+                "PEDISEAR",
+                "PEDISEYE",
+                "PEDISOUT",
+                "PEDISPHY",
+                "PEDISREM",
+            ]
+        ].sum(axis=1)
+        > 0
+    )
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
@@ -278,6 +294,7 @@ def add_personal_income_variables(
         1 - p["taxable_pension_fraction"][year]
     )
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
+    cps["child_support_received"] = person.CSP_VAL
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
@@ -288,6 +305,10 @@ def add_personal_income_variables(
         1 - p["long_term_capgain_fraction"][year]
     )
     cps["receives_wic"] = person.WICYN == 1
+    cps["veterans_benefits"] = person.VET_VAL
+    # Expenses.
+    # "What is the annual amount of child support paid?"
+    person["child_support_expense"] = person.CHSP_VAL
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:

@@ -1,0 +1,42 @@
+- name: Benefits include housing subsidies by default.
+  period: 2021
+  input:
+    spm_unit_capped_housing_subsidy: 1
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    lifeline: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 1
+
+- name: Benefits do not include housing subsidies if the program is abolished.
+  period: 2021
+  input:
+    gov.hud.abolition: true
+    spm_unit_capped_housing_subsidy: 1
+    social_security: 0
+    ssi: 0
+    ca_cvrp: 0
+    snap: 0
+    wic: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    lifeline: 0
+    acp: 0
+    ebb: 0
+    tanf: 0
+    high_efficiency_electric_home_rebate: 0
+    residential_efficiency_electrification_rebate: 0
+    basic_income: 0
+  output:
+    spm_unit_benefits: 0
