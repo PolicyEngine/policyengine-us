@@ -26,10 +26,19 @@ class md_dependent_care_subtraction(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        us_expenses = tax_unit("cdcc_relevant_expenses", period)
-        us = parameters(period).gov.irs.credits
-        num_eligibles = min_(
-            us.cdcc.eligibility.max, tax_unit("count_cdcc_eligible", period)
+        decoupling_years = [2020, 2021]
+        decoupled_year = 2019
+        
+        decoupling_period = Period(
+            (YEAR, (min(decoupling_years),1,1), len(decoupling_years))
         )
-        md = parameters(period).gov.states.md.tax.income.agi.subtractions
-        return min_(md.max_care_expense * num_eligibles, us_expenses)
+        if decoupling_period.contains(period):
+            print(f"\nDECOUPLING in {period.start}")
+            period_max = Period((YEAR, f"{decoupled_year}-01-01"))
+        else:
+            period_max = period
+        max_care_expense = parameters(period_max).gov.irs.credits.cdcc.max
+
+        us_expenses = tax_unit("cdcc_relevant_expenses", period)
+        num_eligibles = tax_unit("count_cdcc_eligible", period)
+        return min_(max_care_expense * num_eligibles, us_expenses)
