@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class oh_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
@@ -12,6 +13,4 @@ class oh_income_tax_before_credits(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("oh_taxable_income", period)
         p = parameters(period).gov.states.oh.tax.income.rates
-
         return p.calc(taxable_income)
-        
