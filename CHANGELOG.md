@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.197.6] - 2023-01-06 01:56:20
+
+### Fixed
+
+- Incomplete MD care expense AGI subtraction logic.
+
 ## [0.197.5] - 2023-01-04 19:50:05
 
 ### Added
@@ -2523,6 +2529,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.197.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.5...0.197.6
 [0.197.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.4...0.197.5
 [0.197.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.3...0.197.4
 [0.197.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.2...0.197.3
