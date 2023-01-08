@@ -56,7 +56,7 @@
   output:
     md_pension_subtraction: 10_000
 
-- name: Test for MD social security AGI subtraction variable formula
+- name: Test 1 for MD social security AGI subtraction variable formula
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -85,6 +85,71 @@
     md_pension_subtraction_amount: 0
     md_socsec_subtraction: 17_000
     md_socsec_subtraction_amount: [8_500, 8_500]
+
+- name: Test 2 for MD social security AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_pension_income: 50_000
+        social_security: 15_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        social_security: 5_000
+      person3:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    tax_unit_taxable_social_security: 17_000
+    md_pension_subtraction_amount: 0
+    md_socsec_subtraction: 17_000
+    md_socsec_subtraction_amount: [12_750, 4_250, 0]
+
+- name: Test 3 for MD social security AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_pension_income: 60_000
+        social_security: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        social_security: 10_000
+      person3:
+        age: 85
+        social_security: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    tax_unit_taxable_social_security: 34_000
+    md_pension_subtraction_amount: 0
+    md_socsec_subtraction: 34_000
+    md_socsec_subtraction_amount: [25_500, 8_500, 0]
 
 - name: Test for MD two-income AGI subtraction variable formula
   absolute_error_margin: 0.01
