@@ -211,6 +211,19 @@
         members: [person1, person2, person3]
         state_code: MD
   output:
+    # the MD two-income married subtraction worksheet for this case is:
+    # --------------------------------------------------
+    # VARIABLE               HEAD      SPOUSE      TOTAL
+    # --------------------------------------------------
+    # US agi               40_000      18_500     58_500
+    # care subtr                0           0          0
+    # pension subtr             0      10_000     10_000
+    # socsec subtr              0       8_500      8_500
+    # (*) AGI less subtrs  40_000           0
+    # two-income subtr                                 0
+    # total subtrs              0      18_500     18_500
+    # --------------------------------------------------
+    # two-income subtr is min of head and spouse (*) amounts capped at $1200
     adjusted_gross_income: 58_500
     md_dependent_care_subtraction: 0
     md_pension_subtraction: 10_000
