@@ -45,14 +45,24 @@ class md_two_income_subtraction(Variable):
         total_subs_except_twoinc = add(tax_unit, period, subs_except_twoinc)
         head_subs = 0.5 * total_subs_except_twoinc
         spouse_subs = 0.5 * total_subs_except_twoinc
+        print("\n************************************************")
+        print("irs_gross_income=", gross_income)
+        print("head_frac=", head_frac)
+        print("head_us_agi=", head_us_agi)
+        print("spouse_us_agi=", spouse_us_agi)
+        print("tot_subs_pre_twoinc=", total_subs_except_twoinc)
+        print("head_subs=", head_subs)
+        print("spouse_subs=", spouse_subs)
 
         # compute MD two-income subtraction
-        min_agi_add_sub = min_(
+        min_agi_adds_subs = min_(
             head_us_agi + head_adds - head_subs,
             spouse_us_agi + spouse_adds - spouse_subs,
         )
-        capped_min_agi_add_sub = min_(
+        capped_min_agi_adds_subs = min_(
             p.max_two_income_subtraction,
-            min_agi_add_sub,
+            min_agi_adds_subs,
         )
-        return is_joint * max_(0, capped_min_agi_add_sub)
+        print("min_agi_adds_subs=", min_agi_adds_subs)
+        print("capped_min_agi_adds_subs=", capped_min_agi_adds_subs)
+        return is_joint * max_(0, capped_min_agi_adds_subs)

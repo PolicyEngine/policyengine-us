@@ -151,7 +151,7 @@
     md_socsec_subtraction: 34_000
     md_socsec_subtraction_amount: [25_500, 8_500, 0]
 
-- name: Test for MD two-income AGI subtraction variable formula
+- name: Test 1 for MD two-income AGI subtraction variable formula
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -160,31 +160,19 @@
         is_tax_unit_head: true
         age: 30
         employment_income: 38_000
-        ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
-        wic: 0  # not in TAXSIM35
       person2:
         is_tax_unit_spouse: true
         age: 30
         employment_income: 2_000
-        ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
-        wic: 0  # not in TAXSIM35
       person3:
         age: 6
-        ssi: 0  # not in TAXSIM35
-        state_supplement: 0  # not in TAXSIM35
-        wic: 0  # not in TAXSIM35
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
-        snap: 0  # not in TAXSIM35
-        tanf: 0  # not in TAXSIM35
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 9_000
-        premium_tax_credit: 0  # not in TAXSIM35
     households:
       household:
         members: [person1, person2, person3]
@@ -193,3 +181,41 @@
     md_dependent_care_subtraction: 2_000
     md_two_income_subtraction: 1_000
     md_total_subtractions: 3_000
+
+- name: Test 2 for MD two-income AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        employment_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+        taxable_pension_income: 10_000
+        social_security: 10_000
+      person3:
+        age: 25
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    adjusted_gross_income: 58_500
+    md_dependent_care_subtraction: 0
+    md_pension_subtraction: 10_000
+    md_pension_subtraction_amount: [0, 10_000, 0]
+    md_socsec_subtraction: 8_500
+    md_socsec_subtraction_amount: [0, 8_500, 0]
+    md_two_income_subtraction: 0
+    md_total_subtractions: 18_500
