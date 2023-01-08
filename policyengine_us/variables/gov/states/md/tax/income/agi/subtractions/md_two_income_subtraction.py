@@ -37,22 +37,25 @@ class md_two_income_subtraction(Variable):
         head_adds = 0.5 * total_additions
         spouse_adds = 0.5 * total_additions
 
-        # compute head and spouse MD AGI subtractions (other than two-income)
+        # sum head and spouse MD AGI subtractions (other than two-income)
+        head_subs = 0
+        spouse_subs = 0
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
-        subs_except_twoinc = [
-            sub for sub in p.sources if sub != "md_two_income_subtraction"
-        ]
-        total_subs_except_twoinc = add(tax_unit, period, subs_except_twoinc)
-        head_subs = 0.5 * total_subs_except_twoinc
-        spouse_subs = 0.5 * total_subs_except_twoinc
-        print("\n************************************************")
-        print("irs_gross_income=", gross_income)
-        print("head_frac=", head_frac)
-        print("head_us_agi=", head_us_agi)
-        print("spouse_us_agi=", spouse_us_agi)
-        print("tot_subs_pre_twoinc=", total_subs_except_twoinc)
-        print("head_subs=", head_subs)
-        print("spouse_subs=", spouse_subs)
+        for sub in p.sources:
+            if sub == "md_two_income_subtraction":
+                continue
+            if sub == "md_pension_subtraction":
+                ind_sub = person("md_pension_subtraction_amount", period)
+                head_subs += tax_unit.sum(is_head * ind_sub)
+                spouse_subs += tax_unit.sum(is_spouse * ind_sub)
+            elif sub == "md_socsec_subtraction":
+                ind_sub = person("md_socsec_subtraction_amount", period)
+                head_subs += tax_unit.sum(is_head * ind_sub)
+                spouse_subs += tax_unit.sum(is_spouse * ind_sub)
+            else:
+                unit_sub = tax_unit(sub, period)
+                head_subs += 0.5 * unit_sub
+                spouse_subs += 0.5 * unit_sub
 
         # compute MD two-income subtraction
         min_agi_adds_subs = min_(
@@ -63,6 +66,4 @@ class md_two_income_subtraction(Variable):
             p.max_two_income_subtraction,
             min_agi_adds_subs,
         )
-        print("min_agi_adds_subs=", min_agi_adds_subs)
-        print("capped_min_agi_adds_subs=", capped_min_agi_adds_subs)
         return is_joint * max_(0, capped_min_agi_adds_subs)
