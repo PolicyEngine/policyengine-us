@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class partner_is_disabled(Variable):
+class has_disabled_spouse(Variable):
     value_type = bool
     entity = Person
     label = "person's marriage partner in JOINT filing unit is disabled"

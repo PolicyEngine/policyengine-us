@@ -17,7 +17,7 @@ class md_pension_subtraction_amount(Variable):
         min_age = p.pension.min_age
         elderly = person("age", period) >= min_age
         disabled = person("is_disabled", period)
-        partner_is_disabled = person("partner_is_disabled", period)
+        partner_is_disabled = person("has_disabled_spouse", period)
         eligible = ~dependent & (elderly | disabled | partner_is_disabled)
         # calculate pension subtraction amount for each person
         peninc = person("taxable_pension_income", period)
