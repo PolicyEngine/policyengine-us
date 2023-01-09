@@ -8,7 +8,6 @@ class md_pension_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-2-maryland-taxable-income-calculations-for-individual/part-ii-maryland-adjusted-gross-income/section-10-208-effective-until-712024-subtractions-from-federal-adjusted-gross-income-state-adjustments"
         "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13"
     )
     defined_for = StateCode.MD
