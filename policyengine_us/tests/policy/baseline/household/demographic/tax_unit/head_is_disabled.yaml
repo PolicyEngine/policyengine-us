@@ -1,0 +1,23 @@
+- name: head_is_disabled unit test with disability
+  period: 2020
+  input:
+    is_tax_unit_head: true
+    is_disabled: true
+  output:
+    head_is_disabled: true
+
+- name: head_is_disabled unit test without disability
+  period: 2020
+  input:
+    is_tax_unit_head: true
+    is_disabled: false
+  output:
+    head_is_disabled: false
+
+- name: head_is_disabled unit test with disability for non-head
+  period: 2020
+  input:
+    is_tax_unit_head: false
+    is_disabled: true
+  output:
+    head_is_disabled: false
