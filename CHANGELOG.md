@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.198.0] - 2023-01-09 16:06:12
+
+### Added
+
+- MD AGI subtraction for pension income.
+
 ## [0.197.7] - 2023-01-06 11:26:07
 
 ### Changed
@@ -2535,6 +2541,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.7...0.198.0
 [0.197.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.6...0.197.7
 [0.197.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.5...0.197.6
 [0.197.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.4...0.197.5
