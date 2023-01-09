@@ -44,15 +44,13 @@ class md_two_income_subtraction(Variable):
         for sub in p.sources:
             if sub == "md_two_income_subtraction":
                 continue
-            if sub == "md_pension_subtraction":
-                ind_sub = person("md_pension_subtraction_amount", period)
-                head_subs += tax_unit.sum(is_head * ind_sub)
-                spouse_subs += tax_unit.sum(is_spouse * ind_sub)
-            elif sub == "md_socsec_subtraction":
-                ind_sub = person("md_socsec_subtraction_amount", period)
+            if sub in ["md_pension_subtraction", "md_socsec_subtraction"]:
+                # person-level subtractions
+                ind_sub = person(sub + "_amount", period)
                 head_subs += tax_unit.sum(is_head * ind_sub)
                 spouse_subs += tax_unit.sum(is_spouse * ind_sub)
             else:
+                # taxunit-level subtractions
                 unit_sub = tax_unit(sub, period)
                 head_subs += 0.5 * unit_sub
                 spouse_subs += 0.5 * unit_sub
