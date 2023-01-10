@@ -8,5 +8,4 @@ class spm_unit_market_income(Variable):
     definition_period = YEAR
     unit = USD
 
-    def formula(spm_unit, period, parameters):
-        return add(spm_unit, period, ["market_income"])
+    adds = ["market_income"]
