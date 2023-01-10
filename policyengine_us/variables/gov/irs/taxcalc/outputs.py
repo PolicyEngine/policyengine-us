@@ -134,7 +134,7 @@ class c03260(Variable):
 
     def formula(tax_unit, period, parameters):
         misc = parameters(period).gov.irs.ald.misc
-        setax = aggr(tax_unit, period, ["self_employment_tax"])
+        setax = add(tax_unit, period, ["self_employment_tax"])
         return (1 - misc.self_emp_tax_adj) * misc.employer_share * setax
 
 

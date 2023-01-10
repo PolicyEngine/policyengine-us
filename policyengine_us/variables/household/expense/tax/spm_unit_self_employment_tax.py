@@ -9,4 +9,4 @@ class spm_unit_self_employment_tax(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        return aggr(spm_unit, period, ["self_employment_tax"])
+        return add(spm_unit, period, ["self_employment_tax"])

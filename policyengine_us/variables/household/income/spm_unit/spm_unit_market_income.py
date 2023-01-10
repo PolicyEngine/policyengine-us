@@ -9,4 +9,4 @@ class spm_unit_market_income(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        return aggr(spm_unit, period, ["market_income"])
+        return add(spm_unit, period, ["market_income"])
