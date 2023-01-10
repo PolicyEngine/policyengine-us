@@ -7,9 +7,7 @@ class sey(Variable):
     definition_period = YEAR
     unit = USD
 
-    formula = sum_of_variables(
-        ["self_employment_income", "farm_income", "k1bx14"]
-    )
+    adds = ["self_employment_income", "farm_income", "k1bx14"]
 
 
 class filer_sey(Variable):
