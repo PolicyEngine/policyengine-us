@@ -15,20 +15,8 @@ class md_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.md.tax.income.deductions.standard
         md_agi = tax_unit("md_agi", period)
-        # Standard deduction is a percentage of AGI, bounded by a min/max by filing status.
-        if parameters(period).gov.contrib.nber.taxsim35_emulation:
-            # emulate TAXSIM35 bug
-            wrong_min_std_ded = where(
-                np.logical_or(
-                    filing_status == filing_status.possible_values.SINGLE,
-                    filing_status == filing_status.possible_values.SEPARATE,
-                ),
-                2300,
-                4650,
-            )
-            return np.clip(
-                p.rate * md_agi, wrong_min_std_ded, p.max[filing_status]
-            )
+        # standard deduction is a percentage of AGI that
+        # is bounded by a min/max by filing status.
         return np.clip(
             p.rate * md_agi, p.min[filing_status], p.max[filing_status]
         )
