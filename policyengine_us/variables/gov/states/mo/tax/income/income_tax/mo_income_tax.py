@@ -15,9 +15,5 @@ class mo_income_tax(Variable):
     defined_for = StateCode.MO
     # mo_property_tax_credit is refundable, per pg.17 of: https://dor.mo.gov/forms/4711_2021.pdf and the last reference above.
 
-    def formula(tax_unit, period, parameters):
-        mo_income_tax_before_credits = add(
-            tax_unit, period, ["mo_income_tax_before_credits"]
-        )
-        mo_property_tax_credit = tax_unit("mo_property_tax_credit", period)
-        return mo_income_tax_before_credits - mo_property_tax_credit
+    adds = ["mo_income_tax_before_credits"]
+    subtracts = ["mo_property_tax_credit"]

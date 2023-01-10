@@ -11,11 +11,7 @@ class md_single_childless_eitc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        single_childless = tax_unit(
-            "md_qualifies_for_single_childless_eitc", period
-        )
-        in_md = tax_unit.household("state_code_str", period) == "MD"
-        eligible = single_childless & in_md
+        eligible = tax_unit("md_qualifies_for_single_childless_eitc", period)
         federal_eitc_without_age_minimum = tax_unit(
             "federal_eitc_without_age_minimum", period
         )
