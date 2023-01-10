@@ -8,5 +8,4 @@ class taxsim_fiitax(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return tax_unit("income_tax", period)
+    adds = ["income_tax"]

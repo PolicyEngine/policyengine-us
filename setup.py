@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="0.197.6",
+    version="0.199.1",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -36,7 +36,7 @@ setup(
         "microdf_python==0.3.0",
         "pandas==1.5.2",
         "pathlib==1.0.1",
-        "policyengine-core==1.11.0",
+        "policyengine-core==1.11.1",
         "pytest==5.4.3",
         "pytest-dependency==0.5.1",
         "pyyaml==6.0",

@@ -10,6 +10,4 @@ class md_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.MD
 
-    formula = sum_of_variables(
-        "gov.states.md.tax.income.credits.non_refundable"
-    )
+    adds = "gov.states.md.tax.income.credits.non_refundable"

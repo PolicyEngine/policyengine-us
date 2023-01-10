@@ -10,4 +10,4 @@ class ma_part_c_agi(Variable):
     reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-2"
     defined_for = StateCode.MA
 
-    formula = sum_of_variables(["ma_part_c_gross_income"])
+    adds = ["ma_part_c_gross_income"]

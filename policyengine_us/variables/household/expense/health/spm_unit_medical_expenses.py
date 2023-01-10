@@ -8,4 +8,4 @@ class spm_unit_medical_expenses(Variable):
     definition_period = YEAR
     unit = USD
 
-    formula = sum_of_variables(["medical_expense"])
+    adds = ["medical_expense"]
