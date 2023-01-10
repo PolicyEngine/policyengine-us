@@ -10,10 +10,5 @@ class non_refundable_ctc(Variable):
         "The portion of the Child Tax Credit that is not refundable."
     )
     definition_period = YEAR
-    adds = [
-        "ctc",
-    ]
-
-    subtracts = [
-        "refundable_ctc",
-    ]
+    adds = ["ctc"]
+    subtracts = ["refundable_ctc"]
