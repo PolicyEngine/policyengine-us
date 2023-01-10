@@ -1,0 +1,55 @@
+- name: MD pension AGI subtraction unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+        md_pension_subtraction_amount: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 60
+        md_pension_subtraction_amount: 0
+      person3:
+        age: 90
+        md_pension_subtraction_amount: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    md_pension_subtraction: 20_000
+
+- name: MD pension AGI subtraction unit test 2
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+        md_pension_subtraction_amount: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 60
+        md_pension_subtraction_amount: 10_000
+      person3:
+        age: 90
+        md_pension_subtraction_amount: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    md_pension_subtraction: 30_000
