@@ -9,4 +9,4 @@ class ctc_qualifying_children(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/24#c"
 
-    formula = sum_of_variables(["ctc_qualifying_child"])
+    adds = ["ctc_qualifying_child"]

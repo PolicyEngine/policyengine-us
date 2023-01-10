@@ -10,7 +10,4 @@ class md_pension_subtraction(Variable):
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        pen_sub_amt = person("md_pension_subtraction_amount", period)
-        return tax_unit.sum(pen_sub_amt)
+    adds = ["md_pension_subtraction_amount"]

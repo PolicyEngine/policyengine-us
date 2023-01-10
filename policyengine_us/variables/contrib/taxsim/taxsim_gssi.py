@@ -8,5 +8,4 @@ class taxsim_gssi(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["social_security"])
+    adds = ["social_security"]

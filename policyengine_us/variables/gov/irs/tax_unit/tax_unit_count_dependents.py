@@ -7,4 +7,4 @@ class tax_unit_count_dependents(Variable):
     label = "Number of dependents"
     definition_period = YEAR
 
-    formula = sum_of_variables(["is_tax_unit_dependent"])
+    adds = ["is_tax_unit_dependent"]

@@ -7,9 +7,7 @@ class sey(Variable):
     definition_period = YEAR
     unit = USD
 
-    formula = sum_of_variables(
-        ["self_employment_income", "farm_income", "k1bx14"]
-    )
+    adds = ["self_employment_income", "farm_income", "k1bx14"]
 
 
 class filer_sey(Variable):
@@ -31,17 +29,16 @@ class combined(Variable):
     documentation = "Total federal income and payroll tax liability."
     unit = USD
 
-    def formula(tax_unit, period, parameters):
-        TAX_UNIT_COMPONENTS = ["iitax", "additional_medicare_tax"]
-        PERSON_COMPONENTS = [
-            "self_employment_medicare_tax",
-            "self_employment_social_security_tax",
-            "employee_medicare_tax",
-            "employee_social_security_tax",
-        ]
-        tax_unit_components = add(tax_unit, period, TAX_UNIT_COMPONENTS)
-        person_components = aggr(tax_unit, period, PERSON_COMPONENTS)
-        return tax_unit_components + person_components
+    adds = [
+        # Tax unit level.
+        "iitax",
+        "additional_medicare_tax",
+        # Person level
+        "self_employment_medicare_tax",
+        "self_employment_social_security_tax",
+        "employee_medicare_tax",
+        "employee_social_security_tax",
+    ]
 
 
 tax = variable_alias("tax", combined)

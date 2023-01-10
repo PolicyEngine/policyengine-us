@@ -10,7 +10,4 @@ class self_employment_tax_ald(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/164#f"
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        ald = person("self_employment_tax_ald_person", period)
-        return tax_unit.sum(ald)
+    adds = ["self_employment_tax_ald_person"]

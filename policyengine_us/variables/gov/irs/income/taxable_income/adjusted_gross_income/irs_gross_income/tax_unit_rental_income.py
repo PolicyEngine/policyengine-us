@@ -9,4 +9,4 @@ class tax_unit_rental_income(Variable):
     documentation = "Combined rental income for the tax unit."
     definition_period = YEAR
 
-    formula = sum_of_variables(["rental_income"])
+    adds = ["rental_income"]
