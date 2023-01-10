@@ -10,4 +10,4 @@ class tax_unit_capital_loss(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/1211"
 
-    formula = sum_of_variables(["capital_loss"])
+    adds = ["capital_loss"]
