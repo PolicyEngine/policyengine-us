@@ -10,4 +10,4 @@ class self_employed_health_insurance_ald(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/162#l"
 
-    adds = ["self_employed_health_insurance_ald_person"])
+    adds = ["self_employed_health_insurance_ald_person"]
