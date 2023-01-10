@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class oh_income_tax_exempt(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "OH income tax exempt"
     defined_for = StateCode.OH
