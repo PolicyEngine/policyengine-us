@@ -13,4 +13,5 @@ class oh_income_tax_before_credits(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("oh_taxable_income", period)
         p = parameters(period).gov.states.oh.tax.income.rates
-        return p.calc(taxable_income)
+        exempt = tax_unit("oh_income_tax_exempt", period)
+        return p.calc(taxable_income) * ~exempt

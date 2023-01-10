@@ -1,5 +1,6 @@
 - name: Single filing, income in 2nd tax bracket
   period: 2021
+  absolute_error_margin: 1
   input:
     oh_taxable_income: 31_000
     state_code: OH
@@ -10,6 +11,7 @@
 
 - name: Single filing, income in 3rd tax bracket
   period: 2021
+  absolute_error_margin: 1
   input:
     oh_taxable_income: 64_500
     state_code: OH

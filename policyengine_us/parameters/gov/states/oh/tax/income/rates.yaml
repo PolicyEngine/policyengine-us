@@ -3,21 +3,26 @@ brackets:
   - threshold:
       2021-01-01: 0
     rate:
-      2021-01-01: 0
+      # The first $25,000 income are not taxed; Ohio has a tax cliff.
+      # This is the rate implied by the starting tax amount $346.16
+      # divided by $25,000.
+      # Separately, we add a variable for being tax exempt, set if income
+      # is below $25,000.
+      2021-01-01: 0.01385
   - threshold: 
-      2021-01-01: 25_001
+      2021-01-01: 25_000
     rate:
       2021-01-01: 0.02765
   - threshold:
-      2021-01-01: 44_251
+      2021-01-01: 44_250
     rate:
       2021-01-01: 0.03226
   - threshold:
-      2021-01-01: 88_451
+      2021-01-01: 88_450
     rate:
       2021-01-01: 0.03688
   - threshold: 
-      2021-01-01: 110_651
+      2021-01-01: 110_650
     rate: 
       2021-01-01: 0.0399
 metadata:
