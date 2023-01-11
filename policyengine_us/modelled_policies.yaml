@@ -2,13 +2,12 @@ core:
   modelled:
     - Federal income tax
     - Payroll taxes
-    - SSI
+    - Supplemental Security Income
     - SNAP
-    - ACP
-    - EBB
-    - Lifeline
-    - Free school meals
+    - Free and reduced price school meals
     - WIC
+    - Affordable Connectivity Program
+    - Lifeline
 filtered:
   state_name:
     California:
@@ -27,6 +26,7 @@ filtered:
     Massachusetts:
       modelled:
       - Massachusetts state income tax
+      - Massachusetts SSI state supplement
     New York:
       modelled:
       - New York state income tax
