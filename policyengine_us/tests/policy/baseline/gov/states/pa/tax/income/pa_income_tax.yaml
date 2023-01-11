@@ -118,7 +118,6 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     # emulate TAXSIM35's smooth phase-out of PA tax forgiveness
     # no emulation implies a PA income tax difference of $156.23
     people:

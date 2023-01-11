@@ -3,7 +3,6 @@
   absolute_error_margin: 0.01
   period: 2018
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     # emulate TAXSIM35 smooth CTC phase-out
     # no emulation implies non_refundable_ctc has a $42.50 difference, and
     # therefore, income_tax has a $42.50 difference (see output section below)

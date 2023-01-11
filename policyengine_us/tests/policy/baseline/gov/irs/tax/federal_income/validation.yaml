@@ -3,7 +3,6 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     # if no emulation of CTC phase-out logic, there is a $35 income tax diff
     people:
       person1:

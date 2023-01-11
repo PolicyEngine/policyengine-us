@@ -122,7 +122,6 @@
 - name: TAXSIM erroneously considers the adult dependent CTC to be fully refundable in 2021.
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       head:
         age: 40
