@@ -8,4 +8,4 @@ class phone_expense(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["phone_cost"])  # For compatibility
+    adds = ["phone_cost"]  # For compatibility

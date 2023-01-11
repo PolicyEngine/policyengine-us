@@ -8,5 +8,4 @@ class taxsim_dividends(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["dividend_income"])
+    adds = ["dividend_income"]

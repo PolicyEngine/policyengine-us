@@ -8,5 +8,4 @@ class taxsim_childcare(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["tax_unit_childcare_expenses"])
+    adds = ["tax_unit_childcare_expenses"]

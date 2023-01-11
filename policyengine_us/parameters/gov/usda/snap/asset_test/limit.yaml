@@ -1,4 +1,4 @@
-description: Maximum value of SNAP-visible assets
+description: The USDA restricts SNAP to households with assets not exceeding this value.
 standard:
   description: Maximum value of SNAP-visible assets for households without elderly or disabled members
   values:
@@ -37,6 +37,7 @@ elderly_disabled:
           href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
 metadata:
   unit: currency-USD
+  label: SNAP asset limit
   reference:
     - title: 7 U.S. Code § 2014(g)(1)(A)
       href: https://www.law.cornell.edu/uscode/text/7/2014#g_1_A

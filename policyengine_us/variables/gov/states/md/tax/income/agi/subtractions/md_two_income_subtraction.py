@@ -37,22 +37,31 @@ class md_two_income_subtraction(Variable):
         head_adds = 0.5 * total_additions
         spouse_adds = 0.5 * total_additions
 
-        # compute head and spouse MD AGI subtractions (other than two-income)
+        # sum head and spouse MD AGI subtractions (other than two-income)
+        head_subs = 0
+        spouse_subs = 0
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
-        subs_except_twoinc = [
-            sub for sub in p.sources if sub != "md_two_income_subtraction"
-        ]
-        total_subs_except_twoinc = add(tax_unit, period, subs_except_twoinc)
-        head_subs = 0.5 * total_subs_except_twoinc
-        spouse_subs = 0.5 * total_subs_except_twoinc
+        for sub in p.sources:
+            if sub == "md_two_income_subtraction":
+                continue
+            if sub in ["md_pension_subtraction", "md_socsec_subtraction"]:
+                # person-level subtractions
+                ind_sub = person(sub + "_amount", period)
+                head_subs += tax_unit.sum(is_head * ind_sub)
+                spouse_subs += tax_unit.sum(is_spouse * ind_sub)
+            else:
+                # taxunit-level subtractions
+                unit_sub = tax_unit(sub, period)
+                head_subs += 0.5 * unit_sub
+                spouse_subs += 0.5 * unit_sub
 
         # compute MD two-income subtraction
-        min_agi_add_sub = min_(
+        min_agi_adds_subs = min_(
             head_us_agi + head_adds - head_subs,
             spouse_us_agi + spouse_adds - spouse_subs,
         )
-        capped_min_agi_add_sub = min_(
+        capped_min_agi_adds_subs = min_(
             p.max_two_income_subtraction,
-            min_agi_add_sub,
+            min_agi_adds_subs,
         )
-        return is_joint * max_(0, capped_min_agi_add_sub)
+        return is_joint * max_(0, capped_min_agi_adds_subs)

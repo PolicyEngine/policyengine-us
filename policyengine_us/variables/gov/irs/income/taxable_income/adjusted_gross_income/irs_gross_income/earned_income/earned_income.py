@@ -9,4 +9,4 @@ class earned_income(Variable):
     documentation = "Income from wages or self-employment"
     definition_period = YEAR
 
-    formula = sum_of_variables(["employment_income", "self_employment_income"])
+    adds = ["employment_income", "self_employment_income"]

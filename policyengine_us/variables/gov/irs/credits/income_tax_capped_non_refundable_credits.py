@@ -8,12 +8,8 @@ class income_tax_capped_non_refundable_credits(Variable):
     unit = USD
     documentation = "Capped value of non-refundable tax credits"
     definition_period = YEAR
-    adds = [
-        "income_tax_non_refundable_credits",
-    ]
-    subtracts = [
-        "income_tax_unavailable_non_refundable_credits",
-    ]
+    adds = ["income_tax_non_refundable_credits"]
+    subtracts = ["income_tax_unavailable_non_refundable_credits"]
 
 
 class income_tax_unavailable_non_refundable_credits(Variable):

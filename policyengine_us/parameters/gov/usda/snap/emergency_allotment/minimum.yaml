@@ -1,4 +1,4 @@
-description: Minimum amount of SNAP emergency allotment.
+description: States provide SNAP emergency allotments of at least this amount.
 
 values:
   2020-01-01: 95
@@ -6,6 +6,7 @@ values:
 metadata:
   period: month
   unit: currency-USD
+  label: SNAP emergency allotment minimum
   reference:
     - title: "USDA: Supplemental Nutrition Assistance Program (SNAP) - Emergency Allotments"
       href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-covid-emergency-allotments-phase-3-guidance.pdf#page=3

@@ -14,7 +14,7 @@ class is_acp_eligible(Variable):
         fcc = parameters(period).gov.fcc
         categorically_eligible = np.any(
             [
-                aggr(spm_unit, period, [program])
+                add(spm_unit, period, [program])
                 for program in fcc.acp.categorical_eligibility
             ],
             axis=0,
@@ -22,7 +22,7 @@ class is_acp_eligible(Variable):
         # ACP categorical eligibility points includes Lifeline categorical eligibility.
         lifeline_categorically_eligible = np.any(
             [
-                aggr(spm_unit, period, [program])
+                add(spm_unit, period, [program])
                 for program in fcc.lifeline.categorical_eligibility
             ],
             axis=0,

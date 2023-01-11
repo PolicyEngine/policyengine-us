@@ -13,6 +13,7 @@ class ca_young_child(Variable):
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1",
         "https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html",
     )
+    defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.young_child
@@ -29,8 +30,7 @@ class ca_young_child(Variable):
         is_eligible_child = meets_age_limit & is_qualifying_child_for_caleitc
         has_eligible_child = tax_unit.sum(is_eligible_child) > 0
         receives_ca_eitc = tax_unit("ca_eitc", period) > 0
-        in_ca = tax_unit.household("state_code_str", period) == "CA"
-        eligible = has_eligible_child & receives_ca_eitc & in_ca
+        eligible = has_eligible_child & receives_ca_eitc
         # Phase out the amount.
         # NB: Law and instructions say $20 per $100, but the tax form
         # instructs the filer to round.

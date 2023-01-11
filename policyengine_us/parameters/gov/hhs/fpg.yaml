@@ -7,6 +7,7 @@ first_person:
     2020-01-01: 12_760
     2021-01-01: 12_880
     2022-01-01: 13_590 # 2022 values took effect on 2022-01-12, but we assign it to the start of the calendar year.
+    2023-01-01: 14_550 # Tentative using 7.1% November CPI-U change.
   AK:
     2017-01-01: 15_060
     2018-01-01: 15_180
@@ -14,6 +15,7 @@ first_person:
     2020-01-01: 15_950
     2021-01-01: 16_090
     2022-01-01: 16_990
+    2023-01-01: 18_200 # Tentative using 7.1% November CPI-U change.
   HI:
     2017-01-01: 13_860
     2018-01-01: 13_960
@@ -21,6 +23,7 @@ first_person:
     2020-01-01: 14_680
     2021-01-01: 14_820
     2022-01-01: 15_630
+    2023-01-01: 16_740 # Tentative using 7.1% November CPI-U change.
 additional_person:
   # Calculated by subtracting a two-person household's line from a one-person's.
   # This difference is always the same for larger households.
@@ -31,6 +34,7 @@ additional_person:
     2020-01-01: 4_480
     2021-01-01: 4_540
     2022-01-01: 4_720 # 18_310 - 13_590
+    2023-01-01: 5_050 # Tentative using 7.1% November CPI-U change.
   AK:
     2017-01-01: 5_230
     2018-01-01: 5_400
@@ -38,6 +42,7 @@ additional_person:
     2020-01-01: 5_600
     2021-01-01: 5_680
     2022-01-01: 5_900 # 22_890 - 16_990
+    2023-01-01: 6_320 # Tentative using 7.1% November CPI-U change.
   HI:
     2017-01-01: 4_810
     2018-01-01: 4_810
@@ -45,6 +50,7 @@ additional_person:
     2020-01-01: 5_150
     2021-01-01: 5_220
     2022-01-01: 5_430 # 21_060 - 15_630
+    2023-01-01: 5_820 # Tentative using 7.1% November CPI-U change.
 metadata:
   unit: currency-USD
   reference:
@@ -52,7 +58,10 @@ metadata:
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines/prior-hhs-poverty-guidelines-federal-register-references
     - title: Poverty Guidelines
       href: https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines
+    - title: "Table 1. Consumer Price Index for All Urban Consumers (CPI-U): U.S. city average, by expenditure category, November 2022"
+      href: https://www.bls.gov/news.release/cpi.t01.htm
   period: year
+  label: Federal poverty guidelines
   breakdown:
     - [first_person, additional_person]
     - state_group

@@ -9,4 +9,4 @@ class ctc_maximum(Variable):
     documentation = "Maximum value of the Child Tax Credit, before phase-out."
     definition_period = YEAR
 
-    formula = sum_of_variables(["ctc_individual_maximum"])
+    adds = ["ctc_individual_maximum"]

@@ -8,7 +8,4 @@ class md_total_subtractions(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
-
-    formula = sum_of_variables(
-        "gov.states.md.tax.income.agi.subtractions.sources"
-    )
+    adds = "gov.states.md.tax.income.agi.subtractions.sources"

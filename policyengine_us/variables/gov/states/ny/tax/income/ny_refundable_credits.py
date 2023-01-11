@@ -9,4 +9,4 @@ class ny_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    formula = sum_of_variables("gov.states.ny.tax.income.credits.refundable")
+    adds = "gov.states.ny.tax.income.credits.refundable"

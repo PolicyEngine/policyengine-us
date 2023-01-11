@@ -8,4 +8,4 @@ class exemptions(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["tax_unit_size"])
+    adds = ["tax_unit_size"]

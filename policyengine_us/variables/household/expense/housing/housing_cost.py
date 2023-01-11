@@ -8,4 +8,4 @@ class housing_cost(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["rent"])
+    adds = ["rent"]

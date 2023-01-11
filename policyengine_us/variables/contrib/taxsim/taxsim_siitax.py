@@ -8,4 +8,4 @@ class taxsim_siitax(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["state_income_tax"])
+    adds = ["state_income_tax"]

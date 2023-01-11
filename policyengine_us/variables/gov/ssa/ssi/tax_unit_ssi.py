@@ -8,4 +8,4 @@ class tax_unit_ssi(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["ssi"])
+    adds = ["ssi"]

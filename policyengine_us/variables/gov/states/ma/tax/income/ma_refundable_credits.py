@@ -10,4 +10,4 @@ class ma_refundable_credits(Variable):
     reference = "https://www.mass.gov/doc/2021-form-1-massachusetts-resident-income-tax-return/download"
     defined_for = StateCode.MA
 
-    formula = sum_of_variables("gov.states.ma.tax.income.credits.refundable")
+    adds = "gov.states.ma.tax.income.credits.refundable"

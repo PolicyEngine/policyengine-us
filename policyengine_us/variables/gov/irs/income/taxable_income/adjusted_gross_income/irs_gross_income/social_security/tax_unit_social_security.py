@@ -8,4 +8,4 @@ class tax_unit_social_security(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["social_security"])
+    adds = ["social_security"]

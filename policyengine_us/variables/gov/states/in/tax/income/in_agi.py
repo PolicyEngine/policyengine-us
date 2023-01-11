@@ -12,10 +12,5 @@ class in_agi(Variable):
     )
     defined_for = StateCode.IN
 
-    def formula(tax_unit, period, parameters):
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        in_add_backs = tax_unit("in_add_backs", period)
-        in_deductions = tax_unit("in_deductions", period)
-        in_exemptions = tax_unit("in_exemptions", period)
-
-        return federal_agi + in_add_backs - in_deductions - in_exemptions
+    adds = ["adjusted_gross_income", "in_add_backs"]
+    subtracts = ["in_deductions", "in_exemptions"]

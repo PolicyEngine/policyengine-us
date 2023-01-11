@@ -13,6 +13,4 @@ class or_income_subtractions(Variable):
     )
     defined_for = StateCode.OR
 
-    formula = sum_of_variables(
-        "gov.states.or.tax.income.subtractions.subtractions"
-    )
+    adds = "gov.states.or.tax.income.subtractions.subtractions"

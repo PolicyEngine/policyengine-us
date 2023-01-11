@@ -8,4 +8,4 @@ class count_cdcc_eligible(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["is_cdcc_eligible"])
+    adds = ["is_cdcc_eligible"]

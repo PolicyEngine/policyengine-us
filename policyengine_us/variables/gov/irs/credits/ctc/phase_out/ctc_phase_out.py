@@ -22,8 +22,5 @@ class ctc_phase_out(Variable):
         p = parameters(period).gov.irs.credits.ctc.phase_out
         phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
         excess = max_(0, income - phase_out_threshold)
-        # TAXSIM phases out the CTC smoothly rather than in increments.
-        if parameters(period).gov.contrib.nber.taxsim35_emulation:
-            return excess * p.amount / p.increment
         increments = ceil(excess / p.increment)
         return increments * p.amount

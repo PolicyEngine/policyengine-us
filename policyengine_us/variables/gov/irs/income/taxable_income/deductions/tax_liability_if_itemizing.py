@@ -12,9 +12,6 @@ class tax_liability_if_itemizing(Variable):
         simulation = tax_unit.simulation
         itemized_branch = simulation.get_branch("itemizing")
         itemized_branch.set_input(
-            "tax_unit_itemizes",
-            period,
-            np.ones((tax_unit.count,), dtype=bool),
+            "tax_unit_itemizes", period, np.ones((tax_unit.count,), dtype=bool)
         )
-        values = itemized_branch.calculate("federal_state_income_tax", period)
-        return values
+        return itemized_branch.calculate("federal_state_income_tax", period)

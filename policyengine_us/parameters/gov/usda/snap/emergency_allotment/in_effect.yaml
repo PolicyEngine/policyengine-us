@@ -1,4 +1,4 @@
-description: Whether a SNAP emergency allotment is in effect; that is, whether a state provides all eligible households the maximum amount.
+description: States have secured SNAP emergency allotment approval from the USDA in these periods.
 
 AK:
   2020-03-01: true
@@ -132,5 +132,7 @@ metadata:
       href: https://www.fns.usda.gov/snap/covid-19-emergency-allotments-guidance
     - title: "SNAP Screener: SNAP Emergency Allotments & Maximum Benefit Amounts"
       href: https://www.snapscreener.com/blog/emergency-allotments
+  unit: bool
+  label: SNAP emergency allotment in effect
   breakdown:
   - state_code

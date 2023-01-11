@@ -13,9 +13,7 @@ class capital_gains_28_percent_rate_gain(Variable):
         href="https://www.law.cornell.edu/uscode/text/26/1#h_4",
     )
 
-    formula = sum_of_variables(
-        [
-            "long_term_capital_gains_on_collectibles",
-            "long_term_capital_gains_on_small_business_stock",
-        ]
-    )
+    adds = [
+        "long_term_capital_gains_on_collectibles",
+        "long_term_capital_gains_on_small_business_stock",
+    ]

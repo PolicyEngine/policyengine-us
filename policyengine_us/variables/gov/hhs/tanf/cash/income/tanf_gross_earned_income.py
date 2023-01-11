@@ -9,9 +9,4 @@ class tanf_gross_earned_income(Variable):
     documentation = "Gross earned income for calculating Temporary Assistance for Needy Families benefit."
     unit = USD
     reference = "https://www.dhs.state.il.us/page.aspx?item=15814"
-
-    def formula(spm_unit, period, parameters):
-        sources = parameters(
-            period
-        ).gov.hhs.tanf.cash.income.gross.sources.earned
-        return add(spm_unit, period, sources)
+    adds = "gov.hhs.tanf.cash.income.gross.sources.earned"

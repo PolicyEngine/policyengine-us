@@ -33,9 +33,6 @@ class pa_tax_forgiveness_rate(Variable):
         )
         excess = eligibility_income - eligibility_income_increment
         forgiveness_increment = p.rate_increment
-        if parameters(period).gov.contrib.nber.taxsim35_emulation:
-            increments = excess / forgiveness_increment
-        else:
-            increments = np.ceil(excess / forgiveness_increment)
+        increments = np.ceil(excess / forgiveness_increment)
         percent = p.tax_back
         return min_(max_(1 - percent * increments, 0), 1)

@@ -8,7 +8,5 @@ class tax_exempt_unemployment_compensation(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(person, period, parameters):
-        total_ui = person("unemployment_compensation", period)
-        taxable_ui = person("taxable_unemployment_compensation", period)
-        return total_ui - taxable_ui
+    adds = ["unemployment_compensation"]
+    subtracts = ["taxable_unemployment_compensation"]

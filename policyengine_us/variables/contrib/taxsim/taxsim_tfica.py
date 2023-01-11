@@ -8,4 +8,4 @@ class taxsim_tfica(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["self_employment_tax", "employee_payroll_tax"])
+    adds = ["self_employment_tax", "employee_payroll_tax"]

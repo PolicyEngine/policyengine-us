@@ -11,4 +11,4 @@ class tax_unit_partnership_s_corp_income(Variable):
     )
     definition_period = YEAR
 
-    formula = sum_of_variables(["partnership_s_corp_income"])
+    adds = ["partnership_s_corp_income"]

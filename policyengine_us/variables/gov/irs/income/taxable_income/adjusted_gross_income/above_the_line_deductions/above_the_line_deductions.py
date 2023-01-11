@@ -12,4 +12,4 @@ class above_the_line_deductions(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
 
-    formula = sum_of_variables("gov.irs.ald.deductions")
+    adds = "gov.irs.ald.deductions"

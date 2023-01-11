@@ -10,7 +10,4 @@ class self_employed_pension_contribution_ald(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/162#l"
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        ald = person("self_employed_pension_contribution_ald_person", period)
-        return tax_unit.sum(ald)
+    adds = ["self_employed_pension_contribution_ald_person"]
