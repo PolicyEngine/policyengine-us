@@ -64,10 +64,10 @@
     adjusted_gross_income: 495_150.00
     taxable_income: 471_150.00
     eitc: 0.00
-    non_refundable_ctc: 3_242.50  # correct $3,200 (see emulation note above)
+    non_refundable_ctc: 3_200.00
     refundable_ctc: 0.00
     cdcc: 1_200.00  # expected cdcc = 0.20 * 6000
-    income_tax: 111_839.00  # correct $111,881.50 (see emulation note above)
+    income_tax: 111_881.50
 
 - name: Tax unit with taxsimid 26 from f19.its.csv
   absolute_error_margin: 0.01
