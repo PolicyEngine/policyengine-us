@@ -11,8 +11,36 @@ core:
     - WIC
 filtered:
   state_name:
+    California:
+      modelled:
+      - CalWORKS (TANF)
+      not_modelled:
+      - California state income tax
+    Illinois:
+      modelled:
+      - TANF
+      not_modelled:
+      - Illinois state income tax
+    Maryland:
+      modelled:
+      - Maryland state income tax
     Massachusetts:
       modelled:
-      - Massachusetts State income tax
+      - Massachusetts state income tax
+    Missouri:
+      modelled:
+      - Missouri state income tax
+    New York:
+      modelled:
+      - New York state income tax
       not_modelled:
-      - Massachusetts TANF
+      - New York City income tax
+    Oregon:
+      modelled:
+      - Oregon state income tax
+    Pennsylvania:
+      modelled:
+      - Pennsylvania state income tax
+    Washington:
+      modelled:
+      - Washington state income tax
