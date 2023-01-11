@@ -11,6 +11,6 @@ class fcc_fpg_ratio(Variable):
     unit = "/1"
 
     def formula(spm_unit, period, parameters):
-        income = aggr(spm_unit, period, ["irs_gross_income"])
+        income = add(spm_unit, period, ["irs_gross_income"])
         fpg = spm_unit("spm_unit_fpg", period)
         return income / fpg
