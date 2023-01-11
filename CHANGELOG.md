@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.199.4] - 2023-01-11 04:59:47
+
+### Added
+
+- Tentative 2023 federal poverty guidelines based on November CPI-U.
+- C-CPI-U for more months of 2022.
+
 ## [0.199.3] - 2023-01-11 03:09:07
 
 ### Added
@@ -2565,6 +2572,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.199.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.3...0.199.4
 [0.199.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.2...0.199.3
 [0.199.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.1...0.199.2
 [0.199.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.0...0.199.1
