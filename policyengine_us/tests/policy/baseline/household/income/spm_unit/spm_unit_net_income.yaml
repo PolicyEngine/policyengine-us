@@ -1,0 +1,8 @@
+- name: SPM unit net income is market income plus benefits minus taxes.
+  period: 2021
+  input:
+    spm_unit_market_income: 3
+    spm_unit_benefits: 2
+    spm_unit_taxes: 1
+  output:
+    spm_unit_net_income: 3 + 2 - 1

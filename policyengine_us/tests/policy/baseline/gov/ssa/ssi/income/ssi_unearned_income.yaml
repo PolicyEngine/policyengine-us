@@ -1,0 +1,14 @@
+- name: Defaults to zero.
+  period: 2022
+  output:
+    ssi_unearned_income: 0
+
+- name: Otherwise sums across sources.
+  period: 2022
+  input:
+    social_security: 1
+    interest_income: 2
+    dividend_income: 3
+    gi_cash_assistance: 4
+  output:
+    ssi_unearned_income: 1 + 2 + 3 + 4

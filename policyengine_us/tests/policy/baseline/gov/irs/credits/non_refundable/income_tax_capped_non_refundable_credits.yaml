@@ -1,0 +1,8 @@
+- name: Non-refundable credits are capped properly
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    income_tax_non_refundable_credits: 2
+    income_tax_before_credits: 1
+  output:
+    income_tax_capped_non_refundable_credits: 1
