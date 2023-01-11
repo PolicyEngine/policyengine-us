@@ -8,5 +8,4 @@ class taxsim_dep18(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return add(tax_unit, period, ["is_eitc_qualifying_child"])
+    adds = ["is_eitc_qualifying_child"]

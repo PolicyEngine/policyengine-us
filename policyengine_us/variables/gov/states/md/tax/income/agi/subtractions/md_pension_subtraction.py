@@ -9,4 +9,5 @@ class md_pension_subtraction(Variable):
     definition_period = YEAR
     reference = "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13"
     defined_for = StateCode.MD
+
     adds = ["md_pension_subtraction_amount"]

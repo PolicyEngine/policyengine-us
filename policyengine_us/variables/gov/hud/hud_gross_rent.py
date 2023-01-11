@@ -11,4 +11,4 @@ class hud_gross_rent(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/24/982.503"
 
     # TODO: Add utility costs.
-    formula = sum_of_variables(["housing_cost", "hud_utility_allowance"])
+    adds = ["housing_cost", "hud_utility_allowance"]

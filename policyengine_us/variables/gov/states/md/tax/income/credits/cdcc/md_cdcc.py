@@ -17,8 +17,7 @@ class md_cdcc(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.md.tax.income.credits.cdcc
         # Eligibility is based on AGI.
-        in_md = tax_unit.household("state_code_str", period) == "MD"
-        eligible = (agi <= p.eligibility.agi_cap[filing_status]) & in_md
+        eligible = agi <= p.eligibility.agi_cap[filing_status]
         # Maximum is a percent of federal.
         max_cdcc = p.percent * tax_unit("cdcc", period)
         # Phases out based on filing status.

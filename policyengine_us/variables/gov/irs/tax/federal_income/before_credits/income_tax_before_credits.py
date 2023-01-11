@@ -9,10 +9,8 @@ class income_tax_before_credits(Variable):
     unit = USD
     documentation = "Total (regular + AMT) income tax liability before credits"
 
-    formula = sum_of_variables(
-        [
-            "income_tax_main_rates",
-            "capital_gains_tax",
-            "alternative_minimum_tax",
-        ]
-    )
+    adds = [
+        "income_tax_main_rates",
+        "capital_gains_tax",
+        "alternative_minimum_tax",
+    ]

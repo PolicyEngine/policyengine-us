@@ -15,10 +15,4 @@ class ctc_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
     )
-
-    formula = sum_of_variables(
-        [
-            "ctc_child_individual_maximum",
-            "ctc_adult_individual_maximum",
-        ]
-    )
+    adds = ["ctc_child_individual_maximum", "ctc_adult_individual_maximum"]

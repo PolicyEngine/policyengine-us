@@ -10,4 +10,4 @@ class interest_deduction(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/163"
 
-    formula = sum_of_variables(["interest_expense"])
+    adds = ["interest_expense"]

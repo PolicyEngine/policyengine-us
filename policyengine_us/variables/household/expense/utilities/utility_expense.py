@@ -8,14 +8,12 @@ class utility_expense(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(
-        [
-            "heating_cooling_expense",
-            "gas_expense",
-            "electricity_expense",
-            "trash_expense",
-            "water_expense",
-            "sewage_expense",
-            "phone_expense",
-        ]
-    )
+    adds = [
+        "heating_cooling_expense",
+        "gas_expense",
+        "electricity_expense",
+        "trash_expense",
+        "water_expense",
+        "sewage_expense",
+        "phone_expense",
+    ]
