@@ -33,7 +33,6 @@ class qbid_amount(Variable):
         filing_status = person.tax_unit("filing_status", period)
         po_start = p.qbi.phase_out.start[filing_status]
         po_length = p.qbi.phase_out.length[filing_status]
-        po_end = po_start + po_length
         # compute phase-out limited QBID amount
         reduction_rate = min_(  # Worksheet 12-A, line 24; Schedule A, line 9
             1, (max_(0, taxinc_less_qbid - po_start)) / po_length

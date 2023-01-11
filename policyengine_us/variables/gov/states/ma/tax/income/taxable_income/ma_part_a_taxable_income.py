@@ -10,9 +10,7 @@ class ma_part_a_taxable_income(Variable):
     reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
-    formula = sum_of_variables(
-        [
-            "ma_part_a_taxable_dividend_income",
-            "ma_part_a_taxable_capital_gains_income",
-        ]
-    )
+    adds = [
+        "ma_part_a_taxable_dividend_income",
+        "ma_part_a_taxable_capital_gains_income",
+    ]

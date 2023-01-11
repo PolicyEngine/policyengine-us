@@ -8,4 +8,4 @@ class or_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("gov.states.or.tax.income.credits.refundable")
+    adds = "gov.states.or.tax.income.credits.refundable"

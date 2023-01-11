@@ -8,6 +8,7 @@ class is_eligible_md_poverty_line_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://law.justia.com/codes/maryland/2021/tax-general/title-10/subtitle-7/section-10-709/"
+    defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
         # (3)    “Eligible low income taxpayer” means an individual, or an
@@ -44,10 +45,4 @@ class is_eligible_md_poverty_line_credit(Variable):
             "md_income_tax_before_credits", period
         )
         eitc_less_than_income_tax = md_eitc < md_income_tax_before_credits
-        in_md = tax_unit.household("state_code_str", period) == "MD"
-        return (
-            agi_below_fpg
-            & earnings_below_fpg
-            & eitc_less_than_income_tax
-            & in_md
-        )
+        return agi_below_fpg & earnings_below_fpg & eitc_less_than_income_tax

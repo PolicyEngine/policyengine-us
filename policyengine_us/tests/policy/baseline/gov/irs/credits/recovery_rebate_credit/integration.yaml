@@ -1,0 +1,49 @@
+- name: First and second payments have the correct maximum.
+  period: 2020
+  input:
+    people:
+      parent:
+        age: 25
+      child_1:
+        age: 6
+      child_2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+  output:
+    recovery_rebate_credit: (1_200 + 2 * 500) + (3 * 600)
+
+- name: First and second payments are both fully phased out at $250k
+  period: 2020
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income: 250_000
+      child_1:
+        age: 6
+      child_2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+  output:
+    recovery_rebate_credit: 0
+
+- name: Third payments with a slight phase-out.
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 25
+        employment_income: 113_000
+      child_1:
+        age: 6
+      child_2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+  output:
+    recovery_rebate_credit: 3_920 # https://www.efile.com/stimulus-check-three/

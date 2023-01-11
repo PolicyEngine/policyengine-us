@@ -10,10 +10,8 @@ class non_refundable_american_opportunity_credit(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"
 
-    def formula(tax_unit, period):
-        total = tax_unit("american_opportunity_credit", period)
-        refundable = tax_unit("refundable_american_opportunity_credit", period)
-        return total - refundable
+    adds = ["american_opportunity_credit"]
+    subtracts = ["refundable_american_opportunity_credit"]
 
 
 c87668 = variable_alias("c87668", non_refundable_american_opportunity_credit)

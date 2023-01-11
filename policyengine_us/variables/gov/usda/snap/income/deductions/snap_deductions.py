@@ -10,4 +10,4 @@ class snap_deductions(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e"
 
-    formula = sum_of_variables("gov.usda.snap.income.deductions.allowed")
+    adds = "gov.usda.snap.income.deductions.allowed"
