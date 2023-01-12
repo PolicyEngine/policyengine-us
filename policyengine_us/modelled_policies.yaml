@@ -11,8 +11,29 @@ core:
     - WIC
 filtered:
   state_name:
-    Massachusetts:
+    MA:
       modelled:
       - Massachusetts State income tax
       not_modelled:
       - Massachusetts TANF
+    OR:
+      modelled:
+      - Oregon State income tax
+      not_modelled:
+      - Oregon TANF
+    PA:
+      modelled:
+      - Pennsylvania State income tax
+      not_modelled:
+      - Pennsylvania TANF
+    MD:
+      modelled:
+      - Maryland State income tax
+      not_modelled:
+      - Maryland TANF
+    NY:
+      modelled:
+      - New York State income tax
+      not_modelled:
+      - New York TANF
+  
