@@ -2,7 +2,6 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
         is_tax_unit_head: true
@@ -41,6 +40,6 @@
       household:
         members: [person1, person2]
         state_code: TX  # no state income tax
-  output:  # expected results from TAXSIM35 12/30/22 version
+  output:  # expected results from TAXSIM35 12/30/22(2023-01-12) version
     taxsim_tfica: 10_157.48
-    income_tax: 385.81
+    income_tax: -154.73

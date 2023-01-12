@@ -2,7 +2,6 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    gov.contrib.nber.taxsim35_emulation: true
     people:
       person1:
         is_tax_unit_head: true
@@ -42,9 +41,9 @@
       household:
         members: [person1, person2, person3]
         state_code: TX  # no state income tax
-  output:  # expected results from TAXSIM35 12/30/22 version
+  output:  # expected results from TAXSIM35 12/30/22(2023-01-12) version
     taxsim_tfica: 11_130.24
-    income_tax: 24_409.70
+    income_tax: 24_507.2
 
 - name: Tax unit with taxsimid 87060 in a21.its.csv and a21.ots.csv
   absolute_error_margin: 0.01
