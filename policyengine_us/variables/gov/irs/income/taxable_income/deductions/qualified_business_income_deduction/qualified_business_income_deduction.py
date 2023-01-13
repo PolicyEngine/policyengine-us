@@ -24,9 +24,4 @@ class qualified_business_income_deduction(Variable):
         netcg_qdiv = tax_unit("adjusted_net_capital_gain", period)
         rate = parameters(period).gov.irs.deductions.qbi.max.rate
         taxinc_cap = rate * max_(0, taxinc_less_qbid - netcg_qdiv)
-        if parameters(period).gov.contrib.nber.taxsim35_emulation:
-            person = tax_unit.members
-            stcg = tax_unit.sum(person("short_term_capital_gains", period))
-            taxinc_cap -= rate * stcg  # TAXSIM35 bug
-            taxinc_cap = max_(0, taxinc_cap)
         return min_(uncapped_qbid, taxinc_cap)
