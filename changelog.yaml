@@ -2134,3 +2134,49 @@
     changed:
     - Replaced `aggr` with `add`.
   date: 2023-01-10 17:31:28
+- bump: patch
+  changes:
+    added:
+    - Units and labels for SNAP parameters.
+  date: 2023-01-11 03:09:07
+- bump: patch
+  changes:
+    added:
+    - Tentative 2023 federal poverty guidelines based on November CPI-U.
+    - C-CPI-U for more months of 2022.
+  date: 2023-01-11 04:59:47
+- bump: patch
+  changes:
+    added:
+    - School meal program values for 2022-23 school year.
+  date: 2023-01-11 05:07:04
+- bump: patch
+  changes:
+    added:
+    - README files for parameter folders.
+  date: 2023-01-11 06:09:00
+- bump: minor
+  changes:
+    removed:
+    - taxsim35_emulation parameter and all associated code and tests.
+  date: 2023-01-11 12:37:35
+- bump: patch
+  changes:
+    added:
+    - More md_cdcc unit tests.
+  date: 2023-01-11 18:57:20
+- bump: patch
+  changes:
+    added:
+    - Metadata for some modelled policies.
+  date: 2023-01-11 22:55:05
+- bump: patch
+  changes:
+    changed:
+    - Core bumped to next patch version.
+  date: 2023-01-11 23:55:26
+- bump: patch
+  changes:
+    fixed:
+    - Added modelled policy metadata.
+  date: 2023-01-12 00:27:48

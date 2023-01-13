@@ -39,6 +39,9 @@ metadata:
   unit: /1
   name: hud_ami_income_limit
   label: HUD area median income limit
+  household: false
+  economy: false
+  propagate_metadata_to_children: true
   reference:
     - title: 24 CFR § 81.17 - Affordability - Income level definitions - family size and income known (owner-occupied units, actual tenants, and prospective tenants).
       href: https://www.law.cornell.edu/cfr/text/24/81.17

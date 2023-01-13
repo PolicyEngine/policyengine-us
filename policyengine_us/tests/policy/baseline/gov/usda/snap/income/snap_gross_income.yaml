@@ -1,0 +1,7 @@
+- name: Gross income equals earned income plus unearned income.
+  period: 2020
+  input:
+    snap_earned_income: 1
+    snap_unearned_income: 2
+  output:
+    snap_gross_income: 3

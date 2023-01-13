@@ -92,7 +92,7 @@
     taxable_pension_income: 10_000
     state_code: MO
   output:
-    mo_pension_and_ss_or_ssd_deduction_section_b: 3_000
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0
 
 - name: AGI above threshold, private pension income, no taxable social security income, joint
   period: 2021

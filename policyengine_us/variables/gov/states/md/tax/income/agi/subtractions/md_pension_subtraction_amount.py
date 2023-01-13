@@ -14,7 +14,7 @@ class md_pension_subtraction_amount(Variable):
         p = parameters(period).gov.states.md.tax.income.agi.subtractions
         # determine pension subtraction eligiblity for each person
         dependent = person("is_tax_unit_dependent", period)
-        min_age = p.pension_subtraction_min_age
+        min_age = p.pension.min_age
         elderly = person("age", period) >= min_age
         disabled = person("is_disabled", period)
         partner_is_disabled = person("has_disabled_spouse", period)
@@ -22,7 +22,6 @@ class md_pension_subtraction_amount(Variable):
         # calculate pension subtraction amount for each person
         peninc = person("taxable_pension_income", period)
         socsec = person("social_security", period)
-        max_amount = p.pension_subtraction_max
-        amount = min_(peninc, max_(0, max_amount - socsec))
+        amount = min_(peninc, max_(0, p.pension.max_amount - socsec))
         # return pension subtraction amount for each eligible person
         return eligible * amount

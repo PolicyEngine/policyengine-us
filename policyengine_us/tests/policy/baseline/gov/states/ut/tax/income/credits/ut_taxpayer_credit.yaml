@@ -1,0 +1,8 @@
+- name: $100 credit max and $100 credit reduction
+  period: 2021
+  input:
+    state_code: UT
+    ut_taxpayer_credit_max: 100
+    ut_taxpayer_credit_reduction: 100
+  output:
+    ut_taxpayer_credit: 0

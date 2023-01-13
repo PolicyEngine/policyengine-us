@@ -1,0 +1,25 @@
+- name: Default gross/market income is zero.
+  period: 2022
+  output:
+    ccdf_income: 0
+
+- name: CCDF income for one person is their market income.
+  period: 2022
+  input:
+    market_income: 10_000
+  output:
+    ccdf_income: 10_000
+
+- name: CCDF sums market income.
+  period: 2022
+  input:
+    people:
+      p1:
+        market_income: 10_000
+      p2:
+        market_income: 20_000
+    spm_units:
+      spm_unit:
+        members: [p1, p2]
+  output:
+    ccdf_income: 30_000

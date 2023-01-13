@@ -1,0 +1,20 @@
+- name: Defaults to zero
+  period: 2022
+  output:
+    snap_earned_income: 0
+
+- name: Otherwise sums across people. Dividends don't count.
+  period: 2022
+  input:
+    people:
+      person_1:
+        employment_income: 1
+      person_2:
+        employment_income: 1
+        self_employment_income: 1
+        dividend_income: 5
+    spm_units:
+      spm_unit:
+        members: [person_1, person_2]
+  output:
+    snap_earned_income: 3
