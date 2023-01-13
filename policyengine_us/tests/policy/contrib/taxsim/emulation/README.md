@@ -1,1 +1,0 @@
-# Documentation on tests that use TAXSIM35 emulation
