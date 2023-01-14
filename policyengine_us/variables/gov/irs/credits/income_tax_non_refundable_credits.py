@@ -5,10 +5,7 @@ class income_tax_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    label = "Income tax non-refundable credits"
-    documentation = (
-        "Total non-refundable credits used to reduce positive tax liability"
-    )
+    label = "federal non-refundable income tax credits"
     unit = USD
     adds = "gov.irs.credits.non_refundable"
 
