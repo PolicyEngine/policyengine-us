@@ -1,21 +1,15 @@
 from policyengine_core.reforms import Reform
 from policyengine_us.model_api import *
-import numpy as np
-from policyengine_us.variables.gov.states.pa.tax.income.forgiveness.pa_tax_forgiveness_rate import (
-    pa_tax_forgiveness_rate as baseline_pa_tax_forgiveness_rate,
-)
-from policyengine_us.variables.gov.irs.credits.ctc.refundable.ctc_refundable_maximum import (
-    ctc_refundable_maximum as baseline_ctc_refundable_maximum,
-)
-from policyengine_us.variables.gov.irs.credits.ctc.phase_out.arpa.ctc_arpa_uncapped_phase_out import (
-    ctc_arpa_uncapped_phase_out as baseline_ctc_arpa_uncapped_phase_out,
-)
-from policyengine_us.variables.gov.irs.credits.ctc.phase_out.ctc_phase_out import (
-    ctc_phase_out as baseline_ctc_phase_out,
-)
 
 
-class pa_tax_forgiveness_rate(baseline_pa_tax_forgiveness_rate):
+class pa_tax_forgiveness_rate(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "PA tax forgiveness on eligibility income"
+    unit = "/1"
+    definition_period = YEAR
+    reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=39"
+    defined_for = StateCode.PA
     """
     TAXSIM erroneously phases in tax forgiveness smoothly.
     """
@@ -47,7 +41,20 @@ class pa_tax_forgiveness_rate(baseline_pa_tax_forgiveness_rate):
         return min_(max_(1 - percent * increments, 0), 1)
 
 
-class ctc_refundable_maximum(baseline_ctc_refundable_maximum):
+class ctc_refundable_maximum(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Maximum refundable CTC"
+    unit = USD
+    documentation = "The maximum refundable CTC for this person."
+    definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/24#a",
+        "https://www.law.cornell.edu/uscode/text/26/24#h",
+        "https://www.law.cornell.edu/uscode/text/26/24#i",
+        "https://www.irs.gov/pub/irs-prior/f1040--2021.pdf",
+        "https://www.irs.gov/pub/irs-prior/f1040s8--2021.pdf",
+    )
     """
     TAXSIM erroneously makes the adult CTC refundable as well.
     """
@@ -67,7 +74,12 @@ class ctc_refundable_maximum(baseline_ctc_refundable_maximum):
         return tax_unit.sum(min_(child_amount, ctc.refundable.individual_max))
 
 
-class ctc_arpa_uncapped_phase_out(baseline_ctc_arpa_uncapped_phase_out):
+class ctc_arpa_uncapped_phase_out(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Uncapped phase-out of ARPA CTC increase"
+    unit = USD
+    definition_period = YEAR
     """
     TAXSIM erroneously phases out the CTC smoothly rather than in increments.
     """
@@ -87,7 +99,13 @@ class ctc_arpa_uncapped_phase_out(baseline_ctc_arpa_uncapped_phase_out):
         return excess * p.amount / p.increment
 
 
-class ctc_phase_out(baseline_ctc_phase_out):
+class ctc_phase_out(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "CTC reduction from income"
+    unit = USD
+    documentation = "Reduction of the total CTC due to income."
+    definition_period = YEAR
     """
     TAXSIM erroneously phases out the CTC smoothly rather than in increments.
     """
