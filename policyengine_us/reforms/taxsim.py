@@ -4,6 +4,9 @@ import numpy as np
 from policyengine_us.variables.gov.states.pa.tax.income.forgiveness.pa_tax_forgiveness_rate import (
     pa_tax_forgiveness_rate as baseline_pa_tax_forgiveness_rate,
 )
+from policyengine_us.variables.gov.irs.credits.ctc.refundable.ctc_refundable_maximum import (
+    ctc_refundable_maximum as baseline_ctc_refundable_maximum,
+)
 
 
 class pa_tax_forgiveness_rate(baseline_pa_tax_forgiveness_rate):
@@ -34,6 +37,23 @@ class pa_tax_forgiveness_rate(baseline_pa_tax_forgiveness_rate):
         return min_(max_(1 - percent * increments, 0), 1)
 
 
+class ctc_refundable_maximum(baseline_ctc_refundable_maximum):
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        # Use either normal or ARPA CTC maximums.
+        child_amount = max_(
+            person("ctc_child_individual_maximum", period),
+            person("ctc_child_individual_maximum_arpa", period),
+        )
+        adult_amount = person("ctc_adult_individual_maximum", period)
+        ctc = parameters(period).gov.irs.credits.ctc
+        if ctc.refundable.fully_refundable:
+            # Fully refundable CTC does not affect the adult CTC.
+            return tax_unit.sum(child_amount + adult_amount)
+        return tax_unit.sum(min_(child_amount, ctc.refundable.individual_max))
+
+
 class taxsim(Reform):
     def apply(self):
         self.update_variable(pa_tax_forgiveness_rate)
+        self.update_variable(ctc_refundable_maximum)

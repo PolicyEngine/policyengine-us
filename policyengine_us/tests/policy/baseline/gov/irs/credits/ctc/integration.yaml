@@ -119,6 +119,22 @@
   output:
     refundable_ctc: 0
 
+- name: TAXSIM erroneously considers the adult dependent CTC to be fully refundable in 2021.
+  reforms: policyengine_us.reforms.taxsim.taxsim
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      dep:
+        age: 60
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep]
+  output:
+    refundable_ctc: 500
+
 - name: Adult dependent CTC is non-refundable in 2022.
   period: 2022
   input:
