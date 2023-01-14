@@ -7,9 +7,19 @@ from policyengine_us.variables.gov.states.pa.tax.income.forgiveness.pa_tax_forgi
 from policyengine_us.variables.gov.irs.credits.ctc.refundable.ctc_refundable_maximum import (
     ctc_refundable_maximum as baseline_ctc_refundable_maximum,
 )
+from policyengine_us.variables.gov.irs.credits.ctc.phase_out.arpa.ctc_arpa_uncapped_phase_out import (
+    ctc_arpa_uncapped_phase_out as baseline_ctc_arpa_uncapped_phase_out,
+)
+from policyengine_us.variables.gov.irs.credits.ctc.phase_out.ctc_phase_out import (
+    ctc_phase_out as baseline_ctc_phase_out,
+)
 
 
 class pa_tax_forgiveness_rate(baseline_pa_tax_forgiveness_rate):
+    """
+    TAXSIM erroneously phases in tax forgiveness smoothly.
+    """
+
     def formula(tax_unit, period, parameters):
         eligibility_income = tax_unit("pa_eligibility_income", period)
         person = tax_unit.members
@@ -38,6 +48,10 @@ class pa_tax_forgiveness_rate(baseline_pa_tax_forgiveness_rate):
 
 
 class ctc_refundable_maximum(baseline_ctc_refundable_maximum):
+    """
+    TAXSIM erroneously makes the adult CTC refundable as well.
+    """
+
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         # Use either normal or ARPA CTC maximums.
@@ -53,7 +67,49 @@ class ctc_refundable_maximum(baseline_ctc_refundable_maximum):
         return tax_unit.sum(min_(child_amount, ctc.refundable.individual_max))
 
 
+class ctc_arpa_uncapped_phase_out(baseline_ctc_arpa_uncapped_phase_out):
+    """
+    TAXSIM erroneously phases out the CTC smoothly rather than in increments.
+    """
+
+    def formula(tax_unit, period, parameters):
+        # Logic sequence follows the form, which is clearer than the IRC.
+        p = parameters(period).gov.irs.credits.ctc.phase_out.arpa
+        # defined_for didn't work.
+        if not p.in_effect:
+            return 0
+        # The ARPA CTC has two phase-outs: the original, and a new phase-out
+        # applying before and only to the increase in the maximum CTC under ARPA.
+        # Calculate the income used to assess the new phase-out.
+        threshold = tax_unit("ctc_arpa_phase_out_threshold", period)
+        agi = tax_unit("adjusted_gross_income", period)
+        excess = max_(0, agi - threshold)
+        return excess * p.amount / p.increment
+
+
+class ctc_phase_out(baseline_ctc_phase_out):
+    """
+    TAXSIM erroneously phases out the CTC smoothly rather than in increments.
+    """
+
+    def formula(tax_unit, period, parameters):
+        # TCJA's phase-out changes are purely parametric so don't require
+        # structural reform.
+
+        # The ARPA CTC has two phase-outs: the original, and a new phase-out
+        # applying before and only to the increase in the maximum CTC under ARPA.
+
+        # Start with the normal phase-out.
+        income = tax_unit("adjusted_gross_income", period)
+        p = parameters(period).gov.irs.credits.ctc.phase_out
+        phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
+        excess = max_(0, income - phase_out_threshold)
+        return excess * p.amount / p.increment
+
+
 class taxsim(Reform):
     def apply(self):
         self.update_variable(pa_tax_forgiveness_rate)
         self.update_variable(ctc_refundable_maximum)
+        self.update_variable(ctc_arpa_uncapped_phase_out)
+        self.update_variable(ctc_phase_out)
