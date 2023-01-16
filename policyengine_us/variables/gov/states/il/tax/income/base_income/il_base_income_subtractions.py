@@ -8,4 +8,4 @@ class il_base_income_subtractions(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("gov.states.il.tax.income.base.subtractions")
+    adds = "gov.states.il.tax.income.base.subtractions"

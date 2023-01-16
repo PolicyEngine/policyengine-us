@@ -10,10 +10,8 @@ class il_total_payments_and_refundable_credits(Variable):
 
     defined_for = StateCode.IL
 
-    formula = sum_of_variables(
-        [
-            "il_pass_through_withholding",
-            "il_pass_through_entity_tax_credit",
-            "il_eitc",
-        ]
-    )
+    adds = [
+        "il_pass_through_withholding",
+        "il_pass_through_entity_tax_credit",
+        "il_eitc",
+    ]

@@ -10,10 +10,8 @@ class il_total_exemptions(Variable):
 
     defined_for = "il_is_exemption_eligible"
 
-    formula = sum_of_variables(
-        [
-            "il_personal_exemption",
-            "il_aged_blind_exemption",
-            "il_dependent_exemption",
-        ]
-    )
+    adds = [
+        "il_personal_exemption",
+        "il_aged_blind_exemption",
+        "il_dependent_exemption",
+    ]

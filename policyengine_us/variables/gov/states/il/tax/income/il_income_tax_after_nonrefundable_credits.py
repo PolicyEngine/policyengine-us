@@ -9,11 +9,5 @@ class il_income_tax_after_nonrefundable_credits(Variable):
     definition_period = YEAR
 
     defined_for = StateCode.IL
-
-    def formula(tax_unit, period, parameters):
-        income_tax_before_credits = tax_unit(
-            "il_income_tax_before_nonrefundable_credits", period
-        )
-        nonrefundable_credits = tax_unit("il_nonrefundable_credits", period)
-
-        return income_tax_before_credits - nonrefundable_credits
+    adds = ["il_income_tax_before_nonrefundable_credits"]
+    subtracts = ["il_nonrefundable_credits"]

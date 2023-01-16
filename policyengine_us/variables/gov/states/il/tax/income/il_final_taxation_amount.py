@@ -10,4 +10,4 @@ class il_final_taxation_amount(Variable):
     defined_for = StateCode.IL
 
     adds = ["il_total_tax"]
-    subtracts = ["il_total_payments_and_refundable_credit"]
+    subtracts = ["il_total_payments_and_refundable_credits"]

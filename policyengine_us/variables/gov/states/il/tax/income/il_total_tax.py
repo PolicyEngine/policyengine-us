@@ -10,6 +10,4 @@ class il_total_tax(Variable):
 
     defined_for = StateCode.IL
 
-    formula = sum_of_variables(
-        ["il_income_tax_after_nonrefundable_credits", "il_use_tax"]
-    )
+    adds = ["il_income_tax_after_nonrefundable_credits", "il_use_tax"]

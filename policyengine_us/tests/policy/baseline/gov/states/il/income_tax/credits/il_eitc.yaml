@@ -1,32 +1,8 @@
-- name: "IL EITC Match #1"
+- name: Illinois has a 18% EITC match
   period: 2021
   absolute_error_margin: 0.0001
   input:
-    people:
-      person_1:
-        age: 30
-    tax_units:
-      tax_unit:
-        earned_income_tax_credit: 1_000
-    households:
-      household:
-        members: [person_1]
-        state_code: IL
+    earned_income_tax_credit: 1_000
+    state_code: IL
   output:
     il_eitc: 1_000 * 0.18
-- name: "IL EITC Match #2"
-  period: 2021
-  absolute_error_margin: 0.0001
-  input:
-    people:
-      person_1:
-        age: 30
-    tax_units:
-      tax_unit:
-        earned_income_tax_credit: 5_000
-    households:
-      household:
-        members: [person_1]
-        state_code: IL
-  output:
-    il_eitc: 5_000 * 0.18
