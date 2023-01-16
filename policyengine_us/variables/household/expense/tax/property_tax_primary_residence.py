@@ -8,4 +8,4 @@ class property_tax_primary_residence(Variable):
     unit = USD
     definition_period = YEAR
 
-    adds = "real_estate_taxes"
+    adds = ["real_estate_taxes"]
