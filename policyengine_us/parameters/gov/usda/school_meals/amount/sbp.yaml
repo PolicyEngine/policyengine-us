@@ -1,0 +1,57 @@
+description: The USDA's School Breakfast Program reimburses these amounts per meal per child.
+
+# Use "Non-severe need"
+CONTIGUOUS_US:
+  PAID:
+    2020-07-01: 0.32
+    2021-07-01: 0.33
+    2022-07-01: 0.35
+  REDUCED:
+    2020-07-01: 1.59
+    2021-07-01: 1.67
+    2022-07-01: 1.81
+  FREE:
+    2020-07-01: 1.89
+    2021-07-01: 1.97
+    2022-07-01: 2.11
+AK:
+  PAID:
+    2020-07-01: 0.49
+    2021-07-01: 0.50
+    2022-07-01: 0.54
+  REDUCED:
+    2020-07-01: 2.73
+    2021-07-01: 2.85
+    2022-07-01: 3.08
+  FREE:
+    2020-07-01: 3.03
+    2021-07-01: 3.15
+    2022-07-01: 3.38
+HI:
+  PAID:
+    2020-07-01: 0.37
+    2021-07-01: 0.38
+    2022-07-01: 0.40
+  REDUCED:
+    2020-07-01: 1.91
+    2021-07-01: 1.99
+    2022-07-01: 2.16
+  FREE:
+    2020-07-01: 2.21
+    2021-07-01: 2.29
+    2022-07-01: 2.46
+
+metadata:
+  unit: currency-USD
+  reference:
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2020
+      href: https://www.federalregister.gov/documents/2020/07/22/2020-15764/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2021
+      href: https://www.federalregister.gov/documents/2021/07/16/2021-15107/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+    - title: National School Lunch, Special Milk, and School Breakfast Programs, National Average Payments/Maximum Reimbursement Rates - 2022
+      href: https://www.federalregister.gov/documents/2022/07/26/2022-15892/national-school-lunch-special-milk-and-school-breakfast-programs-national-average-paymentsmaximum
+  period: day
+  label: School Breakfast Program value
+  breakdown:
+    - state_group
+    - school_meal_tier

@@ -18,7 +18,7 @@ class eitc_eligible(Variable):
         )
         inv_income_sources = eitc.eligibility.counted_inv_income
         investment_income = (
-            aggr(tax_unit, period, inv_income_sources)
+            add(tax_unit, period, inv_income_sources)
             + max_(0, tax_unit("c01000", period))
             + max_(
                 0,

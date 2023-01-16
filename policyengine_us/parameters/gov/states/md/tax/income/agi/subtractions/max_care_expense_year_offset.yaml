@@ -1,0 +1,13 @@
+description: Decoupled year offset for maximum CDCC expense cap
+values:
+  2019-01-01: 0   # use current year federal CDCC maximum expense cap
+  2020-01-01: -1  # use 2019 federal CDCC maximum expense cap 
+  2021-01-01: -2  # use 2019 federal CDCC maximum expense cap
+  2022-01-01: 0   # use current year federal CDCC maximum expense cap
+metadata:
+  reference:
+    - title: "Form 502, line 9"
+      href: https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf
+  unit: int
+  period: year
+  label: Decoupled year offset for maximum CDCC expense cap
