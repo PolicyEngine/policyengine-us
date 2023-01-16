@@ -10,6 +10,4 @@ class snap_unearned_income(Variable):
     reference = "https://www.law.cornell.edu/cfr/text/7/273.9#b_2"
     unit = USD
 
-    def formula(spm_unit, period, parameters):
-        sources = parameters(period).gov.usda.snap.income.sources.unearned
-        return aggr(spm_unit, period, sources)
+    adds = "gov.usda.snap.income.sources.unearned"

@@ -5,6 +5,147 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.200.7] - 2023-01-16 18:14:49
+
+### Changed
+
+- Refactor SNAP emergency allotment to decompose correctly in the app.
+
+## [0.200.6] - 2023-01-15 17:40:22
+
+### Added
+
+- Structural reform emulating TAXSIM.
+
+## [0.200.5] - 2023-01-14 20:30:41
+
+### Fixed
+
+- Added several integration tests.
+
+## [0.200.4] - 2023-01-12 00:27:48
+
+### Fixed
+
+- Added modelled policy metadata.
+
+## [0.200.3] - 2023-01-11 23:55:26
+
+### Changed
+
+- Core bumped to next patch version.
+
+## [0.200.2] - 2023-01-11 22:55:05
+
+### Added
+
+- Metadata for some modelled policies.
+
+## [0.200.1] - 2023-01-11 18:57:20
+
+### Added
+
+- More md_cdcc unit tests.
+
+## [0.200.0] - 2023-01-11 12:37:35
+
+## [0.199.6] - 2023-01-11 06:09:00
+
+### Added
+
+- README files for parameter folders.
+
+## [0.199.5] - 2023-01-11 05:07:04
+
+### Added
+
+- School meal program values for 2022-23 school year.
+
+## [0.199.4] - 2023-01-11 04:59:47
+
+### Added
+
+- Tentative 2023 federal poverty guidelines based on November CPI-U.
+- C-CPI-U for more months of 2022.
+
+## [0.199.3] - 2023-01-11 03:09:07
+
+### Added
+
+- Units and labels for SNAP parameters.
+
+## [0.199.2] - 2023-01-10 17:31:28
+
+### Changed
+
+- Replaced `aggr` with `add`.
+
+## [0.199.1] - 2023-01-10 12:30:48
+
+### Changed
+
+- Used adds and subtracts instead of sum_of_variables and Python code.
+
+## [0.199.0] - 2023-01-10 06:45:38
+
+### Added
+
+- OH Income Tax Rates
+
+## [0.198.0] - 2023-01-09 16:06:12
+
+### Added
+
+- MD AGI subtraction for pension income.
+
+## [0.197.7] - 2023-01-06 11:26:07
+
+### Changed
+
+- Core bumped to 1.11.1.
+
+## [0.197.6] - 2023-01-06 01:56:20
+
+### Fixed
+
+- Incomplete MD care expense AGI subtraction logic.
+
+## [0.197.5] - 2023-01-04 19:50:05
+
+### Added
+
+- Test to guard against inadvertently making 2021 CDCC non-refundable.
+
+## [0.197.4] - 2023-01-04 00:33:41
+
+### Changed
+
+- Update default year to 2023.
+
+## [0.197.3] - 2023-01-03 23:24:30
+
+### Changed
+
+- Widened Python dependency.
+
+## [0.197.2] - 2023-01-03 23:13:23
+
+### Fixed
+
+- Use parameter to define refundable and non-refundable credits, fixing CDCC refundability under ARPA.
+
+## [0.197.1] - 2023-01-03 21:24:39
+
+### Fixed
+
+- PyPI deployments.
+
+## [0.197.0] - 2023-01-03 21:17:57
+
+### Changed
+
+- SNAP EAs are calculated monthly.
+
 ## [0.196.1] - 2023-01-02 21:05:11
 
 ### Changed
@@ -2487,6 +2628,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.200.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.6...0.200.7
+[0.200.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.5...0.200.6
+[0.200.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.4...0.200.5
+[0.200.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.3...0.200.4
+[0.200.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.2...0.200.3
+[0.200.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.1...0.200.2
+[0.200.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.0...0.200.1
+[0.200.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.6...0.200.0
+[0.199.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.5...0.199.6
+[0.199.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.4...0.199.5
+[0.199.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.3...0.199.4
+[0.199.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.2...0.199.3
+[0.199.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.1...0.199.2
+[0.199.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.199.0...0.199.1
+[0.199.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.198.0...0.199.0
+[0.198.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.7...0.198.0
+[0.197.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.6...0.197.7
+[0.197.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.5...0.197.6
+[0.197.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.4...0.197.5
+[0.197.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.3...0.197.4
+[0.197.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.2...0.197.3
+[0.197.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.1...0.197.2
+[0.197.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.197.0...0.197.1
+[0.197.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.196.1...0.197.0
 [0.196.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.196.0...0.196.1
 [0.196.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.195.1...0.196.0
 [0.195.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.195.0...0.195.1

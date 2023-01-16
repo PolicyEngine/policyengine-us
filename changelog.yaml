@@ -2073,3 +2073,125 @@
     changed:
     - Pin and alphabetize dependencies, and pin Python 3.9.
   date: 2023-01-02 21:05:11
+- bump: minor
+  changes:
+    changed:
+    - SNAP EAs are calculated monthly.
+  date: 2023-01-03 21:17:57
+- bump: patch
+  changes:
+    fixed:
+    - PyPI deployments.
+  date: 2023-01-03 21:24:39
+- bump: patch
+  changes:
+    fixed:
+    - Use parameter to define refundable and non-refundable credits, fixing CDCC refundability
+      under ARPA.
+  date: 2023-01-03 23:13:23
+- bump: patch
+  changes:
+    changed:
+    - Widened Python dependency.
+  date: 2023-01-03 23:24:30
+- bump: patch
+  changes:
+    changed:
+    - Update default year to 2023.
+  date: 2023-01-04 00:33:41
+- bump: patch
+  changes:
+    added:
+    - Test to guard against inadvertently making 2021 CDCC non-refundable.
+  date: 2023-01-04 19:50:05
+- bump: patch
+  changes:
+    fixed:
+    - Incomplete MD care expense AGI subtraction logic.
+  date: 2023-01-06 01:56:20
+- bump: patch
+  changes:
+    changed:
+    - Core bumped to 1.11.1.
+  date: 2023-01-06 11:26:07
+- bump: minor
+  changes:
+    added:
+    - MD AGI subtraction for pension income.
+  date: 2023-01-09 16:06:12
+- bump: minor
+  changes:
+    added:
+    - OH Income Tax Rates
+  date: 2023-01-10 06:45:38
+- bump: patch
+  changes:
+    changed:
+    - Used adds and subtracts instead of sum_of_variables and Python code.
+  date: 2023-01-10 12:30:48
+- bump: patch
+  changes:
+    changed:
+    - Replaced `aggr` with `add`.
+  date: 2023-01-10 17:31:28
+- bump: patch
+  changes:
+    added:
+    - Units and labels for SNAP parameters.
+  date: 2023-01-11 03:09:07
+- bump: patch
+  changes:
+    added:
+    - Tentative 2023 federal poverty guidelines based on November CPI-U.
+    - C-CPI-U for more months of 2022.
+  date: 2023-01-11 04:59:47
+- bump: patch
+  changes:
+    added:
+    - School meal program values for 2022-23 school year.
+  date: 2023-01-11 05:07:04
+- bump: patch
+  changes:
+    added:
+    - README files for parameter folders.
+  date: 2023-01-11 06:09:00
+- bump: minor
+  changes:
+    removed:
+    - taxsim35_emulation parameter and all associated code and tests.
+  date: 2023-01-11 12:37:35
+- bump: patch
+  changes:
+    added:
+    - More md_cdcc unit tests.
+  date: 2023-01-11 18:57:20
+- bump: patch
+  changes:
+    added:
+    - Metadata for some modelled policies.
+  date: 2023-01-11 22:55:05
+- bump: patch
+  changes:
+    changed:
+    - Core bumped to next patch version.
+  date: 2023-01-11 23:55:26
+- bump: patch
+  changes:
+    fixed:
+    - Added modelled policy metadata.
+  date: 2023-01-12 00:27:48
+- bump: patch
+  changes:
+    fixed:
+    - Added several integration tests.
+  date: 2023-01-14 20:30:41
+- bump: patch
+  changes:
+    added:
+    - Structural reform emulating TAXSIM.
+  date: 2023-01-15 17:40:22
+- bump: patch
+  changes:
+    changed:
+    - Refactor SNAP emergency allotment to decompose correctly in the app.
+  date: 2023-01-16 18:14:49

@@ -8,4 +8,4 @@ class ssi_unearned_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables("gov.ssa.ssi.income.sources.unearned")
+    adds = "gov.ssa.ssi.income.sources.unearned"

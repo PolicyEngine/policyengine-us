@@ -8,4 +8,4 @@ class federal_state_income_tax(Variable):
     unit = USD
     definition_period = YEAR
 
-    formula = sum_of_variables(["income_tax", "state_income_tax"])
+    adds = ["income_tax", "state_income_tax"]

@@ -14,7 +14,7 @@ class hud_adjusted_income(Variable):
         # Extract annual income.
         income = spm_unit("hud_annual_income", period)
         # Count dependents - children only for now.
-        child_count = aggr(spm_unit, period, ["is_child"])
+        child_count = add(spm_unit, period, ["is_child"])
         # Identify if elderly or disabled.
         elderly_disabled = spm_unit("is_hud_elderly_disabled_family", period)
         # Extract childcare expenses.
@@ -24,7 +24,7 @@ class hud_adjusted_income(Variable):
         # TODO: Attendant care (save for later)
         # Medical expenses for elderly/disabled families.
         ded = parameters(period).gov.hud.adjusted_income.deductions
-        moop = aggr(spm_unit, period, ["medical_out_of_pocket_expenses"])
+        moop = add(spm_unit, period, ["medical_out_of_pocket_expenses"])
         # Only expenses beyond a percent of income are deductible.
         moop_threshold = ded.moop.threshold * income
         moop_deductible = max_(0, moop - moop_threshold)

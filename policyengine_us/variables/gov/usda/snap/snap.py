@@ -9,7 +9,4 @@ class snap(Variable):
     label = "SNAP allotment"
     reference = "https://www.law.cornell.edu/uscode/text/7/2017#a"
     unit = USD
-
-    def formula(spm_unit, period, parameters):
-        ALLOTMENTS = ["snap_normal_allotment", "snap_emergency_allotment"]
-        return add(spm_unit, period, ALLOTMENTS)
+    adds = ["snap_normal_allotment", "snap_emergency_allotment"]

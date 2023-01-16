@@ -1,0 +1,22 @@
+- name: Mid-year SNAP reform is captured
+  period: 2022
+  reforms: policyengine_us.tests.policy.contrib.snap_ea.mid_year_snap_ea_reform.abolish_ca_snap_ea_may_22
+  input:
+    state_code: CA
+    spm_unit_size: 3
+  output:
+    # Assert that Jan/Feb/Mar/Apr are all $95, and following months are $0.
+    snap_emergency_allotment_monthly:
+      2022-01: 95
+      2022-02: 95
+      2022-03: 95
+      2022-04: 95
+      2022-05: 0
+      2022-06: 0
+      2022-07: 0
+      2022-08: 0
+      2022-09: 0
+      2022-10: 0
+      2022-11: 0
+      2022-12: 0
+    

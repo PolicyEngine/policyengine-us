@@ -30,6 +30,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         "employment_income",
         "age",
     ]
+    modelled_policies = COUNTRY_DIR / "modelled_policies.yaml"
 
     def __init__(self):
         # We initialize our tax and benefit system with the general constructor
@@ -58,10 +59,10 @@ class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
     default_dataset = CPS
-    default_dataset_year = 2022
+    default_dataset_year = 2023
     default_role = "member"
-    default_calculation_period = 2022
-    default_input_period = 2022
+    default_calculation_period = 2023
+    default_input_period = 2023
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
@@ -82,6 +83,9 @@ class IndividualSim(CoreIndividualSim):  # Deprecated
         "family",
     ]
 
+
+if 2023 not in CPS.years:
+    CPS.download(2023)
 
 if 2022 not in CPS.years:
     CPS.download(2022)
