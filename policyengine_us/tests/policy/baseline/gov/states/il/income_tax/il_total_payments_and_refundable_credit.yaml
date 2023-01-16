@@ -1,0 +1,18 @@
+- name: "Test #1"
+  period: 2021
+  input:
+    il_pass_through_withholding: 500
+    il_pass_through_entity_tax_credit: 750
+    il_eitc: 1_000
+    state_code: IL
+  output:
+    il_total_payments_and_refundable_credits: 1_000 + 750 + 500
+- name: "Test #2"
+  period: 2021
+  input:
+    il_pass_through_withholding: 2500
+    il_pass_through_entity_tax_credit: 1300
+    il_eitc: 3454
+    state_code: IL
+  output:
+    il_total_payments_and_refundable_credits: 3454 + 1300 + 2500

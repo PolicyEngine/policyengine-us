@@ -1,0 +1,16 @@
+- name: "Test #1"
+  period: 2021
+  input:
+    il_income_tax_after_nonrefundable_credits: 12345
+    il_use_tax: 250
+    state_code: IL
+  output:
+    il_total_tax: 12345 + 250
+- name: "Test #2"
+  period: 2021
+  input:
+    il_income_tax_after_nonrefundable_credits: 93847
+    il_use_tax: 2304
+    state_code: IL
+  output:
+    il_total_tax: 93847 + 2304

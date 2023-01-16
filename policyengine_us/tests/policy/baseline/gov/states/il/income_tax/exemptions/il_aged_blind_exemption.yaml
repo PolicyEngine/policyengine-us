@@ -1,0 +1,23 @@
+- name: "Test #1"
+  period: 2021
+  input:
+    aged_blind_count: 0
+    state_code: IL
+  output:
+    il_aged_blind_exemption: 0
+
+- name: "Test #2"
+  period: 2021
+  input:
+    aged_blind_count: 1
+    state_code: IL
+  output:
+    il_aged_blind_exemption: 1_000
+
+- name: "Test #3"
+  period: 2021
+  input:
+    aged_blind_count: 2
+    state_code: IL
+  output:
+    il_aged_blind_exemption: 2_000
