@@ -30,7 +30,7 @@ DARK_BLUE = "darkblue"
 
 def make_tax(adults, children):
     sim = IndividualSim(year=2022)
-    sim.add_person(name="head", age=25, rent=12_000)
+    sim.add_person(name="head", age=70, rent=12_000)
     members = ["head"]
     if adults == 2:
         sim.add_person(name="spouse", age=25)
@@ -42,7 +42,7 @@ def make_tax(adults, children):
     sim.add_tax_unit(name="tax_unit", members=members, premium_tax_credit=0)
     # $1,000 monthly rent, $50 monthly broadband.
     sim.add_spm_unit(name="spm_unit", members=members, broadband_cost=600)
-    sim.add_household(name="household", members=members, state_code="NY")
+    sim.add_household(name="household", members=members, state_code="MO")
     sim.vary("employment_income", max=100_000, step=100)
     employment_income = sim.calc("employment_income")[0]
     spm_unit_net_income = sim.calc("spm_unit_net_income")[0].round()
@@ -85,7 +85,7 @@ fig = px.line(
     color="children",
     animation_frame="adults",
     labels=LABELS,
-    title="Net income for a New York household",
+    title="Net income for a Missouri household",
     color_discrete_map=COLOR_MAP,
 )
 fig.update_layout(
@@ -296,7 +296,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 1. 0. ... 0. 0. 1.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -519,7 +519,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 1. 0. ... 0. 0. 1.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -843,6 +843,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
-ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 1. 0. ... 0. 0. 1.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
+ValueError: Input [0. 1. 0. ... 0. 0. 1.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
