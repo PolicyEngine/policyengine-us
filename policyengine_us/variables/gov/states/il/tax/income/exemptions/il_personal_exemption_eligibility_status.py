@@ -37,7 +37,7 @@ class il_personal_exemption_eligibility_status(Variable):
         # Criteria for complete ineligibility.
         ineligible = (
             (
-                (not joint)
+                ~joint
                 & (claimable_count > 0)
                 & (il_base_income > tax_unit_personal_eligibility_amount)
             )
@@ -60,9 +60,9 @@ class il_personal_exemption_eligibility_status(Variable):
                 & (claimable_count == 1)
                 & (il_base_income > tax_unit_personal_eligibility_amount)
             )
-            | ((not joint) & (claimable_count == 0))
+            | (~joint & (claimable_count == 0))
             | (
-                (not joint)
+                ~joint
                 & (claimable_count == 1)
                 & (il_base_income < tax_unit_personal_eligibility_amount)
             )
