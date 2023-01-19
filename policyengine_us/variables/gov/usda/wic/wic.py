@@ -27,9 +27,10 @@ class wic(Variable):
         values = p.value
         value_if_eligible = values[category]
         would_takeup = person("would_claim_wic", period)
+        if p.abolish_wic:
+            return 0
         return (
-            ~p.abolish_wic
-            * would_takeup
+            would_takeup
             * eligible
             * value_if_eligible
             * MONTHS_IN_YEAR
