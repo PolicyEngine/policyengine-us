@@ -445,9 +445,9 @@ It leaves the credit non-refundable, producing a phase-in.</p>
 <span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">14</span>     <span class="k">return</span> <span class="n">max_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;uncapped_ssi&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="k">return</span> <span class="mi">0</span>
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="k">return</span> <span class="n">max_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;uncapped_ssi&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134,</span> in <span class="ni">Population.__call__</span><span class="nt">(self, variable_name, period, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">133</span> <span class="k">else</span><span class="p">:</span>
@@ -561,7 +561,7 @@ It leaves the credit non-refundable, producing a phase-in.</p>
 <span class="g g-Whitespace">     </span><span class="mi">63</span>         <span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="p">)</span>
 
-<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
 
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
@@ -668,9 +668,9 @@ It leaves the credit non-refundable, producing a phase-in.</p>
 <span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">14</span>     <span class="k">return</span> <span class="n">max_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;uncapped_ssi&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="k">return</span> <span class="mi">0</span>
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="k">return</span> <span class="n">max_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;uncapped_ssi&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134,</span> in <span class="ni">Population.__call__</span><span class="nt">(self, variable_name, period, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">133</span> <span class="k">else</span><span class="p">:</span>
@@ -784,7 +784,7 @@ It leaves the credit non-refundable, producing a phase-in.</p>
 <span class="g g-Whitespace">     </span><span class="mi">63</span>         <span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="p">)</span>
 
-<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
 
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
@@ -952,9 +952,10 @@ It leaves the credit non-refundable, producing a phase-in.</p>
 <span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">14</span>     <span class="k">return</span> <span class="n">max_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;uncapped_ssi&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">(</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">gov</span><span class="o">.</span><span class="n">ssa</span><span class="o">.</span><span class="n">ssi</span><span class="o">.</span><span class="n">abolish_ssi</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="k">return</span> <span class="mi">0</span>
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="k">return</span> <span class="n">max_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;uncapped_ssi&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">))</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134,</span> in <span class="ni">Population.__call__</span><span class="nt">(self, variable_name, period, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">calculate_divide</span><span class="p">(</span>
@@ -1109,7 +1110,7 @@ It leaves the credit non-refundable, producing a phase-in.</p>
 <span class="g g-Whitespace">     </span><span class="mi">63</span>             <span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>         <span class="p">)</span>
 
-<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
 </pre></div>
 </div>
 </div>

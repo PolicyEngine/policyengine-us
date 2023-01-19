@@ -163,9 +163,9 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 715[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    717[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
-[1;32m     13[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
-[0;32m---> 14[0m     [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, [43mperson[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muncapped_ssi[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
+[1;32m     15[0m     [38;5;28;01mreturn[39;00m [38;5;241m0[39m
+[0;32m---> 16[0m [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, [43mperson[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muncapped_ssi[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m)
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -446,9 +446,9 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 715[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    717[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
-[1;32m     13[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
-[0;32m---> 14[0m     [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, [43mperson[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muncapped_ssi[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
+[1;32m     15[0m     [38;5;28;01mreturn[39;00m [38;5;241m0[39m
+[0;32m---> 16[0m [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, [43mperson[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muncapped_ssi[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m)
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -787,9 +787,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 715[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    717[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:14[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
-[1;32m     13[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(person, period, parameters):
-[0;32m---> 14[0m     [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, [43mperson[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muncapped_ssi[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16[0m, in [0;36mssi.formula[0;34m(person, period, parameters)[0m
+[1;32m     14[0m [38;5;28;01mif[39;00m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39mssa[38;5;241m.[39mssi[38;5;241m.[39mabolish_ssi:
+[1;32m     15[0m     [38;5;28;01mreturn[39;00m [38;5;241m0[39m
+[0;32m---> 16[0m [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, [43mperson[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muncapped_ssi[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m)
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
