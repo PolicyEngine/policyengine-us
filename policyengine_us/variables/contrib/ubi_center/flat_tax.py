@@ -11,5 +11,5 @@ class flat_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("positive_agi", period)
-        rate = parameters(period).gov.contrib.ubi_center.flat_tax.rate
-        return rate * agi
+        p = parameters(period).gov.contrib.ubi_center.flat_tax
+        return p.rate * agi

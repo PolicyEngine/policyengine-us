@@ -16,3 +16,14 @@ class household_refundable_tax_credits(Variable):
         # Skip PA, which has no refundable credits.
         "wa_refundable_credits",  # Washington.
     ]
+
+    def formula(household, period, parameters):
+        added_components = household_refundable_tax_credits.adds
+        p = parameters(period).gov.contrib.ubi_center.flat_tax
+        if p.abolish_federal_income_tax:
+            added_components = [
+                c
+                for c in added_components
+                if c != "income_tax_refundable_credits"
+            ]
+        return add(household, period, added_components)
