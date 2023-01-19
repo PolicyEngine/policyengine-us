@@ -20,3 +20,18 @@ class household_tax_before_refundable_credits(Variable):
         "wa_income_tax_before_refundable_credits",
         "flat_tax",
     ]
+
+    def formula(household, period, parameters):
+        added_components = household_tax_before_refundable_credits.adds
+        p = parameters(period).gov.contrib.ubi_center.flat_tax
+        if p.abolish_payroll_tax:
+            added_components = [
+                c for c in added_components if c != "employee_payroll_tax"
+            ]
+        if p.abolish_federal_income_tax:
+            added_components = [
+                c
+                for c in added_components
+                if c != "income_tax_before_refundable_credits"
+            ]
+        return add(household, period, added_components)

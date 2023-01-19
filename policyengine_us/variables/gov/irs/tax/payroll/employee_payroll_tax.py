@@ -12,3 +12,12 @@ class employee_payroll_tax(Variable):
         "employee_medicare_tax",
         "additional_medicare_tax",
     ]
+
+    def formula(person, period, parameters):
+        if parameters(
+            period
+        ).gov.contrib.ubi_center.flat_tax.abolish_payroll_tax:
+            return 0
+        else:
+            added_components = add(person, period, employee_payroll_tax.adds)
+            return added_components
