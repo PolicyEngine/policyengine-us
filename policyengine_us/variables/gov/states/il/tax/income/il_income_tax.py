@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class il_final_taxation_amount(Variable):
+class il_income_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Il Final Taxation Amount"
+    label = "Illinois income tax"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.IL

@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    fixed:
+      - Misnamed variable il_final_taxation_amount renamed il_income_tax.
+      - Boolean logic errors in il_personal_exemption_eligibility_statusil_personal_exemption_eligibility_status formula.

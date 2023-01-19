@@ -5,7 +5,7 @@
     il_total_payments_and_refundable_credits: 7123
     state_code: IL
   output:
-    il_final_taxation_amount: 1023498 - 7123
+    il_income_tax: 1023498 - 7123
 - name: "Test #2"
   period: 2021
   input:
@@ -13,4 +13,4 @@
     il_total_payments_and_refundable_credits: 35839
     state_code: IL
   output:
-    il_final_taxation_amount: 2312934 - 35839
+    il_income_tax: 2312934 - 35839
