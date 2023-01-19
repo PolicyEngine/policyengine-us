@@ -29,9 +29,4 @@ class wic(Variable):
         would_takeup = person("would_claim_wic", period)
         if p.abolish_wic:
             return 0
-        return (
-            would_takeup
-            * eligible
-            * value_if_eligible
-            * MONTHS_IN_YEAR
-        )
+        return would_takeup * eligible * value_if_eligible * MONTHS_IN_YEAR
