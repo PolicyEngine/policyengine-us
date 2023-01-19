@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.202.1] - 2023-01-19 21:45:27
+
+### Fixed
+
+- Incorrect IL income additions.
+
 ## [0.202.0] - 2023-01-19 21:00:47
 
 ### Added
@@ -2640,6 +2646,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.202.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.202.0...0.202.1
 [0.202.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.201.0...0.202.0
 [0.201.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.7...0.201.0
 [0.200.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.200.6...0.200.7
