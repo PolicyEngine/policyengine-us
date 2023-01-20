@@ -2,6 +2,7 @@ description: Illinois Base Income Subtraction Sources
 values:
   2021-01-01:
     - taxable_social_security
+    - taxable_pension_income
     - il_schedule_m_subtractions
 metadata:
   unit: variable
@@ -10,5 +11,5 @@ metadata:
   reference:
     - title: Illinois Income Tax Act, 35 ILCS 5/502 (from Ch. 120, par. 5-502) Sec. 502. Returns and notices.
       href: https://www.ilga.gov/legislation/ilcs/ilcs5.asp?ActID=577&ChapterID=8
-    - title: Illinois Department of Revenue 2021 Schedule M IL-1040 Instructions
-      href: https://www2.illinois.gov/rev/forms/incometax/Documents/currentyear/individual/IL-1040-Schedule-M-Instr.pdf
+    - title: Illinois Department of Revenue 2021 Form IL-1040 Instructions
+      href: https://tax.illinois.gov/content/dam/soi/en/web/tax/forms/incometax/documents/currentyear/individual/il-1040-instr.pdf#page7
