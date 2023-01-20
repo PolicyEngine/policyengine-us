@@ -2,17 +2,16 @@
   period: 2021
   input:
     people:
-      person_1:
+      person1:
         age: 30
     tax_units:
       tax_unit:
-        members: [person_1]
+        members: [person1]
         property_tax_primary_residence: 5_000_000
-        qualified_business_income_deduction: 10_000
         il_income_tax_before_nonrefundable_credits: 10_000
     households:
       household:
-        members: [person_1]
+        members: [person1]
         state_code: IL
   output:
     il_property_tax_credit: 10_000
@@ -21,17 +20,16 @@
   period: 2021
   input:
     people:
-      person_1:
+      person1:
         age: 30
     tax_units:
       tax_unit:
-        members: [person_1]
+        members: [person1]
         property_tax_primary_residence: 150_000
-        qualified_business_income_deduction: 10_000
         il_income_tax_before_nonrefundable_credits: 10_000
     households:
       household:
-        members: [person_1]
+        members: [person1]
         state_code: IL
   output:
-    il_property_tax_credit: 7_000
+    il_property_tax_credit: 7_500
