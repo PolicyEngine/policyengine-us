@@ -8,14 +8,12 @@ class il_property_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
 
+    defined_for = "il_is_exemption_eligible"
+
     def formula(tax_unit, period, parameters):
-        property_tax = tax_unit("property_tax_primary_residence", period)
-        qbid = tax_unit("qualified_business_income_deduction", period)
-        income_tax_before_credits = tax_unit(
+        ptax_paid = tax_unit("property_tax_primary_residence", period)
+        pre_credit_tax = tax_unit(
             "il_income_tax_before_nonrefundable_credits", period
         )
-        rate = parameters(
-            period
-        ).gov.states.il.tax.income.credits.property_tax.rate
-
-        return min_((property_tax - qbid) * rate, income_tax_before_credits)
+        p = parameters(period).gov.states.il.tax.income.credits
+        return min_(ptax_paid * p.property_tax.rate, pre_credit_tax)

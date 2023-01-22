@@ -15,7 +15,6 @@ class il_income_tax_before_nonrefundable_credits(Variable):
             "recapture_of_investment_credit", period
         )
         rate = parameters(period).gov.states.il.tax.income.rate
-
         return (
             tax_unit("il_taxable_income", period) * rate
             + recapture_of_investment_credit
