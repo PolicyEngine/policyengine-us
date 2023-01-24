@@ -16,16 +16,6 @@ filtered:
       - Massachusetts State income tax
       not_modelled:
       - Massachusetts TANF
-    OR:
-      modelled:
-      - Oregon State income tax
-      not_modelled:
-      - Oregon TANF
-    PA:
-      modelled:
-      - Pennsylvania State income tax
-      not_modelled:
-      - Pennsylvania TANF
     MD:
       modelled:
       - Maryland State income tax
@@ -36,4 +26,19 @@ filtered:
       - New York State income tax
       not_modelled:
       - New York TANF
+    OR:
+      modelled:
+      - Oregon State income tax
+      not_modelled:
+      - Oregon TANF
+    PA:
+      modelled:
+      - Pennsylvania State income tax
+      not_modelled:
+      - Pennsylvania TANF
+    WA:
+      modelled:
+      - Washington State income tax
+      not_modelled:
+      - Washington TANF
   
