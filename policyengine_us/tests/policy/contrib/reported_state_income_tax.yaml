@@ -1,0 +1,8 @@
+- name: Disabled State income tax uses reported value
+  period: 2022
+  input:
+    simulation.reported_state_income_tax: true
+    employment_income: 50_000
+    spm_unit_state_tax_reported: 3_000
+  output:
+    state_income_tax: 3_000

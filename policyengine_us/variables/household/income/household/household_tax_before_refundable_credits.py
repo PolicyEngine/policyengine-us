@@ -23,15 +23,24 @@ class household_tax_before_refundable_credits(Variable):
 
     def formula(household, period, parameters):
         added_components = household_tax_before_refundable_credits.adds
-        p = parameters(period).gov.contrib.ubi_center.flat_tax
-        if p.abolish_payroll_tax:
+        params = parameters(period)
+        flat_tax = params.gov.contrib.ubi_center.flat_tax
+        if flat_tax.abolish_payroll_tax:
             added_components = [
                 c for c in added_components if c != "employee_payroll_tax"
             ]
-        if p.abolish_federal_income_tax:
+        if flat_tax.abolish_federal_income_tax:
             added_components = [
                 c
                 for c in added_components
                 if c != "income_tax_before_refundable_credits"
+            ]
+        if params.simulation.reported_state_income_tax:
+            added_components = [
+                "employee_payroll_tax",
+                "self_employment_tax",
+                "income_tax_before_refundable_credits",  # Federal.
+                "flat_tax",
+                "spm_unit_state_tax_reported",
             ]
         return add(household, period, added_components)
