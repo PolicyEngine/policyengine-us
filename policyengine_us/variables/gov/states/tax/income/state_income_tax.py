@@ -25,6 +25,10 @@ class state_income_tax(Variable):
             spm_unit_state_tax = spm_unit(
                 "spm_unit_state_tax_reported", period
             )
-            return is_head * spm_unit_state_tax / total_tax_unit_heads
+            return where(
+                total_tax_unit_heads > 0,
+                spm_unit_state_tax / total_tax_unit_heads,
+                0,
+            )
         else:
             return add(tax_unit, period, state_income_tax.adds)
