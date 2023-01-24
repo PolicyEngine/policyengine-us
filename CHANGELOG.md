@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.203.4] - 2023-01-24 15:06:42
+
+### Added
+
+- Parameter to use reported State income tax values.
+
 ## [0.203.3] - 2023-01-22 06:08:39
 
 ### Changed
@@ -2670,6 +2676,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.203.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.3...0.203.4
 [0.203.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.2...0.203.3
 [0.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.1...0.203.2
 [0.203.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.0...0.203.1
