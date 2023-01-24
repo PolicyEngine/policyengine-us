@@ -7,7 +7,6 @@ class il_nonrefundable_credits(Variable):
     label = "IL nonrefundable credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.IL
 
-    formula = sum_of_variables(
-        "gov.states.il.tax.income.credits.nonrefundable"
-    )
+    adds = "gov.states.il.tax.income.credits.nonrefundable"

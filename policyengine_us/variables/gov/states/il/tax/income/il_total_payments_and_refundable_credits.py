@@ -7,6 +7,7 @@ class il_total_payments_and_refundable_credits(Variable):
     label = "Il Total Payments And Refundable Credit"
     unit = USD
     definition_period = YEAR
+
     defined_for = StateCode.IL
 
     adds = [

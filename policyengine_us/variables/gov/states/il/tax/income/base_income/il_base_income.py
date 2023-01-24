@@ -8,9 +8,5 @@ class il_base_income(Variable):
     unit = USD
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        return (
-            tax_unit("adjusted_gross_income", period)
-            + tax_unit("il_base_income_additions", period)
-            - tax_unit("il_base_income_subtractions", period)
-        )
+    adds = ["adjusted_gross_income", "il_base_income_additions"]
+    subtracts = ["il_base_income_subtractions"]
