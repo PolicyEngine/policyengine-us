@@ -2230,3 +2230,29 @@
     changed:
     - Updated 2023 federal poverty guidelines to official values.
   date: 2023-01-22 06:08:39
+- bump: patch
+  changes:
+    added:
+    - Parameter to use reported State income tax values.
+  date: 2023-01-24 15:06:42
+- bump: patch
+  changes:
+    fixed:
+    - Minor bug in reported state tax reform handling.
+  date: 2023-01-24 16:21:30
+- bump: patch
+  changes:
+    changed:
+    - Relaxed version dependencies.
+  date: 2023-01-24 22:22:34
+- bump: patch
+  changes:
+    changed:
+    - Added Washington to list of modelled policies states.
+  date: 2023-01-24 23:11:08
+- bump: patch
+  changes:
+    changed:
+    - Ingest CPS Social Security as Social Security retirement benefits, and remove
+      reported logic.
+  date: 2023-01-25 16:55:23

@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.203.8] - 2023-01-25 16:55:23
+
+### Changed
+
+- Ingest CPS Social Security as Social Security retirement benefits, and remove reported logic.
+
+## [0.203.7] - 2023-01-24 23:11:08
+
+### Changed
+
+- Added Washington to list of modelled policies states.
+
+## [0.203.6] - 2023-01-24 22:22:34
+
+### Changed
+
+- Relaxed version dependencies.
+
+## [0.203.5] - 2023-01-24 16:21:30
+
+### Fixed
+
+- Minor bug in reported state tax reform handling.
+
+## [0.203.4] - 2023-01-24 15:06:42
+
+### Added
+
+- Parameter to use reported State income tax values.
+
 ## [0.203.3] - 2023-01-22 06:08:39
 
 ### Changed
@@ -2670,6 +2700,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.203.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.7...0.203.8
+[0.203.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.6...0.203.7
+[0.203.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.5...0.203.6
+[0.203.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.4...0.203.5
+[0.203.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.3...0.203.4
 [0.203.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.2...0.203.3
 [0.203.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.1...0.203.2
 [0.203.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.0...0.203.1
