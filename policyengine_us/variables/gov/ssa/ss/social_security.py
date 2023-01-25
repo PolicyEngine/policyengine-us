@@ -9,8 +9,6 @@ class social_security(Variable):
     label = "Social Security"
     unit = USD
     adds = [
-        [
-            "social_security_" + i
-            for i in ["dependents", "disability", "retirement", "survivors"]
-        ]
+        "social_security_" + i
+        for i in ["dependents", "disability", "retirement", "survivors"]
     ]
