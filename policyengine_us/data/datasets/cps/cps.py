@@ -284,7 +284,7 @@ def add_personal_income_variables(
         1 - p["qualified_dividend_fraction"][year]
     )
     cps["rental_income"] = person.RNT_VAL
-    cps["social_security_reported"] = person.SS_VAL
+    cps["social_security_retirement"] = person.SS_VAL
     cps["unemployment_compensation"] = person.UC_VAL
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
     cps["taxable_pension_income"] = cps_pensions * (
