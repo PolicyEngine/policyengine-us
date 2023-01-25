@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.203.8] - 2023-01-25 16:55:23
+
+### Changed
+
+- Ingest CPS Social Security as Social Security retirement benefits, and remove reported logic.
+
 ## [0.203.7] - 2023-01-24 23:11:08
 
 ### Changed
@@ -2694,6 +2700,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.203.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.7...0.203.8
 [0.203.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.6...0.203.7
 [0.203.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.5...0.203.6
 [0.203.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.4...0.203.5
