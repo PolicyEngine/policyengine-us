@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.203.9] - 2023-01-27 23:10:16
+
+### Changed
+
+- Core bumped and SNAP EA efficiency improvements.
+
 ## [0.203.8] - 2023-01-25 16:55:23
 
 ### Changed
@@ -2700,6 +2706,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.203.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.8...0.203.9
 [0.203.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.7...0.203.8
 [0.203.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.6...0.203.7
 [0.203.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.5...0.203.6
