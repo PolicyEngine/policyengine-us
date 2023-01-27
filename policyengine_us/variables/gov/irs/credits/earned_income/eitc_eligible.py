@@ -12,8 +12,9 @@ class eitc_eligible(Variable):
         person = tax_unit.members
         has_child = tax_unit.any(person("is_child", period))
         age = person("age", period)
-        eitc = parameters(period).gov.irs.credits.eitc
-        meets_age_requirements = (age >= eitc.eligibility.age.min) & (
+        eitc = parameters.gov.irs.credits.eitc(period)
+        min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
+        meets_age_requirements = (age >= min_age) & (
             age <= eitc.eligibility.age.max
         )
         inv_income_sources = eitc.eligibility.counted_inv_income

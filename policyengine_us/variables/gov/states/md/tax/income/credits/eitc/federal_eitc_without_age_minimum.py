@@ -37,7 +37,9 @@ class federal_eitc_without_age_minimum(Variable):
             value=0,
             period=period,
         )
-        simulation.tax_benefit_system._parameters_at_instant_cache = {}
+        simulation.tax_benefit_system.parameters.gov.irs.credits.eitc._at_instant_cache = (
+            {}
+        )
         eitc = simulation.calculate("eitc", period)
         for variable in EITC_VARIABLES:
             simulation.get_holder(variable).delete_arrays()
@@ -45,5 +47,7 @@ class federal_eitc_without_age_minimum(Variable):
             value=original_value,
             period=period,
         )
-        simulation.tax_benefit_system._parameters_at_instant_cache = {}
+        simulation.tax_benefit_system.parameters.gov.irs.credits.eitc._at_instant_cache = (
+            {}
+        )
         return eitc

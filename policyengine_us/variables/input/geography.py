@@ -114,9 +114,9 @@ class medicaid_rating_area(Variable):
             parameter_tree.gov.hhs.medicaid.add_child(
                 "geography", medicaid_parameters
             )
-        mra = parameter_tree(
+        mra = parameter_tree.gov.hhs.medicaid.geography.medicaid_rating_area(
             period
-        ).gov.hhs.medicaid.geography.medicaid_rating_area
+        )
         three_digit_zip_code = household("three_digit_zip_code", period)
         county = household("county_str", period)
         locations = np.array(list(mra._children))

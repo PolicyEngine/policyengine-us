@@ -11,7 +11,9 @@ class snap_emergency_allotment_monthly(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.usda.snap.emergency_allotment
+        # Save time by only recalculating the EA parameters for each month,
+        # rather than the whole parameter tree for each month.
+        p = parameters.gov.usda.snap.emergency_allotment(period)
         if not p.allowed:
             return 0
         # Federal SNAP rules are defined in U.S.C Title 7, Chapter 51, which also
