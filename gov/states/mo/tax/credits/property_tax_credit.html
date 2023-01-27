@@ -372,10 +372,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_property_tax_credit.py:35,</span> in <span class="ni">mo_property_tax_credit.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="n">po_rate</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">phase_out</span><span class="o">.</span><span class="n">rate</span>
@@ -398,10 +398,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_net_income.py:18,</span> in <span class="ni">mo_ptc_net_income.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -424,10 +424,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py:39,</span> in <span class="ni">mo_ptc_gross_income.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="n">pa_sources</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">(</span>
@@ -470,10 +470,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="k">return</span> <span class="mi">0</span>
@@ -495,10 +495,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/uncapped_ssi.py:13,</span> in <span class="ni">uncapped_ssi.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -521,10 +521,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_amount_if_eligible.py:16,</span> in <span class="ni">ssi_amount_if_eligible.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">ssi</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">(</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">gov</span><span class="o">.</span><span class="n">ssa</span><span class="o">.</span><span class="n">ssi</span><span class="o">.</span><span class="n">amount</span>
@@ -553,10 +553,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py:12,</span> in <span class="ni">ssi_claim_is_joint.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;is_ssi_aged_blind_disabled&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
@@ -633,10 +633,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_property_tax_credit.py:35,</span> in <span class="ni">mo_property_tax_credit.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="n">po_rate</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">phase_out</span><span class="o">.</span><span class="n">rate</span>
@@ -659,10 +659,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_net_income.py:18,</span> in <span class="ni">mo_ptc_net_income.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -685,10 +685,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py:39,</span> in <span class="ni">mo_ptc_gross_income.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">35</span> <span class="n">pa_sources</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">(</span>
@@ -731,10 +731,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="k">return</span> <span class="mi">0</span>
@@ -756,10 +756,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/uncapped_ssi.py:13,</span> in <span class="ni">uncapped_ssi.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -782,10 +782,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_amount_if_eligible.py:16,</span> in <span class="ni">ssi_amount_if_eligible.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">ssi</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">(</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">gov</span><span class="o">.</span><span class="n">ssa</span><span class="o">.</span><span class="n">ssi</span><span class="o">.</span><span class="n">amount</span>
@@ -814,10 +814,10 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="ne">--&gt; </span><span class="mi">472</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_formula</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">474</span> <span class="c1"># If no result, use the default value and cache it</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py:12,</span> in <span class="ni">ssi_claim_is_joint.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">person</span><span class="p">(</span><span class="s2">&quot;is_ssi_aged_blind_disabled&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
@@ -926,11 +926,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_property_tax_credit.py:35,</span> in <span class="ni">mo_property_tax_credit.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="n">po_step</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">phase_out</span><span class="o">.</span><span class="n">step</span>
@@ -965,11 +965,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_net_income.py:18,</span> in <span class="ni">mo_ptc_net_income.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -1003,11 +1003,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py:39,</span> in <span class="ni">mo_ptc_gross_income.formula</span><span class="nt">(tax_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">34</span> <span class="c1"># compute person-level public assistance included in PTC gross income</span>
@@ -1072,11 +1072,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi.py:16,</span> in <span class="ni">ssi.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">(</span><span class="n">period</span><span class="p">)</span><span class="o">.</span><span class="n">gov</span><span class="o">.</span><span class="n">ssa</span><span class="o">.</span><span class="n">ssi</span><span class="o">.</span><span class="n">abolish_ssi</span><span class="p">:</span>
@@ -1109,11 +1109,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/uncapped_ssi.py:13,</span> in <span class="ni">uncapped_ssi.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -1147,11 +1147,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_amount_if_eligible.py:16,</span> in <span class="ni">ssi_amount_if_eligible.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
@@ -1191,11 +1191,11 @@ The Property Tax Credit provides up to $1,100 to property owners and $750 to ren
 <span class="g g-Whitespace">    </span><span class="mi">475</span>     <span class="k">if</span> <span class="n">array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">476</span>         <span class="c1"># Check if the variable has a previously defined value</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:715,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
-<span class="g g-Whitespace">    </span><span class="mi">713</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">715</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="k">return</span> <span class="n">array</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:712,</span> in <span class="ni">Simulation._run_formula</span><span class="nt">(self, variable, population, period)</span>
+<span class="g g-Whitespace">    </span><span class="mi">710</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">711</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">712</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">714</span> <span class="k">return</span> <span class="n">array</span>
 
 <span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/ssa/ssi/ssi_claim_is_joint.py:12,</span> in <span class="ni">ssi_claim_is_joint.formula</span><span class="nt">(person, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="k">def</span> <span class="nf">formula</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
