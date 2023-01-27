@@ -46,9 +46,9 @@ class second_lowest_silver_plan_cost(Variable):
         area = household("medicaid_rating_area", period)
         state = household("state_code_str", period)
         age = person("age", period)
-        slspc = parameter_tree(
+        slspc = parameter_tree.gov.hhs.medicaid.geography.second_lowest_silver_plan_cost(
             period
-        ).gov.hhs.medicaid.geography.second_lowest_silver_plan_cost
+        )
         age_code = select(
             [
                 age < 21,
