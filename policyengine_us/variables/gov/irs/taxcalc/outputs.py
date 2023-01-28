@@ -123,21 +123,6 @@ tax_unit_net_capital_gains = variable_alias(
 )
 
 
-class c03260(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-    unit = USD
-
-    def formula(tax_unit, period, parameters):
-        misc = parameters(period).gov.irs.ald.misc
-        setax = add(tax_unit, period, ["self_employment_tax"])
-        return (1 - misc.self_emp_tax_adj) * misc.employer_share * setax
-
-
 class c05700(Variable):
     value_type = float
     entity = TaxUnit

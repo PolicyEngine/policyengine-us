@@ -52,7 +52,7 @@ class refundable_ctc(Variable):
             "employee_medicare_tax",
             "unreported_payroll_tax",
             # Tax unit:
-            "c03260",  # Deductible portion of the self-employed tax.
+            "self_employment_tax_ald",
             "additional_medicare_tax",
         ]
         SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
