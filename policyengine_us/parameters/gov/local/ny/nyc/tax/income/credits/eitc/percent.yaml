@@ -1,0 +1,34 @@
+description: NYC EITC rate schedule. 
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: NYC EITC rate
+  reference:
+    - title: NYC EITC Worksheet and Table
+      href: https://www.tax.ny.gov/forms/current-forms/it/it215i.htm#nyc-eic-table
+    - title: NYC Tax Code
+      href: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13608
+    - title: NYC EITC Form IT-215
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it215_fill_in.pdf
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0.30
+  - threshold:
+      2022-01-01: 7_500
+    amount:
+      2022-01-01: 0.25
+  - threshold:
+      2022-01-01: 17_500
+    amount:
+      2022-01-01: 0.20
+  - threshold:
+      2022-01-01: 22_500
+    amount:
+      2022-01-01: 0.15
+  - threshold:
+      2022-01-01: 42_500
+    amount:
+      2022-01-01: 0.10
