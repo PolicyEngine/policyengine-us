@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.204.0] - 2023-01-29 16:36:45
+
+### Added
+
+- NYC EITC.
+
 ## [0.203.10] - 2023-01-28 22:43:09
 
 ## [0.203.9] - 2023-01-27 23:10:16
@@ -2708,6 +2714,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.10...0.204.0
 [0.203.10]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.9...0.203.10
 [0.203.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.8...0.203.9
 [0.203.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.7...0.203.8
