@@ -17,7 +17,9 @@ class nyc_school_tax_credit_fixed_amount(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Then get the School Tax Credit fixed amount part of the parameter tree.
-        p = parameters(period).gov.local.ny.nyc.tax.income.credits.school.fixed_amount
+        p = parameters(
+            period
+        ).gov.local.ny.nyc.tax.income.credits.school.fixed_amount
 
         # Calculate eligibility.
         eligible = ny_agi <= p.income_limit
@@ -27,5 +29,3 @@ class nyc_school_tax_credit_fixed_amount(Variable):
 
         # Return calculated amount.
         return eligible * amount_if_eligible
-        
-        
