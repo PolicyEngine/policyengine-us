@@ -19,7 +19,7 @@ class nyc_eitc(Variable):
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.eitc
 
         # Calculate the EITC before the reduction.
-        percentage_pre_reduction = p.percentage.calc(ny_agi)
+        percentage_pre_reduction = p.percent.calc(ny_agi)
 
         # Calculate the reduction (if applicable).
         threshold = p.reduce_threshold.calc(ny_agi)
