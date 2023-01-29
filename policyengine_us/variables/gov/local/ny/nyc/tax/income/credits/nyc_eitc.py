@@ -22,7 +22,7 @@ class nyc_eitc(Variable):
         percentage_pre_reduction = p.percent.calc(ny_agi)
 
         # Calculate the reduction (if applicable).
-        threshold = p.reduce_threshold.calc(ny_agi)
+        threshold = p.reduction_threshold.calc(ny_agi)
         excess = max_(0, ny_agi - threshold)
         pct_point_reduction_if_applicable = p.percent_reduction * excess
         pct_point_reduction = where(
