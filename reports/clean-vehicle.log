@@ -138,9 +138,9 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 721[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    723[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:33[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
-[1;32m     32[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mspm_unit_capped_housing_subsidy[39m[38;5;124m"[39m)
-[0;32m---> 33[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:34[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     33[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mspm_unit_capped_housing_subsidy[39m[38;5;124m"[39m)
+[0;32m---> 34[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:225[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
 [1;32m    211[0m [38;5;250m[39m[38;5;124;03m"""Sums a list of variables.[39;00m
@@ -297,7 +297,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -361,9 +361,9 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 721[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    723[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:33[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
-[1;32m     32[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mspm_unit_capped_housing_subsidy[39m[38;5;124m"[39m)
-[0;32m---> 33[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:34[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     33[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mspm_unit_capped_housing_subsidy[39m[38;5;124m"[39m)
+[0;32m---> 34[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:225[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
 [1;32m    211[0m [38;5;250m[39m[38;5;124;03m"""Sums a list of variables.[39;00m
@@ -520,7 +520,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -623,10 +623,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 721[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    723[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:33[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
-[1;32m     31[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39mhud[38;5;241m.[39mabolition:
-[1;32m     32[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mspm_unit_capped_housing_subsidy[39m[38;5;124m"[39m)
-[0;32m---> 33[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/household/income/spm_unit/spm_unit_benefits.py:34[0m, in [0;36mspm_unit_benefits.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     32[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39mhud[38;5;241m.[39mabolition:
+[1;32m     33[0m     BENEFITS[38;5;241m.[39mappend([38;5;124m"[39m[38;5;124mspm_unit_capped_housing_subsidy[39m[38;5;124m"[39m)
+[0;32m---> 34[0m [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mspm_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mBENEFITS[49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:225[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
 [1;32m    205[0m [38;5;28;01mdef[39;00m [38;5;21madd[39m(
@@ -846,6 +846,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
-ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 10502 != 10503 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
 
