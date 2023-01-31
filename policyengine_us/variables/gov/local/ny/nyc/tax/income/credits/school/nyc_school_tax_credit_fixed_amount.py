@@ -11,18 +11,16 @@ class nyc_school_tax_credit_fixed_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         # First get their NYAGI.
-        ny_agi = tax_unit("ny_agi", period)
+        income = tax_unit("nyc_school_credit_income", period)
 
         # Then get their filing status.
         filing_status = tax_unit("filing_status", period)
 
         # Then get the School Tax Credit fixed amount part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.local.ny.nyc.tax.income.credits.school.fixed_amount
+        p = parameters(period).gov.local.ny.nyc.tax.income.credits.school.fixed
 
         # Calculate eligibility.
-        eligible = ny_agi <= p.income_limit
+        eligible = income <= p.income_limit
 
         # Calculate amount if eligible, which varies only with filing status.
         amount_if_eligible = p.amount[filing_status]
