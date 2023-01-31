@@ -13,7 +13,7 @@
 
 - name: Joint filing gets $37 plus .228% of taxable income above $21,600 for total income not over $500,000.
   period: 2022
-  absolute_error_margin: 0.10
+  absolute_error_margin: 1 # The $37 amount is rounded in the instructions.
   input:
     in_nyc: true
     nyc_taxable_income: 500_000
@@ -52,7 +52,7 @@
 
 - name: Single person gets $21 plus .228% of taxable income above $12,000 for total income not over $500,000.
   period: 2022
-  absolute_error_margin: 0.10
+  absolute_error_margin: 1 # The $21 amount is rounded in the instructions.
   input:
     in_nyc: true
     nyc_taxable_income: 500_000
@@ -91,7 +91,7 @@
 
 - name: Household head gets $25 plus .228% of taxable income above $14,400 for total income not over $500,000.
   period: 2022
-  absolute_error_margin: 0.10
+  absolute_error_margin: 1 # The $25 amount is rounded in the instructions.
   input:
     in_nyc: true
     nyc_taxable_income: 500_000
