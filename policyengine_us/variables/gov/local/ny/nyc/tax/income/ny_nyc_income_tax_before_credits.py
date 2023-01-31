@@ -10,7 +10,7 @@ class ny_nyc_income_tax_before_credits(Variable):
     defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("ny_taxable_income", period)
+        taxable_income = tax_unit("nyc_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         rates = parameters(period).gov.local.ny.nyc.tax.income.rates
