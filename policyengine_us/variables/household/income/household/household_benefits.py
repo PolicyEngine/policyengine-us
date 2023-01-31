@@ -10,6 +10,7 @@ class household_benefits(Variable):
     adds = [
         "social_security",
         "ssi",
+        "state_supplement",
         "ca_cvrp",  # California Clean Vehicle Rebate Project.
         "snap",
         "wic",
