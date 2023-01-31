@@ -2,25 +2,25 @@
   period: 2021
   input:
     state_code: NY
-    county: NEW_YORK_COUNTY_NY
+    in_nyc: true
     ny_taxable_income: 0
   output:
     ny_nyc_income_tax_before_credits: 0
 
-- name: 0 tax if 0 taxable income.
+- name: 0 tax if outside NYC.
   period: 2021
   input:
     state_code: NY
-    county: ALBANY_COUNTY_NY
+    in_nyc: false
     ny_taxable_income: 1_000
   output:
     ny_nyc_income_tax_before_credits: 0
 
-- name: 0 tax if 0 taxable income.
+- name: 3% tax in first bracket.
   period: 2021
   input:
     state_code: NY
-    county: NEW_YORK_COUNTY_NY
+    in_nyc: true
     ny_taxable_income: 100
   output:
     # It would be 3.078 but incorporated rounding rules (below and after 50 cents).
