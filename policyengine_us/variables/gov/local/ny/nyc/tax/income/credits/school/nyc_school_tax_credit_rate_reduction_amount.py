@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nyc_school_tax_rate_reduction_amount(Variable):
+class nyc_school_tax_credit_rate_reduction_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "NYC School Tax Credit Rate Reduction Amount"
