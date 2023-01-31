@@ -23,5 +23,5 @@
     in_nyc: true
     ny_taxable_income: 100
   output:
-    # It would be 3.078 but incorporated rounding rules (below and after 50 cents).
-    ny_nyc_income_tax_before_credits: 3 
+    # Would be flat $3 with rounding rules incorporated (below and after 50 cents).
+    ny_nyc_income_tax_before_credits: 3.078
