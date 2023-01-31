@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.205.1] - 2023-01-31 17:38:19
+
+### Changed
+
+- Added state_supplement to spm_unit_benefits.
+
 ## [0.205.0] - 2023-01-29 17:59:09
 
 ### Added
@@ -2720,6 +2726,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.205.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.205.0...0.205.1
 [0.205.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.204.0...0.205.0
 [0.204.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.10...0.204.0
 [0.203.10]: https://github.com/PolicyEngine/policyengine-us/compare/0.203.9...0.203.10
