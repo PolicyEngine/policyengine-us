@@ -19,13 +19,13 @@ class ma_limited_income_tax_credit(Variable):
         exemption_threshold = tax_unit(
             "ma_income_tax_exemption_threshold", period
         )
+        income_over_threshold = max_(0, agi - exemption_threshold)
+        income_ratio = agi / exemption_threshold
         lic = parameters(
             period
         ).gov.states.ma.tax.income.credits.limited_income_credit
-        income_level = agi / exemption_threshold
-        eligible = income_level <= lic.income_limit
-        income_tax = tax_unit("ma_income_tax_before_credits", period)
-        income_over_threshold = max_(0, agi - exemption_threshold)
+        eligible = income_ratio <= lic.income_limit
         tax_cap = lic.percent * income_over_threshold
+        income_tax = tax_unit("ma_income_tax_before_credits", period)
         excess_tax = max_(0, income_tax - tax_cap)
         return eligible * excess_tax

@@ -266,7 +266,8 @@
     is_ma_income_tax_exempt: false
     ma_income_tax_before_credits: 376.50
     ma_limited_income_tax_credit: 12.50
+    ma_non_refundable_credits: 12.50
     ma_dependent_credit: 180.00
     ma_senior_circuit_breaker: 966.00
-    ma_refundable_credits: 1_158.50
-    ma_income_tax: -782.00
+    ma_refundable_credits: 180 + 966
+    ma_income_tax: 376.50 - 12.50 - 180 - 966

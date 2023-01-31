@@ -10,3 +10,4 @@ class ma_income_tax_before_refundable_credits(Variable):
     reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section4"
     defined_for = StateCode.MA
     adds = ["ma_income_tax_before_credits"]
+    subtracts = ["ma_non_refundable_credits"]
