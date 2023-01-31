@@ -1,0 +1,8 @@
+- name: Homeowner with $25 rent and $5k income.
+  period: 2022
+  input:
+    employment_income: 5_000
+    state_code: NY
+    real_estate_taxes: 25_000
+  output:
+    ny_real_property_tax_credit: 65

@@ -1,0 +1,34 @@
+- name: Tax unit with taxsimid 9 in o21.its.csv and o21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 31
+        employment_income: 46_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 31
+        employment_income: 142_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:  # expected results from TAXSIM35 12/08/22 version
+    md_income_tax: 8_612.30

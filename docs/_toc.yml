@@ -1,58 +1,62 @@
 format: jb-book
 root: index
 parts:
-  - caption: Programs
+
+  - caption: Government programs
     chapters:
-      - file: programs/fcc/index
+      - file: gov/fcc/index
         sections:
-          - file: programs/fcc/lifeline
-          - file: programs/fcc/acp
-      - file: programs/hhs/index
+          - file: gov/fcc/lifeline
+          - file: gov/fcc/acp
+      - file: gov/hhs/index
         sections:
-          - file: programs/hhs/tanf
-      - file: programs/hud/index
+          - file: gov/hhs/tanf
+      - file: gov/hud/index
         sections:
-          - file: programs/hud/housing-assistance
-      - file: programs/irs/index
+          - file: gov/hud/housing-assistance
+      - file: gov/irs/tax
         sections:
-          - file: programs/irs/credits/eitc
-          - file: programs/irs/credits/cdcc
-          - file: programs/irs/credits/electric-vehicle-credit
-          - file: gov/irs/tax/federal_income/capital_gains
-      - file: programs/ssa/index
+          - file: gov/irs/credits/eitc
+          - file: gov/irs/credits/cdcc
+          - file: gov/irs/credits/clean-vehicle
+          - file: gov/irs/capital-gains
+      - file: gov/ssa/index
         sections:
-          - file: programs/ssa/ssi
-      - file: programs/states/index
+          - file: gov/ssa/ssi
+      - file: gov/states/index
         sections:
-          - file: programs/states/ca/index
+          - file: gov/states/ca/index
             sections:
-              - file: programs/states/ca/calepa/carb/cvrp
-          - file: programs/states/ma/index
+              - file: gov/states/ca/calepa/carb/cvrp
+          - file: gov/states/ma/index
             sections:
-              - file: programs/states/ma/tax-benefit
-              - file: programs/states/ma/tax/income/index
-              - file: programs/states/ma/tax/income/credits/senior-circuit-breaker
-          - file: programs/states/md/index
+              - file: gov/states/ma/tax-benefit
+              - file: gov/states/ma/tax/income/index
+              - file: gov/states/ma/tax/income/credits/senior-circuit-breaker
+          - file: gov/states/md/index
             sections:
-              - file: programs/states/md/tax/income/index
-              - file: programs/states/md/tax/income/credits/cdcc
-              - file: programs/states/md/tax/income/credits/ctc
-              - file: programs/states/md/tax/income/credits/eitc
-              - file: programs/states/md/tax/income/credits/poverty-line-credit
-          - file: programs/states/ny/index
+              - file: gov/states/md/tax/income/index
+              - file: gov/states/md/tax/income/credits/cdcc
+              - file: gov/states/md/tax/income/credits/ctc
+              - file: gov/states/md/tax/income/credits/eitc
+              - file: gov/states/md/tax/income/credits/poverty-line-credit
+              - file: gov/states/md/tax/income/deductions/standard-deduction
+          - file: gov/states/ny/index
             sections:
-              - file: programs/states/ny/eitc
-          - file: programs/states/wa/index
+              - file: gov/states/ny/cdcc
+              - file: gov/states/ny/ctc
+              - file: gov/states/ny/eitc
+              - file: gov/states/ny/tax
+              - file: gov/states/ny/tax-benefit
+          - file: gov/states/pa/tax
+          - file: gov/states/wa/index
             sections:
-              - file: programs/states/wa/tax/income/credits/working-families-tax-credit
-      - file: programs/usda/index
+              - file: gov/states/wa/tax/income/credits/working-families-tax-credit
+      - file: gov/usda/index
         sections:
-          - file: programs/usda/snap
-          - file: programs/usda/school-meals
-          - file: programs/usda/wic
-  - caption: Contrib
-    chapters:
-      - file: contrib/congress/senate/democrats/inflation-reduction-act/electric-vehicle-credit
+          - file: gov/usda/snap
+          - file: gov/usda/school-meals
+          - file: gov/usda/wic
   - caption: Validation
     chapters:
       - file: validation/taxsim

@@ -1,0 +1,38 @@
+- name: No Federal itemizations
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    itemized_taxable_income_deductions: 0
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    misc_deduction: 0
+    mo_net_state_income_taxes: 0
+    state_code: MO
+  output:
+    mo_itemized_deductions: 0.0
+
+- name: 60 in Federal itemizations, 10 in net_state_income_taxes
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    itemized_taxable_income_deductions: 10
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    misc_deduction: 10
+    mo_net_state_income_taxes: 10
+    state_code: MO
+  output:
+    mo_itemized_deductions: 10.00
+
+- name:  6000 in Federal itemizations, 1000 in net_state_income_taxes
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    itemized_taxable_income_deductions: 1000
+    employee_social_security_tax: 0
+    employee_medicare_tax: 0
+    misc_deduction: 1000
+    mo_net_state_income_taxes: 1000
+    state_code: MO
+  output:
+    mo_itemized_deductions: 1000.00

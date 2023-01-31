@@ -1,0 +1,26 @@
+description: The IRS limits the new clean vehicle credit to filers with modified adjusted gross income below this threshold in either the current or preceding year.
+metadata:
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=382
+  label: Income limit for new clean vehicle credit
+  unit: currency-USD
+  period: year
+  name: new_clean_vehicle_credit_income_limit
+  breakdown:
+  - filing_status
+JOINT:
+  0000-01-01: .inf
+  2023-01-01: 300_000
+WIDOW:
+  0000-01-01: .inf
+  2023-01-01: 300_000
+HEAD_OF_HOUSEHOLD:
+  0000-01-01: .inf
+  2023-01-01: 225_000
+SINGLE:
+  0000-01-01: .inf
+  2023-01-01: 150_000
+SEPARATE:
+  0000-01-01: .inf
+  2023-01-01: 150_000

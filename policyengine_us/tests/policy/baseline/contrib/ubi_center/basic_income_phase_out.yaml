@@ -1,0 +1,23 @@
+- name: Phase out as a rate.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    gov.contrib.ubi_center.basic_income.phase_out.rate: 0.1
+    gov.contrib.ubi_center.basic_income.phase_out.threshold.SINGLE: 50_000
+    basic_income_before_phase_out: 10_000
+    adjusted_gross_income: 100_000
+  output:
+    basic_income_phase_out: 5_000
+
+- name: Phase out over a range.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    gov.contrib.ubi_center.basic_income.phase_out.by_rate: false
+    gov.contrib.ubi_center.basic_income.phase_out.threshold.SINGLE: 50_000
+    gov.contrib.ubi_center.basic_income.phase_out.end.SINGLE: 100_000
+    basic_income_before_phase_out: 10_000
+    adjusted_gross_income: 90_000
+  output:
+    # 80% phased out.
+    basic_income_phase_out: 8_000

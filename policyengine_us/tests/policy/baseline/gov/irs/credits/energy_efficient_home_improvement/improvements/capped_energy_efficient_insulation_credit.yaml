@@ -1,0 +1,23 @@
+- name: 10% uncapped before the Inflation Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_insulation_expenditures: 1_000_000
+  output:
+    capped_energy_efficient_insulation_credit: 100_000
+
+- name: 30% uncapped after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_insulation_expenditures: 1_000
+    capped_insulation_air_sealing_ventilation_rebate: 0
+  output:
+    capped_energy_efficient_insulation_credit: 300
+
+- name: 30% of after-rebate expenditures, uncapped.
+  period: 2025
+  input: 
+    energy_efficient_insulation_expenditures: 2_600
+    # Rebate capped at $1,600.
+    capped_insulation_air_sealing_ventilation_rebate: 1_600
+  output:
+    capped_energy_efficient_insulation_credit: 300 # 30% of $1,000.

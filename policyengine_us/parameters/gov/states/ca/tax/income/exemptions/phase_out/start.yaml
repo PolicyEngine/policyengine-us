@@ -1,0 +1,24 @@
+description: Phase out starting amount of california exemption
+
+SINGLE:
+  2021-01-01: 212_288
+SEPARATE:
+  2021-01-01: 212_288
+WIDOW:
+  2021-01-01: 424_581
+JOINT:
+  2021-01-01: 424_581
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 318_437
+
+metadata:
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  name: ca_exemption_phase_out_start
+  label: "California exemption phase out start"
+  reference:
+  - title: 2021 Instructions for Form 540 Personal Income Tax Booklet
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+    

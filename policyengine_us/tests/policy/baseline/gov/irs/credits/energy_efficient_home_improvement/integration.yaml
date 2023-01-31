@@ -1,0 +1,80 @@
+- name: Lots of expenditure types, capped by overall amount.
+  period: 2023
+  input:
+    home_energy_audit_expenditures: 1_000
+    energy_efficient_door_expenditures: 1_000
+    energy_efficient_insulation_expenditures: 1_000
+    energy_efficient_roof_expenditures: 1_000
+    energy_efficient_window_expenditures: 1_000
+    heat_pump_expenditures: 1_000
+    heat_pump_water_heater_expenditures: 1_000
+    biomass_stove_boiler_expenditures: 1_000
+    energy_efficient_central_air_conditioner_expenditures: 1_000
+  output:
+    # Start with heat pump / heat pump water heater / biomass stove/boiler
+    # $3,000 * 30% = $900 < $2,000 so uncapped
+    # Windows: $1,000 * 30% = $300, <$600 so uncapped
+    # Doors: $1,000 * 30% = $300, <$500 so uncapped
+    # Roof: $1,000 * 30% = $300, uncapped
+    # Insulation: fully rebated
+    # Central air conditioner: $1,000 * 30% = $300, uncapped
+    # Audit: $1,000 * 30% = $300, capped at $150
+    # Uncapped sum: $900 + $300 + $300 + $300 + $300 + $300 + $150 = $2,550
+    # Cap at $1,200
+    energy_efficient_home_improvement_credit: 1_200
+
+- name: Lots of expenditure types, capped by heat pump amount.
+  period: 2023
+  input:
+    home_energy_audit_expenditures: 1_000
+    energy_efficient_door_expenditures: 1_000
+    energy_efficient_insulation_expenditures: 1_000
+    energy_efficient_roof_expenditures: 1_000
+    energy_efficient_window_expenditures: 1_000
+    heat_pump_expenditures: 3_000
+    heat_pump_water_heater_expenditures: 3_000
+    biomass_stove_boiler_expenditures: 3_000
+    energy_efficient_central_air_conditioner_expenditures: 1_000
+    tax_unit_income_ami_ratio: 0
+  output:
+    # Start with heat pump / heat pump water heater / biomass stove/boiler
+    # Heat pump rebate is full $3,000 (capped at $8,000)
+    # Heat pump water heater is $1,750 (cap)
+    # After-rebate expenditure is thus $0 + $1,250 + $3,000 = $4,250.
+    # $4,250 * 30% = $1,275
+    # Windows: $1,000 * 30% = $300, <$600 so uncapped
+    # Doors: $1,000 * 30% = $300, <$500 so uncapped
+    # Roof: $1,000 * 30% = $300, uncapped
+    # Insulation: fully rebated
+    # Central air conditioner: $1,000 * 30% = $300, uncapped
+    # Audit: $1,000 * 30% = $300, capped at $150
+    # Uncapped sum: $900 + $300 + $300 + $300 + $300 + $300 + $150 = $2,550
+    # Cap at $1,200
+    energy_efficient_home_improvement_credit: 1_275
+
+- name: Lots of expenditure types, capped by heat pump amount, ineligible for rebates.
+  period: 2023
+  input:
+    home_energy_audit_expenditures: 1_000
+    energy_efficient_door_expenditures: 1_000
+    energy_efficient_insulation_expenditures: 1_000
+    energy_efficient_roof_expenditures: 1_000
+    energy_efficient_window_expenditures: 1_000
+    heat_pump_expenditures: 3_000
+    heat_pump_water_heater_expenditures: 3_000
+    biomass_stove_boiler_expenditures: 3_000
+    energy_efficient_central_air_conditioner_expenditures: 1_000
+    tax_unit_income_ami_ratio: 2
+  output:
+    # Start with heat pump / heat pump water heater / biomass stove/boiler
+    # $9,000 * 30% = $2,700, capped at $2,000
+    # Windows: $1,000 * 30% = $300, <$600 so uncapped
+    # Doors: $1,000 * 30% = $300, <$500 so uncapped
+    # Roof: $1,000 * 30% = $300, uncapped
+    # Insulation: $1,000 * 30% = $300, uncapped
+    # Central air conditioner: $1,000 * 30% = $300, uncapped
+    # Audit: $1,000 * 30% = $300, capped at $150
+    # Uncapped sum: $900 + $300 + $300 + $300 + $300 + $300 + $150 = $2,550
+    # Cap at $1,200
+    energy_efficient_home_improvement_credit: 2_000
+  

@@ -1,0 +1,41 @@
+description: New York State household credit for single filers.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  name: ny_household_credit_single
+  label: NY household credit for single filers
+  reference:
+    - title: Instructions for Form IT-203
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it203i.pdf#page=28
+    - title: Section 606 Credits against tax (b)(2)(A)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+brackets:
+  - threshold:
+      1986-01-01: -.inf
+    amount:
+      1986-01-01: 75
+  - threshold:
+      1986-01-01: 5_000
+    amount:
+      1986-01-01: 60
+  - threshold:
+      1986-01-01: 6_000
+    amount:
+      1986-01-01: 50
+  - threshold:
+      1986-01-01: 7_000
+    amount:
+      1986-01-01: 45
+  - threshold:
+      1986-01-01: 20_000
+    amount:
+      1986-01-01: 40
+  - threshold:
+      1986-01-01: 25_000
+    amount:
+      1986-01-01: 20
+  - threshold:
+      1986-01-01: 28_000
+    amount:
+      1986-01-01: 0

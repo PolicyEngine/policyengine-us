@@ -1,9 +1,0 @@
-- name: single filer with 10k of income
-  period: 2021
-  absolute_error_margin: 0
-  input:
-    state_code: NY
-    ny_taxable_income: 10_000
-    filing_status: SINGLE
-  output:
-    ny_income_tax_before_credits: 407.50

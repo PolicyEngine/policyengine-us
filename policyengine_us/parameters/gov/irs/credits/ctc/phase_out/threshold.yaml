@@ -1,0 +1,35 @@
+description: The IRS phases out the Child Tax Credit for filers with MAGI above these thresholds.
+SINGLE:
+  2013-01-01: 75_000
+  2018-01-01: 200_000
+  2026-01-01: 75_000
+JOINT:
+  2013-01-01: 110_000
+  2018-01-01: 400_000
+  2026-01-01: 110_000
+SEPARATE:
+  2013-01-01: 55_000
+  2018-01-01: 200_000
+  2026-01-01: 55_000
+HEAD_OF_HOUSEHOLD:
+  2013-01-01: 75_000
+  2018-01-01: 200_000
+  2026-01-01: 75_000
+WIDOW:
+  2013-01-01: 75_000
+  2018-01-01: 400_000
+  2026-01-01: 75_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: ctc_phase_out_threshold
+  label: CTC phase-out threshold
+  breakdown:
+    - filing_status
+  reference:
+    - title: U.S.C 26 U.S. Code § 24(b)(2)
+      href: https://www.law.cornell.edu/uscode/text/26/24#b_2
+    # TCJA:
+    - title: U.S.C 26 U.S. Code § 24(h)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_3
+    

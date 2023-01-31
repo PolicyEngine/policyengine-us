@@ -1,0 +1,26 @@
+# Personal income variable imputation parameters used
+# in the cps.py add_personal_income_variables function.
+
+taxable_interest_fraction:
+  2020: 0.680  # SOI 2020 data
+  2021: 0.680  # SOI 2020 data
+  2022: 0.680  # SOI 2020 data
+  2023: 0.680  # SOI 2020 data
+
+qualified_dividend_fraction:
+  2020: 0.448  # SOI 2018 data
+  2021: 0.448  # SOI 2018 data
+  2022: 0.448  # SOI 2018 data
+  2023: 0.448  # SOI 2018 data
+
+taxable_pension_fraction:
+  2020: 1.000  # no SOI data, so arbitrary assumption
+  2021: 1.000  # no SOI data, so arbitrary assumption
+  2022: 1.000  # no SOI data, so arbitrary assumption
+  2023: 1.000  # no SOI data, so arbitrary assumption
+
+long_term_capgain_fraction:
+  2020: 0.880  # SOI 2012 data
+  2021: 0.880  # SOI 2012 data
+  2022: 0.880  # SOI 2012 data
+  2023: 0.880  # SOI 2012 data

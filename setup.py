@@ -2,23 +2,27 @@
 
 from setuptools import find_packages, setup
 
+with open("README.md", "r") as readme_file:
+    readme = readme_file.read()
+
 setup(
-    name="OpenFisca-US",
-    version="0.132.0",
+    name="policyengine-us",
+    version="0.205.3",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
+    long_description=readme,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Operating System :: POSIX",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering :: Information Analysis",
     ],
-    description="OpenFisca tax and benefit system for the US",
+    description="PolicyEngine tax and benefit system for the US",
     keywords="benefit microsimulation social tax",
     license="http://www.fsf.org/licensing/licenses/agpl-3.0.html",
-    url="https://github.com/PolicyEngine/openfisca-us",
+    url="https://github.com/PolicyEngine/policyengine-us",
     include_package_data=True,  # Will read MANIFEST.in
     data_files=[
         (
@@ -27,40 +31,44 @@ setup(
         ),
     ],
     install_requires=[
+        "click==8.1.3",
         "h5py",
         "microdf_python",
-        "OpenFisca-Core[web-api] >= 35.0.0",
-        "OpenFisca-Tools>=0.13.3,<1.0.0",
         "pandas",
         "pathlib",
-        "pytest",
+        "policyengine-core>=1.12,<1.13",
+        "pytest==5.4.3",
         "pytest-dependency",
         "pyyaml",
         "requests",
         "synthimpute",
         "tables",
+        "tabulate",
         "tqdm",
-        "click>=8.0.0",
     ],
     extras_require={
         "dev": [
-            "autopep8 >= 1.5.4, < 2.0.0",
+            "autopep8",
             "black",
             "coverage",
+            "furo",
             "jupyter-book",
-            "plotly",
-            "pytest",
-            "setuptools",
-            "wheel",
-            "yaml-changelog>=0.1.7",
             "linecheck",
+            "markupsafe",
+            "plotly",
+            "setuptools",
+            "sphinx",
+            "sphinx-argparse",
+            "sphinx-math-dollar",
+            "wheel",
+            "yaml-changelog",
         ],
     },
-    python_requires=">=3.7,<3.8",
+    # Windows CI requires Python 3.9.
+    python_requires=">=3.7,<3.10",
     entry_points={
         "console_scripts": [
-            "openfisca-us = openfisca_us.tools.cli:main",
-            "openfisca-us-data = openfisca_us.data.cli:cli",
+            "policyengine-us = policyengine_us.tools.cli:main",
         ],
     },
     packages=find_packages(),

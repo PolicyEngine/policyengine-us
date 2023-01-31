@@ -1,0 +1,15 @@
+- name: "Two dependents in household"
+  period: 2021
+  input:
+    tax_unit_dependents: 2
+    state_code: IL
+  output:
+    il_dependent_exemption: 2_375 * 2
+
+- name: "Three dependents in household"
+  period: 2021
+  input:
+    tax_unit_dependents: 3
+    state_code: IL
+  output:
+    il_dependent_exemption: 2_375 * 3

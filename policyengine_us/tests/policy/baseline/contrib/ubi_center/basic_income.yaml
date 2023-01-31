@@ -1,0 +1,8 @@
+- name: Basic income with phase-out applied.
+  period: 2022
+  input:
+    basic_income_before_phase_out: 10_000
+    basic_income_phase_out: 4_000
+    basic_income_eligible: true
+  output:
+    basic_income: 6_000

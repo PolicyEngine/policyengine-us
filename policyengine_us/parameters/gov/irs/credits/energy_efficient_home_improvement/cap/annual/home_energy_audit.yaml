@@ -1,0 +1,12 @@
+description: The IRS caps energy efficient home improvement credits on home energy audits at this amount per year.
+values:
+  0000-01-01: 0
+  2023-01-01: 150
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_home_energy_audit_cap
+  label: Energy efficient home improvement credit cap on home energy audits
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=345

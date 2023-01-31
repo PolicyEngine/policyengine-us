@@ -23,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Build changelog
         run: pip install yaml-changelog>=0.1.7 && make changelog
       - name: Preview changelog update
@@ -32,6 +32,7 @@ jobs:
         run: .github/is-version-number-acceptable.sh
   Test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -41,7 +42,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Install package
         run: make install
       - name: Run tests

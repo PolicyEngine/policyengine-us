@@ -1,0 +1,15 @@
+- name: By default there is no AGI limit.
+  period: 2022
+  input:
+    adjusted_gross_income: 100_000
+  output:
+    basic_income_eligible: true
+
+- name: AGI exceeds the threshold.
+  period: 2022
+  input:
+    gov.contrib.ubi_center.basic_income.agi_limit.in_effect: true
+    gov.contrib.ubi_center.basic_income.agi_limit.amount.SINGLE: 50_000
+    adjusted_gross_income: 100_000
+  output:
+    basic_income_eligible: false

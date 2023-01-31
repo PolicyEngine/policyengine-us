@@ -1,0 +1,234 @@
+- name: Test for MD care expense AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 20_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 30
+        employment_income: 20_000
+      person3:
+        age: 6
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    md_dependent_care_subtraction: 6_000
+
+- name: Test for MD pension AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_pension_income: 20_000
+        social_security: 24_300
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_pension_subtraction: 10_000
+
+- name: Test 1 for MD social security AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_pension_income: 50_000
+        social_security: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        social_security: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    tax_unit_taxable_social_security: 17_000
+    md_pension_subtraction_amount: 0
+    md_socsec_subtraction: 17_000
+    md_socsec_subtraction_amount: [8_500, 8_500]
+
+- name: Test 2 for MD social security AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_pension_income: 50_000
+        social_security: 15_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        social_security: 5_000
+      person3:
+        age: 16
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    tax_unit_taxable_social_security: 17_000
+    md_pension_subtraction_amount: 0
+    md_socsec_subtraction: 17_000
+    md_socsec_subtraction_amount: [12_750, 4_250, 0]
+
+- name: Test 3 for MD social security AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_pension_income: 60_000
+        social_security: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        social_security: 10_000
+      person3:
+        age: 85
+        social_security: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    tax_unit_taxable_social_security: 34_000
+    md_pension_subtraction_amount: 0
+    md_socsec_subtraction: 34_000
+    md_socsec_subtraction_amount: [25_500, 8_500, 0]
+
+- name: Test 1 for MD two-income AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 38_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 30
+        employment_income: 2_000
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    md_dependent_care_subtraction: 2_000
+    md_two_income_subtraction: 1_000
+    md_total_subtractions: 3_000
+
+- name: Test 2 for MD two-income AGI subtraction variable formula
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 65
+        employment_income: 40_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 65
+        taxable_pension_income: 10_000
+        social_security: 10_000
+      person3:
+        age: 25
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    # the MD two-income married subtraction worksheet for this case is:
+    # --------------------------------------------------
+    # VARIABLE               HEAD      SPOUSE      TOTAL
+    # --------------------------------------------------
+    # US agi               40_000      18_500     58_500
+    # care subtr                0           0          0
+    # pension subtr             0      10_000     10_000
+    # socsec subtr              0       8_500      8_500
+    # (*) AGI less subtrs  40_000           0
+    # two-income subtr                                 0
+    # total subtrs              0      18_500     18_500
+    # --------------------------------------------------
+    # two-income subtr is min of head and spouse (*) amounts capped at $1200
+    adjusted_gross_income: 58_500
+    md_dependent_care_subtraction: 0
+    md_pension_subtraction: 10_000
+    md_pension_subtraction_amount: [0, 10_000, 0]
+    md_socsec_subtraction: 8_500
+    md_socsec_subtraction_amount: [0, 8_500, 0]
+    md_two_income_subtraction: 0
+    md_total_subtractions: 18_500

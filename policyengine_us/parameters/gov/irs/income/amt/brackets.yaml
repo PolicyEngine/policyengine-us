@@ -1,0 +1,39 @@
+rates:
+  metadata:
+    unit: /1
+    reference:
+      - title: 26 U.S. Code § 55 - Alternative minimum tax imposed (b)(1)(A)
+        href: https://www.law.cornell.edu/uscode/text/26/55#b_1_A
+  1:
+    values:
+      2013-01-01: 0.26
+  2:
+    values:
+      2013-01-01: 0.02
+thresholds:
+  description: AMT brackets (upper thresholds)
+  metadata:
+    unit: currency-USD
+    period: year
+    reference:
+      - title: 2023 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=12
+      - title: 2022 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=12
+      - title: 2021 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=12
+      - title: 2020 IRS data release
+        href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=12
+  1:
+    values:
+      2013-01-01: 179_500
+      2014-01-01: 182_500
+      2015-01-01: 185_400
+      2016-01-01: 186_300
+      2017-01-01: 187_800
+      2018-01-01: 191_100
+      2019-01-01: 194_800
+      2020-01-01: 197_900
+      2021-01-01: 199_900
+      2022-01-01: 206_100
+      2023-01-01: 220_700

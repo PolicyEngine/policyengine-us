@@ -1,0 +1,145 @@
+description: The USDA deducts this amount from net income when computing SNAP benefits.
+
+# Household sizes above 6 use the rate for a 6 member household in all states.
+CONTIGUOUS_US:
+  1:
+    2020-10-01: 167
+    2021-10-01: 177
+    2022-10-01: 193
+  2:
+    2020-10-01: 167
+    2021-10-01: 177
+    2022-10-01: 193
+  3:
+    2020-10-01: 167
+    2021-10-01: 177
+    2022-10-01: 193
+  4:
+    2020-10-01: 181
+    2021-10-01: 184
+    2022-10-01: 193
+  5:
+    2020-10-01: 212
+    2021-10-01: 215
+    2022-10-01: 225
+  6:
+    2020-10-01: 243
+    2021-10-01: 246
+    2022-10-01: 258
+AK:
+  1:
+    2020-10-01: 286
+    2021-10-01: 303
+    2022-10-01: 330
+  2:
+    2020-10-01: 286
+    2021-10-01: 303
+    2022-10-01: 330
+  3:
+    2020-10-01: 286
+    2021-10-01: 303
+    2022-10-01: 330
+  4:
+    2020-10-01: 286
+    2021-10-01: 303
+    2022-10-01: 330
+  5:
+    2020-10-01: 286
+    2021-10-01: 303
+    2022-10-01: 330
+  6:
+    2020-10-01: 304
+    2021-10-01: 308
+    2022-10-01: 330
+GU:
+  1:
+    2020-10-01: 336
+    2021-10-01: 356
+    2022-10-01: 387
+  2:
+    2020-10-01: 336
+    2021-10-01: 356
+    2022-10-01: 387
+  3:
+    2020-10-01: 336
+    2021-10-01: 356
+    2022-10-01: 387
+  4:
+    2020-10-01: 363
+    2021-10-01: 367
+    2022-10-01: 387
+  5:
+    2020-10-01: 425
+    2021-10-01: 430
+    2022-10-01: 450
+  6:
+    2020-10-01: 487
+    2021-10-01: 493
+    2022-10-01: 515
+HI:
+  1:
+    2020-10-01: 236
+    2021-10-01: 250
+    2022-10-01: 272
+  2:
+    2020-10-01: 236
+    2021-10-01: 250
+    2022-10-01: 272
+  3:
+    2020-10-01: 236
+    2021-10-01: 250
+    2022-10-01: 272
+  4:
+    2020-10-01: 236
+    2021-10-01: 250
+    2022-10-01: 272
+  5:
+    2020-10-01: 244
+    2021-10-01: 250
+    2022-10-01: 272
+  6:
+    2020-10-01: 280
+    2021-10-01: 283
+    2022-10-01: 296
+VI:
+  1:
+    2020-10-01: 147
+    2021-10-01: 156
+    2022-10-01: 170
+  2:
+    2020-10-01: 147
+    2021-10-01: 156
+    2022-10-01: 170
+  3:
+    2020-10-01: 150
+    2021-10-01: 156
+    2022-10-01: 170
+  4:
+    2020-10-01: 181
+    2021-10-01: 184
+    2022-10-01: 192
+  5:
+    2020-10-01: 212
+    2021-10-01: 215
+    2022-10-01: 225
+  6:
+    2020-10-01: 243
+    2021-10-01: 246
+    2022-10-01: 258
+
+metadata:
+  unit: currency-USD
+  name: snap_standard_deduction
+  label: SNAP standard deduction
+  reference:
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf
+    - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Maximum Allotments and Deductions
+      href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+    # This page links to other PDFs.
+    - title: USDA Cost of Living Adjustments
+      href: https://www.fns.usda.gov/snap/allotment/COLA
+  period: month
+  breakdown:
+    - state_group
+    - range(1, 7)

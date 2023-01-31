@@ -1,0 +1,74 @@
+- name: Tax unit with recid 95001 from m21.ita.csv
+  # See https://github.com/PolicyEngine/openfisca-us/issues/1270
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 64
+        employment_income: 175_000
+        taxable_interest_income: 100_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX  # no state income tax
+  output:  # expected from TAXSIM35
+    taxsim_tfica: 11_391.10
+    income_tax: 65_615.00
+
+- name: Tax unit with taxsimid 56 from p21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        employment_income: 4_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX  # no state income tax
+  output:  # expected from TAXSIM35 12/08/22 version
+    taxsim_tfica: 306.00
+    income_tax: -11_800.00

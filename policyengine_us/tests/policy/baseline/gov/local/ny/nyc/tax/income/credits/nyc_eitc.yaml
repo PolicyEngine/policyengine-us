@@ -1,0 +1,69 @@
+- name: NYC EITC, fraction of federal EITC (NYAGI=18k)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    in_nyc: true
+    earned_income_tax_credit: 100
+    ny_agi: 18_000
+  output:
+    # NYC EIC rate worksheet
+    # 1. Enter the amount from Form IT-201, line 33 or Form IT-203, line 32,
+    #    New York adjusted gross income.
+    #    = 18_000
+    # 2. Enter the appropriate dollar amount from the NYC EIC rate table below
+    #    for your NYAGI (if applicable).
+    #    [Skip lines 2-5]
+    # 3. Subtract line 2 from line 1.
+    #    N/A 
+    # 4. Multiply line 3 by .00002 (round the result to four decimal places).
+    #    N/A
+    # 5. Enter the decimal from the NYC EIC rate table.
+    #    N/A
+    # 6. Subtract line 4 from line 5 or enter the decimal from the NYC EIC
+    #    rate table. Also enter on Worksheet C, line 2.
+    #    = .2
+    #
+    # Worksheet C, New York City earned income credit
+    #
+    # 1. Enter the amount from Form IT-215, line 10.
+    #    Federal EITC: 100
+    # 2. Enter the decimal from line 6 of the NYC EIC rate Worksheet
+    #    0.2
+    # 3. Allowable NYC EIC (multiply line 1 by line 2)
+    nyc_eitc: 20
+
+- name: NYC EITC, fraction of federal EITC (NYAGI=21k)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    in_nyc: true
+    earned_income_tax_credit: 100
+    ny_agi: 21_000
+  output:
+    # NYC EIC rate worksheet
+    # 1. Enter the amount from Form IT-201, line 33 or Form IT-203, line 32,
+    #    New York adjusted gross income.
+    #    = 21_000
+    # 2. Enter the appropriate dollar amount from the NYC EIC rate table below
+    #    for your NYAGI (if applicable).
+    #    = 19_999
+    # 3. Subtract line 2 from line 1.
+    #    = 1_001
+    # 4. Multiply line 3 by .00002 (round the result to four decimal places).
+    #    = 0.0200
+    # 5. Enter the decimal from the NYC EIC rate table.
+    #    = 0.20
+    # 6. Subtract line 4 from line 5 or enter the decimal from the NYC EIC
+    #    rate table. Also enter on Worksheet C, line 2.
+    #    = 0.18
+    #
+    # Worksheet C, New York City earned income credit
+    #
+    # 1. Enter the amount from Form IT-215, line 10.
+    #    Federal EITC: 100
+    # 2. Enter the decimal from line 6 of the NYC EIC rate Worksheet
+    #    0.18
+    # 3. Allowable NYC EIC (multiply line 1 by line 2)
+    nyc_eitc: 18

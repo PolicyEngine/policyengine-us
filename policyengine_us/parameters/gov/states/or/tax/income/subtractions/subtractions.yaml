@@ -1,0 +1,17 @@
+description: Oregon caps its federal tax liability subtraction for widow(er) filers at this amount, depending on federal AGI.
+metadata:
+  name: or_subtractions
+  label: OR subtractions
+  reference:
+    - title: Chapter 316 - Personal Income Tax
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.800
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=13
+
+    - title: 2021 Oregon Income Tax Form OR-40
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40_101-040_2021.pdf#page=3
+
+values:
+  2020-01-01:
+    - or_federal_tax_liability_subtraction
+    - taxable_social_security
