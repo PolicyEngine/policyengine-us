@@ -3,7 +3,7 @@
   input:
     state_code: NY
     in_nyc: true
-    ny_agi: 250_000
+    nyc_school_credit_income: 250_000
     filing_status: SINGLE
   output:
     # NYC School Tax Instructions
@@ -16,7 +16,7 @@
   input:
     state_code: NY
     in_nyc: false
-    ny_agi: 250_000
+    nyc_school_credit_income: 250_000
     filing_status: SINGLE
   output:
     # NYC School Tax Instructions
@@ -29,7 +29,7 @@
   input:
     state_code: NY
     in_nyc: true
-    ny_agi: 250_001
+    nyc_school_credit_income: 250_001
     filing_status: SINGLE
   output:
     # NYC School Tax Instructions
@@ -42,7 +42,7 @@
   input:
     state_code: NY
     in_nyc: true
-    ny_agi: 250_000
+    nyc_school_credit_income: 250_000
     filing_status: JOINT
   output:
     # NYC School Tax Instructions
@@ -55,7 +55,7 @@
   input:
     state_code: NY
     in_nyc: true
-    ny_agi: 250_001
+    nyc_school_credit_income: 250_001
     filing_status: JOINT
   output:
     # NYC School Tax Instructions
