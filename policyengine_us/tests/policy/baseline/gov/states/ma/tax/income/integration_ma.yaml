@@ -202,7 +202,7 @@
       household:
         members: [person1, person2, person3]
         state_code: MA
-  output:  # expected results from patched TAXSIM35 2023-01-28 version
+  output:  # expected results from patched TAXSIM35 2023-01-31 version
 
     ma_part_b_agi: 4_010  # taxable interest income assumed to be from MA banks
     ma_part_b_taxable_income_deductions: 3_100  # rent deduction
@@ -220,4 +220,53 @@
     ma_income_tax_before_credits: 0.05 * 120 + 0.12 * 9_010 + 0.05 * 8_010
                                   # = 1487.70
     ma_dependent_credit: 360
-    ma_income_tax: 1_487.70 - 360  # = 1_127.70  # TAXSIM: 575.40
+    ma_income_tax: 1_487.70 - 360
+
+- name: Tax unit with taxsimid 78550 in u21.its.csv and u21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        qualified_dividend_income: 4_010
+        taxable_interest_income: 3_010
+        short_term_capital_gains: 2_010
+        long_term_capital_gains: 10_010
+        social_security: 18_000
+        rent: 18_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+        ma_covid_19_essential_employee_premium_pay_program: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 3_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:  # expected results from patched TAXSIM35 2023-01-31 version
+    ma_income_tax_exemption_threshold: 15_400
+    ma_agi: 19_040
+    is_ma_income_tax_exempt: false
+    ma_income_tax_before_credits: 376.50
+    ma_limited_income_tax_credit: 12.50
+    ma_dependent_credit: 180.00
+    ma_senior_circuit_breaker: 966.00
+    ma_refundable_credits: 1_158.50
+    ma_income_tax: -782.00
