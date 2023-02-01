@@ -6,4 +6,4 @@ class age(Variable):
     entity = Person
     label = "Age"
     definition_period = YEAR
-    default_value = 30
+    default_value = 40
