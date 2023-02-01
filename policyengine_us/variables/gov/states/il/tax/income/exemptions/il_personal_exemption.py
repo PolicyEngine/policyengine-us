@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 # TODO: apparently test is required for this, even though this is directly linked to il_personal_exemption_eligibility_status?
 class il_personal_exemption(Variable):
     value_type = float

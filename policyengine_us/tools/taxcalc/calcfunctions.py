@@ -2184,7 +2184,6 @@ def GainsTax(
         hasqdivltcg = 0  # no special taxation of qual divids and l-t cap gains
 
     if hasqdivltcg == 1:
-
         dwks1 = c04800
         dwks2 = e00650
         dwks3 = e58990
@@ -2295,7 +2294,6 @@ def GainsTax(
         c24580 = dwks45
 
     else:  # if hasqdivltcg is zero
-
         c24580 = c05200
         dwks10 = max(0.0, min(p23250, c23650)) + e01100
         dwks13 = 0.0
