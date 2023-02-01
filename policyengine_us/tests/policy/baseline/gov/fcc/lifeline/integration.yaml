@@ -7,7 +7,7 @@
   output:
     lifeline: 9.25 * 12
 
-- name: Individual who doesn't get SNAP but is below the poverty line and has phone cost can get full Lifeline benefit.
+- name: Individual who doesn't get SNAP and is above the poverty line and has phone cost does not get Lifeline.
   period: 2022
   input:
     phone_cost: 20 * 12
