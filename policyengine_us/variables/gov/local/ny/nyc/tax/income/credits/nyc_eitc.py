@@ -10,7 +10,6 @@ class nyc_eitc(Variable):
     defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
-
         # First get their NYAGI and EITC.
         ny_agi = tax_unit("ny_agi", period)
         federal_eitc = tax_unit("earned_income_tax_credit", period)

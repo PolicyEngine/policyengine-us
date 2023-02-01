@@ -11,7 +11,6 @@ class refundable_ctc(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/26/24#d"
 
     def formula(tax_unit, period, parameters):
-
         # This line corresponds to "the credit which would be allowed under this section [the CTC section]"
         # without regard to this subsection [the refundability section] and the limitation under
         # section 26(a) [the section that limits the amount of the non-refundable CTC to tax liability].
