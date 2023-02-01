@@ -12,6 +12,6 @@
   input:
     phone_cost: 20 * 12
     snap: 0
-    employment_income: 20_000 # Below the poverty line for one person.
+    employment_income: 20_000 # Above the poverty line for one person.
   output:
-    lifeline: 9.25 * 12
+    lifeline: 0
