@@ -11,8 +11,8 @@ class pa_total_taxable_income(Variable):
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):
-        us_agi = add(tax_unit, period, ["adjusted_gross_income"])
+        us_gross_income = add(tax_unit, period, ["irs_gross_income"])
         p = parameters(period).gov.states.pa.tax.income
         sources = p.nontaxable_income_sources
         pa_nontaxable_income = add(tax_unit, period, sources)
-        return us_agi - pa_nontaxable_income
+        return max_(0, us_gross_income - pa_nontaxable_income)
