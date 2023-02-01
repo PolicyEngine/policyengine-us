@@ -2311,3 +2311,8 @@
     changed:
     - Increase default age from 30 to 40.
   date: 2023-02-01 03:52:15
+- bump: patch
+  changes:
+    changed:
+    - Base of PA taxable income from adjusted_gross_income to irs_gross_income.
+  date: 2023-02-01 22:12:43
