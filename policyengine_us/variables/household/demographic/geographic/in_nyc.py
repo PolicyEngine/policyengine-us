@@ -12,23 +12,10 @@ class in_nyc(Variable):
         # Get the county.
         county = household("county_str", period)
 
-        # Get possible counties.
-        # counties = county.possible_values
-
-        # Return whether the county is NYC.
-        # return county in [
-        #     counties.NEW_YORK_COUNTY_NY,
-        #     counties.KINGS_COUNTY_NY,
-        #     counties.QUEENS_COUNTY_NY,
-        #     counties.RICHMOND_COUNTY_NY,
-        #     counties.BRONX_COUNTY_NY,
-        # ]
-
-        # Like this or is there a way to do it with County.NEW_YORK_COUNTY_NY.county_str?
-        return county in [ 
+        return county.isin([ 
             "NEW_YORK_COUNTY_NY",
             "KINGS_COUNTY_NY",
             "QUEENS_COUNTY_NY",
             "RICHMOND_COUNTY_NY",
             "BRONX_COUNTY_NY"
-        ]
+        ])
