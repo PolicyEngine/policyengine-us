@@ -18,8 +18,10 @@ class nyc_taxable_income(Variable):
         # First get their NY AGI.
         agi = tax_unit("ny_agi", period)
 
-        deductions_and_exemptions = add(tax_unit, period, 
-            ["nyc_taxable_income_deductions", "nyc_exemptions"]
+        deductions_and_exemptions = add(
+            tax_unit,
+            period,
+            ["nyc_taxable_income_deductions", "nyc_exemptions"],
         )
 
         return max_(agi - deductions_and_exemptions, 0)
