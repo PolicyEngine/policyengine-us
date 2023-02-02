@@ -14,5 +14,5 @@ class nyc_exemptions(Variable):
         count_dependents = tax_unit("tax_unit_count_dependents", period)
         dependent_exemption = parameters(
             period
-        ).gov.local.ny.nyc.tax.income.exemptions.dependent
+        ).gov.local.ny.nyc.tax.income.taxable_income.exemptions.dependent
         return dependent_exemption * count_dependents
