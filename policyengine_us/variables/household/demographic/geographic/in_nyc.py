@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class in_nyc(Variable):
@@ -12,10 +13,11 @@ class in_nyc(Variable):
         # Get the county.
         county = household("county_str", period)
 
-        return county.isin([ 
+        NYC_COUNTIES = [
             "NEW_YORK_COUNTY_NY",
             "KINGS_COUNTY_NY",
             "QUEENS_COUNTY_NY",
             "RICHMOND_COUNTY_NY",
-            "BRONX_COUNTY_NY"
-        ])
+            "BRONX_COUNTY_NY",
+        ]
+        return np.isin(county, NYC_COUNTIES)
