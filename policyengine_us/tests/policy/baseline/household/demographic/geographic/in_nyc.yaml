@@ -1,0 +1,41 @@
+- name: In NYC (county = New York / Manhattan).
+  period: 2022
+  input:
+    county: "NEW_YORK_COUNTY_NY"
+  output:
+    in_nyc: true
+
+- name: In NYC (county = Kings / Brookkyn).
+  period: 2022
+  input:
+    county: "KINGS_COUNTY_NY"
+  output:
+    in_nyc: true
+
+- name: In NYC (county = Queens).
+  period: 2022
+  input:
+    county: "QUEENS_COUNTY_NY"
+  output:
+    in_nyc: true
+
+- name: In NYC (county = Richmond / Staten Island).
+  period: 2022
+  input:
+    county: "RICHMOND_COUNTY_NY"
+  output:
+    in_nyc: true
+
+- name: In NYC (county = Bronx).
+  period: 2022
+  input:
+    county: "BRONX_COUNTY_NY"
+  output:
+    in_nyc: true
+
+- name: In NYC (county = Allegheny (PA)).
+  period: 2022
+  input:
+    county: "ALLEGHENY_COUNTY_PA"
+  output:
+    in_nyc: false
