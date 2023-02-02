@@ -18,12 +18,14 @@ class nyc_taxable_income(Variable):
         ny_agi = tax_unit("ny_agi", period)
 
         # Get parameter tree.
-        p = parameters(period).gov.local.ny.nyc.tax.income.exemptions
+        # p = parameters(period).gov.local.ny.nyc.tax.income.exemptions
+        # Get NYC taxable income deductions.
+        nyc_taxable_income_deductions = tax_unit("nyc_taxable_income_deductions", period)
 
         # Get number of dependents.
-        count_dependents = tax_unit("tax_unit_dependents", period)
+        # count_dependents = tax_unit("tax_unit_dependents", period)
 
         # Subtract dependent exemption amount.
-        nyc_taxable_income = ny_agi - p.dependent * count_dependents
+        nyc_taxable_income = ny_agi - nyc_taxable_income_deductions
 
         return nyc_taxable_income
