@@ -5,6 +5,20 @@ values:
     - ira_contributions # (f)
     - sep_simple_qualified_plan_contributions # (f)
     - early_withdrawal_penalty # (h)
+    - self_employment_tax_ald
+  2018-01-01:
+    - loss_ald # (c)
+    - ira_contributions # (f)
+    - sep_simple_qualified_plan_contributions # (f)
+    - early_withdrawal_penalty # (h)
+    - self_employment_tax_ald
+    - alimony_income  # is a US ALD only in 2018 through 2025
+  2026-01-01:
+    - loss_ald # (c)
+    - ira_contributions # (f)
+    - sep_simple_qualified_plan_contributions # (f)
+    - early_withdrawal_penalty # (h)
+    - self_employment_tax_ald  
 metadata:
   unit: variable
   name: ma_ald_disallowed
