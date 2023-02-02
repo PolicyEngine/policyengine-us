@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.209.1] - 2023-02-02 21:54:04
+
+### Added
+
+- alimony_income and self_employment_tax_ald to list of MA disallowed ALDs.
+
 ## [0.209.0] - 2023-02-02 17:49:25
 
 ### Added
@@ -2780,6 +2786,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.0...0.209.1
 [0.209.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.208.0...0.209.0
 [0.208.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.207.3...0.208.0
 [0.207.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.207.2...0.207.3
