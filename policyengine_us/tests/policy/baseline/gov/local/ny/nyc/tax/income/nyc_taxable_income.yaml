@@ -4,7 +4,7 @@
     state_code: NY
     in_nyc: true
     ny_agi: 100_000
-    nyc_taxable_deductions: 3_000
+    nyc_taxable_income_deductions: 3_000
   output:
     nyc_taxable_income: 97_000
 
@@ -14,7 +14,7 @@
     state_code: NY
     in_nyc: false
     ny_agi: 100_000
-    nyc_taxable_deductions: 3_000
+    nyc_taxable_income_deductions: 3_000
   output:
     nyc_taxable_income: 100_000
     
