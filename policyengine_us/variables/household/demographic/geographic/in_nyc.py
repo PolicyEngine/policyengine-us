@@ -9,7 +9,6 @@ class in_nyc(Variable):
     label = "Is in NYC"
 
     def formula(household, period, parameters):
-
         # Get the county.
         county = household("county_str", period)
 
