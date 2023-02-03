@@ -26,10 +26,13 @@ class md_dependent_care_subtraction(Variable):
     """
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.md.tax.income.agi.subtractions
-        max_decoupled_year_offset = p.max_care_expense_year_offset
+        md_p = parameters(period).gov.states.md.tax.income.agi.subtractions
+        max_decoupled_year_offset = md_p.max_care_expense_year_offset
         period_max = period.offset(max_decoupled_year_offset)
         md_max_care_expense = parameters(period_max).gov.irs.credits.cdcc.max
+        max_eligibles = parameters(period).gov.irs.credits.cdcc.eligibility.max
+        num_eligibles = min_(
+            max_eligibles, tax_unit("count_cdcc_eligible", period)
+        )
         us_expenses = tax_unit("cdcc_relevant_expenses", period)
-        num_eligibles = tax_unit("count_cdcc_eligible", period)
         return min_(md_max_care_expense * num_eligibles, us_expenses)
