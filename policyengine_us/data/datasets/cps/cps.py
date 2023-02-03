@@ -291,7 +291,7 @@ def add_personal_income_variables(
     )
     # Otherwise assign them to Social Security disability benefits.
     cps["social_security_disability"] = (
-        person.SS_VAL - cps.social_security_retirement
+        person.SS_VAL - cps["social_security_retirement"]
     )
     cps["unemployment_compensation"] = person.UC_VAL
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
