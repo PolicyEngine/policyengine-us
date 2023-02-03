@@ -2331,3 +2331,9 @@
     added:
     - alimony_income and self_employment_tax_ald to list of MA disallowed ALDs.
   date: 2023-02-02 21:54:04
+- bump: patch
+  changes:
+    changed:
+    - Split CPS Social Security benefits between retirement and disability depending
+      on age.
+  date: 2023-02-03 15:22:34
