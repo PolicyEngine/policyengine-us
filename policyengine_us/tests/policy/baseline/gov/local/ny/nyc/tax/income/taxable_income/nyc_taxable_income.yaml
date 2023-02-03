@@ -1,0 +1,29 @@
+- name: NY AGI minus NYC taxable deductions (in NYC).
+  period: 2022
+  input:
+    in_nyc: true
+    ny_agi: 100_000
+    nyc_taxable_income_deductions: 3_000
+    nyc_exemptions: 1_000
+  output:
+    nyc_taxable_income: 96_000
+
+- name: Exemptions and deductions exceed AGI.
+  period: 2022
+  input:
+    in_nyc: true
+    ny_agi: 3_500
+    nyc_taxable_income_deductions: 3_000
+    nyc_exemptions: 1_000
+  output:
+    nyc_taxable_income: 0
+
+- name: NY AGI minus NYC taxable deductions (not in NYC).
+  period: 2022
+  input:
+    in_nyc: false
+    ny_agi: 100_000
+    nyc_taxable_income_deductions: 0
+    nyc_exemptions: 0
+  output:
+    nyc_taxable_income: 0

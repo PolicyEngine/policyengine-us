@@ -2301,3 +2301,33 @@
     added:
     - NYC School Tax Credit Rate Reduction Amount.
   date: 2023-01-31 23:17:45
+- bump: patch
+  changes:
+    changed:
+    - Raised default age from 18 to 30.
+  date: 2023-02-01 00:43:30
+- bump: patch
+  changes:
+    changed:
+    - Increase default age from 30 to 40.
+  date: 2023-02-01 03:52:15
+- bump: patch
+  changes:
+    changed:
+    - Base of PA taxable income from adjusted_gross_income to irs_gross_income.
+  date: 2023-02-01 22:12:43
+- bump: minor
+  changes:
+    added:
+    - in_nyc formula
+  date: 2023-02-02 16:32:41
+- bump: minor
+  changes:
+    added:
+    - NYC Taxable Income
+  date: 2023-02-02 17:49:25
+- bump: patch
+  changes:
+    added:
+    - alimony_income and self_employment_tax_ald to list of MA disallowed ALDs.
+  date: 2023-02-02 21:54:04

@@ -1,0 +1,15 @@
+- name: NYC exemption amount based on number of dependents.
+  period: 2022
+  input:
+    in_nyc: true
+    tax_unit_count_dependents: 0
+  output:
+    nyc_exemptions: 0
+
+- name: NYC exemption amount based on number of dependents.
+  period: 2022
+  input:
+    in_nyc: true
+    tax_unit_count_dependents: 2
+  output:
+    nyc_exemptions: 2_000
