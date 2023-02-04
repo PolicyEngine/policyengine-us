@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.209.3] - 2023-02-04 00:52:10
+
+### Changed
+
+- Formula for md_dependent_care_subtraction variable.
+
 ## [0.209.2] - 2023-02-03 15:22:34
 
 ### Changed
@@ -2792,6 +2798,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.209.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.2...0.209.3
 [0.209.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.1...0.209.2
 [0.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.0...0.209.1
 [0.209.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.208.0...0.209.0
