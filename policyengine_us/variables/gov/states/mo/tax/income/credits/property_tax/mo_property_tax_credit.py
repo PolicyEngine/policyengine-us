@@ -13,7 +13,7 @@ class mo_property_tax_credit(Variable):
         "https://revisor.mo.gov/main/OneSection.aspx?section=135.010&bid=6435",
         "https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=6439",
     )
-    defined_for = StateCode.MO
+    defined_for = "mo_ptc_taxunit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mo.tax.income.credits.property_tax
@@ -36,7 +36,4 @@ class mo_property_tax_credit(Variable):
         excess_income = max_(0, net_income - po_start)
         po_steps = np.ceil(excess_income / po_step)
         phaseout_amount = po_rate * po_steps * net_income
-        credit = max_(0, max_credit - phaseout_amount)
-        # allow credit only for eligible tax units
-        eligible = tax_unit("mo_ptc_taxunit_eligible", period)
-        return eligible * credit
+        return max_(0, max_credit - phaseout_amount)
