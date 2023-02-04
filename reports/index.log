@@ -28,12 +28,12 @@ LIGHT_BLUE = "lightblue"
 DARK_BLUE = "darkblue"
 
 
-def make_tax_under_65(adults, children):
-    sim = IndividualSim(year=2021)
-    sim.add_person(name="head", age=25, rent=0)
+def make_tax_over_65(adults, children):
+    sim = IndividualSim(year=2022)
+    sim.add_person(name="head", age=75, rent=12_000)
     members = ["head"]
     if adults == 2:
-        sim.add_person(name="spouse", age=25)
+        sim.add_person(name="spouse", age=75)
         members += ["spouse"]
     for i in range(children):
         child = "child{}".format(i)
@@ -60,13 +60,13 @@ def make_tax_under_65(adults, children):
 l = []
 for adults in range(1, 3):
     for children in range(0, 4):
-        l.append(make_tax_under_65(adults, children))
+        l.append(make_tax_over_65(adults, children))
 
 df = pd.concat(l)
 
 LABELS = dict(
     employment_income="Employment income",
-    mo_income_tax="Missouri income tax",
+    mo_income_tax="Missouri income tax for ",
     mtr="Marginal tax rate",
     adults="Adults",
     children="Children",
@@ -128,6 +128,23 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 481[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    483[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:684[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    683[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
+[0;32m--> 684[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    685[0m [43m            [49m[43madded_variable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mmap_to[49m[38;5;241;43m=[39;49m[43mvariable[49m[38;5;241;43m.[39;49m[43mentity[49m[38;5;241;43m.[39;49m[43mkey[49m
+[1;32m    686[0m [43m        [49m[43m)[49m
+[1;32m    687[0m [38;5;28;01mif[39;00m variable[38;5;241m.[39msubtracts [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:320[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    319[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 320[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    321[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:481[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    480[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 481[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    483[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:721[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
 [1;32m    720[0m [38;5;28;01melse[39;00m:
 [0;32m--> 721[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
@@ -347,7 +364,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 1. 0. ... 1. 0. 1.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -406,6 +423,23 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 481[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    483[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:684[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    683[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
+[0;32m--> 684[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    685[0m [43m            [49m[43madded_variable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mmap_to[49m[38;5;241;43m=[39;49m[43mvariable[49m[38;5;241;43m.[39;49m[43mentity[49m[38;5;241;43m.[39;49m[43mkey[49m
+[1;32m    686[0m [43m        [49m[43m)[49m
+[1;32m    687[0m [38;5;28;01mif[39;00m variable[38;5;241m.[39msubtracts [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:320[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    319[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 320[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    321[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:481[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    480[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 481[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    483[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:721[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
 [1;32m    720[0m [38;5;28;01melse[39;00m:
 [0;32m--> 721[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
@@ -625,24 +659,24 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 1. 0. ... 1. 0. 1.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
 
 During handling of the above exception, another exception occurred:
 
 [0;31mValueError[0m                                Traceback (most recent call last)
-Cell [0;32mIn[1], line 44[0m
+Cell [0;32mIn[3], line 44[0m
 [1;32m     42[0m [38;5;28;01mfor[39;00m adults [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m1[39m, [38;5;241m3[39m):
 [1;32m     43[0m     [38;5;28;01mfor[39;00m children [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m0[39m, [38;5;241m4[39m):
-[0;32m---> 44[0m         l[38;5;241m.[39mappend([43mmake_tax_under_65[49m[43m([49m[43madults[49m[43m,[49m[43m [49m[43mchildren[49m[43m)[49m)
+[0;32m---> 44[0m         l[38;5;241m.[39mappend([43mmake_tax_over_65[49m[43m([49m[43madults[49m[43m,[49m[43m [49m[43mchildren[49m[43m)[49m)
 [1;32m     46[0m df [38;5;241m=[39m pd[38;5;241m.[39mconcat(l)
 [1;32m     48[0m LABELS [38;5;241m=[39m [38;5;28mdict[39m(
 [1;32m     49[0m     employment_income[38;5;241m=[39m[38;5;124m"[39m[38;5;124mEmployment income[39m[38;5;124m"[39m,
-[1;32m     50[0m     mo_income_tax[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMissouri income tax[39m[38;5;124m"[39m,
+[1;32m     50[0m     mo_income_tax[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMissouri income tax for [39m[38;5;124m"[39m,
 [0;32m   (...)[0m
 [1;32m     53[0m     children[38;5;241m=[39m[38;5;124m"[39m[38;5;124mChildren[39m[38;5;124m"[39m,
 [1;32m     54[0m )
 
-Cell [0;32mIn[1], line 27[0m, in [0;36mmake_tax_under_65[0;34m(adults, children)[0m
+Cell [0;32mIn[3], line 27[0m, in [0;36mmake_tax_over_65[0;34m(adults, children)[0m
 [1;32m     25[0m sim[38;5;241m.[39mvary([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m100_000[39m, step[38;5;241m=[39m[38;5;241m100[39m)
 [1;32m     26[0m employment_income [38;5;241m=[39m sim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m]
 [0;32m---> 27[0m mo_income_tax [38;5;241m=[39m [43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_income_tax[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m][38;5;241m.[39mround()
@@ -704,6 +738,32 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    710[0m     [38;5;28mself[39m[38;5;241m.[39mtax_benefit_system[38;5;241m.[39mparameters, TracingParameterNodeAtInstant
 [1;32m    711[0m ):
 [1;32m    712[0m     [38;5;66;03m# Soft-recast[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:320[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    315[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
+[1;32m    316[0m     variable_name, period, [38;5;28mself[39m[38;5;241m.[39mbranch_name
+[1;32m    317[0m )
+[1;32m    319[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 320[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    321[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+[1;32m    322[0m         result [38;5;241m=[39m result[38;5;241m.[39mdecode_to_str()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:481[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    479[0m [38;5;28;01mtry[39;00m:
+[1;32m    480[0m     [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 481[0m     array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    483[0m     [38;5;66;03m# If no result, use the default value and cache it[39;00m
+[1;32m    484[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    485[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:684[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    682[0m     values [38;5;241m=[39m [38;5;241m0[39m
+[1;32m    683[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
+[0;32m--> 684[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    685[0m [43m            [49m[43madded_variable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mmap_to[49m[38;5;241;43m=[39;49m[43mvariable[49m[38;5;241;43m.[39;49m[43mentity[49m[38;5;241;43m.[39;49m[43mkey[49m
+[1;32m    686[0m [43m        [49m[43m)[49m
+[1;32m    687[0m [38;5;28;01mif[39;00m variable[38;5;241m.[39msubtracts [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    688[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(variable[38;5;241m.[39msubtracts, [38;5;28mstr[39m):
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:320[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
 [1;32m    315[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
@@ -1032,6 +1092,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
-ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 1. 0. ... 1. 0. 1.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+ValueError: Input [0. 1. 0. ... 1. 0. 1.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
 
