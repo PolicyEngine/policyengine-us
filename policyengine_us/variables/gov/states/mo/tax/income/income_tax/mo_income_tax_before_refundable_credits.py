@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mo_income_tax(Variable):
+class mo_income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Missouri income tax"
+    label = "MO income tax"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,5 +16,9 @@ class mo_income_tax(Variable):
     defined_for = StateCode.MO
     # mo_property_tax_credit is refundable, per pg.17 of: https://dor.mo.gov/forms/4711_2021.pdf and the last reference above.
 
-    adds = ["mo_income_tax_before_refundable_credits"]
-    subtracts = ["mo_refundable_credits"]
+    def formula(tax_unit, period, parameters):
+        tax_before_credits = add(
+            tax_unit, period, ["mo_income_tax_before_credits"]
+        )
+        non_refundable_credits = tax_unit("mo_non_refundable_credits", period)
+        return max_(tax_before_credits - non_refundable_credits, 0)
