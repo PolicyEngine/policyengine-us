@@ -24,3 +24,12 @@
     earned_income_tax_credit: 100
   output:
     mo_wftc: 0
+
+- name: Introduced in 2023
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: MO
+    earned_income_tax_credit: 100
+  output:
+    mo_wftc: 0
