@@ -10,7 +10,7 @@ class mo_wftc(Variable):
     reference = "https://revisor.mo.gov/main/OneSection.aspx?section=143.177&bid=49978&hl="
     defined_for = StateCode.MO
 
-    def formula(tax_unit, period, parameters):
+    def formula_2023(tax_unit, period, parameters):
         federal_eitc = tax_unit("earned_income_tax_credit", period)
         rate = parameters(
             period
