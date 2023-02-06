@@ -317,6 +317,8 @@ def add_personal_income_variables(
     # Expenses.
     # "What is the annual amount of child support paid?"
     person["child_support_expense"] = person.CHSP_VAL
+    person["health_insurance_premiums"] = person.PHIP_VAL
+    person["medical_out_of_pocket_expenses"] = person.MOOP
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
