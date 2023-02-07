@@ -13,6 +13,7 @@
         employment_income: 25_000
         is_tax_unit_spouse: true
         public_pension_income: 10_000
+        taxable_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -128,20 +129,19 @@
         employment_income: 25_000
         is_tax_unit_head: true
         public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_pension_income: 10_000
         taxable_social_security: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
         public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_pension_income: 10_000
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
-        filing_status: JOINT
         members: [person1, person2]
+        premium_tax_credit: 0
     household:
       members: [person1, person2]
       state_code: MO
@@ -180,7 +180,7 @@
       members: [person1, person2]
       state_code: MO
   output:
-    mo_adjusted_gross_income: [45_000, 45_000]
+    mo_adjusted_gross_income: [40_000, 40_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
@@ -196,14 +196,14 @@
         employment_income: 25_000
         is_tax_unit_head: true
         public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_pension_income: 10_000
         taxable_social_security: 11_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
         public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_pension_income: 10_000
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
@@ -230,11 +230,13 @@
         employment_income: 25_000
         is_tax_unit_head: true
         public_pension_income: 10_000
+        taxable_pension_income: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
         public_pension_income: 10_000
+        taxable_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -259,7 +261,7 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        taxable_pension_income: 10_000
+        taxable_pension_income: 10_000        
       person2:
         age: 72
         employment_income: 25_000
@@ -289,13 +291,13 @@
         age: 78
         employment_income: 5_000
         is_tax_unit_head: true
-        taxable_pension_income: 5_000
+        taxable_pension_income: 10_000
         public_pension_income: 5_000
       person2:
         age: 72
         employment_income: 5_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 5_000
+        taxable_pension_income: 10_000
         public_pension_income: 5_000
     tax_units:
       tax_unit:
@@ -308,6 +310,6 @@
   output:
     mo_adjusted_gross_income: [15_000, 15_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [5_000, 5_000]
-    mo_pension_and_ss_or_ssd_deduction_section_b: [5_000, 5_000]
+    mo_pension_and_ss_or_ssd_deduction_section_b: [6_000, 6_000]
     mo_pension_and_ss_or_ssd_deduction_section_c: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction: 20_000
+    mo_pension_and_ss_or_ssd_deduction: 22_000
