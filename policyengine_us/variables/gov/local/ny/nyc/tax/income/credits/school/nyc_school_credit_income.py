@@ -8,7 +8,7 @@ class nyc_school_credit_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "in_nyc"
-    adds = ["adjusted_gross_income"]
+    adds = [ "adjusted_gross_income" ]
 
     # NYC School Tax Credit has its own definition of income.
     # "Income, for purposes of determining your New York City school tax credit, means your recomputed federal adjusted gross income from
