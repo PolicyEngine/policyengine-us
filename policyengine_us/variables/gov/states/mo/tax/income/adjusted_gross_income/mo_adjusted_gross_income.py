@@ -15,8 +15,5 @@ class mo_adjusted_gross_income(Variable):
 
     def formula(person, period, parameters):
         gross_income = person("irs_gross_income", period)
-        public_pension_income = person(
-            "public_pension_income", period
-        )  # only a concept that exists for Missouri currently
         subtractions = person("mo_qualified_health_insurance_premiums", period)
-        return max_(0, gross_income + public_pension_income - subtractions)
+        return max_(0, gross_income - subtractions)
