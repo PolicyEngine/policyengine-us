@@ -11,6 +11,7 @@ class nyc_household_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         # First get their federal AGI.
+        # Technically based on recomputed AGI, which deviates slightly from federal AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
 
         # Then get their filing status.
@@ -20,16 +21,23 @@ class nyc_household_credit(Variable):
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.household
 
         # Then get their number of dependents.
-        n_dependents = tax_unit("tax_unit_count_dependents", period)
+        tax_unit_size = tax_unit("tax_unit_size", period)
 
-        # Calculate the flat amount that is regardless of dependent count.
-        flat_amount = p.flat_amount[filing_status][federal_agi]
+        filing_statuses = filing_status.possible_values
 
-        # Calculuate the amount of credit per dependent.
-        credit_per_dependent = p.amount_per_dependent[filing_status][federal_agi]
-
-        # Calculate the total variable amount (based on number of dependents).
-        variable_amount = n_dependents * credit_per_dependent
-
-        # Return the total credit.
-        return flat_amount + variable_amount
+        return select(
+            [
+                filing_status == filing_statuses.SINGLE,
+                filing_status == filing_statuses.SEPARATE,
+            ],
+            [
+                # Single filers get a flat amount.
+                p.flat_amount.calc(federal_agi),
+                # Separate filers get an amount for each person in the tax
+                # unit, varying with AGI.
+                p.separate_per_dependent.calc(federal_agi) * tax_unit_size,
+            ],
+            # Joint, head of household, and widow filers have a different
+            # amount per person, varying with AGI.
+            default=p.other_per_dependent.calc(federal_agi) * tax_unit_size,
+        )
