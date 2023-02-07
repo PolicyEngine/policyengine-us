@@ -1,0 +1,8 @@
+- name: Unless we worry about readjusted income, this is just adjusted gross income.
+  period: 2022
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 123_456
+  output:
+    nyc_school_credit_income: 123_456
