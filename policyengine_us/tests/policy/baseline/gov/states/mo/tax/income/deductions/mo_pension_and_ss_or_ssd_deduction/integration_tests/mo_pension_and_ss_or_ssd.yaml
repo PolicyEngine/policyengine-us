@@ -12,8 +12,7 @@
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 10_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -103,7 +102,7 @@
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -128,15 +127,15 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 5_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 5_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
@@ -161,15 +160,15 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 2_500
+        taxable_private_pension_income: 2_500
         taxable_social_security: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 2_500
+        taxable_private_pension_income: 2_500
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
@@ -195,15 +194,15 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 5_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 11_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 5_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
@@ -229,14 +228,12 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 10_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 10_000
-        taxable_pension_income: 10_000
+        taxable_public_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -261,12 +258,12 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        taxable_pension_income: 10_000        
+        taxable_private_pension_income: 10_000        
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -291,14 +288,14 @@
         age: 78
         employment_income: 5_000
         is_tax_unit_head: true
-        taxable_pension_income: 10_000
-        public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
+        taxable_public_pension_income: 5_000
       person2:
         age: 72
         employment_income: 5_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 10_000
-        public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
+        taxable_public_pension_income: 5_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
