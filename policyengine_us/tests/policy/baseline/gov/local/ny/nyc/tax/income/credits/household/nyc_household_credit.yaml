@@ -1,3 +1,14 @@
+- name: Single person making $0 gets $15.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 0
+    filing_status: SINGLE
+  output:
+    nyc_household_credit: 15
+
 - name: Single person making $5k gets $15.
   period: 2022
   absolute_error_margin: 0

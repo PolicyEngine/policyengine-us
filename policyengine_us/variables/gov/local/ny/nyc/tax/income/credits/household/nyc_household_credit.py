@@ -20,7 +20,7 @@ class nyc_household_credit(Variable):
         # Then get the household credit part of the parameter tree.
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.household
 
-        # Then get their number of dependents.
+        # Then get their number of people.
         tax_unit_size = tax_unit("tax_unit_size", period)
 
         filing_statuses = filing_status.possible_values
@@ -32,12 +32,12 @@ class nyc_household_credit(Variable):
             ],
             [
                 # Single filers get a flat amount.
-                p.flat_amount.calc(federal_agi),
+                p.flat_amount.calc(federal_agi, right=True),
                 # Separate filers get an amount for each person in the tax
                 # unit, varying with AGI.
-                p.separate_per_dependent.calc(federal_agi) * tax_unit_size,
+                p.separate_per_dependent.calc(federal_agi, right=True) * tax_unit_size,
             ],
             # Joint, head of household, and widow filers have a different
             # amount per person, varying with AGI.
-            default=p.other_per_dependent.calc(federal_agi) * tax_unit_size,
+            default=p.other_per_dependent.calc(federal_agi, right=True) * tax_unit_size,
         )
