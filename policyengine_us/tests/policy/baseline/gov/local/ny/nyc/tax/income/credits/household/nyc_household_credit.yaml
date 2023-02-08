@@ -31,7 +31,7 @@
   output:
     nyc_household_credit: 0
 
-- name: Married couple making $15k gets $30 per (two) dependents.
+- name: Married couple making $15k gets $30 per tax unit dependent (includes filers) (size=2).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -43,7 +43,7 @@
   output:
     nyc_household_credit: 60
 
-- name: Married couple making $15k gets $30 per (four) dependents.
+- name: Married couple making $15k gets $30 per tax unit dependent (includes filers) (size=4).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -55,7 +55,7 @@
   output:
     nyc_household_credit: 120
 
-- name: Married couple making $21k gets $10 per dependent.
+- name: Married couple making $21k gets $10 per tax unit dependent (includes filers).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -79,7 +79,7 @@
   output:
     nyc_household_credit: 0
 
-- name: Head of household making $15k gets $30 per (two) dependents.
+- name: Head of household making $15k gets $30 per tax unit dependent (includes self) (size=2).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -91,7 +91,7 @@
   output:
     nyc_household_credit: 60
 
-- name: Head of household making $15k gets $30 per (four) dependents.
+- name: Head of household making $15k gets $30 per tax unit dependent (includes self) (size=4).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -103,7 +103,7 @@
   output:
     nyc_household_credit: 120
 
-- name: Head of household making $21k gets $10 per dependent.
+- name: Head of household making $21k gets $10 per tax unit dependent (includes self).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -127,7 +127,7 @@
   output:
     nyc_household_credit: 0
 
-- name: Widow making $15k gets $30 per (two) dependents.
+- name: Widow making $15k gets $30 per dependent (includes self) (size=2).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -139,7 +139,7 @@
   output:
     nyc_household_credit: 60
 
-- name: Widow making $15k gets $30 per (four) dependents.
+- name: Widow making $15k gets $30 per dependent (includes self) (size=4).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -175,7 +175,7 @@
   output:
     nyc_household_credit: 0
 
-- name: Separate filers making $15k or less get $15 per (two) dependents.
+- name: Separate filers making $15k or less get $15 per tax unit dependent (size=2).
   period: 2022
   absolute_error_margin: 0
   input:
@@ -187,7 +187,7 @@
   output:
     nyc_household_credit: 30
 
-- name: Separate filers making $18k get $8 per (four) dependents.
+- name: Separate filers making $18k get $8 per tax unit dependent (size=4).
   period: 2022
   absolute_error_margin: 3 # Table has some rounding.
   input:
@@ -199,7 +199,7 @@
   output:
     nyc_household_credit: 32
 
-- name: Separate filers making $21k get $5 per (six) dependents.
+- name: Separate filers making $21k get $5 per tax unit dependent.
   period: 2022
   absolute_error_margin: 3 # Table has some rounding.
   input:
