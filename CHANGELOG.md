@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.213.0] - 2023-02-08 04:04:24
+
+### Added
+
+- NYC household credit
+
 ## [0.212.0] - 2023-02-07 15:58:09
 
 ### Added
@@ -2828,6 +2834,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.213.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.212.0...0.213.0
 [0.212.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.211.1...0.212.0
 [0.211.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.211.0...0.211.1
 [0.211.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.210.1...0.211.0
