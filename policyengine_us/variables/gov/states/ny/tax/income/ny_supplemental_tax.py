@@ -48,8 +48,7 @@ class ny_supplemental_tax(Variable):
         )
 
         phase_in_fraction = min_(
-            1,
-            applicable_amount / sup_tax.phase_in_length,
+            1, applicable_amount / sup_tax.phase_in_length,
         )
 
         rate = select(

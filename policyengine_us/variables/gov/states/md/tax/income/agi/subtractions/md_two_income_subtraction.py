@@ -61,7 +61,6 @@ class md_two_income_subtraction(Variable):
             spouse_us_agi + spouse_adds - spouse_subs,
         )
         capped_min_agi_adds_subs = min_(
-            p.max_two_income_subtraction,
-            min_agi_adds_subs,
+            p.max_two_income_subtraction, min_agi_adds_subs,
         )
         return is_joint * max_(0, capped_min_agi_adds_subs)

@@ -18,11 +18,5 @@ class taxsim_state(Variable):
                 state_code_str == "WA",
                 True,
             ],
-            [
-                21,
-                22,
-                33,
-                48,
-                0,
-            ],
+            [21, 22, 33, 48, 0,],
         )
