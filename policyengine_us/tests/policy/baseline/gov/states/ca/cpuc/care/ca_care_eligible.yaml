@@ -1,0 +1,58 @@
+# Test poverty line for one person.
+- name: One person with income equal to 200% of poverty line for a two-person household is eligible.
+  period: 2023
+  input:
+    household_size: 1
+    household_income: 36_620
+    state_code: CA
+  output:
+    ca_care_eligible: true
+
+- name: One person with income just above 200% of poverty line for a two-person household is ineligible.
+  period: 2023
+  input:
+    household_size: 1
+    household_income: 36_621
+    state_code: CA
+  output:
+    ca_care_eligible: false
+
+# Test poverty line for two people.
+- name: Two people with income equal to 200% of poverty line for a two-person household is eligible.
+  period: 2023
+  input:
+    household_size: 2
+    household_income: 36_620
+    state_code: CA
+  output:
+    ca_care_eligible: true
+
+- name: Two people with income just above 200% of poverty line for a two-person household is ineligible.
+  period: 2023
+  input:
+    household_size: 2
+    household_income: 36_621
+    state_code: CA
+  output:
+    ca_care_eligible: false
+
+# Test categorical eligibility.
+- name: One person with income above the income threshold but participates in SNAP is eligible.
+  period: 2023
+  input:
+    household_size: 1
+    household_income: 36_621
+    state_code: CA
+    snap: 1
+  output:
+    ca_care_eligible: true
+
+# Test California.
+- name: One person with income below the threshold not from California is ineligible.
+  period: 2023
+  input:
+    household_size: 1
+    household_income: 36_620
+    state_code: NY
+  output:
+    ca_care_eligible: false
