@@ -33,9 +33,12 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         social_security_disability = person(
             "social_security_disability", period
         )
+        larger_of_ss_ssdi = max_(
+            taxable_social_security_benefits, social_security_disability
+        )
+        
         # print(taxable_social_security_benefits, agi_over_ss_or_ssd_allowance)
         return max_(
-            (taxable_social_security_benefits + social_security_disability)
-            - agi_over_ss_or_ssd_allowance,
+            larger_of_ss_ssdi - agi_over_ss_or_ssd_allowance,
             0,
         )
