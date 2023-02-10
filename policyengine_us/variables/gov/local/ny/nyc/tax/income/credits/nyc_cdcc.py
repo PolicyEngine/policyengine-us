@@ -29,7 +29,6 @@ class nyc_cdcc(Variable):
         # Generally, one can claim the CDCC if they quality for the NYS CDCC
         # (which is generally based on qualifying for the federal CDCC).
         # They also need to have a FAGI <= $30k.
-        # Separate filers have a different set of rules for eligibility.
         eligible = fagi <= p.income_limit
 
         # Get their NY State CDCC (line 14 on Form IT-216).
