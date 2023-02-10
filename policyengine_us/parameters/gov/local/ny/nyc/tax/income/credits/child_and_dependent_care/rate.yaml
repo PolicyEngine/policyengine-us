@@ -1,0 +1,118 @@
+description: NYC CDCC Limitation Table Rate
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: NYC CDCC
+  reference:
+    - title: NY State/City CDCC Form 216 Instructions
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it216i.pdf#page=7
+brackets:
+  - threshold:
+      2022-01-01: -1
+    amount:
+      2022-01-01: .750
+  - threshold:
+      2022-01-01: 25_000
+    amount:
+      2022-01-01: .735
+  - threshold:
+      2022-01-01: 25_200
+    amount:
+      2022-01-01: .705
+  - threshold:
+      2022-01-01: 25_400
+    amount:
+      2022-01-01: .675
+  - threshold:
+      2022-01-01: 25_600
+    amount:
+      2022-01-01: .645
+  - threshold:
+      2022-01-01: 25_800
+    amount:
+      2022-01-01: .615
+  - threshold:
+      2022-01-01: 26_000
+    amount:
+      2022-01-01: .585
+  - threshold:
+      2022-01-01: 26_200
+    amount:
+      2022-01-01: .555
+  - threshold:
+      2022-01-01: 26_400
+    amount:
+      2022-01-01: .525
+  - threshold:
+      2022-01-01: 26_600
+    amount:
+      2022-01-01: .495
+  - threshold:
+      2022-01-01: 26_800
+    amount:
+      2022-01-01: .465
+  - threshold:
+      2022-01-01: 27_000
+    amount:
+      2022-01-01: .435
+  - threshold:
+      2022-01-01: 27_200
+    amount:
+      2022-01-01: .405
+  - threshold:
+      2022-01-01: 27_400
+    amount:
+      2022-01-01: .375
+  - threshold:
+      2022-01-01: 27_600
+    amount:
+      2022-01-01: .345
+  - threshold:
+      2022-01-01: 27_800
+    amount:
+      2022-01-01: .315
+  - threshold:
+      2022-01-01: 28_000
+    amount:
+      2022-01-01: .285
+  - threshold:
+      2022-01-01: 28_200
+    amount:
+      2022-01-01: .255
+  - threshold:
+      2022-01-01: 28_400
+    amount:
+      2022-01-01: .225
+  - threshold:
+      2022-01-01: 28_600
+    amount:
+      2022-01-01: .195
+  - threshold:
+      2022-01-01: 28_800
+    amount:
+      2022-01-01: .165
+  - threshold:
+      2022-01-01: 29_000
+    amount:
+      2022-01-01: .135
+  - threshold:
+      2022-01-01: 29_200
+    amount:
+      2022-01-01: .105
+  - threshold:
+      2022-01-01: 29_400
+    amount:
+      2022-01-01: .075
+  - threshold:
+      2022-01-01: 29_600
+    amount:
+      2022-01-01: .045
+  - threshold:
+      2022-01-01: 29_800
+    amount:
+      2022-01-01: .015
+  - threshold:
+      2022-01-01: 30_000
+    amount:
+      2022-01-01: 0
