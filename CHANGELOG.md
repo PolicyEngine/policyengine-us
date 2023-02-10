@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.213.2] - 2023-02-10 04:12:00
+
+### Fixed
+
+- Value of OASDI maximum taxable earnings for 2023.
+
 ## [0.213.1] - 2023-02-09 00:00:45
 
 ### Fixed
@@ -2840,6 +2846,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.213.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.1...0.213.2
 [0.213.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.0...0.213.1
 [0.213.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.212.0...0.213.0
 [0.212.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.211.1...0.212.0
