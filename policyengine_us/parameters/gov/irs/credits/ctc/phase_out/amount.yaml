@@ -2,8 +2,7 @@ description: The IRS reduces the Child Tax Credit by this amount for each increm
 values:
   0000-01-01: 50
 metadata:
-  unit: /1
-  name: ctc_phase_out_amount
+  unit: currency-USD
   label: CTC phase-out amount
   reference:
     - title: U.S.C 26 U.S. Code § 24(b)(1)
