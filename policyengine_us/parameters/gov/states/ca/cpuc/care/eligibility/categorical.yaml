@@ -1,0 +1,17 @@
+description: California provides CARE eligibility to households that are enrolled in these programs.
+values:
+  2022-06-01:
+    - medicaid
+    - wic
+    - snap
+    - ssi
+    - tanf
+metadata:
+  reference:
+    - title: CARE/FERA Program
+      href: https://www.cpuc.ca.gov/lowincomerates/
+  unit: program
+  label: CARE categorical eligibility programs
+
+
+# looking for NSL, Healthy Families A & B, LIHEAP, Head Start Income Eligible, Bureau of Indian Affairs General Assistance
