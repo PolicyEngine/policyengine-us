@@ -21,9 +21,7 @@ class nyc_cdcc(Variable):
         fagi = tax_unit("adjusted_gross_income", period)
 
         # Then get the CDCC part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.local.ny.nyc.tax.income.credits.child_and_dependent_care_credit
+        p = parameters(period).gov.local.ny.nyc.tax.income.credits.cdcc
 
         # Calculate eligibility.
         # Generally, one can claim the CDCC if they quality for the NYS CDCC
