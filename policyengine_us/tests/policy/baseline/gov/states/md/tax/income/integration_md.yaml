@@ -70,3 +70,32 @@
     md_socsec_subtraction: 12_750
     md_two_income_subtraction: 0
     md_dependent_care_subtraction: 2 * 3_000  # = 6_000
+
+- name: 2021 MD integration test for a single coupon-clipping homeowner
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        taxable_interest_income: 200_000
+        real_estate_taxes: 12_000
+        interest_expense: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:  # expected results from hand calculations using 2021 MD Form 502
+    # https://www.marylandtaxes.gov/forms/21_forms/502.pdf#page=2
+    # https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=18
+    md_agi: 200_000
+    md_deductions: 34_000  # PEUS 0.213.3 code generates 24_000
+    md_taxable_income: 200_000 - 34_000  # code generates 200_000 - 24_000
