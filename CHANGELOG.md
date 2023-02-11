@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.213.4] - 2023-02-11 14:40:00
+
+### Fixed
+
+- Calculation of MD itemized deduction amount.
+
 ## [0.213.3] - 2023-02-10 16:30:27
 
 ### Fixed
@@ -2852,6 +2858,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.213.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.3...0.213.4
 [0.213.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.2...0.213.3
 [0.213.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.1...0.213.2
 [0.213.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.0...0.213.1
