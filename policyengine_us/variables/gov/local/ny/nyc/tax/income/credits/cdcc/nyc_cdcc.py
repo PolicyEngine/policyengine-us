@@ -9,7 +9,7 @@ class nyc_cdcc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.tax.ny.gov/pdf/current_forms/it/it216i.pdf"
-    defined_for = "in_nyc"
+    defined_for = "nyc_cdcc_eligible"
 
     def formula(tax_unit, period, parameters):
         # The NYC CDCC is a share of the NY State CDCC.
@@ -17,17 +17,8 @@ class nyc_cdcc(Variable):
         # relevant expenses used for children under 4 and the NYC CDCC rate,
         # which depends on income.
 
-        # First get their FAGI.
-        fagi = tax_unit("adjusted_gross_income", period)
-
-        # Then get the CDCC part of the parameter tree.
+        # First get the CDCC part of the parameter tree.
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.cdcc
-
-        # Calculate eligibility.
-        # Generally, one can claim the CDCC if they quality for the NYS CDCC
-        # (which is generally based on qualifying for the federal CDCC).
-        # They also need to have a FAGI <= $30k.
-        eligible = fagi <= p.income_limit
 
         # Get their NY State CDCC (line 14 on Form IT-216).
         nys_cdcc = tax_unit("ny_cdcc", period)
@@ -46,7 +37,10 @@ class nyc_cdcc(Variable):
         # Take this share of the NY State CDCC.
         nyc_qualifying_cdcc_amount = nys_cdcc * expenses_share_child_under_4
 
-        # Calculate the NYC CDCC rate which depends on income.
-        cdcc_rate = p.rate.calc(fagi, right=True)
+        # Get their federal AGI.
+        income = tax_unit("adjusted_gross_income", period)
 
-        return eligible * nyc_qualifying_cdcc_amount * cdcc_rate
+        # Calculate the NYC CDCC rate which depends on income.
+        cdcc_rate = p.rate.calc(income, right=True)
+
+        return nyc_qualifying_cdcc_amount * cdcc_rate
