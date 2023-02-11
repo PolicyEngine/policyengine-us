@@ -11,27 +11,28 @@ class md_deductions(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        # Check if the tax_unit itemized on their federal returns:
-        tax_unit_itemizes = tax_unit("tax_unit_itemizes", period)
-        standard_deduction = tax_unit("md_standard_deduction", period)
-        gov = parameters(period).gov
-        federal_deductions_if_itemizing = (
-            gov.irs.deductions.deductions_if_itemizing
-        )
-        federal_deductions_if_itemizing = [
+        us_itemizer = tax_unit("tax_unit_itemizes", period)
+        md_std_ded = tax_unit("md_standard_deduction", period)
+        p = parameters(period).gov.irs.deductions
+        us_deductions_if_itemizing = [
             deduction
-            for deduction in federal_deductions_if_itemizing
+            for deduction in p.deductions_if_itemizing
             if deduction
             not in [
                 "salt_deduction",
                 "qualified_business_income_deduction",
             ]
         ]
-        itemized_deductions_less_salt = add(
-            tax_unit, period, federal_deductions_if_itemizing
+        us_itemized_deductions_less_salt = add(
+            tax_unit, period, us_deductions_if_itemizing
         )
+        property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        salt = p.itemized.salt_and_real_estate
+        cap = salt.cap[tax_unit("filing_status", period)]
+        capped_property_taxes = min_(property_taxes, cap)
+        md_itm_ded = us_itemized_deductions_less_salt + capped_property_taxes
         return where(
-            tax_unit_itemizes,
-            itemized_deductions_less_salt,
-            standard_deduction,
+            us_itemizer,
+            where(md_itm_ded > md_std_ded, md_itm_ded, md_std_ded),
+            md_std_ded,
         )
