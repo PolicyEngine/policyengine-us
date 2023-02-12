@@ -26,7 +26,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 10_000]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
-    mo_pension_and_ss_or_ssd_deduction: 20_000
+    mo_pension_and_ss_or_ssd_deduction: 30_000
 
 - name:  70k income, childless couple, evenly split income, one with SS, one with SSD
   period: 2021
@@ -56,7 +56,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [20_000, 20_000]
-    mo_pension_and_ss_or_ssd_deduction: 20_000
+    mo_pension_and_ss_or_ssd_deduction: 40_000
 
 - name:  70k income, childless couple, evenly split income, both with SS and SSD
   period: 2021
@@ -86,7 +86,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [12_000, 12_000]
-    mo_pension_and_ss_or_ssd_deduction: 12_000
+    mo_pension_and_ss_or_ssd_deduction: 24_000
 
 - name:  70k income, childless couple, evenly split income, one with SS, one with private pension
   period: 2021
@@ -116,7 +116,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
-    mo_pension_and_ss_or_ssd_deduction: 10_000
+    mo_pension_and_ss_or_ssd_deduction: 20_000
 
 - name:  90k income, childless couple, evenly split income, both with public + private pensions, and SS
   period: 2021
@@ -149,7 +149,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [20_000, 20_000]
-    mo_pension_and_ss_or_ssd_deduction: 20_000
+    mo_pension_and_ss_or_ssd_deduction: 40_000
 
 - name:  90k income, childless couple, evenly split income, both with public + private pensions, one with SS and the other with SSD 
   period: 2021
@@ -183,7 +183,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [20_000, 20_000]
-    mo_pension_and_ss_or_ssd_deduction: [20_000]
+    mo_pension_and_ss_or_ssd_deduction: 40_000
 
 - name:  100k income, childless couple, evenly split income, both with public + private pensions, both with SS and SSD 
   period: 2021
@@ -217,7 +217,7 @@
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [21_000, 21_000]
-    mo_pension_and_ss_or_ssd_deduction: 21_000
+    mo_pension_and_ss_or_ssd_deduction: 42_000
 
 - name:  70k income, childless couple, evenly split income, both with public pensions
   period: 2021
