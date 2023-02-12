@@ -13,4 +13,4 @@ class mo_income_tax_exempt(Variable):
     def formula(person, period, parameters):
         taxable_income = person("mo_taxable_income", period)
         p = parameters(period).gov.states.mo.tax.income
-        return taxable_income < p.minimal_taxable_income
+        return taxable_income < p.minimum_taxable_income
