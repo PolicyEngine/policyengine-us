@@ -44,7 +44,7 @@ brackets:
       2021-01-01: 6_528
   - rate:
       2019-01-01: 0.05
-      2023-01-01: 0.0495 #https://www.senate.mo.gov/22info/BTS_Web/Bill.aspx?SessionType=E1&BillID=97872967
+      2023-01-01: 0.0495 # Top rate set to 4.95% in 2023. Potentially subject to further decreases based on revenue surplus triggers.
     threshold:
       2019-01-01: 7_371
       2020-01-01: 7_511
@@ -55,7 +55,7 @@ brackets:
       2019-01-01: 8_424
       2020-01-01: 8_584
       2021-01-01: 8_704
-      2023-01-01: .inf
+      2023-01-01: .inf # Top rate set to 4.95%, eliminating this bracket.
       
 metadata:
   reference:
@@ -65,6 +65,8 @@ metadata:
       href: https://dor.mo.gov/forms/2020%20Tax%20Chart_2020.pdf
     - title: MO 2021 Income Tax Chart
       href: https://dor.mo.gov/forms/2021%20Tax%20Chart_2021.pdf
+    - title: MO Legal Code |  143.011.  Resident individuals — tax rates — rate reductions, when.
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=51511&hl=
   label: MO Resident Individual Tax Rates
   type: marginal_rate
   threshold_unit: currency-USD
