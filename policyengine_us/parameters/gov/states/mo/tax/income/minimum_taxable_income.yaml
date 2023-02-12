@@ -1,0 +1,11 @@
+description: Missouri only levies tax on taxable income of at least this amount.
+values:
+  0000-01-01: 100
+  2023-01-01: 1_000
+metadata:
+  reference:
+    - title: Missouri Legal Code | 143.021.  Tax determined by rates in section 143.011 — no tax on taxable income, when.
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.021
+  label: MO minimum taxable income
+  unit: currency-USD
+  period: year

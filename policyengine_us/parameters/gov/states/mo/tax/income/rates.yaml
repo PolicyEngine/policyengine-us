@@ -44,6 +44,7 @@ brackets:
       2021-01-01: 6_528
   - rate:
       2019-01-01: 0.05
+      2023-01-01: 0.0495 #https://www.senate.mo.gov/22info/BTS_Web/Bill.aspx?SessionType=E1&BillID=97872967
     threshold:
       2019-01-01: 7_371
       2020-01-01: 7_511
@@ -54,6 +55,7 @@ brackets:
       2019-01-01: 8_424
       2020-01-01: 8_584
       2021-01-01: 8_704
+      2023-01-01: .inf
       
 metadata:
   reference:
@@ -64,7 +66,6 @@ metadata:
     - title: MO 2021 Income Tax Chart
       href: https://dor.mo.gov/forms/2021%20Tax%20Chart_2021.pdf
   label: MO Resident Individual Tax Rates
-  name: mo_resident_individual_tax_rates
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
