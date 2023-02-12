@@ -35,5 +35,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         )
         # print(taxable_social_security_benefits, agi_over_ss_or_ssd_allowance)
         return max_(
-            tax_unit_taxable_social_security_benefits - agi_over_ss_or_ssd_allowance, 0
+            tax_unit_taxable_social_security_benefits
+            - agi_over_ss_or_ssd_allowance,
+            0,
         )

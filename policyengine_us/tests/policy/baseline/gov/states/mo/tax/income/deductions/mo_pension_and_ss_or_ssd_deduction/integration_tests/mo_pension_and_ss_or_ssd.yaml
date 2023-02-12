@@ -25,7 +25,7 @@
     mo_adjusted_gross_income: [35_000, 35_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 10_000]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
     mo_pension_and_ss_or_ssd_deduction: 20_000
 
 - name:  70k income, childless couple, evenly split income, one with SS, one with SSD
@@ -55,7 +55,7 @@
     mo_adjusted_gross_income: [35_000, 25_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [20_000, 20_000]
     mo_pension_and_ss_or_ssd_deduction: 20_000
 
 - name:  70k income, childless couple, evenly split income, both with SS and SSD
@@ -85,7 +85,7 @@
     mo_adjusted_gross_income: [31_000, 31_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [6_000, 6_000]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [12_000, 12_000]
     mo_pension_and_ss_or_ssd_deduction: 12_000
 
 - name:  70k income, childless couple, evenly split income, one with SS, one with private pension
@@ -115,7 +115,7 @@
     mo_adjusted_gross_income: [35_000, 35_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
     mo_pension_and_ss_or_ssd_deduction: 10_000
 
 - name:  90k income, childless couple, evenly split income, both with public + private pensions, and SS
@@ -148,7 +148,7 @@
     mo_adjusted_gross_income: [45_000, 45_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [20_000, 20_000]
     mo_pension_and_ss_or_ssd_deduction: 20_000
 
 - name:  90k income, childless couple, evenly split income, both with public + private pensions, one with SS and the other with SSD 
@@ -182,7 +182,7 @@
     mo_adjusted_gross_income: [40_000, 40_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [20_000, 20_000]
     mo_pension_and_ss_or_ssd_deduction: [20_000]
 
 - name:  100k income, childless couple, evenly split income, both with public + private pensions, both with SS and SSD 
@@ -216,7 +216,7 @@
     mo_adjusted_gross_income: [46_000, 45_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
-    mo_pension_and_ss_or_ssd_deduction_section_c: [11_000, 10_000]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [21_000, 21_000]
     mo_pension_and_ss_or_ssd_deduction: 21_000
 
 - name:  70k income, childless couple, evenly split income, both with public pensions

@@ -32,8 +32,7 @@ class adjusted_net_capital_gain(Variable):
             "capital_gains_28_percent_rate_gain", period
         )
         net_gains_less_dividends = max_(
-            0,
-            net_capital_gain - qualified_dividend_income,
+            0, net_capital_gain - qualified_dividend_income,
         )
         reduced_capital_gains = max_(
             net_gains_less_dividends
