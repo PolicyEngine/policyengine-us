@@ -6,7 +6,7 @@ class income_tax_before_refundable_credits(Variable):
     entity = TaxUnit
     definition_period = YEAR
     unit = USD
-    label = "Income tax before refundable credits"
+    label = "Federal income tax before refundable credits"
     documentation = "Income tax liability (including other taxes) after non-refundable credits are used, but before refundable credits are applied"
     adds = [
         "income_tax_before_credits",
