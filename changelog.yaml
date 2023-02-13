@@ -2397,3 +2397,10 @@
     added:
     - Illinois and Missouri income taxes to net income tree.
   date: 2023-02-12 20:12:05
+- bump: patch
+  changes:
+    changed:
+    - Updated Missouri income tax for 2023.
+    fixed:
+    - mo_income_tax_before_credits tests.
+  date: 2023-02-13 00:09:41
