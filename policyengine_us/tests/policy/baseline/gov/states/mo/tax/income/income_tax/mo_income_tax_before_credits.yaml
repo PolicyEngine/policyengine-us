@@ -7,6 +7,16 @@
   output:
     mo_income_tax_before_refundable_credits: 0.0
 
+- name: If exempt, no tax.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    mo_income_tax_exempt: true
+    mo_taxable_income: 99
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 0
+
 - name:  $8,999 MO taxable income
   period: 2021
   absolute_error_margin: 0.01
@@ -14,7 +24,7 @@
     mo_taxable_income: 8_999
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 298.81
+    mo_income_tax_before_credits: 298.81
 
 - name:  $9,500 MO taxable income
   period: 2021
@@ -23,7 +33,7 @@
     mo_taxable_income: 9_500
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 325.86
+    mo_income_tax_before_credits: 325.86
 
 - name:  $13,000 MO taxable income
   period: 2021
@@ -32,44 +42,48 @@
     mo_taxable_income: 13_000
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 514.864
+    mo_income_tax_before_credits: 514.864
 
 - name: no income
-  period: 2023
+  period: 2021
   absolute_error_margin: 0
   input:
     mo_taxable_income: 0
-    mo_wftc: 0
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 0.0
+    mo_income_tax_before_credits: 0.0
 
 - name:  $8,999 MO taxable income
-  period: 2023
+  period: 2021
   absolute_error_margin: 0.01
   input:
     mo_taxable_income: 8_999
-    mo_wftc: 100
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 198.81
+    mo_income_tax_before_credits: 298.81
 
 - name:  $9,500 MO taxable income
-  period: 2023
+  period: 2021
   absolute_error_margin: 0.01
   input:
     mo_taxable_income: 9_500
-    mo_wftc: 100
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 225.86
+    mo_income_tax_before_credits: 325.86
 
-- name:  $13,000 MO taxable income
+- name:  $13,000 MO taxable income in 2023
   period: 2023
   absolute_error_margin: 0.01
   input:
     mo_taxable_income: 13_000
-    mo_wftc: 600
     state_code: MO
   output:
-    mo_income_tax_before_refundable_credits: 0
+    #   (1.5% * $1,088)
+    # + (2% * ($2,176 - $1,088))
+    # + (2.5% * ($3,264 - $2,176))
+    # + (3% * ($4,352 - $3,264))
+    # + (3.5% * ($5,440 - $4,352))
+    # + (4% * ($6,528 - $5,440))
+    # + (4.5% * ($7,616 - $6,528))
+    # + (4.95% * ($13,000 - $7,616))
+    mo_income_tax_before_credits: 494.988
