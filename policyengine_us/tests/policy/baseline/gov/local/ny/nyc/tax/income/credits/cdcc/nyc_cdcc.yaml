@@ -2,8 +2,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: NY
-    in_nyc: true
+    nyc_cdcc_eligible: true
     adjusted_gross_income: 1_000
     cdcc_share_expenses_child_under_four: .50
     ny_cdcc: 0
