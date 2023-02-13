@@ -17,30 +17,20 @@ class nyc_cdcc(Variable):
         # relevant expenses used for children under 4 and the NYC CDCC rate,
         # which depends on income.
 
-        # First get the CDCC part of the parameter tree.
-        p = parameters(period).gov.local.ny.nyc.tax.income.credits.cdcc
-
         # Get their NY State CDCC (line 14 on Form IT-216).
         nys_cdcc = tax_unit("ny_cdcc", period)
 
         # Get the share of CDCC relevant expenses used for children under 4.
-        cdcc_expenses = tax_unit(
-            "cdcc_relevant_expenses", period
-        )  # Line 3a on Form IT-216.
-        cdcc_share_expenses_child_under_four = tax_unit(
-            "cdcc_share_expenses_child_under_four", period
+        share_of_childcare_expenses_for_children_under_four = tax_unit(
+            "share_of_childcare_expenses_for_children_under_four", period
         )
-        expenses_share_child_under_4 = (
-            cdcc_expenses * cdcc_share_expenses_child_under_four
-        )  # Line 23 on Form IT-216.
 
         # Take this share of the NY State CDCC.
-        nyc_qualifying_cdcc_amount = nys_cdcc * expenses_share_child_under_4
+        nyc_qualifying_cdcc_amount = (
+            nys_cdcc * share_of_childcare_expenses_for_children_under_four
+        )
 
-        # Get their federal AGI.
-        income = tax_unit("adjusted_gross_income", period)
+        # Get the CDCC rate "applicable percentage" portion of the NYS CDCC
+        applicable_percentage = tax_unit("nyc_cdcc_applicable_percentage", period)
 
-        # Calculate the NYC CDCC rate which depends on income.
-        cdcc_rate = p.rate.calc(income, right=True)
-
-        return nyc_qualifying_cdcc_amount * cdcc_rate
+        return nyc_qualifying_cdcc_amount * applicable_percentage
