@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_care_eligible(Variable):
+class ca_care_income_eligible(Variable):
     value_type = bool
     entity = Household
     definition_period = YEAR
