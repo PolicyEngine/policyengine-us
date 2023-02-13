@@ -30,9 +30,10 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         taxable_social_security_benefits = person(
             "taxable_social_security", period
         )
-        tax_unit_taxable_social_security_benefits = tax_unit.sum(
-            taxable_social_security_benefits
+        tax_unit_taxable_social_security_benefits = add(
+            tax_unit, period, ["taxable_social_security"]
         )
+
         # print(taxable_social_security_benefits, agi_over_ss_or_ssd_allowance)
         return max_(
             tax_unit_taxable_social_security_benefits
