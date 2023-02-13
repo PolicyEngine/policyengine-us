@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class il_income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IL income tax before nonrefundable credits"
+    label = "Illinois income tax before refundable credits"
     unit = USD
     definition_period = YEAR
 
