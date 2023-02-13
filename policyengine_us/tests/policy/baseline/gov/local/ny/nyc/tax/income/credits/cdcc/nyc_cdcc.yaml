@@ -1,58 +1,43 @@
-- name: Anyone with $0 NY State CDCC gets $0 NYC CDCC.
+- name: NYC CDCC is the product of inputs (rate = 75%).
   period: 2022
   absolute_error_margin: 0
   input:
     nyc_cdcc_eligible: true
-    adjusted_gross_income: 1_000
-    cdcc_share_expenses_child_under_four: .50
-    ny_cdcc: 0
+    ny_cdcc: 2_000
+    share_of_childcare_expenses_for_children_under_four: .50
+    nyc_cdcc_applicable_percentage: .75
+  output:
+    nyc_cdcc: 750
+
+- name: NYC CDCC is the product of inputs (rate = 45%).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nyc_cdcc_eligible: true
+    ny_cdcc: 2_000
+    share_of_childcare_expenses_for_children_under_four: .50
+    nyc_cdcc_applicable_percentage: .45
+  output:
+    nyc_cdcc: 450
+
+- name: NYC CDCC is $0 if ineligible.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nyc_cdcc_eligible: false
+    ny_cdcc: 2_000
+    share_of_childcare_expenses_for_children_under_four: .50
+    nyc_cdcc_applicable_percentage: .75
   output:
     nyc_cdcc: 0
 
-- name: Anyone with over $30k income gets $0 NYC CDCC.
+- name: NYC CDCC is $0 if no expenses on children under age four.
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: NY
     nyc_cdcc_eligible: true
-    adjusted_gross_income: 30_001
-    cdcc_share_expenses_child_under_four: .50
     ny_cdcc: 2_000
+    share_of_childcare_expenses_for_children_under_four: 0
+    nyc_cdcc_applicable_percentage: .75
   output:
     nyc_cdcc: 0
-
-- name: Someone making $26,600 with all their CDCC expenses on a child under 4 gets .525 of their NYS CDCC.
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    state_code: NY
-    nyc_cdcc_eligible: true
-    adjusted_gross_income: 26_600
-    cdcc_share_expenses_child_under_four: 1
-    ny_cdcc: 2_000
-  output:
-    nyc_cdcc: 1_050
-
-- name: Someone making $26,600 with none of their CDCC expenses on a child under 4 gets no NYC CDCC.
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    state_code: NY
-    nyc_cdcc_eligible: true
-    adjusted_gross_income: 26_600
-    cdcc_share_expenses_child_under_four: 0
-    ny_cdcc: 2_000
-  output:
-    nyc_cdcc: 0
-
-- name: Someone making $26,600 with half of their CDCC expenses on a child under 4 .525 * .50 of their NYS CDCC.
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    state_code: NY
-    nyc_cdcc_eligible: true
-    adjusted_gross_income: 26_600
-    cdcc_share_expenses_child_under_four: .50
-    ny_cdcc: 2_000
-  output:
-    nyc_cdcc: 525

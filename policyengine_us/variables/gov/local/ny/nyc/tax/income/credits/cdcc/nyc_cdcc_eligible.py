@@ -18,4 +18,4 @@ class nyc_cdcc_eligible(Variable):
         # Then get the CDCC part of the parameter tree.
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.cdcc
 
-        return income <= p.income_limit
+        return income <= p.phaseout_end
