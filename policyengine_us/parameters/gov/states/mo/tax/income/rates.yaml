@@ -55,7 +55,7 @@ brackets:
       2023-01-01: 6_000
   - rate:
       2019-01-01: 0.05
-      2023-01-01: 0.0495  # Top rates capped in 2023 with further
+      2023-01-01: 0.0495  # 5.0% rate capped in 2023 with further
                           # decreases based on revenue surplus triggers
     threshold:
       2019-01-01: 7_371
@@ -66,7 +66,7 @@ brackets:
   - rate:
       2019-01-01: 0.054
       2022-01-01: 0.053
-      2023-01-01: 0.0495  # Top rates capped in 2023
+      2023-01-01: 0.0495  # 5.5% rate capped in 2023
     threshold:
       2019-01-01: 8_424
       2020-01-01: 8_584
@@ -76,7 +76,7 @@ brackets:
   - rate:
       2019-01-01: 0.054
       2022-01-01: 0.053
-      2023-01-01: 0.0495  # Top rates capped in 2023
+      2023-01-01: 0.0495  # 6.0% rate capped in 2023
     threshold:
       2019-01-01: .inf
       2020-01-01: .inf
