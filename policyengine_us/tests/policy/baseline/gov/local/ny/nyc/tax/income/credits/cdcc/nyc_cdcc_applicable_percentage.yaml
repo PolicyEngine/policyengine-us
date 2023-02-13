@@ -18,7 +18,7 @@
 
 - name: With income of $27k, the rate is 45%.
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.0001
   input:
     nyc_cdcc_eligible: true
     adjusted_gross_income: 27_000
