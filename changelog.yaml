@@ -2377,3 +2377,30 @@
     fixed:
     - Incomplete specification of pension income variables.
   date: 2023-02-09 00:00:45
+- bump: patch
+  changes:
+    fixed:
+    - Value of OASDI maximum taxable earnings for 2023.
+  date: 2023-02-10 04:12:00
+- bump: patch
+  changes:
+    fixed:
+    - CTC phase-out metadata.
+  date: 2023-02-10 16:30:27
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of MD itemized deduction amount.
+  date: 2023-02-11 14:40:00
+- bump: minor
+  changes:
+    added:
+    - Illinois and Missouri income taxes to net income tree.
+  date: 2023-02-12 20:12:05
+- bump: patch
+  changes:
+    changed:
+    - Updated Missouri income tax for 2023.
+    fixed:
+    - mo_income_tax_before_credits tests.
+  date: 2023-02-13 00:09:41

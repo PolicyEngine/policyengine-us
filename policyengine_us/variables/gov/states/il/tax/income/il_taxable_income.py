@@ -9,8 +9,6 @@ class il_taxable_income(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        return max_(
-            0,
-            tax_unit("il_base_income", period)
-            - tax_unit("il_total_exemptions", period),
-        )
+        base_income = tax_unit("il_base_income", period)
+        exemptions = tax_unit("il_total_exemptions", period)
+        return max_(0, base_income - exemptions)
