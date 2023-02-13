@@ -11,7 +11,7 @@ class nyc_cdcc_applicable_percentage(Variable):
     def formula(tax_unit, period, parameters):
         # Calculate the "applicable percentage" of the portion of the NYS CDCC
         # applied for children under age four.
-        # Up to $25k, the percentage is 75%. Above $25k, it phases out to 0% at $30k.
+        # Up to $25k, the percentage is 75%. Above $25k, it phases out to 0% above $30k.
         # See https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13608
         # § 11-1706 Credits against tax (e).
 
