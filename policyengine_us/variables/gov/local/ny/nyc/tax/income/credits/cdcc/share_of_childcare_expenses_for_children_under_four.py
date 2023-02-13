@@ -17,7 +17,12 @@ class share_of_childcare_expenses_for_children_under_four(Variable):
 
         # Get the total childcare expenses
         # Line 3a on Form IT-216.
-        tax_unit_childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        tax_unit_childcare_expenses = tax_unit(
+            "tax_unit_childcare_expenses", period
+        )
 
         # Return the share of childcare expenses for children under age four
-        return childcare_expenses_for_children_under_four / tax_unit_childcare_expenses
+        return (
+            childcare_expenses_for_children_under_four
+            / tax_unit_childcare_expenses
+        )

@@ -15,5 +15,7 @@ class childcare_expenses_for_children_under_four(Variable):
         person = tax_unit.members
         child_under_four = person("age", period) < 4
         children_under_four = tax_unit.sum(child_under_four)
-        tax_unit_childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        tax_unit_childcare_expenses = tax_unit(
+            "tax_unit_childcare_expenses", period
+        )
         return children_under_four * tax_unit_childcare_expenses / children
