@@ -1,0 +1,8 @@
+- name: NYC CDCC is the product of inputs (rate = 75%).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    tax_unit_children: true
+    tax_unit_childcare_expenses: 2_000
+  output:
+    childcare_expenses_for_children_under_four: 750
