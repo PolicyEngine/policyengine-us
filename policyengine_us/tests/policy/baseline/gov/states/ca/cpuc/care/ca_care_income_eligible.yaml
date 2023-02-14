@@ -6,7 +6,7 @@
     ca_care_poverty_line: 1
     state_code: CA
   output:
-    ca_care_eligible: true
+    ca_care_income_eligible: true
 
 - name: One person with income just above 200% of poverty line for a two-person household is ineligible.
   period: 2023
@@ -15,4 +15,4 @@
     ca_care_poverty_line: 1
     state_code: CA
   output:
-    ca_care_eligible: false
+    ca_care_income_eligible: false
