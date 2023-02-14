@@ -1,0 +1,18 @@
+# Test poverty line for one person.
+- name: A person with an income equal to 200% of poverty line is eligible.
+  period: 2023
+  input:
+    household_market_income: 2
+    ca_care_poverty_line: 1
+    state_code: CA
+  output:
+    ca_care_income_eligible: true
+
+- name: One person with income just above 200% of poverty line for a two-person household is ineligible.
+  period: 2023
+  input:
+    household_market_income: 2.5
+    ca_care_poverty_line: 1
+    state_code: CA
+  output:
+    ca_care_income_eligible: false
