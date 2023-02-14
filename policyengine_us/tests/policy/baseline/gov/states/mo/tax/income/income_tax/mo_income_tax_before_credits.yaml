@@ -77,15 +77,13 @@
   input:
     mo_taxable_income: 13_000
     state_code: MO
-  output:
-    # 2023 legislation at following URL:
-    # https://revisor.mo.gov/main/OneSection.aspx?section=143.011&bid=51511&hl=
-    # ---------------------------------------------------------------------
-    # MO taxable income                 income tax calculation
-    # ---------------------------------------------------------------------    
-    # Over $7,000 but not over $8,000	$210 plus 5% of excess over $7,000
-    # ---------------------------------------------------------------------    
-    # Above overruled in 2023 by 4.95% maximum marginal tax rate
-    # ---------------------------------------------------------------------    
-    # So, itax = $210 + 4.95% * ($13,000 - $7,000) = $507
-    mo_income_tax_before_credits: 507
+  output:  # output calculated using 2022 bracket thresholds in 2023
+    #   (1.5% * $1,121)                16.815
+    # + (2% * ($2,242 - $1,121))       22.420
+    # + (2.5% * ($3,363 - $2,242))     28.025
+    # + (3% * ($4,484 - $3,363))       33.630
+    # + (3.5% * ($5,605 - $4,484))     39.235
+    # + (4% * ($6,726 - $5,605))       44.840
+    # + (4.5% * ($7,847 - $6,726))     50.445
+    # + (4.95% * ($13,000 - $7,847))  255.0735
+    mo_income_tax_before_credits:     490.4835
