@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.214.4] - 2023-02-14 05:02:37
+
+### Fixed
+
+- Logic for summation of taxable Social Security in Part C of MO Pension/SS/SSD deduction
+
 ## [0.214.3] - 2023-02-14 04:35:35
 
 ### Fixed
@@ -2886,6 +2892,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.214.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.3...0.214.4
 [0.214.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.2...0.214.3
 [0.214.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.1...0.214.2
 [0.214.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.0...0.214.1

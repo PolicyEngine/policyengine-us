@@ -2414,3 +2414,9 @@
     fixed:
     - MO income tax brackets.
   date: 2023-02-14 04:35:35
+- bump: patch
+  changes:
+    fixed:
+    - Logic for summation of taxable Social Security in Part C of MO Pension/SS/SSD
+      deduction
+  date: 2023-02-14 05:02:37
