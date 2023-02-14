@@ -24,4 +24,3 @@ class ca_care_eligible(Variable):
         is_categorically_eligible = add(household, period, p.categorical) > 0
         # Return True if either income or categorical eligibility is met.
         return income_eligible | is_categorically_eligible
-
