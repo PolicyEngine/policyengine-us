@@ -2,7 +2,7 @@
 - name: A person with an income equal to 200% of poverty line is eligible.
   period: 2023
   input:
-    household_income: 2
+    household_market_income: 2
     ca_care_poverty_line: 1
     state_code: CA
   output:
@@ -11,7 +11,7 @@
 - name: One person with income just above 200% of poverty line for a two-person household is ineligible.
   period: 2023
   input:
-    household_income: 2.5
+    household_market_income: 2.5
     ca_care_poverty_line: 1
     state_code: CA
   output:
