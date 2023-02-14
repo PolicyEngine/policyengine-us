@@ -6,12 +6,15 @@ values:
     - snap
     - ssi
     - tanf
+    # Also these, not in our model:
+    # NSL
+    # Healthy Families A & B
+    # LIHEAP
+    # Head Start Income Eligible
+    # Bureau of Indian Affairs General Assistance
 metadata:
   reference:
     - title: CARE/FERA Program
       href: https://www.cpuc.ca.gov/lowincomerates/
   unit: program
   label: CARE categorical eligibility programs
-
-
-# looking for NSL, Healthy Families A & B, LIHEAP, Head Start Income Eligible, Bureau of Indian Affairs General Assistance
