@@ -1,0 +1,20 @@
+- name: Household that participates in SNAP is categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    snap: 1
+    wic: 2
+  output:
+    ca_care_categorically_eligible: true
+
+- name: Household that participates in none of the programs is not categorically eligible.
+  period: 2023
+  input:
+    state_code: CA
+    medicaid: 0
+    wic: 0
+    snap: 0
+    ssi: 0
+    tanf: 0
+  output:
+    ca_care_categorically_eligible: false
