@@ -14,6 +14,7 @@ class ca_care_income_eligible(Variable):
         # Check income eligibility with respect to percent of the poverty line.
         income = household("household_income", period)
         p = parameters(period).gov.states.ca.cpuc.care.eligibility
-        # Calculate income limit based on federal poverty line, adjusted to set one-person households as two-person.
+        # Calculate income limit based on federal poverty line, adjusted to
+        # set one-person households as two-person.
         poverty_line = household("ca_care_poverty_line", period)
         return income <= poverty_line * p.fpl_limit
