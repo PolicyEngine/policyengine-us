@@ -415,5 +415,6 @@
       household:
         members: [person1, person2, person3]
         state_code: MO
-  output:  # expected results from patched TAXSIM35 2023-02-14 version
-    mo_income_tax: 77.59
+  output:  # expected results from hand calculations using 2021 MO Form 1040
+    mo_pension_and_ss_or_ssd_deduction_section_b: [1_485, 1_485, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [750, 750, 0]
