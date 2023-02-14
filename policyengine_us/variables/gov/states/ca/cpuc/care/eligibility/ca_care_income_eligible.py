@@ -17,4 +17,4 @@ class ca_care_income_eligible(Variable):
         # Calculate income limit based on federal poverty line, adjusted to
         # set one-person households as two-person.
         poverty_line = household("ca_care_poverty_line", period)
-        return income <= poverty_line * p.fpl_limit
+        return income <= (poverty_line * p.fpl_limit)
