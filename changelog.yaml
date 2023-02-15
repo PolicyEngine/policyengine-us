@@ -2420,3 +2420,13 @@
     - Logic for summation of taxable Social Security in Part C of MO Pension/SS/SSD
       deduction
   date: 2023-02-14 05:02:37
+- bump: minor
+  changes:
+    added:
+    - California CARE eligibility.
+  date: 2023-02-14 21:49:06
+- bump: patch
+  changes:
+    fixed:
+    - MO social security or social security disability deduction calculation.
+  date: 2023-02-14 21:56:48

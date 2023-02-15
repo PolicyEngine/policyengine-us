@@ -1,0 +1,16 @@
+- name: One person household gets the poverty line of a two-person household.
+  # NB: Current resources are a year behind.
+  period: 2022
+  input:
+    household_size: 1
+    state_code: CA
+  output:
+    ca_care_poverty_line: 18_310
+
+- name: Other household sizes get the normal poverty line.
+  period: 2022
+  input:
+    household_size: 2
+    state_code: CA
+  output:
+    ca_care_poverty_line: 18_310
