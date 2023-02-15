@@ -25,7 +25,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
         filing_status = tax_unit("filing_status", period)
         line4 = p.mo_private_pension_deduction_allowance[filing_status]
         line5 = max_(0, line3 - line4)
-        ind_pvt_pension_amt = person("taxable_pension_income", period)
+        ind_pvt_pension_amt = person("taxable_private_pension_income", period)
         max_pvt_pension_amt = p.mo_max_private_pension
         ind_pvt_pension_val = min_(ind_pvt_pension_amt, max_pvt_pension_amt)
         unit_pvt_pension_val = tax_unit.sum(ind_pvt_pension_val)  # line8
