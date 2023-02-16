@@ -17,7 +17,9 @@ class me_personal_exemption_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Then get the Maine Personal Credit part of the parameter tree.
-        p = parameters(period).gov.states.me.tax.income.deductions.personal_exemption
+        p = parameters(
+            period
+        ).gov.states.me.tax.income.deductions.personal_exemption
 
         # Calculate the Personal Exemption phase-out parameters based on
         # filing status.
