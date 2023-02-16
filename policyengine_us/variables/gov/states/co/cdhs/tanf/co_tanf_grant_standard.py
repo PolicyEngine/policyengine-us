@@ -14,9 +14,10 @@ class co_tanf_grant_standard(Variable):
         adults = spm_unit("spm_unit_count_adults", period)
         children = people - adults
         p = parameters(period).gov.states.co.cdhs.tanf.grant_standard
-        capped_children = min_(children, 10)
-        capped_adults = min_(adults, 2)
+        capped_children = min_(children, 10).astype(int)
+        capped_adults = min_(adults, 2).astype(int)
         additional_children = children - capped_children
         base = p.main[capped_adults][capped_children]
         additional_grant_standard = p.additional_child * additional_children
-        return base + additional_grant_standard
+        monthly = base + additional_grant_standard
+        return monthly * MONTHS_IN_YEAR
