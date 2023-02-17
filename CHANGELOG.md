@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.217.1] - 2023-02-17 04:46:22
+
+### Fixed
+
+- MO section B pension deduction calculations.
+- MO adjusted gross income calculations.
+
 ## [0.217.0] - 2023-02-17 00:02:39
 
 ### Added
@@ -2922,6 +2929,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.217.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.217.0...0.217.1
 [0.217.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.216.0...0.217.0
 [0.216.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.215.2...0.216.0
 [0.215.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.215.1...0.215.2
