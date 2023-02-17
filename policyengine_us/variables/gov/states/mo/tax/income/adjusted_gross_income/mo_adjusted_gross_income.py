@@ -17,36 +17,27 @@ class mo_adjusted_gross_income(Variable):
         gross_income = person("irs_gross_income", period)
         # subtract federal above-the-line deductions (ALDs) by person
         # ... subtract some ALDs explicitly by person
-        personal_alds = [
+        PERSONAL_ALDS = [
             "self_employment_tax_ald_person",
             "self_employed_health_insurance_ald_person",
             "self_employed_pension_contribution_ald_person",
         ]
         tax_unit = person.tax_unit
-        ind_total_personal_alds = add(person, period, personal_alds)
+        ind_total_personal_alds = add(person, period, PERSONAL_ALDS)
         unit_total_personal_alds = add(tax_unit, period, personal_alds)
-        fed_agi = gross_income - ind_total_personal_alds
         # ... subtract remaining ALDs by adhoc allocation between spouses
         unit_total_alds = tax_unit("above_the_line_deductions", period)
-        remaining_alds = unit_total_alds - unit_total_personal_alds
+        unit_remaining_alds = unit_total_alds - unit_total_personal_alds
         filing_status = person.tax_unit("filing_status", period)
         is_married = filing_status == filing_status.possible_values.JOINT
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         allocated_alds = where(
-            is_married,
-            where(  # married
-                is_head,
-                0.5 * remaining_alds,
-                where(is_spouse, 0.5 * remaining_alds, 0),
-            ),
-            where(  # not married
-                is_head,
-                remaining_alds,
-                0,
-            ),
+            is_head | is_spouse,
+            unit_remaining_alds / where(is_married, 2, 1),
+            0
         )
-        fed_agi = fed_agi - allocated_alds
+        fed_agi = gross_income - ind_total_personal_alds - allocated_alds
         # return MO AGI including MO additions and MO subtractions
         subtractions = person("mo_qualified_health_insurance_premiums", period)
         return max_(0, fed_agi - subtractions)

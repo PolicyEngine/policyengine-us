@@ -31,8 +31,10 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
             ),
         )
         ind_pvt_pension_amt = person("taxable_private_pension_income", period)
-        max_pvt_pension_amt = p.mo_max_private_pension
-        ind_pvt_pension_val = min_(ind_pvt_pension_amt, max_pvt_pension_amt)
+        ind_pvt_pension_val = min_(
+            ind_pvt_pension_amt,
+            p.mo_max_private_pension,
+        )
         unit_pvt_pension_val = tax_unit.sum(ind_pvt_pension_val)  # line8
         unit_deduction = max_(0, unit_pvt_pension_val - excess_agi)  # line9
         ind_share_of_unit_deduction = where(
