@@ -3,6 +3,16 @@
   absolute_error_margin: 0
   input:
     tax_unit_children: true
-    tax_unit_childcare_expenses: 2_000
+    people:
+      person1:
+        age: 3
+      person2:
+        age: 13
+      person3:
+        age: 39
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 8_000
   output:
-    childcare_expenses_for_children_under_four: 750
+    childcare_expenses_for_children_under_four: 4_000
