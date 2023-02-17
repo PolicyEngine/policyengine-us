@@ -24,7 +24,7 @@ class mo_adjusted_gross_income(Variable):
         ]
         tax_unit = person.tax_unit
         ind_total_personal_alds = add(person, period, PERSONAL_ALDS)
-        unit_total_personal_alds = add(tax_unit, period, personal_alds)
+        unit_total_personal_alds = add(tax_unit, period, PERSONAL_ALDS)
         # ... subtract remaining ALDs by adhoc allocation between spouses
         unit_total_alds = tax_unit("above_the_line_deductions", period)
         unit_remaining_alds = unit_total_alds - unit_total_personal_alds
@@ -35,7 +35,7 @@ class mo_adjusted_gross_income(Variable):
         allocated_alds = where(
             is_head | is_spouse,
             unit_remaining_alds / where(is_married, 2, 1),
-            0
+            0,
         )
         fed_agi = gross_income - ind_total_personal_alds - allocated_alds
         # return MO AGI including MO additions and MO subtractions
