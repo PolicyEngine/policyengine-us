@@ -42,7 +42,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
             - public_pension_allowance,
             0,
         )
-        public_pension_amount = person("public_pension_income", period)
+        public_pension_amount = person("taxable_public_pension_income", period)
         max_social_security_benefit = (
             p.mo_max_social_security_benefit
         )  # Seen on Line 7, Section A
