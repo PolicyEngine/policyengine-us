@@ -2404,3 +2404,55 @@
     fixed:
     - mo_income_tax_before_credits tests.
   date: 2023-02-13 00:09:41
+- bump: patch
+  changes:
+    fixed:
+    - Removed "uncapped" from OR refundable credits description.
+  date: 2023-02-13 20:27:43
+- bump: patch
+  changes:
+    fixed:
+    - MO income tax brackets.
+  date: 2023-02-14 04:35:35
+- bump: patch
+  changes:
+    fixed:
+    - Logic for summation of taxable Social Security in Part C of MO Pension/SS/SSD
+      deduction
+  date: 2023-02-14 05:02:37
+- bump: minor
+  changes:
+    added:
+    - California CARE eligibility.
+  date: 2023-02-14 21:49:06
+- bump: patch
+  changes:
+    fixed:
+    - MO social security or social security disability deduction calculation.
+  date: 2023-02-14 21:56:48
+- bump: patch
+  changes:
+    added:
+    - Legislative references for California CARE program.
+  date: 2023-02-16 18:00:31
+- bump: minor
+  changes:
+    added:
+    - Colorado TANF grant standard.
+  date: 2023-02-16 22:58:46
+- bump: minor
+  changes:
+    added:
+    - DC EITC.
+  date: 2023-02-17 00:02:39
+- bump: patch
+  changes:
+    fixed:
+    - MO section B pension deduction calculations.
+    - MO adjusted gross income calculations.
+  date: 2023-02-17 04:46:22
+- bump: minor
+  changes:
+    added:
+    - Maine personal exemption deduction.
+  date: 2023-02-17 05:32:26
