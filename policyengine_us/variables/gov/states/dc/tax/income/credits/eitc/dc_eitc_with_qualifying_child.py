@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_eitc(Variable):
+class dc_eitc_with_qualifying_child(Variable):
     value_type = float
     entity = TaxUnit
-    label = "DC EITC"
+    label = "DC EITC With Qualifying Child Amount"
     unit = USD
     definition_period = YEAR
     reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
@@ -12,5 +12,5 @@ class dc_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)
-        rate = parameters(period).gov.states.dc.tax.income.credits.eitc.match
+        rate = parameters(period).gov.states.dc.tax.income.credits.eitc.qualifying.match
         return eitc * rate
