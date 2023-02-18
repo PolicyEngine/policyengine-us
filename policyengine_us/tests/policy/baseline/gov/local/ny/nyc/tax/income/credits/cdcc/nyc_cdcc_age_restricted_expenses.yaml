@@ -1,4 +1,4 @@
-- name: NYC CDCC is the product of inputs (rate = 75%).
+- name: Share of childcare expenses on children under four.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -15,4 +15,4 @@
         members: [person1, person2, person3]
         tax_unit_childcare_expenses: 8_000
   output:
-    childcare_expenses_for_children_under_four: 4_000
+    nyc_cdcc_age_restricted_expenses: 4_000

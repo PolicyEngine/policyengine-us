@@ -3,7 +3,7 @@
   absolute_error_margin: 0
   input:
     nyc_cdcc_eligible: true
-    childcare_expenses_for_children_under_four: 1_000
+    nyc_cdcc_age_restricted_expenses: 1_000
     tax_unit_childcare_expenses: 5_000
   output:
-    share_of_childcare_expenses_for_children_under_four: .20
+    nyc_cdcc_share_qualifying_childcare_expenses: .20

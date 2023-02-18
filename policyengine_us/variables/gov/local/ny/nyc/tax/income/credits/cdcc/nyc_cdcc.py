@@ -20,9 +20,9 @@ class nyc_cdcc(Variable):
         # Get their NY State CDCC (line 14 on Form IT-216).
         nys_cdcc = tax_unit("ny_cdcc", period)
 
-        # Get the share of CDCC relevant expenses used for children under 4.
+        # Get the share of childcare expenses that count towards the NYC CDCC.
         share_of_childcare_expenses_for_children_under_four = tax_unit(
-            "share_of_childcare_expenses_for_children_under_four", period
+            "nyc_cdcc_share_qualifying_childcare_expenses", period
         )
 
         # Take this share of the NY State CDCC.
