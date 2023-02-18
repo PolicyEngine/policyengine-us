@@ -18,7 +18,7 @@ class nyc_cdcc_age_restricted_expenses(Variable):
         children = tax_unit("tax_unit_children", period)
         person = tax_unit.members
         qualifying_children = (
-            person("age", period) < p.nyc_cdcc_age_restriction
+            person("age", period) < p.child_age_restriction
         )
         children_under_four = tax_unit.sum(qualifying_children)
         tax_unit_childcare_expenses = tax_unit(
