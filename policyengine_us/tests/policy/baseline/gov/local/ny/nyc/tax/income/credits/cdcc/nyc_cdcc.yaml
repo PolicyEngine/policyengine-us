@@ -4,7 +4,7 @@
   input:
     nyc_cdcc_eligible: true
     ny_cdcc: 2_000
-    share_of_childcare_expenses_for_children_under_four: .50
+    nyc_cdcc_share_qualifying_childcare_expenses: .50
     nyc_cdcc_applicable_percentage: .75
   output:
     nyc_cdcc: 750
@@ -15,7 +15,7 @@
   input:
     nyc_cdcc_eligible: true
     ny_cdcc: 2_000
-    share_of_childcare_expenses_for_children_under_four: .50
+    nyc_cdcc_share_qualifying_childcare_expenses: .50
     nyc_cdcc_applicable_percentage: .45
   output:
     nyc_cdcc: 450
@@ -26,7 +26,7 @@
   input:
     nyc_cdcc_eligible: false
     ny_cdcc: 2_000
-    share_of_childcare_expenses_for_children_under_four: .50
+    nyc_cdcc_share_qualifying_childcare_expenses: .50
     nyc_cdcc_applicable_percentage: .75
   output:
     nyc_cdcc: 0
@@ -37,7 +37,7 @@
   input:
     nyc_cdcc_eligible: true
     ny_cdcc: 2_000
-    share_of_childcare_expenses_for_children_under_four: 0
+    nyc_cdcc_share_qualifying_childcare_expenses: 0
     nyc_cdcc_applicable_percentage: .75
   output:
     nyc_cdcc: 0
