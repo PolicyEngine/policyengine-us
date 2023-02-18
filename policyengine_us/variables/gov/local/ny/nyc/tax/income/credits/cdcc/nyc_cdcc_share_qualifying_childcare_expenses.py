@@ -12,7 +12,7 @@ class nyc_cdcc_share_qualifying_childcare_expenses(Variable):
         # Get the total expenses for children that qualify towards the NYC CDCC.
         # Line 23 on Form IT-216.
         childcare_expenses_for_children_under_four = tax_unit(
-            "nyc_age_restricted_childcare_expenses", period
+            "nyc_cdcc_age_restricted_expenses", period
         )
 
         # Get the total childcare expenses.
