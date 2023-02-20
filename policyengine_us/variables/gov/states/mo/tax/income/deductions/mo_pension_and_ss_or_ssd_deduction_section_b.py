@@ -15,36 +15,31 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
-        # variables and params needed for all sections
         tax_unit = person.tax_unit
-        mo_agi = person("mo_adjusted_gross_income", period)
-        tax_unit_mo_agi = tax_unit.sum(mo_agi)
-        taxable_social_security_benefits = person(
-            "taxable_social_security", period
-        )
-        tax_unit_taxable_social_security_benefits = tax_unit.sum(
-            taxable_social_security_benefits
-        )
-        agi_in_excess_of_taxable_social_security = (
-            tax_unit_mo_agi - tax_unit_taxable_social_security_benefits
-        )  # Equivalent to Line 3 of section A and B
-        filing_status = tax_unit("filing_status", period)
+        ind_mo_agi = person("mo_adjusted_gross_income", period)
+        unit_mo_agi = tax_unit.sum(ind_mo_agi)
+        ind_taxable_oasdi = person("taxable_social_security", period)
+        unit_taxable_oasdi = tax_unit.sum(ind_taxable_oasdi)
         p = parameters(period).gov.states.mo.tax.income.deductions
-
-        private_pension_allowance = p.mo_private_pension_deduction_allowance[
-            filing_status
-        ]
-        agi_over_private_pension_allowance = max_(
-            agi_in_excess_of_taxable_social_security
-            - private_pension_allowance,
+        filing_status = tax_unit("filing_status", period)
+        excess_agi = max_(  # line5
+            0,
+            (
+                unit_mo_agi
+                - unit_taxable_oasdi
+                - p.mo_private_pension_deduction_allowance[filing_status]
+            ),
+        )
+        ind_pvt_pension_amt = person("taxable_private_pension_income", period)
+        ind_pvt_pension_val = min_(
+            ind_pvt_pension_amt,
+            p.mo_max_private_pension,
+        )
+        unit_pvt_pension_val = tax_unit.sum(ind_pvt_pension_val)  # line8
+        unit_deduction = max_(0, unit_pvt_pension_val - excess_agi)  # line9
+        ind_share_of_unit_deduction = where(
+            ind_pvt_pension_val > 0,
+            ind_pvt_pension_val / unit_pvt_pension_val,
             0,
         )
-        private_pension_amount = person("taxable_pension_income", period)
-        max_private_pension_amount = p.mo_max_private_pension
-        private_pension_value = min_(
-            private_pension_amount, max_private_pension_amount
-        )
-
-        return max_(
-            private_pension_value - agi_over_private_pension_allowance, 0
-        )
+        return ind_share_of_unit_deduction * unit_deduction
