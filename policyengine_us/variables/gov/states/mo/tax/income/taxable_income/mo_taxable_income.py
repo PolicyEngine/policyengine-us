@@ -45,5 +45,5 @@ class mo_taxable_income(Variable):
         unit_taxinc = max_(0, unit_mo_agi - unit_mo_deductions)
 
         # allocate unit taxable income by each individual's share of unit AGI
-        ind_share = where(unit_mo_agi > 0, mo_agi / unit_mo_agi, 0)
-        return ind_share * unit_taxinc
+        ind_agi_share = where(unit_mo_agi > 0, mo_agi / unit_mo_agi, 0)
+        return ind_agi_share * unit_taxinc
