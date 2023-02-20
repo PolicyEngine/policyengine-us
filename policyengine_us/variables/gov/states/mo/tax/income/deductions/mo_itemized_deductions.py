@@ -17,6 +17,6 @@ class mo_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mo.tax.income
         deductions = [deduction for deduction in p.deductions.itemized]
-        deduction_value = add(tax_unit, period, deductions)
+        deduction_value = add(tax_unit, period, p.deductions.itemized)
         net_state_income_taxes = tax_unit("mo_net_state_income_taxes", period)
         return max_(0, deduction_value - net_state_income_taxes)
