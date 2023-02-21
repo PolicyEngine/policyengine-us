@@ -12,7 +12,7 @@ class nyc_taxable_income(Variable):
     def formula(tax_unit, period, parameters):
         # If had contribution(s) to Charitable Gifts Trust Fund accounts AND
         # itemized those contributions, would subtract the contribution(s)
-        # amount from their NY AGI and the their itemized decudtion amount.
+        # amount from their NY AGI and the their itemized deduction amount.
         # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=16
 
         # First get their NY AGI.

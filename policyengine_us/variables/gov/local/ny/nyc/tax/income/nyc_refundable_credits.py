@@ -7,7 +7,7 @@ class nyc_refundable_credits(Variable):
     label = "NYC refundable credits"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.NY
+    defined_for = "in_nyc"
     reference = "https://www.tax.ny.gov/pit/credits/new_york_city_credits.htm#:~:text=New%20for%202022,adjusted%20gross%20income%20(NYAGI)."
 
     adds = [

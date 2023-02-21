@@ -11,7 +11,7 @@ class nyc_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         income_tax_before_credits = tax_unit(
-            "ny_nyc_income_tax_before_credits", period
+            "nyc_income_tax_before_credits", period
         )
         non_refundable_credits = tax_unit("nyc_non_refundable_credits", period)
         return max_(income_tax_before_credits - non_refundable_credits, 0)
