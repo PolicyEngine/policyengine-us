@@ -7,6 +7,7 @@ class nyc_cdcc_applicable_percentage(Variable):
     label = "NYC CDCC rate"
     unit = USD
     definition_period = YEAR
+    defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
         # Calculate the "applicable percentage" of the portion of the NYS CDCC
