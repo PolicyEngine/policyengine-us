@@ -7,7 +7,7 @@ class nyc_income_tax_before_refundable_credits(Variable):
     label = "NYC income tax"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.NY
+    defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
         income_tax_before_credits = tax_unit(
