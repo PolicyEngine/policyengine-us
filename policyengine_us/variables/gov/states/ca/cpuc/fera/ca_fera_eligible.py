@@ -23,7 +23,5 @@ class ca_fera_eligible(Variable):
         p = parameters(period).gov.states.ca.cpuc
         care_fpl_limit = p.care.eligibility.fpl_limit
         fera_fpl_limit = p.fera.eligibility.fpl_limit
-        income_eligible = (
-            income <= (ca_care_poverty_line * fera_fpl_limit)
-        ) and (income > (ca_care_poverty_line * care_fpl_limit))
+        income_eligible = (income <= (ca_care_poverty_line * fera_fpl_limit)) and (income > (ca_care_poverty_line * care_fpl_limit))
         return income_eligible and n_eligible and not care_eligible
