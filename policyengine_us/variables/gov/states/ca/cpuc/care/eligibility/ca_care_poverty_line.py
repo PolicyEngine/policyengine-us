@@ -6,7 +6,7 @@ class ca_care_poverty_line(Variable):
     entity = Household
     definition_period = YEAR
     label = "Poverty line as defined for California CARE program"
-    reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
 
     def formula(household, period, parameters):
