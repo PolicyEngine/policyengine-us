@@ -10,8 +10,4 @@ class nyc_non_refundable_credits(Variable):
     reference = "https://www.tax.ny.gov/pit/credits/new_york_city_credits.htm#:~:text=New%20for%202022,adjusted%20gross%20income%20(NYAGI)."
     defined_for = "in_nyc"
 
-    # This is what I think it should be.
-    adds = [
-        "nyc_household_credit",
-        "nyc_unincorporated_business_credit",
-    ]
+    adds = "gov.local.ny.nyc.tax.income.credits.non_refundable"
