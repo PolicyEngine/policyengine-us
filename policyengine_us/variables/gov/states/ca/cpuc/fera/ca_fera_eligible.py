@@ -7,7 +7,8 @@ class ca_fera_eligible(Variable):
     definition_period = YEAR
     label = "Eligible for California FERA program"
     documentation = "Eligible for California Alternate Rates for Energy"
-    reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
+    reference = ("https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program",
+    "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.12")
     defined_for = StateCode.CA
 
     def formula(household, period, parameters):
@@ -23,5 +24,7 @@ class ca_fera_eligible(Variable):
         p = parameters(period).gov.states.ca.cpuc
         care_fpl_limit = p.care.eligibility.fpl_limit
         fera_fpl_limit = p.fera.eligibility.fpl_limit
-        income_eligible = (income <= (ca_care_poverty_line * fera_fpl_limit)) and (income > (ca_care_poverty_line * care_fpl_limit))
+        income_eligible = (
+            income <= (ca_care_poverty_line * fera_fpl_limit)
+        ) and (income > (ca_care_poverty_line * care_fpl_limit))
         return income_eligible and n_eligible and not care_eligible
