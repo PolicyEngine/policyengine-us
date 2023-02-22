@@ -12,6 +12,6 @@ class ca_care(Variable):
     defined_for = StateCode.CA
 
     def formula(household, period, parameters):
-       is_eligible = household("ca_care_eligible", period)
-       amount = household("ca_care_amount_if_eligible", period)
-       return is_eligible * amount
+        is_eligible = household("ca_care_eligible", period)
+        amount = household("ca_care_amount_if_eligible", period)
+        return is_eligible * amount
