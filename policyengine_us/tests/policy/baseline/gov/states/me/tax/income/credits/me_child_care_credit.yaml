@@ -1,0 +1,13 @@
+- name: Outside Maine, no ME childcare credit 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    regular_child_care_expenses: 1000 #federal Form 2441,line 2, column (d)
+    step_4_child_care_expenses: 0
+
+  output:
+    me_agi: 0
+
+
