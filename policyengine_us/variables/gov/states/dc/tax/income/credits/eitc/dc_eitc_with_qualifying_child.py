@@ -12,5 +12,7 @@ class dc_eitc_with_qualifying_child(Variable):
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)
-        rate = parameters(period).gov.states.dc.tax.income.credits.eitc.qualifying.match
+        rate = parameters(
+            period
+        ).gov.states.dc.tax.income.credits.eitc.qualifying.match
         return eitc * rate
