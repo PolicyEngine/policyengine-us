@@ -12,6 +12,8 @@ class household_benefits(Variable):
         "ssi",
         "state_supplement",
         "ca_cvrp",  # California Clean Vehicle Rebate Project.
+        "ca_care", 
+        "ca_fera",
         "snap",
         "wic",
         "free_school_meals",

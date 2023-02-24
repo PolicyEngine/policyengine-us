@@ -4,7 +4,7 @@
     state_code: CA
     electricity_expense: 100
   output:
-    ca_care_categorically_eligible: 32.5
+    ca_care_amount_if_eligible: 32.5
 
 - name: Household with multiple SPM units.
   period: 2023
@@ -24,4 +24,4 @@
         members: [p1, p2]
         state_code: CA
   output:
-    ca_care_categorically_eligible: 65
+    ca_care_amount_if_eligible: 65
