@@ -5,7 +5,7 @@ class three_digit_zip_code(Variable):
     value_type = str
     entity = Household
     label = "Three-digit zipcode"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(household, period, parameters):
         zip_code = np.array(household("zip_code", period)).astype(str)
