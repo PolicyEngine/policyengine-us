@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.220.3] - 2023-02-26 23:50:19
+
+### Changed
+
+- Moved computed income variables to their respective section to avoid showing them as inputs.
+
 ## [0.220.2] - 2023-02-24 14:42:35
 
 ### Changed
@@ -2965,6 +2971,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.2...0.220.3
 [0.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.1...0.220.2
 [0.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.0...0.220.1
 [0.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.219.1...0.220.0

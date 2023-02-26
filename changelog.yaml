@@ -2481,3 +2481,9 @@
     changed:
     - Replace all instances of ETERNITY with YEAR.
   date: 2023-02-24 14:42:35
+- bump: patch
+  changes:
+    changed:
+    - Moved computed income variables to their respective section to avoid showing
+      them as inputs.
+  date: 2023-02-26 23:50:19
