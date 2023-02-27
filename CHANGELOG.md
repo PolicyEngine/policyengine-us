@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.220.4] - 2023-02-27 16:56:43
+
+### Fixed
+
+- SSI resource pass rate is now 0.2 (from 0.6) to hit administrative targets.
+
 ## [0.220.3] - 2023-02-26 23:50:19
 
 ### Changed
@@ -2971,6 +2977,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.3...0.220.4
 [0.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.2...0.220.3
 [0.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.1...0.220.2
 [0.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.0...0.220.1

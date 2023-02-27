@@ -2487,3 +2487,8 @@
     - Moved computed income variables to their respective section to avoid showing
       them as inputs.
   date: 2023-02-26 23:50:19
+- bump: patch
+  changes:
+    fixed:
+    - SSI resource pass rate is now 0.2 (from 0.6) to hit administrative targets.
+  date: 2023-02-27 16:56:43
