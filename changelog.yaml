@@ -2466,3 +2466,24 @@
     fixed:
     - Incomplete list of MO itemized deductions.
   date: 2023-02-20 17:10:15
+- bump: minor
+  changes:
+    added:
+    - Add NYC taxes to net income tree.
+  date: 2023-02-21 23:07:17
+- bump: patch
+  changes:
+    fixed:
+    - Incomplete list of state income tax variables by adding IL.
+  date: 2023-02-23 14:18:46
+- bump: patch
+  changes:
+    changed:
+    - Replace all instances of ETERNITY with YEAR.
+  date: 2023-02-24 14:42:35
+- bump: patch
+  changes:
+    changed:
+    - Moved computed income variables to their respective section to avoid showing
+      them as inputs.
+  date: 2023-02-26 23:50:19

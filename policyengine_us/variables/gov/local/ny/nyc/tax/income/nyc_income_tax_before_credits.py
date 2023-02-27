@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ny_nyc_income_tax_before_credits(Variable):
+class nyc_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "NYC income tax before credits"

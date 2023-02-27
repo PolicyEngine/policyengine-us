@@ -2,6 +2,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
+    in_nyc: true
     nyc_cdcc_eligible: true
     ny_cdcc: 2_000
     nyc_cdcc_share_qualifying_childcare_expenses: .50
@@ -13,6 +14,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
+    in_nyc: true
     nyc_cdcc_eligible: true
     ny_cdcc: 2_000
     nyc_cdcc_share_qualifying_childcare_expenses: .50
@@ -24,6 +26,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
+    in_nyc: true
     nyc_cdcc_eligible: false
     ny_cdcc: 2_000
     nyc_cdcc_share_qualifying_childcare_expenses: .50
@@ -35,6 +38,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
+    in_nyc: true
     nyc_cdcc_eligible: true
     ny_cdcc: 2_000
     nyc_cdcc_share_qualifying_childcare_expenses: 0
