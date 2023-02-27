@@ -6,7 +6,6 @@
   output:
     co_tanf_eligible: true
 
-
 - name: Is demographic eligible but not income eligible.
   period: 2023
   input:
@@ -14,7 +13,6 @@
     co_tanf_income_eligible: false
   output:
     co_tanf_eligible: false
-
 
 - name: Is not demographic eligible but is income eligible.
   period: 2023

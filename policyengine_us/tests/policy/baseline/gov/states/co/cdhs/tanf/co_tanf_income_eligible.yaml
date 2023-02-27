@@ -1,26 +1,35 @@
-- name: If no children and one adult, grant standard is $337/mo.
+- name: If no children and one adult with no income, income eligible is true.
   period: 2023
   input:
     spm_unit_count_adults: 1
-    spm_unit_size: 1
-    
+    spm_unit_count_children: 0
+    co_tanf_gross_countable_income: 0
   output:
     co_tanf_income_eligible: true
 
-- name: If not eligible, we don't calculate it.
+- name: If one child and one adult with no income, income eligible is true.
   period: 2023
   input:
-    co_tanf_eligible: false
     spm_unit_count_adults: 1
-    spm_unit_size: 1
+    spm_unit_count_children: 1
+    co_tanf_gross_countable_income: 0
   output:
     co_tanf_income_eligible: true
 
-- name: If two adults and 12 kids, grant standard is $1,538 + 2 * $82 = $1,702 per month.
+- name: If one child and one adult with income of $200/month, income eligible is false.
   period: 2023
   input:
-    co_tanf_eligible: true
-    spm_unit_count_adults: 2
-    spm_unit_size: 14
+    spm_unit_count_adults: 1
+    spm_unit_count_children: 1
+    co_tanf_gross_countable_income: 2_400
   output:
-    co_tanf_income_eligible: 1_702 * 12
+    co_tanf_income_eligible: false
+
+- name: If 12 children and two adult with income of $1703/month, income eligible is false.
+  period: 2023
+  input:
+    spm_unit_count_adults: 1
+    spm_unit_count_children: 12
+    co_tanf_gross_countable_income: 20_424
+  output:
+    co_tanf_income_eligible: false
