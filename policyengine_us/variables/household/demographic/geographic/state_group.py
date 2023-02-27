@@ -17,7 +17,7 @@ class state_group(Variable):
     default_value = StateGroup.CONTIGUOUS_US
     entity = Household
     label = "State group"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(household, period, parameters):
         NON_CONTIGUOUS_STATES = ("AK", "HI", "GU", "PR", "VI")
