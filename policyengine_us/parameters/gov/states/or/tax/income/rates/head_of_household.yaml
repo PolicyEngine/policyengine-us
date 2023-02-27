@@ -3,7 +3,6 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  name: or_income_tax_rate_head
   label: OR State income tax rate for head of household filers.
   reference:
     - title: Chapter 316 - Personal Income Tax
@@ -14,8 +13,8 @@ brackets:
   - threshold:
       1993-01-01: 0
     rate:
-      2017-01-01: .05
-      2020-01-01: .0475
+      2017-01-01: 0.05
+      2020-01-01: 0.0475
   - threshold:
       # All thresholds are double that of single.
       1993-01-01: 4_000
@@ -26,8 +25,8 @@ brackets:
       2020-01-01: 7_200
       2021-01-01: 7_300
     rate:
-      2017-01-01: .07
-      2020-01-01: .0675
+      2017-01-01: 0.07
+      2020-01-01: 0.0675
   - threshold:
       1993-01-01: 10_000
       2017-01-01: 17_000
@@ -36,10 +35,10 @@ brackets:
       2020-01-01: 18_100
       2021-01-01: 18_400
     rate:
-      2017-01-01: .09
-      2020-01-01: .0875
+      2017-01-01: 0.09
+      2020-01-01: 0.0875
   - threshold:
       # Top threshold doesn't change.
       1993-01-01: 250_000
     rate:
-      2017-01-01: .099
+      2017-01-01: 0.099

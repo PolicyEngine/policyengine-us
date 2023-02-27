@@ -3,7 +3,6 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  name: or_income_tax_rate_single
   label: OR State income tax rate for single filers.
   reference:
     - title: Chapter 316 - Personal Income Tax
@@ -20,8 +19,8 @@ brackets:
   - threshold:
       1993-01-01: 0
     rate:
-      2017-01-01: .05
-      2020-01-01: .0475
+      2017-01-01: 0.05
+      2020-01-01: 0.0475
   - threshold:
       1993-01-01: 2_000
       # We do not show inflation-adjusted values from 1994 to 2016.
@@ -31,8 +30,8 @@ brackets:
       2020-01-01: 3_600
       2021-01-01: 3_650
     rate:
-      2017-01-01: .07
-      2020-01-01: .0675
+      2017-01-01: 0.07
+      2020-01-01: 0.0675
   - threshold:
       1993-01-01: 5_000
       2017-01-01: 8_500
@@ -41,9 +40,9 @@ brackets:
       2020-01-01: 9_050
       2021-01-01: 9_200
     rate:
-      2017-01-01: .09
-      2020-01-01: .0875
+      2017-01-01: 0.09
+      2020-01-01: 0.0875
   - threshold:
       1993-01-01: 125_000
     rate:
-      2017-01-01: .099
+      2017-01-01: 0.099
