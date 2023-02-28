@@ -3,19 +3,20 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  name: or_income_tax_rate_widow
   label: OR State income tax rate for widow(er) filers
   reference:
     - title: Chapter 316 - Personal Income Tax
-      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.037 (1)(a)
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #3160.037 (1)(a)
     - title: 2021 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=27
+    - title: 2022 Publication OR-40-NP, Oregon Income Tax Part-year Resident/Nonresident Forms and Instructions, 150-101-048-1
+      href: https://www.oregon.gov/dor/programs/individuals/Documents/Part-year%20and%20nonresident,%20Form%20OR-40-P%20and%20OR-40-N%20filers.pdf.pdf
 brackets:
   - threshold:
       1993-01-01: 0
     rate:
-      2017-01-01: .05
-      2020-01-01: .0475
+      2017-01-01: 0.05
+      2020-01-01: 0.0475
   - threshold:
       # All thresholds are double that of single.
       1993-01-01: 4_000
@@ -25,9 +26,10 @@ brackets:
       2019-01-01: 7_100
       2020-01-01: 7_200
       2021-01-01: 7_300
+      2022-01-01: 7_500
     rate:
-      2017-01-01: .07
-      2020-01-01: .0675
+      2017-01-01: 0.07
+      2020-01-01: 0.0675
   - threshold:
       1993-01-01: 10_000
       2017-01-01: 17_000
@@ -35,11 +37,12 @@ brackets:
       2019-01-01: 17_800
       2020-01-01: 18_100
       2021-01-01: 18_400
+      2022-01-01: 18_900
     rate:
-      2017-01-01: .09
-      2020-01-01: .0875
+      2017-01-01: 0.09
+      2020-01-01: 0.0875
   - threshold:
       # Top threshold doesn't change.
       1993-01-01: 250_000
     rate:
-      2017-01-01: .099
+      2017-01-01: 0.099
