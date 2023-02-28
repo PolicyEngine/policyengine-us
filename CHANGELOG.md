@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.220.5] - 2023-02-28 05:31:41
+
+### Changed
+
+- Updated Oregon income tax parameters for 2022.
+
 ## [0.220.4] - 2023-02-27 16:56:43
 
 ### Fixed
@@ -2977,6 +2983,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.220.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.4...0.220.5
 [0.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.3...0.220.4
 [0.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.2...0.220.3
 [0.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.1...0.220.2
