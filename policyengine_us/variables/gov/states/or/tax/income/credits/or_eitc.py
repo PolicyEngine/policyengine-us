@@ -20,7 +20,7 @@ class or_eitc(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states["or"].tax.income.credits.eitc
         # Check if any person in the simulation in a young child.
-        young_child = person("age", period) < p.young_child_age
+        young_child = person("age", period) < p.old_child_age
         # Re-aggregate to the tax unit level.
         has_young_child = tax_unit.any(young_child)
         # Multiply by the relevant factor.
