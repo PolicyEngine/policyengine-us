@@ -17,5 +17,6 @@ class co_tanf_income_eligible(Variable):
         additional_children = children - capped_children
         base = p.main[capped_adults][capped_children]
         additional_need_standard = p.additional_child * additional_children
-        eligible = income < base + additional_need_standard
+        need_standard = base + additional_need_standard
+        return income < need_standard
         return eligible
