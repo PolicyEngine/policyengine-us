@@ -1,9 +1,9 @@
-description: Oregon caps its federal tax liability subtraction for single filers at this amount, depending on federal AGI.
+description: Oregon caps its federal tax liability subtraction for married filing separately filers at this amount, depending on federal AGI.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
-  label: OR federal tax liability subtraction cap for single filers
+  label: OR federal tax liability subtraction cap for married filing separately filers
   reference:
     - title: Chapter 316 - Personal Income Tax
       href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html #316.800
@@ -15,28 +15,28 @@ brackets:
   - threshold:
       2021-01-01: 0
     amount:
-      2021-01-01: 7_050
-      2022-01-01: 7_250
+      2021-01-01: 3_525
+      2022-01-01: 3_625
   - threshold:
       2021-01-01: 125_000
     amount:
-      2021-01-01: 5_650
-      2022-01-01: 5_800
+      2021-01-01: 2_825
+      2022-01-01: 2_900
   - threshold:
       2021-01-01: 130_000
     amount:
-      2021-01-01: 4_200
-      2022-01-01: 4_350
+      2021-01-01: 2_100
+      2022-01-01: 2_175
   - threshold:
       2021-01-01: 135_000
     amount:
-      2021-01-01: 2_800
-      2022-01-01: 2_900
+      2021-01-01: 1_400
+      2022-01-01: 1_450
   - threshold:
       2021-01-01: 140_000
     amount:
-      2021-01-01: 1_400
-      2022-01-01: 1_450
+      2021-01-01: 700
+      2022-01-01: 725
   - threshold:
       2021-01-01: 145_000
     amount:
