@@ -1,0 +1,19 @@
+
+description: The tax rate on Part A dividend income.
+values:
+  2002-01-01: 0.053
+  # Amount started falling in 2004.
+  # Rates from 2015 to 2022 are from Tax Foundation.
+  2015-01-01: 0.0515
+  2016-01-01: 0.051
+  2019-01-01: 0.0505
+  2020-01-01: 0.05
+metadata:
+  label: MA dividend tax rate
+  reference:
+    - title: "Section 4: Rates of tax for residents, non-residents and corporate trusts (b)"
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section4
+    - title: State Individual Income Tax Rates and Brackets (Tax Foundation)
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
+  unit: /1
+  period: year
