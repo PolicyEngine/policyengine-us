@@ -27,4 +27,8 @@ class ma_income_tax_before_credits(Variable):
             + rates.part_b * part_b
             + rates.part_c * part_c
         )
-        return ~exempt * tax_on_income
+        total_taxable_income = (
+            part_a_dividends + part_a_capital_gains + part_b + part_c
+        )
+        additional_tax = rates.additional.calc(total_taxable_income)
+        return where(exempt, 0, tax_on_income + additional_tax)
