@@ -10,16 +10,10 @@ class net_investment_income_tax(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        NII_ELEMENTS = [
-            "taxable_interest_income",
-            "dividend_income",
-            "c01000",
-            "rental_income",
-        ]
-        nii = max_(0, add(tax_unit, period, NII_ELEMENTS))
         p = parameters(period).gov.irs.investment.net_investment_income_tax
         threshold = p.threshold[tax_unit("filing_status", period)]
         base = min_(
-            nii, max_(0, tax_unit("adjusted_gross_income", period) - threshold)
+            max_(0, tax_unit("net_investment_income", period)),
+            max_(0, tax_unit("adjusted_gross_income", period) - threshold),
         )
         return p.rate * base
