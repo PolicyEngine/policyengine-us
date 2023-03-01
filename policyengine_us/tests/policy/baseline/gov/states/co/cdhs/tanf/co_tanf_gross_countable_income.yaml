@@ -1,0 +1,31 @@
+- name: $0 earned income and $0 unearned income, $0 per year
+  period: 2023
+  input:
+    co_tanf_countable_gross_earned_income: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf_gross_countable_income: 0
+
+- name: $20,000 earned income and $0 unearned income, $20,000 per year
+  period: 2023
+  input:
+    co_tanf_countable_gross_earned_income: 20_000
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf_gross_countable_income: 20_000
+
+- name: $0 earned income and $10,000 unearned income, $10,000 per year
+  period: 2023
+  input:
+    co_tanf_countable_gross_earned_income: 0
+    co_tanf_countable_gross_unearned_income: 10_000
+  output:
+    co_tanf_gross_countable_income: 10_000
+
+- name: $25,000 earned income and $5,000 unearned income, $30,000 per year
+  period: 2023
+  input:
+    co_tanf_countable_gross_earned_income: 25_000
+    co_tanf_countable_gross_unearned_income: 5_000
+  output:
+    co_tanf_gross_countable_income: 30_000
