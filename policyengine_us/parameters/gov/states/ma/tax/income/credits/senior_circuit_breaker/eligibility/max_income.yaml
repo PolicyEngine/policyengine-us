@@ -1,7 +1,7 @@
 description: Maximum income for the MA Senior Circuit Breaker credit.
 SINGLE:
   2001-01-01: 40_000
-  2021-01-01: 62_000
+  2021-01-01: 62_000 #values past 2001 are inflation adjusted
 JOINT:
   2001-01-01: 60_000
   2021-01-01: 93_000
@@ -19,7 +19,6 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  name: ma_scb_max_income
   label: MA Senior Circuit Breaker maximum income
   reference:
     - title: Mass. General Laws c.62 § 6(k)

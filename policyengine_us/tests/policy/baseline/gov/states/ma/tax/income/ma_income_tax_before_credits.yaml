@@ -2,6 +2,7 @@
   period: 2021
   input:
     ma_part_a_taxable_capital_gains_income: 1_000_000
+    is_ma_income_tax_exempt: false
     state_code: MA
   output:
     ma_income_tax_before_credits: 120_000
@@ -10,6 +11,7 @@
   period: 2022
   input:
     ma_part_a_taxable_dividend_income: 2_000_000
+    is_ma_income_tax_exempt: false
     state_code: MA
   output:
     ma_income_tax_before_credits: 100_000
@@ -18,6 +20,7 @@
   period: 2023
   input:
     ma_part_a_taxable_dividend_income: 2_000_000
+    is_ma_income_tax_exempt: false
     state_code: MA
   output:
     ma_income_tax_before_credits: 140_000
