@@ -10,12 +10,12 @@ class eitc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        has_child = tax_unit.any(person("is_child", period))
+        has_child = tax_unit("tax_unit_children", period) > 0
         age = person("age", period)
-        eitc = parameters.gov.irs.credits.eitc(period)
-        min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
-        meets_age_requirements = (age >= min_age) & (
-            age <= eitc.eligibility.age.max
+        p = parameters(period).gov.irs.credits.eitc
+        age_limit = p.eligibility.age
+        meets_age_requirements = (age >= age_limit.min) & (
+            age <= age_limit.max
         )
         no_loss_capital_gains = max_(
             0,
@@ -32,7 +32,7 @@ class eitc_eligible(Variable):
             + no_loss_capital_gains
         )
         inv_income_disqualified = (
-            eitc_investment_income > eitc.phase_out.max_investment_income
+            eitc_investment_income > p.phase_out.max_investment_income
         )
         eligible = has_child | tax_unit.any(meets_age_requirements)
         return eligible & ~inv_income_disqualified
