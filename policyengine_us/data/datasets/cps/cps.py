@@ -259,7 +259,7 @@ def add_personal_income_variables(
         person (DataFrame): The CPS person table.
         year (int): The CPS year
     """
-    # get income imputation parameters
+    # Get income imputation parameters.
     yamlfilename = os.path.join(
         os.path.abspath(os.path.dirname(__file__)), "income_parameters.yaml"
     )
@@ -294,6 +294,7 @@ def add_personal_income_variables(
         person.SS_VAL - cps["social_security_retirement"]
     )
     cps["unemployment_compensation"] = person.UC_VAL
+    # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
     cps["taxable_pension_income"] = cps_pensions * (
         p["taxable_pension_fraction"][year]
@@ -301,10 +302,14 @@ def add_personal_income_variables(
     cps["tax_exempt_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"][year]
     )
-    # Other income is a catch-all for all other income sources.
+    # Other income (OI_VAL) is a catch-all for all other income sources.
     # The code for alimony income is 20.
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
+    # The code for strike benefits is 12.
+    cps["strike_benefits"] = (person.OI_OFF == 12) * person.OI_VAL
     cps["child_support_received"] = person.CSP_VAL
+    # Assume all public assistance / welfare dollars (PAW_VAL) are TANF.
+    # They could also include General Assistance.
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
