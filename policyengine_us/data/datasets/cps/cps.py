@@ -68,15 +68,9 @@ class CPS(PublicDataset):
         raw_data = RawCPS.load(year)
         cps = h5py.File(self.file(year), mode="w")
 
+        ENTITIES = ("person", "tax_unit", "family", "spm_unit", "household")
         person, tax_unit, family, spm_unit, household = [
-            raw_data[entity]
-            for entity in (
-                "person",
-                "tax_unit",
-                "family",
-                "spm_unit",
-                "household",
-            )
+            raw_data[entity] for entity in ENTITIES
         ]
 
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
@@ -201,19 +195,10 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # "Is...blind or does...have serious difficulty seeing even when Wearing
     #  glasses?" 1 -> Yes
     cps["is_blind"] = person.PEDISEYE == 1
-    cps["is_ssi_disabled"] = (
-        person[
-            [
-                "PEDISDRS",
-                "PEDISEAR",
-                "PEDISEYE",
-                "PEDISOUT",
-                "PEDISPHY",
-                "PEDISREM",
-            ]
-        ].sum(axis=1)
-        > 0
-    )
+    DISABILITY_FLAGS = [
+        "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
+    ]
+    cps["is_ssi_disabled"] = person[DISABILITY_FLAGS].sum(axis=1) > 0
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
