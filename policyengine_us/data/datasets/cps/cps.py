@@ -267,7 +267,7 @@ def add_personal_income_variables(
         p = yaml.safe_load(yamlfile)
     assert isinstance(p, dict)
 
-    # assign CPS variables
+    # Assign CPS variables.
     cps["employment_income"] = person.WSAL_VAL
     cps["taxable_interest_income"] = person.INT_VAL * (
         p["taxable_interest_fraction"][year]
@@ -301,6 +301,8 @@ def add_personal_income_variables(
     cps["tax_exempt_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"][year]
     )
+    # Other income is a catch-all for all other income sources.
+    # The code for alimony income is 20.
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
     cps["child_support_received"] = person.CSP_VAL
     cps["tanf_reported"] = person.PAW_VAL
@@ -314,6 +316,7 @@ def add_personal_income_variables(
     )
     cps["receives_wic"] = person.WICYN == 1
     cps["veterans_benefits"] = person.VET_VAL
+    cps["workers_compensation"] = person.WC_VAL
     # Expenses.
     # "What is the annual amount of child support paid?"
     person["child_support_expense"] = person.CHSP_VAL
