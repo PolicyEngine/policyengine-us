@@ -19,11 +19,7 @@ class eitc_eligible(Variable):
         )
         no_loss_capital_gains = max_(
             0,
-            add(
-                tax_unit,
-                period,
-                ["short_term_capital_gains", "long_term_capital_gains"],
-            ),
+            add(tax_unit, period, ["capital_gains"]),
         )
         eitc_investment_income = (
             tax_unit("net_investment_income", period)
