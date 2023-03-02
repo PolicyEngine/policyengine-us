@@ -22,10 +22,13 @@ class eitc_eligible(Variable):
             add(tax_unit, period, ["capital_gains"]),
         )
         eitc_investment_income = (
-            tax_unit("net_investment_income", period)
-            + add(tax_unit, period, ["tax_exempt_interest_income"])
-            # replace limited-loss capital gains with no-loss capital gains
-            - tax_unit("c01000", period)  # limited-loss capital gains
+            add(
+                tax_unit,
+                period,
+                ["net_investment_income", "tax_exempt_interest_income"],
+            )
+            # Replace limited-loss capital gains with no-loss capital gains.
+            - tax_unit("c01000", period)  # Limited-loss capital gains.
             + no_loss_capital_gains
         )
         inv_income_disqualified = (
