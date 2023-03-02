@@ -17,18 +17,23 @@ class eitc_eligible(Variable):
         meets_age_requirements = (age >= min_age) & (
             age <= eitc.eligibility.age.max
         )
-        inv_income_sources = eitc.eligibility.counted_inv_income
-        investment_income = (
-            add(tax_unit, period, inv_income_sources)
-            + max_(0, tax_unit("c01000", period))
-            + max_(
-                0,
-                tax_unit("tax_unit_rental_income", period)
-                - tax_unit("tax_unit_partnership_s_corp_income", period),
-            )
+        no_loss_capital_gains = max_(
+            0,
+            add(
+                tax_unit,
+                period,
+                ["short_term_capital_gains", "long_term_capital_gains"],
+            ),
+        )
+        eitc_investment_income = (
+            tax_unit("net_investment_income", period)
+            + add(tax_unit, period, ["tax_exempt_interest_income"])
+            # replace limited-loss capital gains with no-loss capital gains
+            - tax_unit("c01000", period)  # limited-loss capital gains
+            + no_loss_capital_gains
         )
         inv_income_disqualified = (
-            investment_income > eitc.phase_out.max_investment_income
+            eitc_investment_income > eitc.phase_out.max_investment_income
         )
         eligible = has_child | tax_unit.any(meets_age_requirements)
         return eligible & ~inv_income_disqualified
