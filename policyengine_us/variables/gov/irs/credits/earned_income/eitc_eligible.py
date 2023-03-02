@@ -12,11 +12,12 @@ class eitc_eligible(Variable):
         person = tax_unit.members
         has_child = tax_unit("tax_unit_children", period) > 0
         age = person("age", period)
-        p = parameters(period).gov.irs.credits.eitc
-        age_limit = p.eligibility.age
-        meets_age_min = age >= age_limit.min
-        meets_age_max = age <= age_limit.max
-        meets_age_requirements = meets_age_min & meets_age_max
+        # Relative parameter reference break branching in some states that
+        # modify EITC age limits.
+        eitc = parameters.gov.irs.credits.eitc(period)
+        min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
+        max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
+        meets_age_requirements = (age >= min_age) & (age <= max_age)
         no_loss_capital_gains = max_(
             0,
             add(tax_unit, period, ["capital_gains"]),
@@ -32,7 +33,7 @@ class eitc_eligible(Variable):
             + no_loss_capital_gains
         )
         inv_income_disqualified = (
-            eitc_investment_income > p.phase_out.max_investment_income
+            eitc_investment_income > eitc.phase_out.max_investment_income
         )
         eligible = has_child | tax_unit.any(meets_age_requirements)
         return eligible & ~inv_income_disqualified
