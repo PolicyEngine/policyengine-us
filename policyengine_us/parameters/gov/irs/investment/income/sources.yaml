@@ -4,10 +4,9 @@ values:
     - taxable_interest_income
     - dividend_income
     - rental_income
-    - c01000  # loss-limited capital gains
+    - c01000  # Loss-limited capital gains.
 metadata:
   unit: currency-USD
-  name: irs_investment_income_sources
   label: net investment income sources
   reference:
     - title: Instructions for Form 8960, Net Investment Income Tax
