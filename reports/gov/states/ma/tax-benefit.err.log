@@ -1,5 +1,5 @@
 Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
   File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
@@ -18,84 +18,83 @@ Traceback (most recent call last):
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
 from policyengine_us import IndividualSim
-
 import pandas as pd
 import plotly.express as px
 
+LIGHT_GRAY = "#F5F5F5"
+GRAY = "#BDBDBD"
+BLUE = "#5091cc"
+LIGHT_BLUE = "lightblue"
+DARK_BLUE = "darkblue"
 
-def make(adults, children, purchased_qualifying_new_clean_vehicle):
-    sim = IndividualSim(year=2023)
-    # Specify age 25 to qualify for EITC.
-    sim.add_person(name="head", age=25, is_tax_unit_head=True)
+
+def make_tax(adults, children):
+    sim = IndividualSim(year=2022)
+    sim.add_person(name="head", age=25, rent=12_000)
     members = ["head"]
     if adults == 2:
-        sim.add_person(name="spouse")
-        members.append("spouse")
+        sim.add_person(name="spouse", age=25)
+        members += ["spouse"]
     for i in range(children):
         child = "child{}".format(i)
-        sim.add_person(name=child, age=5)
-        members.append(child)
-    sim.add_tax_unit(
-        name="tax_unit",
-        members=members,
-        purchased_qualifying_new_clean_vehicle=purchased_qualifying_new_clean_vehicle,
-        new_clean_vehicle_battery_capacity=70,
-        # Assume it meets both requirements.
-        new_clean_vehicle_battery_critical_minerals_extracted_in_trading_partner_country=0.5,
-        new_clean_vehicle_battery_components_made_in_north_america=0.5,
-        new_clean_vehicle_classification="SUV",
-        new_clean_vehicle_msrp=65_990,  # Per Google.
-        premium_tax_credit=0,
-    )
-    sim.add_spm_unit(name="spm_unit", members=members)
+        sim.add_person(name=child, age=6)
+        members += [child]
+    sim.add_tax_unit(name="tax_unit", members=members, premium_tax_credit=0)
+    # $1,000 monthly rent, $50 monthly broadband.
+    sim.add_spm_unit(name="spm_unit", members=members, broadband_cost=600)
     sim.add_household(name="household", members=members, state_code="MA")
-    sim.vary("employment_income", max=350_000)
+    sim.vary("employment_income", max=100_000, step=100)
+    employment_income = sim.calc("employment_income")[0]
+    spm_unit_net_income = sim.calc("spm_unit_net_income")[0].round()
+    mtr = 1 - sim.deriv(
+        "spm_unit_net_income", "employment_income", wrt_target="head"
+    )
     return pd.DataFrame(
         dict(
-            employment_income=sim.calc("employment_income")[0],
-            spm_unit_net_income=sim.calc("spm_unit_net_income")[0],
-            credit=sim.calc("new_clean_vehicle_credit")[0],
+            employment_income=employment_income,
+            spm_unit_net_income=spm_unit_net_income,
+            mtr=mtr,
             adults=adults,
-            children=children,
-            purchased_qualifying_new_clean_vehicle=purchased_qualifying_new_clean_vehicle,
+            children=str(children),
         )
     )
 
 
+# Make a table of state taxes for different numbers of adults and children.
 l = []
-for adults in [1, 2]:
+for adults in range(1, 3):
     for children in range(0, 4):
-        for purchased_qualifying_new_clean_vehicle in [True, False]:
-            l.append(
-                make(adults, children, purchased_qualifying_new_clean_vehicle)
-            )
+        l.append(make_tax(adults, children))
 
 df = pd.concat(l)
 
-wide = df.pivot(
-    index=["employment_income", "adults", "children"],
-    columns="purchased_qualifying_new_clean_vehicle",
-    values="spm_unit_net_income",
-).reset_index()
-wide["benefit"] = wide[True] - wide[False]
-
 LABELS = dict(
     employment_income="Employment income",
-    benefit="Net clean vehicle credit",
-    children="Children",
+    spm_unit_net_income="Net income",
+    mtr="Marginal tax rate",
     adults="Adults",
+    children="Children",
 )
 
+COLOR_MAP = {"0": GRAY, "1": LIGHT_BLUE, "2": BLUE, "3": DARK_BLUE}
+
 fig = px.line(
-    wide,
+    df,
     "employment_income",
-    "benefit",
+    "spm_unit_net_income",
     color="children",
     animation_frame="adults",
     labels=LABELS,
-    title="Net benefit from clean vehicle credit under Inflation Reduction Act",
+    title="Net income for a Massachusetts household",
+    color_discrete_map=COLOR_MAP,
 )
-fig.update_layout(xaxis_tickformat="$,", yaxis_tickformat="$,")
+fig.update_layout(
+    xaxis_tickformat="$,",
+    yaxis_tickformat="$,",
+    plot_bgcolor="white",
+    xaxis_gridcolor=LIGHT_GRAY,
+    yaxis_gridcolor=LIGHT_GRAY,
+)
 fig.show()
 ------------------
 
@@ -297,7 +296,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -520,37 +519,36 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
 [0;31mValueError[0m                                Traceback (most recent call last)
-Cell [0;32mIn[1], line 51[0m
-[1;32m     48[0m     [38;5;28;01mfor[39;00m children [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m0[39m, [38;5;241m4[39m):
-[1;32m     49[0m         [38;5;28;01mfor[39;00m purchased_qualifying_new_clean_vehicle [38;5;129;01min[39;00m [[38;5;28;01mTrue[39;00m, [38;5;28;01mFalse[39;00m]:
-[1;32m     50[0m             l[38;5;241m.[39mappend(
-[0;32m---> 51[0m                 [43mmake[49m[43m([49m[43madults[49m[43m,[49m[43m [49m[43mchildren[49m[43m,[49m[43m [49m[43mpurchased_qualifying_new_clean_vehicle[49m[43m)[49m
-[1;32m     52[0m             )
-[1;32m     54[0m df [38;5;241m=[39m pd[38;5;241m.[39mconcat(l)
-[1;32m     56[0m wide [38;5;241m=[39m df[38;5;241m.[39mpivot(
-[1;32m     57[0m     index[38;5;241m=[39m[[38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124madults[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mchildren[39m[38;5;124m"[39m],
-[1;32m     58[0m     columns[38;5;241m=[39m[38;5;124m"[39m[38;5;124mpurchased_qualifying_new_clean_vehicle[39m[38;5;124m"[39m,
-[1;32m     59[0m     values[38;5;241m=[39m[38;5;124m"[39m[38;5;124mspm_unit_net_income[39m[38;5;124m"[39m,
-[1;32m     60[0m )[38;5;241m.[39mreset_index()
+Cell [0;32mIn[1], line 48[0m
+[1;32m     46[0m [38;5;28;01mfor[39;00m adults [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m1[39m, [38;5;241m3[39m):
+[1;32m     47[0m     [38;5;28;01mfor[39;00m children [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m0[39m, [38;5;241m4[39m):
+[0;32m---> 48[0m         l[38;5;241m.[39mappend([43mmake_tax[49m[43m([49m[43madults[49m[43m,[49m[43m [49m[43mchildren[49m[43m)[49m)
+[1;32m     50[0m df [38;5;241m=[39m pd[38;5;241m.[39mconcat(l)
+[1;32m     52[0m LABELS [38;5;241m=[39m [38;5;28mdict[39m(
+[1;32m     53[0m     employment_income[38;5;241m=[39m[38;5;124m"[39m[38;5;124mEmployment income[39m[38;5;124m"[39m,
+[1;32m     54[0m     spm_unit_net_income[38;5;241m=[39m[38;5;124m"[39m[38;5;124mNet income[39m[38;5;124m"[39m,
+[0;32m   (...)[0m
+[1;32m     57[0m     children[38;5;241m=[39m[38;5;124m"[39m[38;5;124mChildren[39m[38;5;124m"[39m,
+[1;32m     58[0m )
 
-Cell [0;32mIn[1], line 37[0m, in [0;36mmake[0;34m(adults, children, purchased_qualifying_new_clean_vehicle)[0m
-[1;32m     32[0m sim[38;5;241m.[39madd_household(name[38;5;241m=[39m[38;5;124m"[39m[38;5;124mhousehold[39m[38;5;124m"[39m, members[38;5;241m=[39mmembers, state_code[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMA[39m[38;5;124m"[39m)
-[1;32m     33[0m sim[38;5;241m.[39mvary([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m350_000[39m)
-[1;32m     34[0m [38;5;28;01mreturn[39;00m pd[38;5;241m.[39mDataFrame(
-[1;32m     35[0m     [38;5;28mdict[39m(
-[1;32m     36[0m         employment_income[38;5;241m=[39msim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m],
-[0;32m---> 37[0m         spm_unit_net_income[38;5;241m=[39m[43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mspm_unit_net_income[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m],
-[1;32m     38[0m         credit[38;5;241m=[39msim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124mnew_clean_vehicle_credit[39m[38;5;124m"[39m)[[38;5;241m0[39m],
-[1;32m     39[0m         adults[38;5;241m=[39madults,
-[1;32m     40[0m         children[38;5;241m=[39mchildren,
-[1;32m     41[0m         purchased_qualifying_new_clean_vehicle[38;5;241m=[39mpurchased_qualifying_new_clean_vehicle,
-[1;32m     42[0m     )
-[1;32m     43[0m )
+Cell [0;32mIn[1], line 29[0m, in [0;36mmake_tax[0;34m(adults, children)[0m
+[1;32m     27[0m sim[38;5;241m.[39mvary([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m100_000[39m, step[38;5;241m=[39m[38;5;241m100[39m)
+[1;32m     28[0m employment_income [38;5;241m=[39m sim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m]
+[0;32m---> 29[0m spm_unit_net_income [38;5;241m=[39m [43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mspm_unit_net_income[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m][38;5;241m.[39mround()
+[1;32m     30[0m mtr [38;5;241m=[39m [38;5;241m1[39m [38;5;241m-[39m sim[38;5;241m.[39mderiv(
+[1;32m     31[0m     [38;5;124m"[39m[38;5;124mspm_unit_net_income[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, wrt_target[38;5;241m=[39m[38;5;124m"[39m[38;5;124mhead[39m[38;5;124m"[39m
+[1;32m     32[0m )
+[1;32m     33[0m [38;5;28;01mreturn[39;00m pd[38;5;241m.[39mDataFrame(
+[1;32m     34[0m     [38;5;28mdict[39m(
+[1;32m     35[0m         employment_income[38;5;241m=[39memployment_income,
+[0;32m   (...)[0m
+[1;32m     40[0m     )
+[1;32m     41[0m )
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:266[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
 [1;32m    264[0m         result [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msim[38;5;241m.[39mcalculate_add(var, period)
@@ -846,6 +844,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
-ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 7001 != 7002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
+ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
 

@@ -1,19 +1,19 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Affordable Connectivity Program" href="acp.html" /><link rel="prev" title="FCC" href="index.html" />
 
-    <!-- Generated with Sphinx 4.5.0 and Furo 2022.12.07 -->
+    <!-- Generated with Sphinx 5.0.2 and Furo 2022.12.07 -->
         <title>Lifeline - PolicyEngine US documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -269,20 +269,25 @@
         </div>
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="lifeline">
-<h1>Lifeline<a class="headerlink" href="#lifeline" title="Permalink to this headline">#</a></h1>
+<h1>Lifeline<a class="headerlink" href="#lifeline" title="Permalink to this heading">#</a></h1>
 <p>The Lifeline program subsidizes phone and broadband plans for low-income households.
 On behalf of the <a class="reference external" href="https://fcc.gov">Federal Communications Commission</a>, Lifeline is administered by the <a class="reference external" href="https://www.usac.org">Universal Service Administrative Company</a>, a nonprofit, through the <a class="reference external" href="https://www.fcc.gov/general/universal-service-fund">Universal Service Fund</a>.</p>
 <section id="eligibility">
-<h2>Eligibility<a class="headerlink" href="#eligibility" title="Permalink to this headline">#</a></h2>
+<h2>Eligibility<a class="headerlink" href="#eligibility" title="Permalink to this heading">#</a></h2>
 <p>The FCC provides <a class="reference external" href="https://www.law.cornell.edu/cfr/text/47/54.409#c">at most one Lifeline benefit</a> to households with income below 135% of the federal poverty guideline, as well as to households with members that participate in Medicaid, SSI, and SNAP (PolicyEngine supports these three), as well as other programs.</p>
 </section>
 <section id="benefit">
-<h2>Benefit<a class="headerlink" href="#benefit" title="Permalink to this headline">#</a></h2>
+<h2>Benefit<a class="headerlink" href="#benefit" title="Permalink to this heading">#</a></h2>
 <p>Lifeline provides up to $9.25 per month.</p>
 </section>
 <section id="variable">
-<h2>Variable<a class="headerlink" href="#variable" title="Permalink to this headline">#</a></h2>
+<h2>Variable<a class="headerlink" href="#variable" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">policyengine_us.tools.documentation</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">variable_summary</span><span class="p">,</span>
@@ -293,6 +298,7 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
@@ -370,8 +376,13 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 </div>
 </section>
 <section id="values-by-income">
-<h2>Values by income<a class="headerlink" href="#values-by-income" title="Permalink to this headline">#</a></h2>
+<h2>Values by income<a class="headerlink" href="#values-by-income" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variation_chart</span><span class="p">(</span>
     <span class="s2">&quot;lifeline&quot;</span><span class="p">,</span>
@@ -386,6 +397,7 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
@@ -502,16 +514,17 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=8bf782fb4ee92b3d3646425e50f299c4e1fd152d"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../../_static/togglebutton.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
