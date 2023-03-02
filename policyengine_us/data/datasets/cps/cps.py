@@ -322,6 +322,17 @@ def add_personal_income_variables(
     cps["receives_wic"] = person.WICYN == 1
     cps["veterans_benefits"] = person.VET_VAL
     cps["workers_compensation"] = person.WC_VAL
+    # Disability income has multiple sources and values split across two pairs
+    # of variables. Include everything except for worker's compensation
+    # (code 1), which is defined as WC_VAL.
+    WORKERS_COMP_DIS_CODE = 1
+    disability_benefits_1 = person.DIS_VAL1 * (
+        person.DIS_OFF1 != WORKERS_COMP_DIS_CODE
+    )
+    disability_benefits_2 = person.DIS_VAL2 * (
+        person.DIS_OFF2 != WORKERS_COMP_DIS_CODE
+    )
+    cps["disability_benefits"] = disability_benefits_1 + disability_benefits_2
     # Expenses.
     # "What is the annual amount of child support paid?"
     person["child_support_expense"] = person.CHSP_VAL
