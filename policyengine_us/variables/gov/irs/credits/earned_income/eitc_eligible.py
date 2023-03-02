@@ -14,9 +14,9 @@ class eitc_eligible(Variable):
         age = person("age", period)
         p = parameters(period).gov.irs.credits.eitc
         age_limit = p.eligibility.age
-        meets_age_requirements = (age >= age_limit.min) & (
-            age <= age_limit.max
-        )
+        meets_age_min = age >= age_limit.min
+        meets_age_max = age <= age_limit.max
+        meets_age_requirements = meets_age_min & meets_age_max
         no_loss_capital_gains = max_(
             0,
             add(tax_unit, period, ["capital_gains"]),
