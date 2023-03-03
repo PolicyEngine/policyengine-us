@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class snap_emergency_allotment(Variable):
     value_type = float
     entity = SPMUnit
