@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.224.0] - 2023-03-03 22:39:06
+
+### Added
+
+- Colorado TANF countable earned income.
+
 ## [0.223.0] - 2023-03-02 22:01:53
 
 ### Added
@@ -3014,6 +3020,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.224.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.223.0...0.224.0
 [0.223.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.2...0.223.0
 [0.222.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.1...0.222.2
 [0.222.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.0...0.222.1
