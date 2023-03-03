@@ -11,12 +11,12 @@ class me_personal_exemptions(Variable):
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_dwnld_ff.pdf"
 
     def formula(tax_unit, period, parameters):
-    
+
         # Get filing status.
         filing_status = tax_unit("filing_status", period)
-        
+
         # Determine ME personal exemption which varies only with filing status according to Instructions for Line 13
-        filing_statuses = filing_status.possible_values 
+        filing_statuses = filing_status.possible_values
         personal_exemption = select(
             [
                 filing_status == filing_statuses.SINGLE,
