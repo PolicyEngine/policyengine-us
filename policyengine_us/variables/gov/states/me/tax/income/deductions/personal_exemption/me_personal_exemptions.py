@@ -11,7 +11,6 @@ class me_personal_exemptions(Variable):
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_dwnld_ff.pdf"
 
     def formula(tax_unit, period, parameters):
-
         # Get filing status.
         filing_status = tax_unit("filing_status", period)
 
