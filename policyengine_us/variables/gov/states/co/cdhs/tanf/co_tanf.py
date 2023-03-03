@@ -16,7 +16,7 @@ class co_tanf(Variable):
             period,
             [
                 "co_tanf_countable_earned_income_grant_standard",
-                "co_tanf_countable_unearned_income",
+                "co_tanf_countable_gross_unearned_income",
             ],
         )
         return max_(grant_standard - income, 0)

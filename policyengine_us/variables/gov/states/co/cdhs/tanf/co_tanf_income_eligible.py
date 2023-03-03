@@ -14,7 +14,7 @@ class co_tanf_income_eligible(Variable):
             period,
             [
                 "co_tanf_countable_earned_income_need",
-                "co_tanf_countable_unearned_income",
+                "co_tanf_countable_gross_unearned_income",
             ],
         )
         need_standard = spm_unit("co_tanf_need_standard", period)

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_tanf_countable_unearned_income(Variable):
+class co_tanf_countable_gross_unearned_income(Variable):
     value_type = float
     entity = SPMUnit
     label = "Colorado TANF countable gross unearned income"
