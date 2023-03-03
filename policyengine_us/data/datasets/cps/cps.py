@@ -68,15 +68,9 @@ class CPS(PublicDataset):
         raw_data = RawCPS.load(year)
         cps = h5py.File(self.file(year), mode="w")
 
+        ENTITIES = ("person", "tax_unit", "family", "spm_unit", "household")
         person, tax_unit, family, spm_unit, household = [
-            raw_data[entity]
-            for entity in (
-                "person",
-                "tax_unit",
-                "family",
-                "spm_unit",
-                "household",
-            )
+            raw_data[entity] for entity in ENTITIES
         ]
 
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
@@ -201,19 +195,10 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # "Is...blind or does...have serious difficulty seeing even when Wearing
     #  glasses?" 1 -> Yes
     cps["is_blind"] = person.PEDISEYE == 1
-    cps["is_ssi_disabled"] = (
-        person[
-            [
-                "PEDISDRS",
-                "PEDISEAR",
-                "PEDISEYE",
-                "PEDISOUT",
-                "PEDISPHY",
-                "PEDISREM",
-            ]
-        ].sum(axis=1)
-        > 0
-    )
+    DISABILITY_FLAGS = [
+        "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
+    ]
+    cps["is_ssi_disabled"] = person[DISABILITY_FLAGS].sum(axis=1) > 0
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
@@ -259,7 +244,7 @@ def add_personal_income_variables(
         person (DataFrame): The CPS person table.
         year (int): The CPS year
     """
-    # get income imputation parameters
+    # Get income imputation parameters.
     yamlfilename = os.path.join(
         os.path.abspath(os.path.dirname(__file__)), "income_parameters.yaml"
     )
@@ -267,7 +252,7 @@ def add_personal_income_variables(
         p = yaml.safe_load(yamlfile)
     assert isinstance(p, dict)
 
-    # assign CPS variables
+    # Assign CPS variables.
     cps["employment_income"] = person.WSAL_VAL
     cps["taxable_interest_income"] = person.INT_VAL * (
         p["taxable_interest_fraction"][year]
@@ -294,6 +279,7 @@ def add_personal_income_variables(
         person.SS_VAL - cps["social_security_retirement"]
     )
     cps["unemployment_compensation"] = person.UC_VAL
+    # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
     cps["taxable_pension_income"] = cps_pensions * (
         p["taxable_pension_fraction"][year]
@@ -301,8 +287,14 @@ def add_personal_income_variables(
     cps["tax_exempt_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"][year]
     )
+    # Other income (OI_VAL) is a catch-all for all other income sources.
+    # The code for alimony income is 20.
     cps["alimony_income"] = (person.OI_OFF == 20) * person.OI_VAL
+    # The code for strike benefits is 12.
+    cps["strike_benefits"] = (person.OI_OFF == 12) * person.OI_VAL
     cps["child_support_received"] = person.CSP_VAL
+    # Assume all public assistance / welfare dollars (PAW_VAL) are TANF.
+    # They could also include General Assistance.
     cps["tanf_reported"] = person.PAW_VAL
     cps["ssi_reported"] = person.SSI_VAL
     cps["pension_contributions"] = person.RETCB_VAL
@@ -314,11 +306,23 @@ def add_personal_income_variables(
     )
     cps["receives_wic"] = person.WICYN == 1
     cps["veterans_benefits"] = person.VET_VAL
+    cps["workers_compensation"] = person.WC_VAL
+    # Disability income has multiple sources and values split across two pairs
+    # of variables. Include everything except for worker's compensation
+    # (code 1), which is defined as WC_VAL.
+    WORKERS_COMP_DISABILITY_CODE = 1
+    disability_benefits_1 = person.DIS_VAL1 * (
+        person.DIS_SC1 != WORKERS_COMP_DISABILITY_CODE
+    )
+    disability_benefits_2 = person.DIS_VAL2 * (
+        person.DIS_SC2 != WORKERS_COMP_DISABILITY_CODE
+    )
+    cps["disability_benefits"] = disability_benefits_1 + disability_benefits_2
     # Expenses.
     # "What is the annual amount of child support paid?"
-    person["child_support_expense"] = person.CHSP_VAL
-    person["health_insurance_premiums"] = person.PHIP_VAL
-    person["medical_out_of_pocket_expenses"] = person.MOOP
+    cps["child_support_expense"] = person.CHSP_VAL
+    cps["health_insurance_premiums"] = person.PHIP_VAL
+    cps["medical_out_of_pocket_expenses"] = person.MOOP
 
 
 def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:

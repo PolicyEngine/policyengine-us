@@ -7,6 +7,7 @@ class nyc_cdcc_share_qualifying_childcare_expenses(Variable):
     label = "Share of Childcare expenses that qualify towards NYC CDCC"
     unit = USD
     definition_period = YEAR
+    defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
         # Get the total expenses for children that qualify towards the NYC CDCC.

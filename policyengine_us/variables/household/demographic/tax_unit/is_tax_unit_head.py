@@ -5,7 +5,7 @@ class is_tax_unit_head(Variable):
     value_type = bool
     entity = Person
     label = "Head of tax unit"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(person, period, parameters):
         # Only adults can be heads.

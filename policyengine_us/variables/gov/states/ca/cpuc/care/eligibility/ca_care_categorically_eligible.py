@@ -7,6 +7,6 @@ class ca_care_categorically_eligible(Variable):
     definition_period = YEAR
     label = "Eligible for California CARE program"
     documentation = "Eligible for California Alternate Rates for Energy"
-    reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
     adds = "gov.states.ca.cpuc.care.eligibility.categorical"

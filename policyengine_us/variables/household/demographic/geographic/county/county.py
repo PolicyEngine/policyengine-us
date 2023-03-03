@@ -11,7 +11,7 @@ class county(Variable):
     default_value = County.UNKNOWN
     entity = Household
     label = "County"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(household, period, parameters):
         # Attempt to look up from ZIP code
