@@ -1,0 +1,8 @@
+- name: 19-year old filer gets CA EITC
+  period: 2022
+  input:
+    age: 19
+    employment_income: 2_000
+  output:
+    ca_eitc: 153
+    eitc: 0

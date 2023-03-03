@@ -1,0 +1,30 @@
+description: California phases in its secondary EITC schedule at this rate, depending on the number of children.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: /1
+  label: CalEITC second phase-in rate
+  reference:
+    - title: California Revenue and Taxation Code 17052(m-o)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2017-01-01: 0.022
+      2019-01-01: 0.0543
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2017-01-01: 0.031
+      2019-01-01: 0.0633
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2017-01-01: 0.0213
+      2019-01-01: 0.042
+  - threshold:
+      2015-01-01: 3
+    amount:
+      2017-01-01: 0.0212
+      2019-01-01: 0.0415

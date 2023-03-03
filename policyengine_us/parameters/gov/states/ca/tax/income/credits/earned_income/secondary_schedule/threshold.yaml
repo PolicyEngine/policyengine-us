@@ -1,0 +1,21 @@
+description: CalEITC secondary schedule threshold.
+metadata:
+  rate_unit: currency-USD
+  rate_period: year
+  threshold_unit: child
+  type: single_amount
+  label: CalEITC secondary schedule threshold
+  reference:
+    - title: California Legal code REVENUE AND TAXATION CODE - RTC (2019)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+    - title: CA EITC Form 3514 instructions (2022)
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
+brackets:
+  - amount:
+      2022-01-01: 200
+    threshold:
+      2022-01-01: 0
+  - amount:
+      2022-01-01: 505
+    threshold:
+      2022-01-01: 1

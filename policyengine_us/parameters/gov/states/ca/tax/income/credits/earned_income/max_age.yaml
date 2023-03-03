@@ -1,0 +1,9 @@
+description: California limits its EITC to filers below this age.
+values:
+  2018-01-01: .inf
+metadata:
+  unit: year
+  label: CalEITC max age
+  reference:
+    name: California Revenue and Taxation Code 17052(c)(2) # Removes the federal EITC age limit.
+    href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
