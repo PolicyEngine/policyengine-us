@@ -14,8 +14,8 @@
     state_code: ME
     filing_status: SINGLE
     adjusted_gross_income: 0 #is there a better way to label this variable to pull from the federal agi variable 
-    me_income_additions: 0
-    me_income_subtractions: 0
+    me_agi_additions: 0
+    me_agi_subtractions: 0
   output:
     me_agi: 0
 
@@ -26,8 +26,7 @@
     state_code: ME
     filing_status: SINGLE
     adjusted_gross_income: 100_000  
-    me_income_additions: 10_000
-    me_income_subtractions: 20_000
+    me_agi_additions: 10_000
+    me_agi_subtractions: 20_000
   output:
     me_agi: 90_000
-
