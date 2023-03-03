@@ -3,7 +3,7 @@
   input:
     co_tanf_eligible: true
     spm_unit_count_adults: 1
-    spm_unit_size: 1
+    spm_unit_count_children: 0
   output:
     co_tanf_grant_standard: 337 * 12
 
@@ -12,7 +12,7 @@
   input:
     co_tanf_eligible: false
     spm_unit_count_adults: 1
-    spm_unit_size: 1
+    spm_unit_count_children: 0
   output:
     co_tanf_grant_standard: 0
 
@@ -21,6 +21,6 @@
   input:
     co_tanf_eligible: true
     spm_unit_count_adults: 2
-    spm_unit_size: 14
+    spm_unit_count_children: 12
   output:
     co_tanf_grant_standard: 1_702 * 12
