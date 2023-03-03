@@ -9,6 +9,13 @@ class co_tanf_income_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        income = add(spm_unit, period, ["co_tanf_countable_earned_income_need", "co_tanf_countable_unearned_income"])
+        income = add(
+            spm_unit,
+            period,
+            [
+                "co_tanf_countable_earned_income_need",
+                "co_tanf_countable_unearned_income",
+            ],
+        )
         need_standard = spm_unit("co_tanf_need_standard", period)
         return income < need_standard
