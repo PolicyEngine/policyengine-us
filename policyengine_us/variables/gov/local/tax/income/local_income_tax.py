@@ -7,3 +7,5 @@ class local_income_tax(Variable):
     definition_period = YEAR
     label = "Local income tax"
     unit = USD
+
+    adds = ["nyc_income_tax"]

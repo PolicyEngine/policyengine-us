@@ -2409,3 +2409,134 @@
     fixed:
     - Removed "uncapped" from OR refundable credits description.
   date: 2023-02-13 20:27:43
+- bump: patch
+  changes:
+    fixed:
+    - MO income tax brackets.
+  date: 2023-02-14 04:35:35
+- bump: patch
+  changes:
+    fixed:
+    - Logic for summation of taxable Social Security in Part C of MO Pension/SS/SSD
+      deduction
+  date: 2023-02-14 05:02:37
+- bump: minor
+  changes:
+    added:
+    - California CARE eligibility.
+  date: 2023-02-14 21:49:06
+- bump: patch
+  changes:
+    fixed:
+    - MO social security or social security disability deduction calculation.
+  date: 2023-02-14 21:56:48
+- bump: patch
+  changes:
+    added:
+    - Legislative references for California CARE program.
+  date: 2023-02-16 18:00:31
+- bump: minor
+  changes:
+    added:
+    - Colorado TANF grant standard.
+  date: 2023-02-16 22:58:46
+- bump: minor
+  changes:
+    added:
+    - DC EITC.
+  date: 2023-02-17 00:02:39
+- bump: patch
+  changes:
+    fixed:
+    - MO section B pension deduction calculations.
+    - MO adjusted gross income calculations.
+  date: 2023-02-17 04:46:22
+- bump: minor
+  changes:
+    added:
+    - Maine personal exemption deduction.
+  date: 2023-02-17 05:32:26
+- bump: minor
+  changes:
+    added:
+    - NYC child and dependent care credit
+  date: 2023-02-18 20:44:38
+- bump: patch
+  changes:
+    fixed:
+    - Incomplete list of MO itemized deductions.
+  date: 2023-02-20 17:10:15
+- bump: minor
+  changes:
+    added:
+    - Add NYC taxes to net income tree.
+  date: 2023-02-21 23:07:17
+- bump: patch
+  changes:
+    fixed:
+    - Incomplete list of state income tax variables by adding IL.
+  date: 2023-02-23 14:18:46
+- bump: patch
+  changes:
+    changed:
+    - Replace all instances of ETERNITY with YEAR.
+  date: 2023-02-24 14:42:35
+- bump: patch
+  changes:
+    changed:
+    - Moved computed income variables to their respective section to avoid showing
+      them as inputs.
+  date: 2023-02-26 23:50:19
+- bump: patch
+  changes:
+    fixed:
+    - SSI resource pass rate is now 0.2 (from 0.6) to hit administrative targets.
+  date: 2023-02-27 16:56:43
+- bump: patch
+  changes:
+    changed:
+    - Updated Oregon income tax parameters for 2022.
+  date: 2023-02-28 05:31:41
+- bump: minor
+  changes:
+    added:
+    - Eligibility for Colorado TANF.
+  date: 2023-02-28 22:57:23
+- bump: minor
+  changes:
+    added:
+    - Massachusetts rules for 2022 and 2023, including millionaire tax.
+  date: 2023-03-01 01:51:22
+- bump: patch
+  changes:
+    added:
+    - California CARE and FERA electricity discount programs.
+  date: 2023-03-02 03:05:32
+- bump: patch
+  changes:
+    fixed:
+    - Confusing specification of EITC investment income.
+  date: 2023-03-02 20:44:43
+- bump: minor
+  changes:
+    added:
+    - Additional unearned income sources to SNAP.
+    - Worker's compensation, strike benefits, disability benefits, child support expense,
+      health insurance premiums, and medical out of pocket expenses from CPS.
+  date: 2023-03-02 22:01:53
+- bump: minor
+  changes:
+    added:
+    - Colorado TANF countable earned income.
+  date: 2023-03-03 22:39:06
+- bump: patch
+  changes:
+    fixed:
+    - Corrected descriptions for FERA and CARE
+  date: 2023-03-03 23:42:54
+- bump: minor
+  changes:
+    added:
+    - CA nonrefundable credits variable.
+    - CA income tax before refundable credits variable.
+  date: 2023-03-04 21:41:47
