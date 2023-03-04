@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_child_and_dependent_care_expenses_credit(Variable):
+class ca_cdcc(Variable):
     value_type = float
     entity = TaxUnit
     label = "California Child and Dependent Care Expenses Credit"
@@ -15,7 +15,7 @@ class ca_child_and_dependent_care_expenses_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.ca.tax.income.credits.child_and_dependent_care_expenses
+        ).gov.states.ca.tax.income.credits.child_dependent_care
         agi = tax_unit("adjusted_gross_income", period)
         federal_cdcc = tax_unit("cdcc", period)
         multiplier_1 = p.multiplier_1.calc(agi)
