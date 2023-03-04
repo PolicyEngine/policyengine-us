@@ -1,0 +1,31 @@
+- name: No EITC, no matched credit
+  period: 2023
+  input:
+    state_code: OH
+    earned_income_tax_credit: 0
+  output:
+    eitc_match: 0
+
+- name: 30% match
+  period: 2023
+  input:
+    state_code: OH
+    earned_income_tax_credit: 100
+  output:
+    eitc_match: 30
+
+- name: 30% match
+  period: 2023
+  input:
+    state_code: OH
+    earned_income_tax_credit: 3_000
+  output:
+    eitc_match: 900
+
+- name: Outside OH is ineligible
+  period: 2023
+  input:
+    state_code: MA
+    earned_income_tax_credit: 100
+  output:
+    eitc_match: 0
