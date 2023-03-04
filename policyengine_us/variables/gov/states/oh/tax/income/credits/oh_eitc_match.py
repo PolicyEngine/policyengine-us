@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oh_wftc(Variable):
+class oh_eitc_match(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio Working Families Tax Credit"
+    label = "Ohio Earned Income Tax Credit Match"
     unit = USD
     definition_period = YEAR
     reference = ""
