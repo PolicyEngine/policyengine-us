@@ -1,0 +1,20 @@
+- name: High-income taxpayer
+  period: 2021
+  input:
+    state_code: CA
+    ca_income_tax_before_refundable_credits: 44_000
+    ca_mental_health_services_tax: 800
+    ca_use_tax: 100
+  output:
+    ca_income_tax: 44_900
+
+
+- name: Low-income taxpayer
+  period: 2021
+  input:
+    state_code: CA
+    ca_income_tax_before_refundable_credits: 0
+    ca_eitc: 700
+    ca_yctc: 200
+  output:
+    ca_income_tax: -900
