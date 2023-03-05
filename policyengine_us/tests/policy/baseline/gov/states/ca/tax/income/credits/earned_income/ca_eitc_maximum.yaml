@@ -1,0 +1,11 @@
+- name: Filer with no children receives product of earned income amount, phase-in rate, and adjustment factor.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: CA
+    eitc_child_count: 0
+  output:
+    # Phase-in rate: 7.65%
+    # Earned income amount: $4,248
+    # Adjustment factor: 85%
+    ca_eitc_maximum: 276

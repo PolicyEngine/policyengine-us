@@ -1,7 +1,21 @@
-- name: 19-year old filer gets CA EITC
+- name: Name of test
   period: 2022
   input:
-    age: 19
-    employment_income: 7_000
+    people:
+      person:
+        age: 30
+      child_1:
+        age: 10
+      child_2:
+        age: 10
+      child_3:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person, child_1, child_2, child_3]
+    households:
+      household:
+        members: [person, child_1, child_2, child_3]
+        state_code: CA
   output:
-    ca_eitc: 153
+    ca_eitc_maximum: 276

@@ -1,10 +1,10 @@
-description: CalEITC secondary schedule threshold.
+description: Earned income point at which CA filers phase out of the EITC smoothly at the earnings limit.
 metadata:
   rate_unit: currency-USD
   rate_period: year
   threshold_unit: child
   type: single_amount
-  label: CalEITC secondary schedule threshold
+  label: CalEITC final phase-out threshold
   reference:
     - title: California Legal code REVENUE AND TAXATION CODE - RTC (2019)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
