@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.simulations import Simulation
 
+
 def get_ca_eitc_branch(tax_unit, period, parameters):
     simulation: Simulation = tax_unit.simulation
     if "ca_eitc" not in simulation.branches:
@@ -38,7 +39,8 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
 
             # Investment income change
             eitc.phase_out.max_investment_income.update(
-                period=period, value=current_ca_eitc.eligibility.max_investment_income
+                period=period,
+                value=current_ca_eitc.eligibility.max_investment_income,
             )
 
             # EITC amount and phase-out amount changes
@@ -51,7 +53,9 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                     # CA EITC parameters are in terms of the maximum earned income amount,
                     # so we need to multiply the CA parameter by the relevant phase-in rate.
                     # Phase-in rate
-                    phase_in_rate = eitc.phase_in_rate.brackets[i].amount(period)
+                    phase_in_rate = eitc.phase_in_rate.brackets[i].amount(
+                        period
+                    )
                     eitc_max_amount = getattr(
                         ca_eitc.earned_income_amount.brackets[ca_i],
                         attribute,
@@ -67,21 +71,21 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                         period=period,
                         value=getattr(
                             ca_eitc.phase_out.start.brackets[ca_i], attribute
-                        )(period)
+                        )(period),
                     )
                     # Phase-out rate
-                    getattr(
-                        eitc.phase_out.rate.brackets[i], attribute
-                    ).update(
+                    getattr(eitc.phase_out.rate.brackets[i], attribute).update(
                         period=period,
                         value=getattr(
                             ca_eitc.phase_out.rate.brackets[i], attribute
-                        )(period)
+                        )(period),
                     )
+
         branch.tax_benefit_system.modify_parameters(modify_parameters)
         return branch
     else:
         return simulation.branches.get("ca_eitc")
+
 
 class ca_eitc(Variable):
     value_type = float
@@ -95,22 +99,31 @@ class ca_eitc(Variable):
         branch = get_ca_eitc_branch(tax_unit, period, parameters)
         ca_eitc = parameters.gov.states.ca.tax.income.credits.earned_income
         current_ca_eitc = ca_eitc(period)
-        amount = branch.calculate("earned_income_tax_credit", period) * current_ca_eitc.adjustment.factor
-        second_phase_out_start = tax_unit("ca_eitc_second_phase_out_start", period)
+        amount = (
+            branch.calculate("earned_income_tax_credit", period)
+            * current_ca_eitc.adjustment.factor
+        )
+        second_phase_out_start = tax_unit(
+            "ca_eitc_second_phase_out_start", period
+        )
         second_phase_out_end = current_ca_eitc.phase_out.final.end
         count_children = tax_unit("eitc_child_count", period)
-        eitc_at_second_phase_out_start = current_ca_eitc.phase_out.final.start.calc(count_children)
-        earned_income = tax_unit("filer_earned", period)
-        amount_along_second_phase_out = (earned_income - second_phase_out_start)
-        second_phase_out_width = second_phase_out_end - second_phase_out_start
-        percent_along_second_phase_out = amount_along_second_phase_out / second_phase_out_width
-        eitc_along_second_phase_out = max_((
-            eitc_at_second_phase_out_start
-        ) * (1 - percent_along_second_phase_out), 0)
-
-        is_on_second_phase_out = (
-            (earned_income >= second_phase_out_start)
+        eitc_at_second_phase_out_start = (
+            current_ca_eitc.phase_out.final.start.calc(count_children)
         )
+        earned_income = tax_unit("filer_earned", period)
+        amount_along_second_phase_out = earned_income - second_phase_out_start
+        second_phase_out_width = second_phase_out_end - second_phase_out_start
+        percent_along_second_phase_out = (
+            amount_along_second_phase_out / second_phase_out_width
+        )
+        eitc_along_second_phase_out = max_(
+            (eitc_at_second_phase_out_start)
+            * (1 - percent_along_second_phase_out),
+            0,
+        )
+
+        is_on_second_phase_out = earned_income >= second_phase_out_start
 
         return where(
             is_on_second_phase_out,
@@ -127,19 +140,30 @@ class ca_eitc_second_phase_out_start(Variable):
     documentation = "California begins secondarily phasing out the CalEITC at this earnings level."
     definition_period = YEAR
 
-
     def formula(tax_unit, period, parameters):
         maximum = tax_unit("ca_eitc_maximum", period)
-        ca_eitc = parameters(period).gov.states.ca.tax.income.credits.earned_income
+        ca_eitc = parameters(
+            period
+        ).gov.states.ca.tax.income.credits.earned_income
         count_children = tax_unit("eitc_child_count", period)
         # Apply the adjustment factor to the phase-out rate.
-        phase_out_rate = ca_eitc.phase_out.rate.calc(count_children) * ca_eitc.adjustment.factor
+        phase_out_rate = (
+            ca_eitc.phase_out.rate.calc(count_children)
+            * ca_eitc.adjustment.factor
+        )
         # Multiply and divide the second phase-out start by the adjustment factors.
-        eitc_at_which_second_phase_out_starts = ca_eitc.phase_out.final.start.calc(count_children) * ca_eitc.adjustment.factor / ca_eitc.adjustment.divisor
+        eitc_at_which_second_phase_out_starts = (
+            ca_eitc.phase_out.final.start.calc(count_children)
+            * ca_eitc.adjustment.factor
+            / ca_eitc.adjustment.divisor
+        )
         eitc_difference = maximum - eitc_at_which_second_phase_out_starts
         earnings_to_cover_eitc_difference = eitc_difference / phase_out_rate
-        return earnings_to_cover_eitc_difference + ca_eitc.phase_out.start.calc(count_children)
-    
+        return (
+            earnings_to_cover_eitc_difference
+            + ca_eitc.phase_out.start.calc(count_children)
+        )
+
 
 class ca_eitc_maximum(Variable):
     value_type = float
@@ -151,5 +175,7 @@ class ca_eitc_maximum(Variable):
 
     def formula(tax_unit, period, parameters):
         branch = get_ca_eitc_branch(tax_unit, period, parameters)
-        adjustment = parameters(period).gov.states.ca.tax.income.credits.earned_income.adjustment.factor
+        adjustment = parameters(
+            period
+        ).gov.states.ca.tax.income.credits.earned_income.adjustment.factor
         return branch.calculate("eitc_maximum", period) * adjustment
