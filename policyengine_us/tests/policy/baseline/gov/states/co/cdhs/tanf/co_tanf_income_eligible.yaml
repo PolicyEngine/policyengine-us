@@ -1,35 +1,19 @@
-- name: If no children and one adult with no income, income eligible is true.
+- name: Household with no income is eligible.
   period: 2023
   input:
-    spm_unit_count_adults: 1
-    spm_unit_count_children: 0
-    co_tanf_gross_countable_income: 0
+    state_code: CO
+    co_tanf_need_standard: 1
+    co_tanf_countable_earned_income_need: 0
+    co_tanf_countable_gross_unearned_income: 0
   output:
     co_tanf_income_eligible: true
 
-- name: If one child and one adult with no income, income eligible is true.
+- name: Household with income exceeding need standard is ineligible.
   period: 2023
   input:
-    spm_unit_count_adults: 1
-    spm_unit_count_children: 1
-    co_tanf_gross_countable_income: 0
-  output:
-    co_tanf_income_eligible: true
-
-- name: If one child and one adult with income of $200/month, income eligible is false.
-  period: 2023
-  input:
-    spm_unit_count_adults: 1
-    spm_unit_count_children: 1
-    co_tanf_gross_countable_income: 2_400
-  output:
-    co_tanf_income_eligible: false
-
-- name: If 12 children and two adult with income of $1703/month, income eligible is false.
-  period: 2023
-  input:
-    spm_unit_count_adults: 1
-    spm_unit_count_children: 12
-    co_tanf_gross_countable_income: 20_424
+    state_code: CO
+    co_tanf_need_standard: 1
+    co_tanf_countable_earned_income_need: 1
+    co_tanf_countable_gross_unearned_income: 1
   output:
     co_tanf_income_eligible: false

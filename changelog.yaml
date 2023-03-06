@@ -2524,3 +2524,25 @@
     - Worker's compensation, strike benefits, disability benefits, child support expense,
       health insurance premiums, and medical out of pocket expenses from CPS.
   date: 2023-03-02 22:01:53
+- bump: minor
+  changes:
+    added:
+    - Colorado TANF countable earned income.
+  date: 2023-03-03 22:39:06
+- bump: patch
+  changes:
+    fixed:
+    - Corrected descriptions for FERA and CARE
+  date: 2023-03-03 23:42:54
+- bump: minor
+  changes:
+    added:
+    - CA nonrefundable credits variable.
+    - CA income tax before refundable credits variable.
+  date: 2023-03-04 21:41:47
+- bump: minor
+  changes:
+    added:
+    - CA refundable credits variable.
+    - CA income tax variable.
+  date: 2023-03-05 19:02:15
