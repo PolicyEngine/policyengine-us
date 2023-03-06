@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 import numpy as np
 
 
-class ca_young_child(Variable):
+class ca_yctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "CA Young Child Tax Credit"
+    label = "California Young Child Tax Credit"
     unit = USD
     definition_period = YEAR
     reference = (

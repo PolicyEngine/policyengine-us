@@ -16,7 +16,7 @@
         members: [parent, child]
         state_code: CA
   output:
-    ca_young_child: 1_000
+    ca_yctc: 1_000
 
 - name: Earns $100 over the phase out start amount and gets $20 less.
   period: 2021
@@ -36,7 +36,7 @@
         members: [parent, child]
         state_code: CA
   output:
-    ca_young_child: 980
+    ca_yctc: 980
     
 - name: Earns $100 over the phase out start amount but child is 6, so ineligible.
   period: 2021
@@ -56,7 +56,7 @@
         members: [parent, child]
         state_code: CA
   output:
-    ca_young_child: 0
+    ca_yctc: 0
     
 - name: Zero CalEITC so ineligible.
   period: 2021
@@ -76,7 +76,7 @@
         members: [parent, child]
         state_code: CA
   output:
-    ca_young_child: 0
+    ca_yctc: 0
     
 - name: Earns the end of the phase-out window ($30,000) so gets $0.
   period: 2021
@@ -96,7 +96,7 @@
         members: [parent, child]
         state_code: CA
   output:
-    ca_young_child: 0
+    ca_yctc: 0
     
 - name: Amount doesn't vary with the number of qualifying children
   period: 2021
@@ -119,4 +119,4 @@
         members: [parent, child1, child2]
         state_code: CA
   output:
-    ca_young_child: 980
+    ca_yctc: 980
