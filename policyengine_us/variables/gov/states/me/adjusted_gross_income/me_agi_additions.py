@@ -9,7 +9,7 @@ class me_agi_additions(Variable):
     documentation = "Additions to ME AGI over federal AGI."
     definition_period = YEAR
     defined_for = StateCode.ME
-    dict(
+    reference = dict(
         title="Schedule 1A, Income Addition Modifications",
         href="https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1a_ff.pdf",
     )
