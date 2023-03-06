@@ -62,8 +62,27 @@
     ca_care_income_eligible: false
     ca_care_amount_if_eligible: 32.5
     ca_care: 0
-    ca_fera_eligible: true
+    ca_fera_eligible: false
     ca_fera_amount_if_eligible: 18
     ca_fera: 0
 
-  
+- name: A four person household with an income of $80k and no money from any other program is not qualified for CARE or FERA
+  period: 2022
+  input:
+    state_code: CA
+    household_size: 4
+    household_market_income: 100_000
+    electricity_expense: 100
+    # If the following line is ommitted, the test fails.
+    #ca_care_categorically_eligible: false
+  output:
+    wic: 0
+    snap: 0
+    ssi: 0
+    tanf: 0
+    ca_care_income_eligible: false
+    ca_care_amount_if_eligible: 32.5
+    ca_care: 0
+    ca_fera_eligible: false
+    ca_fera_amount_if_eligible: 18
+    ca_fera: 0
