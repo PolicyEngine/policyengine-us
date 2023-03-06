@@ -7,10 +7,10 @@
     eitc_child_count: 0
   output:
     # Maximum credit: $276
-    # Phase-out rate: 7.65%
+    # Phase-out rate: 7.65% * 0.85 = 6.5%
     # Phase-out start: $4,248
     # EITC at which the second phase-out starts: $200
     # EITC difference: $76
-    # Earnings to cover EITC difference: $76 / 0.0765 = $993
-    # Add to phase-out start: $4,248 + $993 = $5,241
-    ca_eitc_second_phase_out_start: 5_241
+    # Earnings to cover EITC difference: $76 / 0.065 = $1,169
+    # Add to phase-out start: $4,248 + $1,169 = $5,417
+    ca_eitc_second_phase_out_start: 5_417
