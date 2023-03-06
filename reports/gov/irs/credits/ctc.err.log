@@ -314,7 +314,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     84[0m )
 [0;32m---> 86[0m [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
 
-[0;31mValueError[0m: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.25' exists, but 'second_lowest_silver_plan_cost.AK.1.25' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
+[0;31mValueError[0m: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.48' exists, but 'second_lowest_silver_plan_cost.AK.1.48' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
 
 During handling of the above exception, another exception occurred:
 
@@ -536,7 +536,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     84[0m )
 [0;32m---> 86[0m [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
 
-[0;31mValueError[0m: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.25' exists, but 'second_lowest_silver_plan_cost.AK.1.25' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
+[0;31mValueError[0m: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.48' exists, but 'second_lowest_silver_plan_cost.AK.1.48' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
 
 During handling of the above exception, another exception occurred:
 
@@ -876,6 +876,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     84[0m     )
 [0;32m---> 86[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m(message)
 
-[0;31mValueError[0m: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.25' exists, but 'second_lowest_silver_plan_cost.AK.1.25' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
-ValueError: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.25' exists, but 'second_lowest_silver_plan_cost.AK.1.25' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
+[0;31mValueError[0m: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.48' exists, but 'second_lowest_silver_plan_cost.AK.1.48' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
+ValueError: Cannot use fancy indexing on parameter node 'second_lowest_silver_plan_cost', as 'second_lowest_silver_plan_cost.AK.0.48' exists, but 'second_lowest_silver_plan_cost.AK.1.48' doesn't. To use fancy indexing on parameter node, its children must be homogenous. See more at <https://openfisca.org/doc/coding-the-legislation/legislation_parameters#computing-a-parameter-that-depends-on-a-variable-fancy-indexing>.
 
