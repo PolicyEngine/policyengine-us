@@ -10,3 +10,8 @@ class ca_care_eligible(Variable):
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
     adds = ["ca_care_categorically_eligible", "ca_care_income_eligible"]
+
+    # def formula(household, period, parameters):
+    #     income_eligible = household("ca_care_income_eligible", period)
+    #     categorically_eligible = household("ca_care_categorically_eligible", period)
+    #     return income_eligible | categorically_eligible
