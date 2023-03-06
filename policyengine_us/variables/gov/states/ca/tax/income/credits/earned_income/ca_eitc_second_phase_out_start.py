@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_core.simulations import Simulation
 
+
 class ca_eitc_second_phase_out_start(Variable):
     value_type = float
     entity = TaxUnit

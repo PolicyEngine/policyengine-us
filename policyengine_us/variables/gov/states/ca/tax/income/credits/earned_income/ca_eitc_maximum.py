@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.ca.tax.income.credits.earned_income.ca_eitc import get_ca_eitc_branch
+from policyengine_us.variables.gov.states.ca.tax.income.credits.earned_income.ca_eitc import (
+    get_ca_eitc_branch,
+)
 
 
 class ca_eitc_maximum(Variable):
