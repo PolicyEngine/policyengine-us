@@ -12,10 +12,22 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
 brackets:
   - amount:
-      2022-01-01: 200
+      values:
+        2019-01-01: 200
+        # Index by the California CPI.
+        # The value isn't published, so we multiply by California CPI and round to the nearest $1.
+      metadata:
+        uprating:
+          parameter: gov.states.ca.cpi
+          rounding: 1.
     threshold:
       2022-01-01: 0
   - amount:
-      2022-01-01: 505
+      values:
+        2019-01-01: 505
+      metadata:
+        uprating:
+          parameter: gov.states.ca.cpi
+          rounding: 1.
     threshold:
       2022-01-01: 1

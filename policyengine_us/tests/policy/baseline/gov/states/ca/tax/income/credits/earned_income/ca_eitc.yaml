@@ -1,0 +1,10 @@
+- name: CA EITC, no children, $20k income
+  period: 2022
+  absolute_error_margin: 20
+  input:
+    employment_income: 20_500
+    eitc_child_count: 0
+  output:
+    ca_eitc: 88
+
+
