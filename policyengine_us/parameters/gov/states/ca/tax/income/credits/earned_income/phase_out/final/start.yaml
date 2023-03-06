@@ -11,7 +11,9 @@ metadata:
     - title: CA EITC Form 3514 instructions (2022)
       href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
 brackets:
-  - amount:
+  - threshold:
+      2021-01-01: 0
+    amount:
       values:
         2019-01-01: 200
         # Index by the California CPI.
@@ -20,14 +22,12 @@ brackets:
         uprating:
           parameter: gov.states.ca.cpi
           rounding: 1.
-    threshold:
-      2022-01-01: 0
-  - amount:
+  - threshold:
+      2021-01-01: 1
+    amount:
       values:
         2019-01-01: 505
       metadata:
         uprating:
           parameter: gov.states.ca.cpi
           rounding: 1.
-    threshold:
-      2022-01-01: 1
