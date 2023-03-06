@@ -57,7 +57,7 @@
     household_market_income: 80_000
     electricity_expense: 100
     # If the following line is ommitted, the test fails.
-    ca_care_categorically_eligible: false
+    #ca_care_categorically_eligible: false
   output:
     ca_care_income_eligible: false
     ca_care_amount_if_eligible: 32.5
