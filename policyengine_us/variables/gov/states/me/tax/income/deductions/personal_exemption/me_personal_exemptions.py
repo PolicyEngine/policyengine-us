@@ -16,21 +16,6 @@ class me_personal_exemptions(Variable):
 
         # Determine ME personal exemption which varies only with filing status according to Instructions for Line 13
         filing_statuses = filing_status.possible_values
-        personal_exemption = select(
-            [
-                filing_status == filing_statuses.SINGLE,
-                filing_status == filing_statuses.JOINT,
-                filing_status == filing_statuses.SEPARATE,
-                filing_status == filing_statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == filing_statuses.WIDOW,
-            ],
-            [
-                1,
-                2,
-                1,
-                1,
-                1,
-            ],
-        )
+        personal_exemption = tax_unit("num", period)
 
         return personal_exemption
