@@ -1,0 +1,11 @@
+description: Separate filers in NJ are exempt from filing if their income is below this threshold.
+metadata:
+  label: NJ Separate Filing Threshold
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  reference:
+    - title: Instructions for Form NJ-1040
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=5
+values:
+  2022-01-01: 10_000
