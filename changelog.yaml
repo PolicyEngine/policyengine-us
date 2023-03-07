@@ -2566,3 +2566,13 @@
     added:
     - Formula for CalEITC qualifying child variable.
   date: 2023-03-07 14:20:43
+- bump: minor
+  changes:
+    added:
+    - me_agi variable, based on federal AGI, additions, and subtractions (not yet
+      defined yet)
+    removed:
+    - me_personal_exemptions.py because variable already exists as num variable
+    - me_personal_exemptions input in me_personal_exemptions.yaml file (no longer
+      variable)
+  date: 2023-03-07 21:57:01
