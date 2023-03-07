@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.227.1] - 2023-03-07 03:56:15
+
+### Added
+
+- Missing 2021 California EITC parameter values.
+
 ## [0.227.0] - 2023-03-06 18:39:45
 
 ### Added
@@ -3046,6 +3052,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.227.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.227.0...0.227.1
 [0.227.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.226.0...0.227.0
 [0.226.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.225.0...0.226.0
 [0.225.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.224.1...0.225.0
