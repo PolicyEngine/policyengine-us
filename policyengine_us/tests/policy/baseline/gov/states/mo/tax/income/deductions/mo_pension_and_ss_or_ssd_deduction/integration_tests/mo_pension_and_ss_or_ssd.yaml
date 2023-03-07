@@ -12,7 +12,7 @@
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 10_000
+        taxable_public_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -102,7 +102,7 @@
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -127,21 +127,20 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
-        premium_tax_credit: 0
-        filing_status: JOINT
         members: [person1, person2]
+        premium_tax_credit: 0
     household:
       members: [person1, person2]
       state_code: MO
@@ -161,15 +160,15 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 2_500
+        taxable_private_pension_income: 2_500
         taxable_social_security: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 2_500
+        taxable_private_pension_income: 2_500
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
@@ -180,11 +179,11 @@
       members: [person1, person2]
       state_code: MO
   output:
-    mo_adjusted_gross_income: [45_000, 45_000]
+    mo_adjusted_gross_income: [40_000, 40_000]
     mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
     mo_pension_and_ss_or_ssd_deduction_section_c: [10_000, 10_000]
-    mo_pension_and_ss_or_ssd_deduction: [20_000]
+    mo_pension_and_ss_or_ssd_deduction: 20_000
 
 - name:  100k income, childless couple, evenly split income, both with public + private pensions, both with SS and SSD 
   period: 2021
@@ -195,15 +194,15 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 11_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 5_000
-        taxable_pension_income: 5_000
+        taxable_public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
         taxable_social_security: 10_000
     tax_units:
       tax_unit:
@@ -229,12 +228,12 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        public_pension_income: 10_000
+        taxable_public_pension_income: 10_000
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        public_pension_income: 10_000
+        taxable_public_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -259,12 +258,12 @@
         age: 78
         employment_income: 25_000
         is_tax_unit_head: true
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000        
       person2:
         age: 72
         employment_income: 25_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 10_000
+        taxable_private_pension_income: 10_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -289,14 +288,14 @@
         age: 78
         employment_income: 5_000
         is_tax_unit_head: true
-        taxable_pension_income: 5_000
-        public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
+        taxable_public_pension_income: 5_000
       person2:
         age: 72
         employment_income: 5_000
         is_tax_unit_spouse: true
-        taxable_pension_income: 5_000
-        public_pension_income: 5_000
+        taxable_private_pension_income: 5_000
+        taxable_public_pension_income: 5_000
     tax_units:
       tax_unit:
         premium_tax_credit: 0
@@ -311,3 +310,111 @@
     mo_pension_and_ss_or_ssd_deduction_section_b: [5_000, 5_000]
     mo_pension_and_ss_or_ssd_deduction_section_c: [0, 0]
     mo_pension_and_ss_or_ssd_deduction: 20_000
+
+- name: Tax unit with taxsimid 77665 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 18_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 500
+        social_security: 9_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 41
+        employment_income: 57_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 500
+        social_security: 9_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person6:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: MO
+  output:  # expected results from patched TAXSIM35 2023-02-13 version
+    mo_income_tax: 3095.77
+
+- name: Tax unit with taxsimid 94115 in f21.its.csv and f21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 15_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 3_000
+        social_security: 1_500
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 69
+        employment_income: 3_010
+        taxable_interest_income: 5_505
+        taxable_private_pension_income: 3_000
+        social_security: 1_500
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:  # expected results from hand calculations using 2021 MO Form 1040
+    mo_pension_and_ss_or_ssd_deduction_section_b: [1_485, 1_485, 0]
+    mo_pension_and_ss_or_ssd_deduction_section_c: [750, 750, 0]

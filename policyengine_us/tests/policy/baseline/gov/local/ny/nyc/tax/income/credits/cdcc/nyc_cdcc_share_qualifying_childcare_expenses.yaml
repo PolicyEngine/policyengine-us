@@ -1,0 +1,10 @@
+- name: Share of tax unit's childcare expenses on children under four.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    nyc_cdcc_age_restricted_expenses: 1_000
+    tax_unit_childcare_expenses: 5_000
+  output:
+    nyc_cdcc_share_qualifying_childcare_expenses: .20

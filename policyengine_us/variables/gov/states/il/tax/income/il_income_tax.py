@@ -10,4 +10,4 @@ class il_income_tax(Variable):
     defined_for = StateCode.IL
 
     adds = ["il_total_tax"]
-    subtracts = ["il_total_payments_and_refundable_credits"]
+    subtracts = ["il_refundable_credits"]

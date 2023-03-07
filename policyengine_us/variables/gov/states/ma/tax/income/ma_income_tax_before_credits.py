@@ -22,9 +22,13 @@ class ma_income_tax_before_credits(Variable):
         rates = parameters(period).gov.states.ma.tax.income.rates
         exempt = tax_unit("is_ma_income_tax_exempt", period)
         tax_on_income = (
-            rates.part_a_dividends * part_a_dividends
-            + rates.part_a_capital_gains * part_a_capital_gains
+            rates.part_a.dividends * part_a_dividends
+            + rates.part_a.capital_gains * part_a_capital_gains
             + rates.part_b * part_b
             + rates.part_c * part_c
         )
-        return ~exempt * tax_on_income
+        total_taxable_income = (
+            part_a_dividends + part_a_capital_gains + part_b + part_c
+        )
+        additional_tax = rates.additional.calc(total_taxable_income)
+        return where(exempt, 0, tax_on_income + additional_tax)

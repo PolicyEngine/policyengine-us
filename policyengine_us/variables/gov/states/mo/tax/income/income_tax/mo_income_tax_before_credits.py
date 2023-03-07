@@ -16,4 +16,5 @@ class mo_income_tax_before_credits(Variable):
     def formula(person, period, parameters):
         taxable_income = person("mo_taxable_income", period)
         rates = parameters(period).gov.states.mo.tax.income.rates
-        return rates.calc(taxable_income)
+        exempt = person("mo_income_tax_exempt", period)
+        return where(exempt, 0, rates.calc(taxable_income))

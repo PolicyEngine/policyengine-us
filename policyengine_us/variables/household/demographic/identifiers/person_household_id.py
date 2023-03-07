@@ -5,4 +5,4 @@ class person_household_id(Variable):
     value_type = int
     entity = Person
     label = "Unique reference for the household of this person"
-    definition_period = ETERNITY
+    definition_period = YEAR

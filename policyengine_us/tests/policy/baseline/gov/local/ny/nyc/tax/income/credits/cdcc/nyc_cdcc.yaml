@@ -1,0 +1,47 @@
+- name: NYC CDCC is the product of inputs (rate = 75%).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    ny_cdcc: 2_000
+    nyc_cdcc_share_qualifying_childcare_expenses: .50
+    nyc_cdcc_applicable_percentage: .75
+  output:
+    nyc_cdcc: 750
+
+- name: NYC CDCC is the product of inputs (rate = 45%).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    ny_cdcc: 2_000
+    nyc_cdcc_share_qualifying_childcare_expenses: .50
+    nyc_cdcc_applicable_percentage: .45
+  output:
+    nyc_cdcc: 450
+
+- name: NYC CDCC is $0 if ineligible.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: false
+    ny_cdcc: 2_000
+    nyc_cdcc_share_qualifying_childcare_expenses: .50
+    nyc_cdcc_applicable_percentage: .75
+  output:
+    nyc_cdcc: 0
+
+- name: NYC CDCC is $0 if no expenses on children under age four.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    ny_cdcc: 2_000
+    nyc_cdcc_share_qualifying_childcare_expenses: 0
+    nyc_cdcc_applicable_percentage: .75
+  output:
+    nyc_cdcc: 0

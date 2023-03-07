@@ -71,7 +71,7 @@ class state_code(Variable):
     default_value = StateCode.CA
     entity = Household
     label = "State code"
-    definition_period = ETERNITY
+    definition_period = YEAR
 
     def formula(household, period, parameters):
         return StateCode.encode(

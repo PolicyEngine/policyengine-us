@@ -1,0 +1,30 @@
+description: NYC provides a household credit of this amount per dependent for joint, widow, and head of household filers.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: NYC Household Credit for joint, widow, and head of household filers.
+  reference:
+    - title: Instructions for Form IT-201
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=17
+brackets:
+  - threshold:
+      2022-01-01: -1
+    amount:
+      2022-01-01: 30
+  - threshold:
+      2022-01-01: 15_000
+    amount:
+      2022-01-01: 25
+  - threshold:
+      2022-01-01: 17_500
+    amount:
+      2022-01-01: 15
+  - threshold:
+      2022-01-01: 20_000
+    amount:
+      2022-01-01: 10
+  - threshold:
+      2022-01-01: 22_500
+    amount:
+      2022-01-01: 0

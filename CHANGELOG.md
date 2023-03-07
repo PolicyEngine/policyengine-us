@@ -5,6 +5,260 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.227.1] - 2023-03-07 03:56:15
+
+### Added
+
+- Missing 2021 California EITC parameter values.
+
+## [0.227.0] - 2023-03-06 18:39:45
+
+### Added
+
+- CalEITC.
+
+## [0.226.0] - 2023-03-05 19:02:15
+
+### Added
+
+- CA refundable credits variable.
+- CA income tax variable.
+
+## [0.225.0] - 2023-03-04 21:41:47
+
+### Added
+
+- CA nonrefundable credits variable.
+- CA income tax before refundable credits variable.
+
+## [0.224.1] - 2023-03-03 23:42:54
+
+### Fixed
+
+- Corrected descriptions for FERA and CARE
+
+## [0.224.0] - 2023-03-03 22:39:06
+
+### Added
+
+- Colorado TANF countable earned income.
+
+## [0.223.0] - 2023-03-02 22:01:53
+
+### Added
+
+- Additional unearned income sources to SNAP.
+- Worker's compensation, strike benefits, disability benefits, child support expense, health insurance premiums, and medical out of pocket expenses from CPS.
+
+## [0.222.2] - 2023-03-02 20:44:43
+
+### Fixed
+
+- Confusing specification of EITC investment income.
+
+## [0.222.1] - 2023-03-02 03:05:32
+
+### Added
+
+- California CARE and FERA electricity discount programs.
+
+## [0.222.0] - 2023-03-01 01:51:22
+
+### Added
+
+- Massachusetts rules for 2022 and 2023, including millionaire tax.
+
+## [0.221.0] - 2023-02-28 22:57:23
+
+### Added
+
+- Eligibility for Colorado TANF.
+
+## [0.220.5] - 2023-02-28 05:31:41
+
+### Changed
+
+- Updated Oregon income tax parameters for 2022.
+
+## [0.220.4] - 2023-02-27 16:56:43
+
+### Fixed
+
+- SSI resource pass rate is now 0.2 (from 0.6) to hit administrative targets.
+
+## [0.220.3] - 2023-02-26 23:50:19
+
+### Changed
+
+- Moved computed income variables to their respective section to avoid showing them as inputs.
+
+## [0.220.2] - 2023-02-24 14:42:35
+
+### Changed
+
+- Replace all instances of ETERNITY with YEAR.
+
+## [0.220.1] - 2023-02-23 14:18:46
+
+### Fixed
+
+- Incomplete list of state income tax variables by adding IL.
+
+## [0.220.0] - 2023-02-21 23:07:17
+
+### Added
+
+- Add NYC taxes to net income tree.
+
+## [0.219.1] - 2023-02-20 17:10:15
+
+### Fixed
+
+- Incomplete list of MO itemized deductions.
+
+## [0.219.0] - 2023-02-18 20:44:38
+
+### Added
+
+- NYC child and dependent care credit
+
+## [0.218.0] - 2023-02-17 05:32:26
+
+### Added
+
+- Maine personal exemption deduction.
+
+## [0.217.1] - 2023-02-17 04:46:22
+
+### Fixed
+
+- MO section B pension deduction calculations.
+- MO adjusted gross income calculations.
+
+## [0.217.0] - 2023-02-17 00:02:39
+
+### Added
+
+- DC EITC.
+
+## [0.216.0] - 2023-02-16 22:58:46
+
+### Added
+
+- Colorado TANF grant standard.
+
+## [0.215.2] - 2023-02-16 18:00:31
+
+### Added
+
+- Legislative references for California CARE program.
+
+## [0.215.1] - 2023-02-14 21:56:48
+
+### Fixed
+
+- MO social security or social security disability deduction calculation.
+
+## [0.215.0] - 2023-02-14 21:49:06
+
+### Added
+
+- California CARE eligibility.
+
+## [0.214.4] - 2023-02-14 05:02:37
+
+### Fixed
+
+- Logic for summation of taxable Social Security in Part C of MO Pension/SS/SSD deduction
+
+## [0.214.3] - 2023-02-14 04:35:35
+
+### Fixed
+
+- MO income tax brackets.
+
+## [0.214.2] - 2023-02-13 20:27:43
+
+### Fixed
+
+- Removed "uncapped" from OR refundable credits description.
+
+## [0.214.1] - 2023-02-13 00:09:41
+
+### Changed
+
+- Updated Missouri income tax for 2023.
+
+### Fixed
+
+- mo_income_tax_before_credits tests.
+
+## [0.214.0] - 2023-02-12 20:12:05
+
+### Added
+
+- Illinois and Missouri income taxes to net income tree.
+
+## [0.213.4] - 2023-02-11 14:40:00
+
+### Fixed
+
+- Calculation of MD itemized deduction amount.
+
+## [0.213.3] - 2023-02-10 16:30:27
+
+### Fixed
+
+- CTC phase-out metadata.
+
+## [0.213.2] - 2023-02-10 04:12:00
+
+### Fixed
+
+- Value of OASDI maximum taxable earnings for 2023.
+
+## [0.213.1] - 2023-02-09 00:00:45
+
+### Fixed
+
+- Incomplete specification of pension income variables.
+
+## [0.213.0] - 2023-02-08 04:04:24
+
+### Added
+
+- NYC household credit
+
+## [0.212.0] - 2023-02-07 15:58:09
+
+### Added
+
+- nyc_school_credit_income equal to adjusted_gross_income
+
+## [0.211.1] - 2023-02-07 04:35:54
+
+### Fixed
+
+- Missouri adjusted gross income calculation.
+
+## [0.211.0] - 2023-02-06 21:29:09
+
+### Added
+
+- Medical out of pocket expenses and health insurance premiums to CPS.
+
+## [0.210.1] - 2023-02-05 17:41:21
+
+### Fixed
+
+- Missouri Working Families Tax Credit start year.
+
+## [0.210.0] - 2023-02-04 22:38:15
+
+### Added
+
+- Missouri Working Families Tax Credit.
+
 ## [0.209.3] - 2023-02-04 00:52:10
 
 ### Changed
@@ -2798,6 +3052,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.227.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.227.0...0.227.1
+[0.227.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.226.0...0.227.0
+[0.226.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.225.0...0.226.0
+[0.225.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.224.1...0.225.0
+[0.224.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.224.0...0.224.1
+[0.224.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.223.0...0.224.0
+[0.223.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.2...0.223.0
+[0.222.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.1...0.222.2
+[0.222.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.0...0.222.1
+[0.222.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.221.0...0.222.0
+[0.221.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.5...0.221.0
+[0.220.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.4...0.220.5
+[0.220.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.3...0.220.4
+[0.220.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.2...0.220.3
+[0.220.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.1...0.220.2
+[0.220.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.220.0...0.220.1
+[0.220.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.219.1...0.220.0
+[0.219.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.219.0...0.219.1
+[0.219.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.218.0...0.219.0
+[0.218.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.217.1...0.218.0
+[0.217.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.217.0...0.217.1
+[0.217.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.216.0...0.217.0
+[0.216.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.215.2...0.216.0
+[0.215.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.215.1...0.215.2
+[0.215.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.215.0...0.215.1
+[0.215.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.4...0.215.0
+[0.214.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.3...0.214.4
+[0.214.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.2...0.214.3
+[0.214.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.1...0.214.2
+[0.214.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.214.0...0.214.1
+[0.214.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.4...0.214.0
+[0.213.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.3...0.213.4
+[0.213.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.2...0.213.3
+[0.213.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.1...0.213.2
+[0.213.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.213.0...0.213.1
+[0.213.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.212.0...0.213.0
+[0.212.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.211.1...0.212.0
+[0.211.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.211.0...0.211.1
+[0.211.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.210.1...0.211.0
+[0.210.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.210.0...0.210.1
+[0.210.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.3...0.210.0
 [0.209.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.2...0.209.3
 [0.209.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.1...0.209.2
 [0.209.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.209.0...0.209.1
