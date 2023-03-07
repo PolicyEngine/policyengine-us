@@ -1,30 +1,28 @@
-description: California EITC phase-out rate
+description: CalEITC phase-out rate
 metadata:
   rate_unit: currency-USD
   rate_period: year
   threshold_unit: child
   type: single_amount
-  label: California EITC phase-out rate
+  label: CalEITC phase-out rate
   reference:
     - title: California Legal code REVENUE AND TAXATION CODE - RTC (2019)
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
-    - title: CA EITC Form 3514 instructions (various years)
-      href: https://www.ftb.ca.gov/forms/202X/202X-3514-instructions.html
 brackets:
   - threshold:
-      2021-01-01: 0
+      2015-01-01: 0
     amount:
-      2021-01-01: 0.0765
+      2015-01-01: 0.0765
   - threshold:
-      2021-01-01: 1
+      2015-01-01: 1
     amount:
-      2021-01-01: 0.34
+      2015-01-01: 0.34
   - threshold:
-      2021-01-01: 2
+      2015-01-01: 2
     amount:
-      2021-01-01: 0.40
+      2015-01-01: 0.40
   - threshold:
-      2021-01-01: 3
+      2015-01-01: 3
     amount:
-      2021-01-01: 0.45
+      2015-01-01: 0.45
 
