@@ -10,13 +10,15 @@ class co_tanf_grant_standard(Variable):
     defined_for = "co_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        children = spm_unit("spm_unit_count_children", period)
+        children = spm_unit("co_tanf_count_children", period)
         adults = spm_unit("spm_unit_count_adults", period)
+        is_pregnant = add(spm_unit, period, ["is_pregnant"]) >= 1
         p = parameters(period).gov.states.co.cdhs.tanf.grant_standard
         capped_children = min_(children, 10).astype(int)
         capped_adults = min_(adults, 2).astype(int)
         additional_children = children - capped_children
         base = p.main[capped_adults][capped_children]
         additional_grant_standard = p.additional_child * additional_children
-        monthly = base + additional_grant_standard
+        pregnancy_allowance = where(is_pregnant, p.pregnancy_allowance, 0)
+        monthly = base + additional_grant_standard + pregnancy_allowance
         return monthly * MONTHS_IN_YEAR
