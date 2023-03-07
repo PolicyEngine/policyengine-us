@@ -1,15 +1,20 @@
-description: Amount an individual or couple can receive via standard deduction
+description: Amount a CA income tax unit can receive as a standard deduction
 
 SINGLE:
   2021-01-01: 4_803
+  2022-01-01: 5_202
 SEPARATE:
   2021-01-01: 4_803
+  2022-01-01: 5_202
 WIDOW:
   2021-01-01: 9_606
+  2022-01-01: 10_404
 JOINT:
   2021-01-01: 9_606
+  2022-01-01: 10_404
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 9_606
+  2022-01-01: 10_404
 
 metadata:
   period: year
@@ -21,5 +26,7 @@ metadata:
   reference:
   - title: 2021 Form 540 California Resident Income Tax Return
     href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf
+  - title: 2022 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2022/2022-540.pdf
   - title: Cal. Rev. & Tax. Code § 17073.5
     href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-3-computation-of-taxable-income/article-1-definition-of-gross-income-adjusted-gross-income-taxable-income-etc/section-170735-standard-deduction?searchWithin=true&listingIndexId=california-codes.california-revenue-and-taxation-code.division-2-other-taxes.part-10-personal-income-tax
