@@ -98,6 +98,15 @@ PERSON_COLUMNS = [
     "CHSP_VAL",
     "PHIP_VAL",
     "MOOP",
+    "PEDISDRS",
+    "PEDISEAR",
+    "PEDISOUT",
+    "PEDISPHY",
+    "PEDISREM",
+    "PEPAR1",
+    "PEPAR2",
+    "DIS_SC1",
+    "DIS_SC2",
 ]
 
 
@@ -158,7 +167,7 @@ class RawCPS(PublicDataset):
                 zipfile = ZipFile(file)
                 with zipfile.open(f"pppub{file_year_code}.csv") as f:
                     storage["person"] = pd.read_csv(
-                        f, usecols=PERSON_COLUMNS
+                        f, usecols=PERSON_COLUMNS + SPM_UNIT_COLUMNS + TAX_UNIT_COLUMNS
                     ).fillna(0)
                     person = storage["person"]
                 with zipfile.open(f"ffpub{file_year_code}.csv") as f:
