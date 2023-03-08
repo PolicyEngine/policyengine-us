@@ -62,6 +62,7 @@ SPM_UNIT_COLUMNS = [
 SPM_UNIT_COLUMNS = ["SPM_" + column for column in SPM_UNIT_COLUMNS]
 PERSON_COLUMNS = [
     "PH_SEQ",
+    "PF_SEQ",
     "P_SEQ",
     "TAX_ID",
     "SPM_ID",
