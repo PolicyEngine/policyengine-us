@@ -13,10 +13,12 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
         VARIABLES_TO_CLEAR = [
             "eitc_eligible",
             "eitc_phase_in_rate",
+            "eitc_phase_out_start",
             "eitc_phase_out_rate",
             "eitc_maximum",
             "eitc_phased_in",
             "eitc_reduction",
+            "earned_income_tax_credit",
         ]
 
         for variable in VARIABLES_TO_CLEAR:

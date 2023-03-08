@@ -29,7 +29,9 @@ class me_personal_exemption_deduction(Variable):
         phaseout_percent = min_(1, excess / phaseout_width)  # Line 5
 
         # Get their Maine personal exemptions (line 6).
-        exemptions = tax_unit("me_personal_exemptions", period)
+        exemptions = tax_unit(
+            "num", period
+        )  # Number of people in the tax unit.
         max_amount = exemptions * p.amount
 
         # Calculate the phaseout amount (line 7).
