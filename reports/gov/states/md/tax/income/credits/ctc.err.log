@@ -1,0 +1,88 @@
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/asyncio/base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from policyengine_us import Microsimulation
+
+sim = Microsimulation(dataset_year=2020)
+
+sim.calc("md_ctc", period=2022).sum() / 1e6
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:182[0m, in [0;36mSimulation.build_from_dataset[0;34m(self)[0m
+[1;32m    181[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 182[0m     data [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mdataset[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mdataset_year[49m[43m)[49m
+[1;32m    183[0m [38;5;28;01mexcept[39;00m:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/data/dataset.py:126[0m, in [0;36mDataset.load[0;34m(self, year, key, mode)[0m
+[1;32m    124[0m [38;5;28;01mif[39;00m key [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    125[0m     [38;5;66;03m# If no key provided, return the basic H5 reader.[39;00m
+[0;32m--> 126[0m     [38;5;28;01mreturn[39;00m [43mh5py[49m[38;5;241;43m.[39;49m[43mFile[49m[43m([49m[43mfile[49m[43m,[49m[43m [49m[43mmode[49m[38;5;241;43m=[39;49m[43mmode[49m[43m)[49m
+[1;32m    127[0m [38;5;28;01melse[39;00m:
+[1;32m    128[0m     [38;5;66;03m# If key provided, return only the values requested.[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/h5py/_hl/files.py:567[0m, in [0;36mFile.__init__[0;34m(self, name, mode, driver, libver, userblock_size, swmr, rdcc_nslots, rdcc_nbytes, rdcc_w0, track_order, fs_strategy, fs_persist, fs_threshold, fs_page_size, page_buf_size, min_meta_keep, min_raw_keep, locking, alignment_threshold, alignment_interval, meta_block_size, **kwds)[0m
+[1;32m    564[0m     fcpl [38;5;241m=[39m make_fcpl(track_order[38;5;241m=[39mtrack_order, fs_strategy[38;5;241m=[39mfs_strategy,
+[1;32m    565[0m                      fs_persist[38;5;241m=[39mfs_persist, fs_threshold[38;5;241m=[39mfs_threshold,
+[1;32m    566[0m                      fs_page_size[38;5;241m=[39mfs_page_size)
+[0;32m--> 567[0m     fid [38;5;241m=[39m [43mmake_fid[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mmode[49m[43m,[49m[43m [49m[43muserblock_size[49m[43m,[49m[43m [49m[43mfapl[49m[43m,[49m[43m [49m[43mfcpl[49m[43m,[49m[43m [49m[43mswmr[49m[38;5;241;43m=[39;49m[43mswmr[49m[43m)[49m
+[1;32m    569[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(libver, [38;5;28mtuple[39m):
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/h5py/_hl/files.py:231[0m, in [0;36mmake_fid[0;34m(name, mode, userblock_size, fapl, fcpl, swmr)[0m
+[1;32m    230[0m         flags [38;5;241m|[39m[38;5;241m=[39m h5f[38;5;241m.[39mACC_SWMR_READ
+[0;32m--> 231[0m     fid [38;5;241m=[39m [43mh5f[49m[38;5;241;43m.[39;49m[43mopen[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[43mflags[49m[43m,[49m[43m [49m[43mfapl[49m[38;5;241;43m=[39;49m[43mfapl[49m[43m)[49m
+[1;32m    232[0m [38;5;28;01melif[39;00m mode [38;5;241m==[39m [38;5;124m'[39m[38;5;124mr+[39m[38;5;124m'[39m:
+
+File [0;32mh5py/_objects.pyx:54[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+File [0;32mh5py/_objects.pyx:55[0m, in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+File [0;32mh5py/h5f.pyx:106[0m, in [0;36mh5py.h5f.open[0;34m()[0m
+
+[0;31mFileNotFoundError[0m: [Errno 2] Unable to open file (unable to open file: name = '/home/runner/work/policyengine-us/policyengine-us/policyengine_us/data/storage/cps_2020.h5', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+
+During handling of the above exception, another exception occurred:
+
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[2], line 3[0m
+[1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mpolicyengine_us[39;00m [38;5;28;01mimport[39;00m Microsimulation
+[0;32m----> 3[0m sim [38;5;241m=[39m [43mMicrosimulation[49m[43m([49m[43mdataset_year[49m[38;5;241;43m=[39;49m[38;5;241;43m2020[39;49m[43m)[49m
+[1;32m      5[0m sim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124mmd_ctc[39m[38;5;124m"[39m, period[38;5;241m=[39m[38;5;241m2022[39m)[38;5;241m.[39msum() [38;5;241m/[39m [38;5;241m1e6[39m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:131[0m, in [0;36mSimulation.__init__[0;34m(self, tax_benefit_system, populations, situation, dataset, dataset_year, reform)[0m
+[1;32m    129[0m     [38;5;28mself[39m[38;5;241m.[39mdataset [38;5;241m=[39m dataset
+[1;32m    130[0m     [38;5;28mself[39m[38;5;241m.[39mdataset_year [38;5;241m=[39m dataset_year
+[0;32m--> 131[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mbuild_from_dataset[49m[43m([49m[43m)[49m
+[1;32m    133[0m [38;5;66;03m# Backwards compatibility methods[39;00m
+[1;32m    134[0m [38;5;28mself[39m[38;5;241m.[39mcalc [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mcalculate
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:184[0m, in [0;36mSimulation.build_from_dataset[0;34m(self)[0m
+[1;32m    182[0m         data [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39mdataset[38;5;241m.[39mload([38;5;28mself[39m[38;5;241m.[39mdataset_year)
+[1;32m    183[0m     [38;5;28;01mexcept[39;00m:
+[0;32m--> 184[0m         data [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mdataset[49m[38;5;241;43m.[39;49m[43mload[49m[43m([49m[43m)[49m
+[1;32m    185[0m [38;5;28;01mexcept[39;00m [38;5;167;01mFileNotFoundError[39;00m [38;5;28;01mas[39;00m e:
+[1;32m    186[0m     [38;5;28;01mraise[39;00m [38;5;167;01mFileNotFoundError[39;00m(
+[1;32m    187[0m         [38;5;124mf[39m[38;5;124m"[39m[38;5;124mThe dataset file [39m[38;5;132;01m{[39;00m[38;5;28mself[39m[38;5;241m.[39mdataset[38;5;241m.[39mname[38;5;132;01m}[39;00m[38;5;124m (with year [39m[38;5;132;01m{[39;00m[38;5;28mself[39m[38;5;241m.[39mdataset_year[38;5;132;01m}[39;00m[38;5;124m) could not be found. [39m[38;5;124m"[39m
+[1;32m    188[0m         [38;5;241m+[39m [38;5;124m"[39m[38;5;124mMake sure you have downloaded or built it using the `policyengine-core data` command.[39m[38;5;124m"[39m
+[1;32m    189[0m     ) [38;5;28;01mfrom[39;00m [38;5;21;01me[39;00m
+
+[0;31mTypeError[0m: load() missing 1 required positional argument: 'year'
+TypeError: load() missing 1 required positional argument: 'year'
+
