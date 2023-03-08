@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.231.2] - 2023-03-08 22:35:18
+
+### Fixed
+
+- CPS generation on Windows.
+
 ## [0.231.1] - 2023-03-08 17:08:12
 
 ### Fixed
@@ -3088,6 +3094,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.231.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.1...0.231.2
 [0.231.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.0...0.231.1
 [0.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.1...0.231.0
 [0.230.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.0...0.230.1
