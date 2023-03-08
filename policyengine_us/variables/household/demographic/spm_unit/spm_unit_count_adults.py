@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class spm_unit_count_adults(Variable):
-    value_type = float
+    value_type = int
     entity = SPMUnit
     label = "adults in SPM unit"
-    unit = USD
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):

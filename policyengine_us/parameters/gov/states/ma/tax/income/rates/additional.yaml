@@ -1,0 +1,19 @@
+description: Massachusetts levies an additional tax on taxable income.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Massachusetts additional income tax
+  reference:
+    title: Proposal for Constitutional Amendment H.86
+    href: https://malegislature.gov/Bills/191/H86
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      0000-01-01: 0
+  - threshold:
+      0000-01-01: 1_000_000
+    rate:
+      0000-01-01: 0
+      2023-01-01: 0.04
