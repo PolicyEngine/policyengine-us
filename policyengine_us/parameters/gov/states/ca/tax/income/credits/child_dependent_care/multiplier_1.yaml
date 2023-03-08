@@ -1,67 +1,67 @@
 description: CA Child and Dependent Care Expenses Credit
 brackets:
   - threshold:
-      0000-01-01: 0
+      2021-01-01: 0
     amount:
       2021-01-01: 0.35
   - threshold:
-      0000-01-01: 15_000
+      2021-01-01: 15_000
     amount:
       2021-01-01: 0.34
   - threshold:
-      0000-01-01: 17_000
+      2021-01-01: 17_000
     amount:
       2021-01-01: 0.33
   - threshold:
-      0000-01-01: 19_000
+      2021-01-01: 19_000
     amount:
       2021-01-01: 0.32
   - threshold:
-      0000-01-01: 21_000
+      2021-01-01: 21_000
     amount:
       2021-01-01: 0.31
   - threshold:
-      0000-01-01: 23_000
+      2021-01-01: 23_000
     amount:
       2021-01-01: 0.30
   - threshold:
-      0000-01-01: 25_000
+      2021-01-01: 25_000
     amount:
       2021-01-01: 0.29
   - threshold:
-      0000-01-01: 27_000
+      2021-01-01: 27_000
     amount:
       2021-01-01: 0.28
   - threshold:
-      0000-01-01: 29_000
+      2021-01-01: 29_000
     amount:
       2021-01-01: 0.27
   - threshold:
-      0000-01-01: 31_000
+      2021-01-01: 31_000
     amount:
       2021-01-01: 0.26
   - threshold:
-      0000-01-01: 33_000
+      2021-01-01: 33_000
     amount:
       2021-01-01: 0.25
   - threshold:
-      0000-01-01: 35_000
+      2021-01-01: 35_000
     amount:
       2021-01-01: 0.24
   - threshold:
-      0000-01-01: 37_000
+      2021-01-01: 37_000
     amount:
       2021-01-01: 0.23
   - threshold:
-      0000-01-01: 39_000
+      2021-01-01: 39_000
     amount:
       2021-01-01: 0.22
   - threshold:
-      0000-01-01: 41_000
+      2021-01-01: 41_000
     amount:
       2021-01-01: 0.21
   - threshold:
-      0000-01-01: 43_000
+      2021-01-01: 43_000
     amount:
       2021-01-01: 0.20
 metadata:
@@ -73,5 +73,7 @@ metadata:
   name: ca_cdcc_multiplier_1
   label: CA CDCC multiplier 1
   reference: 
-    - title: 2020 Instructions for Form FTB 3506 | Child and Dependent Care Expenses Credit
-      href: https://www.ftb.ca.gov/forms/2020/2020-3506-instructions.html
+    - title: 2021 Instructions for California Form 3506
+      href: https://www.ftb.ca.gov/forms/2021/2021-3506-instructions.html
+    - title: 2022 Instructions for California Form 3506
+      href: https://www.ftb.ca.gov/forms/2022/2022-3506-instructions.html
