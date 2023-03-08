@@ -21,4 +21,6 @@ class tanf(Variable):
         eligible = spm_unit("is_tanf_eligible", period)
         # Obtain amount they would receive if they were eligible.
         amount_if_eligible = spm_unit("tanf_amount_if_eligible", period)
-        return where(eligible, amount_if_eligible, 0) + spm_unit("co_tanf", period)
+        return where(eligible, amount_if_eligible, 0) + spm_unit(
+            "co_tanf", period
+        )
