@@ -63,7 +63,8 @@ class RawCPS(PublicDataset):
                 progress_bar.close()
                 zipfile = ZipFile(file)
                 with zipfile.open(f"pppub{file_year_code}.csv") as f:
-                    storage["person"] = person = pd.read_csv(f).fillna(0)
+                    storage["person"] = pd.read_csv(f).fillna(0)
+                    person = storage["person"]
                 with zipfile.open(f"ffpub{file_year_code}.csv") as f:
                     person_family_id = person.PH_SEQ * 10 + person.PF_SEQ
                     family = pd.read_csv(f).fillna(0)
