@@ -6,6 +6,99 @@ import requests
 from tqdm import tqdm
 from policyengine_us.data.storage import policyengine_us_MICRODATA_FOLDER
 
+TAX_UNIT_COLUMNS = [
+    "ACTC_CRD",
+    "AGI",
+    "CTC_CRD",
+    "EIT_CRED",
+    "FEDTAX_AC",
+    "FEDTAX_BC",
+    "MARG_TAX",
+    "STATETAX_A",
+    "STATETAX_B",
+    "TAX_INC",
+]
+
+SPM_UNIT_COLUMNS = [
+    "ACTC",
+    "CAPHOUSESUB",
+    "CAPWKCCXPNS",
+    "CHILDCAREXPNS",
+    "CHILDSUPPD",
+    "EITC",
+    "ENGVAL",
+    "EQUIVSCALE",
+    "FAMTYPE",
+    "FEDTAX",
+    "FEDTAXBC",
+    "FICA",
+    "GEOADJ",
+    "HAGE",
+    "HHISP",
+    "HMARITALSTATUS",
+    "HRACE",
+    "MEDXPNS",
+    "NUMADULTS",
+    "NUMKIDS",
+    "NUMPER",
+    "POOR",
+    "POVTHRESHOLD",
+    "RESOURCES",
+    "SCHLUNCH",
+    "SNAPSUB",
+    "STTAX",
+    "TENMORTSTATUS",
+    "TOTVAL",
+    "WCOHABIT",
+    "WEIGHT",
+    "WFOSTER22",
+    "WICVAL",
+    "WKXPNS",
+    "WNEWHEAD",
+    "WNEWPARENT",
+    "WUI_LT15",
+    "ID",
+]
+SPM_UNIT_COLUMNS = ["SPM_" + column for column in SPM_UNIT_COLUMNS]
+PERSON_COLUMNS = [
+    "PH_SEQ",
+    "P_SEQ",
+    "TAX_ID",
+    "SPM_ID",
+    "A_FNLWGT",
+    "A_LINENO",
+    "A_SPOUSE",
+    "A_AGE",
+    "A_SEX",
+    "PEDISEYE",
+    "MRK",
+    "WSAL_VAL",
+    "INT_VAL",
+    "SEMP_VAL",
+    "FRSE_VAL",
+    "DIV_VAL",
+    "RNT_VAL",
+    "SS_VAL",
+    "UC_VAL",
+    "ANN_VAL",
+    "PNSN_VAL",
+    "OI_OFF",
+    "OI_VAL",
+    "CSP_VAL",
+    "PAW_VAL",
+    "SSI_VAL",
+    "RETCB_VAL",
+    "CAP_VAL",
+    "WICYN",
+    "VET_VAL",
+    "WC_VAL",
+    "DIS_VAL1",
+    "DIS_VAL2",
+    "CHSP_VAL",
+    "PHIP_VAL",
+    "MOOP",
+]
+
 
 class RawCPS(PublicDataset):
     name = "raw_cps"
@@ -63,7 +156,9 @@ class RawCPS(PublicDataset):
                 progress_bar.close()
                 zipfile = ZipFile(file)
                 with zipfile.open(f"pppub{file_year_code}.csv") as f:
-                    storage["person"] = pd.read_csv(f).fillna(0)
+                    storage["person"] = pd.read_csv(
+                        f, usecols=PERSON_COLUMNS
+                    ).fillna(0)
                     person = storage["person"]
                 with zipfile.open(f"ffpub{file_year_code}.csv") as f:
                     person_family_id = person.PH_SEQ * 10 + person.PF_SEQ
@@ -89,69 +184,13 @@ class RawCPS(PublicDataset):
 
     @staticmethod
     def _create_tax_unit_table(person: pd.DataFrame) -> pd.DataFrame:
-        TAX_UNIT_COLUMNS = [
-            "ACTC_CRD",
-            "AGI",
-            "CTC_CRD",
-            "EIT_CRED",
-            "FEDTAX_AC",
-            "FEDTAX_BC",
-            "MARG_TAX",
-            "STATETAX_A",
-            "STATETAX_B",
-            "TAX_INC",
-        ]
         tax_unit_df = person[TAX_UNIT_COLUMNS].groupby(person.TAX_ID).sum()
         tax_unit_df["TAX_ID"] = tax_unit_df.index
         return tax_unit_df
 
     @staticmethod
     def _create_spm_unit_table(person: pd.DataFrame) -> pd.DataFrame:
-        SPM_UNIT_COLUMNS = [
-            "ACTC",
-            "CAPHOUSESUB",
-            "CAPWKCCXPNS",
-            "CHILDCAREXPNS",
-            "CHILDSUPPD",
-            "EITC",
-            "ENGVAL",
-            "EQUIVSCALE",
-            "FAMTYPE",
-            "FEDTAX",
-            "FEDTAXBC",
-            "FICA",
-            "GEOADJ",
-            "HAGE",
-            "HHISP",
-            "HMARITALSTATUS",
-            "HRACE",
-            "MEDXPNS",
-            "NUMADULTS",
-            "NUMKIDS",
-            "NUMPER",
-            "POOR",
-            "POVTHRESHOLD",
-            "RESOURCES",
-            "SCHLUNCH",
-            "SNAPSUB",
-            "STTAX",
-            "TENMORTSTATUS",
-            "TOTVAL",
-            "WCOHABIT",
-            "WEIGHT",
-            "WFOSTER22",
-            "WICVAL",
-            "WKXPNS",
-            "WNEWHEAD",
-            "WNEWPARENT",
-            "WUI_LT15",
-            "ID",
-        ]
-        return (
-            person[["SPM_" + column for column in SPM_UNIT_COLUMNS]]
-            .groupby(person.SPM_ID)
-            .first()
-        )
+        return person[SPM_UNIT_COLUMNS].groupby(person.SPM_ID).first()
 
 
 RawCPS = RawCPS()
