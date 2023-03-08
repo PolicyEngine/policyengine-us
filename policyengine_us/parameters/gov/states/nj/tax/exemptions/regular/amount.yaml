@@ -1,0 +1,19 @@
+description: NJ provides a regular exemption of $1k for individuals and $2k for couples.
+metadata:
+  unit: currency-USD
+  label: NJ Regular Exemption
+  reference:
+    - title: Instructions for Form NJ-1040
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=8
+  breakdown:
+    - filing_status
+SINGLE:
+  2022-01-01: 1_000
+SEPARATE:
+  2022-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 1_000
+JOINT:
+  2022-01-01: 2_000
+WIDOW:
+  2022-01-01: 1_000
