@@ -19,6 +19,8 @@ class co_tanf_grant_standard(Variable):
         additional_children = children - capped_children
         base = p.main[capped_adults][capped_children]
         additional_grant_standard = p.additional_child * additional_children
-        pregnancy_allowance = where(is_pregnant, p.pregnancy_allowance, 0)
+        pregnancy_allowance = where(
+            has_pregnant_person, p.pregnancy_allowance, 0
+        )
         monthly = base + additional_grant_standard + pregnancy_allowance
         return monthly * MONTHS_IN_YEAR
