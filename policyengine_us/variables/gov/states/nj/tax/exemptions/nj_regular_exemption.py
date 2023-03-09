@@ -14,7 +14,7 @@ class nj_regular_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Then get the NJ Exemptions part of the parameter tree.
-        p = parameters(period).gov.states.nj.exemptions
+        p = parameters(period).gov.states.nj.tax.exemptions
 
         # Get their regular exemption amount based on their filing status.
         regular_exemption_amount = p.regular[filing_status]
