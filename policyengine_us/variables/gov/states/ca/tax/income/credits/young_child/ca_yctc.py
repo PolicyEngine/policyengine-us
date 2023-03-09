@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class ca_yctc(Variable):
@@ -9,19 +8,19 @@ class ca_yctc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3",
         "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.1",
         "https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html",
+        "https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3",
+        "https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html",
+        "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=3",
     )
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ca.tax.income.credits.young_child
-        earnings = tax_unit("tax_unit_earned_income", period)
-
-        # Eligibility requires
-        # a) tax unit receives CalEITC
-        # b) tax unit has at least one CalEITC-qualifying child under six
+        # determine eligibility, which requires both (a) and (b):
+        # (a) tax unit receives CalEITC or is CalEITC eligible but has losses
+        # (b) tax unit has at least one CalEITC-qualifying child
         person = tax_unit.members
         meets_age_limit = person("age", period) < p.ineligible_age
         is_qualifying_child_for_caleitc = person(
@@ -29,18 +28,16 @@ class ca_yctc(Variable):
         )
         is_eligible_child = meets_age_limit & is_qualifying_child_for_caleitc
         has_eligible_child = tax_unit.sum(is_eligible_child) > 0
-        receives_ca_eitc = tax_unit("ca_eitc", period) > 0
-        eligible = has_eligible_child & receives_ca_eitc
-        # Phase out the amount.
-        # NB: Law and instructions say $20 per $100, but the tax form
-        # instructs the filer to round.
-        excess_earnings = max_(0, earnings - p.phase_out.start)
-        # Round increments to two decimal places.
-        increments = np.round_(excess_earnings / p.phase_out.increment, 2)
-        # Round reduction to two decimal places.
-        reduction = min_(
-            p.amount, np.round_(increments * p.phase_out.amount, 2)
-        )
-        # Round final result to nearest dollar.
-        # In reality, <$1 goes to $1.
-        return eligible * np.rint(p.amount - reduction)
+
+        gets_caleitc = tax_unit("ca_eitc", period) > 0
+
+        is_loss_eligible = False
+
+        eligible = has_eligible_child & (gets_caleitc | is_loss_eligible)
+
+        # phase out credit amount
+        eitc_earnings = tax_unit("filer_earned", period)
+        excess_earnings = max_(0, eitc_earnings - p.phase_out.start)
+        increments = excess_earnings / p.phase_out.increment
+        reduction = increments * p.phase_out.amount
+        return eligible * max_(0, p.amount - reduction)

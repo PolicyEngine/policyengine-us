@@ -9,7 +9,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_000
+        filer_earned: 25_000
         ca_eitc: 1
     households:
       household:
@@ -18,7 +18,7 @@
   output:
     ca_yctc: 1_000
 
-- name: Earns $100 over the phase out start amount and gets $20 less.
+- name: Earns $100 over the phase out start amount and gets $20 less in 2021.
   period: 2021
   input:
     people:
@@ -29,7 +29,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 1
     households:
       household:
@@ -38,7 +38,7 @@
   output:
     ca_yctc: 980
     
-- name: Earns $100 over the phase out start amount but child is 6, so ineligible.
+- name: Earns $100 over the phase out start but child is 6, so ineligible.
   period: 2021
   input:
     people:
@@ -49,7 +49,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 1
     households:
       household:
@@ -69,7 +69,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 0
     households:
       household:
@@ -89,7 +89,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 30_000
+        filer_earned: 30_000
         ca_eitc: 1
     households:
       household:
@@ -112,7 +112,7 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 1
     households:
       household:
