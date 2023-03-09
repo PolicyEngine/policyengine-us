@@ -17,22 +17,25 @@ class ca_yctc(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ca.tax.income.credits.young_child
-        # determine eligibility, which requires both (a) and (b):
-        # (a) tax unit receives CalEITC or is CalEITC eligible but has losses
-        # (b) tax unit has at least one CalEITC-qualifying child
         person = tax_unit.members
+        p = parameters(period).gov.states.ca.tax.income.credits.young_child
+
+        # determine eligibility, which requires both (a) and (b) to be true:
+        # (a) tax unit has at least one CalEITC-qualifying child
+        # (b) tax unit receives CalEITC _OR_ is CalEITC eligible but has losses
+        # ... determine (a)
         meets_age_limit = person("age", period) < p.ineligible_age
         is_qualifying_child_for_caleitc = person(
             "ca_is_qualifying_child_for_caleitc", period
         )
         is_eligible_child = meets_age_limit & is_qualifying_child_for_caleitc
         has_eligible_child = tax_unit.sum(is_eligible_child) > 0
-
+        # ... determine (b) part one
         gets_caleitc = tax_unit("ca_eitc", period) > 0
-
+        # ... determine (b) part two
         is_loss_eligible = False
 
+        # ... combine (a) and (b) parts to determine eligibility
         eligible = has_eligible_child & (gets_caleitc | is_loss_eligible)
 
         # phase out credit amount
@@ -40,4 +43,5 @@ class ca_yctc(Variable):
         excess_earnings = max_(0, eitc_earnings - p.phase_out.start)
         increments = excess_earnings / p.phase_out.increment
         reduction = increments * p.phase_out.amount
+
         return eligible * max_(0, p.amount - reduction)
