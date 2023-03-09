@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.234.0] - 2023-03-09 16:29:06
+
+### Added
+
+- Maryland TANF earned income deduction.
+
 ## [0.233.0] - 2023-03-09 16:19:45
 
 ### Added
@@ -3106,6 +3112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.233.0...0.234.0
 [0.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.232.0...0.233.0
 [0.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.2...0.232.0
 [0.231.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.1...0.231.2
