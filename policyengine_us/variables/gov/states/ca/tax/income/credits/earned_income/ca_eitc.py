@@ -89,6 +89,17 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
         return simulation.branches.get("ca_eitc")
 
 
+class ca_eitc_eligible(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Eligible for CalEITC"
+    definition_period = YEAR
+
+    def formula(tax_unit, period, parameters):
+        branch = get_ca_eitc_branch(tax_unit, period, parameters)
+        return branch.calculate("eitc_eligible", period)
+
+
 class ca_eitc(Variable):
     value_type = float
     entity = TaxUnit
