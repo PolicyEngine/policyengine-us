@@ -1,0 +1,35 @@
+- name: If one person, maximum monthly income is $450/mo.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 1
+  output:
+    dc_tanf_maximum_income: 450 * 12
+
+- name: If ten person, maximum monthly income is $1786/mo.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 10
+  output:
+    dc_tanf_maximum_income: 1_786 * 12
+
+- name: Only calculate for DC.
+  period: 2023
+  input:
+    state_code: MD
+    spm_unit_size: 10
+  output:
+    dc_tanf_maximum_income: 0
+
+# If a family has child care costs, there is a maximum monthly income limit
+# increase by $175 per child age 2 or over, and $200 per child under the age
+# of two.
+# TODO: Add a test for this.
+# - name: If ten person, maximum monthly income is $1786/mo.
+#   period: 2023
+#   input:
+#     state_code: DC
+#     spm_unit_size: 2
+#   output:
+#     dc_tanf_maximum_income: 1_786 * 12
