@@ -14,7 +14,6 @@
     state_code: ME
     me_agi: 0
     filing_status: SINGLE
-    me_personal_exemptions: 1
   output:
     me_personal_exemption_deduction: 4_450
 
@@ -25,7 +24,6 @@
     state_code: ME
     filing_status: SINGLE
     me_agi: 279_500
-    me_personal_exemptions: 1
   output:
     me_personal_exemption_deduction: 4_450
 
@@ -36,7 +34,6 @@
     state_code: ME
     filing_status: SINGLE
     me_agi: 400_000
-    me_personal_exemptions: 1
   output:
     # Excess = $120,500 / $125,000 = 0.964
     me_personal_exemption_deduction: 160.2 # $4,450 - $4,289.8
@@ -48,6 +45,5 @@
     state_code: ME
     filing_status: SINGLE
     me_agi: 404_500 # $279,500 + $125,000 = $404,500
-    me_personal_exemptions: 1
   output:
     me_personal_exemption_deduction: 0
