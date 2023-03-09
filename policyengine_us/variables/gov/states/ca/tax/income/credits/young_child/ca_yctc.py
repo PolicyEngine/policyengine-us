@@ -33,8 +33,20 @@ class ca_yctc(Variable):
         # ... determine (b) part one
         gets_caleitc = tax_unit("ca_eitc", period) > 0
         # ... determine (b) part two
-        is_loss_eligible = False
-
+        is_caleitc_eligible = tax_unit("ca_eitc_eligible", period)
+        # ... ... determine if losses are limited to modest amount
+        federal_gross_income = tax_unit.sum(person("irs_gross_income", period))
+        total_federal_net_loss = max_(0, -federal_gross_income)
+        has_limited_losses = total_federal_net_loss <= p.loss_threshold
+        # ... ... determine if earnings are limited to modest amount
+        total_earnings = tax_unit("tax_unit_earned_income", period)
+        has_limited_earnings = total_earnings <= p.loss_threshold
+        # ... ... combine all the (b) elements where appropriate
+        is_loss_eligible = where(
+            p.loss_threshold > 0,
+            is_caleitc_eligible & has_limited_losses & has_limited_earnings,
+            False,
+        )
         # ... combine (a) and (b) parts to determine eligibility
         eligible = has_eligible_child & (gets_caleitc | is_loss_eligible)
 
