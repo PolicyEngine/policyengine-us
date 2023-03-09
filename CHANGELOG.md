@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.234.0] - 2023-03-09 16:29:06
+
+### Added
+
+- Maryland TANF earned income deduction.
+
+## [0.233.0] - 2023-03-09 16:19:45
+
+### Added
+
+- Colorado TANF pregnancy allowance and integration tests.
+
+## [0.232.0] - 2023-03-09 04:57:54
+
+### Added
+
+- Added NYC taxes and refundable credits to relevant household variables.
+
+## [0.231.2] - 2023-03-08 22:35:18
+
+### Fixed
+
+- CPS generation on Windows.
+
+## [0.231.1] - 2023-03-08 17:08:12
+
+### Fixed
+
+- SSI pass rate calibrated to 45%.
+
 ## [0.231.0] - 2023-03-08 15:52:08
 
 ### Added
@@ -3082,6 +3112,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.233.0...0.234.0
+[0.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.232.0...0.233.0
+[0.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.2...0.232.0
+[0.231.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.1...0.231.2
+[0.231.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.0...0.231.1
 [0.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.1...0.231.0
 [0.230.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.0...0.230.1
 [0.230.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.229.0...0.230.0
