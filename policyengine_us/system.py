@@ -64,6 +64,11 @@ class Microsimulation(CoreMicrosimulation):
     default_calculation_period = 2023
     default_input_period = 2023
 
+    def __init__(self, *args, dataset = None, dataset_year = None, **kwargs):
+        if (dataset == CPS) and (dataset_year in [2021, 2022, 2023]) and dataset_year not in CPS.years:
+            CPS.download(dataset_year)
+        super().__init__(*args, dataset = dataset, dataset_year = dataset_year, **kwargs)
+
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
     tax_benefit_system = CountryTaxBenefitSystem
@@ -82,13 +87,3 @@ class IndividualSim(CoreIndividualSim):  # Deprecated
         "household",
         "family",
     ]
-
-
-if 2023 not in CPS.years:
-    CPS.download(2023)
-
-if 2022 not in CPS.years:
-    CPS.download(2022)
-
-if 2021 not in CPS.years:
-    CPS.download(2021)
