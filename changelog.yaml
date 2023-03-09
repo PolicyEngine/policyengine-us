@@ -2586,3 +2586,28 @@
     added:
     - Is male variable.
   date: 2023-03-08 15:52:08
+- bump: patch
+  changes:
+    fixed:
+    - SSI pass rate calibrated to 45%.
+  date: 2023-03-08 17:08:12
+- bump: patch
+  changes:
+    fixed:
+    - CPS generation on Windows.
+  date: 2023-03-08 22:35:18
+- bump: minor
+  changes:
+    added:
+    - Added NYC taxes and refundable credits to relevant household variables.
+  date: 2023-03-09 04:57:54
+- bump: minor
+  changes:
+    added:
+    - Colorado TANF pregnancy allowance and integration tests.
+  date: 2023-03-09 16:19:45
+- bump: minor
+  changes:
+    added:
+    - Maryland TANF earned income deduction.
+  date: 2023-03-09 16:29:06
