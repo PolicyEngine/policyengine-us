@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nj_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NJ adjusted gross income"
+    label = "New Jersey adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54/section-54-8a-36/"
