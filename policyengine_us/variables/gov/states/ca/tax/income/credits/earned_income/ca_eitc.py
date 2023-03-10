@@ -93,7 +93,9 @@ class ca_eitc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for CalEITC"
+    unit = USD
     definition_period = YEAR
+    defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
         branch = get_ca_eitc_branch(tax_unit, period, parameters)
@@ -106,6 +108,7 @@ class ca_eitc(Variable):
     label = "CalEITC amount"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.CA
     reference = "https://www.ftb.ca.gov/file/personal/credits/california-earned-income-tax-credit.html#What-you-ll-get"
 
     def formula(tax_unit, period, parameters):
