@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.237.1] - 2023-03-10 23:30:13
+
+### Fixed
+
+- CA Young Child Tax Credit (YCTC) logic.
+
 ## [0.237.0] - 2023-03-10 19:26:00
 
 ### Added
@@ -3135,6 +3141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.237.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.0...0.237.1
 [0.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.236.0...0.237.0
 [0.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.235.0...0.236.0
 [0.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.234.0...0.235.0
