@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.236.0] - 2023-03-10 00:53:46
+
+### Added
+
+- nj_agi and nj_income_tax variables, and income filing threshold parameters.
+
+## [0.235.0] - 2023-03-09 23:25:37
+
+### Added
+
+- 2022 CA use tax parameters.
+- 2022 CA income tax rate bracket parameters.
+- 2022 CA income tax standard deduction parameter.
+- 2022 CA income tax exemption parameters.
+- 2022 CA income tax credit parameters.
+
 ## [0.234.0] - 2023-03-09 16:29:06
 
 ### Added
@@ -3112,6 +3128,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.235.0...0.236.0
+[0.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.234.0...0.235.0
 [0.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.233.0...0.234.0
 [0.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.232.0...0.233.0
 [0.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.2...0.232.0
