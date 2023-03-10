@@ -11,6 +11,7 @@
   input:
     state_code: DC
     spm_unit_size: 10
+    
   output:
     dc_tanf_maximum_income: 1_786 * 12
 
@@ -22,14 +23,48 @@
   output:
     dc_tanf_maximum_income: 0
 
-# If a family has child care costs, there is a maximum monthly income limit
-# increase by $175 per child age 2 or over, and $200 per child under the age
-# of two.
-# TODO: Add a test for this.
-# - name: If ten person, maximum monthly income is $1786/mo.
-#   period: 2023
-#   input:
-#     state_code: DC
-#     spm_unit_size: 2
-#   output:
-#     dc_tanf_maximum_income: 1_786 * 12
+- name: Single parent of three children with childcare costs.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 1
+      child2:
+        age: 2
+      child3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        childcare_expenses: 100
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: DC
+  output:
+    # $200 for child under 2, $175 for children two or older.
+    dc_tanf_maximum_income: (870 + 200 + 175 + 175) * 12
+
+- name: Single parent of three children with no childcare costs.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 1
+      child2:
+        age: 2
+      child3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: DC
+  output:
+    dc_tanf_maximum_income: 870 * 12
