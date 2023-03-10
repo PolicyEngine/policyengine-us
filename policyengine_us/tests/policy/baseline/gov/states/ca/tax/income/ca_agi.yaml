@@ -1,0 +1,9 @@
+- name: CA AGI subtractions larger than federal AGI
+  period: 2021
+  input:
+    adjusted_gross_income: 500
+    ca_agi_subtractions: 800
+    ca_agi_additions: 200
+    state_code: CA
+  output:
+    ca_agi: 200
