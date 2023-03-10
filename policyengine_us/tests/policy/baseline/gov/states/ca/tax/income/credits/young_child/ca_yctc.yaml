@@ -148,7 +148,7 @@
     people:
       parent:
         age: 30
-        irs_gross_income: -20_000  # capital losses
+        irs_gross_income: -20_000  # modest capital losses
       child:
         age: 5
         ca_is_qualifying_child_for_caleitc: true
@@ -162,3 +162,24 @@
   output:
     # ca_eitc: 0  # because of zero earnings
     ca_yctc: 1_083  # the full YCTC amount in 2022 via the 2022 YCTC reform
+
+- name: Zero earnings with large losses, so not eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        irs_gross_income: -40_000  # large capital losses
+      child:
+        age: 5
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # ca_eitc: 0  # because of zero earnings
+    ca_yctc: 0  # not eligible for YCTC in 2022 because of large losses
