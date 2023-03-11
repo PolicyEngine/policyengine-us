@@ -2641,3 +2641,9 @@
     added:
     - NJ regular exemption.
   date: 2023-03-11 01:17:50
+- bump: patch
+  changes:
+    fixed:
+    - CalEITC bug where eligibility conditions weren't applied in the second phase-out
+      region.
+  date: 2023-03-11 13:41:52
