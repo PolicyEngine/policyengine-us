@@ -13,7 +13,7 @@ class ca_renter_credit(Variable):
     def formula(tax_unit, period, parameters):
         # Check eligibility based on state, rent, filing status, and income.
         p = parameters(period).gov.states.ca.tax.income.credits.renter
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ca_agi", period)
         has_rent = add(tax_unit, period, ["rent"]) > 0
         filing_status = tax_unit("filing_status", period)
         income_cap = p.income_cap[filing_status]

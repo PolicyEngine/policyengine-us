@@ -5,6 +5,65 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.238.0] - 2023-03-11 01:17:50
+
+### Added
+
+- NJ regular exemption.
+
+## [0.237.1] - 2023-03-10 23:30:13
+
+### Fixed
+
+- CA Young Child Tax Credit (YCTC) logic.
+
+## [0.237.0] - 2023-03-10 19:26:00
+
+### Added
+
+- CA AGI formula.
+- CA taxable income formula.
+
+## [0.236.0] - 2023-03-10 00:53:46
+
+### Added
+
+- nj_agi and nj_income_tax variables, and income filing threshold parameters.
+
+## [0.235.0] - 2023-03-09 23:25:37
+
+### Added
+
+- 2022 CA use tax parameters.
+- 2022 CA income tax rate bracket parameters.
+- 2022 CA income tax standard deduction parameter.
+- 2022 CA income tax exemption parameters.
+- 2022 CA income tax credit parameters.
+
+## [0.234.0] - 2023-03-09 16:29:06
+
+### Added
+
+- Maryland TANF earned income deduction.
+
+## [0.233.0] - 2023-03-09 16:19:45
+
+### Added
+
+- Colorado TANF pregnancy allowance and integration tests.
+
+## [0.232.0] - 2023-03-09 04:57:54
+
+### Added
+
+- Added NYC taxes and refundable credits to relevant household variables.
+
+## [0.231.2] - 2023-03-08 22:35:18
+
+### Fixed
+
+- CPS generation on Windows.
+
 ## [0.231.1] - 2023-03-08 17:08:12
 
 ### Fixed
@@ -3088,6 +3147,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.1...0.238.0
+[0.237.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.0...0.237.1
+[0.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.236.0...0.237.0
+[0.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.235.0...0.236.0
+[0.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.234.0...0.235.0
+[0.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.233.0...0.234.0
+[0.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.232.0...0.233.0
+[0.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.2...0.232.0
+[0.231.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.1...0.231.2
 [0.231.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.0...0.231.1
 [0.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.1...0.231.0
 [0.230.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.0...0.230.1

@@ -9,7 +9,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_000
+        filer_earned: 25_000
         ca_eitc: 1
     households:
       household:
@@ -18,7 +18,7 @@
   output:
     ca_yctc: 1_000
 
-- name: Earns $100 over the phase out start amount and gets $20 less.
+- name: Earns $100 over the phase out start amount and gets $20 less in 2021.
   period: 2021
   input:
     people:
@@ -29,7 +29,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 1
     households:
       household:
@@ -38,7 +38,7 @@
   output:
     ca_yctc: 980
     
-- name: Earns $100 over the phase out start amount but child is 6, so ineligible.
+- name: Earns $100 over the phase out start but child is 6, so ineligible.
   period: 2021
   input:
     people:
@@ -49,7 +49,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 1
     households:
       household:
@@ -57,19 +57,20 @@
         state_code: CA
   output:
     ca_yctc: 0
-    
-- name: Zero CalEITC so ineligible.
+
+- name: Zero CalEITC so ineligible in 2021.
   period: 2021
   input:
     people:
-      parent: {}
+      parent:
+        age: 30
+        earned_income: 25_100
       child:
         age: 5
         ca_is_qualifying_child_for_caleitc: true
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 25_100
         ca_eitc: 0
     households:
       household:
@@ -77,7 +78,7 @@
         state_code: CA
   output:
     ca_yctc: 0
-    
+
 - name: Earns the end of the phase-out window ($30,000) so gets $0.
   period: 2021
   input:
@@ -89,7 +90,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        tax_unit_earned_income: 30_000
+        filer_earned: 30_000
         ca_eitc: 1
     households:
       household:
@@ -112,7 +113,7 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
-        tax_unit_earned_income: 25_100
+        filer_earned: 25_100
         ca_eitc: 1
     households:
       household:
@@ -120,3 +121,65 @@
         state_code: CA
   output:
     ca_yctc: 980
+
+- name: Zero earnings, so ineligible in 2021.
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # ca_eitc: 0  # because of zero earnings
+    ca_yctc: 0  # because does not get CalEITC
+
+- name: Zero earnings with losses, but still eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        irs_gross_income: -20_000  # modest capital losses
+      child:
+        age: 5
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # ca_eitc: 0  # because of zero earnings
+    ca_yctc: 1_083  # the full YCTC amount in 2022 via the 2022 YCTC reform
+
+- name: Zero earnings with large losses, so not eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        irs_gross_income: -40_000  # large capital losses
+      child:
+        age: 5
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # ca_eitc: 0  # because of zero earnings
+    ca_yctc: 0  # not eligible for YCTC in 2022 because of large losses

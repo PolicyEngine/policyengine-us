@@ -1,0 +1,17 @@
+- name: NJ income tax should be zero for a single filer with income below the filing threshold.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 9_999
+    filing_status: SINGLE
+  output:
+    nj_income_tax: 0
+
+- name: NJ income tax should be zero for a joint couple filing with income below the filing threshold.
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 19_999
+    filing_status: JOINT
+  output:
+    nj_income_tax: 0
