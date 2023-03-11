@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.239.0] - 2023-03-11 22:27:07
+
+### Added
+
+- Federally taxable social security benefits to list of CA AGI subtractions.
+
 ## [0.238.1] - 2023-03-11 13:41:52
 
 ### Fixed
@@ -3153,6 +3159,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.238.1...0.239.0
 [0.238.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.238.0...0.238.1
 [0.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.1...0.238.0
 [0.237.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.0...0.237.1
