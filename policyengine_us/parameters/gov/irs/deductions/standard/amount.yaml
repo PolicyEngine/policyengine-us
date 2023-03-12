@@ -1,4 +1,5 @@
-description: Deduction from taxable income if not itemizing.
+description: Federal deduction from AGI if not itemizing.
+
 SINGLE:
   2018-01-01: 12_000
   2019-01-01: 12_200
@@ -34,10 +35,10 @@ WIDOW:
   2021-01-01: 25_100
   2022-01-01: 25_900
   2023-01-01: 27_700
+
 metadata:
   unit: currency-USD
   label: Standard deduction
-  name: standard_deduction
   period: year
   breakdown:
     - filing_status
