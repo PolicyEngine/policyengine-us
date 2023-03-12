@@ -1,0 +1,13 @@
+description: Income sources counted as net investment income.
+values:
+  2013-01-01:
+    - taxable_interest_income
+    - dividend_income
+    - rental_income
+    - c01000  # Loss-limited capital gains.
+metadata:
+  unit: currency-USD
+  label: net investment income sources
+  reference:
+    - title: Instructions for Form 8960, Net Investment Income Tax
+      href: https://www.irs.gov/pub/irs-pdf/i8960.pdf

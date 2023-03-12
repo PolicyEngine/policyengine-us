@@ -1,0 +1,26 @@
+- name: If no children and one adult, need standard is $253/mo.
+  period: 2023
+  input:
+    state_code: CO
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_need_standard: 253 * 12
+
+- name: If not eligible, we don't calculate it.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_need_standard: 0
+
+- name: If two adults and 12 kids, need standard is $1,155 + 2 * $67 = $1,289 per month.
+  period: 2023
+  input:
+    state_code: CO
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 12
+  output:
+    co_tanf_need_standard: 1_289 * 12

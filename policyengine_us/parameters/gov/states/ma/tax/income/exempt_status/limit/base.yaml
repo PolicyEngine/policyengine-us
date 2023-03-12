@@ -17,9 +17,10 @@ metadata:
   reference:
     - title: § 5 Exempt income of individuals; exemption of stock bonus, pension or profit-sharing trust 
       href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section5
+    # NB: This parameter does not show up directly in tax forms.
+    #     It is not inflation adjusted.
   unit: currency-USD
   period: year
   breakdown:
   - filing_status
-  name: ma_income_tax_no_tax_status_limit
   label: AGI addition to limit to be exempt from MA income tax.

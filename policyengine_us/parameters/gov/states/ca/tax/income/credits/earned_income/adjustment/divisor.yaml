@@ -1,0 +1,10 @@
+description: California divides its EITC adjustment factor by this value when computing the CalEITC for filers below the threshold.
+values:
+  2015-01-01: 0.85
+metadata:
+  unit: /1
+  label: CalEITC adjustment factor divisor
+  reference:
+    # The law defines 0.85 in twelve places, each meaning the same thing, so we define it once.
+    - title: California legal code 17052(m-o)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052

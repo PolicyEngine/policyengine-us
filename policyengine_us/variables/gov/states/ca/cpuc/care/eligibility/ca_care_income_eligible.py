@@ -5,9 +5,9 @@ class ca_care_income_eligible(Variable):
     value_type = bool
     entity = Household
     definition_period = YEAR
-    label = "Eligible for California CARE program"
+    label = "Eligible for California CARE program by virtue of income"
     documentation = "Eligible for California Alternate Rates for Energy"
-    reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
+    reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PUC&sectionNum=739.1"
     defined_for = StateCode.CA
 
     def formula(household, period, parameters):

@@ -1,0 +1,17 @@
+- name: FERA Eligible household gets the amount.
+  period: 2022
+  input:
+    state_code: CA
+    ca_fera_eligible: true
+    ca_fera_amount_if_eligible: 100
+  output:
+    ca_fera: 100
+
+- name: FERA Ineligible household gets $0.
+  period: 2022
+  input:
+    state_code: CA
+    ca_fera_eligible: false
+    ca_fera_amount_if_eligible: 100
+  output:
+    ca_fera: 0
