@@ -12,7 +12,9 @@ class dc_eitc_without_qualifying_child(Variable):
 
     def formula(tax_unit, period, parameters):
         earnings = tax_unit("tax_unit_earned_income", period)
-        p = parameters(period).gov.states.dc.tax.income.credits.eitc.no_children.phase_out
+        p = parameters(
+            period
+        ).gov.states.dc.tax.income.credits.eitc.no_children.phase_out
         federal_eitc = tax_unit("earned_income_tax_credit", period)
         fed_agi = tax_unit("adjusted_gross_income", period)
         greater_of = max_(earnings, fed_agi)
