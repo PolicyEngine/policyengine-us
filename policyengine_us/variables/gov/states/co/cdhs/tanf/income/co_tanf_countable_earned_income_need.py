@@ -19,7 +19,6 @@ class co_tanf_countable_earned_income_need(Variable):
         return where(
             enrolled,
             # For enrolled participants, Colorado applies only a percent exclusion.
-            # TODO: Verify.
             gross_earnings * (1 - p.percent),
             # For new enrollees, Colorado applies only a flat exclusion.
             max_(gross_earnings - annual_flat_exclusion, 0),
