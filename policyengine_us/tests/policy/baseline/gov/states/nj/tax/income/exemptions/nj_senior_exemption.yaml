@@ -73,7 +73,7 @@
   input:
     filing_status: JOINT
   output:
-    nj_senior_exemption: True
+    nj_senior_exemption: 1
 
 - name: If filing seperately return Fales
   period: 2022
@@ -81,5 +81,4 @@
   input:
     filing_status: SINGLE
   output:
-    nj_senior_exemption: False
-
+    nj_senior_exemption: 0
