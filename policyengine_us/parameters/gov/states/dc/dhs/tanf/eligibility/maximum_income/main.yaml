@@ -1,0 +1,32 @@
+description: DC limits its TANF program to households with up to this income level, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 11)
+  label: DC TANF monthly income limit
+  reference:
+    - title: TANF for District Families
+      href: https://dhs.dc.gov/service/tanf-district-families
+
+1: 
+  2022-10-01: 450
+2: 
+  2022-10-01: 560 
+3: 
+  2022-10-01: 712 
+4: 
+  2022-10-01: 870
+5: 
+  2022-10-01: 1_002 
+6: 
+  2022-10-01: 1_178 
+7: 
+  2022-10-01: 1_352 
+8: 
+  2022-10-01: 1_494
+9: 
+  2022-10-01: 1_642
+10: 
+  2022-10-01: 1_786
