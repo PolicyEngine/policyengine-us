@@ -119,6 +119,7 @@ class ca_eitc(Variable):
             branch.calculate("earned_income_tax_credit", period)
             * current_ca_eitc.adjustment.factor
         )
+        eligible = branch.calculate("eitc_eligible", period)
         second_phase_out_start = tax_unit(
             "ca_eitc_second_phase_out_start", period
         )
@@ -126,7 +127,7 @@ class ca_eitc(Variable):
         count_children = tax_unit("eitc_child_count", period)
         eitc_at_second_phase_out_start = (
             current_ca_eitc.phase_out.final.start.calc(count_children)
-        )
+        ) * eligible
         earned_income = tax_unit("filer_earned", period)
         amount_along_second_phase_out = earned_income - second_phase_out_start
         second_phase_out_width = second_phase_out_end - second_phase_out_start

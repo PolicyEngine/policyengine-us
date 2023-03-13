@@ -12,9 +12,5 @@ class ca_agi(Variable):
         "https://www.ftb.ca.gov/forms/2022/2022-540.pdf"
     )
     defined_for = StateCode.CA
-
-    def formula(tax_unit, period, parameters):
-        federal_agi = tax_unit("adjusted_gross_income", period)
-        subtractions = tax_unit("ca_agi_subtractions", period)
-        additions = tax_unit("ca_agi_additions", period)
-        return max_(0, federal_agi - subtractions) + additions
+    adds = ["adjusted_gross_income", "ca_agi_additions"]
+    subtracts = ["ca_agi_subtractions"]

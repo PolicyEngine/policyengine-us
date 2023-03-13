@@ -2641,3 +2641,24 @@
     added:
     - NJ regular exemption.
   date: 2023-03-11 01:17:50
+- bump: patch
+  changes:
+    fixed:
+    - CalEITC bug where eligibility conditions weren't applied in the second phase-out
+      region.
+  date: 2023-03-11 13:41:52
+- bump: minor
+  changes:
+    added:
+    - Federally taxable social security benefits to list of CA AGI subtractions.
+  date: 2023-03-11 22:27:07
+- bump: patch
+  changes:
+    fixed:
+    - CA AGI calculation.
+  date: 2023-03-12 19:57:14
+- bump: minor
+  changes:
+    added:
+    - DC EITC with no qualifying children.
+  date: 2023-03-13 00:07:28
