@@ -30,4 +30,4 @@ class nj_senior_exemption(Variable):
         spouse_eligible = (age_spouse >= p.age_threshold) * joint
 
         # Calculate total senior exemption.
-        return (int(head_eligible) + int(spouse_eligible)) * p.amount
+        return (tax_unit.sum(head_eligible + spouse_eligible)) * p.amount
