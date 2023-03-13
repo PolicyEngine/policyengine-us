@@ -4,6 +4,9 @@ metadata:
   unit: currency-USD
   period: month
   label: DC TANF monthly income limit childcare supplement per child
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
   reference:
     - title: TANF for District Families
       href: https://dhs.dc.gov/service/tanf-district-families
