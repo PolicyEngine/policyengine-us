@@ -27,7 +27,7 @@ class nj_senior_exemption(Variable):
 
         # Determine whether spouse is eligible (>= age 65).
         joint = filing_status == filing_status.possible_values.JOINT
-        spouse_eligible = ((age_spouse >= p.age_threshold).astype(int)) * joint
+        spouse_eligible = ((age_spouse >= p.age_threshold) * joint).astype(int)
 
         # Calculate total senior exemption.
         return (head_eligible + spouse_eligible) * p.amount
