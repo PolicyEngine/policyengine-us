@@ -20,14 +20,14 @@ class nj_senior_exemption(Variable):
         age_head = tax_unit("age_head", period)
 
         # Determine if head of household (filer) is eligible.
-        head_eligible = age_head >= p.age_threshold
+        head_eligible = (age_head >= p.age_threshold).astype(int)
 
         # Get the spouse age, if applicable.
         age_spouse = tax_unit("age_spouse", period)
 
         # Determine whether spouse is eligible (>= age 65).
         joint = filing_status == filing_status.possible_values.JOINT
-        spouse_eligible = (age_spouse >= p.age_threshold) * joint
+        spouse_eligible = ((age_spouse >= p.age_threshold).astype(int)) * joint
 
         # Calculate total senior exemption.
-        return (tax_unit.sum(head_eligible + spouse_eligible)) * p.amount
+        return (head_eligible + spouse_eligible) * p.amount
