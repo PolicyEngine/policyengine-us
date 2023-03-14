@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_tanf_need_standard(Variable):
+class ny_tanf_need_standard(Variable):
     value_type = float
     entity = SPMUnit
     label = "New York TANF need standard"
