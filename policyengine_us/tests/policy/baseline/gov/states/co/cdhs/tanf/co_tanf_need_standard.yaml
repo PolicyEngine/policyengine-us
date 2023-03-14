@@ -3,7 +3,7 @@
   input:
     state_code: CO
     spm_unit_count_adults: 1
-    spm_unit_count_children: 0
+    co_tanf_count_children: 0
   output:
     co_tanf_need_standard: 253 * 12
 
@@ -12,7 +12,7 @@
   input:
     state_code: CA
     spm_unit_count_adults: 1
-    spm_unit_count_children: 0
+    co_tanf_count_children: 0
   output:
     co_tanf_need_standard: 0
 
@@ -21,6 +21,6 @@
   input:
     state_code: CO
     spm_unit_count_adults: 2
-    spm_unit_count_children: 12
+    co_tanf_count_children: 12
   output:
     co_tanf_need_standard: 1_289 * 12

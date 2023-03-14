@@ -4,7 +4,7 @@
     state_code: DC
     earned_income_tax_credit: 0
   output:
-    dc_eitc: 0
+    dc_eitc_with_qualifying_child: 0
 
 - name: 70% match
   period: 2023
@@ -12,4 +12,4 @@
     state_code: DC
     earned_income_tax_credit: 100
   output:
-    dc_eitc: 70
+    dc_eitc_with_qualifying_child: 70
