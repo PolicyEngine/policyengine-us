@@ -10,7 +10,7 @@ class co_tanf_need_standard(Variable):
     defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        children = spm_unit("spm_unit_count_children", period)
+        children = spm_unit("co_tanf_count_children", period)
         adults = spm_unit("spm_unit_count_adults", period)
         p = parameters(period).gov.states.co.cdhs.tanf.need_standard
         capped_children = min_(children, 10).astype(int)
