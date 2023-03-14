@@ -1,0 +1,23 @@
+- name: If one person, maximum monthly benefit is $437/mo.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 1
+  output:
+    dc_tanf_maximum_income: 437 * 12
+
+- name: If ten person, maximum monthly benefit is $1750/mo.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 10
+  output:
+    dc_tanf_maximum_income: 1_750 * 12
+
+- name: Only calculate for DC.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+  output:
+    dc_tanf_maximum_income: 0
