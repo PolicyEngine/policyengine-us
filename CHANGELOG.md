@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.243.0] - 2023-03-14 18:11:17
+
+### Added
+
+- Maryland TANF maximum benefit.
+
 ## [0.242.0] - 2023-03-14 16:59:42
 
 ### Added
@@ -3183,6 +3189,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.243.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.242.0...0.243.0
 [0.242.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.241.0...0.242.0
 [0.241.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.240.0...0.241.0
 [0.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.239.1...0.240.0
