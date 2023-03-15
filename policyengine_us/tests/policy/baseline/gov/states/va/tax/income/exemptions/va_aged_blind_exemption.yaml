@@ -1,0 +1,23 @@
+- name: If not in Virginia, no exemption.
+  period: 2022
+  input:
+    state_code: WA
+  output:
+    va_aged_blind_exemption: 0
+
+- name: If no aged or blind people, no exemption.
+  period: 2022
+  input:
+    state_code: VA
+    aged_blind_count: 0
+  output:
+    va_aged_blind_exemption: 0
+
+- name: Three aged+blind counts in the tax unit.
+  period: 2022
+  input:
+    state_code: VA
+    aged_blind_count: 3
+  output:
+    # $800 per aged/blind exemption.
+    va_aged_blind_exemption: 2_400
