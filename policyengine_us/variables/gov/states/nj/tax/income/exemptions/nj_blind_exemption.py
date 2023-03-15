@@ -13,15 +13,25 @@ class nj_blind_exemption(Variable):
         # First get their filing status.
         filing_status = tax_unit("filing_status", period)
 
+        # Determine whether spouse is eligible.
+        joint = filing_status == filing_status.possible_values.JOINT
+
         # Then get the NJ blind ir disabled exemptions part of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.exemptions.blind
 
-        # Get the individual blind status.
-        blind_head = tax_unit("blind_head", period).astype(int)
+        # Get the individual blind status and disabled.
+        blind_head = tax_unit("blind_head", period)
+        disabled_head = tax_unit("disabled_head", period)
 
-        # Determine whether spouse is eligible.
-        joint = filing_status == filing_status.possible_values.JOINT
-        blind_spouse = (tax_unit("blind_spouse", period) * joint).astype(int)
+        # Check if the individual's eligiblity.
+        head_eligible = blind_head | disabled_head
+
+        # Get the individual's spouse blind status and disabled.
+        blind_spouse = tax_unit("blind_spouse", period) * joint
+        disabled_spouse = tax_unit("disabled_spouse", period)
+
+        # Check if the individual spouse's eligiblity.
+        spouse_eligible = blind_spouse | disabled_spouse
 
         # Calculate total blind exemption.
-        return (blind_head + blind_spouse) * p.amount
+        return (head_eligible + spouse_eligible) * p.amount
