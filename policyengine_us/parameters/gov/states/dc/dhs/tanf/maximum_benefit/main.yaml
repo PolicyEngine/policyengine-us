@@ -1,14 +1,17 @@
-description: DC provides TNAF benefit for households with eligibility to TNAF program, by household size.
+description: DC provides up to this amount in TANF, by household size.
 
 metadata:
   unit: currency-USD
   period: month
   breakdown:
     - range(1, 11)
-  label: DC TANF monthly benefit amount
+  label: DC TANF benefit amount
   reference:
     - title: TANF for District Families
       href: https://dhs.dc.gov/service/tanf-district-families
+    # TODO: Add reference to legal code, and go up to whatever it says.
+    # - title: 
+    #   href:
 
 1: 
   2022-10-01: 437
