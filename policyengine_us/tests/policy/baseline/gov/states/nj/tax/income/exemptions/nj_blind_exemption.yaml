@@ -64,7 +64,7 @@
   output:
     nj_blind_exemption: 1_000
   
-  - name: If filing jointly, head is neither blind nor disabled but spouse is disabled, exemption is $1k.
+- name: If filing jointly, head is neither blind nor disabled but spouse is disabled, exemption is $1k.
   period: 2022
   input:
     state_code: NJ
