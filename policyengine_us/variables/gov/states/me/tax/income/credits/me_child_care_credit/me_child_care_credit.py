@@ -27,7 +27,7 @@ class me_child_care_credit(Variable):
         )  # Line 1b, Column B
 
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
-        ctc = tax_unit(
+        cdcc = tax_unit(
             "cdcc", period
         )  # Line 2: credit for child and dependent care expenses from federal Form 1040 Schedule 3, Line 2, or Form 2441, line 11
         cdcc_regular_portion = (
