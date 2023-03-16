@@ -3,8 +3,8 @@
   input:
     state_code: NJ
     filing_status: SINGLE
-    blind_head: False
-    disabled_head: False
+    blind_head: false
+    disabled_head: false
   output:
     nj_blind_exemption: 0
 
@@ -13,8 +13,8 @@
   input:
     state_code: NJ
     filing_status: SINGLE
-    blind_head: True
-    disabled_head: False
+    blind_head: true
+    disabled_head: false
   output:
     nj_blind_exemption: 1_000
 
@@ -23,8 +23,8 @@
   input:
     state_code: NJ
     filing_status: SINGLE
-    blind_head: False
-    disabled_head: True
+    blind_head: false
+    disabled_head: true
   output:
     nj_blind_exemption: 1_000
 
@@ -33,8 +33,8 @@
   input:
     state_code: NJ
     filing_status: SINGLE
-    blind_head: True
-    disabled_head: True
+    blind_head: true
+    disabled_head: true
   output:
     nj_blind_exemption: 1_000
 
@@ -43,10 +43,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: True
-    disabled_head: False
-    blind_spouse: False
-    disabled_spouse: False
+    blind_head: true
+    disabled_head: false
+    blind_spouse: false
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
 
@@ -55,10 +55,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: True
-    disabled_head: True
-    blind_spouse: False
-    disabled_spouse: False
+    blind_head: true
+    disabled_head: true
+    blind_spouse: false
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
 
@@ -67,10 +67,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: False
-    disabled_head: True
-    blind_spouse: False
-    disabled_spouse: False
+    blind_head: false
+    disabled_head: true
+    blind_spouse: false
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
 
@@ -79,10 +79,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: False
-    disabled_head: False
-    blind_spouse: True
-    disabled_spouse: False
+    blind_head: false
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
   
@@ -91,10 +91,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: False
-    disabled_head: False
-    blind_spouse: False
-    disabled_spouse: True
+    blind_head: false
+    disabled_head: false
+    blind_spouse: false
+    disabled_spouse: true
   output:
     nj_blind_exemption: 1_000
 
@@ -103,10 +103,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: False
-    disabled_head: False
-    blind_spouse: True
-    disabled_spouse: True
+    blind_head: false
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: true
   output:
     nj_blind_exemption: 1_000
 
@@ -115,10 +115,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: True
-    disabled_head: False
-    blind_spouse: True
-    disabled_spouse: False
+    blind_head: true
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
   output:
     nj_blind_exemption: 2_000
   
@@ -127,10 +127,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: False
-    disabled_head: True
-    blind_spouse: False
-    disabled_spouse: True
+    blind_head: false
+    disabled_head: true
+    blind_spouse: false
+    disabled_spouse: true
   output:
     nj_blind_exemption: 2_000
 
@@ -139,10 +139,10 @@
   input:
     state_code: NJ
     filing_status: JOINT
-    blind_head: True
-    disabled_head: True
-    blind_spouse: True
-    disabled_spouse: True
+    blind_head: true
+    disabled_head: true
+    blind_spouse: true
+    disabled_spouse: true
   output:
     nj_blind_exemption: 2_000
 
@@ -151,10 +151,10 @@
   input:
     state_code: NJ
     filing_status: SEPARATE
-    blind_head: True
-    disabled_head: False
-    blind_spouse: False
-    disabled_spouse: False
+    blind_head: true
+    disabled_head: false
+    blind_spouse: false
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
 
@@ -163,10 +163,10 @@
   input:
     state_code: NJ
     filing_status: SEPARATE
-    blind_head: True
-    disabled_head: False
-    blind_spouse: True
-    disabled_spouse: False
+    blind_head: true
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
 
@@ -175,10 +175,10 @@
   input:
     state_code: NJ
     filing_status: SEPARATE
-    blind_head: True
-    disabled_head: True
-    blind_spouse: True
-    disabled_spouse: False
+    blind_head: true
+    disabled_head: true
+    blind_spouse: true
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
 
@@ -187,9 +187,21 @@
   input:
     state_code: NJ
     filing_status: SEPARATE
-    blind_head: False
-    disabled_head: True
-    blind_spouse: True
-    disabled_spouse: False
+    blind_head: false
+    disabled_head: true
+    blind_spouse: true
+    disabled_spouse: false
   output:
     nj_blind_exemption: 1_000
+
+- name: If filing seperately, head is neither, spouse = blind, exemption is $0.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    blind_head: false
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_exemption: 0

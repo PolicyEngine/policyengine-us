@@ -24,14 +24,14 @@ class nj_blind_exemption(Variable):
         disabled_head = tax_unit("disabled_head", period)
 
         # Check if the individual's eligiblity.
-        head_eligible = blind_head | disabled_head
+        head_eligible = (blind_head | disabled_head).astype(int)
 
         # Get the individual's spouse blind status and disabled.
         blind_spouse = tax_unit("blind_spouse", period) * joint
         disabled_spouse = tax_unit("disabled_spouse", period)
 
         # Check if the individual spouse's eligiblity.
-        spouse_eligible = blind_spouse | disabled_spouse
+        spouse_eligible = (blind_spouse | disabled_spouse).astype(int)
 
         # Calculate total blind exemption.
         return (head_eligible + spouse_eligible) * p.amount
