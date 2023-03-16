@@ -1,0 +1,40 @@
+- name: Outside Maine, no refundable ME child care credit
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_non_refundable_child_care_credit: 0
+
+- name: No child care expenses, no credit 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    tax_unit_childcare_expenses: 0
+  output:
+    me_non_refundable_child_care_credit: 0
+
+- name: $1000 federal child care credit, 25% received in Maine credit ($250), all will be refundable
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    tax_unit_childcare_expenses: 1000
+    ctcc: 1000
+  output:
+    me_non_refundable_child_care_credit: 0
+
+- name: $4000 federal child care credit, 25% received in Maine credit ($1000), only some (500, the max) will be refundable, rest unrefundable 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    tax_unit_childcare_expenses: 1000
+    ctcc: 1000
+  output:
+    me_non_refundable_child_care_credit: 500
