@@ -1,0 +1,14 @@
+from policyengine_us.model_api import *
+
+
+class non_refundable_ctc(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "non-refundable ME Child Care Credit"
+    unit = USD
+    documentation = (
+        "The portion of the ME Child Care Credit that is not refundable."
+    )
+    definition_period = YEAR
+    adds = ["me_child_care_credit"]
+    subtracts = ["me_refundable_child_care_credit"]
