@@ -1,11 +1,14 @@
 description: CA young child tax credit amount.
 values:
   2021-01-01: 1_000
+  2022-01-01: 1_083
+
 metadata:
-  reference:
-    - title: California Earned Income Tax Credit
-      href: https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3
   unit: currency-USD
   period: year
-  name: ca_young_child_amount
   label: CA young child tax credit amount
+  reference:
+    - title: 2021 CalEITC Form 3514
+      href: https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3
+    - title: 2022 CalEITC Form 3514
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=3
