@@ -1,0 +1,18 @@
+- name: Lower AGI with taxable social security benefits
+  period: 2021
+  input:
+    adjusted_gross_income: 70_000
+    taxable_social_security: 10_000
+    state_code: KS
+  output:
+    ks_agi_subtractions: 10_000
+
+- name: Higher AGI with taxable social security benefits
+  period: 2022
+  input:
+    adjusted_gross_income: 80_000
+    taxable_social_security: 10_000
+    state_code: KS
+  output:
+    ks_agi_subtractions: 0
+
