@@ -8,9 +8,7 @@ class ks_cdcc(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ksrevenue.gov/pdf/k-4021.pdf"
         "https://www.ksrevenue.gov/pdf/ip21.pdf"
-        "https://www.ksrevenue.gov/pdf/k-4022.pdf"
         "https://www.ksrevenue.gov/pdf/ip22.pdf"
     )
     defined_for = StateCode.KS
