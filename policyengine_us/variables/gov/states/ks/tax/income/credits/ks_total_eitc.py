@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ks_cdcc(Variable):
+class ks_total_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS child and dependent care expenses credit"
+    label = "KS total EITC amount (both nonrefundable and refundable)"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,4 +15,4 @@ class ks_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.credits
-        return p.cdcc_fraction * tax_unit("cdcc", period)
+        return p.eitc_fraction * tax_unit("earned_income_tax_credit", period)

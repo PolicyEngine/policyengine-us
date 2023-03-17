@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ks_refundable_credits(Variable):
+class ks_fstc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS refundable income tax credits"
+    label = "KS food sales tax credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -12,4 +12,8 @@ class ks_refundable_credits(Variable):
         "https://www.ksrevenue.gov/pdf/ip22.pdf"
     )
     defined_for = StateCode.KS
-    adds = "gov.states.ks.tax.income.credits.refundable"
+
+    """
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ks.tax.income.credits
+    """

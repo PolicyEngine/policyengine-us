@@ -13,9 +13,7 @@ class ks_income_tax_before_refundable_credits(Variable):
     )
     defined_for = StateCode.KS
 
-    """
     def formula(tax_unit, period, parameters):
-        itax = tax_unit("ks_income_tax_before_credits", period)
+        itax_before_credits = tax_unit("ks_income_tax_before_credits", period)
         nonrefundable_credits = tax_unit("ks_nonrefundable_credits", period)
-        return max_(0, itax - nonrefundable_credits)
-    """
+        return max_(0, itax_before_credits - nonrefundable_credits)
