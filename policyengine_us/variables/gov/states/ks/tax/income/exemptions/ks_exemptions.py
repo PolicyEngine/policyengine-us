@@ -1,11 +1,10 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class ks_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS Exemptions"
+    label = "KS exemptions amount"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,36 +15,11 @@ class ks_exemptions(Variable):
     )
     defined_for = StateCode.KS
 
-    """
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ca.tax.income.exemptions
-        agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-
-        # calculating phase out amount per credit
-        over_agi_threshold = max_(0, agi - p.phase_out.start[filing_status])
-        increments = np.ceil(
-            over_agi_threshold / p.phase_out.increment[filing_status]
-        )
-        exemption_reduction = increments * p.phase_out.amount
-
-        # Personal Exemptions
-        personal_exemption_count = p.personal_scale[filing_status]
-        personal_aged_blind_exemption_count = (
-            personal_exemption_count + tax_unit("aged_blind_count", period)
-        )
-        personal_aged_blind_exemption = max_(
-            0,
-            personal_aged_blind_exemption_count
-            * (p.amount - exemption_reduction),
-        )
-
-        # Dependent exemptions
+        joint = filing_status == statuses.JOINT
+        hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
+        adults = where(joint | hoh, 2, 1)
         dependents = tax_unit("tax_unit_dependents", period)
-        dependent_exemptions = max_(
-            0, dependents * (p.dependent_amount - exemption_reduction)
-        )
-
-        # total exemptions
-        return personal_aged_blind_exemption + dependent_exemptions
-    """
+        p = parameters(period).gov.states.ks.tax.income.exemptions
+        return (adults + dependents) * p.amount
