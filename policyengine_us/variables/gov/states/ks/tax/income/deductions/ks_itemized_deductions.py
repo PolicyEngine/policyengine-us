@@ -26,7 +26,7 @@ class ks_itemized_deductions(Variable):
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         itm_deds_max = itm_deds_less_salt + uncapped_property_taxes
         # compute high-AGI limit on itemized deductions
-        p = parameters(period).gov.states.ca.tax.income.deductions.itemized
+        p = parameters(period).gov.states.ks.tax.income.deductions.itemized
         # ... determine part of itemized deductions subject to limit
         excluded_itm_deds = add(tax_unit, period, p.limit.excluded_deductions)
         included_itm_deds = p.limit.ded_fraction * max_(

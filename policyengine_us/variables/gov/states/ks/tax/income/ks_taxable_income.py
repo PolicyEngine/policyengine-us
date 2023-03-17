@@ -13,13 +13,9 @@ class ks_taxable_income(Variable):
     )
     defined_for = StateCode.KS
 
-    """
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.ca.tax.income
-        std_ded = p.deductions.standard.amount[filing_status]
+        std_ded = tax_unit("ks_standard_deduction", period)
         itm_ded = tax_unit("ks_itemized_deductions", period)
-        ded = where(itm_ded > std_ded, itm_ded, std_ded)
-        agi = tax_unit("ks_agi", period)
-        return max_(0, agi - ded)
-    """
+        deductions = where(itm_ded > std_ded, itm_ded, std_ded)
+        exemptions = tax_unit("ks_exemptions", period)
+        return max_(0, tax_unit("ks_agi", period) - deductions - exemptions)
