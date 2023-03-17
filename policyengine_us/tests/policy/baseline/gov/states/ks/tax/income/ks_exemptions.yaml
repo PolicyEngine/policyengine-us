@@ -1,26 +1,15 @@
-- name: Unmarried with no dependents
+- name: Four exemptions in 2021
   period: 2021
   input:
-    filing_status: SINGLE
-    tax_unit_dependents: 0
-    state_code: KS
-  output:
-    ks_exemptions: 2_250
-
-- name: Married with two dependents
-  period: 2022
-  input:
-    filing_status: JOINT
-    tax_unit_dependents: 2
+    ks_num_exemptions: 4
     state_code: KS
   output:
     ks_exemptions: 2_250 * 4
 
-- name: Unmarried with one dependent
+- name: Two exemptions in 2022
   period: 2022
   input:
-    filing_status: HEAD_OF_HOUSEHOLD
-    tax_unit_dependents: 1
+    ks_num_exemptions: 2
     state_code: KS
   output:
-    ks_exemptions: 2_250 * 3
+    ks_exemptions: 2_250 * 2
