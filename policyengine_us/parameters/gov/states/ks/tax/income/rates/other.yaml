@@ -1,0 +1,26 @@
+description: KS income tax rates for non-joint filing units
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.031
+  - threshold:
+      2021-01-01: 15_000
+    rate:
+      2021-01-01: 0.0525
+  - threshold:
+      2021-01-01: 30_000
+    rate:
+      2021-01-01: 0.057
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: KS income tax rates for non-joint filing units
+  reference:
+  - title: 2021 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf

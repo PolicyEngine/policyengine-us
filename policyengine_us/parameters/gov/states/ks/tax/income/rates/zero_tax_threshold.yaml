@@ -1,6 +1,6 @@
-description: Base amount a KS income tax unit can get as a standard deduction.
+description: Zero KS income tax unless taxable income exceeds this threshold.
 metadata:
-  label: KS base standard deduction
+  label: KS zero-tax taxable-income threshold
   period: year
   unit: currency-USD
   breakdown:
@@ -12,12 +12,12 @@ metadata:
     href: https://www.ksrevenue.gov/pdf/ip22.pdf
 
 JOINT:
-  2021-01-01: 8_000
+  2021-01-01: 5_000
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 6_000
+  2021-01-01: 2_500
 WIDOW:
-  2021-01-01: 6_000
+  2021-01-01: 2_500
 SINGLE:
-  2021-01-01: 3_500
+  2021-01-01: 2_500
 SEPARATE:
-  2021-01-01: 4_000
+  2021-01-01: 2_500
