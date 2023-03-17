@@ -1,0 +1,23 @@
+description: Extra amount a KS income tax unit can get as a standard deduction.
+metadata:
+  label: KS extra standard deduction for elderly and blind
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+
+JOINT:
+  2021-01-01: 700
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 850
+WIDOW:
+  2021-01-01: 700
+SINGLE:
+  2021-01-01: 850
+SEPARATE:
+  2021-01-01: 700

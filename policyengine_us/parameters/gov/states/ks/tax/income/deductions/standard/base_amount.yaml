@@ -1,0 +1,23 @@
+description: Base amount a KS income tax unit can get as a standard deduction.
+metadata:
+  label: KS base standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+
+JOINT:
+  2021-01-01: 8_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 6_000
+WIDOW:
+  2021-01-01: 8_000
+SINGLE:
+  2021-01-01: 3_500
+SEPARATE:
+  2021-01-01: 4_000

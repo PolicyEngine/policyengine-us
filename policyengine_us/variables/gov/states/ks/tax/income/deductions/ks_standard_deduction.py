@@ -13,9 +13,10 @@ class ks_standard_deduction(Variable):
     )
     defined_for = StateCode.KS
 
-    """
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ca.tax.income.deductions.standard
+        p = parameters(period).gov.states.ks.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        return p.amount[filing_status]
-    """
+        base_amt = p.base_amount[filing_status]
+        aged_blind_count = tax_unit("aged_blind_count", period)
+        extra_amt = aged_blind_count * p.extra_amount[filing_status]
+        return base_amt + extra_amt
