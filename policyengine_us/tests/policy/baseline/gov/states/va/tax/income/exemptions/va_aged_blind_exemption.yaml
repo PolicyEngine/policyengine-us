@@ -5,18 +5,6 @@
   output:
     va_aged_blind_exemption: 0
 
-- name: If no aged or blind people, no exemption.
-  period: 2022
-  input:
-    state_code: VA
-    age_head: 64
-    age_spouse: 64
-    blind_head: NO
-    blind_spouse: NO
-    aged_blind_count: 0
-  output:
-    va_aged_blind_exemption: 0
-
 - name: Three aged+blind counts in the tax unit.
   period: 2022
   input:
@@ -26,116 +14,11 @@
     # $800 per aged/blind exemption.
     va_aged_blind_exemption: 2_400
 
-
-
 - name: If filing jointly, head and spouse are both above 65
   period: 2022
   input:
     state_code: VA
-    filing_status: JOINT
     aged_blind_count: 2
   output:
     # $800 per aged/blind exemption.
     va_aged_blind_exemption: 1_600
-
-
-- name: If filing jointly, head >= age 65 but spouse is not
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: JOINT
-    age_head: 65
-    age_spouse: 64
-    aged_blind_count: 1
-  output:
-    va_senior_exemption: 800
-
-- name: If filing jointly, head < age 65 but spouse >= 65
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: JOINT
-    age_head: 64
-    age_spouse: 65
-    aged_blind_count: 1
-  output:
-    va_senior_exemption: 800
-
-- name: If filing jointly, head and spouse under age 65
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: JOINT
-    age_head: 64
-    age_spouse: 64
-    aged_blind_count: 0
-  output:
-    va_senior_exemption: 0
-
-
-
-- name: If filing separately, head and spouse are both above 65
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: SEPARATE
-    age_head: 65
-    age_spouse: 65
-    aged_blind_count: 1
-  output:
-    nj_senior_exemption: 800
-
-- name: If filing separately, head and spouse are both under 65
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    state_code: VA
-    filing_status: SEPARATE
-    age_head: 64
-    age_spouse: 64
-    aged_blind_count: 0
-  output:
-    nj_senior_exemption: 0
-
-- name: If filing separately, head >= age 65 but spouse is not
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: SEPARATE
-    age_head: 65
-    age_spouse: 64
-    aged_blind_count: 1
-  output:
-    va_senior_exemption: 800
-
-- name: If filing separately, head < age 65 but spouse >= 65
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: SEPARATE
-    age_head: 64
-    age_spouse: 65
-    aged_blind_count: 0
-  output:
-    va_senior_exemption: 0
-
-
-
-- name: If filing single and age >= 65
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: SINGLE
-    age_head: 65
-  output:
-    nj_senior_exemption: 800
-
-- name: If filing single and age < 65
-  period: 2022
-  input:
-    state_code: VA
-    filing_status: SINGLE
-    age_head: 64
-  output:
-    nj_senior_exemption: 0
-
