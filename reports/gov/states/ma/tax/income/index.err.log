@@ -122,9 +122,9 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 724[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    726[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:37[0m, in [0;36mstate_income_tax.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     36[0m [38;5;28;01melse[39;00m:
-[0;32m---> 37[0m     [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mtax_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mstate_income_tax[49m[38;5;241;43m.[39;49m[43madds[49m[43m)[49m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:38[0m, in [0;36mstate_income_tax.formula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     37[0m [38;5;28;01melse[39;00m:
+[0;32m---> 38[0m     [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mtax_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mstate_income_tax[49m[38;5;241;43m.[39;49m[43madds[49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
 [1;32m    209[0m [38;5;250m[39m[38;5;124;03m"""Sums a list of variables.[39;00m
@@ -599,7 +599,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -646,9 +646,9 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 724[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    726[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:37[0m, in [0;36mstate_income_tax.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     36[0m [38;5;28;01melse[39;00m:
-[0;32m---> 37[0m     [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mtax_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mstate_income_tax[49m[38;5;241;43m.[39;49m[43madds[49m[43m)[49m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:38[0m, in [0;36mstate_income_tax.formula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     37[0m [38;5;28;01melse[39;00m:
+[0;32m---> 38[0m     [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mtax_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mstate_income_tax[49m[38;5;241;43m.[39;49m[43madds[49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
 [1;32m    209[0m [38;5;250m[39m[38;5;124;03m"""Sums a list of variables.[39;00m
@@ -1123,7 +1123,7 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -1204,14 +1204,14 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 724[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    726[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:37[0m, in [0;36mstate_income_tax.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     31[0m     [38;5;28;01mreturn[39;00m where(
-[1;32m     32[0m         total_tax_unit_heads [38;5;241m>[39m [38;5;241m0[39m,
-[1;32m     33[0m         spm_unit_state_tax [38;5;241m/[39m total_tax_unit_heads,
-[1;32m     34[0m         [38;5;241m0[39m,
-[1;32m     35[0m     )
-[1;32m     36[0m [38;5;28;01melse[39;00m:
-[0;32m---> 37[0m     [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mtax_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mstate_income_tax[49m[38;5;241;43m.[39;49m[43madds[49m[43m)[49m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:38[0m, in [0;36mstate_income_tax.formula[0;34m(tax_unit, period, parameters)[0m
+[1;32m     32[0m     [38;5;28;01mreturn[39;00m where(
+[1;32m     33[0m         total_tax_unit_heads [38;5;241m>[39m [38;5;241m0[39m,
+[1;32m     34[0m         spm_unit_state_tax [38;5;241m/[39m total_tax_unit_heads,
+[1;32m     35[0m         [38;5;241m0[39m,
+[1;32m     36[0m     )
+[1;32m     37[0m [38;5;28;01melse[39;00m:
+[0;32m---> 38[0m     [38;5;28;01mreturn[39;00m [43madd[49m[43m([49m[43mtax_unit[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mstate_income_tax[49m[38;5;241;43m.[39;49m[43madds[49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
 [1;32m    203[0m [38;5;28;01mdef[39;00m [38;5;21madd[39m(
@@ -1910,6 +1910,6 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
-ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
+[0;31mValueError[0m: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
+ValueError: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3001 != 3003 = count)
 
