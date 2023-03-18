@@ -12,8 +12,5 @@ class ks_income_tax(Variable):
         "https://www.ksrevenue.gov/pdf/ip22.pdf"
     )
     defined_for = StateCode.KS
-    adds = [
-        "ks_income_tax_before_refundable_credits",
-        "ks_use_tax",
-    ]
+    adds = ["ks_income_tax_before_refundable_credits"]
     subtracts = ["ks_refundable_credits"]
