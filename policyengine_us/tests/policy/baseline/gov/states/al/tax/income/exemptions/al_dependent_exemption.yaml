@@ -1,0 +1,23 @@
+- name: Alabama Dependent Exemption applies to AGI ranges between 0 and 50_000
+  period: 2022
+  input:
+    agi_range: [0, 50_000]
+    state_code: AL
+  output:
+    al_dependent_exemption: 1000
+
+- name: Alabama Dependent Exemption applies to AGI ranges between 50_000 and 100_000
+  period: 2022
+  input:
+    agi_range: [50_001, 100_000]
+    state_code: AL
+  output:
+    al_dependent_exemption: 500
+
+- name: Alabama Dependent Exemption applies to AGI range over 100_000
+  period: 2022
+  input:
+    agi_range: [100_000, null]
+    state_code: AL
+  output:
+    al_dependent_exemption: 300
