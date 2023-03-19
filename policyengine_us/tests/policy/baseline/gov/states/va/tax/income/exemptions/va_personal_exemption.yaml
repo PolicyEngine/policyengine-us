@@ -11,7 +11,7 @@
     state_code: VA
     tax_unit_size: 3
   output:
-    # $930 per aged/blind exemption.
+    # $930 per person.
     va_personal_exemption: 2_790
 
 - name: Two tax unit counts in the tax unit.
@@ -20,5 +20,5 @@
     state_code: VA
     tax_unit_size: 2
   output:
-    # $930 per aged/blind exemption.
+    # $930 per person.
     va_personal_exemption: 1_860
