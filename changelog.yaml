@@ -2652,3 +2652,58 @@
     added:
     - Federally taxable social security benefits to list of CA AGI subtractions.
   date: 2023-03-11 22:27:07
+- bump: patch
+  changes:
+    fixed:
+    - CA AGI calculation.
+  date: 2023-03-12 19:57:14
+- bump: minor
+  changes:
+    added:
+    - DC EITC with no qualifying children.
+  date: 2023-03-13 00:07:28
+- bump: minor
+  changes:
+    added:
+    - DC TANF maximum income.
+  date: 2023-03-13 20:45:21
+- bump: minor
+  changes:
+    added:
+    - New York TANF need standard.
+  date: 2023-03-14 16:59:42
+- bump: minor
+  changes:
+    added:
+    - Maryland TANF maximum benefit.
+  date: 2023-03-14 18:11:17
+- bump: minor
+  changes:
+    added:
+    - NJ senior exemption.
+  date: 2023-03-14 22:01:55
+- bump: minor
+  changes:
+    added:
+    - Alabama personal exemption.
+  date: 2023-03-17 23:08:36
+- bump: minor
+  changes:
+    added:
+    - New York TANF countable earned income based on earned income exclusion.
+  date: 2023-03-18 05:01:12
+- bump: minor
+  changes:
+    added:
+    - Virginia aged/blind exemption.
+  date: 2023-03-18 05:22:13
+- bump: minor
+  changes:
+    added:
+    - Missouri TANF income limit / maximum benefit.
+  date: 2023-03-19 16:30:59
+- bump: patch
+  changes:
+    fixed:
+    - CalEITC now correctly has no joint bonus.
+  date: 2023-03-19 20:20:41

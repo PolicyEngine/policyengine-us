@@ -1,0 +1,7 @@
+- name: NY countable earned income is 50% of gross earned income as of 2023-01-01.
+  period: 2023
+  input:
+    state_code: NY
+    ny_tanf_gross_earned_income: 100
+  output:
+    ny_tanf_countable_earned_income: 50
