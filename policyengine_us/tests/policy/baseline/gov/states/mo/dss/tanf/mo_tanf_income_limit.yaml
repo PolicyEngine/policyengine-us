@@ -6,10 +6,10 @@
   output:
     mo_tanf_income_limit: 1_632
 
-- name: I not eligible, we don't calculate it.
+- name: Only calculate for Missouri.
   period: 2023
   input:
-    state_code: MO
+    state_code: CA
     spm_unit_size: 1
   output:
     mo_tanf_income_limit: 0

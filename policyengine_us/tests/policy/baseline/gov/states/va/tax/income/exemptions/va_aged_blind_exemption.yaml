@@ -1,0 +1,24 @@
+- name: If not in Virginia, no exemption.
+  period: 2022
+  input:
+    state_code: WA
+  output:
+    va_aged_blind_exemption: 0
+
+- name: Three aged+blind counts in the tax unit.
+  period: 2022
+  input:
+    state_code: VA
+    aged_blind_count: 3
+  output:
+    # $800 per aged/blind exemption.
+    va_aged_blind_exemption: 2_400
+
+- name: If filing jointly, head and spouse are both above 65
+  period: 2022
+  input:
+    state_code: VA
+    aged_blind_count: 2
+  output:
+    # $800 per aged/blind exemption.
+    va_aged_blind_exemption: 1_600
