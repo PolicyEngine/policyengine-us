@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.248.0] - 2023-03-19 16:30:59
+
+### Added
+
+- Missouri TANF income limit / maximum benefit.
+
 ## [0.247.0] - 2023-03-18 05:22:13
 
 ### Added
@@ -3213,6 +3219,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.248.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.247.0...0.248.0
 [0.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.246.0...0.247.0
 [0.246.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.245.0...0.246.0
 [0.245.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.244.0...0.245.0
