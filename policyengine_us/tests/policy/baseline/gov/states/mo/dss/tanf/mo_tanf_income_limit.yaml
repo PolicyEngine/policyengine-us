@@ -1,0 +1,23 @@
+- name: One-person household has an income limit of $1,632 per year.
+  period: 2023
+  input:
+    state_code: MO
+    spm_unit_size: 1
+  output:
+    mo_tanf_income_limit: 1_632
+
+- name: Only calculate for Missouri.
+  period: 2023
+  input:
+    state_code: CA
+    spm_unit_size: 1
+  output:
+    mo_tanf_income_limit: 0
+
+- name: Eight-person household has an income limit of $6,168.
+  period: 2023
+  input:
+    state_code: MO
+    spm_unit_size: 8
+  output:
+    mo_tanf_income_limit: 6_168
