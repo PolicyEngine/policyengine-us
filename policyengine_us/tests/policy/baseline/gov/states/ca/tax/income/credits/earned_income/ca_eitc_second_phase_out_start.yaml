@@ -1,0 +1,16 @@
+- name: Filer with no children.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    state_code: CA
+    ca_eitc_maximum: 276
+    eitc_child_count: 0
+  output:
+    # Maximum credit: $276
+    # Phase-out rate: 7.65% * 0.85 = 6.5%
+    # Phase-out start: $4,248
+    # EITC at which the second phase-out starts: $229
+    # EITC difference: $47
+    # Earnings to cover EITC difference: $47 / 0.065 = $723
+    # Add to phase-out start: $4,248 + $723 = $4_971
+    ca_eitc_second_phase_out_start: 4_971

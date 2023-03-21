@@ -12,6 +12,7 @@ class household_tax_before_refundable_credits(Variable):
         "employee_payroll_tax",
         "self_employment_tax",
         "income_tax_before_refundable_credits",  # Federal.
+        "ca_income_tax_before_refundable_credits",
         "il_total_tax",
         "ma_income_tax_before_refundable_credits",
         "md_income_tax_before_refundable_credits",
@@ -21,6 +22,7 @@ class household_tax_before_refundable_credits(Variable):
         "pa_income_tax",  # PA has no refundable credits.
         "wa_income_tax_before_refundable_credits",
         "flat_tax",
+        "nyc_income_tax_before_refundable_credits",
     ]
 
     def formula(household, period, parameters):

@@ -1,0 +1,29 @@
+description: CA Child and Dependent Care Expenses Credit
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 40_000
+    amount:
+      2021-01-01: 0.43
+  - threshold:
+      2021-01-01: 70_000
+    amount:
+      2021-01-01: 0.34
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 0
+metadata:
+  threshold_unit: currency_USD
+  amount_unit: /1
+  threshold_period: year
+  type: single_amount
+  label: CA CDCC multiplier 2
+  reference: 
+    - title: 2021 Instructions for California Form 3506
+      href: https://www.ftb.ca.gov/forms/2021/2021-3506-instructions.html
+    - title: 2022 Instructions for California Form 3506
+      href: https://www.ftb.ca.gov/forms/2022/2022-3506-instructions.html

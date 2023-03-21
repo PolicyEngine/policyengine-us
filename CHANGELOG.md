@@ -5,6 +5,229 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.251.1] - 2023-03-21 00:52:11
+
+### Changed
+
+- Add California to modelled_policies.yaml so it shows up in population impacts.
+
+## [0.251.0] - 2023-03-20 15:49:33
+
+### Added
+
+- Miscellaneous income.
+
+## [0.250.0] - 2023-03-20 05:16:36
+
+### Added
+
+- California income tax to net income tree.
+
+## [0.249.0] - 2023-03-19 22:30:49
+
+### Added
+
+- Virginia personal exemption.
+
+## [0.248.1] - 2023-03-19 20:20:41
+
+### Fixed
+
+- CalEITC now correctly has no joint bonus.
+
+## [0.248.0] - 2023-03-19 16:30:59
+
+### Added
+
+- Missouri TANF income limit / maximum benefit.
+
+## [0.247.0] - 2023-03-18 05:22:13
+
+### Added
+
+- Virginia aged/blind exemption.
+
+## [0.246.0] - 2023-03-18 05:01:12
+
+### Added
+
+- New York TANF countable earned income based on earned income exclusion.
+
+## [0.245.0] - 2023-03-17 23:08:36
+
+### Added
+
+- Alabama personal exemption.
+
+## [0.244.0] - 2023-03-14 22:01:55
+
+### Added
+
+- NJ senior exemption.
+
+## [0.243.0] - 2023-03-14 18:11:17
+
+### Added
+
+- Maryland TANF maximum benefit.
+
+## [0.242.0] - 2023-03-14 16:59:42
+
+### Added
+
+- New York TANF need standard.
+
+## [0.241.0] - 2023-03-13 20:45:21
+
+### Added
+
+- DC TANF maximum income.
+
+## [0.240.0] - 2023-03-13 00:07:28
+
+### Added
+
+- DC EITC with no qualifying children.
+
+## [0.239.1] - 2023-03-12 19:57:14
+
+### Fixed
+
+- CA AGI calculation.
+
+## [0.239.0] - 2023-03-11 22:27:07
+
+### Added
+
+- Federally taxable social security benefits to list of CA AGI subtractions.
+
+## [0.238.1] - 2023-03-11 13:41:52
+
+### Fixed
+
+- CalEITC bug where eligibility conditions weren't applied in the second phase-out region.
+
+## [0.238.0] - 2023-03-11 01:17:50
+
+### Added
+
+- NJ regular exemption.
+
+## [0.237.1] - 2023-03-10 23:30:13
+
+### Fixed
+
+- CA Young Child Tax Credit (YCTC) logic.
+
+## [0.237.0] - 2023-03-10 19:26:00
+
+### Added
+
+- CA AGI formula.
+- CA taxable income formula.
+
+## [0.236.0] - 2023-03-10 00:53:46
+
+### Added
+
+- nj_agi and nj_income_tax variables, and income filing threshold parameters.
+
+## [0.235.0] - 2023-03-09 23:25:37
+
+### Added
+
+- 2022 CA use tax parameters.
+- 2022 CA income tax rate bracket parameters.
+- 2022 CA income tax standard deduction parameter.
+- 2022 CA income tax exemption parameters.
+- 2022 CA income tax credit parameters.
+
+## [0.234.0] - 2023-03-09 16:29:06
+
+### Added
+
+- Maryland TANF earned income deduction.
+
+## [0.233.0] - 2023-03-09 16:19:45
+
+### Added
+
+- Colorado TANF pregnancy allowance and integration tests.
+
+## [0.232.0] - 2023-03-09 04:57:54
+
+### Added
+
+- Added NYC taxes and refundable credits to relevant household variables.
+
+## [0.231.2] - 2023-03-08 22:35:18
+
+### Fixed
+
+- CPS generation on Windows.
+
+## [0.231.1] - 2023-03-08 17:08:12
+
+### Fixed
+
+- SSI pass rate calibrated to 45%.
+
+## [0.231.0] - 2023-03-08 15:52:08
+
+### Added
+
+- Is male variable.
+
+## [0.230.1] - 2023-03-08 11:16:04
+
+### Fixed
+
+- Bug causing incorrect CalEITC amounts when not computed first.
+
+## [0.230.0] - 2023-03-07 21:57:01
+
+### Added
+
+- me_agi variable, based on federal AGI, additions, and subtractions (not yet defined yet)
+
+## [0.229.0] - 2023-03-07 14:20:43
+
+### Added
+
+- Formula for CalEITC qualifying child variable.
+
+## [0.228.0] - 2023-03-07 07:05:29
+
+### Added
+
+- Texas TANF monthly income limit.
+
+## [0.227.1] - 2023-03-07 03:56:15
+
+### Added
+
+- Missing 2021 California EITC parameter values.
+
+## [0.227.0] - 2023-03-06 18:39:45
+
+### Added
+
+- CalEITC.
+
+## [0.226.0] - 2023-03-05 19:02:15
+
+### Added
+
+- CA refundable credits variable.
+- CA income tax variable.
+
+## [0.225.0] - 2023-03-04 21:41:47
+
+### Added
+
+- CA nonrefundable credits variable.
+- CA income tax before refundable credits variable.
+
 ## [0.224.1] - 2023-03-03 23:42:54
 
 ### Fixed
@@ -3026,6 +3249,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.251.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.251.0...0.251.1
+[0.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.250.0...0.251.0
+[0.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.249.0...0.250.0
+[0.249.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.248.1...0.249.0
+[0.248.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.248.0...0.248.1
+[0.248.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.247.0...0.248.0
+[0.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.246.0...0.247.0
+[0.246.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.245.0...0.246.0
+[0.245.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.244.0...0.245.0
+[0.244.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.243.0...0.244.0
+[0.243.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.242.0...0.243.0
+[0.242.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.241.0...0.242.0
+[0.241.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.240.0...0.241.0
+[0.240.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.239.1...0.240.0
+[0.239.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.239.0...0.239.1
+[0.239.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.238.1...0.239.0
+[0.238.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.238.0...0.238.1
+[0.238.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.1...0.238.0
+[0.237.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.237.0...0.237.1
+[0.237.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.236.0...0.237.0
+[0.236.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.235.0...0.236.0
+[0.235.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.234.0...0.235.0
+[0.234.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.233.0...0.234.0
+[0.233.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.232.0...0.233.0
+[0.232.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.2...0.232.0
+[0.231.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.1...0.231.2
+[0.231.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.231.0...0.231.1
+[0.231.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.1...0.231.0
+[0.230.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.230.0...0.230.1
+[0.230.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.229.0...0.230.0
+[0.229.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.228.0...0.229.0
+[0.228.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.227.1...0.228.0
+[0.227.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.227.0...0.227.1
+[0.227.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.226.0...0.227.0
+[0.226.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.225.0...0.226.0
+[0.225.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.224.1...0.225.0
 [0.224.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.224.0...0.224.1
 [0.224.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.223.0...0.224.0
 [0.223.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.222.2...0.223.0
