@@ -23,10 +23,10 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    tax_unit_childcare_expenses: 1000
-    cdcc: 1000
+    tax_unit_childcare_expenses: 1_000
+    cdcc: 1_000
   output:
-    me_non_refundable_child_care_credit: 250
+    me_non_refundable_child_care_credit: 0
 
 - name: $4000 federal child care credit, 25% received in Maine credit ($1000), only some (500, the max) will be refundable
   period: 2022
@@ -34,7 +34,7 @@
   input:
     state_code: ME
     filing_status: SINGLE
-    tax_unit_childcare_expenses: 1000
-    cdcc: 1000
+    tax_unit_childcare_expenses: 1_000
+    cdcc: 4_000
   output:
     me_non_refundable_child_care_credit: 500

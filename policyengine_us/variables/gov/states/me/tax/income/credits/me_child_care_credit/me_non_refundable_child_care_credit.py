@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class non_non_refundable_child_care_credit(Variable):
+class me_non_refundable_child_care_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "non-refundable ME Child Care Credit"
@@ -13,3 +13,13 @@ class non_non_refundable_child_care_credit(Variable):
     definition_period = YEAR
     adds = ["me_child_care_credit"]
     subtracts = ["me_refundable_child_care_credit"]
+
+    def formula(tax_unit, period, parameters):
+        added_components = add(
+            tax_unit, period, me_non_refundable_child_care_credit.adds
+        )
+        subtracted_components = add(
+            tax_unit, period, me_non_refundable_child_care_credit.subtracts
+        )
+
+        return max_(added_components - subtracted_components, 0)

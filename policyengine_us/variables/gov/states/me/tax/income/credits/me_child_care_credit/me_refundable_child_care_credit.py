@@ -12,7 +12,7 @@ class me_refundable_child_care_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.child_care
-        maximum_refundable_credit = p.amount
+        maximum_refundable_credit = p.max_amount
         return min_(
             maximum_refundable_credit, tax_unit("me_child_care_credit", period)
         )
