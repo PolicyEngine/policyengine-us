@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.251.1] - 2023-03-21 00:52:11
+
+### Changed
+
+- Add California to modelled_policies.yaml so it shows up in population impacts.
+
+## [0.251.0] - 2023-03-20 15:49:33
+
+### Added
+
+- Miscellaneous income.
+
+## [0.250.0] - 2023-03-20 05:16:36
+
+### Added
+
+- California income tax to net income tree.
+
+## [0.249.0] - 2023-03-19 22:30:49
+
+### Added
+
+- Virginia personal exemption.
+
+## [0.248.1] - 2023-03-19 20:20:41
+
+### Fixed
+
+- CalEITC now correctly has no joint bonus.
+
+## [0.248.0] - 2023-03-19 16:30:59
+
+### Added
+
+- Missouri TANF income limit / maximum benefit.
+
+## [0.247.0] - 2023-03-18 05:22:13
+
+### Added
+
+- Virginia aged/blind exemption.
+
+## [0.246.0] - 2023-03-18 05:01:12
+
+### Added
+
+- New York TANF countable earned income based on earned income exclusion.
+
+## [0.245.0] - 2023-03-17 23:08:36
+
+### Added
+
+- Alabama personal exemption.
+
 ## [0.244.0] - 2023-03-14 22:01:55
 
 ### Added
@@ -3195,6 +3249,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.251.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.251.0...0.251.1
+[0.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.250.0...0.251.0
+[0.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.249.0...0.250.0
+[0.249.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.248.1...0.249.0
+[0.248.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.248.0...0.248.1
+[0.248.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.247.0...0.248.0
+[0.247.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.246.0...0.247.0
+[0.246.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.245.0...0.246.0
+[0.245.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.244.0...0.245.0
 [0.244.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.243.0...0.244.0
 [0.243.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.242.0...0.243.0
 [0.242.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.241.0...0.242.0
