@@ -1,0 +1,85 @@
+- name: If filing jointly, head and spouse are both above 65, exemption is $2k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 65
+  output:
+    nj_senior_exemption: 2_000
+
+- name: If filing jointly, head >= age 65 but spouse is not, exemption is $1k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 64
+  output:
+    nj_senior_exemption: 1_000
+
+- name: If filing jointly, head < age 65 but spouse >= 65, exemption is $1k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    age_head: 64
+    age_spouse: 65
+  output:
+    nj_senior_exemption: 1_000
+
+- name: If filing jointly, head and spouse under age 65, exemption is $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    age_head: 64
+    age_spouse: 64
+  output:
+    nj_senior_exemption: 0
+
+- name: If filing seperately, head and spouse are both above 65, exemption is $1k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    age_head: 65
+    age_spouse: 65
+  output:
+    nj_senior_exemption: 1_000
+
+- name: If filing seperately, head and spouse are both under 65, exemption is $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    age_head: 64
+    age_spouse: 64
+  output:
+    nj_senior_exemption: 0
+
+- name: If filing single and age >= 65, exemption is $1k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    age_head: 65
+  output:
+    nj_senior_exemption: 1_000
+
+- name: If filing single and age < 65, exemption is $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    age_head: 64
+  output:
+    nj_senior_exemption: 0
