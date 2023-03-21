@@ -15,13 +15,11 @@ brackets:
      1983-01-01: 0.05
  
 metadata:
- threshold_unit: currency_USD
- rate_unit: /1
- threshold_period: year
- type: marginal_rate
- label: Alabama single income tax rate
-reference:
-   - title: The Code of Alabama 1975 Section 40-18-5
-     href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
-
-
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Alabama single income tax rate
+  reference:
+  - title: The Code of Alabama 1975 Section 40-18-5
+    href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
