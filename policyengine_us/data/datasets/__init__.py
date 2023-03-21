@@ -1,4 +1,3 @@
-from .cps import CPS, RawCPS
-from .acs import ACS, RawACS
+from .cps import CPS_2020, CPS_2021, CPS_2022, CPS_2023
 
-DATASETS = [CPS, RawCPS, ACS, RawACS]
+DATASETS = [CPS_2020, CPS_2021, CPS_2022, CPS_2023]
