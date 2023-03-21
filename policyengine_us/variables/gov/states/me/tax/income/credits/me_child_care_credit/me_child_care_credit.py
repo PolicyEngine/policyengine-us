@@ -15,6 +15,8 @@ class me_child_care_credit(Variable):
 
         # Line 1: Total childcare expenses; record percentage of expenses that are regular vs. part of Step 4 child care program
         expenses = tax_unit("tax_unit_childcare_expenses", period)
+        if expenses == 0:
+            return 0
         # Line 1a, Column B
         step_4_expenses = tax_unit("me_child_care_step_4_expenses", period)
         # Line 1a, Column A
