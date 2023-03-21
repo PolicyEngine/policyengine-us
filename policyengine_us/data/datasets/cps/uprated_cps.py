@@ -14,6 +14,7 @@ class UpratedCPS(Dataset):
         new_name: str = None,
         new_label: str = None,
         new_file_path: str = None,
+        new_url: str = None,
     ):
         class UpratedCPSFromDataset(UpratedCPS):
             name = new_name or f"{dataset.name}_uprated_{out_year}"
@@ -23,6 +24,7 @@ class UpratedCPS(Dataset):
             file_path = new_file_path or (
                 STORAGE_FOLDER / f"{dataset.name}_uprated_{out_year}.h5"
             )
+            url = new_url
 
         return UpratedCPSFromDataset
 
