@@ -8,7 +8,7 @@
    # 2% of first $500 = $10
    # 4% of the next $2,500 = $100
    # 5% of the next $2,000 = $100
-    al_income_tax: 210
+    al_income_tax_before_credits: 210
 
 
 - name: Joint, income excess of $1000 but not excess of 6000
@@ -20,6 +20,6 @@
   output:
    #2% of first $1000 = 20
    #4% of the next $4000=160 
-    al_income_tax: 180
+    al_income_tax_before_credits: 180
 
 
