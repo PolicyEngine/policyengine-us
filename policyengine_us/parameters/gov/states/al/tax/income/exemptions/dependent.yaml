@@ -1,18 +1,24 @@
 description: Alabama provides dependent exemption amounts based on the filed AGI amount.
 
-agi:
-  2022-01-01: 1000
-agi:
-  2022-01-01: 500
-agi:
-  2022-01-01: 300
-
+brackets:
+- threshold:
+      2022-01-01: -.inf
+  amount: 
+      2022-01-01: 1000
+- threshold:
+      2022-01-01: 50_001
+  amount: 
+      2022-01-01: 500
+- threshold:
+      2022-01-01: 100_001
+  amount: 
+      2022-01-01: 300
 
 metadata:
-  period: year
-  unit: currency-USD
-  breakdown:
-  - agi
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: year
+  type: single_amount
   label: Alabama dependent exemption
   reference:
   - title: 2022 Form 40 Alabama Income Tax Return
