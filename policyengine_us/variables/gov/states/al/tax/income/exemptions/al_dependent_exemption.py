@@ -13,5 +13,5 @@ class al_dependent_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.al.tax.income.exemptions
-        agi= tax_unit("agi", period)
+        agi = tax_unit("agi", period)
         return p.dependent[agi]
