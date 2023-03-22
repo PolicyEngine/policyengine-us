@@ -64,6 +64,7 @@ class Microsimulation(CoreMicrosimulation):
     default_role = "member"
     default_calculation_period = 2023
     default_input_period = 2023
+    datasets = DATASETS
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated

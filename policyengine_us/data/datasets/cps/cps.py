@@ -45,7 +45,7 @@ class CPS(Dataset):
         cps.close()
 
         cps = h5py.File(self.file_path, mode="a")
-        add_silver_plan_cost(self, cps, self.raw_cps.time_period)
+        add_silver_plan_cost(self, cps, 2022)
         cps.close()
 
 
@@ -59,7 +59,7 @@ def add_silver_plan_cost(self, cps: h5py.File, year: int):
     from policyengine_us import Microsimulation
 
     sim = Microsimulation(dataset=self)
-    slspc = sim.calc("second_lowest_silver_plan_cost").values
+    slspc = sim.calc("second_lowest_silver_plan_cost", year).values
 
     cps["second_lowest_silver_plan_cost"] = slspc
 
@@ -339,6 +339,7 @@ CPS_2022 = UpratedCPS.from_dataset(
     "cps_2022",
     "CPS 2022",
     STORAGE_FOLDER / "cps_2022.h5",
+    "https://api.github.com/repos/PolicyEngine/policyengine-us/releases/assets/100380304",
 )
 
 CPS_2023 = UpratedCPS.from_dataset(
@@ -347,4 +348,5 @@ CPS_2023 = UpratedCPS.from_dataset(
     "cps_2023",
     "CPS 2023",
     STORAGE_FOLDER / "cps_2023.h5",
+    "https://api.github.com/repos/PolicyEngine/policyengine-us/releases/assets/100379988",
 )
