@@ -19,6 +19,6 @@ class ks_nonrefundable_eitc(Variable):
         p = parameters(period).gov.states.ks.tax.income
         pre_eitc_credits = p.credits.nonrefundable_before_eitc
         credits_before_eitc = add(tax_unit, period, pre_eitc_credits)
-        tax_before_eitc = pre_credit_tax - credits_before_eitc
+        tax_before_eitc = max_(0, pre_credit_tax - credits_before_eitc)
         diff = total_eitc - tax_before_eitc
         return where(diff <= 0, total_eitc, tax_before_eitc)
