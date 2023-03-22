@@ -5,7 +5,7 @@ class nj_dependents_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Jersey qualified and other dependent children exemption"
-    reference = ...
+    reference = "https://casetext.com/statute/new-jersey-statutes/title-54a-new-jersey-gross-income-tax-act/chapter-54a3-personal-exemptions-and-deductions/section-54a3-1-personal-exemptions-and-deductions"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
