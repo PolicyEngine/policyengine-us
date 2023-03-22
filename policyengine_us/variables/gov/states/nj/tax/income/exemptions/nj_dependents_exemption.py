@@ -17,11 +17,8 @@ class nj_dependents_exemption(Variable):
         # Then get the NJ Exemptions part of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.exemptions.dependents
 
-        # Get each person in the tax unit.
-        person = tax_unit.members
-
-        # Determine if the child is dependent
-        dependent = person("is_tax_unit_dependent", period)
+        # Total the number of dependents.
+        dependents = tax_unit("tax_unit_dependents", period)
 
         # Get their dependent exemption amount based on their filing status.
-        return dependent * p.amount
+        return dependents * p.amount
