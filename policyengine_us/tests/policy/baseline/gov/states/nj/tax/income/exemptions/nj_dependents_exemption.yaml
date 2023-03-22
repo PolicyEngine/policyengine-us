@@ -4,13 +4,12 @@
     state_code: NJ
     tax_unit_dependents: 2
   output:
-    md_aged_dependent_exemption: 3_000
+    nj_dependents_exemption: 3_000
 
 - name: Single filer with one dependent gets $1.5k exemption.
   period: 2022
   input:
     state_code: NJ
-    tax_unit_dependents: 2
+    tax_unit_dependents: 1
   output:
-    md_aged_dependent_exemption: 1_500
-    
+    nj_dependents_exemption: 1_500
