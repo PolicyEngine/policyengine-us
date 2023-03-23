@@ -1,0 +1,15 @@
+- name: If ineligible for federal eitc, ineligible for Colorado EITC.
+  period: 2023
+  input:
+    eitc_eligible: false
+    state_code: CO
+  output:
+    co_eitc_eligible: false
+
+- name: If eligible for federal eitc, eligible for Colorado EITC.
+  period: 2023
+  input:
+    eitc_eligible: true
+    state_code: CO
+  output:
+    co_eitc_eligible: true
