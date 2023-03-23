@@ -1,4 +1,4 @@
-- name: If not in Virginia, no standard deduction.
+- name: If not in Virginia, no Virginia standard deduction.
   period: 2022
   input:
     state_code: WA
@@ -19,7 +19,7 @@
     filing_status: JOINT
     state_code: VA
   output:  
-    md_standard_deduction: 16_000
+    va_standard_deduction: 16_000
 
 - name: VA Standard deduction if married filing separately
   period: 2022
@@ -27,4 +27,4 @@
     filing_status: SEPARATE
     state_code: VA
   output:  
-    md_standard_deduction: 8_000
+    va_standard_deduction: 8_000
