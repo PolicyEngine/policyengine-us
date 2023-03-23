@@ -2,8 +2,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: ME
-    earned_income_tax_credit: 0
     people:
       person1:
         age: 10
@@ -12,6 +10,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        state_code: ME
+        earned_income_tax_credit: 0
   output:
     me_eitc: 0
 
@@ -19,8 +19,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: NY
-    earned_income_tax_credit: 500
     people:
       person1:
         age: 10
@@ -29,6 +27,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        state_code: NY
+        earned_income_tax_credit: 500
   output:
     me_eitc: 0
 
@@ -36,8 +36,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: ME
-    earned_income_tax_credit: 500
     people:
       person1:
         age: 33
@@ -46,6 +44,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        state_code: ME
+        earned_income_tax_credit: 500
   output:
     me_eitc: 250
 
@@ -53,8 +53,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: ME
-    earned_income_tax_credit: 500
     people:
       person1:
         age: 10
@@ -63,6 +61,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        state_code: ME
+        earned_income_tax_credit: 500
   output:
     me_eitc: 125
 
@@ -70,8 +70,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    state_code: ME
-    earned_income_tax_credit: 500
     people:
       person1:
         age: 10
@@ -82,5 +80,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        state_code: ME
+        earned_income_tax_credit: 500
   output:
     me_eitc: 125
