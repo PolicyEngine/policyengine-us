@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class initial_earnings_deduction(Variable):
+class continuous_earnings_deduction(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TANF initial earnings deduction"
+    label = "Maryland TANF continuous earnings deduction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
@@ -18,7 +18,7 @@ class initial_earnings_deduction(Variable):
         )
         # Get the policy parameters.
 
-        p = parameters(period).gov.states.md.tanf.continuous_eligibility
+        p = parameters(period).gov.states.md.tanf.income.deductions.earned
         continuous_earnings_deduction = select(
             # First arg: self employed or not
             [earned_income>0, self_employment_income>0],
