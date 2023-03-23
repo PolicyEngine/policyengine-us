@@ -10,11 +10,11 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        earned_income_tax_credit: 0
     households:
       household:
         members: [person1, person2]
         state_code: ME
-        earned_income_tax_credit: 0
   output:
     me_eitc: 0
 
@@ -30,11 +30,11 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        earned_income_tax_credit: 500
     households:
       household:
         members: [person1, person2]
         state_code: NY
-        earned_income_tax_credit: 500
   output:
     me_eitc: 0
 
@@ -50,11 +50,11 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        earned_income_tax_credit: 500
     households:
       household:
         members: [person1, person2]
         state_code: ME
-        earned_income_tax_credit: 500
   output:
     me_eitc: 250
 
@@ -70,11 +70,11 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        earned_income_tax_credit: 500
     households:
       household:
         members: [person1, person2]
         state_code: ME
-        earned_income_tax_credit: 500
   output:
     me_eitc: 125
 
@@ -92,10 +92,10 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        earned_income_tax_credit: 500
     households:
       household:
         members: [person1, person2, person3]
         state_code: ME
-        earned_income_tax_credit: 500
   output:
     me_eitc: 125
