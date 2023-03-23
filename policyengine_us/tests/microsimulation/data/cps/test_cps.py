@@ -1,4 +1,4 @@
-from policyengine_us.data import CPS
+from policyengine_us.data import CPS_2021, CPS_2022, CPS_2023
 import pytest
 from policyengine_us import Microsimulation
 import warnings
@@ -6,16 +6,16 @@ import warnings
 warnings.filterwarnings("ignore")
 warnings.simplefilter("ignore")
 
-CPS_YEARS = [2021, 2022, 2023]
+CPS_YEARS = [CPS_2021, CPS_2022, CPS_2023]
 
 
 @pytest.mark.dependency(name="cps")
 @pytest.mark.parametrize("year", CPS_YEARS)
 def test_cps_dataset_generates(year):
-    CPS.generate(year)
+    year()
 
 
 @pytest.mark.dependency(depends=["cps"])
 @pytest.mark.parametrize("year", CPS_YEARS)
 def test_cps_policyengine_us_compatible(year):
-    Microsimulation(dataset=CPS, dataset_year=year).calc("employment_income")
+    Microsimulation(dataset=year).calc("employment_income")
