@@ -10,6 +10,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
         state_code: ME
         earned_income_tax_credit: 0
   output:
@@ -26,6 +29,9 @@
         age: 35
     tax_units:
       tax_unit:
+        members: [person1, person2]
+    households:
+      household:
         members: [person1, person2]
         state_code: NY
         earned_income_tax_credit: 500
@@ -44,6 +50,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
         state_code: ME
         earned_income_tax_credit: 500
   output:
@@ -60,6 +69,9 @@
         age: 35
     tax_units:
       tax_unit:
+        members: [person1, person2]
+    households:
+      household:
         members: [person1, person2]
         state_code: ME
         earned_income_tax_credit: 500
@@ -79,6 +91,9 @@
         age: 35
     tax_units:
       tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
         members: [person1, person2, person3]
         state_code: ME
         earned_income_tax_credit: 500
