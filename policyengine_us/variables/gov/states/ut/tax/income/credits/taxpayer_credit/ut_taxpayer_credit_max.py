@@ -2,6 +2,10 @@ from policyengine_us.model_api import *
 
 
 class ut_taxpayer_credit_max(Variable):
+    """
+    Line 16 on Utah 2022 Individual Income Tax return form TC-40.
+    """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxpayer credit maximum"
@@ -23,7 +27,12 @@ class ut_taxpayer_credit_max(Variable):
         deductions_if_itemizing = [
             deduction
             for deduction in deductions_if_itemizing
-            if deduction != "salt_deduction"
+            if deduction
+            not in [
+                "salt_deduction",
+                # Exclude QBID to avoid circular reference.
+                "qualified_business_income_deduction",
+            ]
         ]
         us_itemized_deductions_less_salt = add(
             tax_unit, period, deductions_if_itemizing

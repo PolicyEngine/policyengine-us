@@ -20,7 +20,7 @@ class ut_taxpayer_credit_reduction(Variable):
         ]
         phase_out_rate = ut_taxpayer_credit_params_path.phase_out.rate
         ut_taxable_income = tax_unit("ut_taxable_income", period)
-        income_subject_to_phase_out = max(
+        income_subject_to_phase_out = max_(
             ut_taxable_income - phase_out_start, 0
         )
         return income_subject_to_phase_out * phase_out_rate

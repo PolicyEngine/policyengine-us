@@ -2,6 +2,10 @@ from policyengine_us.model_api import *
 
 
 class ut_taxable_income(Variable):
+    """
+    Line 9 on Utah 2022 Individual Income Tax return form TC-40.
+    """
+
     value_type = float
     entity = TaxUnit
     label = "UT taxable income"

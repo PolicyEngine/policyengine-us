@@ -2,6 +2,10 @@ from policyengine_us.model_api import *
 
 
 class ut_income_tax_before_credits(Variable):
+    """
+    Line 10 on Utah 2022 Individual Income Tax return form TC-40.
+    """
+
     value_type = float
     entity = TaxUnit
     label = "Utah Income Tax Before Credits"
