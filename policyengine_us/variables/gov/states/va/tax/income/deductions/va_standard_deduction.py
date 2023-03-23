@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "VA standard deduction"
+    label = "Virginia standard deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -13,6 +13,6 @@ class va_standard_deduction(Variable):
     defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.va.tax.income.deductions.standard
+        p = parameters(period).gov.states.va.tax.income.deductions
         filing_status = tax_unit("filing_status", period)
         return p.standard[filing_status]
