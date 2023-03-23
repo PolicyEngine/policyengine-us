@@ -18,7 +18,7 @@ class initial_earnings_deduction(Variable):
         )
         # Get the policy parameters.
 
-        p = parameters(period).gov.states.md.tanf.initial_eligibility
+        p = parameters(period).gov.states.md.tanf.continuous_eligibility
         continuous_earnings_deduction = select(
             # First arg: self employed or not
             [earned_income>0, self_employment_income>0],
