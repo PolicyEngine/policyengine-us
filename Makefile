@@ -5,8 +5,6 @@ format:
 install:
 	pip install -e .[dev]
 	pip install --upgrade jupyter-book
-	pip uninstall policyengine-core -y || true
-	pip install git+https://github.com/policyengine/policyengine-core.git@datasets-update
 test:
 	coverage run -a --branch -m policyengine_core.scripts.policyengine_command test policyengine_us/tests/policy/ -c policyengine_us
 	coverage xml -i
