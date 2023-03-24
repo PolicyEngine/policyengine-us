@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class me_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ME EITC"
+    label = "Maine EITC"
     unit = USD
     definition_period = YEAR
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-S.html"
@@ -19,13 +19,10 @@ class me_eitc(Variable):
 
         # Determine applicable percentage of federal EITC.
         # Depends on whether or not they have at least one qualifying child.
-        person = tax_unit.members
-        is_qualifying_child = person("is_eitc_qualifying_child", period)
-        has_qualifying_child = tax_unit.sum(is_qualifying_child) > 0
         percentage = where(
-            has_qualifying_child,
-            p.percent_with_qualifying_child,
-            p.percent_without_qualifying_child,
+            tax_unit("eitc_child_count", period) > 0,
+            p.rate.with_qualifying_child,
+            p.rate.no_qualifying_child,
         )
 
         # Return the net Maine EITC.
