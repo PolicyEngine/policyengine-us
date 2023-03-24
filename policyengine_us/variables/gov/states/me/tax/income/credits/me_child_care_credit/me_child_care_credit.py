@@ -15,16 +15,14 @@ class me_child_care_credit(Variable):
 
         # Line 1: Total childcare expenses; record percentage of expenses that are regular vs. part of Step 4 child care program
         expenses = tax_unit("tax_unit_childcare_expenses", period)
-        if expenses == 0:
-            return 0
         # Line 1a, Column B
         step_4_expenses = tax_unit("me_child_care_step_4_expenses", period)
         # Line 1a, Column A
         regular_expenses = expenses - step_4_expenses
         # Line 1b, Column A
-        percentage_paid_regular = regular_expenses / expenses
+        percentage_paid_regular = np.nan_to_num(regular_expenses / expenses)
         # Line 1b, Column B
-        percentage_paid_step_4 = step_4_expenses / expenses
+        percentage_paid_step_4 = np.nan_to_num(step_4_expenses / expenses)
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
         cdcc = tax_unit("cdcc", period)
         # Line 2a: Column A
