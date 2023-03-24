@@ -1,4 +1,4 @@
-- name: Zero dollar federal EITC, no ME EITC
+- name: Zero dollar federal EITC, no Maine EITC
   period: 2022
   absolute_error_margin: 0
   input:
@@ -38,7 +38,7 @@
   output:
     me_eitc: 0
 
-- name: Federal EITC of $500 and no qualifying children, ME EITC should be $250
+- name: Federal EITC of $500 and no qualifying children, Maine EITC should be $250
   period: 2022
   absolute_error_margin: 0
   input:
@@ -58,7 +58,7 @@
   output:
     me_eitc: 250
 
-- name: Federal EITC of $500 and has a qualifying child, ME EITC should be $125
+- name: Federal EITC of $500 and has a qualifying child, Maine EITC should be $125
   period: 2022
   absolute_error_margin: 0
   input:
@@ -78,7 +78,7 @@
   output:
     me_eitc: 125
 
-- name: Federal EITC of $500 and two qualifying children, ME EITC should be $125 (same as one qualifying child)
+- name: Federal EITC of $500 and two qualifying children, Maine EITC should be $125 (same as one qualifying child)
   period: 2022
   absolute_error_margin: 0
   input:
