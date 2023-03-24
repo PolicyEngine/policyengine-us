@@ -1,0 +1,31 @@
+- name: VA income tax rates - taxable income not exceeding $3000
+  period: 2022
+  input:
+    va_taxable_income: 2_000
+    state_code: VA
+  output:
+    va_tax_amount: round(2_000 * 0.02)
+
+- name: VA income tax rates - taxable income from $3,001 to $5,000
+  period: 2022
+  input:
+    va_taxable_income: 4_000
+    state_code: VA
+  output:
+    va_tax_amount: 60 + round(1_000 * 0.03)
+
+- name: VA income tax rates - taxable income from $5,001 to $17,000
+  period: 2022
+  input:
+    va_taxable_income: 10_000
+    state_code: VA
+  output:
+    va_tax_amount: 120 + round(5_000 * 0.05)
+
+- name: VA income tax rates - taxable income for income over $17,000
+  period: 2022
+  input:
+    va_taxable_income: 20_000
+    state_code: VA
+  output:
+    va_tax_amount: 720 + round(3_000 * 0.0575)
