@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 import numpy as np
 
 
-class va_dependent_exemption(Variable):
+class va_child_dependent_care_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "VA dependent exemption"
