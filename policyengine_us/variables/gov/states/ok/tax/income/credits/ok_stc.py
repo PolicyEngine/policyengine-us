@@ -14,4 +14,5 @@ class ok_stc(Variable):
     defined_for = StateCode.OK
     """
     def formula(tax_unit, period, parameters):
+        # see Form 538-S in the 511 packets referenced above
     """
