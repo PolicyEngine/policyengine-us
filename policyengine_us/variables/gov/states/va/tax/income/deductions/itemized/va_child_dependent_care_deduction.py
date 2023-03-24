@@ -10,10 +10,10 @@ class va_child_dependent_care_deduction(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        amount = parameters(
-            period
-        ).gov.states.va.tax.income.deductions.itemized.child_dependent
+        p = parameters(period).gov.states.va.tax.income.deductions.itemized
+        tax_unit_dependents = tax_unit("tax_unit_dependents", period)
+        amount = p.child_dependent_deduction
 
         return np.where(
-            tax_unit("tax_unit_dependents", period) < 2, amount, 2 * amount
+            tax_unit("tax_unit_dependents", period) > 2, 2*amount,  tax_unit("tax_unit_dependents", period)* amount
         )
