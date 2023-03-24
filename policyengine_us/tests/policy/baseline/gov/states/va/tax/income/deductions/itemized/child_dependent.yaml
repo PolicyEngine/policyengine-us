@@ -1,22 +1,30 @@
+- name: If not in Virginia, no deduction.
+  period: 2022
+  input:
+    state_code: WA
+    tax_unit_dependents: 1
+  output:
+    va_child_dependent_care_deduction: 0
+
 - name: Child and dependent care expense deduction, single dependent.
   period: 2022
   input:
     state_code: VA
     tax_unit_dependents: 1
   output:
-    child_dependent_care_deduction: 3_000
+    va_child_dependent_care_deduction: 3_000
 - name: Child and dependent care expense deduction, two dependents.
   period: 2022
   input:
     state_code: VA
     tax_unit_dependents: 2
   output:
-    child_dependent_care_deduction: 6_000
+    va_child_dependent_care_deduction: 6_000
 - name: Child and dependent care expense deduction, three or more dependents.
   period: 2022
   input:
     state_code: VA
     tax_unit_dependents: 4
   output:
-    child_dependent_care_deduction: 6_000
+    va_child_dependent_care_deduction: 6_000
 

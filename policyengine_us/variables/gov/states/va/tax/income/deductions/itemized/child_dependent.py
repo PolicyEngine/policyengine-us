@@ -13,7 +13,7 @@ class va_dependent_exemption(Variable):
         amount = parameters(
             period
         ).gov.states.va.tax.income.deductions.itemized.child_dependent
-        if tax_unit("tax_unit_dependents", period) < 2:
-            return amount
-        else:
-            return amount * 2
+
+        return np.where(
+            tax_unit("tax_unit_dependents", period) < 2, amount, 2 * amount
+        )
