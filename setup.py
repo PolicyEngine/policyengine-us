@@ -45,6 +45,7 @@ setup(
         "tables",
         "tabulate",
         "tqdm",
+        "survey-enhance",
     ],
     extras_require={
         "dev": [
