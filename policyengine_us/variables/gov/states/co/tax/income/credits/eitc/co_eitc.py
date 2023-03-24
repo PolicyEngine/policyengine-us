@@ -16,8 +16,4 @@ class co_eitc(Variable):
         match_percent = parameters(
             period
         ).gov.states.co.tax.income.credits.eitc.match
-        return where(
-            eligible,
-            federal_eitc * match_percent,
-            0
-        )
+        return where(eligible, federal_eitc * match_percent, 0)
