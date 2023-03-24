@@ -15,5 +15,7 @@ class va_child_dependent_care_deduction(Variable):
         amount = p.child_dependent_deduction
 
         return np.where(
-            tax_unit("tax_unit_dependents", period) > 2, 2*amount,  tax_unit("tax_unit_dependents", period)* amount
+            tax_unit("tax_unit_dependents", period) > 2,
+            2 * amount,
+            tax_unit("tax_unit_dependents", period) * amount,
         )
