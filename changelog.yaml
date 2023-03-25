@@ -2742,3 +2742,8 @@
     added:
     - New Jersey blind or disabled exemption.
   date: 2023-03-24 04:59:06
+- bump: patch
+  changes:
+    fixed:
+    - SLSPC not included in the CPS microdata, causing a 2x runtime.
+  date: 2023-03-25 11:09:53
