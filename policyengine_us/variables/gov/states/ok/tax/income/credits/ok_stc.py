@@ -19,14 +19,22 @@ class ok_stc(Variable):
         person = tax_unit.members
         # determine TANF ineligibility
         tanf_ineligible = add(tax_unit, period, ["ok_tanf"]) > 0
-        # compute comprehensive income for all people in tax unit
+        # compute comprehensive gross income for all people in tax unit
+        tax_unit_income_sources = [
+            "earned_income_tax_credit",
+            "ok_eitc",
+        ]
+        person_income_sources = [
+            source
+            for source in p.income_sources
+            if source not in tax_unit_income_sources
+        ]
         income = 0
-        for source in p.income_sources:
+        for source in person_income_sources:
             # income includes only positive amounts (i.e., no losses)
             income += max_(0, add(person, period, [source]))
-        income += tax_unit("earned_income_tax_credit", period)
-        income += tax_unit("ok_eitc", period)
-        # determine income eligibility in one of two alternative ways
+        income += add(tax_unit, period, tax_unit_income_sources)
+        # determine income eligibility in two alternative ways
         # ... first way
         income_eligible1 = income <= p.income_limit1
         # ... second way
@@ -34,15 +42,14 @@ class ok_stc(Variable):
         has_dependents = num_dependents > 0
         elderly_head = tax_unit("age_head", period) >= p.age_minimum
         elderly_spouse = tax_unit("age_spouse", period) >= p.age_minimum
-        elderly = elderly_head | elderly_spouse
+        has_elder = elderly_head | elderly_spouse
         disabled_head = tax_unit("head_is_disabled", period)
         disabled_spouse = tax_unit("spouse_is_disabled", period)
-        disabled = disabled_head | disabled_spouse
-        unit_eligible = has_dependents | elderly | disabled
+        has_disabled = disabled_head | disabled_spouse
+        unit_eligible = has_dependents | has_elder | has_disabled
         income_eligible2 = unit_eligible & (income <= p.income_limit2)
-        income_eligible = income_eligible1 | income_eligible2
         # determine overall eligibility
-        eligible = ~tanf_ineligible & income_eligible
+        eligible = ~tanf_ineligible & (income_eligible1 | income_eligible2)
         # calculate credit if eligible
         qualified_exemptions = tax_unit("num", period) + num_dependents
         return eligible * qualified_exemptions * p.amount

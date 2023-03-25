@@ -1,6 +1,7 @@
-description: Personal income sources counted as income for OK sales tax credit.
+description: Income sources counted as gross income for OK sales tax credit.
 values:
   2021-01-01:
+    # person-level income sources:
     - employment_income
     - self_employment_income
     - partnership_s_corp_income
@@ -21,15 +22,14 @@ values:
     - illicit_income
     - miscellaneous_income
     - ssi
-    - state_supplement  # for SSI
-    - wic
+    - state_supplement  # state SSI supplement
     - general_assistance
-    # PLUS: tax_unit variables (handled in formula):
-    # - earned_income_tax_credit
-    # - ok_eitc
+    # tax_unit-level income sources:
+    - earned_income_tax_credit
+    - ok_eitc
 
 metadata:
-  label: Personal income sources counted as income for OK sales tax credit
+  label: Income sources counted as gross income for OK sales tax credit
   reference:
   - title: 2021 Form 511 instructions
     href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
