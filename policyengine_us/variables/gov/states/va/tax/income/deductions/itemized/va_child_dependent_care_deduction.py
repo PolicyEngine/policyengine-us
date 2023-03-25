@@ -15,7 +15,7 @@ class va_child_dependent_care_deduction(Variable):
         amount = p.child_dependent_deduction
 
         return np.where(
-            dependents_count  > 2,
+            dependents_count > 2,
             2 * amount,
             dependents_count * amount,
         )
