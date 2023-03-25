@@ -12,14 +12,18 @@ class ok_ptc(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-H.pdf"
     )
     defined_for = StateCode.OK
-    """
-    def formula(tax_unit, period, parameters):
 
-    Any person 65 years of age or older or any totally disabled person
-    who is head of a household, a resident of and domiciled in this state
-    during the entire preceding calendar year, and whose gross household
-    income for such year does not exceed $12,000, may file a claim for
-    property tax relief on the amount of property taxes paid on the
-    household they occupied during the preceding calendar year.
-    The credit may not exceed $200. Claim must be made on Form 538-H.
-    """
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ok.tax.income.credits.property_tax
+        # determine eligibility
+        elderly_head = tax_unit("age_head", period) >= p.age_minimum
+        elderly_spouse = tax_unit("age_spouse", period) >= p.age_minimum
+        disabled_head = tax_unit("head_is_disabled", period)
+        unit_eligible = elderly_head | elderly_spouse | disabled_head
+        income = tax_unit("ok_gross_income", period)
+        income_eligible = income <= p.income_limit
+        eligible = unit_eligible & income_eligible
+        # calculate credit if eligible
+        tax = add(tax_unit, period, ["real_estate_taxes"])
+        excess_property_tax = max_(0, tax - p.income_fraction * income)
+        return eligible * min_(p.maximum_credit, excess_property_tax)
