@@ -5,7 +5,7 @@
     age_head: 60
     age_spouse: 65
     tax_unit_dependents: 2
-    employment_income: 21_000
+    ok_gross_income: 21_000
     state_code: OK
   output:
     ok_stc: 4 * 40
@@ -17,7 +17,7 @@
     age_head: 60
     age_spouse: 60
     tax_unit_dependents: 2
-    employment_income: 51_000
+    ok_gross_income: 51_000
     state_code: OK
   output:
     ok_stc: 0
@@ -28,7 +28,7 @@
     filing_status: HEAD_OF_HOUSEHOLD
     age_head: 30
     tax_unit_dependents: 1
-    employment_income: 18_000
+    ok_gross_income: 18_000
     ok_tanf: 2_000
     state_code: OK
   output:

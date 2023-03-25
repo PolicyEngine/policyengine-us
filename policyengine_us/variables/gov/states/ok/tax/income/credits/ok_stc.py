@@ -16,25 +16,10 @@ class ok_stc(Variable):
     def formula(tax_unit, period, parameters):
         # for details, see Form 538-S in the 511 packets referenced above
         p = parameters(period).gov.states.ok.tax.income.credits.sales_tax
-        person = tax_unit.members
         # determine TANF ineligibility
         tanf_ineligible = add(tax_unit, period, ["ok_tanf"]) > 0
-        # compute comprehensive gross income for all people in tax unit
-        tax_unit_income_sources = [
-            "earned_income_tax_credit",
-            "ok_eitc",
-        ]
-        person_income_sources = [
-            source
-            for source in p.income_sources
-            if source not in tax_unit_income_sources
-        ]
-        income = 0
-        for source in person_income_sources:
-            # income includes only positive amounts (i.e., no losses)
-            income += max_(0, add(person, period, [source]))
-        income += add(tax_unit, period, tax_unit_income_sources)
         # determine income eligibility in two alternative ways
+        income = tax_unit("ok_gross_income", period)
         # ... first way
         income_eligible1 = income <= p.income_limit1
         # ... second way
