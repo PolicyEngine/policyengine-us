@@ -1,0 +1,4 @@
+- bump: patch
+  changes:
+    fixed:
+    - SLSPC not included in the CPS microdata, causing a 2x runtime.
