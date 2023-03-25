@@ -12,21 +12,31 @@ class ok_itemized_deductions(Variable):
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
     )
     defined_for = StateCode.OK
-    """
-    NOTE: OK itemization requires federal itemization
-    NOTE: no loss deductions allowed
-    NOTE: property tax deductions limited by federal rules
-    NOTE: limited to $17K with exceptions for medical and charity
 
     def formula(tax_unit, period, parameters):
-        # compute itemized deduction maximum
-        p = parameters(period).gov.irs.deductions
-        itm_deds = [
+        # follows Schedule 511-D in references
+        itemizing = tax_unit("tax_unit_itemizes", period)
+        # calculate US itemized deductions less state non-property taxes
+        us_p = parameters(period).gov.irs.deductions
+        items = [
             deduction
-            for deduction in p.itemized_deductions
+            for deduction in us_p.itemized_deductions
             if deduction not in ["salt_deduction"]
         ]
-        federal_itm_deds_less_salt = add(tax_unit, period, itm_deds)
-        uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return federal_itm_deds_less_salt + uncapped_property_taxes
-    """
+        us_itm_deds_less_salt = add(tax_unit, period, items)
+        filing_status = tax_unit("filing_status", period)
+        capped_property_taxes = min_(
+            add(tax_unit, period, ["real_estate_taxes"]),
+            us_p.itemized.salt_and_real_estate.cap[filing_status],
+        )
+        ok_itm_deds = us_itm_deds_less_salt + capped_property_taxes
+        # apply partial limit on OK itemized deductions
+        exempt_items = [
+            "medical_expense_deduction",
+            "charitable_deduction",
+        ]
+        exempt_deds = add(tax_unit, period, exempt_items)
+        net_deds = max_(0, ok_itm_deds - exempt_deds)
+        ok_p = parameters(period).gov.states.ok.tax.income.deductions
+        limited_net_deds = min_(net_deds, ok_p.itemized.limit)
+        return exempt_deds + limited_net_deds

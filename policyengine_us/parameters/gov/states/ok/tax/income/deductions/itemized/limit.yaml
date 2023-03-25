@@ -1,13 +1,11 @@
-description: OK refundable credits.
+description: OK itemized deduction limit.
 values:
-  2021-01-01:
-    - ok_ptc  # OK low-income property tax credit
-    - ok_stc  # OK sales tax relief credit
-
+  2021-01-01: 17_000
 
 metadata:
-  unit: variable
-  label: OK refundable credits
+  period: year
+  unit: USD
+  label: OK itemized deduction limit
   reference:
   - title: 2021 Form 511 instructions
     href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
