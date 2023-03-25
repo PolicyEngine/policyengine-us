@@ -40,8 +40,9 @@ class ok_stc(Variable):
         disabled = disabled_head | disabled_spouse
         unit_eligible = has_dependents | elderly | disabled
         income_eligible2 = unit_eligible & (income <= p.income_limit2)
-        # ... eligible for credit either way
-        eligible = income_eligible1 | income_eligible2
+        income_eligible = income_eligible1 | income_eligible2
+        # determine overall eligibility
+        eligible = ~tanf_ineligible & income_eligible
         # calculate credit if eligible
         qualified_exemptions = tax_unit("num", period) + num_dependents
         return eligible * qualified_exemptions * p.amount

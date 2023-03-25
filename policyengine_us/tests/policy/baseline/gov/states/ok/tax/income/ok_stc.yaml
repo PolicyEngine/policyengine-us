@@ -21,3 +21,15 @@
     state_code: OK
   output:
     ok_stc: 0
+
+- name: OK sales tax credit unit test 3
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    age_head: 30
+    tax_unit_dependents: 1
+    employment_income: 18_000
+    ok_tanf: 2_000
+    state_code: OK
+  output:
+    ok_stc: 0
