@@ -17,13 +17,13 @@ class ok_chc(Variable):
         p = parameters(period).gov.states.ok.tax.income.credits
         # determine AGI eligibility
         us_agi = tax_unit("adjusted_gross_income", period)
-        agi_eligible = us_agi <= p.child_agi_limit
+        agi_eligible = us_agi <= p.child.agi_limit
         # determine OK cdcc amount
         us_cdcc = tax_unit("cdcc", period)
-        ok_cdcc = us_cdcc * p.child_cdcc_fraction
+        ok_cdcc = us_cdcc * p.child.cdcc_fraction
         # determine OK ctc amount
         us_ctc = tax_unit("ctc", period)
-        ok_ctc = us_ctc * p.child_ctc_fraction
+        ok_ctc = us_ctc * p.child.ctc_fraction
         # determine prorated fraction
         ok_agi = tax_unit("ok_agi", period)
         prorate = min_(1, max_(0, ok_agi / us_agi))
