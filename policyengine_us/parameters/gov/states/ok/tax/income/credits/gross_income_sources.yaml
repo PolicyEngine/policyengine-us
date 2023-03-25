@@ -1,7 +1,6 @@
 description: Income sources counted as gross income for OK sales tax credit.
 values:
   2021-01-01:
-    # person-level income sources:
     - employment_income
     - self_employment_income
     - partnership_s_corp_income
@@ -24,7 +23,6 @@ values:
     - ssi
     - state_supplement  # state SSI supplement
     - general_assistance
-    # tax_unit-level income sources:
     - earned_income_tax_credit
     - ok_eitc
 

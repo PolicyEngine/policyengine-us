@@ -15,20 +15,9 @@ class ok_gross_income(Variable):
 
     def formula(tax_unit, period, parameters):
         # compute comprehensive gross income for all people in tax unit
-        tax_unit_income_sources = [
-            "earned_income_tax_credit",
-            "ok_eitc",
-        ]
-        p = parameters(period).gov.states.ok.tax.income.credits
-        person_income_sources = [
-            source
-            for source in p.gross_income_sources
-            if source not in tax_unit_income_sources
-        ]
-        person = tax_unit.members
+        p = parameters(period).gov.states.ok.tax.income
         income = 0
-        for source in person_income_sources:
-            # income includes only positive amounts (i.e., no losses)
-            income += max_(0, add(person, period, [source]))
-        income += add(tax_unit, period, tax_unit_income_sources)
+        for source in p.credits.gross_income_sources:
+            # gross income includes only positive amounts (i.e., no losses)
+            income += max_(0, add(tax_unit, period, [source]))
         return income
