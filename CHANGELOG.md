@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.255.0] - 2023-03-26 15:00:14
+
+### Added
+
+- Alabama income tax rate structure
+
 ## [0.254.1] - 2023-03-25 11:09:53
 
 ### Fixed
@@ -3273,6 +3279,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.255.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.254.1...0.255.0
 [0.254.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.254.0...0.254.1
 [0.254.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.253.0...0.254.0
 [0.253.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.252.0...0.253.0
