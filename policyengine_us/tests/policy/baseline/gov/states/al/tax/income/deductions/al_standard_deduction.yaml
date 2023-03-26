@@ -14,6 +14,17 @@
     al_taxable_income: 50_000
     filing_status: JOINT
   output:
-  # 50000-25500=24500/500-49*175=8575
-  # 8500-8575=-25. standard deduction shall not be less than 5_000 for joint filler
+    # 50000-25500=24500/500-49*175=8575
+    # 8500-8575=-25. standard deduction shall not be less than 5_000 for joint filler
     al_standard_deduction: 5_000
+
+- name: Joint filer,30_000
+  period: 2022
+  input:
+    state_code: AL
+    al_taxable_income: 30_001
+    filing_status: JOINT
+  output:
+    # 30_000-25_500=4_501/500-9*175=1_575
+    # 8_500-1_575=6_925
+    al_standard_deduction: 6_925
