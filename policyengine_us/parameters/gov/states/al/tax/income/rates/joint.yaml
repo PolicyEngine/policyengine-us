@@ -1,0 +1,25 @@
+description: Alabama taxes joint filers at these rates by taxable income.
+
+brackets:
+ - threshold:
+     1983-01-01: 0
+   rate:
+     1983-01-01: 0.02
+ - threshold:
+     1983-01-01: 1_000
+   rate:
+     1983-01-01: 0.04
+ - threshold:
+     1983-01-01: 6_000
+   rate:
+     1983-01-01: 0.05
+ 
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Alabama joint income tax rate
+  reference:
+  - title: The Code of Alabama 1975 Section 40-18-5
+    href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
