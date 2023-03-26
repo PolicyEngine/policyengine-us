@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "VA State income tax rate"
+    label = "VA income tax before credits"
     unit = USD
     definition_period = YEAR
     reference = (
