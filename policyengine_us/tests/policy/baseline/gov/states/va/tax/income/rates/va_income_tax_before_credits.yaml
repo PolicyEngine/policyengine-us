@@ -13,7 +13,7 @@
     va_taxable_income: 4_000
     state_code: VA
   output:
-    # 3000 * 0.02 + (4000-3000) * 0.03
+    # 60 + (4000-3000) * 0.03
     va_income_tax_before_credits: 90
 
 - name: VA income tax rates - taxable income from $5,001 to $17,000

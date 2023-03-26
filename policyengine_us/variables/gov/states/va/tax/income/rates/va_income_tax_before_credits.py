@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import round_
 
 
 class va_income_tax_before_credits(Variable):
@@ -15,4 +16,5 @@ class va_income_tax_before_credits(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("va_taxable_income", period)
         p = parameters(period).gov.states.va.tax.income.rates
-        return p.calc(taxable_income)
+        va_income_tax_before_credits = p.calc(taxable_income)
+        return round_(va_income_tax_before_credits)
