@@ -13,7 +13,7 @@ class al_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         gov = parameters(period).gov
-        al_standard_deductions_params_path = gov.states.al.tax.income.phase_out
+        al_standard_deductions_params_path = gov.states.al.tax.income
         filing_status = tax_unit("filing_status", period)
         base_amount = al_standard_deductions_params_path.phase_out.base_amount[
             filing_status
