@@ -39,4 +39,4 @@ class ok_itemized_deductions(Variable):
         net_deds = max_(0, ok_itm_deds - exempt_deds)
         ok_p = parameters(period).gov.states.ok.tax.income.deductions
         limited_net_deds = min_(net_deds, ok_p.itemized.limit)
-        return exempt_deds + limited_net_deds
+        return itemizing * (exempt_deds + limited_net_deds)
