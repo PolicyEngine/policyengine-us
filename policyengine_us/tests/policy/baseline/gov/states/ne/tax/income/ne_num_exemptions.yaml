@@ -1,0 +1,8 @@
+- name: Married couple with three dependents
+  period: 2021
+  input:
+    num: 2
+    tax_unit_dependents: 3
+    state_code: NE
+  output:
+    ne_num_exemptions: 5
