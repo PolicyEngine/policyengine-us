@@ -11,4 +11,3 @@ class va_taxable_income(Variable):
         "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
     )
     defined_for = StateCode.VA
-
