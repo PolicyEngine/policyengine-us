@@ -21,7 +21,7 @@ class childcare_deduction(Variable):
         p = parameters(period).gov.states.md.tanf.income.deductions.earned
         childcare_deduction = select(
             # First arg: self employed or not
-            [earned_income>0, self_employment_income>0],
+            [earned_income > 0, self_employment_income > 0],
             # Second arg: multiply by the percent deduction (0.2, 0.5)
             [earned_income * p.new, self_employment_income * p.self_employed],
             # Third arg: default value to return if none of the conditions are True
