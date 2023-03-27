@@ -18,9 +18,9 @@ class ne_agi_subtractions(Variable):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ne.tax.income.agi.subtractions
         oasdi_fraction = where(
-            fagi <= p.social_security.threshold(filing_status),
+            fagi <= p.social_security.threshold[filing_status],
             1.0,
-            p.social_security.fraction
+            p.social_security.fraction,
         )
         taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
         return taxable_oasdi * oasdi_fraction
