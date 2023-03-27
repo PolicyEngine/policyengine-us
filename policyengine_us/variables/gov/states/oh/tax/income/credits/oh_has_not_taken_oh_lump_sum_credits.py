@@ -12,6 +12,3 @@ class oh_has_not_taken_oh_lump_sum_credits(Variable):
         "https://codes.ohio.gov/ohio-revised-code/section-5747.055",
     )
     defined_for = StateCode.OH
-
-    def formula(person, period, parameters):
-        return 1
