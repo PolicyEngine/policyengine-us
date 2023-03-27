@@ -1,0 +1,24 @@
+description:  Phase out increment of the Alabama standard deductions.
+metadata:
+  label: Alabama standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: The Code of Alabama 1975 Section 40-18-15(b)(4)
+    href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm
+  - title: 2022 Alabama Department of Revenue -Form 40 Booklet Page9
+    href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf
+    
+
+JOINT:
+  2022-01-01: 500
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 500
+WIDOW:
+  2022-01-01: 500
+SINGLE:
+  2022-01-01: 500
+SEPARATE:
+  2022-01-01: 250
