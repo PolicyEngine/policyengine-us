@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class va_child_dependent_care_deduction(Variable):
@@ -15,7 +14,7 @@ class va_child_dependent_care_deduction(Variable):
         dependents_count = tax_unit("tax_unit_dependents", period)
         amount = p.child_dependent_deduction
 
-        return np.where(
+        return where(
             dependents_count > 2,
             2 * amount,
             dependents_count * amount,
