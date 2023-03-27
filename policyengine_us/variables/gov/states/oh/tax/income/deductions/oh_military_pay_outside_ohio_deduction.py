@@ -11,5 +11,5 @@ class oh_military_pay_outside_ohio_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        person_deduction = person("military_service_income", period) #? 
+        person_deduction = person("military_service_income", period)  # ?
         return tax_unit.sum(person_deduction)

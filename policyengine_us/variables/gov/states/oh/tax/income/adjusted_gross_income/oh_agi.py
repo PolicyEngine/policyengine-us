@@ -20,5 +20,5 @@ class oh_agi(Variable):
         "investment_in_529_plan",
         "pell_grant",
         "educator_expense",
-        "disability_benefits"
+        "disability_benefits",
     ]
