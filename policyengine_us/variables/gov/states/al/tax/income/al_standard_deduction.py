@@ -12,16 +12,16 @@ class al_standard_deduction(Variable):
     defined_for = StateCode.AL
 
     def formula(tax_unit, period, parameters):
-        gov = parameters(period).gov
-        p = gov.states.al.tax.income.deductions.standard
+        p = parameters(period).gov.states.al.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        base_amount = p.base_amount[filing_status]
+        base_amount = p.amount.max[filing_status]
         increment = p.phase_out.increment[filing_status]
-        min_amount = p.phase_out.min_amount[filing_status]
+        min_amount = p.amount.min[filing_status]
         rate = p.phase_out.rate[filing_status]
         threshold = p.phase_out.threshold[filing_status]
-        al_taxable_income = tax_unit("al_taxable_income", period)
-        excess_income = max(0, al_taxable_income - threshold)
+        al_agi = tax_unit("al_agi", period)
+        # No "or fraction thereof" clause, so use integer (floor) division rather than ceiling.
+        excess_income = max(0, al_agi - threshold)
         increments = excess_income // increment
         reduction = increments * rate
 

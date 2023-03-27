@@ -1,28 +1,28 @@
-- name: Single filer, 6000 AGI 
+- name: Single filer, with $6,000 taxable income
   period: 2022
   input:
     state_code: AL
-    al_taxable_income: 6_000
+    al_agi: 6_000
     filing_status: SINGLE
   output:
     al_standard_deduction: 3_000
 
-- name: Joint filer,50_000
+- name: Joint filer,with $50,000 taxable income
   period: 2022
   input:
     state_code: AL
-    al_taxable_income: 50_000
+    al_agi: 50_000
     filing_status: JOINT
   output:
     # 50000-25500=24500/500-49*175=8575
     # 8500-8575=-25. standard deduction shall not be less than 5_000 for joint filler
     al_standard_deduction: 5_000
 
-- name: Joint filer,30_000
+- name: Joint filer,with $30,001 taxable income
   period: 2022
   input:
     state_code: AL
-    al_taxable_income: 30_001
+    al_agi: 30_001
     filing_status: JOINT
   output:
     # 30_000-25_500=4_501/500-9*175=1_575
