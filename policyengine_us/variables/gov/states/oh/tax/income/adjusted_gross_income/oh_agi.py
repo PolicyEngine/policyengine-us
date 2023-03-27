@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_adjusted_gross_income(Variable):
+class oh_agi(Variable):
     value_type = float
     entity = Person
     label = "Ohio adjusted gross income"
@@ -13,7 +13,7 @@ class oh_adjusted_gross_income(Variable):
     )
     defined_for = StateCode.OH
 
-    adds = []
+    adds = ["adjusted_gross_income"]
     subtracts = [
         "oh_military_pay_outside_ohio_deduction",
         "oh_uniformed_services_retirement_income_deduction",
