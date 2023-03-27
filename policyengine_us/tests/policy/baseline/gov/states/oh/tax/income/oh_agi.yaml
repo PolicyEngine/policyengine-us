@@ -1,0 +1,14 @@
+- name: $100 federal agi, $10 add backs, $10 deductions, $10 exemptions
+  period: 2021
+  input:
+    state_code: OH
+    adjusted_gross_income: 10_000
+    oh_military_pay_outside_ohio_deduction: 100
+    oh_uniformed_services_retirement_income_deduction: 100
+    investment_in_529_plan: 100
+    pell_grant: 100
+    educator_expense: 100
+    disability_benefits: 100
+  output:
+    oh_agi: 9_400
+
