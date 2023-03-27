@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.258.0] - 2023-03-27 20:36:50
+
+### Added
+
+- Maine EITC.
+
 ## [0.257.1] - 2023-03-27 18:48:24
 
 ### Added
@@ -3297,6 +3303,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.258.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.257.1...0.258.0
 [0.257.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.257.0...0.257.1
 [0.257.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.256.0...0.257.0
 [0.256.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.255.0...0.256.0
