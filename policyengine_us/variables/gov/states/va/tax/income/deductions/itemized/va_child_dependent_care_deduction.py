@@ -8,6 +8,7 @@ class va_child_dependent_care_deduction(Variable):
     label = "VA child/dependent exemption"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.VA
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.va.tax.income.deductions.itemized
