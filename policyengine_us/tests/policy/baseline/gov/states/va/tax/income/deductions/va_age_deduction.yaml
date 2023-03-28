@@ -1,0 +1,41 @@
+- name: If no in Virginia, no deduction.
+  period: 2022
+  input:
+    state_code: WA
+    AFAGI: 60_000
+  output:
+    va_age_deduction: 0
+    
+- name: If in Virginia,filed seperately, and the taxpayer was born before 01/01/1939.
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 50_000
+  output:
+    va_age_deduction: 12_000
+
+- name: If in Virginia, filed jointly, and both taxpayers were born before 01/01/1939.
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 100_000
+  output:
+    va_age_deduction: 24_000
+
+- name: If in Virginia, filed seperately, and the taxpayer was born between 01/02/1939 and 01/01/1958.
+  period: 2022
+  AFAGI: 60_000
+  input:
+    state_code: VA
+  output:
+   # deduction_amount = $12,000 - (AFAGI - $50,000)
+    va_age_deduction: 2_000
+
+- name: If in Virginia, filed jointly, and both taxpayers were born between 01/02/1939 and 01/01/1958.
+  period: 2022
+  AFAGI: 90_000
+  input:
+    state_code: VA
+  output:
+    # deduction_amount = $24,000 - (AFAGI - $75,000)
+    va_age_deduction: 9_000
