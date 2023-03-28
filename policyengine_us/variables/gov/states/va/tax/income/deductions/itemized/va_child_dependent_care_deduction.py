@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_child_dependent_care_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "VA child/dependent exemption"
+    label = "Virginia child and dependent care deduction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
@@ -14,8 +14,4 @@ class va_child_dependent_care_deduction(Variable):
         dependents_count = tax_unit("tax_unit_dependents", period)
         amount = p.child_dependent_deduction
 
-        return where(
-            dependents_count > 2,
-            2 * amount,
-            dependents_count * amount,
-        )
+        return amount * where(dependents_count>1, 2, 1)
