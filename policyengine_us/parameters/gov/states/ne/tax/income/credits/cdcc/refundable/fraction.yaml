@@ -1,4 +1,5 @@
 description: NE refundable cdcc as fraction of federal cdcc amount.
+brackets:
   - threshold:
       2021-01-01: 0
     amount:
@@ -39,7 +40,7 @@ description: NE refundable cdcc as fraction of federal cdcc amount.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
-  rate_unit: /1
+  amount_unit: /1
   period: year
   label: NE refundable cdcc as fraction of federal cdcc amount
   reference:

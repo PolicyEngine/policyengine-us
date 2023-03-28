@@ -20,5 +20,5 @@ class ne_cdcc_refundable(Variable):
         agi_eligible = us_agi <= p.cdcc.agi_threshold
         # determine NE refundable cdcc amount
         us_cdcc = tax_unit("cdcc", period)
-        ne_cdcc = us_cdcc * p.cdcc.refundable.fraction[us_agi]
+        ne_cdcc = us_cdcc * p.cdcc.refundable.fraction.calc(us_agi)
         return agi_eligible * ne_cdcc
