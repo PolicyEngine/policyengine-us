@@ -13,6 +13,6 @@ class me_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("me_agi", period)
-        deductions = tax_unit("me_deduction", period)
+        deductions = tax_unit("me_deductions", period)
         exemptions = tax_unit("me_exemptions", period)
         return max_(0, agi - deductions - exemptions)
