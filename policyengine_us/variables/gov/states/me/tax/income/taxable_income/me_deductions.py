@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class me_deduction(Variable):
+class me_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maine deduction"
+    label = "Maine income deductions"
     unit = USD
     definition_period = YEAR
     reference = ""
