@@ -31,5 +31,6 @@
     va_taxable_income: 20_000
     state_code: VA
   output:
-    # 720 + round(3_000 * 0.0575)
+    # 720 + 3_000 * 0.0575 = 892.5
+    # 720 + round(3_000 * 0.0575) = 893
     va_income_tax_before_credits: 893
