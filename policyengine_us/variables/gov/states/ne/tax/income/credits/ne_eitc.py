@@ -15,5 +15,5 @@ class ne_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         us_eitc = tax_unit("earned_income_tax_credit", period)
-        p = parameters(period).gov.states.ne.tax.income.credits.earned_income
-        return p.eitc_fraction * us_eitc
+        p = parameters(period).gov.states.ne.tax.income.credits
+        return us_eitc * p.eitc.fraction
