@@ -17,7 +17,7 @@ class ne_cdcc_nonrefundable(Variable):
         p = parameters(period).gov.states.ne.tax.income.credits
         # determine AGI eligibility
         us_agi = tax_unit("adjusted_gross_income", period)
-        agi_eligible = us_agi <= p.cdcc.agi_threshold
+        agi_eligible = us_agi > p.cdcc.agi_threshold
         # determine NE cdcc amount
         us_cdcc = tax_unit("cdcc", period)
         ne_cdcc = us_cdcc * p.cdcc.nonrefundable.fraction
