@@ -14,4 +14,4 @@ class va_child_dependent_care_deduction(Variable):
         dependents_count = tax_unit("tax_unit_dependents", period)
         amount = p.child_dependent_deduction
 
-        return amount * where(dependents_count>1, 2, 1)
+        return amount * where(dependents_count > 1, 2, 1)
