@@ -5,6 +5,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.260.1] - 2023-03-29 20:36:52
+
+### Fixed
+
+- survey-enhance now a dev dependency.
+
+## [0.260.0] - 2023-03-28 22:21:13
+
+### Added
+
+- New Jersey dependent exemption.
+
+## [0.259.1] - 2023-03-28 04:45:32
+
+## [0.259.0] - 2023-03-27 20:40:18
+
+### Changed
+
+- Add Colorado EITC.
+
+## [0.258.0] - 2023-03-27 20:36:50
+
+### Added
+
+- Maine EITC.
+
+## [0.257.1] - 2023-03-27 18:48:24
+
+### Added
+
+- Calibrated CPS basic structure.
+
+## [0.257.0] - 2023-03-27 02:12:55
+
+### Added
+
+- Alabama standard deductions
+
+## [0.256.0] - 2023-03-26 15:17:24
+
+### Added
+
+- Alabama dependent exemption
+
+## [0.255.0] - 2023-03-26 15:00:14
+
+### Added
+
+- Alabama income tax rate structure
+
+## [0.254.1] - 2023-03-25 11:09:53
+
+### Fixed
+
+- SLSPC not included in the CPS microdata, causing a 2x runtime.
+
+## [0.254.0] - 2023-03-24 04:59:06
+
+### Added
+
+- New Jersey blind or disabled exemption.
+
+## [0.253.0] - 2023-03-24 04:33:15
+
+### Added
+
+- Virginia standard deduction.
+
+## [0.252.0] - 2023-03-23 10:27:47
+
+### Changed
+
+- PolicyEngine Core data updates handled.
+
 ## [0.251.1] - 2023-03-21 00:52:11
 
 ### Changed
@@ -3249,6 +3323,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.260.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.260.0...0.260.1
+[0.260.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.259.1...0.260.0
+[0.259.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.259.0...0.259.1
+[0.259.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.258.0...0.259.0
+[0.258.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.257.1...0.258.0
+[0.257.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.257.0...0.257.1
+[0.257.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.256.0...0.257.0
+[0.256.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.255.0...0.256.0
+[0.255.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.254.1...0.255.0
+[0.254.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.254.0...0.254.1
+[0.254.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.253.0...0.254.0
+[0.253.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.252.0...0.253.0
+[0.252.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.251.1...0.252.0
 [0.251.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.251.0...0.251.1
 [0.251.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.250.0...0.251.0
 [0.250.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.249.0...0.250.0

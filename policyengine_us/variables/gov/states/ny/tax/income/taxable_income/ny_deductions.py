@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ny_deduction(Variable):
+class ny_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NY deduction"
+    label = "NY income deductions"
     unit = USD
     definition_period = YEAR
     reference = "https://www.nysenate.gov/legislation/laws/TAX/613"

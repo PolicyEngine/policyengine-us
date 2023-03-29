@@ -2727,3 +2727,68 @@
     changed:
     - Add California to modelled_policies.yaml so it shows up in population impacts.
   date: 2023-03-21 00:52:11
+- bump: minor
+  changes:
+    changed:
+    - PolicyEngine Core data updates handled.
+  date: 2023-03-23 10:27:47
+- bump: minor
+  changes:
+    added:
+    - Virginia standard deduction.
+  date: 2023-03-24 04:33:15
+- bump: minor
+  changes:
+    added:
+    - New Jersey blind or disabled exemption.
+  date: 2023-03-24 04:59:06
+- bump: patch
+  changes:
+    fixed:
+    - SLSPC not included in the CPS microdata, causing a 2x runtime.
+  date: 2023-03-25 11:09:53
+- bump: minor
+  changes:
+    added:
+    - Alabama income tax rate structure
+  date: 2023-03-26 15:00:14
+- bump: minor
+  changes:
+    added:
+    - Alabama dependent exemption
+  date: 2023-03-26 15:17:24
+- bump: minor
+  changes:
+    added:
+    - Alabama standard deductions
+  date: 2023-03-27 02:12:55
+- bump: patch
+  changes:
+    added:
+    - Calibrated CPS basic structure.
+  date: 2023-03-27 18:48:24
+- bump: minor
+  changes:
+    added:
+    - Maine EITC.
+  date: 2023-03-27 20:36:50
+- bump: minor
+  changes:
+    changed:
+    - Add Colorado EITC.
+  date: 2023-03-27 20:40:18
+- bump: patch
+  changes:
+    chaged:
+    - Made NY deduction plural (ny_deductions).
+  date: 2023-03-28 04:45:32
+- bump: minor
+  changes:
+    added:
+    - New Jersey dependent exemption.
+  date: 2023-03-28 22:21:13
+- bump: patch
+  changes:
+    fixed:
+    - survey-enhance now a dev dependency.
+  date: 2023-03-29 20:36:52
