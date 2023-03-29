@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="0.259.0",
+    version="0.260.1",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -45,7 +45,6 @@ setup(
         "tables",
         "tabulate",
         "tqdm",
-        "survey-enhance",
     ],
     extras_require={
         "dev": [
@@ -63,6 +62,7 @@ setup(
             "sphinx-math-dollar",
             "wheel",
             "yaml-changelog",
+            "survey-enhance",
         ],
     },
     # Windows CI requires Python 3.9.
