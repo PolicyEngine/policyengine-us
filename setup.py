@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="0.257.0",
+    version="0.260.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -45,6 +45,7 @@ setup(
         "tables",
         "tabulate",
         "tqdm",
+        "survey-enhance",
     ],
     extras_require={
         "dev": [
