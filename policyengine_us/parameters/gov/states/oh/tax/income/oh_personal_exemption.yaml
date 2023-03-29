@@ -1,5 +1,5 @@
 description: Ohio personal exemption amount
-values:
+brackets:
   - threshold:
       2022-01-01: 0
     amount:
@@ -12,7 +12,6 @@ values:
       2022-01-01: 80_000
     amount:
       2022-01-01: 1_900
-
   metadata:
   threshold unit: currency-USD
   amount unit: currency-USD
