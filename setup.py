@@ -56,6 +56,7 @@ setup(
             "linecheck",
             "markupsafe",
             "plotly",
+            "pydata-sphinx-theme==0.13.1",
             "setuptools",
             "sphinx",
             "sphinx-argparse",
