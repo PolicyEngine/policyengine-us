@@ -18,12 +18,12 @@ class ks_fstc(Variable):
         # determine if tax unit is eligible for credit
         person = tax_unit.members
         # ... any child dependents?
-        num_all_dependents = tax_unit("tax_unit_dependents", period)
+        count_all_dependents = tax_unit("tax_unit_dependents", period)
         child_age = p.food_sales_tax.child_age
         is_child = person("age", period) < child_age
         is_child_dependent = person("is_tax_unit_dependent", period) & is_child
-        num_child_dependents = tax_unit.sum(is_child_dependent)
-        eligible_child = num_child_dependents > 0
+        count_child_dependents = tax_unit.sum(is_child_dependent)
+        has_eligible_child = count_child_dependents > 0
         # ... any elderly adults?
         min_adult_age = p.food_sales_tax.min_adult_age
         elderly_head = tax_unit("age_head", period) >= min_adult_age
@@ -37,13 +37,15 @@ class ks_fstc(Variable):
             | tax_unit("spouse_is_disabled", period)
         )
         # ... any eligibility for credit?
-        eligible_unit = eligible_child | eligible_age | eligible_blind_disabled
+        eligible_unit = (
+            has_eligible_child | eligible_age | eligible_blind_disabled
+        )
         # determine if income eligible for credit
         fagi = tax_unit("adjusted_gross_income", period)
         eligible_income = fagi <= p.food_sales_tax.agi_limit
         # compute credit amount
         eligible = eligible_unit & eligible_income
-        num_exemptions = tax_unit("ks_num_exemptions", period)
-        num_old_dependents = num_all_dependents - num_child_dependents
-        num_fstc_exemptions = max_(0, num_exemptions - num_old_dependents)
-        return eligible * num_fstc_exemptions * p.food_sales_tax.amount
+        exemptions = tax_unit("ks_num_exemptions", period)
+        old_dependents = count_all_dependents - count_child_dependents
+        fstc_exemptions = max_(0, exemptions - old_dependents)
+        return eligible * fstc_exemptions * p.food_sales_tax.amount

@@ -1,17 +1,17 @@
 description: KS income tax rates for joint filing units
 brackets:
   - threshold:
-      2021-01-01: 0
+      2018-01-01: 0
     rate:
-      2021-01-01: 0.031
+      2018-01-01: 0.031
   - threshold:
-      2021-01-01: 30_000
+      2018-01-01: 30_000
     rate:
-      2021-01-01: 0.0525
+      2018-01-01: 0.0525
   - threshold:
-      2021-01-01: 60_000
+      2018-01-01: 60_000
     rate:
-      2021-01-01: 0.057
+      2018-01-01: 0.057
 
 metadata:
   threshold_unit: currency_USD
@@ -24,3 +24,5 @@ metadata:
     href: https://www.ksrevenue.gov/pdf/ip21.pdf
   - title: 2022 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip22.pdf
+  - title: Kansas 2021 Statute Article 32 §79-32,110_k
+    href: http://www.kslegislature.org/li_2022/b2021_22/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/

@@ -14,6 +14,14 @@ class ks_itemized_deductions(Variable):
     defined_for = StateCode.KS
 
     def formula(tax_unit, period, parameters):
+        # 2021 Form K-40 instructions say this:
+        #   LINE 4 (Standard deduction or itemized deductions):
+        #   If you did not itemize your deductions on your federal return,
+        #   you may choose to itemize your deductions or claim the
+        #   standard deduction on your Kansas return whichever is to your
+        #   advantage.  If you itemized on your federal return, you may
+        #   either itemize or take the standard deduction on your Kansas
+        #   return, whichever is to your advantage.
         # compute itemized deduction maximum
         p = parameters(period).gov.irs.deductions
         itm_deds = [
