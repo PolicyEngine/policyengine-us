@@ -45,7 +45,6 @@ setup(
         "tables",
         "tabulate",
         "tqdm",
-        "survey-enhance",
     ],
     extras_require={
         "dev": [
@@ -63,6 +62,7 @@ setup(
             "sphinx-math-dollar",
             "wheel",
             "yaml-changelog",
+            "survey-enhance",
         ],
     },
     # Windows CI requires Python 3.9.
