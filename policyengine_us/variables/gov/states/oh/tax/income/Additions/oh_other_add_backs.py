@@ -7,6 +7,4 @@ class oh_other_add_backs(Variable):
     label = "OH other add backs"
     definition_period = YEAR
     documentation = ""
-    reference = (
-        ""
-    )
+    reference = ""

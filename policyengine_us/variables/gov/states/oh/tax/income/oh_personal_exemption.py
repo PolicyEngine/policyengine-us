@@ -17,6 +17,9 @@ class oh_personal_exemption(Variable):
         is_spouse = person("is_spouse", period)
         num_of_dependents = tax_unit.sum(is_dependent)
         has_spouse = add(tax_unit, period, ["is_tax_unit_spouse"]) > 0
-        personal_exemption_amount = parameters(period).gov.states.oh.tax.income.personal_exemption_amount
-        return  ((num_of_dependents+has_spouse+(is_tax_unit_head & ~is_dependent)) * personal_exemption_amount)
-    
+        personal_exemption_amount = parameters(
+            period
+        ).gov.states.oh.tax.income.personal_exemption_amount
+        return (
+            num_of_dependents + has_spouse + (is_tax_unit_head & ~is_dependent)
+        ) * personal_exemption_amount
