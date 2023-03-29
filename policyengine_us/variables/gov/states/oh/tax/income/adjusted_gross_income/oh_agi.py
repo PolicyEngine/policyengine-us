@@ -15,7 +15,7 @@ class oh_agi(Variable):
 
     adds = ["adjusted_gross_income"]
     subtracts = [
-        "oh_military_pay_outside_ohio_deduction",
+        # "oh_military_pay_outside_ohio_deduction",
         "oh_uniformed_services_retirement_income_deduction",
         "investment_in_529_plan",
         "pell_grant",
