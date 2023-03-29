@@ -16,5 +16,8 @@ class ks_num_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
+        joint = filing_status == statuses.JOINT
         hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
-        return tax_unit("tax_unit_size", period) + hoh
+        adults = where(joint | hoh, 2, 1)
+        dependents = tax_unit("tax_unit_dependents", period)
+        return adults + dependents
