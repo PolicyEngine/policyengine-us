@@ -6,13 +6,14 @@ class me_dependent_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maine dependents exemption deduction"
-    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
+    reference = (
+        "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-
         # First get total the number of dependents (line 1).
         num_dependents = tax_unit("tax_unit_dependents", period)
 
@@ -34,9 +35,9 @@ class me_dependent_exemption(Variable):
         # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
         excess = max_(me_agi - phaseout_start, 0)
         excess = ceil(excess / 1_000)
-        
+
         # Calculate the excess part phase out amount (line 7).
         phase_out_amount = excess * p.phaseout.step
 
         # Return the max exemption amount minus the phaseout amount (line 8).
-        return max(max_amount - phase_out_amount,0)
+        return max(max_amount - phase_out_amount, 0)
