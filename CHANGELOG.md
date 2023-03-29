@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.261.1] - 2023-03-29 23:22:36
+
+### Changed
+
+- Pin pydata-sphinx-theme==0.13.1 to fix jupyterbook build.
+
 ## [0.261.0] - 2023-03-29 23:06:13
 
 ### Added
@@ -3329,6 +3335,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.261.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.261.0...0.261.1
 [0.261.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.260.1...0.261.0
 [0.260.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.260.0...0.260.1
 [0.260.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.259.1...0.260.0
