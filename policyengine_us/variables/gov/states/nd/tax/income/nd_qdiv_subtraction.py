@@ -14,6 +14,9 @@ class nd_qdiv_subtraction(Variable):
         "https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf"
     )
     defined_for = StateCode.ND
-    """
+
     def formula(tax_unit, period, parameters):
-    """
+        qdiv = add(tax_unit, period, ["qualified_dividend_income"])
+        p = parameters(period).gov.states.nd.tax.income
+        fraction = p.taxable_income.subtractions.qdiv_fraction
+        return fraction * qdiv

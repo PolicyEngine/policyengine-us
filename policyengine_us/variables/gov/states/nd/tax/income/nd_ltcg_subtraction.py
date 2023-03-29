@@ -14,6 +14,11 @@ class nd_ltcg_subtraction(Variable):
         "https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf"
     )
     defined_for = StateCode.ND
-    """
+
     def formula(tax_unit, period, parameters):
-    """
+        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
+        stcg = add(tax_unit, period, ["short_term_capital_gains"])
+        net_ltcg = min_(ltcg, ltcg + stcg)
+        p = parameters(period).gov.states.nd.tax.income
+        fraction = p.taxable_income.subtractions.ltcg_fraction
+        return fraction * net_ltcg
