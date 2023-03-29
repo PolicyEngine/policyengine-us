@@ -14,4 +14,4 @@ class nd_additions(Variable):
         "https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf"
     )
     defined_for = StateCode.ND
-    adds = "gov.states.nd.tax.income.taxable_income.additions"
+    adds = "gov.states.nd.tax.income.taxable_income.additions.sources"
