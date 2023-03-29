@@ -19,7 +19,7 @@ class nj_dependents_attending_college_exemption(Variable):
         person = tax_unit.members
 
         # Get person under 22
-        dependent_age = person("age", period) <= p.age_threshold
+        is_qualifying_age = person("age", period) <= p.age_threshold
 
         # Get dependents in the members
         is_dependent = person("is_tax_unit_dependent", period)
@@ -29,7 +29,7 @@ class nj_dependents_attending_college_exemption(Variable):
 
         # Total number of qualifying dependents attending college
         qualifying_dependents = tax_unit.sum(
-            is_dependent * dependent_age * full_time_student
+            is_dependent * is_qualifying_age * full_time_student
         )
 
         # Get their regular exemption amount based on their filing status.
