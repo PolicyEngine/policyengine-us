@@ -1,6 +1,4 @@
 from policyengine_core.data import Dataset
-from survey_enhance.reweight import CalibratedWeights
-from .loss import Loss, calibration_parameters
 import numpy as np
 from pathlib import Path
 from typing import Type
@@ -43,6 +41,8 @@ class CalibratedCPS(Dataset):
 
     def generate(self):
         from .output_cps import OutputDataset
+        from survey_enhance.reweight import CalibratedWeights
+        from .loss import Loss, calibration_parameters
 
         input_dataset = OutputDataset.from_dataset(self.input_dataset)()
 
