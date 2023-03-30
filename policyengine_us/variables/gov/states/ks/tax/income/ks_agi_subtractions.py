@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_agi_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS AGI subtractions from federal AGI"
+    label = "Kansas AGI subtractions from federal AGI"
     unit = USD
     definition_period = YEAR
     reference = (

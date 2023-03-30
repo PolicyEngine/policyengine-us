@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS refundable EITC amount"
+    label = "Kansas refundable EITC amount"
     unit = USD
     definition_period = YEAR
     reference = (

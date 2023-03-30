@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS refundable income tax credits"
+    label = "Kansas refundable income tax credits"
     unit = USD
     definition_period = YEAR
     reference = (

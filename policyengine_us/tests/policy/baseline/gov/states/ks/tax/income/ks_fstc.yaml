@@ -4,7 +4,7 @@
     age_head: 56
     blind_head: false
     adjusted_gross_income: 30_000
-    ks_num_exemptions: 3
+    ks_count_exemptions: 3
     state_code: KS
   output:
     ks_fstc: 125 * 3
@@ -15,7 +15,7 @@
     age_head: 54
     blind_head: true
     adjusted_gross_income: 30_000
-    ks_num_exemptions: 1
+    ks_count_exemptions: 1
     state_code: KS
   output:
     ks_fstc: 125 * 1
@@ -26,7 +26,7 @@
     age_head: 54
     blind_head: false
     adjusted_gross_income: 30_000
-    ks_num_exemptions: 1
+    ks_count_exemptions: 1
     state_code: KS
   output:
     ks_fstc: 0  # tax unit is ineligible
@@ -37,7 +37,7 @@
     age_head: 56
     blind_head: false
     adjusted_gross_income: 31_000
-    ks_num_exemptions: 3
+    ks_count_exemptions: 3
     state_code: KS
   output:
     ks_fstc: 0  # income ineligible

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_taxable_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS taxable income"
+    label = "Kansas taxable income"
     unit = USD
     definition_period = YEAR
     reference = (

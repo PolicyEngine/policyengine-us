@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS standard deduction"
+    label = "Kansas standard deduction"
     unit = USD
     definition_period = YEAR
     reference = (

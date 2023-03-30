@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ks_num_exemptions(Variable):
+class ks_count_exemptions(Variable):
     value_type = float
     entity = TaxUnit
     label = "number of KS exemptions"

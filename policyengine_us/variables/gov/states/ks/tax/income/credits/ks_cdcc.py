@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS child and dependent care expenses credit"
+    label = "Kansas child and dependent care expenses credit"
     unit = USD
     definition_period = YEAR
     reference = (

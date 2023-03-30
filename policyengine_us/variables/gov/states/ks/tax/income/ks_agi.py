@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS AGI"
+    label = "Kansas AGI"
     unit = USD
     definition_period = YEAR
     reference = (

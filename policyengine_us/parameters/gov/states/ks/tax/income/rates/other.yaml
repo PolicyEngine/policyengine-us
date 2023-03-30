@@ -1,4 +1,4 @@
-description: KS income tax rates for non-joint filing units
+description: Kansas levies income taxes at these rates for filers who do not file as joint.
 brackets:
   - threshold:
       2018-01-01: 0
@@ -18,7 +18,7 @@ metadata:
   rate_unit: /1
   threshold_period: year
   type: marginal_rate
-  label: KS income tax rates for non-joint filing units
+  label: Kansas non-joint income tax rates
   reference:
   - title: 2021 Form K-40 instructions
     href: https://www.ksrevenue.gov/pdf/ip21.pdf

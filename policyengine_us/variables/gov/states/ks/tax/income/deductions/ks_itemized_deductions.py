@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS itemized deductions"
+    label = "Kansas itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = (

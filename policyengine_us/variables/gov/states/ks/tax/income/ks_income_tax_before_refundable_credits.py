@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ks_income_tax_before_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "KS income tax before refundable credits"
+    label = "Kansas income tax before refundable credits"
     unit = USD
     definition_period = YEAR
     reference = (
