@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.263.2] - 2023-03-30 16:04:37
+
+### Fixed
+
+- CPS url updated to fix poverty rate bug.
+
 ## [0.263.1] - 2023-03-30 05:13:18
 
 ### Fixed
@@ -3353,6 +3359,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.263.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.1...0.263.2
 [0.263.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.0...0.263.1
 [0.263.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.262.0...0.263.0
 [0.262.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.261.1...0.262.0
