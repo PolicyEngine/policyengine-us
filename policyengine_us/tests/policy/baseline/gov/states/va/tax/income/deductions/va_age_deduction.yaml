@@ -39,3 +39,12 @@
   output:
     # deduction_amount = $24,000 - (AFAGI - $75,000)
     va_age_deduction: 9_000
+
+- name: If in Virginia, filed jointly, one taxpayer was born before 01/01/1939 and the other was born between 01/02/1939 and 01/01/1958
+  period: 2022
+  AFAGI: 60_000
+  input:
+    state_code: VA
+  output:
+   # deduction_amount = $12,000 - (AFAGI - $50,000)
+    va_age_deduction: 2_000
