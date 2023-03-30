@@ -5,7 +5,7 @@ class nd_additions(Variable):
     value_type = float
     entity = TaxUnit
     label = "ND additions to federal taxable income"
-    unit = USD
+    unit = currency-USD
     definition_period = YEAR
     reference = (
         "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2021.pdf"
