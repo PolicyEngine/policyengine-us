@@ -11,6 +11,7 @@ class household_refundable_tax_credits(Variable):
         "income_tax_refundable_credits",  # Federal.
         "ca_refundable_credits",  # California.
         "il_refundable_credits",  # Illinois.
+        "ks_refundable_credits",  # Kansas.
         "ma_refundable_credits",  # Massachusetts.
         "md_refundable_credits",  # Maryland.
         "mo_refundable_credits",  # Missouri.
