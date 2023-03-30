@@ -4,14 +4,16 @@ from policyengine_us.model_api import *
 class nd_rtrc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ND resident-tax-relief credit amount"
+    label = "ND resident-tax-relief nonrefundable credit amount"
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
-        "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2021.pdf"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/2021-individual-income-tax-booklet.pdf"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2022.pdf"
+        "https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf"
     )
-    defined_for = StateCode.OK
+    defined_for = StateCode.ND
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.income.credits
