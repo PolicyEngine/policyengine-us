@@ -3,7 +3,7 @@ import numpy as np
 
 
 class va_income_tax_before_credits(Variable):
-    value_type = float
+    value_type = int
     entity = TaxUnit
     label = "Virginia income tax before credits"
     unit = USD
@@ -17,4 +17,4 @@ class va_income_tax_before_credits(Variable):
         taxable_income = tax_unit("va_taxable_income", period)
         p = parameters(period).gov.states.va.tax.income.rates
         va_income_tax_before_credits = p.calc(taxable_income)
-        return np.rint(va_income_tax_before_credits, 0)
+        return int(np.floor(va_income_tax_before_credits + 0.5))
