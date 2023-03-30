@@ -2787,3 +2787,28 @@
     added:
     - New Jersey dependent exemption.
   date: 2023-03-28 22:21:13
+- bump: patch
+  changes:
+    fixed:
+    - survey-enhance now a dev dependency.
+  date: 2023-03-29 20:36:52
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI addition and deduction.
+  date: 2023-03-29 23:06:13
+- bump: patch
+  changes:
+    changed:
+    - Pin pydata-sphinx-theme==0.13.1 to fix jupyterbook build.
+  date: 2023-03-29 23:22:36
+- bump: minor
+  changes:
+    added:
+    - Kansas state income tax.
+  date: 2023-03-30 01:37:19
+- bump: minor
+  changes:
+    added:
+    - Maine taxable income.
+  date: 2023-03-30 04:13:27
