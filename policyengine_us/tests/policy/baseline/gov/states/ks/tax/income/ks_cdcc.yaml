@@ -1,0 +1,7 @@
+- name: KS cdcc unit test 1
+  period: 2021
+  input:
+    cdcc: 1_000
+    state_code: KS
+  output:
+    ks_cdcc: 0.25 * 1_000
