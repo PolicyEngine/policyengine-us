@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="0.260.1",
+    version="0.262.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -56,6 +56,7 @@ setup(
             "linecheck",
             "markupsafe",
             "plotly",
+            "pydata-sphinx-theme==0.13.1",
             "setuptools",
             "sphinx",
             "sphinx-argparse",

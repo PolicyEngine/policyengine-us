@@ -1,0 +1,19 @@
+- name: KS nonrefundable eitc unit test 1
+  period: 2021
+  input:
+    ks_income_tax_before_credits: 900
+    ks_cdcc: 500
+    ks_total_eitc: 600
+    state_code: KS
+  output:
+    ks_nonrefundable_eitc: 900 - 500
+
+- name: KS nonrefundable eitc unit test 2
+  period: 2022
+  input:
+    ks_income_tax_before_credits: 900
+    ks_cdcc: 100
+    ks_total_eitc: 600
+    state_code: KS
+  output:
+    ks_nonrefundable_eitc: 600
