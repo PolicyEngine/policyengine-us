@@ -18,6 +18,11 @@ filtered:
       modelled:
       - Illinois state income tax
       - Illinois TANF
+    KS:
+      modelled:
+      - Kansas state income tax
+      not_modelled:
+      - Kansas TANF
     MA:
       modelled:
       - Massachusetts state income tax
