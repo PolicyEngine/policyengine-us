@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.263.4] - 2023-03-31 06:18:36
+
+### Fixed
+
+- Apply EITC married filing separately limitation.
+
 ## [0.263.3] - 2023-03-30 21:40:37
 
 ### Fixed
@@ -3365,6 +3371,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.263.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.3...0.263.4
 [0.263.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.2...0.263.3
 [0.263.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.1...0.263.2
 [0.263.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.0...0.263.1
