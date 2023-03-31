@@ -41,4 +41,7 @@ class eitc_eligible(Variable):
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
             return eligible
-        return eligible & ~tax_unit("is_separate_filer", period)
+        # If separate filers are not eligible, check if the filer is separate.
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return eligible & ~separate
