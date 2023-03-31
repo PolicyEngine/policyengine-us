@@ -2,7 +2,85 @@ Thank you for wanting to contribute to OpenFisca! :smiley:
 
 TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](http://semver.org/).
 
-## Pull requests
+## Identify and Creat an Issue in Github
+
+If you want to work on  a task that's not yet an issue, you can start by creating an issue for it. One way to do so is to log on to your github account in your browser and go to the corresponding repository. Under the **Issues** menu, you can click on **New Issue** tab. You can assign this issue to specific person/peole, and add tags for better classification purpose.
+
+When creating a new issue, you should **specify the program rule and link to a law and/or government site (e.g. tax form)**.
+
+
+## Claim a issue in VS Code
+In VS Code, open the GitHub Extension. In the lower left, under the **Issues** menu, you can find the issues you would like to work on. If an issue has already been assigned to you, you can find it under **My Issues**.
+
+When you are ready to work on it, click the right arrow to the right of the issue number and issue title **→** to start. This will assign you to the issue and create a new branch named for the issue number.
+
+
+## Work on issues assigned in VS Code:
+
+Usually, there are four sepcific types of files you will need to work on:
+
+* Test (.yaml)
+* Parameter (.yaml)
+* Variable (.py)
+* changelog_entry(.yaml)
+
+**You can follow the procedure below to tackle them:** <br>
+**1. Create a unit test** <br>
+This will be a file in *policyengine_{country}/tests/[path to program]/variable.yaml*. We apply **test driven development**, where we write tests before writing the logic. This means tests will break and the goal of the Pull Request (**PR**) is to pass the tests. Unit tests specify direct inputs tot he variable for a number of cases, and the expected output.
+
+**2. Commit your changes** <br>
+Use the VS Code source control extension to enter a message, such as *"Create unit test for ['variable']"* and click **Commit**.
+
+**3. Populate changelog_entry (.yaml)**<br>
+This file describes the changes. And is usaully in the following format:
+> -bump: <br>
+>>changes: <br>
+>>added: <br>
+
+**4. Commit your changes again** <br>
+Enter the commit message: *"Populate changelog_entry.yaml"*
+
+**5. Publish branch and Draft a Pull Request (PR)**<br>
+Before creating a pull request, type **git pull upstream master** in your terminal to make sure you  are using the latest version of the repository.
+**Publishing a branch** means to publich to origin (your fork). When you are ready to submit a pull request, VS Code will ask if you want to create a pull request. Click the button to do so. Enter a title describing what the completed PR will contribute, e.g., **"Add [variable or program]"**. then add to the body **"Fixes #[issue]** to link the PR to the issue such that merging the PR will close the issue.
+
+Finally, check the box for **"Draft"** indicating that the PR is not yet ready to merge.
+
+**6.Run "make test" from the terminal**<br>
+The new tests will fial, but after successfully completing the remianing steps, they will pass.
+
+**7. Create the policy parameters**<br>
+Parameters are **features of the rules defined in the law**. They can be numbers, bools, or lists, and htey can also break down by categories or vary with respect to quantitative variabels (https://openfisca.org/doc/coding-the-legislation/legislation_parameters.html#creating-scales) [you can check here for more details.] <br>
+
+
+One common breakdown is to break down by **"filing_status"**. If you decided to include such category, it is important to make sure that you include all five categories as follow: <br>
+
+* SINGLE
+* SEPARATE
+* WIDOW
+* HEAD_OF_HOUSEHOLD
+* JOINT
+
+Sometimes, the document that you refer to (e.g. tax instruction) does not specify all five statuses. In that case, you can let the **“WIDOW”**， **“HEAD_OF_HOUSEHOLD"** cases to be the same as the "SINGLE" case.
+
+PolicyEngine defines parameters as yaml files, which specify the values as of certain dates, as well as metadata on the units and reference(s).
+
+**8. Create the variable logic**<br>
+Variables are features of each person or household, and PolicyEngine defines them as Python files. Create a file in the variables tree corresponding to the program, such as **"my_tax_credit.py"**, and copy an existing .py file as template. Variables are instances of the Variable class, which defines attributes like the entity and reference, and a formula method defining the logic.
+
+One minor thing that might be helpful: <br>
+
+When you are trying to define a condition, use *where** statement instead of **if** statement. Similarly, use **max_** and **min_** instead of **max** and **min**. These are needed for vectorization.
+
+**Make sure your variable.py file has the same name as the corresponding test.yaml file!**
+
+**9. Run *make test* again**
+To run a specific yaml test or folder of yaml tests, run **policyengine-core test [path] -c policyengine_us.**
+
+**10. Run *make format***<br>
+This will align the code ot the black Python formatting standard, and ensure each file ends in an empty new line. <br>
+
+**Again, remember to run **git pull upstream master** everytime before you *Sync* or *Creating a new PR* **
 
 We follow the [GitHub Flow](https://guides.github.com/introduction/flow/): all code contributions are submitted via a pull request towards the `master` branch.
 
