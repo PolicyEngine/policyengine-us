@@ -36,7 +36,7 @@ class eitc_eligible(Variable):
             eitc_investment_income > eitc.phase_out.max_investment_income
         )
         demographic_eligible = has_child | tax_unit.any(meets_age_requirements)
-        # Apply married filing separately limitation.
+        # Define eligibility before considering separate filer limitation.
         eligible = demographic_eligible & ~inv_income_disqualified
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
