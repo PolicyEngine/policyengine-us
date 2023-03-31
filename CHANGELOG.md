@@ -5,6 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.263.4] - 2023-03-31 06:18:36
+
+### Fixed
+
+- Apply EITC married filing separately limitation.
+
+## [0.263.3] - 2023-03-30 21:40:37
+
+### Fixed
+
+- Lowered SSI asset limit pass rate to 8.8%.
+
+## [0.263.2] - 2023-03-30 16:04:37
+
+### Fixed
+
+- CPS url updated to fix poverty rate bug.
+
+## [0.263.1] - 2023-03-30 05:13:18
+
+### Fixed
+
+- California CDCC formula, which previously doubly applied the federal CDCC rate.
+
+## [0.263.0] - 2023-03-30 04:13:27
+
+### Added
+
+- Maine taxable income.
+
+## [0.262.0] - 2023-03-30 01:37:19
+
+### Added
+
+- Kansas state income tax.
+
+## [0.261.1] - 2023-03-29 23:22:36
+
+### Changed
+
+- Pin pydata-sphinx-theme==0.13.1 to fix jupyterbook build.
+
+## [0.261.0] - 2023-03-29 23:06:13
+
+### Added
+
+- Ohio AGI addition and deduction.
+
+## [0.260.1] - 2023-03-29 20:36:52
+
+### Fixed
+
+- survey-enhance now a dev dependency.
+
+## [0.260.0] - 2023-03-28 22:21:13
+
+### Added
+
+- New Jersey dependent exemption.
+
+## [0.259.1] - 2023-03-28 04:45:32
+
 ## [0.259.0] - 2023-03-27 20:40:18
 
 ### Changed
@@ -3309,6 +3371,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.263.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.3...0.263.4
+[0.263.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.2...0.263.3
+[0.263.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.1...0.263.2
+[0.263.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.0...0.263.1
+[0.263.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.262.0...0.263.0
+[0.262.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.261.1...0.262.0
+[0.261.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.261.0...0.261.1
+[0.261.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.260.1...0.261.0
+[0.260.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.260.0...0.260.1
+[0.260.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.259.1...0.260.0
+[0.259.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.259.0...0.259.1
 [0.259.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.258.0...0.259.0
 [0.258.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.257.1...0.258.0
 [0.257.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.257.0...0.257.1

@@ -1,0 +1,26 @@
+- name: KS income tax before credits unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    ks_taxable_income: 100_000
+    state_code: KS
+  output:  # from filling out 2021 Tax Computation Worksheet
+    ks_income_tax_before_credits: 0.057 * 100_000 - 457.50
+
+- name: KS income tax before credits unit test 2
+  period: 2022
+  input:
+    filing_status: JOINT
+    ks_taxable_income: 100_000
+    state_code: KS
+  output:  # from filling out 2022 Tax Computation Worksheet
+    ks_income_tax_before_credits: 0.057 * 100_000 - 915
+
+- name: KS income tax before credits unit test 3
+  period: 2021
+  input:
+    filing_status: JOINT
+    ks_taxable_income: 4_900
+    state_code: KS
+  output:  # from filling out 2021 Tax Computation Worksheet
+    ks_income_tax_before_credits: 0

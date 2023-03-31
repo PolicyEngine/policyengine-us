@@ -2777,3 +2777,58 @@
     changed:
     - Add Colorado EITC.
   date: 2023-03-27 20:40:18
+- bump: patch
+  changes:
+    chaged:
+    - Made NY deduction plural (ny_deductions).
+  date: 2023-03-28 04:45:32
+- bump: minor
+  changes:
+    added:
+    - New Jersey dependent exemption.
+  date: 2023-03-28 22:21:13
+- bump: patch
+  changes:
+    fixed:
+    - survey-enhance now a dev dependency.
+  date: 2023-03-29 20:36:52
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI addition and deduction.
+  date: 2023-03-29 23:06:13
+- bump: patch
+  changes:
+    changed:
+    - Pin pydata-sphinx-theme==0.13.1 to fix jupyterbook build.
+  date: 2023-03-29 23:22:36
+- bump: minor
+  changes:
+    added:
+    - Kansas state income tax.
+  date: 2023-03-30 01:37:19
+- bump: minor
+  changes:
+    added:
+    - Maine taxable income.
+  date: 2023-03-30 04:13:27
+- bump: patch
+  changes:
+    fixed:
+    - California CDCC formula, which previously doubly applied the federal CDCC rate.
+  date: 2023-03-30 05:13:18
+- bump: patch
+  changes:
+    fixed:
+    - CPS url updated to fix poverty rate bug.
+  date: 2023-03-30 16:04:37
+- bump: patch
+  changes:
+    fixed:
+    - Lowered SSI asset limit pass rate to 8.8%.
+  date: 2023-03-30 21:40:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply EITC married filing separately limitation.
+  date: 2023-03-31 06:18:36
