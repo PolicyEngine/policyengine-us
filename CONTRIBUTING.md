@@ -37,6 +37,8 @@ This file describes the changes. And is usaully in the following format:
 >>changes: <br>
 >>added: <br>
 
+*You can refer to the section below for more details.*<br>
+
 **4. Commit your changes again** <br>
 Enter the commit message: *"Populate changelog_entry.yaml"*
 
@@ -45,6 +47,10 @@ Before creating a pull request, type **git pull upstream master** in your termin
 **Publishing a branch** means to publich to origin (your fork). When you are ready to submit a pull request, VS Code will ask if you want to create a pull request. Click the button to do so. Enter a title describing what the completed PR will contribute, e.g., **"Add [variable or program]"**. then add to the body **"Fixes #[issue]** to link the PR to the issue such that merging the PR will close the issue.
 
 Finally, check the box for **"Draft"** indicating that the PR is not yet ready to merge.
+
+We follow the [GitHub Flow](https://guides.github.com/introduction/flow/): all code contributions are submitted via a pull request towards the `master` branch.
+
+Opening a Pull Request means you want that code to be merged. If you want to only discuss it, send a link to your branch along with your questions through whichever communication channel you prefer.
 
 **6.Run "make test" from the terminal**<br>
 The new tests will fial, but after successfully completing the remianing steps, they will pass.
@@ -82,9 +88,6 @@ This will align the code ot the black Python formatting standard, and ensure eac
 
 **Again, remember to run **git pull upstream master** everytime before you *Sync* or *Creating a new PR* **
 
-We follow the [GitHub Flow](https://guides.github.com/introduction/flow/): all code contributions are submitted via a pull request towards the `master` branch.
-
-Opening a Pull Request means you want that code to be merged. If you want to only discuss it, send a link to your branch along with your questions through whichever communication channel you prefer.
 
 ### Peer reviews
 
@@ -170,3 +173,31 @@ Each change must be documented with the following elements:
 >   - All parameters are assumed to be valid until and end date is explicitely specified with an `<END>` tag
 
 When a Pull Request contains several disctincts changes, several paragraphs may be added to the Changelog. To be properly formatted in Markdown, these paragraphs must be separated by `<!-- -->`.
+
+
+## CodeSpaces for PolicyEngine
+
+1. If you haven't already, fork the **PolicyEngine/policyengine-us**(http://github.com/PolicyEngine/policyengine-us) repository to your personal account
+> Leave the **Copy the master branch only** box checked <br>
+
+2. From **GitHub Codespaces** (https://github.com/codespaces), click **New codespace**
+3. Select  **yourusername/policyengine-us** as the repository and all other defaults
+4. Create new codespace from blanck template
+5. In the terminal, type **conda create -n policyengine python=3.9 -y**
+6. In the terminal, type **conda init**
+7. Restart terminal (click the bin icon to delete the terminal, and start a new terminal from the menu on top)
+8. In the new terminal, type **conda activate policyengine**
+9. In the same terminal, type **make install**
+10. Check out the issue you want to work on
+>If no issue, create one at github.com/policyengine/policyengine-us, or from the GitHub extension in Codespaces <br>
+11. After making any changes, run **make test** in the temrinal to test
+>This sometimes fails with **[Makefile:9: test] Killed** after a while
+>To run a specific test or folder of tests, run **policyengine-core test [path]**
+>Optionally with **-v** to get verbose output (the computation tree)
+
+12. When returning to the Codespace:
+  1. Return to GitHub Codespaces
+  2. Open the codespace you previously made
+  3. Open terminal
+  4. Run **conda activate policyengine** in the temrinal
+    >> If this fails, it means your codespaces session has expired, you need to re-run step **5-7**
