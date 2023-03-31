@@ -31,7 +31,7 @@ TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](htt
   4. Run **conda activate policyengine** in the temrinal
     >> If this fails, it means your codespaces session has expired, you need to re-run step **5-7**
 
-** We recommend that new developers use GitHub Codespaces, but if you want to proceed with VS Code instead, see the instruction below:**
+**We recommend that new developers use GitHub Codespaces, but if you want to proceed with VS Code instead, see the instruction below:**
 
 ## Install and Set up VS Code
 
@@ -50,18 +50,18 @@ TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](htt
 4. Install conda
 >> **conda install python-3.9**
 5. Fork and clone country package you're working on:
-> a. github.com/policyengine/policyengine-us 
-> b. github.com/policyengine/policyengine-canada
-> c. Fork
-> d. github.com/policyengine/policyengine-ng
+> a. github.com/policyengine/policyengine-us <br>
+> b. github.com/policyengine/policyengine-canada<br>
+> c. Fork <br>
+> d. github.com/policyengine/policyengine-ng <br>
 6. Extra steps for Windows users
-> a. Install make
->> i. Open VS Code as administrator (search and right-click)
->> ii. Open a new terminal in VS Code
->> iii. https://chocolatey.org/install
->> iv. Copy the command into the temrinal
->>> v. **choco install make**
->> b.Run conda https://stackoverflow.com/a/67996662/1840471
+a. Install make
+>> i. Open VS Code as administrator (search and right-click) <br>
+>> ii. Open a new terminal in VS Code<br>
+>> iii. https://chocolatey.org/install<br>
+>> iv. Copy the command into the temrinal<br>
+>> v. In terminal, run: **choco install make**<br>
+b. Run conda https://stackoverflow.com/a/67996662/1840471<br>
 7. Run **make install** from terminal in VS Code after opening **policyengine-us**
 >>a. If you have multiple versions of Python installed, you may need to run **python3 -m pip install - e**
 8. Change format on save for Python to black and set line length to 79
@@ -124,7 +124,7 @@ We follow the [GitHub Flow](https://guides.github.com/introduction/flow/): all c
 
 Opening a Pull Request means you want that code to be merged. If you want to only discuss it, send a link to your branch along with your questions through whichever communication channel you prefer.
 
-**6.Run "make test" from the terminal**<br>
+**6. Run "make test" from the terminal**<br>
 The new tests will fial, but after successfully completing the remianing steps, they will pass.
 
 **7. Create the policy parameters**<br>
