@@ -2,6 +2,78 @@ Thank you for wanting to contribute to OpenFisca! :smiley:
 
 TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](http://semver.org/).
 
+## Onboarding: Installation
+
+## Set up CodeSpaces for PolicyEngine
+
+1. If you haven't already, fork the **PolicyEngine/policyengine-us**(http://github.com/PolicyEngine/policyengine-us) repository to your personal account
+> Leave the **Copy the master branch only** box checked <br>
+
+2. From **GitHub Codespaces** (https://github.com/codespaces), click **New codespace**
+3. Select  **yourusername/policyengine-us** as the repository and all other defaults
+4. Create new codespace from blanck template
+5. In the terminal, type **conda create -n policyengine python=3.9 -y**
+6. In the terminal, type **conda init**
+7. Restart terminal (click the bin icon to delete the terminal, and start a new terminal from the menu on top)
+8. In the new terminal, type **conda activate policyengine**
+9. In the same terminal, type **make install**
+10. Check out the issue you want to work on
+>If no issue, create one at github.com/policyengine/policyengine-us, or from the GitHub extension in Codespaces <br>
+11. After making any changes, run **make test** in the temrinal to test
+>This sometimes fails with **[Makefile:9: test] Killed** after a while
+>To run a specific test or folder of tests, run **policyengine-core test [path]**
+>Optionally with **-v** to get verbose output (the computation tree)
+
+12. When returning to the Codespace:
+  1. Return to GitHub Codespaces
+  2. Open the codespace you previously made
+  3. Open terminal
+  4. Run **conda activate policyengine** in the temrinal
+    >> If this fails, it means your codespaces session has expired, you need to re-run step **5-7**
+
+** We recommend that new developers use GitHub Codespaces, but if you want to proceed with VS Code instead, see the instruction below:**
+
+## Install and Set up VS Code
+
+1. Install VS Code (https://code.visualstudio.com/download)
+2. Install VS Code extensions (you will have to sign in to GitHub for each)
+> 1. GitHub Pull Requests & Issues extension
+> 2. Live ShareInstall
+> 3. Python extension
+> 4. [Recommended]: GitHub Copilot https://github.com/features/copilot (30 day free trial)
+
+3. Set git username and email
+4. Set git username and email
+> You can do so by typing the following command into the terminal:
+>> a. **git config --global user.name "John Doe"**
+>> b. **git config --global user.email johndoe@example.com**
+4. Install conda
+>> **conda install python-3.9**
+5. Fork and clone country package you're working on:
+> a. github.com/policyengine/policyengine-us 
+> b. github.com/policyengine/policyengine-canada
+> c. Fork
+> d. github.com/policyengine/policyengine-ng
+6. Extra steps for Windows users
+> a. Install make
+>> i. Open VS Code as administrator (search and right-click)
+>> ii. Open a new terminal in VS Code
+>> iii. https://chocolatey.org/install
+>> iv. Copy the command into the temrinal
+>>> v. **choco install make**
+>> b.Run conda https://stackoverflow.com/a/67996662/1840471
+7. Run **make install** from terminal in VS Code after opening **policyengine-us**
+>>a. If you have multiple versions of Python installed, you may need to run **python3 -m pip install - e**
+8. Change format on save for Python to black and set line length to 79
+9. If you don't have conda installed, you can try the following steps on **MAC**:
+>> 1. Install brew
+>> 2. **brew install python**
+>> 3. **pyenv init**
+>> 4. **pyenv shell 3.9.16**
+>> 5. **python -m venv venv**
+
+
+
 ## Identify and Creat an Issue in Github
 
 If you want to work on  a task that's not yet an issue, you can start by creating an issue for it. One way to do so is to log on to your github account in your browser and go to the corresponding repository. Under the **Issues** menu, you can click on **New Issue** tab. You can assign this issue to specific person/peole, and add tags for better classification purpose.
@@ -174,30 +246,3 @@ Each change must be documented with the following elements:
 
 When a Pull Request contains several disctincts changes, several paragraphs may be added to the Changelog. To be properly formatted in Markdown, these paragraphs must be separated by `<!-- -->`.
 
-
-## CodeSpaces for PolicyEngine
-
-1. If you haven't already, fork the **PolicyEngine/policyengine-us**(http://github.com/PolicyEngine/policyengine-us) repository to your personal account
-> Leave the **Copy the master branch only** box checked <br>
-
-2. From **GitHub Codespaces** (https://github.com/codespaces), click **New codespace**
-3. Select  **yourusername/policyengine-us** as the repository and all other defaults
-4. Create new codespace from blanck template
-5. In the terminal, type **conda create -n policyengine python=3.9 -y**
-6. In the terminal, type **conda init**
-7. Restart terminal (click the bin icon to delete the terminal, and start a new terminal from the menu on top)
-8. In the new terminal, type **conda activate policyengine**
-9. In the same terminal, type **make install**
-10. Check out the issue you want to work on
->If no issue, create one at github.com/policyengine/policyengine-us, or from the GitHub extension in Codespaces <br>
-11. After making any changes, run **make test** in the temrinal to test
->This sometimes fails with **[Makefile:9: test] Killed** after a while
->To run a specific test or folder of tests, run **policyengine-core test [path]**
->Optionally with **-v** to get verbose output (the computation tree)
-
-12. When returning to the Codespace:
-  1. Return to GitHub Codespaces
-  2. Open the codespace you previously made
-  3. Open terminal
-  4. Run **conda activate policyengine** in the temrinal
-    >> If this fails, it means your codespaces session has expired, you need to re-run step **5-7**
