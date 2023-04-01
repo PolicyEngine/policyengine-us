@@ -2822,3 +2822,18 @@
     fixed:
     - CPS url updated to fix poverty rate bug.
   date: 2023-03-30 16:04:37
+- bump: patch
+  changes:
+    fixed:
+    - Lowered SSI asset limit pass rate to 8.8%.
+  date: 2023-03-30 21:40:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply EITC married filing separately limitation.
+  date: 2023-03-31 06:18:36
+- bump: patch
+  changes:
+    fixed:
+    - is_ssi_disabled variable.
+  date: 2023-04-01 15:19:26
