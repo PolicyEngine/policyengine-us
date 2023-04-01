@@ -1,0 +1,10 @@
+- name: Default NY deduction.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+  output:
+    ny_standard_deduction: 8_000
+    ny_itemized_deductions: 0
+    ny_itemizes: false
+    ny_deductions: 8_000

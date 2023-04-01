@@ -9,7 +9,13 @@ values:
     - gi_cash_assistance
     - social_security
     - ssi
-    # Also TANF, pensions, annuities, etc.
+    - tanf
+    - pension_income
+    - miscellaneous_income
+    - veterans_benefits
+    - unemployment_compensation
+    - strike_benefits
+    - rental_income
 
 metadata:
   reference:
