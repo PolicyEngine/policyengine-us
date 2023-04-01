@@ -1,0 +1,19 @@
+- name: ME deduction given Single status, income means deduction won't be limited
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    me_agi: 80_000
+    state_code: ME
+  output:
+    me_itemized_deductions: 0
+    me_standard_deduction: 12_950
+    me_deduction: 12_950
+
+- name: Outside Maine, no ME deductions
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_deduction: 0
