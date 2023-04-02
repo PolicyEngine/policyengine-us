@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mn_subtractions(Variable):
+class mn_itemizing(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Minnesota subtractions from federal AGI"
+    label = "itemizing Minnesota deductions"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,7 +16,7 @@ class mn_subtractions(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("adjusted_gross_income", period)
-        taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
-        p = parameters(period).gov.states.mn.tax.income.agi.subtractions
-        return where(agi <= p.oasdi.agi_limit, taxable_oasdi, 0)
+        std_ded = tax_unit("mn_standard_deduction", period)
+        itm_ded = tax_unit("mn_itemized_deductions", period)
+        return itm_ded > std_ded
+
