@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.266.0] - 2023-04-02 16:55:48
+
+### Added
+
+- North Dakota state income tax.
+
 ## [0.265.0] - 2023-04-02 15:07:00
 
 ### Added
@@ -3389,6 +3395,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.266.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.265.0...0.266.0
 [0.265.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.264.0...0.265.0
 [0.264.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.5...0.264.0
 [0.263.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.4...0.263.5
