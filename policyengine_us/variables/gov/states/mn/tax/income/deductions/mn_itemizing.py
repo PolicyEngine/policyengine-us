@@ -19,4 +19,3 @@ class mn_itemizing(Variable):
         std_ded = tax_unit("mn_standard_deduction", period)
         itm_ded = tax_unit("mn_itemized_deductions", period)
         return itm_ded > std_ded
-

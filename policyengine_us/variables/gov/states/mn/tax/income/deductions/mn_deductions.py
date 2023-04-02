@@ -20,4 +20,3 @@ class mn_deductions(Variable):
         itm_ded = tax_unit("mn_itemized_deductions", period)
         itemizing = tax_unit("mn_itemizing", period)
         return where(itemizing, itm_ded, std_ded)
-

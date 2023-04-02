@@ -20,7 +20,7 @@ class mn_itemized_deductions(Variable):
         #   You may claim the Minnesota standard deduction or itemize
         #   your deductions on your Minnesota return. You will generally
         #   pay less Minnesota income tax if you take the larger of your
-        #   itemized or standard deduction. 
+        #   itemized or standard deduction.
         p = parameters(period).gov.irs.deductions
         itm_deds = [
             deduction
