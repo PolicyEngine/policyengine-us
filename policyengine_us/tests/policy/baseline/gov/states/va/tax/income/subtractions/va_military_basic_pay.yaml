@@ -1,0 +1,24 @@
+- name: VA military basic pay of amount less than $15,000
+  period: 2022
+  input:
+    va_military_basic_pay: 14_000
+    state_code: VA
+  output:
+    va_military_basic_pay_deduction: 14_000
+
+- name: VA military basic pay of amount more than $15,000 but less than $30,000
+  period: 2022
+  input:
+    va_military_basic_pay: 16_000
+    state_code: VA
+  output:
+    # $15,000 - ($16,000 - $15,000)
+    va_military_basic_pay_deduction: 14_000
+
+- name: VA military basic pay of amount more than $30,000
+  period: 2022
+  input:
+    va_military_basic_pay: 31_000
+    state_code: VA
+  output:
+    va_military_basic_pay_deduction: 0
