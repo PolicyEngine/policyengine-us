@@ -1,0 +1,17 @@
+description: North Dakota adds these variables to US taxable income when computing its taxable income.
+values:
+  2021-01-01:
+    - c05700  # lump-sum distributions from federal Form 4972
+
+metadata:
+  unit: variable
+  label: ND additions to US taxable income
+  reference:
+  - title: 2021 ND income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2021.pdf
+  - title: 2021 ND income tax instructions, line 2
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/2021-individual-income-tax-booklet.pdf#page=14
+  - title: 2022 ND income tax form
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/form-nd-1-2022.pdf
+  - title: 2022 ND income tax instructions, line 2
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf#page=14
