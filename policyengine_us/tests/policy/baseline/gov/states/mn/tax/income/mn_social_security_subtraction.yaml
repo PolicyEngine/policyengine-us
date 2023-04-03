@@ -1,0 +1,19 @@
+- name: MN social security subtraction unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    social_security: 6_000
+    taxable_social_security: 0
+    state_code: MN
+  output:
+    mn_social_security_subtraction: 0
+
+- name: MN social security subtraction unit test 2
+  period: 2022
+  input:
+    filing_status: SINGLE
+    social_security: 30_000
+    taxable_social_security: 25_500  # = 30_000 * 0.85
+    state_code: MN
+  output:
+    mn_social_security_subtraction: 4_260

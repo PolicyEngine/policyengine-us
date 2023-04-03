@@ -2,9 +2,9 @@ from policyengine_us.model_api import *
 
 
 class mn_itemizing(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    label = "itemizing Minnesota deductions"
+    label = "whether or not itemizing Minnesota deductions"
     unit = USD
     definition_period = YEAR
     reference = (

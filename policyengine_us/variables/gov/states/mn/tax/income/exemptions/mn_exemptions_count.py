@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class mn_exemptions_count(Variable):
-    value_type = float
+    value_type = int
     entity = TaxUnit
     label = "Minnesota exemptions count"
     unit = USD
