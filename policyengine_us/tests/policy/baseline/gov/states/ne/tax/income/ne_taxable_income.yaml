@@ -1,0 +1,19 @@
+- name: NE taxable income unit test 1
+  period: 2021
+  input:
+    ne_agi: 90_000
+    ne_standard_deduction: 10_000
+    ne_itemized_deductions: 9_000
+    state_code: NE
+  output:
+    ne_taxable_income: 90_000 - 10_000
+
+- name: NE taxable income unit test 2
+  period: 2021
+  input:
+    ne_agi: 90_000
+    ne_standard_deduction: 10_000
+    ne_itemized_deductions: 12_000
+    state_code: NE
+  output:
+    ne_taxable_income: 90_000 - 12_000
