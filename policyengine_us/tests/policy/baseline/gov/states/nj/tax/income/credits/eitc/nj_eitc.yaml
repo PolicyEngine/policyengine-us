@@ -16,7 +16,7 @@
   output:
     nj_eitc: 40
 
-- name: New Jersey EITC, fraction of would-be federal EITC (doesn't qualify for federal EITC because of age)
+- name: New Jersey EITC, fraction of max zero-child federal EITC (doesn't qualify for federal EITC because too young)
   period: 2022
   absolute_error_margin: 0
   input:
@@ -30,7 +30,7 @@
   output:
     nj_eitc: 224
 
-- name: New Jersey EITC qualifies, but doesn't qualify for federal because of age.
+- name: New Jersey EITC, fraction of max zero-child federal EITC (doesn't qualify for federal EITC because too old)
   period: 2022
   absolute_error_margin: 0
   input:
