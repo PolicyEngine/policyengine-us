@@ -14,4 +14,5 @@ class nj_total_exemptions(Variable):
         "nj_senior_exemption",
         "nj_dependents_exemption",
         "nj_blind_or_disabled_exemption",
+        "nj_dependents_attending_college_exemption",
     ]
