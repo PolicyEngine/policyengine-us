@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_military_basic_pay_subtraction(Variable):
     value_type = float
     entity = Person
-    label = "Virginia personal exemption"
+    label = "Virginia military basic pay subtraction"
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
@@ -16,5 +16,8 @@ class va_military_basic_pay_subtraction(Variable):
         p = parameters(period).gov.states.va.tax.income.subtractions.military_basic_pay
         # TODO: Sum for head and spouse - not just everyone in tax unit.
         # Use is_tax_unit_head and is_tax_unit_spouse
-        military_pay = person("military_pay", period)
-        return where(military_pay < p.threshold, military_pay, max_(0, (2 * p.threshold) - military_pay))
+        head_military_pay = person("military_pay", "is_tax_unit_head", period)
+        spouse_military_pay = person("military_pay", "is_tax_unit_spouse", period)
+        military_pay_sum = sum(where(head_military_pay < p.threshold, head_military_pay, max_(0, (2 * p.threshold) - head_military_pay)),
+                               where(spouse_military_pay < p.threshold, spouse_military_pay, max_(0, (2 * p.threshold) - spouse_military_pay)))
+        return military_pay_sum
