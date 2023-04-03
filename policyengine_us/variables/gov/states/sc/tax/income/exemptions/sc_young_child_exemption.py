@@ -16,7 +16,7 @@ class sc_young_child_exemption(Variable):
         # Determine eligibility for each person in the tax unit.
         person = tax_unit.members
         meets_age_limit = person("age", period) < p.ineligible_age
-        eligible = meets_age_limit & person("is_dependent", period)
+        eligible = meets_age_limit & person("is_tax_unit_dependent", period)
         # Count number of eligible people in the tax unit.
         count_eligible = tax_unit.sum(eligible)
         # Multiply by the amount per exemption.
