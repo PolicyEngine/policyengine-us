@@ -30,18 +30,16 @@
   output:
     nj_eitc: 224
 
-- name: New Jersey EITC age < 18 (nondependent), doesn't qualify for federal or NJ EITC because of age.
+- name: New Jersey EITC qualifies, but doesn't qualify for federal because of age.
   period: 2022
   absolute_error_margin: 0
   input:
     people:
       person1:
-        age: 17
-        is_tax_unit_dependent: false
-        is_child: false
+        age: 66
     households:
       household:
         members: [person1]
         state_code: NJ
   output:
-    nj_eitc: 0
+    nj_eitc: 224
