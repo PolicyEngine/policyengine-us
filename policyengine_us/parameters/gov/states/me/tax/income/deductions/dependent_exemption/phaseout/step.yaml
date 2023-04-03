@@ -1,0 +1,10 @@
+description: Maine reduces the dependent exemption by this amount for every phaseout increment in AGI above phaseout start.
+metadata:
+  type: single_amount
+  unit: currency-USD
+  label: Maine dependent exemption phaseout amount per phaseout increment
+  reference:
+    - title: Instructions for Form 1040ME
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_a_ff.pdf#page=2
+values:
+  2022-01-01: 7.50

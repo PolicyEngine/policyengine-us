@@ -16,6 +16,8 @@ class household_refundable_tax_credits(Variable):
         "md_refundable_credits",  # Maryland.
         "mo_refundable_credits",  # Missouri.
         "or_refundable_credits",  # Oregon.
+        "nd_refundable_credits",  # North Dakota.
+        "ne_refundable_credits",  # Nebraska.
         "ny_refundable_credits",  # New York.
         # Skip PA, which has no refundable credits.
         "wa_refundable_credits",  # Washington.
