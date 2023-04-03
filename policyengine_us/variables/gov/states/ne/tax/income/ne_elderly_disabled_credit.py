@@ -15,5 +15,5 @@ class ne_elderly_disabled_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         credit = tax_unit("elderly_disabled_credit", period)
-        itax_before_credits = tax_unit("income_tax_before_credits", period)
-        return min_(credit, itax_before_credits)
+        us_itax_before_credits = tax_unit("income_tax_before_credits", period)
+        return min_(credit, us_itax_before_credits)
