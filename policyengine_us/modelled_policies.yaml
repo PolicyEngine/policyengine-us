@@ -38,6 +38,16 @@ filtered:
       - Missouri state income tax
       not_modelled:
       - Missouri TANF
+    ND:
+      modelled:
+      - North Dakota state income tax
+      not_modelled:
+      - North Dakota TANF
+    NE:
+      modelled:
+      - Nebraska state income tax
+      not_modelled:
+      - Nebraska TANF
     NY:
       modelled:
       - New York state income tax
@@ -58,4 +68,3 @@ filtered:
       - Washington state income tax
       not_modelled:
       - Washington TANF
-  

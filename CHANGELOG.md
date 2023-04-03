@@ -5,6 +5,48 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.269.0] - 2023-04-03 18:48:55
+
+### Added
+
+- New Jersey dependent attending college exemption.
+
+## [0.268.0] - 2023-04-03 17:24:53
+
+### Added
+
+- Nebraska state income tax.
+
+## [0.267.0] - 2023-04-03 16:13:54
+
+### Added
+
+- South Carolina young child exemption.
+
+## [0.266.0] - 2023-04-02 16:55:48
+
+### Added
+
+- North Dakota state income tax.
+
+## [0.265.0] - 2023-04-02 15:07:00
+
+### Added
+
+- Earned income for new york tanf.
+
+## [0.264.0] - 2023-04-02 02:13:21
+
+### Added
+
+- Maine dependent exemption.
+
+## [0.263.5] - 2023-04-01 15:19:26
+
+### Fixed
+
+- is_ssi_disabled variable.
+
 ## [0.263.4] - 2023-03-31 06:18:36
 
 ### Fixed
@@ -3371,6 +3413,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.269.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.268.0...0.269.0
+[0.268.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.267.0...0.268.0
+[0.267.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.266.0...0.267.0
+[0.266.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.265.0...0.266.0
+[0.265.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.264.0...0.265.0
+[0.264.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.5...0.264.0
+[0.263.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.4...0.263.5
 [0.263.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.3...0.263.4
 [0.263.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.2...0.263.3
 [0.263.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.1...0.263.2

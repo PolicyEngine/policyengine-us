@@ -1,0 +1,59 @@
+- name: Married filing jointly with two dependents, earning $450K gets $225 exemption.
+  period: 2022
+  input:
+    state_code: ME
+    me_agi: 450_000
+    filing_status: JOINT
+    tax_unit_dependents: 2
+  output:
+    me_dependent_exemption: 225
+
+- name: Married filing jointly with two dependents, earning $449.50K gets $225 exemption.
+  period: 2022
+  input:
+    state_code: ME
+    me_agi: 449_500
+    filing_status: JOINT
+    tax_unit_dependents: 2
+  output:
+    me_dependent_exemption: 225
+
+- name: Single filer with one dependent, earning $450K gets $0 exemption.
+  period: 2022
+  input:
+    state_code: ME
+    me_agi: 450_000
+    filing_status: SINGLE
+    tax_unit_dependents: 1
+  output:
+    me_dependent_exemption: 0
+
+- name: Joint filer with no dependent gets $0 exemption.
+  period: 2022
+  input:
+    state_code: ME
+    me_agi: 450_000
+    filing_status: JOINT
+    tax_unit_dependents: 0
+  output:
+    me_dependent_exemption: 0
+
+- name: Single filer with two dependents, earning $190K gets $600 exemption.
+  period: 2022
+  input:
+    state_code: ME
+    me_agi: 190_000
+    filing_status: SINGLE
+    tax_unit_dependents: 2
+  output:
+    me_dependent_exemption: 600
+
+- name: Single filer with two dependents, earning $220k gets $450 exemption.
+  period: 2022
+  input:
+    state_code: ME
+    me_agi: 220_000
+    filing_status: SINGLE
+    tax_unit_dependents: 2
+  output:
+    me_dependent_exemption: 450
