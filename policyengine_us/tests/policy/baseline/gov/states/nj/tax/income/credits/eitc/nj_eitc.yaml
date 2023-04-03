@@ -5,11 +5,14 @@
     people:
       person1:
         age: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        earned_income_tax_credit: 100
     households:
       household:
         members: [person1]
         state_code: NJ
-        earned_income_tax_credit: 100
   output:
     nj_eitc: 40
 
