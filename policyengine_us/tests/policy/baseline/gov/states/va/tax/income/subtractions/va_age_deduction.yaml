@@ -6,88 +6,7 @@
     birthday: 01/01/1929
   output:
     va_age_deduction: 0
-    
-- name: If in Virginia, single filer, and the taxpayer was born before 01/01/1939.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 50_000 # always the joint AFAGI
-    filing_status: SINGLE
-  output:
-    va_age_deduction: 12_000
-
-  - name: If in Virginia, single taxpayer, and the taxpayer was born between 01/02/1939 and 01/01/1958.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 60_000
-    filing_status: SINGLE
-  output:
-    #deduction_ammount = $12,000 - (AFAGI - $50,000)
-    va_age_deduction: 2_000
-
-  - name: If in Virginia, single taxpayer, and the taxpayer was born after 01/01/1958.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 60_000
-    filing_status: SINGLE
-  output:
-    # not eligible
-    va_age_deduction: 0
-
-- name: If in Virginia, filed jointly, and both taxpayers were born before 01/01/1939.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 100_000
-    filing_status: JOINT
-  output:
-    #deduction_amount = 2 * $12,000 = $24,000
-    va_age_deduction: 24_000
-    
-- name: If in Virginia, married but filed seperately, and both taxpayers was born between 01/02/1939 and 01/01/1958.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 80_000
-    filing_status: SEPERATE # both claim
-  output:
-   # deduction_amount = ($24,000 - (AFAGI - $75,000))/2
-    va_age_deduction: 19_000
-
-  - name: If in Virginia, married but filed seperately, and the taxpayer was born between 01/02/1939 and 01/01/1958.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 90_000
-    filing_status: SEPERATE # but only one claim
-  output:
-   # deduction_amount = $24,000 - (AFAGI - $75,000)
-    va_age_deduction: 0
-
-- name: If in Virginia, married and filed jointly, and both taxpayers were born between 01/02/1939 and 01/01/1958.
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 90_000
-    filing_status: JOINT # both claim
-  output:
-    # deduction_amount = $24,000 - (AFAGI - $75,000)
-    va_age_deduction: 9_000
-
-- name: If in Virginia, married and filed jointly, one taxpayer was born before 01/01/1939 and the other was born between 01/02/1939 and 01/01/1958
-  period: 2022
-  input:
-    state_code: VA
-    AFAGI: 90_000
-    filing_status: JOINT # both claim
-  output:
-   # deduction_amount = $24,000 - (AFAGI - $75,000)
-    va_age_deduction: 9_000
-
-
-
+  
 Possible cases:
 
 # single : born after 01/02/1958
@@ -114,21 +33,183 @@ Possible cases:
 Possible cases (copy):
 
 # single : born after 01/02/1958
+- name: If in Virginia, filed as a single individual, and was born after 01/02/1958.
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 70_000
+    filing_status: SINGLE
+    birth_day: 01/02/1958
+  output:
+    va_age_deduction: 0
+
+
 # single: born between 01/02/1939 and 01/01/1958
+- name: If in Virginia, filed as a single individual, and was born between 01/02/1939 and 01/01/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 60_000
+    filing_status: SINGLE
+    birth_day: 01/02/1945
+  output:
+#deduction_ammount = $12,000 - (AFAGI - $50,000)
+    va_age_deduction: 2_000
+
+
+
 # single: born before 01/01/1939
+- name: If in Virginia, filed as a single individual, and was born before 01/01/1938
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 60_000
+    filing_status: SINGLE
+    birth_day: 01/02/1937
+  output:
+#deduction_ammount = $12,000 - (AFAGI - $50,000)
+    va_age_deduction: 12_000
 
 # married: jointly, both born after 01/02/1958: $0
+- name: If in Virginia, filed  jointly as a married couple, and both were born after 01/02/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1959
+    birth_day_spouce: 01/02/1962
+  output:
+    va_age_deduction: 0
+  
 # married: jointly, both between 01/02/1939 and 01/01/1958: $24,000 - (AFAGI - $75,000)
+- name: If in Virginia, filed jointly as a married couple, and both were born between 01/02/1939 and 01/01/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1942
+    birth_day_spouce: 01/02/1950
+  output:
+#deduction_amount = $24,000 - (AFAGI - $75,000)
+    va_age_deduction: 9_000
+
 # married: jointly, both born before 01/01/1939: $24,000
+- name: If in Virginia, filed jointly as a married couple, and both were born before 01/01/1939
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1938
+    birth_day_spouce: 01/02/1937
+  output:
+    va_age_deduction: 24_000
 
 # married: jointly: one eligible for deduction: born before 01/01/1939: $12,000
+- name: If in Virginia, filed jointly as a married couple, and only one spouse is eligible for deduction and he/she was born before 01/01/1939
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1938
+    birth_day_spouce: 01/02/1959
+  output:
+    va_age_deduction: 12_000
+
 # married: jointly: one eligible for deduction: born between 01/02/1939 and 01/01/1958: $12,000 - (AFAGI - $75,000)
+- name: If in Virginia, filed jointly as a married couple, and only one spouse is eligible for deduction and he/she was born between 01/02/1939 and 01/01/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 80_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1942
+    birth_day_spouce: 01/02/1959
+  output:
+    va_age_deduction: 7_000
 # married: jointly: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958: $12,000 + $12,000 - (AFAGI - $75,000)
+- name: If in Virginia, filed jointly as a married couple, and only one spouse is eligible for deduction and he/she was born between 01/02/1939 and 01/01/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1942
+    birth_day_spouce: 01/02/1957
+  output:
+    va_age_deduction: 9_000
+
 
 # married: separate, both born after 01/02/1958: $0
+- name: If in Virginia, married but decided to file separately. Both parties were born after 01/02/1958.
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1960
+    birth_day_spouce: 01/02/1970
+  output:
+    va_age_deduction: 0
+
 # married: separate, both between 01/02/1939 and 01/01/1958: ($24,000 - (AFAGI - $75,000)) / 2
+- name: If in Virginia, married but decided to file separately. Both parties were born between 01/02/1939 and 01/01/1958。
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1941
+    birth_day_spouce: 01/02/1943
+  output:
+    va_age_deduction: 4_500
+
 # married: separate, both born before 01/01/1939: $12,000
+- name: If in Virginia, married but decided to file separately. Both parties were born before 01/01/1939。
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1938
+    birth_day_spouce: 01/02/1937
+  output:
+    va_age_deduction: 12_000
 
 # married: separate: one eligible for deduction: born before 01/01/1939: $12,000
+- name: If in Virginia, married but decided to file separately. Only one spouse is eligible for deduction and he/she was born before 01/01/1939
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 90_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1938
+    birth_day_spouce: 01/02/1959
+  output:
+    va_age_deduction: 12_000
+
 # married: separate: one eligible for deduction: born between 01/02/1939 and 01/01/1958: $12,000 - (AFAGI - $75,000)
+- name: If in Virginia, married but decided to file separately. Only one spouse is eligible for deduction and he/she was born between 01/02/1939 and 01/01/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 80_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1957
+    birth_day_spouce: 01/02/1959
+  output:
+    va_age_deduction: 7_000
 # married: separate: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958: [$12,000 + $12,000 - (AFAGI - $75,000)] / 2
+- name: If in Virginia, married but decided to file separately. Both parties are eligible for deduction and were born between 01/02/1939 and 01/01/1958
+  period: 2022
+  input:
+    state_code: VA
+    AFAGI: 80_000
+    filing_status: JOINT
+    birth_day_self: 01/02/1945
+    birth_day_spouce: 01/02/1947
+  output:
+    va_age_deduction: 9_500
