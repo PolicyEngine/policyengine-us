@@ -1,4 +1,4 @@
-description: Standard deduction for ME State tax.
+description: Maine state tax standard deduction
 SINGLE:
   2022-01-01: 12_950
 JOINT:
@@ -14,8 +14,7 @@ metadata:
   period: year
   breakdown:
     - filing_status
-  name: ny_standard_deduction_amount
-  label: NY standard deduction
+  label: Maine standard deduction
   reference:
     - title: State of Maine - Individual Income Tax 2022 Rates
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2022.pdf

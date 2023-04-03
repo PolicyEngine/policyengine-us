@@ -19,6 +19,4 @@ class me_standard_deduction(Variable):
         p = parameters(period).gov.states.me.tax.income.deductions.standard
 
         # Get standard deduction for filing status
-        standard_deduction = p.amount[filing_status]
-
-        return standard_deduction
+        return p.amount[filing_status]

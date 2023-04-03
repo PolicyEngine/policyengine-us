@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class me_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ME deduction"
+    label = "Maine deduction"
     unit = USD
     definition_period = YEAR
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf"
