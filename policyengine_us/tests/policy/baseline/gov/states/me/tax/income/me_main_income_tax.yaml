@@ -1,0 +1,142 @@
+- name: Single filer, taxable income is $20K. The main income tax is $1160.
+  period: 2022
+  input:
+    me_taxable_income: 20_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # 5.8% of first $21,050 : $1160
+   # 6.75% of the next $28,950 : $0
+   # 7.15% of the amount exceeding $50,000 : $0
+   # Total = $1160
+    me_main_income_tax: 1_160
+
+- name: Single filer, taxable income is $25K. The main income tax is $1488.
+  period: 2022
+  input:
+    me_taxable_income: 25_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # 5.8% of first $21,050 : $1221
+   # 6.75% of the next $28,950 :$267
+   # 7.15% of the amount exceeding $50,000 : $0
+   # Total = $1221 + $267 = $1488
+    me_main_income_tax: 1_488
+
+- name: Single filer, taxable income is $55K. The main income tax is $3533.
+  period: 2022
+  input:
+    me_taxable_income: 55_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+   # 5.8% of first $21,050 : $1221
+   # 6.75% of the next $28,950 :$1954
+   # 7.15% of the amount exceeding $50,000 : $358
+   # Total = $1221 + $1954 + $358 = $3_533
+    me_main_income_tax: 3_533
+
+- name: Separate filer, taxable income is $55K. The main income tax is $3533.
+  period: 2022
+  input:
+    me_taxable_income: 55_000
+    filing_status: SEPARATE
+    state_code: ME
+  output:
+   # 5.8% of first $21,050 : $1221
+   # 6.75% of the next $28,950 : $1954
+   # 7.15% of the amount exceeding $50,000 : $358
+   # Total = $1221 + $1954 + $358 = $3_533
+    me_main_income_tax: 3_533
+
+- name: Head of household filer, taxable income is $20K. The main income tax is $1160.
+  period: 2022
+  input:
+    me_taxable_income: 20_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+   # 5.8% of first $31,550 : $1160
+   # 6.75% of the next $43,450 : $0
+   # 7.15% of the amount exceeding $75,000 : $0
+   # Total = $1160
+    me_main_income_tax: 1_160
+
+- name: Head of household filer, taxable income is $35K. The main income tax is $2063.
+  period: 2022
+  input:
+    me_taxable_income: 35_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+   # 5.8% of first $31,550 : $1830
+   # 6.75% of the next $43,450 : $233
+   # 7.15% of the amount exceeding $75,000 : $0
+   # Total = $1830 + $233 = $2063
+    me_main_income_tax: 2_063
+
+- name: Head of household filer, taxable income is $80K. The main income tax is $5121.
+  period: 2022
+  input:
+    me_taxable_income: 80_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: ME
+  output:
+   # 5.8% of first $31,550 : $1830
+   # 6.75% of the next $43,450 : $2933
+   # 7.15% of the amount exceeding $75,000 : $358
+   # Total = $1830 + $2933 + $358 = $5121
+    me_main_income_tax: 5_121
+
+- name: Joint filer, taxable income is $20K. The main income tax is $1160.
+  period: 2022
+  input:
+    me_taxable_income: 20_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+   # 5.8% of first $42,100 : $1160
+   # 6.75% of the next $57,900 : $0
+   # 7.15% of the amount exceeding $100,000 : $0
+   # Total = $1160
+    me_main_income_tax: 1_160
+
+- name: Joint filer, taxable income is $50K. The main income tax is $2975.
+  period: 2022
+  input:
+    me_taxable_income: 50_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+   # 5.8% of first $42,100 : $2442
+   # 6.75% of the next $57,900 : $533
+   # 7.15% of the amount exceeding $100,000 : $0
+   # Total = $2442 + $533 = $2975
+    me_main_income_tax: 2_975
+
+- name: Joint filer, taxable income is $110K. The main income tax is $7065.
+  period: 2022
+  input:
+    me_taxable_income: 110_000
+    filing_status: JOINT
+    state_code: ME
+  output:
+   # 5.8% of first $42,100 : $2442
+   # 6.75% of the next $57,900 : $3908
+   # 7.15% of the amount exceeding $100,000 : $715
+   # Total = $2442 + $3908 + $715 = $7065
+    me_main_income_tax: 7_065
+
+- name: Surviving spouses filer, taxable income is $110K. The main income tax is $7065.
+  period: 2022
+  input:
+    me_taxable_income: 110_000
+    filing_status: WIDOW
+    state_code: ME
+  output:
+   # 5.8% of first $42,100 : $2442
+   # 6.75% of the next $57,900 : $3908
+   # 7.15% of the amount exceeding $100,000 : $715
+   # Total = $2442 + $3908 + $715 = $7065
+    me_main_income_tax: 7_065

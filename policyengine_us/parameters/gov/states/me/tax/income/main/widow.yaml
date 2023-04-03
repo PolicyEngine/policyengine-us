@@ -1,0 +1,36 @@
+description: Progressive rate schedule for a widow in ME. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  name: me_income_tax_rate_widow
+  label: ME State income tax rates for widow filers
+  reference:
+    - title: Maine §5111. Imposition and rate of tax
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5111.html
+brackets:
+  - threshold:
+      # Define time period and the first tax bracket lower bound
+      2017-01-01: 0
+
+    rate:
+      # If in the given time period and first tax bracket
+      # Then the tax rate is as follow
+      2017-01-01: 0.058
+
+  - threshold:
+      # Define time period and the first tax bracket upper bound
+      2017-01-01: 42_100
+    rate:
+      # If in the given time period and second tax bracket
+      # Then the tax rate is as follow
+      2017-01-01: 0.0675
+
+  - threshold:
+      # Define time period and the second tax bracket upper bound
+      2017-01-01: 100_000
+
+    rate:
+      # If in the given time period and third tax bracket
+      # Then the tax rate is as follow
+      2017-01-01: 0.0715
