@@ -1,0 +1,42 @@
+- name: New Jersey EITC, fraction of federal EITC (qualifies for federal EITC)
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+        earned_income_tax_credit: 100
+  output:
+    nj_eitc: 40
+
+- name: New Jersey EITC, fraction of would-be federal EITC (doesn't qualify for federal EITC because of age)
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_eitc: 224
+
+- name: New Jersey EITC, doesn't qualify for federal or NJ EITC because of age.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 17
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_eitc: 0

@@ -1,0 +1,41 @@
+- name: Individual without child that is still eligible for federal eitc based on age.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_eitc_eligible: true
+
+- name: Individual without child that is not eligible for federal eitc based on age.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_eitc_eligible: true
+
+- name: Individual without child that is not eligible for federal or NJ eitc.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 17
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_eitc_eligible: false

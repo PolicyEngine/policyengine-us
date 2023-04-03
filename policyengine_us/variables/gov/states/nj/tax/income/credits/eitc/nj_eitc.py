@@ -1,0 +1,35 @@
+from policyengine_us.model_api import *
+
+
+class nj_eitc(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "New Jersey EITC"
+    unit = USD
+    definition_period = YEAR
+    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-7/"
+    defined_for = StateCode.NJ
+
+    def formula(tax_unit, period, parameters):
+        # Get parameter tree for NJ EITC.
+        p = parameters(period).gov.states.nj.tax.income.credits.eitc
+
+        # Get parameter tree for federal EITC.
+        p_fed = parameters(period).gov.irs.credits.eitc
+
+        # Calculate NJ EITC.
+        # If eligible for federal EITC, return federal EITC * percent_of_federal_eitc.
+        # If ineligible for federal EITC only because of age, return max federal EITC * percent_of_federal_eitc.
+        #     Note: this implies that they have no children (hence the max federal EITC input).
+        # Otherwise, return 0.
+        return select(
+            [
+                tax_unit("eitc_eligible", period),
+                tax_unit("nj_eitc_eligible", period),
+            ],
+            [
+                tax_unit("eitc", period) * p.percent_of_federal_eitc,
+                p_fed.max.calc(0) * p.percent_of_federal_eitc,
+            ],
+            default=0,
+        )
