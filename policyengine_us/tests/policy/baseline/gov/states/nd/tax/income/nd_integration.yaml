@@ -1,0 +1,39 @@
+- name: Tax unit with taxsimid 55 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 51
+        employment_income: 86_010
+        qualified_dividend_income: 5_010
+        taxable_interest_income: 11_010
+        short_term_capital_gains: 9_010
+        long_term_capital_gains: 10_010
+        rental_income: 1_010
+        taxable_private_pension_income: 2_000
+        social_security: 5_000
+        rent: 13_000
+        self_employment_income: 142_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:  # expected results from patched TAXSIM35 2023-04-01 version
+    nd_income_tax: 3956.12
