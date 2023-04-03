@@ -25,7 +25,9 @@ class nj_dependents_attending_college_exemption(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
 
         # Get full time students
-        is_full_time_college_student = person("is_full_time_college_student", period)
+        is_full_time_college_student = person(
+            "is_full_time_college_student", period
+        )
 
         # Total number of qualifying dependents attending college
         qualifying_dependents = tax_unit.sum(

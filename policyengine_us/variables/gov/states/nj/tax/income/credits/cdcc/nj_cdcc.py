@@ -13,9 +13,7 @@ class nj_cdcc(Variable):
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.credits.cdcc.rate
+        p = parameters(period).gov.states.nj.tax.income.credits.cdcc.rate
         agi = tax_unit("adjusted_gross_income", period)
         federal_cdcc = tax_unit("cdcc", period)
         rate = p.calc(agi)
