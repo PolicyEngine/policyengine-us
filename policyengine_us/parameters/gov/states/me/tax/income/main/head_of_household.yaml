@@ -12,12 +12,10 @@ brackets:
   - threshold:
       # Define time period and the first tax bracket lower bound
       2017-01-01: 0
-
     rate:
       # If in the given time period and first tax bracket
       # Then the tax rate is as follow
       2017-01-01: 0.058
-
   - threshold:
       # Define time period and the first tax bracket upper bound
       2017-01-01: 31_550
@@ -25,11 +23,9 @@ brackets:
       # If in the given time period and second tax bracket
       # Then the tax rate is as follow
       2017-01-01: 0.0675
-
   - threshold:
       # Define time period and the second tax bracket upper bound
       2017-01-01: 75_000
-
     rate:
       # If in the given time period and third tax bracket
       # Then the tax rate is as follow

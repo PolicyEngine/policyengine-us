@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class me_main_income_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ME main income tax (before credits and supplemental tax)"
+    label = "Maine main income tax (before credits and supplemental tax)"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ME
