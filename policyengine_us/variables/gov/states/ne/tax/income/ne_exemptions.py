@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ne_num_exemptions(Variable):
+class ne_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "number of NE exemptions"
+    label = "NE exemptions amount"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,4 +16,5 @@ class ne_num_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         adults = tax_unit("num", period)
         dependents = tax_unit("tax_unit_dependents", period)
-        return adults + dependents
+        p = parameters(period).gov.states.ne.tax.income.exemptions
+        return (adults + dependents) * p.amount
