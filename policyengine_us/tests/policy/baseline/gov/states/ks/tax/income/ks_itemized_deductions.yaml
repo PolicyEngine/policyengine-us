@@ -1,0 +1,21 @@
+- name: KS itemized deductions unit test 1
+  period: 2021
+  input:
+    real_estate_taxes: 8
+    salt_deduction: 10
+    interest_deduction: 9
+    medical_expense_deduction: 2
+    state_code: KS
+  output:
+    ks_itemized_deductions: 8 + 9 + 2
+
+- name: KS itemized deductions unit test 2
+  period: 2022
+  input:
+    real_estate_taxes: 12
+    salt_deduction: 10
+    interest_deduction: 9
+    medical_expense_deduction: 2
+    state_code: KS
+  output:
+    ks_itemized_deductions: 12 + 9 + 2
