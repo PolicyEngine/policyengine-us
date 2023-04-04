@@ -1,7 +1,15 @@
-- name: NY countable earned income is 50% of gross earned income as of 2023-01-01.
+- name: NY countable earned income = gross earned income*50% - 150 as of 2023-01-01.
   period: 2023
   input:
     state_code: NY
-    ny_tanf_gross_earned_income: 100
+    ny_tanf_gross_earned_income: 1000
   output:
-    ny_tanf_countable_earned_income: 50
+    ny_tanf_countable_earned_income: 350
+
+- name: NY countable earned income = gross earned income*50% - 150, max(200*50%-150,0)=0
+  period: 2023
+  input:
+    state_code: NY
+    ny_tanf_gross_earned_income: 200
+  output:
+    ny_tanf_countable_earned_income: 0

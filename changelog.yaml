@@ -2792,3 +2792,98 @@
     fixed:
     - survey-enhance now a dev dependency.
   date: 2023-03-29 20:36:52
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI addition and deduction.
+  date: 2023-03-29 23:06:13
+- bump: patch
+  changes:
+    changed:
+    - Pin pydata-sphinx-theme==0.13.1 to fix jupyterbook build.
+  date: 2023-03-29 23:22:36
+- bump: minor
+  changes:
+    added:
+    - Kansas state income tax.
+  date: 2023-03-30 01:37:19
+- bump: minor
+  changes:
+    added:
+    - Maine taxable income.
+  date: 2023-03-30 04:13:27
+- bump: patch
+  changes:
+    fixed:
+    - California CDCC formula, which previously doubly applied the federal CDCC rate.
+  date: 2023-03-30 05:13:18
+- bump: patch
+  changes:
+    fixed:
+    - CPS url updated to fix poverty rate bug.
+  date: 2023-03-30 16:04:37
+- bump: patch
+  changes:
+    fixed:
+    - Lowered SSI asset limit pass rate to 8.8%.
+  date: 2023-03-30 21:40:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply EITC married filing separately limitation.
+  date: 2023-03-31 06:18:36
+- bump: patch
+  changes:
+    fixed:
+    - is_ssi_disabled variable.
+  date: 2023-04-01 15:19:26
+- bump: minor
+  changes:
+    added:
+    - Maine dependent exemption.
+  date: 2023-04-02 02:13:21
+- bump: minor
+  changes:
+    added:
+    - Earned income for new york tanf.
+  date: 2023-04-02 15:07:00
+- bump: minor
+  changes:
+    added:
+    - North Dakota state income tax.
+  date: 2023-04-02 16:55:48
+- bump: minor
+  changes:
+    added:
+    - South Carolina young child exemption.
+  date: 2023-04-03 16:13:54
+- bump: minor
+  changes:
+    added:
+    - Nebraska state income tax.
+  date: 2023-04-03 17:24:53
+- bump: minor
+  changes:
+    added:
+    - New Jersey dependent attending college exemption.
+  date: 2023-04-03 18:48:55
+- bump: minor
+  changes:
+    added:
+    - Virginia income tax rate and blank Virginia income tax variable file.
+  date: 2023-04-04 02:09:32
+- bump: minor
+  changes:
+    added:
+    - New Jersey total exemptions.
+  date: 2023-04-04 04:32:08
+- bump: minor
+  changes:
+    added:
+    - New York TANF flat income disregard.
+  date: 2023-04-04 14:04:35
+- bump: minor
+  changes:
+    added:
+    - New York TANF gross unearned income
+  date: 2023-04-04 14:16:28
