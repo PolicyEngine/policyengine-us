@@ -21,10 +21,18 @@
     nj_eitc: 224
 
 - name: New Jersey EITC, fraction of max zero-child federal EITC (doesn't qualify for federal EITC only because too young)
-  period: 2023
+  period: 2022
   absolute_error_margin: 0
   input:
-    adjusted_gross_income: 24_200
+    # In 2022, the joint bonus is $6,130
+    # Phaseout rate is 7.65%
+    # Phaseout start is $9,160 + $6,130 = $15,290
+    # Maximum EITC is $560
+    # (completed_phaseout-phaseout_start)/phaseout_rate = max_credit
+    # so completed_phaseout = $560/.0765 + $15,290 = $22,610.26
+    # so the cliff should kick in there.
+    # This test is just below the cliff (nj_eitc should be $224).
+    adjusted_gross_income: 22_600
     filing_status: JOINT
     earned_income_tax_credit: 0
     eitc_eligible: false
@@ -37,7 +45,15 @@
   period: 2023
   absolute_error_margin: 0
   input:
-    adjusted_gross_income: 24_220
+    # In 2022, the joint bonus is $6,130
+    # Phaseout rate is 7.65%
+    # Phaseout start is $9,160 + $6,130 = $15,290
+    # Maximum EITC is $560
+    # (completed_phaseout-phaseout_start)/phaseout_rate = max_credit
+    # so completed_phaseout = $560/.0765 + $15,290 = $22,610.26
+    # so the cliff should kick in there.
+    # This test is just above the cliff (nj_eitc should be $0).
+    adjusted_gross_income: 22_620
     filing_status: JOINT
     earned_income_tax_credit: 0
     eitc_eligible: false
