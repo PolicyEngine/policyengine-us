@@ -2,17 +2,10 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    people:
-      person1:
-        age: 30
-    tax_units:
-      tax_unit:
-        members: [person1]
-        earned_income_tax_credit: 100
-    households:
-      household:
-        members: [person1]
-        state_code: NJ
+    earned_income_tax_credit: 100
+    eitc_eligible: true
+    nj_eitc_eligible: true
+    state_code: NJ
   output:
     nj_eitc: 40
 
@@ -20,26 +13,19 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    people:
-      person1:
-        age: 20
-    households:
-      household:
-        members: [person1]
-        state_code: NJ
+    earned_income_tax_credit: 0
+    eitc_eligible: false
+    nj_eitc_eligible: true
+    state_code: NJ
   output:
     nj_eitc: 224
 
-- name: New Jersey EITC, fraction of max zero-child federal EITC (doesn't qualify for federal EITC because too old)
+- name: Outside New Jersey, no New Jersey EITC.
   period: 2022
   absolute_error_margin: 0
   input:
-    people:
-      person1:
-        age: 66
-    households:
-      household:
-        members: [person1]
-        state_code: NJ
+    earned_income_tax_credit: 100
+    eitc_eligible: true
+    state_code: NY
   output:
-    nj_eitc: 224
+    nj_eitc: 0

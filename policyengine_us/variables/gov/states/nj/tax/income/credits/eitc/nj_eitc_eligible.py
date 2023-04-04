@@ -26,7 +26,7 @@ class nj_eitc_eligible(Variable):
         simulation.tax_benefit_system.parameters.gov.irs.credits.eitc.eligibility.age.min.update(
             value=parameters(
                 period
-            ).gov.states.nj.tax.income.credits.eitc.eligibility.minimum_age,
+            ).gov.states.nj.tax.income.credits.eitc.eligibility.age.min,
             period=period,
         )
 
@@ -37,7 +37,7 @@ class nj_eitc_eligible(Variable):
         simulation.tax_benefit_system.parameters.gov.irs.credits.eitc.eligibility.age.max.update(
             value=parameters(
                 period
-            ).gov.states.nj.tax.income.credits.eitc.eligibility.maximum_age,
+            ).gov.states.nj.tax.income.credits.eitc.eligibility.age.max,
             period=period,
         )
 
