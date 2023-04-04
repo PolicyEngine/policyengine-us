@@ -1,0 +1,34 @@
+description: New Jersey provides a credit for each dependent who is under the age of 6
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  amount_unit: 1
+  label: New Jersey Child Tax Credit
+  reference:
+    - title: Instructions for Form NJ-1040 (line 65)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 500
+  - threshold:
+      2022-01-01: 30_000
+    amount:
+      2022-01-01: 400
+  - threshold:
+      2022-01-01: 40_000
+    amount:
+      2022-01-01: 300
+  - threshold:
+      2022-01-01: 50_000
+    amount:
+      2022-01-01: 200
+  - threshold:
+      2022-01-01: 60_000
+    amount:
+      2022-01-01: 100
+  - threshold:
+      2022-01-01: 80_000
+    amount:
+      2022-01-01: 0
