@@ -21,6 +21,7 @@ class mn_itemized_deductions(Variable):
         #   your deductions on your Minnesota return. You will generally
         #   pay less Minnesota income tax if you take the larger of your
         #   itemized or standard deduction.
+        # ... calculate pre-limitation itemized deductions
         p = parameters(period).gov.irs.deductions
         itm_deds = [
             deduction
@@ -28,5 +29,22 @@ class mn_itemized_deductions(Variable):
             if deduction not in ["salt_deduction"]
         ]
         us_itm_deds_less_salt = add(tax_unit, period, itm_deds)
-        uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return us_itm_deds_less_salt + uncapped_property_taxes
+        filing_status = tax_unit("filing_status", period)
+        capped_property_taxes = min_(
+            add(tax_unit, period, ["real_estate_taxes"]),
+            p.itemized.salt_and_real_estate.cap[filing_status],
+        )
+        mn_itm_deds = us_itm_deds_less_salt + capped_property_taxes
+        # ... calculate itemized deductions offset
+        p = parameters(period).gov.states.mn.tax.income.deductions.itemized
+        exempt_deds = (
+            tax_unit("medical_expense_deduction", period)
+            + tax_unit("casualty_loss_deduction", period)
+        )
+        net_deds = max_(0, mn_itm_deds - exempt_deds)
+        net_deds_frac = p.net_deduction_fraction * net_deds
+        agi = tax_unit("adjusted_gross_income", period)
+        excess_agi = max_(0, agi - p.agi_threshold[filing_status])
+        excess_agi_frac = p.excess_agi_fraction * excess_agi
+        offset = min_(net_deds_frac, excess_agi_frac)
+        return max_(0, mn_itm_deds - offset)
