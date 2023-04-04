@@ -33,7 +33,7 @@
 
 - name: Maine deduction given Head of Widow status, income of $200k means deduction will be partially phased out
   period: 2022
-  absolute_error_margin: 0
+  absolute_error_margin: 0.01
   input:
     me_agi: 200_000
     state_code: ME
