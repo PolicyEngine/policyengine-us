@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: NJ
-    adjusted_gross_income: 20_000
+    nj_taxable_income: 20_000
     cdcc: 1_000
   output:
     nj_cdcc: 500
@@ -11,7 +11,7 @@
   period: 2022
   input:
     state_code: NJ
-    adjusted_gross_income: 40_000
+    nj_taxable_income: 40_000
     cdcc: 1_000
   output:
     nj_cdcc: 400
@@ -20,7 +20,7 @@
   period: 2022
   input:
     state_code: NJ
-    adjusted_gross_income: 70_000
+    nj_taxable_income: 70_000
     cdcc: 1_000
   output:
     nj_cdcc: 300
@@ -29,7 +29,7 @@
   period: 2022
   input:
     state_code: NJ
-    adjusted_gross_income: 100_000
+    nj_taxable_income: 100_000
     cdcc: 1_000
   output:
     nj_cdcc: 200
@@ -38,7 +38,7 @@
   period: 2022
   input:
     state_code: NJ
-    adjusted_gross_income: 130_000
+    nj_taxable_income: 130_000
     cdcc: 1_000
   output:
     nj_cdcc: 100
@@ -47,7 +47,7 @@
   period: 2022
   input:
     state_code: NJ
-    adjusted_gross_income: 160_000
+    nj_taxable_income: 160_000
     cdcc: 1_000
   output:
     nj_cdcc: 0

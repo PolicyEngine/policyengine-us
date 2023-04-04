@@ -1,15 +1,15 @@
 description: New Jersey provides a credit for child and dependent care.
 metadata:
+  type: marginal_rate
   threshold_unit: currency-USD
   amount_unit: /1
-  threshold_period: year
   label: New Jersey Child and Dependent Care Credit
   reference: 
     - title: Instructions for Form NJ-1040 (line 64)
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44
 brackets:
   - threshold:  
-      2022-01-01: -.inf
+      2022-01-01: 0
     amount:
       2022-01-01: 0.5
   - threshold:  
@@ -32,4 +32,3 @@ brackets:
       2022-01-01: 150_000
     amount:
       2022-01-01: 0
-      
