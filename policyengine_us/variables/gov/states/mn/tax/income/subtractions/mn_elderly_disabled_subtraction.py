@@ -18,7 +18,7 @@ class mn_elderly_disabled_subtraction(Variable):
         p = mn_itax.subtractions.elderly_disabled
         filing_status = tax_unit("filing_status", period)
         # calculate the subtraction amount
-        # ... determine starting amount
+        # ... determine age eligibility
         person = tax_unit.members
         is_elderly = person("age", period) >= p.minimum_age
         is_head = person("is_tax_unit_head", period)
@@ -29,10 +29,10 @@ class mn_elderly_disabled_subtraction(Variable):
         is_disabled = person("is_permanently_and_totally_disabled", period)
         disabled_head = is_head & is_disabled
         disabled_spouse = is_spouse & is_disabled
-        # ... determine start amount
-        start_amount = where(
+        # ... determine base subtraction amount
+        base_amount = where(
             tax_unit.any(elderly_head | elderly_spouse),
-            p.base_amount[filing_unit],
+            p.base_amount[filing_status],
             0,  # because federally-taxable disability income
             # included in federal Form 1040, line 1z, is unknown
         )
@@ -40,26 +40,26 @@ class mn_elderly_disabled_subtraction(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         dinc_person = person("total_disability_payments", period)
         disinc_person = dinc_person * ~is_dependent * ~is_elderly
-        disability_income = add(tax_unit, period, ["disinc_person"])
+        disability_income = tax_unit.sum(disinc_person)
         # ... determine untaxed social security benefits
-        untaxed_social_security = add(
-            tax_unit, period, ["social_security"]
-        ) - add(tax_unit, period, ["taxable_social_security"])
+        unit_socsec = add(tax_unit, period, ["social_security"])
+        unit_taxed_socsec = add(tax_unit, period, ["taxable_social_security"])
+        untaxed_social_security = unit_socsec - unit_taxed_socsec
         # ... determine total disability and social security benefits
         benefits = disability_income + untaxed_social_security
-        # ... subtract benefits from start_amount
-        amount = max_(0, start_amount - benefits)
-        # ... determine AGI eligibility for subtraction
+        # ... subtract benefits from base amount
+        amount = max_(0, base_amount - benefits)
+        # ... determine net agi
         agi = tax_unit("adjusted_gross_income", period)
         agi += tax_unit("c05700", period)  # lump-sum Form 4972 distributions
-        agi_limit = p.agi_base_limit[filing_status]
-        joint = filing_status == filing_stauts.possible_values.JOINT
+        agi_offset = p.agi_offset_base[filing_status]
+        joint = filing_status == filing_status.possible_values.JOINT
         head_eligible = tax_unit.any(elderly_head | disabled_head)
         spouse_eligible = tax_unit.any(elderly_spouse | disabled_spouse)
         joint_with_two_eligibles = joint & head_eligible & spouse_eligible
-        agi_limit += p.agi_extra_limit * joint_with_two_eligibles
-        net_agi = max_(0, agi - agi_limit)
-        fraction_of_net_agi = p.agi_fraction * net_agi
+        agi_offset += joint_with_two_eligibles * p.agi_offset_extra
+        net_agi = max_(0, agi - agi_offset)
+        fraction_of_net_agi = p.net_agi_fraction * net_agi
         # ... subtract fracton_of_net_agi from amount to get final amount
         final_amount = max_(0, amount - fraction_of_net_agi)
         return where(head_eligible | spouse_eligible, final_amount, 0)
