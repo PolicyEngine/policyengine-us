@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class me_main_income_tax(Variable):
+class me_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maine main income tax (before credits and supplemental tax)"

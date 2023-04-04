@@ -6,7 +6,7 @@
     state_code: ME
   output:
    # .058*20000 = 1160
-    me_main_income_tax: 1_160
+    me_income_tax_before_credits: 1_160
 
 - name: Single filer, taxable income is $25K. The main income tax is $1487.525.
   period: 2022
@@ -16,7 +16,7 @@
     state_code: ME
   output:
    # .058*21050 + .0675*(25000-21050) = 1487.525
-    me_main_income_tax: 1_487.525
+    me_income_tax_before_credits: 1_487.525
 
 - name: Single filer, taxable income is $55K. The main income tax is $3532.525.
   period: 2022
@@ -26,7 +26,7 @@
     state_code: ME
   output:
    # .058*21050 + .0675*(50000-21050) + .0715*(55000-50000) = 3532.525
-    me_main_income_tax: 3_532.525
+    me_income_tax_before_credits: 3_532.525
 
 - name: Separate filer, taxable income is $55K. The main income tax is $3532.525.
   period: 2022
@@ -36,7 +36,7 @@
     state_code: ME
   output:
    # .058*21050 + .0675*(50000-21050) + .0715*(55000-50000) = 3532.525
-    me_main_income_tax: 3_532.525
+    me_income_tax_before_credits: 3_532.525
 
 - name: Head of household filer, taxable income is $20K. The main income tax is $1160.
   period: 2022
@@ -49,7 +49,7 @@
    # 6.75% of the next $43,450 : $0
    # 7.15% of the amount exceeding $75,000 : $0
    # Total = $1160
-    me_main_income_tax: 1_160
+    me_income_tax_before_credits: 1_160
 
 - name: Head of household filer, taxable income is $35K. The main income tax is $2_062.775.
   period: 2022
@@ -59,7 +59,7 @@
     state_code: ME
   output:
    # .058*31550 + .0675*(35000-31550) = 2062.775
-    me_main_income_tax: 2_062.775
+    me_income_tax_before_credits: 2_062.775
 
 - name: Head of household filer, taxable income is $80K. The main income tax is $5120.275.
   period: 2022
@@ -69,7 +69,7 @@
     state_code: ME
   output:
    # .058*31550 + .0675*(75000-31550) + .0715*(80000-75000) = 5120.275
-    me_main_income_tax: 5_120.275
+    me_income_tax_before_credits: 5_120.275
 
 - name: Joint filer, taxable income is $20K. The main income tax is $1160.
   period: 2022
@@ -82,7 +82,7 @@
    # 6.75% of the next $57,900 : $0
    # 7.15% of the amount exceeding $100,000 : $0
    # Total = $1160
-    me_main_income_tax: 1_160
+    me_income_tax_before_credits: 1_160
 
 - name: Joint filer, taxable income is $50K. The main income tax is $2975.050.
   period: 2022
@@ -92,7 +92,7 @@
     state_code: ME
   output:
    # .058*42100 + .0675*(50000-42100) = 2975.050
-    me_main_income_tax: 2_975.050
+    me_income_tax_before_credits: 2_975.050
 
 - name: Joint filer, taxable income is $110K. The main income tax is $7065.050.
   period: 2022
@@ -102,7 +102,7 @@
     state_code: ME
   output:
    # .058*42100 + .0675*(100000-42100) + .0715*(110000-100000) = 7065.050
-    me_main_income_tax: 7_065.050
+    me_income_tax_before_credits: 7_065.050
 
 - name: Surviving spouses filer, taxable income is $110K. The main income tax is $7065.050.
   period: 2022
@@ -112,4 +112,4 @@
     state_code: ME
   output:
    # .058*42100 + .0675*(100000-42100) + .0715*(110000-100000) = 7065.050
-    me_main_income_tax: 7_065.050
+    me_income_tax_before_credits: 7_065.050
