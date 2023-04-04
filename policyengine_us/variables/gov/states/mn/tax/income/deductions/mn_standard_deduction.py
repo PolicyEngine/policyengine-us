@@ -8,17 +8,23 @@ class mn_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2021-12/m1_21_0.pdf"
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf"
-        "https://www.revenue.state.mn.us/sites/default/files/2022-12/m1_22.pdf"
         "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
     )
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mn.tax.income.deductions.standard
+        p = parameters(period).gov.states.mn.tax.income.deductions
+        # ... calculate pre-limitation amount
         filing_status = tax_unit("filing_status", period)
-        base_amt = p.base_amount[filing_status]
+        base_amt = p.standard.base_amount[filing_status]
         aged_blind_count = tax_unit("aged_blind_count", period)
-        extra_amt = aged_blind_count * p.extra_amount[filing_status]
-        return base_amt + extra_amt
+        extra_amt = aged_blind_count * p.standard.extra_amount[filing_status]
+        std_ded = base_amt + extra_amt
+        # ... calculate standard deduction offset
+        std_ded_offset = p.deduction_fraction * std_ded
+        agi = tax_unit("adjusted_gross_income", period)
+        excess_agi = max_(0, agi - p.agi_threshold[filing_status])
+        excess_agi_offset = p.excess_agi_fraction * excess_agi
+        offset = min_(std_ded_offset, excess_agi_offset)
+        return max_(0, std_ded - offset)

@@ -36,13 +36,13 @@ class mn_itemized_deductions(Variable):
         )
         mn_itm_deds = us_itm_deds_less_salt + capped_property_taxes
         # ... calculate itemized deductions offset
-        p = parameters(period).gov.states.mn.tax.income.deductions.itemized
+        p = parameters(period).gov.states.mn.tax.income.deductions
         exempt_deds = tax_unit("medical_expense_deduction", period)
         exempt_deds += tax_unit("casualty_loss_deduction", period)
         net_deds = max_(0, mn_itm_deds - exempt_deds)
-        net_deds_frac = p.net_deduction_fraction * net_deds
+        net_deds_offset = p.deduction_fraction * net_deds
         agi = tax_unit("adjusted_gross_income", period)
         excess_agi = max_(0, agi - p.agi_threshold[filing_status])
-        excess_agi_frac = p.excess_agi_fraction * excess_agi
-        offset = min_(net_deds_frac, excess_agi_frac)
+        excess_agi_offset = p.excess_agi_fraction * excess_agi
+        offset = min_(net_deds_offset, excess_agi_offset)
         return max_(0, mn_itm_deds - offset)
