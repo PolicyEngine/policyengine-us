@@ -1,0 +1,39 @@
+- name: NE income tax before credits unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: SINGLE
+    ne_taxable_income: 10_000
+    state_code: NE
+  output:  # from hand calculation to avoid whole-dollar rounding
+    ne_income_tax_before_credits: 315.93
+
+- name: NE income tax before credits unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: JOINT
+    ne_taxable_income: 110_000
+    state_code: NE
+  output:  # from hand calculation to avoid whole-dollar rounding
+    ne_income_tax_before_credits: 5_675.15
+
+- name: NE income tax before credits unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: SINGLE
+    ne_taxable_income: 30_000
+    state_code: NE
+  output:  # from hand calculation to avoid whole-dollar rounding
+    ne_income_tax_before_credits: 1_158.03
+
+- name: NE income tax before credits unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    ne_taxable_income: 110_000
+    state_code: NE
+  output:  # from hand calculation to avoid whole-dollar rounding
+    ne_income_tax_before_credits: 6_062.08
