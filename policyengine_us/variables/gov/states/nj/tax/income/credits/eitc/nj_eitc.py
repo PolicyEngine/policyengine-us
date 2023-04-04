@@ -17,6 +17,19 @@ class nj_eitc(Variable):
         # Get parameter tree for federal EITC.
         p_fed = parameters(period).gov.irs.credits.eitc
 
+        # Determine if filer is above federal EITC income threshold.
+        # We can find the income threshold by looking at their filing status and the phase-out rate for 0 children.
+        # Note: this assumes the same phaseout rate for all filing statuses (which is the case).
+        is_joint = tax_unit("tax_unit_is_joint", period)
+        joint_bonus = p_fed.phase_out.joint_bonus.calc(0)
+        phaseout_rate = p_fed.phaseout_rate.calc(0)
+        phaseout_start = p_fed.phaseout_start.calc(0) + is_joint * joint_bonus
+        max_credit = p_fed.max.calc(0)
+        completed_phaseout = max_credit / phaseout_rate + phaseout_start
+        income_eligible = (
+            tax_unit("adjusted_gross_income", period) < completed_phaseout
+        )
+
         # Calculate NJ EITC.
         # If eligible for federal EITC, return federal EITC * percent_of_federal_eitc.
         # If ineligible for federal EITC only because of age, return max federal EITC * percent_of_federal_eitc.
@@ -26,11 +39,11 @@ class nj_eitc(Variable):
         nj_eitc = select(
             [
                 tax_unit("eitc_eligible", period),
-                tax_unit("nj_eitc_eligible", period),
+                income_eligible & tax_unit("nj_eitc_eligible", period),
             ],
             [
                 tax_unit("eitc", period),
-                p_fed.max.calc(0),
+                max_credit,
             ],
             default=0,
         )
