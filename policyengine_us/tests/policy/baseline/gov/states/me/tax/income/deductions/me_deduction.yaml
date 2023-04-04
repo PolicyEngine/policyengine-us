@@ -19,7 +19,7 @@
   output:
     me_deduction: 0
 
-  - name: Maine deduction given Head of Household status, income of $300k means deduction will be fully phased out
+- name: Maine deduction given Head of Household status, income of $300k means deduction will be fully phased out
   period: 2022
   absolute_error_margin: 0
   input:
@@ -31,7 +31,7 @@
     me_standard_deduction: 19_400
     me_deduction: 0
 
-  - name: Maine deduction given Head of Widow status, income of $200k means deduction will be partially phased out
+- name: Maine deduction given Head of Widow status, income of $200k means deduction will be partially phased out
   period: 2022
   absolute_error_margin: 0
   input:
