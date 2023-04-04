@@ -22,8 +22,8 @@ class nj_eitc(Variable):
         # Note: this assumes the same phaseout rate for all filing statuses (which is the case).
         is_joint = tax_unit("tax_unit_is_joint", period)
         joint_bonus = p_fed.phase_out.joint_bonus.calc(0)
-        phaseout_rate = p_fed.phaseout_rate.calc(0)
-        phaseout_start = p_fed.phaseout_start.calc(0) + is_joint * joint_bonus
+        phaseout_rate = p_fed.phase_out.rate.calc(0)
+        phaseout_start = p_fed.phase_out.start.calc(0) + is_joint * joint_bonus
         max_credit = p_fed.max.calc(0)
         completed_phaseout = max_credit / phaseout_rate + phaseout_start
         income_eligible = (
