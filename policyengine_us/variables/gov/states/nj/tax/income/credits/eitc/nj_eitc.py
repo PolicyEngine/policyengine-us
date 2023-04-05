@@ -26,7 +26,7 @@ class nj_eitc(Variable):
         nj_eitc = select(
             [
                 tax_unit("eitc_eligible", period),
-                tax_unit("nj_eitc_income_eligible")
+                tax_unit("nj_eitc_income_eligible", period)
                 & tax_unit("nj_eitc_age_eligible", period),
             ],
             [
