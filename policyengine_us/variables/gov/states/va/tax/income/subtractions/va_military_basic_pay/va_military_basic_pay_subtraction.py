@@ -18,7 +18,7 @@ class va_military_basic_pay_subtraction(Variable):
             period
         ).gov.states.va.tax.income.subtractions.military_basic_pay
         # Compute subtractable military pay for head and spouse separately.
-        military_pay = person("military_pay", period)
+        military_pay = person("military_basic_pay", period)
         # Subtraction phases in and then out dollar for dollar with respect to military pay, at a given threshold.
         subtractable_military_pay = where(
             military_pay < p.threshold,
