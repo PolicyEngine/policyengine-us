@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nj_eitc_age_eligible(Variable):
+class nj_eitc_income_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "New Jersey Eligible for EITC"
