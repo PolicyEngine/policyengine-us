@@ -16,9 +16,9 @@ class mn_taxable_income(Variable):
     defined_for = StateCode.MN
 
     def formula(tax_unit, period, parameters):
-        us_agi = tax_unit("adjsted_gross_income", period)
+        us_agi = tax_unit("adjusted_gross_income", period)
         adds = tax_unit("mn_additions", period)
         deductions = tax_unit("mn_deductions", period)
         exemptions = tax_unit("mn_exemptions", period)
-        subs = tax_unit("mn_subractions", period)
+        subs = tax_unit("mn_subtractions", period)
         return max_(0, us_agi + adds - deductions - exemptions - subs)
