@@ -7,8 +7,7 @@ class mn_lumpsum_tax(Variable):
     label = "Minnesota lump-sum tax"
     unit = USD
     definition_period = YEAR
-    reference = (
-    )
+    reference = ()
     defined_for = StateCode.MN
 
     # def formula(tax_unit, period, parameters):
