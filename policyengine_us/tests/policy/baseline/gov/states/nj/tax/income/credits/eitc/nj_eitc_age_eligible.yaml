@@ -10,7 +10,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true
 
 - name: Filer without children that is ineligible for the federal EITC based on age, but still eligible for the NJ EITC because of lower age minimum.
   period: 2022
@@ -24,7 +24,7 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true
 
 - name: Filer without children that is ineligible for the federal EITC based on age, but still eligible for the NJ EITC because of no age maximum.
   period: 2022
@@ -38,4 +38,4 @@
         members: [person1]
         state_code: NJ
   output:
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true

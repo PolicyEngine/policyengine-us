@@ -4,7 +4,8 @@
   input:
     earned_income_tax_credit: 100
     eitc_eligible: true
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true
+    nj_eitc_income_eligible: true
     state_code: NJ
   output:
     nj_eitc: 40
@@ -15,7 +16,8 @@
   input:
     earned_income_tax_credit: 0
     eitc_eligible: false
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true
+    nj_eitc_income_eligible: true
     state_code: NJ
   output:
     nj_eitc: 224
@@ -32,11 +34,11 @@
     # so completed_phaseout = $560/.0765 + $15,290 = $22,610.26
     # so the cliff should kick in there.
     # This test is just below the cliff (nj_eitc should be $224).
-    adjusted_gross_income: 22_600
     filing_status: JOINT
     earned_income_tax_credit: 0
     eitc_eligible: false
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true
+    nj_eitc_income_eligible: true
     state_code: NJ
   output:
     nj_eitc: 224
@@ -53,11 +55,11 @@
     # so completed_phaseout = $560/.0765 + $15,290 = $22,610.26
     # so the cliff should kick in there.
     # This test is just above the cliff (nj_eitc should be $0).
-    adjusted_gross_income: 22_620
     filing_status: JOINT
     earned_income_tax_credit: 0
     eitc_eligible: false
-    nj_eitc_eligible: true
+    nj_eitc_age_eligible: true
+    nj_eitc_income_eligible: false
     state_code: NJ
   output:
     nj_eitc: 0
@@ -67,7 +69,8 @@
   absolute_error_margin: 0
   input:
     earned_income_tax_credit: 100
-    eitc_eligible: true
+    nj_eitc_age_eligible: true
+    nj_eitc_income_eligible: true
     state_code: NY
   output:
     nj_eitc: 0
