@@ -12,4 +12,5 @@ class ny_tanf_eligible(Variable):
         # Assume federal demographic eligibility given consistency.
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
         income_eligible = spm_unit("ny_tanf_income_eligible", period)
-        return demographic_eligible & income_eligible
+        asset_eligible = spm_unit("ny_tanf_asset_eligible", period)
+        return demographic_eligible & income_eligible & asset_eligible
