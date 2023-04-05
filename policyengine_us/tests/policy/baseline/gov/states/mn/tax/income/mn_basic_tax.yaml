@@ -1,4 +1,4 @@
-- name: MN income tax before credits unit test 1
+- name: MN basic tax unit test 1
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -6,9 +6,9 @@
     mn_taxable_income: 200_000
     state_code: MN
   output:  # based on filling out Tax Rate Schedule in M1 form instructions
-    mn_income_tax_before_credits: 11_700.19 + 0.0985 * (200_000 - 166_040)
+    mn_basic_tax: 11_700.19 + 0.0985 * (200_000 - 166_040)
 
-- name: MN income tax before credits unit test 2
+- name: MN basic tax unit test 2
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -16,9 +16,9 @@
     mn_taxable_income: 300_000
     state_code: MN
   output:  # based on filling out Tax Rate Schedule in M1 form instructions
-    mn_income_tax_before_credits: 20_050.24 + 0.0985 * (300_000 - 284_810)
+    mn_basic_tax: 20_050.24 + 0.0985 * (300_000 - 284_810)
 
-- name: MN income tax before credits unit test 3
+- name: MN basic tax unit test 3
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -26,4 +26,4 @@
     mn_taxable_income: 300_000
     state_code: MN
   output:  # based on filling out Tax Rate Schedule in M1 form instructions
-    mn_income_tax_before_credits: 15_907.00 + 0.0985 * (300_000 - 227_600)
+    mn_basic_tax: 15_907.00 + 0.0985 * (300_000 - 227_600)

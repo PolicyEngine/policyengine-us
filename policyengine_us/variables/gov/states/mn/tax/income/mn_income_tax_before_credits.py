@@ -12,25 +12,4 @@ class mn_income_tax_before_credits(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf"
     )
     defined_for = StateCode.MN
-
-    def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        statuses = filing_status.possible_values
-        taxable_income = tax_unit("mn_taxable_income", period)
-        p = parameters(period).gov.states.mn.tax.income.rates
-        return select(
-            [
-                filing_status == statuses.SINGLE,
-                filing_status == statuses.SEPARATE,
-                filing_status == statuses.JOINT,
-                filing_status == statuses.WIDOW,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                p.single.calc(taxable_income),
-                p.separate.calc(taxable_income),
-                p.joint.calc(taxable_income),
-                p.widow.calc(taxable_income),
-                p.head_of_household.calc(taxable_income),
-            ],
-        )
+    adds = ["mn_basic_tax", "mn_alternative_mimimum_tax", "mn_lumpsum_tax"]
