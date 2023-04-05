@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_taxable_income(Variable):
+class va_military_basic_pay(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia military basic pay"
