@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-import numpy as np
+from numpy import ceil
 
 
 class mn_exemptions(Variable):
@@ -24,7 +24,7 @@ class mn_exemptions(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         excess_agi = max_(0, agi - p.agi_threshold[filing_status])
-        steps = np.ceil(excess_agi / p.agi_step_size[filing_status])
+        steps = ceil(excess_agi / p.agi_step_size[filing_status])
         offset_fraction = p.agi_step_fraction * steps
         offset = offset_fraction * exemptions
         return max_(0, exemptions - offset)
