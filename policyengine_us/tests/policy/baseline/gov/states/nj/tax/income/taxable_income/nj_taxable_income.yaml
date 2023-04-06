@@ -1,0 +1,8 @@
+- name: NJ taxable income under the personal exemption amount.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    employment_income: 500
+    state_code: NJ
+  output:
+    nj_taxable_income: 0
