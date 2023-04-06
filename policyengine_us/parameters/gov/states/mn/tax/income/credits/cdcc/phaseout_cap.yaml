@@ -1,0 +1,13 @@
+description: Minnesota has a child/dependent care credit which is phased out when federal AGI exceeds a threshold but the phaseout amount is capped at this amount per qualifying dependent.
+values:
+  2021-01-01: 600
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota CDCC phaseout cap per qualifying dependent
+  reference:
+  - title: 2021 Schedule M1CD, Child and Dependent Care Credit, Worksheet for Line 8
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf#page=6
+  - title: 2022 Schedule M1CD, Child and Dependent Care Credit, Worksheet for Line 8
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf#page=6
