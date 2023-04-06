@@ -8,7 +8,7 @@
   output:
     va_age_deduction: 0
 
-Possible cases:
+Summary of all possible cases:
 
 # single : born after 01/02/1958
 # single: born between 01/02/1939 and 01/01/1958
@@ -30,8 +30,6 @@ Possible cases:
 # married: separate: one eligible for deduction: born between 01/02/1939 and 01/01/1958
 # married: separate: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958
 
-
-Possible cases (copy):
 
 # single : born after 01/02/1958
 - name: If in Virginia, filed as a single individual, and was born after 01/02/1958.
