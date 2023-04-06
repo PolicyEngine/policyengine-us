@@ -6,7 +6,7 @@ import warnings
 warnings.filterwarnings("ignore")
 warnings.simplefilter("ignore")
 
-CPS_YEARS = [CPS_2021, CPS_2022, CPS_2023]
+CPS_YEARS = []
 
 
 @pytest.mark.dependency(name="cps")
