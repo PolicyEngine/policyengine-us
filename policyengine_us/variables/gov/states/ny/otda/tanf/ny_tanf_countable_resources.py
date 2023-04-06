@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class amount_of_asset(Variable):
+class ny_tanf_countable_resources(Variable):
     value_type = float
     entity = SPMUnit
     label = "Amount of asset"

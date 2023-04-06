@@ -2,8 +2,8 @@
   period: 2023
   input:
     state_code: NY
-    is_any_family_members_over_60: true
-    amount_of_asset: 3000
+    age: 61
+    ny_tanf_countable_resources: 3000
   output:
     ny_tanf_asset_eligible: true
 
@@ -12,8 +12,8 @@
   period: 2023
   input:
     state_code: NY
-    is_any_family_members_over_60: true
-    amount_of_asset: 4000
+    age: 61
+    ny_tanf_countable_resources: 4000
   output:
     ny_tanf_asset_eligible: false
 
@@ -22,8 +22,8 @@
   period: 2023
   input:
     state_code: NY
-    is_any_family_members_over_60: false
-    amount_of_asset: 2500
+    age: 59
+    ny_tanf_countable_resources: 2500
   output:
     ny_tanf_asset_eligible: false
 
@@ -31,7 +31,7 @@
   period: 2023
   input:
     state_code: NY
-    is_any_family_members_over_60: false
-    amount_of_asset: 1500
+    age: 59
+    ny_tanf_countable_resources: 1500
   output:
     ny_tanf_asset_eligible: true
