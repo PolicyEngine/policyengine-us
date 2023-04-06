@@ -9,4 +9,4 @@ class ny_tanf_gross_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.NY
 
-    adds = "gov.states.ny.otda.tanf.income.earned_income"
+    adds = "gov.states.ny.otda.tanf.income.earned"
