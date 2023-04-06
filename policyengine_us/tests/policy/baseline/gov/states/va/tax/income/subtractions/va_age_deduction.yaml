@@ -3,13 +3,11 @@
   input:
     state_code: WA
     AFAGI: 60_000
-    birthday: 01/01/1929
+    age_head: 90
+    age_spouse: None
   output:
     va_age_deduction: 0
 
-    age_head
-    age_spouse
-  
 Possible cases:
 
 # single : born after 01/02/1958
@@ -42,7 +40,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 70_000
     filing_status: SINGLE
-    birth_day: 01/02/1958
+    age_head: 40
+    age_spouse: None
   output:
     va_age_deduction: 0
 
@@ -54,7 +53,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 60_000
     filing_status: SINGLE
-    birth_day: 01/02/1945
+    age_head: 70
+    age_spouse: None
   output:
 #deduction_ammount = $12,000 - (AFAGI - $50,000)
     va_age_deduction: 2_000
@@ -62,13 +62,14 @@ Possible cases (copy):
 
 
 # single: born before 01/01/1939
-- name: If in Virginia, filed as a single individual, and was born before 01/01/1938
+- name: If in Virginia, filed as a single individual, and was born before 01/01/1939
   period: 2022
   input:
     state_code: VA
     AFAGI: 60_000
     filing_status: SINGLE
-    birth_day: 01/02/1937
+    age_head: 88
+    age_spouse: None
   output:
 #deduction_ammount = $12,000 - (AFAGI - $50,000)
     va_age_deduction: 12_000
@@ -80,8 +81,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 90_000
     filing_status: JOINT
-    birth_day_self: 01/02/1959
-    birth_day_spouce: 01/02/1962
+    age_head: 45
+    age_spouse: 43
   output:
     va_age_deduction: 0
   
@@ -92,8 +93,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 90_000
     filing_status: JOINT
-    birth_day_self: 01/02/1942
-    birth_day_spouce: 01/02/1950
+    age_head: 71
+    age_spouse: 75
   output:
 #deduction_amount = $24,000 - (AFAGI - $75,000)
     va_age_deduction: 9_000
@@ -105,8 +106,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 90_000
     filing_status: JOINT
-    birth_day_self: 01/02/1938
-    birth_day_spouce: 01/02/1937
+    age_head: 90
+    age_spouse: 89
   output:
     va_age_deduction: 24_000
 
@@ -117,8 +118,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 90_000
     filing_status: JOINT
-    birth_day_self: 01/02/1938
-    birth_day_spouce: 01/02/1959
+    age_head: 87
+    age_spouse: 75
   output:
     va_age_deduction: 12_000
 
@@ -129,8 +130,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 80_000
     filing_status: JOINT
-    birth_day_self: 01/02/1942
-    birth_day_spouce: 01/02/1959
+    age_head: 87
+    age_spouse: 59
   output:
     va_age_deduction: 7_000
 # married: jointly: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958: $12,000 + $12,000 - (AFAGI - $75,000)
@@ -140,8 +141,8 @@ Possible cases (copy):
     state_code: VA
     AFAGI: 90_000
     filing_status: JOINT
-    birth_day_self: 01/02/1942
-    birth_day_spouce: 01/02/1957
+    age_head: 68
+    age_spouse: 59
   output:
     va_age_deduction: 9_000
 
@@ -152,9 +153,9 @@ Possible cases (copy):
   input:
     state_code: VA
     AFAGI: 90_000
-    filing_status: JOINT
-    birth_day_self: 01/02/1960
-    birth_day_spouce: 01/02/1970
+    filing_status: SEPARATE
+    age_head: 45
+    age_spouse: 47
   output:
     va_age_deduction: 0
 
@@ -164,9 +165,9 @@ Possible cases (copy):
   input:
     state_code: VA
     AFAGI: 90_000
-    filing_status: JOINT
-    birth_day_self: 01/02/1941
-    birth_day_spouce: 01/02/1943
+    filing_status: SEPARATE
+    age_head: 70
+    age_spouse: 71
   output:
     va_age_deduction: 4_500
 
@@ -176,9 +177,9 @@ Possible cases (copy):
   input:
     state_code: VA
     AFAGI: 90_000
-    filing_status: JOINT
-    birth_day_self: 01/02/1938
-    birth_day_spouce: 01/02/1937
+    filing_status: SEPARATE
+    age_head: 87
+    age_spouse: 90
   output:
     va_age_deduction: 12_000
 
@@ -188,9 +189,9 @@ Possible cases (copy):
   input:
     state_code: VA
     AFAGI: 90_000
-    filing_status: JOINT
-    birth_day_self: 01/02/1938
-    birth_day_spouce: 01/02/1959
+    filing_status: SEPARATE
+    age_head: 85
+    age_spouse: 50
   output:
     va_age_deduction: 12_000
 
@@ -200,9 +201,9 @@ Possible cases (copy):
   input:
     state_code: VA
     AFAGI: 80_000
-    filing_status: JOINT
-    birth_day_self: 01/02/1957
-    birth_day_spouce: 01/02/1959
+    filing_status: SEPARATE
+    age_head: 67
+    age_spouse: 50
   output:
     va_age_deduction: 7_000
 # married: separate: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958: [$12,000 + $12,000 - (AFAGI - $75,000)] / 2
@@ -211,8 +212,8 @@ Possible cases (copy):
   input:
     state_code: VA
     AFAGI: 80_000
-    filing_status: JOINT
-    birth_day_self: 01/02/1945
-    birth_day_spouce: 01/02/1947
+    filing_status: SEPARATE
+    birth_day_self: 90
+    birth_day_spouce: 80
   output:
     va_age_deduction: 9_500
