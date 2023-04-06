@@ -1,0 +1,44 @@
+- name: If child age 1 and not full time student
+  period: 2023
+  input:
+    age: 1
+    is_in_k12_school: false
+    state_code: MD
+  output:
+    md_tanf_is_child: true
+
+- name: If child age 15 and full time student
+  period: 2023
+  input:
+    age: 15
+    is_in_k12_school: true
+    state_code: MD
+  output:
+    md_tanf_is_child: true
+
+  - name: If child age 19 and not full time student
+  period: 2023
+  input:
+    age: 19
+    is_in_k12_school: false
+    state_code: MD
+  output:
+    md_tanf_is_child: false
+
+  - name: If child age 19 and full time k12 student
+  period: 2023
+  input:
+    age: 19
+    is_in_k12_school: true
+    state_code: MD
+  output:
+    md_tanf_is_child: true
+  
+  - name: If child age 20 and full time k12student
+  period: 2023
+  input:
+    age: 20
+    is_in_k12_school: true
+    state_code: MD
+  output:
+    md_tanf_is_child: false
