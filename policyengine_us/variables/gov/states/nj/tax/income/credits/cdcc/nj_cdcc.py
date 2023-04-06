@@ -24,6 +24,8 @@ class nj_cdcc(Variable):
 
         # Calculate NJ CDCC
         rate = p.calc(taxable_income)
+        print(rate)
+        print(federal_cdcc)
 
         # Calculate total NJ CDCC
         return federal_cdcc * rate
