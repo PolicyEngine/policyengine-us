@@ -12,4 +12,4 @@ class mn_additions(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf"
     )
     defined_for = StateCode.MN
-    adds = "gov.states.mn.additions.sources"
+    adds = "gov.states.mn.tax.income.additions.sources"
