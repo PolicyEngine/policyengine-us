@@ -1,4 +1,4 @@
-description: No CalEITC to filers with investment income above this threshold.
+description: California limits the CalEITC to filers with investment income below this threshold.
 values:
   2021-01-01: 4_053
   2022-01-01: 4_389
@@ -12,4 +12,4 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
   unit: currency-USD
   period: year
-  label: CalEITC maximum investment income
+  label: CalEITC investment income limit
