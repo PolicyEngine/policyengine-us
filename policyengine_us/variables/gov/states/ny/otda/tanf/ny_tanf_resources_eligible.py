@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ny_tanf_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "New York TANF asset eligible"
+    label = "New York TANF resources eligible"
     definition_period = YEAR
     defined_for = StateCode.NY
 
