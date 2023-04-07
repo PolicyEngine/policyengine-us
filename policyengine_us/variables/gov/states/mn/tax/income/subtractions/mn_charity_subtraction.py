@@ -17,5 +17,5 @@ class mn_charity_subtraction(Variable):
         charity = tax_unit("charitable_deduction", period)
         itemizing = tax_unit("mn_itemizing", period)
         p = parameters(period).gov.states.mn.tax.income.subtractions.charity
-        subtraction_amount = p.fraction * max(0, charity - p.threshold)
+        subtraction_amount = p.fraction * max_(0, charity - p.threshold)
         return where(itemizing, 0, subtraction_amount)
