@@ -4,7 +4,7 @@
     state_code: NY
     is_demographic_tanf_eligible: true
     ny_tanf_income_eligible: true
-    ny_tanf_asset_eligible: true
+    ny_tanf_resources_eligible: true
   output:
     ny_tanf_eligible: true
 
@@ -15,7 +15,7 @@
     state_code: NY
     is_demographic_tanf_eligible: true
     ny_tanf_income_eligible: false
-    ny_tanf_asset_eligible: true
+    ny_tanf_resources_eligible: true
   output:
     ny_tanf_eligible: false
 
@@ -26,7 +26,7 @@
     state_code: NY
     is_demographic_tanf_eligible: false
     ny_tanf_income_eligible: true
-    ny_tanf_asset_eligible: true
+    ny_tanf_resources_eligible: true
   output:
     ny_tanf_eligible: false
 
@@ -36,7 +36,7 @@
     state_code: NY
     is_demographic_tanf_eligible: true
     ny_tanf_income_eligible: true
-    ny_tanf_asset_eligible: false
+    ny_tanf_resources_eligible: false
   output:
     ny_tanf_eligible: false
 
@@ -46,6 +46,6 @@
     state_code: NY
     is_demographic_tanf_eligible: false
     ny_tanf_income_eligible: false
-    ny_tanf_asset_eligible: false
+    ny_tanf_resources_eligible: false
   output:
     ny_tanf_eligible: false
