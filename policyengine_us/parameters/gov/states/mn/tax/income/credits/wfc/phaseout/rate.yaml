@@ -1,0 +1,30 @@
+description: Minnesota has a working family credit (WFC) in which these phaseout rates are applied to income beyond a threshold.
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: /1
+  label: MN WFC phaseout rate by number of children
+  reference:
+  - title: 2021 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/2021/cite/290.0671
+  - title: 2022 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/cite/290.0671
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.02
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 0.06
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 0.105
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 0.105
