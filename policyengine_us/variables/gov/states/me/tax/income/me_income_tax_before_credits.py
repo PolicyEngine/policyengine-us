@@ -14,12 +14,7 @@ class me_income_tax_before_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
 
-        rates = parameters(period).gov.states.me.tax.income.main
-        single = rates.single
-        joint = rates.joint
-        hoh = rates.head_of_household
-        widow = rates.widow
-        separate = rates.separate
+        p = parameters(period).gov.states.me.tax.income.main
 
         return select(
             [
@@ -30,10 +25,10 @@ class me_income_tax_before_credits(Variable):
                 filing_status == status.SEPARATE,
             ],
             [
-                single.calc(taxable_income),
-                joint.calc(taxable_income),
-                hoh.calc(taxable_income),
-                widow.calc(taxable_income),
-                separate.calc(taxable_income),
+                p.single.calc(taxable_income),
+                p.joint.calc(taxable_income),
+                p.head_of_household.calc(taxable_income),
+                p.widow.calc(taxable_income),
+                p.separate.calc(taxable_income),
             ],
         )
