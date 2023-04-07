@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ny_tanf_asset_eligible(Variable):
+class ny_tanf_sset_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "New York TANF asset eligible"
