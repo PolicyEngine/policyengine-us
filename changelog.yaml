@@ -2897,3 +2897,26 @@
     added:
     - New York TANF demographic and income eligibility
   date: 2023-04-05 03:08:10
+- bump: minor
+  changes:
+    added:
+    - South Carolina income tax before credits.
+  date: 2023-04-05 16:25:35
+- bump: minor
+  changes:
+    added:
+    - Modify file name for earned income
+  date: 2023-04-05 23:18:07
+- bump: minor
+  changes:
+    added:
+    - Arizona standard deduction.
+  date: 2023-04-06 18:22:11
+- bump: minor
+  changes:
+    added:
+    - New York TANF resource limit.
+    - New York TANF to general TANF variable.
+    fixed:
+    - Multiply New York TANF flat earned income disregard by 12.
+  date: 2023-04-07 16:22:50
