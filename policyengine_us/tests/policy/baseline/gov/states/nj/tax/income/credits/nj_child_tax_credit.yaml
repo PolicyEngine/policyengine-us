@@ -1,7 +1,8 @@
-- name: Filer with AGI below $30,000 with 1 dependent below 6 gets 500 credit
+- name: Filer with AGI below $30,000 with 1 dependent below 6 gets 500 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
+    filing_status: JOINT
     people:
       person1:
         age: 30
@@ -23,10 +24,11 @@
   output:
     nj_child_tax_credit: 500
 
-- name: Filer with AGI between $30,000 and $40,000 with 2 dependent below 6 gets 800 credit
+- name: Filer with AGI between $30,000 and $40,000 with 2 dependent below 6 gets 800 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
+    filing_status: JOINT
     people:
       person1:
         age: 30
@@ -48,10 +50,11 @@
   output:
     nj_child_tax_credit: 500
 
-- name: Filer with AGI between $60,000 and $80,000 with 3 dependent below 6 gets 300 credit
+- name: Filer with AGI between $60,000 and $80,000 with 3 dependent below 6 gets 300 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
+    filing_status: JOINT
     people:
       person1:
         age: 30
@@ -75,3 +78,32 @@
         state_code: NJ
   output:
     nj_child_tax_credit: 300
+
+- name: Filer with AGI between $60,000 and $80,000 with 3 dependent below 6 gets 0 credit when filing separately
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    filing_status: SEPARATE
+    people:
+      person1:
+        age: 30
+        is_tax_unit_dependent: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+      person4:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        nj_taxable_income: 65_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: NJ
+  output:
+    nj_child_tax_credit: 0
