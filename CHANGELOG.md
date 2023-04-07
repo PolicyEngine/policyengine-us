@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.279.0] - 2023-04-07 16:22:50
+
+### Added
+
+- New York TANF resource limit.
+- New York TANF to general TANF variable.
+
+### Fixed
+
+- Multiply New York TANF flat earned income disregard by 12.
+
+## [0.278.0] - 2023-04-06 18:22:11
+
+### Added
+
+- Arizona standard deduction.
+
 ## [0.277.0] - 2023-04-05 23:18:07
 
 ### Added
@@ -3461,6 +3478,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.279.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.278.0...0.279.0
+[0.278.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.277.0...0.278.0
 [0.277.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.276.0...0.277.0
 [0.276.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.275.0...0.276.0
 [0.275.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.274.0...0.275.0

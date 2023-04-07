@@ -2907,3 +2907,16 @@
     added:
     - Modify file name for earned income
   date: 2023-04-05 23:18:07
+- bump: minor
+  changes:
+    added:
+    - Arizona standard deduction.
+  date: 2023-04-06 18:22:11
+- bump: minor
+  changes:
+    added:
+    - New York TANF resource limit.
+    - New York TANF to general TANF variable.
+    fixed:
+    - Multiply New York TANF flat earned income disregard by 12.
+  date: 2023-04-07 16:22:50

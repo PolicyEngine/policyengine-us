@@ -19,6 +19,6 @@ class ny_tanf_countable_earned_income(Variable):
         # https://otda.ny.gov/policy/gis/2022/22DC085.pdf Section 2
         # Effective October 1, 2022, the EID will be applied prior to the work expense disregard.
         return max_(
-            gross_earned_income * (1 - p.percent) - p.flat,
+            gross_earned_income * (1 - p.percent) - p.flat * MONTHS_IN_YEAR,
             0,
         )
