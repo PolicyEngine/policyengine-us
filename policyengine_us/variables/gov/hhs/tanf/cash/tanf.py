@@ -26,5 +26,7 @@ class tanf(Variable):
         amount_if_eligible = spm_unit("tanf_amount_if_eligible", period)
         # Add TANF programs computed in variables/gov/states.
         STATES_WITH_TANF = ["co", "ny"]
-        state_tanf = add(spm_unit, period, [i + "_tanf" for i in STATES_WITH_TANF])
+        state_tanf = add(
+            spm_unit, period, [i + "_tanf" for i in STATES_WITH_TANF]
+        )
         return where(eligible, amount_if_eligible, 0) + state_tanf
