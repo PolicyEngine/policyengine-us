@@ -9,4 +9,4 @@ class nj_total_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NJ
 
-    adds = []
+    # adds = []
