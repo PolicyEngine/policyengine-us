@@ -473,10 +473,13 @@
 <span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:21,</span> in <span class="ni">tanf.formula</span><span class="nt">(spm_unit, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># Obtain eligibility.</span>
-<span class="ne">---&gt; </span><span class="mi">21</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;is_tanf_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Obtain amount they would receive if they were eligible.</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24,</span> in <span class="ni">tanf.formula</span><span class="nt">(spm_unit, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># First compute TANF for states with it defined in gov/hhs/tanf.</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="c1"># This is IL and CA.</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># (We will move these into gov/states)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># Obtain eligibility.</span>
+<span class="ne">---&gt; </span><span class="mi">24</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;is_tanf_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="c1"># Obtain amount they would receive if they were eligible.</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134,</span> in <span class="ni">Population.__call__</span><span class="nt">(self, variable_name, period, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">133</span> <span class="k">else</span><span class="p">:</span>
@@ -747,10 +750,13 @@
 <span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:21,</span> in <span class="ni">tanf.formula</span><span class="nt">(spm_unit, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># Obtain eligibility.</span>
-<span class="ne">---&gt; </span><span class="mi">21</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;is_tanf_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Obtain amount they would receive if they were eligible.</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24,</span> in <span class="ni">tanf.formula</span><span class="nt">(spm_unit, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># First compute TANF for states with it defined in gov/hhs/tanf.</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="c1"># This is IL and CA.</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># (We will move these into gov/states)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># Obtain eligibility.</span>
+<span class="ne">---&gt; </span><span class="mi">24</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;is_tanf_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="c1"># Obtain amount they would receive if they were eligible.</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134,</span> in <span class="ni">Population.__call__</span><span class="nt">(self, variable_name, period, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">133</span> <span class="k">else</span><span class="p">:</span>
@@ -1058,12 +1064,15 @@
 <span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:21,</span> in <span class="ni">tanf.formula</span><span class="nt">(spm_unit, period, parameters)</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24,</span> in <span class="ni">tanf.formula</span><span class="nt">(spm_unit, period, parameters)</span>
 <span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="k">return</span> <span class="n">tanf_reported</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># Obtain eligibility.</span>
-<span class="ne">---&gt; </span><span class="mi">21</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;is_tanf_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># Obtain amount they would receive if they were eligible.</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="n">amount_if_eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;tanf_amount_if_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="c1"># First compute TANF for states with it defined in gov/hhs/tanf.</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="c1"># This is IL and CA.</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span> <span class="c1"># (We will move these into gov/states)</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="c1"># Obtain eligibility.</span>
+<span class="ne">---&gt; </span><span class="mi">24</span> <span class="n">eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;is_tanf_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="c1"># Obtain amount they would receive if they were eligible.</span>
+<span class="g g-Whitespace">     </span><span class="mi">26</span> <span class="n">amount_if_eligible</span> <span class="o">=</span> <span class="n">spm_unit</span><span class="p">(</span><span class="s2">&quot;tanf_amount_if_eligible&quot;</span><span class="p">,</span> <span class="n">period</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134,</span> in <span class="ni">Population.__call__</span><span class="nt">(self, variable_name, period, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">calculate_divide</span><span class="p">(</span>

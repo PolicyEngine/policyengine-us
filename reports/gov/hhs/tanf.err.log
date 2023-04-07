@@ -88,10 +88,13 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:21[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
-[1;32m     20[0m [38;5;66;03m# Obtain eligibility.[39;00m
-[0;32m---> 21[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     22[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     20[0m [38;5;66;03m# First compute TANF for states with it defined in gov/hhs/tanf.[39;00m
+[1;32m     21[0m [38;5;66;03m# This is IL and CA.[39;00m
+[1;32m     22[0m [38;5;66;03m# (We will move these into gov/states)[39;00m
+[1;32m     23[0m [38;5;66;03m# Obtain eligibility.[39;00m
+[0;32m---> 24[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     25[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -362,10 +365,13 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:21[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
-[1;32m     20[0m [38;5;66;03m# Obtain eligibility.[39;00m
-[0;32m---> 21[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     22[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     20[0m [38;5;66;03m# First compute TANF for states with it defined in gov/hhs/tanf.[39;00m
+[1;32m     21[0m [38;5;66;03m# This is IL and CA.[39;00m
+[1;32m     22[0m [38;5;66;03m# (We will move these into gov/states)[39;00m
+[1;32m     23[0m [38;5;66;03m# Obtain eligibility.[39;00m
+[0;32m---> 24[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     25[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -673,12 +679,15 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:21[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
 [1;32m     19[0m     [38;5;28;01mreturn[39;00m tanf_reported
-[1;32m     20[0m [38;5;66;03m# Obtain eligibility.[39;00m
-[0;32m---> 21[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     22[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
-[1;32m     23[0m amount_if_eligible [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_amount_if_eligible[39m[38;5;124m"[39m, period)
+[1;32m     20[0m [38;5;66;03m# First compute TANF for states with it defined in gov/hhs/tanf.[39;00m
+[1;32m     21[0m [38;5;66;03m# This is IL and CA.[39;00m
+[1;32m     22[0m [38;5;66;03m# (We will move these into gov/states)[39;00m
+[1;32m     23[0m [38;5;66;03m# Obtain eligibility.[39;00m
+[0;32m---> 24[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     25[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
+[1;32m     26[0m amount_if_eligible [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_amount_if_eligible[39m[38;5;124m"[39m, period)
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
