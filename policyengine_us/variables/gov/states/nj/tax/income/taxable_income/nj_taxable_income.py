@@ -13,6 +13,6 @@ class nj_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("nj_agi", period)
-        deductions = tax_unit("nj_deductions", period)
-        exemptions = tax_unit("nj_exemptions", period)
+        deductions = tax_unit("nj_total_deductions", period)
+        exemptions = tax_unit("nj_total_exemptions", period)
         return max_(0, agi - deductions - exemptions)
