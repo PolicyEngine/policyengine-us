@@ -14,9 +14,12 @@ class household_tax_before_refundable_credits(Variable):
         "income_tax_before_refundable_credits",  # Federal.
         "ca_income_tax_before_refundable_credits",
         "il_total_tax",
+        "ks_income_tax_before_refundable_credits",
         "ma_income_tax_before_refundable_credits",
         "md_income_tax_before_refundable_credits",
         "mo_income_tax_before_refundable_credits",
+        "nd_income_tax_before_refundable_credits",
+        "ne_income_tax_before_refundable_credits",
         "ny_income_tax_before_refundable_credits",
         "or_income_tax_before_refundable_credits",
         "pa_income_tax",  # PA has no refundable credits.

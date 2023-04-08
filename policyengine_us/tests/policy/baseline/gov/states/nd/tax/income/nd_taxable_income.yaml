@@ -1,0 +1,21 @@
+- name: ND taxable income unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 20_000
+    taxable_income_deductions: 23_000
+    nd_additions: 6_000
+    nd_subtractions: 1_000
+    state_code: ND
+  output:
+    nd_taxable_income: 20_000 - 23_000 + 6_000 - 1_000
+
+- name: ND taxable income unit test 2
+  period: 2021
+  input:
+    adjusted_gross_income: 20_000
+    taxable_income_deductions: 33_000
+    nd_additions: 6_000
+    nd_subtractions: 5_000
+    state_code: ND
+  output:
+    nd_taxable_income: 0  # because cannot be negative
