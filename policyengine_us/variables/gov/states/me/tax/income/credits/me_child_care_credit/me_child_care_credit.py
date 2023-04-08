@@ -7,31 +7,23 @@ class me_child_care_credit(Variable):
     label = "ME child care credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_a_ff.pdf"  # (y)
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_a_ff.pdf"
+    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5218.html"
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.child_care
 
-        # Line 1: Total childcare expenses; record percentage of expenses that are regular vs. part of Step 4 child care program
-        expenses = tax_unit("tax_unit_childcare_expenses", period)
-        # Line 1a, Column B
-        step = tax_unit("me_step", period)
-        step_4_expenses = max(step - 3, 0) * tax_unit(
-            "me_child_care_step_expenses", period
-        )  # step 4 expenses only qualify
-        # Line 1a, Column A
-        regular_expenses = expenses - step_4_expenses
-        # Line 1b, Column A
-        percentage_paid_regular = np.nan_to_num(regular_expenses / expenses)
-        # Line 1b, Column B
-        percentage_paid_step_4 = np.nan_to_num(step_4_expenses / expenses)
+        # Get share of expenses that went to step 4 programs
+        step_4_share_of_expenses = tax_unit(
+            "me_step4_share_of_child_care_expenses"
+        )
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
         cdcc = tax_unit("cdcc", period)
         # Line 2a: Column A
-        cdcc_regular_portion = cdcc * percentage_paid_regular
+        cdcc_regular_portion = cdcc * (1 - step_4_share_of_expenses)
         # Line 2a, Column B
-        cdcc_step_4_portion = cdcc * percentage_paid_step_4
+        cdcc_step_4_portion = cdcc * step_4_share_of_expenses
         # Line 3, Column A
         me_regular_child_care_credit = (
             p.regular_share_of_federal_credit * cdcc_regular_portion
