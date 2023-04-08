@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.280.0] - 2023-04-08 04:35:49
+
+### Added
+
+- New Jersey taxable income.
+
 ## [0.279.0] - 2023-04-07 16:22:50
 
 ### Added
@@ -3478,6 +3484,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.280.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.279.0...0.280.0
 [0.279.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.278.0...0.279.0
 [0.278.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.277.0...0.278.0
 [0.277.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.276.0...0.277.0
