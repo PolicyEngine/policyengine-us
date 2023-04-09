@@ -62,4 +62,4 @@
         members: [person1, person2]
         state_code: MN
   output:
-    mn_wfc_eligible: false  # taxpayer has child but too much investment income
+    mn_wfc_eligible: true  # federal EITC investment income rules no applied

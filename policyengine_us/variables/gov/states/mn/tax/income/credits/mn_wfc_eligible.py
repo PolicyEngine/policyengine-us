@@ -24,18 +24,9 @@ class mn_wfc_eligible(Variable):
         in_age_range = (age >= min_age) & (age <= max_age)
         age_eligible = in_age_range & ~person("is_tax_unit_dependent", period)
         demographic_eligible = has_child | tax_unit.any(age_eligible)
-        # determine investment income eligibility using EITC rules
-        eitc_invinc_sources = [
-            "net_investment_income",  # includes limited-loss capital gains
-            "tax_exempt_interest_income",
-        ]
-        eitc_invinc = add(tax_unit, period, eitc_invinc_sources)
-        # ... replace limited-loss capital gains with no-loss capital gains
-        eitc_invinc -= tax_unit("c01000", period)  # limited-loss capital gains
-        eitc_invinc += max_(0, add(tax_unit, period, ["capital_gains"]))
-        invinc_ineligible = eitc_invinc > eitc.phase_out.max_investment_income
+        # the MN WFC has no investment income eligibility rules
         # determine if tax unit has separate filing status
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
         # determine WFC eligibility
-        return demographic_eligible & ~invinc_ineligible & ~separate
+        return demographic_eligible & ~separate
