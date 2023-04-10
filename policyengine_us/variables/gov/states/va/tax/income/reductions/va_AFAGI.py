@@ -1,4 +1,6 @@
 from policyengine_us.model_api import *
+
+
 class va_afagi(Variable):
     value_type = float
     entity = TaxUnit
@@ -7,4 +9,3 @@ class va_afagi(Variable):
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=16"
     defined_for = StateCode.VA
-
