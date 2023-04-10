@@ -37,12 +37,10 @@ class mn_cdcc(Variable):
         expense = min_(expense, tax_unit("min_head_spouse_earned", period))
         # calculate pre-phaseout credit amount
         agi = tax_unit("adjusted_gross_income", period)
-        amount = expense * p.cdcc.expense_fraction.calc(agi)
+        pre_po_amount = expense * p.cdcc.expense_fraction.calc(agi)
         # calculate post-phaseout credit amount
         excess_agi = max_(0, agi - p.cdcc.phaseout_threshold)
-        fractional_excess_agi = excess_agi * p.cdcc.phaseout_rate
-        phaseout_cap = eligible_count * p.cdcc.phaseout_cap
-        phasedout_amount = max_(0, phaseout_cap - fractional_excess_agi)
-        amount = where(excess_agi > 0, min_(amount, phasedout_amount), amount)
+        po_amount = excess_agi * p.cdcc.phaseout_rate
+        amount = max_(0, pre_po_amount - po_amount)
         # credit amount only for eligibles
         return eligible * amount
