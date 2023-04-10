@@ -1,12 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ny_tanf_gross_earned_income(Variable):
+class ny_tanf_countable_resources(Variable):
     value_type = float
     entity = SPMUnit
-    label = "New York TANF gross earned income"
+    label = "Countable resources for New York TANF"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-
-    adds = "gov.states.ny.otda.tanf.income.earned"
