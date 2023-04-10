@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class nj_cdcc(Variable):
     value_type = float
     entity = TaxUnit
