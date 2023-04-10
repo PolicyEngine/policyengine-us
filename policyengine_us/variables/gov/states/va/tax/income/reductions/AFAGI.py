@@ -1,3 +1,4 @@
+from policyengine_us.model_api import *
 class va_AFAGI(Variable):
     value_type = float
     entity = TaxUnit
