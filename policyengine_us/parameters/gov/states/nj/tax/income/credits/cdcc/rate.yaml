@@ -1,11 +1,13 @@
-description: New Jersey provides a credit for child and dependent care.
+description: New Jersey matches this share of the federal Child and Dependent Care Credit, depending on taxable income.
 metadata:
   threshold_unit: currency-USD
   amount_unit: /1
   threshold_period: year
   type: single_amount
-  label: New Jersey Child and Dependent Care Credit
+  label: New Jersey Child and Dependent Care Credit match
   reference: 
+    - title: Child and Dependent Care Credit
+    - href: https://www.nj.gov/treasury/taxation/depcarecred.shtml 
     - title: Instructions for Form NJ-1040 (line 64)
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=44
 brackets:
