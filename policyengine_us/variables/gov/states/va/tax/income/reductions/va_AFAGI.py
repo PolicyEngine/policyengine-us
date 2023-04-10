@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-class va_AFAGI(Variable):
+class va_afagi(Variable):
     value_type = float
     entity = TaxUnit
     label = "Available Federal adjusted gross income"
