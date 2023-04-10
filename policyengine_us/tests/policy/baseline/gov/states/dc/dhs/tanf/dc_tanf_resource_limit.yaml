@@ -1,0 +1,47 @@
+- name: If the household does not include a person who is age 60 or older, resource limit is $2000.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 50
+        is_child: false
+      child:
+        age: 2
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        spm_unit_size: 2
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    dc_tanf_resource_limit: 2_000
+
+- name: If the household includes a person who is age 60 or older, resource limit is $3000.
+  period: 2023
+  input:
+    people:
+      parent1:
+        age: 40
+        is_child: false
+      parent2:
+        age: 60
+        is_child: false
+      child1:
+        age: 1
+        is_child: true
+      child2:
+        age: 2
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        spm_unit_size: 4
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: DC
+  output:
+    dc_tanf_resource_limit: 3_000

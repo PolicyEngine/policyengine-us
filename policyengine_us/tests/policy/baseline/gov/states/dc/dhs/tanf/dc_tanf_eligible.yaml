@@ -1,0 +1,26 @@
+- name: Is demographic eligible and income eligible.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible: true
+    dc_tanf_income_eligible: true
+  output:
+    dc_tanf_eligible: true
+
+- name: Is demographic eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible: true
+    dc_tanf_income_eligible: false
+  output:
+    dc_tanf_eligible: false
+
+- name: Is not demographic eligible but is income eligible.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_demographic_eligible: false
+    dc_tanf_income_eligible: true
+  output:
+    dc_tanf_eligible: false
