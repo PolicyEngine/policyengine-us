@@ -17,9 +17,9 @@ class mn_standard_deduction(Variable):
         p = parameters(period).gov.states.mn.tax.income.deductions
         # ... calculate pre-limitation amount
         filing_status = tax_unit("filing_status", period)
-        base_amt = p.standard.base_amount[filing_status]
+        base_amt = p.standard.base[filing_status]
         aged_blind_count = tax_unit("aged_blind_count", period)
-        extra_amt = aged_blind_count * p.standard.extra_amount[filing_status]
+        extra_amt = aged_blind_count * p.standard.extra[filing_status]
         std_ded = base_amt + extra_amt
         # ... calculate standard deduction offset
         std_ded_offset = p.deduction_fraction * std_ded

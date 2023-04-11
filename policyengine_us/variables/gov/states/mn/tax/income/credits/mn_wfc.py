@@ -19,19 +19,19 @@ class mn_wfc(Variable):
         count = tax_unit("eitc_child_count", period)
         # determine pre-phaseout credit amount using EITC earnings
         earnings = max_(0, tax_unit("filer_earned", period))
-        capped_earn = min_(earnings, wfc.phasein.earnings_maximum.calc(count))
-        amount = capped_earn * wfc.phasein.rate.calc(count)
+        capped_earn = min_(earnings, wfc.phase_in.earnings_maximum.calc(count))
+        amount = capped_earn * wfc.phase_in.rate.calc(count)
         # determine phaseout reduction
         agi = tax_unit("adjusted_gross_income", period)
         income = max_(earnings, agi)
         filing_status = tax_unit("filing_status", period)
         income_threshold = where(
             filing_status == filing_status.possible_values.JOINT,
-            wfc.phaseout.joint_threshold.calc(count),
-            wfc.phaseout.other_threshold.calc(count),
+            wfc.phase_out.threshold.joint.calc(count),
+            wfc.phase_out.threshold.other.calc(count),
         )
         excess_income = max_(0, income - income_threshold)
-        reduction = excess_income * wfc.phaseout.rate.calc(count)
+        reduction = excess_income * wfc.phase_out.rate.calc(count)
         # determine credit amount after phaseout if eligible
         eligible = tax_unit("mn_wfc_eligible", period)
         return eligible * max_(0, amount - reduction)
