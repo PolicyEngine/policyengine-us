@@ -17,11 +17,16 @@ class tanf(Variable):
         tanf_reported = add(spm_unit, period, ["tanf_reported"])
         if tanf_reported.sum() > 0:
             return tanf_reported
+        # First compute TANF for states with it defined in gov/hhs/tanf.
+        # This is IL and CA.
+        # (We will move these into gov/states)
         # Obtain eligibility.
         eligible = spm_unit("is_tanf_eligible", period)
         # Obtain amount they would receive if they were eligible.
         amount_if_eligible = spm_unit("tanf_amount_if_eligible", period)
         # Add TANF programs computed in variables/gov/states.
-        return where(eligible, amount_if_eligible, 0) + spm_unit(
-            "co_tanf", period
+        STATES_WITH_TANF = ["co", "ny"]
+        state_tanf = add(
+            spm_unit, period, [i + "_tanf" for i in STATES_WITH_TANF]
         )
+        return where(eligible, amount_if_eligible, 0) + state_tanf

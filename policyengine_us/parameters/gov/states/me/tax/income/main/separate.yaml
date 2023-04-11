@@ -1,0 +1,32 @@
+description: Progressive rate schedule for a separate filer in ME. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: ME State income tax rates for separate filers
+  reference:
+    - title: Maine §5111. Imposition and rate of tax
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5111.html
+    - title: Maine 2022 Individual Income Tax Form 1040ME
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_dwnld_ff.pdf
+    - title: Maine 2022 Individual Income Tax Tables
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_tax_tables.pdf
+    - title: Maine 2023	Individual Income Tax Rate Schedules
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2023.pdf
+brackets:
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 0.058
+  - threshold:
+      2017-01-01: 21_050
+      2022-01-01: 23_000
+      2023-01-01: 24_500
+    rate:
+      2017-01-01: 0.0675
+  - threshold:
+      2017-01-01: 50_000
+      2022-01-01: 54_450
+      2023-01-01: 58_050
+    rate:
+      2017-01-01: 0.0715
