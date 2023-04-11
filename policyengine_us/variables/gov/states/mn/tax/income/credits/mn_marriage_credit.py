@@ -36,7 +36,7 @@ class mn_marriage_credit(Variable):
         # determine overall eligibility for credit
         eligible = joint & individual_income_eligible & taxable_income_eligible
         # determine credit amount
-        std_ded = mn_itax.deductions.standard.base_amount[filing_status]
+        std_ded = mn_itax.deductions.standard.base[filing_status]
         fractional_std_ded = p.standard_deduction_fraction * std_ded
         taxinc1 = max_(0, min_income - fractional_std_ded)
         itax1 = mn_itax.rates.single.calc(taxinc1)
