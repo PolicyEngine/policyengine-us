@@ -31,11 +31,11 @@ class ok_itemized_deductions(Variable):
         )
         ok_itm_deds = us_itm_deds_less_salt + capped_property_taxes
         # apply partial limit on OK itemized deductions
-        exempt_items = [
+        EXEMPT_ITEMS = [
             "medical_expense_deduction",
             "charitable_deduction",
         ]
-        exempt_deds = add(tax_unit, period, exempt_items)
+        exempt_deds = add(tax_unit, period, EXEMPT_ITEMS)
         net_deds = max_(0, ok_itm_deds - exempt_deds)
         ok_p = parameters(period).gov.states.ok.tax.income.deductions
         limited_net_deds = min_(net_deds, ok_p.itemized.limit)
