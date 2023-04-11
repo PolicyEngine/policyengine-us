@@ -16,22 +16,23 @@ class az_blind_exemption(Variable):
         # Determine whether spouse is eligible.
         joint = filing_status == filing_status.possible_values.JOINT
 
-        # Then get the AZ blind or disabled exemptions part of the parameter tree.
+        # Then get the AZ blind exemptions part of the parameter tree.
         p = parameters(
             period
-        ).gov.states.az.tax.income.exemptions.blind
+        ).gov.states.nj.tax.income.exemptions.blind_or_disabled
 
-        # Get the individual blind status.
+        # Get the individual blind status and disabled.
         blind_head = tax_unit("blind_head", period)
 
         # Check if the individual's eligiblity.
         head_eligible = (blind_head).astype(int)
 
-        # Get the individual's spouse blind status.
+        # Get the individual's spouse blind status and disabled.
         blind_spouse = tax_unit("blind_spouse", period) * joint
 
         # Check if the individual spouse's eligiblity.
         spouse_eligible = (blind_spouse).astype(int)
 
-        # Calculate total blind exemption.
-        return (head_eligible + spouse_eligible) * p.amount
+        # Calculate total blind exemption.       
+        blind_exemptions = head_eligible(int) + spouse_eligible(int)
+        return blind_exemptions * p.amount
