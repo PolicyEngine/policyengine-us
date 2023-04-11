@@ -147,6 +147,7 @@ class ut_taxable_income(Variable):
     defined_for = StateCode.UT
     subtracts = ["ut_subtractions_from_income", "ut_state_tax_refund"]
 
+
 class ut_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
@@ -328,6 +329,7 @@ class ut_income_tax(Variable):
         )
         ut_taxpayer_credit = tax_unit("ut_taxpayer_credit", period)
         return max_(ut_income_tax_before_credits - ut_taxpayer_credit, 0)
+
 
 class ut_income_tax_before_refundable_credits(Variable):
     value_type = float
