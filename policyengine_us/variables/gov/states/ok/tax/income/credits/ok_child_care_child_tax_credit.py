@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ok_chc(Variable):
+class ok_child_care_child_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Oklahoma Child Care/Child Tax Credit"
