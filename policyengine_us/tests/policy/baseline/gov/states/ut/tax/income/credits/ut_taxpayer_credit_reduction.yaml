@@ -6,7 +6,7 @@
     ut_taxable_income: 16_000
     state_code: UT
   output:
-    ut_taxpayer_credit_reduction: (16_000 - 15_095) * 0.013
+    ut_taxpayer_credit_reduction: (16_000 - 15_548) * 0.013
 
 - name: Credit is reduced, joint
   period: 2021
@@ -16,7 +16,7 @@
     ut_taxable_income: 30_200
     state_code: UT
   output:
-    ut_taxpayer_credit_reduction: (30_200 - 30_190) * 0.013
+    ut_taxpayer_credit_reduction: (30_200 - 31_096) * 0.013
 
 - name: Credit is not reduced, single
   period: 2021
@@ -26,4 +26,4 @@
     ut_taxable_income: 10_000
     state_code: UT
   output:
-    ut_taxpayer_credit_reduction: 0 # max((10_000 - 15_095),0) * 0.013
+    ut_taxpayer_credit_reduction: max((10_000 - 15_095),0) * 0.013

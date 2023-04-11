@@ -210,7 +210,7 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
         )
 
 
-class ut_initial_taxpayer_credit(Variable):
+class ut_taxpayer_credit_max(Variable):
     value_type = float
     entity = TaxUnit
     label = "Utah initial taxpayer credit"
@@ -287,7 +287,7 @@ class ut_taxpayer_credit(Variable):
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
-        initial_credit = tax_unit("ut_initial_taxpayer_credit", period)
+        initial_credit = tax_unit("ut_taxpayer_credit_max", period)
         reduction = tax_unit("ut_taxpayer_credit_reduction", period)
         return max_(initial_credit - reduction, 0)
 
