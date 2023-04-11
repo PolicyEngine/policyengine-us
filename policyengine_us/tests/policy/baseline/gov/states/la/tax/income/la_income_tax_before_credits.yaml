@@ -1,0 +1,29 @@
+- name: income in 1st tax bracket
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 10_000
+    state_code: LA
+  output:
+    # 0.0185*10_000 before 12_500
+    la_income_tax_before_credits: 185
+
+- name: income in 2nd tax bracket
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 40_000
+    state_code: LA
+  output:
+    # 12_500*0.0185+(40_000-12_500)*0.0315=1097.5
+    la_income_tax_before_credits: 1097.5
+
+- name: income in 3rd tax bracket
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    la_taxable_income: 60_000
+    state_code: LA
+  output:
+    #12_500*0.0185+(50_000-12_500)*0.0315+(60_000-50_000)*0.0425=1837.5
+    la_income_tax_before_credits: 1837.5
