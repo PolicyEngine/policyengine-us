@@ -5,6 +5,161 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.284.0] - 2023-04-11 04:11:43
+
+### Added
+
+- New Jersey CDCC.
+
+## [0.283.0] - 2023-04-11 04:09:36
+
+### Added
+
+- Minnesota state income tax.
+
+## [0.282.0] - 2023-04-10 21:13:07
+
+### Added
+
+- Virginia military basic pay subtraction.
+
+## [0.281.1] - 2023-04-10 16:22:22
+
+### Added
+
+- Legislative reference for California mental health services tax.
+
+## [0.281.0] - 2023-04-10 03:21:40
+
+### Added
+
+- ME main income tax (before credits and supplemental tax)
+
+## [0.280.0] - 2023-04-08 04:35:49
+
+### Added
+
+- New Jersey taxable income.
+
+## [0.279.0] - 2023-04-07 16:22:50
+
+### Added
+
+- New York TANF resource limit.
+- New York TANF to general TANF variable.
+
+### Fixed
+
+- Multiply New York TANF flat earned income disregard by 12.
+
+## [0.278.0] - 2023-04-06 18:22:11
+
+### Added
+
+- Arizona standard deduction.
+
+## [0.277.0] - 2023-04-05 23:18:07
+
+### Added
+
+- Modify file name for earned income
+
+## [0.276.0] - 2023-04-05 16:25:35
+
+### Added
+
+- South Carolina income tax before credits.
+
+## [0.275.0] - 2023-04-05 03:08:10
+
+### Added
+
+- New York TANF demographic and income eligibility
+
+## [0.274.0] - 2023-04-04 22:47:27
+
+### Added
+
+- Ohio AGI deductions
+
+## [0.273.0] - 2023-04-04 14:16:28
+
+### Added
+
+- New York TANF gross unearned income
+
+## [0.272.0] - 2023-04-04 14:04:35
+
+### Added
+
+- New York TANF flat income disregard.
+
+## [0.271.0] - 2023-04-04 04:32:08
+
+### Added
+
+- New Jersey total exemptions.
+
+## [0.270.0] - 2023-04-04 02:09:32
+
+### Added
+
+- Virginia income tax rate and blank Virginia income tax variable file.
+
+## [0.269.0] - 2023-04-03 18:48:55
+
+### Added
+
+- New Jersey dependent attending college exemption.
+
+## [0.268.0] - 2023-04-03 17:24:53
+
+### Added
+
+- Nebraska state income tax.
+
+## [0.267.0] - 2023-04-03 16:13:54
+
+### Added
+
+- South Carolina young child exemption.
+
+## [0.266.0] - 2023-04-02 16:55:48
+
+### Added
+
+- North Dakota state income tax.
+
+## [0.265.0] - 2023-04-02 15:07:00
+
+### Added
+
+- Earned income for new york tanf.
+
+## [0.264.0] - 2023-04-02 02:13:21
+
+### Added
+
+- Maine dependent exemption.
+
+## [0.263.5] - 2023-04-01 15:19:26
+
+### Fixed
+
+- is_ssi_disabled variable.
+
+## [0.263.4] - 2023-03-31 06:18:36
+
+### Fixed
+
+- Apply EITC married filing separately limitation.
+
+## [0.263.3] - 2023-03-30 21:40:37
+
+### Fixed
+
+- Lowered SSI asset limit pass rate to 8.8%.
+
 ## [0.263.2] - 2023-03-30 16:04:37
 
 ### Fixed
@@ -3359,6 +3514,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.284.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.283.0...0.284.0
+[0.283.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.282.0...0.283.0
+[0.282.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.1...0.282.0
+[0.281.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.0...0.281.1
+[0.281.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.280.0...0.281.0
+[0.280.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.279.0...0.280.0
+[0.279.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.278.0...0.279.0
+[0.278.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.277.0...0.278.0
+[0.277.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.276.0...0.277.0
+[0.276.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.275.0...0.276.0
+[0.275.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.274.0...0.275.0
+[0.274.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.273.0...0.274.0
+[0.273.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.272.0...0.273.0
+[0.272.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.271.0...0.272.0
+[0.271.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.270.0...0.271.0
+[0.270.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.269.0...0.270.0
+[0.269.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.268.0...0.269.0
+[0.268.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.267.0...0.268.0
+[0.267.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.266.0...0.267.0
+[0.266.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.265.0...0.266.0
+[0.265.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.264.0...0.265.0
+[0.264.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.5...0.264.0
+[0.263.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.4...0.263.5
+[0.263.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.3...0.263.4
+[0.263.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.2...0.263.3
 [0.263.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.1...0.263.2
 [0.263.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.263.0...0.263.1
 [0.263.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.262.0...0.263.0

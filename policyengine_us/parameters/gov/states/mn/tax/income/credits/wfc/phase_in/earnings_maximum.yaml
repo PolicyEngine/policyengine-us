@@ -1,0 +1,38 @@
+description: Minnesota has a working family credit (WFC) in which the credit is phased in a a rate that is applied to earnings up to this maximum.
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: MN WFC maximum earnings to which the phasein rate is applied
+  reference:
+  - title: 2021 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/2021/cite/290.0671
+  - title: 2021 Inflation-Adjusted Amounts in Minnesota Statutes
+    href: https://www.revenue.state.mn.us/sites/default/files/2020-12/Inflation%20Adjustments%20TY%202021.pdf#page=2
+  - title: 2022 Minnesota Statutes, section 290.0671
+    href: https://www.revisor.mn.gov/statutes/cite/290.0671
+  - title: 2022 Inflation-Adjusted Amounts in Minnesota Statutes
+    href: https://www.revenue.state.mn.us/sites/default/files/2021-12/Inflation_Adjustments_TY_2022.pdf#page=2
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 7_340
+      2022-01-01: 7_570
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 12_270
+      2022-01-01: 12_650
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 20_120
+      2022-01-01: 20_750
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 20_530
+      2022-01-01: 21_170
