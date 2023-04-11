@@ -1,0 +1,18 @@
+
+- name: If eligible, they get earned 5% federal EITC.
+  period: 2023
+  input:
+    eitc_eligible: true
+    earned_income_tax_credit: 100
+    state_code: LA
+  output:
+    la_eitc: 5
+
+- name: If no federal EITC no Louisiana EITC.
+  period: 2023
+  input:
+    eitc_eligible: true
+    earned_income_tax_credit: 0
+    state_code: LA
+  output:
+    la_eitc: 0
