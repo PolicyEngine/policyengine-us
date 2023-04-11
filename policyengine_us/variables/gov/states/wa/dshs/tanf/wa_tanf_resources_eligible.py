@@ -11,4 +11,4 @@ class wa_tanf_resources_eligible(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.wa.dshs.tanf.eligibility.resources
         countable_resources = spm_unit("wa_tanf_countable_resources", period)
-        return countable_resources <= p.resource_limit
+        return countable_resources <= p.limit

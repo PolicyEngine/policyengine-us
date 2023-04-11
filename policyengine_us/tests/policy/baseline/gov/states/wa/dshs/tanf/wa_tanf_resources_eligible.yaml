@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: WA
-    wa_tanf_countable_resources: 6000
+    wa_tanf_countable_resources: 6_000
   output:
     wa_tanf_resources_eligible: true
 
@@ -11,6 +11,6 @@
   period: 2023
   input:
     state_code: WA
-    wa_tanf_countable_resources: 7000
+    wa_tanf_countable_resources: 7_000
   output:
     wa_tanf_resources_eligible: false
