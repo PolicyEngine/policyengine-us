@@ -144,7 +144,16 @@ class ut_taxable_income(Variable):
     documentation = "Form TC-40, line 9"
     definition_period = YEAR
     adds = ["ut_total_income"]
+    defined_for = StateCode.UT
     subtracts = ["ut_subtractions_from_income", "ut_state_tax_refund"]
+
+class ut_refundable_credits(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Utah refundable credits"
+    unit = USD
+    definition_period = YEAR
+    defined_for = StateCode.UT
 
 
 class ut_income_tax_before_credits(Variable):
@@ -319,3 +328,12 @@ class ut_income_tax(Variable):
         )
         ut_taxpayer_credit = tax_unit("ut_taxpayer_credit", period)
         return max_(ut_income_tax_before_credits - ut_taxpayer_credit, 0)
+
+class ut_income_tax_before_refundable_credits(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Utah income tax before refundable credits"
+    unit = USD
+    definition_period = YEAR
+    adds = ["ut_income_tax_before_credits"]
+    defined_for = StateCode.UT
