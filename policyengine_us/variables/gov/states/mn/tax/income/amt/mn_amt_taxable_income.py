@@ -16,16 +16,16 @@ class mn_amt_taxable_income(Variable):
     def formula(tax_unit, period, parameters):
         fagi = tax_unit("adjusted_gross_income", period)
         itemizing = tax_unit("mn_itemizing", period)
-        some_deductions = [
+        SOME_DEDUCTIONS = [
             "charitable_deduction",
             "medical_expense_deduction",
             "casualty_loss_deduction",
         ]
-        some_itm_deds = itemizing * add(tax_unit, period, some_deductions)
-        amt_subtractions = [
+        some_itm_deds = itemizing * add(tax_unit, period, SOME_DEDUCTIONS)
+        AMT_SUBTRACTIONS = [
             "us_govt_interest",
             "mn_charity_subtraction",
             "mn_social_security_subtraction",
         ]
-        amt_subs = add(tax_unit, period, amt_subtractions)
+        amt_subs = add(tax_unit, period, AMT_SUBTRACTIONS)
         return fagi - some_itm_deds - amt_subs
