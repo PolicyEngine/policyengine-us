@@ -33,6 +33,6 @@ class az_blind_exemption(Variable):
         # Check if the individual spouse's eligiblity.
         spouse_eligible = (blind_spouse).astype(int)
 
-        # Calculate total blind exemption.       
+        # Calculate total blind exemption.
         blind_exemptions = head_eligible(int) + spouse_eligible(int)
         return blind_exemptions * p.amount
