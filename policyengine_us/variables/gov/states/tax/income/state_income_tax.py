@@ -9,10 +9,14 @@ class state_income_tax(Variable):
     definition_period = YEAR
     adds = [
         # state income tax variables listed in alphabetical order:
+        "ca_income_tax",
         "il_income_tax",
+        "ks_income_tax",
         "ma_income_tax",
         "md_income_tax",
         # "mo_income_tax",  --- activating will cause circular logic errors
+        # "ne_income_tax",  --- activating will cause circular logic errors
+        # "nd_income_tax",  --- activating will cause circular logic errors
         "ny_income_tax",
         "or_income_tax",
         "pa_income_tax",

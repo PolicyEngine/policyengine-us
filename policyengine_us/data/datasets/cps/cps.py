@@ -1,72 +1,34 @@
 import logging
-from policyengine_core.data import PublicDataset
+from policyengine_core.data import Dataset
 import h5py
-from policyengine_us.data.datasets.cps.raw_cps import RawCPS
-from policyengine_us.data.storage import policyengine_us_MICRODATA_FOLDER
+from policyengine_us.data.datasets.cps.raw_cps import (
+    RawCPS_2020,
+    RawCPS_2021,
+    RawCPS,
+)
+from policyengine_us.data.datasets.cps.uprated_cps import UpratedCPS
+from policyengine_us.data.storage import STORAGE_FOLDER
 from pandas import DataFrame, Series
 import numpy as np
 import pandas as pd
 import os
 import yaml
+from typing import Type
 
 
-class CPS(PublicDataset):
+class CPS(Dataset):
     name = "cps"
     label = "CPS"
-    model = "policyengine_us"
-    folder_path = policyengine_us_MICRODATA_FOLDER
+    raw_cps: Type[RawCPS] = None
+    data_format = Dataset.ARRAYS
 
-    url_by_year = {
-        2020: "https://github.com/PolicyEngine/openfisca-us/releases/download/cps-v0/cps_2020.h5",
-        2021: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2021.h5",
-        2022: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2022.h5",
-        2023: "https://github.com/PolicyEngine/policyengine-us/releases/download/cps-2021-v0/cps_2023.h5",
-    }
-
-    def generate(self, year: int):
+    def generate(self):
         """Generates the Current Population Survey dataset for PolicyEngine US microsimulations.
         Technical documentation and codebook here: https://www2.census.gov/programs-surveys/cps/techdocs/cpsmar21.pdf
-
-        Args:
-            year (int): The year of the Raw CPS to use.
         """
 
-        # Prepare raw CPS tables
-        year = int(year)
-
-        LATEST_YEAR = 2021
-
-        if year > LATEST_YEAR:
-            print(
-                f"Currently, only the {LATEST_YEAR} ASEC is available. ",
-                f"Uprating the {LATEST_YEAR} ASEC to {year}...",
-            )
-            if LATEST_YEAR not in CPS.years:
-                print(
-                    f"Didn't find the {LATEST_YEAR} CPS dataset. Generating..."
-                )
-                CPS.generate(LATEST_YEAR)
-
-            from policyengine_us import Microsimulation
-
-            sim = Microsimulation(dataset=CPS, dataset_year=LATEST_YEAR)
-            uprated_cps = h5py.File(self.file(year), mode="w")
-            latest_cps = h5py.File(self.file(LATEST_YEAR), mode="r")
-            for variable in latest_cps:
-                if variable in sim.tax_benefit_system.variables:
-                    uprated_cps.create_dataset(
-                        variable, data=sim.calculate(variable, year).values
-                    )
-            uprated_cps.close()
-            latest_cps.close()
-            return
-
-        if year not in RawCPS.years:
-            logging.info(f"Generating raw CPS for year {year}.")
-            RawCPS.generate(year)
-
-        raw_data = RawCPS.load(year)
-        cps = h5py.File(self.file(year), mode="w")
+        raw_data = self.raw_cps().load()
+        cps = h5py.File(self.file_path, mode="w")
 
         ENTITIES = ("person", "tax_unit", "family", "spm_unit", "household")
         person, tax_unit, family, spm_unit, household = [
@@ -75,19 +37,19 @@ class CPS(PublicDataset):
 
         add_id_variables(cps, person, tax_unit, family, spm_unit, household)
         add_personal_variables(cps, person)
-        add_personal_income_variables(cps, person, year)
+        add_personal_income_variables(cps, person, self.raw_cps.time_period)
         add_spm_variables(cps, spm_unit)
         add_household_variables(cps, household)
 
         raw_data.close()
         cps.close()
 
-        cps = h5py.File(self.file(year), mode="a")
-        add_silver_plan_cost(cps, year)
+        cps = h5py.File(self.file_path, mode="a")
+        add_silver_plan_cost(self, cps, 2022)
         cps.close()
 
 
-def add_silver_plan_cost(cps: h5py.File, year: int):
+def add_silver_plan_cost(self, cps: h5py.File, year: int):
     """Adds the second-lowest silver plan cost for each tax unit, based on geography.
 
     Args:
@@ -96,8 +58,8 @@ def add_silver_plan_cost(cps: h5py.File, year: int):
     """
     from policyengine_us import Microsimulation
 
-    sim = Microsimulation(dataset=CPS, dataset_year=year)
-    slspc = sim.calc("second_lowest_silver_plan_cost").values
+    sim = Microsimulation(dataset=self)
+    slspc = sim.calc("second_lowest_silver_plan_cost", year).values
 
     cps["second_lowest_silver_plan_cost"] = slspc
 
@@ -198,7 +160,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     DISABILITY_FLAGS = [
         "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
     ]
-    cps["is_ssi_disabled"] = person[DISABILITY_FLAGS].sum(axis=1) > 0
+    cps["is_ssi_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
 
     def children_per_parent(col: str) -> pd.DataFrame:
         """Calculate number of children in the household using parental
@@ -355,4 +317,36 @@ def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     cps["fips"] = household.GESTFIPS
 
 
-CPS = CPS()
+class CPS_2020(CPS):
+    name = "cps_2020"
+    label = "CPS 2020"
+    raw_cps = RawCPS_2020
+    file_path = STORAGE_FOLDER / "cps_2020.h5"
+    time_period = 2020
+
+
+class CPS_2021(CPS):
+    name = "cps_2021"
+    label = "CPS 2021"
+    raw_cps = RawCPS_2021
+    file_path = STORAGE_FOLDER / "cps_2021.h5"
+    time_period = 2021
+
+
+CPS_2022 = UpratedCPS.from_dataset(
+    CPS_2021,
+    2022,
+    "cps_2022",
+    "CPS 2022",
+    STORAGE_FOLDER / "cps_2022.h5",
+    "https://api.github.com/repos/PolicyEngine/policyengine-us/releases/assets/100380304",
+)
+
+CPS_2023 = UpratedCPS.from_dataset(
+    CPS_2021,
+    2023,
+    "cps_2023",
+    "CPS 2023",
+    STORAGE_FOLDER / "cps_2023.h5",
+    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023_v0_263_5.h5",
+)

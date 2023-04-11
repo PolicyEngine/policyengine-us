@@ -39,6 +39,14 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                 period=period, value=current_ca_eitc.eligibility.age.min
             )
 
+            # No joint bonus
+            eitc.phase_out.joint_bonus.brackets[0].amount.update(
+                period=period, value=0
+            )
+            eitc.phase_out.joint_bonus.brackets[1].amount.update(
+                period=period, value=0
+            )
+
             # Investment income change
             eitc.phase_out.max_investment_income.update(
                 period=period,

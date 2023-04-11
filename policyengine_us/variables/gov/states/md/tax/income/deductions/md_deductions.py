@@ -11,23 +11,20 @@ class md_deductions(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        us_itemizer = tax_unit("tax_unit_itemizes", period)
-        md_std_ded = tax_unit("md_standard_deduction", period)
         p = parameters(period).gov.irs.deductions
-        us_deductions_if_itemizing = [
+        itm_deds = [
             deduction
-            for deduction in p.deductions_if_itemizing
-            if deduction
-            not in ["salt_deduction", "qualified_business_income_deduction",]
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
         ]
-        us_itemized_deductions_less_salt = add(
-            tax_unit, period, us_deductions_if_itemizing
-        )
+        itm_deds_less_salt = add(tax_unit, period, itm_deds)
         property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         salt = p.itemized.salt_and_real_estate
         cap = salt.cap[tax_unit("filing_status", period)]
         capped_property_taxes = min_(property_taxes, cap)
-        md_itm_ded = us_itemized_deductions_less_salt + capped_property_taxes
+        md_itm_ded = itm_deds_less_salt + capped_property_taxes
+        md_std_ded = tax_unit("md_standard_deduction", period)
+        us_itemizer = tax_unit("tax_unit_itemizes", period)
         return where(
             us_itemizer,
             where(md_itm_ded > md_std_ded, md_itm_ded, md_std_ded),
