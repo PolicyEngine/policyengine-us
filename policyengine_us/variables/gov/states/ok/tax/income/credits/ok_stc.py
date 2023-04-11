@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_stc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK sales tax credit"
+    label = "Oklahoma sales tax credit"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_gross_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK gross income used in OK credit calculations"
+    label = "Oklahoma gross income used in OK credit calculations"
     unit = USD
     definition_period = YEAR
     reference = (

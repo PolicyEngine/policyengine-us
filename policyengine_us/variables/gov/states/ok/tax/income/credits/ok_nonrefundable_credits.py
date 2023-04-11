@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_nonrefundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK nonrefundable income tax credits"
+    label = "Oklahoma nonrefundable income tax credits"
     unit = USD
     definition_period = YEAR
     reference = (

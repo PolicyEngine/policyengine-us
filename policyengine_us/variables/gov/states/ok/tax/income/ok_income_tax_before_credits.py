@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK income tax before credits"
+    label = "Oklahoma income tax before credits"
     unit = USD
     definition_period = YEAR
     reference = (

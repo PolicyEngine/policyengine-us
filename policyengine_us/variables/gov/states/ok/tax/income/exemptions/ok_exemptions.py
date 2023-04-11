@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK exemptions amount"
+    label = "Oklahoma exemptions amount"
     unit = USD
     definition_period = YEAR
     reference = (

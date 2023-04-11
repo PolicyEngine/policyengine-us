@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_income_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK income tax"
+    label = "Oklahoma income tax"
     unit = USD
     definition_period = YEAR
     reference = (

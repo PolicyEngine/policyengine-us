@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK itemized deductions"
+    label = "Oklahoma itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = (

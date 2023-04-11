@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK refundable income tax credits"
+    label = "Oklahoma refundable income tax credits"
     unit = USD
     definition_period = YEAR
     reference = (

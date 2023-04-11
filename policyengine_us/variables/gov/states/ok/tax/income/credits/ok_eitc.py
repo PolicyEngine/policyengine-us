@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK EITC amount"
+    label = "Oklahoma EITC amount"
     unit = USD
     definition_period = YEAR
     reference = (

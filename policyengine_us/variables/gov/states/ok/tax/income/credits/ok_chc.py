@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_chc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK child credit"
+    label = "Oklahoma child credit"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_ptc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK property tax credit"
+    label = "Oklahoma property tax credit"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ok_agi_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OK AGI additions to federal AGI"
+    label = "Oklahoma AGI additions to federal AGI"
     unit = USD
     definition_period = YEAR
     reference = (
