@@ -143,8 +143,8 @@ class ut_taxable_income(Variable):
     unit = USD
     documentation = "Form TC-40, line 9"
     definition_period = YEAR
-    adds = ["ut_total_income", "ut_state_tax_refund"]
-    subtracts = ["ut_subtractions_from_income"]
+    adds = ["ut_total_income"]
+    subtracts = ["ut_subtractions_from_income", "ut_state_tax_refund"]
 
 
 class ut_income_tax_before_credits(Variable):
@@ -234,7 +234,7 @@ class ut_taxpayer_credit_max(Variable):
         # The exemption is not actually applied here in the form, but we include it here
         # to avoid counting the exemption as a nonrefundable credit when comparing against
         # ut_income_tax_before_credits.
-        return rate * deductions * ~tax_unit("ut_income_tax_exempt", period)
+        return rate * deductions
 
 
 class ut_taxpayer_credit_phase_out_income(Variable):
@@ -293,7 +293,7 @@ class ut_taxpayer_credit(Variable):
 
 
 class ut_income_tax_exempt(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "exempt from Utah income tax"
     unit = USD
