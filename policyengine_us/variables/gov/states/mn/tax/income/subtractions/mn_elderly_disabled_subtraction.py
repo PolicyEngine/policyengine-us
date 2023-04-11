@@ -50,16 +50,24 @@ class mn_elderly_disabled_subtraction(Variable):
         # ... subtract benefits from base amount
         amount = max_(0, base_amount - benefits)
         # ... determine net agi
-        agi = tax_unit("adjusted_gross_income", period)
-        agi += tax_unit("c05700", period)  # lump-sum Form 4972 distributions
-        agi_offset = p.agi_offset_base[filing_status]
+        agi = add(
+            tax_unit,
+            period,
+            [
+                "adjusted_gross_income",
+                "c05700",  # lump-sum Form 4972 distributions
+            ],
+        )
+        agi_offset_base = p.agi_offset_base[filing_status]
         joint = filing_status == filing_status.possible_values.JOINT
         head_eligible = tax_unit.any(elderly_head | disabled_head)
         spouse_eligible = tax_unit.any(elderly_spouse | disabled_spouse)
+        eligible = head_eligible | spouse_eligible
         joint_with_two_eligibles = joint & head_eligible & spouse_eligible
-        agi_offset += joint_with_two_eligibles * p.agi_offset_extra
+        agi_offset_extra = joint_with_two_eligibles * p.agi_offset_extra
+        agi_offset = agi_offset_base + agi_offset_extra
         net_agi = max_(0, agi - agi_offset)
         fraction_of_net_agi = p.net_agi_fraction * net_agi
         # ... subtract fracton_of_net_agi from amount to get final amount
         final_amount = max_(0, amount - fraction_of_net_agi)
-        return where(head_eligible | spouse_eligible, final_amount, 0)
+        return eligible * final_amount
