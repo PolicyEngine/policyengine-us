@@ -1,0 +1,13 @@
+description: Minnesota provides a marriage credit for joint filers where the lesser income of the two spouses is at least this minimum amount.
+values:
+  2021-01-01: 26_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota marriage credit minimum individual income for eligibility
+  reference:
+  - title: 2021 Minnesota Schedule M1MA, Line 6
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf
+  - title: 2022 Minnesota Schedule M1MA, Line 6
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_22.pdf

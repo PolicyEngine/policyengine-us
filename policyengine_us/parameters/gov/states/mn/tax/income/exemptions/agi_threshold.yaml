@@ -1,0 +1,28 @@
+description: Minnesota limits exemptions when federal AGI is above this threshold.
+metadata:
+  label: federal AGI threshold above which Minnesota exemptions are limited
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://taxsim.nber.org/historical_state_tax_forms/MN/2021/m1sa_21.pdf#page=13
+  - title: 2022 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=13
+
+JOINT:
+  2021-01-01: 299_750
+  2022-01-01: 309_050
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 249_800
+  2022-01-01: 257_550
+WIDOW:
+  2021-01-01: 299_750
+  2022-01-01: 309_050
+SINGLE:
+  2021-01-01: 199_850
+  2022-01-01: 206_050
+SEPARATE:
+  2021-01-01: 149_875
+  2022-01-01: 154_525
