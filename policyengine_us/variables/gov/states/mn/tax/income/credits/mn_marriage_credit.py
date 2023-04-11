@@ -21,14 +21,9 @@ class mn_marriage_credit(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
         # determine individual income eligibility
         person = tax_unit.members
-        income_sources = [
-            "employment_income",
-            "self_employment_income",
-            "taxable_social_security",
-            "taxable_pension_income",
-        ]
-        income = add(person, period, income_sources)
-        income -= person("self_employment_tax_ald_person", period)
+        income = add(person, period, p.income_sources) - person(
+            "self_employment_tax_ald_person", period
+        )
         is_head = person("is_tax_unit_head", period)
         head_income = tax_unit.sum(is_head * income)
         is_spouse = person("is_tax_unit_spouse", period)
