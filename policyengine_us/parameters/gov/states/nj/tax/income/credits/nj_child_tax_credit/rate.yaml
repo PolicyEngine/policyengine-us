@@ -1,7 +1,8 @@
 description: New Jersey provides a credit for each dependent who is under the age of 6
 metadata:
-  type: marginal_rate
+  type: single_amount
   threshold_unit: currency-USD
+  threshold_period: year
   amount_unit: 1
   label: New Jersey Child Tax Credit
   reference:
