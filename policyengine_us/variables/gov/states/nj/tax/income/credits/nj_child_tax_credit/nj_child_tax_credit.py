@@ -30,4 +30,4 @@ class nj_child_tax_credit(Variable):
         is_joint = tax_unit("tax_unit_is_joint", period)
 
         # Calculate total child tax credit
-        return count_eligible * is_joint
+        return count_eligible * rate * is_joint
