@@ -1,0 +1,13 @@
+description: Minnesota limits exemptions when federal AGI is above a threshold by this fraction of AGI per step above the threshold.
+values:
+  2021-01-01: 0.02
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota fraction of federal AGI steps above threshold that is used to limit exemptions
+  reference:
+  - title: 2021 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://taxsim.nber.org/historical_state_tax_forms/MN/2021/m1sa_21.pdf#page=13
+  - title: 2022 Minnesota Form M1 instructions, Worksheet for Line 5
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=13

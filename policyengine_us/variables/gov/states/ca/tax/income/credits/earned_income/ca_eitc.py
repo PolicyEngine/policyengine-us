@@ -39,6 +39,14 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                 period=period, value=current_ca_eitc.eligibility.age.min
             )
 
+            # No joint bonus
+            eitc.phase_out.joint_bonus.brackets[0].amount.update(
+                period=period, value=0
+            )
+            eitc.phase_out.joint_bonus.brackets[1].amount.update(
+                period=period, value=0
+            )
+
             # Investment income change
             eitc.phase_out.max_investment_income.update(
                 period=period,
@@ -59,12 +67,10 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                         period
                     )
                     eitc_max_amount = getattr(
-                        ca_eitc.earned_income_amount.brackets[ca_i],
-                        attribute,
+                        ca_eitc.earned_income_amount.brackets[ca_i], attribute,
                     )(period) * (phase_in_rate if attribute == "amount" else 1)
                     getattr(eitc.max.brackets[i], attribute).update(
-                        period=period,
-                        value=eitc_max_amount,
+                        period=period, value=eitc_max_amount,
                     )
                     # Phase-out start
                     getattr(
@@ -89,12 +95,26 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
         return simulation.branches.get("ca_eitc")
 
 
+class ca_eitc_eligible(Variable):
+    value_type = bool
+    entity = TaxUnit
+    label = "Eligible for CalEITC"
+    unit = USD
+    definition_period = YEAR
+    defined_for = StateCode.CA
+
+    def formula(tax_unit, period, parameters):
+        branch = get_ca_eitc_branch(tax_unit, period, parameters)
+        return branch.calculate("eitc_eligible", period)
+
+
 class ca_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "CalEITC amount"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.CA
     reference = "https://www.ftb.ca.gov/file/personal/credits/california-earned-income-tax-credit.html#What-you-ll-get"
 
     def formula(tax_unit, period, parameters):
@@ -105,6 +125,7 @@ class ca_eitc(Variable):
             branch.calculate("earned_income_tax_credit", period)
             * current_ca_eitc.adjustment.factor
         )
+        eligible = branch.calculate("eitc_eligible", period)
         second_phase_out_start = tax_unit(
             "ca_eitc_second_phase_out_start", period
         )
@@ -112,7 +133,7 @@ class ca_eitc(Variable):
         count_children = tax_unit("eitc_child_count", period)
         eitc_at_second_phase_out_start = (
             current_ca_eitc.phase_out.final.start.calc(count_children)
-        )
+        ) * eligible
         earned_income = tax_unit("filer_earned", period)
         amount_along_second_phase_out = earned_income - second_phase_out_start
         second_phase_out_width = second_phase_out_end - second_phase_out_start
@@ -128,7 +149,5 @@ class ca_eitc(Variable):
         is_on_second_phase_out = earned_income >= second_phase_out_start
 
         return where(
-            is_on_second_phase_out,
-            eitc_along_second_phase_out,
-            amount,
+            is_on_second_phase_out, eitc_along_second_phase_out, amount,
         )

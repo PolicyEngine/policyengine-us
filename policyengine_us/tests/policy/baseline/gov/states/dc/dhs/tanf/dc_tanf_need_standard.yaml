@@ -1,0 +1,79 @@
+- name: If one person, need standard is $450 * 12/yr.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 1
+  output:
+    dc_tanf_need_standard: 450 * 12
+
+- name: If ten person, need standard is $1,786 * 12/yr.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 10
+    
+  output:
+    dc_tanf_need_standard: 1_786 * 12
+
+- name: Only calculate for DC.
+  period: 2023
+  input:
+    state_code: MD
+    spm_unit_size: 10
+  output:
+    dc_tanf_need_standard: 0
+
+- name: Single parent of three children with childcare costs, need standard is $1,420 * 12/yr.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        is_child: false
+      child1:
+        age: 1
+        is_child: true
+      child2:
+        age: 2
+        is_child: true
+      child3:
+        age: 3
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+        childcare_expenses: 100
+        spm_unit_size: 4
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: DC
+  output:
+    # $200 for child under 2, $175 for children two or older.
+    dc_tanf_need_standard: (870 + 200 + 175 + 175) * 12
+
+- name: Single parent of three children with no childcare costs, need standard is $870 * 12/yr.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 40
+        is_child: false
+      child1:
+        age: 1
+        is_child: true
+      child2:
+        age: 2
+        is_child: true
+      child3:
+        age: 3
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: DC
+  output:
+    dc_tanf_need_standard: 870 * 12

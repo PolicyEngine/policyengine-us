@@ -2591,3 +2591,372 @@
     fixed:
     - SSI pass rate calibrated to 45%.
   date: 2023-03-08 17:08:12
+- bump: patch
+  changes:
+    fixed:
+    - CPS generation on Windows.
+  date: 2023-03-08 22:35:18
+- bump: minor
+  changes:
+    added:
+    - Added NYC taxes and refundable credits to relevant household variables.
+  date: 2023-03-09 04:57:54
+- bump: minor
+  changes:
+    added:
+    - Colorado TANF pregnancy allowance and integration tests.
+  date: 2023-03-09 16:19:45
+- bump: minor
+  changes:
+    added:
+    - Maryland TANF earned income deduction.
+  date: 2023-03-09 16:29:06
+- bump: minor
+  changes:
+    added:
+    - 2022 CA use tax parameters.
+    - 2022 CA income tax rate bracket parameters.
+    - 2022 CA income tax standard deduction parameter.
+    - 2022 CA income tax exemption parameters.
+    - 2022 CA income tax credit parameters.
+  date: 2023-03-09 23:25:37
+- bump: minor
+  changes:
+    added:
+    - nj_agi and nj_income_tax variables, and income filing threshold parameters.
+  date: 2023-03-10 00:53:46
+- bump: minor
+  changes:
+    added:
+    - CA AGI formula.
+    - CA taxable income formula.
+  date: 2023-03-10 19:26:00
+- bump: patch
+  changes:
+    fixed:
+    - CA Young Child Tax Credit (YCTC) logic.
+  date: 2023-03-10 23:30:13
+- bump: minor
+  changes:
+    added:
+    - NJ regular exemption.
+  date: 2023-03-11 01:17:50
+- bump: patch
+  changes:
+    fixed:
+    - CalEITC bug where eligibility conditions weren't applied in the second phase-out
+      region.
+  date: 2023-03-11 13:41:52
+- bump: minor
+  changes:
+    added:
+    - Federally taxable social security benefits to list of CA AGI subtractions.
+  date: 2023-03-11 22:27:07
+- bump: patch
+  changes:
+    fixed:
+    - CA AGI calculation.
+  date: 2023-03-12 19:57:14
+- bump: minor
+  changes:
+    added:
+    - DC EITC with no qualifying children.
+  date: 2023-03-13 00:07:28
+- bump: minor
+  changes:
+    added:
+    - DC TANF maximum income.
+  date: 2023-03-13 20:45:21
+- bump: minor
+  changes:
+    added:
+    - New York TANF need standard.
+  date: 2023-03-14 16:59:42
+- bump: minor
+  changes:
+    added:
+    - Maryland TANF maximum benefit.
+  date: 2023-03-14 18:11:17
+- bump: minor
+  changes:
+    added:
+    - NJ senior exemption.
+  date: 2023-03-14 22:01:55
+- bump: minor
+  changes:
+    added:
+    - Alabama personal exemption.
+  date: 2023-03-17 23:08:36
+- bump: minor
+  changes:
+    added:
+    - New York TANF countable earned income based on earned income exclusion.
+  date: 2023-03-18 05:01:12
+- bump: minor
+  changes:
+    added:
+    - Virginia aged/blind exemption.
+  date: 2023-03-18 05:22:13
+- bump: minor
+  changes:
+    added:
+    - Missouri TANF income limit / maximum benefit.
+  date: 2023-03-19 16:30:59
+- bump: patch
+  changes:
+    fixed:
+    - CalEITC now correctly has no joint bonus.
+  date: 2023-03-19 20:20:41
+- bump: minor
+  changes:
+    added:
+    - Virginia personal exemption.
+  date: 2023-03-19 22:30:49
+- bump: minor
+  changes:
+    added:
+    - California income tax to net income tree.
+  date: 2023-03-20 05:16:36
+- bump: minor
+  changes:
+    added:
+    - Miscellaneous income.
+  date: 2023-03-20 15:49:33
+- bump: patch
+  changes:
+    changed:
+    - Add California to modelled_policies.yaml so it shows up in population impacts.
+  date: 2023-03-21 00:52:11
+- bump: minor
+  changes:
+    changed:
+    - PolicyEngine Core data updates handled.
+  date: 2023-03-23 10:27:47
+- bump: minor
+  changes:
+    added:
+    - Virginia standard deduction.
+  date: 2023-03-24 04:33:15
+- bump: minor
+  changes:
+    added:
+    - New Jersey blind or disabled exemption.
+  date: 2023-03-24 04:59:06
+- bump: patch
+  changes:
+    fixed:
+    - SLSPC not included in the CPS microdata, causing a 2x runtime.
+  date: 2023-03-25 11:09:53
+- bump: minor
+  changes:
+    added:
+    - Alabama income tax rate structure
+  date: 2023-03-26 15:00:14
+- bump: minor
+  changes:
+    added:
+    - Alabama dependent exemption
+  date: 2023-03-26 15:17:24
+- bump: minor
+  changes:
+    added:
+    - Alabama standard deductions
+  date: 2023-03-27 02:12:55
+- bump: patch
+  changes:
+    added:
+    - Calibrated CPS basic structure.
+  date: 2023-03-27 18:48:24
+- bump: minor
+  changes:
+    added:
+    - Maine EITC.
+  date: 2023-03-27 20:36:50
+- bump: minor
+  changes:
+    changed:
+    - Add Colorado EITC.
+  date: 2023-03-27 20:40:18
+- bump: patch
+  changes:
+    chaged:
+    - Made NY deduction plural (ny_deductions).
+  date: 2023-03-28 04:45:32
+- bump: minor
+  changes:
+    added:
+    - New Jersey dependent exemption.
+  date: 2023-03-28 22:21:13
+- bump: patch
+  changes:
+    fixed:
+    - survey-enhance now a dev dependency.
+  date: 2023-03-29 20:36:52
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI addition and deduction.
+  date: 2023-03-29 23:06:13
+- bump: patch
+  changes:
+    changed:
+    - Pin pydata-sphinx-theme==0.13.1 to fix jupyterbook build.
+  date: 2023-03-29 23:22:36
+- bump: minor
+  changes:
+    added:
+    - Kansas state income tax.
+  date: 2023-03-30 01:37:19
+- bump: minor
+  changes:
+    added:
+    - Maine taxable income.
+  date: 2023-03-30 04:13:27
+- bump: patch
+  changes:
+    fixed:
+    - California CDCC formula, which previously doubly applied the federal CDCC rate.
+  date: 2023-03-30 05:13:18
+- bump: patch
+  changes:
+    fixed:
+    - CPS url updated to fix poverty rate bug.
+  date: 2023-03-30 16:04:37
+- bump: patch
+  changes:
+    fixed:
+    - Lowered SSI asset limit pass rate to 8.8%.
+  date: 2023-03-30 21:40:37
+- bump: patch
+  changes:
+    fixed:
+    - Apply EITC married filing separately limitation.
+  date: 2023-03-31 06:18:36
+- bump: patch
+  changes:
+    fixed:
+    - is_ssi_disabled variable.
+  date: 2023-04-01 15:19:26
+- bump: minor
+  changes:
+    added:
+    - Maine dependent exemption.
+  date: 2023-04-02 02:13:21
+- bump: minor
+  changes:
+    added:
+    - Earned income for new york tanf.
+  date: 2023-04-02 15:07:00
+- bump: minor
+  changes:
+    added:
+    - North Dakota state income tax.
+  date: 2023-04-02 16:55:48
+- bump: minor
+  changes:
+    added:
+    - South Carolina young child exemption.
+  date: 2023-04-03 16:13:54
+- bump: minor
+  changes:
+    added:
+    - Nebraska state income tax.
+  date: 2023-04-03 17:24:53
+- bump: minor
+  changes:
+    added:
+    - New Jersey dependent attending college exemption.
+  date: 2023-04-03 18:48:55
+- bump: minor
+  changes:
+    added:
+    - Virginia income tax rate and blank Virginia income tax variable file.
+  date: 2023-04-04 02:09:32
+- bump: minor
+  changes:
+    added:
+    - New Jersey total exemptions.
+  date: 2023-04-04 04:32:08
+- bump: minor
+  changes:
+    added:
+    - New York TANF flat income disregard.
+  date: 2023-04-04 14:04:35
+- bump: minor
+  changes:
+    added:
+    - New York TANF gross unearned income
+  date: 2023-04-04 14:16:28
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI deductions
+  date: 2023-04-04 22:47:27
+- bump: minor
+  changes:
+    added:
+    - New York TANF demographic and income eligibility
+  date: 2023-04-05 03:08:10
+- bump: minor
+  changes:
+    added:
+    - South Carolina income tax before credits.
+  date: 2023-04-05 16:25:35
+- bump: minor
+  changes:
+    added:
+    - Modify file name for earned income
+  date: 2023-04-05 23:18:07
+- bump: minor
+  changes:
+    added:
+    - Arizona standard deduction.
+  date: 2023-04-06 18:22:11
+- bump: minor
+  changes:
+    added:
+    - New York TANF resource limit.
+    - New York TANF to general TANF variable.
+    fixed:
+    - Multiply New York TANF flat earned income disregard by 12.
+  date: 2023-04-07 16:22:50
+- bump: minor
+  changes:
+    added:
+    - New Jersey taxable income.
+  date: 2023-04-08 04:35:49
+- bump: minor
+  changes:
+    added:
+    - ME main income tax (before credits and supplemental tax)
+  date: 2023-04-10 03:21:40
+- bump: patch
+  changes:
+    added:
+    - Legislative reference for California mental health services tax.
+  date: 2023-04-10 16:22:22
+- bump: minor
+  changes:
+    added:
+    - Virginia military basic pay subtraction.
+  date: 2023-04-10 21:13:07
+- bump: minor
+  changes:
+    added:
+    - Minnesota state income tax.
+  date: 2023-04-11 04:09:36
+- bump: minor
+  changes:
+    added:
+    - New Jersey CDCC.
+  date: 2023-04-11 04:11:43
+- bump: minor
+  changes:
+    added:
+    - Oklahoma state income tax.
+  date: 2023-04-11 04:46:52
+- bump: patch
+  changes:
+    fixed:
+    - Subtraction error in EITC joint bonus.
+  date: 2023-04-11 19:35:40
