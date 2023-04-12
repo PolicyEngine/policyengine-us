@@ -1,0 +1,26 @@
+- name: No earned income, applicant, $0 per year after deduction.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_gross_earned_income: 0
+    is_tanf_enrolled: false
+  output:
+    dc_tanf_countable_earned_income: 0
+
+- name: Earned income $1,000, applicant, $840 * 12 per year after deduction.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_gross_earned_income: 1_000
+    is_tanf_enrolled: false
+  output:
+    dc_tanf_countable_earned_income: 840 * 12 # $160 disregard only.
+
+- name: Earned income $1,000, recipient, $280 per year after deduction.
+  period: 2023
+  input:
+    state_code: DC
+    dc_tanf_gross_earned_income: 1_000
+    is_tanf_enrolled: true
+  output:
+    dc_tanf_countable_earned_income: 280 * 12 # $160 and additional two thirds disregard

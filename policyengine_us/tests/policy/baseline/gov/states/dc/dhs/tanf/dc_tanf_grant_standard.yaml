@@ -1,4 +1,4 @@
-- name: If one person, maximum monthly benefit is $437/mo.
+- name: If one person, grand standard is $437 * 12/yr.
   period: 2023
   input:
     state_code: DC
@@ -6,7 +6,7 @@
   output:
     dc_tanf_maximum_benefit: 437 * 12
 
-- name: If ten person, maximum monthly benefit is $1750/mo.
+- name: If ten person, grand standard is $1750 * 12/yr.
   period: 2023
   input:
     state_code: DC
