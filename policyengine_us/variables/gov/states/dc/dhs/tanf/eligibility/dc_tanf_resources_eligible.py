@@ -17,9 +17,7 @@ class dc_tanf_resources_eligible(Variable):
             person("age", period) >= p.elderly_age_threshold
         )
         # Check if the household has at least one disabled member.
-        has_disabled = spm_unit.any(
-            person("is_disabled", period)
-        )
+        has_disabled = spm_unit.any(person("is_disabled", period))
         # Look up resource limit by the condition.
         resource_limit = p.main[has_elderly | has_disabled]
         countable_resources = spm_unit("dc_tanf_countable_resources", period)

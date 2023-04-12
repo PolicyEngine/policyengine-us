@@ -11,5 +11,7 @@ class dc_tanf(Variable):
 
     def formula(spm_unit, period, parameters):
         grant_standard = spm_unit("dc_tanf_grant_standard", period)
-        countable_income = spm_unit("dc_tanf_countable_income_for_computing_benefits", period)
+        countable_income = spm_unit(
+            "dc_tanf_countable_income_for_computing_benefits", period
+        )
         return max_(grant_standard - countable_income, 0)

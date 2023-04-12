@@ -26,6 +26,8 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         unit_taxable_ben = tax_unit.sum(ind_taxable_ben)
         unit_deduction = max_(0, unit_taxable_ben - unit_agi_over_allowance)
         ind_frac = where(
-            ind_taxable_ben > 0, ind_taxable_ben / unit_taxable_ben, 0,
+            ind_taxable_ben > 0,
+            ind_taxable_ben / unit_taxable_ben,
+            0,
         )
         return ind_frac * unit_deduction

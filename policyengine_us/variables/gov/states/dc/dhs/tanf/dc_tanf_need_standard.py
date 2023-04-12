@@ -11,9 +11,7 @@ class dc_tanf_need_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)
-        p = parameters(
-            period
-        ).gov.states.dc.dhs.tanf.need_standard
+        p = parameters(period).gov.states.dc.dhs.tanf.need_standard
         base = p.main[unit_size]
         # Add childcare addition, which depends on the child's age.
         person = spm_unit.members
