@@ -16,11 +16,11 @@
   output:
     dc_tanf_countable_earned_income: 840 * 12 # $160 disregard only.
 
-- name: Earned income $1,000, recipient, $280 per year after deduction.
+- name: Earned income $1,160, recipient, $330 * 12 per year after deduction.
   period: 2023
   input:
     state_code: DC
-    dc_tanf_gross_earned_income: 1_000
+    dc_tanf_gross_earned_income: 1_160
     is_tanf_enrolled: true
   output:
-    dc_tanf_countable_earned_income: 280 * 12 # $160 and additional two thirds disregard
+    dc_tanf_countable_earned_income: 330 * 12 # $160 and additional two thirds disregard

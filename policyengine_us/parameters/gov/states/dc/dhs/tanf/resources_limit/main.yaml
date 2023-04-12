@@ -1,0 +1,18 @@
+description: DC limits TANF to this resource amount depending on if households have at least one elderly or disabled member.
+
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - (true, false)
+  label: DC TANF resources limit
+  reference:
+    - title: TANF for District Families
+      href: https://dhs.dc.gov/service/tanf-district-families
+            https://dhs.dc.gov/sites/default/files/dc/sites/dhs/service_content/attachments/TANF_Announcement_StatePlan_ForComment_01072020.pdf#page=22
+
+
+true: 
+  2022-10-01: 2_000
+false: 
+  2022-10-01: 3_000 

@@ -17,7 +17,7 @@
     dc_tanf_countable_gross_unearned_income: 0
 
 
-- name: $1,000 of each unearned income and $1,000 in child support $10,000 per year
+- name: $1,000 of each unearned income and $1,000 in child support, $10,000 per year
   period: 2023
   input:
     state_code: DC
@@ -31,7 +31,7 @@
     gi_cash_assistance: 1_000
     social_security: 1_000
     ssi: 1_000
-    child_support_received: 1_000 # disregard $150 per month
+    child_support_received: 1_000 # disregard $150 per month * 12
   output:
     dc_tanf_countable_gross_unearned_income: 10_000
 
