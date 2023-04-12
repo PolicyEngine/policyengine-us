@@ -3,8 +3,6 @@ description: DC limits TANF to this resource amount depending on if households h
 metadata:
   unit: currency-USD
   period: year
-  breakdown:
-    - (true, false)
   label: DC TANF resources limit
   reference:
     - title: TANF for District Families
@@ -13,6 +11,7 @@ metadata:
 
 
 true: 
-  2022-10-01: 2_000
+  2022-10-01: 3_000
 false: 
-  2022-10-01: 3_000 
+  2022-10-01: 2_000
+

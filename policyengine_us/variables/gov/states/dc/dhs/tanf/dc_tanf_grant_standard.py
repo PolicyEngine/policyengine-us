@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_grand_standard(Variable):
+class dc_tanf_grant_standard(Variable):
     value_type = float
     entity = SPMUnit
     label = "DC TANF grand standard"
@@ -11,6 +11,6 @@ class dc_tanf_grand_standard(Variable):
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)
-        p = parameters(period).gov.states.dc.dhs.tanf.grand_standard
+        p = parameters(period).gov.states.dc.dhs.tanf.grant_standard
         monthly = p.main[unit_size]
         return monthly * MONTHS_IN_YEAR

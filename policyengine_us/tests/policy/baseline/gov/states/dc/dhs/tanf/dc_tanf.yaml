@@ -3,8 +3,7 @@
   input:
     dc_tanf_eligible: false
     dc_tanf_grant_standard: 100
-    dc_tanf_countable_earned_income: 0
-    dc_tanf_countable_unearned_income: 0
+    dc_tanf_countable_income_for_computing_benefits: 0
   output:
     dc_tanf: 0
 
@@ -13,8 +12,7 @@
   input:
     dc_tanf_eligible: true
     dc_tanf_grant_standard: 100
-    dc_tanf_countable_earned_income: 0
-    dc_tanf_countable_unearned_income: 0
+    dc_tanf_countable_income_for_computing_benefits: 0
   output:
     dc_tanf: 100
 
@@ -23,7 +21,6 @@
   input:
     dc_tanf_eligible: true
     dc_tanf_grant_standard: 100
-    dc_tanf_countable_earned_income: 100
-    dc_tanf_countable_unearned_income: 100
+    dc_tanf_countable_income_for_computing_benefits: 110
   output:
     dc_tanf: 0
