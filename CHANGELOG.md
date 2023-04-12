@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.285.1] - 2023-04-11 19:35:40
+
+### Fixed
+
+- Subtraction error in EITC joint bonus.
+
+## [0.285.0] - 2023-04-11 04:46:52
+
+### Added
+
+- Oklahoma state income tax.
+
+## [0.284.0] - 2023-04-11 04:11:43
+
+### Added
+
+- New Jersey CDCC.
+
+## [0.283.0] - 2023-04-11 04:09:36
+
+### Added
+
+- Minnesota state income tax.
+
+## [0.282.0] - 2023-04-10 21:13:07
+
+### Added
+
+- Virginia military basic pay subtraction.
+
 ## [0.281.1] - 2023-04-10 16:22:22
 
 ### Added
@@ -3496,6 +3526,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.285.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.0...0.285.1
+[0.285.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.284.0...0.285.0
+[0.284.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.283.0...0.284.0
+[0.283.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.282.0...0.283.0
+[0.282.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.1...0.282.0
 [0.281.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.0...0.281.1
 [0.281.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.280.0...0.281.0
 [0.280.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.279.0...0.280.0
