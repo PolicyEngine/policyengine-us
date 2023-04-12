@@ -13,15 +13,10 @@ class me_non_refundable_child_care_credit(Variable):
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5218.html"
     definition_period = YEAR
 
-    adds = ["me_child_care_credit"]
-    subtracts = ["me_refundable_child_care_credit"]
-
     def formula(tax_unit, period, parameters):
-        added_components = add(
-            tax_unit, period, me_non_refundable_child_care_credit.adds
-        )
-        subtracted_components = add(
-            tax_unit, period, me_non_refundable_child_care_credit.subtracts
+        me_child_care_credit = tax_unit("me_child_care_credit", period)
+        me_refundable_child_care_credit = tax_unit(
+            "me_refundable_child_care_credit", period
         )
 
-        return max_(added_components - subtracted_components, 0)
+        return max_(me_child_care_credit - me_refundable_child_care_credit, 0)

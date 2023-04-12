@@ -16,7 +16,7 @@ class me_child_care_credit(Variable):
 
         # Get share of expenses that went to step 4 programs
         step_4_share_of_expenses = tax_unit(
-            "me_step4_share_of_child_care_expenses", period
+            "me_step_4_share_of_child_care_expenses", period
         )
         # Line 2: Divide Federal CDCC according to share of regular vs. Step 4 expenses
         cdcc = tax_unit("cdcc", period)
@@ -26,10 +26,10 @@ class me_child_care_credit(Variable):
         cdcc_step_4_portion = cdcc * step_4_share_of_expenses
         # Line 3, Column A
         me_regular_child_care_credit = (
-            p.regular_share_of_federal_credit * cdcc_regular_portion
+            p.share_of_federal_credit.non_step_4 * cdcc_regular_portion
         )
         # Line 3, Column B
         me_step_4_child_care_credit = (
-            p.step_4_share_of_federal_credit * cdcc_step_4_portion
+            p.share_of_federal_credit.step_4 * cdcc_step_4_portion
         )
         return me_regular_child_care_credit + me_step_4_child_care_credit
