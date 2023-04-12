@@ -14,10 +14,10 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
+        filing_status: JOINT
         members: [person1, person2, person3]
     households:
       household:
-        filing_status: JOINT
         nj_taxable_income: 20_000
         members: [person1, person2, person3]
         state_code: NJ
@@ -40,10 +40,10 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
+        filing_status: JOINT
         members: [person1, person2, person3]
     households:
       household:
-        filing_status: JOINT
         nj_taxable_income: 35_000
         members: [person1, person2, person3]
         state_code: NJ
@@ -69,10 +69,10 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
+        filing_status: JOINT
         members: [person1, person2, person3, person4]
     households:
       household:
-        filing_status: JOINT
         nj_taxable_income: 20_000
         members: [person1, person2, person3, person4]
         state_code: NJ
@@ -95,10 +95,10 @@
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
+        filing_status: SEPARATE
         members: [person1, person2, person3]
     households:
       household:
-        filing_status: SEPARATE
         nj_taxable_income: 20_000
         members: [person1, person2, person3]
         state_code: NJ
