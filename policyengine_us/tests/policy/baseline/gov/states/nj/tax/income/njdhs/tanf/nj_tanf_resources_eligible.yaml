@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: NJ
-    nj_tanf_countable_resources: 2000
+    nj_tanf_countable_resources: 2_000
   output:
     nj_tanf_resources_eligible: true
 
@@ -11,6 +11,6 @@
   period: 2023
   input:
     state_code: NJ
-    nj_tanf_countable_resources: 4000
+    nj_tanf_countable_resources: 4_000
   output:
     nj_tanf_resources_eligible: false
