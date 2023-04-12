@@ -27,4 +27,5 @@ class nj_child_tax_credit(Variable):
         count_eligible = tax_unit.sum(eligible)
 
         # Calculate total child tax credit
-        return count_eligible * rate
+        # return count_eligible * rate
+        return count_eligible
