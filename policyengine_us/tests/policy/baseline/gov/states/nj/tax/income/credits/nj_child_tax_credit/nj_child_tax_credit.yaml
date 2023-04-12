@@ -15,10 +15,10 @@
     tax_units:
       tax_unit:
         filing_status: JOINT
+        nj_taxable_income: 20_000
         members: [person1, person2, person3]
     households:
       household:
-        nj_taxable_income: 20_000
         members: [person1, person2, person3]
         state_code: NJ
   output:
@@ -41,10 +41,10 @@
     tax_units:
       tax_unit:
         filing_status: JOINT
+        nj_taxable_income: 35_000
         members: [person1, person2, person3]
     households:
       household:
-        nj_taxable_income: 35_000
         members: [person1, person2, person3]
         state_code: NJ
   output:
@@ -70,10 +70,10 @@
     tax_units:
       tax_unit:
         filing_status: JOINT
+        nj_taxable_income: 20_000
         members: [person1, person2, person3, person4]
     households:
       household:
-        nj_taxable_income: 20_000
         members: [person1, person2, person3, person4]
         state_code: NJ
   output:
@@ -96,10 +96,10 @@
     tax_units:
       tax_unit:
         filing_status: SEPARATE
+        nj_taxable_income: 20_000
         members: [person1, person2, person3]
     households:
       household:
-        nj_taxable_income: 20_000
         members: [person1, person2, person3]
         state_code: NJ
   output:
