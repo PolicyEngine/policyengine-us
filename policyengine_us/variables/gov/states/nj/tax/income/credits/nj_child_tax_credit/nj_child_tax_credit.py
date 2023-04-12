@@ -25,7 +25,9 @@ class nj_child_tax_credit(Variable):
         meets_age_limit = person("age", period) < p.ineligible_age
         eligible = meets_age_limit & person("is_tax_unit_dependent", period)
         count_eligible = tax_unit.sum(eligible)
+        
+        # Get joint filers
+        is_joint = tax_unit("tax_unit_is_joint", period)
 
         # Calculate total child tax credit
-        # return count_eligible * rate
-        return count_eligible
+        return count_eligible * is_joint

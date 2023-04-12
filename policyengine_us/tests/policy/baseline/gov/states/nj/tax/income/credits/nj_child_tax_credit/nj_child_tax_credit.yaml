@@ -156,3 +156,29 @@
         state_code: NJ
   output:
     nj_child_tax_credit: 3
+
+- name: Filler with 3 dependents under 6 gets 0 when filing separately
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 2
+        is_tax_unit_dependent: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        filing_status: SEPARATE
+        nj_taxable_income: 20_000
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_child_tax_credit: 0
