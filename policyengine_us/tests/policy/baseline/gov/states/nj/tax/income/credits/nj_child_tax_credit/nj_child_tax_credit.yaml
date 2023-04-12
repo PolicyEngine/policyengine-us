@@ -2,7 +2,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    filing_status: JOINT
     people:
       person1:
         age: 21
@@ -18,6 +17,7 @@
         members: [person1, person2, person3]
     households:
       household:
+        filing_status: JOINT
         nj_taxable_income: 20_000
         members: [person1, person2, person3]
         state_code: NJ
@@ -28,7 +28,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    filing_status: JOINT
     people:
       person1:
         age: 21
@@ -44,6 +43,7 @@
         members: [person1, person2, person3]
     households:
       household:
+        filing_status: JOINT
         nj_taxable_income: 35_000
         members: [person1, person2, person3]
         state_code: NJ
@@ -54,7 +54,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    filing_status: JOINT
     people:
       person1:
         age: 21
@@ -73,6 +72,7 @@
         members: [person1, person2, person3, person4]
     households:
       household:
+        filing_status: JOINT
         nj_taxable_income: 20_000
         members: [person1, person2, person3, person4]
         state_code: NJ
@@ -83,7 +83,6 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    filing_status: SEPARATE
     people:
       person1:
         age: 21
@@ -99,6 +98,7 @@
         members: [person1, person2, person3]
     households:
       household:
+        filing_status: SEPARATE
         nj_taxable_income: 20_000
         members: [person1, person2, person3]
         state_code: NJ

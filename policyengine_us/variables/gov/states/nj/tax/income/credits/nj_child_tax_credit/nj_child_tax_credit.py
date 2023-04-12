@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class nj_child_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
