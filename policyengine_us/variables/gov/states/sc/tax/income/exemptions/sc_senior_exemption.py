@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 
-
-class nj_senior_exemption(Variable):
+class sc_senior_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "South Carolina senior exemption"
@@ -30,5 +29,9 @@ class nj_senior_exemption(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
         spouse_eligible = ((age_spouse >= p.age_threshold) * joint).astype(int)
 
-        # Calculate total senior exemption.
+        # Get SC retirement income deduction and military retirement income deduction
+        retirement_income_deduction = tax_unit("sc_retirement_income_deduction", period)
+        military_retirement_income_deduction = tax_unit("sc_military_retirement_income_deduction", period)
+       
+        # Calculate total senior exemption. The exemption can not be less than 0. 
         return max((head_eligible + spouse_eligible) * p.amount - retirement_income_deduction - military_retirement_income_deduction,0)
