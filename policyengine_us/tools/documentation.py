@@ -70,9 +70,15 @@ def variation_chart(
     if additional_child_data is None:
         additional_child_data = {}
 
-    adult_template = dict(age=30, **additional_adult_data,)
+    adult_template = dict(
+        age=30,
+        **additional_adult_data,
+    )
 
-    child_template = dict(age=10, **additional_child_data,)
+    child_template = dict(
+        age=10,
+        **additional_child_data,
+    )
 
     for adults in [1, 2]:
         for children in child_count_list:
@@ -83,7 +89,9 @@ def variation_chart(
                 people[f"child_{i}"] = child_template
             situation = dict(
                 people=people,
-                household=dict(state_code=state,),
+                household=dict(
+                    state_code=state,
+                ),
                 axes=[[dict(name=axis, min=0, max=100_000, count=101)]],
             )
             sim = Simulation(situation=situation)
@@ -111,14 +119,17 @@ def variation_chart(
         facet_col_spacing=0.1,
         color_discrete_sequence=[LIGHTER_BLUE, LIGHT_BLUE, BLUE, DARK_BLUE],
     )
-    fig.update_xaxes(tickformat="$,.0f",)
+    fig.update_xaxes(
+        tickformat="$,.0f",
+    )
     max_data_value = max(df[system.variables[variable].label])
     # Round up to nearest value in same order of magnitude
     max_data_value = 10 ** (len(str(int(max_data_value))) - 1) * (
         1 + int(max_data_value / 10 ** (len(str(int(max_data_value))) - 1))
     )
     fig.update_yaxes(
-        tickformat="$,.0f", range=(y_axis_min, y_axis_max or max_data_value),
+        tickformat="$,.0f",
+        range=(y_axis_min, y_axis_max or max_data_value),
     )
 
     fig.layout.annotations[0].text = "Single"
