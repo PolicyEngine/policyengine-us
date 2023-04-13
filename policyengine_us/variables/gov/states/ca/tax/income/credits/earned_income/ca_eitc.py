@@ -6,7 +6,7 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
     simulation: Simulation = tax_unit.simulation
     if "ca_eitc" not in simulation.branches:
         branch = simulation.get_branch("ca_eitc")
-        branch.tax_benefit_system = branch.tax_benefit_system.clone()
+        original_eitc = parameters.gov.irs.credits.eitc.clone()
 
         # Change parameters.
 
@@ -92,6 +92,9 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                     )
 
         branch.tax_benefit_system.modify_parameters(modify_parameters)
+        simulation.tax_benefit_system.parameters.gov.irs.credits.eitc = (
+            original_eitc
+        )
         return branch
     else:
         return simulation.branches.get("ca_eitc")

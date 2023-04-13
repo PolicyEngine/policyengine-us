@@ -28,8 +28,8 @@ class ny_ctc(Variable):
             # Initialise pre-TCJA CTC branch and parameters.
             simulation = tax_unit.simulation
             pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
-            pre_tcja_ctc.tax_benefit_system = (
-                simulation.tax_benefit_system.clone()
+            original_ctc_parameters = (
+                simulation.tax_benefit_system.parameters.gov.irs.credits.ctc.clone()
             )
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
             # Update parameters to pre-TCJA values.
@@ -75,4 +75,7 @@ class ny_ctc(Variable):
         eligible_for_minimum = agi < federal_threshold
         applicable_minimum = eligible_for_minimum * minimum
         eligible = qualifying_children > 0
+        simulation.tax_benefit_system.parameters.gov.irs.credits.ctc = (
+            original_ctc_parameters
+        )
         return eligible * max_(applicable_minimum, federal_match)
