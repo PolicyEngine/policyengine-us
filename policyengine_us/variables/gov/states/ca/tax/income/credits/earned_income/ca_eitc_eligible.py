@@ -22,7 +22,9 @@ class ca_eitc_eligible(Variable):
             & ~is_dependent
         )
 
-        eitc_investment_income = tax_unit("eitc_relevant_investment_income", period)
+        eitc_investment_income = tax_unit(
+            "eitc_relevant_investment_income", period
+        )
 
         meets_investment_income_requirements = (
             eitc_investment_income <= p.eligibility.max_investment_income
