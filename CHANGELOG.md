@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.286.1] - 2023-04-13 16:18:46
+
+### Changed
+
+- CalEITC reimplemented without branching.
+
 ## [0.286.0] - 2023-04-13 02:15:59
 
 ### Added
@@ -3532,6 +3538,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.286.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.0...0.286.1
 [0.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.1...0.286.0
 [0.285.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.0...0.285.1
 [0.285.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.284.0...0.285.0
