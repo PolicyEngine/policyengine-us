@@ -1,0 +1,40 @@
+description: CT head of household income tax rate
+metadata:
+ threshold_unit: currency_USD
+ rate_unit: /1
+ threshold_period: year
+ type: marginal_rate
+ label: CT head of household income tax rate
+reference:
+   - title: The Code of Connecticut Chapter 229 Section 12-700
+     href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700
+
+brackets:
+ - threshold:
+     0000-01-01: 0
+   rate:
+     2022-01-01: 0.03
+ - threshold:
+     2022-01-01: 16000
+   rate:
+     2022-01-01: 0.05
+ - threshold:
+     2022-01-01: 80000
+   rate:
+     2022-01-01: 0.055
+ - threshold:
+     2022-01-01: 160000
+   rate:
+     2022-01-01: 0.06
+ - threshold:
+     2022-01-01: 320000
+   rate:
+     2022-01-01: 0.065
+ - threshold:
+     2022-01-01: 400000
+   rate:
+     2022-01-01: 0.069
+ - threshold:
+     2022-01-01: 800000
+   rate:
+     2022-01-01: 0.0699

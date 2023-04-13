@@ -1,0 +1,40 @@
+description: CT married pair joint income tax rate
+metadata:
+ threshold_unit: currency_USD
+ rate_unit: /1
+ threshold_period: year
+ type: marginal_rate
+ label: CT married pair joint income tax rate
+reference:
+   - title: The Code of Connecticut Chapter 229 Section 12-700
+     href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700
+brackets:
+ - threshold:
+     0000-01-01: 0
+   rate:
+     2022-01-01: 0.03
+ - threshold:
+     2022-01-01: 10000
+   rate:
+     2022-01-01: 0.05
+ - threshold:
+     2022-01-01: 50000
+   rate:
+     2022-01-01: 0.055
+ - threshold:
+     2022-01-01: 100000
+   rate:
+     2022-01-01: 0.06
+ - threshold:
+     2022-01-01: 200000
+   rate:
+     2022-01-01: 0.065
+ - threshold:
+     2022-01-01: 250000
+   rate:
+     2022-01-01: 0.069
+ - threshold:
+     2022-01-01: 500000
+   rate:
+     2022-01-01: 0.0699
+
