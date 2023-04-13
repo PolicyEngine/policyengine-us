@@ -14,9 +14,7 @@ class OutputDataset(Dataset):
 
     @staticmethod
     def from_dataset(
-        dataset: Type[Dataset],
-        year: int = None,
-        out_year: int = 2022,
+        dataset: Type[Dataset], year: int = None, out_year: int = 2022,
     ):
         class OutputDatasetFromDataset(OutputDataset):
             name = f"{dataset.name}"
@@ -31,9 +29,7 @@ class OutputDataset(Dataset):
     def generate(self):
         from policyengine_us import Microsimulation
 
-        sim = Microsimulation(
-            dataset=self.input_dataset(),
-        )
+        sim = Microsimulation(dataset=self.input_dataset(),)
 
         sim.default_calculation_period = self.output_year
 
@@ -83,9 +79,4 @@ class OutputDataset(Dataset):
             "household_id", map_to="person"
         ).values
 
-        self.save_dataset(
-            dict(
-                person=person,
-                household=household,
-            )
-        )
+        self.save_dataset(dict(person=person, household=household,))

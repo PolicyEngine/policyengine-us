@@ -67,12 +67,10 @@ def get_ca_eitc_branch(tax_unit, period, parameters):
                         period
                     )
                     eitc_max_amount = getattr(
-                        ca_eitc.earned_income_amount.brackets[ca_i],
-                        attribute,
+                        ca_eitc.earned_income_amount.brackets[ca_i], attribute,
                     )(period) * (phase_in_rate if attribute == "amount" else 1)
                     getattr(eitc.max.brackets[i], attribute).update(
-                        period=period,
-                        value=eitc_max_amount,
+                        period=period, value=eitc_max_amount,
                     )
                     # Phase-out start
                     getattr(
@@ -151,7 +149,5 @@ class ca_eitc(Variable):
         is_on_second_phase_out = earned_income >= second_phase_out_start
 
         return where(
-            is_on_second_phase_out,
-            eitc_along_second_phase_out,
-            amount,
+            is_on_second_phase_out, eitc_along_second_phase_out, amount,
         )

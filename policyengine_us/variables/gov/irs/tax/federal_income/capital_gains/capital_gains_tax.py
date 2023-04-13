@@ -13,8 +13,7 @@ class capital_gains_tax(Variable):
         net_cg = tax_unit("net_capital_gain", period)
         taxable_income = tax_unit("taxable_income", period)
         adjusted_net_cg = min_(
-            tax_unit("adjusted_net_capital_gain", period),
-            taxable_income,
+            tax_unit("adjusted_net_capital_gain", period), taxable_income,
         )  # ANCG is referred to in all cases as ANCG or taxable income if less.
 
         cg = parameters(period).gov.irs.capital_gains
@@ -50,8 +49,7 @@ class capital_gains_tax(Variable):
         )
 
         cg_in_third_bracket = max_(
-            adjusted_net_cg - cg_in_first_bracket - cg_in_second_bracket,
-            0,
+            adjusted_net_cg - cg_in_first_bracket - cg_in_second_bracket, 0,
         )
 
         main_cg_tax = (
@@ -67,16 +65,13 @@ class capital_gains_tax(Variable):
             tax_unit, period, ["qualified_dividend_income"]
         )
         max_taxable_unrecaptured_gain = min_(
-            unrecaptured_s_1250_gain,
-            max_(0, net_cg - qualified_dividends),
+            unrecaptured_s_1250_gain, max_(0, net_cg - qualified_dividends),
         )
         unrecaptured_gain_deduction = max_(
-            non_cg_taxable_income + net_cg - taxable_income,
-            0,
+            non_cg_taxable_income + net_cg - taxable_income, 0,
         )
         taxable_unrecaptured_gain = max_(
-            max_taxable_unrecaptured_gain - unrecaptured_gain_deduction,
-            0,
+            max_taxable_unrecaptured_gain - unrecaptured_gain_deduction, 0,
         )
 
         unrecaptured_gain_tax = (

@@ -36,15 +36,13 @@ class ma_part_b_taxable_income_deductions(Variable):
         bank_interest = add(tax_unit, period, ["taxable_interest_income"])
         filing_status = tax_unit("filing_status", period)
         bank_interest_deduction = min_(
-            tax.exemptions.interest[filing_status],
-            bank_interest,
+            tax.exemptions.interest[filing_status], bank_interest,
         )
         # (B)(a)(9): Rent deduction.
         rent = add(tax_unit, period, ["rent"])
         rent_deduction = tax.deductions.rent.share * rent
         rent_deduction = min_(
-            rent_deduction,
-            tax.deductions.rent.cap[filing_status],
+            rent_deduction, tax.deductions.rent.cap[filing_status],
         )
         # (B)(a)(13): Charitable contributions deduction.
         charitable_deduction = tax_unit("charitable_deduction", period)
