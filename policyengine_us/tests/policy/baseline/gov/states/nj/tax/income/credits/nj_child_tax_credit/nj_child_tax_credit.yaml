@@ -1,4 +1,4 @@
-- name: Filler with 2 dependents under 6 and taxable income under 30000 gets 1000 credit when not filing separately
+- name: Filer with 2 dependents under 6 and taxable income under 30000 gets 1000 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
@@ -24,7 +24,7 @@
   output:
     nj_child_tax_credit: 1_000
 
-- name: Filler with 3 dependents under 6 and taxable income between 30000 and 40000 gets 1200 credit when not filing separately
+- name: Filer with 3 dependents under 6 and taxable income between 30000 and 40000 gets 1200 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
@@ -53,7 +53,7 @@
   output:
     nj_child_tax_credit: 1_200
 
-- name: Filler with 3 dependents under 6 and taxable income between 40000 and 50000 gets 900 credit when not filing separately
+- name: Filer with 3 dependents under 6 and taxable income between 40000 and 50000 gets 900 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
@@ -82,7 +82,7 @@
   output:
     nj_child_tax_credit: 900
 
-- name: Filler with 4 dependents under 6 and taxable income between 50000 and 60000 gets 800 credit when not filing separately
+- name: Filer with 4 dependents under 6 and taxable income between 50000 and 60000 gets 800 credit when not filing separately
   period: 2022
   absolute_error_margin: 0
   input:
@@ -114,7 +114,7 @@
   output:
     nj_child_tax_credit: 800
 
-- name: Filler is not eligible for credit when filing separately
+- name: Filer is not eligible for credit when filing separately
   period: 2022
   absolute_error_margin: 0
   input:
