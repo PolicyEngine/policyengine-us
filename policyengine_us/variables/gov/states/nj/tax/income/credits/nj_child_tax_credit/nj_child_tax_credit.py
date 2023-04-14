@@ -23,12 +23,16 @@ class nj_child_tax_credit(Variable):
         # Get number of eligible children dependents
         person = tax_unit.members
         meets_age_limit = person("age", period) < p.ineligible_age
-        age_dependent_eligible = meets_age_limit & person("is_tax_unit_dependent", period)
+        age_dependent_eligible = meets_age_limit & person(
+            "is_tax_unit_dependent", period
+        )
         count_eligible = tax_unit.sum(age_dependent_eligible)
 
         # Get joint filers
         filing_status = tax_unit("filing_status", period)
-        filing_eligible = filing_status != filing_status.possible_values.SEPARATE
+        filing_eligible = (
+            filing_status != filing_status.possible_values.SEPARATE
+        )
 
         # Calculate total child tax credit
         return count_eligible * rate * filing_eligible
