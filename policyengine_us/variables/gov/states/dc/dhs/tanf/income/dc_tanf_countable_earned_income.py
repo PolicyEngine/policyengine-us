@@ -17,7 +17,8 @@ class dc_tanf_countable_earned_income(Variable):
         return where(
             enrolled,
             # For enrolled recipients, DC applies a flat and a percent deduction.
-            max_(gross_earnings - annual_flat_exclusion, 0) * (1 - p.percentage),
+            max_(gross_earnings - annual_flat_exclusion, 0)
+            * (1 - p.percentage),
             # For new applicants, DC applies only a flat deduction.
             max_(gross_earnings - annual_flat_exclusion, 0),
         )
