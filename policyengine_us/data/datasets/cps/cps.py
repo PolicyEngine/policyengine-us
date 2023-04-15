@@ -195,6 +195,9 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
 
     cps["has_marketplace_health_coverage"] = person.MRK == 1
 
+    cps["cps_race"] = person.PRDTRACE
+    cps["is_hispanic"] = person.PRDTHSP != 0
+
 
 def add_personal_income_variables(
     cps: h5py.File, person: DataFrame, year: int
