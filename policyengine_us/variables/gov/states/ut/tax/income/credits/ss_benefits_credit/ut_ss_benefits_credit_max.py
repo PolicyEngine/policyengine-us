@@ -21,8 +21,10 @@ class ut_ss_benefits_credit_max(Variable):
         total_income = tax_unit("ut_total_income", period)  # Line 2
         # Skip line 3 (muncipal bond interest)
         # Skip line 4 (subtract line 3 from line 2)
-        
-        tax_exempt_interest = add(tax_unit, period, ["tax_exempt_interest_income"]) # Line 5
+
+        tax_exempt_interest = add(
+            tax_unit, period, ["tax_exempt_interest_income"]
+        )  # Line 5
         modified_agi = total_income + tax_exempt_interest  # Line 6
         p = parameters(period).gov.states.ut.tax.income
         taxed_ss = taxable_social_security * p.rate  # Line 7

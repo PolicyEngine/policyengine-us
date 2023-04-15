@@ -14,16 +14,21 @@ class ut_at_home_parent_credit(Variable):
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
         p = parameters(period).gov.states.ut.tax.income.credits.at_home_parent
-        count_children = tax_unit.sum(
-            (age < p.max_child_age)
-            & is_dependent
-        )
+        count_children = tax_unit.sum((age < p.max_child_age) & is_dependent)
         parent_qualifies = (
-            person("employment_income", period) + person("self_employment_income", period)
+            person("employment_income", period)
+            + person("self_employment_income", period)
         ) < p.parent_max_earnings
         one_parent_qualifies = tax_unit.sum(parent_qualifies) > 0
-        tax_unit_qualifies = tax_unit("adjusted_gross_income", period) < p.max_agi
-        max_credit = p.amount * count_children * one_parent_qualifies * tax_unit_qualifies
+        tax_unit_qualifies = (
+            tax_unit("adjusted_gross_income", period) < p.max_agi
+        )
+        max_credit = (
+            p.amount
+            * count_children
+            * one_parent_qualifies
+            * tax_unit_qualifies
+        )
         if p.refundable:
             limiting_liability = (
                 tax_unit("ut_income_tax_before_credits", period)
@@ -34,4 +39,3 @@ class ut_at_home_parent_credit(Variable):
             )
             return min_(max_credit, limiting_liability)
         return max_credit
-
