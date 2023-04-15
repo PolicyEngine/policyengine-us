@@ -342,7 +342,7 @@ CPS_2022 = UpratedCPS.from_dataset(
     "cps_2022",
     "CPS 2022",
     STORAGE_FOLDER / "cps_2022.h5",
-    "https://api.github.com/repos/PolicyEngine/policyengine-us/releases/assets/100380304",
+    new_url="release://policyengine/policyengine-us/cps-2022/cps_2022.h5",
 )
 
 CPS_2023 = UpratedCPS.from_dataset(
@@ -351,5 +351,5 @@ CPS_2023 = UpratedCPS.from_dataset(
     "cps_2023",
     "CPS 2023",
     STORAGE_FOLDER / "cps_2023.h5",
-    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023_v0_263_5.h5",
+    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023.h5",
 )
