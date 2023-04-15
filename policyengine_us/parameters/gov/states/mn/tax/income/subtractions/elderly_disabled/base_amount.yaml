@@ -1,0 +1,23 @@
+description: Minnesota allows a subtraction from US AGI to get its taxable income that is available to tax units with elderly or disabled heads or spouses that met certain eligibility conditions with this variable being a base amount in the calculation of the subtraction amount.
+metadata:
+  label: Minnesota base amount in elderly/disabled subtraction calculations
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Minnesota Schedule M1R form and instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1R form and instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_22.pdf#page=1
+
+JOINT:
+  2021-01-01: 12_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 9_600 
+WIDOW:
+  2021-01-01: 9_600
+SINGLE:
+  2021-01-01: 9_600
+SEPARATE:
+  2021-01-01: 6_000

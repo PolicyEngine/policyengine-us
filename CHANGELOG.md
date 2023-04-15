@@ -5,6 +5,95 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.288.0] - 2023-04-15 01:06:27
+
+### Added
+
+- ME Child Care Credit, refundable and nonrefundable portion.
+
+## [0.287.0] - 2023-04-15 00:25:24
+
+### Added
+
+- Hawaii standard deduction.
+
+## [0.286.2] - 2023-04-14 10:05:46
+
+### Changed
+
+- CalEITC reimplemented without branching and without bug.
+
+## [0.286.1] - 2023-04-13 16:18:46
+
+### Changed
+
+- CalEITC reimplemented without branching.
+
+## [0.286.0] - 2023-04-13 02:15:59
+
+### Added
+
+- DC standard deduction.
+
+## [0.285.1] - 2023-04-11 19:35:40
+
+### Fixed
+
+- Subtraction error in EITC joint bonus.
+
+## [0.285.0] - 2023-04-11 04:46:52
+
+### Added
+
+- Oklahoma state income tax.
+
+## [0.284.0] - 2023-04-11 04:11:43
+
+### Added
+
+- New Jersey CDCC.
+
+## [0.283.0] - 2023-04-11 04:09:36
+
+### Added
+
+- Minnesota state income tax.
+
+## [0.282.0] - 2023-04-10 21:13:07
+
+### Added
+
+- Virginia military basic pay subtraction.
+
+## [0.281.1] - 2023-04-10 16:22:22
+
+### Added
+
+- Legislative reference for California mental health services tax.
+
+## [0.281.0] - 2023-04-10 03:21:40
+
+### Added
+
+- ME main income tax (before credits and supplemental tax)
+
+## [0.280.0] - 2023-04-08 04:35:49
+
+### Added
+
+- New Jersey taxable income.
+
+## [0.279.0] - 2023-04-07 16:22:50
+
+### Added
+
+- New York TANF resource limit.
+- New York TANF to general TANF variable.
+
+### Fixed
+
+- Multiply New York TANF flat earned income disregard by 12.
+
 ## [0.278.0] - 2023-04-06 18:22:11
 
 ### Added
@@ -3467,6 +3556,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.287.0...0.288.0
+[0.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.2...0.287.0
+[0.286.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.1...0.286.2
+[0.286.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.0...0.286.1
+[0.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.1...0.286.0
+[0.285.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.0...0.285.1
+[0.285.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.284.0...0.285.0
+[0.284.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.283.0...0.284.0
+[0.283.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.282.0...0.283.0
+[0.282.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.1...0.282.0
+[0.281.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.0...0.281.1
+[0.281.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.280.0...0.281.0
+[0.280.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.279.0...0.280.0
+[0.279.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.278.0...0.279.0
 [0.278.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.277.0...0.278.0
 [0.277.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.276.0...0.277.0
 [0.276.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.275.0...0.276.0
