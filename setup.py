@@ -11,7 +11,7 @@ setup(
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",
