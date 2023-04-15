@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.288.0] - 2023-04-15 01:06:27
+
+### Added
+
+- ME Child Care Credit, refundable and nonrefundable portion.
+
 ## [0.287.0] - 2023-04-15 00:25:24
 
 ### Added
@@ -3550,6 +3556,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.287.0...0.288.0
 [0.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.2...0.287.0
 [0.286.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.1...0.286.2
 [0.286.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.0...0.286.1
