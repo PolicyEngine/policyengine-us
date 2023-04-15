@@ -24,5 +24,5 @@ class dc_tanf_resources_eligible(Variable):
             p.higher_limit,
             p.lower_limit,
         )
-        countable_resources = spm_unit("dc_tanf_countable_resource", period)
+        countable_resources = spm_unit("dc_tanf_countable_resources", period)
         return countable_resources <= resource_limit
