@@ -7,10 +7,11 @@ class ut_income_tax(Variable):
     label = "Utah income tax"
     unit = USD
     definition_period = YEAR
-
-    def formula(tax_unit, period, parameters):
-        ut_income_tax_before_credits = tax_unit(
-            "ut_income_tax_before_credits", period
-        )
-        ut_taxpayer_credit = tax_unit("ut_taxpayer_credit", period)
-        return max_(ut_income_tax_before_credits - ut_taxpayer_credit, 0)
+    adds = ["ut_income_tax_before_credits"]
+    subtracts = [
+        "ut_taxpayer_credit",
+        "ut_eitc",
+        "ut_retirement_credit",
+        "ut_ss_benefits_credit",
+    ]
+    defined_for = StateCode.UT
