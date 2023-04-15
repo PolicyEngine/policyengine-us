@@ -9,4 +9,4 @@ class ut_total_dependents(Variable):
     documentation = "Form TC-40, line 2c"
     definition_period = YEAR
     defined_for = StateCode.UT
-    adds = ["ut_dependents_under_17", "ut_dependents_over_17"]
+    adds = ["tax_unit_count_dependents"]
