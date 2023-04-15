@@ -12,7 +12,7 @@
 - name: FTB instruction booklet reports that the maximum CalEITC of $1,843 applies to a filer with 1 child and earnings between $6,351 and $6,400.
   period: 2022
   # Booklet specifies in roughly $6 increments for 2-child filers.
-  absolute_error_margin: 10
+  absolute_error_margin: 6
   input:
     state_code: CA
     eitc_child_count: 1
@@ -54,7 +54,7 @@
     ca_is_qualifying_child_for_caleitc: [false, true]
 
 - name: California tax unit with only wage income and three children
-  absolute_error_margin: 80
+  absolute_error_margin: 2
   period: 2021
   input:
     people:

@@ -24,13 +24,16 @@ class ca_eitc(Variable):
         phased_in_amount = phase_in_income * phase_in_rate
 
         phase_out_min_income = p.phase_out.start.calc(child_count)
-        phase_out_rate = p.phase_out.rate.calc(child_count)
+        phase_out_rate = (
+            p.phase_out.rate.calc(child_count) * p.adjustment.factor
+        )
 
         phase_out_income = max_(0, earned_income - phase_out_min_income)
 
         second_phase_out_start_eitc = p.phase_out.final.start.calc(
             child_count
-        )  # Expressed as the EITC amount at which the second phase-out starts, not the income level.
+        )  # Expressed as the EITC amount at which the second phase-out starts,
+        # not the income level.
 
         maximum_eitc = phase_in_max_income * phase_in_rate
         eitc_fall_by_first_phase_out = (
