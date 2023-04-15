@@ -118,7 +118,7 @@ fig.show()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mIndexError[0m                                Traceback (most recent call last)
+[0;31mValueError[0m                                Traceback (most recent call last)
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:261[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
 [1;32m    260[0m [38;5;28;01mtry[39;00m:
 [0;32m--> 261[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m[43mvar[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
@@ -563,31 +563,29 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     57[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(key, numpy[38;5;241m.[39mndarray):
 [0;32m---> 58[0m     [38;5;28;01mreturn[39;00m [43mparameters[49m[38;5;241;43m.[39;49m[43mVectorialParameterNodeAtInstant[49m[38;5;241;43m.[39;49m[43mbuild_from_node[49m[43m([49m
 [1;32m     59[0m [43m        [49m[38;5;28;43mself[39;49m
-[1;32m     60[0m [43m    [49m[43m)[49m[key]
+[1;32m     60[0m [43m    [49m[43m)[49m[43m[[49m[43mkey[49m[43m][49m
 [1;32m     61[0m [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39m_children[key]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:25[0m, in [0;36mVectorialParameterNodeAtInstant.build_from_node[0;34m(node)[0m
-[1;32m     21[0m [38;5;129m@staticmethod[39m
-[1;32m     22[0m [38;5;28;01mdef[39;00m [38;5;21mbuild_from_node[39m(
-[1;32m     23[0m     node: [38;5;124m"[39m[38;5;124mParameterNode[39m[38;5;124m"[39m,
-[1;32m     24[0m ) [38;5;241m-[39m[38;5;241m>[39m [38;5;124m"[39m[38;5;124mVectorialParameterNodeAtInstant[39m[38;5;124m"[39m:
-[0;32m---> 25[0m     [43mVectorialParameterNodeAtInstant[49m[38;5;241;43m.[39;49m[43mcheck_node_vectorisable[49m[43m([49m[43mnode[49m[43m)[49m
-[1;32m     26[0m     subnodes_name [38;5;241m=[39m node[38;5;241m.[39m_children[38;5;241m.[39mkeys()
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:216[0m, in [0;36mVectorialParameterNodeAtInstant.__getitem__[0;34m(self, key)[0m
+[1;32m    212[0m names [38;5;241m=[39m [38;5;28mlist[39m(
+[1;32m    213[0m     [38;5;28mself[39m[38;5;241m.[39mdtype[38;5;241m.[39mnames
+[1;32m    214[0m )  [38;5;66;03m# Get all the names of the subnodes, e.g. ['zone_1', 'zone_2'][39;00m
+[1;32m    215[0m default [38;5;241m=[39m numpy[38;5;241m.[39mfull_like(
+[0;32m--> 216[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mvector[49m[43m[[49m[43mkey[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m][49m, numpy[38;5;241m.[39mnan
+[1;32m    217[0m )  [38;5;66;03m# In case of unexpected key, we will set the corresponding value to NaN.[39;00m
+[1;32m    218[0m conditions [38;5;241m=[39m [key [38;5;241m==[39m name [38;5;28;01mfor[39;00m name [38;5;129;01min[39;00m names]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:172[0m, in [0;36mVectorialParameterNodeAtInstant.check_node_vectorisable[0;34m(node)[0m
-[1;32m    170[0m         raise_not_implemented(first_name, [38;5;28mtype[39m(first_node)[38;5;241m.[39m[38;5;18m__name__[39m)
-[0;32m--> 172[0m [43mcheck_nodes_homogeneous[49m[43m([49m[43mextract_named_children[49m[43m([49m[43mnode[49m[43m)[49m[43m)[49m
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/numpy/core/records.py:510[0m, in [0;36mrecarray.__getitem__[0;34m(self, indx)[0m
+[1;32m    509[0m [38;5;28;01mdef[39;00m [38;5;21m__getitem__[39m([38;5;28mself[39m, indx):
+[0;32m--> 510[0m     obj [38;5;241m=[39m [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__getitem__[39;49m[43m([49m[43mindx[49m[43m)[49m
+[1;32m    512[0m     [38;5;66;03m# copy behavior of getattr, except that here[39;00m
+[1;32m    513[0m     [38;5;66;03m# we might also be returning a single element[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:130[0m, in [0;36mVectorialParameterNodeAtInstant.check_node_vectorisable.<locals>.check_nodes_homogeneous[0;34m(named_nodes)[0m
-[1;32m    129[0m nodes [38;5;241m=[39m [38;5;28mlist[39m(named_nodes[38;5;241m.[39mvalues())
-[0;32m--> 130[0m first_node [38;5;241m=[39m [43mnodes[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m
-[1;32m    131[0m first_name [38;5;241m=[39m names[[38;5;241m0[39m]
-
-[0;31mIndexError[0m: list index out of range
+[0;31mValueError[0m: no field of name SINGLE
 
 During handling of the above exception, another exception occurred:
 
-[0;31mIndexError[0m                                Traceback (most recent call last)
+[0;31mValueError[0m                                Traceback (most recent call last)
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:264[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
 [1;32m    263[0m [38;5;28;01mtry[39;00m:
 [0;32m--> 264[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msim[49m[38;5;241;43m.[39;49m[43mcalculate_add[49m[43m([49m[43mvar[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
@@ -1054,31 +1052,29 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     57[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(key, numpy[38;5;241m.[39mndarray):
 [0;32m---> 58[0m     [38;5;28;01mreturn[39;00m [43mparameters[49m[38;5;241;43m.[39;49m[43mVectorialParameterNodeAtInstant[49m[38;5;241;43m.[39;49m[43mbuild_from_node[49m[43m([49m
 [1;32m     59[0m [43m        [49m[38;5;28;43mself[39;49m
-[1;32m     60[0m [43m    [49m[43m)[49m[key]
+[1;32m     60[0m [43m    [49m[43m)[49m[43m[[49m[43mkey[49m[43m][49m
 [1;32m     61[0m [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39m_children[key]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:25[0m, in [0;36mVectorialParameterNodeAtInstant.build_from_node[0;34m(node)[0m
-[1;32m     21[0m [38;5;129m@staticmethod[39m
-[1;32m     22[0m [38;5;28;01mdef[39;00m [38;5;21mbuild_from_node[39m(
-[1;32m     23[0m     node: [38;5;124m"[39m[38;5;124mParameterNode[39m[38;5;124m"[39m,
-[1;32m     24[0m ) [38;5;241m-[39m[38;5;241m>[39m [38;5;124m"[39m[38;5;124mVectorialParameterNodeAtInstant[39m[38;5;124m"[39m:
-[0;32m---> 25[0m     [43mVectorialParameterNodeAtInstant[49m[38;5;241;43m.[39;49m[43mcheck_node_vectorisable[49m[43m([49m[43mnode[49m[43m)[49m
-[1;32m     26[0m     subnodes_name [38;5;241m=[39m node[38;5;241m.[39m_children[38;5;241m.[39mkeys()
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:216[0m, in [0;36mVectorialParameterNodeAtInstant.__getitem__[0;34m(self, key)[0m
+[1;32m    212[0m names [38;5;241m=[39m [38;5;28mlist[39m(
+[1;32m    213[0m     [38;5;28mself[39m[38;5;241m.[39mdtype[38;5;241m.[39mnames
+[1;32m    214[0m )  [38;5;66;03m# Get all the names of the subnodes, e.g. ['zone_1', 'zone_2'][39;00m
+[1;32m    215[0m default [38;5;241m=[39m numpy[38;5;241m.[39mfull_like(
+[0;32m--> 216[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mvector[49m[43m[[49m[43mkey[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m][49m, numpy[38;5;241m.[39mnan
+[1;32m    217[0m )  [38;5;66;03m# In case of unexpected key, we will set the corresponding value to NaN.[39;00m
+[1;32m    218[0m conditions [38;5;241m=[39m [key [38;5;241m==[39m name [38;5;28;01mfor[39;00m name [38;5;129;01min[39;00m names]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:172[0m, in [0;36mVectorialParameterNodeAtInstant.check_node_vectorisable[0;34m(node)[0m
-[1;32m    170[0m         raise_not_implemented(first_name, [38;5;28mtype[39m(first_node)[38;5;241m.[39m[38;5;18m__name__[39m)
-[0;32m--> 172[0m [43mcheck_nodes_homogeneous[49m[43m([49m[43mextract_named_children[49m[43m([49m[43mnode[49m[43m)[49m[43m)[49m
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/numpy/core/records.py:510[0m, in [0;36mrecarray.__getitem__[0;34m(self, indx)[0m
+[1;32m    509[0m [38;5;28;01mdef[39;00m [38;5;21m__getitem__[39m([38;5;28mself[39m, indx):
+[0;32m--> 510[0m     obj [38;5;241m=[39m [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__getitem__[39;49m[43m([49m[43mindx[49m[43m)[49m
+[1;32m    512[0m     [38;5;66;03m# copy behavior of getattr, except that here[39;00m
+[1;32m    513[0m     [38;5;66;03m# we might also be returning a single element[39;00m
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:130[0m, in [0;36mVectorialParameterNodeAtInstant.check_node_vectorisable.<locals>.check_nodes_homogeneous[0;34m(named_nodes)[0m
-[1;32m    129[0m nodes [38;5;241m=[39m [38;5;28mlist[39m(named_nodes[38;5;241m.[39mvalues())
-[0;32m--> 130[0m first_node [38;5;241m=[39m [43mnodes[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m
-[1;32m    131[0m first_name [38;5;241m=[39m names[[38;5;241m0[39m]
-
-[0;31mIndexError[0m: list index out of range
+[0;31mValueError[0m: no field of name SINGLE
 
 During handling of the above exception, another exception occurred:
 
-[0;31mIndexError[0m                                Traceback (most recent call last)
+[0;31mValueError[0m                                Traceback (most recent call last)
 Cell [0;32mIn[4], line 66[0m
 [1;32m     64[0m     [38;5;28;01mfor[39;00m children [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m0[39m, [38;5;241m4[39m):
 [1;32m     65[0m         [38;5;28;01mfor[39;00m year [38;5;129;01min[39;00m [[38;5;241m2020[39m, [38;5;241m2021[39m, [38;5;241m2022[39m]:
@@ -1795,30 +1791,27 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     57[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(key, numpy[38;5;241m.[39mndarray):
 [0;32m---> 58[0m         [38;5;28;01mreturn[39;00m [43mparameters[49m[38;5;241;43m.[39;49m[43mVectorialParameterNodeAtInstant[49m[38;5;241;43m.[39;49m[43mbuild_from_node[49m[43m([49m
 [1;32m     59[0m [43m            [49m[38;5;28;43mself[39;49m
-[1;32m     60[0m [43m        [49m[43m)[49m[key]
+[1;32m     60[0m [43m        [49m[43m)[49m[43m[[49m[43mkey[49m[43m][49m
 [1;32m     61[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39m_children[key]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:25[0m, in [0;36mVectorialParameterNodeAtInstant.build_from_node[0;34m(node)[0m
-[1;32m     21[0m [38;5;129m@staticmethod[39m
-[1;32m     22[0m [38;5;28;01mdef[39;00m [38;5;21mbuild_from_node[39m(
-[1;32m     23[0m     node: [38;5;124m"[39m[38;5;124mParameterNode[39m[38;5;124m"[39m,
-[1;32m     24[0m ) [38;5;241m-[39m[38;5;241m>[39m [38;5;124m"[39m[38;5;124mVectorialParameterNodeAtInstant[39m[38;5;124m"[39m:
-[0;32m---> 25[0m     [43mVectorialParameterNodeAtInstant[49m[38;5;241;43m.[39;49m[43mcheck_node_vectorisable[49m[43m([49m[43mnode[49m[43m)[49m
-[1;32m     26[0m     subnodes_name [38;5;241m=[39m node[38;5;241m.[39m_children[38;5;241m.[39mkeys()
-[1;32m     27[0m     [38;5;66;03m# Recursively vectorize the children of the node[39;00m
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:216[0m, in [0;36mVectorialParameterNodeAtInstant.__getitem__[0;34m(self, key)[0m
+[1;32m    211[0m         key [38;5;241m=[39m key[38;5;241m.[39mastype([38;5;124m"[39m[38;5;124mstr[39m[38;5;124m"[39m)
+[1;32m    212[0m names [38;5;241m=[39m [38;5;28mlist[39m(
+[1;32m    213[0m     [38;5;28mself[39m[38;5;241m.[39mdtype[38;5;241m.[39mnames
+[1;32m    214[0m )  [38;5;66;03m# Get all the names of the subnodes, e.g. ['zone_1', 'zone_2'][39;00m
+[1;32m    215[0m default [38;5;241m=[39m numpy[38;5;241m.[39mfull_like(
+[0;32m--> 216[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mvector[49m[43m[[49m[43mkey[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m[43m][49m, numpy[38;5;241m.[39mnan
+[1;32m    217[0m )  [38;5;66;03m# In case of unexpected key, we will set the corresponding value to NaN.[39;00m
+[1;32m    218[0m conditions [38;5;241m=[39m [key [38;5;241m==[39m name [38;5;28;01mfor[39;00m name [38;5;129;01min[39;00m names]
+[1;32m    219[0m values [38;5;241m=[39m [[38;5;28mself[39m[38;5;241m.[39mvector[name] [38;5;28;01mfor[39;00m name [38;5;129;01min[39;00m names]
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:172[0m, in [0;36mVectorialParameterNodeAtInstant.check_node_vectorisable[0;34m(node)[0m
-[1;32m    169[0m     [38;5;28;01melse[39;00m:
-[1;32m    170[0m         raise_not_implemented(first_name, [38;5;28mtype[39m(first_node)[38;5;241m.[39m[38;5;18m__name__[39m)
-[0;32m--> 172[0m [43mcheck_nodes_homogeneous[49m[43m([49m[43mextract_named_children[49m[43m([49m[43mnode[49m[43m)[49m[43m)[49m
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/numpy/core/records.py:510[0m, in [0;36mrecarray.__getitem__[0;34m(self, indx)[0m
+[1;32m    509[0m [38;5;28;01mdef[39;00m [38;5;21m__getitem__[39m([38;5;28mself[39m, indx):
+[0;32m--> 510[0m     obj [38;5;241m=[39m [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__getitem__[39;49m[43m([49m[43mindx[49m[43m)[49m
+[1;32m    512[0m     [38;5;66;03m# copy behavior of getattr, except that here[39;00m
+[1;32m    513[0m     [38;5;66;03m# we might also be returning a single element[39;00m
+[1;32m    514[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(obj, ndarray):
 
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/parameters/vectorial_parameter_node_at_instant.py:130[0m, in [0;36mVectorialParameterNodeAtInstant.check_node_vectorisable.<locals>.check_nodes_homogeneous[0;34m(named_nodes)[0m
-[1;32m    128[0m names [38;5;241m=[39m [38;5;28mlist[39m(named_nodes[38;5;241m.[39mkeys())
-[1;32m    129[0m nodes [38;5;241m=[39m [38;5;28mlist[39m(named_nodes[38;5;241m.[39mvalues())
-[0;32m--> 130[0m first_node [38;5;241m=[39m [43mnodes[49m[43m[[49m[38;5;241;43m0[39;49m[43m][49m
-[1;32m    131[0m first_name [38;5;241m=[39m names[[38;5;241m0[39m]
-[1;32m    132[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(first_node, parameters[38;5;241m.[39mParameterNodeAtInstant):
-
-[0;31mIndexError[0m: list index out of range
-IndexError: list index out of range
+[0;31mValueError[0m: no field of name SINGLE
+ValueError: no field of name SINGLE
 
