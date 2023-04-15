@@ -14,4 +14,4 @@ class dc_tanf_countable_gross_unearned_income(Variable):
         # Sum unearned sources, plus child support disregard $150 received per month.
         gross_unearned = add(spm_unit, period, p.unearned)
         child_support = add(spm_unit, period, ["child_support_received"])
-        return gross_unearned + max_(child_support - 150 * 12, 0)
+        return gross_unearned + max_(child_support - 150 * MONTHS_IN_YEAR, 0)
