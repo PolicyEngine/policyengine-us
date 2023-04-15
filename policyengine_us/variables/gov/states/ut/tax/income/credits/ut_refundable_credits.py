@@ -1,12 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ut_total_income(Variable):
+class ut_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "UT total income"
+    label = "Utah refundable credits"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.UT
-
-    adds = ["adjusted_gross_income", "ut_additions_to_income"]
