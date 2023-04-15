@@ -21,8 +21,8 @@ class ut_retirement_credit(Variable):
         )
         if parameters(
             period
-        ).gov.states.ut.tax.income.credits.retirement_credit.refundable:
-            return min(
+        ).gov.states.ut.tax.income.credits.retirement.refundable:
+            return min_(
                 claims_retirement_credit * max_credit, limiting_liability
             )
         return claims_retirement_credit * max_credit

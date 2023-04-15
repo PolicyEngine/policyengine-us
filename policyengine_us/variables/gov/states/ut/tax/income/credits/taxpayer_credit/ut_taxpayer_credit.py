@@ -17,6 +17,6 @@ class ut_taxpayer_credit(Variable):
         limiting_liability = tax_unit("ut_income_tax_before_credits", period)
         if parameters(
             period
-        ).gov.states.ut.tax.income.credits.taxpayer_credit.refundable:
+        ).gov.states.ut.tax.income.credits.taxpayer.refundable:
             return min_(max_value, limiting_liability)
         return max_value

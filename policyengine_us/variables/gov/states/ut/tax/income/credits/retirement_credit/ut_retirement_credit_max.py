@@ -15,14 +15,14 @@ class ut_retirement_credit_max(Variable):
         This credit is an alternative to the social security benefits credit,
         but instead is based on a flat rate.
         """
-        p = parameters(period).gov.states.us.tax.income
-        p_credit = p.credits.retirement_credit
+        p = parameters(period).gov.states.ut.tax.income
+        p_credit = p.credits.retirement
         age = tax_unit.members("age", period)
         birth_year = -(age - period.start.year)
         meets_age_conditions = birth_year >= p_credit.birth_year
         max_value = p_credit.max * tax_unit.sum(meets_age_conditions)
         total_income = tax_unit("ut_total_income", period)
-        tax_exempt_interest = tax_unit("tax_exempt_interest_income", period)
+        tax_exempt_interest = add(tax_unit, period, ["tax_exempt_interest_income"])
         modified_agi = total_income + tax_exempt_interest
         filing_status = tax_unit("filing_status", period)
         phase_out_income = max_(
