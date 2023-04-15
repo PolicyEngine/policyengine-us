@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class dc_tanf_resource_eligible(Variable):
+class dc_tanf_resources_eligible(Variable):
     value_type = float
     entity = SPMUnit
     label = "DC TANF resources eligible"
