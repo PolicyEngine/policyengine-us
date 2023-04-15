@@ -1,0 +1,7 @@
+- name: OK use tax unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 100_000
+    state_code: OK
+  output:
+    ok_use_tax: 56

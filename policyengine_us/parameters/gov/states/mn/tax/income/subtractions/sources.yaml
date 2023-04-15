@@ -1,0 +1,16 @@
+description: Minnesota subtracts these variables from US AGI when computing its taxable income.
+values:
+  2021-01-01:
+    - mn_charity_subtraction
+    - mn_social_security_subtraction
+    - us_govt_interest
+    - mn_elderly_disabled_subtraction
+
+metadata:
+  unit: variable
+  label: MN subractions from US AGI
+  reference:
+  - title: 2021 MN Schedule M1M, Income Additions and Subtractions
+    href: https://www.taxformfinder.org/forms/2021/2021-minnesota-form-m1m.pdf
+  - title: 2022 MN Schedule M1M, Income Additions and Subtractions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1m_22.pdf

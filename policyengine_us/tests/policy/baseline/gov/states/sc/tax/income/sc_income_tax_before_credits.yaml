@@ -1,0 +1,34 @@
+- name: income in 1st tax bracket
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 2_800
+    state_code: SC
+  output:
+    # no tax before 3_200
+    sc_income_tax_before_credits: 0
+
+- name: income in 2nd tax bracket
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 12_000
+    state_code: SC
+  output:
+    # 12_000*0.03 - 96
+    # $96 is mechanically determined by the rate structure
+    # $3,200 * 3% = $96
+    sc_income_tax_before_credits: 264
+
+- name: income in 3rd tax bracket
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    sc_taxable_income: 20_800
+    state_code: SC
+  output:
+    # 20_800*0.065 - 658 = 694
+    # $694 is mechanically determined by the rate structure
+    # 6.5% * $20,800-(0% * $3,200 + (3% * ($16,040 - $3,200)) + 6.5% * ($20,800 - $16,040))
+    # $96 + 6.5% * ($16,040 - $3,200) = $96 + 6.5% * $12,840 = $96 + $834
+    sc_income_tax_before_credits: 694

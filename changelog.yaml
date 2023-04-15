@@ -2882,3 +2882,130 @@
     added:
     - New York TANF flat income disregard.
   date: 2023-04-04 14:04:35
+- bump: minor
+  changes:
+    added:
+    - New York TANF gross unearned income
+  date: 2023-04-04 14:16:28
+- bump: minor
+  changes:
+    added:
+    - Ohio AGI deductions
+  date: 2023-04-04 22:47:27
+- bump: minor
+  changes:
+    added:
+    - New York TANF demographic and income eligibility
+  date: 2023-04-05 03:08:10
+- bump: minor
+  changes:
+    added:
+    - South Carolina income tax before credits.
+  date: 2023-04-05 16:25:35
+- bump: minor
+  changes:
+    added:
+    - Modify file name for earned income
+  date: 2023-04-05 23:18:07
+- bump: minor
+  changes:
+    added:
+    - Arizona standard deduction.
+  date: 2023-04-06 18:22:11
+- bump: minor
+  changes:
+    added:
+    - New York TANF resource limit.
+    - New York TANF to general TANF variable.
+    fixed:
+    - Multiply New York TANF flat earned income disregard by 12.
+  date: 2023-04-07 16:22:50
+- bump: minor
+  changes:
+    added:
+    - New Jersey taxable income.
+  date: 2023-04-08 04:35:49
+- bump: minor
+  changes:
+    added:
+    - ME main income tax (before credits and supplemental tax)
+  date: 2023-04-10 03:21:40
+- bump: patch
+  changes:
+    added:
+    - Legislative reference for California mental health services tax.
+  date: 2023-04-10 16:22:22
+- bump: minor
+  changes:
+    added:
+    - Virginia military basic pay subtraction.
+  date: 2023-04-10 21:13:07
+- bump: minor
+  changes:
+    added:
+    - Minnesota state income tax.
+  date: 2023-04-11 04:09:36
+- bump: minor
+  changes:
+    added:
+    - New Jersey CDCC.
+  date: 2023-04-11 04:11:43
+- bump: minor
+  changes:
+    added:
+    - Oklahoma state income tax.
+  date: 2023-04-11 04:46:52
+- bump: patch
+  changes:
+    fixed:
+    - Subtraction error in EITC joint bonus.
+  date: 2023-04-11 19:35:40
+- bump: minor
+  changes:
+    added:
+    - DC standard deduction.
+  date: 2023-04-13 02:15:59
+- bump: patch
+  changes:
+    changed:
+    - CalEITC reimplemented without branching.
+  date: 2023-04-13 16:18:46
+- bump: patch
+  changes:
+    changed:
+    - CalEITC reimplemented without branching and without bug.
+  date: 2023-04-14 10:05:46
+- bump: minor
+  changes:
+    added:
+    - Hawaii standard deduction.
+  date: 2023-04-15 00:25:24
+- bump: minor
+  changes:
+    added:
+    - ME Child Care Credit, refundable and nonrefundable portion.
+  date: 2023-04-15 01:06:27
+- bump: minor
+  changes:
+    added:
+    - Washington TANF resource limit.
+  date: 2023-04-15 03:01:12
+- bump: minor
+  changes:
+    added:
+    - Utah State income tax.
+  date: 2023-04-15 09:31:34
+- bump: minor
+  changes:
+    added:
+    - CPS racial category.
+    - Top-level racial category (4 categories).
+  date: 2023-04-15 10:49:00
+- bump: minor
+  changes:
+    added:
+    - Utah SS Benefits Credit.
+    - Utah retirement credit.
+    - Utah EITC.
+    - Utah at-home parent credit.
+  date: 2023-04-15 18:19:59
