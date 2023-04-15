@@ -10,4 +10,3 @@ class me_itemized_deductions(Variable):
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_2_ff.pdf"
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5125.html"
     defined_for = StateCode.ME
-    default_value = 0
