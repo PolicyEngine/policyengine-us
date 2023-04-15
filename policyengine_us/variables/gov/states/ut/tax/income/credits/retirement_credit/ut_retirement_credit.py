@@ -19,7 +19,7 @@ class ut_retirement_credit(Variable):
             - tax_unit("ut_taxpayer_credit", period)
             - tax_unit("ut_eitc", period)
         )
-        if parameters(
+        if not parameters(
             period
         ).gov.states.ut.tax.income.credits.retirement.refundable:
             return min_(

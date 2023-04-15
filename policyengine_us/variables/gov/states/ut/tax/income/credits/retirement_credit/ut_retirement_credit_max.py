@@ -19,7 +19,7 @@ class ut_retirement_credit_max(Variable):
         p_credit = p.credits.retirement
         age = tax_unit.members("age", period)
         birth_year = -(age - period.start.year)
-        meets_age_conditions = birth_year >= p_credit.birth_year
+        meets_age_conditions = birth_year < p_credit.birth_year
         max_value = p_credit.max * tax_unit.sum(meets_age_conditions)
         total_income = tax_unit("ut_total_income", period)
         tax_exempt_interest = add(tax_unit, period, ["tax_exempt_interest_income"])

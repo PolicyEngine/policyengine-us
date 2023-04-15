@@ -19,7 +19,7 @@ class ut_ss_benefits_credit(Variable):
             - tax_unit("ut_taxpayer_credit", period)
             - tax_unit("ut_eitc", period)
         )
-        if parameters(
+        if not parameters(
             period
         ).gov.states.ut.tax.income.credits.ss_benefits.refundable:
             return min_(
