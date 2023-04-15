@@ -1,0 +1,23 @@
+- name: IA taxable income unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    ia_net_income: 20_000
+    ia_basic_deduction: 8_000
+    ia_fedtax_deduction: 0
+    ia_qbi_deduction: 0
+    state_code: IA
+  output:
+    ia_taxable_income: 12_000
+
+- name: IA taxable income unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    ia_net_income: 12_000
+    ia_basic_deduction: 9_000
+    ia_fedtax_deduction: 0
+    ia_qbi_deduction: 4_000
+    state_code: IA
+  output:
+    ia_taxable_income: 0
