@@ -214,6 +214,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../pa/tax.html">Pennsylvania</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../ut/ut_income_tax.html">Utah State income tax</a></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../../wa/index.html">Washington</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../wa/tax/income/credits/working-families-tax-credit.html">Washington Working Families Tax Credit</a></li>
 </ul>
@@ -385,9 +386,9 @@ It also has other exemptions, deductions, and credits, including a partial feder
 <span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:43,</span> in <span class="ni">state_income_tax.formula</span><span class="nt">(tax_unit, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">43</span>     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">state_income_tax</span><span class="o">.</span><span class="n">adds</span><span class="p">)</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:44,</span> in <span class="ni">state_income_tax.formula</span><span class="nt">(tax_unit, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">44</span>     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">state_income_tax</span><span class="o">.</span><span class="n">adds</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223,</span> in <span class="ni">add</span><span class="nt">(entity, period, variables, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">209</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Sums a list of variables.</span>
@@ -862,7 +863,7 @@ It also has other exemptions, deductions, and credits, including a partial feder
 <span class="g g-Whitespace">     </span><span class="mi">63</span>         <span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="p">)</span>
 
-<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
 
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
@@ -909,9 +910,9 @@ It also has other exemptions, deductions, and credits, including a partial feder
 <span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:43,</span> in <span class="ni">state_income_tax.formula</span><span class="nt">(tax_unit, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">43</span>     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">state_income_tax</span><span class="o">.</span><span class="n">adds</span><span class="p">)</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:44,</span> in <span class="ni">state_income_tax.formula</span><span class="nt">(tax_unit, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">44</span>     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">state_income_tax</span><span class="o">.</span><span class="n">adds</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223,</span> in <span class="ni">add</span><span class="nt">(entity, period, variables, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">209</span><span class="w"> </span><span class="sd">&quot;&quot;&quot;Sums a list of variables.</span>
@@ -1386,7 +1387,7 @@ It also has other exemptions, deductions, and credits, including a partial feder
 <span class="g g-Whitespace">     </span><span class="mi">63</span>         <span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="p">)</span>
 
-<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
 
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
@@ -1467,14 +1468,14 @@ It also has other exemptions, deductions, and credits, including a partial feder
 <span class="ne">--&gt; </span><span class="mi">734</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">formula</span><span class="p">(</span><span class="n">population</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">parameters_at</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">736</span> <span class="k">return</span> <span class="n">array</span>
 
-<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:43,</span> in <span class="ni">state_income_tax.formula</span><span class="nt">(tax_unit, period, parameters)</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span>     <span class="k">return</span> <span class="n">where</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">38</span>         <span class="n">total_tax_unit_heads</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="n">spm_unit_state_tax</span> <span class="o">/</span> <span class="n">total_tax_unit_heads</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">40</span>         <span class="mi">0</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span>     <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">42</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">43</span>     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">state_income_tax</span><span class="o">.</span><span class="n">adds</span><span class="p">)</span>
+<span class="nn">File ~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/tax/income/state_income_tax.py:44,</span> in <span class="ni">state_income_tax.formula</span><span class="nt">(tax_unit, period, parameters)</span>
+<span class="g g-Whitespace">     </span><span class="mi">38</span>     <span class="k">return</span> <span class="n">where</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>         <span class="n">total_tax_unit_heads</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>         <span class="n">spm_unit_state_tax</span> <span class="o">/</span> <span class="n">total_tax_unit_heads</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span>         <span class="mi">0</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">42</span>     <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">43</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">44</span>     <span class="k">return</span> <span class="n">add</span><span class="p">(</span><span class="n">tax_unit</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">state_income_tax</span><span class="o">.</span><span class="n">adds</span><span class="p">)</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223,</span> in <span class="ni">add</span><span class="nt">(entity, period, variables, options)</span>
 <span class="g g-Whitespace">    </span><span class="mi">203</span> <span class="k">def</span> <span class="nf">add</span><span class="p">(</span>
@@ -2173,7 +2174,7 @@ It also has other exemptions, deductions, and credits, including a partial feder
 <span class="g g-Whitespace">     </span><span class="mi">63</span>             <span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>         <span class="p">)</span>
 
-<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+<span class="ne">ValueError</span>: Input [0. 0. 0. ... 0. 0. 0.] is not a valid value for the entity marital_unit (size = 3002 != 3003 = count)
 </pre></div>
 </div>
 </div>
