@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.289.0] - 2023-04-15 03:01:12
+
+### Added
+
+- Washington TANF resource limit.
+
+## [0.288.0] - 2023-04-15 01:06:27
+
+### Added
+
+- ME Child Care Credit, refundable and nonrefundable portion.
+
+## [0.287.0] - 2023-04-15 00:25:24
+
+### Added
+
+- Hawaii standard deduction.
+
+## [0.286.2] - 2023-04-14 10:05:46
+
+### Changed
+
+- CalEITC reimplemented without branching and without bug.
+
 ## [0.286.1] - 2023-04-13 16:18:46
 
 ### Changed
@@ -3538,6 +3562,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.289.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.288.0...0.289.0
+[0.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.287.0...0.288.0
+[0.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.2...0.287.0
+[0.286.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.1...0.286.2
 [0.286.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.0...0.286.1
 [0.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.1...0.286.0
 [0.285.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.0...0.285.1
