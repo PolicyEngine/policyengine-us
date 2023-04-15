@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.292.0] - 2023-04-15 18:19:59
+
+### Added
+
+- Utah SS Benefits Credit.
+- Utah retirement credit.
+- Utah EITC.
+- Utah at-home parent credit.
+
 ## [0.291.0] - 2023-04-15 10:49:00
 
 ### Added
@@ -3575,6 +3584,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.291.0...0.292.0
 [0.291.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.290.0...0.291.0
 [0.290.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.289.0...0.290.0
 [0.289.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.288.0...0.289.0

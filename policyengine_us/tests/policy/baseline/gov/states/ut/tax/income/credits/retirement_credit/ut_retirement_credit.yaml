@@ -1,0 +1,47 @@
+- name: UT retirement credit unit test 1
+  period: 2022
+  input:
+    ut_claims_retirement_credit: true
+    ut_retirement_credit_max: 450
+    ut_income_tax_before_credits: 700
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_retirement_credit: 450
+
+- name: UT retirement credit unit test 2
+  period: 2022
+  input:
+    ut_claims_retirement_credit: false
+    ut_retirement_credit_max: 450
+    ut_income_tax_before_credits: 700
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_retirement_credit: 0  # tax unit does not claim retirement credit
+
+- name: UT retirement credit unit test 3
+  period: 2022
+  input:
+    ut_claims_retirement_credit: true
+    ut_retirement_credit_max: 450
+    ut_income_tax_before_credits: 400
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_retirement_credit: 250  # limited by remaining tax liability
+
+- name: UT retirement credit unit test 4
+  period: 2022
+  input:
+    ut_claims_retirement_credit: true
+    ut_retirement_credit_max: 0
+    ut_income_tax_before_credits: 700
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_retirement_credit: 0  # max credit is 0
