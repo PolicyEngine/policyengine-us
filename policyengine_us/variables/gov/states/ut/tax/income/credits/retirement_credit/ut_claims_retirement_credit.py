@@ -11,6 +11,6 @@ class ut_claims_retirement_credit(Variable):
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
-        max_retiement_credit = tax_unit("ut_retirement_credit_max", period)
+        max_retirement_credit = tax_unit("ut_retirement_credit_max", period)
         max_ss_benefits_credit = tax_unit("ut_ss_benefits_credit_max", period)
-        return max_retiement_credit >= max_ss_benefits_credit
+        return max_retirement_credit >= max_ss_benefits_credit
