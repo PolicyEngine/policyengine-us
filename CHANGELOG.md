@@ -3596,8 +3596,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-<<<<<<< HEAD
-=======
 [0.293.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.0...0.293.1
 [0.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.292.0...0.293.0
 [0.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.291.0...0.292.0
@@ -3606,7 +3604,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [0.289.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.288.0...0.289.0
 [0.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.287.0...0.288.0
 [0.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.2...0.287.0
->>>>>>> efffde32d32fb93ccfb45552c4d804fc71fc21ec
 [0.286.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.1...0.286.2
 [0.286.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.0...0.286.1
 [0.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.1...0.286.0
