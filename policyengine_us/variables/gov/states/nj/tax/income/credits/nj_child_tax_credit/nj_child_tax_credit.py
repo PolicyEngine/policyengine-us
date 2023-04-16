@@ -28,7 +28,7 @@ class nj_child_tax_credit(Variable):
         )
         count_eligible = tax_unit.sum(age_dependent_eligible)
 
-        # Get joint filers
+        # Exclude married filing separately filers.
         filing_status = tax_unit("filing_status", period)
         filing_eligible = (
             filing_status != filing_status.possible_values.SEPARATE
