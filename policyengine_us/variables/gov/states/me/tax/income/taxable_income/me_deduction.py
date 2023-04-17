@@ -18,13 +18,13 @@ class me_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Get overall deduction part of parameters tree
-        p = parameters(period).gov.states.me.tax.income.deductions.overall
+        p = parameters(period).gov.states.me.tax.income.deductions.phase_out
 
         # Calculate the deduction phase-out parameters based on
         # filing status.
-        phaseout_start = p.phaseout.start[filing_status]
+        phaseout_start = p.start[filing_status]
         excess = max_(me_agi - phaseout_start, 0)  # Line 3
-        phaseout_width = p.phaseout.width[filing_status]  # Line 4
+        phaseout_width = p.width[filing_status]  # Line 4
         phaseout_percent = min_(1, excess / phaseout_width)  # Line 5
 
         # Get their deduction prior to phaseout. Max of itemized and standard (Line 6)
