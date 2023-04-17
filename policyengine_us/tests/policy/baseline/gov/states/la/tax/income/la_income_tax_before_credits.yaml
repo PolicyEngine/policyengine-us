@@ -16,7 +16,7 @@
     state_code: LA
   output:
     # 12_500*0.0185+(40_000-12_500)*0.0315=1097.5
-    la_income_tax_before_credits: 1097.5
+    la_income_tax_before_credits: 1_097.5
 
 - name: income in 3rd tax bracket
   period: 2022
@@ -26,4 +26,4 @@
     state_code: LA
   output:
     #12_500*0.0185+(50_000-12_500)*0.0315+(60_000-50_000)*0.0425=1837.5
-    la_income_tax_before_credits: 1837.5
+    la_income_tax_before_credits: 1_837.5
