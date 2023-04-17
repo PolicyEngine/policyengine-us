@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.294.0] - 2023-04-16 23:56:05
+
+### Added
+
+- NJ child tax credit.
+
+## [0.293.1] - 2023-04-16 15:33:21
+
+### Changed
+
+- Fixed README.md display on PyPI.
+
+## [0.293.0] - 2023-04-16 10:06:18
+
+### Fixed
+
+- Removed a microdata test that was failing due to download requirements.
+
 ## [0.292.0] - 2023-04-15 18:19:59
 
 ### Added
@@ -3584,6 +3602,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.1...0.294.0
+[0.293.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.0...0.293.1
+[0.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.292.0...0.293.0
 [0.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.291.0...0.292.0
 [0.291.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.290.0...0.291.0
 [0.290.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.289.0...0.290.0
