@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.295.0] - 2023-04-17 15:44:00
+
+### Added
+
+- Maine standard, itemized, and overall deduction.
+
 ## [0.294.0] - 2023-04-16 23:56:05
 
 ### Added
@@ -3602,6 +3608,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.294.0...0.295.0
 [0.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.1...0.294.0
 [0.293.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.0...0.293.1
 [0.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.292.0...0.293.0
