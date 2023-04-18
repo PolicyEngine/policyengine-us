@@ -19,5 +19,5 @@ class dc_tanf_countable_income(Variable):
         return (
             max_(gross_earnings - annual_flat_exclusion, 0)
             * (1 - p.percentage)
-            + gross_unearnings
+            + gross_unearned_income
         )
