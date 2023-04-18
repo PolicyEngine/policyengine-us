@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_tanf_grant_standard(Variable):
     value_type = float
     entity = SPMUnit
-    label = "DC TANF grand standard"
+    label = "DC TANF grant standard"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DC
