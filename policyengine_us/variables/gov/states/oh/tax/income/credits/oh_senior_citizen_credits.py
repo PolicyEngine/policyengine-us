@@ -9,7 +9,6 @@ class oh_senior_citizen_credits(Variable):
     definition_period = YEAR
     reference = (
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20",
-        "https://codes.ohio.gov/ohio-revised-code/section-5747.055",
     )
     defined_for = StateCode.OH
 
@@ -29,11 +28,11 @@ class oh_senior_citizen_credits(Variable):
         )
 
         age = person("age", period)
-        any_over_65 = sum(age > age_threshold) >= 1
+        any_elderly = tax_unit.any(age >= age_threshold)
         agi = tax_unit("oh_agi", period)
         under_agi_cap = agi < agi_cap
         return (
-            any_over_65
+            any_elderly
             * under_agi_cap
             * credit_amount
             * has_not_taken_lump_sum_distribution

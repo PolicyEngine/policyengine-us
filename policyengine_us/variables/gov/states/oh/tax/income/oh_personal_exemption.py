@@ -12,15 +12,19 @@ class oh_personal_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        #test for this three
-        is_dependent = person("is_tax_unit_dependent", period)#should we create a variable for this in person file? tmr ask nick
-        is_tax_unit_head = person("is_tax_unit_head", period) #the variable 'is_tax_unit_head' is defined for 'people', change this to person just for now
+        is_dependent = person("is_tax_unit_dependent", period)
+        is_tax_unit_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
+        eligible_spouse = tax_unit.sum(is_spouse & ~is_dependent)
+        eligible_head = tax_unit.sum(is_tax_unit_head & ~is_dependent)
         agi = tax_unit("oh_agi", period)
-        num_of_dependents = tax_unit.sum(is_dependent)
-        personal_exemption_amount = parameters(
-            period
-        ).gov.states.oh.tax.income.oh_personal_exemption.calc(agi)
+        num_of_dependents = tax_unit("tax_unit_dependents", period)
+        p = parameters(period).gov.states.oh.tax.income
+        personal_exemption_amount = p.exemption.personal.calc(agi)
+        # print(personal_exemption_amount)
+        # print(eligible_spouse)
+        # print(eligible_head)
+        # print(num_of_dependents)
         return (
-            num_of_dependents + (is_spouse & ~is_dependent) + (is_tax_unit_head & ~is_dependent)
+            num_of_dependents + eligible_spouse + eligible_head
         ) * personal_exemption_amount

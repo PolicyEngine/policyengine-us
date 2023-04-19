@@ -1,22 +1,35 @@
+# - name: Ohio personal exemption test
+#   absolute_error_margin: 0.01
+#   period: 2021
+#   input:
+#     people:
+#       person1: 
+#         is_tax_unit_dependent: false
+#         is_tax_unit_head: true
+#         is_tax_unit_spouse: false
+#       person2:
+#         is_tax_unit_dependent: false
+#         is_tax_unit_head: false
+#         is_tax_unit_spouse: true
+#     tax_units:
+#       tax_unit:
+#         oh_agi: 90_000
+#         members: [person1,person2]
+#     households:
+#       household:
+#         members: [person1,person2]
+#         state_code: OH
+#   output: 
+#     oh_personal_exemption: [1_900,1_900]
 - name: Ohio personal exemption test
   absolute_error_margin: 0.01
   period: 2021
   input:
-    people:
-      person1: 
-        is_dependent: false
-        is_tax_unit_head: true
-        is_spouse: false
-      person2:
-        is_dependent: false
-        is_tax_unit_head: false
-        is_spouse: true
-    tax_units:
-      tax_unit:
-        oh_agi: 90_000
-        members: [person1,person2]
-    households:
-      household:
-        members: [person1,person2]
-        state_code: OH
-  output: 3_800
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tax_unit_dependents: 50
+    is_tax_unit_dependent: false
+    oh_agi: 90_000
+    state_code: OH
+  output:
+    oh_personal_exemption: 3_800
