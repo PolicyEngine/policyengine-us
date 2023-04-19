@@ -1,0 +1,28 @@
+description: New Jersey limits its TANF program to households with up to this income level, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 9)
+  label: New Jersey TANF monthly income limit
+  reference:
+    - title: New Jersey State Plan and Executive Certification | Administration of the Block Grant for Temporary Assistance for Needy Families
+      href: https://casetext.com/regulation/new-jersey-administrative-code/title-10-human-services/chapter-90-work-first-new-jersey-program/subchapter-3-financial-eligibility-income-resources-benefits/section-1090-33-wfnjtanf-initial-allowable-maximum-income-and-maximum-benefit-payment-levels-schedules-i-and-ii
+
+1: 
+  2023-01-01: 321
+2: 
+  2023-01-01: 638
+3: 
+  2023-01-01: 839
+4: 
+  2023-01-01: 966
+5: 
+  2023-01-01: 1_092
+6: 
+  2023-01-01: 1_221
+7:
+  2023-10-01: 1_341
+8:
+  2023-10-01: 1_442
