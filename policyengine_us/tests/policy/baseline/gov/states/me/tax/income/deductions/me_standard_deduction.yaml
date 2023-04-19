@@ -1,0 +1,39 @@
+- name: Maine standard deduction given Single status
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    me_agi: 80_000
+    state_code: ME
+    filing_status: SINGLE
+  output:
+    me_standard_deduction: 12_950
+
+- name: Outside Maine, no Maine deductions
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_deduction: 0
+
+- name: Maine deduction given Head of Household status
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    me_agi: 300_000
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    me_standard_deduction: 19_400
+
+- name: Maine deduction given Head of Widow status
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    me_agi: 200_000
+    state_code: ME
+    filing_status: WIDOW
+  output:
+    me_standard_deduction: 25_900
+  
