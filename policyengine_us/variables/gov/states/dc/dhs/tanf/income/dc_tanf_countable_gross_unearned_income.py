@@ -17,6 +17,7 @@ class dc_tanf_countable_gross_unearned_income(Variable):
         monthly_child_support_deduction = (
             p.unearned_deduction.monthly_child_support
         )
-        return gross_unearned + max_(
+        child_support_after_deduction = max_(
             child_support - monthly_child_support_deduction * MONTHS_IN_YEAR, 0
         )
+        return gross_unearned + child_support_after_deduction

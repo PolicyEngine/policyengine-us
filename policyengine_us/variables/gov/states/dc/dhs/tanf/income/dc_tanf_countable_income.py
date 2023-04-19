@@ -16,8 +16,7 @@ class dc_tanf_countable_income(Variable):
         )
         p = parameters(period).gov.states.dc.dhs.tanf.income.earned_deduction
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
-        return (
-            max_(gross_earnings - annual_flat_exclusion, 0)
-            * (1 - p.percentage)
-            + gross_unearned_income
-        )
+        earnings_after_deduction = max_(
+            gross_earnings - annual_flat_exclusion, 0
+        ) * (1 - p.percentage)
+        return earnings_after_deduction + gross_unearned_income
