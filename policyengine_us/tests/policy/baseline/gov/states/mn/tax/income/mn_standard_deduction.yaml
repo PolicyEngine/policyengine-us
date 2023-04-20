@@ -1,0 +1,44 @@
+- name: MN standard deduction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    adjusted_gross_income: 100_000
+    state_code: MN
+  output:
+    mn_standard_deduction: 12_525
+
+- name: MN standard deduction unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 2
+    adjusted_gross_income: 100_000
+    state_code: MN
+  output:
+    mn_standard_deduction: 16_300
+
+- name: MN standard deduction unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 3
+    adjusted_gross_income: 306_050
+    state_code: MN
+  output:
+    mn_standard_deduction: 29_850 - 0.03 * (306_050 - 206_050)
+
+- name: MN standard deduction unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 0
+    adjusted_gross_income: 1_000_000
+    state_code: MN
+  output:
+    mn_standard_deduction: 18_800 - 0.80 * 18_800
+

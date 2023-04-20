@@ -1,0 +1,17 @@
+- name: MN income tax before refundable credits unit test 1
+  period: 2021
+  input:
+    mn_income_tax_before_credits: 900
+    mn_nonrefundable_credits: 100
+    state_code: MN
+  output:
+    mn_income_tax_before_refundable_credits: 800
+
+- name: MN income tax before refundable credits unit test 2
+  period: 2021
+  input:
+    mn_income_tax_before_credits: 600
+    mn_nonrefundable_credits: 700
+    state_code: MN
+  output:
+    mn_income_tax_before_refundable_credits: 0
