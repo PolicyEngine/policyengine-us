@@ -1,0 +1,19 @@
+description: Maryland TANF counts these income sources as unearned income.
+values:
+  2022-11-01:
+    - investment_income
+    - pension_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    - ssi
+metadata:
+  unit: list
+  reference:
+    title: CODE OF COLORADO REGULATIONS 9 CCR 2503-6 | Income Maintenance (Volume 3) | 3.605.3
+    href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=45
