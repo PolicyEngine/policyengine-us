@@ -1,0 +1,134 @@
+- name: ME AGI subtraction amount unit test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        social_security: 20_000
+        pension_income: 1_000
+        me_military_retirement_pay_subtractions: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        social_security: 20_000
+        pension_income: 1_000
+        me_military_retirement_pay_subtractions: 0
+      person3:
+        social_security: 0 
+        pension_income: 0
+        me_military_retirement_pay_subtractions: 0
+      person4:
+        social_security: 0
+        pension_income: 0
+        me_military_retirement_pay_subtractions: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        me_other_subtractions: 1_000
+        taxable_social_security: 1_000
+        us_govt_interest: 1_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    state_code: ME
+  output:
+    me_agi_subtractions: 6_000  
+
+name: ME AGI subtraction amount unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        social_security: 20_000
+        pension_income: 1_000
+        me_military_retirement_pay_subtractions: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        social_security: 20_000
+        pension_income: 6_000
+        me_military_retirement_pay_subtractions: 0
+      person3:
+        social_security: 0
+        pension_income: 0
+        me_military_retirement_pay_subtractions: 0
+      person4:
+        social_security: 0
+        pension_income: 0
+        me_military_retirement_pay_subtractions: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        me_other_subtractions: 1_000
+        taxable_social_security: 1_000
+        us_govt_interest: 1_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    state_code: ME
+  output:
+    me_agi_subtractions: 10_000   
+
+name: ME AGI subtraction amount unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        social_security: 20_000
+        pension_income: 1_000
+        me_military_retirement_pay_subtractions: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        social_security: 20_000
+        pension_income: 6_000
+        me_military_retirement_pay_subtractions: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        me_other_subtractions: 1_000
+        taxable_social_security: 1_000
+        us_govt_interest: 1_000
+    households:
+      household:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    state_code: ME
+  output:
+    me_agi_subtractions: 10_000    
+
+name: ME AGI subtraction amount unit test 4
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        social_security: 20_000
+        pension_income: 1_000
+        me_military_retirement_pay_subtractions: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        me_other_subtractions: 1_000
+        taxable_social_security: 1_000
+        us_govt_interest: 1_000
+    households:
+      household:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    state_code: ME
+  output:
+    me_agi_subtractions: 5_000   
