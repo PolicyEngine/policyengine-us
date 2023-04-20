@@ -1,0 +1,122 @@
+- name: MN elderly/disabled subtraction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        is_permanently_and_totally_disabled: false
+        social_security: 0
+      person2:
+        age: 10
+        is_permanently_and_totally_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    mn_elderly_disabled_subtraction: 0
+
+- name: MN elderly/disabled subtraction unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        is_permanently_and_totally_disabled: false
+        social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+        is_permanently_and_totally_disabled: false
+        social_security: 0
+      person3:
+        age: 10
+        is_permanently_and_totally_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_elderly_disabled_subtraction: 12_000
+
+- name: MN elderly/disabled subtraction unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        is_permanently_and_totally_disabled: false
+        social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+        is_permanently_and_totally_disabled: true
+        social_security: 0
+      person3:
+        age: 10
+        is_permanently_and_totally_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 20_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_elderly_disabled_subtraction: 12_000 - 0.5 * (20_000 - 18_000)
+
+- name: MN elderly/disabled subtraction unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        is_permanently_and_totally_disabled: false
+        social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+        is_permanently_and_totally_disabled: true
+        social_security: 0
+      person3:
+        age: 10
+        is_permanently_and_totally_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 42_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MN
+  output:
+    mn_elderly_disabled_subtraction: 0  # = 12_000 - 0.5 * (42_000 - 18_000)

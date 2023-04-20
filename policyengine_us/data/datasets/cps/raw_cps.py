@@ -107,6 +107,8 @@ PERSON_COLUMNS = [
     "PEPAR2",
     "DIS_SC1",
     "DIS_SC2",
+    "PRDTRACE",
+    "PRDTHSP",
 ]
 
 
@@ -188,7 +190,6 @@ class RawCPS(Dataset):
                 storage["tax_unit"] = RawCPS._create_tax_unit_table(person)
                 storage["spm_unit"] = RawCPS._create_spm_unit_table(person)
         except Exception as e:
-            self.remove()
             raise ValueError(
                 f"Attempted to extract and save the CSV files, but encountered an error: {e} (removed the intermediate dataset)."
             )
