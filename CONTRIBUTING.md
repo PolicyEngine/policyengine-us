@@ -12,14 +12,14 @@ TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](htt
 2. From **GitHub Codespaces** (https://github.com/codespaces), click **New codespace**
 3. Select  **yourusername/policyengine-us** as the repository and all other defaults
 4. Create new codespace from blanck template
-5. In the terminal, type **conda create -n policyengine python=3.9 -y**
-6. In the terminal, type **conda init**
+5. In the terminal, type `conda create -n policyengine python=3.9 -y`
+6. In the terminal, type `conda init`
 7. Restart terminal (click the bin icon to delete the terminal, and start a new terminal from the menu on top)
-8. In the new terminal, type **conda activate policyengine**
-9. In the same terminal, type **make install**
+8. In the new terminal, type `conda activate policyengine`
+9. In the same terminal, type `make install`
 10. Check out the issue you want to work on
 >If no issue, create one at github.com/policyengine/policyengine-us, or from the GitHub extension in Codespaces <br>
-11. After making any changes, run **make test** in the temrinal to test
+11. After making any changes, run `make test` in the temrinal to test
 >This sometimes fails with **[Makefile:9: test] Killed** after a while
 >To run a specific test or folder of tests, run **policyengine-core test [path]**
 >Optionally with **-v** to get verbose output (the computation tree)
@@ -28,7 +28,7 @@ TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](htt
   1. Return to GitHub Codespaces
   2. Open the codespace you previously made
   3. Open terminal
-  4. Run **conda activate policyengine** in the temrinal
+  4. Run `conda activate policyengine` in the temrinal
     >> If this fails, it means your codespaces session has expired, you need to re-run step **5-7**
 
 **We recommend that new developers use GitHub Codespaces, but if you want to proceed with VS Code instead, see the instruction below:**
@@ -45,10 +45,10 @@ TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](htt
 3. Set git username and email
 4. Set git username and email
 > You can do so by typing the following command into the terminal:
->> a. **git config --global user.name "John Doe"**
->> b. **git config --global user.email johndoe@example.com**
+>> a. `git config --global user.name "John Doe"`
+>> b. `git config --global user.email johndoe@example.com`
 4. Install conda
->> **conda install python-3.9**
+>> `conda install python-3.9`
 5. Fork and clone country package you're working on:
 > a. github.com/policyengine/policyengine-us <br>
 > b. github.com/policyengine/policyengine-canada<br>
@@ -60,17 +60,17 @@ a. Install make
 >> ii. Open a new terminal in VS Code<br>
 >> iii. https://chocolatey.org/install<br>
 >> iv. Copy the command into the temrinal<br>
->> v. In terminal, run: **choco install make**<br>
+>> v. In terminal, run: `choco install make`<br>
 b. Run conda https://stackoverflow.com/a/67996662/1840471<br>
-7. Run **make install** from terminal in VS Code after opening **policyengine-us**
->>a. If you have multiple versions of Python installed, you may need to run **python3 -m pip install - e**
+7. Run `make install` from terminal in VS Code after opening **policyengine-us**
+>>a. If you have multiple versions of Python installed, you may need to run `python3 -m pip install - e`
 8. Change format on save for Python to black and set line length to 79
 9. If you don't have conda installed, you can try the following steps on **MAC**:
 >> 1. Install brew
->> 2. **brew install python**
->> 3. **pyenv init**
->> 4. **pyenv shell 3.9.16**
->> 5. **python -m venv venv**
+>> 2. `brew install python`
+>> 3. `pyenv init`
+>> 4. `pyenv shell 3.9.16`
+>> 5. `python -m venv venv`
 
 
 
