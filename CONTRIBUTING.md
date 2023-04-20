@@ -12,7 +12,7 @@ TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](htt
 2. From **GitHub Codespaces** (https://github.com/codespaces), click **New codespace**
 3. Select  **yourusername/policyengine-us** as the repository and all other defaults
 4. Create new codespace from blanck template
-5. In the terminal, type **conda create -n policyengine python=3.9 -y**
+5. In the terminal, type `conda create -n policyengine python=3.9 -y`
 6. In the terminal, type **conda init**
 7. Restart terminal (click the bin icon to delete the terminal, and start a new terminal from the menu on top)
 8. In the new terminal, type **conda activate policyengine**
