@@ -15,14 +15,13 @@ class nj_tanf_maximum_allowable_income(Variable):
         # Cap them at the maximum specified in the tables.
         capped_people = min_(people, 8).astype(int)
         # Calculate additional people beyond the maximum in tables.
-        additional_people = people - capped_people
-        
+        additional_people = people - capped_people   
         # Get the relevant part of the parameter tree.
-        p = parameters(period).gov.states.ny.otda.tanf.need_standard
-        # Look up the main need standard for the number of (capped) people.
+        p = parameters(period).gov.states.nj.njdhs.tanf.maximum_allowable_income
+        # Look up the main maximum allowable income for the number of (capped) people.
         base = p.main[capped_people]
-        # Add the additional need standard for the additional people.
-        additional_need_standard = p.additional * additional_people
-        monthly = base + additional_need_standard
+        # Add the additional maximum allowable income for the additional people.
+        additional_maximum_allowable_income = p.additional * additional_people
+        monthly = base + additional_maximum_allowable_income
         # Return annual value.
         return monthly * MONTHS_IN_YEAR

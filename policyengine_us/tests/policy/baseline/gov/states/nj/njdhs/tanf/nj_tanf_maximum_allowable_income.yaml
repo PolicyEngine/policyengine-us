@@ -1,10 +1,10 @@
-- name: If no children and one adult, New Jersey TANF maximum allowable income is $321/mo.
+- name: If no children and one adult, New Jersey TANF maximum allowable income is $243/mo.
   period: 2023
   input:
     state_code: NJ
     spm_unit_size: 1
   output:
-    nj_tanf_maximum_allowable_income: 321 * 12
+    nj_tanf_maximum_allowable_income: 243 * 12
 
 - name: If not eligible, we don't calculate it.
   period: 2023
@@ -14,10 +14,10 @@
   output:
     nj_tanf_maximum_allowable_income: 0
 
-- name: If 10 people, maximum allowable income is $1442 + 2 * $99 = $1640 per month.
+- name: If 10 people, maximum allowable income is $1092 + 2 * $75 = $1242 per month.
   period: 2023
   input:
     state_code: NJ
     spm_unit_size: 10
   output:
-    nj_tanf_maximum_allowable_income: 1640 * 12
+    nj_tanf_maximum_allowable_income: 1242 * 12
