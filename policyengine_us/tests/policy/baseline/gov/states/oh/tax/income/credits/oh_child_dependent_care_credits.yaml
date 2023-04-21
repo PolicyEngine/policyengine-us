@@ -1,0 +1,35 @@
+- name: child and dependent care credit test
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 19999
+    cdcc: 2000
+  output:
+    oh_child_dependent_care_credits: 2000
+
+- name: child and dependent care credit test
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 20000
+    cdcc: 2000
+  output:
+    oh_child_dependent_care_credits: 500
+
+- name: child and dependent care credit test
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 30000
+    cdcc: 2000
+  output:
+    oh_child_dependent_care_credits: 500
+
+- name: child and dependent care credit test
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 40000
+    cdcc: 2000
+  output:
+    oh_child_dependent_care_credits: 0

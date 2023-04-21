@@ -17,13 +17,13 @@ class oh_senior_citizen_credits(Variable):
         person = tax_unit.members
         age_threshold = parameters(
             period
-        ).gov.states.oh.tax.income.senior_citizen.age_threshold
+        ).gov.states.oh.tax.income.credits.senior_citizen.age_threshold
         agi_cap = parameters(
             period
-        ).gov.states.oh.tax.income.senior_citizen.agi_cap
+        ).gov.states.oh.tax.income.credits.senior_citizen.agi_cap
         credit_amount = parameters(
             period
-        ).gov.states.oh.tax.income.senior_citizen.credit_amount
+        ).gov.states.oh.tax.income.credits.senior_citizen.credit_amount
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
