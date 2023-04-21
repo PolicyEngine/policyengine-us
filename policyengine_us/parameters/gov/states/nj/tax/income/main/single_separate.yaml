@@ -1,0 +1,42 @@
+description: Progressive rate schedule for a single filer in New Jersey. 
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: New Jersey State income tax rates for single filers
+  reference:
+    - title: 2022 New Jersey Revised Statutes - Title 54A - New Jersey Gross Income Tax Act Section 54A:2-1 - Imposition of tax
+      href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-2-1/
+    - title: New Jersey 2022 Individual Income Tax Form 1040ME, Tax Table for individuals earning less than $100k
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=54
+    - title: New Jersey 2022 Individual Income Tax Form 1040ME, Tax Table for individuals earning more than or equal to $100k
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=63
+brackets:
+  - threshold:
+      2020-01-01: 0
+    rate:
+      2020-01-01: .014
+  - threshold:
+      2020-01-01: 20_000
+    rate:
+      2020-01-01: .0175
+  - threshold:
+      2020-01-01: 35_000
+    rate:
+      2020-01-01: .035
+  - threshold:
+      2020-01-01: 40_000
+    rate:
+      2020-01-01: .05525
+  - threshold:
+      2020-01-01: 75_000
+    rate:
+      2020-01-01: .0637
+  - threshold:
+      2020-01-01: 500_000
+    rate:
+      2020-01-01: .0897
+  - threshold:
+      2020-01-01: 1_000_000
+    rate:
+      2020-01-01: .1075
