@@ -1,0 +1,45 @@
+- name: Maine deduction given Single status, income of $80k means deduction won't be limited
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    me_agi: 80_000
+    state_code: ME
+    filing_status: SINGLE
+  output:
+    me_itemized_deductions: 0
+    me_standard_deduction: 12_950
+    me_deduction: 12_950
+
+- name: Outside Maine, no Maine deductions
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_deduction: 0
+
+- name: Maine deduction given Head of Household status, income of $300k means deduction will be fully phased out
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    me_agi: 300_000
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    me_itemized_deductions: 0
+    me_standard_deduction: 19_400
+    me_deduction: 0
+
+- name: Maine deduction given Head of Widow status, income of $200k means deduction will be partially phased out
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    me_agi: 200_000
+    state_code: ME
+    filing_status: WIDOW
+  output:
+    me_itemized_deductions: 0
+    me_standard_deduction: 25_900
+    me_deduction: 21_013.53
+  
