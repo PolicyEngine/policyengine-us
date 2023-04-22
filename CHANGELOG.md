@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.298.0] - 2023-04-22 00:43:40
+
+### Added
+
+- New Jersey TANF maximum allowable income.
+
+## [0.297.0] - 2023-04-21 15:52:35
+
+### Added
+
+- DC TANF to net income tree.
+- README files for new states.
+
 ## [0.296.0] - 2023-04-20 19:07:10
 
 ### Added
@@ -3620,6 +3633,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.298.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.297.0...0.298.0
+[0.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.296.0...0.297.0
 [0.296.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.295.1...0.296.0
 [0.295.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.295.0...0.295.1
 [0.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.294.0...0.295.0
