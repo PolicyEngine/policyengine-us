@@ -7,25 +7,28 @@
         social_security: 20_000
         pension_income: 1_000
         me_military_retirement_pay_subtractions: 1_000
+        taxable_social_security: 500
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
         pension_income: 1_000
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 500
       person3:
         social_security: 0 
         pension_income: 0
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 0
       person4:
         social_security: 0
         pension_income: 0
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
         filing_status: JOINT
         me_other_subtractions: 1_000
-        taxable_social_security: 1_000
         us_govt_interest: 1_000
     households:
       household:
@@ -46,25 +49,28 @@
         social_security: 20_000
         pension_income: 1_000
         me_military_retirement_pay_subtractions: 1_000
+        taxable_social_security: 500
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
         pension_income: 6_000
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 500
       person3:
         social_security: 0
         pension_income: 0
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 0
       person4:
         social_security: 0
         pension_income: 0
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
         filing_status: JOINT
         me_other_subtractions: 1_000
-        taxable_social_security: 1_000
         us_govt_interest: 1_000
     households:
       household:
@@ -85,17 +91,18 @@
         social_security: 20_000
         pension_income: 1_000
         me_military_retirement_pay_subtractions: 1_000
+        taxable_social_security: 500
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
         pension_income: 6_000
         me_military_retirement_pay_subtractions: 0
+        taxable_social_security: 500
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
         me_other_subtractions: 1_000
-        taxable_social_security: 1_000
         us_govt_interest: 1_000
     households:
       household:
@@ -116,12 +123,12 @@
         social_security: 20_000
         pension_income: 1_000
         me_military_retirement_pay_subtractions: 1_000
+        taxable_social_security: 1_000
     tax_units:
       tax_unit:
         members: [person1]
         filing_status: SINGLE
         me_other_subtractions: 1_000
-        taxable_social_security: 1_000
         us_govt_interest: 1_000
     households:
       household:
