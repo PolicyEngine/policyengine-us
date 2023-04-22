@@ -30,10 +30,10 @@
     households:
       household:
         members: [person1, person2, person3, person4]
+        state_code: ME
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-    state_code: ME
   output:
     me_agi_subtractions: 6_000  
 
@@ -69,10 +69,10 @@
     households:
       household:
         members: [person1, person2, person3, person4]
+        state_code: ME
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
-    state_code: ME
   output:
     me_agi_subtractions: 10_000   
 
@@ -100,10 +100,10 @@
     households:
       household:
         members: [person1, person2]
+        state_code: ME
     spm_units:
       spm_unit:
         members: [person1, person2]
-    state_code: ME
   output:
     me_agi_subtractions: 10_000    
 
@@ -126,9 +126,9 @@
     households:
       household:
         members: [person1]
+        state_code: ME
     spm_units:
       spm_unit:
         members: [person1]
-    state_code: ME
   output:
     me_agi_subtractions: 5_000   
