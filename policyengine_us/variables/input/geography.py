@@ -17,7 +17,7 @@ class state_name(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        fips = household("fips", period)
+        fips = household("state_fips", period)
         return (
             pd.Series(fips)
             .map(
