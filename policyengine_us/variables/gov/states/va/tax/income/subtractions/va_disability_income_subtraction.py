@@ -29,6 +29,4 @@ class va_disability_income_subtraction(Variable):
             "is_tax_unit_spouse", period
         )
         # Sum subtractable disability income for heads and spouses.
-        return tax_unit.sum(
-            subtractable_disability_income * is_head_or_spouse
-        )
+        return tax_unit.sum(subtractable_disability_income * is_head_or_spouse)
