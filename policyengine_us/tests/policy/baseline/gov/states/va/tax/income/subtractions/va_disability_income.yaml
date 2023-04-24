@@ -1,4 +1,4 @@
-name: VA disability income of amount less than $20,000, only person in tax unit
+- name: VA disability income of amount less than $20,000, only person in tax unit
   period: 2022
   input:
     people:
@@ -60,7 +60,7 @@ name: VA disability income of amount less than $20,000, only person in tax unit
     # 14,000+12,000 since dependent should not be added
     va_disability_benefits_subtraction: 26_000
 
-name: VA disability income of amount more than $20,000, only person in tax unit
+- name: VA disability income of amount more than $20,000, only person in tax unit
   period: 2022
   input:
     people:
@@ -78,7 +78,7 @@ name: VA disability income of amount more than $20,000, only person in tax unit
     # the maximum of allowable subtraction is $20,000
     va_disability_benefits_subtraction: 20_000
 
- name: VA disability income of amount more than $20,000 for both spouse and a dependent, less than $20,000 for head
+- name: VA disability income of amount more than $20,000 for both spouse and a dependent, less than $20,000 for head
   period: 2022
   input:
     people:
