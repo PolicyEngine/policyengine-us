@@ -16,6 +16,9 @@ class va_age_deduction(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         age_deduction_amount = 0
+
+        AFAGI = tax_unit(AFAGI, period)
+
         # calcualte the number of people eligble for age deduction in a household
         eligible_count = sum(
             where(age_head > 64, 1, 0) + where(age_spouse > 64, 1, 0)
