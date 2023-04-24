@@ -13,7 +13,7 @@
         members: [person1]
         state_code: VA
   output:
-    va_disability_benefits_subtraction: 15_000
+    va_disability_income_subtraction: 15_000
 
 - name: VA disability income of amount less than $20,000, both head and spouse eligible in tax unit
   period: 2022
@@ -34,7 +34,7 @@
         state_code: VA
   output:
     # 14,000+13,000
-    va_disability_benefits_subtraction: 27_000
+    va_disability_income_subtraction: 27_000
 
 - name: VA disability income of amount less than $20,000 for head and spouse and a dependent eligible in tax unit
   period: 2022
@@ -58,7 +58,7 @@
         state_code: VA
   output:
     # 14,000+12,000 since dependent should not be added
-    va_disability_benefits_subtraction: 26_000
+    va_disability_income_subtraction: 26_000
 
 - name: VA disability income of amount more than $20,000, only person in tax unit
   period: 2022
@@ -76,7 +76,7 @@
         state_code: VA
   output:
     # the maximum of allowable subtraction is $20,000
-    va_disability_benefits_subtraction: 20_000
+    va_disability_income_subtraction: 20_000
 
 - name: VA disability income of amount more than $20,000 for both spouse and a dependent, less than $20,000 for head
   period: 2022
@@ -100,5 +100,5 @@
         state_code: VA
   output:
     # $15,000 + $20,000(max) and ignore the dependent
-    va_disability_benefits_subtraction: 35_000
+    va_disability_income_subtraction: 35_000
 
