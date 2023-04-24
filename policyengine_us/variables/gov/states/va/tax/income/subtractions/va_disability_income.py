@@ -20,7 +20,7 @@ class va_disability_income_subtraction(Variable):
         # Compute subtractable disability income for head and spouse separately.
         disability_income = person("disability_benefits", period)
         # Subtraction phases in and then out dollar for dollar with respect to military pay, at a given threshold.
-        subtractable_disability_benefits= where(
+        subtractable_disability_benefits = where(
             disability_income < p.threshold,
             disability_income,
             p.threshold,
@@ -29,4 +29,6 @@ class va_disability_income_subtraction(Variable):
             "is_tax_unit_spouse", period
         )
         # Sum subtractable disability income for heads and spouses.
-        return tax_unit.sum(subtractable_disability_benefits * is_head_or_spouse)
+        return tax_unit.sum(
+            subtractable_disability_benefits * is_head_or_spouse
+        )
