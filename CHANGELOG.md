@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.300.0] - 2023-04-24 05:59:47
+
+### Added
+
+- Hawaii rate structure.
+
 ## [0.299.0] - 2023-04-22 05:13:27
 
 ### Added
@@ -3639,6 +3645,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.300.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.299.0...0.300.0
 [0.299.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.298.0...0.299.0
 [0.298.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.297.0...0.298.0
 [0.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.296.0...0.297.0
