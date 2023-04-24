@@ -1,0 +1,30 @@
+- name: "Is eligible for TANF due to children under 18"
+  period: 2022
+  input:
+    age: 17
+  output:
+    nj_is_person_demographic_tanf_eligible: true
+
+- name: "18-year-old out of school is not eligible for TANF"
+  period: 2022
+  input:
+    age: 18
+    is_full_time_student: false
+  output:
+    nj_is_person_demographic_tanf_eligible: false
+
+- name: "Is eligible for TANF due to being an 18-year-old in school"
+  period: 2022
+  input:
+    age: 18
+    is_full_time_student: true
+  output:
+    nj_is_person_demographic_tanf_eligible: true
+
+- name: "Is not eligible for TANF due to being an 19-year-old in school"
+  period: 2022
+  input:
+    age: 19
+    is_full_time_student: true
+  output:
+    nj_is_person_demographic_tanf_eligible: false
