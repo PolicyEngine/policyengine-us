@@ -15,53 +15,52 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-def make_ssi(social_security=0, vary="employment_income"):
+LABELS = dict(
+    employment_income="Monthly employment income",
+    dividend_income="Monthly dividend income",
+    monthly_income="Monthly income",
+    income_source="Income source",
+    monthly_tanf="Monthly TANF allotment",
+    mtr="Marginal tax rate from TANF?",
+    allotment="TANF allotment",
+    state_code="State",
+)
+
+
+def make_df(state_code, enrolled, vary_var):
     sim = IndividualSim(year=2022)
-    sim.add_person(name="parent", social_security=social_security)
-    sim.add_person(name="child1", age=10, is_ssi_disabled=True)
-    sim.add_person(name="child2", age=8, is_ssi_disabled=True)
-    sim.add_tax_unit(name="tax_unit", members=["parent", "child1", "child2"])
-    sim.vary(vary, max=72_000, step=120)
-    employment_income = sim.calc("employment_income")[0]
-    ssi = sim.calc("tax_unit_ssi")[0]
-    mtr = -sim.deriv("tax_unit_ssi", "employment_income", wrt_target="parent")
+    sim.add_person(name="adult", age=30)
+    sim.add_person(name="child", age=10)
+    sim.add_spm_unit(
+        name="spm_unit", members=["adult", "child"], is_tanf_enrolled=enrolled
+    )
+    sim.add_household(
+        name="household", members=["adult", "child"], state_code=state_code
+    )
+
+    sim.vary(vary_var, max=1500 * 12, step=120)
+
     return pd.DataFrame(
         dict(
-            employment_income=employment_income,
-            ssi=ssi,
-            mtr=mtr,
-            social_security=social_security,
+            monthly_income=sim.calc(vary_var)[0] / 12,
+            enrolled="Enrolled" if enrolled else "Not Enrolled",
+            state_code=state_code,
+            monthly_tanf=sim.calc("tanf")[0] / 12,
+            vary_var=vary_var,
+            # mtr=-sim.deriv("tanf", "employment_income"),
         )
     )
 
 
-# Compute for different values of Social Security income.
-l = []
-for ss in [0, 500 * 12]:
-    l.append(make_ssi(social_security=ss))
-
-df = pd.concat(l)
-
-# Make monthly.
-df[["employment_income", "ssi", "social_security"]] /= 12
-df.social_security = "$" + df.social_security.astype(int).astype(str)
-
 fig = px.line(
-    df,
-    "employment_income",
-    "ssi",
-    color="social_security",
+    make_df("IL", True, "employment_income"),
+    "monthly_income",
+    "monthly_tanf",
     labels=LABELS,
-    title="Supplemental Security Income for a single parent and two disabled children",
-    color_discrete_map=COLOR_MAP,
+    title="TANF allotment for a two-person household in Illinois",
 )
-fig.update_layout(
-    xaxis_tickformat="$,",
-    yaxis_tickformat="$,",
-    plot_bgcolor="white",
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
+
+fig.update_layout(xaxis_tickformat="$,", yaxis_tickformat="$,")
 fig.show()
 ------------------
 
@@ -71,6 +70,91 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    260[0m [38;5;28;01mtry[39;00m:
 [0;32m--> 261[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m[43mvar[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    262[0m [38;5;28;01mexcept[39;00m:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     20[0m [38;5;66;03m# First compute TANF for states with it defined in gov/hhs/tanf.[39;00m
+[1;32m     21[0m [38;5;66;03m# This is IL and CA.[39;00m
+[1;32m     22[0m [38;5;66;03m# (We will move these into gov/states)[39;00m
+[1;32m     23[0m [38;5;66;03m# Obtain eligibility.[39;00m
+[0;32m---> 24[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     25[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/eligibility/is_tanf_eligible.py:15[0m, in [0;36mis_tanf_eligible.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m demographic_eligible [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mis_demographic_tanf_eligible[39m[38;5;124m"[39m, period)
+[1;32m     13[0m economic_eligible [38;5;241m=[39m where(
+[1;32m     14[0m     spm_unit([38;5;124m"[39m[38;5;124mis_tanf_enrolled[39m[38;5;124m"[39m, period),
+[0;32m---> 15[0m     [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_continuous_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m,
+[1;32m     16[0m     spm_unit([38;5;124m"[39m[38;5;124mis_tanf_initial_eligible[39m[38;5;124m"[39m, period),
+[1;32m     17[0m )
+[1;32m     18[0m [38;5;28;01mreturn[39;00m demographic_eligible [38;5;241m&[39m economic_eligible
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/eligibility/continuous/is_tanf_continuous_eligible.py:13[0m, in [0;36mis_tanf_continuous_eligible.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m earned_income [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_gross_earned_income[39m[38;5;124m"[39m, period)
+[0;32m---> 13[0m unearned_income [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mtanf_gross_unearned_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     14[0m net_income [38;5;241m=[39m earned_income [38;5;241m+[39m unearned_income
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
 [1;32m    329[0m [38;5;28;01mtry[39;00m:
@@ -220,7 +304,19 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [2. 0. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1802 != 1803 = count)
+[0;31mValueError[0m: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 301 != 302 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -262,6 +358,91 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
 
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     20[0m [38;5;66;03m# First compute TANF for states with it defined in gov/hhs/tanf.[39;00m
+[1;32m     21[0m [38;5;66;03m# This is IL and CA.[39;00m
+[1;32m     22[0m [38;5;66;03m# (We will move these into gov/states)[39;00m
+[1;32m     23[0m [38;5;66;03m# Obtain eligibility.[39;00m
+[0;32m---> 24[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     25[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/eligibility/is_tanf_eligible.py:15[0m, in [0;36mis_tanf_eligible.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m demographic_eligible [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mis_demographic_tanf_eligible[39m[38;5;124m"[39m, period)
+[1;32m     13[0m economic_eligible [38;5;241m=[39m where(
+[1;32m     14[0m     spm_unit([38;5;124m"[39m[38;5;124mis_tanf_enrolled[39m[38;5;124m"[39m, period),
+[0;32m---> 15[0m     [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_continuous_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m,
+[1;32m     16[0m     spm_unit([38;5;124m"[39m[38;5;124mis_tanf_initial_eligible[39m[38;5;124m"[39m, period),
+[1;32m     17[0m )
+[1;32m     18[0m [38;5;28;01mreturn[39;00m demographic_eligible [38;5;241m&[39m economic_eligible
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/eligibility/continuous/is_tanf_continuous_eligible.py:13[0m, in [0;36mis_tanf_continuous_eligible.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m earned_income [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_gross_earned_income[39m[38;5;124m"[39m, period)
+[0;32m---> 13[0m unearned_income [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mtanf_gross_unearned_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     14[0m net_income [38;5;241m=[39m earned_income [38;5;241m+[39m unearned_income
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:697[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
 [1;32m    696[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
 [0;32m--> 697[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
@@ -400,29 +581,56 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [2. 0. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1802 != 1803 = count)
+[0;31mValueError[0m: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 301 != 302 = count)
 
 During handling of the above exception, another exception occurred:
 
 [0;31mValueError[0m                                Traceback (most recent call last)
-Cell [0;32mIn[3], line 24[0m
-[1;32m     22[0m l [38;5;241m=[39m []
-[1;32m     23[0m [38;5;28;01mfor[39;00m ss [38;5;129;01min[39;00m [[38;5;241m0[39m, [38;5;241m500[39m [38;5;241m*[39m [38;5;241m12[39m]:
-[0;32m---> 24[0m     l[38;5;241m.[39mappend([43mmake_ssi[49m[43m([49m[43msocial_security[49m[38;5;241;43m=[39;49m[43mss[49m[43m)[49m)
-[1;32m     26[0m df [38;5;241m=[39m pd[38;5;241m.[39mconcat(l)
-[1;32m     28[0m [38;5;66;03m# Make monthly.[39;00m
-
-Cell [0;32mIn[3], line 9[0m, in [0;36mmake_ssi[0;34m(social_security, vary)[0m
-[1;32m      7[0m sim[38;5;241m.[39mvary(vary, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m72_000[39m, step[38;5;241m=[39m[38;5;241m120[39m)
-[1;32m      8[0m employment_income [38;5;241m=[39m sim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m]
-[0;32m----> 9[0m ssi [38;5;241m=[39m [43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mtax_unit_ssi[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m]
-[1;32m     10[0m mtr [38;5;241m=[39m [38;5;241m-[39msim[38;5;241m.[39mderiv([38;5;124m"[39m[38;5;124mtax_unit_ssi[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, wrt_target[38;5;241m=[39m[38;5;124m"[39m[38;5;124mparent[39m[38;5;124m"[39m)
-[1;32m     11[0m [38;5;28;01mreturn[39;00m pd[38;5;241m.[39mDataFrame(
-[1;32m     12[0m     [38;5;28mdict[39m(
-[1;32m     13[0m         employment_income[38;5;241m=[39memployment_income,
+Cell [0;32mIn[2], line 39[0m
+[1;32m     24[0m     sim[38;5;241m.[39mvary(vary_var, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m1500[39m [38;5;241m*[39m [38;5;241m12[39m, step[38;5;241m=[39m[38;5;241m120[39m)
+[1;32m     26[0m     [38;5;28;01mreturn[39;00m pd[38;5;241m.[39mDataFrame(
+[1;32m     27[0m         [38;5;28mdict[39m(
+[1;32m     28[0m             monthly_income[38;5;241m=[39msim[38;5;241m.[39mcalc(vary_var)[[38;5;241m0[39m] [38;5;241m/[39m [38;5;241m12[39m,
 [0;32m   (...)[0m
-[1;32m     17[0m     )
-[1;32m     18[0m )
+[1;32m     34[0m         )
+[1;32m     35[0m     )
+[1;32m     38[0m fig [38;5;241m=[39m px[38;5;241m.[39mline(
+[0;32m---> 39[0m     [43mmake_df[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mIL[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43;01mTrue[39;49;00m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43memployment_income[39;49m[38;5;124;43m"[39;49m[43m)[49m,
+[1;32m     40[0m     [38;5;124m"[39m[38;5;124mmonthly_income[39m[38;5;124m"[39m,
+[1;32m     41[0m     [38;5;124m"[39m[38;5;124mmonthly_tanf[39m[38;5;124m"[39m,
+[1;32m     42[0m     labels[38;5;241m=[39mLABELS,
+[1;32m     43[0m     title[38;5;241m=[39m[38;5;124m"[39m[38;5;124mTANF allotment for a two-person household in Illinois[39m[38;5;124m"[39m,
+[1;32m     44[0m )
+[1;32m     46[0m fig[38;5;241m.[39mupdate_layout(xaxis_tickformat[38;5;241m=[39m[38;5;124m"[39m[38;5;124m$,[39m[38;5;124m"[39m, yaxis_tickformat[38;5;241m=[39m[38;5;124m"[39m[38;5;124m$,[39m[38;5;124m"[39m)
+[1;32m     47[0m fig[38;5;241m.[39mshow()
+
+Cell [0;32mIn[2], line 31[0m, in [0;36mmake_df[0;34m(state_code, enrolled, vary_var)[0m
+[1;32m     20[0m sim[38;5;241m.[39madd_household(
+[1;32m     21[0m     name[38;5;241m=[39m[38;5;124m"[39m[38;5;124mhousehold[39m[38;5;124m"[39m, members[38;5;241m=[39m[[38;5;124m"[39m[38;5;124madult[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mchild[39m[38;5;124m"[39m], state_code[38;5;241m=[39mstate_code
+[1;32m     22[0m )
+[1;32m     24[0m sim[38;5;241m.[39mvary(vary_var, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m1500[39m [38;5;241m*[39m [38;5;241m12[39m, step[38;5;241m=[39m[38;5;241m120[39m)
+[1;32m     26[0m [38;5;28;01mreturn[39;00m pd[38;5;241m.[39mDataFrame(
+[1;32m     27[0m     [38;5;28mdict[39m(
+[1;32m     28[0m         monthly_income[38;5;241m=[39msim[38;5;241m.[39mcalc(vary_var)[[38;5;241m0[39m] [38;5;241m/[39m [38;5;241m12[39m,
+[1;32m     29[0m         enrolled[38;5;241m=[39m[38;5;124m"[39m[38;5;124mEnrolled[39m[38;5;124m"[39m [38;5;28;01mif[39;00m enrolled [38;5;28;01melse[39;00m [38;5;124m"[39m[38;5;124mNot Enrolled[39m[38;5;124m"[39m,
+[1;32m     30[0m         state_code[38;5;241m=[39mstate_code,
+[0;32m---> 31[0m         monthly_tanf[38;5;241m=[39m[43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mtanf[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m] [38;5;241m/[39m [38;5;241m12[39m,
+[1;32m     32[0m         vary_var[38;5;241m=[39mvary_var,
+[1;32m     33[0m         [38;5;66;03m# mtr=-sim.deriv("tanf", "employment_income"),[39;00m
+[1;32m     34[0m     )
+[1;32m     35[0m )
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:266[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
 [1;32m    264[0m         result [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msim[38;5;241m.[39mcalculate_add(var, period)
@@ -445,6 +653,129 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m    651[0m         variable_name, period
 [1;32m    652[0m     )
 [1;32m    653[0m )
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
+[1;32m    326[0m     variable_name, period, [38;5;28mself[39m[38;5;241m.[39mbranch_name
+[1;32m    327[0m )
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+[1;32m    332[0m         result [38;5;241m=[39m result[38;5;241m.[39mdecode_to_str()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    489[0m [38;5;28;01mtry[39;00m:
+[1;32m    490[0m     [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m     array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m     [38;5;66;03m# If no result, use the default value and cache it[39;00m
+[1;32m    494[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    495[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    732[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/tanf.py:24[0m, in [0;36mtanf.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     19[0m     [38;5;28;01mreturn[39;00m tanf_reported
+[1;32m     20[0m [38;5;66;03m# First compute TANF for states with it defined in gov/hhs/tanf.[39;00m
+[1;32m     21[0m [38;5;66;03m# This is IL and CA.[39;00m
+[1;32m     22[0m [38;5;66;03m# (We will move these into gov/states)[39;00m
+[1;32m     23[0m [38;5;66;03m# Obtain eligibility.[39;00m
+[0;32m---> 24[0m eligible [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     25[0m [38;5;66;03m# Obtain amount they would receive if they were eligible.[39;00m
+[1;32m     26[0m amount_if_eligible [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_amount_if_eligible[39m[38;5;124m"[39m, period)
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
+[1;32m    131[0m         variable_name, period, [38;5;241m*[39m[38;5;241m*[39mcalculate_kwargs
+[1;32m    132[0m     )
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
+[1;32m    326[0m     variable_name, period, [38;5;28mself[39m[38;5;241m.[39mbranch_name
+[1;32m    327[0m )
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+[1;32m    332[0m         result [38;5;241m=[39m result[38;5;241m.[39mdecode_to_str()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    489[0m [38;5;28;01mtry[39;00m:
+[1;32m    490[0m     [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m     array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m     [38;5;66;03m# If no result, use the default value and cache it[39;00m
+[1;32m    494[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    495[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    732[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/eligibility/is_tanf_eligible.py:15[0m, in [0;36mis_tanf_eligible.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[1;32m     12[0m     demographic_eligible [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mis_demographic_tanf_eligible[39m[38;5;124m"[39m, period)
+[1;32m     13[0m     economic_eligible [38;5;241m=[39m where(
+[1;32m     14[0m         spm_unit([38;5;124m"[39m[38;5;124mis_tanf_enrolled[39m[38;5;124m"[39m, period),
+[0;32m---> 15[0m         [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mis_tanf_continuous_eligible[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m,
+[1;32m     16[0m         spm_unit([38;5;124m"[39m[38;5;124mis_tanf_initial_eligible[39m[38;5;124m"[39m, period),
+[1;32m     17[0m     )
+[1;32m     18[0m     [38;5;28;01mreturn[39;00m demographic_eligible [38;5;241m&[39m economic_eligible
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
+[1;32m    131[0m         variable_name, period, [38;5;241m*[39m[38;5;241m*[39mcalculate_kwargs
+[1;32m    132[0m     )
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
+[1;32m    326[0m     variable_name, period, [38;5;28mself[39m[38;5;241m.[39mbranch_name
+[1;32m    327[0m )
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+[1;32m    332[0m         result [38;5;241m=[39m result[38;5;241m.[39mdecode_to_str()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    489[0m [38;5;28;01mtry[39;00m:
+[1;32m    490[0m     [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m     array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m     [38;5;66;03m# If no result, use the default value and cache it[39;00m
+[1;32m    494[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    495[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    732[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/hhs/tanf/cash/eligibility/continuous/is_tanf_continuous_eligible.py:13[0m, in [0;36mis_tanf_continuous_eligible.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[1;32m     12[0m     earned_income [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_gross_earned_income[39m[38;5;124m"[39m, period)
+[0;32m---> 13[0m     unearned_income [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mtanf_gross_unearned_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     14[0m     net_income [38;5;241m=[39m earned_income [38;5;241m+[39m unearned_income
+[1;32m     15[0m     payment_level [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mtanf_max_amount[39m[38;5;124m"[39m, period)
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
+[1;32m    131[0m         variable_name, period, [38;5;241m*[39m[38;5;241m*[39mcalculate_kwargs
+[1;32m    132[0m     )
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
 [1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
@@ -653,6 +984,30 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [2. 0. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1802 != 1803 = count)
-ValueError: Input [2. 0. 0. ... 0. 0. 2.] is not a valid value for the entity marital_unit (size = 1802 != 1803 = count)
+[0;31mValueError[0m: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 301 != 302 = count)
+ValueError: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 301 != 302 = count)
 
