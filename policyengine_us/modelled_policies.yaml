@@ -2,52 +2,83 @@ core:
   modelled:
     - Federal income tax
     - Payroll taxes
-    - SSI
-    - SNAP
-    - ACP
-    - EBB
+    - Supplemental Security Income
+    - Supplemental Nutrition Assistance Program
+    - Affordable Connectivity Program
     - Lifeline
-    - Free school meals
+    - Free and reduced price school meals
     - WIC
 filtered:
   state_name:
+    CA:
+      modelled:
+      - California state income tax
+      - California TANF
+    DC:
+      modelled:
+      - District of Columbia TANF
+      not_modelled:
+      - District of Columbia income tax
     IL:
       modelled:
-      - Illinois State income tax
+      - Illinois state income tax
       - Illinois TANF
+    KS:
+      modelled:
+      - Kansas state income tax
+      not_modelled:
+      - Kansas TANF
     MA:
       modelled:
-      - Massachusetts State income tax
+      - Massachusetts state income tax
       not_modelled:
       - Massachusetts TANF
     MD:
       modelled:
-      - Maryland State income tax
+      - Maryland state income tax
       not_modelled:
       - Maryland TANF
+    MN:
+      modelled:
+      - Minnesota state income tax
+      not_modelled:
+      - Minnesota TANF
     MO:
       modelled:
-      - Missouri State income tax
+      - Missouri state income tax
       not_modelled:
       - Missouri TANF
+    ND:
+      modelled:
+      - North Dakota state income tax
+      not_modelled:
+      - North Dakota TANF
+    NE:
+      modelled:
+      - Nebraska state income tax
+      not_modelled:
+      - Nebraska TANF
     NY:
       modelled:
-      - New York State income tax
-      not_modelled:
+      - New York state income tax
       - New York TANF
     OR:
       modelled:
-      - Oregon State income tax
+      - Oregon state income tax
       not_modelled:
       - Oregon TANF
     PA:
       modelled:
-      - Pennsylvania State income tax
+      - Pennsylvania state income tax
       not_modelled:
       - Pennsylvania TANF
     WA:
       modelled:
-      - Washington State income tax
+      - Washington state income tax
       not_modelled:
       - Washington TANF
-  
+    UT:
+      modelled:
+      - Utah state income tax
+      not_modelled:
+      - Utah TANF

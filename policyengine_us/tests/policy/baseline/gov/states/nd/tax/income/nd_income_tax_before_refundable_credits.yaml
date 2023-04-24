@@ -1,0 +1,17 @@
+- name: ND income tax before refundable credits unit test 1
+  period: 2021
+  input:
+    nd_income_tax_before_credits: 900
+    nd_nonrefundable_credits: 850
+    state_code: ND
+  output:
+    nd_income_tax_before_refundable_credits: 900 - 850
+
+- name: ND income tax before refundable credits unit test 2
+  period: 2022
+  input:
+    nd_income_tax_before_credits: 900
+    nd_nonrefundable_credits: 950
+    state_code: ND
+  output:
+    nd_income_tax_before_refundable_credits: 0
