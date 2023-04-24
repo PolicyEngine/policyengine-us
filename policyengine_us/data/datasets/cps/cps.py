@@ -319,6 +319,7 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
 def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     cps["state_fips"] = household.GESTFIPS
     cps["county_fips"] = household.GTCO
+    state_county_fips = cps["state_fips"][...] * 1e3 + cps["county_fips"][...]
     # Assign is_nyc here instead of as a variable formula so that it shows up
     # as toggleable in the webapp.
     # List county FIPS codes for each NYC county/borough.
@@ -335,7 +336,7 @@ def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
     nyc_full_county_fips = [
         NYS_FIPS * 1e3 + county_fips for county_fips in NYC_COUNTY_FIPS
     ]
-    cps["is_nyc"] = np.isin(cps["county_fips"], nyc_full_county_fips)
+    cps["in_nyc"] = np.isin(state_county_fips, nyc_full_county_fips)
 
 
 class CPS_2020(CPS):
