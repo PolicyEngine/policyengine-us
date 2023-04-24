@@ -14,6 +14,7 @@ class household_refundable_tax_credits(Variable):
         "ks_refundable_credits",  # Kansas.
         "ma_refundable_credits",  # Massachusetts.
         "md_refundable_credits",  # Maryland.
+        "mn_refundable_credits",  # Minnesota.
         "mo_refundable_credits",  # Missouri.
         "or_refundable_credits",  # Oregon.
         "nd_refundable_credits",  # North Dakota.
@@ -22,6 +23,7 @@ class household_refundable_tax_credits(Variable):
         # Skip PA, which has no refundable credits.
         "wa_refundable_credits",  # Washington.
         "nyc_refundable_credits",  # New York City.
+        "ut_refundable_credits",  # Utah.
     ]
 
     def formula(household, period, parameters):

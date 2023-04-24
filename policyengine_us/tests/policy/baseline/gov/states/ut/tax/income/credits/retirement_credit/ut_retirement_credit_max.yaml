@@ -1,0 +1,32 @@
+- name: UT retirement credit max unit test 1
+  period: 2022
+  input:
+    age: 80
+    ut_total_income: 10_000
+    tax_exempt_interest_income: 500
+    filing_status: SINGLE
+    state_code: UT
+  output:
+    ut_retirement_credit_max: 450
+
+- name: UT retirement credit max unit test 2
+  period: 2022
+  input:
+    age: 64
+    ut_total_income: 20_000
+    tax_exempt_interest_income: 500
+    filing_status: SINGLE
+    state_code: UT
+  output:
+    ut_retirement_credit_max: 0  # age ineligible
+
+- name: UT retirement credit max unit test 3
+  period: 2022
+  input:
+    age: 80
+    ut_total_income: 30_000
+    tax_exempt_interest_income: 500
+    filing_status: SINGLE
+    state_code: UT
+  output:
+    ut_retirement_credit_max: 312.50  # phase-out reduction partially eliminates credit
