@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class oh_personal_exemption(Variable):
-    value_type = bool
+    value_type = float
     entity = TaxUnit
     label = "OH personal exemption"
     defined_for = StateCode.OH
@@ -21,10 +21,6 @@ class oh_personal_exemption(Variable):
         num_of_dependents = tax_unit("tax_unit_dependents", period)
         p = parameters(period).gov.states.oh.tax.income
         personal_exemption_amount = p.exemption.personal.calc(agi)
-        # print(personal_exemption_amount)
-        # print(eligible_spouse)
-        # print(eligible_head)
-        # print(num_of_dependents)
         return (
             num_of_dependents + eligible_spouse + eligible_head
         ) * personal_exemption_amount

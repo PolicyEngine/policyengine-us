@@ -20,7 +20,7 @@
         members: [person1,person2]
         state_code: OH
   output: 
-    oh_personal_exemption: [1_900,1_900]
+    oh_personal_exemption: 3_800
 
 - name: Ohio personal exemption test
   absolute_error_margin: 0.01
@@ -28,9 +28,9 @@
   input:
     is_tax_unit_head: true
     is_tax_unit_spouse: true
-    tax_unit_dependents: 50
+    tax_unit_dependents: 1
     is_tax_unit_dependent: false
     oh_agi: 90_000
     state_code: OH
   output:
-    oh_personal_exemption: 3_800
+    oh_personal_exemption: 5_700
