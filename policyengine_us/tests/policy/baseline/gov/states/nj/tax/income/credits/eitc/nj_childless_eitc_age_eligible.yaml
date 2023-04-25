@@ -32,7 +32,7 @@
         members: [person1]
         nj_eitc_income_eligible: false
   output:
-    nj_childless_eitc_age_eligible: true
+    nj_childless_eitc_age_eligible: false
 
 - name: Individual with child should not be eligible, regardless of income.
   period: 2022
