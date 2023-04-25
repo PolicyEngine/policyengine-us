@@ -4,8 +4,7 @@
   input:
     earned_income_tax_credit: 100
     eitc_eligible: true
-    nj_eitc_age_eligible: true
-    nj_eitc_income_eligible: true
+    nj_childless_eitc_age_eligible: true
     state_code: NJ
   output:
     nj_eitc: 40
@@ -16,8 +15,7 @@
   input:
     earned_income_tax_credit: 0
     eitc_eligible: false
-    nj_eitc_age_eligible: true
-    nj_eitc_income_eligible: true
+    nj_childless_eitc_age_eligible: true
     state_code: NJ
   output:
     nj_eitc: 224
@@ -26,51 +24,20 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    # In 2022, the joint bonus is $6,130
-    # Phaseout rate is 7.65%
-    # Phaseout start is $9,160 + $6,130 = $15,290
-    # Maximum EITC is $560
-    # (completed_phaseout-phaseout_start)/phaseout_rate = max_credit
-    # so completed_phaseout = $560/.0765 + $15,290 = $22,610.26
-    # so the cliff should kick in there.
-    # This test is just below the cliff (nj_eitc should be $224).
     filing_status: JOINT
     earned_income_tax_credit: 0
     eitc_eligible: false
-    nj_eitc_age_eligible: true
-    nj_eitc_income_eligible: true
+    nj_childless_eitc_age_eligible: true
     state_code: NJ
   output:
     nj_eitc: 224
-
-- name: New Jersey EITC is zero because AGI is above federal EITC income threshold
-  period: 2022
-  absolute_error_margin: 0
-  input:
-    # In 2022, the joint bonus is $6,130
-    # Phaseout rate is 7.65%
-    # Phaseout start is $9,160 + $6,130 = $15,290
-    # Maximum EITC is $560
-    # (completed_phaseout-phaseout_start)/phaseout_rate = max_credit
-    # so completed_phaseout = $560/.0765 + $15,290 = $22,610.26
-    # so the cliff should kick in there.
-    # This test is just above the cliff (nj_eitc should be $0).
-    filing_status: JOINT
-    earned_income_tax_credit: 0
-    eitc_eligible: false
-    nj_eitc_age_eligible: true
-    nj_eitc_income_eligible: false
-    state_code: NJ
-  output:
-    nj_eitc: 0
 
 - name: Outside New Jersey, no New Jersey EITC.
   period: 2022
   absolute_error_margin: 0
   input:
     earned_income_tax_credit: 100
-    nj_eitc_age_eligible: true
-    nj_eitc_income_eligible: true
+    nj_childless_eitc_age_eligible: true
     state_code: NY
   output:
     nj_eitc: 0
