@@ -48,8 +48,8 @@ class me_pension_income_subtractions(Variable):
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         is_joint = (
-            tax_unit("filing_status")
-            == tax_unit("filing_status").possible_values.JOINT
+            tax_unit("filing_status", period)
+            == tax_unit("filing_status", period).possible_values.JOINT
         )
         return select(
             [is_joint],

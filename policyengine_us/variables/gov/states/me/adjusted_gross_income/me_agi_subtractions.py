@@ -14,7 +14,7 @@ class me_agi_subtractions(Variable):
         href="https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf",
     )
     adds = [
-        "taxable_social_security",
+        "tax_unit_taxable_social_security",
         "us_govt_interest",
         "me_pension_income_subtractions",
     ]
