@@ -3001,3 +3001,94 @@
     - CPS racial category.
     - Top-level racial category (4 categories).
   date: 2023-04-15 10:49:00
+- bump: minor
+  changes:
+    added:
+    - Utah SS Benefits Credit.
+    - Utah retirement credit.
+    - Utah EITC.
+    - Utah at-home parent credit.
+  date: 2023-04-15 18:19:59
+- bump: minor
+  changes:
+    fixed:
+    - Removed a microdata test that was failing due to download requirements.
+  date: 2023-04-16 10:06:18
+- bump: patch
+  changes:
+    changed:
+    - Fixed README.md display on PyPI.
+  date: 2023-04-16 15:33:21
+- bump: minor
+  changes:
+    added:
+    - NJ child tax credit.
+  date: 2023-04-16 23:56:05
+- bump: minor
+  changes:
+    added:
+    - Maine standard, itemized, and overall deduction.
+  date: 2023-04-17 15:44:00
+- bump: patch
+  changes:
+    changed:
+    - 2021 SSI and TANF data by federal and state level.
+  date: 2023-04-20 15:28:54
+- bump: minor
+  changes:
+    added:
+    - DC TANF program.
+  date: 2023-04-20 19:07:10
+- bump: minor
+  changes:
+    added:
+    - DC TANF to net income tree.
+    - README files for new states.
+  date: 2023-04-21 15:52:35
+- bump: minor
+  changes:
+    added:
+    - New Jersey TANF maximum allowable income.
+  date: 2023-04-22 00:43:40
+- bump: minor
+  changes:
+    added:
+    - Merged 3 onboarding materials into one file for future references.
+  date: 2023-04-22 05:13:27
+- bump: minor
+  changes:
+    added:
+    - Hawaii rate structure.
+  date: 2023-04-24 05:59:47
+- bump: patch
+  changes:
+    fixed:
+    - NYC CDCC qualifying childcare share does not return NaN.
+  date: 2023-04-24 11:58:18
+- bump: patch
+  changes:
+    added:
+    - Legislative reference for North Dakota income tax rates.
+  date: 2023-04-24 15:57:07
+- bump: patch
+  changes:
+    added:
+    - Legal reference for NE CDCC and EITC.
+  date: 2023-04-24 16:01:05
+- bump: patch
+  changes:
+    added:
+    - Legal code reference for Kansas Tax Credits
+  date: 2023-04-24 16:18:02
+- bump: minor
+  changes:
+    added:
+    - Populate is_nyc from the CPS.
+    changed:
+    - Rename fips to state_fips.
+  date: 2023-04-24 21:15:38
+- bump: patch
+  changes:
+    added:
+    - Edited NYC EITC variable label.
+  date: 2023-04-25 04:39:43

@@ -1,0 +1,19 @@
+description: Maine phases out its standard/itemized deduction over this amount of Maine AGI above the threshold.
+metadata:
+  unit: currency-USD
+  label: Maine standard/itemized deduction phase-out width
+  reference:
+    - title: Instructions for Form 1040ME
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+  breakdown:
+    - filing_status
+SINGLE:
+  2022-01-01: 75_000
+SEPARATE:
+  2022-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 112_500
+JOINT:
+  2022-01-01: 150_000
+WIDOW:
+  2022-01-01: 150_000
