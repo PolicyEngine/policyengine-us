@@ -19,15 +19,14 @@ class nj_eitc(Variable):
 
         # Calculate NJ EITC.
         # If eligible for federal EITC, return federal EITC * percent_of_federal_eitc.
-        # If ineligible for federal EITC only because of age, return max federal EITC * percent_of_federal_eitc.
+        # If ineligible for federal EITC only because of age, return max federal EITC (for zero children) * percent_of_federal_eitc.
         #     Note: this implies that they have no children (hence the max federal EITC input).
         # Otherwise, return 0.
         # Worksheet reference: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=43
         nj_eitc = select(
             [
                 tax_unit("eitc_eligible", period),
-                tax_unit("nj_eitc_income_eligible")
-                & tax_unit("nj_eitc_age_eligible", period),
+                tax_unit("nj_childless_eitc_age_eligible", period),
             ],
             [
                 tax_unit("eitc", period),

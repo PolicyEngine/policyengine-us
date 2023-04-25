@@ -1,0 +1,106 @@
+- name: FTB instruction booklet reports that the maximum CalEITC of $3,051 applies to a filer with 3 children and earnings between $7,951 and $8,000.
+  period: 2022
+  # Booklet specifies in roughly $20 increments for 3-child filers.
+  absolute_error_margin: 20
+  input:
+    state_code: CA
+    eitc_child_count: 3
+    earned_income: 8_000
+  output:
+    ca_eitc: 3_051
+
+- name: FTB instruction booklet reports that the maximum CalEITC of $1,843 applies to a filer with 1 child and earnings between $6,351 and $6,400.
+  period: 2022
+  # Booklet specifies in roughly $6 increments for 2-child filers.
+  absolute_error_margin: 6
+  input:
+    state_code: CA
+    eitc_child_count: 1
+    earned_income: 6_400
+  output:
+    ca_eitc: 1_843
+
+- name: FTB instruction booklet reports that filers with no children and earned income between $9,951 and $10,000 receive a CalEITC of $184.
+  period: 2022
+  # Booklet specifies in roughly $2 increments for filers without children.
+  absolute_error_margin: 2
+  input:
+    state_code: CA
+    eitc_child_count: 0
+    earned_income: 9_951
+  output:
+    #ca_eitc_second_phase_out_start: 8_201 # First bracket.
+    ca_eitc: 184
+
+- name: Test of ca_is_qualifying_child_for_caleitc
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 8_000
+      person2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ca_is_qualifying_child_for_caleitc: [false, true]
+
+- name: California tax unit with only wage income and three children
+  absolute_error_margin: 2
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 10_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+        employment_income: 5_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 9
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 7
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 5
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: CA
+  output:  # from hand calculations using 2021 Form 3514 and its instructions
+    ca_yctc: 1_000
+    ca_eitc: 578

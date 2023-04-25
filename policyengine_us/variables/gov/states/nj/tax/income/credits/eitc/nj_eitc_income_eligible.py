@@ -13,6 +13,25 @@ class nj_eitc_income_eligible(Variable):
         # Get parameter tree for federal EITC.
         p = parameters(period).gov.irs.credits.eitc
 
+        # Check if they are above the investment income limit.
+        no_loss_capital_gains = max_(
+            0,
+            add(tax_unit, period, ["capital_gains"]),
+        )
+        eitc_investment_income = (
+            add(
+                tax_unit,
+                period,
+                ["net_investment_income", "tax_exempt_interest_income"],
+            )
+            # Replace limited-loss capital gains with no-loss capital gains.
+            - tax_unit("c01000", period)  # Limited-loss capital gains.
+            + no_loss_capital_gains
+        )
+        inv_income_disqualified = (
+            eitc_investment_income > p.phase_out.max_investment_income
+        )
+
         # Determine if filer is above federal EITC income threshold.
         # We can find the income threshold by looking at their filing status and the phase-out rate for 0 children.
         # Note: this assumes the same phaseout rate for all filing statuses (which is the case).
@@ -22,4 +41,6 @@ class nj_eitc_income_eligible(Variable):
         phaseout_start = p.phase_out.start.calc(0) + is_joint * joint_bonus
         max_credit = p.max.calc(0)
         completed_phaseout = max_credit / phaseout_rate + phaseout_start
-        return tax_unit("adjusted_gross_income", period) < completed_phaseout
+        return (
+            tax_unit("adjusted_gross_income", period) < completed_phaseout
+        ) & ~inv_income_disqualified

@@ -1,0 +1,30 @@
+- name: OK property tax credit unit test 1
+  period: 2021
+  input:
+    age_head: 60
+    age_spouse: 65
+    ok_gross_income: 10_000
+    real_estate_taxes: 900
+    state_code: OK
+  output:
+    ok_ptc: 200
+
+- name: OK property tax credit unit test 2
+  period: 2022
+  input:
+    age_head: 60
+    ok_gross_income: 10_000
+    real_estate_taxes: 900
+    state_code: OK
+  output:
+    ok_ptc: 0
+
+- name: OK property tax credit unit test 3
+  period: 2022
+  input:
+    head_is_disabled: true
+    ok_gross_income: 10_000
+    real_estate_taxes: 200
+    state_code: OK
+  output:
+    ok_ptc: 100
