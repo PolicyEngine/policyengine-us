@@ -15,7 +15,6 @@ class ia_standard_deduction(Variable):
     )
     defined_for = StateCode.IA
 
-
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ia.tax.income
