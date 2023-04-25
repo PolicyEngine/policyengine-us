@@ -49,7 +49,7 @@
         state_code: NJ
     tax_units:
       tax_unit:
-        members: [person1]
+        members: [person1, person2]
         nj_eitc_income_eligible: true
   output:
     nj_childless_eitc_age_eligible: false
