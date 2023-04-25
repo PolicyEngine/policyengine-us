@@ -1,4 +1,4 @@
-- name: ME AGI subtraction amount unit test 1
+- name: ME AGI pension income subtraction amount unit test 1
   period: 2022
   input:
     people:
@@ -28,16 +28,13 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: ME
-        taxable_social_security: 1_000
-        us_govt_interest: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
   output:
-    # taxable_social_security + us_govt_interest + me_pension_income_subtractions ($3000) = $5000
-    me_agi_subtractions: 5_000  
+    me_pension_income_subtractions: 3_000  
 
-- name: ME AGI subtraction amount unit test 2
+- name: ME AGI pension income subtraction amount unit test 2
   period: 2022
   input:
     people:
@@ -67,16 +64,13 @@
       household:
         members: [person1, person2, person3, person4]
         state_code: ME
-        taxable_social_security: 1_000
-        us_govt_interest: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4]
   output:
-    # taxable_social_security + us_govt_interest + me_pension_income_subtractions ($7000) = $9000
-    me_agi_subtractions: 9_000   
+    me_pension_income_subtractions: 7_000   
 
-- name: ME AGI subtraction amount unit test 3
+- name: ME AGI pension income subtraction amount unit test 3
   period: 2022
   input:
     people:
@@ -98,16 +92,13 @@
       household:
         members: [person1, person2]
         state_code: ME
-        taxable_social_security: 1_000
-        us_govt_interest: 1_000
     spm_units:
       spm_unit:
         members: [person1, person2]
   output:
-    # taxable_social_security + us_govt_interest + me_pension_income_subtractions ($7000) = $9000
-    me_agi_subtractions: 9_000    
+    me_pension_income_subtractions: 7_000    
 
-- name: ME AGI subtraction amount unit test 4
+- name: ME AGI pension income subtraction amount unit test 4
   period: 2022
   input:
     people:
@@ -124,11 +115,8 @@
       household:
         members: [person1]
         state_code: ME
-        taxable_social_security: 1_000
-        us_govt_interest: 1_000
     spm_units:
       spm_unit:
         members: [person1]
   output:
-    # taxable_social_security + us_govt_interest + me_pension_income_subtractions ($2000) = $4000
-    me_agi_subtractions: 4_000   
+    me_pension_income_subtractions: 2_000   
