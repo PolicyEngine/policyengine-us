@@ -86,6 +86,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        nj_eitc_income_eligible: false
+        nj_eitc_income_eligible: true
   output:
     nj_childless_eitc_age_eligible: true
