@@ -32,7 +32,6 @@ class nj_childless_eitc_age_eligible(Variable):
         return (
             ~separate
             & no_children
-            & meets_age_requirements
             & tax_unit.any(meets_age_requirements)
             & tax_unit("nj_eitc_income_eligible", period)
         )
