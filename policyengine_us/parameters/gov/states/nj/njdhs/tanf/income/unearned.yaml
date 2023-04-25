@@ -1,0 +1,18 @@
+description: New Jersey TANF counts these income sources as unearned income.
+values:
+  2021-01-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+metadata:
+  unit: list
+  reference:
+    title: CODE OF New Jersey | Department of Human Service | 10:90-3.9
+    href: https://casetext.com/regulation/new-jersey-administrative-code/title-10-human-services/chapter-90-work-first-new-jersey-program/subchapter-3-financial-eligibility-income-resources-benefits/section-1090-39-income-wfnj-tanfga
+          https://casetext.com/regulation/new-jersey-administrative-code/title-10-human-services/chapter-87-new-jersey-supplemental-nutrition-assistance-program-nj-snap-manual/subchapter-5-financial-eligibility-income/section-1087-55-unearned-income
