@@ -21,9 +21,12 @@ class vehicles_owned(Variable):
         for _ in range(int(max_vehicles)):
             # Pick a random adult in each household
             selected_adult = (
-                randint(0, adult_rank[is_adult].max()) % num_adults_in_household
+                randint(0, adult_rank[is_adult].max())
+                % num_adults_in_household
             )
             maximum_reached = household.sum(vehicles) >= household_vehicles
-            should_add_vehicle = ~maximum_reached & (adult_rank == selected_adult)
+            should_add_vehicle = ~maximum_reached & (
+                adult_rank == selected_adult
+            )
             vehicles += where(should_add_vehicle, 1, 0)
         return vehicles

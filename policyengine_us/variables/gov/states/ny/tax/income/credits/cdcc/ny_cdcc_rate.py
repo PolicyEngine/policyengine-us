@@ -28,7 +28,9 @@ class ny_cdcc_rate(Variable):
         # any intuitive names for these parameters.
 
         ny_agi = tax_unit("ny_agi", period)
-        percentage = parameters(period).gov.states.ny.tax.income.credits.cdcc.percentage
+        percentage = parameters(
+            period
+        ).gov.states.ny.tax.income.credits.cdcc.percentage
         main = percentage.main
         main_numerator = main.fraction.numerator
         fraction = (
@@ -42,7 +44,9 @@ class ny_cdcc_rate(Variable):
         fraction = (
             max_(
                 0,
-                min_(alternate_numerator.min, alternate_numerator.top - ny_agi),
+                min_(
+                    alternate_numerator.min, alternate_numerator.top - ny_agi
+                ),
             )
             / alternate.fraction.denominator
         )

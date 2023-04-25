@@ -65,8 +65,12 @@ class OutputDataset(Dataset):
 
         for variable in PROGRAM_VARIABLES:
             if variables[variable].entity.key != "household":
-                person[variable] = sim.calculate(variable, map_to="person").values
-                household[variable] = sim.calculate(variable, map_to="household").values
+                person[variable] = sim.calculate(
+                    variable, map_to="person"
+                ).values
+                household[variable] = sim.calculate(
+                    variable, map_to="household"
+                ).values
                 household[f"{variable}_participants"] = sim.map_result(
                     sim.calculate(variable).values > 0,
                     variables[variable].entity.key,

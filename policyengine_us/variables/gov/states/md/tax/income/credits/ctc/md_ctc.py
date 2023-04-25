@@ -13,7 +13,9 @@ class md_ctc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
-        income_eligible = tax_unit("adjusted_gross_income", period) <= p.agi_cap
+        income_eligible = (
+            tax_unit("adjusted_gross_income", period) <= p.agi_cap
+        )
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         disabled = person("is_disabled", period)

@@ -7,9 +7,7 @@ class in_aged_blind_exemptions(Variable):
     label = "IN exemptions for aged and or blind"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (a)(4)(B)
-    )
+    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (a)(4)(B)
     defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):

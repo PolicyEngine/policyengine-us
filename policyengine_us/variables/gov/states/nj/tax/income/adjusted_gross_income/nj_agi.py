@@ -7,9 +7,7 @@ class nj_agi(Variable):
     label = "New Jersey adjusted gross income"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://law.justia.com/codes/new-jersey/2022/title-54/section-54-8a-36/"
-    )
+    reference = "https://law.justia.com/codes/new-jersey/2022/title-54/section-54-8a-36/"
     defined_for = StateCode.NJ
 
     adds = ["adjusted_gross_income", "nj_agi_additions"]

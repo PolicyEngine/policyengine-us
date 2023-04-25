@@ -12,4 +12,6 @@ class min_head_spouse_earned(Variable):
         is_joint = tax_unit("tax_unit_is_joint", period)
         head_earnings = tax_unit("head_earned", period)
         spouse_earnings = tax_unit("spouse_earned", period)
-        return where(is_joint, min_(head_earnings, spouse_earnings), head_earnings)
+        return where(
+            is_joint, min_(head_earnings, spouse_earnings), head_earnings
+        )

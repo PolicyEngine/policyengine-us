@@ -6,7 +6,9 @@ class me_non_refundable_child_care_credit(Variable):
     entity = TaxUnit
     label = "non-refundable ME Child Care Credit"
     unit = USD
-    documentation = "The portion of the ME Child Care Credit that is non-refundable."
+    documentation = (
+        "The portion of the ME Child Care Credit that is non-refundable."
+    )
     reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_a_ff.pdf"
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5218.html"
     definition_period = YEAR

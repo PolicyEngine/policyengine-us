@@ -9,9 +9,7 @@ class al_income_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     # The Code of Alabama 1975 Section 40-18-5
-    reference = (
-        " https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
-    )
+    reference = " https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)

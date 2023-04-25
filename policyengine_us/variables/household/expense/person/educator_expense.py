@@ -6,5 +6,7 @@ class educator_expense(Variable):
     entity = Person
     label = "Educator expenses"
     unit = USD
-    documentation = "Expenses necessary for carrying out educator-related duties."
+    documentation = (
+        "Expenses necessary for carrying out educator-related duties."
+    )
     definition_period = YEAR

@@ -14,7 +14,9 @@ class lifetime_learning_credit(Variable):
         education = parameters(period).gov.irs.credits.education
         llc = education.lifetime_learning_credit
         person = tax_unit.members
-        is_aoc_eligible = person("is_eligible_for_american_opportunity_credit", period)
+        is_aoc_eligible = person(
+            "is_eligible_for_american_opportunity_credit", period
+        )
         eligible_expenses = tax_unit.sum(
             person("qualified_tuition_expenses", period) * ~is_aoc_eligible
         )

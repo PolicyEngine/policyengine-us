@@ -15,4 +15,6 @@ class net_long_term_capital_gain(Variable):
         href="https://www.law.cornell.edu/uscode/text/26/1222#7",
     )
 
-    formula = excess(of="long_term_capital_gains", over="long_term_capital_losses")
+    formula = excess(
+        of="long_term_capital_gains", over="long_term_capital_losses"
+    )

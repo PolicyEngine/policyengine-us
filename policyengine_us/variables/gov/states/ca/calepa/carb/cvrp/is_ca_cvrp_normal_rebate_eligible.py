@@ -6,9 +6,7 @@ class is_ca_cvrp_normal_rebate_eligible(Variable):
     entity = Person
     definition_period = YEAR
     label = "Eligible for CVRP normal rebate"
-    documentation = (
-        "Eligible for California Clean Vehicle Rebate Project (CVRP) normal rebate"
-    )
+    documentation = "Eligible for California Clean Vehicle Rebate Project (CVRP) normal rebate"
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
     defined_for = StateCode.CA
 

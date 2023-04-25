@@ -24,7 +24,9 @@ class County(Enum):
     NOME_CENSUS_AREA_AK = "Nome Census Area, AK"
     NORTH_SLOPE_BOROUGH_AK = "North Slope Borough, AK"
     NORTHWEST_ARCTIC_BOROUGH_AK = "Northwest Arctic Borough, AK"
-    PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK = "Prince of Wales-Hyder Census Area, AK"
+    PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK = (
+        "Prince of Wales-Hyder Census Area, AK"
+    )
     SITKA_CITY_AND_BOROUGH_AK = "Sitka City and Borough, AK"
     SKAGWAY_MUNICIPALITY_AK = "Skagway Municipality, AK"
     SOUTHEAST_FAIRBANKS_CENSUS_AREA_AK = "Southeast Fairbanks Census Area, AK"

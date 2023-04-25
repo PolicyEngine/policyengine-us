@@ -24,7 +24,9 @@ class nyc_eitc(Variable):
         threshold = p.reduction_threshold.calc(ny_agi)
         excess = max_(0, ny_agi - threshold)
         pct_point_reduction_if_applicable = p.percent_reduction * excess
-        pct_point_reduction = where(threshold > 0, pct_point_reduction_if_applicable, 0)
+        pct_point_reduction = where(
+            threshold > 0, pct_point_reduction_if_applicable, 0
+        )
 
         # Percentage is nonnegative because the last bracket is a flat 10%.
         percentage = percentage_pre_reduction - pct_point_reduction

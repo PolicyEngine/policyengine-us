@@ -9,4 +9,6 @@ class spm_unit_payroll_tax(Variable):
     unit = USD
 
     def formula(spm_unit, period, parameters):
-        return sum_contained_tax_units("employee_payroll_tax", spm_unit, period)
+        return sum_contained_tax_units(
+            "employee_payroll_tax", spm_unit, period
+        )

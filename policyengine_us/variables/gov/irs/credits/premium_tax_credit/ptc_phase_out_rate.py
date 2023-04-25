@@ -20,7 +20,9 @@ class ptc_phase_out_rate(Variable):
         for i in range(len(lower.thresholds)):
             lower_threshold = lower.thresholds[i]
             upper_threshold = (
-                lower.thresholds[i + 1] if i + 1 < len(lower.thresholds) else inf
+                lower.thresholds[i + 1]
+                if i + 1 < len(lower.thresholds)
+                else inf
             )
             in_bracket = (income_level >= lower_threshold) & (
                 income_level < upper_threshold

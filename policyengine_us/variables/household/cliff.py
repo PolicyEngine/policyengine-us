@@ -20,9 +20,7 @@ class cliff_gap(Variable):
     entity = Person
     label = "cliff gap"
     unit = USD
-    documentation = (
-        "Amount of income lost if this person's employment income increased by $2,000."
-    )
+    documentation = "Amount of income lost if this person's employment income increased by $2,000."
     definition_period = YEAR
 
     def formula(person, period, parameters):
@@ -35,7 +33,8 @@ class cliff_gap(Variable):
         alt_simulation.set_input(
             "employment_income",
             period,
-            person("employment_income", period) + person("is_adult", period) * delta,
+            person("employment_income", period)
+            + person("is_adult", period) * delta,
         )
         alt_person = alt_simulation.person
         household_net_income = person.spm_unit("spm_unit_net_income", period)

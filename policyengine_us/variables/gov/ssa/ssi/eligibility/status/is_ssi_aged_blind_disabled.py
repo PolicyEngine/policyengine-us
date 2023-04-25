@@ -12,4 +12,6 @@ class is_ssi_aged_blind_disabled(Variable):
 
     def formula(person, period, parameters):
         simulation: Simulation = person.simulation
-        return any_(person, period, ["is_ssi_aged", "is_blind", "is_ssi_disabled"])
+        return any_(
+            person, period, ["is_ssi_aged", "is_blind", "is_ssi_disabled"]
+        )

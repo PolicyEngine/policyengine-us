@@ -25,9 +25,7 @@ taxsim_platform = PLATFORM_MAPPING[platform.system()]
 class TaxSim35:
     """TAXSIM 35 Internet version: http://taxsim.nber.org/taxsim35/"""
 
-    EXECUTABLE_URL = (
-        f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{taxsim_platform}.exe"
-    )
+    EXECUTABLE_URL = f"https://taxsim.nber.org/stata/taxsim35/taxsim35-{taxsim_platform}.exe"
     folder = Path(__file__).parent.absolute()
     executable_path = folder / "taxsim35.exe"
     INPUT_VARIABLES = [
@@ -158,11 +156,16 @@ class TaxSim35:
             column_names = [f"v{i}" for i in range(10, 30)]
             column_names = [i for i in column_names if i != "v23"]
             output_data = {column: [] for column in column_names}
-            for output in tqdm(outputs, desc="Parsing detailed outputs from TAXSIM"):
+            for output in tqdm(
+                outputs, desc="Parsing detailed outputs from TAXSIM"
+            ):
                 columns_used = []
                 for line in output.split("\n"):
                     if any(
-                        [name.replace("v", "") + "." in line for name in column_names]
+                        [
+                            name.replace("v", "") + "." in line
+                            for name in column_names
+                        ]
                     ):
                         number = line.split(".")[0].strip()
                         value = line.split(".")[1].split("  ")[-1]
@@ -213,20 +216,26 @@ class TaxSim35:
         test_str = ""
         tax_unit_number = 1
         # Shuffle the dataframe
-        is_non_zero = taxsim_df[openfisca_named_taxsim_output_variables].sum(axis=1) > 0
+        is_non_zero = (
+            taxsim_df[openfisca_named_taxsim_output_variables].sum(axis=1) > 0
+        )
         if drop_zeros:
             taxsim_df = taxsim_df[is_non_zero]
         taxsim_df = taxsim_df.sample(frac=1).reset_index(drop=True)
         if return_dataframe:
             return taxsim_df
-        for tax_unit_id in tqdm(taxsim_df.taxsim_taxsimid, desc="Writing YAML tests"):
+        for tax_unit_id in tqdm(
+            taxsim_df.taxsim_taxsimid, desc="Writing YAML tests"
+        ):
             if number is not None and i >= number:
                 break
             i += 1
             test_str += f"- name: Tax unit {tax_unit_number:,.0f} (CPS ID {tax_unit_id}) matches TAXSIM35 outputs\n  absolute_error_margin: 1\n  period: {year}\n  input:\n    people:\n"
             tax_unit_number += 1
             person_id = sim.calc("person_id").values
-            person_tax_unit_id = sim.calc("tax_unit_id", map_to="person").values
+            person_tax_unit_id = sim.calc(
+                "tax_unit_id", map_to="person"
+            ).values
             tax_unit_ids = sim.calc("tax_unit_id").values
             people_in_tax_unit = person_id[person_tax_unit_id == tax_unit_id]
             person_number = 1
@@ -238,11 +247,13 @@ class TaxSim35:
                     + openfisca_named_taxsim_input_variables
                 ):
                     if variables[variable_name].entity.key == "person":
-                        value = sim.calc(variable_name, map_to="person").values[
-                            person_id == person
-                        ][0]
+                        value = sim.calc(
+                            variable_name, map_to="person"
+                        ).values[person_id == person][0]
                         try:
-                            test_str += f"        {variable_name}: {value:_.0f}\n"
+                            test_str += (
+                                f"        {variable_name}: {value:_.0f}\n"
+                            )
                         except:
                             test_str += f"        {variable_name}: {value}\n"
             test_str += f"    tax_units:\n      tax_unit:\n        members: [{','.join(['person_' + str(p) for p in range(1, person_number)])}]\n"
@@ -251,9 +262,9 @@ class TaxSim35:
                 + openfisca_named_taxsim_input_variables
             ):
                 if variables[variable_name].entity.key == "tax_unit":
-                    value = sim.calc(variable_name).values[tax_unit_ids == tax_unit_id][
-                        0
-                    ]
+                    value = sim.calc(variable_name).values[
+                        tax_unit_ids == tax_unit_id
+                    ][0]
                     try:
                         test_str += f"        {variable_name}: {value:_.0f}\n"
                     except:
@@ -274,7 +285,9 @@ class TaxSim35:
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Generate tests from TAXSIM35")
-    parser.add_argument("outputs", nargs="*", help="Outputs to generate tests for.")
+    parser.add_argument(
+        "outputs", nargs="*", help="Outputs to generate tests for."
+    )
     parser.add_argument(
         "-num", type=int, default=32, help="Number of tests to generate."
     )
@@ -284,5 +297,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     taxsim = TaxSim35()
     taxsim.OUTPUT_VARIABLES = args.outputs
-    result = taxsim.generate_from_microsimulation(CPS, args.year, number=args.num)
+    result = taxsim.generate_from_microsimulation(
+        CPS, args.year, number=args.num
+    )
     print(result)

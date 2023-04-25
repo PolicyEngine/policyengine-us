@@ -9,6 +9,4 @@ class al_agi(Variable):
     unit = USD
     definition_period = YEAR
     # The Code of Alabama 1975
-    reference = (
-        " https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
-    )
+    reference = " https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"

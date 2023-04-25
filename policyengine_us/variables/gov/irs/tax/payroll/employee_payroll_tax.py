@@ -14,7 +14,9 @@ class employee_payroll_tax(Variable):
     ]
 
     def formula(person, period, parameters):
-        if parameters(period).gov.contrib.ubi_center.flat_tax.abolish_payroll_tax:
+        if parameters(
+            period
+        ).gov.contrib.ubi_center.flat_tax.abolish_payroll_tax:
             return 0
         else:
             added_components = add(person, period, employee_payroll_tax.adds)

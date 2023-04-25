@@ -15,6 +15,8 @@ class acp(Variable):
         broadband_cost = spm_unit("broadband_cost_after_lifeline", period)
         tribal = spm_unit.household("is_on_tribal_land", period)
         amounts = parameters(period).gov.fcc.acp.amount
-        max_amount = where(tribal, amounts.tribal, amounts.standard) * MONTHS_IN_YEAR
+        max_amount = (
+            where(tribal, amounts.tribal, amounts.standard) * MONTHS_IN_YEAR
+        )
         amount_if_eligible = min_(max_amount, broadband_cost)
         return where(eligible, amount_if_eligible, 0)

@@ -9,5 +9,7 @@ class is_usda_elderly(Variable):
     label = "USDA elderly"
 
     def formula(person, period, parameters):
-        elderly_age_threshold = parameters(period).gov.usda.elderly_age_threshold
+        elderly_age_threshold = parameters(
+            period
+        ).gov.usda.elderly_age_threshold
         return person("age", period) >= elderly_age_threshold

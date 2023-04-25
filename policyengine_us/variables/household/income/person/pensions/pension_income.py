@@ -6,9 +6,7 @@ class pension_income(Variable):
     entity = Person
     label = "pension income"
     unit = USD
-    documentation = (
-        "Income from pensions, annuitities, life insurance or endowment contracts."
-    )
+    documentation = "Income from pensions, annuitities, life insurance or endowment contracts."
     definition_period = YEAR
     adds = [
         "tax_exempt_pension_income",

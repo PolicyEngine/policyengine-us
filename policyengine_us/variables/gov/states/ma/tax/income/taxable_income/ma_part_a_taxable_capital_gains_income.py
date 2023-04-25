@@ -14,5 +14,7 @@ class ma_part_a_taxable_capital_gains_income(Variable):
         part_a_agi = tax_unit("ma_part_a_agi", period)
         dividends = add(tax_unit, period, ["dividend_income"])
         stcg_agi = part_a_agi - dividends
-        div_excess_exemption = tax_unit("ma_part_a_div_excess_exemption", period)
+        div_excess_exemption = tax_unit(
+            "ma_part_a_div_excess_exemption", period
+        )
         return max_(0, stcg_agi - div_excess_exemption)

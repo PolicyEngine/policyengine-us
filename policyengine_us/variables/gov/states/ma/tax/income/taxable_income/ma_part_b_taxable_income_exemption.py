@@ -27,7 +27,9 @@ class ma_part_b_taxable_income_exemption(Variable):
         blind_exemption = tax.exemptions.blind * count_blind
         # (1C) and (2C): Aged exemptions.
         age = person("age", period)
-        count_aged = tax_unit.sum(~dependent & (age >= tax.exemptions.aged.age))
+        count_aged = tax_unit.sum(
+            ~dependent & (age >= tax.exemptions.aged.age)
+        )
         aged_exemption = tax.exemptions.aged.amount * count_aged
         # (3): Dependent exemptions.
         count_dependents = tax_unit("tax_unit_dependents", period)

@@ -14,8 +14,12 @@ class american_opportunity_credit(Variable):
         education = parameters(period).gov.irs.credits.education
         aoc = education.american_opportunity_credit
         person = tax_unit.members
-        is_eligible = person("is_eligible_for_american_opportunity_credit", period)
-        tuition_expenses = person("qualified_tuition_expenses", period) * is_eligible
+        is_eligible = person(
+            "is_eligible_for_american_opportunity_credit", period
+        )
+        tuition_expenses = (
+            person("qualified_tuition_expenses", period) * is_eligible
+        )
         maximum_amount_per_student = aoc.amount.calc(tuition_expenses)
         maximum_amount = tax_unit.sum(maximum_amount_per_student)
         phase_out = tax_unit("education_credit_phase_out", period)

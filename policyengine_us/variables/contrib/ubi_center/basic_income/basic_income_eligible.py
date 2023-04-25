@@ -6,7 +6,9 @@ class basic_income_eligible(Variable):
     entity = TaxUnit
     label = "Basic income eligible"
     unit = USD
-    documentation = "Eligible for basic income payments based on adjusted gross income."
+    documentation = (
+        "Eligible for basic income payments based on adjusted gross income."
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

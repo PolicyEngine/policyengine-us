@@ -13,5 +13,7 @@ class ny_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         cdcc_max = tax_unit("ny_cdcc_max", period)
         expenses = tax_unit("cdcc_relevant_expenses", period)
-        cdcc_rate = tax_unit("ny_cdcc_rate", period) * tax_unit("cdcc_rate", period)
+        cdcc_rate = tax_unit("ny_cdcc_rate", period) * tax_unit(
+            "cdcc_rate", period
+        )
         return min_(cdcc_max, expenses * cdcc_rate)

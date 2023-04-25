@@ -31,5 +31,7 @@ class is_acp_eligible(Variable):
         # Cannot be simultaneously enrolled in Emergency Broadband Benefit.
         ebb_enrolled = spm_unit("ebb", period) > 0
         return (
-            categorically_eligible | fpg_eligible | lifeline_categorically_eligible
+            categorically_eligible
+            | fpg_eligible
+            | lifeline_categorically_eligible
         ) & ~ebb_enrolled

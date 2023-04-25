@@ -6,9 +6,7 @@ class eitc_phase_out_rate(Variable):
     entity = TaxUnit
     label = "EITC phase-out rate"
     unit = USD
-    documentation = (
-        "Percentage of earnings above the phase-out threshold that reduce the EITC."
-    )
+    documentation = "Percentage of earnings above the phase-out threshold that reduce the EITC."
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

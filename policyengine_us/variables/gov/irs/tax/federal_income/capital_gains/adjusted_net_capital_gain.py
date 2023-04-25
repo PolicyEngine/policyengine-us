@@ -6,9 +6,7 @@ class adjusted_net_capital_gain(Variable):
     entity = TaxUnit
     label = "Adjusted net capital gain"
     unit = USD
-    documentation = (
-        "The excess of net long-term capital gain over net short-term capital loss."
-    )
+    documentation = "The excess of net long-term capital gain over net short-term capital loss."
     definition_period = YEAR
     reference = dict(
         title="26 U.S. Code § 1(h)(3)",
@@ -24,15 +22,22 @@ class adjusted_net_capital_gain(Variable):
         # definition here, but it's a good enough approximation. See 26 U.S. Code § 1(h)(11)(B) for the
         # definition of 'net capital gain' for the above variable, and 26 U.S. Code § 1(h)(3) for the definition
         # of adjusted net capital gain (this variable).
-        qualified_dividend_income = add(tax_unit, period, ["qualified_dividend_income"])
-        unrecaptured_s_1250_gain = tax_unit("unrecaptured_section_1250_gain", period)
-        cg_28_pct_rate_gain = tax_unit("capital_gains_28_percent_rate_gain", period)
+        qualified_dividend_income = add(
+            tax_unit, period, ["qualified_dividend_income"]
+        )
+        unrecaptured_s_1250_gain = tax_unit(
+            "unrecaptured_section_1250_gain", period
+        )
+        cg_28_pct_rate_gain = tax_unit(
+            "capital_gains_28_percent_rate_gain", period
+        )
         net_gains_less_dividends = max_(
             0,
             net_capital_gain - qualified_dividend_income,
         )
         reduced_capital_gains = max_(
-            net_gains_less_dividends - (unrecaptured_s_1250_gain + cg_28_pct_rate_gain),
+            net_gains_less_dividends
+            - (unrecaptured_s_1250_gain + cg_28_pct_rate_gain),
             0,
         )
         return reduced_capital_gains + qualified_dividend_income

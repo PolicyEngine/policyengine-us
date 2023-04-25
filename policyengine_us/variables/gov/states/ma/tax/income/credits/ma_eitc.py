@@ -7,7 +7,9 @@ class ma_eitc(Variable):
     label = "MA EITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (h)
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (h)
+    )
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):

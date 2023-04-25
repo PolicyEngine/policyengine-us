@@ -12,7 +12,9 @@ class income_tax_main_rates(Variable):
     def formula(tax_unit, period, parameters):
         # compute taxable income that is taxed at the main rates
         full_taxable_income = tax_unit("taxable_income", period)
-        cg_exclusion = tax_unit("capital_gains_excluded_from_taxable_income", period)
+        cg_exclusion = tax_unit(
+            "capital_gains_excluded_from_taxable_income", period
+        )
         taxinc = max_(0, full_taxable_income - cg_exclusion)
         # compute tax using bracket rates and thresholds
         p = parameters(period).gov.irs.income

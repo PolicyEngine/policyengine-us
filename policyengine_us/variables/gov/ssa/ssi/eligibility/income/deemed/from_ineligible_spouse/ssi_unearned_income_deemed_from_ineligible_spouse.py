@@ -5,9 +5,7 @@ class ssi_unearned_income_deemed_from_ineligible_spouse(Variable):
     value_type = float
     entity = Person
     label = "SSI unearned income (deemed from ineligible spouse)"
-    documentation = (
-        "This is ignored if total income is under the SSI individual allowance."
-    )
+    documentation = "This is ignored if total income is under the SSI individual allowance."
     unit = USD
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/20/416.1163"

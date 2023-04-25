@@ -7,9 +7,7 @@ class or_itemized_deductions(Variable):
     label = "OR itemized deductions"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"  # 316.695 (1)(d)
-    )
+    reference = "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html"  # 316.695 (1)(d)
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):

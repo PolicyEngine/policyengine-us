@@ -55,7 +55,8 @@ class c09600(Variable):
             0,
             (
                 amt.exemption.amount[filing_status]
-                - phase_out.rate * max_(0, c62100 - phase_out.start[filing_status])
+                - phase_out.rate
+                * max_(0, c62100 - phase_out.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)

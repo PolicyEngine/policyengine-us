@@ -15,4 +15,6 @@ class or_kicker(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["or"].tax.income.credits.kicker
-        return p.percent * tax_unit("or_tax_before_credits_in_prior_year", period)
+        return p.percent * tax_unit(
+            "or_tax_before_credits_in_prior_year", period
+        )

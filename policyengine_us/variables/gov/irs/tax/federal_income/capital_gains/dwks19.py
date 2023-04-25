@@ -7,7 +7,9 @@ class dwks19(Variable):
     definition_period = YEAR
     label = "DWKS14"
     unit = USD
-    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
+    documentation = (
+        "search taxcalc/calcfunctions.py for how calculated and used"
+    )
 
     def formula(tax_unit, period, parameters):
         dwks14 = tax_unit("dwks14", period)

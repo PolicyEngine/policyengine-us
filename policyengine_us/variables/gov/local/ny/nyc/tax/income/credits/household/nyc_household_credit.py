@@ -35,9 +35,11 @@ class nyc_household_credit(Variable):
                 p.flat_amount.calc(federal_agi, right=True),
                 # Separate filers get an amount for each person in the tax
                 # unit, varying with AGI.
-                p.separate_per_dependent.calc(federal_agi, right=True) * tax_unit_size,
+                p.separate_per_dependent.calc(federal_agi, right=True)
+                * tax_unit_size,
             ],
             # Joint, head of household, and widow filers have a different
             # amount per person, varying with AGI.
-            default=p.other_per_dependent.calc(federal_agi, right=True) * tax_unit_size,
+            default=p.other_per_dependent.calc(federal_agi, right=True)
+            * tax_unit_size,
         )

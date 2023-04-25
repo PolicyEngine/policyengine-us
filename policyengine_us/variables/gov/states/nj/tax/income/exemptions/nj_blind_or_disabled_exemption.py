@@ -17,7 +17,9 @@ class nj_blind_or_disabled_exemption(Variable):
         joint = filing_status == filing_status.possible_values.JOINT
 
         # Then get the NJ blind ir disabled exemptions part of the parameter tree.
-        p = parameters(period).gov.states.nj.tax.income.exemptions.blind_or_disabled
+        p = parameters(
+            period
+        ).gov.states.nj.tax.income.exemptions.blind_or_disabled
 
         # Get the individual blind status and disabled.
         blind_head = tax_unit("blind_head", period)

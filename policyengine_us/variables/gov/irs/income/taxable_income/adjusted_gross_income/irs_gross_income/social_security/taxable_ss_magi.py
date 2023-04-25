@@ -33,7 +33,9 @@ class taxable_ss_magi(Variable):
         not_dependent = ~person("is_tax_unit_dependent", period)
         for source in income_sources_without_ss:
             # Add positive values only - losses are deducted later.
-            gross_income += not_dependent * max_(0, add(person, period, [source]))
+            gross_income += not_dependent * max_(
+                0, add(person, period, [source])
+            )
         gross_income = tax_unit.sum(gross_income)
         above_the_line_deductions = irs.ald.deductions
         revoked_deductions = ss_magi.revoked_deductions

@@ -25,7 +25,9 @@ class or_standard_deduction(Variable):
         claimable_dep_earned_amount = (
             earned_income + p.claimable_as_dependent.earned_income_addition
         )
-        tax_unit_dependent_elsewhere = tax_unit("tax_unit_dependent_elsewhere", period)
+        tax_unit_dependent_elsewhere = tax_unit(
+            "tax_unit_dependent_elsewhere", period
+        )
         # Set floor and ceiling around earned income plus additional amount.
         floored_claimable_dep_amount = max_(
             claimable_dep_earned_amount, claimable_dep_floor
@@ -43,7 +45,9 @@ class or_standard_deduction(Variable):
         blind_spouse = tax_unit("blind_spouse", period).astype(int)
         age_threshold = p.aged_or_blind.age
         aged_head = (tax_unit("age_head", period) >= age_threshold).astype(int)
-        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(int)
+        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(
+            int
+        )
         aged_blind_count = blind_head + blind_spouse + aged_head + aged_spouse
         amount_per_aged_blind = p.aged_or_blind.amount[filing_status]
         aged_blind_deduction = aged_blind_count * amount_per_aged_blind

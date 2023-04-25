@@ -31,7 +31,8 @@ class ut_ss_benefits_credit_max(Variable):
         filing_status = tax_unit("filing_status", period)
         phase_out_income = max_(
             0,
-            modified_agi - p.credits.ss_benefits.phase_out.threshold[filing_status],
+            modified_agi
+            - p.credits.ss_benefits.phase_out.threshold[filing_status],
         )  # Line 8
         phase_out_reduction = (
             phase_out_income * p.credits.ss_benefits.phase_out.rate

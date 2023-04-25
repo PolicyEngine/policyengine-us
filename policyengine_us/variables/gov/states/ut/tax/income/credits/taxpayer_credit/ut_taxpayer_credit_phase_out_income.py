@@ -6,7 +6,9 @@ class ut_taxpayer_credit_phase_out_income(Variable):
     entity = TaxUnit
     label = "Utah taxpayer credit phase-out income"
     unit = USD
-    documentation = "Income that reduces the Utah taxpayer credit. Form TC-40, line 18"
+    documentation = (
+        "Income that reduces the Utah taxpayer credit. Form TC-40, line 18"
+    )
     definition_period = YEAR
     defined_for = StateCode.UT
 

@@ -6,7 +6,9 @@ class per_vehicle_payment(Variable):
     entity = Person
     label = "Per-vehicle payment"
     unit = USD
-    documentation = "Payment to vehicle owners in respect of each owned vehicle."
+    documentation = (
+        "Payment to vehicle owners in respect of each owned vehicle."
+    )
     definition_period = YEAR
     defined_for = StateCode.CA
 

@@ -14,4 +14,6 @@ class has_disabled_spouse(Variable):
         spouse_disabled = person.tax_unit("spouse_is_disabled", period)
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        return married & ((is_head & spouse_disabled) | (is_spouse & head_disabled))
+        return married & (
+            (is_head & spouse_disabled) | (is_spouse & head_disabled)
+        )

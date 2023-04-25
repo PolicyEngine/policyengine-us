@@ -9,7 +9,9 @@ class residential_efficiency_electrification_rebate(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.doe.residential_efficiency_electrification_rebate
+        p = parameters(
+            period
+        ).gov.doe.residential_efficiency_electrification_rebate
         expenditures = tax_unit(
             "residential_efficiency_electrification_retrofit_expenditures",
             period,

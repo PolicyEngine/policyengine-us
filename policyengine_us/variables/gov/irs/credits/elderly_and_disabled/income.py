@@ -15,12 +15,16 @@ class section_22_income(Variable):
     entity = TaxUnit
     label = "Section 22 income"
     unit = USD
-    documentation = "Income upon which the elderly or disabled credit is applied"
+    documentation = (
+        "Income upon which the elderly or disabled credit is applied"
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/22"
 
     def formula(tax_unit, period, parameters):
-        elderly_disabled = parameters(period).gov.irs.credits.elderly_or_disabled
+        elderly_disabled = parameters(
+            period
+        ).gov.irs.credits.elderly_or_disabled
         # Calculate initial amount
         filing_status = tax_unit("filing_status", period)
         person = tax_unit.members
@@ -48,7 +52,9 @@ class section_22_income(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         num_elderly = tax_unit.sum(is_elderly & ~is_dependent)
         disability_income = person("total_disability_payments", period)
-        non_elderly_disability_income = tax_unit.sum(disability_income * ~is_elderly)
+        non_elderly_disability_income = tax_unit.sum(
+            disability_income * ~is_elderly
+        )
 
         cap = (
             num_elderly * elderly_disabled.amount.one_qualified
@@ -60,8 +66,12 @@ class section_22_income(Variable):
         taxable_pensions = add(tax_unit, period, ["taxable_pension_income"])
         non_taxable_pensions = total_pensions - taxable_pensions
         total_social_security = tax_unit("tax_unit_social_security", period)
-        taxable_social_security = tax_unit("tax_unit_taxable_social_security", period)
-        non_taxable_social_security = total_social_security - taxable_social_security
+        taxable_social_security = tax_unit(
+            "tax_unit_taxable_social_security", period
+        )
+        non_taxable_social_security = (
+            total_social_security - taxable_social_security
+        )
         capped_reduced_amount = (
             capped_amount - non_taxable_pensions - non_taxable_social_security
         )
@@ -70,6 +80,8 @@ class section_22_income(Variable):
         amount_over_phase_out = max_(
             0, agi - elderly_disabled.phase_out.threshold[filing_status]
         )
-        phase_out_reduction = elderly_disabled.phase_out.rate * amount_over_phase_out
+        phase_out_reduction = (
+            elderly_disabled.phase_out.rate * amount_over_phase_out
+        )
 
         return max_(0, capped_reduced_amount - phase_out_reduction)

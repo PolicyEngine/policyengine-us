@@ -12,7 +12,9 @@ class il_personal_exemption_eligibility_status(Variable):
     possible_values = ILPersonalExemptionEligibilityStatus
     default_value = ILPersonalExemptionEligibilityStatus.NOT_ELIGIBLE
     entity = TaxUnit
-    label = "Whether The Tax Unit Is Eligible For The Illinois Personal Exemption"
+    label = (
+        "Whether The Tax Unit Is Eligible For The Illinois Personal Exemption"
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
@@ -24,8 +26,8 @@ class il_personal_exemption_eligibility_status(Variable):
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
 
-        tax_unit_personal_eligibility_amount = personal_eligibility_amount * where(
-            joint, 2, 1
+        tax_unit_personal_eligibility_amount = (
+            personal_eligibility_amount * where(joint, 2, 1)
         )
 
         # Then, determine whether either the head or the spouse of the tax unit is claimable as a dependent in another unit.

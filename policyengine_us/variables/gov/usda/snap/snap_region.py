@@ -28,7 +28,10 @@ class snap_region(Variable):
             .map(
                 {
                     state_groups.AK: SNAPRegion.AK_URBAN,
-                    **{key: value for key, value in SNAPRegion._member_map_.items()},
+                    **{
+                        key: value
+                        for key, value in SNAPRegion._member_map_.items()
+                    },
                 }
             )
             .values

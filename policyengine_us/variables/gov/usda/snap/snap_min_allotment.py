@@ -6,7 +6,9 @@ class snap_min_allotment(Variable):
     entity = SPMUnit
     definition_period = YEAR
     label = "SNAP minimum allotment"
-    documentation = "Minimum allotment for SNAP based on household size and state"
+    documentation = (
+        "Minimum allotment for SNAP based on household size and state"
+    )
     unit = USD
 
     def formula(spm_unit, period, parameters):

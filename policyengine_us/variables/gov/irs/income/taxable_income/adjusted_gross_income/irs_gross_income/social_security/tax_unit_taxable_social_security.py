@@ -21,14 +21,18 @@ class tax_unit_taxable_social_security(Variable):
         # baseline), and that they would be mechanically the same parameter.
 
         ss_fraction = ss.rate.lower * gross_ss
-        modified_agi_plus_half_ss = tax_unit("taxable_ss_magi", period) + ss_fraction
+        modified_agi_plus_half_ss = (
+            tax_unit("taxable_ss_magi", period) + ss_fraction
+        )
         filing_status = tax_unit("filing_status", period)
 
         base_amount = ss.threshold.lower[filing_status]
         adjusted_base_amount = ss.threshold.upper[filing_status]
 
         under_first_threshold = modified_agi_plus_half_ss < base_amount
-        under_second_threshold = modified_agi_plus_half_ss < adjusted_base_amount
+        under_second_threshold = (
+            modified_agi_plus_half_ss < adjusted_base_amount
+        )
 
         excess_over_base = max_(0, modified_agi_plus_half_ss - base_amount)
         excess_over_adjusted_base = max_(

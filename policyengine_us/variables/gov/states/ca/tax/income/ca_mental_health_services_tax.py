@@ -12,5 +12,7 @@ class ca_mental_health_services_tax(Variable):
 
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("ca_taxable_income", period)
-        rate = parameters(period).gov.states.ca.tax.income.mental_health_services
+        rate = parameters(
+            period
+        ).gov.states.ca.tax.income.mental_health_services
         return rate.calc(taxable_income)

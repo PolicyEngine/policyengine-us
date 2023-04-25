@@ -16,9 +16,7 @@ class ccdf_age_group(Variable):
     label = "CCDF age group"
     definition_period = YEAR
 
-    reference = (
-        "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
-    )
+    reference = "https://ocfs.ny.gov/main/policies/external/ocfs_2019/LCM/19-OCFS-LCM-23.pdf"
 
     def formula(person, period, parameters):
         age = person("age", period)

@@ -10,7 +10,9 @@ class ma_dependent_care_credit(Variable):
     label = "MA dependent care credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
+    reference = (
+        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # (y)
+    )
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):

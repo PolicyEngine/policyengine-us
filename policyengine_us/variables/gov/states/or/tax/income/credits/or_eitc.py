@@ -24,5 +24,7 @@ class or_eitc(Variable):
         # Re-aggregate to the tax unit level.
         has_young_child = tax_unit.any(young_child)
         # Multiply by the relevant factor.
-        rate = where(has_young_child, p.match.has_young_child, p.match.no_young_child)
+        rate = where(
+            has_young_child, p.match.has_young_child, p.match.no_young_child
+        )
         return eitc * rate

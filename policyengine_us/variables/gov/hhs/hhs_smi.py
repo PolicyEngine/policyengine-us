@@ -13,9 +13,13 @@ class hhs_smi(Variable):
         size = spm_unit("spm_unit_size", period)
         state = spm_unit.household("state_code_str", period)
         four_person_smi = parameters(period).gov.hhs.smi.amount[state]
-        adjustment_mapping = parameters(period).gov.hhs.smi.household_size_adjustment
+        adjustment_mapping = parameters(
+            period
+        ).gov.hhs.smi.household_size_adjustment
         first_person_rate = adjustment_mapping.first_person
-        second_to_sixth_additional_rate = adjustment_mapping.second_to_sixth_person
+        second_to_sixth_additional_rate = (
+            adjustment_mapping.second_to_sixth_person
+        )
         seven_or_more_additional_rate = adjustment_mapping.additional_person
         size_adjustment = (
             first_person_rate

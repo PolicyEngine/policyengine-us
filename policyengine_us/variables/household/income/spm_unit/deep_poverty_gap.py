@@ -6,7 +6,9 @@ class deep_poverty_gap(Variable):
     entity = SPMUnit
     label = "deep poverty gap"
     unit = USD
-    documentation = "Difference between household income and deep poverty line."
+    documentation = (
+        "Difference between household income and deep poverty line."
+    )
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):

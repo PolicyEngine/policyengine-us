@@ -124,7 +124,9 @@ for state_name, state_code in tqdm(
     with open(DATA_FOLDER / f"{state_code}2020.pl.zip", "wb") as f:
         f.write(r.content)
     # Unzip the file
-    with zipfile.ZipFile(DATA_FOLDER / f"{state_code}2020.pl.zip", "r") as zip_ref:
+    with zipfile.ZipFile(
+        DATA_FOLDER / f"{state_code}2020.pl.zip", "r"
+    ) as zip_ref:
         zip_ref.extractall(DATA_FOLDER / f"{state_code}2020.pl")
     # Delete the zip file
     os.remove(DATA_FOLDER / f"{state_code}2020.pl.zip")

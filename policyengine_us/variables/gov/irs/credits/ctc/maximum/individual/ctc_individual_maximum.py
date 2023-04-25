@@ -6,7 +6,9 @@ class ctc_individual_maximum(Variable):
     entity = Person
     label = "CTC individual amount maximum"
     unit = USD
-    documentation = "The Child Tax Credit entitlement in respect of this person."
+    documentation = (
+        "The Child Tax Credit entitlement in respect of this person."
+    )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/24#a",

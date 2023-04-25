@@ -8,5 +8,7 @@ class is_ssi_aged(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        aged_threshold = parameters(period).gov.ssa.ssi.eligibility.aged_threshold
+        aged_threshold = parameters(
+            period
+        ).gov.ssa.ssi.eligibility.aged_threshold
         return person("age", period) >= aged_threshold

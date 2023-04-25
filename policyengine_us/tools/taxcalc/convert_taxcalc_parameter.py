@@ -49,7 +49,9 @@ if __name__ == "__main__":
         default=TAXCALC_PARAM_FILE,
         help="Path to the tax-calculator policy_current_law.json file.",
     )
-    parser.add_argument("parameter", help="The name of the parameter to convert")
+    parser.add_argument(
+        "parameter", help="The name of the parameter to convert"
+    )
     args = parser.parse_args()
 
     with open(args.tc_params, "r") as f:

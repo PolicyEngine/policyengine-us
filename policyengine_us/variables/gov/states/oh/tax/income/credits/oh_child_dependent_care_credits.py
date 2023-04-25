@@ -13,12 +13,12 @@ class oh_child_dependent_care_credits(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        agi_state_limit = parameters(
+        agi_upper_limit = parameters(
             period
-        ).gov.states.oh.tax.income.credits.child.agi_state_limit
-        age_federal_limit = parameters(
+        ).gov.states.oh.tax.income.credits.child.agi_upper_limit
+        agi_partial_credit_limit = parameters(
             period
-        ).gov.states.oh.tax.income.credits.child.agi_federal_limit
+        ).gov.states.oh.tax.income.credits.child.agi_partial_credit_limit
         oh_cdcc_fraction = parameters(
             period
         ).gov.states.oh.tax.income.credits.child.cdcc_fraction
@@ -26,7 +26,7 @@ class oh_child_dependent_care_credits(Variable):
         agi = tax_unit("oh_agi", period)
         us_cdcc = tax_unit("cdcc", period)
 
-        oh_eligible = age_federal_limit <= agi < agi_state_limit
-        us_eligible = agi < age_federal_limit
+        oh_eligible = agi_partial_credit_limit <= agi < agi_upper_limit
+        us_eligible = agi < agi_partial_credit_limit
 
         return (oh_eligible * oh_cdcc_fraction + us_eligible) * us_cdcc

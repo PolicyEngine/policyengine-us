@@ -7,7 +7,9 @@ class in_unemployment_compensation_deduction(Variable):
     label = "IN Unemployment compensation deduction"
     unit = USD
     definition_period = YEAR
-    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-10"
+    reference = (
+        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-2-10"
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["in"].tax.income.deductions
@@ -16,7 +18,9 @@ class in_unemployment_compensation_deduction(Variable):
         )
         federal_agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        agi_reduction = p.unemployment_compensation.agi_reduction[filing_status]
+        agi_reduction = p.unemployment_compensation.agi_reduction[
+            filing_status
+        ]
         reduced_agi = max(0, federal_agi - agi_reduction)
         reduced_agi_haircut = p.unemployment_compensation.reduced_agi_haircut
         in_taxable_unemployment_compensation = min(

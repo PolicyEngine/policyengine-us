@@ -13,7 +13,9 @@ class dc_tanf_resources_eligible(Variable):
         p = parameters(period).gov.states.dc.dhs.tanf.resource_limit
         person = spm_unit.members
         # Check if the household has at least one elderly member.
-        has_elderly = spm_unit.any(person("age", period) >= p.elderly_age_threshold)
+        has_elderly = spm_unit.any(
+            person("age", period) >= p.elderly_age_threshold
+        )
         # Check if the household has at least one disabled member.
         has_disabled = spm_unit.any(person("is_disabled", period))
         # Look up resource limit by the condition.

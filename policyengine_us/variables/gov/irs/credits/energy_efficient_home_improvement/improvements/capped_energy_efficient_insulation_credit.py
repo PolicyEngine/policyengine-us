@@ -13,13 +13,17 @@ class capped_energy_efficient_insulation_credit(Variable):
         pre_rebate_expenditure = tax_unit(
             "energy_efficient_insulation_expenditures", period
         )
-        p = parameters(period).gov.irs.credits.energy_efficient_home_improvement
+        p = parameters(
+            period
+        ).gov.irs.credits.energy_efficient_home_improvement
         # NB: We assume that the credit is based on after-rebate expenditures,
         # where rebates are per-item before the total rebate cap is applied.
         # We also assume all rebates for insulation, air sealing, and ventilation
         # are for insulation. Otherwise would require allocating the rebate
         # across subcategories.
-        rebate = tax_unit("capped_insulation_air_sealing_ventilation_rebate", period)
+        rebate = tax_unit(
+            "capped_insulation_air_sealing_ventilation_rebate", period
+        )
         # Cap at zero in case they have a rebate from air sealing and ventilation
         # but no insulation expenditures.
         post_rebate_expenditure = max_(0, pre_rebate_expenditure - rebate)

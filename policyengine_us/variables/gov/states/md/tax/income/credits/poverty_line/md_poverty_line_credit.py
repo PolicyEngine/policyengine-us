@@ -18,12 +18,15 @@ class md_poverty_line_credit(Variable):
         # of this section equals the lesser of:
         # (1) the State income tax determined after subtracting the credit
         # allowed under § 10–704(b)(1) of this subtitle; or
-        income_tax_before_credits = tax_unit("md_income_tax_before_credits", period)
+        income_tax_before_credits = tax_unit(
+            "md_income_tax_before_credits", period
+        )
         md_non_single_childless_non_refundable_eitc = tax_unit(
             "md_non_single_childless_non_refundable_eitc", period
         )
         tax_after_non_refundable_eitc = (
-            income_tax_before_credits - md_non_single_childless_non_refundable_eitc
+            income_tax_before_credits
+            - md_non_single_childless_non_refundable_eitc
         )
         # (2)    an amount equal to 5% of the eligible low income taxpayer’s
         # earned income, as defined under § 32(c)(2) of the Internal Revenue
@@ -33,5 +36,7 @@ class md_poverty_line_credit(Variable):
         ).gov.states.md.tax.income.credits.poverty_line.earned_income_share
         earnings = tax_unit("tax_unit_earned_income", period)
         earnings_portion = earnings * rate
-        amount_if_eligible = min_(tax_after_non_refundable_eitc, earnings_portion)
+        amount_if_eligible = min_(
+            tax_after_non_refundable_eitc, earnings_portion
+        )
         return amount_if_eligible * eligible

@@ -7,9 +7,7 @@ class me_eitc(Variable):
     label = "Maine EITC"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-S.html"
-    )
+    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-S.html"
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):

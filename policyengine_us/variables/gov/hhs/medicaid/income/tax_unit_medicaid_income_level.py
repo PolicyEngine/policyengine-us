@@ -6,7 +6,9 @@ class tax_unit_medicaid_income_level(Variable):
     entity = TaxUnit
     label = "Medicaid income level"
     unit = "/1"
-    documentation = "Income for Medicaid as a percentage of the federal poverty line."
+    documentation = (
+        "Income for Medicaid as a percentage of the federal poverty line."
+    )
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

@@ -12,7 +12,9 @@ class maximum_state_supplement(Variable):
         marital_unit = person.marital_unit
         eligible = person("is_ssi_eligible_individual", period)
         state_code = person.household("state_code_str", period)
-        living_arrangement = person.household("state_living_arrangement", period)
+        living_arrangement = person.household(
+            "state_living_arrangement", period
+        )
         ss_amounts = parameters(period).gov.ssa.state_supplement.amount
         amounts = ss_amounts[state_code][living_arrangement]
         is_blind = person("is_blind", period)

@@ -8,9 +8,7 @@ class nyc_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "in_nyc"
-    reference = (
-        "https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=16"
-    )
+    reference = "https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=16"
     adds = ["ny_taxable_income"]
     # If had contribution(s) to Charitable Gifts Trust Fund accounts AND
     # itemized those contributions, would subtract the contribution(s)

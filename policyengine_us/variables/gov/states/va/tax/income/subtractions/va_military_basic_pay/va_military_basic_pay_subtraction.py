@@ -8,11 +8,15 @@ class va_military_basic_pay_subtraction(Variable):
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
-    reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+    reference = (
+        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.va.tax.income.subtractions.military_basic_pay
+        p = parameters(
+            period
+        ).gov.states.va.tax.income.subtractions.military_basic_pay
         # Compute subtractable military pay for head and spouse separately.
         military_pay = person("military_basic_pay", period)
         # Subtraction phases in and then out dollar for dollar with respect to military pay, at a given threshold.

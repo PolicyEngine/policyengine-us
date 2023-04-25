@@ -6,9 +6,7 @@ class deep_poverty_line(Variable):
     entity = SPMUnit
     label = "deep poverty line"
     unit = USD
-    documentation = (
-        "Income threshold below which a household is considered to be in deep poverty."
-    )
+    documentation = "Income threshold below which a household is considered to be in deep poverty."
     definition_period = YEAR
 
     def formula(spm_unit, period, parameters):

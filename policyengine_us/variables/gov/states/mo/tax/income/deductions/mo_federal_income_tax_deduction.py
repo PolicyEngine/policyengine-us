@@ -17,7 +17,9 @@ class mo_federal_income_tax_deduction(Variable):
         # Deduct a capped share of federal income tax liability.
         # Ignore certain refundable credits: recovery rebates and EITC.
         # See #1528 for uncertainty around these credits.
-        p = parameters(period).gov.states.mo.tax.income.deductions.federal_income_tax
+        p = parameters(
+            period
+        ).gov.states.mo.tax.income.deductions.federal_income_tax
         uncapped_federal_income_tax_ignoring_credits = add(
             tax_unit, period, ["income_tax"] + p.ignored_credits
         )

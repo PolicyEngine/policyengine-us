@@ -6,7 +6,9 @@ class dwks10(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "DWKS10"
-    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
+    documentation = (
+        "search taxcalc/calcfunctions.py for how calculated and used"
+    )
     unit = USD
 
     def formula(tax_unit, period, parameters):

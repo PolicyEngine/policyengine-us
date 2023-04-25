@@ -28,7 +28,9 @@ class ny_ctc(Variable):
             # Initialise pre-TCJA CTC branch and parameters.
             simulation = tax_unit.simulation
             pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
-            pre_tcja_ctc.tax_benefit_system = simulation.tax_benefit_system.clone()
+            pre_tcja_ctc.tax_benefit_system = (
+                simulation.tax_benefit_system.clone()
+            )
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
             # Update parameters to pre-TCJA values.
             for (
@@ -45,7 +47,9 @@ class ny_ctc(Variable):
                 if "ctc" in variable:
                     pre_tcja_ctc.delete_arrays(variable)
             # Calculate pre-TCJA CTC.
-            maximum_ctc = pre_tcja_ctc.calculate("ctc_child_individual_maximum", period)
+            maximum_ctc = pre_tcja_ctc.calculate(
+                "ctc_child_individual_maximum", period
+            )
             meets_ny_minimum_age = age >= p.minimum_age
             pre_tcja_ctc.set_input(
                 "ctc_individual_maximum",
