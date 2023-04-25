@@ -3080,3 +3080,15 @@
     added:
     - Legal code reference for Kansas Tax Credits
   date: 2023-04-24 16:18:02
+- bump: minor
+  changes:
+    added:
+    - Populate is_nyc from the CPS.
+    changed:
+    - Rename fips to state_fips.
+  date: 2023-04-24 21:15:38
+- bump: patch
+  changes:
+    added:
+    - Edited NYC EITC variable label.
+  date: 2023-04-25 04:39:43
