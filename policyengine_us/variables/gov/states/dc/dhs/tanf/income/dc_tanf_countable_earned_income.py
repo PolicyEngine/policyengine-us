@@ -14,9 +14,7 @@ class dc_tanf_countable_earned_income(Variable):
         p = parameters(period).gov.states.dc.dhs.tanf.income.earned_deduction
         enrolled = spm_unit("is_tanf_enrolled", period)
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
-        earnings_after_flat_exclusion = max_(
-            gross_earnings - annual_flat_exclusion, 0
-        )
+        earnings_after_flat_exclusion = max_(gross_earnings - annual_flat_exclusion, 0)
         return where(
             enrolled,
             # For enrolled recipients, DC applies a flat and a percent deduction.

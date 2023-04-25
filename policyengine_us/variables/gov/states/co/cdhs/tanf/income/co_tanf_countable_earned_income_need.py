@@ -10,9 +10,7 @@ class co_tanf_countable_earned_income_need(Variable):
     defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        gross_earnings = spm_unit(
-            "co_tanf_countable_gross_earned_income", period
-        )
+        gross_earnings = spm_unit("co_tanf_countable_gross_earned_income", period)
         p = parameters(period).gov.states.co.cdhs.tanf.income.earned_exclusion
         enrolled = spm_unit("is_tanf_enrolled", period)
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR

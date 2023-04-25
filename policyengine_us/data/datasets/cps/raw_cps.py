@@ -132,16 +132,12 @@ class RawCPS(Dataset):
         }
 
         if self.time_period not in CPS_URL_BY_YEAR:
-            raise ValueError(
-                f"No raw CPS data URL known for year {self.time_period}."
-            )
+            raise ValueError(f"No raw CPS data URL known for year {self.time_period}.")
 
         url = CPS_URL_BY_YEAR[self.time_period]
 
         response = requests.get(url, stream=True)
-        total_size_in_bytes = int(
-            response.headers.get("content-length", 200e6)
-        )
+        total_size_in_bytes = int(response.headers.get("content-length", 200e6))
         progress_bar = tqdm(
             total=total_size_in_bytes,
             unit="iB",
@@ -149,13 +145,9 @@ class RawCPS(Dataset):
             desc="Downloading ASEC",
         )
         if response.status_code == 404:
-            raise FileNotFoundError(
-                "Received a 404 response when fetching the data."
-            )
+            raise FileNotFoundError("Received a 404 response when fetching the data.")
         try:
-            with BytesIO() as file, pd.HDFStore(
-                self.file_path, mode="w"
-            ) as storage:
+            with BytesIO() as file, pd.HDFStore(self.file_path, mode="w") as storage:
                 content_length_actual = 0
                 for data in response.iter_content(int(1e6)):
                     progress_bar.update(len(data))
@@ -168,9 +160,7 @@ class RawCPS(Dataset):
                 with zipfile.open(f"pppub{file_year_code}.csv") as f:
                     storage["person"] = pd.read_csv(
                         f,
-                        usecols=PERSON_COLUMNS
-                        + SPM_UNIT_COLUMNS
-                        + TAX_UNIT_COLUMNS,
+                        usecols=PERSON_COLUMNS + SPM_UNIT_COLUMNS + TAX_UNIT_COLUMNS,
                     ).fillna(0)
                     person = storage["person"]
                 with zipfile.open(f"ffpub{file_year_code}.csv") as f:
@@ -183,9 +173,7 @@ class RawCPS(Dataset):
                     person_household_id = person.PH_SEQ
                     household = pd.read_csv(f).fillna(0)
                     household_id = household.H_SEQ
-                    household = household[
-                        household_id.isin(person_household_id)
-                    ]
+                    household = household[household_id.isin(person_household_id)]
                     storage["household"] = household
                 storage["tax_unit"] = RawCPS._create_tax_unit_table(person)
                 storage["spm_unit"] = RawCPS._create_spm_unit_table(person)

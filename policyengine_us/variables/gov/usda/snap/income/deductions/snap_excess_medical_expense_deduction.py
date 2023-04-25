@@ -6,9 +6,7 @@ class snap_excess_medical_expense_deduction(Variable):
     entity = SPMUnit
     label = "SNAP excess medical expense deduction"
     unit = USD
-    documentation = (
-        "Deduction from SNAP gross income for excess medical expenses"
-    )
+    documentation = "Deduction from SNAP gross income for excess medical expenses"
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/7/2014#e_5"
 
@@ -20,9 +18,7 @@ class snap_excess_medical_expense_deduction(Variable):
         disabled = person("is_usda_disabled", period)
         moop = person("medical_out_of_pocket_expenses", period)
         elderly_disabled_moop = spm_unit.sum(moop * (elderly | disabled))
-        p = parameters(
-            period
-        ).gov.usda.snap.income.deductions.excess_medical_expense
+        p = parameters(period).gov.usda.snap.income.deductions.excess_medical_expense
         disregard = p.disregard * MONTHS_IN_YEAR
         excess = max_(elderly_disabled_moop - disregard, 0)
         # Calculate standard medical deduction (SMD).

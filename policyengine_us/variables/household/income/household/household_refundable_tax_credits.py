@@ -32,9 +32,7 @@ class household_refundable_tax_credits(Variable):
         p = params.gov.contrib.ubi_center.flat_tax
         if p.abolish_federal_income_tax:
             added_components = [
-                c
-                for c in added_components
-                if c != "income_tax_refundable_credits"
+                c for c in added_components if c != "income_tax_refundable_credits"
             ]
         if params.simulation.reported_state_income_tax:
             added_components = [

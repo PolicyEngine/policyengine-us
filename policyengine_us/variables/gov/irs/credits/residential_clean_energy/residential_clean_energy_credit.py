@@ -19,15 +19,11 @@ class residential_clean_energy_credit(Variable):
         )
         # Get qualifying expenditures for fuel cell.
         # These are capped based on the kilowatts.
-        fuel_cell_expenditures = tax_unit(
-            "fuel_cell_property_expenditures", period
-        )
+        fuel_cell_expenditures = tax_unit("fuel_cell_property_expenditures", period)
         fuel_cell_cap = p.fuel_cell_cap_per_kw * tax_unit(
             "fuel_cell_property_capacity", period
         )
-        capped_fuel_cell_expenditures = min_(
-            fuel_cell_expenditures, fuel_cell_cap
-        )
+        capped_fuel_cell_expenditures = min_(fuel_cell_expenditures, fuel_cell_cap)
         qualifying_expenditures = (
             expenditures_less_fuel_cell + capped_fuel_cell_expenditures
         )

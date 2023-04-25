@@ -22,9 +22,7 @@ class taxable_income_less_qbid(Variable):
             if deduction != "qualified_business_income_deduction"
         ]
         ded_value_if_itemizing = add(tax_unit, period, ded_if_itemizing)
-        ded_value_if_not_itemizing = add(
-            tax_unit, period, ded_if_not_itemizing
-        )
+        ded_value_if_not_itemizing = add(tax_unit, period, ded_if_not_itemizing)
         ded_value = max_(ded_value_if_itemizing, ded_value_if_not_itemizing)
         return max_(
             0,

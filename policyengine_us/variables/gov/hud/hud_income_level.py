@@ -37,8 +37,7 @@ class hud_income_level(Variable):
             + size_limit_excess.MODERATE * size_exceeding_4
         )
         low_threshold = (
-            size_limit.LOW[size_capped_at_4]
-            + size_limit_excess.LOW * size_exceeding_4
+            size_limit.LOW[size_capped_at_4] + size_limit_excess.LOW * size_exceeding_4
         )
         very_low_threshold = (
             size_limit.VERY_LOW[size_capped_at_4]

@@ -46,7 +46,5 @@ zip_code["population"] = (
     zcta.set_index("zcta").population[zip_code.zcta].values
     / zip_code.groupby("zcta").zip_code.count()[zip_code.zcta].values
 )
-zip_code["county"] = (
-    zcta_to_county.set_index("zcta").county[zip_code.zcta].values
-)
+zip_code["county"] = zcta_to_county.set_index("zcta").county[zip_code.zcta].values
 zip_code.to_csv("zip_codes.csv", compression="gzip")

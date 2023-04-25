@@ -7,7 +7,9 @@ class ecpa_filer_credit(Variable):
     definition_period = YEAR
     unit = USD
     label = "End Child Poverty Act Filer Credit"
-    reference = "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
+    reference = (
+        "https://tlaib.house.gov/sites/tlaib.house.gov/files/EndChildPovertyAct.pdf"
+    )
 
     def formula_2022(tax_unit, period, parameters):
         # Filer credit.

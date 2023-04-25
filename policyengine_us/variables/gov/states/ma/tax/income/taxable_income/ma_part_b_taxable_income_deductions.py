@@ -48,9 +48,4 @@ class ma_part_b_taxable_income_deductions(Variable):
         )
         # (B)(a)(13): Charitable contributions deduction.
         charitable_deduction = tax_unit("charitable_deduction", period)
-        return (
-            fica
-            + bank_interest_deduction
-            + rent_deduction
-            + charitable_deduction
-        )
+        return fica + bank_interest_deduction + rent_deduction + charitable_deduction

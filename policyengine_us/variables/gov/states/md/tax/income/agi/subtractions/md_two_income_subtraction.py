@@ -23,9 +23,7 @@ class md_two_income_subtraction(Variable):
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         head_gross_income = tax_unit.sum(where(is_head, gross_income, 0))
-        couple_gross_income = tax_unit.sum(
-            where(is_head | is_spouse, gross_income, 0)
-        )
+        couple_gross_income = tax_unit.sum(where(is_head | is_spouse, gross_income, 0))
         head_frac = where(
             couple_gross_income > 0, head_gross_income / couple_gross_income, 1
         )

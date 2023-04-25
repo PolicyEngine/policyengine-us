@@ -8,13 +8,13 @@ class nj_child_tax_credit(Variable):
     documentation = "New Jersey Child Tax Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45"
+    reference = (
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.credits.nj_child_tax_credit
+        p = parameters(period).gov.states.nj.tax.income.credits.nj_child_tax_credit
 
         # Get Rate for taxable income
         taxable_income = tax_unit("nj_taxable_income", period)
@@ -30,9 +30,7 @@ class nj_child_tax_credit(Variable):
 
         # Exclude married filing separately filers.
         filing_status = tax_unit("filing_status", period)
-        filing_eligible = (
-            filing_status != filing_status.possible_values.SEPARATE
-        )
+        filing_eligible = filing_status != filing_status.possible_values.SEPARATE
 
         # Calculate total child tax credit
         return count_eligible * rate * filing_eligible

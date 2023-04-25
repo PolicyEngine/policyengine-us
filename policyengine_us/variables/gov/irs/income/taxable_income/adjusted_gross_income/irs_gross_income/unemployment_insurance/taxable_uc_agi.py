@@ -6,9 +6,7 @@ class taxable_uc_agi(Variable):
     entity = TaxUnit
     label = "Taxable unemployment compensation for SS adjusted gross income"
     unit = USD
-    documentation = (
-        "Income used to determine taxability of unemployment compensation."
-    )
+    documentation = "Income used to determine taxability of unemployment compensation."
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/85"
 
@@ -25,9 +23,7 @@ class taxable_uc_agi(Variable):
         not_dependent = ~person("is_tax_unit_dependent", period)
         for source in income_sources_without_ss:
             # Add positive values only - losses are deducted later.
-            gross_income += not_dependent * max_(
-                0, add(person, period, [source])
-            )
+            gross_income += not_dependent * max_(0, add(person, period, [source]))
         gross_income = tax_unit.sum(gross_income)
         above_the_line_deductions = irs.ald.deductions
         total_deductions = add(tax_unit, period, above_the_line_deductions)

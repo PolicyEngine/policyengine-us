@@ -12,9 +12,7 @@ class is_in_medicaid_medically_needy_category(Variable):
         mn_categories = parameters(
             period
         ).gov.hhs.medicaid.eligibility.categories.medically_needy.categories
-        aged_threshold = parameters(
-            period
-        ).gov.ssa.ssi.eligibility.aged_threshold
+        aged_threshold = parameters(period).gov.ssa.ssi.eligibility.aged_threshold
         is_child = any_(person, period, mn_categories.child.child_categories)
         is_disabled = person("is_ssi_disabled", period)
         is_senior = person("age", period) >= aged_threshold

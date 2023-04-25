@@ -8,7 +8,9 @@ class nj_taxable_income(Variable):
     unit = USD
     documentation = "NJ AGI less taxable income deductions"
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3-1/"
+    reference = (
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3-1/"
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):

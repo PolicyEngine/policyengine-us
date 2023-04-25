@@ -13,7 +13,5 @@ class co_eitc(Variable):
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("earned_income_tax_credit", period)
         eligible = tax_unit("eitc_eligible", period)
-        match_percent = parameters(
-            period
-        ).gov.states.co.tax.income.credits.eitc.match
+        match_percent = parameters(period).gov.states.co.tax.income.credits.eitc.match
         return where(eligible, federal_eitc * match_percent, 0)

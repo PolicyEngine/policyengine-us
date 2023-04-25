@@ -6,11 +6,11 @@ class in_qualifying_child_count(Variable):
     entity = TaxUnit
     label = "IN qualifying dependent child count"
     unit = "child"
-    documentation = (
-        "Number of qualifying children for the IN additional exemption."
-    )
+    documentation = "Number of qualifying children for the IN additional exemption."
     definition_period = YEAR
-    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (5)(B)(i)
+    reference = (
+        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (5)(B)(i)
+    )
     defined_for = StateCode.IN
 
     adds = ["in_is_qualifying_dependent_child"]

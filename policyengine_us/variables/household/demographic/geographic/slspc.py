@@ -16,10 +16,7 @@ class second_lowest_silver_plan_cost(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation: Simulation = tax_unit.simulation
-        if (
-            simulation.get_holder("reported_slspc").get_array(period)
-            is not None
-        ):
+        if simulation.get_holder("reported_slspc").get_array(period) is not None:
             # If the user has provided a value for the second-lowest silver plan
             # cost, use that.
             return simulation.calculate("reported_slspc", period)
@@ -38,16 +35,16 @@ class second_lowest_silver_plan_cost(Variable):
                 medicaid_parameters,
                 tax_unit.simulation.tax_benefit_system.variables,
             )
-            parameter_tree.gov.hhs.medicaid.add_child(
-                "geography", medicaid_parameters
-            )
+            parameter_tree.gov.hhs.medicaid.add_child("geography", medicaid_parameters)
         person = tax_unit.members
         household = person.household
         area = household("medicaid_rating_area", period)
         state = household("state_code_str", period)
         age = person("age", period)
-        slspc = parameter_tree.gov.hhs.medicaid.geography.second_lowest_silver_plan_cost(
-            period
+        slspc = (
+            parameter_tree.gov.hhs.medicaid.geography.second_lowest_silver_plan_cost(
+                period
+            )
         )
         age_code = select(
             [

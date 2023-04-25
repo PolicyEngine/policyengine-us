@@ -5,9 +5,7 @@ class employee_medicare_tax(Variable):
     value_type = float
     entity = Person
     label = "employee-side health insurance payroll tax"
-    documentation = (
-        "Total liability for employee-side health insurance payroll tax."
-    )
+    documentation = "Total liability for employee-side health insurance payroll tax."
     definition_period = YEAR
     unit = USD
 

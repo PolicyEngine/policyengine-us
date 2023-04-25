@@ -27,9 +27,7 @@ class tax_unit_itemizes(Variable):
         ]
         filing_status = tax_unit("filing_status", period)
         salt_cap = ded.itemized.salt_and_real_estate.cap[filing_status]
-        itemized_deductions = (
-            add(tax_unit, period, deductions_if_itemizing) + salt_cap
-        )
+        itemized_deductions = add(tax_unit, period, deductions_if_itemizing) + salt_cap
         deductions_if_not_itemizing = tax_unit(
             "standard_deduction", period
         )  # Ignore QBID here, it requires SALT.
@@ -37,7 +35,5 @@ class tax_unit_itemizes(Variable):
             return False
 
         tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
-        tax_if_not_itemizing = tax_unit(
-            "tax_liability_if_not_itemizing", period
-        )
+        tax_if_not_itemizing = tax_unit("tax_liability_if_not_itemizing", period)
         return tax_if_itemizing < tax_if_not_itemizing

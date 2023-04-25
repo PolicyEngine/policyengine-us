@@ -42,9 +42,7 @@ def variable_alias(name: str, variable_cls: type) -> type:
     Copy a variable class and return a new class.
     """
     class_dict = dict(variable_cls.__dict__)
-    class_dict["formula"] = lambda entity, period: entity(
-        variable_cls.__name__, period
-    )
+    class_dict["formula"] = lambda entity, period: entity(variable_cls.__name__, period)
     return type(
         name,
         variable_cls.__bases__,
@@ -57,9 +55,7 @@ def taxcalc_read_only_variable(name: str, variable_cls: type) -> type:
     Copy a variable class and return a new class for a tax-calc variable.
     """
     class_dict = dict(variable_cls.__dict__)
-    class_dict["formula"] = lambda entity, period: entity(
-        variable_cls.__name__, period
-    )
+    class_dict["formula"] = lambda entity, period: entity(variable_cls.__name__, period)
     return type(
         name,
         (Variable,),
@@ -108,18 +104,12 @@ def get_next_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:
     Return the next threshold in the sequence of thresholds.
     """
     t = np.array(thresholds)
-    return t[
-        min_((t <= values.reshape((1, len(values))).T).sum(axis=1), len(t) - 1)
-    ]
+    return t[min_((t <= values.reshape((1, len(values))).T).sum(axis=1), len(t) - 1)]
 
 
-def get_previous_threshold(
-    values: ArrayLike, thresholds: ArrayLike
-) -> ArrayLike:
+def get_previous_threshold(values: ArrayLike, thresholds: ArrayLike) -> ArrayLike:
     """
     Return the previous threshold in the sequence of thresholds.
     """
     t = np.array(thresholds)
-    return t[
-        max_((t <= values.reshape((1, len(values))).T).sum(axis=1) - 1, 0)
-    ]
+    return t[max_((t <= values.reshape((1, len(values))).T).sum(axis=1) - 1, 0)]

@@ -15,9 +15,7 @@ class capital_gains_excluded_from_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         net_capital_gain = tax_unit("net_capital_gain", period)
-        adjusted_net_capital_gain = tax_unit(
-            "adjusted_net_capital_gain", period
-        )
+        adjusted_net_capital_gain = tax_unit("adjusted_net_capital_gain", period)
         taxable_income = tax_unit("taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         cg = parameters(period).gov.irs.capital_gains.brackets

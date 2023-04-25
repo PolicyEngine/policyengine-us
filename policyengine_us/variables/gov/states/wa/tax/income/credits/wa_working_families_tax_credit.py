@@ -26,9 +26,7 @@ class wa_working_families_tax_credit(Variable):
         # The legislative analysis clarifies that this refers to "federal maximum AGI"
         # https://lawfilesext.leg.wa.gov/biennium/2021-22/Pdf/Bill%20Reports/House/1297-S.E%20HBR%20FBR%2021.pdf?q=20220706071752
         eitc_agi_limit = tax_unit("eitc_agi_limit", period)
-        phase_out_start_reduction = p.phase_out.start_below_eitc.calc(
-            eitc_child_count
-        )
+        phase_out_start_reduction = p.phase_out.start_below_eitc.calc(eitc_child_count)
         phase_out_start = eitc_agi_limit - phase_out_start_reduction
         # The phase-out rates are hard-coded in the legal code, but HB 1888 (2021-22)
         # instructs DOR to revise it to get to zero by the EITC AGI limit.

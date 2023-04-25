@@ -22,8 +22,7 @@ class standard(Variable):
         initial_standard = basic_stded + extra_stded
         # Separate filers get zero if their spouse itemizes.
         return where(
-            (filing_status == filing_statuses.SEPARATE)
-            & separate_filer_itemizes,
+            (filing_status == filing_statuses.SEPARATE) & separate_filer_itemizes,
             0,
             initial_standard,
         )

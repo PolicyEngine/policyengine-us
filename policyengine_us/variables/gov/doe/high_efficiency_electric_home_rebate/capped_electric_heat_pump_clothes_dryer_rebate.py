@@ -13,9 +13,7 @@ class capped_electric_heat_pump_clothes_dryer_rebate(Variable):
         percent_covered = tax_unit(
             "high_efficiency_electric_home_rebate_percent_covered", period
         )
-        expenditures = tax_unit(
-            "electric_heat_pump_clothes_dryer_expenditures", period
-        )
+        expenditures = tax_unit("electric_heat_pump_clothes_dryer_expenditures", period)
         cap = parameters(
             period
         ).gov.doe.high_efficiency_electric_home_rebate.cap.electric_heat_pump_clothes_dryer

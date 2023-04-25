@@ -7,7 +7,9 @@ class al_standard_deduction(Variable):
     label = "Alabama standard deduction"
     unit = USD
     # The Code of Alabama 1975 Section 40-18-15 (b)(4).
-    documentation = "https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
+    documentation = (
+        "https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm"
+    )
     definition_period = YEAR
     defined_for = StateCode.AL
 

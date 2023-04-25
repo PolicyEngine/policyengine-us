@@ -13,9 +13,7 @@ class ny_tanf_countable_earned_income(Variable):
         # Get gross earned income.
         gross_earned_income = spm_unit("ny_tanf_gross_earned_income", period)
         # Multiply by 100% minus the EID.
-        p = parameters(
-            period
-        ).gov.states.ny.otda.tanf.income.earned_income_deduction
+        p = parameters(period).gov.states.ny.otda.tanf.income.earned_income_deduction
         # https://otda.ny.gov/policy/gis/2022/22DC085.pdf Section 2
         # Effective October 1, 2022, the EID will be applied prior to the work expense disregard.
         return max_(

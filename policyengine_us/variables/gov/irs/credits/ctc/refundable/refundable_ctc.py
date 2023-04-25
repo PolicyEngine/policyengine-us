@@ -35,12 +35,8 @@ class refundable_ctc(Variable):
         # First, we find tax_increase:
 
         earnings = tax_unit("tax_unit_earned_income", period)
-        earnings_over_threshold = max_(
-            0, earnings - ctc.refundable.phase_in.threshold
-        )
-        relevant_earnings = (
-            earnings_over_threshold * ctc.refundable.phase_in.rate
-        )
+        earnings_over_threshold = max_(0, earnings - ctc.refundable.phase_in.threshold)
+        relevant_earnings = earnings_over_threshold * ctc.refundable.phase_in.rate
 
         # Compute "Social Security taxes" as defined in the US Code for the ACTC.
         # This includes OASDI and Medicare payroll taxes, as well as half
@@ -69,12 +65,8 @@ class refundable_ctc(Variable):
         )
         limiting_tax = tax_unit("ctc_limiting_tax_liability", period)
         ctc_capped_by_tax = min_(total_ctc, limiting_tax)
-        ctc_capped_by_increased_tax = min_(
-            total_ctc, limiting_tax + tax_increase
-        )
-        amount_ctc_would_increase = (
-            ctc_capped_by_increased_tax - ctc_capped_by_tax
-        )
+        ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + tax_increase)
+        amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
 
         return min_(maximum_refundable_ctc, amount_ctc_would_increase)
 

@@ -12,9 +12,7 @@ class net_investment_income_tax(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.investment.net_investment_income_tax
         threshold = p.threshold[tax_unit("filing_status", period)]
-        excess_agi = max_(
-            0, tax_unit("adjusted_gross_income", period) - threshold
-        )
+        excess_agi = max_(0, tax_unit("adjusted_gross_income", period) - threshold)
         base = min_(
             max_(0, tax_unit("net_investment_income", period)),
             excess_agi,

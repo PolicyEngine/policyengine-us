@@ -7,9 +7,7 @@ class tx_tanf_income_limit(Variable):
     label = "Texas TANF income limit"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.hhs.texas.gov/services/financial/cash/tanf-cash-help"
-    )
+    reference = "https://www.hhs.texas.gov/services/financial/cash/tanf-cash-help"
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):

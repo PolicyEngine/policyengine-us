@@ -12,13 +12,9 @@ class charitable_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
-        non_cash_donations = add(
-            tax_unit, period, ["charitable_non_cash_donations"]
-        )
+        non_cash_donations = add(tax_unit, period, ["charitable_non_cash_donations"])
         positive_agi = tax_unit("positive_agi", period)
-        ceiling = parameters(
-            period
-        ).gov.irs.deductions.itemized.charity.ceiling
+        ceiling = parameters(period).gov.irs.deductions.itemized.charity.ceiling
         capped_non_cash_donations = min_(
             non_cash_donations, ceiling.non_cash * positive_agi
         )

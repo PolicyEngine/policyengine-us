@@ -2,9 +2,7 @@ from policyengine_us.model_api import *
 import numpy as np
 
 
-class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
-    Variable
-):
+class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -13,9 +11,7 @@ class capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit(
     reference = "https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=340"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.irs.credits.energy_efficient_home_improvement
+        p = parameters(period).gov.irs.credits.energy_efficient_home_improvement
         pre_rebate_expenditure = add(
             tax_unit,
             period,

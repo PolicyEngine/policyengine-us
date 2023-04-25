@@ -7,9 +7,7 @@ class ca_cvrp(Variable):
     definition_period = YEAR
     label = "California Clean Vehicle Rebate Project"
     unit = USD
-    documentation = (
-        "Total California Clean Vehicle Rebate Project (CVRP) benefit"
-    )
+    documentation = "Total California Clean Vehicle Rebate Project (CVRP) benefit"
     reference = "https://cleanvehiclerebate.org/en/eligibility-guidelines"
     defined_for = StateCode.CA
 
@@ -22,9 +20,7 @@ class ca_cvrp(Variable):
         p_increased_amount = parameters(
             period
         ).gov.states.ca.calepa.carb.cvrp.increased_rebate.amount
-        increased_eligible = person(
-            "is_ca_cvrp_increased_rebate_eligible", period
-        )
+        increased_eligible = person("is_ca_cvrp_increased_rebate_eligible", period)
         bought_qualifying_ev = vehicle_amount > 0
         increased_amount = (
             increased_eligible & bought_qualifying_ev

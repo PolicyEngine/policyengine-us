@@ -10,9 +10,7 @@ class co_tanf_countable_earned_income_grant_standard(Variable):
     defined_for = StateCode.CO
 
     def formula(spm_unit, period, parameters):
-        gross_earnings = spm_unit(
-            "co_tanf_countable_gross_earned_income", period
-        )
+        gross_earnings = spm_unit("co_tanf_countable_gross_earned_income", period)
         p = parameters(period).gov.states.co.cdhs.tanf.income.earned_exclusion
         # Grant standard applies a percent exclusion.
         return gross_earnings * (1 - p.percent)

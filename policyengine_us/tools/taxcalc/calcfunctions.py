@@ -243,12 +243,8 @@ def EI_PayrollTax(
 
     # compute taxable self-employment income for OASDI SECA
     sey_frac = 1.0 - 0.5 * (FICA_ss_trt + FICA_mc_trt)
-    txearn_sey_p = min(
-        max(0.0, sey_p * sey_frac), SS_Earnings_c - txearn_was_p
-    )
-    txearn_sey_s = min(
-        max(0.0, sey_s * sey_frac), SS_Earnings_c - txearn_was_s
-    )
+    txearn_sey_p = min(max(0.0, sey_p * sey_frac), SS_Earnings_c - txearn_was_p)
+    txearn_sey_s = min(max(0.0, sey_s * sey_frac), SS_Earnings_c - txearn_was_s)
 
     # compute self-employment tax on taxable self-employment income, SECA
     setax_ss_p = FICA_ss_trt * txearn_sey_p
@@ -267,9 +263,7 @@ def EI_PayrollTax(
     was_plus_sey_s = gross_was_s + max(0.0, sey_s * sey_frac)
     extra_ss_income_p = max(0.0, was_plus_sey_p - SS_Earnings_thd)
     extra_ss_income_s = max(0.0, was_plus_sey_s - SS_Earnings_thd)
-    extra_payrolltax = (
-        extra_ss_income_p * FICA_ss_trt + extra_ss_income_s * FICA_ss_trt
-    )
+    extra_payrolltax = extra_ss_income_p * FICA_ss_trt + extra_ss_income_s * FICA_ss_trt
 
     # compute part of total payroll taxes for filing unit
     # (the ptax_amc part of total payroll taxes for the filing unit is
@@ -278,11 +272,7 @@ def EI_PayrollTax(
 
     # compute OASDI part of payroll taxes
     ptax_oasdi = (
-        ptax_ss_was_p
-        + ptax_ss_was_s
-        + setax_ss_p
-        + setax_ss_s
-        + extra_payrolltax
+        ptax_ss_was_p + ptax_ss_was_s + setax_ss_p + setax_ss_s + extra_payrolltax
     )
 
     # compute earned* variables and AGI deduction for
@@ -353,12 +343,8 @@ def DependentCare(
     """
 
     if earned <= ALD_Dependents_thd[MARS - 1]:
-        care_deduction = (
-            (1.0 - ALD_Dependents_hc) * nu13 * ALD_Dependents_Child_c
-        ) + (
-            (1.0 - ALD_Dependents_hc)
-            * elderly_dependents
-            * ALD_Dependents_Elder_c
+        care_deduction = ((1.0 - ALD_Dependents_hc) * nu13 * ALD_Dependents_Child_c) + (
+            (1.0 - ALD_Dependents_hc) * elderly_dependents * ALD_Dependents_Elder_c
         )
     else:
         care_deduction = 0.0
@@ -717,8 +703,7 @@ def SSBenefits(
     else:
         c02500 = min(
             SS_percentage2 * (ymod - SS_thd85[MARS - 1])
-            + SS_percentage1
-            * min(e02400, SS_thd85[MARS - 1] - SS_thd50[MARS - 1]),
+            + SS_percentage1 * min(e02400, SS_thd85[MARS - 1] - SS_thd50[MARS - 1]),
             SS_percentage2 * e02400,
         )
     return c02500
@@ -1207,9 +1192,7 @@ def ItemDed(
         (1.0 - ID_StateLocalTax_hc) * max(e18400_capped, 0.0),
         ID_StateLocalTax_c[MARS - 1],
     )
-    c18500 = min(
-        (1.0 - ID_RealEstate_hc) * e18500_capped, ID_RealEstate_c[MARS - 1]
-    )
+    c18500 = min((1.0 - ID_RealEstate_hc) * e18500_capped, ID_RealEstate_c[MARS - 1])
     # following two statements implement a cap on c18400 and c18500 in a way
     # that those with negative AGI, c00100, are not capped under current law,
     # hence the 0.0001 rather than zero
@@ -1228,9 +1211,7 @@ def ItemDed(
     c19700 = max(0.0, c19700 - charity_floor) * (1.0 - ID_Charity_hc)
     c19700 = min(c19700, ID_Charity_c[MARS - 1])
     # Casualty
-    c20500 = max(0.0, g20500_capped - ID_Casualty_frt * posagi) * (
-        1.0 - ID_Casualty_hc
-    )
+    c20500 = max(0.0, g20500_capped - ID_Casualty_frt * posagi) * (1.0 - ID_Casualty_hc)
     c20500 = min(c20500, ID_Casualty_c[MARS - 1])
     # Miscellaneous
     c20400 = e20400_capped
@@ -1503,9 +1484,7 @@ def TaxInc(
     else:
         ui_excluded = 0.0
     # calculate taxable income before qualified business income deduction
-    pre_qbid_taxinc = max(
-        0.0, c00100 - max(c04470, standard) - c04600 - ui_excluded
-    )
+    pre_qbid_taxinc = max(0.0, c00100 - max(c04470, standard) - c04600 - ui_excluded)
     # calculate qualified business income deduction
     qbided = 0.0
     qbinc = max(0.0, e00900 + e26270 + e02100 + e27200)
@@ -2169,13 +2148,7 @@ def GainsTax(
         Regular tax on regular taxable income before credits
     """
     # pylint: disable=too-many-statements
-    if (
-        c01000 > 0.0
-        or c23650 > 0.0
-        or p23250 > 0.0
-        or e01100 > 0.0
-        or e00650 > 0.0
-    ):
+    if c01000 > 0.0 or c23650 > 0.0 or p23250 > 0.0 or e01100 > 0.0 or e00650 > 0.0:
         hasqdivltcg = 1  # has qualified dividends or long-term capital gains
     else:
         hasqdivltcg = 0  # no qualified dividends or long-term capital gains
@@ -2507,9 +2480,7 @@ def AMT(
         c62100 = c00100 - e00700
     c62100 += cmbtp  # add income not in AGI but considered income for AMT
     if MARS == 3:
-        amtsepadd = max(
-            0.0, min(AMT_em[MARS - 1], AMT_prt * (c62100 - AMT_em_pe))
-        )
+        amtsepadd = max(0.0, min(AMT_em[MARS - 1], AMT_prt * (c62100 - AMT_em_pe)))
     else:
         amtsepadd = 0.0
     c62100 = c62100 + amtsepadd  # AMT taxable income, which is line28
@@ -2523,25 +2494,15 @@ def AMT(
     if young_head and no_or_young_spouse:
         line29 = min(line29, earned + AMT_child_em)
     line30 = max(0.0, c62100 - line29)
-    line3163 = AMT_rt1 * line30 + AMT_rt2 * max(
-        0.0, (line30 - (AMT_brk1 / sep))
-    )
-    if (
-        dwks10 > 0.0
-        or dwks13 > 0.0
-        or dwks14 > 0.0
-        or dwks19 > 0.0
-        or e24515 > 0.0
-    ):
+    line3163 = AMT_rt1 * line30 + AMT_rt2 * max(0.0, (line30 - (AMT_brk1 / sep)))
+    if dwks10 > 0.0 or dwks13 > 0.0 or dwks14 > 0.0 or dwks19 > 0.0 or e24515 > 0.0:
         # complete Form 6251, Part III (line36 is equal to line30)
         line37 = dwks13
         line38 = e24515
         line39 = min(line37 + line38, dwks10)
         line40 = min(line30, line39)
         line41 = max(0.0, line30 - line40)
-        line42 = AMT_rt1 * line41 + AMT_rt2 * max(
-            0.0, (line41 - (AMT_brk1 / sep))
-        )
+        line42 = AMT_rt1 * line41 + AMT_rt2 * max(0.0, (line41 - (AMT_brk1 / sep)))
         line44 = dwks14
         line45 = max(0.0, AMT_CG_brk1[MARS - 1] - line44)
         line46 = min(line30, line37)
@@ -2559,18 +2520,14 @@ def AMT(
             linex2 = 0.0  # linex2 is amount taxed at AMT_CG_rt4
         else:
             line57 = line46 - line56
-            linex1 = min(
-                line48, max(0.0, AMT_CG_brk3[MARS - 1] - line44 - line45)
-            )
+            linex1 = min(line48, max(0.0, AMT_CG_brk3[MARS - 1] - line44 - line45))
             linex2 = max(0.0, line54 - linex1)
         cgtax3 = line57 * AMT_CG_rt3
         cgtax4 = linex2 * AMT_CG_rt4
         if line38 == 0.0:
             line61 = 0.0
         else:
-            line61 = 0.25 * max(
-                0.0, line30 - line41 - line56 - line57 - linex2
-            )
+            line61 = 0.25 * max(0.0, line30 - line41 - line56 - line57 - linex2)
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + cgtax4 + line61
         line64 = min(line3163, line62)
         line31 = line64
@@ -2720,13 +2677,9 @@ def F2441(
             tratio2 = math.ceil(max(((c00100 - CDCC_ps2) * CDCC_prt), 0.0))
             crate = max(0.0, CDCC_frt - min(CDCC_frt, tratio2))
     else:
-        crate = max(
-            CDCC_frt, CDCC_crt - max(((c00100 - CDCC_ps) * CDCC_prt), 0.0)
-        )
+        crate = max(CDCC_frt, CDCC_crt - max(((c00100 - CDCC_ps) * CDCC_prt), 0.0))
         if c00100 > CDCC_ps2:
-            crate = max(
-                0.0, CDCC_frt - max(((c00100 - CDCC_ps2) * CDCC_prt), 0.0)
-            )
+            crate = max(0.0, CDCC_frt - max(((c00100 - CDCC_ps2) * CDCC_prt), 0.0))
     c33200 = c33000 * 0.01 * crate
     # credit is limited by tax liability if not refundable
     if CDCC_refundable:
@@ -2777,10 +2730,7 @@ def EITCamount(
         Earned Income Credit
     """
     eitc = min(
-        (
-            basic_frac * max_amount
-            + (1.0 - basic_frac) * phasein_rate * earnings
-        ),
+        (basic_frac * max_amount + (1.0 - basic_frac) * phasein_rate * earnings),
         max_amount,
     )
     if earnings > phaseout_start or agi > phaseout_start:
@@ -2966,16 +2916,10 @@ def EITC(
     # reduce positive EITC if investment income exceeds ceiling
     if c59660 > 0.0:
         invinc = (
-            e00400
-            + e00300
-            + e00600
-            + max(0.0, c01000)
-            + max(0.0, (e02000 - e26270))
+            e00400 + e00300 + e00600 + max(0.0, c01000) + max(0.0, (e02000 - e26270))
         )
         if invinc > EITC_InvestIncome_c:
-            eitc = c59660 - EITC_excess_InvestIncome_rt * (
-                invinc - EITC_InvestIncome_c
-            )
+            eitc = c59660 - EITC_excess_InvestIncome_rt * (invinc - EITC_InvestIncome_c)
             c59660 = max(0.0, eitc)
     return c59660
 
@@ -3255,9 +3199,7 @@ def PersonalTaxCredit(
         recovery_rebate_credit = RRC_c * XTOT
         recovery_rebate_credit += RRC_c_unit[MARS - 1] + RRC_c_kids * nu18
     elif c00100 < RRC_pe[MARS - 1] and c00100 > 0:
-        prt = (c00100 - RRC_ps[MARS - 1]) / (
-            RRC_pe[MARS - 1] - RRC_ps[MARS - 1]
-        )
+        prt = (c00100 - RRC_ps[MARS - 1]) / (RRC_pe[MARS - 1] - RRC_ps[MARS - 1])
         recovery_rebate_credit = RRC_c * XTOT * (1 - prt)
     else:
         recovery_rebate_credit = max(
@@ -4281,9 +4223,7 @@ def BenefitSurtax(calc):
         The function modifies calc
     """
     if calc.policy_param("ID_BenefitSurtax_crt") != 1.0:
-        ben = ComputeBenefit(
-            calc, calc.policy_param("ID_BenefitSurtax_Switch")
-        )
+        ben = ComputeBenefit(calc, calc.policy_param("ID_BenefitSurtax_Switch"))
         agi = calc.array("c00100")
         ben_deduct = calc.policy_param("ID_BenefitSurtax_crt") * agi
         ben_exempt_array = calc.policy_param("ID_BenefitSurtax_em")
@@ -4314,18 +4254,14 @@ def BenefitLimitation(calc):
         The function modifies calc
     """
     if calc.policy_param("ID_BenefitCap_rt") != 1.0:
-        benefit = ComputeBenefit(
-            calc, calc.policy_param("ID_BenefitCap_Switch")
-        )
+        benefit = ComputeBenefit(calc, calc.policy_param("ID_BenefitCap_Switch"))
         # Calculate total deductible expenses under the cap
         deduct_exps = 0.0
         if calc.policy_param("ID_BenefitCap_Switch")[0]:  # medical
             deduct_exps += calc.array("c17000")
         if calc.policy_param("ID_BenefitCap_Switch")[1]:  # statelocal
             one_minus_hc = 1.0 - calc.policy_param("ID_StateLocalTax_hc")
-            deduct_exps += one_minus_hc * np.maximum(
-                calc.array("e18400_capped"), 0.0
-            )
+            deduct_exps += one_minus_hc * np.maximum(calc.array("e18400_capped"), 0.0)
         if calc.policy_param("ID_BenefitCap_Switch")[2]:  # realestate
             one_minus_hc = 1.0 - calc.policy_param("ID_RealEstate_hc")
             deduct_exps += one_minus_hc * calc.array("e18500_capped")

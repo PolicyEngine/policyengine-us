@@ -17,6 +17,4 @@ class md_standard_deduction(Variable):
         md_agi = tax_unit("md_agi", period)
         # standard deduction is a percentage of AGI that
         # is bounded by a min/max by filing status.
-        return np.clip(
-            p.rate * md_agi, p.min[filing_status], p.max[filing_status]
-        )
+        return np.clip(p.rate * md_agi, p.min[filing_status], p.max[filing_status])

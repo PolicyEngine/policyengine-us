@@ -12,9 +12,7 @@ class meets_ssi_resource_test(Variable):
     def formula(person, period, parameters):
         simulation: Simulation = person.simulation
         if hasattr(simulation, "dataset"):
-            pass_rate = parameters(
-                period
-            ).gov.ssa.ssi.eligibility.resources.pass_rate
+            pass_rate = parameters(period).gov.ssa.ssi.eligibility.resources.pass_rate
             return random(person) < pass_rate
         joint_claim = person("ssi_claim_is_joint", period)
         personal_resources = person("ssi_countable_resources", period)

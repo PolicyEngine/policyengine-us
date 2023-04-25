@@ -17,9 +17,7 @@ class nj_tanf_maximum_allowable_income(Variable):
         # Calculate additional people beyond the maximum in tables.
         additional_people = people - capped_people
         # Get the relevant part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.states.nj.njdhs.tanf.maximum_allowable_income
+        p = parameters(period).gov.states.nj.njdhs.tanf.maximum_allowable_income
         # Look up the main maximum allowable income for the number of (capped) people.
         base = p.main[capped_people]
         # Add the additional maximum allowable income for the additional people.

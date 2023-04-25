@@ -6,7 +6,9 @@ class in_is_qualifying_dependent_child(Variable):
     entity = Person
     label = "IN additional exemption qualifying dependent child"
     definition_period = YEAR
-    reference = "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (5)(B)(i)
+    reference = (
+        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (5)(B)(i)
+    )
     defined_for = StateCode.IN
 
     def formula(person, period, parameters):

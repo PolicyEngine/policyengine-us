@@ -11,9 +11,7 @@ class adjusted_gross_income(Variable):
 
     def formula(tax_unit, period, parameters):
         gross_income = add(tax_unit, period, ["irs_gross_income"])
-        above_the_line_deductions = tax_unit(
-            "above_the_line_deductions", period
-        )
+        above_the_line_deductions = tax_unit("above_the_line_deductions", period)
         agi = max_(gross_income - above_the_line_deductions, 0)
         if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
             agi += add(tax_unit, period, ["basic_income"])

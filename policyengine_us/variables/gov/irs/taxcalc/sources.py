@@ -96,13 +96,13 @@ class filer_e02300(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Unemployment compensation benefits for filing unit (excluding dependents)"
+    documentation = (
+        "Unemployment compensation benefits for filing unit (excluding dependents)"
+    )
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return tax_unit_non_dep_sum(
-            "unemployment_compensation", tax_unit, period
-        )
+        return tax_unit_non_dep_sum("unemployment_compensation", tax_unit, period)
 
 
 class e02400(Variable):
@@ -132,9 +132,7 @@ class e87530(Variable):
     entity = Person
     definition_period = YEAR
     label = "Qualified tuition expenses"
-    documentation = (
-        "Adjusted qualified lifetime learning expenses for all students"
-    )
+    documentation = "Adjusted qualified lifetime learning expenses for all students"
     unit = USD
 
 
@@ -142,7 +140,9 @@ class elderly_dependents(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Number of dependents age 65+ in filing unit excluding taxpayer and spouse"
+    documentation = (
+        "Number of dependents age 65+ in filing unit excluding taxpayer and spouse"
+    )
 
 
 class incapable_of_self_care(Variable):
@@ -169,9 +169,7 @@ class cdcc_qualified_dependent(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         is_spouse = person("is_tax_unit_spouse", period)
         dependent_or_spouse = is_dependent | is_spouse
-        return meets_age_criteria | (
-            dependent_or_spouse & incapable_of_self_care
-        )
+        return meets_age_criteria | (dependent_or_spouse & incapable_of_self_care)
 
 
 class f2441(Variable):
@@ -192,9 +190,7 @@ class f6251(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "True if Form 6251 (AMT) attached to return; otherwise false"
-    )
+    documentation = "True if Form 6251 (AMT) attached to return; otherwise false"
 
 
 class a_lineno(Variable):
@@ -208,7 +204,9 @@ class ffpos(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "CPS family identifier within household (not used in tax-calculation logic)"
+    documentation = (
+        "CPS family identifier within household (not used in tax-calculation logic)"
+    )
 
 
 class fips(Variable):
@@ -223,9 +221,7 @@ class h_seq(Variable):
     value_type = int
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "CPS household sequence number (not used in tax-calculation logic)"
-    )
+    documentation = "CPS household sequence number (not used in tax-calculation logic)"
 
 
 class data_source(Variable):
@@ -239,9 +235,7 @@ class k1bx14(Variable):
     value_type = float
     entity = Person
     definition_period = YEAR
-    documentation = (
-        "Partner self-employment earnings/loss (included in e26270 total)"
-    )
+    documentation = "Partner self-employment earnings/loss (included in e26270 total)"
     unit = USD
 
 

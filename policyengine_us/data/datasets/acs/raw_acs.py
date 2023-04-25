@@ -79,18 +79,14 @@ class RawACS(PublicDataset):
                     household_url, "psam_hus", HOUSEHOLD_COLUMNS
                 )
                 # Remove group quarters (zero weight)
-                household = household[
-                    ~household.SERIALNO.str.contains("2019GQ")
-                ]
+                household = household[~household.SERIALNO.str.contains("2019GQ")]
                 household["SERIALNO"] = household["SERIALNO"].apply(
                     lambda x: int(x.replace("2019HU", ""))
                 )
                 storage["household"] = household
                 # Person file
                 logging.info(f"Downloading person file")
-                person = concat_zipped_csvs(
-                    person_url, "psam_pus", PERSON_COLUMNS
-                )
+                person = concat_zipped_csvs(person_url, "psam_pus", PERSON_COLUMNS)
                 person = person[~person.SERIALNO.str.contains("2019GQ")]
                 person["SERIALNO"] = person["SERIALNO"].apply(
                     lambda x: int(x.replace("2019HU", ""))
@@ -112,9 +108,7 @@ class RawACS(PublicDataset):
 RawACS = RawACS()
 
 
-def concat_zipped_csvs(
-    url: str, prefix: str, columns: List[str]
-) -> pd.DataFrame:
+def concat_zipped_csvs(url: str, prefix: str, columns: List[str]) -> pd.DataFrame:
     """Downloads the ACS microdata, which is a zip file containing two halves in CSV format.
 
     Args:
@@ -183,9 +177,9 @@ def create_spm_unit_table(storage: pd.HDFStore, person: pd.DataFrame) -> None:
     original_person_table = storage["person"]
     # Ensure that join keys are the same type.
     JOIN_COLUMNS = ["SERIALNO", "SPORDER"]
-    original_person_table[JOIN_COLUMNS] = original_person_table[
-        JOIN_COLUMNS
-    ].astype(int)
+    original_person_table[JOIN_COLUMNS] = original_person_table[JOIN_COLUMNS].astype(
+        int
+    )
     person[JOIN_COLUMNS] = person[JOIN_COLUMNS].astype(int)
     # Add SPM_ID from the SPM person table to the original person table.
     combined_person_table = pd.merge(

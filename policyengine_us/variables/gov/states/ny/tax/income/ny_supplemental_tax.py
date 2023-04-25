@@ -37,10 +37,7 @@ class ny_supplemental_tax(Variable):
 
         previous_agi_threshold = select(
             in_each_status,
-            [
-                get_previous_threshold(ny_agi, scale.thresholds)
-                for scale in scales
-            ],
+            [get_previous_threshold(ny_agi, scale.thresholds) for scale in scales],
         )
 
         applicable_amount = max_(
@@ -55,9 +52,7 @@ class ny_supplemental_tax(Variable):
         rate = select(
             in_each_status,
             [
-                scale.marginal_rates(
-                    max_(sup_tax.min_agi + 1, ny_taxable_income)
-                )
+                scale.marginal_rates(max_(sup_tax.min_agi + 1, ny_taxable_income))
                 for scale in scales
             ],
         )

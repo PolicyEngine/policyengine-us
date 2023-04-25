@@ -20,14 +20,9 @@ class ut_at_home_parent_credit(Variable):
             + person("self_employment_income", period)
         ) < p.parent_max_earnings
         one_parent_qualifies = tax_unit.sum(parent_qualifies) > 0
-        tax_unit_qualifies = (
-            tax_unit("adjusted_gross_income", period) < p.max_agi
-        )
+        tax_unit_qualifies = tax_unit("adjusted_gross_income", period) < p.max_agi
         max_credit = (
-            p.amount
-            * count_children
-            * one_parent_qualifies
-            * tax_unit_qualifies
+            p.amount * count_children * one_parent_qualifies * tax_unit_qualifies
         )
         if p.refundable:
             limiting_liability = (

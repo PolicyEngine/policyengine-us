@@ -7,9 +7,7 @@ class new_clean_vehicle_credit(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "New clean vehicle credit"
-    documentation = (
-        "Nonrefundable credit for the purchase of a new clean vehicle"
-    )
+    documentation = "Nonrefundable credit for the purchase of a new clean vehicle"
     unit = USD
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/30D",

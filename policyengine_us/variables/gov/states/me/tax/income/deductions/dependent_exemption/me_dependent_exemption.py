@@ -6,7 +6,9 @@ class me_dependent_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maine dependents exemption deduction"
-    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
+    reference = (
+        "https://www.mainelegislature.org/legis/statutes/36/title36sec5219-SS.html"
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ME
@@ -19,9 +21,7 @@ class me_dependent_exemption(Variable):
         me_agi = tax_unit("me_agi", period)
 
         # Then get the Maine Dependents Exemptions part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.states.me.tax.income.deductions.dependent_exemption
+        p = parameters(period).gov.states.me.tax.income.deductions.dependent_exemption
 
         # Calculate the maximum dependents exemption amount (line 2).
         max_amount = num_dependents * p.amount

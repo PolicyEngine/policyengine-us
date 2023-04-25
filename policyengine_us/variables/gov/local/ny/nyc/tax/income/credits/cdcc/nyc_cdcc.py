@@ -31,8 +31,6 @@ class nyc_cdcc(Variable):
         )
 
         # Get the CDCC rate "applicable percentage" portion of the NYS CDCC
-        applicable_percentage = tax_unit(
-            "nyc_cdcc_applicable_percentage", period
-        )
+        applicable_percentage = tax_unit("nyc_cdcc_applicable_percentage", period)
 
         return nyc_qualifying_cdcc_amount * applicable_percentage

@@ -3,7 +3,9 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = "Percent of marginal income gains that do not increase household net income."
+    documentation = (
+        "Percent of marginal income gains that do not increase household net income."
+    )
     entity = Person
     definition_period = YEAR
     value_type = float
@@ -14,13 +16,9 @@ class marginal_tax_rate(Variable):
         simulation = person.simulation
         adult_index_values = person("adult_index", period)
         DELTA = 1_000
-        mtr_adult_count = parameters(
-            period
-        ).simulation.marginal_tax_rate_adults
+        mtr_adult_count = parameters(period).simulation.marginal_tax_rate_adults
         for adult_index in range(1, 1 + mtr_adult_count):
-            alt_simulation = simulation.get_branch(
-                f"adult_{adult_index}_pay_rise"
-            )
+            alt_simulation = simulation.get_branch(f"adult_{adult_index}_pay_rise")
             mask = adult_index_values == adult_index
             for variable in simulation.tax_benefit_system.variables:
                 if variable not in simulation.input_variables:
@@ -31,15 +29,11 @@ class marginal_tax_rate(Variable):
                 person("employment_income", period) + mask * DELTA,
             )
             alt_person = alt_simulation.person
-            household_net_income = person.household(
-                "household_net_income", period
-            )
+            household_net_income = person.household("household_net_income", period)
             household_net_income_higher_earnings = alt_person.household(
                 "household_net_income", period
             )
-            increase = (
-                household_net_income_higher_earnings - household_net_income
-            )
+            increase = household_net_income_higher_earnings - household_net_income
             mtr_values += where(mask, 1 - increase / DELTA, 0)
         return mtr_values
 

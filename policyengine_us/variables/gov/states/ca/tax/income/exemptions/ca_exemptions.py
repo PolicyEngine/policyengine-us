@@ -18,20 +18,17 @@ class ca_exemptions(Variable):
 
         # calculating phase out amount per credit
         over_agi_threshold = max_(0, agi - p.phase_out.start[filing_status])
-        increments = np.ceil(
-            over_agi_threshold / p.phase_out.increment[filing_status]
-        )
+        increments = np.ceil(over_agi_threshold / p.phase_out.increment[filing_status])
         exemption_reduction = increments * p.phase_out.amount
 
         # Personal Exemptions
         personal_exemption_count = p.personal_scale[filing_status]
-        personal_aged_blind_exemption_count = (
-            personal_exemption_count + tax_unit("aged_blind_count", period)
+        personal_aged_blind_exemption_count = personal_exemption_count + tax_unit(
+            "aged_blind_count", period
         )
         personal_aged_blind_exemption = max_(
             0,
-            personal_aged_blind_exemption_count
-            * (p.amount - exemption_reduction),
+            personal_aged_blind_exemption_count * (p.amount - exemption_reduction),
         )
 
         # Dependent exemptions

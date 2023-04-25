@@ -8,9 +8,7 @@ class is_young_adult_for_medicaid_fc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        ma = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.young_adult
+        ma = parameters(period).gov.hhs.medicaid.eligibility.categories.young_adult
         income = person("medicaid_income_level", period)
         state = person.household("state_code_str", period)
         income_limit = ma.income_limit[state]

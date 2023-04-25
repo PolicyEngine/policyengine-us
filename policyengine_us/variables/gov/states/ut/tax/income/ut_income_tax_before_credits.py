@@ -12,8 +12,5 @@ class ut_income_tax_before_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         ut_taxable_income = tax_unit("ut_taxable_income", period)
-        total_tax = (
-            ut_taxable_income
-            * parameters(period).gov.states.ut.tax.income.rate
-        )
+        total_tax = ut_taxable_income * parameters(period).gov.states.ut.tax.income.rate
         return max_(total_tax, 0)

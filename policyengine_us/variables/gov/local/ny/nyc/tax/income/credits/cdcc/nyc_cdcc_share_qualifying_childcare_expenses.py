@@ -19,14 +19,11 @@ class nyc_cdcc_share_qualifying_childcare_expenses(Variable):
 
         # Get the total childcare expenses.
         # Line 3a on Form IT-216.
-        tax_unit_childcare_expenses = tax_unit(
-            "tax_unit_childcare_expenses", period
-        )
+        tax_unit_childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
 
         # Return the share of childcare expenses for children under age four
         return where(
             tax_unit_childcare_expenses == 0,
             0,
-            childcare_expenses_for_children_under_four
-            / tax_unit_childcare_expenses,
+            childcare_expenses_for_children_under_four / tax_unit_childcare_expenses,
         )

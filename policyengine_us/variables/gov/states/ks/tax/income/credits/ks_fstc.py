@@ -37,9 +37,7 @@ class ks_fstc(Variable):
             | tax_unit("spouse_is_disabled", period)
         )
         # ... any eligibility for credit?
-        eligible_unit = (
-            has_eligible_child | eligible_age | eligible_blind_disabled
-        )
+        eligible_unit = has_eligible_child | eligible_age | eligible_blind_disabled
         # determine if income eligible for credit
         fagi = tax_unit("adjusted_gross_income", period)
         eligible_income = fagi <= p.food_sales_tax.agi_limit

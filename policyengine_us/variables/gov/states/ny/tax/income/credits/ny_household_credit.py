@@ -12,9 +12,7 @@ class ny_household_credit(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.ny.tax.income.credits.household_credit
+        p = parameters(period).gov.states.ny.tax.income.credits.household_credit
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         # Include spouse's AGI if filing separately.
@@ -38,8 +36,8 @@ class ny_household_credit(Variable):
         separate = filing_status == filing_statuses.SEPARATE
         non_single_base = p.non_single.base.calc(agi, right=True)
         non_single_additional = p.non_single.additional.calc(agi, right=True)
-        total_amount_if_not_single = (
-            non_single_base + non_single_additional * (size - 1)
+        total_amount_if_not_single = non_single_base + non_single_additional * (
+            size - 1
         )
         amount_if_not_single = np.ceil(
             total_amount_if_not_single / where(separate, 2, 1)

@@ -17,9 +17,7 @@ class nyc_school_tax_credit_rate_reduction_amount(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Then get the School Tax Credit rate reduction amount part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.local.ny.nyc.tax.income.credits.school.rate_reduction
+        p = parameters(period).gov.local.ny.nyc.tax.income.credits.school.rate_reduction
 
         # Calculate eligibility.
         eligible = nyc_taxable_income <= p.income_limit

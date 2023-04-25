@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class nd_ltcg_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "ND long-term capital gains subtraction from federal taxable income"
-    )
+    label = "ND long-term capital gains subtraction from federal taxable income"
     unit = USD
     definition_period = YEAR
     reference = (

@@ -17,8 +17,7 @@ class rrc_caa(Variable):
         count_children = tax_unit("ctc_qualifying_children", period)
         count_adults = where(tax_unit("tax_unit_is_joint", period), 2, 1)
         max_payment = (
-            rrc.caa.max.adult * count_adults
-            + rrc.caa.max.child * count_children
+            rrc.caa.max.adult * count_adults + rrc.caa.max.child * count_children
         )
         payment_reduction = rrc.caa.phase_out.rate * max_(
             0, agi - rrc.caa.phase_out.threshold[filing_status]

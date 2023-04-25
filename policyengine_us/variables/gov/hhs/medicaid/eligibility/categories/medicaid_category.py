@@ -23,9 +23,7 @@ class medicaid_category(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        categories = parameters(
-            period
-        ).gov.hhs.medicaid.eligibility.categories.covered
+        categories = parameters(period).gov.hhs.medicaid.eligibility.categories.covered
 
         variable_to_category = dict(
             is_infant_for_medicaid=MedicaidCategory.INFANT,
@@ -48,10 +46,7 @@ class medicaid_category(Variable):
         }
 
         return select(
-            [
-                person(variable, period)
-                for variable in variable_to_category.keys()
-            ]
+            [person(variable, period) for variable in variable_to_category.keys()]
             + [True],
             list(variable_to_category.values()) + [MedicaidCategory.NONE],
         )

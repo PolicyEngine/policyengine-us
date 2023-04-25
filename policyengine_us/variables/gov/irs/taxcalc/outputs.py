@@ -48,9 +48,7 @@ class filer_earned(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
     def formula(tax_unit, period, parameters):
@@ -62,9 +60,7 @@ class earned(Variable):
     entity = Person
     definition_period = YEAR
     label = "Earned income"
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
     def formula(person, period, parameters):
@@ -81,7 +77,9 @@ class othertaxes(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = "Other taxes: sum of niit, e09700, e09800 and e09900 (included in c09200)"
+    documentation = (
+        "Other taxes: sum of niit, e09700, e09800 and e09900 (included in c09200)"
+    )
     unit = USD
 
 
@@ -90,18 +88,14 @@ class sep(Variable):
     entity = TaxUnit
     definition_period = YEAR
     default_value = 1
-    documentation = (
-        "2 when filing_status is 3 (married filing separately); otherwise 1"
-    )
+    documentation = "2 when filing_status is 3 (married filing separately); otherwise 1"
 
 
 class surtax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -113,23 +107,17 @@ class c01000(Variable):
     unit = USD
 
     def formula(tax_unit, period, parameters):
-        return max_(
-            (-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period)
-        )
+        return max_((-3000.0 / tax_unit("sep", period)), tax_unit("c23650", period))
 
 
-tax_unit_net_capital_gains = variable_alias(
-    "tax_unit_net_capital_gains", c01000
-)
+tax_unit_net_capital_gains = variable_alias("tax_unit_net_capital_gains", c01000)
 
 
 class c05700(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -137,9 +125,7 @@ class c07240(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -147,9 +133,7 @@ class c07260(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -157,9 +141,7 @@ class c07300(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -167,9 +149,7 @@ class c07400(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -177,9 +157,7 @@ class c07600(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -187,9 +165,7 @@ class c08000(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -209,18 +185,14 @@ class care_deduction(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
 
 
 class ctc_new(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 
@@ -236,9 +208,7 @@ class fstax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
+    documentation = "search taxcalc/calcfunctions.py for how calculated and used"
     unit = USD
 
 

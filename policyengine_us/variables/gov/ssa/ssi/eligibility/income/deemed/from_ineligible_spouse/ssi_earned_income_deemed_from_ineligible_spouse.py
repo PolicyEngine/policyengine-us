@@ -34,6 +34,4 @@ class ssi_earned_income_deemed_from_ineligible_spouse(Variable):
         remaining_child_allocations = max_(
             0, child_allocations - ineligible_spousal_unearned_income
         )
-        return max_(
-            0, ineligible_spousal_earned_income - remaining_child_allocations
-        )
+        return max_(0, ineligible_spousal_earned_income - remaining_child_allocations)

@@ -6,7 +6,9 @@ class poverty_line(Variable):
     entity = SPMUnit
     label = "poverty line"
     unit = USD
-    documentation = "Income threshold below which a household is considered to be in poverty."
+    documentation = (
+        "Income threshold below which a household is considered to be in poverty."
+    )
     definition_period = YEAR
     adds = [
         "spm_unit_spm_threshold",

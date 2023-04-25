@@ -16,7 +16,5 @@ class aged_blind_count(Variable):
             period
         ).gov.irs.deductions.standard.aged_or_blind.age_threshold
         aged_head = (tax_unit("age_head", period) >= age_threshold).astype(int)
-        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(
-            int
-        )
+        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(int)
         return blind_head + blind_spouse + aged_head + aged_spouse

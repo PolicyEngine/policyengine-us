@@ -13,7 +13,5 @@ class household_income_decile(Variable):
         income = household("household_net_income", period)
         count_people = household("household_count_people", period)
         household_weight = household("household_weight", period)
-        weighted_income = MicroSeries(
-            income, weights=household_weight * count_people
-        )
+        weighted_income = MicroSeries(income, weights=household_weight * count_people)
         return weighted_income.decile_rank().values

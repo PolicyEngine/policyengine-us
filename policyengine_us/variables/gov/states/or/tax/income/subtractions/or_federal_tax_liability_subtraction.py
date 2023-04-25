@@ -25,9 +25,7 @@ class or_federal_tax_liability_subtraction(Variable):
         #  (other than the EITC)."
         eitc = tax_unit("eitc", period)
         federal_tax_liability_less_eitc = federal_tax_liability + eitc
-        non_negative_federal_tax_liability = max_(
-            0, federal_tax_liability_less_eitc
-        )
+        non_negative_federal_tax_liability = max_(0, federal_tax_liability_less_eitc)
         caps = (
             parameters(period)
             .gov.states["or"]

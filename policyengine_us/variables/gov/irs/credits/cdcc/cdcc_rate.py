@@ -17,9 +17,7 @@ class cdcc_rate(Variable):
         excess_agi = max_(0, agi - p.phase_out.start)
         increments = np.ceil(excess_agi / p.phase_out.increment)
         percentage_reduction = increments * p.phase_out.rate
-        phased_out_rate = max_(
-            p.phase_out.min, p.phase_out.max - percentage_reduction
-        )
+        phased_out_rate = max_(p.phase_out.min, p.phase_out.max - percentage_reduction)
 
         # Second phase-out
         second_excess_agi = max_(0, agi - p.phase_out.second_start)

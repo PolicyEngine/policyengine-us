@@ -22,8 +22,7 @@ class il_personal_exemption(Variable):
 
         return personal_exemption_amount * select(
             [
-                il_is_personal_exemption_eligible
-                == eligibility_status.BOTH_ELIGIBLE,
+                il_is_personal_exemption_eligible == eligibility_status.BOTH_ELIGIBLE,
                 il_is_personal_exemption_eligible
                 == eligibility_status.PARTIALLY_ELIGIBLE,
             ],

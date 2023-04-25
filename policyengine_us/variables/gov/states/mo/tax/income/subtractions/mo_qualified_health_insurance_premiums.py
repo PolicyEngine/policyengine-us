@@ -20,9 +20,7 @@ class mo_qualified_health_insurance_premiums(Variable):
 
         # total_health_insurance_premiums is also a primary input to the MO side of calculation, MO Form 5695, Line 8
         # Federal Schedule A, Line 4
-        med_expense_deduction = add(
-            tax_unit, period, ["medical_expense_deduction"]
-        )
+        med_expense_deduction = add(tax_unit, period, ["medical_expense_deduction"])
 
         # the ratio of federal medical expense deduction to total medical expenses (out of pocket + premiums)
         # need division because med_dental_out_of_pocket is in federal tax, but no MO tax

@@ -76,9 +76,7 @@ def generate_input_values(
     """
     if not DEBUG_MODE:
         try:
-            cps_tax_unit = cps[(cps[output_names] != 0).min(axis=1)].sample(
-                n=1
-            )
+            cps_tax_unit = cps[(cps[output_names] != 0).min(axis=1)].sample(n=1)
         except:
             cps_tax_unit = cps.sample(n=1)
     result = {}
@@ -165,13 +163,8 @@ def convert_tc_structure_to_openfisca(input_dict: dict) -> dict:
                 "is_tax_unit_dependent": True,
             }
             new_input_dict["tax_units"]["tax_unit"]["members"].append(name)
-    if (
-        "n24" in input_dict
-        and input_dict["n24"] - (input_dict.get("nu06") or 0) > 0
-    ):
-        for i in range(
-            int(input_dict.get("n24") - (input_dict.get("nu06") or 0))
-        ):
+    if "n24" in input_dict and input_dict["n24"] - (input_dict.get("nu06") or 0) > 0:
+        for i in range(int(input_dict.get("n24") - (input_dict.get("nu06") or 0))):
             name = f"child_under_17_over_6_{i+1}"
             new_input_dict["people"][name] = {
                 "age": 16,
@@ -220,16 +213,10 @@ def convert_openfisca_structure_to_tc(input_dict: dict) -> dict:
     new_input_dict = {}
     members = input_dict["tax_units"]["tax_unit"]["members"]
     new_input_dict["nu06"] = len(
-        list(
-            filter(lambda name: input_dict["people"][name]["age"] < 6, members)
-        )
+        list(filter(lambda name: input_dict["people"][name]["age"] < 6, members))
     )
     new_input_dict["n24"] = len(
-        list(
-            filter(
-                lambda name: input_dict["people"][name]["age"] < 17, members
-            )
-        )
+        list(filter(lambda name: input_dict["people"][name]["age"] < 17, members))
     )
     new_input_dict["n1820"] = len(
         list(
@@ -241,18 +228,12 @@ def convert_openfisca_structure_to_tc(input_dict: dict) -> dict:
         )
     )
     new_input_dict["n21"] = len(
-        list(
-            filter(
-                lambda name: input_dict["people"][name]["age"] >= 21, members
-            )
-        )
+        list(filter(lambda name: input_dict["people"][name]["age"] >= 21, members))
     )
     new_input_dict["XTOT"] = len(
         list(
             filter(
-                lambda name: input_dict["people"][name][
-                    "is_tax_unit_dependent"
-                ],
+                lambda name: input_dict["people"][name]["is_tax_unit_dependent"],
                 members,
             )
         )
@@ -263,18 +244,12 @@ def convert_openfisca_structure_to_tc(input_dict: dict) -> dict:
     for person in input_dict["people"]:
         for variable in input_dict["people"][person]:
             if person == "primary":
-                new_input_dict[variable + "_p"] = input_dict["people"][person][
-                    variable
-                ]
+                new_input_dict[variable + "_p"] = input_dict["people"][person][variable]
             if person == "spouse":
-                new_input_dict[variable + "_s"] = input_dict["people"][person][
-                    variable
-                ]
+                new_input_dict[variable + "_s"] = input_dict["people"][person][variable]
         for variable in input_dict["tax_units"]["tax_unit"]:
             if variable != "members":
-                new_input_dict[variable] = input_dict["tax_units"]["tax_unit"][
-                    variable
-                ]
+                new_input_dict[variable] = input_dict["tax_units"]["tax_unit"][variable]
     return new_input_dict
 
 
@@ -326,11 +301,7 @@ def inverse_rename_variable(x):
 
 
 def inverse_translate_value(name, x):
-    return (
-        INVERSE_VALUE_RENAMES[name].get(x, x)
-        if name in INVERSE_VALUE_RENAMES
-        else x
-    )
+    return INVERSE_VALUE_RENAMES[name].get(x, x) if name in INVERSE_VALUE_RENAMES else x
 
 
 def get_test_output(test: dict, fn_name: str) -> dict:
@@ -342,8 +313,7 @@ def get_test_output(test: dict, fn_name: str) -> dict:
     }
     kwargs, fn_, _ = generate_unit_test(fn_name, input_overrides)
     result = {
-        x: float(y)
-        for x, y in zip(get_outputs(CALCFUNCTIONS[fn_name]), fn_(kwargs))
+        x: float(y) for x, y in zip(get_outputs(CALCFUNCTIONS[fn_name]), fn_(kwargs))
     }
     return result
 

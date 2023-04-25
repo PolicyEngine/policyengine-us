@@ -6,7 +6,9 @@ class education_tax_credits(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Education tax credits"
-    documentation = "Education tax credits non-refundable amount from Form 8863 (includes c87668)"
+    documentation = (
+        "Education tax credits non-refundable amount from Form 8863 (includes c87668)"
+    )
     unit = USD
     reference = "https://www.law.cornell.edu/uscode/text/26/25A"
 

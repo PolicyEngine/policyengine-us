@@ -17,8 +17,7 @@ class rrc_cares(Variable):
         # (a)(2) specifies CTC eligibility for children
         count_adults = where(tax_unit("tax_unit_is_joint", period), 2, 1)
         max_payment = (
-            rrc.cares.max.adult * count_adults
-            + rrc.cares.max.child * count_children
+            rrc.cares.max.adult * count_adults + rrc.cares.max.child * count_children
         )
         payment_reduction = rrc.cares.phase_out.rate * max_(
             0, agi - rrc.cares.phase_out.threshold[filing_status]

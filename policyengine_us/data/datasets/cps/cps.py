@@ -101,9 +101,7 @@ def add_id_variables(
     cps["family_weight"] = family.FSUP_WGT / 1e2
 
     # Tax unit weight is the weight of the containing family.
-    family_weight = Series(
-        cps["family_weight"][...], index=cps["family_id"][...]
-    )
+    family_weight = Series(cps["family_weight"][...], index=cps["family_id"][...])
     person_family_id = cps["person_family_id"][...]
     persons_family_weight = Series(family_weight[person_family_id])
     cps["tax_unit_weight"] = persons_family_weight.groupby(
@@ -116,9 +114,7 @@ def add_id_variables(
 
     # Marital units
 
-    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(
-        person.A_LINENO, person.A_SPOUSE
-    )
+    marital_unit_id = person.PH_SEQ * 1e6 + np.maximum(person.A_LINENO, person.A_SPOUSE)
 
     # marital_unit_id is not the household ID, zero padded and followed
     # by the index within household (of each person, or their spouse if
@@ -157,9 +153,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     # "Is...blind or does...have serious difficulty seeing even when Wearing
     #  glasses?" 1 -> Yes
     cps["is_blind"] = person.PEDISEYE == 1
-    DISABILITY_FLAGS = [
-        "PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]
-    ]
+    DISABILITY_FLAGS = ["PEDIS" + i for i in ["DRS", "EAR", "EYE", "OUT", "PHY", "REM"]]
     cps["is_ssi_disabled"] = (person[DISABILITY_FLAGS] == 1).any(axis=1)
 
     def children_per_parent(col: str) -> pd.DataFrame:
@@ -181,9 +175,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
 
     # Aggregate to parent.
     res = (
-        pd.concat(
-            [children_per_parent("PEPAR1"), children_per_parent("PEPAR2")]
-        )
+        pd.concat([children_per_parent("PEPAR1"), children_per_parent("PEPAR2")])
         .groupby(["PH_SEQ", "A_LINENO"])
         .children.sum()
         .reset_index()
@@ -199,9 +191,7 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
     cps["is_hispanic"] = person.PRDTHSP != 0
 
 
-def add_personal_income_variables(
-    cps: h5py.File, person: DataFrame, year: int
-):
+def add_personal_income_variables(cps: h5py.File, person: DataFrame, year: int):
     """Add income variables.
 
     Args:
@@ -246,9 +236,7 @@ def add_personal_income_variables(
     cps["unemployment_compensation"] = person.UC_VAL
     # Add pensions and annuities.
     cps_pensions = person.PNSN_VAL + person.ANN_VAL
-    cps["taxable_pension_income"] = cps_pensions * (
-        p["taxable_pension_fraction"][year]
-    )
+    cps["taxable_pension_income"] = cps_pensions * (p["taxable_pension_fraction"][year])
     cps["tax_exempt_pension_income"] = cps_pensions * (
         1 - p["taxable_pension_fraction"][year]
     )
