@@ -12,7 +12,7 @@
     tax_units:
       tax_unit:
         members: [person1]
-        nj_eitc_income_eligible: false
+        nj_eitc_income_eligible: true
   output:
     nj_childless_eitc_age_eligible: true
 
@@ -34,7 +34,7 @@
   output:
     nj_childless_eitc_age_eligible: true
 
-- name: Individual with child should not be eligible.
+- name: Individual with child should not be eligible, regardless of income.
   period: 2022
   absolute_error_margin: 0
   input:
