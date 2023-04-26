@@ -17,7 +17,7 @@ class md_tanf_initial_earnings_deduction(Variable):
         self_employment_income = spm_unit("self_employment_income", period)
         # Get the policy parameters.
         p = parameters(period).gov.states.md.tanf.income.sources
-        
+
         return select(
             # First arg: self employed or not
             [earned_income, self_employment_income > 0],
