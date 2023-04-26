@@ -19,7 +19,7 @@ class nj_childless_eitc_age_eligible(Variable):
         # Check if tax unit has any EITC qualifying children.
         person = tax_unit.members
         eitc_qualifying_child = person("is_eitc_qualifying_child", period)
-        no_qualifying_children = tax_unit.sum(eitc_qualifying_child) == 0
+        no_qualifying_children = tax_unit("eitc_child_count", period) == 0
 
         # Get the NJ EITC paramaeter tree.
         p = parameters(period).gov.states.nj.tax.income.credits.eitc
