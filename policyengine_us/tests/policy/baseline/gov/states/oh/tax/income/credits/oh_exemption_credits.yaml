@@ -1,0 +1,89 @@
+- name: Ohio exemption credits test
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1: 
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person3: 
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person4: 
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person5: 
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        oh_agi: 40_000
+        members: [person1,person2,person3,person4,person5]
+    households:
+      household:
+        members: [person1,person2,person3,person4,person5]
+        state_code: OH
+  output: 
+    oh_exemption_credits: 100
+
+- name: Ohio exemption credits test
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1: 
+        is_tax_unit_dependent: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person2:
+        is_tax_unit_dependent: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      person3: 
+        is_tax_unit_dependent: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        oh_agi: 80_000
+        members: [person1,person2,person3]
+    households:
+      household:
+        members: [person1,person2,person3]
+        state_code: OH
+  output: 
+    oh_exemption_credits: 0
+
+- name: Ohio exemption credits test
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tax_unit_dependents: 28
+    is_tax_unit_dependent: false
+    oh_agi: 80_001
+    state_code: OH
+  output:
+    oh_exemption_credits: 600
+
+- name: Ohio exemption credits test
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tax_unit_dependents: 1
+    is_tax_unit_dependent: false
+    oh_agi: 50_000
+    state_code: OH
+  output:
+    oh_exemption_credits: 0

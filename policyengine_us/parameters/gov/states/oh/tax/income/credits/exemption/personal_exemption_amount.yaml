@@ -1,0 +1,25 @@
+description: Ohio personal exemption amount
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 2_350
+  - threshold: 
+      2022-01-01: 40_001
+    amount:
+      2022-01-01: 2_100
+  - threshold:
+      2022-01-01: 80_001
+    amount:
+      2022-01-01: 1_850
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: OH Personal Exemption Amount
+  reference:
+    - title: Ohio Personal Exemption Schedule
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.025
+    - title: 
+      href: 
