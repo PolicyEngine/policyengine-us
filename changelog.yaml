@@ -3092,3 +3092,15 @@
     added:
     - Edited NYC EITC variable label.
   date: 2023-04-25 04:39:43
+- bump: patch
+  changes:
+    added:
+    - Change NYC CDCC age restriction unit from currency to year.
+  date: 2023-04-26 02:13:48
+- bump: minor
+  changes:
+    added:
+    - Self-employment tax abolition switch.
+    fixed:
+    - Some OK households had NaN net income.
+  date: 2023-04-26 12:07:09
