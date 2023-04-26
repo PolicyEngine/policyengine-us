@@ -30,7 +30,9 @@ class nj_childless_eitc_age_eligible(Variable):
         max_age = p.eligibility.age.max
         meets_age_requirements = (age >= min_age) & (age <= max_age)
         is_filer = person("is_tax_unit_head", period)
-        filer_age_eligible = tax_unit.sum(is_filer & meets_age_requirements)
+        filer_age_eligible = (
+            tax_unit.sum(is_filer & meets_age_requirements) > 0
+        )
 
         return (
             ~separate
