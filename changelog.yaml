@@ -3065,3 +3065,42 @@
     fixed:
     - NYC CDCC qualifying childcare share does not return NaN.
   date: 2023-04-24 11:58:18
+- bump: patch
+  changes:
+    added:
+    - Legislative reference for North Dakota income tax rates.
+  date: 2023-04-24 15:57:07
+- bump: patch
+  changes:
+    added:
+    - Legal reference for NE CDCC and EITC.
+  date: 2023-04-24 16:01:05
+- bump: patch
+  changes:
+    added:
+    - Legal code reference for Kansas Tax Credits
+  date: 2023-04-24 16:18:02
+- bump: minor
+  changes:
+    added:
+    - Populate is_nyc from the CPS.
+    changed:
+    - Rename fips to state_fips.
+  date: 2023-04-24 21:15:38
+- bump: patch
+  changes:
+    added:
+    - Edited NYC EITC variable label.
+  date: 2023-04-25 04:39:43
+- bump: patch
+  changes:
+    added:
+    - Change NYC CDCC age restriction unit from currency to year.
+  date: 2023-04-26 02:13:48
+- bump: minor
+  changes:
+    added:
+    - Self-employment tax abolition switch.
+    fixed:
+    - Some OK households had NaN net income.
+  date: 2023-04-26 12:07:09
