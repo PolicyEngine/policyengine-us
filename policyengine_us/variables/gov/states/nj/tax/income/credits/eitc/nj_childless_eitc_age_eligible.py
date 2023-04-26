@@ -16,22 +16,25 @@ class nj_childless_eitc_age_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
 
-        # Check if tax unit has children.
-        no_children = tax_unit("tax_unit_children", period) == 0
+        # Check if tax unit has any EITC qualifying children.
+        person = tax_unit.members
+        eitc_qualifying_child = person("is_eitc_qualifying_child", period)
+        no_qualifying_children = tax_unit.sum(eitc_qualifying_child) == 0
 
         # Get the NJ EITC paramaeter tree.
         p = parameters(period).gov.states.nj.tax.income.credits.eitc
 
         # Check if the filer meets NJ EITC age requirements.
-        person = tax_unit.members
         age = person("age", period)
         min_age = p.eligibility.age.min
         max_age = p.eligibility.age.max
         meets_age_requirements = (age >= min_age) & (age <= max_age)
+        is_filer = person("is_head", period)
+        filer_age_eligible = tax_unit.sum(is_filer & meets_age_requirements)
 
         return (
             ~separate
-            & no_children
-            & tax_unit.any(meets_age_requirements)
+            & no_qualifying_children
+            & filer_age_eligible
             & tax_unit("nj_eitc_income_eligible", period)
         )
