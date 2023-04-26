@@ -10,6 +10,6 @@ class md_tanf_gross_unearned_income(Variable):
     defined_for = StateCode.MD
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.md.tanf.income.deeductions.earned
+        p = parameters(period).gov.states.md.tanf.income.sources
         gross_unearned = add(spm_unit, period, p.unearned)
         return gross_unearned
