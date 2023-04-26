@@ -1,0 +1,24 @@
+- name: Missouri requires families must have a child under age 18 or a pregnant woman in the household.
+  period: 2023
+  input:
+    state_code: MO
+    age: 18
+  output:
+    mo_tanf_demographic_eligible: false
+
+- name: Missouri requires families must have a child under age 18 or a pregnant woman in the household.
+  period: 2023
+  input:
+    state_code: MO
+    age: 17
+  output:
+    mo_tanf_demographic_eligible: true
+
+- name: Missouri familes have a pregnant woman in the household.
+  period: 2023
+  input:
+    state_code: MO
+    age: 18
+    is_pregnant: true
+  output:
+    mo_tanf_demographic_eligible: true
