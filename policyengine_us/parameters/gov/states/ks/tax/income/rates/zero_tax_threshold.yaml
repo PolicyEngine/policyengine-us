@@ -1,0 +1,31 @@
+description: Kansas only levies taxes on filers with at least this much taxable income.
+metadata:
+  label: KS zero-tax taxable-income threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip21.pdf
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+  - title: Kansas 2022 Statute | Article 32 | §79-32,110_(e)
+    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/
+
+  
+JOINT:
+  2016-01-01: 12_500
+  2018-01-01: 5_000
+HEAD_OF_HOUSEHOLD:
+  2016-01-01: 5_000
+  2018-01-01: 2_500
+WIDOW:
+  2016-01-01: 5_000
+  2018-01-01: 2_500
+SINGLE:
+  2016-01-01: 5_000
+  2018-01-01: 2_500
+SEPARATE:
+  2016-01-01: 5_000
+  2018-01-01: 2_500

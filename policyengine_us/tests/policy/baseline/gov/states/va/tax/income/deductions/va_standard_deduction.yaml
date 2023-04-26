@@ -1,0 +1,23 @@
+- name: VA Standard deduction if single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_standard_deduction: 8_000
+
+- name: VA Standard deduction if married filing jointly
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:  
+    va_standard_deduction: 16_000
+
+- name: VA Standard deduction if married filing separately
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    state_code: VA
+  output:  
+    va_standard_deduction: 8_000

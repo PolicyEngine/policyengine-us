@@ -21,5 +21,6 @@ class market_income(Variable):
             "rental_income",
             "illicit_income",
             "farm_income",
+            "miscellaneous_income",
         ]
         return add(person, period, COMPONENTS)

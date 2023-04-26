@@ -18,10 +18,19 @@
         age: 12
       person5:
         age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0
+        tanf: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4, person5]
         tax_unit_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX  # skip all state income tax calculations
   output:
     employee_payroll_tax: 19_499.80
     adjusted_gross_income: 325_950.00
@@ -60,7 +69,7 @@
     households:
       household:
         members: [person1]
-        state_code: TX  # skip all state income tax calculations'
+        state_code: TX  # skip all state income tax calculations
   output:  # expected results from USI-Tax-Analyzer 2.35.0 version
     taxsim_tfica: 4_896.00
     income_tax_before_credits: 7_067.50

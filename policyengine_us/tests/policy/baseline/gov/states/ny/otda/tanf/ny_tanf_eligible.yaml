@@ -1,0 +1,51 @@
+- name: Is demographic eligible, income eligible and asset eligible.
+  period: 2023
+  input:
+    state_code: NY
+    is_demographic_tanf_eligible: true
+    ny_tanf_income_eligible: true
+    ny_tanf_resources_eligible: true
+  output:
+    ny_tanf_eligible: true
+
+
+- name: Is demographic eligible and asset eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: NY
+    is_demographic_tanf_eligible: true
+    ny_tanf_income_eligible: false
+    ny_tanf_resources_eligible: true
+  output:
+    ny_tanf_eligible: false
+
+
+- name: Is not demographic eligible but is income eligible and asset eligible.
+  period: 2023
+  input:
+    state_code: NY
+    is_demographic_tanf_eligible: false
+    ny_tanf_income_eligible: true
+    ny_tanf_resources_eligible: true
+  output:
+    ny_tanf_eligible: false
+
+- name: Is not asset eligible but is income eligible and demographic eligible.
+  period: 2023
+  input:
+    state_code: NY
+    is_demographic_tanf_eligible: true
+    ny_tanf_income_eligible: true
+    ny_tanf_resources_eligible: false
+  output:
+    ny_tanf_eligible: false
+
+- name: Is not demographic eligible, income eligible and asset eligible.
+  period: 2023
+  input:
+    state_code: NY
+    is_demographic_tanf_eligible: false
+    ny_tanf_income_eligible: false
+    ny_tanf_resources_eligible: false
+  output:
+    ny_tanf_eligible: false

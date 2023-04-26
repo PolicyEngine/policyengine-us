@@ -11,17 +11,15 @@ class or_itemized_deductions(Variable):
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
-        federal_deductions_if_itemizing = parameters(
-            period
-        ).gov.irs.deductions.deductions_if_itemizing
-        or_deductions_if_itemizing = [
+        p = parameters(period).gov.irs.deductions
+        itm_deds = [
             deduction
-            for deduction in federal_deductions_if_itemizing
-            if deduction
-            not in [
-                "salt_deduction",
-                # Exclude QBID to avoid circular reference.
-                "qualified_business_income_deduction",
-            ]
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
         ]
-        return add(tax_unit, period, or_deductions_if_itemizing)
+        or_itemized_deductions_less_salt = add(tax_unit, period, itm_deds)
+        property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        salt = p.itemized.salt_and_real_estate
+        cap = salt.cap[tax_unit("filing_status", period)]
+        capped_property_taxes = min_(property_taxes, cap)
+        return or_itemized_deductions_less_salt + capped_property_taxes
