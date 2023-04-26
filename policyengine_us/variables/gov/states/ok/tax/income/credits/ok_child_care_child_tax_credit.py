@@ -26,6 +26,6 @@ class ok_child_care_child_tax_credit(Variable):
         ok_ctc = us_ctc * p.child.ctc_fraction
         # determine prorated fraction
         ok_agi = tax_unit("ok_agi", period)
-        prorate = min_(1, max_(0, ok_agi / us_agi))
+        prorate = min_(1, max_(0, where(us_agi != 0, ok_agi / us_agi, 0)))
         # receive greater of OK cdcc or OK ctc amounts prorated if AGI eligible
         return agi_eligible * prorate * max_(ok_cdcc, ok_ctc)
