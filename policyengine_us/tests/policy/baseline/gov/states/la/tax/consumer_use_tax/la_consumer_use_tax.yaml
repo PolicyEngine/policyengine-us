@@ -1,0 +1,9 @@
+#During 2022, if you purchased goods for use in Louisiana from outside the state and were not charged Louisiana state sales tax, you are required to file and pay the tax directly to LDR
+
+- name: LA consumer use tax 8.45 percent
+  period: 2022
+  input:
+    state_code: LA
+    la_agi: 10_000
+  output:
+    la_use_tax: 845
