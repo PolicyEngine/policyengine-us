@@ -1,0 +1,23 @@
+description: Louisiana provides filers a standard deduction of this amount, depending on filing status.
+metadata:
+  label: Louisiana standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 LOUISIANA TAX TABLE - Single or Married Filing Separately
+    href: https://revenue.louisiana.gov/TaxForms/IT540(2022)%20Tax%20Table.pdf
+  - title: RS 47:294
+    href: https://www.legis.la.gov/legis/Law.aspx?d=101761
+
+JOINT:
+  2022-01-01: 9_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 9_000
+WIDOW:
+  2022-01-01: 9_000
+SINGLE:
+  2022-01-01: 4_500
+SEPARATE:
+  2022-01-01: 4_500
