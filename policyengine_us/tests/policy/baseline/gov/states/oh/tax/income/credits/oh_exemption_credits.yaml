@@ -32,7 +32,7 @@
         members: [person1,person2,person3,person4,person5]
         state_code: OH
   output: 
-    oh_exemption_credits: 100
+    oh_exemption_credit: 100
 
 - name: Ohio exemption credits test
   absolute_error_margin: 0.01
@@ -60,7 +60,7 @@
         members: [person1,person2,person3]
         state_code: OH
   output: 
-    oh_exemption_credits: 0
+    oh_exemption_credit: 0
 
 - name: Ohio exemption credits test
   absolute_error_margin: 0.01
@@ -73,7 +73,7 @@
     oh_agi: 80_001
     state_code: OH
   output:
-    oh_exemption_credits: 600
+    oh_exemption_credit: 600
 
 - name: Ohio exemption credits test
   absolute_error_margin: 0.01
@@ -86,4 +86,4 @@
     oh_agi: 50_000
     state_code: OH
   output:
-    oh_exemption_credits: 0
+    oh_exemption_credit: 0
