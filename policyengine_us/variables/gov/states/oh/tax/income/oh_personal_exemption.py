@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_personal_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OH personal exemption"
+    label = "OH Personal Exemption"
     defined_for = StateCode.OH
     unit = USD
     definition_period = YEAR
