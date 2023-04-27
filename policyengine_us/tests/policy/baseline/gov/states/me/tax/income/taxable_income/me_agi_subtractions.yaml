@@ -1,7 +1,6 @@
 - name: ME AGI subtraction amount unit test 1
   period: 2022
   input:
-    filing_status: JOINT
     tax_unit_taxable_social_security: 1_000
     us_govt_interest: 1_000
     state_code: ME
@@ -13,7 +12,6 @@
 - name: ME AGI subtraction amount unit test 2
   period: 2022
   input:
-    filing_status: JOINT
     tax_unit_taxable_social_security: 1_000
     us_govt_interest: 1_000
     state_code: ME
@@ -25,7 +23,6 @@
 - name: ME AGI subtraction amount unit test 3
   period: 2022
   input:
-    filing_status: JOINT
     tax_unit_taxable_social_security: 1_000
     us_govt_interest: 1_000
     state_code: ME
@@ -37,7 +34,6 @@
 - name: ME AGI subtraction amount unit test 4
   period: 2022
   input:
-    filing_status: SINGLE
     tax_unit_taxable_social_security: 1_000
     us_govt_interest: 1_000
     state_code: ME
