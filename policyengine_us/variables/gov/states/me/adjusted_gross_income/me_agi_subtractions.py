@@ -16,5 +16,5 @@ class me_agi_subtractions(Variable):
     adds = [
         "tax_unit_taxable_social_security",
         "us_govt_interest",
-        "me_pension_income_subtractions",
+        "me_pension_income_deduction",
     ]

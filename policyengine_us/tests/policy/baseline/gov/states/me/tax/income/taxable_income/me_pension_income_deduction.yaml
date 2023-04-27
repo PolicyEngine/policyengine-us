@@ -32,7 +32,7 @@
       spm_unit:
         members: [person1, person2, person3, person4]
   output:
-    me_pension_income_subtractions: 3_000  
+    me_pension_income_deduction: 3_000  
 
 - name: ME AGI pension income subtraction amount unit test 2
   period: 2022
@@ -68,7 +68,7 @@
       spm_unit:
         members: [person1, person2, person3, person4]
   output:
-    me_pension_income_subtractions: 7_000   
+    me_pension_income_deduction: 7_000   
 
 - name: ME AGI pension income subtraction amount unit test 3
   period: 2022
@@ -96,7 +96,7 @@
       spm_unit:
         members: [person1, person2]
   output:
-    me_pension_income_subtractions: 7_000    
+    me_pension_income_deduction: 7_000    
 
 - name: ME AGI pension income subtraction amount unit test 4
   period: 2022
@@ -119,4 +119,4 @@
       spm_unit:
         members: [person1]
   output:
-    me_pension_income_subtractions: 2_000   
+    me_pension_income_deduction: 2_000   

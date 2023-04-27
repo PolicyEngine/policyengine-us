@@ -1,134 +1,47 @@
 - name: ME AGI subtraction amount unit test 1
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        social_security: 20_000
-        pension_income: 1_000
-        military_retirement_pay: 1_000
-      person2:
-        is_tax_unit_spouse: true
-        social_security: 20_000
-        pension_income: 1_000
-        military_retirement_pay: 0
-      person3:
-        social_security: 0 
-        pension_income: 0
-        military_retirement_pay: 0
-      person4:
-        social_security: 0
-        pension_income: 0
-        military_retirement_pay: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3, person4]
-        filing_status: JOINT
-        tax_unit_taxable_social_security: 1_000
-        us_govt_interest: 1_000
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: ME
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
+    filing_status: JOINT
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 3_000
   output:
-    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_subtractions ($3000) = $5000
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($3000) = $5000
     me_agi_subtractions: 5_000  
 
 - name: ME AGI subtraction amount unit test 2
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        social_security: 20_000
-        pension_income: 1_000
-        military_retirement_pay: 1_000
-      person2:
-        is_tax_unit_spouse: true
-        social_security: 20_000
-        pension_income: 6_000
-        military_retirement_pay: 0
-      person3:
-        social_security: 0
-        pension_income: 0
-        military_retirement_pay: 0
-      person4:
-        social_security: 0
-        pension_income: 0
-        military_retirement_pay: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3, person4]
-        filing_status: JOINT
-        tax_unit_taxable_social_security: 1_000
-        us_govt_interest: 1_000
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: ME
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3, person4]
+    filing_status: JOINT
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 7_000
   output:
-    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_subtractions ($7000) = $9000
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($7000) = $9000
     me_agi_subtractions: 9_000   
 
 - name: ME AGI subtraction amount unit test 3
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        social_security: 20_000
-        pension_income: 1_000
-        military_retirement_pay: 1_000
-      person2:
-        is_tax_unit_spouse: true
-        social_security: 20_000
-        pension_income: 6_000
-        military_retirement_pay: 0
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT
-        tax_unit_taxable_social_security: 1_000
-        us_govt_interest: 1_000
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ME
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
+    filing_status: JOINT
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 7_000
   output:
-    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_subtractions ($7000) = $9000
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($7000) = $9000
     me_agi_subtractions: 9_000    
 
 - name: ME AGI subtraction amount unit test 4
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        social_security: 20_000
-        pension_income: 1_000
-        military_retirement_pay: 1_000
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-        tax_unit_taxable_social_security: 1_000
-        us_govt_interest: 1_000
-    households:
-      household:
-        members: [person1]
-        state_code: ME
-    spm_units:
-      spm_unit:
-        members: [person1]
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 1_000
+    us_govt_interest: 1_000
+    state_code: ME
+    me_pension_income_deduction: 2_000
   output:
-    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_subtractions ($2000) = $4000
+    # tax_unit_taxable_social_security + us_govt_interest + me_pension_income_deduction ($2000) = $4000
     me_agi_subtractions: 4_000   

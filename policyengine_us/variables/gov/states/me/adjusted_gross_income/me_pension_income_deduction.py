@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class me_pension_income_subtractions(Variable):
+class me_pension_income_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "ME AGI pension income subtractions"
