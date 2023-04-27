@@ -7,6 +7,7 @@ class nyc_cdcc_share_qualifying_childcare_expenses(Variable):
     label = "Share of Childcare expenses that qualify towards NYC CDCC"
     unit = USD
     definition_period = YEAR
+    unit = "/1"
     defined_for = "in_nyc"
 
     def formula(tax_unit, period, parameters):
@@ -23,7 +24,9 @@ class nyc_cdcc_share_qualifying_childcare_expenses(Variable):
         )
 
         # Return the share of childcare expenses for children under age four
-        return (
+        return where(
+            tax_unit_childcare_expenses == 0,
+            0,
             childcare_expenses_for_children_under_four
-            / tax_unit_childcare_expenses
+            / tax_unit_childcare_expenses,
         )
