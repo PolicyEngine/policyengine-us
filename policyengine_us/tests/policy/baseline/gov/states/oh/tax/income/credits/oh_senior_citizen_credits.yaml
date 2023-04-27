@@ -1,4 +1,4 @@
-- name: senior citizen test
+- name: senior citizen test eligible
   period: 2021
   input:
     state_code: OH
@@ -8,7 +8,7 @@
   output:
     oh_senior_citizen_credits: 50
 
-- name: senior citizen test
+- name: senior citizen test ineligible, has OH taken lump sum
   period: 2021
   input:
     state_code: OH
@@ -18,7 +18,7 @@
   output:
     oh_senior_citizen_credits: 0
 
-- name: senior citizen test
+- name: senior citizen test, ineligible AGI
   period: 2021
   input:
     state_code: OH
@@ -28,7 +28,7 @@
   output:
     oh_senior_citizen_credits: 0
 
-- name: senior citizen test
+- name: senior citizen test, ineligible AGI and OH lump sum status
   period: 2021
   input:
     state_code: OH
