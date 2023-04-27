@@ -3087,3 +3087,25 @@
     changed:
     - Rename fips to state_fips.
   date: 2023-04-24 21:15:38
+- bump: patch
+  changes:
+    added:
+    - Edited NYC EITC variable label.
+  date: 2023-04-25 04:39:43
+- bump: patch
+  changes:
+    added:
+    - Change NYC CDCC age restriction unit from currency to year.
+  date: 2023-04-26 02:13:48
+- bump: minor
+  changes:
+    added:
+    - Self-employment tax abolition switch.
+    fixed:
+    - Some OK households had NaN net income.
+  date: 2023-04-26 12:07:09
+- bump: minor
+  changes:
+    added:
+    - New Jersey EITC and New Jersey EITC eligiblity (different age parameters).
+  date: 2023-04-27 01:54:06
