@@ -1,4 +1,4 @@
-- name: child and dependent care credit test
+- name: child and dependent care credit low AGI (full eligibility)
   period: 2021
   input:
     state_code: OH
@@ -7,7 +7,7 @@
   output:
     oh_child_dependent_care_credits: 2000
 
-- name: child and dependent care credit test
+- name: child and dependent care credit test, just above lower threshold AGI (.25 * federal CDCC)
   period: 2021
   input:
     state_code: OH
@@ -16,7 +16,7 @@
   output:
     oh_child_dependent_care_credits: 500
 
-- name: child and dependent care credit test
+- name: child and dependent care credit test, solidly above lower threshold AGI (.25 * federal CDCC)
   period: 2021
   input:
     state_code: OH
@@ -25,7 +25,7 @@
   output:
     oh_child_dependent_care_credits: 500
 
-- name: child and dependent care credit test
+- name: child and dependent care credit test above upper threshold (ineligible)
   period: 2021
   input:
     state_code: OH
