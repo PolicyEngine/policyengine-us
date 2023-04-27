@@ -10,7 +10,7 @@ class nj_tanf_resources_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         # The WFNJ/TANF resource limit is $2,000 for an assistance unit.
-        # https://www.state.nj.us/humanservices/providers/grants/public/publicnoticefiles/NJ%20TANF%20State%20Plan%20FFY%2021%20-%20FFY%2023%20DRAFT.pdf#page=20
+        # https://www.nj.gov/humanservices/dfd/programs/workfirstnj/tanf_2021_23_st_plan.pdf#page=21
         p = parameters(period).gov.states.nj.njdhs.tanf.eligibility.resources
         countable_resources = spm_unit("nj_tanf_countable_resources", period)
         return countable_resources <= p.limit
