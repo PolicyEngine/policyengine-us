@@ -16,7 +16,7 @@ class ok_eitc(Variable):
     def formula(tax_unit, period, parameters):
         us_agi = tax_unit("adjusted_gross_income", period)
         ok_agi = tax_unit("ok_agi", period)
-        prorate = min_(1, max_(0, ok_agi / us_agi))
+        prorate = min_(1, max_(0, where(us_agi != 0, ok_agi / us_agi, 0)))
         us_eitc = tax_unit("earned_income_tax_credit", period)
         p = parameters(period).gov.states.ok.tax.income.credits.earned_income
         return prorate * p.eitc_fraction * us_eitc
