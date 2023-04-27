@@ -1,10 +1,10 @@
-- name: If no children and one adult, New Jersey TANF maximum benefit is $162/mo.
+- name: If no children and one adult, New Jersey TANF maximum benefit is $214/month.
   period: 2023
   input:
     state_code: NJ
     spm_unit_size: 1
   output:
-    nj_tanf_maximum_benefit: 162 * 12
+    nj_tanf_maximum_benefit: 214 * 12
 
 - name: If not eligible, we don't calculate it.
   period: 2023
@@ -14,12 +14,12 @@
   output:
     nj_tanf_maximum_benefit: 0
 
-- name: If 10 people, maximum benefit is $728 + 2 * $50 = $828 per month.
+- name: If 10 people, maximum benefit is $961 + 2 * $66 = $1093 per month.
   period: 2023
   input:
     state_code: NJ
     spm_unit_size: 10
   output:
-    nj_tanf_maximum_benefit: 828 * 12  
+    nj_tanf_maximum_benefit: 1_093 * 12  
 
     
