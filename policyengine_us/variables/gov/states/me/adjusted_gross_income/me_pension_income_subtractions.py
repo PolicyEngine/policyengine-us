@@ -37,9 +37,7 @@ class me_pension_income_subtractions(Variable):
         pension_income_deduction = min_(pension_income, ss_reduced_cap)
 
         # Get the military retirement pay (line 6).
-        military_retirement_pay = person(
-            "me_military_retirement_pay_subtractions", period
-        )
+        military_retirement_pay = person("military_retirement_pay", period)
 
         # Get the total deduction.
         deduction = pension_income_deduction + military_retirement_pay
@@ -47,12 +45,10 @@ class me_pension_income_subtractions(Variable):
         # Return the total deduction for the tax unit.
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        is_joint = (
-            tax_unit("filing_status", period)
-            == tax_unit("filing_status", period).possible_values.JOINT
-        )
-        return select(
-            [is_joint],
-            [tax_unit.sum(where(is_head | is_spouse, deduction, 0))],
+        filing_status = tax_unit("filing_status", period)
+        is_joint = filing_status == filing_status.possible_values.JOINT
+        return where(
+            is_joint,
+            tax_unit.sum(where(is_head | is_spouse, deduction, 0)),
             tax_unit.sum(where(is_head, deduction, 0)),
         )

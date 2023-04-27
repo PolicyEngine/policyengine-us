@@ -6,20 +6,20 @@
         is_tax_unit_head: true
         social_security: 20_000
         pension_income: 1_000
-        me_military_retirement_pay_subtractions: 1_000
+        military_retirement_pay: 1_000
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
         pension_income: 1_000
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
       person3:
         social_security: 0 
         pension_income: 0
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
       person4:
         social_security: 0
         pension_income: 0
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
@@ -45,20 +45,20 @@
         is_tax_unit_head: true
         social_security: 20_000
         pension_income: 1_000
-        me_military_retirement_pay_subtractions: 1_000
+        military_retirement_pay: 1_000
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
         pension_income: 6_000
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
       person3:
         social_security: 0
         pension_income: 0
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
       person4:
         social_security: 0
         pension_income: 0
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
@@ -84,12 +84,12 @@
         is_tax_unit_head: true
         social_security: 20_000
         pension_income: 1_000
-        me_military_retirement_pay_subtractions: 1_000
+        military_retirement_pay: 1_000
       person2:
         is_tax_unit_spouse: true
         social_security: 20_000
         pension_income: 6_000
-        me_military_retirement_pay_subtractions: 0
+        military_retirement_pay: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -115,7 +115,7 @@
         is_tax_unit_head: true
         social_security: 20_000
         pension_income: 1_000
-        me_military_retirement_pay_subtractions: 1_000
+        military_retirement_pay: 1_000
     tax_units:
       tax_unit:
         members: [person1]
