@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.303.0] - 2023-04-27 01:54:06
+
+### Added
+
+- New Jersey EITC and New Jersey EITC eligiblity (different age parameters).
+
+## [0.302.0] - 2023-04-26 12:07:09
+
+### Added
+
+- Self-employment tax abolition switch.
+
+### Fixed
+
+- Some OK households had NaN net income.
+
+## [0.301.2] - 2023-04-26 02:13:48
+
+### Added
+
+- Change NYC CDCC age restriction unit from currency to year.
+
 ## [0.301.1] - 2023-04-25 04:39:43
 
 ### Added
@@ -3685,6 +3707,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.302.0...0.303.0
+[0.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.2...0.302.0
+[0.301.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.1...0.301.2
 [0.301.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.0...0.301.1
 [0.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.4...0.301.0
 [0.300.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.3...0.300.4
