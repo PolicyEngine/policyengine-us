@@ -21,5 +21,4 @@ class oh_non_public_school_credits(Variable):
             person("non_public_school_tuition", period)
         )
         eligible = agi < agi_upper_limit and tuitions > 0
-        print(rates.calc(agi))
         return rates.calc(agi) * eligible
