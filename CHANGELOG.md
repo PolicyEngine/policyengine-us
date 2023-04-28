@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.309.0] - 2023-04-28 20:10:09
+
+### Added
+
+- New Jersey TANF gross earned income.
+
 ## [0.308.0] - 2023-04-28 19:05:33
 
 ### Added
@@ -3743,6 +3749,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.308.0...0.309.0
 [0.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.307.0...0.308.0
 [0.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.306.0...0.307.0
 [0.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.305.0...0.306.0
