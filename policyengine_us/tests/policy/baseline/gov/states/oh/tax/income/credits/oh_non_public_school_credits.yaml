@@ -1,0 +1,44 @@
+- name: AGI Not eligible
+  period: 2021
+  input:
+    oh_agi: 100_000
+    non_public_school_tuition: 1000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 0
+
+- name: No non public tuition
+  period: 2021
+  input:
+    oh_agi: 80_000
+    non_public_school_tuition: 0
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 0
+
+- name: AGI less that 50_000
+  period: 2021
+  input:
+    oh_agi: 49_999
+    non_public_school_tuition: 1000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 500
+
+- name: AGI greater that 50_000 case 1
+  period: 2021
+  input:
+    oh_agi: 50_000
+    non_public_school_tuition: 1000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 1000
+
+- name: AGI greater that 50_000 case 2
+  period: 2021
+  input:
+    oh_agi: 80_000
+    non_public_school_tuition: 1000
+    state_code: OH
+  output:
+    oh_non_public_school_credits: 1000
