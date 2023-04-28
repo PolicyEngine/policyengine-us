@@ -4,17 +4,12 @@ from policyengine_us.model_api import *
 class me_pension_income_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "ME AGI pension income subtractions"
+    label = "Maine pension income deduction"
     unit = USD
-    documentation = (
-        "ME pension income subtractions, part of ME agi subtractions."
-    )
+    documentation = "Maine pension income deduction, which subtracts from federal AGI to compute Maine AGI."
     definition_period = YEAR
     defined_for = StateCode.ME
-    dict(
-        title="Schedule 1S, Income Subtraction Modifications, 2022 - Worksheet for Pension Income Deduction",
-        href="https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf",
-    )
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
