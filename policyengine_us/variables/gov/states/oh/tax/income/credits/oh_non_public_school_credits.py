@@ -17,7 +17,7 @@ class oh_non_public_school_credits(Variable):
             period
         ).gov.states.oh.tax.income.credits.non_public_tuition
         agi_upper_limit = p.agi_upper_limit
-        rates = p.agi_credit_rates
+        rates = p.agi_credit_amount
 
         agi = tax_unit("oh_agi", period)
         person = tax_unit.members
