@@ -26,10 +26,10 @@ class nj_income_tax_before_refundable_credits(Variable):
                 filing_status == status.SEPARATE,
             ],
             [
-                p.single_separate.calc(taxable_income),
-                p.joint_hoh_spouse.calc(taxable_income),
-                p.joint_hoh_spouse.calc(taxable_income),
-                p.joint_hoh_spouse.calc(taxable_income),
-                p.single_separate.calc(taxable_income),
+                p.single.calc(taxable_income),
+                p.joint.calc(taxable_income),
+                p.head_of_household.calc(taxable_income),
+                p.widow.calc(taxable_income),
+                p.separate.calc(taxable_income),
             ],
         )
