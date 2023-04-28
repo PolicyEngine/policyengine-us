@@ -14,6 +14,7 @@ class nj_income_tax_before_refundable_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
 
+        # Get main nj tax parameter tree.
         p = parameters(period).gov.states.nj.tax.income.main
 
         return select(
