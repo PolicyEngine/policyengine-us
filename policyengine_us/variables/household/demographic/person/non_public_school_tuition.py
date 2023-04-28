@@ -6,4 +6,3 @@ class non_public_school_tuition(Variable):
     entity = Person
     definition_period = YEAR
     label = "Nonchartered, Nonpublic School Tuition"
-
