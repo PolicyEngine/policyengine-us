@@ -28,5 +28,4 @@ class ia_is_tax_exempt(Variable):
             where(is_elderly, pil.single_elderly, pil.single_nonelderly),
             where(is_elderly, pil.other_elderly, pil.other_nonelderly),
         )
-        modified_income = add(tax_unit, period, p.modified_income_sources)
-        return modified_income <= modified_income_limit
+        return tax_unit("ia_modified_income", period) <= modified_income_limit
