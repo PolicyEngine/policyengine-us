@@ -15,12 +15,20 @@ class ia_itemized_deductions(Variable):
     )
     defined_for = StateCode.IA
 
-
-#    def formula(tax_unit, period, parameters):
-#        """
-#        FROM THE 2021 INSTRUCTIONS (PAGE 46):
-#          The $10,000 federal cap on the itemized deduction for state and
-#        local taxes does not apply for Iowa purposes. Taxpayers may still
-#        deduct eligible state and local taxes paid, independent of the
-#        federal dollar limitation.
-#        """
+    def formula(tax_unit, period, parameters):
+        """
+        FROM THE 2021 INSTRUCTIONS (PAGE 46):
+          The $10,000 federal cap on the itemized deduction for state and
+        local taxes does not apply for Iowa purposes. Taxpayers may still
+        deduct eligible state and local taxes paid, independent of the
+        federal dollar limitation.
+        """
+        p = parameters(period).gov.irs.deductions
+        itm_deds = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        us_itemized_deductions_less_salt = add(tax_unit, period, itm_deds)
+        uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        return us_itemized_deductions_less_salt + uncapped_property_taxes
