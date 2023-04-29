@@ -1,0 +1,19 @@
+- name: IA federal income tax deduction unit test 1
+  period: 2021
+  input:
+    income_tax_before_refundable_credits: 10_000
+    self_employment_tax: 7_000
+    additional_medicare_tax: 1_000
+    state_code: IA
+  output:
+    ia_fedtax_deduction: 2_000
+
+- name: IA federal income tax deduction unit test 1
+  period: 2022
+  input:
+    income_tax_before_refundable_credits: 1_000
+    self_employment_tax: 4_000
+    additional_medicare_tax: 500
+    state_code: IA
+  output:
+    ia_fedtax_deduction: -3_500
