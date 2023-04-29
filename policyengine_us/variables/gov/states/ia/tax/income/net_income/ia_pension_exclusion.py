@@ -20,8 +20,8 @@ class ia_pension_exclusion(Variable):
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         # ... determine age eligibility
-        is_elderly = person("age", period) >= p.pension_exclusion.minimum_age
-        is_elderly = (is_head & is_elderly) | (is_spouse & is_elderly)
+        is_an_elder = person("age", period) >= p.pension_exclusion.minimum_age
+        is_elderly = (is_head & is_an_elder) | (is_spouse & is_an_elder)
         # ... determine disability eligiblity
         has_disability = person("is_permanently_and_totally_disabled", period)
         is_disabled = (is_head & has_disability) | (is_spouse & has_disability)
