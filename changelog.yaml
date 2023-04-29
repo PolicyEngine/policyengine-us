@@ -3092,3 +3092,55 @@
     added:
     - Edited NYC EITC variable label.
   date: 2023-04-25 04:39:43
+- bump: patch
+  changes:
+    added:
+    - Change NYC CDCC age restriction unit from currency to year.
+  date: 2023-04-26 02:13:48
+- bump: minor
+  changes:
+    added:
+    - Self-employment tax abolition switch.
+    fixed:
+    - Some OK households had NaN net income.
+  date: 2023-04-26 12:07:09
+- bump: minor
+  changes:
+    added:
+    - New Jersey EITC and New Jersey EITC eligiblity (different age parameters).
+  date: 2023-04-27 01:54:06
+- bump: patch
+  changes:
+    fixed:
+    - Reorganised local level area variables.
+  date: 2023-04-27 11:28:42
+- bump: minor
+  changes:
+    fixed:
+    - NJ TANF maximum benefit.
+  date: 2023-04-28 02:43:27
+- bump: minor
+  changes:
+    fixed:
+    - New Jersey TANF maximum allowable income.
+  date: 2023-04-28 02:57:49
+- bump: minor
+  changes:
+    added:
+    - New Jersey TANF Gross Unearned Income.
+  date: 2023-04-28 03:02:45
+- bump: minor
+  changes:
+    added:
+    - Modify description
+  date: 2023-04-28 03:08:20
+- bump: minor
+  changes:
+    added:
+    - Maine AGI Subtractions.
+  date: 2023-04-28 19:05:33
+- bump: minor
+  changes:
+    added:
+    - New Jersey TANF gross earned income.
+  date: 2023-04-28 20:10:09
