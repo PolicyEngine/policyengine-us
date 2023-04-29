@@ -1,0 +1,17 @@
+- name: IA basic tax unit test 1
+  period: 2021
+  input:
+    ia_regular_tax: 345
+    ia_alternate_tax: 344
+    state_code: IA
+  output:
+    ia_basic_tax: 344
+
+- name: IA basic tax unit test 2
+  period: 2022
+  input:
+    ia_regular_tax: 343
+    ia_alternate_tax: 344
+    state_code: IA
+  output:
+    ia_basic_tax: 343
