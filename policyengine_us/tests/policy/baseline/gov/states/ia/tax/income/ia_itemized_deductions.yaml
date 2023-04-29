@@ -1,0 +1,19 @@
+- name: IA itemized deductions unit test 1
+  period: 2021
+  input:
+    interest_deduction: 15_000
+    state_and_local_sales_or_income_tax: 8_000
+    real_estate_taxes: 12_000
+    state_code: IA
+  output:
+    ia_itemized_deductions: 27_000
+
+- name: IA itemized deductions unit test 2
+  period: 2022
+  input:
+    interest_deduction: 16_000
+    state_and_local_sales_or_income_tax: 12_000
+    real_estate_taxes: 13_000
+    state_code: IA
+  output:
+    ia_itemized_deductions: 29_000
