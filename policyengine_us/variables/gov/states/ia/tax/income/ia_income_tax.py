@@ -14,4 +14,5 @@ class ia_income_tax(Variable):
         "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
     )
     defined_for = StateCode.IA
-    adds = ["ia_income_tax_before_refundable_credits", "ia_refundable_credits"]
+    adds = ["ia_income_tax_before_refundable_credits"]
+    subtracts = ["ia_refundable_credits"]
