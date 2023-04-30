@@ -5,6 +5,86 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.309.0] - 2023-04-28 20:10:09
+
+### Added
+
+- New Jersey TANF gross earned income.
+
+## [0.308.0] - 2023-04-28 19:05:33
+
+### Added
+
+- Maine AGI Subtractions.
+
+## [0.307.0] - 2023-04-28 03:08:20
+
+### Added
+
+- Modify description
+
+## [0.306.0] - 2023-04-28 03:02:45
+
+### Added
+
+- New Jersey TANF Gross Unearned Income.
+
+## [0.305.0] - 2023-04-28 02:57:49
+
+### Fixed
+
+- New Jersey TANF maximum allowable income.
+
+## [0.304.0] - 2023-04-28 02:43:27
+
+### Fixed
+
+- NJ TANF maximum benefit.
+
+## [0.303.1] - 2023-04-27 11:28:42
+
+### Fixed
+
+- Reorganised local level area variables.
+
+## [0.303.0] - 2023-04-27 01:54:06
+
+### Added
+
+- New Jersey EITC and New Jersey EITC eligiblity (different age parameters).
+
+## [0.302.0] - 2023-04-26 12:07:09
+
+### Added
+
+- Self-employment tax abolition switch.
+
+### Fixed
+
+- Some OK households had NaN net income.
+
+## [0.301.2] - 2023-04-26 02:13:48
+
+### Added
+
+- Change NYC CDCC age restriction unit from currency to year.
+
+## [0.301.1] - 2023-04-25 04:39:43
+
+### Added
+
+- Edited NYC EITC variable label.
+
+## [0.301.0] - 2023-04-24 21:15:38
+
+### Added
+
+- Populate is_nyc from the CPS.
+
+### Changed
+
+- Rename fips to state_fips.
+
 ## [0.300.4] - 2023-04-24 16:18:02
 
 ### Added
@@ -3669,6 +3749,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.308.0...0.309.0
+[0.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.307.0...0.308.0
+[0.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.306.0...0.307.0
+[0.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.305.0...0.306.0
+[0.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.304.0...0.305.0
+[0.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.303.1...0.304.0
+[0.303.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.303.0...0.303.1
+[0.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.302.0...0.303.0
+[0.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.2...0.302.0
+[0.301.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.1...0.301.2
+[0.301.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.0...0.301.1
+[0.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.4...0.301.0
 [0.300.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.3...0.300.4
 [0.300.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.2...0.300.3
 [0.300.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.1...0.300.2
