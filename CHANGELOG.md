@@ -5,6 +5,66 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.310.1] - 2023-05-01 03:21:40
+
+### Fixed
+
+- Removed Maryland refundable EITC match drop from 45% to 28%, reflecting recent legislation.
+
+## [0.310.0] - 2023-04-30 15:12:21
+
+### Added
+
+- Virginia disability income subtraction.
+
+## [0.309.0] - 2023-04-28 20:10:09
+
+### Added
+
+- New Jersey TANF gross earned income.
+
+## [0.308.0] - 2023-04-28 19:05:33
+
+### Added
+
+- Maine AGI Subtractions.
+
+## [0.307.0] - 2023-04-28 03:08:20
+
+### Added
+
+- Modify description
+
+## [0.306.0] - 2023-04-28 03:02:45
+
+### Added
+
+- New Jersey TANF Gross Unearned Income.
+
+## [0.305.0] - 2023-04-28 02:57:49
+
+### Fixed
+
+- New Jersey TANF maximum allowable income.
+
+## [0.304.0] - 2023-04-28 02:43:27
+
+### Fixed
+
+- NJ TANF maximum benefit.
+
+## [0.303.1] - 2023-04-27 11:28:42
+
+### Fixed
+
+- Reorganised local level area variables.
+
+## [0.303.0] - 2023-04-27 01:54:06
+
+### Added
+
+- New Jersey EITC and New Jersey EITC eligiblity (different age parameters).
+
 ## [0.302.0] - 2023-04-26 12:07:09
 
 ### Added
@@ -3701,6 +3761,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.310.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.0...0.310.1
+[0.310.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.309.0...0.310.0
+[0.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.308.0...0.309.0
+[0.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.307.0...0.308.0
+[0.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.306.0...0.307.0
+[0.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.305.0...0.306.0
+[0.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.304.0...0.305.0
+[0.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.303.1...0.304.0
+[0.303.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.303.0...0.303.1
+[0.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.302.0...0.303.0
 [0.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.2...0.302.0
 [0.301.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.1...0.301.2
 [0.301.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.0...0.301.1
