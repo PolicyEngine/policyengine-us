@@ -5,6 +5,115 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<<<<<<< HEAD
+=======
+## [0.295.0] - 2023-04-17 15:44:00
+
+### Added
+
+- Maine standard, itemized, and overall deduction.
+
+## [0.294.0] - 2023-04-16 23:56:05
+
+### Added
+
+- NJ child tax credit.
+
+## [0.293.1] - 2023-04-16 15:33:21
+
+### Changed
+
+- Fixed README.md display on PyPI.
+
+## [0.293.0] - 2023-04-16 10:06:18
+
+### Fixed
+
+- Removed a microdata test that was failing due to download requirements.
+
+## [0.292.0] - 2023-04-15 18:19:59
+
+### Added
+
+- Utah SS Benefits Credit.
+- Utah retirement credit.
+- Utah EITC.
+- Utah at-home parent credit.
+
+## [0.291.0] - 2023-04-15 10:49:00
+
+### Added
+
+- CPS racial category.
+- Top-level racial category (4 categories).
+
+## [0.290.0] - 2023-04-15 09:31:34
+
+### Added
+
+- Utah State income tax.
+
+## [0.289.0] - 2023-04-15 03:01:12
+
+### Added
+
+- Washington TANF resource limit.
+
+## [0.288.0] - 2023-04-15 01:06:27
+
+### Added
+
+- ME Child Care Credit, refundable and nonrefundable portion.
+
+## [0.287.0] - 2023-04-15 00:25:24
+
+### Added
+
+- Hawaii standard deduction.
+
+## [0.286.2] - 2023-04-14 10:05:46
+
+### Changed
+
+- CalEITC reimplemented without branching and without bug.
+
+## [0.286.1] - 2023-04-13 16:18:46
+
+### Changed
+
+- CalEITC reimplemented without branching.
+
+## [0.286.0] - 2023-04-13 02:15:59
+
+### Added
+
+- DC standard deduction.
+
+## [0.285.1] - 2023-04-11 19:35:40
+
+### Fixed
+
+- Subtraction error in EITC joint bonus.
+
+## [0.285.0] - 2023-04-11 04:46:52
+
+### Added
+
+- Oklahoma state income tax.
+
+## [0.284.0] - 2023-04-11 04:11:43
+
+### Added
+
+- New Jersey CDCC.
+
+## [0.283.0] - 2023-04-11 04:09:36
+
+### Added
+
+- Minnesota state income tax.
+
+>>>>>>> 21abf3538dfa031ce0cf236a28381beb0728a0ee
 ## [0.282.0] - 2023-04-10 21:13:07
 
 ### Added
@@ -3502,6 +3611,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+<<<<<<< HEAD
+=======
+[0.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.294.0...0.295.0
+[0.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.1...0.294.0
+[0.293.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.0...0.293.1
+[0.293.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.292.0...0.293.0
+[0.292.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.291.0...0.292.0
+[0.291.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.290.0...0.291.0
+[0.290.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.289.0...0.290.0
+[0.289.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.288.0...0.289.0
+[0.288.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.287.0...0.288.0
+[0.287.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.2...0.287.0
+[0.286.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.1...0.286.2
+[0.286.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.286.0...0.286.1
+[0.286.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.1...0.286.0
+[0.285.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.285.0...0.285.1
+[0.285.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.284.0...0.285.0
+[0.284.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.283.0...0.284.0
+[0.283.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.282.0...0.283.0
+>>>>>>> 21abf3538dfa031ce0cf236a28381beb0728a0ee
 [0.282.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.1...0.282.0
 [0.281.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.281.0...0.281.1
 [0.281.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.280.0...0.281.0

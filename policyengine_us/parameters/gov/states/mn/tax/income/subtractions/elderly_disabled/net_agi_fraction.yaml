@@ -1,0 +1,13 @@
+description: Minnesota allows a subtraction from US AGI to get its taxable income that is available to tax units with elderly or disabled heads or spouses that met certain eligibility conditions with this variable being the fraction of net AGI that reduces the subtraction amount.
+values:
+  2021-01-01: 0.5
+
+metadata:
+  label: Minnesota elderly/disabled subraction net AGI fraction
+  period: year
+  unit: /1
+  reference:
+  - title: 2021 Minnesota Schedule M1R form and instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1R form and instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1r_22.pdf#page=1

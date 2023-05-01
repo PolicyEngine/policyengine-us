@@ -7,10 +7,15 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
+<<<<<<< HEAD
     version="0.282.0",
+=======
+    version="0.295.0",
+>>>>>>> 21abf3538dfa031ce0cf236a28381beb0728a0ee
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
+    long_description_content_type="text/markdown",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: GNU Affero General Public License v3",

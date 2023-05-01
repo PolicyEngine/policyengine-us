@@ -19,13 +19,10 @@ class az_blind_exemption(Variable):
         # Then get the AZ blind exemptions part of the parameter tree.
         p = parameters(
             period
-        ).gov.states.nj.tax.income.exemptions.blind_or_disabled
+        ).gov.states.az.tax.income.exemptions
 
         # Get the individual blind status and disabled.
-        blind_head = tax_unit("blind_head", period)
-
-        # Check if the individual's eligiblity.
-        head_eligible = (blind_head).astype(int)
+        head_eligible = tax_unit("blind_head", period).astype(int)
 
         # Get the individual's spouse blind status and disabled.
         blind_spouse = tax_unit("blind_spouse", period) * joint
