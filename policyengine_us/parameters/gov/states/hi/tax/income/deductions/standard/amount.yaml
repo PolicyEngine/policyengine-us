@@ -1,0 +1,21 @@
+description: Hawaii provides filers a standard deduction of this amount, depending on their filing status.
+metadata:
+  label: Hawaii standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Hawaii Tax Form Instruction Booklet line 23
+    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20
+
+JOINT:
+  2022-01-01: 4_400
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 3_212
+WIDOW:
+  2022-01-01: 4_400
+SINGLE:
+  2022-01-01: 2_200
+SEPARATE:
+  2022-01-01: 2_200

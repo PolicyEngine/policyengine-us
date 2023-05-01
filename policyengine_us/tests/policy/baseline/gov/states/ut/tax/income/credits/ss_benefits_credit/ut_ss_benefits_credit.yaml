@@ -1,0 +1,47 @@
+- name: UT Social Security Benefits Credit unit test 1
+  period: 2022
+  input:
+    ut_claims_retirement_credit: false
+    ut_ss_benefits_credit_max: 500
+    ut_income_tax_before_credits: 700
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_ss_benefits_credit: 500
+
+- name: UT Social Security Benefits Credit unit test 2
+  period: 2022
+  input:
+    ut_claims_retirement_credit: true
+    ut_ss_benefits_credit_max: 500
+    ut_income_tax_before_credits: 700
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_ss_benefits_credit: 0  # tax unit claims retirement credit
+
+- name: UT Social Security Benefits Credit unit test 3
+  period: 2022
+  input:
+    ut_claims_retirement_credit: false
+    ut_ss_benefits_credit_max: 500
+    ut_income_tax_before_credits: 400
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_ss_benefits_credit: 250  # limited by remaining tax liability
+
+- name: UT Social Security Benefits Credit unit test 4
+  period: 2022
+  input:
+    ut_claims_retirement_credit: false
+    ut_ss_benefits_credit_max: 0
+    ut_income_tax_before_credits: 700
+    ut_taxpayer_credit: 100
+    ut_eitc: 50
+    state_code: UT
+  output:
+    ut_ss_benefits_credit: 0  # max credit is 0

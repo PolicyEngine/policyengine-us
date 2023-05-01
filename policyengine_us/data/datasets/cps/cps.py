@@ -195,6 +195,9 @@ def add_personal_variables(cps: h5py.File, person: DataFrame) -> None:
 
     cps["has_marketplace_health_coverage"] = person.MRK == 1
 
+    cps["cps_race"] = person.PRDTRACE
+    cps["is_hispanic"] = person.PRDTHSP != 0
+
 
 def add_personal_income_variables(
     cps: h5py.File, person: DataFrame, year: int
@@ -314,7 +317,26 @@ def add_spm_variables(cps: h5py.File, spm_unit: DataFrame) -> None:
 
 
 def add_household_variables(cps: h5py.File, household: DataFrame) -> None:
-    cps["fips"] = household.GESTFIPS
+    cps["state_fips"] = household.GESTFIPS
+    cps["county_fips"] = household.GTCO
+    state_county_fips = cps["state_fips"][...] * 1e3 + cps["county_fips"][...]
+    # Assign is_nyc here instead of as a variable formula so that it shows up
+    # as toggleable in the webapp.
+    # List county FIPS codes for each NYC county/borough.
+    NYC_COUNTY_FIPS = [
+        5,  # Bronx
+        47,  # Kings (Brooklyn)
+        61,  # New York (Manhattan)
+        81,  # Queens
+        85,  # Richmond (Staten Island)
+    ]
+    # Compute NYC by concatenating NY state FIPS with county FIPS.
+    # For example, 36061 is Manhattan.
+    NYS_FIPS = 36
+    nyc_full_county_fips = [
+        NYS_FIPS * 1e3 + county_fips for county_fips in NYC_COUNTY_FIPS
+    ]
+    cps["in_nyc"] = np.isin(state_county_fips, nyc_full_county_fips)
 
 
 class CPS_2020(CPS):
@@ -339,7 +361,7 @@ CPS_2022 = UpratedCPS.from_dataset(
     "cps_2022",
     "CPS 2022",
     STORAGE_FOLDER / "cps_2022.h5",
-    "https://api.github.com/repos/PolicyEngine/policyengine-us/releases/assets/100380304",
+    new_url="release://policyengine/policyengine-us/cps-2022/cps_2022.h5",
 )
 
 CPS_2023 = UpratedCPS.from_dataset(
@@ -348,5 +370,5 @@ CPS_2023 = UpratedCPS.from_dataset(
     "cps_2023",
     "CPS 2023",
     STORAGE_FOLDER / "cps_2023.h5",
-    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023_v0_263_5.h5",
+    new_url="release://policyengine/policyengine-us/cps-2023/cps_2023.h5",
 )
