@@ -24,16 +24,19 @@ class va_age_deduction(Variable):
             where(age_head > 64, 1, 0) + where(age_spouse > 64, 1, 0)
         )
         # calculate the number of people age >=84 and is eligible for a full deduction
+        birth_year_head = year(period) - age_head
+        # Compare to a policy parameter for 1939 per legal code
         eightyfour_count = sum(
             where(age_head > 83, 1, 0) + where(age_spouse > 83, 1, 0)
         )
-        age_deduction_amount = (
+        filing_statuses = filing_status.possible_values
+        joint = filing_status == filing_statuses.JOINT
+        separate = filing_status == filing_statuses.SEPARATE
+        return (
             12_000 * eligible_count
             - (where(eligible_count == eightyfour_count, 0, 1))
             * (
                 AFAGI
-                - where(filing_status in ("JOINT", "SEPARATE"), 75_000, 50_000)
+                - where(joint | separate, 75_000, 50_000)
             )
-        ) / where(filing_status == "JOINT", 1, eligible_count)
-
-        return where(filing_status in ("JOINT", "SEPARATE"), 75_000, 50_000)
+        ) / where(joint, 1, eligible_count)
