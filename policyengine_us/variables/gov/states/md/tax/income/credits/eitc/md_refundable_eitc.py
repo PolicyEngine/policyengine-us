@@ -17,4 +17,5 @@ class md_refundable_eitc(Variable):
         income_tax = tax_unit("md_income_tax_before_credits", period)
         excess = max_(0, non_refundable_eitc - income_tax)
         childless = tax_unit("eitc_child_count", period) == 0
-        return where(childless, excess, p.match.refundable * excess)
+        multiplier = where(childless, 1, p.match.refundable)
+        return excess * multiplier
