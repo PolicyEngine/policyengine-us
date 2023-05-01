@@ -36,4 +36,4 @@ class va_age_deduction(Variable):
             )
         ) / where(filing_status == "JOINT", 1, eligible_count)
 
-        return age_deduction_amount
+        return where(filing_status in ("JOINT", "SEPARATE"), 75_000, 50_000)
