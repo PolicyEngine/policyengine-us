@@ -13,10 +13,10 @@ class md_non_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("eitc", period)
-        md_eitc = parameters(period).gov.states.md.tax.income.credits.eitc
+        p = parameters(period).gov.states.md.tax.income.credits.eitc
         childless = tax_unit("eitc_child_count", period) == 0
         return where(
             childless,
-            min_(md_eitc.childless.max_amount, federal_eitc),
-            md_eitc.non_refundable_match * federal_eitc,
+            min_(p.childless.max_amount, federal_eitc),
+            p.match.non_refundable * federal_eitc,
         )
