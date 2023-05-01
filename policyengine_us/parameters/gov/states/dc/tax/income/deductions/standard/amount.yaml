@@ -1,0 +1,23 @@
+description: DC provides filers a standard deduction of this amount, depending on filing status.
+metadata:
+  label: DC standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Code of the District of Columbia § 47–1801.04(44)
+    href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1801.04#(44)
+  - title: District of Columbia (DC) Individual Income Tax Forms and Instructions
+    href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=11
+
+JOINT:
+  2022-01-01: 25_900
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 19_400
+WIDOW:
+  2022-01-01: 25_900
+SINGLE:
+  2022-01-01: 12_950
+SEPARATE:
+  2022-01-01: 12_950

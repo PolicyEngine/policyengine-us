@@ -14,6 +14,11 @@ filtered:
       modelled:
       - California state income tax
       - California TANF
+    DC:
+      modelled:
+      - District of Columbia TANF
+      not_modelled:
+      - District of Columbia income tax
     IL:
       modelled:
       - Illinois state income tax
@@ -33,6 +38,11 @@ filtered:
       - Maryland state income tax
       not_modelled:
       - Maryland TANF
+    MN:
+      modelled:
+      - Minnesota state income tax
+      not_modelled:
+      - Minnesota TANF
     MO:
       modelled:
       - Missouri state income tax
@@ -51,7 +61,6 @@ filtered:
     NY:
       modelled:
       - New York state income tax
-      not_modelled:
       - New York TANF
     OR:
       modelled:
@@ -68,3 +77,8 @@ filtered:
       - Washington state income tax
       not_modelled:
       - Washington TANF
+    UT:
+      modelled:
+      - Utah state income tax
+      not_modelled:
+      - Utah TANF
