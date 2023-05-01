@@ -10,10 +10,9 @@ class nj_tanf_countable_earned_income(Variable):
     defined_for = StateCode.NJ
 
     def formula(spm_unit, period, parameters):
-        # Get gross earned income.
         person = spm_unit.members
+        # Get gross earned income.
         gross_earned_income = spm_unit("nj_tanf_gross_earned_income", period)
-        # Multiply by 100% minus the EID.
         p = parameters(
             period
         ).gov.states.nj.njdhs.tanf.income.earned_income_deduction
