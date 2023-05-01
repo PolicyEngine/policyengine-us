@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ia_pension_exclusion(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Iowa pension exclusion"
     unit = USD
     definition_period = YEAR
@@ -13,15 +13,14 @@ class ia_pension_exclusion(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ia.tax.income.net_income
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.ia.tax.income.pension_exclusion
         # determine eligibility for pension exclusion
-        person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         # ... determine age eligibility
-        is_an_elder = person("age", period) >= p.pension_exclusion.minimum_age
-        is_elderly = (is_head & is_an_elder) | (is_spouse & is_an_elder)
+        an_elder = person("age", period) >= p.minimum_age
+        is_elderly = (is_head & an_elder) | (is_spouse & an_elder)
         # ... determine disability eligiblity
         has_disability = person("is_permanently_and_totally_disabled", period)
         is_disabled = (is_head & has_disability) | (is_spouse & has_disability)
@@ -29,7 +28,6 @@ class ia_pension_exclusion(Variable):
         is_eligible = is_elderly | is_disabled
         # determine pension exclusion amount
         pension = person("taxable_pension_income", period)
-        uncapped_exclusion = tax_unit.sum(is_eligible * pension)
-        filing_status = tax_unit("filing_status", period)
-        exclusion_cap = p.pension_exclusion.maximum_amount[filing_status]
-        return min_(uncapped_exclusion, exclusion_cap)
+        filing_status = person.tax_unit("filing_status", period)
+        exclusion_cap = p.maximum_amount[filing_status]
+        return is_eligible * min_(pension, exclusion_cap)

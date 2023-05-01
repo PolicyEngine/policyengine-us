@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_net_income(Variable):
+class ia_income_adjustments(Variable):
     value_type = float
     entity = Person
-    label = "Iowa net income"
+    label = "Iowa income adjustments"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,5 +14,4 @@ class ia_net_income(Variable):
         "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
     )
     defined_for = StateCode.IA
-    adds = ["ia_gross_income"]
-    subtracts = ["ia_income_adjustments"]
+    adds = "gov.states.ia.tax.income.income_adjustments.sources"

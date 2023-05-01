@@ -10,18 +10,12 @@
       person2:
         age: 10
         taxable_pension_income: 7_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: IA
   output:
-    ia_pension_exclusion: 1_000
+    ia_pension_exclusion: [1_000, 0]
 
 - name: IA pension exclusion unit test 2
   period: 2022
@@ -36,18 +30,12 @@
         is_tax_unit_spouse: true
         age: 55
         taxable_pension_income: 7_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: IA
   output:
-    ia_pension_exclusion: 8_000
+    ia_pension_exclusion: [1_000, 7_000]
 
 - name: IA pension exclusion unit test 3
   period: 2022
@@ -61,18 +49,12 @@
         is_tax_unit_spouse: true
         age: 55
         taxable_pension_income: 7_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: IA
   output:
-    ia_pension_exclusion: 7_000
+    ia_pension_exclusion: [0, 7_000]
 
 - name: IA pension exclusion unit test 4
   period: 2022
@@ -85,15 +67,9 @@
       person2:
         age: 54
         taxable_pension_income: 7_000
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
     households:
       household:
         members: [person1, person2]
         state_code: IA
   output:
-    ia_pension_exclusion: 0
+    ia_pension_exclusion: [0, 0]
