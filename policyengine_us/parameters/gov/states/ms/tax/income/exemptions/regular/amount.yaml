@@ -1,10 +1,12 @@
-description: MS provides a regular exemption of $6k for individuals, $12k for couples, $8k for heads of household.
+description: Mississippi provides an exemption of this value depending on filing status.
 metadata:
   unit: currency-USD
-  label: MS Regular Exemption
+  label: Mississippi exemption
   reference: 
     - title: Mississippi State FORMS 80-105 AND 80-205
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=5
+    - title: Department of Revenue, State of Mississippi - Tax rates, Exemptions, & Deductions.
+      href: https://www.dor.ms.gov/individual/tax-rates
   breakdown:
     - filing_status
 SINGLE:
