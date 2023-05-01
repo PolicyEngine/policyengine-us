@@ -17,7 +17,7 @@ class va_age_deduction(Variable):
         age_spouse = tax_unit("age_spouse", period)
         age_deduction_amount = 0
 
-        AFAGI_amount = tax_unit("AFAGI", period)
+        AFAGI = tax_unit("AFAGI", period)
 
         # calcualte the number of people eligble for age deduction in a household
         eligible_count = sum(
@@ -31,7 +31,7 @@ class va_age_deduction(Variable):
             12_000 * eligible_count
             - (where(eligible_count == eightyfour_count, 0, 1))
             * (
-                AFAGI_amount
+                AFAGI
                 - where(filing_status in ("JOINT", "SEPARATE"), 75_000, 50_000)
             )
         ) / where(filing_status == "JOINT", 1, eligible_count)
