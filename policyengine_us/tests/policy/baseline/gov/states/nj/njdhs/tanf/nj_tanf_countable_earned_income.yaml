@@ -1,0 +1,49 @@
+- name: NJ countable earned income = gross earned income*(1-100%) for first month.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_gross_earned_income: 6_000
+    months_enrolled_in_tanf: 1
+    weekly_hours_worked: 40
+  output:
+    nj_tanf_countable_earned_income: 0
+
+- name: NJ countable earned income = gross earned income*(1-75%) for applicant with weekly working hours over 20 in 2nd month.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_gross_earned_income: 6_000
+    months_enrolled_in_tanf: 2
+    weekly_hours_worked: 40
+  output:
+    nj_tanf_countable_earned_income: 1_500
+
+- name: NJ countable earned income = gross earned income*(1-50%) for applicant with weekly working hours under 20 in 2nd month.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_gross_earned_income: 6_000
+    months_enrolled_in_tanf: 2
+    weekly_hours_worked: 19
+  output:
+    nj_tanf_countable_earned_income: 3_000
+
+- name: NJ countable earned income = gross earned income*(1-75%) for applicant with weekly working hours over 20 in 7nd month.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_gross_earned_income: 6_000
+    months_enrolled_in_tanf: 7
+    weekly_hours_worked: 40
+  output:
+    nj_tanf_countable_earned_income: 1_500
+
+- name: NJ countable earned income = gross earned income*(1-50%) for applicant with weekly working hours over 20 in 8nd month.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_gross_earned_income: 6_000
+    months_enrolled_in_tanf: 8
+    weekly_hours_worked: 40
+  output:
+    nj_tanf_countable_earned_income: 3_000
