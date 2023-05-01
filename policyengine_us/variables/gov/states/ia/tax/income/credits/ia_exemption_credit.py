@@ -21,10 +21,10 @@ class ia_exemption_credit(Variable):
         exemption = p.credits.exemption
         elder_head = tax_unit("age_head", period) >= exemption.elderly_age
         elder_spouse = tax_unit("age_spouse", period) >= exemption.elderly_age
-        elder_count = int(elder_head) + int(elder_spouse)
+        elder_count = elder_head.astype(int) + elder_spouse.astype(int)
         blind_head = tax_unit("blind_head", period)
         blind_spouse = tax_unit("blind_spouse", period)
-        blind_count = int(blind_head) + int(blind_spouse)
+        blind_count = blind_head.astype(int) + blind_spouse.astype(int)
         additional_count = elder_count + blind_count
         return (
             adult_count * exemption.personal
