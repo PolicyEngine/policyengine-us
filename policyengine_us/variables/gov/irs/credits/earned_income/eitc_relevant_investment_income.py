@@ -10,7 +10,8 @@ class eitc_relevant_investment_income(Variable):
 
     def formula(tax_unit, period, parameters):
         no_loss_capital_gains = max_(
-            0, add(tax_unit, period, ["capital_gains"]),
+            0,
+            add(tax_unit, period, ["capital_gains"]),
         )
         return (
             add(

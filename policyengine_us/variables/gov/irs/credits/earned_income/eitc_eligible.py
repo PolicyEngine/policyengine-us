@@ -19,7 +19,8 @@ class eitc_eligible(Variable):
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         meets_age_requirements = (age >= min_age) & (age <= max_age)
         no_loss_capital_gains = max_(
-            0, add(tax_unit, period, ["capital_gains"]),
+            0,
+            add(tax_unit, period, ["capital_gains"]),
         )
         eitc_investment_income = (
             add(

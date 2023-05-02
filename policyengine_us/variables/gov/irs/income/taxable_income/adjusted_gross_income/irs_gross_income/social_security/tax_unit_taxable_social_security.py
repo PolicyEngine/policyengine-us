@@ -51,7 +51,11 @@ class tax_unit_taxable_social_security(Variable):
             ss.rate.upper * gross_ss,
         )
         return select(
-            [under_first_threshold, under_second_threshold, True,],
+            [
+                under_first_threshold,
+                under_second_threshold,
+                True,
+            ],
             [
                 0,
                 amount_if_under_second_threshold,

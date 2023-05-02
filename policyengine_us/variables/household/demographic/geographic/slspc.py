@@ -50,11 +50,21 @@ class second_lowest_silver_plan_cost(Variable):
             period
         )
         age_code = select(
-            [age < 21, age < 64, age >= 64,],
-            ["0-20", age.astype(int).astype(str), "64+",],
+            [
+                age < 21,
+                age < 64,
+                age >= 64,
+            ],
+            [
+                "0-20",
+                age.astype(int).astype(str),
+                "64+",
+            ],
         )
         eligible = person.tax_unit("is_ptc_eligible", period)
         per_person_cost = index_(
-            into=slspc, indices=[state, area, age_code], where=eligible,
+            into=slspc,
+            indices=[state, area, age_code],
+            where=eligible,
         )
         return tax_unit.sum(per_person_cost)

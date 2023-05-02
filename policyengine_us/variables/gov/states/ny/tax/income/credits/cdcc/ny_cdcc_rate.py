@@ -55,7 +55,9 @@ class ny_cdcc_rate(Variable):
         )
 
         ny_percentage = where(
-            ny_agi < alternate.max_agi, alternate_percentage, main_percentage,
+            ny_agi < alternate.max_agi,
+            alternate_percentage,
+            main_percentage,
         )
 
         s_1_b_multiplier = percentage.multiplier.calc(ny_agi)

@@ -28,7 +28,10 @@ class nj_eitc(Variable):
                 tax_unit("eitc_eligible", period),
                 tax_unit("nj_childless_eitc_age_eligible", period),
             ],
-            [tax_unit("eitc", period), p_fed.max.calc(0),],
+            [
+                tax_unit("eitc", period),
+                p_fed.max.calc(0),
+            ],
             default=0,
         )
 
