@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_net_income(Variable):
+class ia_itemized_deductions_indiv(Variable):
     value_type = float
     entity = Person
-    label = "Iowa net income"
+    label = "Iowa itemized deductions for individual couples"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,11 +16,5 @@ class ia_net_income(Variable):
     defined_for = StateCode.IA
 
     def formula(person, period, parameters):
-        gross_income = person("ia_gross_income", period)
-        income_adjustments = person("ia_income_adjustments", period)
-        net_income = gross_income - income_adjustments
-        # allocate any dependent net_income to tax unit head
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * net_income)
-        is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * net_income + is_head * sum_dep_net_income
+        unit_deds = person.tax_unit("ia_itemized_deductions_unit", period)
+        return unit_deds * person("ia_prorate_fraction", period)

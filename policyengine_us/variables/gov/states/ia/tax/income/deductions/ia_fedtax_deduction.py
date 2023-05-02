@@ -32,7 +32,7 @@ class ia_fedtax_deduction(Variable):
         # allocate any dependent self-employment tax to tax unit head
         indiv_setax = person("self_employment_tax", period)
         is_dependent = person("is_tax_unit_dependent", period)
-        sum_dependent_setax = person.tax_unit.sum(is_dependent * indiv_setax)
-        setax = ~is_dependent * indiv_setax + is_head * sum_dependent_setax
+        sum_dep_setax = person.tax_unit.sum(is_dependent * indiv_setax)
+        setax = ~is_dependent * indiv_setax + is_head * sum_dep_setax
         # return prorated_tax less setax
-        return max_(0, prorated_tax - setax)        
+        return max_(0, prorated_tax - setax)

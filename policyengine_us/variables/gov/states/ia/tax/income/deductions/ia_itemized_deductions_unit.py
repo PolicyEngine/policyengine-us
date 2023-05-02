@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_itemized_deductions(Variable):
+class ia_itemized_deductions_unit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Iowa itemized deductions"
+    label = "Iowa itemized deductions for tax unit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -23,6 +23,7 @@ class ia_itemized_deductions(Variable):
         deduct eligible state and local taxes paid, independent of the
         federal dollar limitation.
         """
+        # compute tax unit's itemized deductions
         p = parameters(period).gov.irs.deductions
         itm_deds = [
             deduction
