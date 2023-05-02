@@ -14,5 +14,13 @@ class ia_net_income(Variable):
         "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
     )
     defined_for = StateCode.IA
-    adds = ["ia_gross_income"]
-    subtracts = ["ia_income_adjustments"]
+
+    def formula(person, period, parameters):
+      gross_income = person("ia_gross_income", period)
+      income_adjustments = person("ia_income_adjustments", period)
+      net_income = gross_income - income_adjustments
+      # allocate any dependent net_income to tax unit head
+      is_dependent = person("is_tax_unit_dependent", period)
+      sum_dependent_net_income = person.tax_unit.sum(is_dependent * net_income)
+      is_head = person("is_tax_unit_head", period)
+      return ~is_dependent * net_income + is_head * sum_dependent_net_income
