@@ -21,7 +21,7 @@ class nj_tanf_income_eligible(Variable):
             "nj_tanf_maximum_allowable_income", period
         )
         maximum_benefit = spm_unit("nj_tanf_maximum_benefit", period)
-        # New Jersey Administrative Code 10:90-3.1 
+        # New Jersey Administrative Code 10:90-3.1
         return (income <= maximum_allowable_income) & (
             income < maximum_benefit
         )
