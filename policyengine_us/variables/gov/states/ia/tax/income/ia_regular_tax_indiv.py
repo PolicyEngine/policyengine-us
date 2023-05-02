@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_regular_tax(Variable):
+class ia_regular_tax_indiv(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Iowa regular tax calculated using income tax rate schedule"
+    entity = Person
+    label = "Iowa regular tax calculated using income tax rate schedule when married couples file separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,7 +15,7 @@ class ia_regular_tax(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
-        taxable_income = tax_unit("ia_taxable_income", period)
+    def formula(person, period, parameters):
+        taxable_income = person("ia_taxable_income_indiv", period)
         p = parameters(period).gov.states.ia.tax.income
         return p.rates.all.calc(max_(0, taxable_income))
