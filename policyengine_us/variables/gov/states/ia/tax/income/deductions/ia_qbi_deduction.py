@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class ia_qbi_deduction(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Iowa deduction that is fraction of federal qualified business income deduction"
     unit = USD
     definition_period = YEAR
@@ -15,7 +15,7 @@ class ia_qbi_deduction(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
-        fed_qbid = tax_unit("qualified_business_income_deduction", period)
+    def formula(person, period, parameters):
+        fed_qbid = person("qbid_amount", period)
         p = parameters(period).gov.states.ia.tax.income
         return fed_qbid * p.deductions.qualified_business_income.fraction
