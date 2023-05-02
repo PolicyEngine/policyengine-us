@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_taxable_income(Variable):
+class ia_taxable_income_joint(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Iowa taxable income"
+    entity = Person
+    label = "Iowa taxable income when married couple file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,8 +15,12 @@ class ia_taxable_income(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
-        net_income = tax_unit("ia_net_income", period)
+    def formula(person, period, parameters):
+        net_income = person("ia_net_income", period)
         p = parameters(period).gov.states.ia.tax.income
-        deductions = add(tax_unit, period, p.deductions.sources)
-        return max_(0, net_income - deductions)
+        deductions = [
+            f"{ded}_joint" if ded == "ia_basic_deduction" else ded
+            for ded in p.deductions.sources
+        ]
+        deductions_amount = add(person, period, deductions)
+        return max_(0, net_income - deductions_amount)
