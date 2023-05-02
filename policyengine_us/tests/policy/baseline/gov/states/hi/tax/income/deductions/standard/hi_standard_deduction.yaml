@@ -1,0 +1,15 @@
+- name: Single filer 
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: SINGLE
+  output:
+    hi_standard_deduction: 2_200
+
+- name: Joint filer 
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: JOINT
+  output:
+    hi_standard_deduction: 4_400
