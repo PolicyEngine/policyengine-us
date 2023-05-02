@@ -5,7 +5,7 @@ from policyengine_us.model_api import *
 class oh_earned_income_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio Earned Credit"
+    label = "Ohio Earned Income Credit"
     unit = USD
     definition_period = YEAR
     reference = (
