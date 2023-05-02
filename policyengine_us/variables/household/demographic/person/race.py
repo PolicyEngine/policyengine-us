@@ -27,10 +27,5 @@ class race(Variable):
                 (cps_race == 2) & ~hispanic,
                 True,
             ],
-            [
-                Race.HISPANIC,
-                Race.WHITE,
-                Race.BLACK,
-                Race.OTHER,
-            ],
+            [Race.HISPANIC, Race.WHITE, Race.BLACK, Race.OTHER,],
         )

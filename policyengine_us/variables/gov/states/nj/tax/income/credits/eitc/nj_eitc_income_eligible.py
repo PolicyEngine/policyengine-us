@@ -15,8 +15,7 @@ class nj_eitc_income_eligible(Variable):
 
         # Check if they are above the investment income limit.
         no_loss_capital_gains = max_(
-            0,
-            add(tax_unit, period, ["capital_gains"]),
+            0, add(tax_unit, period, ["capital_gains"]),
         )
         eitc_investment_income = (
             add(

@@ -121,11 +121,7 @@ class medicaid_rating_area(Variable):
         county = household("county_str", period)
         locations = np.array(list(mra._children))
         county_in_locations = np.isin(county, locations)
-        location = where(
-            county_in_locations,
-            county,
-            three_digit_zip_code,
-        )
+        location = where(county_in_locations, county, three_digit_zip_code,)
         valid_location = np.isin(location, locations)
         rating_areas = np.ones_like(
             location

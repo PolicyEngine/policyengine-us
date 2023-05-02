@@ -49,10 +49,7 @@ class CalibratedCPS(Dataset):
         original_weights = input_dataset.household.household_weight.values
 
         calibrated_weights = CalibratedWeights(
-            original_weights,
-            input_dataset,
-            Loss,
-            calibration_parameters,
+            original_weights, input_dataset, Loss, calibration_parameters,
         )
         weights = calibrated_weights.calibrate(
             "2022-01-01",

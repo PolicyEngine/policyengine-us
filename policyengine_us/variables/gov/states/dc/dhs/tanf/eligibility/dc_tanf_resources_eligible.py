@@ -20,9 +20,7 @@ class dc_tanf_resources_eligible(Variable):
         has_disabled = spm_unit.any(person("is_disabled", period))
         # Look up resource limit by the condition.
         resource_limit = where(
-            has_elderly | has_disabled,
-            p.higher_limit,
-            p.lower_limit,
+            has_elderly | has_disabled, p.higher_limit, p.lower_limit,
         )
         countable_resources = spm_unit("dc_tanf_countable_resources", period)
         return countable_resources <= resource_limit
