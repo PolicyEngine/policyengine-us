@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_standard_deduction(Variable):
+class ia_standard_deduction_joint(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Iowa standard deduction"
+    entity = Person
+    label = "Iowa standard deduction when married couples file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,7 +15,7 @@ class ia_standard_deduction(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
+    def formula(person, period, parameters):
+        filing_status = person.tax_unit("filing_status", period)
         p = parameters(period).gov.states.ia.tax.income
         return p.deductions.standard[filing_status]
