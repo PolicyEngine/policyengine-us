@@ -1,19 +1,28 @@
 - name: IA federal income tax deduction unit test 1
+  absolute_error_margin: 0.01
   period: 2021
   input:
-    income_tax_before_refundable_credits: 10_000
-    self_employment_tax: 7_000
-    additional_medicare_tax: 1_000
-    state_code: IA
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        ia_net_income: 300_000
+        self_employment_tax: 200
+      person2:
+        is_tax_unit_spouse: true
+        age: 38
+        ia_net_income: 100_000
+      person3:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        income_tax_before_refundable_credits: 21_000
+        additional_medicare_tax: 1_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
   output:
-    ia_fedtax_deduction: 2_000
-
-- name: IA federal income tax deduction unit test 2
-  period: 2022
-  input:
-    income_tax_before_refundable_credits: 1_000
-    self_employment_tax: 4_000
-    additional_medicare_tax: 500
-    state_code: IA
-  output:
-    ia_fedtax_deduction: -3_500
+    ia_fedtax_deduction: [14_800, 5_000, 0]
