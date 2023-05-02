@@ -20,9 +20,9 @@ class nj_tanf_countable_earned_income(Variable):
         weekly_hours_worked = person("weekly_hours_worked", period)
         # New Jerset Admin Code 10:90-3.8(b)
         return where(
-            months_enrolled_in_tanf > 1,
+            months_enrolled_in_tanf > p.first_month_threshold,
             where(
-                months_enrolled_in_tanf > 7,
+                months_enrolled_in_tanf > p.consecutive_month_threshold,
                 gross_earned_income * (1 - p.additional_percent),
                 where(
                     weekly_hours_worked >= p.work_hours_threshold,
