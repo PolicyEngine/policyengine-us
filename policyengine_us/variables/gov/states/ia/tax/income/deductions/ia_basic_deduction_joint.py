@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_basic_deduction(Variable):
+class ia_basic_deduction_joint(Variable):
     value_type = float
-    entity = TaxUnit
-    label = "Iowa deduction of either standard or itemized deductions"
+    entity = Person
+    label = "Iowa deduction of either standard or itemized deductions when married couples file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,7 +15,7 @@ class ia_basic_deduction(Variable):
     )
     defined_for = StateCode.IA
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         """
         FROM THE 2021 INSTRUCTIONS (PAGE 46):
           You may itemize deductions or claim the Iowa standard deduction,
@@ -23,6 +23,6 @@ class ia_basic_deduction(Variable):
         even if you did not itemize deductions on your federal return.
         """
         return max_(
-            tax_unit("ia_standard_deduction", period),
-            tax_unit("ia_itemized_deductions", period),
+            person("ia_standard_deduction_joint", period),
+            person("ia_itemized_deductions_joint", period),
         )
