@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.311.0] - 2023-05-03 21:35:09
+
+### Added
+
+- Mississippi dependents allowance
+
 ## [0.310.2] - 2023-05-03 19:02:41
 
 ### Added
@@ -3767,6 +3773,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.311.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.2...0.311.0
 [0.310.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.1...0.310.2
 [0.310.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.0...0.310.1
 [0.310.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.309.0...0.310.0
