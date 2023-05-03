@@ -17,6 +17,6 @@ class ia_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_cdcc = tax_unit("cdcc", period)
-        netinc = tax_unit("ia_net_income", period)
+        netinc = add(tax_unit, period, ["ia_net_income"])
         p = parameters(period).gov.states.ia.tax.income
         return federal_cdcc * p.credits.child_care.fraction.calc(netinc)
