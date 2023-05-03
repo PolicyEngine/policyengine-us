@@ -1,0 +1,8 @@
+- name: NY CDCC qualifying expenses with zero childcare expenses
+  period: 2023
+  input:
+    nyc_cdcc_age_restricted_expenses: 0
+    tax_unit_childcare_expenses: 0
+    in_nyc: true
+  output:
+    nyc_cdcc_share_qualifying_childcare_expenses: 0
