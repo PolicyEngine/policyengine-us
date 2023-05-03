@@ -8,5 +8,5 @@ class nj_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
-    adds = ["nj_income_tax_before_refundable_credits"]
-    subtracts = ["nj_refundable_credits"]
+    adds = ["ny_income_tax_before_refundable_credits"]
+    subtracts = ["ny_refundable_credits"]
