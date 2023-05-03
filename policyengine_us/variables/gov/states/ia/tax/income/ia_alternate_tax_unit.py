@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 import numpy as np
 
 
-class ia_alternate_tax(Variable):
+class ia_alternate_tax_unit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Iowa alternate tax calculated using worksheet"
