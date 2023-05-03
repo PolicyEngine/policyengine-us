@@ -1,5 +1,5 @@
 - name: Single filer gets $6k exemption.
-  period: 2022
+  period: 2020
   input:
     state_code: MS
     filing_status: SINGLE
@@ -7,7 +7,7 @@
     ms_regular_exemption: 6_000
 
 - name: Head of household filer gets $8k exemption.
-  period: 2022
+  period: 2020
   input:
     state_code: MS
     filing_status: HEAD_OF_HOUSEHOLD
@@ -15,7 +15,7 @@
     ms_regular_exemption: 8_000
 
 - name: Joint filer gets $12k exemption.
-  period: 2022
+  period: 2020
   input:
     state_code: MS
     filing_status: JOINT
@@ -23,7 +23,7 @@
     ms_regular_exemption: 12_000
 
 - name: Widow filer gets $12k exemption.
-  period: 2022
+  period: 2020
   input:
     state_code: MS
     filing_status: WIDOW
@@ -31,7 +31,7 @@
     ms_regular_exemption: 12_000
 
 - name: Separate filer gets $6k exemption.
-  period: 2022
+  period: 2020
   input:
     state_code: MS
     filing_status: SEPARATE
