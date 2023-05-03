@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.312.0] - 2023-05-03 23:46:50
+
+### Added
+
+- Mississippi regular exemption.
+
 ## [0.311.0] - 2023-05-03 21:35:09
 
 ### Added
@@ -3773,6 +3779,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.312.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.311.0...0.312.0
 [0.311.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.2...0.311.0
 [0.310.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.1...0.310.2
 [0.310.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.0...0.310.1
