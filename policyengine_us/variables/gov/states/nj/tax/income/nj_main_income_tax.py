@@ -7,6 +7,7 @@ class nj_income_tax_before_refundable_credits(Variable):
     label = "New Jersey income tax"
     unit = USD
     definition_period = YEAR
+    reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-2-1/"
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
