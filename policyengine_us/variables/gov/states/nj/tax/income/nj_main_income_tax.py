@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nj_income_tax_before_refundable_credits(Variable):
+class nj_main_income_tax(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Jersey income tax"
