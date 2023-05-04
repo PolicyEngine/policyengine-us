@@ -24,12 +24,23 @@ class Populations(LossCategory):
     ) -> List[Tuple[str, float, torch.Tensor]]:
         comparisons = []
         age = dataset.person.age
+        parameters = self.calibration_parameters.populations
         comparisons += [
             (
-                f"people",
+                f"population_US",
                 sum_by_household(np.ones_like(age), dataset),
-                330_000_000,
+                parameters.total,
             )
         ]
+        household_state_codes = dataset.household.state_code
+        for state in parameters.by_state._children:
+            comparisons += [
+                (
+                    f"population_{state}",
+                    sum_by_household(np.ones_like(age), dataset)
+                    * (household_state_codes == state),
+                    parameters.by_state._children[state],
+                )
+            ]
 
         return comparisons
