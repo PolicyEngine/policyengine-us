@@ -26,7 +26,6 @@ class ia_fedtax_deduction(Variable):
             - person.tax_unit("additional_medicare_tax", period)
         )
         # prorate aggregate_tax among head and spouse according to net incomes
-        net_income = person("ia_net_income", period)
         fraction = person("ia_prorate_fraction", period)
         prorated_tax = fraction * aggregate_tax
         # allocate any dependent self-employment tax to tax unit head
