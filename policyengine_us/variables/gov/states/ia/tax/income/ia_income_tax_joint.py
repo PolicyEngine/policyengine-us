@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_income_tax_before_credits(Variable):
+class ia_income_tax_joint(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Iowa income tax before credits"
+    label = "Iowa income tax when married couples file jointly"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,10 +14,4 @@ class ia_income_tax_before_credits(Variable):
         "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
     )
     defined_for = StateCode.IA
-
-    def formula(tax_unit, period, parameters):
-        return where(
-            tax_unit("ia_files_separately", period),
-            tax_unit("ia_income_tax_indiv", period),
-            tax_unit("ia_income_tax_joint", period),
-        )
+    adds = ["ia_base_tax_joint", "ia_amt_joint"]

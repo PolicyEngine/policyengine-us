@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ia_income_tax_before_credits(Variable):
-    value_type = float
+class ia_files_separately(Variable):
+    value_type = bool
     entity = TaxUnit
-    label = "Iowa income tax before credits"
+    label = "married couple files separately on Iowa tax return"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,8 +16,6 @@ class ia_income_tax_before_credits(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
-        return where(
-            tax_unit("ia_files_separately", period),
-            tax_unit("ia_income_tax_indiv", period),
-            tax_unit("ia_income_tax_joint", period),
-        )
+        itax_indiv = tax_unit("ia_income_tax_indiv", period)
+        itax_joint = tax_unit("ia_income_tax_joint", period)
+        return itax_indiv < itax_joint
