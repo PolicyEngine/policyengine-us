@@ -3104,3 +3104,79 @@
     fixed:
     - Some OK households had NaN net income.
   date: 2023-04-26 12:07:09
+- bump: minor
+  changes:
+    added:
+    - New Jersey EITC and New Jersey EITC eligiblity (different age parameters).
+  date: 2023-04-27 01:54:06
+- bump: patch
+  changes:
+    fixed:
+    - Reorganised local level area variables.
+  date: 2023-04-27 11:28:42
+- bump: minor
+  changes:
+    fixed:
+    - NJ TANF maximum benefit.
+  date: 2023-04-28 02:43:27
+- bump: minor
+  changes:
+    fixed:
+    - New Jersey TANF maximum allowable income.
+  date: 2023-04-28 02:57:49
+- bump: minor
+  changes:
+    added:
+    - New Jersey TANF Gross Unearned Income.
+  date: 2023-04-28 03:02:45
+- bump: minor
+  changes:
+    added:
+    - Modify description
+  date: 2023-04-28 03:08:20
+- bump: minor
+  changes:
+    added:
+    - Maine AGI Subtractions.
+  date: 2023-04-28 19:05:33
+- bump: minor
+  changes:
+    added:
+    - New Jersey TANF gross earned income.
+  date: 2023-04-28 20:10:09
+- bump: minor
+  changes:
+    added:
+    - Virginia disability income subtraction.
+  date: 2023-04-30 15:12:21
+- bump: patch
+  changes:
+    fixed:
+    - Removed Maryland refundable EITC match drop from 45% to 28%, reflecting recent
+      legislation.
+  date: 2023-05-01 03:21:40
+- bump: patch
+  changes:
+    added:
+    - Legal code reference for North Nakota Tax Credits
+  date: 2023-05-03 19:02:41
+- bump: minor
+  changes:
+    added:
+    - Mississippi dependents allowance
+  date: 2023-05-03 21:35:09
+- bump: minor
+  changes:
+    added:
+    - Mississippi regular exemption.
+  date: 2023-05-03 23:46:50
+- bump: minor
+  changes:
+    added:
+    - Update Kansas Legal Reference for AGI and CDCC.
+  date: 2023-05-04 00:04:47
+- bump: patch
+  changes:
+    added:
+    - Federal payroll tax
+  date: 2023-05-04 15:28:04
