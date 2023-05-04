@@ -22,7 +22,7 @@
         members: [person1, person2]
         state_code: IA
   output:
-    ia_basic_tax: 1_550
+    ia_income_tax_before_credits: 1_550
 
 - name: IA basic tax unit test 2
   period: 2022
@@ -48,4 +48,4 @@
         members: [person1, person2]
         state_code: IA
   output:
-    ia_basic_tax: 1_500
+    ia_income_tax_before_credits: 1_500

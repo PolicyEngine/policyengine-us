@@ -14,4 +14,8 @@ class ia_income_tax_before_credits(Variable):
         "https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf"
     )
     defined_for = StateCode.IA
-    adds = ["ia_basic_tax", "ia_amt"]
+
+    def formula(tax_unit, period, parameters):
+        taxindiv = add(tax_unit, period, ["ia_base_tax_indiv", "ia_amt_indiv"])
+        taxjoint = add(tax_unit, period, ["ia_base_tax_joint", "ia_amt_joint"])
+        return min_(taxindiv, taxjoint)
