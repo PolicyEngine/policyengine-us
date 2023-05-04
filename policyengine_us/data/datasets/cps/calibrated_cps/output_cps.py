@@ -45,6 +45,7 @@ class OutputDataset(Dataset):
         HOUSEHOLD_VARIABLES = [
             "household_id",
             "household_weight",
+            "state_code",
         ]
 
         PROGRAM_VARIABLES = [

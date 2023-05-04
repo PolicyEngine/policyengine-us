@@ -10,9 +10,9 @@ from ..cps import CPS_2023
 class CalibratedCPS(Dataset):
     input_dataset: Type[Dataset]
     input_dataset_year: int
-    epochs: int = 32
+    epochs: int = 128
     learning_rate: float = 2e1
-    log_dir: str = None
+    log_dir: str = "."
     time_period: str = None
     log_verbose: bool = False
 
@@ -74,4 +74,5 @@ CalibratedCPS_2023 = CalibratedCPS.from_dataset(
     new_name="calibrated_cps_2023",
     new_label="Calibrated CPS 2023",
     out_year=2023,
+    log_folder=Path(__file__).parent.parent / "logs",
 )
