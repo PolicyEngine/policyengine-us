@@ -1,0 +1,30 @@
+childcare_deduction = (
+            200 * (workhours >= 100) * md_tanf_count_children
+            + 100 * (workhours < 100) * md_tanf_count_children
+        )
+
+- name: 0 children, $0 deductions
+  period: 2023
+  input:
+    state_code: MD
+    md_tanf_count_children: 0
+  output:
+    md_tanf_childcare_deduction: 0
+
+- name: 2 children, full-time work, $400 deductions
+  period: 2023
+  input:
+    state_code: MD
+    md_tanf_count_children: 2
+    workhours: 100
+  output:
+    md_tanf_childcare_deduction: 400
+
+- name: 2 children, part-time work, $200 deductions
+  period: 2023
+  input:
+    state_code: MD
+    md_tanf_count_children: 2
+    workhours: 50
+  output:
+    md_tanf_childcare_deduction: 200

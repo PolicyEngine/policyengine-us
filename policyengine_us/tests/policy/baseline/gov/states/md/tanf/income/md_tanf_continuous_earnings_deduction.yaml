@@ -2,16 +2,16 @@
   period: 2023
   input:
     state_code: MD
-    tanf_gross_earned_income: 0
+    md_tanf_gross_earned_income: 0
   output:
     md_tanf_continuous_earnings_deduction: 0
-
 
 - name: If not self-employed, 40% deduction.
   period: 2023
   input:
     state_code: MD
-    tanf_gross_earned_income: 100
+    self_employment_income: 0
+    md_tanf_gross_earned_income: 100
   output:
     md_tanf_continuous_earnings_deduction: 40
 
@@ -20,6 +20,8 @@
   input:
     state_code: MD
     self_employment_income: 100
-    etanf_gross_earned_income: 100
+    md_tanf_gross_earned_income: 100
   output:
     md_tanf_continuous_earnings_deduction: 50
+
+
