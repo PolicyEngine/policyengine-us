@@ -16,11 +16,15 @@ class ia_taxable_income_joint(Variable):
     defined_for = StateCode.IA
 
     def formula(person, period, parameters):
+        # assign total net_income to tax unit head
+        is_head = person("is_tax_unit_head", period)
         net_income = person("ia_net_income", period)
+        head_net_income = is_head * person.tax_unit.sum(net_income)
+        # subtract joint deductions
         p = parameters(period).gov.states.ia.tax.income
         deductions = [
             f"{ded}_joint" if ded == "ia_basic_deduction" else ded
             for ded in p.deductions.sources
         ]
         deductions_amount = add(person, period, deductions)
-        return max_(0, net_income - deductions_amount)
+        return is_head * max_(0, head_net_income - deductions_amount)
