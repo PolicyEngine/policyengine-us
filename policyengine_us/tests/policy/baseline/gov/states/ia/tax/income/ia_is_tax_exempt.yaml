@@ -5,7 +5,7 @@
     age_head: 60
     ia_net_income: 0
     ia_pension_exclusion: 0
-    taxable_social_security: 10_000
+    ia_reportable_social_security: 10_000
     state_code: IA
   output:
     ia_is_tax_exempt: false
@@ -17,7 +17,7 @@
     age_head: 70
     ia_net_income: 0
     ia_pension_exclusion: 0
-    taxable_social_security: 10_000
+    ia_reportable_social_security: 10_000
     state_code: IA
   output:
     ia_is_tax_exempt: true
@@ -29,7 +29,7 @@
     age_head: 60
     ia_net_income: 0
     ia_pension_exclusion: 0
-    taxable_social_security: 10_000
+    ia_reportable_social_security: 10_000
     state_code: IA
   output:
     ia_is_tax_exempt: true
@@ -41,7 +41,7 @@
     age_head: 70
     ia_net_income: 10_000
     ia_pension_exclusion: 10_000
-    taxable_social_security: 10_000
+    ia_reportable_social_security: 10_000
     state_code: IA
   output:
     ia_is_tax_exempt: true
