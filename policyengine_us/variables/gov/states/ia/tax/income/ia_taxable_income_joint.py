@@ -26,5 +26,5 @@ class ia_taxable_income_joint(Variable):
             f"{ded}_joint" if ded == "ia_basic_deduction" else ded
             for ded in p.deductions.sources
         ]
-        deductions_amount = add(person, period, deductions)
+        deductions_amount = add(person.tax_unit, period, deductions)
         return is_head * max_(0, head_net_income - deductions_amount)
