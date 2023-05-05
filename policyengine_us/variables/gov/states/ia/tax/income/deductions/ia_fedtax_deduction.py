@@ -19,12 +19,18 @@ class ia_fedtax_deduction(Variable):
         # Iowa allows a deduction of federal income taxes from Iowa net
         # income, but federal payroll taxes (FICA and SECA and Additional
         # Medicare) cannot be used to reduced Iowa net income.
+        ustax = person.tax_unit("income_tax_before_refundable_credits", period)
+        # correct ustax amount for flaw in CTC refundable/nonrefundable split
+        ctc = parameters(period).gov.irs.credits.ctc
+        ctc_fully_refundable = ctc.refundable.fully_refundable
+        if ctc_fully_refundable:
+            us_tax = ustax + person.tax_unit("non_refundable_ctc", period)
+        else:
+            us_tax = ustax
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        aggregate_tax = (is_head | is_spouse) * (
-            person.tax_unit("income_tax_before_refundable_credits", period)
-            - person.tax_unit("additional_medicare_tax", period)
-        )
+        additional_hi_tax = person.tax_unit("additional_medicare_tax", period)
+        aggregate_tax = (is_head | is_spouse) * (us_tax - additional_hi_tax)
         # prorate aggregate_tax among head and spouse according to net incomes
         fraction = person("ia_prorate_fraction", period)
         prorated_tax = fraction * aggregate_tax
