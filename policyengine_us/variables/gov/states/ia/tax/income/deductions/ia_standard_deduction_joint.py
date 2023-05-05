@@ -19,4 +19,4 @@ class ia_standard_deduction_joint(Variable):
         is_head = person("is_tax_unit_head", period)
         filing_status = person.tax_unit("filing_status", period)
         p = parameters(period).gov.states.ia.tax.income
-        return p.deductions.standard[filing_status] * is_head
+        return is_head * p.deductions.standard[filing_status]
