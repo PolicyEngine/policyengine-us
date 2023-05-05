@@ -15,26 +15,19 @@ class oh_senior_citizen_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        age_threshold = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.senior_citizen.age_threshold
-        agi_cap = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.senior_citizen.agi_cap
-        credit_amount = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.senior_citizen.credit_amount
+        p = parameters(period).gov.states.oh.tax.income.credits.senior_citizen
+
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
 
         age = person("age", period)
-        any_over_65 = sum(age > age_threshold) >= 1
-        agi = tax_unit("oh_agi", period)
-        under_agi_cap = agi < agi_cap
+        any_elderly = tax_unit.any(age > p.age_threshold)
+        income_eligible = tax_unit("oh_agi", period) < p.agi_cap
+
         return (
-            any_over_65
-            * under_agi_cap
-            * credit_amount
+            any_elderly
+            * income_eligible
+            * p.credit_amount
             * has_not_taken_lump_sum_distribution
         )
