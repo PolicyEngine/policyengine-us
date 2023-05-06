@@ -3,7 +3,7 @@
   input:
     state_code: MI
     filing_status: SINGLE
-    aged_count: 35
+    age_head: 35
   output:
     mi_standard_deduction: 0
 
@@ -12,7 +12,7 @@
   input:
     state_code: MI
     filing_status: SINGLE
-    aged_count: 67
+    age_head: 67
   output:
     mi_standard_deduction: 20_000
 
@@ -21,7 +21,7 @@
   input:
     state_code: MI
     filing_status: JOINT
-    aged_count: 35
+    age_head: 35
   output: 
     mi_standard_deduction: 0
 
@@ -30,7 +30,7 @@
   input:
     state_code: MI
     filing_status: JOINT
-    aged_count: 67
+    age_head: 67
   output:
     mi_standard_deduction: 40_000
 
@@ -39,7 +39,7 @@
   input:
     state_code: MI
     filing_status: WIDOW
-    aged_count: 35
+    age_head: 35
   output: 
     mi_standard_deduction: 0
 
@@ -48,6 +48,6 @@
   input:
     state_code: MI
     filing_status: WIDOW
-    aged_count: 67
+    age_head: 67
   output:
     mi_standard_deduction: 40_000

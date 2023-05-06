@@ -19,7 +19,7 @@ class mi_standard_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         # Aged standard deduction.
         age_threshold = p.age
-        aged_count = (tax_unit("aged_count", period) >= age_threshold).astype(
+        aged_count = (tax_unit("age_head", period) >= age_threshold).astype(
             int
         )
         amount_per_aged = p.amount[filing_status]
