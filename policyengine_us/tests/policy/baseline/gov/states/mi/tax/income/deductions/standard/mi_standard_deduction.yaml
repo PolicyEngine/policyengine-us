@@ -1,0 +1,53 @@
+- name: 2022 single filer who is not at the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: SINGLE
+    aged_count: 35
+  output:
+    mi_standard_deduction: 0
+
+- name: 2022 single filer who is at the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: SINGLE
+    aged_count: 67
+  output:
+    mi_standard_deduction: 20_000
+
+- name: 2022 joint filer who is not at the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: JOINT
+    aged_count: 35
+  output: 
+    mi_standard_deduction: 0
+
+- name: 2022 joint filer who is at the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: JOINT
+    aged_count: 67
+  output:
+    mi_standard_deduction: 40_000
+
+- name: 2022 widow filer who is not at the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: WIDOW
+    aged_count: 35
+  output: 
+    mi_standard_deduction: 0
+
+- name: 2022 widow filer who is at the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: WIDOW
+    aged_count: 67
+  output:
+    mi_standard_deduction: 40_000

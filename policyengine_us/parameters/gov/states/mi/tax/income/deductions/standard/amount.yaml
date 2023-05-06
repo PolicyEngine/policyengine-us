@@ -1,0 +1,18 @@
+description: Michigan provides a standard deduction of this amount if you or your spouse are 67 or older.
+metadata:
+  label: MI standard deduction for 67 or older
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: Michigan Standard Deduction
+      href: https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction
+SINGLE:
+  2022-01-01: 20_000
+
+JOINT:
+  2022-01-01: 40_000
+
+WIDOW:
+  2022-01-01: 40_000
