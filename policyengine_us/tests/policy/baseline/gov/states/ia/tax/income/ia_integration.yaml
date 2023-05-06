@@ -75,7 +75,7 @@
     # Iowa income tax is sum of base tax and alternative minimum tax:
     ia_income_tax_indiv: 13_488.60  # person amounts aggregated for tax unit
     ia_income_tax_joint: 15_415.70  # person amounts aggregated for tax unit
-    # decide whether or not to file separately on Iowa return
+    # decide whether or not to file separately on Iowa return:
     ia_files_separately: true
     ia_income_tax_before_credits: 13_488.60
     ia_exemption_credit: 240  # = 6 * 40
@@ -125,3 +125,60 @@
         state_code: IA
   output:  # expected ia_income_tax from patched TAXSIM35 2023-05-06 version
     ia_income_tax: 1_376.25
+
+- name: Tax unit with taxsimid 70540 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 9_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 69
+        employment_income: 30_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-05-06 version
+    ia_regular_tax_indiv:  [   90.31, 1_117.14]
+    ia_regular_tax_joint:  [1_453.34,     0.00]
+    ia_alternate_tax_indiv: [ 138.27,   460.54]
+    ia_alternate_tax_joint: [ 598.81,     0.00]
+    # base tax is minimum of regular tax and alternate tax:
+    ia_base_tax_indiv: [ 90.31, 460.54]
+    ia_base_tax_joint: [598.81,   0.00]
+    # if sep/jnt decision made at this stage, couple would file separately
+    # but the IA AMT calculations below reverse that decision
+    # Iowa alternative minimum tax:
+    # (cannot yet validate the following ia_amt_indiv results because
+    #  the 2023-0506 patched version of TAXSIM35 incorrectly makes the
+    #  IA sep/jnt filing decision BEFORE applying the AMT to base tax)
+    ia_amt_indiv: [0, 148.56]  # 2023-05-06 TAXSIM35 logic 
+    ia_amt_joint: [0,   0.00]
+    # Iowa income tax is sum of base tax and alternative minimum tax:
+    ia_income_tax_indiv: 699.41  # = 90.31 + (460.54 + 148.56)
+    ia_income_tax_joint: 598.81  # person amounts aggregated for tax unit
+    # decide whether or not to file separately on Iowa return:
+    ia_files_separately: false
+    ia_income_tax_before_credits: 598.81
+    ia_exemption_credit: 120
+    ia_income_tax: 478.81  # the incorrect TAXSIM35 result is 430.85
