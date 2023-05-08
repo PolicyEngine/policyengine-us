@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class total_income(Variable):
+class state_or_federal_salary(Variable):
     value_type = float
     entity = Person
     label = "state or federal salary"
