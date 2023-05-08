@@ -19,16 +19,41 @@ class nj_tanf_countable_earned_income(Variable):
         months_enrolled_in_tanf = person("months_enrolled_in_tanf", period)
         weekly_hours_worked = person("weekly_hours_worked", period)
         # New Jerset Admin Code 10:90-3.8(b)
-        return where(
-            months_enrolled_in_tanf > p.first_month_threshold,
-            where(
-                months_enrolled_in_tanf > p.consecutive_month_threshold,
-                gross_earned_income * (1 - p.additional_percent),
-                where(
-                    weekly_hours_worked >= p.work_hours_threshold,
-                    gross_earned_income * (1 - p.consecutive_month_percent),
-                    gross_earned_income * (1 - p.additional_percent),
-                ),
-            ),
-            gross_earned_income * (1 - p.first_month_percent),
+        person_meet_higher_work_hours_threshold = (
+            weekly_hours_worked >= p.work_hours_threshold
         )
+        person_enrolled_in_tanf_for_first_month = (
+            months_enrolled_in_tanf <= p.first_month_threshold
+        )
+        person_enrolled_in_tanf_for_consecutive_months = (
+            months_enrolled_in_tanf <= p.consecutive_month_threshold
+        ) and (months_enrolled_in_tanf > p.first_month_threshold)
+        person_enrolled_in_tanf_for_additional_months_with_work_hours_over_20 = (
+            months_enrolled_in_tanf > p.consecutive_month_threshold
+            and person_meet_higher_work_hours_threshold
+        )
+        person_enrolled_in_tanf_for_additional_months_with_Work_hours_below_20 = (
+            months_enrolled_in_tanf > p.first_month_threshold
+        )
+        if person_meet_higher_work_hours_threshold:
+            if person_enrolled_in_tanf_for_first_month:
+                return gross_earned_income * (
+                    1 - p.higher_work_hours.first_month_percent
+                )
+            elif person_enrolled_in_tanf_for_consecutive_months:
+                return gross_earned_income * (
+                    1 - p.higher_work_hours.consecutive_month_percent
+                )
+            elif person_enrolled_in_tanf_for_additional_months_with_work_hours_over_20:
+                return gross_earned_income * (
+                    1 - p.higher_work_hours.additional_percent
+                )
+        else:
+            if person_enrolled_in_tanf_for_first_month:
+                return gross_earned_income * (
+                    1 - p.lower_work_hours.first_month_percent
+                )
+            elif person_enrolled_in_tanf_for_additional_months_with_Work_hours_below_20:
+                return gross_earned_income * (
+                    1 - p.lower_work_hours.additional_percent
+                )
