@@ -3,8 +3,9 @@
   input:
     state_code: WA
     AFAGI: 60_000
+    filing_status: JOINT
     age_head: 90
-    age_spouse: None
+    age_spouse: 80
   output:
     va_age_deduction: 0
 
@@ -38,7 +39,6 @@
     AFAGI: 70_000
     filing_status: SINGLE
     age_head: 40
-    age_spouse: None
   output:
     va_age_deduction: 0
 
@@ -51,9 +51,8 @@
     AFAGI: 60_000
     filing_status: SINGLE
     age_head: 70
-    age_spouse: None
   output:
-#deduction_ammount = $12,000 - (AFAGI - $50,000)
+# deduction_ammount = $12,000 - (AFAGI - $50,000)
     va_age_deduction: 2_000
 
 
@@ -66,7 +65,6 @@
     AFAGI: 60_000
     filing_status: SINGLE
     age_head: 88
-    age_spouse: None
   output:
 #deduction_ammount = $12,000 - (AFAGI - $50,000)
     va_age_deduction: 12_000
@@ -116,7 +114,7 @@
     AFAGI: 90_000
     filing_status: JOINT
     age_head: 87
-    age_spouse: 75
+    age_spouse: 60
   output:
     va_age_deduction: 12_000
 
@@ -127,19 +125,20 @@
     state_code: VA
     AFAGI: 80_000
     filing_status: JOINT
-    age_head: 87
+    age_head: 80
     age_spouse: 59
   output:
     va_age_deduction: 7_000
+
 # married: jointly: both eligible for deduction: one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958: $12,000 + $12,000 - (AFAGI - $75,000)
-- name: If in Virginia, filed jointly as a married couple, and only one spouse is eligible for deduction and he/she was born between 01/02/1939 and 01/01/1958
+- name: If in Virginia, filed jointly as a married couple, both eligible for deduction, one born before 01/01/1939, the other born between 01/02/1939 and 01/01/1958
   period: 2022
   input:
     state_code: VA
     AFAGI: 90_000
     filing_status: JOINT
-    age_head: 68
-    age_spouse: 59
+    age_head: 89
+    age_spouse: 75
   output:
     va_age_deduction: 9_000
 
