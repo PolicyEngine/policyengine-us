@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-
+import datetime
 
 class va_age_deduction(Variable):
     value_type = float
@@ -19,7 +19,7 @@ class va_age_deduction(Variable):
 
         AFAGI = tax_unit("AFAGI", period)
         # People who were born on or before the threshold date are eligible for a full deduction
-        threshhold_date = "1939-01-01"
+        threshhold_date = datetime.strptime("1939-01-01", "%Y-%m-%d")
 
         # calcualte the number of people eligble for age deduction in a household (people who are 65 and older)
         eligible_count = sum(
@@ -27,11 +27,11 @@ class va_age_deduction(Variable):
         )
 
         # calculate the number of people age >=84 and is eligible for a full deduction
-        birth_year_head = year(period) - age_head
-        birth_year_spouse = year(period) - age_spouse
+        birth_year_head = int(period) - age_head
+        birth_year_spouse = int(period) - age_spouse
         full_deduction_count = sum(
-            where(birth_year_head < year(threshhold_date), 1, 0),
-            where(birth_year_spouse < year(threshhold_date), 1, 0),
+            where(birth_year_head < threshhold_date.year, 1, 0),
+            where(birth_year_spouse < threshhold_date.year, 1, 0),
         )
 
         filing_statuses = filing_status.possible_values
