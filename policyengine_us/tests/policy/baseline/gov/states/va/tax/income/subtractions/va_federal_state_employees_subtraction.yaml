@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        total_income: 16_000
+        employment_income: 16_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -20,7 +20,7 @@
   input:
     people:
       person1:
-        total_income: 14_000
+        employment_income: 14_000
         state_or_federal_salary: 13_000
     tax_units:
       tax_unit:
@@ -37,10 +37,10 @@
   input:
     people:
       person1:
-        total_income: 15_000
+        employment_income: 15_000
         state_or_federal_salary: 14_000
       person2:
-        total_income: 15_000
+        employment_income: 15_000
         state_or_federal_salary: 15_000
     tax_units:
       tax_unit:
@@ -58,13 +58,13 @@
   input:
     people:
       person1:
-        total_income: 15_000
+        employment_income: 15_000
         state_or_federal_salary: 14_000
       person2:
-        total_income: 15_000
+        employment_income: 15_000
         state_or_federal_salary: 13_000
       person3:
-        total_income: 15_000
+        employment_income: 15_000
         state_or_federal_salary: 12_000
     tax_units:
       tax_unit:

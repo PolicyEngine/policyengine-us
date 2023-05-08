@@ -18,10 +18,10 @@ class va_federal_state_employees_subtraction(Variable):
             period
         ).gov.states.va.tax.income.subtractions.disability_income
 
-        total_income = person("total_income", period)
+        employment_income = person("employment_income", period)
         state_or_federal_salary = person("state_or_federal_salary", period)
         subtractable_federal_state_salary = where(
-            total_income > p.amount, 0, state_or_federal_salary
+            employment_income > p.amount, 0, state_or_federal_salary
         )
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
