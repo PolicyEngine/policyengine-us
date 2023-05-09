@@ -1,9 +1,18 @@
-- name: 2022 single filer who is not at the age threshold
+- name: 2022 single filer who is below the age threshold
   period: 2022
   input:
     state_code: MI
     filing_status: SINGLE
     age_head: 35
+  output:
+    mi_standard_deduction: 0
+
+- name: 2022 single filer who is above the age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: SINGLE
+    age_head: 77
   output:
     mi_standard_deduction: 0
 
@@ -16,38 +25,82 @@
   output:
     mi_standard_deduction: 20_000
 
-- name: 2022 joint filer who is not at the age threshold
+- name: 2022 joint filer who is not at the age threshold, their spouse is not at the threshold
   period: 2022
   input:
     state_code: MI
     filing_status: JOINT
     age_head: 35
+    age_spouse: 35
   output: 
     mi_standard_deduction: 0
 
-- name: 2022 joint filer who is at the age threshold
+- name: 2022 joint filer who is at the age threshold, their spouse is not at the threshold
   period: 2022
   input:
     state_code: MI
     filing_status: JOINT
     age_head: 67
+    age_spouse: 65
   output:
     mi_standard_deduction: 40_000
 
-- name: 2022 widow filer who is not at the age threshold
+- name: 2022 joint filer who is not at the age threshold, their spouse is at the threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 67
+  output:
+    mi_standard_deduction: 40_000
+
+- name: 2022 joint filer who is at the age threshold, their spouse is at the threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: JOINT
+    age_head: 67
+    age_spouse: 67
+  output:
+    mi_standard_deduction: 40_000
+
+- name: 2022 widow filer who is not at the age threshold, their spouse is not at the threshold
   period: 2022
   input:
     state_code: MI
     filing_status: WIDOW
     age_head: 35
+    age_spouse: 35
   output: 
     mi_standard_deduction: 0
 
-- name: 2022 widow filer who is at the age threshold
+- name: 2022 widow filer who is at the age threshold, their spouse is not at the threshold
   period: 2022
   input:
     state_code: MI
     filing_status: WIDOW
     age_head: 67
+    age_spouse: 65
   output:
+    mi_standard_deduction: 40_000
+
+- name: 2022 widow filer who is not at the age threshold, their spouse is at the threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: WIDOW
+    age_head: 65
+    age_spouse: 67
+  output: 
+    mi_standard_deduction: 40_000
+
+- name: 2022 widow filer who is at the age threshold, their spouse is at the threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: WIDOW
+    age_head: 67
+    age_spouse: 67
+  output: 
     mi_standard_deduction: 40_000
