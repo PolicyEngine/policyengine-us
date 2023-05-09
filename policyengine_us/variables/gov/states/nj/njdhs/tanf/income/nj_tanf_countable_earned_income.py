@@ -22,38 +22,50 @@ class nj_tanf_countable_earned_income(Variable):
         person_meet_higher_work_hours_threshold = (
             weekly_hours_worked >= p.work_hours_threshold
         )
+        person_meet_lower_work_hours_threshold = (
+            weekly_hours_worked < p.work_hours_threshold
+        )
         person_enrolled_in_tanf_for_first_month = (
             months_enrolled_in_tanf <= p.first_month_threshold
         )
-        person_enrolled_in_tanf_for_consecutive_months = (
+        person_enrolled_in_tanf_for_consecutive_months_with_work_hours_over_20 = (
             months_enrolled_in_tanf <= p.consecutive_month_threshold
-        ) and (months_enrolled_in_tanf > p.first_month_threshold)
+            and months_enrolled_in_tanf > p.first_month_threshold
+            and person_meet_higher_work_hours_threshold
+        )
         person_enrolled_in_tanf_for_additional_months_with_work_hours_over_20 = (
             months_enrolled_in_tanf > p.consecutive_month_threshold
             and person_meet_higher_work_hours_threshold
         )
-        person_enrolled_in_tanf_for_additional_months_with_Work_hours_below_20 = (
+        person_enrolled_in_tanf_for_additional_months_with_work_hours_below_20 = (
             months_enrolled_in_tanf > p.first_month_threshold
+            and person_meet_lower_work_hours_threshold
         )
-        if person_meet_higher_work_hours_threshold:
-            if person_enrolled_in_tanf_for_first_month:
-                return gross_earned_income * (
-                    1 - p.higher_work_hours.first_month_percent
-                )
-            elif person_enrolled_in_tanf_for_consecutive_months:
-                return gross_earned_income * (
-                    1 - p.higher_work_hours.consecutive_month_percent
-                )
-            elif person_enrolled_in_tanf_for_additional_months_with_work_hours_over_20:
-                return gross_earned_income * (
-                    1 - p.higher_work_hours.additional_percent
-                )
-        else:
-            if person_enrolled_in_tanf_for_first_month:
-                return gross_earned_income * (
-                    1 - p.lower_work_hours.first_month_percent
-                )
-            elif person_enrolled_in_tanf_for_additional_months_with_Work_hours_below_20:
-                return gross_earned_income * (
-                    1 - p.lower_work_hours.additional_percent
-                )
+        #If the condition is not met, the value of result will not change
+        result = 0
+        result = where(
+            person_enrolled_in_tanf_for_first_month,
+            gross_earned_income
+            * (1 - p.higher_work_hours.first_month_percent),
+            result,
+        )
+        result = where(
+            (
+                person_meet_higher_work_hours_threshold
+                and person_enrolled_in_tanf_for_consecutive_months_with_work_hours_over_20
+            ),
+            gross_earned_income
+            * (1 - p.higher_work_hours.consecutive_month_percent),
+            result,
+        )
+        result = where(
+            person_enrolled_in_tanf_for_additional_months_with_work_hours_over_20,
+            gross_earned_income * (1 - p.higher_work_hours.additional_percent),
+            result,
+        )
+        result = where(
+            person_enrolled_in_tanf_for_additional_months_with_work_hours_below_20,
+            gross_earned_income * (1 - p.lower_work_hours.additional_percent),
+            result,
+        )
+        return result
