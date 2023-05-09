@@ -22,15 +22,15 @@ class mi_standard_deduction(Variable):
         # Aged standard deduction.
         age_min_threshold = p.min_age
         age_max_threshold = p.max_age
-        aged_head = (tax_unit("age_head", period) >= age_min_threshold and tax_unit("age_head", period) <= age_max_threshold).astype(
-            int
-        )
-        aged_spouse = (tax_unit("age_spouse", period) >= age_min_threshold and tax_unit("age_head", period) <= age_max_threshold).astype(
-            int
-        )
-        aged_count = max_(
-            aged_head, aged_spouse
-        )
+        aged_head = (
+            tax_unit("age_head", period) >= age_min_threshold
+            and tax_unit("age_head", period) <= age_max_threshold
+        ).astype(int)
+        aged_spouse = (
+            tax_unit("age_spouse", period) >= age_min_threshold
+            and tax_unit("age_head", period) <= age_max_threshold
+        ).astype(int)
+        aged_count = max_(aged_head, aged_spouse)
         amount_per_aged = p.amount[filing_status]
         aged_deduction = aged_count * amount_per_aged
         return aged_deduction
