@@ -23,9 +23,11 @@ class nj_potential_property_tax_deduction(Variable):
 
         # Get the amount of property tax paid by the tax unit.
         # If renting, this will be a fraction of the total rent.
+        person = tax_unit.members
+        rent_amounts = person("rent", period)
         property_tax = np.where(
             rents,
-            tax_unit("rent", period) * p.rent_fraction,
+            tax_unit.sum(rent_amounts) * p.rent_fraction,
             tax_unit("nj_homeowners_property_tax", period),
         )
 
