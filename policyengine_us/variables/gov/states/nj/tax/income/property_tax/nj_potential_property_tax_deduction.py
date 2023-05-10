@@ -14,9 +14,7 @@ class nj_potential_property_tax_deduction(Variable):
         # Don't forget to divide the threshold if filing separately? They have to also live together.
 
         # Get the NJ property tax deduction portion of the parameter tree.
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.property_tax_deduction_credit
+        p = parameters(period).gov.states.nj.tax.income.deductions.property_tax
 
         # Determine whether the tax unit is renting or owns a home.
         rents = tax_unit("rents", period)
@@ -27,11 +25,11 @@ class nj_potential_property_tax_deduction(Variable):
         rent_amounts = person("rent", period)
         property_tax = np.where(
             rents,
-            tax_unit.sum(rent_amounts) * p.rent_fraction,
+            tax_unit.sum(rent_amounts) * p.qualifying_rent_fraction,
             tax_unit("nj_homeowners_property_tax", period),
         )
 
         # Get the amount of paid property taxes under the threshold.
-        threshold = p.deductible_property_taxes_threshold
+        threshold = p.threshold
 
         return min_(property_tax, threshold)

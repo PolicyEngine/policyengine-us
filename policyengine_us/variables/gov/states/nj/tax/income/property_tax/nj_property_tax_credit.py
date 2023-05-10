@@ -14,10 +14,8 @@ class nj_property_tax_credit(Variable):
         # Don't forget to add eligiblity (I think easy one is filing threshold).
         # Don't forget to divide the threshold if filing separately? They have to also live together.
 
-        # Get the NJ property tax deduction portion of the parameter tree.
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.property_tax_deduction_credit
+        # Get the NJ property tax credit portion of the parameter tree.
+        p = parameters(period).gov.states.nj.tax.income.credits.property_tax
 
         # Check that the tax unit is not taking the property tax deduction.
         not_taking_deduction = ~tax_unit(
