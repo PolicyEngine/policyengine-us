@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class nj_taking_property_tax_deduction(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Household taking New Jersey property tax deduction"
     unit = USD
