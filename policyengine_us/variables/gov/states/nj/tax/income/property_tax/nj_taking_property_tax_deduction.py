@@ -69,5 +69,5 @@ class nj_taking_property_tax_deduction(Variable):
         # Determine whether the difference in tax incidence is greater than the credit amount.
         credit_amount = parameters(
             period
-        ).gov.states.nj.tax.income.property_tax_deduction_credit
-        return taxes_without_deduction - taxes_with_deduction > credit_amount
+        ).gov.states.nj.tax.income.property_tax_deduction_credit.credit_amount
+        return (taxes_without_deduction - taxes_with_deduction) > credit_amount
