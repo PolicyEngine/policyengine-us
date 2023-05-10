@@ -15,75 +15,34 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-from policyengine_us import IndividualSim
-import pandas as pd
+sim.vary("employment_income", max=4000 * 12, step=120)
+
 import plotly.express as px
 
-LIGHT_GRAY = "#F5F5F5"
-GRAY = "#BDBDBD"
-BLUE = "#5091cc"
-LIGHT_BLUE = "lightblue"
-DARK_BLUE = "darkblue"
-
-COLOR_MAP = {"0": GRAY, "1": LIGHT_BLUE, "2": BLUE, "3": DARK_BLUE}
-
-
-def make_prop_tax(adults):
-    sim = IndividualSim(year=2022)
-    sim.add_person(name="head", age=65, rent=12_000)
-    members = ["head"]
-    if adults == 2:
-        sim.add_person(name="spouse", age=65)
-        members += ["spouse"]
-    sim.add_tax_unit(name="tax_unit", members=members)
-    sim.add_spm_unit(name="spm_unit", members=members)
-    sim.add_household(name="household", members=members, state_code="MO")
-    sim.vary("employment_income", max=100_000, step=100)
-    return pd.DataFrame(
-        dict(
-            employment_income=sim.calc("employment_income")[0],
-            mo_property_tax_credit=sim.calc("mo_property_tax_credit")[
-                0
-            ].round(),
-            scb_mtr=-sim.deriv(
-                "mo_property_tax_credit",
-                "employment_income",
-                wrt_target="head",
-            ),
-            adults=adults,
-        )
-    )
-
-
-# Make a table of state taxes for different numbers of adults and children.
-l = []
-for adults in range(1, 3):
-    l.append(make_prop_tax(adults))
-
-df = pd.concat(l)
-
 LABELS = dict(
-    employment_income="Employment Income",
-    mo_property_tax_credit="MO Property Tax Credit",
-    scb_mtr="MO Property Tax Credit Marginal Tax Rate",
-    adults="Adults",
+    employment_income="Monthly employment income",
+    school_meal_subsidy="Monthly school meal subsidy",
+    mtr="Marginal tax rate",
 )
+
+df = pd.DataFrame(
+    dict(
+        employment_income=sim.calc("employment_income")[0],
+        school_meal_net_subsidy=sim.calc("school_meal_net_subsidy")[0],
+    )
+)
+df[["employment_income", "school_meal_net_subsidy"]] = (
+    df[["employment_income", "school_meal_net_subsidy"]] / 12
+).round()
 
 fig = px.line(
     df,
     "employment_income",
-    "mo_property_tax_credit",
-    color="adults",
+    "school_meal_net_subsidy",
     labels=LABELS,
-    title="Missouri Property Tax Credit w/ $1,000/month in rent",
+    title="School meal subsidy for a one-parent one-child household in California",
 )
-fig.update_layout(
-    xaxis_tickformat="$,",
-    yaxis_tickformat="$,",
-    plot_bgcolor="white",
-    xaxis_gridcolor=LIGHT_GRAY,
-    yaxis_gridcolor=LIGHT_GRAY,
-)
+fig.update_layout(xaxis_tickformat="$,", yaxis_tickformat="$,")
 fig.show()
 ------------------
 
@@ -110,10 +69,12 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_property_tax_credit.py:35[0m, in [0;36mmo_property_tax_credit.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     34[0m po_rate [38;5;241m=[39m p[38;5;241m.[39mphase_out[38;5;241m.[39mrate
-[0;32m---> 35[0m net_income [38;5;241m=[39m [43mtax_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_ptc_net_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     36[0m excess_income [38;5;241m=[39m max_([38;5;241m0[39m, net_income [38;5;241m-[39m po_start)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_net_subsidy.py:15[0m, in [0;36mschool_meal_net_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[1;32m     13[0m     [38;5;66;03m# Calculate net daily subsidy per child, subtracting the daily subsidy[39;00m
+[1;32m     14[0m     [38;5;66;03m# for full-price children.[39;00m
+[0;32m---> 15[0m     daily_subsidy [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_daily_subsidy[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     16[0m     daily_paid_subsidy [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mschool_meal_paid_daily_subsidy[39m[38;5;124m"[39m, period)
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -136,10 +97,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_net_income.py:18[0m, in [0;36mmo_ptc_net_income.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     17[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(tax_unit, period, parameters):
-[0;32m---> 18[0m     gross_income [38;5;241m=[39m [43mtax_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_ptc_gross_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     19[0m     income_offset [38;5;241m=[39m tax_unit([38;5;124m"[39m[38;5;124mmo_ptc_income_offset[39m[38;5;124m"[39m, period)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_daily_subsidy.py:15[0m, in [0;36mschool_meal_daily_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     14[0m state_group [38;5;241m=[39m spm_unit[38;5;241m.[39mhousehold([38;5;124m"[39m[38;5;124mstate_group_str[39m[38;5;124m"[39m, period)
+[0;32m---> 15[0m tier [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_tier[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m[38;5;241m.[39mdecode_to_str()
+[1;32m     16[0m p_amount [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mamount
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -162,36 +123,59 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py:39[0m, in [0;36mmo_ptc_gross_income.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     35[0m pa_sources [38;5;241m=[39m parameters(
-[1;32m     36[0m     period
-[1;32m     37[0m )[38;5;241m.[39mgov[38;5;241m.[39mstates[38;5;241m.[39mmo[38;5;241m.[39mtax[38;5;241m.[39mincome[38;5;241m.[39mcredits[38;5;241m.[39mproperty_tax[38;5;241m.[39mpublic_assistance_types
-[1;32m     38[0m public_assistance_income [38;5;241m=[39m tax_unit[38;5;241m.[39msum(
-[0;32m---> 39[0m     [43madd[49m[43m([49m[43mperson[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mpa_sources[49m[43m)[49m  [38;5;66;03m# line 6[39;00m
-[1;32m     40[0m )
-[1;32m     41[0m [38;5;66;03m# compute nonbusiness capital losses in PTC gross income (line 7)[39;00m
-
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
-[1;32m    209[0m [38;5;250m[39m[38;5;124;03m"""Sums a list of variables.[39;00m
-[1;32m    210[0m 
-[1;32m    211[0m [38;5;124;03mArgs:[39;00m
-[0;32m   (...)[0m
-[1;32m    221[0m [38;5;124;03m    ArrayLike: The result of the operation.[39;00m
-[1;32m    222[0m [38;5;124;03m"""[39;00m
-[0;32m--> 223[0m [38;5;28;01mreturn[39;00m [43mfor_each_variable[49m[43m([49m
-[1;32m    224[0m [43m    [49m[43mentity[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mvariables[49m[43m,[49m[43m [49m[43magg_func[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43madd[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m
-[1;32m    225[0m [43m[49m[43m)[49m
-
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:179[0m, in [0;36mfor_each_variable[0;34m(entity, period, variables, agg_func, group_agg_func, options)[0m
-[1;32m    178[0m [38;5;28;01mif[39;00m variable_entity[38;5;241m.[39mkey [38;5;241m==[39m entity[38;5;241m.[39mentity[38;5;241m.[39mkey:
-[0;32m--> 179[0m     values [38;5;241m=[39m [43mentity[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m[43m)[49m
-[1;32m    180[0m [38;5;28;01melif[39;00m variable_entity[38;5;241m.[39mis_person:
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py:19[0m, in [0;36mschool_meal_tier.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     18[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[0;32m---> 19[0m     fpg_ratio [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_fpg_ratio[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     20[0m     p_income_limit [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mincome[38;5;241m.[39mlimit
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
 [0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
 [1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
 [1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_fpg_ratio.py:12[0m, in [0;36mschool_meal_fpg_ratio.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[0;32m---> 12[0m     income [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_countable_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     13[0m     [38;5;28;01mreturn[39;00m income [38;5;241m/[39m spm_unit([38;5;124m"[39m[38;5;124mspm_unit_fpg[39m[38;5;124m"[39m, period)
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:697[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    696[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
+[0;32m--> 697[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    698[0m [43m            [49m[43madded_variable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mmap_to[49m[38;5;241;43m=[39;49m[43mvariable[49m[38;5;241;43m.[39;49m[43mentity[49m[38;5;241;43m.[39;49m[43mkey[49m
+[1;32m    699[0m [43m        [49m[43m)[49m
+[1;32m    700[0m [38;5;28;01mif[39;00m variable[38;5;241m.[39msubtracts [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
 [1;32m    329[0m [38;5;28;01mtry[39;00m:
@@ -324,7 +308,40 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 2. 0. ... 2. 0. 2.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 801 != 802 = count)
 
 During handling of the above exception, another exception occurred:
 
@@ -371,10 +388,12 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_property_tax_credit.py:35[0m, in [0;36mmo_property_tax_credit.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     34[0m po_rate [38;5;241m=[39m p[38;5;241m.[39mphase_out[38;5;241m.[39mrate
-[0;32m---> 35[0m net_income [38;5;241m=[39m [43mtax_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_ptc_net_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     36[0m excess_income [38;5;241m=[39m max_([38;5;241m0[39m, net_income [38;5;241m-[39m po_start)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_net_subsidy.py:15[0m, in [0;36mschool_meal_net_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[1;32m     13[0m     [38;5;66;03m# Calculate net daily subsidy per child, subtracting the daily subsidy[39;00m
+[1;32m     14[0m     [38;5;66;03m# for full-price children.[39;00m
+[0;32m---> 15[0m     daily_subsidy [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_daily_subsidy[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     16[0m     daily_paid_subsidy [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mschool_meal_paid_daily_subsidy[39m[38;5;124m"[39m, period)
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -397,10 +416,10 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_net_income.py:18[0m, in [0;36mmo_ptc_net_income.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     17[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(tax_unit, period, parameters):
-[0;32m---> 18[0m     gross_income [38;5;241m=[39m [43mtax_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_ptc_gross_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     19[0m     income_offset [38;5;241m=[39m tax_unit([38;5;124m"[39m[38;5;124mmo_ptc_income_offset[39m[38;5;124m"[39m, period)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_daily_subsidy.py:15[0m, in [0;36mschool_meal_daily_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     14[0m state_group [38;5;241m=[39m spm_unit[38;5;241m.[39mhousehold([38;5;124m"[39m[38;5;124mstate_group_str[39m[38;5;124m"[39m, period)
+[0;32m---> 15[0m tier [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_tier[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m[38;5;241m.[39mdecode_to_str()
+[1;32m     16[0m p_amount [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mamount
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -423,36 +442,59 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py:39[0m, in [0;36mmo_ptc_gross_income.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     35[0m pa_sources [38;5;241m=[39m parameters(
-[1;32m     36[0m     period
-[1;32m     37[0m )[38;5;241m.[39mgov[38;5;241m.[39mstates[38;5;241m.[39mmo[38;5;241m.[39mtax[38;5;241m.[39mincome[38;5;241m.[39mcredits[38;5;241m.[39mproperty_tax[38;5;241m.[39mpublic_assistance_types
-[1;32m     38[0m public_assistance_income [38;5;241m=[39m tax_unit[38;5;241m.[39msum(
-[0;32m---> 39[0m     [43madd[49m[43m([49m[43mperson[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mpa_sources[49m[43m)[49m  [38;5;66;03m# line 6[39;00m
-[1;32m     40[0m )
-[1;32m     41[0m [38;5;66;03m# compute nonbusiness capital losses in PTC gross income (line 7)[39;00m
-
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
-[1;32m    209[0m [38;5;250m[39m[38;5;124;03m"""Sums a list of variables.[39;00m
-[1;32m    210[0m 
-[1;32m    211[0m [38;5;124;03mArgs:[39;00m
-[0;32m   (...)[0m
-[1;32m    221[0m [38;5;124;03m    ArrayLike: The result of the operation.[39;00m
-[1;32m    222[0m [38;5;124;03m"""[39;00m
-[0;32m--> 223[0m [38;5;28;01mreturn[39;00m [43mfor_each_variable[49m[43m([49m
-[1;32m    224[0m [43m    [49m[43mentity[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mvariables[49m[43m,[49m[43m [49m[43magg_func[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43madd[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m
-[1;32m    225[0m [43m[49m[43m)[49m
-
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:179[0m, in [0;36mfor_each_variable[0;34m(entity, period, variables, agg_func, group_agg_func, options)[0m
-[1;32m    178[0m [38;5;28;01mif[39;00m variable_entity[38;5;241m.[39mkey [38;5;241m==[39m entity[38;5;241m.[39mentity[38;5;241m.[39mkey:
-[0;32m--> 179[0m     values [38;5;241m=[39m [43mentity[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m[43m)[49m
-[1;32m    180[0m [38;5;28;01melif[39;00m variable_entity[38;5;241m.[39mis_person:
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py:19[0m, in [0;36mschool_meal_tier.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     18[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[0;32m---> 19[0m     fpg_ratio [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_fpg_ratio[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     20[0m     p_income_limit [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mincome[38;5;241m.[39mlimit
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
 [0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
 [1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
 [1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_fpg_ratio.py:12[0m, in [0;36mschool_meal_fpg_ratio.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[0;32m---> 12[0m     income [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_countable_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     13[0m     [38;5;28;01mreturn[39;00m income [38;5;241m/[39m spm_unit([38;5;124m"[39m[38;5;124mspm_unit_fpg[39m[38;5;124m"[39m, period)
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    490[0m [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m [38;5;66;03m# If no result, use the default value and cache it[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:697[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    696[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
+[0;32m--> 697[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    698[0m [43m            [49m[43madded_variable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mmap_to[49m[38;5;241;43m=[39;49m[43mvariable[49m[38;5;241;43m.[39;49m[43mentity[49m[38;5;241;43m.[39;49m[43mkey[49m
+[1;32m    699[0m [43m        [49m[43m)[49m
+[1;32m    700[0m [38;5;28;01mif[39;00m variable[38;5;241m.[39msubtracts [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
 [1;32m    329[0m [38;5;28;01mtry[39;00m:
@@ -585,40 +627,66 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m         )
 [1;32m     64[0m     )
 
-[0;31mValueError[0m: Input [0. 2. 0. ... 2. 0. 2.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 801 != 802 = count)
 
 During handling of the above exception, another exception occurred:
 
 [0;31mValueError[0m                                Traceback (most recent call last)
-Cell [0;32mIn[1], line 44[0m
-[1;32m     42[0m l [38;5;241m=[39m []
-[1;32m     43[0m [38;5;28;01mfor[39;00m adults [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m1[39m, [38;5;241m3[39m):
-[0;32m---> 44[0m     l[38;5;241m.[39mappend([43mmake_prop_tax[49m[43m([49m[43madults[49m[43m)[49m)
-[1;32m     46[0m df [38;5;241m=[39m pd[38;5;241m.[39mconcat(l)
-[1;32m     48[0m LABELS [38;5;241m=[39m [38;5;28mdict[39m(
-[1;32m     49[0m     employment_income[38;5;241m=[39m[38;5;124m"[39m[38;5;124mEmployment Income[39m[38;5;124m"[39m,
-[1;32m     50[0m     mo_property_tax_credit[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMO Property Tax Credit[39m[38;5;124m"[39m,
-[1;32m     51[0m     scb_mtr[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMO Property Tax Credit Marginal Tax Rate[39m[38;5;124m"[39m,
-[1;32m     52[0m     adults[38;5;241m=[39m[38;5;124m"[39m[38;5;124mAdults[39m[38;5;124m"[39m,
-[1;32m     53[0m )
-
-Cell [0;32mIn[1], line 28[0m, in [0;36mmake_prop_tax[0;34m(adults)[0m
-[1;32m     23[0m sim[38;5;241m.[39madd_household(name[38;5;241m=[39m[38;5;124m"[39m[38;5;124mhousehold[39m[38;5;124m"[39m, members[38;5;241m=[39mmembers, state_code[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMO[39m[38;5;124m"[39m)
-[1;32m     24[0m sim[38;5;241m.[39mvary([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;28mmax[39m[38;5;241m=[39m[38;5;241m100_000[39m, step[38;5;241m=[39m[38;5;241m100[39m)
-[1;32m     25[0m [38;5;28;01mreturn[39;00m pd[38;5;241m.[39mDataFrame(
-[1;32m     26[0m     [38;5;28mdict[39m(
-[1;32m     27[0m         employment_income[38;5;241m=[39msim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m],
-[0;32m---> 28[0m         mo_property_tax_credit[38;5;241m=[39m[43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_property_tax_credit[39;49m[38;5;124;43m"[39;49m[43m)[49m[
-[1;32m     29[0m             [38;5;241m0[39m
-[1;32m     30[0m         ][38;5;241m.[39mround(),
-[1;32m     31[0m         scb_mtr[38;5;241m=[39m[38;5;241m-[39msim[38;5;241m.[39mderiv(
-[1;32m     32[0m             [38;5;124m"[39m[38;5;124mmo_property_tax_credit[39m[38;5;124m"[39m,
-[1;32m     33[0m             [38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m,
-[1;32m     34[0m             wrt_target[38;5;241m=[39m[38;5;124m"[39m[38;5;124mhead[39m[38;5;124m"[39m,
-[1;32m     35[0m         ),
-[1;32m     36[0m         adults[38;5;241m=[39madults,
-[1;32m     37[0m     )
-[1;32m     38[0m )
+Cell [0;32mIn[2], line 14[0m
+[1;32m      3[0m [38;5;28;01mimport[39;00m [38;5;21;01mplotly[39;00m[38;5;21;01m.[39;00m[38;5;21;01mexpress[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpx[39;00m
+[1;32m      5[0m LABELS [38;5;241m=[39m [38;5;28mdict[39m(
+[1;32m      6[0m     employment_income[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMonthly employment income[39m[38;5;124m"[39m,
+[1;32m      7[0m     school_meal_subsidy[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMonthly school meal subsidy[39m[38;5;124m"[39m,
+[1;32m      8[0m     mtr[38;5;241m=[39m[38;5;124m"[39m[38;5;124mMarginal tax rate[39m[38;5;124m"[39m,
+[1;32m      9[0m )
+[1;32m     11[0m df [38;5;241m=[39m pd[38;5;241m.[39mDataFrame(
+[1;32m     12[0m     [38;5;28mdict[39m(
+[1;32m     13[0m         employment_income[38;5;241m=[39msim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m)[[38;5;241m0[39m],
+[0;32m---> 14[0m         school_meal_net_subsidy[38;5;241m=[39m[43msim[49m[38;5;241;43m.[39;49m[43mcalc[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_net_subsidy[39;49m[38;5;124;43m"[39;49m[43m)[49m[[38;5;241m0[39m],
+[1;32m     15[0m     )
+[1;32m     16[0m )
+[1;32m     17[0m df[[[38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mschool_meal_net_subsidy[39m[38;5;124m"[39m]] [38;5;241m=[39m (
+[1;32m     18[0m     df[[[38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mschool_meal_net_subsidy[39m[38;5;124m"[39m]] [38;5;241m/[39m [38;5;241m12[39m
+[1;32m     19[0m )[38;5;241m.[39mround()
+[1;32m     21[0m fig [38;5;241m=[39m px[38;5;241m.[39mline(
+[1;32m     22[0m     df,
+[1;32m     23[0m     [38;5;124m"[39m[38;5;124memployment_income[39m[38;5;124m"[39m,
+[0;32m   (...)[0m
+[1;32m     26[0m     title[38;5;241m=[39m[38;5;124m"[39m[38;5;124mSchool meal subsidy for a one-parent one-child household in California[39m[38;5;124m"[39m,
+[1;32m     27[0m )
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/individual_sim.py:266[0m, in [0;36mIndividualSim.calc[0;34m(self, var, period, target, index, map_to, reform)[0m
 [1;32m    264[0m         result [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msim[38;5;241m.[39mcalculate_add(var, period)
@@ -665,12 +733,13 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_property_tax_credit.py:35[0m, in [0;36mmo_property_tax_credit.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     33[0m po_step [38;5;241m=[39m p[38;5;241m.[39mphase_out[38;5;241m.[39mstep
-[1;32m     34[0m po_rate [38;5;241m=[39m p[38;5;241m.[39mphase_out[38;5;241m.[39mrate
-[0;32m---> 35[0m net_income [38;5;241m=[39m [43mtax_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_ptc_net_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     36[0m excess_income [38;5;241m=[39m max_([38;5;241m0[39m, net_income [38;5;241m-[39m po_start)
-[1;32m     37[0m po_steps [38;5;241m=[39m np[38;5;241m.[39mceil(excess_income [38;5;241m/[39m po_step)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_net_subsidy.py:15[0m, in [0;36mschool_meal_net_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[1;32m     13[0m     [38;5;66;03m# Calculate net daily subsidy per child, subtracting the daily subsidy[39;00m
+[1;32m     14[0m     [38;5;66;03m# for full-price children.[39;00m
+[0;32m---> 15[0m     daily_subsidy [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_daily_subsidy[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     16[0m     daily_paid_subsidy [38;5;241m=[39m spm_unit([38;5;124m"[39m[38;5;124mschool_meal_paid_daily_subsidy[39m[38;5;124m"[39m, period)
+[1;32m     17[0m     net_daily_subsidy_per_child [38;5;241m=[39m daily_subsidy [38;5;241m-[39m daily_paid_subsidy
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
@@ -704,11 +773,13 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_net_income.py:18[0m, in [0;36mmo_ptc_net_income.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     17[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(tax_unit, period, parameters):
-[0;32m---> 18[0m     gross_income [38;5;241m=[39m [43mtax_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mmo_ptc_gross_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
-[1;32m     19[0m     income_offset [38;5;241m=[39m tax_unit([38;5;124m"[39m[38;5;124mmo_ptc_income_offset[39m[38;5;124m"[39m, period)
-[1;32m     20[0m     [38;5;28;01mreturn[39;00m max_([38;5;241m0[39m, gross_income [38;5;241m-[39m income_offset)
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_daily_subsidy.py:15[0m, in [0;36mschool_meal_daily_subsidy.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     12[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[1;32m     13[0m     [38;5;66;03m# Get state group and tier (based on poverty ratio) for SPM unit.[39;00m
+[1;32m     14[0m     state_group [38;5;241m=[39m spm_unit[38;5;241m.[39mhousehold([38;5;124m"[39m[38;5;124mstate_group_str[39m[38;5;124m"[39m, period)
+[0;32m---> 15[0m     tier [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_tier[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m[38;5;241m.[39mdecode_to_str()
+[1;32m     16[0m     p_amount [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mamount
+[1;32m     17[0m     nslp_per_child [38;5;241m=[39m p_amount[38;5;241m.[39mnslp[state_group][tier]
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
@@ -742,42 +813,11 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
 [1;32m    736[0m [38;5;28;01mreturn[39;00m array
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/states/mo/tax/income/credits/property_tax/mo_ptc_gross_income.py:39[0m, in [0;36mmo_ptc_gross_income.formula[0;34m(tax_unit, period, parameters)[0m
-[1;32m     34[0m [38;5;66;03m# compute person-level public assistance included in PTC gross income[39;00m
-[1;32m     35[0m pa_sources [38;5;241m=[39m parameters(
-[1;32m     36[0m     period
-[1;32m     37[0m )[38;5;241m.[39mgov[38;5;241m.[39mstates[38;5;241m.[39mmo[38;5;241m.[39mtax[38;5;241m.[39mincome[38;5;241m.[39mcredits[38;5;241m.[39mproperty_tax[38;5;241m.[39mpublic_assistance_types
-[1;32m     38[0m public_assistance_income [38;5;241m=[39m tax_unit[38;5;241m.[39msum(
-[0;32m---> 39[0m     [43madd[49m[43m([49m[43mperson[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mpa_sources[49m[43m)[49m  [38;5;66;03m# line 6[39;00m
-[1;32m     40[0m )
-[1;32m     41[0m [38;5;66;03m# compute nonbusiness capital losses in PTC gross income (line 7)[39;00m
-[1;32m     42[0m losses [38;5;241m=[39m [[38;5;124m"[39m[38;5;124mshort_term_capital_losses[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124mlong_term_capital_losses[39m[38;5;124m"[39m]
-
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:223[0m, in [0;36madd[0;34m(entity, period, variables, options)[0m
-[1;32m    203[0m [38;5;28;01mdef[39;00m [38;5;21madd[39m(
-[1;32m    204[0m     entity: Population,
-[1;32m    205[0m     period: Period,
-[1;32m    206[0m     variables: List[[38;5;28mstr[39m],
-[1;32m    207[0m     options: List[[38;5;28mstr[39m] [38;5;241m=[39m [38;5;28;01mNone[39;00m,
-[1;32m    208[0m ):
-[1;32m    209[0m [38;5;250m    [39m[38;5;124;03m"""Sums a list of variables.[39;00m
-[1;32m    210[0m 
-[1;32m    211[0m [38;5;124;03m    Args:[39;00m
-[0;32m   (...)[0m
-[1;32m    221[0m [38;5;124;03m        ArrayLike: The result of the operation.[39;00m
-[1;32m    222[0m [38;5;124;03m    """[39;00m
-[0;32m--> 223[0m     [38;5;28;01mreturn[39;00m [43mfor_each_variable[49m[43m([49m
-[1;32m    224[0m [43m        [49m[43mentity[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mvariables[49m[43m,[49m[43m [49m[43magg_func[49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43madd[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m
-[1;32m    225[0m [43m    [49m[43m)[49m
-
-File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/commons/formulas.py:179[0m, in [0;36mfor_each_variable[0;34m(entity, period, variables, agg_func, group_agg_func, options)[0m
-[1;32m    177[0m variable_entity [38;5;241m=[39m entity[38;5;241m.[39mentity[38;5;241m.[39mget_variable(variable)[38;5;241m.[39mentity
-[1;32m    178[0m [38;5;28;01mif[39;00m variable_entity[38;5;241m.[39mkey [38;5;241m==[39m entity[38;5;241m.[39mentity[38;5;241m.[39mkey:
-[0;32m--> 179[0m     values [38;5;241m=[39m [43mentity[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m[43m)[49m
-[1;32m    180[0m [38;5;28;01melif[39;00m variable_entity[38;5;241m.[39mis_person:
-[1;32m    181[0m     values [38;5;241m=[39m group_agg_func(
-[1;32m    182[0m         entity[38;5;241m.[39mmembers(variable, period, options[38;5;241m=[39moptions)
-[1;32m    183[0m     )
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_tier.py:19[0m, in [0;36mschool_meal_tier.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     18[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[0;32m---> 19[0m     fpg_ratio [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_fpg_ratio[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     20[0m     p_income_limit [38;5;241m=[39m parameters(period)[38;5;241m.[39mgov[38;5;241m.[39musda[38;5;241m.[39mschool_meals[38;5;241m.[39mincome[38;5;241m.[39mlimit
+[1;32m     21[0m     [38;5;66;03m# Categorical eligibility provides free school meals.[39;00m
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
@@ -787,6 +827,69 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
 [1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
 [1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
+[1;32m    326[0m     variable_name, period, [38;5;28mself[39m[38;5;241m.[39mbranch_name
+[1;32m    327[0m )
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+[1;32m    332[0m         result [38;5;241m=[39m result[38;5;241m.[39mdecode_to_str()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    489[0m [38;5;28;01mtry[39;00m:
+[1;32m    490[0m     [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m     array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m     [38;5;66;03m# If no result, use the default value and cache it[39;00m
+[1;32m    494[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    495[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:734[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    732[0m     array [38;5;241m=[39m formula(population, period)
+[1;32m    733[0m [38;5;28;01melse[39;00m:
+[0;32m--> 734[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mparameters_at[49m[43m)[49m
+[1;32m    736[0m [38;5;28;01mreturn[39;00m array
+
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/variables/gov/usda/school_meals/school_meal_fpg_ratio.py:12[0m, in [0;36mschool_meal_fpg_ratio.formula[0;34m(spm_unit, period, parameters)[0m
+[1;32m     11[0m [38;5;28;01mdef[39;00m [38;5;21mformula[39m(spm_unit, period, parameters):
+[0;32m---> 12[0m     income [38;5;241m=[39m [43mspm_unit[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mschool_meal_countable_income[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m     13[0m     [38;5;28;01mreturn[39;00m income [38;5;241m/[39m spm_unit([38;5;124m"[39m[38;5;124mspm_unit_fpg[39m[38;5;124m"[39m, period)
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
+[1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
+[1;32m    131[0m         variable_name, period, [38;5;241m*[39m[38;5;241m*[39mcalculate_kwargs
+[1;32m    132[0m     )
+[1;32m    133[0m [38;5;28;01melse[39;00m:
+[0;32m--> 134[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43msimulation[49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    135[0m [43m        [49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mcalculate_kwargs[49m
+[1;32m    136[0m [43m    [49m[43m)[49m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
+[1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
+[1;32m    326[0m     variable_name, period, [38;5;28mself[39m[38;5;241m.[39mbranch_name
+[1;32m    327[0m )
+[1;32m    329[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 330[0m     result [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_calculate[49m[43m([49m[43mvariable_name[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    331[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(result, EnumArray) [38;5;129;01mand[39;00m decode_enums:
+[1;32m    332[0m         result [38;5;241m=[39m result[38;5;241m.[39mdecode_to_str()
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:491[0m, in [0;36mSimulation._calculate[0;34m(self, variable_name, period)[0m
+[1;32m    489[0m [38;5;28;01mtry[39;00m:
+[1;32m    490[0m     [38;5;28mself[39m[38;5;241m.[39m_check_for_cycle(variable[38;5;241m.[39mname, period)
+[0;32m--> 491[0m     array [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_run_formula[49m[43m([49m[43mvariable[49m[43m,[49m[43m [49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
+[1;32m    493[0m     [38;5;66;03m# If no result, use the default value and cache it[39;00m
+[1;32m    494[0m     [38;5;28;01mif[39;00m array [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    495[0m         [38;5;66;03m# Check if the variable has a previously defined value[39;00m
+
+File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:697[0m, in [0;36mSimulation._run_formula[0;34m(self, variable, population, period)[0m
+[1;32m    695[0m     values [38;5;241m=[39m [38;5;241m0[39m
+[1;32m    696[0m     [38;5;28;01mfor[39;00m added_variable [38;5;129;01min[39;00m adds_list:
+[0;32m--> 697[0m         values [38;5;241m=[39m values [38;5;241m+[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcalculate[49m[43m([49m
+[1;32m    698[0m [43m            [49m[43madded_variable[49m[43m,[49m[43m [49m[43mperiod[49m[43m,[49m[43m [49m[43mmap_to[49m[38;5;241;43m=[39;49m[43mvariable[49m[38;5;241;43m.[39;49m[43mentity[49m[38;5;241;43m.[39;49m[43mkey[49m
+[1;32m    699[0m [43m        [49m[43m)[49m
+[1;32m    700[0m [38;5;28;01mif[39;00m variable[38;5;241m.[39msubtracts [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    701[0m     [38;5;28;01mif[39;00m [38;5;28misinstance[39m(variable[38;5;241m.[39msubtracts, [38;5;28mstr[39m):
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/policyengine_core/simulations/simulation.py:330[0m, in [0;36mSimulation.calculate[0;34m(self, variable_name, period, map_to, decode_enums)[0m
 [1;32m    325[0m [38;5;28mself[39m[38;5;241m.[39mtracer[38;5;241m.[39mrecord_calculation_start(
@@ -969,5 +1072,38 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.16/x64/lib/python3.9/site-packages/p
 [1;32m     63[0m             )
 [1;32m     64[0m         )
 
-[0;31mValueError[0m: Input [0. 2. 0. ... 2. 0. 2.] is not a valid value for the entity marital_unit (size = 2001 != 2002 = count)
+[0;31mValueError[0m: Input [0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+ 0. 0. 0. 0. 0. 0. 0. 0. 0.] is not a valid value for the entity marital_unit (size = 801 != 802 = count)
 
