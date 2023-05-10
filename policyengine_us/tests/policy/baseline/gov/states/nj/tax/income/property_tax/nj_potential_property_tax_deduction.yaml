@@ -11,9 +11,12 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        state_code: NJ
         rents: true
         nj_homeowners_property_tax: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
   output:
     nj_potential_property_tax_deduction: 1_800
 
@@ -30,9 +33,12 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        state_code: NJ
         rents: true
         nj_homeowners_property_tax: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
   output:
     nj_potential_property_tax_deduction: 15_000
 
