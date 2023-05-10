@@ -23,7 +23,7 @@ class va_age_deduction(Variable):
 
         age_head = tax_unit("age_head", period)
         age_spouse = where(single, 0, tax_unit("age_spouse", period))
-        #age_spouse = tax_unit("age_spouse", period)
+        # age_spouse = tax_unit("age_spouse", period)
 
         AFAGI = tax_unit("AFAGI", period)
         # People who were born on or before the threshold date are eligible for a full deduction
