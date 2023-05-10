@@ -1,9 +1,10 @@
-- name: NJ taxable income minus property tax deduction.
+- name: NJ AGI minus deductions and exemptions.
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_taxable_income_before_property_tax_deduction: 10_000
-    nj_property_tax_deduction: 1_000
+    nj_agi: 10_000
+    nj_total_deductions: 0
+    nj_total_exemptions: 1_000
     state_code: NJ
   output:
     nj_taxable_income_before_property_tax_deduction: 9_000
@@ -12,8 +13,9 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_taxable_income_before_property_tax_deduction: 1_000
-    nj_property_tax_deduction: 2_000
+    nj_agi: 1_000
+    nj_total_deductions: 0
+    nj_total_exemptions: 2_000
     state_code: NJ
   output:
     nj_taxable_income_before_property_tax_deduction: 0
