@@ -3197,3 +3197,9 @@
     - Virginia federal state employees subtraction, empty state_or_federal_salary
       variable file.
   date: 2023-05-10 02:34:49
+- bump: minor
+  changes:
+    changed:
+    - Itemization decisions now use deduction size, not liability change for speed.
+    - Added defined_fors for optimisation.
+  date: 2023-05-10 22:25:05
