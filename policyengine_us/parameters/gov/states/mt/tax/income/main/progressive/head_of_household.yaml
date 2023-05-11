@@ -1,0 +1,18 @@
+description: Montana provides the following marginal tax rate for the head of the household.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Montana income tax rate head of household
+  reference:
+    - title: Montana Code Annotated 2021 Title 15, Chapter 30, Part 21, 15-30-2103 
+      href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0030/0150-0300-0210-0030.html
+brackets:
+  - threshold:
+      2024-01-01: 0
+    rate:
+      2024-01-01: 0.047
+  - threshold:
+      2024-01-01: 30_750
+    rate:
+      2024-01-01: 0.065
