@@ -17,10 +17,8 @@ class nj_property_tax_credit(Variable):
         # Get the NJ property tax credit portion of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.credits.property_tax
 
-        # Check that the tax unit is not taking the property tax deduction.
-        not_taking_deduction = ~tax_unit(
-            "nj_taking_property_tax_deduction", period
-        )
+        # Check if the tax unit is taking the property tax deduction.
+        taking_deduction = tax_unit("nj_taking_property_tax_deduction", period)
 
         # Return the credit amount, which does not depend on property taxes paid if eligible.
-        return p.credit_amount * not_taking_deduction
+        return p.credit_amount * ~taking_deduction
