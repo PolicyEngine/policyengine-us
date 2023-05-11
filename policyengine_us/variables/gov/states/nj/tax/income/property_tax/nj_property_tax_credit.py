@@ -21,4 +21,4 @@ class nj_property_tax_credit(Variable):
         taking_deduction = tax_unit("nj_taking_property_tax_deduction", period)
 
         # Return the credit amount, which does not depend on property taxes paid if eligible.
-        return p.credit_amount * ~taking_deduction
+        return p.amount * ~taking_deduction
