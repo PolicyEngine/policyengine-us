@@ -6,7 +6,7 @@
     nj_taking_property_tax_deduction: false
     state_code: NJ
   output:
-    nj_potential_property_tax_deduction: 50
+    nj_property_tax_credit: 50
 
 - name: NJ property tax credit is $0 if taking property tax deduction.
   period: 2022
@@ -16,4 +16,4 @@
     nj_taking_property_tax_deduction: true
     state_code: NJ
   output:
-    nj_potential_property_tax_deduction: 0
+    nj_property_tax_credit: 0
