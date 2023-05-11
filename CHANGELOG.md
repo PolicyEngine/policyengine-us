@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.316.0] - 2023-05-10 22:25:05
+
+### Changed
+
+- Itemization decisions now use deduction size, not liability change for speed.
+- Added defined_fors for optimisation.
+
+## [0.315.0] - 2023-05-10 02:34:49
+
+### Added
+
+- Virginia federal state employees subtraction, empty state_or_federal_salary variable file.
+
+## [0.314.1] - 2023-05-05 02:49:29
+
+### Added
+
+- Legal reference for Nebraska CDCC, EITC, AGI reduction by SSB, and extra standard deduction.
+
+## [0.314.0] - 2023-05-04 19:37:30
+
+### Added
+
+- New Jersey main income tax.
+
+## [0.313.1] - 2023-05-04 15:28:04
+
+### Added
+
+- Federal payroll tax
+
+## [0.313.0] - 2023-05-04 00:04:47
+
+### Added
+
+- Update Kansas Legal Reference for AGI and CDCC.
+
+## [0.312.0] - 2023-05-03 23:46:50
+
+### Added
+
+- Mississippi regular exemption.
+
+## [0.311.0] - 2023-05-03 21:35:09
+
+### Added
+
+- Mississippi dependents allowance
+
+## [0.310.2] - 2023-05-03 19:02:41
+
+### Added
+
+- Legal code reference for North Nakota Tax Credits
+
 ## [0.310.1] - 2023-05-01 03:21:40
 
 ### Fixed
@@ -3762,6 +3817,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.316.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.315.0...0.316.0
+[0.315.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.314.1...0.315.0
+[0.314.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.314.0...0.314.1
+[0.314.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.313.1...0.314.0
+[0.313.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.313.0...0.313.1
+[0.313.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.312.0...0.313.0
+[0.312.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.311.0...0.312.0
+[0.311.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.2...0.311.0
+[0.310.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.1...0.310.2
+[0.310.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.310.0...0.310.1
+[0.310.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.309.0...0.310.0
+[0.309.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.308.0...0.309.0
+[0.308.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.307.0...0.308.0
+[0.307.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.306.0...0.307.0
+[0.306.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.305.0...0.306.0
+[0.305.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.304.0...0.305.0
+[0.304.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.303.1...0.304.0
+[0.303.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.303.0...0.303.1
+[0.303.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.302.0...0.303.0
+[0.302.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.2...0.302.0
+[0.301.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.1...0.301.2
+[0.301.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.301.0...0.301.1
+[0.301.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.4...0.301.0
+[0.300.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.3...0.300.4
+[0.300.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.2...0.300.3
+[0.300.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.1...0.300.2
+[0.300.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.300.0...0.300.1
+[0.300.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.299.0...0.300.0
+[0.299.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.298.0...0.299.0
+[0.298.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.297.0...0.298.0
+[0.297.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.296.0...0.297.0
+[0.296.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.295.1...0.296.0
+[0.295.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.295.0...0.295.1
 [0.295.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.294.0...0.295.0
 [0.294.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.1...0.294.0
 [0.293.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.293.0...0.293.1
