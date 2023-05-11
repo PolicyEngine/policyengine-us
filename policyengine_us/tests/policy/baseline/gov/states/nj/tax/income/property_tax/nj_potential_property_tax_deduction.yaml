@@ -12,6 +12,7 @@
         members: [person1, person2]
         rents: true
         nj_homeowners_property_tax: 0
+        nj_property_tax_deduction_or_credit_eligible: true
     households:
       household:
         members: [person1, person2]
@@ -33,6 +34,7 @@
         members: [person1, person2]
         rents: true
         nj_homeowners_property_tax: 0
+        nj_property_tax_deduction_or_credit_eligible: true
     households:
       household:
         members: [person1, person2]
@@ -47,6 +49,7 @@
     rents: false
     nj_homeowners_property_tax: 10_000
     state_code: NJ
+    nj_property_tax_deduction_or_credit_eligible: true
   output:
     nj_potential_property_tax_deduction: 10_000
 
@@ -57,5 +60,17 @@
     rents: false
     nj_homeowners_property_tax: 20_000
     state_code: NJ
+    nj_property_tax_deduction_or_credit_eligible: true
+  output:
+    nj_potential_property_tax_deduction: 15_000
+
+- name: NJ potential property tax deduction should be $0 if ineligible.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    rents: false
+    nj_homeowners_property_tax: 20_000
+    state_code: NJ
+    nj_property_tax_deduction_or_credit_eligible: false
   output:
     nj_potential_property_tax_deduction: 15_000
