@@ -1,15 +1,12 @@
 from policyengine_us.model_api import *
 
 
-
-
 class md_tanf_is_child(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
     label = "Wether is a child for MD TANF based on age, education, etc."
     documentation = "0307 Age rev 11.22.doc"
-
 
     def formula(person, period, parameters):
         # younger than age 18
