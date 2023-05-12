@@ -1,0 +1,38 @@
+description: Delaware provides the following rate on perosnal income taxes.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Delaware personal income tax rate
+  reference:
+    - title: Government of Delaware - Tax Rate Changes
+      href: https://revenue.delaware.gov/software-developer/tax-rate-changes/
+brackets:
+  - threshold:
+      2014-01-01: 0
+    rate:
+      2014-01-01: 0
+  - threshold:
+      2014-01-01: 2_000
+    rate:
+      2014-01-01: 0.022
+  - threshold:
+      2014-01-01: 5_000
+    rate:
+      2014-01-01: 0.039
+  - threshold:
+      2014-01-01: 10_000
+    rate:
+      2014-01-01: 0.048
+  - threshold:
+      2014-01-01: 20_000
+    rate:
+      2014-01-01: 0.052
+  - threshold:
+      2014-01-01: 25_000
+    rate:
+      2014-01-01: 0.0555
+  - threshold:
+      2014-01-01: 60_000
+    rate:
+      2014-01-01: 0.066
