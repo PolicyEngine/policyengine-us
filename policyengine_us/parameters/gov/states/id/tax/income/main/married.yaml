@@ -1,0 +1,26 @@
+description: Idaho provides the following income tax rate for married filers.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Idaho income tax rate married filers
+  reference:
+    - title: Idaho State Tax Comission - Individual Income Tax Rate Schedule
+      href: https://tax.idaho.gov/taxes/income-tax/individual-income/individual-income-tax-rate-schedule/ 
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.01
+  - threshold:
+      2022-01-01: 3_324
+    rate:
+      2022-01-01: 0.03
+  - threshold:
+      2022-01-01: 9_974
+    rate:
+      2022-01-01: 0.045
+  - threshold:
+      2022-01-01: 16_622
+    rate:
+      2022-01-01: 0.06
