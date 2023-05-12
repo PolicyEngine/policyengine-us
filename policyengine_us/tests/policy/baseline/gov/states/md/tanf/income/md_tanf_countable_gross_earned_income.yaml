@@ -1,0 +1,19 @@
+- name: "Person who has 1000 employment income, 1000 self employment income, 1000 armed services basica allowance for houseing ".
+  period: 2023
+  input:
+    - employment_income:1000
+    - self_employment_income:1000
+    - armed_services_basic_allowance_for_housing:1000
+  output:
+    md_tanf_countable_gross_earned_income:3000
+
+
+- name: "Person who has -1 employment income, -1 self employment income, -1 armed services basica allowance for houseing, 1000 child support".
+  period: 2023
+  input:
+    - employment_income:-1
+    - self_employment_income:-1
+    - armed_services_basic_allowance_for_housing:-1
+    - child_support:1000
+  output:
+    md_tanf_countable_gross_earned_income:0

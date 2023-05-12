@@ -1,6 +1,8 @@
 from policyengine_us.model_api import *
 
 
+
+
 class md_tanf(Variable):
     value_type = float
     entity = SPMUnit
@@ -8,6 +10,7 @@ class md_tanf(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "md_tanf_eligible"
+
 
     def formula(spm_unit, period, parameters):
         grant_standard = spm_unit("md_tanf_maximun_benefit", period)
