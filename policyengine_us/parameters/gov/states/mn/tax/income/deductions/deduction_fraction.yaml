@@ -1,0 +1,13 @@
+description: Minnesota limits itemized deductions when federal AGI is above a threshold by applying this fraction to a subset of itemized deductions.
+values:
+  2021-01-01: 0.8
+
+metadata:
+  period: year
+  unit: /1
+  label: Minnesota fraction of subset of itemized deductions that can limit total itemized deductions
+  reference:
+  - title: 2021 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://taxsim.nber.org/historical_state_tax_forms/MN/2021/m1sa_21.pdf#page=7
+  - title: 2022 Minnesota Schedule M1SA form, Worksheet for Line 26
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1sa_22.pdf#page=7

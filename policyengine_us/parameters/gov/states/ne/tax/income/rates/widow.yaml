@@ -1,0 +1,37 @@
+description: NE income tax rates for widow filing units
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0246
+  - threshold:
+      2021-01-01: 6_660
+      2022-01-01: 6_860
+    rate:
+      2021-01-01: 0.0351
+  - threshold:
+      2021-01-01: 39_990
+      2022-01-01: 41_190
+    rate:
+      2021-01-01: 0.0501
+  - threshold:
+      2021-01-01: 64_430
+      2022-01-01: 66_360
+    rate:
+      2021-01-01: 0.0684
+        
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: NE income tax rates for widow filing units
+  reference:
+  - title: Nebraska Tax Rates, Brackets
+    href: https://www.efile.com/nebraska-tax-brackets-rates-and-forms/
+  - title: 2021 NE income tax form and instruction booklet
+    href: https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf
+  - title: 2022 NE income tax form and instruction booklet
+    href: https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf
+  - title: Nebraska Revised Statute | chapter 77 | §2715.03
+    href: https://www.nebraskalegislature.gov/laws/statutes.php?statute=77-2715.03

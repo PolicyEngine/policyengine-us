@@ -1,0 +1,207 @@
+- name: If filing single, not blind nor disabled, exemption is $0.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    blind_head: false
+    disabled_head: false
+  output:
+    nj_blind_or_disabled_exemption: 0
+
+- name: If filing single, blind but not disabled, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    blind_head: true
+    disabled_head: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing single, not blind but disabled, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    blind_head: false
+    disabled_head: true
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing single, blind & disabled, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    blind_head: true
+    disabled_head: true
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing jointly, head = blind but spouse is neither, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: true
+    disabled_head: false
+    blind_spouse: false
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing jointly, head = blind & disabled, but spouse is neither, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: true
+    disabled_head: true
+    blind_spouse: false
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing jointly, head = disabled but spouse is neither, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: false
+    disabled_head: true
+    blind_spouse: false
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing jointly, head is neither blind nor disabled but spouse = blind, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: false
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+  
+- name: If filing jointly, head is neither blind nor disabled but spouse = disabled, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: false
+    disabled_head: false
+    blind_spouse: false
+    disabled_spouse: true
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing jointly, head is neither blind nor disabled but spouse = blind & disabled, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: false
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: true
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing jointly, head and spouse both = blind, exemption is $2k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: true
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 2_000
+  
+- name: If filing jointly, head and spouse both = disabled, exemption is $2k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: false
+    disabled_head: true
+    blind_spouse: false
+    disabled_spouse: true
+  output:
+    nj_blind_or_disabled_exemption: 2_000
+
+- name: If filing jointly, head and spouse both = blind & disabled, exemption is $2k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: JOINT
+    blind_head: true
+    disabled_head: true
+    blind_spouse: true
+    disabled_spouse: true
+  output:
+    nj_blind_or_disabled_exemption: 2_000
+
+- name: If filing seperately, head = blind but spouse is neither, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    blind_head: true
+    disabled_head: false
+    blind_spouse: false
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing seperately, head and spouse both = blind, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    blind_head: true
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing seperately, head = blind & disabled, spouse = blind, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    blind_head: true
+    disabled_head: true
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing seperately, head = disabled, spouse = blind, exemption is $1k.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    blind_head: false
+    disabled_head: true
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 1_000
+
+- name: If filing seperately, head is neither, spouse = blind, exemption is $0.
+  period: 2022
+  input:
+    state_code: NJ
+    filing_status: SEPARATE
+    blind_head: false
+    disabled_head: false
+    blind_spouse: true
+    disabled_spouse: false
+  output:
+    nj_blind_or_disabled_exemption: 0

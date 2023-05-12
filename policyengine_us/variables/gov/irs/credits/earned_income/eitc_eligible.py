@@ -35,5 +35,13 @@ class eitc_eligible(Variable):
         inv_income_disqualified = (
             eitc_investment_income > eitc.phase_out.max_investment_income
         )
-        eligible = has_child | tax_unit.any(meets_age_requirements)
-        return eligible & ~inv_income_disqualified
+        demographic_eligible = has_child | tax_unit.any(meets_age_requirements)
+        # Define eligibility before considering separate filer limitation.
+        eligible = demographic_eligible & ~inv_income_disqualified
+        # This parameter is true if separate filers are eligible.
+        if eitc.eligibility.separate_filer:
+            return eligible
+        # If separate filers are not eligible, check if the filer is separate.
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return eligible & ~separate

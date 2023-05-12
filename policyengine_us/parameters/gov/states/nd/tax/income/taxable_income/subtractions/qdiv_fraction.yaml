@@ -1,0 +1,14 @@
+description: North Dakota subtracts this fraction of qualified dividends from US taxable income when calculating its taxable income.
+values:
+  2021-01-01: 0.40
+  2022-01-01: 0.40
+
+metadata:
+  label: fraction of qualified dividends that can be subtracted from taxable income
+  unit: /1
+  period: year
+  reference:
+  - title: 2021 ND income tax form and instruction booklet, line 13
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/individual-income-tax-booklet-2021.pdf #page13
+  - title: 2022 ND income tax form and instruction booklet, line 13
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf #page13
