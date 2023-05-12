@@ -41,14 +41,16 @@ class nj_tanf_countable_earned_income(Variable):
             months_enrolled_in_tanf > p.first_month_threshold
             and person_meet_lower_work_hours_threshold
         )
-        #If the condition is not met, the value of result will not change
+        # The value of result will only change, if the first condition in "where" is met. If the condition is not met, the value of result will not change
         result = 0
+        # If applicant is enrolled in TANF for the first month, the earned income deduction is 100%.
         result = where(
             person_enrolled_in_tanf_for_first_month,
             gross_earned_income
             * (1 - p.higher_work_hours.first_month_percent),
             result,
         )
+        # If applicant is enrolled in TANF for consecutive months with work hours over 20, the earned income deduction is 75%.
         result = where(
             (
                 person_meet_higher_work_hours_threshold
@@ -58,11 +60,13 @@ class nj_tanf_countable_earned_income(Variable):
             * (1 - p.higher_work_hours.consecutive_month_percent),
             result,
         )
+        # If applicant is enrolled in TANF for additional months with work hours over 20, the earned income deduction is 50%.
         result = where(
             person_enrolled_in_tanf_for_additional_months_with_work_hours_over_20,
             gross_earned_income * (1 - p.higher_work_hours.additional_percent),
             result,
         )
+        # If applicant is enrolled in TANF for additional months with work hours below 20, the earned income deduction is 50%.
         result = where(
             person_enrolled_in_tanf_for_additional_months_with_work_hours_below_20,
             gross_earned_income * (1 - p.lower_work_hours.additional_percent),
