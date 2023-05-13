@@ -10,6 +10,8 @@ class pa_tanf_maximum_assets(Variable):
     defined_for = StateCode.PA
 
     def formula(spm_unit, period, parameters):
-        maximum_assets = parameters(period).gov.states.pa.dhs.tanf.maximum_asset_value
+        maximum_assets = parameters(
+            period
+        ).gov.states.pa.dhs.tanf.maximum_asset_value
         total_assets = SPMUnit("spm_unit_assets", period)
         return total_assets < maximum_assets
