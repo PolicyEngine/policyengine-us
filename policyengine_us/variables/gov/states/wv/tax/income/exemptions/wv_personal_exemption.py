@@ -13,4 +13,5 @@ class wv_personal_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wv.tax.income.exemptions
         tax_unit_size = tax_unit("tax_unit_size", period)
-        return tax_unit_size * p.personal
+        standard_deduction = where(tax_unit_size == 0, 500, p.personal * tax_unit_size)
+        return standard_deduction
