@@ -1,0 +1,24 @@
+- name: No assets
+  period: 2021
+  input:
+    state_code: PA
+    spm_unit_assets: 0
+  output:
+    pa_tanf_maximum_assets: true
+
+- name: Eligible
+  period: 2021
+  input:
+    state_code: PA
+    spm_unit_assets: 500
+  output:
+    pa_tanf_maximum_assets: true
+
+
+- name: Ineligible
+  period: 2021
+  input:
+    state_code: PA
+    spm_unit_assets: 1_000
+  output:
+    pa_tanf_maximum_assets: false 
