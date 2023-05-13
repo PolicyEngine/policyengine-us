@@ -1,0 +1,58 @@
+- name: Single filer, taxable income is $25k in 2022 then tax is $367.50.
+  period: 2022
+  input:
+    nj_taxable_income: 25_000
+    filing_status: SINGLE
+    state_code: NJ
+  output:
+    # .014 * 20,000 + .0175 * (25,000-20,000) = 367.50
+    nj_main_income_tax: 367.5
+
+- name: Separate filer, taxable income is $1,100,000 in 2022 then tax is $85,323.75.
+  period: 2022
+  input:
+    nj_taxable_income: 1_100_000
+    filing_status: SEPARATE
+    state_code: NJ
+  output:
+    # $74.573.75 + .1075 * (1,100,000-1,000,000) = 85,323.75
+    nj_main_income_tax: 85_323.75
+
+- name: Joint filer, taxable income is $25k in 2022 then tax is $367.50.
+  period: 2022
+  input:
+    nj_taxable_income: 25_000
+    filing_status: SINGLE
+    state_code: NJ
+  output:
+    # .014 * 20,000 + .0175 * (25,000-20,000) = 367.5
+    nj_main_income_tax: 367.5
+
+- name: Head of household filer, taxable income is $56,000 in 2022 then tax is $952.
+  period: 2022
+  input:
+    nj_taxable_income: 56_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: NJ
+  output:
+    # $805 + .0245 * (56,000-50,000) = 952
+    nj_main_income_tax: 952
+
+- name: Surviving spouse filer, taxable income is $1,100,000 in 2022 then tax is $83,407.50.
+  period: 2022
+  input:
+    nj_taxable_income: 1_100_000
+    filing_status: WIDOW
+    state_code: NJ
+  output:
+    # $72,657.60 + .1075 * (1,100,000-1,000,000) = 83,407.50
+    nj_main_income_tax: 83_407.50
+
+- name: Single filer, outside of NJ then tax is $0.
+  period: 2022
+  input:
+    nj_taxable_income: 25_000
+    filing_status: SINGLE
+    state_code: ME
+  output:
+    nj_main_income_tax: 0
