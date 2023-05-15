@@ -33,8 +33,9 @@ class tax_unit_itemizes(Variable):
         deductions_if_not_itemizing = tax_unit(
             "standard_deduction", period
         )  # Ignore QBID here, it requires SALT.
-        if all(itemized_deductions < deductions_if_not_itemizing):
-            return False
+
+        # Decide by non-SALT deduction size
+        return itemized_deductions > deductions_if_not_itemizing
 
         tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
         tax_if_not_itemizing = tax_unit(
