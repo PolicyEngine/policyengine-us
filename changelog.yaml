@@ -3203,3 +3203,9 @@
     - Itemization decisions now use deduction size, not liability change for speed.
     - Added defined_fors for optimisation.
   date: 2023-05-10 22:25:05
+- bump: patch
+  changes:
+    removed:
+    - NYC dependent exemption, given logic currently adopts NYS taxable income.
+    - Unused parameter name fields.
+  date: 2023-05-16 02:34:19
