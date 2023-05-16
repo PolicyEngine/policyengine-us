@@ -30,15 +30,15 @@ class tax_unit_itemizes(Variable):
         itemized_deductions = (
             add(tax_unit, period, deductions_if_itemizing) + salt_cap
         )
-        deductions_if_not_itemizing = tax_unit(
-            "standard_deduction", period
-        )  # Ignore QBID here, it requires SALT.
+        # Ignore QBID here, it requires SALT.
+        deductions_if_not_itemizing = tax_unit("standard_deduction", period)
 
-        # Decide by non-SALT deduction size
-        return itemized_deductions > deductions_if_not_itemizing
-
-        tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
-        tax_if_not_itemizing = tax_unit(
-            "tax_liability_if_not_itemizing", period
-        )
-        return tax_if_itemizing < tax_if_not_itemizing
+        if parameters(period).simulation.branch_to_determine_itemization:
+            tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
+            tax_if_not_itemizing = tax_unit(
+                "tax_liability_if_not_itemizing", period
+            )
+            return tax_if_itemizing < tax_if_not_itemizing
+        else:
+            # Decide by non-SALT deduction size.
+            return itemized_deductions > deductions_if_not_itemizing
