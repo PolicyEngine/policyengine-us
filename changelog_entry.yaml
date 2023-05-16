@@ -1,0 +1,5 @@
+- bump: patch
+  changes:
+    removed:
+      - NYC dependent exemption, given logic currently adopts NYS taxable income.
+      - Unused parameter name fields.
