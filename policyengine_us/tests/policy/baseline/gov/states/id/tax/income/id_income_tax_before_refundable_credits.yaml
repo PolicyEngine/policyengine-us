@@ -1,0 +1,8 @@
+- name: Joint filers # ((10_000 - 9_974) * 0.045 + ((9_974 - 3_324) * 0.03) + (3_324 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 10_000
+    filing_status: JOINT
+  output:
+    id_income_tax_before_refundable_credits: 233.91
