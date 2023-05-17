@@ -34,7 +34,7 @@ class sc_senior_exemption(Variable):
         retirement_income_deduction = tax_unit(
             "sc_retirement_income_deduction", period
         )
-        military_retirement_income_deduction = tax_unit(
+        sc_military_retirement_income_deduction = tax_unit(
             "sc_military_retirement_income_deduction", period
         )
 
@@ -42,6 +42,6 @@ class sc_senior_exemption(Variable):
         return max(
             (head_eligible + spouse_eligible) * p.amount
             - retirement_income_deduction
-            - military_retirement_income_deduction,
+            - sc_military_retirement_income_deduction,
             0,
         )
