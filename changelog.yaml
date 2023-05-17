@@ -3197,3 +3197,20 @@
     - Virginia federal state employees subtraction, empty state_or_federal_salary
       variable file.
   date: 2023-05-10 02:34:49
+- bump: minor
+  changes:
+    changed:
+    - Itemization decisions now use deduction size, not liability change for speed.
+    - Added defined_fors for optimisation.
+  date: 2023-05-10 22:25:05
+- bump: patch
+  changes:
+    removed:
+    - NYC dependent exemption, given logic currently adopts NYS taxable income.
+    - Unused parameter name fields.
+  date: 2023-05-16 02:34:19
+- bump: minor
+  changes:
+    added:
+    - Switch to branch to determine itemization.
+  date: 2023-05-16 03:46:12
