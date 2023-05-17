@@ -14,13 +14,15 @@ class ga_income_tax_before_refundable_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         income = tax_unit("ga_taxable_income", period)
-        return select( [
-            filing_status == status.SINGLE,
-            filing_status == status.SEPARATE,
-            filing_status == status.JOINT,
-        ],[
-            p.single.calc(income),
-            p.separate.calc(income),
-            p.joint.calc(income),
-        ],
+        return select(
+            [
+                filing_status == status.SINGLE,
+                filing_status == status.SEPARATE,
+                filing_status == status.JOINT,
+            ],
+            [
+                p.single.calc(income),
+                p.separate.calc(income),
+                p.joint.calc(income),
+            ],
         )
