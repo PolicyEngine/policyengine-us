@@ -6,3 +6,21 @@
     filing_status: JOINT
   output:
     id_income_tax_before_refundable_credits: 233.91
+
+- name: Joint filers w/ no income
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 0
+    filing_status: JOINT
+  output:
+    id_income_tax_before_refundable_credits: 0
+
+- name: Single filers # ((3_000 - 1_662) * 0.03 + 1_662 * 0.01)
+  period: 2023
+  input:
+    state_code: ID
+    id_taxable_income: 3_000
+    filing_status: SINGLE
+  output:
+    id_income_tax_before_refundable_credits: 56.76
