@@ -9,7 +9,7 @@ class ca_care(Variable):
     label = "California CARE"
     documentation = "California's CARE program provides this electricity discount to eligible households."
     reference = "https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program"
-    defined_for = StateCode.CA
+    defined_for = "ca_care_eligible"
 
     def formula(household, period, parameters):
         is_eligible = household("ca_care_eligible", period)

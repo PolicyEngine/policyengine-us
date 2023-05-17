@@ -1,0 +1,15 @@
+description: New Jersey limits its TANF program to households with up to this income level for people beyond size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New Jersey TANF monthly income limit per additional person
+  reference:
+    # Legal code provides 2003 law; state plan provides updated values.
+    - title: New Jersey Administration State Code | Work First New Jersey Program | Financial Eligibility, Income, Resources, Benefits | § 10:90-3.3 WFNJ/TANF-initial allowable maximum income and maximum benefit payment levels (Schedules I and II)
+      href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=977adb3e-e3a6-4eba-8d54-e69ee35f7dcd&nodeid=AAOAERAAEAAD&nodepath=%2FROOT%2FAAO%2FAAOAER%2FAAOAERAAE%2FAAOAERAAEAAD&level=4&haschildren=&populated=false&title=%C2%A7+10%3A90-3.3+WFNJ%2FTANF-initial+allowable+maximum+income+and+maximum+benefit+payment+levels+(Schedules+I+and+II)&config=00JAA1YTg5OGJlYi04MTI4LTRlNjQtYTc4Yi03NTQxN2E5NmE0ZjQKAFBvZENhdGFsb2ftaXPxZTR7bRPtX1Jok9kz&pddocfullpath=%2Fshared%2Fdocument%2Fadministrative-codes%2Furn%3AcontentItem%3A5XKV-PWD1-JTGH-B3FM-00008-00&ecomp=8gf5kkk&prid=039b2ed1-6268-497c-a43f-3e4c508cdc00
+    - title: New Jersey State Plan for TANF(2021-2023)
+      href: https://www.nj.gov/humanservices/dfd/programs/workfirstnj/tanf_2021_23_st_plan.pdf#page=63
+
+values:
+  2023-01-01: 99
