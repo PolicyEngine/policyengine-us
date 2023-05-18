@@ -1,0 +1,24 @@
+description: Pennsylvania limits its TANF grant standard to households with up to this income level, by household size.
+
+metadata:
+  unit: currency-USD
+  period: month
+  breakdown:
+    - range(1, 6)
+  label: Pennsylvania TANF monthly income limit
+  reference:
+    - title: Pennsylvania State Cash Assistance for Number of Persons in Budget Group
+      href: https://www.compass.state.pa.us/compass.web/menuitems/CashFAQ.aspx?Language=EN
+
+1: 
+  2012-10-01: 205
+2: 
+  2012-10-01: 316
+3: 
+  2012-10-01: 403
+4: 
+  2012-10-01: 497
+5: 
+  2012-10-01: 589
+6: 
+  2012-10-01: 670
