@@ -4,10 +4,10 @@ from policyengine_us.model_api import *
 class va_tanf_up_grant_standard(Variable):
     value_type = float
     entity = SPMUnit
-    label = "DC TANF grant standard"
+    label = "VA TANF UP grant standard"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.DC
+    defined_for = StateCode.VA
 
     def formula(spm_unit, period, parameters):
         unit_size = spm_unit("spm_unit_size", period)

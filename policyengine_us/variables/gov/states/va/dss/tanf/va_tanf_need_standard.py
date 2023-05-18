@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_tanf_grant_standard(Variable):
+class va_tanf_need_standard(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA TANF grant standard"
+    label = "VA TANF need standard"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
@@ -19,8 +19,8 @@ class va_tanf_grant_standard(Variable):
         if_group3 = county in p.localities.group3
         p = where(
             if_group3,
-            p.grant_standard.group3,
-            p.grant_standard.group2,
+            p.need_standard.group3,
+            p.need_standard.group2,
         )
 
         monthly = p.main[ceiling] + additional * p.addition

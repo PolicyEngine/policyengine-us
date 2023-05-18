@@ -1,0 +1,55 @@
+- name: If one person and lives in Arlington, grand standard is $316 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 1
+  output:
+    va_tanf_grant_standard: 316 * 12
+
+- name: If ten person and lives in Fairfax, grand standard is $1,085 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+  output:
+    va_tanf_grant_standard: 1_085 * 12
+
+- name: If twelve person and lives in Montgomery, grand standard is $1,247 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 12
+  output:
+    va_tanf_grant_standard: 1_247 * 12
+
+- name: If one person and lives in Bedford, grand standard is $226 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 1
+  output:
+    va_tanf_grant_standard: 226 * 12
+
+- name: If ten person and lives in Frederick, grand standard is $975 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 10
+  output:
+    va_tanf_grant_standard: 975 * 12
+
+- name: If twelve person and lives in Pittsylvania, grand standard is $1,137 * 12/yr.
+  period: 2023
+  input:
+    state_code: VA
+    spm_unit_size: 12
+  output:
+    va_tanf_grant_standard: 1_137 * 12
+
+- name: Only calculate for VA.
+  period: 2023
+  input:
+    state_code: DC
+    spm_unit_size: 10
+  output:
+    va_tanf_grant_standard: 0
