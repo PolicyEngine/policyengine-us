@@ -8,7 +8,7 @@ class ri_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.RI
     unit = USD
     definition_period = YEAR
-    
+
     def formula(tax_unit, period, parameters):
         income = tax_unit("ri_taxable_income", period)
         rate = parameters(period).gov.states.ri.tax.income.rate

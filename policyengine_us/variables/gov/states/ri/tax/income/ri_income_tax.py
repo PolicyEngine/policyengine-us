@@ -9,4 +9,4 @@ class ri_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     adds = ["ri_income_tax_before_refundable_credits"]
-    subtracts = ['ri_refundable_credits']
+    subtracts = ["ri_refundable_credits"]
