@@ -1,0 +1,44 @@
+- name: "Person who has different amount for all the unearned income sources".
+  period: 2023
+  input:
+    - pension_income: 1
+    - investment_income: 2
+    - social_security: 3
+    - alimony_income: 4
+    - monetary_gifts: 5
+    - dividend_income: 6
+    - interest_income: 7
+    - lottery_winnings: 8
+    - lawsuit_settlements: 9
+    - inheritances: 10
+    - rent_subsidies: 11
+    - worker_compensation: 12
+    - unemployment_compensation: 13
+    - veterans_benefits: 14
+    - criminal_injuries_compensation: 15
+    - sick_accident: 16
+  output:
+    md_tanf_countable_gross_unearned_income: 136
+
+
+- name: "Person who has different negative amount for all the unearned income sources".
+  period: 2023
+  input:
+    - pension_income: -1
+    - investment_income: -2
+    - social_security: -3
+    - alimony_income: -4
+    - monetary_gifts: -5
+    - dividend_income: -6
+    - interest_income: -7
+    - lottery_winnings: -8
+    - lawsuit_settlements: -9
+    - inheritances: -10
+    - rent_subsidies: -11
+    - worker_compensation: -12
+    - unemployment_compensation: -13
+    - veterans_benefits: -14
+    - criminal_injuries_compensation: -15
+    - sick_accident: -16
+  output:
+    md_tanf_countable_gross_unearned_income: 0

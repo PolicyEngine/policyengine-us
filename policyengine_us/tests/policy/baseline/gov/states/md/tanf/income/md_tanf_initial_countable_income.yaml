@@ -1,0 +1,55 @@
+- name: No alimony, child support, or childcare, initial deductions of $20, earned income of $100, $80 per year
+  period: 2023
+  input:
+    state_code: MD
+    alimony_income: 0
+    childcare_expenses: 0
+    child_support_received: 0
+    is_tanf_enrolled: false
+    md_tanf_initial_earnings_deductions: 20
+    md_tanf_gross_earned_income: 100
+    md_tanf_gross_unearned_income: 0
+  output:
+    md_tanf_net_initial_countable_income: 80
+
+- name: No alimony or child support, childcare of $10, initial deductions of $20, earned income of $100, $70 per year
+  period: 2023
+  input:
+    state_code: MD
+    alimony_income: 0
+    childcare_expenses: 10
+    child_support_received: 0
+    is_tanf_enrolled: false
+    md_tanf_initial_earnings_deductions: 20
+    md_tanf_gross_earned_income: 100
+    md_tanf_gross_unearned_income: 0
+  output:
+    md_tanf_net_initial_countable_income: 70
+
+- name: No alimony or childcare, child support of $10, initial deductions of $20, earned income of $100, $70 per year
+  period: 2023
+  input:
+    state_code: MD
+    alimony_income: 0
+    childcare_expenses: 0
+    child_support_received: 10
+    is_tanf_enrolled: false
+    md_tanf_initial_earnings_deductions: 20
+    md_tanf_gross_earned_income: 100
+    md_tanf_gross_unearned_income: 0
+  output:
+    md_tanf_net_initial_countable_income: 70
+
+- name: No childcare or child support, alimony of $10, initial deductions of $20, earned income of $100, $70 per year
+  period: 2023
+  input:
+    state_code: MD
+    alimony_income: 10
+    childcare_expenses: 0
+    child_support_received: 0
+    is_tanf_enrolled: false
+    md_tanf_initial_earnings_deductions: 20
+    md_tanf_gross_earned_income: 100
+    md_tanf_gross_unearned_income: 0
+  output:
+    md_tanf_net_initial_countable_income: 70
