@@ -1,4 +1,4 @@
-- name: 2022 single filer who is below the age threshold
+- name: 2022 single filer who is below the standard deduction age threshold 
   period: 2022
   input:
     state_code: MI
@@ -7,16 +7,25 @@
   output:
     mi_standard_deduction: 0
 
-- name: 2022 single filer who is above the age threshold
+- name: 2022 single filer who is below the standard deduction age threshold but at the tier 3 retirement and pension benefits age threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: SINGLE
+    age_head: 66
+  output: # 0 + 0 + 15000 + 0
+    mi_standard_deduction: 15_000
+
+- name: 2022 single filer who is above the standard deduction age threshold but at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold
   period: 2022
   input:
     state_code: MI
     filing_status: SINGLE
     age_head: 77
-  output:
-    mi_standard_deduction: 0
+  output: # 0 + 56961 + 0 + 12697
+    mi_standard_deduction: 69_658
 
-- name: 2022 single filer who is at the age threshold
+- name: 2022 single filer who is at the standard deduction age threshold
   period: 2022
   input:
     state_code: MI
@@ -35,27 +44,27 @@
   output: 
     mi_standard_deduction: 0
 
-- name: 2022 joint filer who is at the age threshold, their spouse is not at the threshold
+- name: 2022 joint filer who is at the standard deduction age threshold, their spouse is at the tier 3 retirement and pension benefits threshold
   period: 2022
   input:
     state_code: MI
     filing_status: JOINT
     age_head: 67
     age_spouse: 65
-  output:
+  output: # 40000 > 30000
     mi_standard_deduction: 40_000
 
-- name: 2022 joint filer who is not at the age threshold, their spouse is at the threshold
+- name: 2022 joint filer who is at the tier 3 retirement and pension benefits age threshold, their spouse is at the standard deduction threshold
   period: 2022
   input:
     state_code: MI
     filing_status: JOINT
     age_head: 65
     age_spouse: 67
-  output:
+  output: # 40000 > 30000
     mi_standard_deduction: 40_000
 
-- name: 2022 joint filer who is at the age threshold, their spouse is at the threshold
+- name: 2022 joint filer who is at the standard deduction age threshold, their spouse is at the standard deduction threshold
   period: 2022
   input:
     state_code: MI
@@ -64,6 +73,26 @@
     age_spouse: 67
   output:
     mi_standard_deduction: 40_000
+
+- name: 2022 joint filer who is at the standard deduction age threshold, their spouse is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: JOINT
+    age_head: 67
+    age_spouse: 77
+  output: # 0 + 113922 + 0 + 25394 > 40000
+    mi_standard_deduction: 139_316
+
+- name: 2022 joint filer who is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, their spouse is at the standard deduction threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: JOINT
+    age_head: 77
+    age_spouse: 67
+  output: # 0 + 113922 + 0 + 25394 > 40000
+    mi_standard_deduction: 139_316
 
 - name: 2022 widow filer who is not at the age threshold, their spouse is not at the threshold
   period: 2022
@@ -75,27 +104,27 @@
   output: 
     mi_standard_deduction: 0
 
-- name: 2022 widow filer who is at the age threshold, their spouse is not at the threshold
+- name: 2022 widow filer who is at the standard deduction age threshold, their spouse is at the tier 3 retirement and pension benefits threshold
   period: 2022
   input:
     state_code: MI
     filing_status: WIDOW
     age_head: 67
     age_spouse: 65
-  output:
-    mi_standard_deduction: 40_000
+  output: # 20000 > 15000
+    mi_standard_deduction: 20_000
 
-- name: 2022 widow filer who is not at the age threshold, their spouse is at the threshold
+- name: 2022 widow filer who is at the tier 3 retirement and pension benefits age threshold, their spouse is at the standard deduction threshold
   period: 2022
   input:
     state_code: MI
     filing_status: WIDOW
     age_head: 65
     age_spouse: 67
-  output: 
-    mi_standard_deduction: 40_000
+  output: # 20000 > 15000
+    mi_standard_deduction: 20_000
 
-- name: 2022 widow filer who is at the age threshold, their spouse is at the threshold
+- name: 2022 widow filer who is at the standard deduction age threshold, their spouse is at the standard deduction threshold
   period: 2022
   input:
     state_code: MI
@@ -103,4 +132,24 @@
     age_head: 67
     age_spouse: 67
   output: 
-    mi_standard_deduction: 40_000
+    mi_standard_deduction: 20_000
+
+- name: 2022 widow filer who is at the standard deduction age threshold, their spouse is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: WIDOW
+    age_head: 67
+    age_spouse: 77
+  output: # 0 + 56961 + 0 + 12697 > 20000
+    mi_standard_deduction: 69_658
+
+- name: 2022 widow filer who is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, their spouse is at the standard deduction threshold
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: WIDOW
+    age_head: 77
+    age_spouse: 67
+  output: # 0 + 56961 + 0 + 12697 > 20000
+    mi_standard_deduction: 69_658
