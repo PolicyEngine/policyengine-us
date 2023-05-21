@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.318.0] - 2023-05-21 02:07:26
+
+### Added
+
+- Rhode Island personal income tax schedule.
+
 ## [0.317.1] - 2023-05-18 14:42:51
 
 ### Added
@@ -3831,6 +3837,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.318.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.317.1...0.318.0
 [0.317.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.317.0...0.317.1
 [0.317.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.316.1...0.317.0
 [0.316.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.316.0...0.316.1
