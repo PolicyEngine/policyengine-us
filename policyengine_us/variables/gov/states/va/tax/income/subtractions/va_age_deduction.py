@@ -29,13 +29,13 @@ class va_age_deduction(Variable):
 
         AFAGI = tax_unit("AFAGI", period)
         # People who were born on or before the threshold date are eligible for a full deduction
-        threshhold_date = datetime.datetime.strptime("1939-01-01", "%Y-%m-%d")
+        threshhold_date = datetime.datetime.strptime(p.va_age_date, "%Y-%m-%d")
 
         # calcualte the number of people eligble for age deduction in a household (people who are 65 and older)
-        eligible_count = sum(
-            where(age_head >= p.va_age, 1, 0),
-            where(age_spouse >= p.va_age, 1, 0),
-        )
+        eligible_count = 
+            where(age_head >= p.va_age, 1, 0)+
+            where(age_spouse >= p.va_age, 1, 0)
+        
 
         # calculate the number of people age >=84 and is eligible for a full deduction
         birth_year_head = period.start.year - age_head
@@ -45,12 +45,12 @@ class va_age_deduction(Variable):
             where(birth_year_spouse < int(threshhold_date.year), 1, 0),
         )
 
+        maximum_allowable_deduction_amount_adjusted_by_filing_status = p.maximum_allowable_amount * eligible_count
+        exceeded_amount = AFAGI - where(joint | separate, p.married_limit, p.single_limit)
+        married_filing_status = where(joint, 1, eligible_count) # The deduction amount for married taxpayers is different when filing jointly vs. separately.
         age_deduction = (
-            p.maximum_allowable_amount * eligible_count
-            - (where(eligible_count == full_deduction_count, 0, 1))
-            * (
-                AFAGI
-                - where(joint | separate, p.married_limit, p.single_limit)
-            )
-        ) / where(joint, 1, eligible_count)
+            maximum_allowable_deduction_amount_adjusted_by_filing_status
+            - where(eligible_count == full_deduction_count, 0, 1)
+            *  exceeded_amount
+        ) / married_filing_status
         return where(math.isnan(age_deduction), 0, age_deduction)
