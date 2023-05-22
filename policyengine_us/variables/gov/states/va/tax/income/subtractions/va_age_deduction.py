@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import datetime
 import math
 
 
@@ -28,7 +27,6 @@ class va_age_deduction(Variable):
 
         afagi = tax_unit("va_afagi", period)
         # People who were born on or before the threshold date are eligible for a full deduction
-        # threshhold_date = datetime.datetime.strptime(p.va_age_date, "%Y-%m-%d")
         threshhold_year = p.va_age_date
 
         # calcualte the number of people eligble for age deduction in a household (people who are 65 and older)
@@ -55,7 +53,9 @@ class va_age_deduction(Variable):
         )  # The deduction amount for married taxpayers is different when filing jointly vs. separately.
         age_deduction = (
             maximum_allowable_deduction_amount_adjusted_by_filing_status
-            - where(eligible_count == full_deduction_count, 0, 1)
+            - where(
+                eligible_count == full_deduction_count, 0, 1
+            )  # If taxpayers who are eligible for age deduction also meet the full deduction criterion, then they will receive a full deduction without any adjustment.
             * exceeded_amount
         ) / married_filing_status
         return where(math.isnan(age_deduction), 0, age_deduction)
