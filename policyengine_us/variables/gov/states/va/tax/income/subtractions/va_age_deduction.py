@@ -25,11 +25,12 @@ class va_age_deduction(Variable):
 
         age_head = tax_unit("age_head", period)
         age_spouse = where(single, 0, tax_unit("age_spouse", period))
-        # age_spouse = tax_unit("age_spouse", period)
+    
 
         afagi = tax_unit("va_afagi", period)
         # People who were born on or before the threshold date are eligible for a full deduction
-        threshhold_date = datetime.datetime.strptime(p.va_age_date, "%Y-%m-%d")
+        #threshhold_date = datetime.datetime.strptime(p.va_age_date, "%Y-%m-%d")
+        threshhold_year = p.va_age_date
 
         # calcualte the number of people eligble for age deduction in a household (people who are 65 and older)
         eligible_count = where(age_head >= p.va_age, 1, 0) + where(
@@ -40,8 +41,8 @@ class va_age_deduction(Variable):
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
         full_deduction_count = sum(
-            where(birth_year_head < int(threshhold_date.year), 1, 0),
-            where(birth_year_spouse < int(threshhold_date.year), 1, 0),
+            where(birth_year_head < threshhold_year, 1, 0),
+            where(birth_year_spouse < threshhold_year, 1, 0),
         )
 
         maximum_allowable_deduction_amount_adjusted_by_filing_status = (
