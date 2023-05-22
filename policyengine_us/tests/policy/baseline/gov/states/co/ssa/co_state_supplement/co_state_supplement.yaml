@@ -1,15 +1,26 @@
-- name: No SSI
+- name: Countable Income
   period: 2023
   input:
     co_state_supplement_eligible: true
+    ssi_countable_income: 100
     ssi: 0
   output:
-    co_state_supplement: 1_000
+    co_state_supplement: 814
 
-- name: More SSI than grant standard
+- name: Has some SSI
   period: 2023
   input:
     co_state_supplement_eligible: true
-    ssi: 1_100
+    ssi_countable_income: 0
+    ssi: 200
+  output:
+    co_state_supplement: 714
+
+- name: More total income than grant standard
+  period: 2023
+  input:
+    co_state_supplement_eligible: true
+    ssi_countable_income: 500
+    ssi: 500
   output:
     co_state_supplement: 0
