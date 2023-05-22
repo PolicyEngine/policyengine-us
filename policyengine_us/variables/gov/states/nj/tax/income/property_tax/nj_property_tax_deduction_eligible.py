@@ -1,17 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class nj_property_tax_deduction_or_credit_eligible(Variable):
+class nj_property_tax_deduction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "New Jersey property tax deduction/credit eligibility"
+    label = "New Jersey property tax deduction eligibility"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        # Don't forget to divide the threshold if filing separately? They have to also live together.
-
         # Get the NJ tax portion of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income
 
