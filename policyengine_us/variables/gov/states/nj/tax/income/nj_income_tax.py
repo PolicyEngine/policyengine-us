@@ -8,8 +8,6 @@ class nj_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
-    adds = ["nj_income_tax_before_refundable_credits"]
-    subtracts = ["nj_refundable_credits"]
 
     def formula(tax_unit, period, parameters):
         # Get the NJ tax portion of the parameter tree.
@@ -29,10 +27,8 @@ class nj_income_tax(Variable):
 
         # If taxable income is below the filing threshold, the tax should not be positive.
         # Tax could still be negative if filer is due refundable credits.
-        income_tax = where(
+        return where(
             agi < p.filing_threshold[filing_status],
             min_(0, income_tax - refundable_credits),
             income_tax - refundable_credits,
         )
-
-        return income_tax
