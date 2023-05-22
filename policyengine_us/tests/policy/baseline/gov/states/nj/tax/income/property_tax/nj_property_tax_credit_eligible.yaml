@@ -28,11 +28,12 @@
   output:
     nj_property_tax_credit_eligible: true
 
-- name: Ineligible for property tax deduction but above 65, therefore eligible for credit.
+- name: Ineligible for property tax deduction but above 65 and paid property taxes, therefore eligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    nj_homeowners_property_tax: 100
     age_head: 66
     age_spouse: 64
     blind_head: false
@@ -43,11 +44,12 @@
   output:
     nj_property_tax_credit_eligible: true
 
-- name: Ineligible for property tax deduction but spouse blind or disabled, therefore eligible for credit.
+- name: Ineligible for property tax deduction but spouse is blind and paid property taxes, therefore eligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
+    nj_homeowners_property_tax: 100
     age_head: 64
     age_spouse: 64
     blind_head: false
@@ -57,3 +59,19 @@
     state_code: NJ
   output:
     nj_property_tax_credit_eligible: true
+
+- name: Ineligible for property tax deduction but above 65 but did not pay property taxes, therefore ineligible for credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_eligible: false
+    nj_homeowners_property_tax: 0
+    age_head: 66
+    age_spouse: 64
+    blind_head: false
+    blind_spouse: false
+    disabled_head: false
+    disabled_spouse: false
+    state_code: NJ
+  output:
+    nj_property_tax_credit_eligible: false
