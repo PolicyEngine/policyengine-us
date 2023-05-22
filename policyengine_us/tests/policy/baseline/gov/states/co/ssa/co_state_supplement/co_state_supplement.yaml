@@ -1,0 +1,15 @@
+- name: No SSI
+  period: 2023
+  input:
+    co_state_supplement_eligible: true
+    ssi: 0
+  output:
+    co_state_supplement: 1_000
+
+- name: More SSI than grant standard
+  period: 2023
+  input:
+    co_state_supplement_eligible: true
+    ssi: 1_100
+  output:
+    co_state_supplement: 0
