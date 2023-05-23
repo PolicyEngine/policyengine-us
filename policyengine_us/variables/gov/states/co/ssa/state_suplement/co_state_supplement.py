@@ -12,6 +12,6 @@ class co_state_supplement(Variable):
         income = person("ssi_countable_income", period)
         ssi = person("ssi", period)
         total_countable_income = ssi + income
-        p = parameters(period).gov.states.co.ssa.co_state_supplement
-        grant_standard = p.grant_standard
+        p = parameters(period).gov.states.co.ssa.state_supplement
+        grant_standard = p.grant_standard * MONTHS_IN_YEAR
         return max_(0, grant_standard - total_countable_income)

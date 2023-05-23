@@ -5,6 +5,7 @@
     age: 60
     is_blind: true
     is_ssi_disabled: true
+    state_code: CO
   output:
     co_state_supplement_eligible: false
 
@@ -15,6 +16,7 @@
     age: 59
     is_blind: false
     is_ssi_disabled: false
+    state_code: CO
   output:
     co_state_supplement_eligible: false
 
@@ -25,6 +27,7 @@
     age: 19
     is_blind: true
     is_ssi_disabled: true
+    state_code: CO
   output:
     co_state_supplement_eligible: false
 
@@ -35,6 +38,7 @@
     age: 59
     is_blind: true
     is_ssi_disabled: false
+    state_code: CO
   output:
     co_state_supplement_eligible: true
 
@@ -45,5 +49,6 @@
     age: 0
     is_blind: false
     is_ssi_disabled: true
+    state_code: CO
   output:
     co_state_supplement_eligible: true
