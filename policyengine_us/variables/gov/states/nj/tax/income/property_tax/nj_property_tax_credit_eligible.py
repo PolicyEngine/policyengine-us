@@ -15,13 +15,18 @@ class nj_property_tax_credit_eligible(Variable):
             "nj_property_tax_deduction_eligible", period
         )
 
+        # Get the NJ property tax credit portion of the parameter tree.
+        p = parameters(period).gov.states.nj.tax.income.credits.property_tax
+
         # If filing jointly, only one spouse needs to be 65+ or blind/disabled.
         blind_head = tax_unit("blind_head", period)
         disabled_head = tax_unit("disabled_head", period)
         blind_spouse = tax_unit("blind_spouse", period)
         disabled_spouse = tax_unit("disabled_spouse", period)
-        senior_head = tax_unit("senior_head", period)
-        senior_spouse = tax_unit("senior_spouse", period)
+        senior_head = tax_unit("age_head", period) > p.senior_qualifying_age
+        senior_spouse = (
+            tax_unit("age_spouse", period) > p.senior_qualifying_age
+        )
         senior_blind_disabled = (
             blind_head
             + disabled_head
