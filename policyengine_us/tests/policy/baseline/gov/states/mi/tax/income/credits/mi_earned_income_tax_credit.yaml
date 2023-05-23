@@ -1,0 +1,23 @@
+- name: No EITC
+  period: 2023
+  input:
+    state_code: MI
+    earned_income_tax_credit: 0
+  output:  
+    mi_earned_income_tax_credit: 0
+
+- name: $1_000 EITC
+  period: 2023
+  input:
+    state_code: MI
+    earned_income_tax_credit: 1_000
+  output:  
+    mi_earned_income_tax_credit: 300
+
+- name: Capped at $2,080
+  period: 2023
+  input:
+    state_code: MI
+    earned_income_tax_credit: 100_000
+  output:  
+    mi_earned_income_tax_credit: 2_080
