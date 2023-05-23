@@ -7,3 +7,4 @@ class ky_refundable_credits(Variable):
     label = "Kenntucky refundable credits"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.KY

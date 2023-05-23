@@ -7,5 +7,6 @@ class ky_income_tax(Variable):
     label = "Kenntucky income tax"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.KY
     adds = ["ky_income_tax_before_refundable_credits"]
     subtracts = ["ky_refundable_credits"]
