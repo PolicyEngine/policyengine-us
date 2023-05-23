@@ -1,9 +1,9 @@
-description: New Hampshire provided an exemption amount for disabled filers below age 65.
+description: New Hampshire provides an exemption for disabled filers below age 65 
 metadata:
-  unit: currency-USD
-  label: New Hampshire disabled exemption amount
+  type: single_amount
+  label: New Hampshire disabled exemption age threshold
   reference: 
     - title: TITLE V - TAXATION - CHAPTER 77 - TAXATION OF INCOMES - Section 77:5
       href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-5.htm
 values:
-  2022-01-01: 1_200
+  2022-01-01: 65
