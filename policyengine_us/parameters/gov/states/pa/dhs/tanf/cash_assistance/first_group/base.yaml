@@ -1,0 +1,39 @@
+description: Pennsylvania limits its TANF eligibility to households with income below this amount, depending on household size.
+metadata:
+  label: Pennsylvania TANF monthly income limit
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  period: year
+  reference:
+    - title: Pennsylvania State Cash Assistance for Number of Persons in Budget Group
+      href: https://www.compass.state.pa.us/compass.web/menuitems/CashFAQ.aspx?Language=EN
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 2_580
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 3_960
+  - threshold:
+      2022-01-01: 3
+    amount:
+      2022-01-01: 5_052
+  - threshold:
+      2022-01-01: 4
+    amount:
+      2022-01-01: 6_168
+  - threshold:
+      2022-01-01: 5
+    amount:
+      2022-01-01: 7_284
+  - threshold:
+      2022-01-01: 6
+    amount:
+      2022-01-01: 8_244
