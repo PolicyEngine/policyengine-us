@@ -1,7 +1,6 @@
 description: Pennsylvania State limits its TANF grant standard to households with up to this income level for people beyond size.
-values: 
-  2022-01-01: 996  # 83 * 12
-
+values:
+  2012-10-01: 996 #83 * 12
 metadata:
   unit: currency-USD
   period: year
@@ -9,5 +8,3 @@ metadata:
   reference:
     - title: Pennsylvania State Cash Assistance for Each Additional Person
       href: https://www.compass.state.pa.us/compass.web/menuitems/CashFAQ.aspx?Language=EN
-
-
