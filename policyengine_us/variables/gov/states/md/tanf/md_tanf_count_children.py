@@ -7,4 +7,4 @@ class md_tanf_count_children(Variable):
     label = "Maryland TANF number of children"
     definition_period = YEAR
     defined_for = StateCode.MD
-    adds = "is_child"
+    adds = ["is_child"]
