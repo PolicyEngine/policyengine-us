@@ -12,11 +12,13 @@ class pa_tanf_cash_assistance_payout(Variable):
 
     def formula(spm_unit, period, parameters):
         people = spm_unit("spm_unit_size", period)
-        p = parameters(period).gov.states.pa.dhs.tanf.cash_assistance # not sure
+        p = parameters(
+            period
+        ).gov.states.pa.dhs.tanf.cash_assistance  # not sure
         county = spm_unit.household("county_str", period)
 
         # Group 1: Bucks, Chester, Lancaster, Montgomery, Pike
-        bucks = county == 'BUCKS_COUNTY_PA"
+        bucks = county == "BUCKS_COUNTY_PA"
         chester = county == "CHESTER_COUNTY_PA"
         lancaster = county == "LANCASTER_COUNTY_PA"
         montgomery = county == "MONTGOMERY_COUNTY_PA"
@@ -59,7 +61,7 @@ class pa_tanf_cash_assistance_payout(Variable):
         cameron = county == "CAMERON_COUNTY_PA"
         carbon = county == "CARBON_COUNTY_PA"
         clinton = county == "CLINTON_COUNTY_PA"
-        elk = county ==  "ELK_COUNTY_PA"
+        elk = county == "ELK_COUNTY_PA"
         franklin = county == "FRANKLIN_COUNTY_PA"
         indiana = county == "INDIANA_COUNTY_PA"
         lawrence = county == "LAWRENCE_COUNTY_PA"
@@ -72,7 +74,7 @@ class pa_tanf_cash_assistance_payout(Variable):
         tioga = county == "TIOGA_COUNTY_PA"
         venango = county == "VENANGO_COUNTY_PA"
         washington = county == "WASHINGTON_COUNTY_PA"
-       
+
         # Group 4: Armstrong, Bedford, Cambria, Clarion, Clearfield, Fayette, Forest, Fulton, Greene, Huntingdon, Jefferson, Juniata, Northumberland, Schuylkill, Somerset
         armstrong = county == "ARMSTRONG_COUNTY_PA"
         bedford = county == "BEDFORD_COUNTY_VA"
@@ -90,15 +92,74 @@ class pa_tanf_cash_assistance_payout(Variable):
         schuylkill = county == "SCHUYLKILL_COUNTY_PA"
         somerset = county == "SOMERSET_COUNTY_PA"
 
-
         group_1 = [bucks, chester, lancaster, montgomery, pike]
-        group_2 = [adams, allegheny, berks, blair, bradford, butler, centre, columbia, crawford, 
-            cumberland, dauphin, delaware, erie, lackawanna, lebanon, lehigh, luzerne,
-            lycoming, monroe, montour, northampton, philadelphia, sullivan, susquehanna, 
-            union, warren, wayne, westmoreland, wyoming, york]
-        group_3 = [beaver, cameron, carbon, clinton, elk, franklin, indiana, lawrence, mckean, 
-            mercer, mifflin, perry, potter, snyder, tioga, venango, washington]
-        group_4 = [armstrong, bedford, cambria, clarion, clearfield, fayette, forest, fulton, 
-            greene, huntingdon, jefferson, juniata, northumberland, schuylkill, somerset]
-            
+        group_2 = [
+            adams,
+            allegheny,
+            berks,
+            blair,
+            bradford,
+            butler,
+            centre,
+            columbia,
+            crawford,
+            cumberland,
+            dauphin,
+            delaware,
+            erie,
+            lackawanna,
+            lebanon,
+            lehigh,
+            luzerne,
+            lycoming,
+            monroe,
+            montour,
+            northampton,
+            philadelphia,
+            sullivan,
+            susquehanna,
+            union,
+            warren,
+            wayne,
+            westmoreland,
+            wyoming,
+            york,
+        ]
+        group_3 = [
+            beaver,
+            cameron,
+            carbon,
+            clinton,
+            elk,
+            franklin,
+            indiana,
+            lawrence,
+            mckean,
+            mercer,
+            mifflin,
+            perry,
+            potter,
+            snyder,
+            tioga,
+            venango,
+            washington,
+        ]
+        group_4 = [
+            armstrong,
+            bedford,
+            cambria,
+            clarion,
+            clearfield,
+            fayette,
+            forest,
+            fulton,
+            greene,
+            huntingdon,
+            jefferson,
+            juniata,
+            northumberland,
+            schuylkill,
+            somerset,
+        ]
+
     return
