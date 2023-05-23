@@ -1,10 +1,12 @@
-description: OH Exemption Credit AGI Limit
+description: Ohio limits its exemption credit to filers with modified adjusted gross income less exemptions less than this value.
 values:
   2021-01-01: 30_000
 metadata:
   unit: currency-USD
   period: year
-  label: OH Exemption Credit
+  label: Ohio exemption credit AGI limit
   reference:
     - title: Ohio 2021 Instructions for Filing Original and Amended - Line 9 – Exemption Credit
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
+    - title: Ohio Personal Exemption Schedule
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.025

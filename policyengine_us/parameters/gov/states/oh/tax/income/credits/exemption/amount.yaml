@@ -1,4 +1,4 @@
-description: OH Personal Exemption Amounts
+description: OH Personal Exemption Amount
 brackets:
   - threshold:
       2022-01-01: 0
@@ -17,7 +17,9 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: year
-  label: OH Personal Exemption
+  label: OH Personal Exemption Credit
   reference:
+    - title: Ohio 2021 Instructions for Filing Original and Amended - Line 9 – Exemption Credit
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
     - title: Ohio Personal Exemption Schedule
       href: https://codes.ohio.gov/ohio-revised-code/section-5747.025

@@ -1,0 +1,34 @@
+- name: All three people in one tax unit spend less than 1500 on adoption related expenses
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1: 
+        oh_adoption_credit: 1_500 #spend 1400 on adoption related expenses, so get 1500 on this credit
+      person2:
+        oh_adoption_credit: 1_500 #spend 1000 on adoption related expenses, so get 1500 on this credit
+      person3: 
+        oh_adoption_credit: 1_500 #spend 900 on adoption related expenses, so get 1500 on this credit
+    households:
+      household:
+        members: [person1,person2,person3]
+        state_code: OH
+  output: 
+    oh_tax_unit_adoption_credit: 4_500
+
+- name: Two people in one tax unit, one spend more than 1500 but less than 10000 on adoption related expenses, the other spend more than 10000 on adoption related expenses
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1: 
+        oh_adoption_credit: 3_000 #spend 3000 on adoption related expenses, so get 3000 on this credit
+      person2:
+        oh_adoption_credit: 10_000 #spend 10100 on adoption related expenses, so get 10000 on this credit
+    households:
+      household:
+        members: [person1,person2]
+        state_code: OH
+  output: 
+    oh_tax_unit_adoption_credit: 13_000
+  

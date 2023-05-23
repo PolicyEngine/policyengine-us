@@ -21,14 +21,10 @@ class oh_exemption_credit(Variable):
         eligible_head = tax_unit.sum(is_tax_unit_head & ~is_dependent)
         num_of_dependents = tax_unit("tax_unit_dependents", period)
         agi = tax_unit("oh_agi", period)
-        num_of_exemptions = eligible_spouse + eligible_head + num_of_dependents
+        exemption_count = eligible_spouse + eligible_head + num_of_dependents
 
-        p = parameters(period).gov.states.oh.tax.income
-        personal_exemption_amount = (
-            p.credits.exemption.personal_exemption_amount.calc(agi)
-        )
-        under_agi_less_exemption_cap = (
-            agi - personal_exemption_amount * num_of_exemptions
-        ) < p.credits.exemption.agi_less_exemption_cap
-        credit_amount = p.credits.exemption.credit_amount
-        return under_agi_less_exemption_cap * num_of_exemptions * credit_amount
+        p = parameters(period).gov.states.oh.tax.income.credits.exemption
+        personal_exemption_amount = p.amount.calc(agi)
+        modified_agi = agi - personal_exemption_amount * exemption_count
+        income_eligible = modified_agi < p.income_cap
+        return income_eligible * exemption_count * p.credit_amount
