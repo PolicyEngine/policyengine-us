@@ -1,0 +1,19 @@
+- name: NJ property tax credit is flat amount if eligible and not taking property tax deduction.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_or_credit_eligible: true
+    nj_taking_property_tax_deduction: false
+    state_code: NJ
+  output:
+    nj_property_tax_credit: 50
+
+- name: NJ property tax credit is $0 if taking property tax deduction.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_deduction_or_credit_eligible: true
+    nj_taking_property_tax_deduction: true
+    state_code: NJ
+  output:
+    nj_property_tax_credit: 0
