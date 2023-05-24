@@ -1,0 +1,28 @@
+description: Montan has Earned Income Tax Credit for married joint in which qualified applicants must earn less than certain amount (depending on children).
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: MT EITC maximum earnings for married joint filters
+  reference:
+  - title: 2023 Montana []
+    href: https://www.montanalawhelp.org/resource/earned-income-tax-credit#iCB8804FF-2AEF-41B4-83EE-BBC12F45DCC0
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 24_210
+  - threshold:
+      2023-01-01: 1
+    amount:
+      2023-01-01: 53_120
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2023-01-01: 59_478
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2023-01-01: 63_698

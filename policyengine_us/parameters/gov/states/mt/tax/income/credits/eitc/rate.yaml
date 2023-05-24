@@ -1,0 +1,28 @@
+description: In Montana, the size eitc will depend on how many children you have 
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: MT EITC 
+  reference:
+  - title: 2023 Montana []
+    href: https://www.montanalawhelp.org/resource/earned-income-tax-credit#iCB8804FF-2AEF-41B4-83EE-BBC12F45DCC0
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 600
+  - threshold:
+      2023-01-01: 1
+    amount:
+      2023-01-01: 3_995
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2023-01-01: 6_604
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2023-01-01: 7_430

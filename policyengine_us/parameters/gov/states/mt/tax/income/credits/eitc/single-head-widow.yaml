@@ -1,0 +1,28 @@
+description: Montan has Earned Income Tax Credit for single/head of household/widow in which qualified applicants must earn less than certain amount (depending on children).
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: MT EITC maximum earnings for single/head of household/widow filters
+  reference:
+  - title: 2023 Montana []
+    href: https://www.montanalawhelp.org/resource/earned-income-tax-credit#iCB8804FF-2AEF-41B4-83EE-BBC12F45DCC0
+
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 17_640
+  - threshold:
+      2023-01-01: 1
+    amount:
+      2023-01-01: 46_560
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2023-01-01: 52_918
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2023-01-01: 56_838
