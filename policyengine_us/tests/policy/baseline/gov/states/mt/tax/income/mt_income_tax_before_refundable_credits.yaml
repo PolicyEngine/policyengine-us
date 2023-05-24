@@ -1,5 +1,5 @@
 - name: No income 
-  period: 2022
+  period: 2021
   input:
      filing_status: SINGLE
      mt_taxable_income: 0
@@ -8,7 +8,7 @@
     mt_income_tax_before_refundable_credits: 0
 
 - name: Temporary rate calculation #((5_000 - 2_900) * 0.02 + 2_900 * 0.01)
-  period: 2022
+  period: 2021
   input:
      filing_status: SINGLE
      mt_taxable_income: 5_000
