@@ -1,0 +1,56 @@
+- name: Family with 2 children - one eligible
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 45
+      child1:
+        is_child_of_tax_head: true
+        age: 15
+      child2:
+        is_child_of_tax_head: true
+        age: 17
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ID
+  output:
+    id_child_credit: 205
+
+- name: Family with 2 children - one eligible
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 45
+      child1:
+        is_child_of_tax_head: true
+        age: 15
+      child2:
+        is_child_of_tax_head: true
+        age: 14
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: ID
+  output:
+    id_child_credit: 410
+
+- name: Family with no eligible children
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 45
+      child1:
+        is_child_of_tax_head: true
+        age: 18
+    households:
+      household:
+        members: [head, child1]
+        state_code: ID
+  output:
+    id_child_credit: 0
