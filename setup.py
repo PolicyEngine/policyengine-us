@@ -38,7 +38,7 @@ setup(
         "pandas",
         "pathlib",
         "policyengine-core>=2.1,<3",
-        "pytest==5.4.3",
+         "pytest",
         "pytest-dependency",
         "pyyaml",
         "requests",
