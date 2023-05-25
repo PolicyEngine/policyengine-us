@@ -14,9 +14,28 @@ class ga_standard_deduction(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(period).gov.states.ga.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
+        status = filing_status.possible_values
         base_amt = p.base_amount[filing_status]
-        aged_blind_count = tax_unit("aged_blind_count", period)
-        extra_amt = aged_blind_count * p.extra_amount[filing_status]
+        # $1,300 for self bild and self aged each
+        head = person("is_tax_unit_head", period)
+        blind = person("is_blind", period)
+        aged = person("age", period) >= p.aged.age_eligible
+        extra_amt_head = tax_unit.sum(
+            head * blind * p.blind.self + head * aged * p.aged.self
+        )
+        # $1,300 for spouse bild and self aged each
+        spouse = person("is_tax_unit_spouse", period)
+        extra_amt_spouse = where(
+            filing_status == status.JOINT,
+            tax_unit.sum(
+                spouse * blind * p.blind.self + spouse * aged * p.aged.self
+            ),
+            0,
+        )
+        # total extra deduction
+        extra_amt = extra_amt_head + extra_amt_spouse
         return base_amt + extra_amt
+    
