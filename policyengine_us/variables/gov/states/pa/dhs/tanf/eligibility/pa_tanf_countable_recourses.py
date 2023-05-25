@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class pa_tanf_countable_recourses(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = SPMUnit
     label = "PA TANF countable resources"
     defined_for = StateCode.PA
     unit = USD

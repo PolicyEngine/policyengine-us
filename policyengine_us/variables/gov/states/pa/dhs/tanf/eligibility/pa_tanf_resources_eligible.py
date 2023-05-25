@@ -13,5 +13,5 @@ class pa_tanf_resources_eligible(Variable):
         maximum_assets = parameters(
             period
         ).gov.states.pa.dhs.tanf.maximum_asset_value
-        total_assets = spm_unit("spm_unit_assets", period)
+        total_assets = spm_unit("pa_tanf_countable_recourses", period)
         return total_assets <= maximum_assets

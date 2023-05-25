@@ -2,23 +2,23 @@
   period: 2021
   input:
     state_code: PA
-    spm_unit_assets: 0
+    pa_tanf_countable_recourses: 0
   output:
-    pa_tanf_maximum_assets: true
+    pa_tanf_resources_eligible: true
 
 - name: Eligible
   period: 2021
   input:
     state_code: PA
-    spm_unit_assets: 500
+    pa_tanf_countable_recourses: 500
   output:
-    pa_tanf_maximum_assets: true
+    pa_tanf_resources_eligible: true
 
 
 - name: Ineligible
   period: 2021
   input:
     state_code: PA
-    spm_unit_assets: 1_000
+    pa_tanf_countable_recourses: 1_001
   output:
-    pa_tanf_maximum_assets: false 
+    pa_tanf_resources_eligible: false 
