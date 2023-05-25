@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class pa_tanf_maximum_assets(Variable):
+class pa_tanf_resources_eligible(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "PA TANF maximum assets"
+    label = "PA TANF resources eligible"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PA
@@ -14,4 +14,4 @@ class pa_tanf_maximum_assets(Variable):
             period
         ).gov.states.pa.dhs.tanf.maximum_asset_value
         total_assets = spm_unit("spm_unit_assets", period)
-        return total_assets < maximum_assets
+        return total_assets <= maximum_assets
