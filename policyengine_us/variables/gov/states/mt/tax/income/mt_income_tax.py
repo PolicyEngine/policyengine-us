@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_income_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montanta income tax"
+    label = "Montana income tax"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
