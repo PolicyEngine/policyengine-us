@@ -7,6 +7,7 @@ class maximum_state_supplement(Variable):
     label = "Maximum State Supplement"
     unit = USD
     definition_period = YEAR
+    defined_for = "is_ssi_eligible_individual"
 
     def formula_2022(person, period, parameters):
         marital_unit = person.marital_unit
