@@ -7,9 +7,6 @@ class nh_taxable_income(Variable):
     label = "New Hampshire taxable income"
     unit = USD
     definition_period = YEAR
+    reference = "https://www.gencourt.state.nh.us/rsa/html/V/77/77-4.htm "
     defined_for = StateCode.NH
-
-    def formula(tax_unit, period, parameters):
-        dividend_income = tax_unit("nh_dividend_income", period)
-        interest_income = tax_unit("nh_interest_income", period)
-        return dividend_income + interest_income
+    adds = ["dividend_income", "interest_income"]
