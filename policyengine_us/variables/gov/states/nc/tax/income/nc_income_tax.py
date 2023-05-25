@@ -9,4 +9,3 @@ class nc_income_tax(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
     adds = ["nc_income_tax_before_refundable_credits"]
-    subtracts = ["nc_refundable_credits"]
