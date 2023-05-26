@@ -11,9 +11,9 @@ class md_tanf_net_initial_countable_income(Variable):
 
     def formula(spm_unit, period, parameters):
         # Get gross income for the SPM unit.
-        gross_earned_income = spm_unit("md_tanf_gross_earned_income", period)
+        gross_earned_income = spm_unit("md_tanf_countable_gross_earned_income", period)
         gross_unearned_income = spm_unit(
-            "md_tanf_gross_unearned_income", period
+            "md_tanf_countable_gross_unearned_income", period
         )
         # Get initial deductions for the SPM unit.
         initial_deductions = spm_unit("md_tanf_initial_deductions", period)

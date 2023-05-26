@@ -4,7 +4,7 @@
     state_code: MD
     earned_income: 0
   output:
-    md_tanf_gross_earned_income_deduction: 0
+    md_tanf_countable_gross_earned_income_deduction: 0
 
 
 - name: If not enrolled in TANF, 20% deduction.
@@ -14,7 +14,7 @@
     is_tanf_enrolled: false
     earned_income: 100
   output:
-    md_tanf_gross_earned_income_deduction: 20
+    md_tanf_countable_gross_earned_income_deduction: 20
 
 - name: If enrolled in TANF and not self-employed, 40% deduction.
   period: 2023
@@ -24,7 +24,7 @@
     self_employment_income: 0
     earned_income: 100
   output:
-    md_tanf_gross_earned_income_deduction: 40
+    md_tanf_countable_gross_earned_income_deduction: 40
 
 - name: If self-employed, 50% deduction.
   period: 2023
@@ -34,4 +34,4 @@
     self_employment_income: 100
     earned_income: 100
   output:
-    md_tanf_gross_earned_income_deduction: 50
+    md_tanf_countable_gross_earned_income_deduction: 50

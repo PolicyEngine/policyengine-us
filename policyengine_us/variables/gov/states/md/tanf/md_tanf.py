@@ -15,13 +15,13 @@ class md_tanf(Variable):
             "md_tanf_countable_gross_earned_income", period
         )
         earned_income_deduction = spm_unit(
-            "md_tanf_gross_earned_income_deduction", period
+            "md_tanf_countable_gross_earned_income_deduction", period
         )
         unearned_income = spm_unit(
-            "md_tanf_countable_gross_unearned_income", period
+            "md_tanf_countable_gross_earned_income", period
         )
         unearned_income_deduction = spm_unit(
-            "md_tanf_gross_unearned_income_deduction", period
+            "md_tanf_countable_gross_unearned_income_deduction", period
         )
         income = add(
             spm_unit,
