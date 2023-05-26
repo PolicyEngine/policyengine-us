@@ -16,7 +16,7 @@ class md_tanf_childcare_deduction(Variable):
         workhours = add(spm_unit, period, ["workhour"])
 
         # Get the policy parameters.
-        p = parameters(period).gov.states.md.tanf.income.deductions.earned
+        p = parameters(period).gov.states.md.tanf.income.deductions.earnings_exclusion
         childcare_deduction = (
             200 * (workhours >= 100) * md_tanf_count_children
             + 100 * (workhours < 100) * md_tanf_count_children
