@@ -15,7 +15,9 @@ class md_tanf_continuous_earnings_deduction(Variable):
         # Determine if the SPM unit has any self-employment income.
         self_employment_income = spm_unit("self_employment_income", period)
         # Get the policy parameters.
-        p = parameters(period).gov.states.md.tanf.income.deductions.earnings_exclusion
+        p = parameters(
+            period
+        ).gov.states.md.tanf.income.deductions.earnings_exclusion
 
         return select(
             # First arg: self employed or not

@@ -20,7 +20,9 @@ class md_tanf_gross_earned_income_deduction(Variable):
         )
         has_self_employment_income = self_employment_income > 0
         # Get the policy parameters.
-        p = parameters(period).gov.states.md.tanf.income.deductions.earnings_exclusion
+        p = parameters(
+            period
+        ).gov.states.md.tanf.income.deductions.earnings_exclusion
         percent = select(
             # First arg: list of conditions
             [~is_tanf_enrolled, has_self_employment_income],
