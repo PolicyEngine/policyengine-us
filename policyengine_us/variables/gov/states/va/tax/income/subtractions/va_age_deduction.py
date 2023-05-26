@@ -58,4 +58,4 @@ class va_age_deduction(Variable):
             )  # If taxpayers who are eligible for age deduction also meet the full deduction criterion, then they will receive a full deduction without any adjustment.
             * exceeded_amount
         ) / married_filing_status
-        return where(math.isnan(age_deduction), 0, age_deduction)
+        return age_deduction
