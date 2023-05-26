@@ -20,8 +20,12 @@ class md_tanf_childcare_deduction(Variable):
             period
         ).gov.states.md.tanf.income.deductions.earnings_exclusion
         childcare_deduction = (
-            fulltime_childcare_expenses * (workhours >= 100) * md_tanf_count_children
-            + parttime_childcare_expenses * (workhours < 100) * md_tanf_count_children
+            fulltime_childcare_expenses
+            * (workhours >= 100)
+            * md_tanf_count_children
+            + parttime_childcare_expenses
+            * (workhours < 100)
+            * md_tanf_count_children
         )
 
         # Return if initially eligible
