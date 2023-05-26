@@ -1,0 +1,25 @@
+description: VA deduct anticipated expenses for care of each dependent child or each incapacitated adult for full-time employed applicant.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: VA TANF monthly care expenses per child/disabled adult for full-time employment
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=51
+
+# $175 per month, for care of each child, age 2 and older/incapacitated adult. 
+# $200 per month, for care of each child under 2.
+
+brackets:
+  - amount:
+      2020-07-01: 200
+    threshold:
+      2020-07-01: 0
+  - amount:
+      2020-07-01: 175
+    threshold:
+      2020-07-01: 2
