@@ -19,7 +19,4 @@ class nh_base_exemption(Variable):
         p = parameters(period).gov.states.nh.tax.income.exemptions.amount
 
         # Get their base exemption amounts
-        if joint:
-            return 2 * p.base
-        else:
-            return p.base
+        return where(joint, 2 * p.base, p.base)
