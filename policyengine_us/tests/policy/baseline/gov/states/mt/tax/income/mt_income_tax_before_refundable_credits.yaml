@@ -33,3 +33,12 @@
      state_code: MT
   output:
     mt_income_tax_before_refundable_credits: 1_256
+
+- name: Progressive rate - head of household # ((35_000 - 30_750) * 0.065 + 30_750 * 0.047)
+  period: 2025
+  input:
+     filing_status: HEAD_OF_HOUSEHOLD
+     mt_taxable_income: 35_000
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 1_721.5
