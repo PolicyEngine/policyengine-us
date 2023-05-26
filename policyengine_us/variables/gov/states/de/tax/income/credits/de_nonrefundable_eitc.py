@@ -12,6 +12,6 @@ class de_non_refundable_eitc(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("eitc", period)
+        federal_eitc = tax_unit("earned_income_tax_credit", period)
         p = parameters(period).gov.states.de.tax.income.credits.eitc
         return p.non_refundable * federal_eitc
