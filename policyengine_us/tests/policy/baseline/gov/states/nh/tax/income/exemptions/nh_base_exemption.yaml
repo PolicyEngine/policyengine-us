@@ -1,0 +1,31 @@
+- name: Single filer gets the base exemption before 2027.
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: SINGLE
+  output:
+    nh_base_exemption: 2_400
+
+- name: Joint filers get the base exemptions.
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: JOINT
+  output:
+    nh_base_exemption: 4_800
+
+- name: Singe filer gets no base exemptions in or after 2027.
+  period: 2027
+  input:
+    state_code: NH
+    filing_status: SINGLE
+  output:
+    nh_base_exemption: 0
+
+- name: Joint filers get no base exemptions in or after 2027.
+  period: 2027
+  input:
+    state_code: NH
+    filing_status: JOINT
+  output:
+    nh_base_exemption: 0
