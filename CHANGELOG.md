@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.325.0] - 2023-05-27 05:06:06
+
+### Added
+
+- Adjust New Jersey property tax deduction/credit for separate but cohabitating.
+
 ## [0.324.0] - 2023-05-27 04:37:24
 
 ### Added
@@ -3879,6 +3885,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.325.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.324.0...0.325.0
 [0.324.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.323.0...0.324.0
 [0.323.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.322.0...0.323.0
 [0.322.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.321.0...0.322.0
