@@ -8,5 +8,9 @@ class nc_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NC
-    adds = ["nc_income_tax_before_credits"]
-    subtracts = ["nc_non_refundable_credits"]
+
+    def formula(tax_unit, period, parameters):
+        tax_before_credits = tax_unit("nc_income_tax_before_credits", period)
+        # North Carolina does not allow for any refundable credits
+        credits = tax_unit("nc_non_refundable_credits", period)
+        return max_((tax_before_credits - credits), 0)
