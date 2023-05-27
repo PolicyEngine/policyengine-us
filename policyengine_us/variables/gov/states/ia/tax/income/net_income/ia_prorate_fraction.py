@@ -18,4 +18,9 @@ class ia_prorate_fraction(Variable):
     def formula(person, period, parameters):
         net_income = person("ia_net_income", period)
         total_net_income = person.tax_unit.sum(net_income)
-        return net_income / total_net_income
+        # If no net income, then assign entirely to head.
+        return where(
+            total_net_income == 0,
+            person("is_tax_unit_head", period),
+            net_income / total_net_income,
+        )
