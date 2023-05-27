@@ -1,0 +1,24 @@
+description: Credit amount of the CTC for head_of_household
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 125
+  - threshold:
+      2023-01-01: 32_000
+    amount: 
+      2023-01-01: 100
+  - threshold:
+      2023-01-01: 80_000
+    amount: 
+      2023-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: NC CTC for head_of_household
+  reference:
+  - title: Credit for Children
+    href:https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children

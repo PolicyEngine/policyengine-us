@@ -1,0 +1,24 @@
+description: Credit amount of the CTC for single
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 125
+  - threshold:
+      2023-01-01: 20_000
+    amount: 
+      2023-01-01: 100
+  - threshold:
+      2023-01-01: 50_000
+    amount: 
+      2023-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: NC CTC for single
+  reference:
+  - title: Credit for Children
+    href:https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children
