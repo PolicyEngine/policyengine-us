@@ -3286,3 +3286,8 @@
     added:
     - New Hampshire income tax schedule.
   date: 2023-05-27 16:33:26
+- bump: patch
+  changes:
+    fixed:
+    - Divide-by-zero error in ia_prorate_fraction.
+  date: 2023-05-27 18:05:33
