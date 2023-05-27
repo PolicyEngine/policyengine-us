@@ -5,7 +5,6 @@ class nj_property_tax_deduction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "New Jersey property tax deduction eligibility"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
 
@@ -21,6 +20,6 @@ class nj_property_tax_deduction_eligible(Variable):
         # Next check if they paid property taxes (either directly or through rent).
         direct_property_taxes = tax_unit("nj_homeowners_property_tax", period)
         rent = tax_unit("rents", period)
-        paid_property_taxes = (direct_property_taxes + rent) > 0
+        paid_property_taxes_or_rent = (direct_property_taxes + rent) > 0
 
-        return income_eligible & paid_property_taxes
+        return income_eligible & paid_property_taxes_or_rent

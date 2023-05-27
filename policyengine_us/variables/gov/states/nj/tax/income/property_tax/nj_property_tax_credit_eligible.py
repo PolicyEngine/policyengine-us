@@ -5,12 +5,12 @@ class nj_property_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "New Jersey property tax credit eligibility"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        # Same as deduction eligibility, but also eligible if 65+ or blind/disabled and paid property taxes.
+        # Same as deduction eligibility, but also eligible if 65+ or
+        # blind/disabled and paid property taxes.
         deduction_eligibility = tax_unit(
             "nj_property_tax_deduction_eligible", period
         )
@@ -29,14 +29,15 @@ class nj_property_tax_credit_eligible(Variable):
         )
         senior_blind_disabled = (
             blind_head
-            + disabled_head
-            + blind_spouse
-            + disabled_spouse
-            + senior_head
-            + senior_spouse
-        ) > 0
+            | disabled_head
+            | blind_spouse
+            | disabled_spouse
+            | senior_head
+            | senior_spouse
+        )
 
-        # Next check if they paid property taxes (either directly or through rent).
+        # Next check if they paid property taxes (either directly or through
+        # rent).
         direct_property_taxes = tax_unit("nj_homeowners_property_tax", period)
         rent = tax_unit("rents", period)
         paid_property_taxes = (direct_property_taxes + rent) > 0
