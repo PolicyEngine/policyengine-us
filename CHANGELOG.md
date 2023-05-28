@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.329.2] - 2023-05-28 17:06:47
+
+### Fixed
+
+- Divide by zero in NYC CDCC.
+
 ## [0.329.1] - 2023-05-27 18:05:33
 
 ### Fixed
@@ -3915,6 +3921,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.329.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.1...0.329.2
 [0.329.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.0...0.329.1
 [0.329.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.328.0...0.329.0
 [0.328.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.327.0...0.328.0
