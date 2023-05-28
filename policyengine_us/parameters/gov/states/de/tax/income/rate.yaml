@@ -1,5 +1,5 @@
-description: Delaware provides the following rate on perosnal income taxes.
-metadata:
+description: Delaware taxes personal income according to this rate schedule.
+
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
@@ -7,6 +7,7 @@ metadata:
   reference:
     - title: Government of Delaware - Tax Rate Changes
       href: https://revenue.delaware.gov/software-developer/tax-rate-changes/
+    - title: The Delaware Code - Title 30, Chapter 11, Subch. 1, § 1102, a, 14
 brackets:
   - threshold:
       2014-01-01: 0
