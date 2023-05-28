@@ -45,7 +45,8 @@ class va_age_deduction(Variable):
         maximum_allowable_deduction_amount_adjusted_by_filing_status = (
             p.maximum_allowable_amount * eligible_count
         )
-        exceeded_amount = afagi - where(
+        threshold = ...
+        excess = max_(afagi - threshold, 0)
             joint | separate, p.married_limit, p.single_limit
         )
         married_filing_status = where(
