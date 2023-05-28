@@ -1,12 +1,12 @@
 description: Rhode Island provides filers a standard deduction of this amount, depending on filing status.
 metadata:
-  label: Rhode Island standard deduction
+  label: Rhode Island standard deduction amount
   period: year
   unit: currency-USD
   breakdown:
   - filing_status
   reference:
-  - title: Inflation-adjuested amounts set for tax year 2023.
+  - title: Rhode Island Department of Revenue, Division of Taxation, Inflation-adjusted amounts set for tax year 2023.
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf
   
 SINGLE:
@@ -21,3 +21,6 @@ HEAD_OF_HOUSEHOLD:
 SEPARATE:
   2022-01-01: 9_300
   2023-01-01: 10_025
+WIDOW:
+  2022-01-01: 9_300
+  2023-01-01: 10_000
