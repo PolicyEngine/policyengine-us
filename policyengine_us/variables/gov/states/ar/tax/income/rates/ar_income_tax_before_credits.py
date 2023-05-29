@@ -9,7 +9,7 @@ class ar_income_tax_before_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        ""
+        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_Final_AR1000ES.pdf"
     )
     defined_for = StateCode.AR
 
@@ -17,4 +17,4 @@ class ar_income_tax_before_credits(Variable):
         taxable_income = tax_unit("ar_taxable_income", period)
         p = parameters(period).gov.states.ar.tax.income.rates
         ar_income_tax_before_credits = p.calc(taxable_income)
-        return int(np.floor(ar_income_tax_before_credits + 0.5))
+        return ar_income_tax_before_credits
