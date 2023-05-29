@@ -20,7 +20,7 @@
   output:
     ga_standard_deduction: 7_100
 
-- name: Joint filing - one blind
+- name: Joint filing - one blind spouse
   period: 2023
   input:
     people:
@@ -41,3 +41,69 @@
         state_code: GA
   output:
     ga_standard_deduction: 8_400
+
+- name: Joint filing - one blind dependent 
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_blind: false
+        age: 50
+      person2:
+        is_tax_unit_spouse: true
+        is_blind: false
+        age: 50
+      person3:
+        is_tax_unit_dependent: true
+        is_blind: true
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_standard_deduction: 7_100
+
+- name: Single filing - aged
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_blind: false
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_standard_deduction: 6_700
+
+- name: Head of household  - one blind and aged self and one dependent
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_blind: true
+        age: 65
+      person2:
+        is_tax_unit_dependent: true
+        is_blind: false
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_standard_deduction: 8_000
