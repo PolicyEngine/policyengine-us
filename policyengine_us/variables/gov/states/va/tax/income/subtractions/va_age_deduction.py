@@ -52,7 +52,8 @@ class va_age_deduction(Variable):
                 p.threshold.max[filing_status],
                 p.threshold.min[filing_status],
             ),
-            0)
+            0,
+        )
 
         # The maximum allowable deduction amount would be adjusted by a reduction that is calculated based on the excess and eligibility count for a full deduction
         reduction = excess * where(
