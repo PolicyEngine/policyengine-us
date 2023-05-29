@@ -20,34 +20,42 @@ class va_age_deduction(Variable):
         filing_statuses = filing_status.possible_values
         joint = filing_status == filing_statuses.JOINT
         separate = filing_status == filing_statuses.SEPARATE
+        single = filiing_status == filing_statuses.SINGLE
 
-        # input the age of the head of household (and the spouse if applicable)
         age_head = tax_unit("age_head", period)
         age_spouse = where(single, 0, tax_unit("age_spouse", period))
 
         AFAGI = tax_unit("va_afagi", period)
 
-        # calculate the number of people eligble for age deduction in a household (people who are 65 and older)
-        eligible_count = where(age_head >= p.va_age, 1, 0) + where(
-            age_spouse >= p.va_age, 1, 0
+        # Calculate the number of people who are eligible for an age deduction
+        eligible_count = where(age_head >= p.age_minimum, 1, 0) + where(
+            age_spouse >= p.age_minimum, 1, 0
         )
 
-        # calculate the number of people age >=84 and is eligible for a full deduction
+        # Calculate the number of people eligible for a full age deduction
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
         full_deduction_count = sum(
             where(birth_year_head < p.birth_year_limit_for_full_amount, 1, 0),
-            where(birth_year_spouse < p.birth_year_limit_for_full_amount, 1, 0),
+            where(
+                birth_year_spouse < p.birth_year_limit_for_full_amount, 1, 0
+            ),
         )
-
+        # Calculate the maximum allowable deduction amount per filing
         maximum_allowable_deduction = p.amount * eligible_count
-        exceeded_amount = AFAGI - where(
-            joint | separate,
-            p.threshold.max[filing_status],
-            p.threshold.min[filing_status],
-        )
-        # If the people eligible for an age deduction do not qualify for a full deduction, the age deduction will be adjusted by a reduction.
-        reduction = exceeded_amount * where(
+
+        # Calculate the amount that the adjusted federal AGI exceeds the threshold
+        excess = max_(
+            AFAGI
+            - where(
+                joint | separate,
+                p.threshold.max[filing_status],
+                p.threshold.min[filing_status],
+            ),
+            0)
+
+        # The maximum allowable deduction amount would be adjusted by a reduction that is calculated based on the excess and eligibility count for a full deduction
+        reduction = excess * where(
             eligible_count == full_deduction_count, 0, 1
         )
 
