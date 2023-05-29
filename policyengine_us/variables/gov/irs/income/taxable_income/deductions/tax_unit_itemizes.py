@@ -25,11 +25,7 @@ class tax_unit_itemizes(Variable):
                 "qualified_business_income_deduction",
             ]
         ]
-        filing_status = tax_unit("filing_status", period)
-        salt_cap = ded.itemized.salt_and_real_estate.cap[filing_status]
-        itemized_deductions = (
-            add(tax_unit, period, deductions_if_itemizing) + salt_cap
-        )
+        itemized_deductions = add(tax_unit, period, deductions_if_itemizing)
         # Ignore QBID here, it requires SALT.
         deductions_if_not_itemizing = tax_unit("standard_deduction", period)
 
