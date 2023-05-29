@@ -19,10 +19,12 @@ class ga_income_tax_before_refundable_credits(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.SEPARATE,
                 filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
             ],
             [
                 p.single.calc(income),
                 p.separate.calc(income),
                 p.joint.calc(income),
+                p.head_of_household.calc(income)
             ],
         )

@@ -33,3 +33,12 @@
     state_code: GA
   output:
     ga_income_tax_before_refundable_credits: 7
+
+- name: Head of household filer 
+  period: 2022
+  input:
+    ga_taxable_income: 1_100
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 12
