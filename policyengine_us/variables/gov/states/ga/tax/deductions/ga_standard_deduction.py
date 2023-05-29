@@ -38,4 +38,3 @@ class ga_standard_deduction(Variable):
         # total extra deduction
         extra_amt = extra_amt_head + extra_amt_spouse
         return base_amt + extra_amt
-    
