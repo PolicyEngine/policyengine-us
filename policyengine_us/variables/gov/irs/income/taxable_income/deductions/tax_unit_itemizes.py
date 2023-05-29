@@ -6,35 +6,25 @@ class tax_unit_itemizes(Variable):
     entity = TaxUnit
     label = "Itemizes tax deductions"
     unit = USD
-    documentation = "Whether this tax unit elects to itemize deductions, rather than claim standard deductions."
+    documentation = "Whether tax unit elects to itemize deductions rather than claim the standard deduction."
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # First, apply a shortcut. We can't simulate SALT before federal income tax
-        # (due to circular dependencies), but we can compare the deduction sizes assuming
-        # the SALT is maxed out at its cap.
-        ded = parameters(period).gov.irs.deductions
-        federal_deductions_if_itemizing = ded.deductions_if_itemizing
-        deductions_if_itemizing = [
-            deduction
-            for deduction in federal_deductions_if_itemizing
-            if deduction
-            not in [
-                "salt_deduction",
-                # Exclude QBID to avoid circular reference.
-                "qualified_business_income_deduction",
-            ]
-        ]
-        itemized_deductions = add(tax_unit, period, deductions_if_itemizing)
-        # Ignore QBID here, it requires SALT.
-        deductions_if_not_itemizing = tax_unit("standard_deduction", period)
-
         if parameters(period).simulation.branch_to_determine_itemization:
-            tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
-            tax_if_not_itemizing = tax_unit(
+            # determine federal itemization behavior by comparing tax liability
+            tax_liability_if_itemizing = tax_unit(
+                "tax_liability_if_itemizing", period
+            )
+            tax_liabilityif_not_itemizing = tax_unit(
                 "tax_liability_if_not_itemizing", period
             )
-            return tax_if_itemizing < tax_if_not_itemizing
+            return tax_liability_if_itemizing < tax_liability_if_not_itemizing
         else:
-            # Decide by non-SALT deduction size.
-            return itemized_deductions > deductions_if_not_itemizing
+            # determine federal itemization behavior by comparing deductions
+            deductions_if_itemizing = tax_unit(
+                "taxable_income_deductions_if_itemizing", period
+            )
+            deductions_if_not_itemizing = tax_unit(
+                "taxable_income_deductions_if_not_itemizing", period
+            )
+            return deductions_if_itemizing > deductions_if_not_itemizing
