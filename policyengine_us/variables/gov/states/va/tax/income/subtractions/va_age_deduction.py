@@ -20,7 +20,8 @@ class va_age_deduction(Variable):
         filing_statuses = filing_status.possible_values
         joint = filing_status == filing_statuses.JOINT
         separate = filing_status == filing_statuses.SEPARATE
-        single = filiing_status == filing_statuses.SINGLE
+        single = filing_status == filing_statuses.SINGLE
+
 
         age_head = tax_unit("age_head", period)
         age_spouse = where(single, 0, tax_unit("age_spouse", period))
@@ -46,11 +47,7 @@ class va_age_deduction(Variable):
 
         # Calculate the amount that the adjusted federal AGI exceeds the threshold
         excess = max_(
-            AFAGI
-            - where(
-                joint | separate,
-                p.threshold.max[filing_status],
-                p.threshold.min[filing_status],
+            AFAGI - (p.threshold[filing_status],
             ),
             0,
         )
