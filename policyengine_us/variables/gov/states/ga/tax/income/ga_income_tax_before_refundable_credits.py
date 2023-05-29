@@ -25,6 +25,6 @@ class ga_income_tax_before_refundable_credits(Variable):
                 p.single.calc(income),
                 p.separate.calc(income),
                 p.joint.calc(income),
-                p.head_of_household.calc(income)
+                p.head_of_household.calc(income),
             ],
         )
