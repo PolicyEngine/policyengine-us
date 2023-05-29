@@ -13,5 +13,5 @@ class ga_cdcc(Variable):
         expenses = tax_unit("cdcc", period)
         rate = parameters(
             period
-        ).gov.states.ga.tax.income.credits.qualified_child.rate
+        ).gov.states.ga.tax.income.credits.dependent_care_credit.rate
         return expenses * rate
