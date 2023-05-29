@@ -1,0 +1,26 @@
+description: Arizona taxes the personal income for single filers at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Arizona income tax rate single filers
+  reference:
+    - title: Fifty-sixth Legislature, L21, Ch. 411, sec. 4, 43-1011., 6 (a)
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01011.htm
+brackets:
+  - threshold:
+      2019-01-01: 0
+    rate:
+      2019-01-01: 0.0259
+  - threshold:
+      2019-01-01: 26_500
+    rate:
+      2019-01-01: 0.0334
+  - threshold:
+      2019-01-01: 53_000
+    rate:
+      2019-01-01: 0.0417
+  - threshold:
+      2019-01-01: 159_000
+    rate:
+      2019-01-01: 0.045
