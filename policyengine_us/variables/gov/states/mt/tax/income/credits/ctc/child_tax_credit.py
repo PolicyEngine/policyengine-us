@@ -20,8 +20,9 @@ class mt_ctc(Variable):
 
         p = parameters(period).gov.states.mt.tax.income.credits.ctc
         # income limit
+        gross_income = tax_unit("adjusted_gross_income", period)
         income_eligible = (
-            tax_unit("adjusted_gross_income", period) <= p.income_threshold
+            gross_income <= p.income_threshold
         )
         investment_income_eligible = (
             tax_unit("investment_income", period) <= p.investment_threshold
@@ -31,5 +32,9 @@ class mt_ctc(Variable):
         meets_age_limit = person("age", period) < p.child_age_eligibility
         eligible_child = dependent & meets_age_limit
         eligible_children = tax_unit.sum(eligible_child)
-        # implent reduction
+        
+        # reduction
+        if gross_income > p.reduction.treshold:
+            return income_eligible * investment_income_eligible * eligible_children * p.amount * p.reduction.rate * ((gross_income - p.reduction.treshold) // p.reduction.increment)
+
         return income_eligible * investment_income_eligible * eligible_children * p.amount
