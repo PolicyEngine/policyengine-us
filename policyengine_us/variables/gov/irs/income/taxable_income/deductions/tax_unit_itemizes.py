@@ -35,9 +35,8 @@ class tax_unit_itemizes(Variable):
             # ... add back the possibly capped local real estate taxes,
             #     which have no circular logic problems
             filing_status = tax_unit("filing_status", period)
-            salt_cap = p.itemized.salt_and_real_estate.cap[filing_status]
-            local_property_taxes = tax_unit("real_estate_taxes", period)
             itemized_deductions = partial_itemized_deductions + min_(
-                salt_cap, local_property_taxes
+                add(tax_unit, period, ["real_estate_taxes"]),
+                p.itemized.salt_and_real_estate.cap[filing_status],
             )
             return itemized_deductions > standard_deduction
