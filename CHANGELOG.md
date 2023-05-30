@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.329.4] - 2023-05-30 06:23:37
+
+### Fixed
+
+- Incorrect logic in federal tax_unit_itemizes formula.
+
 ## [0.329.3] - 2023-05-29 00:20:03
 
 ### Fixed
@@ -3927,6 +3933,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.329.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.3...0.329.4
 [0.329.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.2...0.329.3
 [0.329.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.1...0.329.2
 [0.329.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.0...0.329.1
