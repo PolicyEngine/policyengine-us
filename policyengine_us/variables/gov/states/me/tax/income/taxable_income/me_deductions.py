@@ -8,8 +8,8 @@ class me_deductions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html"
-        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf"
+        "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html",
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf",
     )
     defined_for = StateCode.ME
 

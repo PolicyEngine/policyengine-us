@@ -7,8 +7,10 @@ class me_standard_deduction_pre_phaseout(Variable):
     label = "Maine standard deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf"
-    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html"
+    reference = (
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf",
+        "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html",
+    )
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
