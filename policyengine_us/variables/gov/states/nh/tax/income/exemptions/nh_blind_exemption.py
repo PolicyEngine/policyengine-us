@@ -13,10 +13,10 @@ class nh_blind_exemption(Variable):
         p = parameters(period).gov.states.nh.tax.income.exemptions.amount
 
         # Get the individual blind status.
-        blind_head = tax_unit("blind_head", period)
+        blind_head = tax_unit("blind_head", period).astype(int)
 
         # Get the individual's spouse blind status.
-        blind_spouse = tax_unit("blind_spouse", period) 
+        blind_spouse = tax_unit("blind_spouse", period).astype(int)
 
         # Calculate total blind exemption.
         return tax_unit.sum(blind_head + blind_spouse) * p.blind_addition

@@ -13,5 +13,5 @@ class nh_total_exemptions(Variable):
         "nh_base_exemption",
         "nh_blind_exemption",
         "nh_disabled_exemption",
-        "nh_old_age_exemption"
+        "nh_old_age_exemption",
     ]

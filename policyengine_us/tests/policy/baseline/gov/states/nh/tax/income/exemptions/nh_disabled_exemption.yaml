@@ -87,8 +87,7 @@
     disabled_spouse: true
     age_spouse: 60
   output:
-    # nh_disabled_exemption: 2_400
-    nh_disabled_exemption: 1_200
+    nh_disabled_exemption: 2_400
 
 - name: If filing jointly, head is disabled at the age below 65 and spouse is disabled at the age of 65, they will get one exemption.
   period: 2022
