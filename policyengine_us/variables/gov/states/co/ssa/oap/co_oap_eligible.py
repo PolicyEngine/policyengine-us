@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oap_eligible(Variable):
+class co_oap_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Old Age Pension Eligible"
+    label = "Colorado Old Age Pension Eligible"
     definition_period = YEAR
     defined_for = StateCode.CO
 

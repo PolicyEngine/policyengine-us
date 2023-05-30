@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oap(Variable):
+class co_oap(Variable):
     value_type = float
     entity = Person
-    label = "Old Age Pension"
+    label = "Colorado Old Age Pension"
     definition_period = YEAR
     defined_for = "oap_eligible"
 
