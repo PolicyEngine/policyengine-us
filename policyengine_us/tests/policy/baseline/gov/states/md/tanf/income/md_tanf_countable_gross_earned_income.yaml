@@ -1,19 +1,42 @@
-- name: "Person who has 1000 employment income, 1000 self employment income, 1000 armed services basica allowance for houseing "
+- name: "Person1 has 1000 employment income, 1000 self employment income, 1000 armed services basica allowance for houseing, Person2 has 500 self employment "
   period: 2023
   input:
-    employment_income: 1000
-    self_employment_income: 1000
-    armed_services_basic_allowance_for_housing: 1000
+    people:
+      person1:
+        employment_income: 1000
+        self_employment_income: 1000
+        armed_services_basic_allowance_for_housing: 1000
+      person2: 
+        employment_income: 0
+        self_employment_income: 500
+        armed_services_basic_allowance_for_housing: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
   output:
-    md_tanf_countable_gross_earned_income: 3000
+    md_tanf_countable_gross_earned_income: 3500
 
 
 - name: "Person who has -1 employment income, -1 self employment income, -1 armed services basica allowance for houseing, 1000 child support"
   period: 2023
   input:
-    employment_income: -1
-    self_employment_income: -1
-    armed_services_basic_allowance_for_housing: -1
-    child_support: 1000
+    people:
+      person1:
+        employment_income: -1
+        self_employment_income: -2
+        armed_services_basic_allowance_for_housing: -3
+      person2: 
+        employment_income: 0
+        self_employment_income: -4
+        armed_services_basic_allowance_for_housing: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        state_code: MD
   output:
     md_tanf_countable_gross_earned_income: 0

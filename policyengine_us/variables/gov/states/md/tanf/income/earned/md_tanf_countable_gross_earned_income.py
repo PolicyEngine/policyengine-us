@@ -10,5 +10,6 @@ class md_tanf_countable_gross_earned_income(Variable):
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.md.tanf.income.sources
-        gross_earned = add(spm_unit, period, p.earned)
-        return gross_earned
+        person = spm_unit.members
+        gross_earned = person("earned_income", period)
+        return spm_unit.sum{gross_earned}
