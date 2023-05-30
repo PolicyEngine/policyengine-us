@@ -1,0 +1,25 @@
+description: Louisiana nonrefundable cdcc as fraction of federal cdcc amount.
+brackets:
+ - threshold:
+     2006-01-01: 25_000
+   amount:
+     2006-01-01: 0.3
+ - threshold:
+     2006-01-01: 50_000
+   amount:
+     2006-01-01: 0.1
+ - threshold:
+     2006-01-01: 60_000
+   amount:
+     2006-01-01: 0.1
+
+
+metadata:
+ type: single_amount
+ threshold_unit: currency-USD
+ amount_unit: /1
+ period: year
+ label: Louisiana nonrefundable cdcc as fraction of federal cdcc amount
+ reference:
+ - title: §297.4. Reduction to tax due; certain child care expenses
+   href: http://legis.la.gov/Legis/Law.aspx?d=101769
