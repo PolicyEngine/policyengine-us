@@ -1,0 +1,53 @@
+- name: Outside Maine, no Maine deductions
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_standard_deduction_pre_phaseout: 0
+
+- name: Maine standard deduction if single
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+  output:
+    me_standard_deduction_pre_phaseout: 12_950
+
+- name: Maine standard deduction if filing jointly
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: JOINT
+  output:
+    me_standard_deduction_pre_phaseout: 25_900
+
+- name: Maine standard deduction if married filing separate
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SEPARATE
+  output:
+    me_standard_deduction_pre_phaseout: 12_950
+
+- name: Maine standard deduction if head of household
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    me_standard_deduction_pre_phaseout: 19_400
+
+- name: Maine standard deduction if widow
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: WIDOW
+  output:
+    me_standard_deduction_pre_phaseout: 25_900

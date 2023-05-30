@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class me_standard_deduction(Variable):
+class me_standard_deduction_pre_phaseout(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maine standard deduction"
