@@ -8,5 +8,9 @@ class nj_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NY
-
-    adds = ["nj_property_tax_credit"]
+    adds = [
+        "nj_property_tax_credit",
+        "nj_eitc",
+        "nj_cdcc",
+        "nj_child_tax_credit",
+    ]
