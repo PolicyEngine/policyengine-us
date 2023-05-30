@@ -17,14 +17,9 @@ class nh_education_tax_credit(Variable):
         ).gov.states.nh.tax.income.credits.education_tax_credit
 
         # Get Rate for donation
-        donation = tax_unit("donation", period)
-        rate = p.rate.calc(donation)
-
-        # Exclude married filing separately filers.
-        filing_status = tax_unit("filing_status", period)
-        filing_eligible = (
-            filing_status != filing_status.possible_values.SEPARATE
+        donation = add(
+            tax_unit, 
+            period, 
+            ["charitable_cash_donations", "charitable_non_cash_donations"],
         )
-
-        # Calculate total child tax credit
-        return count_eligible * p.rate * filing_eligible
+        return p.rate.calc(donation)

@@ -3,7 +3,7 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: /1
   threshold_period: year
-  type: single_amount
+  type: marginal_amount
   label: New Hampshire Education Tax Credit 
   reference: 
     - title: TITLE V- TAXATION - CHAPTER 77-G - EDUCATION TAX CREDIT - Section 77-G:4
@@ -12,6 +12,10 @@ metadata:
       href: https://www.revenue.nh.gov/quick-links/education-tax-credit.htm
 brackets:
   - threshold:  
-      2013-01-01: 600_000
+      2013-01-01: 0
     amount:
       2013-01-01: 0.85
+  - threshold:  
+      2013-01-01: 600_000
+    amount:
+      2013-01-01: 0
