@@ -1,0 +1,16 @@
+- name: 20k taxable income at a flat 4.25% rate
+  period: 2022
+  input:
+    mi_taxable_income: 20_000
+    state_code: MI
+  output:
+   # 20_000 * 0.0425 = 850
+    mi_income_tax_before_credits: 850
+
+- name: No taxable income
+  period: 2022
+  input:
+    mi_taxable_income: 0
+    state_code: MI
+  output:
+    mi_income_tax_before_credits: 0
