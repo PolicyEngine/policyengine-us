@@ -23,7 +23,7 @@ class pa_tanf_cash_assistance_payout(Variable):
         lancaster = county == "LANCASTER_COUNTY_PA"
         montgomery = county == "MONTGOMERY_COUNTY_PA"
         pike = county == "PIKE_COUNTY_PA"
-        group1 = [bucks]
+
         # Group 2: Adams, Allegheny, Berks, Blair, Bradford, Butler, Centre, Columbia, Crawford, Cumberland, Dauphin, Delaware, Erie, Lackawanna, Lebanon, Lehigh, Luzerne, Lycoming, Monroe, Montour, Northampton, Philadelphia, Sullivan, Susquehanna, Union, Warren, Wayne, Westmoreland, Wyoming, York
         adams = county == "ADAMS_COUNTY_PA"
         allegheny = county == "ALLEGHENY_COUNTY_PA"
@@ -161,5 +161,9 @@ class pa_tanf_cash_assistance_payout(Variable):
             schuylkill,
             somerset,
         ]
+        group_one_amount = group_1 * p.first_group.base.calc(people)
+        group_two_amount = group_2 * p.first_group.base.calc(people)
+        group_three_amount = group_3 * p.first_group.base.calc(people)
+        group_four_amount = group_4 * p.first_group.base.calc(people)
 
-    return
+        return
