@@ -12,5 +12,7 @@ class ky_dependent_care_service(Variable):
 
     def formula(tax_unit, period, parameters):
         dependent_care_credit = tax_unit("cdcc", period)
-        rate = parameters(period).gov.states.ky.tax.income.credits.dependent_care_service.match
-        return  dependent_care_credit * rate
+        rate = parameters(
+            period
+        ).gov.states.ky.tax.income.credits.dependent_care_service.match
+        return dependent_care_credit * rate
