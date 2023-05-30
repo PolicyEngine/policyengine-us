@@ -15,7 +15,7 @@ class tax_unit_itemizes(Variable):
             tax_liability_if_itemizing = tax_unit(
                 "tax_liability_if_itemizing", period
             )
-            tax_liabilityif_not_itemizing = tax_unit(
+            tax_liability_if_not_itemizing = tax_unit(
                 "tax_liability_if_not_itemizing", period
             )
             return tax_liability_if_itemizing < tax_liability_if_not_itemizing
