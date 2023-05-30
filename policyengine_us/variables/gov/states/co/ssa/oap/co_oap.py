@@ -6,7 +6,7 @@ class co_oap(Variable):
     entity = Person
     label = "Colorado Old Age Pension"
     definition_period = YEAR
-    defined_for = "oap_eligible"
+    defined_for = "co_oap_eligible"
 
     def formula(person, period, parameters):
         income = person("ssi_countable_income", period)

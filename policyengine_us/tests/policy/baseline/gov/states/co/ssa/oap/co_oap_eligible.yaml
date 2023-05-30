@@ -6,7 +6,7 @@
     ssi_claim_is_joint: false
     state_code: CO
   output:
-    oap_eligible: false
+    co_oap_eligible: false
 
 - name: Ineligible resources single
   period: 2023
@@ -16,7 +16,7 @@
     ssi_claim_is_joint: false
     state_code: CO
   output:
-    oap_eligible: false
+    co_oap_eligible: false
 
 - name: Ineligible resources couple
   period: 2023
@@ -26,7 +26,7 @@
     ssi_claim_is_joint: true
     state_code: CO
   output:
-    oap_eligible: false
+    co_oap_eligible: false
 
 - name: Eligible single
   period: 2023
@@ -36,7 +36,7 @@
     ssi_claim_is_joint: false
     state_code: CO
   output:
-    oap_eligible: true
+    co_oap_eligible: true
 
 - name: Eligible couple
   period: 2023
@@ -46,4 +46,4 @@
     ssi_claim_is_joint: true
     state_code: CO
   output:
-    oap_eligible: true
+    co_oap_eligible: true
