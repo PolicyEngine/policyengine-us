@@ -7,7 +7,7 @@ class nj_refundable_credits(Variable):
     label = "New Jersey refundable credits"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.NY
+    defined_for = StateCode.NJ
     adds = [
         "nj_property_tax_credit",
         "nj_eitc",
