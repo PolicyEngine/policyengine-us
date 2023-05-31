@@ -92,78 +92,107 @@ class pa_tanf_cash_assistance_payout(Variable):
         schuylkill = county == "SCHUYLKILL_COUNTY_PA"
         somerset = county == "SOMERSET_COUNTY_PA"
 
-        group_1 = [bucks, chester, lancaster, montgomery, pike]
-        group_2 = [
-            adams,
-            allegheny,
-            berks,
-            blair,
-            bradford,
-            butler,
-            centre,
-            columbia,
-            crawford,
-            cumberland,
-            dauphin,
-            delaware,
-            erie,
-            lackawanna,
-            lebanon,
-            lehigh,
-            luzerne,
-            lycoming,
-            monroe,
-            montour,
-            northampton,
-            philadelphia,
-            sullivan,
-            susquehanna,
-            union,
-            warren,
-            wayne,
-            westmoreland,
-            wyoming,
-            york,
-        ]
-        group_3 = [
-            beaver,
-            cameron,
-            carbon,
-            clinton,
-            elk,
-            franklin,
-            indiana,
-            lawrence,
-            mckean,
-            mercer,
-            mifflin,
-            perry,
-            potter,
-            snyder,
-            tioga,
-            venango,
-            washington,
-        ]
-        group_4 = [
-            armstrong,
-            bedford,
-            cambria,
-            clarion,
-            clearfield,
-            fayette,
-            forest,
-            fulton,
-            greene,
-            huntingdon,
-            jefferson,
-            juniata,
-            northumberland,
-            schuylkill,
-            somerset,
-        ]
-        group_one_amount = group_1 * p.first_group.base.calc(people)
-        group_two_amount = group_2 * p.first_group.base.calc(people)
-        group_three_amount = group_3 * p.first_group.base.calc(people)
-        group_four_amount = group_4 * p.first_group.base.calc(people)
+        group_1 = bucks | chester | lancaster | montgomery | pike
+        group_2 = (
+            adams
+            | allegheny
+            | berks
+            | blair
+            | bradford
+            | butler
+            | centre
+            | columbia
+            | crawford
+            | cumberland
+            | dauphin
+            | delaware
+            | erie
+            | lackawanna
+            | lebanon
+            | lehigh
+            | luzerne
+            | lycoming
+            | monroe
+            | montour
+            | northampton
+            | philadelphia
+            | sullivan
+            | susquehanna
+            | union
+            | warren
+            | wayne
+            | westmoreland
+            | wyoming
+            | york
+        )
 
-        return
+        group_3 = (
+            beaver
+            | cameron
+            | carbon
+            | clinton
+            | elk
+            | franklin
+            | indiana
+            | lawrence
+            | mckean
+            | mercer
+            | mifflin
+            | perry
+            | potter
+            | snyder
+            | tioga
+            | venango
+            | washington
+        )
+
+        group_4 = (
+            armstrong
+            | bedford
+            | cambria
+            | clarion
+            | clearfield
+            | fayette
+            | forest
+            | fulton
+            | greene
+            | huntingdon
+            | jefferson
+            | juniata
+            | northumberland
+            | schuylkill
+            | somerset
+        )
+
+        supplement_amount = select(
+            [
+                group_1,
+                group_2,
+                group_3,
+                group_4,
+            ],
+            [
+                p.first_group.additional_person * max(0, (people - 6)),
+                p.second_group.additional_person * max(0, (people - 6)),
+                p.third_group.additional_person * max(0, (people - 6)),
+                p.fourth_group.additional_person * max(0, (people - 6)),
+            ],
+        )
+
+        return (
+            select(
+                [
+                    group_1,
+                    group_2,
+                    group_3,
+                    group_4,
+                ],
+                [
+                    p.first_group.base.calc(people),
+                    p.second_group.base.calc(people),
+                    p.third_group.base.calc(people),
+                    p.fourth_group.base.calc(people),
+                ],
+            )
+            + supplement_amount
+        )
