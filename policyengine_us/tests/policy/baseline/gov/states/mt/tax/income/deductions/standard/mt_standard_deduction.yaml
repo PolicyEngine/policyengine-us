@@ -2,6 +2,7 @@
   period: 2022
   input:
     state_code: MT
+    tax_unit_earned_income: 12_950
     filing_status: SINGLE
   output:
     mt_standard_deduction: 5_000
@@ -10,22 +11,25 @@
   period: 2023
   input:
     state_code: MT
+    tax_unit_earned_income: 4_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    mt_standard_deduction: 5_000
+    mt_standard_deduction: 4_000
 
 - name: $9,980 for joint.
   period: 2024
   input:
     state_code: MT
+    tax_unit_earned_income: 9_980
     filing_status: JOINT
   output:
-    mt_standard_deduction: 10_000
+    mt_standard_deduction: 9_980
   
 - name: $10,000 for joint.
   period: 2024
   input:
     state_code: MT
+    tax_unit_earned_income: 10_000
     filing_status: JOINT
   output:
     mt_standard_deduction: 10_000
