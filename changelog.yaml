@@ -3241,3 +3241,78 @@
     changed:
     - Core bump.
   date: 2023-05-23 07:48:13
+- bump: minor
+  changes:
+    added:
+    - Kentucky income tax rate.
+  date: 2023-05-25 05:21:32
+- bump: minor
+  changes:
+    added:
+    - Colorado SSI State Supplement
+  date: 2023-05-25 19:14:24
+- bump: minor
+  changes:
+    added:
+    - New Jersey income tax formula.
+  date: 2023-05-26 02:04:07
+- bump: minor
+  changes:
+    added:
+    - Python 3.10 support.
+  date: 2023-05-27 04:37:24
+- bump: minor
+  changes:
+    added:
+    - Adjust New Jersey property tax deduction/credit for separate but cohabitating.
+  date: 2023-05-27 05:06:06
+- bump: minor
+  changes:
+    added:
+    - North Carolina income tax schedule.
+  date: 2023-05-27 05:39:37
+- bump: minor
+  changes:
+    added:
+    - Montana personal income tax schedule.
+  date: 2023-05-27 05:42:06
+- bump: minor
+  changes:
+    added:
+    - Iowa state income tax.
+  date: 2023-05-27 15:54:35
+- bump: minor
+  changes:
+    added:
+    - New Hampshire income tax schedule.
+  date: 2023-05-27 16:33:26
+- bump: patch
+  changes:
+    fixed:
+    - Divide-by-zero error in ia_prorate_fraction.
+  date: 2023-05-27 18:05:33
+- bump: patch
+  changes:
+    fixed:
+    - Divide by zero in NYC CDCC.
+  date: 2023-05-28 17:06:47
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing itemization to be too frequently chosen.
+  date: 2023-05-29 00:20:03
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect logic in federal tax_unit_itemizes formula.
+  date: 2023-05-30 06:23:37
+- bump: minor
+  changes:
+    added:
+    - Old Age Pension
+  date: 2023-05-30 16:14:28
+- bump: patch
+  changes:
+    fixed:
+    - Add six states to list used by state_income_tax formula.
+  date: 2023-05-31 02:23:18
