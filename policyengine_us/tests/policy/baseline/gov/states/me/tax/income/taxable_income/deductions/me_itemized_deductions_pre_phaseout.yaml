@@ -1,0 +1,59 @@
+- name: Maine deduction is $0 outside of Maine.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    tax_unit_itemizes: true
+    taxable_income_deductions_if_itemizing: 10_000
+    medical_expenses: 500
+    real_estate_taxes: 1_000
+  output:
+    me_itemized_deductions_pre_phaseout: 0
+
+- name: Maine itemized deduction is federal itemized deduction plus real estate taxes.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    tax_unit_itemizes: true
+    taxable_income_deductions_if_itemizing: 10_000
+    medical_expenses: 500
+    real_estate_taxes: 1_000
+  output:
+    me_itemized_deductions_pre_phaseout: 11_000
+
+- name: Maine itemized deduction is $0 if tax unit does not itemize on federal return.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    tax_unit_itemizes: false
+    taxable_income_deductions_if_itemizing: 10_000
+    medical_expenses: 500
+    real_estate_taxes: 1_000
+  output:
+    me_itemized_deductions_pre_phaseout: 0
+
+- name: Maine itemized deduction is capped.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    tax_unit_itemizes: true
+    taxable_income_deductions_if_itemizing: 31_151
+    medical_expenses: 0
+    real_estate_taxes: 0
+  output:
+    me_itemized_deductions_pre_phaseout: 31_150
+
+- name: Maine itemized deduction is capped at $31,150 before medical expenses.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    tax_unit_itemizes: true
+    taxable_income_deductions_if_itemizing: 40_000
+    medical_expenses: 5_000
+    real_estate_taxes: 1_000
+  output:
+    me_itemized_deductions_pre_phaseout: 36_150
