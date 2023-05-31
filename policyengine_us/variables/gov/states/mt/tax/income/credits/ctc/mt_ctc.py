@@ -11,13 +11,6 @@ class mt_ctc(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        # int amount of credit for each qualifying child
-        # int number of qualifying children
-        # bool proof of earned income & valid SSN for each child
-        # float investment income (has to be less than 10_300)
-        # float earned income/tax liability (tax credit can't exceed tax liability)
-        # int age of each child
-
         p = parameters(period).gov.states.mt.tax.income.credits.ctc
         # income limit
         gross_income = tax_unit("adjusted_gross_income", period)
@@ -32,9 +25,12 @@ class mt_ctc(Variable):
         meets_age_limit = person("age", period) < p.child_age_eligibility
         eligible_child = dependent & meets_age_limit
         eligible_children = tax_unit.sum(eligible_child)
-        
+        eligible = income_eligible * investment_income_eligible
+        child_amount = eligible_children * p.amount
+        credit = eligible * child_amount
         # reduction
-        if gross_income > p.reduction.treshold:
-            return income_eligible * investment_income_eligible * eligible_children * p.amount * p.reduction.rate * ((gross_income - p.reduction.treshold) // p.reduction.increment)
+        reduction_rate = p.reduction.rate * (max_((gross_income - p.reduction.treshold),0) // p.reduction.increment)
+        reduced_credit = max_((credit - reduction_rate),0)
+        return where((gross_income > p.reduction.treshold), reduced_credit , credit)
 
-        return income_eligible * investment_income_eligible * eligible_children * p.amount
+#where(condition, if_true, if_false)
