@@ -1,7 +1,7 @@
 description: New Hampshire matches this share of Education Tax Credit, depending on the donation.
 metadata:
   threshold_unit: currency-USD
-  amount_unit: /1
+  rate_unit: /1
   threshold_period: year
   type: marginal_amount
   label: New Hampshire Education Tax Credit 
@@ -13,9 +13,9 @@ metadata:
 brackets:
   - threshold:  
       2013-01-01: 0
-    amount:
+    rate:
       2013-01-01: 0.85
   - threshold:  
       2013-01-01: 600_000
-    amount:
+    rate:
       2013-01-01: 0
