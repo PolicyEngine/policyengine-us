@@ -20,4 +20,5 @@
         state_code: NJ
   output:
     taxable_social_security: 3_000  # on federal form
+    adjusted_gross_income: 1_000 + 3_000  #  on federal form
     nj_agi: 1_000  # NJ does not include social security in AGI
