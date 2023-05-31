@@ -18,7 +18,7 @@ class me_itemized_deductions_pre_phaseout(Variable):
         us_itemizing = tax_unit("tax_unit_itemizes", period)
 
         # Get the Maine itemizing deduction parameters.
-        p = parameters(period).gov.states.me.deductions.itemized
+        p = parameters(period).gov.states.me.tax.income.deductions.itemized
 
         # Get federal itemized deductions.
         deduction = tax_unit("taxable_income_deductions_if_itemizing", period)
