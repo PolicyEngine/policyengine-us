@@ -6,7 +6,7 @@ class ri_standard_deduction(Variable):
     entity = TaxUnit
     label = "Rhode Island standard deduction"
     unit = USD
-    documentation = " https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf"
+    documentation = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf"
     definition_period = YEAR
     defined_for = StateCode.RI
 
