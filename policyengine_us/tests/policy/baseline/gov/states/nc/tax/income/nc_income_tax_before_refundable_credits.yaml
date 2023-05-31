@@ -1,0 +1,23 @@
+- name: No income
+  period: 2023
+  input:
+    nc_taxable_income: 0
+    state_code: NC
+  output:
+    nc_income_tax_before_credits: 0
+
+- name: 1_000 income # 1_000 * 0.0475
+  period: 2023
+  input:
+    nc_taxable_income: 1_000
+    state_code: NC
+  output:
+    nc_income_tax_before_credits: 47.5
+
+- name: 1_000 income in 2025 # 1_000 * 0.0475
+  period: 2025
+  input:
+    nc_taxable_income: 1_000
+    state_code: NC
+  output:
+    nc_income_tax_before_credits: 45
