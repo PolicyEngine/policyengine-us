@@ -29,7 +29,7 @@ class mt_ctc(Variable):
         
         eligible = income_eligible * investment_income_eligible
        
-        child_amount = eligible_children * p.amount
+        child_amount = eligible_children * p.base
         credit = eligible * child_amount
         # reduction
         reduction_rate = p.reduction.rate * (max_((gross_income - p.reduction.treshold),0) // p.reduction.increment)
