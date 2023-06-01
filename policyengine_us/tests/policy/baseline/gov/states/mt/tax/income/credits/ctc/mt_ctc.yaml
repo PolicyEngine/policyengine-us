@@ -1,0 +1,34 @@
+- name: MT child tax credit test 1
+  period: 2023
+  input:
+    adjusted_gross_income: 30_000
+    is_tax_unit_dependent: True
+    net_investment_income: 200
+    age: 4
+    state_code: MT
+  output:
+    mt_ctc: 1_200
+  
+- name: MT child tax credit test 2
+  period: 2023
+  input:
+    adjusted_gross_income: 70_000
+    is_tax_unit_dependent: True
+    net_investment_income: 20_000
+    age: 3
+    state_code: MT
+  output:
+    mt_ctc: 0
+    
+- name: MT child tax credit test 2
+  period: 2023
+  input:
+    adjusted_gross_income: 55_000
+    is_tax_unit_dependent: True
+    net_investment_income: 0
+    age: 3
+    state_code: MT
+  output:
+    mt_ctc: 750
+    # 1200 - 5*90 = 750
+  
