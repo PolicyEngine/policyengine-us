@@ -5,7 +5,7 @@ metadata:
   - title: The Budget and Economic Outlook 2023 to 2033 | Congressional Budget Office
     # Revenue Projections, by Category > Feb 2023 > Sheet 3.Individual Income Tax Details
     href: https://www.cbo.gov/publication/58848
-total_adjusted_gross_income:
+adjusted_gross_income:
   2019-01-01: 11_962_000_000_000
   2020-01-01: 12_650_000_000_000
   2021-01-01: 14_758_000_000_000
@@ -21,7 +21,7 @@ total_adjusted_gross_income:
   2031-01-01: 20_983_000_000_000
   2032-01-01: 21_767_000_000_000
   2033-01-01: 22_564_000_000_000
-salaries_and_wages:
+employment_income:
   2019-01-01: 8_273_000_000_000
   2020-01-01: 8_414_000_000_000
   2021-01-01: 9_165_000_000_000
@@ -37,7 +37,7 @@ salaries_and_wages:
   2031-01-01: 14_424_000_000_000
   2032-01-01: 14_953_000_000_000
   2033-01-01: 15_488_000_000_000
-taxable_interest_and_ordinary_dividends: # excludes qualified dividends
+taxable_interest_and_ordinary_dividends: # excludes qualified_dividend_income
   2019-01-01: 237_000_000_000
   2020-01-01: 241_000_000_000
   2021-01-01: 243_000_000_000
@@ -53,7 +53,7 @@ taxable_interest_and_ordinary_dividends: # excludes qualified dividends
   2031-01-01: 428_000_000_000
   2032-01-01: 436_000_000_000
   2033-01-01: 445_000_000_000
-qualified_dividends:
+qualified_dividend_income:
   2019-01-01: 248_000_000_000
   2020-01-01: 246_000_000_000
   2021-01-01: 262_000_000_000
@@ -69,7 +69,7 @@ qualified_dividends:
   2031-01-01: 379_000_000_000
   2032-01-01: 400_000_000_000
   2033-01-01: 420_000_000_000
-capital_gain_or_loss:
+net_capital_gain:
   2019-01-01: 884_000_000_000
   2020-01-01: 1_152_000_000_000
   2021-01-01: 2_037_000_000_000
@@ -85,7 +85,7 @@ capital_gain_or_loss:
   2031-01-01: 1_397_000_000_000
   2032-01-01: 1_442_000_000_000
   2033-01-01: 1_491_000_000_000
-net_business_income:
+self_employment_income:
   2019-01-01: 1_103_000_000_000
   2020-01-01: 1_170_000_000_000
   2021-01-01: 1_302_000_000_000
@@ -101,7 +101,7 @@ net_business_income:
   2031-01-01: 1_971_000_000_000
   2032-01-01: 2_038_000_000_000
   2033-01-01: 2_107_000_000_000
-taxable_pensions_annuities_IRA:
+taxable_pension_income:
   2019-01-01: 1_125_000_000_000
   2020-01-01: 1_127_000_000_000
   2021-01-01: 1_336_000_000_000
@@ -117,7 +117,7 @@ taxable_pensions_annuities_IRA:
   2031-01-01: 1_897_000_000_000
   2032-01-01: 1_974_000_000_000
   2033-01-01: 2_053_000_000_000
-taxable_social_security_benefits:
+taxable_social_security:
   2019-01-01: 361_000_000_000
   2020-01-01: 376_000_000_000
   2021-01-01: 422_000_000_000
@@ -133,7 +133,7 @@ taxable_social_security_benefits:
   2031-01-01: 897_000_000_000
   2032-01-01: 949_000_000_000
   2033-01-01: 1_003_000_000_000
-all_other_sources:
+irs_other_income:
   2019-01-01: -125_000_000_000
   2020-01-01: 62_000_000_000
   2021-01-01: 136_000_000_000
@@ -149,7 +149,7 @@ all_other_sources:
   2031-01-01: -169_000_000_000
   2032-01-01: -176_000_000_000
   2033-01-01: -185_000_000_000
-statutory_adjustments:
+above_the_line_deductions:
   2019-01-01: -145_000_000_000
   2020-01-01: -139_000_000_000
   2021-01-01: -146_000_000_000
