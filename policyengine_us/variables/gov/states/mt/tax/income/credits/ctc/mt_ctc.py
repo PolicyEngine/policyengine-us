@@ -32,7 +32,7 @@ class mt_ctc(Variable):
         child_amount = eligible_children * p.base
         credit = eligible * child_amount
         # reduction
-        reduction_rate = p.reduction.rate * (max_((gross_income - p.reduction.treshold),0) // p.reduction.increment)
+        reduction_rate = p.reduction.rate * (max_((gross_income - p.reduction.threshold),0) // p.reduction.increment)
         reduced_credit = max_((credit - reduction_rate),0)
 
-        return where((gross_income > p.reduction.treshold), reduced_credit , credit)
+        return where((gross_income > p.reduction.threshold), reduced_credit , credit)
