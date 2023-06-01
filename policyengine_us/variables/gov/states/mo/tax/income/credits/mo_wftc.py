@@ -15,4 +15,4 @@ class mo_wftc(Variable):
         rate = parameters(
             period
         ).gov.states.mo.tax.income.credits.wftc.eitc_match
-        return federal_eitc * rate
+        return federal_eitc * rate * 12
