@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nyc_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NYC EITC (without deducting other credits)"
+    label = "NYC EITC"
     unit = USD
     definition_period = YEAR
     defined_for = "in_nyc"

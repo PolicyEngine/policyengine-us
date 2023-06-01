@@ -1,0 +1,55 @@
+- name: No unearned income or child support, $0 per year
+  period: 2023
+  input:
+    state_code: DC
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 0
+    child_support_received: 0
+  output:
+    dc_tanf_countable_gross_unearned_income: 0
+
+
+- name: $1,000 of each unearned income and $1,000 in child support, $10,000 per year
+  period: 2023
+  input:
+    state_code: DC
+    veterans_benefits: 1_000
+    rental_income: 1_000
+    alimony_income: 1_000
+    dividend_income: 1_000
+    interest_income: 1_000
+    pension_income: 1_000
+    unemployment_compensation: 1_000
+    gi_cash_assistance: 1_000
+    social_security: 1_000
+    ssi: 1_000
+    child_support_received: 1_000 # disregard $150 per month * 12
+  output:
+    dc_tanf_countable_gross_unearned_income: 10_000
+
+
+- name: No unearned income and $2,000 in child support, $11,000 per year
+  period: 2023
+  input:
+    state_code: DC
+    veterans_benefits: 0
+    rental_income: 0
+    alimony_income: 0
+    dividend_income: 0
+    interest_income: 0
+    pension_income: 0
+    unemployment_compensation: 0
+    gi_cash_assistance: 0
+    social_security: 0
+    ssi: 0
+    child_support_received: 2_000 # disregard $150 per month * 12
+  output:
+    dc_tanf_countable_gross_unearned_income: 200

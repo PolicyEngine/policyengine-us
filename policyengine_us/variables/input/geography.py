@@ -17,7 +17,7 @@ class state_name(Variable):
     definition_period = YEAR
 
     def formula(household, period, parameters):
-        fips = household("fips", period)
+        fips = household("state_fips", period)
         return (
             pd.Series(fips)
             .map(
@@ -142,3 +142,18 @@ class reported_slspc(Variable):
     unit = USD
     definition_period = YEAR
     hidden_input = True
+
+
+class county_fips(Variable):
+    value_type = int
+    entity = Household
+    definition_period = YEAR
+    documentation = "County FIPS code"
+
+
+class state_fips(Variable):
+    value_type = int
+    entity = Household
+    definition_period = YEAR
+    documentation = "State FIPS code"
+    default_value = 6
