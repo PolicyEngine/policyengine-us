@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.331.1] - 2023-05-31 23:59:55
+
+### Fixed
+
+- Missing taxable_social_security in list of NJ AGI subtractions relative to federal AGI.
+
 ## [0.331.0] - 2023-05-31 23:56:45
 
 ### Added
@@ -3951,6 +3957,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.331.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.331.0...0.331.1
 [0.331.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.330.1...0.331.0
 [0.330.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.330.0...0.330.1
 [0.330.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.329.4...0.330.0

@@ -3321,3 +3321,9 @@
     added:
     - Rhode Island Standard Deduction.
   date: 2023-05-31 23:56:45
+- bump: patch
+  changes:
+    fixed:
+    - Missing taxable_social_security in list of NJ AGI subtractions relative to federal
+      AGI.
+  date: 2023-05-31 23:59:55
