@@ -1,0 +1,10 @@
+- name: No children
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: NC
+    adjusted_gross_income: 15_000
+    tax_unit_children: 0
+  output:  
+    nc_ctc: 0
+
