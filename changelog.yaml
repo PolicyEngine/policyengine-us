@@ -3316,3 +3316,14 @@
     fixed:
     - Add six states to list used by state_income_tax formula.
   date: 2023-05-31 02:23:18
+- bump: minor
+  changes:
+    added:
+    - Rhode Island Standard Deduction.
+  date: 2023-05-31 23:56:45
+- bump: patch
+  changes:
+    fixed:
+    - Missing taxable_social_security in list of NJ AGI subtractions relative to federal
+      AGI.
+  date: 2023-05-31 23:59:55
