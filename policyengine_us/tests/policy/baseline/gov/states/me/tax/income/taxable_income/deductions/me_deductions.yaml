@@ -3,7 +3,7 @@
   absolute_error_margin: 0
   input:
     state_code: NY
-    me_deduction_phaseout_percentage: .40
+    me_deduction_phaseout_percentage: 0.40
     me_standard_deduction_pre_phaseout: 20_000
     me_itemized_deductions_pre_phaseout: 25_000
   output:
@@ -14,7 +14,7 @@
   absolute_error_margin: 0
   input:
     state_code: ME
-    me_deduction_phaseout_percentage: .40
+    me_deduction_phaseout_percentage: 0.40
     me_standard_deduction_pre_phaseout: 20_000
     me_itemized_deductions_pre_phaseout: 25_000
   output:
@@ -25,7 +25,7 @@
   absolute_error_margin: 0
   input:
     state_code: ME
-    me_deduction_phaseout_percentage: .90
+    me_deduction_phaseout_percentage: 0.90
     me_standard_deduction_pre_phaseout: 25_000
     me_itemized_deductions_pre_phaseout: 20_000
   output:

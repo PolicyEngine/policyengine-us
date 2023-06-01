@@ -31,14 +31,3 @@ class me_deduction_phaseout_percentage(Variable):
 
         # Calculate the phaseout percent (Line 5)
         return min_(1, excess / phaseout_width)
-
-        # Get their deduction prior to phaseout. Max of itemized and standard (Line 6)
-        max_deduction = max_(
-            tax_unit("me_itemized_deductions", period),
-            tax_unit("me_standard_deduction", period),
-        )
-
-        # Calculate the phaseout amount (Line 7)
-        phaseout_amount = max_deduction * phaseout_percent
-
-        return max_deduction - phaseout_amount  # Line 8

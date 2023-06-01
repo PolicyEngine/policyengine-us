@@ -15,7 +15,7 @@ class me_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         # Get the phaseout percent (Line 5).
-        phaseout_percent = tax_unit("me_deduction_phaseout_percent", period)
+        phaseout_percent = tax_unit("me_deduction_phaseout_percentage", period)
 
         # Get the relevant deduction amount (Line 6).
         max_deduction = max_(
