@@ -20,5 +20,5 @@ class la_cdcc_refundable(Variable):
        agi_eligible = us_agi <= p.cdcc.agi_threshold
        # determine LA refundable cdcc amount
        us_cdcc = tax_unit("cdcc", period)
-       la_cdcc = us_cdcc * p.cdcc.refundable.fraction.calc(us_agi)
+       la_cdcc = us_cdcc * p.cdcc.refundable.fraction
        return agi_eligible * la_cdcc
