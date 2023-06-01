@@ -8,3 +8,33 @@
   output:  
     nc_ctc: 0
 
+- name: 1 child
+  period: 2021
+  input:
+    filing_status: SINGLE
+    state_code: NC
+    adjusted_gross_income: 15_000
+    tax_unit_children: 1
+  output:  
+    nc_ctc: 125
+
+- name: 1 child
+  period: 2021
+  input:
+    filing_status: JOINT
+    state_code: NC
+    adjusted_gross_income: 50_000
+    tax_unit_children: 1
+  output:  
+    nc_ctc: 100
+
+
+- name: 2 children
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: NC
+    adjusted_gross_income: 30_000
+    tax_unit_children: 2
+  output:  
+    nc_ctc: 250
