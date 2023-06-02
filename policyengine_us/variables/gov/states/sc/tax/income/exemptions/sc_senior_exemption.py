@@ -46,13 +46,13 @@ class sc_senior_exemption(Variable):
 
         # Calculate senior exemption. The exemption can not be less than 0. Add head and spouse together.
         return max(
-            head_eligible* p.amount
+            head_eligible * p.amount
             - retirement_income_deduction
             - sc_military_retirement_income_deduction,
-            0,) + max(
-            spouse_eligible* p.spouse_amount
+            0,
+        ) + max(
+            spouse_eligible * p.spouse_amount
             - retirement_income_deduction_spouse
             - sc_military_retirement_income_deduction_spouse,
             0,
-            )
-    
+        )
