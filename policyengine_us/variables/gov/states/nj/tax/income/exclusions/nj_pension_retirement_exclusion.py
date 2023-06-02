@@ -55,8 +55,8 @@ class nj_pension_retirement_exclusion(Variable):
 
         # Get the total income minus interest and pension income to determine exclusion percentage.
         # Line 27 minus 16b and 20b.
-        interest_income = add(tax_unit, period, "taxable_interest_income")
-        pension_income = add(tax_unit, period, "taxable_pension_income")
+        interest_income = add(tax_unit, period, ["taxable_interest_income"])
+        pension_income = add(tax_unit, period, ["taxable_pension_income"])
         agi = tax_unit("adjustable_gross_income", period)
         qualifying_income = agi - interest_income - pension_income
 
