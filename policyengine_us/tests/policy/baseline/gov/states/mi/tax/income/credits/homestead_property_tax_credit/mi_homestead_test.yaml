@@ -1,0 +1,36 @@
+- name: No household resources (income)
+  period: 2023
+  input:
+    employment_income: 0
+    self_employment_income: 0
+  output:
+    mi_homestead_property_tax_credit: 1_600
+
+- name: No household resources (all) 
+  period: 2023
+  input:
+    - employment_income: 0
+    - self_employment_income: 0
+    - strike_benefits: 0
+    - dividend_income: 0
+    - interest_income: 0
+    - farm_income: 0
+    - qualified_business_income: 0
+    - rental_income: 0
+    - farm_rent_income: 0
+    - pension_income: 0
+    - net_capital_gain: 0
+    - alimony_income: 0
+    - social_security: 0
+    - ssi: 0
+    - child_support_received: 0
+    - unemployment_compensation: 0
+    - miscellaneous_income: 0
+    - veterans_benefits: 0
+    - workers_compensation: 0
+    - disability_benefits: 0
+    - gi_cash_assistance: 0
+    - tanf: 0
+    - general_assistance: 0
+  output:
+    mi_homestead_property_tax_credit: 1_600
