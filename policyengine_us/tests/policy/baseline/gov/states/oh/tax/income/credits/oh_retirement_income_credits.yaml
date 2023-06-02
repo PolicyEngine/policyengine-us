@@ -22,7 +22,7 @@
   period: 2021
   input:
     state_code: OH
-    oh_agi: 100_001
+    oh_agi: 100_000
     pension_income: 10
     oh_has_not_taken_oh_lump_sum_credits: True
   output:
@@ -52,8 +52,48 @@
   period: 2021
   input:
     state_code: OH
+    oh_agi: 1_500
+    pension_income: 10
+    oh_has_not_taken_oh_lump_sum_credits: True
+  output:
+    oh_retirement_income_credits: 25
+
+- name: retire income credit tier 3
+  period: 2021
+  input:
+    state_code: OH
     oh_agi: 1_501
     pension_income: 10
     oh_has_not_taken_oh_lump_sum_credits: True
   output:
     oh_retirement_income_credits: 50
+
+- name: retire income credit tier 4
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 3_001
+    pension_income: 10
+    oh_has_not_taken_oh_lump_sum_credits: True
+  output:
+    oh_retirement_income_credits: 80
+
+- name: retire income credit tier 5
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 5_001
+    pension_income: 10
+    oh_has_not_taken_oh_lump_sum_credits: True
+  output:
+    oh_retirement_income_credits: 130
+
+- name: retire income credit tier 6
+  period: 2021
+  input:
+    state_code: OH
+    oh_agi: 8_001
+    pension_income: 10
+    oh_has_not_taken_oh_lump_sum_credits: True
+  output:
+    oh_retirement_income_credits: 200

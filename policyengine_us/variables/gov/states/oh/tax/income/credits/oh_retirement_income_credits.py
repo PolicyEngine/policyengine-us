@@ -24,9 +24,7 @@ class oh_retirement_income_credits(Variable):
         pension_income = sum(person("pension_income", period))
 
         agi = tax_unit("oh_agi", period)
-        has_not_taken_lump_sum_distribution = person(
-             "oh_has_not_taken_oh_lump_sum_credits", period
-         )
+        has_not_taken_lump_sum_distribution = person("oh_has_not_taken_oh_lump_sum_credits", period)
 
         eligible = agi < p.agi_cap and pension_income > 0
         return p.agi_credit_amount.calc(agi) * eligible * has_not_taken_lump_sum_distribution
