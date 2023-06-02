@@ -1,0 +1,11 @@
+description: Pennsylvania has a threshold value for number of persons in budget group. After exceeding this number, the cash assistance will be constant for each additional person.
+
+values:
+  2023-01-01: 6
+  
+metadata:
+  unit: person
+  label: Pennsylvania TANF threshold value for number of persons in budget group to receive additional cash assistance
+  reference:
+    - title: Pennsylvania State TANF Cash Assistance for Threshold of Number of People in Budget Group
+      href: https://www.compass.state.pa.us/compass.web/menuitems/CashFAQ.aspx?Language=EN

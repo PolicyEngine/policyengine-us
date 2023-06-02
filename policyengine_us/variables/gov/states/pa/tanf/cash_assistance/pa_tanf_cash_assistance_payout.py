@@ -172,10 +172,14 @@ class pa_tanf_cash_assistance_payout(Variable):
                 group_4,
             ],
             [
-                p.first_group.additional_person * max(0, (people - 6)),
-                p.second_group.additional_person * max(0, (people - 6)),
-                p.third_group.additional_person * max(0, (people - 6)),
-                p.fourth_group.additional_person * max(0, (people - 6)),
+                p.first_group.additional_person
+                * max(0, (people - p.number_of_persons_threshold)),
+                p.second_group.additional_person
+                * max(0, (people - p.number_of_persons_threshold)),
+                p.third_group.additional_person
+                * max(0, (people - p.number_of_persons_threshold)),
+                p.fourth_group.additional_person
+                * max(0, (people - p.number_of_persons_threshold)),
             ],
         )
 
