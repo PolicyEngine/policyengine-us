@@ -13,4 +13,5 @@ class ri_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
-        return p.amount[filing_status]
+        phase_out = tax_unit("ri_standard_deduction_phase_out", period)
+        return p.amount[filing_status] * phase_out

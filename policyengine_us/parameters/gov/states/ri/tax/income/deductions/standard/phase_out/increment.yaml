@@ -1,12 +1,12 @@
-description: Phaseout increment for RI standard deduction.
+description: Rhode Island phases the standard deduction out at this increment.
 values:
   2022-01-01: 6_200
   2023-01-01: 6_700
 
 metadata:
-  label: phaseout increment for RI standard deduction by tax year
+  label: Rhode Island standard deduction phase out increment
   period: year
-  unit: /1
+  unit: currency-USD
   reference:
   - title: Inflation-adjusted amounts set for tax year 2023
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf

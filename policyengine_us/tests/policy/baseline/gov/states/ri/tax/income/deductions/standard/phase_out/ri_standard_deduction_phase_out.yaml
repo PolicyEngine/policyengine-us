@@ -1,0 +1,8 @@
+- name: Single filer
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 200_000
+  output:
+    ri_standard_deduction_phase_out: 1
+
