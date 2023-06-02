@@ -60,10 +60,9 @@ class va_age_deduction(Variable):
             count_eligible == count_eligible_for_full_deduction, 0, 1
         )
 
-
         # Special case: for all married taxpayers, the age deduction will differ when filing separately vs. filing jointly.
         married_filing_status = where(joint, 1, count_eligible)
-        
+
         # Calculate the age deduction amount for each filing
         age_deduction = (
             maximum_allowable_deduction - reduction
