@@ -1,0 +1,35 @@
+description: Michigan has a home heating standard allowance which stays effective only when the household income is within this ceiling
+metadata:
+  type: single_amount
+  threshold_unit: exemptions
+  amount_unit: currency-USD
+  label: Michigan income ceiling of home heating standard allowance
+  reference:
+    - title: TABLE A - 2022 Home Heating Credit (MI-1040CR-7) Standard Allowance
+      href: https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance
+brackets:
+  - threshold:
+      2022-01-01: 14_957
+    amount:
+      2022-01-01: 524
+  - threshold:
+      2022-01-01: 20_157
+    amount:
+      2022-01-01: 706
+  - threshold:
+      2022-01-01: 25_357
+    amount:
+      2022-01-01: 888
+  - threshold:
+      2022-01-01: 30_528
+    amount:
+      2022-01-01: 1_069
+  - threshold:
+      2022-01-01: 35_729
+    amount:
+      2022-01-01: 1_251
+  - threshold:
+      2022-01-01: 40_929
+    amount:
+      2022-01-01: 1_433
+
