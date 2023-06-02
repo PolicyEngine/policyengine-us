@@ -24,40 +24,47 @@ class va_age_deduction(Variable):
 
         age_head = tax_unit("age_head", period)
         age_spouse = where(single, 0, tax_unit("age_spouse", period))
+        birth_year_head = period.start.year - age_head
+        birth_year_spouse = period.start.year - age_spouse
 
-        AFAGI = tax_unit("va_afagi", period)
+        afagi = tax_unit("va_afagi", period)
 
         # Calculate the number of people who are eligible for an age deduction
-        eligible_count = where(age_head >= p.age_minimum, 1, 0) + where(
-            age_spouse >= p.age_minimum, 1, 0
+        head_eligible = age_head >= p.age_minimum
+        spouse_eligible = age_spouse >= p.age_minimum
+        count_eligible = head_eligible.astype(int) + spouse_eligible.astype(
+            int
         )
 
         # Calculate the number of people eligible for a full age deduction
-        birth_year_head = period.start.year - age_head
-        birth_year_spouse = period.start.year - age_spouse
-        full_deduction_count = sum(
-            where(birth_year_head < p.birth_year_limit_for_full_amount, 1, 0),
-            where(
-                birth_year_spouse < p.birth_year_limit_for_full_amount, 1, 0
-            ),
+        head_eligible_for_full_deduction = (
+            birth_year_head < p.birth_year_limit_for_full_amount
         )
+        spouse_eligible_for_full_deduction = (
+            birth_year_spouse < p.birth_year_limit_for_full_amount
+        )
+        count_eligible_for_full_deduction = (
+            head_eligible_for_full_deduction.astype(int)
+            + spouse_eligible_for_full_deduction.astype(int)
+        )
+
         # Calculate the maximum allowable deduction amount per filing
-        maximum_allowable_deduction = p.amount * eligible_count
+        maximum_allowable_deduction = p.amount * count_eligible
 
         # Calculate the amount that the adjusted federal AGI exceeds the threshold
-        excess = max_(
-            AFAGI - (p.threshold[filing_status],),
-            0,
-        )
+        excess = max_(afagi - p.threshold[filing_status], 0)
 
-        # The maximum allowable deduction amount would be adjusted by a reduction that is calculated based on the excess and eligibility count for a full deduction
+        # Reduce by the entire excess, unless both head and spouse (or head only if single)
+        # are eligible for the full deduction
         reduction = excess * where(
-            eligible_count == full_deduction_count, 0, 1
+            count_eligible == count_eligible_for_full_deduction, 0, 1
         )
 
-        married_filing_status = where(joint, 1, eligible_count)
 
         # Special case: for all married taxpayers, the age deduction will differ when filing separately vs. filing jointly.
+        married_filing_status = where(joint, 1, count_eligible)
+        
+        # Calculate the age deduction amount for each filing
         age_deduction = (
             maximum_allowable_deduction - reduction
         ) / married_filing_status
