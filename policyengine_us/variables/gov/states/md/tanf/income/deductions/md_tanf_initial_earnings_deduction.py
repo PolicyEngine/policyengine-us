@@ -11,11 +11,11 @@ class md_tanf_initial_earnings_deduction(Variable):
 
     def formula(spm_unit, period, parameters):
         # Get earned income for the SPM unit.
+        p = parameters(period).gov.states.md.tanf.income.sources
         earned_income = add(spm_unit, period, p.earned)
         # Determine if the SPM unit has any self-employment income.
         self_employment_income = spm_unit("self_employment_income", period)
         # Get the policy parameters.
-        p = parameters(period).gov.states.md.tanf.income.sources
 
         return select(
             # First arg: self employed or not

@@ -1,25 +1,56 @@
-- name: 0 children, $0 deductions
+- name:  No children, part-time work, $0 deductions
   period: 2023
   input:
-    state_code: MD
-    md_tanf_count_children: 0
+    people:
+      person1:
+        work_hours_per_week: 50
+      person2:
+        work_hours_per_week: 60
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        md_tanf_count_children: 0
+    households:
+      household:
+        state_code: MD
   output:
     md_tanf_childcare_deduction: 0
 
-- name: 2 children, full-time work, $400 deductions
+- name:  2 children, part-time work, $200 deductions
   period: 2023
   input:
-    state_code: MD
-    md_tanf_count_children: 2
-    workhours: 100
+    people:
+      person1:
+        work_hours_per_week: 50
+      person2:
+        work_hours_per_week: 60
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        md_tanf_count_children: 2
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_childcare_deduction: 200
+
+- name:  2 children, full-time work, $400 deductions
+  period: 2023
+  input:
+    people:
+      person1:
+        work_hours_per_week: 100
+      person2:
+        work_hours_per_week: 60
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        md_tanf_count_children: 2
+    households:
+      household:
+        state_code: MD
   output:
     md_tanf_childcare_deduction: 400
 
-- name: 2 children, part-time work, $200 deductions
-  period: 2023
-  input:
-    state_code: MD
-    md_tanf_count_children: 2
-    workhours: 50
-  output:
-    md_tanf_childcare_deduction: 200
+
+

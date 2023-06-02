@@ -31,4 +31,4 @@ class md_tanf_countable_gross_earned_income_deduction(Variable):
             default=p.not_self_employed,
         )
         # Multiply earned income by percent deduction.
-        return spm_unit.sum{earned_income * percent}
+        return spm_unit.sum(earned_income * percent)

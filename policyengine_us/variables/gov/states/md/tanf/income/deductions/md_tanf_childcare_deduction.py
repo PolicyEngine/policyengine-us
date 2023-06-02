@@ -13,20 +13,17 @@ class md_tanf_childcare_deduction(Variable):
     defined_for = StateCode.MD
 
     def formula(spm_unit, period, parameters):
-        workhours = add(spm_unit, period, ["workhour"])
-
+        children = spm_unit("md_tanf_count_children", period)
+        person = spm_unit.members
+        work_hours = person("work_hours_per_week", period)
         # Get the policy parameters.
         p = parameters(
             period
         ).gov.states.md.tanf.income.deductions.earnings_exclusion
-        childcare_deduction = (
-            fulltime_childcare_expenses
-            * (workhours >= 100)
-            * md_tanf_count_children
-            + parttime_childcare_expenses
-            * (workhours < 100)
-            * md_tanf_count_children
-        )
+        full_time = spm_unit.any(work_hours >= p.fulltime_hours)
 
-        # Return if initially eligible
-        return childcare_deduction
+        return children * where(
+            full_time,
+            p.fulltime_childcare_expenses,
+            p.parttime_childcare_expenses,
+        )

@@ -1,11 +1,12 @@
-description: Maryland excludes this childcare expenses from TANF countable earned income for full-time enrollees.
+description: Work hour requirement defining someone is full-time employed or not
 
 values:
-  2022-11-01: 200
+  2022-11-01: 100
 
 metadata:
   period: year
-  label: Maryland TANF childcare expenses for full-time enrollees
+  label: Maryland TANF work hours requirement for full-time enrollees
   reference:
     - title: Maryland TEMPORARY CASH ASSISTANCE MANUAL 904.1 DEDUCTIONS FROM EARNED INCOME
       href: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0904%20Deductions%20and%20Expenses%20rev%2011.22.1.doc
+
