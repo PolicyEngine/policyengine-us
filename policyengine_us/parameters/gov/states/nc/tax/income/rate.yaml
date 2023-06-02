@@ -1,0 +1,15 @@
+description: North Carolina taxes the personal income at this rate.
+values:
+  2019-01-01: 0.0525
+  2023-01-01: 0.0475
+  2024-01-01: 0.046
+  2025-01-01: 0.045
+  2026-01-01: 0.0425
+  2027-01-01: 0.0399
+metadata:
+  unit: /1
+  period: year
+  label: North Carolina income tax rate
+  reference:
+    - title: North Carolina Department of Revenue - Tax Rate Schedules
+      href: https://www.ncdor.gov/taxes-forms/tax-rate-schedules#:~:text=For%20Tax%20Year%202023%2C%20the,is%205.25%25%20(0.0525)
