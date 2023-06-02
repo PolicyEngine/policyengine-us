@@ -4,12 +4,12 @@
   input:
     people:
       person1:
-        medical_expense: 500
         real_estate_taxes: 1_000
     tax_units:
       tax_unit:
         members: [person1]
         tax_unit_itemizes: true
+        medical_expense_deduction: 500
         taxable_income_deductions_if_itemizing: 10_000
     households:
       household:
@@ -24,12 +24,12 @@
   input:
     people:
       person1:
-        medical_expense: 500
         real_estate_taxes: 1_000
     tax_units:
       tax_unit:
         members: [person1]
         tax_unit_itemizes: true
+        medical_expense_deduction: 500
         taxable_income_deductions_if_itemizing: 10_000
     households:
       household:
@@ -44,12 +44,12 @@
   input:
     people:
       person1:
-        medical_expense: 500
         real_estate_taxes: 1_000
     tax_units:
       tax_unit:
         members: [person1]
         tax_unit_itemizes: false
+        medical_expense_deduction: 500
         taxable_income_deductions_if_itemizing: 10_000
     households:
       household:
@@ -64,12 +64,12 @@
   input:
     people:
       person1:
-        medical_expense: 0
         real_estate_taxes: 0
     tax_units:
       tax_unit:
         members: [person1]
         tax_unit_itemizes: true
+        medical_expense_deduction: 0
         taxable_income_deductions_if_itemizing: 31_151
     households:
       household:
@@ -84,12 +84,12 @@
   input:
     people:
       person1:
-        medical_expense: 5_000
         real_estate_taxes: 1_000
     tax_units:
       tax_unit:
         members: [person1]
         tax_unit_itemizes: true
+        medical_expense_deduction: 5_000
         taxable_income_deductions_if_itemizing: 40_000
     households:
       household:
