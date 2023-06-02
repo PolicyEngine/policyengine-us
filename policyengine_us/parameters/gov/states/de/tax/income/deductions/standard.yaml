@@ -1,0 +1,19 @@
+description: Delaware provides these standard deduction amounts for 2022.
+metadata:
+  reference:
+    - title: Delaware individual income tax instructions for 2022
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf
+  label: Delaware Standard Deduction
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+JOINT:
+  2022-01-01: 6_500
+SINGLE:
+  2022-01-01: 3_250
+SEPARATE:
+  2022-01-01: 3_250
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 3_250
+
