@@ -1,0 +1,36 @@
+description: OH Retirement Income Credit AGI Credit Amount
+brackets:
+  - threshold:
+      2021-01-01: -1
+    amount:
+      2021-01-01: 0
+  - threshold: 
+      2021-01-01: 501
+    amount:
+      2021-01-01: 25
+  - threshold:
+      2021-01-01: 1_501
+    amount:
+      2021-01-01: 50
+  - threshold:
+      2021-01-01: 3_001
+    amount:
+      2021-01-01: 80
+  - threshold:
+      2021-01-01: 5_001
+    amount:
+      2021-01-01: 130
+  - threshold:
+      2021-01-01: 8_001
+    amount:
+      2021-01-01: 200
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  type: single_amount
+  label: OH Retirement Income Credit Amount
+  reference:
+    - title: Ohio Income Tax Form
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
+    - title: Ohio Income Tax Form
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29
