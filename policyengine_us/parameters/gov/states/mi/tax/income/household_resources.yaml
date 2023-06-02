@@ -1,0 +1,35 @@
+# unit: list
+# to include: emoployment_income , self_employment_income, rent, interest, 
+# divident, pension_income, net_capital_gains, social_security, ssi
+
+# Source: On page 2 of https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR7.pdf?rev=c36e54deae424566bb6abd1cbe8af7cb&hash=B39BA9887DD31395E754CC0641EFB512
+
+description: Income sources used to calculate total house resources for the homestead property tax credit
+values:
+  2023-01-01:
+    - employment_income #19
+    - self_employment_income #19
+    - strike_benefits #19
+    - dividend_income #20
+    - interest_income #20
+    - farm_income #21
+    - qualified_business_income #21?
+    - rental_income #22
+    - farm_rent_income #22
+    - pension_income #23
+    - net_capital_gain #24
+    - alimony_income #25
+    - social_security #26
+    - ssi #26
+    - child_support_received #27
+    - unemployment_compensation #28
+    - # Missing 29 Gifts received or expenses paid on your behalf
+    - miscellaneous_income #30? But this taxable income
+    - veterans_benefits #31
+    - workers_compensation #31?
+    - disability_benefits #31
+    - gi_cash_assistance #32?
+    - tanf #32
+    - general_assistance #32?
+metadata:
+  unit: list

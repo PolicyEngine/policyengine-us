@@ -1,54 +1,57 @@
-
 description: The Homestead Property Tax Credit Phase Out determines the percentage of the credit that can be claimed based on total household resources.
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 1
+  - threshold:
+      2023-01-01: 54_000
+    amount:
+      2023-01-01: 0.9
+  - threshold:
+      2023-01-01: 55_000
+    amount:
+      2023-01-01: 0.8
+  - threshold:
+      2023-01-01: 56_000
+    amount:
+      2023-01-01: 0.7
+  - threshold:
+      2023-01-01: 57_000
+    amount:
+      2023-01-01: 0.6
+  - threshold:
+      2023-01-01: 58_000
+    amount:
+      2023-01-01: 0.5
+  - threshold:
+      2023-01-01: 59_000
+    amount:
+      2023-01-01: 0.4
+  - threshold:
+      2023-01-01: 60_000
+    amount:
+      2023-01-01: 0.3
+  - threshold:
+      2023-01-01: 61_000
+    amount:
+      2023-01-01: 0.2
+  - threshold:
+      2023-01-01: 62_000
+    amount:
+      2023-01-01: 0.1
+  - threshold:
+      2023-01-01: 63_000
+    amount:
+      2023-01-01: 0
+      
 metadata:
-    unit: /1
-    period: year
-    label: Homestead Property Tax Credit Phase Out
+  type: single_amount
+  amount_unit: /1
+  threshold_unit: currency-USD
+  period: year
+
+  label: "Homestead Property Tax Credit Phase Out"
     reference:
     - title: "MI-1040CR TABLE B"
       href: "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR-Instructions.pdf?rev=67deea154fe14149a8a22a30e370fa6c&hash=D1B4A597CDE814D95EC9F1DDC91663D3"
-values:
-  2023-01-01:
-    - range:
-        start: 0
-        end: 54_000
-      value: 1.00
-    - range:
-        start: 54_001
-        end: 55_000
-      value: 0.90
-    - range:
-        start: 55_001
-        end: 56_000
-      value: 0.80
-    - range:
-        start: 56_001
-        end: 57_000
-      value: 0.70
-    - range:
-        start: 57_001
-        end: 58_000
-      value: 0.60
-    - range:
-        start: 58_001
-        end: 59_000
-      value: 0.50
-    - range:
-        start: 59_001
-        end: 60_000
-      value: 0.40
-    - range:
-        start: 60_001
-        end: 61_000
-      value: 0.30
-    - range:
-        start: 61_001
-        end: 62_000
-      value: 0.20
-    - range:
-        start: 62_001
-        end: 63_000
-      value: 0.10
-    - range:
-        start: 63_001
-    value: 0.00
