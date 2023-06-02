@@ -1,4 +1,4 @@
-- name: Single filer
+- name: Filer claims full amount of standard deductions
   period: 2022
   input:
     state_code: RI
@@ -6,3 +6,26 @@
   output:
     ri_standard_deduction_phase_out: 1
 
+- name: Filer claims limited standard deductions
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 217_100
+  output:
+    ri_standard_deduction_phase_out: 0.8
+
+- name: Filer claims limited standard deductions
+  period: 2023
+  input:
+    state_code: RI
+    adjusted_gross_income: 260_000
+  output:
+    ri_standard_deduction_phase_out: 0.2
+
+- name: Filer claims none of standard deductions
+  period: 2023
+  input:
+    state_code: RI
+    adjusted_gross_income: 270_000
+  output:
+    ri_standard_deduction_phase_out: 0
