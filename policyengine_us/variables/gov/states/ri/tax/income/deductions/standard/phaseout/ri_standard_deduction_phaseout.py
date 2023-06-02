@@ -26,5 +26,5 @@ class ri_standard_deduction_phaseout(Variable):
         excess_agi_percentage = p.phaseout.percentage_threshold[excess_agi_step]
 
         deduction_amount = excess_agi_percentage * p.amount[filing_status]
-        
+
         return max_(0, deduction_amount)
