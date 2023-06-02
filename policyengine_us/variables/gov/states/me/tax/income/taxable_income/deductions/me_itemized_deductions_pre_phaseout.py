@@ -24,7 +24,7 @@ class me_itemized_deductions_pre_phaseout(Variable):
         deduction = tax_unit("taxable_income_deductions_if_itemizing", period)
 
         # Get medical (and dental) expenses.
-        medical_expenses = tax_unit("medical_expenses", period)
+        medical_expenses = tax_unit("medical_expense", period)
 
         # Get real estate (and property) taxes.
         real_estate_taxes = tax_unit("real_estate_taxes", period)

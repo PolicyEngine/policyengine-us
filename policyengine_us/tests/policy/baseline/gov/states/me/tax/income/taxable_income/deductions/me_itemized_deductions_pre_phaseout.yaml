@@ -5,7 +5,7 @@
     state_code: NY
     tax_unit_itemizes: true
     taxable_income_deductions_if_itemizing: 10_000
-    medical_expenses: 500
+    medical_expense: 500
     real_estate_taxes: 1_000
   output:
     me_itemized_deductions_pre_phaseout: 0
@@ -17,7 +17,7 @@
     state_code: ME
     tax_unit_itemizes: true
     taxable_income_deductions_if_itemizing: 10_000
-    medical_expenses: 500
+    medical_expense: 500
     real_estate_taxes: 1_000
   output:
     me_itemized_deductions_pre_phaseout: 11_000
@@ -29,7 +29,7 @@
     state_code: ME
     tax_unit_itemizes: false
     taxable_income_deductions_if_itemizing: 10_000
-    medical_expenses: 500
+    medical_expense: 500
     real_estate_taxes: 1_000
   output:
     me_itemized_deductions_pre_phaseout: 0
@@ -41,7 +41,7 @@
     state_code: ME
     tax_unit_itemizes: true
     taxable_income_deductions_if_itemizing: 31_151
-    medical_expenses: 0
+    medical_expense: 0
     real_estate_taxes: 0
   output:
     me_itemized_deductions_pre_phaseout: 31_150
@@ -53,7 +53,7 @@
     state_code: ME
     tax_unit_itemizes: true
     taxable_income_deductions_if_itemizing: 40_000
-    medical_expenses: 5_000
+    medical_expense: 5_000
     real_estate_taxes: 1_000
   output:
     me_itemized_deductions_pre_phaseout: 36_150
