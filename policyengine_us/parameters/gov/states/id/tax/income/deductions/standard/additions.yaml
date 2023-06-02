@@ -1,0 +1,21 @@
+description: Idaho provides this base standard deduction additions.
+metadata:
+  label: Idaho base standard deduction additions
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Itemized Deduction Worksheet for Idaho
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIS00407/EIS00407_01-05-2023.pdf
+  
+JOINT:
+  2023-01-01: 1_400
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 1_750
+WIDOW:
+  2023-01-01: 1_400
+SINGLE:
+  2023-01-01: 1_750
+SEPARATE:
+  2023-01-01: 1_400
