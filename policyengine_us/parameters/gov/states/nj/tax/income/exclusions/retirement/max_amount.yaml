@@ -1,0 +1,17 @@
+description: Filers (and/or spouses) can exclude no more than this amount of retirement income from taxable income
+metadata:
+  unit: currency-USD
+  label: NJ pension/retirement maximum exclusion amount
+  reference:
+    - title: Instructions for Form NJ-1040 (line 28a)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21
+SINGLE:
+  2022-01-01: 75_000
+SEPARATE:
+  2022-01-01: 50_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 75_000
+JOINT:
+  2022-01-01: 100_000
+WIDOW:
+  2022-01-01: 75_000

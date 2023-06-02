@@ -1,0 +1,542 @@
+- name: Can count all of head and spouse retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 3_000
+        taxable_interest_income: 2_000
+        taxable_pension_income: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 6_000
+        taxable_interest_income: 5_000
+        taxable_pension_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 19_000
+
+- name: Spouse retirement income can't be counted because they're not age eligible.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 3_000
+        taxable_interest_income: 2_000
+        taxable_pension_income: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 61
+        taxable_social_security: 6_000
+        taxable_interest_income: 5_000
+        taxable_pension_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 6_000
+
+- name: Retirement income of third senior in tax unit can't be counted.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 3_000
+        taxable_interest_income: 2_000
+        taxable_pension_income: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 6_000
+        taxable_interest_income: 5_000
+        taxable_pension_income: 4_000
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        age: 62
+        taxable_social_security: 3_000
+        taxable_interest_income: 2_000
+        taxable_pension_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 19_000
+
+- name: Can count all head and spouse retirement income because they're blind or disabled.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 61
+        taxable_social_security: 3_000
+        taxable_interest_income: 2_000
+        taxable_pension_income: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 61
+        taxable_social_security: 6_000
+        taxable_interest_income: 5_000
+        taxable_pension_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: true
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: true
+        adjusted_gross_income: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 19_000
+
+- name: Max amount is restrictive - head of household filer.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 100_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 75_000
+
+- name: Max amount is restrictive - joint filer.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 100_000
+
+- name: Max amount is restrictive - single filer.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 100_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 75_000
+
+- name: Max amount is restrictive - widow filer.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 100_000
+        filing_status: WIDOW
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 75_000
+
+- name: Max amount is restrictive - separate filer.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 100_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 50_000
+
+- name: Joint filer with $110k income can exclude 50 percent of retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 110_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 50_000
+
+- name: Joint filer with $150k income can exclude 25 percent of retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 150_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 25_000
+
+- name: Single filer with $110k income can exclude 37.5 percent of retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 110_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 37_500
+
+- name: Single filer with $150k income can exclude 18.75 percent of retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 150_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 18_750
+
+- name: Separate filer with $110k income can exclude 25 percent of retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 110_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 25_000
+
+- name: Separate filer with $150k income can exclude 12.5 percent of retirement income.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        taxable_social_security: 100_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        taxable_social_security: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        blind_head: false
+        blind_spouse: false
+        disabled_head: false
+        disabled_spouse: false
+        adjusted_gross_income: 150_000
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_pension_retirement_exclusion: 12_500
