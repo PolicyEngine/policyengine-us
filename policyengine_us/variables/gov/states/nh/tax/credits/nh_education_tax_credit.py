@@ -5,7 +5,6 @@ class nh_education_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Hampshire Education Tax Credits"
-    documentation = "New Hampshire Education Tax Credit"
     unit = USD
     definition_period = YEAR
     reference = (
