@@ -1,0 +1,12 @@
+description: VA excludes this amount of monthly child support when computing unearned income.
+
+values:
+  2020-07-01: 100
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: VA TANF child support exclusion
+  reference:
+    - title: VA TANF Guidance Manual - Need and Amount of Assistance 
+      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=57

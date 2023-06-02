@@ -1,0 +1,64 @@
+- name: VA requires earned income from full time children to be disregarded from computing household earnings.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 1_000
+      parent2:
+        earned_income: 2_000
+      child:
+        earned_income: 300
+        is_child : true
+        is_full_time_student: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
+  output:
+    va_tanf_gross_earned_income: 3_000
+
+- name: VA only requires earned income from full time children to be disregarded from computing household earnings.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 1_000
+      parent2:
+        earned_income: 2_000
+      child:
+        earned_income: 300
+        is_child : true
+        is_full_time_student: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
+  output:
+    va_tanf_gross_earned_income: 3_300
+
+
+- name: Earned income from adults should be summed up.
+  period: 2023
+  input:
+    people:
+      parent1:
+        earned_income: 1_000
+      parent2:
+        earned_income: 2_000
+      parent3:
+        earned_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, parent3]
+    households:
+      household:
+        members: [parent1, parent2, parent3]
+        state_code: VA
+  output:
+    va_tanf_gross_earned_income: 4_000

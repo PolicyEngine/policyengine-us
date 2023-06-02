@@ -1,0 +1,39 @@
+- name: Household with no income is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_need_standard: 1
+    va_tanf_countable_earned_income: 0
+    va_tanf_countable_unearned_income: 0
+  output:
+    va_tanf_income_eligibility: true
+
+- name: Household with income equaling need standard is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_need_standard: 1_000
+    va_tanf_countable_earned_income: 500
+    va_tanf_countable_unearned_income: 500
+  output:
+    va_tanf_income_eligibility: true
+
+- name: Household with income exceeding need standard is not eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_tanf_need_standard: 1_000
+    va_tanf_countable_earned_income: 1_000
+    va_tanf_countable_unearned_income: 1_000
+  output:
+    va_tanf_income_eligibility: false
+
+- name: Only calculate for VA.
+  period: 2023
+  input:
+    state_code: MD
+    va_tanf_need_standard: 1_000
+    va_tanf_countable_earned_income: 0
+    va_tanf_countable_unearned_income: 0
+  output:
+    va_tanf_income_eligibility: false
