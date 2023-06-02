@@ -1,0 +1,20 @@
+description: North Carolina Standard Deductions, depending on filling status.
+metadata:
+  lable: North Caroliona Standard Deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference: North Carolina Department of Revenue
+    href: https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions 
+
+SINGLE:
+  2023-01-01: 12_750
+JOINT:
+  2023-01-01: 25_500
+WIDOW:
+  2023-01-01: 25_500
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 19_125
+SEPARATE:
+  2023-01-01: 12_750
