@@ -1,0 +1,35 @@
+- name: Single filer no income
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    az_taxable_income: 0
+  output:
+    az_income_tax_before_credits: 0
+
+- name: Joint calculation # ((60,000 - 53,000) * 0.0334 + 53,000 * 0.0259)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_taxable_income: 60_000
+  output:
+    az_income_tax_before_credits: 1_606.5
+
+- name: Separate calculation # ((30,000 - 26,500) * 0.0334 + 26,500 * 0.0259)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_taxable_income: 30_000
+  output:
+    az_income_tax_before_credits: 803.25
+
+- name: Head of Household calculation # ((70,000 - 53,000) * 0.0334 + 53,000 * 0.0259)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_taxable_income: 70_000
+  output:
+    az_income_tax_before_credits: 1_940.5
