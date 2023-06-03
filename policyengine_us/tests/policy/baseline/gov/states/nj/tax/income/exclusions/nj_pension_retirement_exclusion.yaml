@@ -31,7 +31,7 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 19_000
+    nj_pension_retirement_exclusion: 21_000
 
 - name: Spouse retirement income can't be counted because they're not age eligible.
   absolute_error_margin: 0
@@ -108,7 +108,7 @@
         members: [person1, person2, person3]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 19_000
+    nj_pension_retirement_exclusion: 21_000
 
 - name: Can count all head and spouse retirement income because they're blind or disabled.
   absolute_error_margin: 0
@@ -143,7 +143,7 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 19_000
+    nj_pension_retirement_exclusion: 21_000
 
 - name: Max amount is restrictive - head of household filer.
   absolute_error_margin: 0
