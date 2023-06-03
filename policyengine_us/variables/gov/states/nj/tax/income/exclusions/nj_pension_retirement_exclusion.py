@@ -33,10 +33,12 @@ class nj_pension_retirement_exclusion(Variable):
         social_security = person("taxable_social_security", period)
         interest_income = person("taxable_interest_income", period)
         pension_income = person("taxable_pension_income", period)
-        potential_head_exclusion = where(
-            is_head,
-            social_security + interest_income + pension_income,
-            0,
+        potential_head_exclusion = add(
+            where(
+                is_head,
+                social_security + interest_income + pension_income,
+                0,
+            )
         )
         head_exclusion = eligible_head * potential_head_exclusion
 
@@ -45,10 +47,12 @@ class nj_pension_retirement_exclusion(Variable):
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
         is_spouse = person("is_tax_unit_spouse", period)
-        potential_spouse_exclusion = where(
-            is_spouse,
-            social_security + interest_income + pension_income,
-            0,
+        potential_spouse_exclusion = add(
+            where(
+                is_spouse,
+                social_security + interest_income + pension_income,
+                0,
+            )
         )
         spouse_exclusion = joint * eligible_spouse * potential_spouse_exclusion
         exclusion_amount = head_exclusion + spouse_exclusion
@@ -81,4 +85,4 @@ class nj_pension_retirement_exclusion(Variable):
         # Get the maximum exclusion amount based on filing status.
         maximum_exclusion = p.max_amount[filing_status]
 
-        return max_(exclusion_amount * exclusion_percentage, maximum_exclusion)
+        return min_(exclusion_amount * exclusion_percentage, maximum_exclusion)
