@@ -33,7 +33,7 @@ class nj_pension_retirement_exclusion(Variable):
         social_security = person("taxable_social_security", period)
         interest_income = person("taxable_interest_income", period)
         pension_income = person("taxable_pension_income", period)
-        potential_head_exclusion = add(
+        potential_head_exclusion = tax_unit.sum(
             where(
                 is_head,
                 social_security + interest_income + pension_income,
@@ -47,7 +47,7 @@ class nj_pension_retirement_exclusion(Variable):
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
         is_spouse = person("is_tax_unit_spouse", period)
-        potential_spouse_exclusion = add(
+        potential_spouse_exclusion = tax_unit.sum(
             where(
                 is_spouse,
                 social_security + interest_income + pension_income,
