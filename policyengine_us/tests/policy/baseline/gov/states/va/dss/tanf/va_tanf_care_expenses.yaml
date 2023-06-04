@@ -1,0 +1,59 @@
+- name: Full-time employment family, mother and a 1-year-old child, $200 per month
+  input:
+    people:
+      parent:
+        is_mother: true
+        is_disabled: false
+      child:
+        is_child: true
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        va_tanf_is_full_time: true
+  output:
+    va_tanf_care_expenses: 2_400
+
+- name: Full-time employment family, mother, disabled father, a 1-year-old child and a 2-year-old child, 
+  input:
+    people:
+      parent1:
+        is_mother: true
+        is_disabled: false
+      parent2:
+        is_father: true
+        is_disabled: true
+      child1:
+        is_child: true
+        age: 1
+      child2:
+        is_child: true
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        va_tanf_is_full_time: true
+  output:
+    va_tanf_care_expenses: 6_600
+
+- name: Part-time employment family, mother, disabled father, a 1-year-old child and a 3-year-old child, 
+  input:
+    people:
+      parent1:
+        is_mother: true
+        is_disabled: false
+      parent2:
+        is_father: true
+        is_disabled: true
+      child1:
+        is_child: true
+        age: 1
+      child2:
+        is_child: true
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        va_tanf_is_full_time: false
+  output:
+    va_tanf_care_expenses: 4_320

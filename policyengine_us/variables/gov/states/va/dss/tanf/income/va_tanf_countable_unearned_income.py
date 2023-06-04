@@ -22,5 +22,5 @@ class va_tanf_countable_unearned_income(Variable):
         gross_unearned_after_disregard =  gross_unearned - min_(child_support, child_support_disregard) - min_(interest_income, interest_income_disregard)
         return where(up_tanf_eligibility,
                      gross_unearned_after_disregard - unemployment_compensation,
-                     gross_unearned_after_disregard,)
+                     gross_unearned_after_disregard)
 

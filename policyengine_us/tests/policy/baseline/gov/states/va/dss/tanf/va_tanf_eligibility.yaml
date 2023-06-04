@@ -1,0 +1,26 @@
+- name: Is demographic eligible and income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    is_demographic_tanf_eligible: true
+    va_tanf_income_eligible: true
+  output:
+    va_tanf_eligible: true
+
+- name: Is demographic eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    is_demographic_tanf_eligible: true
+    va_tanf_income_eligible: false
+  output:
+    va_tanf_eligible: false
+
+- name: Is income eligible but not demographic eligible.
+  period: 2023
+  input:
+    state_code: VA
+    is_demographic_tanf_eligible: false
+    va_tanf_income_eligible: true
+  output:
+    va_tanf_eligible: false

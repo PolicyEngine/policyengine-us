@@ -17,7 +17,6 @@ class va_tanf_gross_earned_income(Variable):
         nonchild_earned_income = where(
             child_0_17 & full_time_student,
             0,
-            person_earned_income,)
-        gross_earned_income = spm_unit.sum(nonchild_earned_income)
+            person_earned_income)
         
-        return gross_earned_income
+        return spm_unit.sum(nonchild_earned_income)

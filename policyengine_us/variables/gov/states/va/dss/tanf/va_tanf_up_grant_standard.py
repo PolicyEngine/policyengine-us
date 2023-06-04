@@ -20,7 +20,7 @@ class va_tanf_up_grant_standard(Variable):
         p = where(
             if_group3,
             p.up_grant_standard.group3,
-            p.up_grant_standard.group2,
+            p.up_grant_standard.group2
         )
 
         monthly = p.main[ceiling] + additional * p.addition

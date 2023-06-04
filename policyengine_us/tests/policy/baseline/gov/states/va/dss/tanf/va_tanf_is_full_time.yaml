@@ -1,0 +1,47 @@
+- name: Zero work hour refers to part-time employment status.
+  period: 2023
+  input:
+    people:
+      parent1:
+        work_hours_per_week: 0
+        is_mother: true
+      parent2:
+        work_hours_per_week: 0
+        is_father: true
+      child:
+        work_hours_per_week: 0
+        is_child: true
+  output:
+    va_tanf_is_full_time: false
+
+- name: One parent with 30 work hours refer to full-time employment status.
+  period: 2023
+  input:
+    people:
+      parent1:
+        work_hours_per_week: 30
+        is_mother: true
+      parent2:
+        work_hours_per_week: 0
+        is_father: true
+      child:
+        work_hours_per_week: 0
+        is_child: true
+  output:
+    va_tanf_is_full_time: true
+
+- name: Only child with 30 work hours refer to part-time employment status.
+  period: 2023
+  input:
+    people:
+      parent1:
+        work_hours_per_week: 29
+        is_mother: true
+      parent2:
+        work_hours_per_week: 0
+        is_father: true
+      child:
+        work_hours_per_week: 30
+        is_child: true
+  output:
+    va_tanf_is_full_time: false

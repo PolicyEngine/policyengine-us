@@ -20,7 +20,7 @@ class va_tanf_need_standard(Variable):
         p = where(
             if_group3,
             p.need_standard.group3,
-            p.need_standard.group2,
+            p.need_standard.group2
         )
 
         monthly = p.main[ceiling] + additional * p.addition
