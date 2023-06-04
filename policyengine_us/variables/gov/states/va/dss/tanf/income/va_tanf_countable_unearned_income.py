@@ -15,12 +15,19 @@ class va_tanf_countable_unearned_income(Variable):
         gross_unearned = add(spm_unit, period, p.unearned)
         child_support = add(spm_unit, period, ["child_support_received"])
         interest_income = add(spm_unit, period, ["interest_income"])
-        unemployment_compensation = add(spm_unit, period, ["unemployment_compensation"])
+        unemployment_compensation = add(
+            spm_unit, period, ["unemployment_compensation"]
+        )
         p = p.deduction.unearned
-        child_support_disregard = p.monthly_child_support * MONTHS_IN_YEAR 
+        child_support_disregard = p.monthly_child_support * MONTHS_IN_YEAR
         interest_income_disregard = p.montly_interest_income * MONTHS_IN_YEAR
-        gross_unearned_after_disregard =  gross_unearned - min_(child_support, child_support_disregard) - min_(interest_income, interest_income_disregard)
-        return where(up_tanf_eligibility,
-                     gross_unearned_after_disregard - unemployment_compensation,
-                     gross_unearned_after_disregard)
-
+        gross_unearned_after_disregard = (
+            gross_unearned
+            - min_(child_support, child_support_disregard)
+            - min_(interest_income, interest_income_disregard)
+        )
+        return where(
+            up_tanf_eligibility,
+            gross_unearned_after_disregard - unemployment_compensation,
+            gross_unearned_after_disregard,
+        )

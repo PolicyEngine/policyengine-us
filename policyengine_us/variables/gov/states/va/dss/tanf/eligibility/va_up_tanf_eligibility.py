@@ -12,7 +12,7 @@ class va_up_tanf_eligibility(Variable):
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
         earned_income = person("earned_income", period)
-        mother = person("is_mother",period)
+        mother = person("is_mother", period)
         father = person("is_father", period)
         disabled = person("is_disabled", period)
         eligible_father = (father) & (~disabled) & (earned_income == 0)

@@ -26,5 +26,5 @@ class va_tanf(Variable):
         p = where(up_tanf_eligibility, up_grant_standard, grant_standard)
         p = where(if_group3, p.group3, p.group2)
         maximum = p.max
-        
+
         return min_(where(payment >= minimum, payment, 0), maximum)
