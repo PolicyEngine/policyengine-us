@@ -1,0 +1,82 @@
+- name: Married filing joint with one dependent
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        tax_unit_dependents: 1
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_exemptions: 10_400
+
+- name: SINGLE
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_dependents: 0
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_exemptions: 2_700
+
+- name: Married filing joint with three dependents
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        is_tax_unit_dependent: true
+      person4:
+        is_tax_unit_dependent: true
+      person5:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        filing_status: JOINT
+        tax_unit_dependents: 3
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_exemptions: 16_400
+
+- name: Head of household
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        tax_unit_dependents: 1
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_exemptions: 5_700 
