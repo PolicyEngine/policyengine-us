@@ -42,7 +42,7 @@
   output:
     ms_aged_exemption: 0
 
-- name: If filing seperately, head and spouse are both above 65, exemption is $1.5k.
+- name: If filing separately, head and spouse are both above 65, exemption is $1.5k.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -53,7 +53,7 @@
   output:
     ms_aged_exemption: 1_500
 
-- name: If filing seperately, head and spouse are both under 65, exemption is $0.
+- name: If filing separately, head and spouse are both under 65, exemption is $0.
   period: 2022
   absolute_error_margin: 0
   input:
