@@ -17,4 +17,4 @@ class ms_personal_standard_deduction(Variable):
         p = parameters(period).gov.states.ms.tax.income.deductions.standard
 
         # Get their standard deduction amount based on their filing status.
-        return p.deductions.standard.amount[filing_status]
+        return p.amount[filing_status]
