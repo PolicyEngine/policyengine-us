@@ -1,0 +1,35 @@
+- name: 1 dependent under 17 and 1 dependent over 17.
+  period: 2023
+  input:
+    state_code: AZ
+    dependents_under17: 1
+    dependents_over17: 1
+  output:
+    az_dependents_credits: 125
+
+- name: no dependents.
+  period: 2023
+  input:
+    state_code: AZ
+    dependents_under17: 0
+    dependents_over17: 0
+  output:
+    az_dependents_credits: 0
+
+- name: 2 dependents under 17.
+  period: 2023
+  input:
+    state_code: AZ
+    dependents_under17: 2
+    dependents_over17: 0
+  output:
+    az_dependents_credits: 200
+
+- name: 2 dependents over 17.
+  period: 2023
+  input:
+    state_code: AZ
+    dependents_under17: 0
+    dependents_over17: 2
+  output:
+    az_dependents_credits: 50
