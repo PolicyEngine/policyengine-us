@@ -1,18 +1,9 @@
 description: South Carolina matches this share of the federal Child and Dependent Care Credit
-brackets:
- - threshold:
-     2022-01-01: 0
-   rate:
-     2022-01-01: 0.07
- - threshold:
-     2022-01-01: 6_000
-   rate:
-     2022-01-01: 0.00
-  
+values: 
+  2022-01-01: 0.07
+
 metadata:
-  type: marginal_rate
-  threshold_unit: currency-USD
-  rate_unit: /1
+  unit: /1
   period: year
   label: South Carolina Child and Dependent Care Credit match
   reference: 
