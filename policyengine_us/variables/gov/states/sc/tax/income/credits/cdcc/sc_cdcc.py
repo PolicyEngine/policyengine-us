@@ -8,7 +8,9 @@ class sc_cdcc(Variable):
     documentation = "South Carolina Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=22"
+    reference = (
+        "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=22"
+    )
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
@@ -17,7 +19,7 @@ class sc_cdcc(Variable):
 
         # Get federal child care expenses
         federal_cdce = tax_unit("childcare_expenses", period)
-        
+
         # # Married filing separate are ineligible.
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
