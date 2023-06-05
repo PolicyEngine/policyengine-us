@@ -5,7 +5,7 @@
     filing_status: SINGLE
     blind_head: false
   output:
-    ms_blind_or_age_exemption: 0
+    ms_blind_exemption: 0
 
 - name: If filing single and blind, exemption is $1.5k.
   period: 2022
@@ -14,7 +14,7 @@
     filing_status: SINGLE
     blind_head: true
   output:
-    ms_blind_or_age_exemption: 1_500
+    ms_blind_exemption: 1_500
 
 - name: If filing jointly, head is blind but spouse is not blind, exemption is $1.5k.
   period: 2022
@@ -24,7 +24,7 @@
     blind_head: true
     blind_spouse: false
   output:
-    ms_blind_or_age_exemption: 1_500
+    ms_blind_exemption: 1_500
 
 - name: If filing jointly, head and spouse are both blind, exemption is $3k.
   period: 2022
@@ -34,7 +34,7 @@
     blind_head: true
     blind_spouse: true
   output:
-    ms_blind_or_age_exemption: 3_000
+    ms_blind_exemption: 3_000
 
 - name: If filing jointly, head and spouse are both not blind, exemption is $0k.
   period: 2022
@@ -64,9 +64,9 @@
     blind_head: true
     blind_spouse: true
   output:
-    ms_blind_or_age_exemption: 1_500
+    ms_blind_exemption: 1_500
 
-- name: If filing seperately, head and spouse are both not blind, exemption is $0k.
+- name: If filing separately, head and spouse are both not blind, exemption is $0k.
   period: 2022
   input:
     state_code: MS
@@ -74,4 +74,4 @@
     blind_head: false
     blind_spouse: false
   output:
-    ms_blind_or_age_exemption: 0
+    ms_blind_exemption: 0
