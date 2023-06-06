@@ -44,7 +44,7 @@
     blind_head: false
     blind_spouse: false
   output:
-    ms_blind_or_age_exemption: 0
+    ms_blind_exemption: 0
 
 - name: If filing jointly, head is not blind but spouse is blind, exemption is $1.5k.
   period: 2022
@@ -54,7 +54,7 @@
     blind_head: false
     blind_spouse: true
   output:
-    ms_blind_or_age_exemption: 1_500
+    ms_blind_exemption: 1_500
 
 - name: If filing seperately, head and spouse are both blind, exemption is $1.5k.
   period: 2022
