@@ -1,0 +1,23 @@
+description: Iowa imposes an alternative minimum tax in which the AMT taxable income threshold is this amount.
+metadata:
+  label: Iowa alternative minimum tax threshold amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 IA 6251 Form, Line 23
+    href: https://tax.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf#page=2
+  - title: 2022 IA 6251 Form, Line 23
+    href: https://tax.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf#page=2
+
+JOINT:
+  2021-01-01: 35_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 26_000
+WIDOW:
+  2021-01-01: 26_000
+SINGLE:
+  2021-01-01: 26_000
+SEPARATE:
+  2021-01-01: 17_500
