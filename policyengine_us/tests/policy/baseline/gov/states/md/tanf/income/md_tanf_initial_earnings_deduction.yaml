@@ -3,6 +3,7 @@
   input:
     state_code: MD
     md_tanf_countable_gross_earned_income: 0
+    taxable_self_employment_income: 0
   output:
     md_tanf_initial_earnings_deduction: 0
 
@@ -13,6 +14,7 @@
     state_code: MD
     is_tanf_enrolled: false
     md_tanf_countable_gross_earned_income: 100
+    taxable_self_employment_income: 0
   output:
     md_tanf_initial_earnings_deduction: 20
 
@@ -20,8 +22,8 @@
   period: 2023
   input:
     state_code: MD
-    self_employment_income: 100
     is_tanf_enrolled: false
     md_tanf_countable_gross_earned_income: 100
+    taxable_self_employment_income: 100
   output:
     md_tanf_initial_earnings_deduction: 50

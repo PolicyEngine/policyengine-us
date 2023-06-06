@@ -10,9 +10,9 @@ class md_tanf_countable_gross_unearned_income(Variable):
     defined_for = StateCode.MD
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.md.tanf.income.sources
-        # Sum unearned sources, plus child support if not currently enrolled.
-        gross_unearned = add(spm_unit, period, p.unearned)
-        child_support = add(spm_unit, period, ["child_support_received"])
+        person = spm_unit.members
+        gross_unearned = spm_unit("md_tanf_gross_unearned", period)
+        child_support = spm_unit.sum(person("child_support_received", period))
         enrolled = spm_unit("is_tanf_enrolled", period)
-        return gross_unearned + where(enrolled, 0, child_support)
+
+        return gross_unearned + enrolled * child_support

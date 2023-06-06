@@ -2,21 +2,21 @@ description: Maryland TANF counts these income sources as unearned income.
 values:
   2022-11-01:
     - pension_income
-    - investment_income
+#   - investment_income
     - social_security
-    - sick_accident
+#   - sick_accident
     - alimony_income
-    - monetary_gifts
+#   - monetary_gifts
     - dividend_income
     - interest_income
-    - lottery_winnings
-    - lawsuit_settlements
-    - inheritances
-    - rent_subsidies
-    - worker_compensation
+#   - lottery_winnings
+#   - lawsuit_settlements
+#   - inheritances
+#   - rent_subsidies
+#   - worker_compensation
     - unemployment_compensation
     - veterans_benefits
-    - criminal_injuries_compensation
+ #  - criminal_injuries_compensation
 
 metadata:
   unit: list

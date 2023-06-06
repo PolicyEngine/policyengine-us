@@ -21,6 +21,7 @@ class md_tanf_net_countable_income(Variable):
         continuous_deductions = spm_unit(
             "md_tanf_continuous_earnings_deduction", period
         )
+
         # Get alimony deductions for the SPM unit.
         person = spm_unit.members
         alimony_deduction_ind = person("alimony_income", period)

@@ -1,94 +1,37 @@
-- name: "Person who has different amount for all the unearned income sources"
+- name: "Person1 10 child support, Person2 0 child support, not enrolled, 100 gross unearned, 100 countable gross unearned"
   period: 2023
   input:
-    People: 
-      Person1: 
-        pension_income: 1
-        investment_income: 2
-        social_security: 3
-        alimony_income: 4
-        monetary_gifts: 5
-        dividend_income: 6
-        interest_income: 7
-        lottery_winnings: 8
-        lawsuit_settlements: 9
-        inheritances: 10
-        rent_subsidies: 11
-        worker_compensation: 12
-        unemployment_compensation: 13
-        veterans_benefits: 14
-        criminal_injuries_compensation: 15
-        sick_accident: 16
-      person2:
-        pension_income: 0
-        investment_income: 17
-        social_security: 0
-        alimony_income: 18
-        monetary_gifts: 0
-        dividend_income: 19
-        interest_income: 0
-        lottery_winnings: 20
-        lawsuit_settlements: 0
-        inheritances: 0
-        rent_subsidies: 0
-        worker_compensation: 0
-        unemployment_compensation: 0
-        veterans_benefits: 0
-        criminal_injuries_compensation: 0
-        sick_accident: 0
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    households:
-      household:
-        state_code: MD
-  output:
-    md_tanf_countable_gross_earned_income: 210
-
-
-- name: "Person who has different negative amount for all the unearned income sources"
-  period: 2023
-  input:
-    people:
+    people: 
       person1: 
-        pension_income: -1
-        investment_income: -2
-        social_security: -3
-        alimony_income: -4
-        monetary_gifts: -5
-        dividend_income: -6
-        interest_income: -7
-        lottery_winnings: -8
-        lawsuit_settlements: -9
-        inheritances: -10
-        rent_subsidies: -11
-        worker_compensation: -12
-        unemployment_compensation: -13
-        veterans_benefits: -14
-        criminal_injuries_compensation: -15
-        sick_accident: -16
-      person2: 
-        pension_income: 0
-        investment_income: 0
-        social_security: 0
-        alimony_income: 0
-        monetary_gifts: 0
-        dividend_income: 0
-        interest_income: 0
-        lottery_winnings: 0
-        lawsuit_settlements: 0
-        inheritances: 0
-        rent_subsidies: 0
-        worker_compensation: 0
-        unemployment_compensation: 0
-        veterans_benefits: -14
-        criminal_injuries_compensation: 0
-        sick_accident: 0
+        child_support_received: 10
+      person2:
+        child_support_received: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
+        is_tanf_enrolled: false
+        md_tanf_gross_unearned: 100
     households:
       household:
         state_code: MD
   output:
-    md_tanf_countable_gross_earned_income: 0
+    md_tanf_countable_gross_unearned_income: 100
+
+- name: "Person1 10 child support, Person2 0 child support, enrolled, 100 gross unearned, 110 countable gross unearned"
+  period: 2023
+  input:
+    people: 
+      person1: 
+        child_support_received: 10
+      person2:
+        child_support_received: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        md_tanf_gross_unearned: 100
+    households:
+      household:
+        state_code: MD
+  output:
+    md_tanf_countable_gross_unearned_income: 110

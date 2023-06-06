@@ -22,6 +22,7 @@ class md_tanf_net_initial_countable_income(Variable):
             "md_tanf_initial_earnings_deduction", period
         )
         # Get alimony deductions for the SPM unit.
+
         person = spm_unit.members
         alimony_deduction_ind = person("alimony_income", period)
         alimony_deduction = spm_unit.sum(alimony_deduction_ind)
