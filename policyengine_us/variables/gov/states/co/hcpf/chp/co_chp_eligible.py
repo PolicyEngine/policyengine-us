@@ -11,5 +11,6 @@ class co_chp_eligible(Variable):
     def formula(person, period, parameters):
         medicaid_eligible = person('is_medicaid_eligible', period)
         income_level = person('medicaid_income_level', period)
-        in_income_range = income_level <= 2.6
+        p = parameters(period).gov.states.co.hcpf.chp
+        in_income_range = income_level <= p.income_limit
         return ~medicaid_eligible & in_income_range
