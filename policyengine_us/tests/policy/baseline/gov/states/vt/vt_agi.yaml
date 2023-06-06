@@ -1,0 +1,32 @@
+- name: Outside Maine, no Vermont AGI
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    vt_agi: 0
+
+- name: If $0 income and $0 mods, Vermont agi is $0. 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: VT
+    filing_status: SINGLE
+    adjusted_gross_income: 0
+    vt_agi_additions: 0
+    vt_agi_subtractions: 0
+  output:
+    vt_agi: 0
+
+- name: If $100_000 income and $10_000 add mods and $20_000 sub mods, Vermont AGI is $90_000. 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: VT
+    filing_status: JOINT
+    adjusted_gross_income: 100_000  
+    vt_agi_additions: 10_000
+    vt_agi_subtractions: 20_000
+  output:
+    vt_agi: 90_000
