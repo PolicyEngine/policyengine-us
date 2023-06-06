@@ -1,0 +1,22 @@
+description: Arizona provides this base amount for dependent based on age. 
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: age
+  amount_unit: currency-USD
+  label: Arizona Dependent Credit Amount
+  reference:
+  - title: Arizona Form 140 - 2021 Resident Personal Income Tax Return
+    href: https://azdor.gov/file/13752/download?token=zlZ1pofA
+  - title: Arizona Form 140 - 2022 Resident Personal Income Tax Return
+    href: https://azdor.gov/file/12346/download?token=7FAdFbnT
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 17
+    amount:
+      2021-01-01: 25

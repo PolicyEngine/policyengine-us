@@ -1,0 +1,95 @@
+description: Arizona provides this base amount for dependent based on age. 
+metadata:
+  type: single_amount
+  period: year
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Arizona Dependent Credit Amount
+  reference:
+  - title: Arizona Form 140 - 2021 Resident Personal Income Tax Return
+    href: https://azdor.gov/file/13752/download?token=zlZ1pofA
+  - title: Arizona Form 140 - 2022 Resident Personal Income Tax Return
+    href: https://azdor.gov/file/12346/download?token=7FAdFbnT
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.95
+  - threshold:
+      2021-01-01: 1_001
+    amount:
+      2021-01-01: 0.9
+  - threshold:
+      2021-01-01: 2_001
+    amount:
+      2021-01-01: 0.85
+  - threshold:
+      2021-01-01: 3_001
+    amount:
+      2021-01-01: 0.8
+  - threshold:
+      2021-01-01: 4_001
+    amount:
+      2021-01-01: 0.75
+  - threshold:
+      2021-01-01: 5_001
+    amount:
+      2021-01-01: 0.7
+  - threshold:
+      2021-01-01: 6_001
+    amount:
+      2021-01-01: 0.65
+  - threshold:
+      2021-01-01: 7_001
+    amount:
+      2021-01-01: 25
+  - threshold:
+      2021-01-01: 8_000
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 9_000
+    amount:
+      2021-01-01: 25
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 11_000
+    amount:
+      2021-01-01: 0.6
+  - threshold:
+      2021-01-01: 12_000
+    amount:
+      2021-01-01: 0.65
+  - threshold:
+      2021-01-01: 13_000
+    amount:
+      2021-01-01: 0.7
+  - threshold:
+      2021-01-01: 14_000
+    amount:
+      2021-01-01: 0.75
+  - threshold:
+      2021-01-01: 15_000
+    amount:
+      2021-01-01: 0.8
+  - threshold:
+      2021-01-01: 16_000
+    amount:
+      2021-01-01: 0.85
+  - threshold:
+      2021-01-01: 17_000
+    amount:
+      2021-01-01: 0.9
+  - threshold:
+      2021-01-01: 18_000
+    amount:
+      2021-01-01: 0.95
+  - threshold:
+      2021-01-01: 19_000
+    amount:
+      2021-01-01: 0
+  
