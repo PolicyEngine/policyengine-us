@@ -1,5 +1,9 @@
-- name: Default is zero.
+- name: Single filers with income of $0 pay $0.
   period: 2022
+  input:
+    wv_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: WV
   output:
     wv_income_tax_before_credits: 0
 
