@@ -3,13 +3,13 @@ from policyengine_us.model_api import *
 
 
 
-class la_childexpensetaxcredits_nonrefundable(Variable):
+class la_child_expense_tax_credits_refundable(Variable):
    value_type = float
    entity = TaxUnit
-   label = "Louisiana Child Expense Tax credits"
+   label = "Louisiana_refundable_child_expense_tax_credits"
    unit = star
    definition_period = YEAR
-   reference = https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit
+   reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
    defined_for = StateCode.LA
 
 
@@ -19,6 +19,6 @@ class la_childexpensetaxcredits_nonrefundable(Variable):
        us_agi = tax_unit("adjusted_gross_income", period)
        agi_eligible = us_agi <=p.threshold
        # determine LA nonrefundable amount
-       us_qualityrating = tax_unit("quality rating", period)
-       la_childexpense = us_qualityrating * p.nonrefundable.nonrefundable
-       return la_childexpense
+       quality_rating = tax_unit("quality_rating_of_child_care_facility", period)
+       la_child_expense_tax_credits = us_agi * p.refundable.calc(quality_rating)
+       return la_child_expense_tax_credits
