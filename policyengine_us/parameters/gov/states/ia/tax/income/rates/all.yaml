@@ -1,0 +1,58 @@
+description: Iowa levies income taxes at these rates for all filers.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0033
+  - threshold:
+      2021-01-01: 1_676
+      2022-01-01: 1_743
+    rate:
+      2021-01-01: 0.0067
+  - threshold:
+      2021-01-01: 3_352
+      2022-01-01: 3_486
+    rate:
+      2021-01-01: 0.0225
+  - threshold:
+      2021-01-01: 6_704
+      2022-01-01: 6_972
+    rate:
+      2021-01-01: 0.0414
+  - threshold:
+      2021-01-01: 15_084
+      2022-01-01: 15_687
+    rate:
+      2021-01-01: 0.0563
+  - threshold:
+      2021-01-01: 25_140
+      2022-01-01: 26_145
+    rate:
+      2021-01-01: 0.0596
+  - threshold:
+      2021-01-01: 33_520
+      2022-01-01: 34_860
+    rate:
+      2021-01-01: 0.0625
+  - threshold:
+      2021-01-01: 50_280
+      2022-01-01: 52_290
+    rate:
+      2021-01-01: 0.0744
+  - threshold:
+      2021-01-01: 75_420
+      2022-01-01: 78_435
+    rate:
+      2021-01-01: 0.0853
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Iowa income tax rates and brackets for all filers
+  reference:
+  - title: IDR Announces 2021 Interest Rates, Deductions, Income Tax Brackets
+    href: https://tax.iowa.gov/idr-announces-2021-interest-rates-deductions-income-tax-brackets
+  - title: IDR Announces 2022 Interest Rates, Deductions, Income Tax Brackets
+    href: https://tax.iowa.gov/idr-announces-2022-interest-rates-deductions-income-tax-brackets
