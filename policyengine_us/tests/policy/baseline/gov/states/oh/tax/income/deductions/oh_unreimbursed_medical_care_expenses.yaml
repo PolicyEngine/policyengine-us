@@ -1,0 +1,19 @@
+- name: moop < agi * rate
+  period: 2022
+  input:
+    state_code: OH
+    adjusted_gross_income: 10_000
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 600
+  output:
+    oh_unreimbursed_medical_care_expenses: 500
+
+- name: moop > agi * rate
+  period: 2022
+  input:
+    state_code: OH
+    adjusted_gross_income: 10_000
+    health_insurance_premiums: 500
+    medical_out_of_pocket_expenses: 800
+  output:
+    oh_unreimbursed_medical_care_expenses: 550
