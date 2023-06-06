@@ -1,0 +1,17 @@
+SINGLE:
+  1983-01-01: 4_500
+SEPARATE:
+  1983-01-01: 4_500
+HEAD_OF_HOUSEHOLD:
+  1983-01-01: 9_000
+JOINT:
+  1983-01-01: 9_000
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: Louisiana income tax personal exemption
+  reference:
+    - title: "§294.  Personal exemptions and credit for dependents"
+      href: https://www.legis.la.gov/legis/Law.aspx?d=101761
