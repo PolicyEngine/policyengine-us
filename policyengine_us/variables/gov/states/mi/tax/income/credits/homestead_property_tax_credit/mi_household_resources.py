@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class mi_household_resources(Variable):
     value_type = float
     entity = TaxUnit
