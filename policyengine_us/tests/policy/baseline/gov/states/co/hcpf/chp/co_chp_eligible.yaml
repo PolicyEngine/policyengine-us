@@ -1,0 +1,26 @@
+- name: Not Medicaid eligible
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: true
+    medicaid_income_level: 0
+  output:
+    co_chp_eligible: false
+
+- name: Too much income
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: false
+    medicaid_income_level: 2.7
+  output:
+    co_chp_eligible: false
+
+- name: In income range and not Medicaid eligible
+  period: 2023
+  input:
+    state_code: CO
+    is_medicaid_eligible: false
+    medicaid_income_level: 2.6
+  output:
+    co_chp_eligible: true
