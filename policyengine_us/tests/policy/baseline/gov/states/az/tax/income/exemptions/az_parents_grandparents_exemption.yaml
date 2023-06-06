@@ -2,22 +2,25 @@
   period: 2023
   input:
     state_code: AZ
-    tax_unit_parents_grandparents: 0
+    tax_unit_parents: 0
+    tax_unit_grandparents: 0
   output:
     az_parents_grandparents_exemption: 0
 
-- name: 1 parents or grandparents
+- name: 1 parent and no grandparents
   period: 2023
   input:
     state_code: AZ
-    tax_unit_parents_grandparents: 1
+    tax_unit_parents: 1
+    tax_unit_grandparents: 0
   output:
     az_parents_grandparents_exemption: 10_000
 
-- name: 2 parents or grandparents
+- name: 1 parent and 1 grandparent
   period: 2023
   input:
     state_code: AZ
-    tax_unit_parents_grandparents: 2
+    tax_unit_parents: 1
+    tax_unit_grandparents: 1
   output:
     az_parents_grandparents_exemption: 20_000
