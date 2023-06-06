@@ -11,6 +11,7 @@ class az_parents_grandparents_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
-        par_grandpars = tax_unit("tax_unit_parents_grandparents", period)
+        parents = tax_unit("tax_unit_parents", period)
+        grandparents = tax_unit("tax_unit_grandparents", period)
         
-        return pars_grandpars * p.parents_grandparents
+        return (parents + grandparents) * p.parents_grandparents
