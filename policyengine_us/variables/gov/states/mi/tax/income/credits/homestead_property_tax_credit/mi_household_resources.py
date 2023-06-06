@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
 
-# policyengine-core test ./policyengine_us/tests/policy/baseline/gov/states/mi/
-
 class mi_household_resources(Variable):
     value_type = float
     entity = TaxUnit
