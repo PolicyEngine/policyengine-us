@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class medicaid_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mdicaid-related MAGI"
+    label = "Medicaid-related MAGI"
     unit = USD
     documentation = "Income definition for Medicaid for this tax unit."
     definition_period = YEAR
