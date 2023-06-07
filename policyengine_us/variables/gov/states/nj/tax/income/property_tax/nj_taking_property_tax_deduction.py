@@ -8,11 +8,10 @@ class nj_taking_property_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
-    defined_for = "nj_property_tax_deduction_or_credit_eligible"
+    defined_for = "nj_property_tax_deduction_eligible"
 
     def formula(tax_unit, period, parameters):
         # This follows the logic of the 1040 instructions Worksheet H.
-        # Don't forget to divide the threshold if filing separately? They have to also live together.
 
         # Get the would-be property tax deduction.
         deduction = tax_unit("nj_potential_property_tax_deduction", period)
@@ -67,7 +66,12 @@ class nj_taking_property_tax_deduction(Variable):
         )
 
         # Determine whether the difference in tax incidence is greater than the credit amount.
+        # Credit amount is halved if filing separately but maintaining the same home.
         credit_amount = parameters(
             period
         ).gov.states.nj.tax.income.credits.property_tax.amount
+        separate = filing_status == status.SEPARATE
+        cohabitating = tax_unit("cohabitating_spouses", period)
+        credit_amount = credit_amount / (1 + separate * cohabitating)
+
         return (taxes_without_deduction - taxes_with_deduction) > credit_amount
