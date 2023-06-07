@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mt_standard_deduction(Variable):
+class mt_other_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "MT standard deduction"

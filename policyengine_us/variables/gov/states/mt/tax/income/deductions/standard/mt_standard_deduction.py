@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class mt_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
@@ -15,5 +16,4 @@ class mt_standard_deduction(Variable):
         # standard deduction is a percentage of AGI that
         # is bounded by a min/max by filing status.
         min_amount = max_((p.rate * agi), p.min[filing_status])
-        print(min_amount)
         return min_(min_amount, p.max[filing_status])
