@@ -29,3 +29,19 @@
     adjusted_gross_income: 270_000
   output:
     ri_standard_deduction_phase_out: 0
+
+- name: Filer claims full amount of standard deductions
+  period: 2021
+  input:
+    state_code: RI
+    adjusted_gross_income: 200_000
+  output:
+    ri_standard_deduction_phase_out: 1
+
+- name: Filer claims limited standard deductions
+  period: 2021
+  input:
+    state_code: RI
+    adjusted_gross_income: 211_000
+  output:
+    ri_standard_deduction_phase_out: 0.8
