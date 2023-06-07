@@ -1,0 +1,20 @@
+description: Maine state tax standard deduction
+SINGLE:
+  2022-01-01: 12_950
+JOINT:
+  2022-01-01: 25_900
+SEPARATE:
+  2022-01-01: 12_950
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 19_400
+WIDOW: 
+  2022-01-01: 25_900
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: Maine standard deduction
+  reference:
+    - title: State of Maine - Individual Income Tax 2022 Rates
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2022.pdf

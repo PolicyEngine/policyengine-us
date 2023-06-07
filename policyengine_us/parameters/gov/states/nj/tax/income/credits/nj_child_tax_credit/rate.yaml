@@ -1,0 +1,40 @@
+description: New Jersey provides this credit amount for each qualifying dependent, depending on income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: 1
+  label: New Jersey Child Tax Credit
+  reference:
+    - title: Instructions for 2022 Form NJ-1040 (line 65)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=45
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+      2022-01-01: 500
+  - threshold:
+      2021-01-01: 30_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 400
+  - threshold:
+      2021-01-01: 40_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 300
+  - threshold:
+      2021-01-01: 50_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 200
+  - threshold:
+      2021-01-01: 60_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 100
+  - threshold:
+      2021-01-01: 80_000
+    amount:
+      2021-01-01: 0
