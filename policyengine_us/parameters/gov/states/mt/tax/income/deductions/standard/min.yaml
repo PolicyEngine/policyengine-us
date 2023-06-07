@@ -1,0 +1,26 @@
+description: Montana provides a standard deduction of up to this amount.
+metadata:
+  label: Montana minimum standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: MT Code, Income Tax - Deductions, § 42-15-512 (2)
+      href: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E523
+
+JOINT:
+  2021-01-01: 4_260
+  2022-01-01: 4_520
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 4_260
+  2022-01-01: 4_520
+WIDOW:
+  2021-01-01: 2_130
+  2022-01-01: 2_260
+SINGLE:
+  2021-01-01: 2_130
+  2022-01-01: 2_260
+SEPARATE:
+  2021-01-01: 2_130
+  2022-01-01: 2_260

@@ -15,4 +15,4 @@ class mt_standard_deduction(Variable):
         max_amount = p.max[filing_status]
 
         income = tax_unit("tax_unit_earned_income", period)
-        return min(max_amount, income)
+        return min_(max_amount, income)

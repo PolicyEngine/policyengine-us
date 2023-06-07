@@ -1,21 +1,26 @@
-description: MT provides filers a maximum standard deduction of this amount, depending on filing status.
+description: Montana provides filers a maximum standard deduction of this amount, depending on filing status.
 metadata:
-  label: MT standard deduction
+  label: Montana standard deduction max amount
   period: year
   unit: currency-USD
   breakdown:
-  - filing_status
+    - filing_status
   reference:
-  - title: MT Code, Taxation - Individual Income Tax, § 15-30-2131 (b)
-    href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html
-  
+    - title: MT Code, Income Tax - Deductions, § 42-15-512 (2)
+      href: https://rules.mt.gov/gateway/RuleNo.asp?RN=42%2E15%2E523
+
 JOINT:
-  2021-01-01: 10_000
+  2021-01-01: 9_660
+  2022-01-01: 10_180
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 5_000
+  2021-01-01: 9_660
+  2022-01-01: 10_180
 WIDOW:
-  2021-01-01: 5_000
+  2021-01-01: 4_830
+  2022-01-01: 5_090
 SINGLE:
-  2021-01-01: 5_000
+  2021-01-01: 4_830
+  2022-01-01: 5_090
 SEPARATE:
-  2021-01-01: 5_000
+  2021-01-01: 4_830
+  2022-01-01: 5_090

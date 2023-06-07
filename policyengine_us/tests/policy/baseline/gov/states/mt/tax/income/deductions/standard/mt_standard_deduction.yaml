@@ -1,35 +1,44 @@
-- name: $12,950 for single.
+# - name: $12,950 for single. #0.2*12950=2590 (in the middle)
+#   period: 2021
+#   input:
+#     state_code: MT
+#     adjusted_gross_income: 12_950
+#     filing_status: SINGLE
+#   output:
+#     mt_standard_deduction: 2_590
+
+# - name: $8,000 for widow. #0.2*8000=1600 (lower than min)
+#   period: 2021
+#   input:
+#     state_code: MT
+#     adjusted_gross_income: 8_000
+#     filing_status: WIDOW
+#   output:
+#     mt_standard_deduction: 2_130
+
+# - name: $30,000 for seperate. #0.2*30000=6000 (higher than max)
+#   period: 2021
+#   input:
+#     state_code: MT
+#     adjusted_gross_income: 30_000
+#     filing_status: SEPERATE
+#   output:
+#     mt_standard_deduction: 4_830
+
+# - name: $25,180 for head of household. #0.2*25180=5036 (in the middle)
+#   period: 2022
+#   input:
+#     state_code: MT
+#     adjusted_gross_income: 25_180
+#     filing_status: HEAD_OF_HOUSEHOLD
+#   output:
+#     mt_standard_deduction: 5_036
+
+- name: $15,000 for joint. #0.2*15000=3000 (lower than min)
   period: 2022
   input:
     state_code: MT
-    tax_unit_earned_income: 12_950
-    filing_status: SINGLE
-  output:
-    mt_standard_deduction: 5_000
-
-- name: $4,000 for head of household.
-  period: 2023
-  input:
-    state_code: MT
-    tax_unit_earned_income: 4_000
-    filing_status: HEAD_OF_HOUSEHOLD
-  output:
-    mt_standard_deduction: 4_000
-
-- name: $9,980 for joint.
-  period: 2024
-  input:
-    state_code: MT
-    tax_unit_earned_income: 9_980
+    adjusted_gross_income: 15_000
     filing_status: JOINT
   output:
-    mt_standard_deduction: 9_980
-  
-- name: $10,000 for joint.
-  period: 2024
-  input:
-    state_code: MT
-    tax_unit_earned_income: 10_000
-    filing_status: JOINT
-  output:
-    mt_standard_deduction: 10_000
+    mt_standard_deduction: 4_520
