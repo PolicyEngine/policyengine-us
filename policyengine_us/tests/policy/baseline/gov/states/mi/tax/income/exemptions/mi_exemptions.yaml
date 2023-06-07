@@ -1,0 +1,44 @@
+- name: no dependents, is not stillborn parent, not disabled
+  period: 2022
+  input:
+    person_count: 1
+    state_code: MI
+  output:
+    mi_exemptions: 5_000
+
+- name: 2 dependents, is not stillborn parent, not disabled
+  period: 2022
+  input:
+    person_count: 1
+    dependent_count: 2
+    state_code: MI
+  output: # 5_000 * 3
+    mi_exemptions: 15_000
+
+- name: no dependents, is stillborn parent, not disabled
+  period: 2022
+  input:
+    person_count: 1
+    stillborn_parent: true
+    state_code: MI
+  output: # 5_000 + 5_000
+    mi_exemptions: 10_000
+
+- name: no dependents, is not stillborn parent, is disabled
+  period: 2022
+  input:
+    person_count: 1
+    disabled_count: 1
+    state_code: MI
+  output: # 5_000 + 2_900
+    mi_exemptions: 7_900
+
+- name: no dependents, is not stillborn parent, is disabled, is disabled veteran
+  period: 2022
+  input:
+    person_count: 1
+    disabled_count: 1
+    disabled_veteran_count: 1
+    state_code: MI
+  output: # 5_000 + 2_900 + 400
+    mi_exemptions: 8_300
