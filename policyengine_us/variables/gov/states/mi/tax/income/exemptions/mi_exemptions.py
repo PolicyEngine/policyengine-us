@@ -31,7 +31,15 @@ class mi_exemptions(Variable):
 
         # Disabled veteran exemptions
         disabled_veteran = tax_unit("disabled_veteran_count", period)
-        disabled_veteran_exemption = disabled_veteran * p.special_exemptions.disabled_veteran_amount
+        disabled_veteran_exemption = (
+            disabled_veteran * p.special_exemptions.disabled_veteran_amount
+        )
 
         # Total exemptions
-        return personal_exemption + dependent_exemption + stillborn_exemption + disabled_exemption + disabled_veteran_exemption
+        return (
+            personal_exemption
+            + dependent_exemption
+            + stillborn_exemption
+            + disabled_exemption
+            + disabled_veteran_exemption
+        )
