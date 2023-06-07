@@ -5,7 +5,7 @@ import numpy as np
 class ga_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "GA Exemptions"
+    label = "Georgia Exemptions"
     defined_for = StateCode.GA
     unit = USD
     definition_period = YEAR
