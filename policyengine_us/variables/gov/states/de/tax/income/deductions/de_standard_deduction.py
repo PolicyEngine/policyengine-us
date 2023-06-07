@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class de_standard_deduction(Variable):
