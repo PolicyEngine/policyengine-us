@@ -39,6 +39,7 @@ class mt_ctc(Variable):
         increments = excess // p.reduction.increment
         reduction_rate = p.reduction.rate * increments
         reduced_credit = max_((credit - reduction_rate), 0)
-        return where(
-            (gross_income > p.reduction.threshold), reduced_credit, credit
-        )
+        return reduced_credit
+        # return where(
+        #     (gross_income > p.reduction.threshold), reduced_credit, credit
+        # )

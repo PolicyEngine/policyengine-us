@@ -32,8 +32,8 @@
 #     mt_ctc: 750
 #     # 1200 - 5*90 = 750
   
-- name: Adult dependent CTC is non-refundable in 2022.
-  period: 2022
+- name: MT child tax credit test 1
+  period: 2023
   input:
     people:
       head:
@@ -48,8 +48,33 @@
       tax_unit:
         members: [head, dep1, dep2]
         adjusted_gross_income: 55_000
-        is_tax_unit_dependent: True
         net_investment_income: 0
-        state_code: MT
+    household:
+      state_code: MT
   output:
     mt_ctc: 750
+    # 1200 - 5*90 = 750
+
+- name: MT child tax credit test 2
+  period: 2023
+  input:
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 3
+        is_tax_unit_dependent: true
+      dep2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+        adjusted_gross_income: 30_000
+        net_investment_income: 0
+    household:
+      state_code: MT
+  output:
+    mt_ctc: 2_400
+    # 1200 * 2
+    
