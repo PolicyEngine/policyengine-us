@@ -33,3 +33,21 @@
     tax_unit_size: 4
   output:
     ri_exemption: 0
+
+- name: Filer claims full amount of exemption
+  period: 2021
+  input:
+    state_code: RI
+    adjusted_gross_income: 200_000
+    tax_unit_size: 1
+  output:
+    ri_exemption: 4_250
+
+- name: Filer claims limited amount of exemption
+  period: 2021
+  input:
+    state_code: RI
+    adjusted_gross_income: 211_000
+    tax_unit_size: 2
+  output:
+    ri_exemption: 6_800

@@ -7,16 +7,22 @@ metadata:
   reference:
     - title: Rhode Island Tax Rate Schedule - 2022
       href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-10/2022%20RI%20Tax%20Tables_Complete.pdf
+    - title: Rhode Island Tax Rate Schedule - 2021
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021-ri-tax-tables_web.pdf
 brackets:
   - threshold:
-      2022-01-01: 0
+      2021-01-01: 0
     rate:
-      2022-01-01: 0.0375
+      2021-01-01: 0.0375
   - threshold:
+      2021-01-01: 66_200
       2022-01-01: 68_200
     rate:
+      2021-01-01: 0.0475
       2022-01-01: 0.0475
   - threshold:
+      2021-01-01: 155_550
       2022-01-01: 155_050
     rate:
+      2021-01-01: 0.0599
       2022-01-01: 0.0599
