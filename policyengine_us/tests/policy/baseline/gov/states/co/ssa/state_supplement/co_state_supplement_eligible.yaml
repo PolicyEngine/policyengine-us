@@ -1,0 +1,54 @@
+- name: Ineligible senior
+  period: 2023
+  input:
+    is_ssi_eligible_individual: false
+    age: 60
+    is_blind: true
+    is_ssi_disabled: true
+    state_code: CO
+  output:
+    co_state_supplement_eligible: false
+
+- name: Not blind or disabled
+  period: 2023
+  input:
+    is_ssi_eligible_individual: false
+    age: 59
+    is_blind: false
+    is_ssi_disabled: false
+    state_code: CO
+  output:
+    co_state_supplement_eligible: false
+
+- name: Not SSI eligible
+  period: 2023
+  input:
+    is_ssi_eligible_individual: false
+    age: 19
+    is_blind: true
+    is_ssi_disabled: true
+    state_code: CO
+  output:
+    co_state_supplement_eligible: false
+
+- name: SSI eligible and blind
+  period: 2023
+  input:
+    is_ssi_eligible_individual: true
+    age: 59
+    is_blind: true
+    is_ssi_disabled: false
+    state_code: CO
+  output:
+    co_state_supplement_eligible: true
+
+- name: SSI eligible and disabled
+  period: 2023
+  input:
+    is_ssi_eligible_individual: true
+    age: 0
+    is_blind: false
+    is_ssi_disabled: true
+    state_code: CO
+  output:
+    co_state_supplement_eligible: true
