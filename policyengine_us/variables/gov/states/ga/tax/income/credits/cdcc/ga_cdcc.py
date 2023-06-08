@@ -11,7 +11,5 @@ class ga_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_cdcc = tax_unit("cdcc", period)
-        rate = parameters(
-            period
-        ).gov.states.ga.tax.income.credits.cdcc.rate
+        rate = parameters(period).gov.states.ga.tax.income.credits.cdcc.rate
         return federal_cdcc * rate
