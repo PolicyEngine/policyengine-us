@@ -13,5 +13,5 @@ class ga_cdcc(Variable):
         federal_cdcc = tax_unit("cdcc", period)
         rate = parameters(
             period
-        ).gov.states.ga.tax.income.credits.dependent_care_credit.rate
+        ).gov.states.ga.tax.income.credits.cdcc.rate
         return federal_cdcc * rate
