@@ -1,19 +1,19 @@
 description: PA TANF countable personal property resources for cash assistance.
 values:
   2020-08-28:
-    - cash_on_hand
-    - bank_and_credit_union_accounts
-    - stocks_and_bonds
-    - mutual_funds
-    - savings_bonds
-    - unrestricted_trust_funds
-    - burial_reserves_and_prepaid_funerals 
-    - individual_retirement_accounts_and_Keogh_funds
-    - boats_all-terrain_vehicles_snowmobiles
-    - motor_vehicles
-    - money_gained_from_selling_an_item
-    - life_insurance
-    - lottery_winnings
+    - cash_on_hand # Not found
+    - bank_and_credit_union_accounts # Not found
+    - stocks_and_bonds # Not found
+    - mutual_funds # Not found
+    - savings_bonds # Not found
+    - unrestricted_trust_funds # trust-related not found
+    - burial_reserves_and_prepaid_funerals #
+    - individual_retirement_accounts_and_Keogh_funds # Not found
+    - boats_all-terrain_vehicles_snowmobiles #
+    - motor_vehicles # household_vehicles_owned
+    - money_gained_from_selling_an_item # Not found
+    - life_insurance # Only have health insurance related variable
+    - lottery_winnings # Not found
 metadata:
   unit: list
   reference:
