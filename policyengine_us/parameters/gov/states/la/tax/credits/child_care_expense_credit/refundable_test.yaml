@@ -1,0 +1,45 @@
+- name: LA refundable child care expense tax credit unit test 1
+ period: 2007
+ input:
+   adjusted_gross_income: 20_000
+   quality_rating_of_child_care_facility: 5
+   state_code: LA
+ output:
+   la_child_expense_tax_credits_nonrefundable: 20_000*2
+
+- name: LA refundable child care expense tax credit unit test 2
+ period: 2007
+ input:
+   adjusted_gross_income: 20_000
+   quality_rating_of_child_care_facility: 4
+   state_code: LA
+ output:
+   la_child_expense_tax_credits_nonrefundable: 20_000*1.5
+
+- name: LA refundable child care expense tax credit unit test 3
+ period: 2007
+ input:
+   adjusted_gross_income: 20_000
+   quality_rating_of_child_care_facility: 3
+   state_code: LA
+ output:
+   la_child_expense_tax_credits_nonrefundable: 20_000*1
+
+- name: LA refundable child care expense tax credit unit test 4
+ period: 2007
+ input:
+   adjusted_gross_income: 20_000
+   quality_rating_of_child_care_facility: 2
+   state_code: LA
+ output:
+   la_child_expense_tax_credits_nonrefundable: 20_000*0.5
+
+- name: LA refundable child care expense tax credit unit test 5
+ period: 2007
+ input:
+   adjusted_gross_income: 20_000
+   quality_rating_of_child_care_facility: 1
+   state_code: LA
+ output:
+   la_child_expense_tax_credits_nonrefundable: 0
+
