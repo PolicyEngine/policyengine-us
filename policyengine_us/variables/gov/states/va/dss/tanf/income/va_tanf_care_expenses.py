@@ -17,8 +17,8 @@ class va_tanf_care_expenses(Variable):
         age = person("age", period)
         adult = person("is_adult", period)
         disabled = person("is_disabled", period)
-        disabled_adult = adult & disabled
-        care_recipient = child | disabled_adult
+        disabled_adult = (adult) & (disabled)
+        care_recipient = (child) | (disabled_adult)
 
         full_time_care_expenses = spm_unit.sum(
             p.care_expenses_full_time.calc(age) * care_recipient

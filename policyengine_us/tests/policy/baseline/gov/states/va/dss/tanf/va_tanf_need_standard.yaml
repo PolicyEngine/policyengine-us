@@ -1,55 +1,62 @@
-- name: If one person and lives in Arlington, grand standard is $631 * 12/yr.
+- name: If one person and lives in Arlington, need standard is $631 * 12/yr.
   period: 2023
   input:
     state_code: VA
     spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
   output:
     va_tanf_need_standard: 631 * 12
 
-- name: If ten person and lives in Fairfax, grand standard is $2,171 * 12/yr.
+- name: If ten person and lives in Fairfax, need standard is $2,171 * 12/yr.
   period: 2023
   input:
     state_code: VA
     spm_unit_size: 10
+    county_str: FAIRFAX_COUNTY_VA
   output:
     va_tanf_need_standard: 2_171 * 12
 
-- name: If twelve person and lives in Montgomery, grand standard is $2,495 * 12/yr.
+- name: If twelve person and lives in Montgomery, need standard is $2,495 * 12/yr.
   period: 2023
   input:
     state_code: VA
     spm_unit_size: 12
+    county_str: MONTGOMERY_COUNTY_VA
   output:
     va_tanf_need_standard: 2_495 * 12
 
-- name: If one person and lives in Bedford, grand standard is $453 * 12/yr.
+- name: If one person and lives in Bedford, need standard is $453 * 12/yr.
   period: 2023
   input:
     state_code: VA
     spm_unit_size: 1
+    county_str: BEDFORD_COUNTY_VA
   output:
     va_tanf_need_standard: 453 * 12
 
-- name: If ten person and lives in Frederick, grand standard is $1,950 * 12/yr.
+- name: If ten person and lives in Frederick, need standard is $1,950 * 12/yr.
   period: 2023
   input:
     state_code: VA
     spm_unit_size: 10
+    county_str: FREDERICK_COUNTY_VA
   output:
     va_tanf_need_standard: 1_950 * 12
 
-- name: If twelve person and lives in Pittsylvania, grand standard is $2,274 * 12/yr.
+- name: If twelve person and lives in Pittsylvania, need standard is $2,274 * 12/yr.
   period: 2023
   input:
     state_code: VA
     spm_unit_size: 12
+    county_str: PITTSYLVANIA_COUNTY_VA
   output:
     va_tanf_need_standard: 2_274 * 12
 
 - name: Only calculate for VA.
   period: 2023
   input:
-    state_code: MD
+    state_code: FL
     spm_unit_size: 10
+    county_str: COLLIER_COUNTY_FL
   output:
     va_tanf_need_standard: 0
