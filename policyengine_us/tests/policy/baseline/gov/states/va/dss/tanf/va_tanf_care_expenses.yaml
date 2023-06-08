@@ -3,8 +3,9 @@
   input:
     people:
       parent:
-        is_mother: true
+        is_adult: true
         is_disabled: false
+        age: 25
       child:
         is_child: true
         age: 1
@@ -20,11 +21,13 @@
   input:
     people:
       parent1:
-        is_mother: true
+        is_adult: true
         is_disabled: false
+        age: 25
       parent2:
-        is_father: true
+        is_adult: true
         is_disabled: true
+        age: 25
       child1:
         is_child: true
         age: 1
@@ -43,11 +46,13 @@
   input:
     people:
       parent1:
-        is_mother: true
+        is_adult: true
         is_disabled: false
+        age: 25
       parent2:
-        is_father: true
+        is_adult: true
         is_disabled: true
+        age: 25
       child1:
         is_child: true
         age: 1
