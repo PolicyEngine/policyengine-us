@@ -13,4 +13,8 @@ class co_chp_eligible(Variable):
         income_level = person('medicaid_income_level', period)
         p = parameters(period).gov.states.co.hcpf.chp
         in_income_range = income_level <= p.income_limit
-        return ~medicaid_eligible & in_income_range
+        age = person('age', period)
+        is_child = p.child.calc(age)
+        is_pregnant = person('is_pregnant', period)
+        is_age_eligible = is_pregnant | is_child
+        return ~medicaid_eligible & is_age_eligible & in_income_range
