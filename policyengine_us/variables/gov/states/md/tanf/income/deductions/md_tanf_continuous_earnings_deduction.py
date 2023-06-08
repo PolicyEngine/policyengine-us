@@ -10,15 +10,9 @@ class md_tanf_continuous_earnings_deduction(Variable):
     defined_for = StateCode.MD
 
     def formula(spm_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.md.tanf.income.deductions.earnings_exclusion
-        earned_income = spm_unit(
-            "md_tanf_countable_gross_earned_income", period
-        )
-        self_employment_income = spm_unit(
-            "md_tanf_self_employment_income", peropd
-        )
+        p = parameters(period).gov.states.md.tanf.income.deductions.earnings_exclusion
+        earned_income = spm_unit("md_tanf_countable_gross_earned_income", period)
+        self_employment_income = spm_unit("md_tanf_self_employment_income", period)
 
         return select(
             # First arg: self employed or not
@@ -29,5 +23,5 @@ class md_tanf_continuous_earnings_deduction(Variable):
                 earned_income * p.not_self_employed,
             ],
             # Third arg: default value to return if none of the conditions are True
-            default=0,
+            default=0
         )

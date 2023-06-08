@@ -3,7 +3,7 @@
   input:
     age: 20
     is_full_time_college_student: true
-    is_k12_student: false
+    is_in_k12_school: false
   output:
     md_tanf_is_child: false
 
@@ -13,7 +13,7 @@
   input:
     age: 18
     is_full_time_college_student: true
-    is_k12_student: true
+    is_in_k12_school: true
   output:
     md_tanf_is_child: true
 
@@ -23,7 +23,7 @@
   input:
     age: 19
     is_full_time_college_student: true
-    is_k12_student: false
+    is_in_k12_school: false
   output:
     md_tanf_is_child: true
 
@@ -33,6 +33,6 @@
   input:
     age: 19
     is_full_time_college_student: false
-    is_k12_student: true
+    is_in_k12_school: true
   output:
     md_tanf_is_child: false
