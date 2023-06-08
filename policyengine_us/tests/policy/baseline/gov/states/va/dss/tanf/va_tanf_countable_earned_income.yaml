@@ -1,36 +1,36 @@
-- name: Earned income $3,167, 3 household members, $2,080 per year after deduction.
+- name: Earned income $5,004, 3 household members, $2,400 per year after deduction.
   period: 2023
   input:
     state_code: VA
-    va_tanf_gross_earned_income: 3_167
+    va_tanf_gross_earned_income: 5_004
     spm_unit_size: 3
   output:
     va_tanf_countable_earned_income: 2_400
 
 
-- name: Earned income $4,178, 4 household members, $3,200 per year after deduction.
+- name: Earned income $6_136, 4 household members, $3,200 per year after deduction.
   period: 2023
   input:
     state_code: VA
-    va_tanf_gross_earned_income: 4_178
+    va_tanf_gross_earned_income: 6_136
     spm_unit_size: 4
   output:
     va_tanf_countable_earned_income: 3_200
 
-- name: Earned income $5,209, 5 household members, $4,000 per year after deduction.
+- name: Earned income $7,508, 5 household members, $4,000 per year after deduction.
   period: 2023
   input:
     state_code: VA
-    va_tanf_gross_earned_income: 5_209
+    va_tanf_gross_earned_income: 7_508
     spm_unit_size: 5
   output:
     va_tanf_countable_earned_income: 4_000
 
-- name: Earned income $6,240, 6 household members, $4,800 per year after deduction.
+- name: Earned income $8,880, 6 household members, $4,800 per year after deduction.
   period: 2023
   input:
     state_code: VA
-    va_tanf_gross_earned_income: 6_240
+    va_tanf_gross_earned_income: 8_880
     spm_unit_size: 6
   output:
     va_tanf_countable_earned_income: 4_800

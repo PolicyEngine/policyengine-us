@@ -20,11 +20,12 @@ class va_tanf_care_expenses(Variable):
         disabled_adult = adult & disabled
         care_recipient = child | disabled_adult
 
-        person_care_expenses = where(
+        full_time_care_expenses = spm_unit.sum(p.care_expenses_full_time.calc(age) * care_recipient)
+        part_time_care_expenses = spm_unit.sum(p.care_expenses_part_time * care_recipient)
+        monthly_care_expenses = where(
             is_full_time,
-            p.care_expenses_full_time.calc(age) * care_recipient,
-            p.care_expenses_part_time * care_recipient,
+            full_time_care_expenses,
+            part_time_care_expenses
         )
-        monthly_care_expenses = spm_unit.sum(person_care_expenses)
 
         return monthly_care_expenses * MONTHS_IN_YEAR

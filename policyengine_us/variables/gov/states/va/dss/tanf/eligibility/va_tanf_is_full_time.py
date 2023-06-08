@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class va_tanf_is_full_time(Variable):
-    value_type = float
+    value_type = bool
     entity = SPMUnit
     label = "VA TANF care expenses"
     unit = USD

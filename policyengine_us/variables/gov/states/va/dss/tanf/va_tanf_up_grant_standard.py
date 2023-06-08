@@ -16,10 +16,10 @@ class va_tanf_up_grant_standard(Variable):
 
         county = spm_unit.household("county_str", period)
         p = parameters(period).gov.states.va.dss.tanf
-        if_group3 = county in p.localities.group3
-        p = where(
-            if_group3, p.up_grant_standard.group3, p.up_grant_standard.group2
-        )
+        if county in p.localities.group3:
+            p = p.up_grant_standard.group3
+        else:
+            p = p.up_grant_standard.group2
 
         monthly = p[0].main[ceiling] + additional * p[0].addition
         return monthly * MONTHS_IN_YEAR

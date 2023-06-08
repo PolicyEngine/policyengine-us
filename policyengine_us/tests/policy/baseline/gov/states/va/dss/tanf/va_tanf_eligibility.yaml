@@ -5,7 +5,7 @@
     is_demographic_tanf_eligible: true
     va_tanf_income_eligibility: true
   output:
-    va_tanf_eligible: true
+    va_tanf_eligibility: true
 
 - name: Is demographic eligible but not income eligible.
   period: 2023
@@ -14,7 +14,7 @@
     is_demographic_tanf_eligible: true
     va_tanf_income_eligibility: false
   output:
-    va_tanf_eligible: false
+    va_tanf_eligibility: false
 
 - name: Is income eligible but not demographic eligible.
   period: 2023
@@ -23,4 +23,4 @@
     is_demographic_tanf_eligible: false
     va_tanf_income_eligibility: true
   output:
-    va_tanf_eligible: false
+    va_tanf_eligibility: false
