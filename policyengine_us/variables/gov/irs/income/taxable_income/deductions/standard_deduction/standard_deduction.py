@@ -11,5 +11,5 @@ class standard_deduction(Variable):
     adds = [
         "basic_standard_deduction",
         "additional_standard_deduction",
-        "bonus_standard_deduction",
+        "bonus_guaranteed_deduction",
     ]
