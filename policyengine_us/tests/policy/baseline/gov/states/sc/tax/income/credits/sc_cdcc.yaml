@@ -48,4 +48,22 @@
     sc_cdcc: 280
     # 4,000*0.07 = 280 
 
+- name: No cdcc eligible people, with $0 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 0
+    count_cdcc_eligible: 0
+  output:
+    sc_cdcc: 0
+
+- name: No cdcc eligible people, with $4000 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 4_000
+    count_cdcc_eligible: 0
+  output:
+    sc_cdcc: 0
+
 
