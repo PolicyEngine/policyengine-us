@@ -14,12 +14,12 @@
   output:
     va_tanf_is_full_time: false
 
-- name: One parent with 30 work hours refer to full-time employment status.
+- name: One parent with 40 work hours refer to full-time employment status.
   period: 2023
   input:
     people:
       parent1:
-        work_hours_per_week: 30
+        work_hours_per_week: 40
         is_mother: true
       parent2:
         work_hours_per_week: 0
