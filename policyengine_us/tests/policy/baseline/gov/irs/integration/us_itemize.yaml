@@ -1,0 +1,57 @@
+- name: Single homeowner living in Texas
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 100_000
+        interest_expense: 12_000
+        real_estate_taxes: 11_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # no state income tax
+  output:
+    state_income_tax: 0
+    adjusted_gross_income: 100_000
+    taxable_income_deductions_if_not_itemizing: 12_550
+    taxable_income_deductions_if_itemizing: 12_000 + 10_000
+    tax_unit_itemizes: true
+    taxable_income: 100_000 - 22_000
+
+- name: Single homeowner living in Illinois
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 100_000
+        interest_expense: 8_000
+        real_estate_taxes: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL  # state income tax that does not depend on US tax
+  output:
+    state_income_tax: 4_576.44
+    adjusted_gross_income: 100_000
+    taxable_income_deductions_if_not_itemizing: 12_550
+    taxable_income_deductions_if_itemizing: 8_000 + 10_000
+    tax_unit_itemizes: true
+    taxable_income: 100_000 - 18_000
