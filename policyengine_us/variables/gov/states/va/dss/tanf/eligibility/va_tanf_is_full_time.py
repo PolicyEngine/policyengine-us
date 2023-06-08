@@ -5,7 +5,6 @@ class va_tanf_is_full_time(Variable):
     value_type = bool
     entity = SPMUnit
     label = "VA TANF care expenses"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
 

@@ -16,7 +16,7 @@ class va_tanf_grant_standard(Variable):
 
         county = spm_unit.household("county_str", period)
         p = parameters(period).gov.states.va.dss.tanf
-        if county in p.localities.group3:
+        if county.item() in p.localities.group3:
             p = p.grant_standard.group3
         else:
             p = p.grant_standard.group2
