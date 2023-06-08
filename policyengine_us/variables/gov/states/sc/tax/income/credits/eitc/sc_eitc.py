@@ -8,7 +8,7 @@ class sc_eitc(Variable):
     label = "South Carolina EITC"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.sc.gov/about/forms"
+    reference = "https://dor.sc.gov/forms-site/Forms/TC60_2021.pdf"
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)
