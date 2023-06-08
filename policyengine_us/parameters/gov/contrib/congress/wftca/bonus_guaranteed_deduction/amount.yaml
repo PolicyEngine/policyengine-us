@@ -1,10 +1,14 @@
 description: An increase to the basic standard deduction.
-2000-01-01:
-  SINGLE: 2_000
-  SEPARATE: 2_000
-  HEAD_OF_HOUSEHOLD: 3_000
-  JOINT: 4_000
-  WIDOW: 4_000
+SINGLE:
+  2000-01-01: 0
+SEPARATE:
+  2000-01-01: 0
+JOINT:
+  2000-01-01: 0
+WIDOW:
+  2000-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  2000-01-01: 0
 metadata:
   label: Bonus guaranteed deduction
   unit: currency-USD
