@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class de_non_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "DE EITC non-refundable State tax credit"
+    label = "Delaware non-refundable EITC"
     unit = USD
     documentation = "Non-refundable EITC credit reducing DE State income tax."
     definition_period = YEAR
