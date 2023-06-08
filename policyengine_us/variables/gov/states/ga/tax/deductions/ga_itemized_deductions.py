@@ -16,3 +16,13 @@ class ga_itemized_deductions(Variable):
 
     # GA itemized deduction does not account for mortgage expenses
     adds = ["itemized_taxable_income_deductions"]
+
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.deductions
+        itm_deds = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+
+        return add(tax_unit, period, itm_deds)

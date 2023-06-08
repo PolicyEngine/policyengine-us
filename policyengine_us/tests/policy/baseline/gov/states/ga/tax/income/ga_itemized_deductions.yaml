@@ -1,0 +1,21 @@
+- name: GA itemized deductions unit test 1 
+  period: 2021
+  input:
+    charitable_deduction: 100
+    interest_deduction: 20
+    salt_deduction: 100
+    medical_expense_deduction: 90
+    casualty_loss_deduction: 20
+    state_code: GA
+  output:
+    ga_itemized_deductions: 100 + 20 + 100 + 90 + 20 - 100
+
+- name: GA itemized deductions unit test 2
+  period: 2022
+  input:
+    salt_deduction: 100
+    interest_deduction: 0
+    medical_expense_deduction: 100
+    state_code: GA
+  output:
+    ga_itemized_deductions: 100 + 0 + 100 - 100
