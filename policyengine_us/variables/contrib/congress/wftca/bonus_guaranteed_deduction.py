@@ -16,6 +16,7 @@ class bonus_guaranteed_deduction(Variable):
         ).gov.contrib.congress.wftca.bonus_guaranteed_deduction
         amount = wftca.amount[filing_status]
         agi = tax_unit("adjusted_gross_income", period)
-        income_in_phase_out_region = max_(agi - wftca.phase_out.threshold, 0)
+        threshold = wftca.phase_out.threshold[filing_status]
+        income_in_phase_out_region = max_(agi - threshold, 0)
         reduction = wftca.phase_out.rate * income_in_phase_out_region
         return max_(amount - reduction, 0)

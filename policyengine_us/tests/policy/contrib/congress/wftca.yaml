@@ -10,7 +10,7 @@
   input:
     gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.JOINT: 4_000
     gov.contrib.congress.wftca.bonus_guaranteed_deduction.phase_out.rate: 0.05
-    gov.contrib.congress.wftca.bonus_guaranteed_deduction.phase_out.threshold: 400_000
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.phase_out.threshold.JOINT: 400_000
     employment_income: 500_000
     filing_status: JOINT
   output:
