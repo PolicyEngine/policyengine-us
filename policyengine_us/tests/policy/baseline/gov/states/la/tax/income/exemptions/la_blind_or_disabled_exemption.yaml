@@ -19,6 +19,7 @@
         state_code: LA
   output:
     la_blind_or_disabled_exemption: 1_000
+
 - name: Non blind
   period: 2021
   input:
@@ -40,3 +41,27 @@
         state_code: LA
   output:
     la_blind_or_disabled_exemption: 0
+
+- name: Blind and disabled
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 64
+        is_tax_unit_head: 1
+        is_blind: 1
+        is_disabled: 1
+      person2:
+        age: 64
+        is_tax_unit_spouse: 1
+        is_blind: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_blind_or_disabled_exemption: 1_000
+    

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_total_exemptions(Variable):
+class la_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana total exemption allowance"
+    label = "Louisiana exemptions"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.LA

@@ -11,6 +11,5 @@ class la_dependents_exemption(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.exemptions.dependent
         dependents = tax_unit("tax_unit_dependents", period)
-        return dependents * p
+        return dependents * parameters(period).gov.states.la.tax.income.exemptions.dependent
