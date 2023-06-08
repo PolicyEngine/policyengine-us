@@ -1,0 +1,35 @@
+- name: yourself and spouse are both above 65.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 65
+    age_spouse: 65
+  output:
+    de_aged_additional_deduction: 5_000
+
+- name: yourself >= age 65 but spouse is not.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 65
+    age_spouse: 64
+  output:
+    de_aged_additional_deduction: 2_500
+
+- name: yourself < age 65 but spouse >= 65.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 64
+    age_spouse: 65
+  output:
+    de_aged_additional_deduction: 2_500
+
+- name: both yourself and spouse under 65.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 64
+    age_spouse: 64
+  output:
+    de_aged_additional_deduction: 0
