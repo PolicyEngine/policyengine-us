@@ -1,0 +1,36 @@
+- name: VT Interest and dividend income add back amount unit test 1
+  period: 2022
+  input:
+    state_code: ME
+  output:
+    vt_interest_and_dividend_add_back: 0  
+
+- name: VT Interest and dividend income add back amount unit test 2
+  period: 2022
+  input:
+    state_code: VT
+    interest_income: 1_500
+    dividend_income: 3_000
+    vt_interest_and_dividend: 1_000
+  output:
+    vt_interest_and_dividend_add_back: 3_500   
+
+- name: VT Interest and dividend income add back amount unit test 3
+  period: 2022
+  input:
+    state_code: VT
+    interest_income: 0
+    dividend_income: 0
+    vt_interest_and_dividend: 0
+  output:
+    vt_interest_and_dividend_add_back: 0    
+
+- name: VT Interest and dividend income add back amount unit test 4
+  period: 2022
+  input:
+    state_code: ME
+    interest_income: 1_000
+    dividend_income: 1_000
+    vt_interest_and_dividend: 2_000
+  output:
+    vt_interest_and_dividend_add_back: 0   

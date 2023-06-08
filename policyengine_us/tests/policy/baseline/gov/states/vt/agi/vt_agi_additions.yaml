@@ -1,0 +1,33 @@
+- name: VT AGI addition amount unit test 1
+  period: 2022
+  input:
+    state_code: ME
+  output:
+    vt_agi_additions: 0  
+
+- name: VT AGI addition amount unit test 2
+  period: 2022
+  input:
+    state_code: VT
+    vt_interest_and_dividend_add_back: 0
+    vt_bonus_depreciation_add_back: 0
+  output:
+    vt_agi_additions: 0  
+
+- name: VT AGI addition amount unit test 3
+  period: 2022
+  input:
+    state_code: VT
+    vt_interest_and_dividend_add_back: 2_500
+    vt_bonus_depreciation_add_back: 6_500
+  output:
+    vt_agi_additions: 9_000    
+
+- name: VT AGI addition amount unit test 4
+  period: 2022
+  input:
+    state_code: VT
+    vt_interest_and_dividend_add_back: 1_000
+    vt_bonus_depreciation_add_back: 3_000
+  output:
+    vt_agi_additions: 4_000   
