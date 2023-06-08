@@ -9,8 +9,8 @@ class la_total_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.LA
     adds = [
-        'la_aged_exemption',
-        'la_blind_or_disabled_exemption',
-        'la_dependents_exemption',
-        'la_personal_exemption',
-              ]
+        "la_aged_exemption",
+        "la_blind_or_disabled_exemption",
+        "la_dependents_exemption",
+        "la_personal_exemption",
+    ]
