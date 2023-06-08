@@ -1,1 +1,15 @@
--test
+description: Kentucky provides this flat standard deduction amount.
+values:
+  2021-01-01: 2_690
+  2022-01-01: 2_770
+  2023-01-01: 2_980
+metadata:
+  label: Kentucky standard deduction amount
+  period: year
+  unit: currency-USD
+  reference:
+  - title: 2023 KENTUCKY WITHHOLDING TAX FORMULA
+    href: https://revenue.ky.gov/Forms/42A003(TCF).pdf
+
+
+
