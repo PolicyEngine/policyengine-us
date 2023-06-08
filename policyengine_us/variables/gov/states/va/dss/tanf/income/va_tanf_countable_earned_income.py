@@ -13,7 +13,7 @@ class va_tanf_countable_earned_income(Variable):
         gross_earnings = spm_unit("va_tanf_gross_earned_income", period)
         unit_size = spm_unit("spm_unit_size", period)
         p = parameters(period).gov.states.va.dss.tanf.income.deduction.earned
-        annual_flat_exclusion = p.flat[unit_size] * MONTHS_IN_YEAR
+        annual_flat_exclusion = p.flat.calc(unit_size) * MONTHS_IN_YEAR
         earnings_after_flat_exclusion = max_(
             gross_earnings - annual_flat_exclusion, 0
         )

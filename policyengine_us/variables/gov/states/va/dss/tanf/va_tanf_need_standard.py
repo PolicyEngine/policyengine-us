@@ -19,5 +19,5 @@ class va_tanf_need_standard(Variable):
         if_group3 = county in p.localities.group3
         p = where(if_group3, p.need_standard.group3, p.need_standard.group2)
 
-        monthly = p.main[ceiling] + additional * p.addition
+        monthly = p[0].main[ceiling] + additional * p[0].addition
         return monthly * MONTHS_IN_YEAR

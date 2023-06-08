@@ -4,10 +4,10 @@
     people:
       parent1:
         work_hours_per_week: 0
-        is_mother: true
+        is_child: false
       parent2:
         work_hours_per_week: 0
-        is_father: true
+        is_child: false
       child:
         work_hours_per_week: 0
         is_child: true
@@ -20,10 +20,10 @@
     people:
       parent1:
         work_hours_per_week: 30
-        is_mother: true
+        is_child: false
       parent2:
         work_hours_per_week: 0
-        is_father: true
+        is_child: false
       child:
         work_hours_per_week: 0
         is_child: true
@@ -36,10 +36,10 @@
     people:
       parent1:
         work_hours_per_week: 29
-        is_mother: true
+        is_child: false
       parent2:
         work_hours_per_week: 0
-        is_father: true
+        is_child: false
       child:
         work_hours_per_week: 30
         is_child: true

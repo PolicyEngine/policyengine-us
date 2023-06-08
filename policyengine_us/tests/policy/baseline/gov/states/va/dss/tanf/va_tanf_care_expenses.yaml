@@ -1,4 +1,5 @@
 - name: Full-time employment family, mother and a 1-year-old child, $200 per month
+  period: 2023
   input:
     people:
       parent:
@@ -14,7 +15,8 @@
   output:
     va_tanf_care_expenses: 2_400
 
-- name: Full-time employment family, mother, disabled father, a 1-year-old child and a 2-year-old child, 
+- name: Full-time employment family, mother, disabled father, a 1-year-old child and a 2-year-old child, $550 per month
+  period: 2023
   input:
     people:
       parent1:
@@ -36,7 +38,8 @@
   output:
     va_tanf_care_expenses: 6_600
 
-- name: Part-time employment family, mother, disabled father, a 1-year-old child and a 3-year-old child, 
+- name: Part-time employment family, mother, disabled father, a 1-year-old child and a 3-year-old child, $360 per month
+  period: 2023
   input:
     people:
       parent1:

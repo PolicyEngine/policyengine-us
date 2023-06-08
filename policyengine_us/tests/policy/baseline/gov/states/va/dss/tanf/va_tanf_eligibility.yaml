@@ -3,7 +3,7 @@
   input:
     state_code: VA
     is_demographic_tanf_eligible: true
-    va_tanf_income_eligible: true
+    va_tanf_income_eligibility: true
   output:
     va_tanf_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     state_code: VA
     is_demographic_tanf_eligible: true
-    va_tanf_income_eligible: false
+    va_tanf_income_eligibility: false
   output:
     va_tanf_eligible: false
 
@@ -21,6 +21,6 @@
   input:
     state_code: VA
     is_demographic_tanf_eligible: false
-    va_tanf_income_eligible: true
+    va_tanf_income_eligibility: true
   output:
     va_tanf_eligible: false
