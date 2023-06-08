@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.333.0] - 2023-06-06 15:49:45
+
+### Added
+
+- Vermont AGI.
+
+## [0.332.0] - 2023-06-05 02:11:50
+
+### Changed
+
+- Delaware personal income tax rate.
+
 ## [0.331.1] - 2023-05-31 23:59:55
 
 ### Fixed
@@ -3957,6 +3969,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.333.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.332.0...0.333.0
+[0.332.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.331.1...0.332.0
 [0.331.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.331.0...0.331.1
 [0.331.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.330.1...0.331.0
 [0.330.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.330.0...0.330.1
