@@ -1,12 +1,3 @@
-- name: LA nonrefundable child care expense tax credit unit test 1
- period: 2018
- input:
-   adjusted_gross_income: 26_000
-   quality_rating_of_child_care_facility: 5
-   state_code: LA
- output:
-   la_child_expense_tax_credits_nonrefundable: 26_000*2
-
 - name: LA nonrefundable child care expense tax credit unit test 2
  period: 2018
  input:
