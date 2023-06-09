@@ -10,13 +10,11 @@ class nh_base_exemption(Variable):
     defined_for = StateCode.NH
 
     def formula(tax_unit, period, parameters):
-
-        # get number of tax unit
-        tax_unit_size = tax_unit("tax_unit_size", period) 
-
-        # How can I use the person level base exemption for this household one?
         
-        # I think the ADD function you mentioned is used in nh_total_exemptions.py, which adds all different 
-        # typels of exemptions. 
-        
-        return 
+        # Get members in the tax unit
+        person = tax_unit.members
+
+        # Get exemption amount for members
+        base = person("nh_person_base_exemption", period)
+
+        return tax_unit.sum(base)

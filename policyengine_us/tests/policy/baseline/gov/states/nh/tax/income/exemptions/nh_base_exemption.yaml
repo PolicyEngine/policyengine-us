@@ -1,31 +1,87 @@
+- name: Single filer with dependents gets the base exemption before 2027.
+  period: 2022
+  input:
+    people:
+      head:
+        nh_person_base_exemption: 2_400
+      dependent_1:
+        nh_person_base_exemption: 1_000
+      dependent_2:
+        nh_person_base_exemption: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent_1, dependent_2]
+    households:
+      household:
+        members: [head, dependent_1, dependent_2]
+        state_code: NH
+  output:
+    nh_base_exemption: 5_400
+
 - name: Single filer gets the base exemption before 2027.
   period: 2022
   input:
-    state_code: NH
-    filing_status: SINGLE
+    people:
+      head:
+        nh_person_base_exemption: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NH
   output:
-    nh_base_exemption: 2_400
+    nh_base_exemption: 1_000
 
-- name: Joint filers get the base exemptions.
+- name: Joint filers get the base exemption before 2027.
   period: 2022
   input:
-    state_code: NH
-    filing_status: JOINT
+    people:
+      head:
+        nh_person_base_exemption: 2_400
+      spouse:
+        nh_person_base_exemption: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NH
   output:
     nh_base_exemption: 4_800
-
-- name: Singe filer gets no base exemptions in or after 2027.
-  period: 2027
-  input:
-    state_code: NH
-    filing_status: SINGLE
-  output:
-    nh_base_exemption: 0
 
 - name: Joint filers get no base exemptions in or after 2027.
   period: 2027
   input:
-    state_code: NH
-    filing_status: JOINT
+    people:
+      head:
+        nh_person_base_exemption: 2_400
+      spouse:
+        nh_person_base_exemption: 2_400
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NH
+  output:
+    nh_base_exemption: 0
+
+- name: Single filer gets no base exemptions in or after 2027.
+  period: 2027
+  input:
+    people:
+      head:
+        nh_person_base_exemption: 2_400
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NH
   output:
     nh_base_exemption: 0

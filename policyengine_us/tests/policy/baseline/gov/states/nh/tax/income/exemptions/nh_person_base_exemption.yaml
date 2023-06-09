@@ -1,0 +1,23 @@
+- name: Filer gets the exemption below $2.4k.
+  period: 2022
+  input:
+    dividend_income: 400
+    interest_income: 1_000
+  output:
+    nh_person_base_exemption: 1_400
+
+- name: Filer gets the exemption of $2.4k.
+  period: 2022
+  input:
+    dividend_income: 2_000
+    interest_income: 1_000
+  output:
+    nh_person_base_exemption: 2_400
+
+- name: Filer gets the exemption of $2.4k.
+  period: 2022
+  input:
+    dividend_income: 1_400
+    interest_income: 1_000
+  output:
+    nh_person_base_exemption: 2_400
