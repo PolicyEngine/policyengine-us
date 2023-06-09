@@ -1,24 +1,26 @@
-description: Credit amount of the CTC for head_of_household
+description: North Carolina allows for the following child tax credit for head of household filers.
 brackets:
   - threshold:
-      2023-01-01: 0
+      2015-01-01: 0
     amount:
-      2023-01-01: 125
+      2015-01-01: 125
+      2018-01-01: 0
   - threshold:
-      2023-01-01: 32_000
+      2015-01-01: 32_000
     amount: 
       2023-01-01: 100
+      2018-01-01: 0
   - threshold:
-      2023-01-01: 80_000
+      2015-01-01: 80_000
     amount: 
-      2023-01-01: 0
+      2015-01-01: 0
 
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: year
-  label: NC CTC for head_of_household
+  label: North Carolina CTC head of household filer amount
   reference:
-  - title: Credit for Children
+  - title: North Carolina Department of Revenue - Credit for Children
     href: https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children

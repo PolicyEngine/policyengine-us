@@ -1,13 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class nc_ctc(Variable):
+class nc_credit_for_children(Variable):
     value_type = float
     entity = TaxUnit
-    label = "North Carolina CTC"
+    label = "North Carolina credit for children"
     definition_period = YEAR
     unit = USD
-    documentation = "North Carolina Tax Credit"
     reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children"
     defined_for = StateCode.NC
 
@@ -22,11 +21,15 @@ class nc_ctc(Variable):
                 filing_status == status.SINGLE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
                 filing_status == status.JOINT,
+                filing_status == status.WIDOW,
+                filing_status == status.SEPARATE,
             ],
             [
                 p.single.calc(income),
                 p.head_of_household.calc(income),
-                p.married.calc(income),
+                p.joint.calc(income),
+                p.widow.calc(income),
+                p.separate.calc(income),
             ],
         )
         return children * credit_amount

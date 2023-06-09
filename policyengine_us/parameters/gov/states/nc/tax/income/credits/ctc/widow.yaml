@@ -1,4 +1,4 @@
-description: North Carolina allows for the following child tax credit for single filers.
+description: North Carolina allows for the following child tax credit for widow filers.
 brackets:
   - threshold:
       2015-01-01: 0
@@ -6,12 +6,12 @@ brackets:
       2015-01-01: 125
       2018-01-01: 0
   - threshold:
-      2015-01-01: 20_000
+      2015-01-01: 40_000
     amount: 
       2015-01-01: 100
       2018-01-01: 0
   - threshold:
-      2015-01-01: 50_000
+      2015-01-01: 100_000
     amount: 
       2015-01-01: 0
 
@@ -20,7 +20,7 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
   period: year
-  label: North Carolina CTC single filer amount
+  label: North Carolina CTC widow filer amount
   reference:
   - title: North Carolina Department of Revenue - Credit for Children
     href: https://www.ncdor.gov/taxes-forms/individual-income-tax/credit-children
