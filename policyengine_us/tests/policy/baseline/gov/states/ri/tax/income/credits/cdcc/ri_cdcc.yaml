@@ -2,14 +2,25 @@
   period: 2021
   input:
     state_code: RI
-    cdcc_relevant_expenses: 0
+    cdcc: 0
+    ri_income_tax: 300
   output:
     ri_cdcc: 0
+
+- name: Calculation # Federal CDCC * 25%
+  period: 2021
+  input:
+    state_code: RI
+    cdcc: 1_000
+    ri_income_tax: 300
+  output:
+    ri_cdcc: 250
 
 - name: Calculation # Federal CDCC * 25%
   period: 2022
   input:
     state_code: RI
-    cdcc_relevant_expenses: 10_000
+    cdcc: 2_000
+    ri_income_tax: 300
   output:
-    ri_cdcc: 2_500
+    ri_cdcc: 300
