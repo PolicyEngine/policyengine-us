@@ -51,7 +51,11 @@ class mi_standard_deduction(Variable):
         rb3_amount_per_aged = p.retirement_benefits_deduction.tier3_amount[
             filing_status
         ]
-        rb3_deduction = rb3_aged_count * rb3_amount_per_aged
+        rb3_deduction = (
+            rb3_aged_count
+            * rb3_amount_per_aged
+            * tax_unit("mi_social_security_retirement", period)
+        )
 
         # Interest, Dividends, and Capital Gains Deduction
         senior_age_threshold = (
@@ -63,7 +67,8 @@ class mi_standard_deduction(Variable):
                 filing_status
             ]
         )
-        idcg_deduction = idcg_aged_count * idcg_amount_per_aged
+        income = tax_unit("mi_interest_dividends_capital_gains_income", period)
+        idcg_deduction = min_(idcg_aged_count * idcg_amount_per_aged, income)
 
         return (
             standrad_deduction + rb1_deduction + rb3_deduction + idcg_deduction
