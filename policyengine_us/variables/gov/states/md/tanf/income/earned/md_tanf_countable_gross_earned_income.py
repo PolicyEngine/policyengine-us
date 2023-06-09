@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_tanf_gross_earned(Variable):
+class md_tanf_countable_gross_earned_income(Variable):
     value_type = float
     entity = SPMUnit
     label = "Maryland TANF countable gross earned income"
