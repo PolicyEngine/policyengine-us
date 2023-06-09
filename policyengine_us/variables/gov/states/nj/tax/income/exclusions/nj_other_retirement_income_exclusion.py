@@ -26,7 +26,7 @@ class nj_other_retirement_income_exclusion(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
-        eligible_member = (is_head * eligible_head) + (
+        eligible_member = (is_head * eligible_head) | (
             is_spouse * eligible_spouse * joint
         )
         gross_income = person("irs_gross_income", period)
@@ -66,15 +66,9 @@ class nj_other_retirement_income_exclusion(Variable):
             ],
         )
 
-        # Get the maximum exclusion amount based on filing status.
-        filing_status_max_exclusion = p.max_amount[filing_status]
-
         # Get the potential exclusion amount for the tax unit.
         # If all the income in qualifying_income were eligible for exclusion.
-        max_exclusion = max_(
-            qualifying_income * exclusion_percentage,
-            filing_status_max_exclusion,
-        )
+        max_exclusion = qualifying_income * exclusion_percentage
 
         # Get the tax unit's pension/retirement exclusion from line 28a.
         pension_retirement_exclusion = tax_unit(
