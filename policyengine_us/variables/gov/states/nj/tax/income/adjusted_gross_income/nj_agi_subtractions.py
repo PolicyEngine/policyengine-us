@@ -10,7 +10,6 @@ class nj_agi_subtractions(Variable):
     definition_period = YEAR
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54/section-54-8a-36/"
     adds = [
-        "taxable_social_security",
         "nj_pension_retirement_exclusion",
         "nj_other_retirement_income_exclusion",
         "nj_other_retirement_special_exclusion",
