@@ -32,12 +32,13 @@ class nj_other_retirement_special_exclusion(Variable):
         spouse_social_security = tax_unit.sum(
             where(is_spouse, social_security, 0)
         )
-        special_exclusion_head_eligible = tax_unit(
-            "age_head", period
-        ) >= p.latest_age_social_security_start & (head_social_security == 0)
-        special_exclusion_spouse_eligible = tax_unit(
-            "age_spouse", period
-        ) >= p.latest_age_social_security_start & (spouse_social_security == 0)
+        special_exclusion_head_eligible = (
+            tax_unit("age_head", period) >= p.latest_age_social_security_star
+        ) & (head_social_security == 0)
+        special_exclusion_spouse_eligible = (
+            tax_unit("age_spouse", period)
+            >= p.latest_age_social_security_start
+        ) & (spouse_social_security == 0)
         special_exclusion_eligible = where(
             joint,
             special_exclusion_head_eligible
