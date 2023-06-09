@@ -8,7 +8,10 @@ class nj_other_retirement_income_exclusion(Variable):
     unit = USD
     documentation = "New Jersey other retirement income (Line 28b)"
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21"
+    reference = (
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-15/",
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
@@ -89,6 +92,6 @@ class nj_other_retirement_income_exclusion(Variable):
         earned_income_eligible = tax_unit.sum(wages) <= earned_income_threshold
 
         # Calculate the final exclusion, which is the excess income after subtracting the pension/retirement exclusion.
-        return (
+        return max_(
             excess * income_eligible * positive_excess * earned_income_eligible
         )
