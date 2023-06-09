@@ -14,9 +14,7 @@ class ms_aged_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Then get the MS aged exemptions part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.states.ms.tax.income.exemptions.aged_or_blind
+        p = parameters(period).gov.states.ms.tax.income.exemptions.aged
 
         # Get the individual filer's age.
         age_head = tax_unit("age_head", period)

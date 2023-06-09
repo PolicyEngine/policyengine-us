@@ -14,9 +14,7 @@ class ms_blind_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Then get the MS blind exemptions part of the parameter tree.
-        p = parameters(
-            period
-        ).gov.states.ms.tax.income.exemptions.aged_or_blind
+        p = parameters(period).gov.states.ms.tax.income.exemptions.blind
 
         # Determine if head of household (filer) is eligible.
         head_eligible = tax_unit("blind_head", period).astype(int)
