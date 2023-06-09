@@ -3,27 +3,28 @@
   input:
     people:
       head:
-        nh_person_base_exemption: 2_400
+        dividend_income: 1_400
+        interest_income: 1_000
       dependent_1:
-        nh_person_base_exemption: 1_000
-      dependent_2:
-        nh_person_base_exemption: 2_000
+        dividend_income: 1_400
+        interest_income: 1_000
     tax_units:
       tax_unit:
-        members: [head, dependent_1, dependent_2]
+        members: [head, dependent_1]
     households:
       household:
-        members: [head, dependent_1, dependent_2]
+        members: [head, dependent_1]
         state_code: NH
   output:
-    nh_base_exemption: 5_400
+    nh_base_exemption: 4_800
 
 - name: Single filer gets the base exemption before 2027.
   period: 2022
   input:
     people:
       head:
-        nh_person_base_exemption: 1_000
+        dividend_income: 1_600
+        interest_income: 1_000
     tax_units:
       tax_unit:
         members: [head]
@@ -32,16 +33,35 @@
         members: [head]
         state_code: NH
   output:
-    nh_base_exemption: 1_000
+    nh_base_exemption: 2_400
+
+- name: Single filer gets the base exemption before 2027.
+  period: 2022
+  input:
+    people:
+      head:
+        dividend_income: 1_000
+        interest_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NH
+  output:
+    nh_base_exemption: 2_000
 
 - name: Joint filers get the base exemption before 2027.
   period: 2022
   input:
     people:
       head:
-        nh_person_base_exemption: 2_400
+        dividend_income: 2_000
+        interest_income: 1_000
       spouse:
-        nh_person_base_exemption: 2_400
+        dividend_income: 0
+        interest_income: 1_000
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -50,16 +70,18 @@
         members: [head, spouse]
         state_code: NH
   output:
-    nh_base_exemption: 4_800
+    nh_base_exemption: 3_400
 
 - name: Joint filers get no base exemptions in or after 2027.
   period: 2027
   input:
     people:
       head:
-        nh_person_base_exemption: 2_400
+        dividend_income: 1_000
+        interest_income: 1_000
       spouse:
-        nh_person_base_exemption: 2_400
+        dividend_income: 1_000
+        interest_income: 1_000
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -75,7 +97,8 @@
   input:
     people:
       head:
-        nh_person_base_exemption: 2_400
+        dividend_income: 1_000
+        interest_income: 1_000
     tax_units:
       tax_unit:
         members: [head]

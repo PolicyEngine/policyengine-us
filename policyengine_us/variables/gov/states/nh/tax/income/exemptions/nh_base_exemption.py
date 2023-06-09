@@ -10,11 +10,12 @@ class nh_base_exemption(Variable):
     defined_for = StateCode.NH
 
     def formula(tax_unit, period, parameters):
-        
-        # Get members in the tax unit
         person = tax_unit.members
-
-        # Get exemption amount for members
-        base = person("nh_person_base_exemption", period)
-
+        individual_income = person("dividend_income", period) + person(
+            "interest_income", period
+        )
+        amount = parameters(
+            period
+        ).gov.states.nh.tax.income.exemptions.amount.base
+        base = min_(individual_income, amount)
         return tax_unit.sum(base)
