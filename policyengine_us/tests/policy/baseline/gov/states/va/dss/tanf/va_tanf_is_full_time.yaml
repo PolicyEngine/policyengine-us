@@ -11,6 +11,10 @@
       child:
         work_hours_per_week: 0
         is_child: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
   output:
     va_tanf_is_full_time: false
 
@@ -27,6 +31,10 @@
       child:
         work_hours_per_week: 0
         is_child: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
   output:
     va_tanf_is_full_time: true
 
@@ -43,5 +51,9 @@
       child:
         work_hours_per_week: 30
         is_child: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: VA
   output:
     va_tanf_is_full_time: false
