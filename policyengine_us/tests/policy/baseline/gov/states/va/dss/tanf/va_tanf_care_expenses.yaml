@@ -13,6 +13,10 @@
       spm_unit:
         members: [parent, child]
         va_tanf_is_full_time: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
   output:
     va_tanf_care_expenses: 2_400
 
@@ -38,6 +42,10 @@
       spm_unit:
         members: [parent1, parent2, child1, child2]
         va_tanf_is_full_time: true
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: VA
   output:
     va_tanf_care_expenses: 6_600
 
@@ -63,5 +71,9 @@
       spm_unit:
         members: [parent1, parent2, child1, child2]
         va_tanf_is_full_time: false
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: VA
   output:
     va_tanf_care_expenses: 4_320
