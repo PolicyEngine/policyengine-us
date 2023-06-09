@@ -1,0 +1,11 @@
+description: PA TANF counts these income sources as earned income.
+values:
+  2020-09-14: #
+    - employment_income # wage (including tips) + Salaries + bonuses + Commissions
+    - rental_income # Rental property income
+    - self_employment_income
+metadata:
+  unit: list
+  reference:
+    title: Cash Assistance Handbook | § 150.2. Countable Earned Income.
+    href: http://services.dpw.state.pa.us/oimpolicymanuals/cash/index.htm#t=150_Income%2F150_2_Countable_Earned_Income.htm&rhsearch=income&rhsyns=%20
