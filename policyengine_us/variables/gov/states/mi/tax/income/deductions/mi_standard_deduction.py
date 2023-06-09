@@ -33,22 +33,22 @@ class mi_standard_deduction(Variable):
         standrad_deduction = aged_count * amount_per_aged
 
         # Retirement Benefits Deduction Tier 1
-        tier1_age_threshold = p.retirement_benefits_deduction.tier1_birth_year
+        tier1_age_threshold = p.retirement_benefits_deduction.tier_one.birth_year
         rb1_birth_year = -(age_older - period.start.year)
         rb1_aged_count = (rb1_birth_year < tier1_age_threshold).astype(int)
-        rb1_amount_per_aged = p.retirement_benefits_deduction.tier1_amount[
+        rb1_amount_per_aged = p.retirement_benefits_deduction.tier_one.amount[
             filing_status
         ]
         rb1_deduction = rb1_aged_count * rb1_amount_per_aged
 
         # Retirement Benefits Deduction Tier 3
-        tier3_age_min_threshold = p.retirement_benefits_deduction.tier3_min_age
-        tier3_age_max_threshold = p.retirement_benefits_deduction.tier3_max_age
+        tier3_age_min_threshold = p.retirement_benefits_deduction.tier_three.min_age
+        tier3_age_max_threshold = p.retirement_benefits_deduction.tier_three.max_age
         rb3_aged_count = (
             age_older >= tier3_age_min_threshold
             and age_older <= tier3_age_max_threshold
         ).astype(int)
-        rb3_amount_per_aged = p.retirement_benefits_deduction.tier3_amount[
+        rb3_amount_per_aged = p.retirement_benefits_deduction.tier_three.amount[
             filing_status
         ]
         rb3_deduction = (
