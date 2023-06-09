@@ -21,5 +21,5 @@ class va_tanf_up_grant_standard(Variable):
         else:
             p = p.up_grant_standard.group2
 
-        monthly = p[0].main[ceiling] + additional * p[0].addition
+        monthly = p.main[ceiling] + additional * p.addition
         return monthly * MONTHS_IN_YEAR

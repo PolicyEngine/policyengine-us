@@ -3,6 +3,7 @@
   input:
     state_code: VA
     spm_unit_size: 1
+    county_str: ARLINGTON_COUNTY_VA
   output:
     va_tanf_up_grant_standard: 275 * 12
 
@@ -11,6 +12,7 @@
   input:
     state_code: VA
     spm_unit_size: 10
+    county_str: FAIRFAX_COUNTY_VA
   output:
     va_tanf_up_grant_standard: 944 * 12
 
@@ -19,6 +21,7 @@
   input:
     state_code: VA
     spm_unit_size: 12
+    county_str: MONTGOMERY_COUNTY_VA
   output:
     va_tanf_up_grant_standard: 1_086 * 12
 
@@ -27,6 +30,7 @@
   input:
     state_code: VA
     spm_unit_size: 1
+    county_str: BEDFORD_COUNTY_VA
   output:
     va_tanf_up_grant_standard: 197 * 12
 
@@ -35,6 +39,7 @@
   input:
     state_code: VA
     spm_unit_size: 10
+    county_str: FREDERICK_COUNTY_VA
   output:
     va_tanf_up_grant_standard: 848 * 12
 
@@ -43,13 +48,15 @@
   input:
     state_code: VA
     spm_unit_size: 12
+    county_str: PITTSYLVANIA_COUNTY_VA
   output:
     va_tanf_up_grant_standard: 990 * 12
 
 - name: Only calculate for VA.
   period: 2023
   input:
-    state_code: CA
+    state_code: FL
     spm_unit_size: 10
+    county_str: COLLIER_COUNTY_FL
   output:
     va_tanf_up_grant_standard: 0
