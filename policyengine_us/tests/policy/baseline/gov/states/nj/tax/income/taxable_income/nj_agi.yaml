@@ -1,0 +1,55 @@
+# - name: NJ taxpayer with taxable pension income
+#   absolute_error_margin: 0.01
+#   period: 2021
+#   input:
+#     people:
+#       person1:
+#         is_tax_unit_head: true
+#         age: 62
+#         taxable_interest_income: 6_000
+#         taxable_pension_income: 12_000
+#     spm_units:
+#       spm_unit:
+#         members: [person1]
+#     tax_units:
+#       tax_unit:
+#         members: [person1]
+#     households:
+#       household:
+#         members: [person1]
+#         state_code: NJ
+#   output:
+#     adjusted_gross_income: 18_000  # on federal form
+#     nj_agi: 6_000  # because pension subtraction from federal AGI is missing
+#     # CORRECT nj_agi OUTPUT IS:
+#     # 6_000 because all pension income is excluded from NJ AGI in this case
+
+# - name: NJ taxpayer with no taxable pension income
+#   absolute_error_margin: 0.01
+#   period: 2021
+#   input:
+#     people:
+#       person1:
+#         is_tax_unit_head: true
+#         age: 70
+#         taxable_interest_income: 7_000
+#     spm_units:
+#       spm_unit:
+#         members: [person1]
+#     tax_units:
+#       tax_unit:
+#         members: [person1]
+#     households:
+#       household:
+#         members: [person1]
+#         state_code: NJ
+#   output:
+#     adjusted_gross_income: 7_000  # on federal form
+#     nj_agi: 4_000  # because pension subtraction from federal AGI is missing
+#     # CORRECT nj_agi OUTPUT IS:
+#     # 4_000 because eligible for Other Retirement Income Exclusion, namely
+#     #   the Special Exclusion of $3000 for singles who will never get social
+#     #   security benefits
+#     # Note: we can infer this is the case for those age 70+ who have no
+#     #       social security benefits because beyond age 70 there are no
+#     #       more delayed retirement credits under social security.

@@ -1,0 +1,103 @@
+- name: Joint filing, both spouses not eligible for social security so they get the special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        taxable_social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 6_000
+
+- name: Single filer not eligible for social security so they get the special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 3_000
+
+- name: One spouse has social security benefits, so not eligible for special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        taxable_social_security: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 0
+
+- name: One spouse not at age we're using to assume not eligible for social security (70), so not eligible for special exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        taxable_social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 69
+        taxable_social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_special_exclusion: 0

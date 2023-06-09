@@ -8,7 +8,10 @@ class nj_pension_retirement_exclusion(Variable):
     unit = USD
     documentation = "New Jersey pension and retirement excludable amount if eligible (Line 28a)"
     definition_period = YEAR
-    reference = "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21"
+    reference = (
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21",
+        "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-6-10/",
+    )
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
