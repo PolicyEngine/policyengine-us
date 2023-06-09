@@ -1,0 +1,226 @@
+- name: Can exclude all of head and spouse income, minus pension exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 25_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 25_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 49_000
+
+- name: Can only exclude head income due to age.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 25_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 61
+        irs_gross_income: 25_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 24_000
+
+- name: Total income is above threshold, so no exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 150_001
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 0
+
+- name: Sum of earned income is above threshold, so no exclusion.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 50_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 1_501
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 0
+
+- name: Can exclude 25% of married filing jointly with income in ($125k,150k].
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 150_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 37_500
+
+- name: Can exclude 18.75% of singler filer with income in ($125k,150k].
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 150_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_pension_retirement_exclusion: 0
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 28_125
+
+- name: Can exclude 12.5% of married filing separate with income in ($125k,150k].
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 150_000
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 0
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 18_750
