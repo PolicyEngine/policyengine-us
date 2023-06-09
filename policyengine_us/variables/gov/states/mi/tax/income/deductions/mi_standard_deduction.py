@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mi_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MI standard deduction"
+    label = "Michigan standard deduction"
     unit = USD
     definition_period = YEAR
     documentation = "Michigan standard deduction, consist of standard deduction for age 67-76, retirement and pension benefits for age 62-66 and above 77, and interest, dividends, and capital gains deduction for age above 77."
