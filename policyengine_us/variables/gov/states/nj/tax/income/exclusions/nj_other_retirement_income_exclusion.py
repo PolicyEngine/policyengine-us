@@ -92,6 +92,6 @@ class nj_other_retirement_income_exclusion(Variable):
         earned_income_eligible = tax_unit.sum(wages) <= earned_income_threshold
 
         # Calculate the final exclusion, which is the excess income after subtracting the pension/retirement exclusion.
-        return max_(
+        return (
             excess * income_eligible * positive_excess * earned_income_eligible
         )
