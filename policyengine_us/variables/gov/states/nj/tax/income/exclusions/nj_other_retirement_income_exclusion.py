@@ -86,7 +86,7 @@ class nj_other_retirement_income_exclusion(Variable):
 
         # Check that income from wages, business, partnership income, and corporate income are below threshold.
         earned_income_threshold = p.other_retirement_earned_income_threshold
-        earned_income_eligible = wages <= earned_income_threshold
+        earned_income_eligible = tax_unit.sum(wages) <= earned_income_threshold
 
         # Calculate the final exclusion, which is the excess income after subtracting the pension/retirement exclusion.
         return (
