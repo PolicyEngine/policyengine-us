@@ -1,0 +1,32 @@
+- name: MI taxable income unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 90_000
+    mi_standard_deduction: 20_000
+    itemized_taxable_income_deductions: 9_000
+    mi_exemptions: 5_000
+    state_code: MI
+  output:
+    mi_taxable_income: 90_000 - 20_000 - 5_000
+
+- name: MI taxable income unit test 2
+  period: 2021
+  input:
+    adjusted_gross_income: 90_000
+    mi_standard_deduction: 15_000
+    itemized_taxable_income_deductions: 16_000
+    mi_exemptions: 5_000
+    state_code: MI
+  output:
+    mi_taxable_income: 90_000 - 16_000 - 5_000
+
+- name: MI taxable income unit test 3
+  period: 2022
+  input:
+    adjusted_gross_income: 13_000
+    mi_standard_deduction: 20_000
+    itemized_taxable_income_deductions: 9_000
+    mi_exemptions: 5_000
+    state_code: MI
+  output:
+    mi_taxable_income: 0
