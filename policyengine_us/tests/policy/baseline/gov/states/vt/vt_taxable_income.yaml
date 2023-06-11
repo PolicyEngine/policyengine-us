@@ -1,0 +1,10 @@
+- name: Vermont taxable income under the standard deduction.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    vt_agi: 2_000
+    vt_deductions: 1_000
+    vt_exemptions: 1_000
+    state_code: VT
+  output:
+    vt_taxable_income: 0
