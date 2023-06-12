@@ -1,0 +1,23 @@
+- name: Delaware personal credit if single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    state_code: DE
+  output:
+    de_personal: 220
+
+- name: Delaware personal credit if married filing jointly and above max threshold
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: DE
+  output:  
+    de_personal: 110
+
+- name: Delaware personal credit if widower
+  period: 2022
+  input:
+    filing_status: WIDOW
+    state_code: DE
+  output:  
+    de_personal: 220
