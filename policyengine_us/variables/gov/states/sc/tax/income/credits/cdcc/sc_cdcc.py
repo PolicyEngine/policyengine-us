@@ -14,13 +14,13 @@ class sc_cdcc(Variable):
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        # Get South Carolina CDCC rate
+        # Get South Carolina CDCC rate.
         p = parameters(period).gov.states.sc.tax.income.credits.cdcc
 
-        # Get federal child care expenses
-        federal_cdce = tax_unit("tax_unit_childcare_expenses", period)
+        # Get child care expenses.
+        childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
 
-        # # Married filing separate are ineligible.
+        # Married filing separate are ineligible.
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
 
@@ -30,7 +30,6 @@ class sc_cdcc(Variable):
         )
 
         # Calculate total CDCC
-        return (
-            min_(federal_cdce * p.rate, p.amount * count_cdcc_eligible)
-            * eligible
-        )
+        max_match = childcare_expenses * p.rate
+        cap = p.amount * count_cdcc_eligible
+        return eligible * min_(max_match, cap)
