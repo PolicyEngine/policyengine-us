@@ -1,0 +1,38 @@
+- name: Single filers with income of $0 pay $0.
+  period: 2022
+  input:
+    wv_taxable_income: 0
+    filing_status: SINGLE
+    state_code: WV
+  output:
+    wv_income_tax_before_credits: 0
+
+- name: Single filers with income of $1,000,000 pay $63,875.
+  period: 2022
+  input:
+    wv_taxable_income: 1_000_000
+    filing_status: SINGLE
+    state_code: WV
+  output:
+    #   3% * $10,000                     [$300]
+    # + 4% * ($25,000 - $10,000)         [$600]
+    # + 4.5% * ($40,000 - $25,000)       [$675]
+    # + 6% * ($60,000 - $40,000)         [$1200]
+    # + 6.5% * ($1,000,000 - $60,000)    [$61100]
+    # = $63,875
+    wv_income_tax_before_credits: 63_875
+
+- name: Married filing separately filers with income of $1,000,000 pay $64,437.5.
+  period: 2022
+  input:
+    wv_taxable_income: 1_000_000
+    filing_status: SEPARATE
+    state_code: WV
+  output:
+    #   3% * $5,000                     [$150]
+    # + 4% * ($12,500 - $5,000)         [$300]
+    # + 4.5% * ($20,000 - $12,500)      [$337.5]
+    # + 6% * ($30,000 - $20,000)        [$600]
+    # + 6.5% * ($1,000,000 - $30,000)   [$63050]
+    # = $64,437.5
+    wv_income_tax_before_credits: 64_437.50
