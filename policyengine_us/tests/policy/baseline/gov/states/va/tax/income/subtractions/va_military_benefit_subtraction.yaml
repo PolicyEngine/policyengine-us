@@ -5,10 +5,10 @@
       person1:
         military_benefit: 9_000
         is_tax_unit_head: 1
+        age: 60
     tax_units:
       tax_unit:
         members: [person1]
-        age_head: 60
     households:
       household:
         members: [person1]
@@ -23,10 +23,10 @@
       person1:
         military_benefit: 9_000
         is_tax_unit_head: 1
+        age: 45
     tax_units:
       tax_unit:
         members: [person1]
-        age_head: 45
     households:
       household:
         members: [person1]
@@ -42,14 +42,14 @@
       person1:
         military_benefit: 9_000
         is_tax_unit_head: 1
+        age: 60
       person2:
         military_benefit: 8_000
         is_tax_unit_spouse: 1
+        age: 60
     tax_units:
       tax_unit:
         members: [person1, person2]
-        age_head: 60
-        age_spouse: 60
     households:
       household:
         members: [person1, person2]
@@ -65,14 +65,14 @@
       person1:
         military_benefit: 9_000
         is_tax_unit_head: 1
+        age: 50
       person2:
         military_benefit: 8_000
         is_tax_unit_spouse: 1
+        age: 60
     tax_units:
       tax_unit:
         members: [person1, person2]
-        age_head: 50
-        age_spouse: 60
     households:
       household:
         members: [person1, person2]
@@ -88,20 +88,21 @@
       person1:
         military_benefit: 9_000
         is_tax_unit_head: 1
+        age: 87
       person2:
         military_benefit: 16_000
         is_tax_unit_spouse: 1
+        age: 85
     tax_units:
       tax_unit:
         members: [person1, person2]
-        age_head: 87
-        age_spouse: 85
     households:
       household:
         members: [person1, person2]
         state_code: VA
   output:
-    va_military_benefit_subtraction: 9_000
+    # $9,000 + $10,000 (max is $10,000)
+    va_military_benefit_subtraction: 19_000
     
 - name: VA military benefit of amount less than $10,000 for spouse, head and a dependent, all older than 55
   period: 2022
@@ -110,17 +111,17 @@
       person1:
         military_benefit: 9_000
         is_tax_unit_head: 1
+        age: 87
       person2:
         military_benefit: 5_000
         is_tax_unit_spouse: 1
+        age: 85
       person3:
         military_benefit: 9_000
         is_tax_unit_dependent: 1
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        age_head: 87
-        age_spouse: 85
     households:
       household:
         members: [person1, person2, person3]
@@ -136,13 +137,13 @@
       person1:
         military_benefit: 20_000
         is_tax_unit_head: 1
+        age: 84
     tax_units:
       tax_unit:
         members: [person1]
-        age_head: 84
     households:
       household:
         members: [person1]
         state_code: VA
   output:
-    va_military_benefit_subtraction: 0
+    va_military_benefit_subtraction: 10_000
