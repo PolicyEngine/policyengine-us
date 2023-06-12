@@ -16,4 +16,3 @@ class wv_personal_exemption(Variable):
         return where(
             tax_unit_size == 0, p.base_personal, p.personal * tax_unit_size
         )
-        return standard_deduction
