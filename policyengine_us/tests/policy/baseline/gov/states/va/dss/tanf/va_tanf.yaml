@@ -51,20 +51,44 @@
   input:
     va_tanf_eligibility: true
     va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 13_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 4_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf: 8_940
+
+- name: If tanf eligible, living in group III, payment more than maximum payment, then they get the maximum payment.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
     va_tanf_grant_standard: 12_000
     va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 4_000
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    va_tanf: 7_500
+
+- name: If up tanf eligible, living in group III, payment more than maximum payment, then they get the maximum payment.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 0
+    va_tanf_up_grant_standard: 12_000
     va_tanf_countable_income: 4_000
     county_str: ARLINGTON_COUNTY_VA
   output:
     va_tanf: 7_776
 
-- name: If tanf eligible, living in group II, payment more maximum payment, then they get the difference.
+- name: If up tanf eligible, living in group II, payment more maximum payment, then they get the difference.
   period: 2023
   input:
     va_tanf_eligibility: true
-    va_up_tanf_eligibility: false
-    va_tanf_grant_standard: 11_000
-    va_tanf_up_grant_standard: 0
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 0
+    va_tanf_up_grant_standard: 11_000
     va_tanf_countable_income: 4_000
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
