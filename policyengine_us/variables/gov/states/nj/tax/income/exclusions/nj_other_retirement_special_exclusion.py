@@ -49,4 +49,4 @@ class nj_other_retirement_special_exclusion(Variable):
             head_eligible,
         )
 
-        return p.special_exclusion_amount[filing_status] * eligible
+        return p.special_exclusion.amount[filing_status] * eligible
