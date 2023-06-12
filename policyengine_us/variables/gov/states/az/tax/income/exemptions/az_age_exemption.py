@@ -21,4 +21,4 @@ class az_age_exemption(Variable):
         age_spouse = tax_unit("age_spouse", period)
         spouse_eligible = (age_spouse >= 65).astype(int)
 
-        return (head_eligible + spouse_eligible * joint ) * p.age
+        return (head_eligible + spouse_eligible * joint) * p.age
