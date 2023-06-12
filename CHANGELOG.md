@@ -5,6 +5,66 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.335.0] - 2023-06-12 15:05:19
+
+### Fixed
+
+- West Virginia tax rate schedule.
+
+## [0.334.0] - 2023-06-08 22:01:14
+
+### Added
+
+- Working Families Tax Cut Act parameters.
+
+## [0.333.1] - 2023-06-08 15:10:11
+
+### Added
+
+- Federal AGI by income source.
+
+## [0.333.0] - 2023-06-06 15:49:45
+
+### Added
+
+- Vermont AGI.
+
+## [0.332.0] - 2023-06-05 02:11:50
+
+### Changed
+
+- Delaware personal income tax rate.
+
+## [0.331.1] - 2023-05-31 23:59:55
+
+### Fixed
+
+- Missing taxable_social_security in list of NJ AGI subtractions relative to federal AGI.
+
+## [0.331.0] - 2023-05-31 23:56:45
+
+### Added
+
+- Rhode Island Standard Deduction.
+
+## [0.330.1] - 2023-05-31 02:23:18
+
+### Fixed
+
+- Add six states to list used by state_income_tax formula.
+
+## [0.330.0] - 2023-05-30 16:14:28
+
+### Added
+
+- Old Age Pension
+
+## [0.329.4] - 2023-05-30 06:23:37
+
+### Fixed
+
+- Incorrect logic in federal tax_unit_itemizes formula.
+
 ## [0.329.3] - 2023-05-29 00:20:03
 
 ### Fixed
