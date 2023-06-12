@@ -4,11 +4,11 @@
     people:
       person1:
         military_benefit: 9_000
-        age_head: 60
         is_tax_unit_head: 1
     tax_units:
       tax_unit:
         members: [person1]
+        age_head: 60
     households:
       household:
         members: [person1]
@@ -22,11 +22,11 @@
     people:
       person1:
         military_benefit: 9_000
-        age_head: 45
         is_tax_unit_head: 1
     tax_units:
       tax_unit:
         members: [person1]
+        age_head: 45
     households:
       household:
         members: [person1]
@@ -41,15 +41,15 @@
     people:
       person1:
         military_benefit: 9_000
-        age_head: 60
         is_tax_unit_head: 1
       person2:
         military_benefit: 8_000
-        age_spouse: 60
         is_tax_unit_spouse: 1
     tax_units:
       tax_unit:
         members: [person1, person2]
+        age_head: 60
+        age_spouse: 60
     households:
       household:
         members: [person1, person2]
@@ -64,15 +64,15 @@
     people:
       person1:
         military_benefit: 9_000
-        age_head: 50
         is_tax_unit_head: 1
       person2:
         military_benefit: 8_000
-        age_spouse: 60
         is_tax_unit_spouse: 1
     tax_units:
       tax_unit:
         members: [person1, person2]
+        age_head: 50
+        age_spouse: 60
     households:
       household:
         members: [person1, person2]
@@ -87,15 +87,15 @@
     people:
       person1:
         military_benefit: 9_000
-        age_head: 87
         is_tax_unit_head: 1
       person2:
         military_benefit: 16_000
-        age_spouse: 85
         is_tax_unit_spouse: 1
     tax_units:
       tax_unit:
         members: [person1, person2]
+        age_head: 87
+        age_spouse: 85
     households:
       household:
         members: [person1, person2]
@@ -109,11 +109,9 @@
     people:
       person1:
         military_benefit: 9_000
-        age_head: 87
         is_tax_unit_head: 1
       person2:
         military_benefit: 5_000
-        age_spouse: 85
         is_tax_unit_spouse: 1
       person2:
         military_benefit: 9_000
@@ -121,6 +119,8 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        age_head: 87
+        age_spouse: 85
     households:
       household:
         members: [person1, person2, person3]
@@ -135,11 +135,11 @@
     people:
       person1:
         military_benefit: 20_000
-        age_head: 84
         is_tax_unit_head: 1
     tax_units:
       tax_unit:
         members: [person1]
+        age_head: 84
     households:
       household:
         members: [person1]
