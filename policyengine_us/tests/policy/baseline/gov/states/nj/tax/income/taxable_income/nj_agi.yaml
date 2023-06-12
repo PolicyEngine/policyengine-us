@@ -1,5 +1,5 @@
 - name: NJ taxpayer with taxable pension income
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   period: 2021
   input:
     people:
@@ -25,14 +25,16 @@
     # 6_000 because all pension income is excluded from NJ AGI in this case
 
 - name: NJ taxpayer with no taxable pension income
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   period: 2021
   input:
     people:
       person1:
         is_tax_unit_head: true
         age: 70
+        taxable_pension_income: 0
         taxable_interest_income: 7_000
+        taxable_social_security: 0
     spm_units:
       spm_unit:
         members: [person1]

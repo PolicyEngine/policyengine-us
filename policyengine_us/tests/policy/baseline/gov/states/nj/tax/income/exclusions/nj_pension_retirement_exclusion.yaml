@@ -6,14 +6,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 3_000
-        taxable_interest_income: 2_000
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 6_000
-        taxable_interest_income: 5_000
         taxable_pension_income: 4_000
     spm_units:
       spm_unit:
@@ -31,7 +27,7 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 21_000
+    nj_pension_retirement_exclusion: 5_000
 
 - name: Spouse retirement income can't be counted because they're not age eligible.
   absolute_error_margin: 0
@@ -41,14 +37,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 3_000
-        taxable_interest_income: 2_000
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 61
-        taxable_social_security: 6_000
-        taxable_interest_income: 5_000
         taxable_pension_income: 4_000
     spm_units:
       spm_unit:
@@ -66,7 +58,7 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 6_000
+    nj_pension_retirement_exclusion: 1_000
 
 - name: Retirement income of third senior in tax unit can't be counted.
   absolute_error_margin: 0
@@ -76,22 +68,16 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 3_000
-        taxable_interest_income: 2_000
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 6_000
-        taxable_interest_income: 5_000
-        taxable_pension_income: 4_000
+        taxable_pension_income: 2_000
       person3:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
         age: 62
-        taxable_social_security: 3_000
-        taxable_interest_income: 2_000
-        taxable_pension_income: 1_000
+        taxable_pension_income: 4_000
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -108,7 +94,7 @@
         members: [person1, person2, person3]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 21_000
+    nj_pension_retirement_exclusion: 3_000
 
 - name: Can count all head and spouse retirement income because they're blind or disabled.
   absolute_error_margin: 0
@@ -118,14 +104,10 @@
       person1:
         is_tax_unit_head: true
         age: 61
-        taxable_social_security: 3_000
-        taxable_interest_income: 2_000
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 61
-        taxable_social_security: 6_000
-        taxable_interest_income: 5_000
         taxable_pension_income: 4_000
     spm_units:
       spm_unit:
@@ -143,7 +125,7 @@
         members: [person1, person2]
         state_code: NJ
   output:
-    nj_pension_retirement_exclusion: 21_000
+    nj_pension_retirement_exclusion: 5_000
 
 - name: Max amount is restrictive - head of household filer.
   absolute_error_margin: 0
@@ -153,14 +135,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -189,14 +167,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -225,21 +199,13 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
-      person2:
-        is_tax_unit_spouse: true
-        age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [person1]
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1]
         blind_head: false
         blind_spouse: false
         disabled_head: false
@@ -248,7 +214,7 @@
         filing_status: SINGLE
     households:
       household:
-        members: [person1, person2]
+        members: [person1]
         state_code: NJ
   output:
     nj_pension_retirement_exclusion: 75_000
@@ -261,21 +227,13 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
-      person2:
-        is_tax_unit_spouse: true
-        age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [person1]
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1]
         blind_head: false
         blind_spouse: false
         disabled_head: false
@@ -297,14 +255,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -333,14 +287,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -369,14 +319,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -405,14 +351,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -441,21 +383,13 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
-      person2:
-        is_tax_unit_spouse: true
-        age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
     spm_units:
       spm_unit:
-        members: [person1, person2]
+        members: [person1]
     tax_units:
       tax_unit:
-        members: [person1, person2]
+        members: [person1]
         blind_head: false
         blind_spouse: false
         disabled_head: false
@@ -464,7 +398,7 @@
         filing_status: SINGLE
     households:
       household:
-        members: [person1, person2]
+        members: [person1]
         state_code: NJ
   output:
     nj_pension_retirement_exclusion: 18_750
@@ -477,14 +411,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -513,14 +443,10 @@
       person1:
         is_tax_unit_head: true
         age: 62
-        taxable_social_security: 100_000
-        taxable_interest_income: 0
-        taxable_pension_income: 0
+        taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
-        taxable_social_security: 0
-        taxable_interest_income: 0
         taxable_pension_income: 0
     spm_units:
       spm_unit:

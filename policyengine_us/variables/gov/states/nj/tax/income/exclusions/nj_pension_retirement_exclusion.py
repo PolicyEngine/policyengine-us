@@ -33,13 +33,11 @@ class nj_pension_retirement_exclusion(Variable):
         # This includes social security, interest income, and pension income.
         person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
-        social_security = person("taxable_social_security", period)
-        interest_income = person("taxable_interest_income", period)
         pension_income = person("taxable_pension_income", period)
         potential_head_exclusion = tax_unit.sum(
             where(
                 is_head,
-                social_security + interest_income + pension_income,
+                pension_income,
                 0,
             )
         )
@@ -53,19 +51,25 @@ class nj_pension_retirement_exclusion(Variable):
         potential_spouse_exclusion = tax_unit.sum(
             where(
                 is_spouse * joint,
-                social_security + interest_income + pension_income,
+                pension_income,
                 0,
             )
         )
         spouse_exclusion = joint * eligible_spouse * potential_spouse_exclusion
         exclusion_amount = head_exclusion + spouse_exclusion
 
-        # Get the total income minus interest and pension income to determine exclusion percentage.
-        # Line 27 minus 16b and 20b.
-        interest_income = add(tax_unit, period, ["taxable_interest_income"])
-        pension_income = add(tax_unit, period, ["taxable_pension_income"])
+        # Get total income minus exempt interest and pension income to determine exclusion percentage.
+        # Line 27 (total income minus 16b and 20b).
+        exempt_interest_income = add(
+            tax_unit, period, ["tax_exempt_interest_income"]
+        )
+        exempt_pension_income = add(
+            tax_unit, period, ["tax_exempt_pension_income"]
+        )
         agi = tax_unit("adjusted_gross_income", period)
-        qualifying_income = agi - interest_income - pension_income
+        qualifying_income = (
+            agi - exempt_interest_income - exempt_pension_income
+        )
 
         # Get the exclusion percentage based on filing status and income.
         exclusion_percentage = select(
