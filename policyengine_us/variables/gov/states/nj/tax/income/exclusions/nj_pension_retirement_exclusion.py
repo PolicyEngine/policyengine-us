@@ -48,12 +48,15 @@ class nj_pension_retirement_exclusion(Variable):
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
         is_spouse = person("is_tax_unit_spouse", period)
-        potential_spouse_exclusion = tax_unit.sum(
-            where(
-                is_spouse * joint,
-                pension_income,
-                0,
+        potential_spouse_exclusion = (
+            tax_unit.sum(
+                where(
+                    is_spouse,
+                    pension_income,
+                    0,
+                )
             )
+            * joint
         )
         spouse_exclusion = joint * eligible_spouse * potential_spouse_exclusion
         exclusion_amount = head_exclusion + spouse_exclusion

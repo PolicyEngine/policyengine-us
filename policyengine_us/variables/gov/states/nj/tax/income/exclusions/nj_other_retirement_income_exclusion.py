@@ -33,12 +33,12 @@ class nj_other_retirement_income_exclusion(Variable):
             is_spouse * eligible_spouse * joint
         )
         gross_income = person("irs_gross_income", period)
-        interest_income = person("taxable_interest_income", period)
-        pension_income = person("taxable_pension_income", period)
+        exempt_interest_income = person("tax_exempt_interest_income", period)
+        exempt_pension_income = person("tax_exempt_pension_income", period)
         qualifying_income = tax_unit.sum(
             where(
                 eligible_member,
-                gross_income - interest_income - pension_income,
+                gross_income - exempt_interest_income - exempt_pension_income,
                 0,
             )
         )
