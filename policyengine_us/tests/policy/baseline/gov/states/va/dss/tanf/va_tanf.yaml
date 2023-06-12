@@ -1,0 +1,71 @@
+- name: If ineligible, they get zero.
+  period: 2023
+  input:
+    va_tanf_eligibility: false
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 1_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 3_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf: 0
+
+- name: If tanf eligible, payment less than $10 * 12, then they get zero.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 2_100
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 2_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf: 0
+
+- name: If up tanf eligible, payment less than $10 * 12, then they get zero.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: true
+    va_tanf_grant_standard: 0
+    va_tanf_up_grant_standard: 2_100
+    va_tanf_countable_income: 2_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf: 0
+
+- name: If tanf eligible, living in group3, payment less than maximum payment, then they get the difference.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 10_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 4_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf: 6_000
+
+- name: If tanf eligible, living in group III, payment more than maximum payment, then they get the maximum payment.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 12_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 4_000
+    county_str: ARLINGTON_COUNTY_VA
+  output:
+    va_tanf: 7_776
+
+- name: If tanf eligible, living in group II, payment more maximum payment, then they get the difference.
+  period: 2023
+  input:
+    va_tanf_eligibility: true
+    va_up_tanf_eligibility: false
+    va_tanf_grant_standard: 11_000
+    va_tanf_up_grant_standard: 0
+    va_tanf_countable_income: 4_000
+    county_str: PITTSYLVANIA_COUNTY_VA
+  output:
+    va_tanf: 6_528
