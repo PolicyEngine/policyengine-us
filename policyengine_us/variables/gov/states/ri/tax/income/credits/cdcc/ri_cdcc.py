@@ -13,4 +13,4 @@ class ri_cdcc(Variable):
         ri_income_tax = tax_unit("ri_income_tax", period)
         fed_cdcc = tax_unit("cdcc", period)
         rate = parameters(period).gov.states.ri.tax.income.credits.cdcc.rate
-        return min(fed_cdcc * rate, ri_income_tax)
+        return min_(fed_cdcc * rate, ri_income_tax)
