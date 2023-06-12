@@ -1,0 +1,76 @@
+- name: NJ property tax deduction is 18% of rent if still below threshold.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        rent: 10_000
+      person2:
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        rents: true
+        nj_homeowners_property_tax: 0
+        nj_property_tax_deduction_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_potential_property_tax_deduction: 1_800
+
+- name: NJ property tax deduction is 18% of rent, capped at threshold.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        rent: 100_000
+      person2:
+        rent: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        rents: true
+        nj_homeowners_property_tax: 0
+        nj_property_tax_deduction_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_potential_property_tax_deduction: 15_000
+
+- name: NJ property tax deduction is property taxes paid on main home if below threshold and not renting.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    rents: false
+    nj_homeowners_property_tax: 10_000
+    state_code: NJ
+    nj_property_tax_deduction_eligible: true
+  output:
+    nj_potential_property_tax_deduction: 10_000
+
+- name: NJ property tax deduction cannot exceed $15,000 threshold.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    rents: false
+    nj_homeowners_property_tax: 20_000
+    state_code: NJ
+    nj_property_tax_deduction_eligible: true
+  output:
+    nj_potential_property_tax_deduction: 15_000
+
+- name: NJ potential property tax deduction should be $0 if ineligible.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    rents: false
+    nj_homeowners_property_tax: 20_000
+    state_code: NJ
+    nj_property_tax_deduction_eligible: false
+  output:
+    nj_potential_property_tax_deduction: 0
