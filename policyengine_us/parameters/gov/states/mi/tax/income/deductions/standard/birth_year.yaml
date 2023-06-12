@@ -1,10 +1,17 @@
-description: Michigan provides a standard deduction addition below this age threshold. 
+description: Michigan provides a standard deduction addition for recipients born after this year. 
 values:
-  2017-01-01: 76
+  2017-01-01: 1941
+  2018-01-01: 1942
+  2019-01-01: 1943
+  2020-01-01: 1944
+  2021-01-01: 1945
+  2022-01-01: 1946
 metadata:
   unit: year
   label: Michigan standard deduction addition age max threshold
   reference:
+    - title: Michigan Legal Code Section 206.30
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
     - title: Michigan Standard Deduction
       href: https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction
     - title: Michigan 2022 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS

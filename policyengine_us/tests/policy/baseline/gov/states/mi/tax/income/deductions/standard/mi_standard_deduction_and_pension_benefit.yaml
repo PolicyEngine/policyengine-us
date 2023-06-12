@@ -5,7 +5,7 @@
     filing_status: SINGLE
     age_head: 35
   output:
-    mi_standard_deduction: 0
+    mi_standard_deduction_and_pension_benefit: 0
 
 - name: 2022 single filer who is below the standard deduction age threshold but at the tier 3 retirement and pension benefits age threshold
   period: 2022
@@ -13,9 +13,9 @@
     state_code: MI
     filing_status: SINGLE
     age_head: 66
-    mi_social_security_retirement: true
+    is_social_security_retirement: true
   output: # 0 + 0 + 15000 + 0
-    mi_standard_deduction: 15_000
+    mi_standard_deduction_and_pension_benefit: 15_000
 
 - name: 2022 single filer who is below the standard deduction age threshold but at the tier 3 retirement and pension benefits age threshold, but not receive retirement benefits from employment exempt from Social Security
   period: 2022
@@ -24,7 +24,7 @@
     filing_status: SINGLE
     age_head: 66
   output: # 0 + 0 + 0 + 0
-    mi_standard_deduction: 0
+    mi_standard_deduction_and_pension_benefit: 0
 
 - name: 2022 single filer who is above the standard deduction age threshold but at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, $13000 interest, dividends, and capital gains income
   period: 2022
@@ -34,7 +34,7 @@
     age_head: 77
     mi_interest_dividends_capital_gains_income: 13_000
   output: # 0 + 56961 + 0 + 12697
-    mi_standard_deduction: 69_658
+    mi_standard_deduction_and_pension_benefit: 69_658
 
 - name: 2022 single filer who is above the standard deduction age threshold but at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, $1000 interest, dividends, and capital gains income
   period: 2022
@@ -44,7 +44,7 @@
     age_head: 77
     mi_interest_dividends_capital_gains_income: 1_000
   output: # 0 + 56961 + 0 + 1000
-    mi_standard_deduction: 57_961
+    mi_standard_deduction_and_pension_benefit: 57_961
 
 - name: 2022 single filer who is at the standard deduction age threshold
   period: 2022
@@ -53,7 +53,7 @@
     filing_status: SINGLE
     age_head: 67
   output:
-    mi_standard_deduction: 20_000
+    mi_standard_deduction_and_pension_benefit: 20_000
 
 - name: 2022 joint filer who is not at the age threshold, their spouse is not at the threshold
   period: 2022
@@ -63,7 +63,7 @@
     age_head: 35
     age_spouse: 35
   output: 
-    mi_standard_deduction: 0
+    mi_standard_deduction_and_pension_benefit: 0
 
 - name: 2022 joint filer who is at the standard deduction age threshold, their spouse is at the tier 3 retirement and pension benefits threshold
   period: 2022
@@ -72,9 +72,9 @@
     filing_status: JOINT
     age_head: 67
     age_spouse: 65
-    mi_social_security_retirement: true
+    is_social_security_retirement: true
   output: # 40000 > 30000
-    mi_standard_deduction: 40_000
+    mi_standard_deduction_and_pension_benefit: 40_000
 
 - name: 2022 joint filer who is at the tier 3 retirement and pension benefits age threshold, their spouse is at the standard deduction threshold
   period: 2022
@@ -83,9 +83,9 @@
     filing_status: JOINT
     age_head: 65
     age_spouse: 67
-    mi_social_security_retirement: true
+    is_social_security_retirement: true
   output: # 40000 > 30000
-    mi_standard_deduction: 40_000
+    mi_standard_deduction_and_pension_benefit: 40_000
 
 - name: 2022 joint filer who is at the standard deduction age threshold, their spouse is at the standard deduction threshold
   period: 2022
@@ -95,7 +95,7 @@
     age_head: 67
     age_spouse: 67
   output:
-    mi_standard_deduction: 40_000
+    mi_standard_deduction_and_pension_benefit: 40_000
 
 - name: 2022 joint filer who is at the standard deduction age threshold, their spouse is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold, $13000 interest, dividends, and capital gains income
   period: 2022
@@ -106,7 +106,7 @@
     age_spouse: 77
     mi_interest_dividends_capital_gains_income: 13_000
   output: # 0 + 113922 + 0 + 13000 > 40000
-    mi_standard_deduction: 126_922
+    mi_standard_deduction_and_pension_benefit: 126_922
 
 - name: 2022 joint filer who is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, their spouse is at the standard deduction threshold, $26000 interest, dividends, and capital gains income
   period: 2022
@@ -117,7 +117,7 @@
     age_spouse: 67
     mi_interest_dividends_capital_gains_income: 26_000
   output: # 0 + 113922 + 0 + 25394 > 40000
-    mi_standard_deduction: 139_316
+    mi_standard_deduction_and_pension_benefit: 139_316
 
 - name: 2022 widow filer who is not at the age threshold, their spouse is not at the threshold
   period: 2022
@@ -127,7 +127,7 @@
     age_head: 35
     age_spouse: 35
   output: 
-    mi_standard_deduction: 0
+    mi_standard_deduction_and_pension_benefit: 0
 
 - name: 2022 widow filer who is at the standard deduction age threshold, their spouse is at the tier 3 retirement and pension benefits threshold
   period: 2022
@@ -136,9 +136,9 @@
     filing_status: WIDOW
     age_head: 67
     age_spouse: 65
-    mi_social_security_retirement: true
+    is_social_security_retirement: true
   output: # 20000 > 15000
-    mi_standard_deduction: 20_000
+    mi_standard_deduction_and_pension_benefit: 20_000
 
 - name: 2022 widow filer who is at the tier 3 retirement and pension benefits age threshold, their spouse is at the standard deduction threshold
   period: 2022
@@ -147,9 +147,9 @@
     filing_status: WIDOW
     age_head: 65
     age_spouse: 67
-    mi_social_security_retirement: true
+    is_social_security_retirement: true
   output: # 20000 > 15000
-    mi_standard_deduction: 20_000
+    mi_standard_deduction_and_pension_benefit: 20_000
 
 - name: 2022 widow filer who is at the standard deduction age threshold, their spouse is at the standard deduction threshold
   period: 2022
@@ -159,7 +159,7 @@
     age_head: 67
     age_spouse: 67
   output: 
-    mi_standard_deduction: 20_000
+    mi_standard_deduction_and_pension_benefit: 20_000
 
 - name: 2022 widow filer who is at the standard deduction age threshold, their spouse is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction threshold, $13000 interest, dividends, and capital gains income
   period: 2022
@@ -170,7 +170,7 @@
     age_spouse: 77
     mi_interest_dividends_capital_gains_income: 13_000
   output: # 0 + 56961 + 0 + 12697 > 20000
-    mi_standard_deduction: 69_658
+    mi_standard_deduction_and_pension_benefit: 69_658
 
 - name: 2022 widow filer who is at the tier 1 retirement and pension benefits and interest, dividends, and capital gains deduction age threshold, their spouse is at the standard deduction threshold, $1000 interest, dividends, and capital gains income
   period: 2022
@@ -181,4 +181,4 @@
     age_spouse: 67
     mi_interest_dividends_capital_gains_income: 1_000
   output: # 0 + 56961 + 0 + 1000 > 20000
-    mi_standard_deduction: 57_961
+    mi_standard_deduction_and_pension_benefit: 57_961
