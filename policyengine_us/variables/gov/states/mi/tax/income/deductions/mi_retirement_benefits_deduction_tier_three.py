@@ -9,6 +9,7 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
     definition_period = YEAR
     documentation = "Michigan retirement and pension benefits for age 62-66."
     reference = (
+        "http://legislature.mi.gov/doc.aspx?mcl-206-30",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf?rev=86a928564e3f42449c531309673f5da7&hash=7147C48E7C9B1B8171B72DC34A66642A",
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
     )
