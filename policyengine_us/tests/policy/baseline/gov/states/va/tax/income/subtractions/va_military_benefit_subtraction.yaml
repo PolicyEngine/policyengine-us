@@ -1,0 +1,148 @@
+- name: VA military benefit of amount less than $10,000, only person in tax unit, 55 or older
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 9_000
+        age_head: 60
+        is_tax_unit_head: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_military_benefit_subtraction: 9_000
+
+- name: VA military benefit of amount less than $10,000, only person in tax unit, not 55 or older
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 9_000
+        age_head: 45
+        is_tax_unit_head: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # $0 since the individual has to be 55 or older to be eligible for the subtraction
+    va_military_benefit_subtraction: 0
+
+- name: VA military benefit of amount less than $10,000, both head and spouse eligible in tax unit, both older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 9_000
+        age_head: 60
+        is_tax_unit_head: 1
+      person2:
+        military_benefit: 8_000
+        age_spouse: 60
+        is_tax_unit_spouse: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 9,000+8,000
+    va_military_benefit_subtraction: 17_000
+
+- name: VA military benefit of amount less than $10,000, both head and spouse eligible in tax unit, only spouse older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 9_000
+        age_head: 50
+        is_tax_unit_head: 1
+      person2:
+        military_benefit: 8_000
+        age_spouse: 60
+        is_tax_unit_spouse: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 8,000 since the individual has to be older than 55
+    va_military_benefit_subtraction: 8_000
+
+- name: VA military benefit of amount more than $10,000 for spouse but less than $10,000 for head, both older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 9_000
+        age_head: 87
+        is_tax_unit_head: 1
+      person2:
+        military_benefit: 16_000
+        age_spouse: 85
+        is_tax_unit_spouse: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_military_benefit_subtraction: 9_000
+    
+- name: VA military benefit of amount less than $10,000 for spouse, head and a dependent, all older than 55
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 9_000
+        age_head: 87
+        is_tax_unit_head: 1
+      person2:
+        military_benefit: 5_000
+        age_spouse: 85
+        is_tax_unit_spouse: 1
+      person2:
+        military_benefit: 9_000
+        is_tax_unit_dependent: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # $9,000+$5,000 since dependents should be excluded
+    va_military_benefit_subtraction: 14_000
+
+- name: VA military benefit of amount more than $10,000, 55 or older
+  period: 2022
+  input:
+    people:
+      person1:
+        military_benefit: 20_000
+        age_head: 84
+        is_tax_unit_head: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_military_benefit_subtraction: 0
