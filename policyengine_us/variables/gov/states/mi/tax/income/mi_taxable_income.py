@@ -11,7 +11,7 @@ class mi_taxable_income(Variable):
 
     def formula(tax_unit, period, parameters):
         agi = tax_unit("adjusted_gross_income", period)
-        std_ded = tax_unit("mi_standard_deduction", period)
+        std_ded = tax_unit("mi_standard_deduction_and_pension_benefit", period)
         itm_ded = tax_unit(
             "itemized_taxable_income_deductions", period
         )  # equal to federal itmded
