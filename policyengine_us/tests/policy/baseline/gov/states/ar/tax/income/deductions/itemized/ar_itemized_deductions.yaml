@@ -1,0 +1,39 @@
+- name: Single filer with low AGI and large medical expenses
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    medical_expense_deduction: 10_000
+  output:
+    ca_itemized_deductions: 10_000
+
+- name: Single filer with high AGI and large medical expenses
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 212_288 + 50_000
+    medical_expense_deduction: 10_000
+  output:
+    ca_itemized_deductions: 10_000  # medical expenses not subject to limitation
+
+- name: Single filer with low AGI and large charitable_deduction
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    charitable_deduction: 10_000
+  output:
+    ca_itemized_deductions: 10_000
+
+- name: Single filer with high AGI and large charitable_deduction
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 212_288 + 50_000
+    charitable_deduction: 10_000
+  output:
+    ca_itemized_deductions: 7_000  # charity subject to limitation
