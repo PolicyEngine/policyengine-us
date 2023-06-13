@@ -1,49 +1,69 @@
 description: Michigan provides the following percentage of the the homestead property tax credit based on the filers income.
 brackets:
   - threshold:
-      2023-01-01: 0
+      2016-01-01: 0
     amount:
-      2023-01-01: 1
+      2016-01-01: 1
   - threshold:
-      2023-01-01: 54_001
+      2016-01-01: 41_001
+      2018-01-01: 51_001
+      2022-01-01: 54_001
     amount:
-      2023-01-01: 0.9
+      2016-01-01: 0.9
   - threshold:
-      2023-01-01: 55_001
+      2016-01-01: 42_001
+      2018-01-01: 52_001
+      2022-01-01: 55_001
     amount:
-      2023-01-01: 0.8
+      2016-01-01: 0.8
   - threshold:
-      2023-01-01: 56_001
+      2016-01-01: 43_001
+      2018-01-01: 53_001
+      2022-01-01: 56_001
     amount:
-      2023-01-01: 0.7
+      2016-01-01: 0.7
   - threshold:
-      2023-01-01: 57_001
+      2016-01-01: 44_001
+      2018-01-01: 54_001
+      2022-01-01: 57_001
     amount:
-      2023-01-01: 0.6
+      2016-01-01: 0.6
   - threshold:
-      2023-01-01: 58_001
+      2016-01-01: 45_001
+      2018-01-01: 55_001
+      2022-01-01: 58_001
     amount:
-      2023-01-01: 0.5
+      2016-01-01: 0.5
   - threshold:
-      2023-01-01: 59_001
+      2016-01-01: 46_001
+      2018-01-01: 56_001
+      2022-01-01: 59_001
     amount:
-      2023-01-01: 0.4
+      2016-01-01: 0.4
   - threshold:
-      2023-01-01: 60_001
+      2016-01-01: 47_001
+      2018-01-01: 57_001
+      2022-01-01: 60_001
     amount:
-      2023-01-01: 0.3
+      2016-01-01: 0.3
   - threshold:
-      2023-01-01: 61_001
+      2016-01-01: 48_001
+      2018-01-01: 58_001
+      2022-01-01: 61_001
     amount:
-      2023-01-01: 0.2
+      2016-01-01: 0.2
   - threshold:
-      2023-01-01: 62_001
+      2016-01-01: 49_001
+      2018-01-01: 59_001
+      2022-01-01: 62_001
     amount:
-      2023-01-01: 0.1
+      2016-01-01: 0.1
   - threshold:
-      2023-01-01: 63_001
+      2016-01-01: 50_001
+      2018-01-01: 60_001
+      2022-01-01: 63_001
     amount:
-      2023-01-01: 0
+      2016-01-01: 0
       
 metadata:
   type: single_amount
@@ -53,5 +73,7 @@ metadata:
 
   label: Homestead Property Tax Credit Phase Out
   reference:
-    - title: "MI-1040CR TABLE B"
-      href: "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR-Instructions.pdf?rev=67deea154fe14149a8a22a30e370fa6c&hash=D1B4A597CDE814D95EC9F1DDC91663D3"
+    - title: MI-1040 Instructions
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR-Instructions.pdf?rev=67deea154fe14149a8a22a30e370fa6c&hash=D1B4A597CDE814D95EC9F1DDC91663D3
+    - title: Michigan Income Tax Act 206.520 (8)
+      href: http://www.legislature.mi.gov/(S(4kisbxgqhgmxdyusq0z31zad))/mileg.aspx?page=GetObject&objectname=mcl-206-520

@@ -1,10 +1,13 @@
-description: Michigan provides this maximum amount under the state homestead property tax credit.
+description: Michigan provides this maximum amount under the homestead property tax credit.
 metadata:
     unit: currency-USD
     period: year
     label: Homestead Property Tax Credit max amount
     reference:
-    - title: "Michigan Homestead Property Tax Credit"
-      href: "https://michiganfreetaxhelp.org/tax-credits/#:~:text=The%20Homestead%20Property%20Tax%20Credit,must%20be%20%24143%2C000%20or%20less."
+    - title: MI-1040 Instructions page 29
+      href: https://michiganfreetaxhelp.org/tax-credits/#:~:text=The%20Homestead%20Property%20Tax%20Credit,must%20be%20%24143%2C000%20or%20less.
+    - title: Michigan Income Tax Act 206.520 (15)
+      href: http://www.legislature.mi.gov/(S(4kisbxgqhgmxdyusq0z31zad))/mileg.aspx?page=GetObject&objectname=mcl-206-520
 values:
-    2023-01-01: 1_600
+    2018-01-01: 1_500
+    2022-01-01: 1_600
