@@ -18,9 +18,12 @@ class id_income_tax_before_refundable_credits(Variable):
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
+                filing_status == status.SEPARATE,
+                filing_status == status.WIDOW
             ],
             [
                 rates.single.calc(income),
                 rates.married.calc(income),
+                
             ],
         )
