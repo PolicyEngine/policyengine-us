@@ -12,7 +12,8 @@ class co_chp_lab_saving(Variable):
         copay = parameters(period).gov.states.co.hcpf.chp.copays.lab.calc(
             income_level
         )
-        lab_expense = person("lab_expense")
-        imaging_expense = person("imaging_expese")
-        total_expenses = lab_expense + imaging_expense
-        return max_(0, total_expenses - copay)
+        lab_expense = person("lab_expense", period)
+        imaging_expense = person("imaging_expense", period)
+        lab_saving = max_(0, lab_expense - copay)
+        imaging_saving = max_(0, imaging_expense - copay)
+        return lab_saving + imaging_saving

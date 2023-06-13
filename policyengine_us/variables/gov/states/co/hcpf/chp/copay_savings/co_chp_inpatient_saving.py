@@ -12,5 +12,5 @@ class co_chp_inpatient_saving(Variable):
         copay = parameters(
             period
         ).gov.states.co.hcpf.chp.copays.inpatient.calc(income_level)
-        expense = person("inpatient_expense")
+        expense = person("inpatient_expense", period)
         return max_(0, expense - copay)

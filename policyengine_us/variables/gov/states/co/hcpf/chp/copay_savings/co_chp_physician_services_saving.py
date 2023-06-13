@@ -12,5 +12,5 @@ class co_chp_physician_services_saving(Variable):
         copay = parameters(
             period
         ).gov.states.co.hcpf.chp.copays.physician_services.calc(income_level)
-        expense = person("physician_services_expense")
+        expense = person("physician_services_expense", period)
         return max_(0, expense - copay)

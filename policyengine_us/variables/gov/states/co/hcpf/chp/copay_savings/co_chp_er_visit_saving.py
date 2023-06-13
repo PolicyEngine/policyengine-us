@@ -12,5 +12,5 @@ class co_chp_er_visit_saving(Variable):
         copay = parameters(period).gov.states.co.hcpf.chp.copays.er_visit.calc(
             income_level
         )
-        expense = person("er_visit_expense")
+        expense = person("er_visit_expense", period)
         return max_(0, expense - copay)

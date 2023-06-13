@@ -12,5 +12,5 @@ class co_chp_urgent_care_saving(Variable):
         copay = parameters(
             period
         ).gov.states.co.hcpf.chp.copays.urgent_care.calc(income_level)
-        expense = person("urgent_care_expense")
+        expense = person("urgent_care_expense", period)
         return max_(0, expense - copay)

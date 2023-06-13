@@ -12,5 +12,5 @@ class co_chp_prescription_saving(Variable):
         copay = parameters(
             period
         ).gov.states.co.hcpf.chp.copays.prescription.calc(income_level)
-        expense = person("prescription_expense")
+        expense = person("prescription_expense", period)
         return max_(0, expense - copay)

@@ -12,5 +12,5 @@ class co_chp_ambulance_saving(Variable):
         copay = parameters(
             period
         ).gov.states.co.hcpf.chp.copays.ambulance.calc(income_level)
-        expense = person("ambulance_expense")
+        expense = person("ambulance_expense", period)
         return max_(0, expense - copay)

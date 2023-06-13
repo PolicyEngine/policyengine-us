@@ -1,0 +1,53 @@
+- name: No income
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 0
+    prescription_expense: 100
+  output:
+    co_chp_prescription_saving: 100
+
+- name: 150% fpl
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 1.5
+    prescription_expense: 200
+  output:
+    co_chp_prescription_saving: 199
+
+- name: 175% fpl
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 1.75
+    prescription_expense: 300
+  output:
+    co_chp_prescription_saving: 293.5
+
+- name: 250% fpl
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 2.50
+    prescription_expense: 400
+  output:
+    co_chp_prescription_saving: 390
+
+- name: Too much income
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 3
+    prescription_expense: 500
+  output:
+    co_chp_prescription_saving: 0
+
+- name: No expenses
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 0
+    prescription_expense: 0
+  output:
+    co_chp_prescription_saving: 0
