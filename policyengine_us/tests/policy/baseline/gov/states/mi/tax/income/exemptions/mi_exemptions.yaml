@@ -1,7 +1,7 @@
 - name: no dependents, is not stillborn parent, not disabled, is not a dependent
   period: 2022
   input:
-    tax_unit_size: 1
+    head_spouse_count: 1
     state_code: MI
   output:
     mi_exemptions: 5_000
@@ -9,7 +9,7 @@
 - name: 2 dependents, is not stillborn parent, not disabled, is not a dependent
   period: 2022
   input:
-    tax_unit_size: 1
+    head_spouse_count: 1
     tax_unit_dependents: 2
     state_code: MI
   output: # 5_000 * 3
@@ -18,8 +18,8 @@
 - name: no dependents, is stillborn parent, not disabled, is not a dependent
   period: 2022
   input:
-    tax_unit_size: 1
-    tax_unit_stillborn_parent: true
+    head_spouse_count: 1
+    tax_unit_stillborn_parent: 1
     state_code: MI
   output: # 5_000 + 5_000
     mi_exemptions: 10_000
@@ -27,7 +27,7 @@
 - name: no dependents, is not stillborn parent, is disabled, is not a dependent
   period: 2022
   input:
-    tax_unit_size: 1
+    head_spouse_count: 1
     head_is_disabled: 1
     state_code: MI
   output: # 5_000 + 2_900
@@ -36,7 +36,7 @@
 - name: no dependents, is not stillborn parent, is disabled, is disabled veteran, is not a dependent
   period: 2022
   input:
-    tax_unit_size: 1
+    head_spouse_count: 1
     head_is_disabled: 1
     tax_unit_disabled_veteran: 1
     state_code: MI
@@ -46,8 +46,8 @@
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2021
   input:
-    tax_unit_size: 1
-    tax_unit_is_dependent: true
+    head_spouse_count: 1
+    dsi: true
     filing_status: SINGLE
     state_code: MI
   output: # 4_900 + 1_500
@@ -56,8 +56,8 @@
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, married
   period: 2021
   input:
-    tax_unit_size: 1
-    tax_unit_is_dependent: true
+    head_spouse_count: 1
+    dsi: true
     filing_status: JOINT
     state_code: MI
   output: # 4_900 + 3_000
@@ -66,8 +66,8 @@
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2022
   input:
-    tax_unit_size: 1
-    tax_unit_is_dependent: true
+    head_spouse_count: 1
+    dsi: true
     filing_status: SINGLE
     state_code: MI
   output: # 5_000

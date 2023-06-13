@@ -2,7 +2,9 @@ from policyengine_us.model_api import *
 
 
 class tax_unit_stillborn_parent(Variable):
-    value_type = bool
+    value_type = int
     entity = TaxUnit
-    label = "Is the parent of a stillborn child"
+    label = (
+        "Head or spouse is the parent of a stillborn child in the filing year"
+    )
     definition_period = YEAR

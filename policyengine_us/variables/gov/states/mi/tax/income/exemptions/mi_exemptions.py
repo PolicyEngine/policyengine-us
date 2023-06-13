@@ -14,33 +14,30 @@ class mi_exemptions(Variable):
         p = parameters(period).gov.states.mi.tax.income.exemptions
 
         # Personal Exemptions
-        person = tax_unit("tax_unit_size", period)
-        personal_exemption = person * p.amount
+        person = tax_unit("head_spouse_count", period)
+        personal_exemption = person * p.filer
 
         # Dependent exemptions
         dependent = tax_unit("tax_unit_dependents", period)
-        dependent_exemption = dependent * p.dependent_amount
+        dependent_exemption = dependent * p.dependent
 
         # Stillborn Exemptions
-        stillborn = tax_unit("tax_unit_stillborn_parent", period).astype(int)
-        stillborn_exemption = stillborn * p.special_exemptions.stillborn_amount
+        stillborn = tax_unit("tax_unit_stillborn_parent", period)
+        stillborn_exemption = stillborn * p.stillborn
 
         # Disabled exemptions
         disabled = tax_unit("head_is_disabled", period)
-        disabled_exemption = disabled * p.special_exemptions.disabled_amount
+        disabled_exemption = disabled * p.disabled
 
         # Disabled veteran exemptions
         disabled_veteran = tax_unit("tax_unit_disabled_veteran", period)
-        disabled_veteran_exemption = (
-            disabled_veteran * p.special_exemptions.disabled_veteran_amount
-        )
+        disabled_veteran_exemption = disabled_veteran * p.disabled_veteran
 
-        # Is dependent exemptions
+        # Dependent on other return exemptions
         filing_status = tax_unit("filing_status", period)
-        is_dependent = tax_unit("tax_unit_is_dependent", period).astype(int)
+        is_dependent = tax_unit("dsi", period).astype(int)
         is_dependent_exemption = (
-            is_dependent
-            * p.special_exemptions.is_dependent_amount[filing_status]
+            is_dependent * p.dependent_on_other_return[filing_status]
         )
 
         # Total exemptions
