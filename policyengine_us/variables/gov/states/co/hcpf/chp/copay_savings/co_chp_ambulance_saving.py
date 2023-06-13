@@ -9,8 +9,10 @@ class co_chp_ambulance_saving(Variable):
 
     def formula(person, period, parameters):
         income_level = person("medicaid_income_level", period)
-        copay = parameters(
+        is_pregnant = person("is_pregnant", period)
+        p = parameters(
             period
-        ).gov.states.co.hcpf.chp.copays.ambulance.calc(income_level)
+        ).gov.states.co.hcpf.chp.copays.ambulance
+        copay = where(is_pregnant, 0, p.calc(income_level))
         expense = person("ambulance_expense", period)
         return max_(0, expense - copay)

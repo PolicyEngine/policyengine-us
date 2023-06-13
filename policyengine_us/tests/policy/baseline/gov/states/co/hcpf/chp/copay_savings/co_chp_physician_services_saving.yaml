@@ -4,6 +4,7 @@
     state_code: CO
     medicaid_income_level: 0
     physician_services_expense: 100
+    is_pregnant: false
   output:
     co_chp_physician_services_saving: 100
 
@@ -13,6 +14,7 @@
     state_code: CO
     medicaid_income_level: 1.5
     physician_services_expense: 200
+    is_pregnant: false
   output:
     co_chp_physician_services_saving: 198
 
@@ -22,6 +24,7 @@
     state_code: CO
     medicaid_income_level: 1.75
     physician_services_expense: 300
+    is_pregnant: false
   output:
     co_chp_physician_services_saving: 295
 
@@ -31,6 +34,7 @@
     state_code: CO
     medicaid_income_level: 2.50
     physician_services_expense: 400
+    is_pregnant: false
   output:
     co_chp_physician_services_saving: 390
 
@@ -40,6 +44,7 @@
     state_code: CO
     medicaid_income_level: 3
     physician_services_expense: 500
+    is_pregnant: false
   output:
     co_chp_physician_services_saving: 0
 
@@ -49,5 +54,16 @@
     state_code: CO
     medicaid_income_level: 0
     physician_services_expense: 0
+    is_pregnant: false
   output:
     co_chp_physician_services_saving: 0
+
+- name: No co-pay if pregnant
+  period: 2023
+  input:
+    state_code: CO
+    medicaid_income_level: 2.5
+    physician_services_expense: 100
+    is_pregnant: true
+  output:
+    co_chp_physician_services_saving: 100
