@@ -7,6 +7,13 @@ class co_chp(Variable):
     label = "Child Health Plan Plus"
     definition_period = YEAR
     defined_for = "co_chp_eligible"
-
-    def formula(person, period, parameters):
-        return 0
+    adds = [
+        "co_chp_ambulance_saving",
+        "co_chp_er_visit_saving",
+        "co_chp_inpatient_saving",
+        "co_chp_lab_saving",
+        "co_chp_outpatient_saving",
+        "co_chp_physician_services_saving",
+        "co_chp_prescription_saving",
+        "co_chp_urgent_care_saving",
+    ]
