@@ -1,0 +1,23 @@
+- name: No EITC
+  period: 2023
+  input:
+    earned_income_tax_credit: 0
+    state_code: NM
+  output:
+    nm_working_families_credit: 0
+
+- name: $1,000 EITC in 2023
+  period: 2023
+  input:
+    earned_income_tax_credit: 1_000
+    state_code: NM
+  output:
+    nm_working_families_credit: 250
+
+- name: $1,000 EITC in 2021
+  period: 2021
+  input:
+    earned_income_tax_credit: 1_000
+    state_code: NM
+  output:
+    nm_working_families_credit: 200
