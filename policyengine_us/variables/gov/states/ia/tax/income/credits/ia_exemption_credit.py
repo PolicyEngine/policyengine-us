@@ -20,7 +20,7 @@ class ia_exemption_credit(Variable):
         hoh_status = filing_status.possible_values.HEAD_OF_HOUSEHOLD
         hoh_bonus = where(filing_status == hoh_status, 1, 0)
         dependent_count = tax_unit("tax_unit_dependents", period)
-        # count extra adults exemptions based on being elderly and/or blind
+        # count extra adult exemptions based on being elderly and/or blind
         p = parameters(period).gov.states.ia.tax.income
         exemption = p.credits.exemption
         elder_head = tax_unit("age_head", period) >= exemption.elderly_age
