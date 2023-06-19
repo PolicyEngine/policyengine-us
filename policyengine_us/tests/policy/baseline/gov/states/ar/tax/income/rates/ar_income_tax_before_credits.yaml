@@ -7,38 +7,38 @@
     #round(5_100 * 0.00)
     ar_income_tax_before_credits: 0
 
-- name: AR income tax rates - taxable income from $5,100 to $10,300
+- name: AR income tax rates - taxable income from $5,101 to $10,300
   period: 2022
   input:
     ar_taxable_income: 10_000
     state_code: AR
   output:
-    # (10_000-5_100) * 0.02
+    # (10_000-5_101) * 0.02
     ar_income_tax_before_credits: 98
 
-- name: AR income tax rates - taxable income from $10,300 to $14,700
+- name: AR income tax rates - taxable income from $10,301 to $14,700
   period: 2022
   input:
     ar_taxable_income: 11_000
     state_code: AR
   output:
-    # 104 + round((11_000 - 10_300)* 0.03)
+    # 104 + round((11_000 - 10_301)* 0.03)
     ar_income_tax_before_credits: 125
 
-- name: AR income tax rates - taxable income from $14,700 to $24,300
+- name: AR income tax rates - taxable income from $14,701 to $24,300
   period: 2022
   input:
     ar_taxable_income: 20_000
     state_code: AR
   output:
-  # 236 + round((20_000 - 14_700)* 0.034)
+  # 236 + round((20_000 - 14_701)* 0.034)
     ar_income_tax_before_credits: 416
 
-- name: AR income tax rates - taxable income for income over $24,300
+- name: AR income tax rates - taxable income for income over $24,301
   period: 2022
   input:
     ar_taxable_income: 25_000
     state_code: AR
   output:
-    # 562 + round((25_000-24_300) * 0.049) = 596
+    # 562 + round((25_000-24_301) * 0.049) = 596
     ar_income_tax_before_credits: 596
