@@ -1,0 +1,7 @@
+- name: Two exemptions in 2022
+  period: 2022
+  input:
+    ga_count_exemptions: 2
+    state_code: GA
+  output:
+    ga_low_income_credits: 
