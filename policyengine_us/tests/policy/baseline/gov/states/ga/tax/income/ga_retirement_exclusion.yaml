@@ -1,0 +1,55 @@
+- name: head disable but not age eligible # this works
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: true
+        age: 50
+        pension_income: 100
+        interest_income: 100
+        dividend_income: 100
+        rental_income: 100
+        capital_gains: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_agi_exclusion: 100*5
+
+
+- name: head age eligible and spouse is disable
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 66
+        pension_income: 100
+        interest_income: 100
+        dividend_income: 100
+        rental_income: 100
+        capital_gains: 100
+      person2:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        age: 50
+        pension_income: 100
+        interest_income: 100
+        dividend_income: 100
+        rental_income: 100
+        capital_gains: 100
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_agi_exclusion: 100*5*2
