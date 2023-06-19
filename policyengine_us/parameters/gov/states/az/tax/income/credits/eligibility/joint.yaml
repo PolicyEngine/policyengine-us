@@ -1,0 +1,27 @@
+description: Arizona Eligibility of Couple Filing Jointly with different number of dependents for Income Credits.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  rate_unit: currency-USD
+  rate_period: year
+  label: AZ household credit base for Couple Filing Jointly
+  reference:
+    - title: 43-1073. Family income tax credit (a) (1-4)
+      href: https://www.azleg.gov/ars/43/01073.htm
+brackets:
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 20_000
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 23_600
+  - threshold:
+      2022-01-01: 3
+    amount:
+      2022-01-01: 27_300
+  - threshold:
+      2022-01-01: 4
+    amount:
+      2022-01-01: 31_000
