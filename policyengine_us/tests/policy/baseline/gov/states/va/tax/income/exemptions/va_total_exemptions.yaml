@@ -5,7 +5,7 @@
     va_aged_blind_exemption: 2400
     va_personal_exemption: 2790
   output:
-    va_total_exemption: 0
+    va_total_exemptions: 0
 
 - name: Total exemption when both age/blind and personal exemptions are eligible.
   period: 2022
@@ -14,7 +14,7 @@
     va_aged_blind_exemption: 2400
     va_personal_exemption: 2790
   output:
-    va_total_exemption: 5190
+    va_total_exemptions: 5190
 
 - name: Total exemption when only personal exemption is eligible .
   period: 2022
@@ -23,4 +23,4 @@
     va_aged_blind_exemption:  0
     va_personal_exemption: 1860
   output:
-    va_total_exemption: 1860
+    va_total_exemptions: 1860

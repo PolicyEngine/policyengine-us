@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_total_exemption(Variable):
+class va_total_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Virginia total exemption"
+    label = "Virginia exemptions"
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
