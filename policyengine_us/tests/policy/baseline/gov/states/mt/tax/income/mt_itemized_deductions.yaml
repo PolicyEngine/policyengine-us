@@ -1,0 +1,38 @@
+- name: Test case 1 #salt has a cap of 5000 for seperate
+  period: 2021
+  input:
+     filing_status: SEPARATE
+     charitable_deduction: 800
+     interest_deduction: 265
+     real_estate_taxes: 6_000 #5000
+     medical_expense_deduction: 1_000
+     casualty_loss_deduction: 400
+     state_code: MT
+  output:
+    mt_itemized_deductions: 7_465
+
+- name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
+  period: 2022
+  input:
+     filing_status: HEAD_OF_HOUSEHOLD
+     charitable_deduction: 0
+     interest_deduction: 1_234
+     real_estate_taxes: 11_000
+     medical_expense_deduction: 3_000 
+     casualty_loss_deduction: 0
+     state_code: MT
+  output:
+    mt_itemized_deductions: 14_234
+
+- name: Test case 3 #sum all terms
+  period: 2021
+  input:
+     filing_status: SINGLE
+     charitable_deduction: 1_000
+     interest_deduction: 34
+     real_estate_taxes: 1_035
+     medical_expense_deduction: 3_000
+     casualty_loss_deduction: 745
+     state_code: MT
+  output:
+    mt_itemized_deductions: 5_814
