@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class va_total_exemption(Variable):
     value_type = float
     entity = TaxUnit
