@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.335.1] - 2023-06-18 20:18:56
+
+### Fixed
+
+- Iowa exemption credit logic for head-of-household filing units.
+
+## [0.335.0] - 2023-06-12 15:05:19
+
+### Fixed
+
+- West Virginia tax rate schedule.
+
 ## [0.334.0] - 2023-06-08 22:01:14
 
 ### Added
@@ -3981,6 +3993,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.335.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.335.0...0.335.1
+[0.335.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.334.0...0.335.0
 [0.334.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.333.1...0.334.0
 [0.333.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.333.0...0.333.1
 [0.333.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.332.0...0.333.0
