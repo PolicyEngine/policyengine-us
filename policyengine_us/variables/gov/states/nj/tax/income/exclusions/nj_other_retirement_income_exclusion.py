@@ -35,10 +35,14 @@ class nj_other_retirement_income_exclusion(Variable):
         gross_income = person("irs_gross_income", period)
         exempt_interest_income = person("tax_exempt_interest_income", period)
         exempt_pension_income = person("tax_exempt_pension_income", period)
+        fed_taxable_ss = add(tax_unit, period, ["taxable_social_security"])
         qualifying_income = tax_unit.sum(
             where(
                 eligible_member,
-                gross_income - exempt_interest_income - exempt_pension_income,
+                gross_income
+                - exempt_interest_income
+                - exempt_pension_income
+                - fed_taxable_ss,
                 0,
             )
         )

@@ -63,15 +63,20 @@ class nj_pension_retirement_exclusion(Variable):
 
         # Get total income minus exempt interest and pension income to determine exclusion percentage.
         # Line 27 (total income minus 16b and 20b).
+        # This should also not include federally taxable SS.
         exempt_interest_income = add(
             tax_unit, period, ["tax_exempt_interest_income"]
         )
         exempt_pension_income = add(
             tax_unit, period, ["tax_exempt_pension_income"]
         )
+        fed_taxable_ss = add(tax_unit, period, ["taxable_social_security"])
         agi = tax_unit("adjusted_gross_income", period)
         qualifying_income = (
-            agi - exempt_interest_income - exempt_pension_income
+            agi
+            - exempt_interest_income
+            - exempt_pension_income
+            - fed_taxable_ss
         )
 
         # Get the exclusion percentage based on filing status and income.
