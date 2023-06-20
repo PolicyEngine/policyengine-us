@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.337.0] - 2023-06-20 21:40:43
+
+### Added
+
+- Georgia personal income tax rate schedule.
+
+## [0.336.0] - 2023-06-20 21:15:16
+
+### Added
+
+- New Hampshire Education Tax Credit.
+
+## [0.335.1] - 2023-06-18 20:18:56
+
+### Fixed
+
+- Iowa exemption credit logic for head-of-household filing units.
+
+## [0.335.0] - 2023-06-12 15:05:19
+
+### Fixed
+
+- West Virginia tax rate schedule.
+
+## [0.334.0] - 2023-06-08 22:01:14
+
+### Added
+
+- Working Families Tax Cut Act parameters.
+
+## [0.333.1] - 2023-06-08 15:10:11
+
+### Added
+
+- Federal AGI by income source.
+
 ## [0.333.0] - 2023-06-06 15:49:45
 
 ### Added
@@ -3969,6 +4005,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.337.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.336.0...0.337.0
+[0.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.335.1...0.336.0
+[0.335.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.335.0...0.335.1
+[0.335.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.334.0...0.335.0
+[0.334.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.333.1...0.334.0
+[0.333.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.333.0...0.333.1
 [0.333.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.332.0...0.333.0
 [0.332.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.331.1...0.332.0
 [0.331.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.331.0...0.331.1
