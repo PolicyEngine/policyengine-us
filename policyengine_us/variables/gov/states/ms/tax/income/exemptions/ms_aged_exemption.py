@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ms_aged_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mississippi aged and blind exemption"
+    label = "Mississippi aged exemption"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
