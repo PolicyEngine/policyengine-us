@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_personal_standard_deduction(Variable):
+class ms_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Mississippi personal standard deduction"
