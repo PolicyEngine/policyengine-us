@@ -5,7 +5,7 @@
     people:
       person1:
         is_tax_unit_head: true
-        age: 61
+        age: 62
         taxable_interest_income: 1_000
         social_security: 60_000
     spm_units:
@@ -14,6 +14,8 @@
     tax_units:
       tax_unit:
         members: [person1]
+      nj_pension_retirement_exclusion: 0
+      nj_other_retirement_income_exclusion: 0
     households:
       household:
         members: [person1]
