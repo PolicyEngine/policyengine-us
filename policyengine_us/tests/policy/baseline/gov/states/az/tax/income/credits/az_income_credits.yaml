@@ -1,94 +1,59 @@
 - name: AZ credit unit test 1
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: true
-      person3:
-        is_tax_unit_dependents: true
-      person4:
-        is_tax_unit_dependents: true
-      person5:
-        is_tax_unit_dependents: true
-    tax_units:
-      tax_unit:
-        filing_status: JOINT
-        adjusted_gross_income: 27_000
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: AZ
+    tax_unit:
+      filing_status: JOINT
+      adjusted_gross_income: 30_000
+      tax_unit_dependents: 5
+      tax_unit_head: true
+      tax_unit_spouse: true
   output:
-    az_income_credits: 200
-
+    az_income_credits: 240
 
 - name: AZ credit unit test 2
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: true
-      person3:
-        is_tax_unit_dependents: true
-      person4:
-        is_tax_unit_dependents: true
-    tax_units:
-      tax_unit:
-        filing_status: JOINT
-        adjusted_gross_income: 30_000
-        members: [person1, person2, person3, person4]
-    households:
-      household:
-        members: [person1, person2, person3, person4]
-        state_code: AZ
+    tax_unit:
+      filing_status: SINGLE
+      adjusted_gross_income: 9_000
+      tax_unit_dependents: 0
+      tax_unit_head: true
+      tax_unit_spouse: false
   output:
-    az_income_credits: 0
+    az_income_credits: 40
 
 - name: AZ credit unit test 3
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-    tax_units:
-      tax_unit:
-        filing_status: SINGLE
-        adjusted_gross_income: 9_000
-        members: [person1]
-    households:
-      household:
-        members: [person1]
-        state_code: AZ
+    tax_unit:
+      filing_status: SEPARATE
+      adjusted_gross_income: 11_000
+      tax_unit_dependents: 2
+      tax_unit_head: true
+      tax_unit_spouse: true
   output:
-    az_income_credits: 40
+    az_income_credits: 0
 
 - name: AZ credit unit test 4
   period: 2023
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: false
-      person3:
-        is_tax_unit_dependents: true
-      person4:
-        is_tax_unit_dependents: true
-      person5:
-        is_tax_unit_dependents: true
-    tax_units:
-      tax_unit:
-        filing_status: HEAD_OF_HOUSEHOLD
-        adjusted_gross_income: 23_000
-        members: [person1, person2, person3, person4, person5]
-    households:
-      household:
-        members: [person1, person2, person3, person4, person5]
-        state_code: AZ
+    tax_unit:
+      filing_status: HEAD_OF_HOUSEHOLD
+      adjusted_gross_income: 26_000
+      tax_unit_dependents: 5
+      tax_unit_head: true
+      tax_unit_spouse: false
+  output:
+    az_income_credits: 240
+
+- name: AZ credit unit test 5
+  period: 2023
+  input:
+    tax_unit:
+      filing_status: WIDOW
+      adjusted_gross_income: 27_000
+      tax_unit_dependents: 3
+      tax_unit_head: false
+      tax_unit_spouse: true
   output:
     az_income_credits: 160

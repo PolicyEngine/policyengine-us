@@ -1,0 +1,31 @@
+description: Arizona Eligibility of Single Household with different number of dependents for Income Credits.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  rate_unit: currency-USD
+  rate_period: year
+  label: AZ credit base for single household filers
+  reference:
+    - title: 43-1073. Family income tax credit (a) (1, 5-8)
+      href: https://www.azleg.gov/ars/43/01073.htm
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 20_000
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 20_135
+  - threshold:
+      2022-01-01: 3
+    amount:
+      2022-01-01: 23_800
+  - threshold:
+      2022-01-01: 4
+    amount:
+      2022-01-01: 25_200
+  - threshold:
+      2022-01-01: 5
+    amount:
+      2022-01-01: 26_575
