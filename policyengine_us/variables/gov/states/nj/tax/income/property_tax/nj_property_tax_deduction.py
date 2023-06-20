@@ -12,8 +12,6 @@ class nj_property_tax_deduction(Variable):
     default_value = 0
 
     def formula(tax_unit, period, parameters):
-        # Don't forget to divide the threshold if filing separately? They have to also live together.
-
         # Get the tax unit's potential property tax deduction.
         potential_deduction = tax_unit(
             "nj_potential_property_tax_deduction", period
