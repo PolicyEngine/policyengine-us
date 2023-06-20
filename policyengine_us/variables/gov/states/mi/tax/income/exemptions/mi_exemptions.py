@@ -8,7 +8,10 @@ class mi_exemptions(Variable):
     defined_for = StateCode.MI
     unit = USD
     definition_period = YEAR
-    reference = "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf"
+    reference = (
+        "http://legislature.mi.gov/doc.aspx?mcl-206-30",
+        "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mi.tax.income.exemptions
