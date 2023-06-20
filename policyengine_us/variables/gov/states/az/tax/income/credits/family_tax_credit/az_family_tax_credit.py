@@ -15,8 +15,8 @@ class az_family_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period) 
         status = filing_status.possible_values
         dependents = tax_unit("tax_unit_dependents", period)
-        head = tax_unit("tax_unit_head", period).astype(int)
-        spouse = tax_unit("tax_unit_spouse", period).astype(int)
+        head = tax_unit("is_tax_unit_head", period).astype(int)
+        spouse = tax_unit("is_tax_unit_spouse", period).astype(int)
         max_income = select(
             [
                 filing_status == status.SINGLE,
