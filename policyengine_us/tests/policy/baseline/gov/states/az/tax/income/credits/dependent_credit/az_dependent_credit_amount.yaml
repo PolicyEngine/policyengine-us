@@ -1,0 +1,53 @@
+- name: Housheold with no depedends
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 25
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_dependent_credit_amount: 0
+
+- name: Housheold with one young depedend
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 25
+      person2:
+        is_tax_unit_dependent: true
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_credit_amount: 100
+
+- name: Housheold with one young depedend and one older
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 25
+      person2:
+        is_tax_unit_dependent: true
+        age: 16
+      person3:
+        is_tax_unit_dependent: true
+        age: 17
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_dependent_credit_amount: 125

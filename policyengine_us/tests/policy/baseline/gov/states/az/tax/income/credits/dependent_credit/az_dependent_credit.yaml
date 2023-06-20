@@ -1,0 +1,27 @@
+- name: 30% phase out
+  period: 2023
+  absolute_error_margin: 0.1
+  input:
+    state_code: AZ
+    az_dependent_credit_amount: 100
+    az_dependent_credit_phase_out: 0.3
+  output:
+    az_dependent_credit: 30
+
+- name: 30% phase out
+  period: 2023
+  input:
+    state_code: AZ
+    az_dependent_credit_amount: 100
+    az_dependent_credit_phase_out: 0
+  output:
+    az_dependent_credit: 0
+
+- name: 30% phase out
+  period: 2023
+  input:
+    state_code: AZ
+    az_dependent_credit_amount: 0
+    az_dependent_credit_phase_out: 0.3
+  output:
+    az_dependent_credit: 0

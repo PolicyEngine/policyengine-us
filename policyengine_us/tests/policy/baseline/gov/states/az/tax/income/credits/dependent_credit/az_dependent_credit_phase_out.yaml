@@ -1,0 +1,26 @@
+- name: Single filer with no income
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    adjusted_gross_income: 0
+  output:
+    az_dependent_credit_phase_out: 1
+
+- name: Single filer with 210_000 income
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    adjusted_gross_income: 210_000
+  output:
+    az_dependent_credit_phase_out: 0.5
+
+- name: Joint filer with 500_000 income
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    adjusted_gross_income: 500_000
+  output:
+    az_dependent_credit_phase_out: 0

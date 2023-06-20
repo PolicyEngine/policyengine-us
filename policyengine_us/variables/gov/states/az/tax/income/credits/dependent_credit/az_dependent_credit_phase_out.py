@@ -12,7 +12,7 @@ class az_dependent_credit_phase_out(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("adjusted_gross_income", period)
-        p = parameters(period).gov.states.az.tax.income.credits.dependent_credit
+        p = parameters(period).gov.states.az.tax.income.credits.dependent_credit.reduction
         filing_status = tax_unit("filing_status", period)
-        threshold = max_(p.start(filing_status) - income, 0)
+        threshold = max_(income - p.start[filing_status], 0)
         return p.rate.calc(threshold)

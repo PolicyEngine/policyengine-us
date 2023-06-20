@@ -11,9 +11,9 @@ class az_dependent_credit_amount(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(period).gov.states.az.tax.income.credits.dependent_credit
         dependent = person("is_tax_unit_dependent", period)
-        person = tax_unit.members
         age = person("age", period)
         dependent_amount = p.amount.calc(age) * dependent
         return tax_unit.sum(dependent_amount)
