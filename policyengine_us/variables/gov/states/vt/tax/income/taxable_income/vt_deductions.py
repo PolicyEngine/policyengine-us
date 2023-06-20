@@ -7,5 +7,5 @@ class vt_deductions(Variable):
     label = "Vermont income deductions"
     unit = USD
     definition_period = YEAR
-    reference = ""
+    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html"
     defined_for = StateCode.VT
