@@ -16,10 +16,9 @@ class mi_standard_deduction_and_pension_benefit(Variable):
     )
     defined_for = StateCode.MI
 
-    def formula(tax_unit, period, parameters):
-        return (
-            tax_unit("mi_standard_deduction", period)
-            + tax_unit("mi_retirement_benefits_deduction_tier_one", period)
-            + tax_unit("mi_retirement_benefits_deduction_tier_three", period)
-            + tax_unit("mi_interest_dividends_capital_gains_deduction", period)
-        )
+    adds = [
+        "mi_standard_deduction",
+        "mi_retirement_benefits_deduction_tier_one",
+        "mi_retirement_benefits_deduction_tier_three",
+        "mi_interest_dividends_capital_gains_deduction",
+    ]

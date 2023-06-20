@@ -18,22 +18,19 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.standard.retirement_benefits_deduction.tier_three
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        age_older = max_(
-            tax_unit("age_head", period), tax_unit("age_spouse", period)
-        )
+        age_older = tax_unit("greater_age_head_spouse", period)
         # Retirement Benefits Deduction Tier 3
-        rb3_age_eligibility = (
-            (age_older >= p.min_age) & (age_older <= p.max_age)
-        ).astype(int)
+        rb3_age_eligibility = (age_older >= p.min_age) & (
+            age_older <= p.max_age
+        )
         rb3_amount_per_aged = p.amount[filing_status]
-        rb3_deduction = (
+
+        return (
             rb3_age_eligibility
             * rb3_amount_per_aged
             * tax_unit("is_social_security_retirement", period)
         )
-
-        return rb3_deduction

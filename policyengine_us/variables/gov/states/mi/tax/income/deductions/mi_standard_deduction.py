@@ -20,15 +20,12 @@ class mi_standard_deduction(Variable):
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        age_older = max_(
-            tax_unit("age_head", period), tax_unit("age_spouse", period)
-        )
+        age_older = tax_unit("greater_age_head_spouse", period)
         # Michigan Standard Deduction
         sd_birth_year = -(age_older - period.start.year)
-        sd_age_eligibility = (
-            (age_older >= p.min_age) & (sd_birth_year >= p.birth_year)
-        ).astype(int)
+        sd_age_eligibility = (age_older >= p.min_age) & (
+            sd_birth_year >= p.birth_year
+        )
         sd_amount_per_aged = p.amount[filing_status]
-        standrad_deduction = sd_age_eligibility * sd_amount_per_aged
 
-        return standrad_deduction
+        return sd_age_eligibility * sd_amount_per_aged

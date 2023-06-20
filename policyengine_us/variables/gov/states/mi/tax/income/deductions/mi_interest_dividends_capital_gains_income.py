@@ -9,4 +9,4 @@ class mi_interest_dividends_capital_gains_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.MI
 
-    adds = "gov.states.mi.tax.income.deductions.standard.interest_dividends_capital_gains_deduction.income_types"
+    adds = "gov.states.mi.tax.income.deductions.interest_dividends_capital_gains.income_types"

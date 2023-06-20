@@ -17,19 +17,14 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.standard.interest_dividends_capital_gains_deduction
+        ).gov.states.mi.tax.income.deductions.interest_dividends_capital_gains
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        age_older = max_(
-            tax_unit("age_head", period), tax_unit("age_spouse", period)
-        )
+        age_older = tax_unit("greater_age_head_spouse", period)
         # Interest, Dividends, and Capital Gains Deduction
-        idcg_aged_eligibility = (age_older >= p.senior_age).astype(int)
+        idcg_aged_eligibility = age_older >= p.senior_age
         idcg_amount_per_aged = p.senior_amount[filing_status]
         income = tax_unit("mi_interest_dividends_capital_gains_income", period)
-        idcg_deduction = min_(
-            idcg_aged_eligibility * idcg_amount_per_aged, income
-        )
 
-        return idcg_deduction
+        return min_(idcg_aged_eligibility * idcg_amount_per_aged, income)

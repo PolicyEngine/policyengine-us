@@ -20,17 +20,14 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.deductions.standard.retirement_benefits_deduction.tier_one
+        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_one
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        age_older = max_(
-            tax_unit("age_head", period), tax_unit("age_spouse", period)
-        )
+        age_older = tax_unit("greater_age_head_spouse", period)
         # Retirement Benefits Deduction Tier 1
         rb1_birth_year = -(age_older - period.start.year)
-        rb1_age_eligibility = (rb1_birth_year < p.birth_year).astype(int)
+        rb1_age_eligibility = rb1_birth_year < p.birth_year
         rb1_amount_per_aged = p.amount[filing_status]
-        rb1_deduction = rb1_age_eligibility * rb1_amount_per_aged
 
-        return rb1_deduction
+        return rb1_age_eligibility * rb1_amount_per_aged
