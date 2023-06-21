@@ -14,4 +14,6 @@ class md_tanf(Variable):
         grant_standard = spm_unit("md_tanf_maximum_benefit", period)
         # SPM unit income after continuous deduction
         income = spm_unit("md_tanf_net_countable_income", period)
-        return max(grant_standard - income, 0)
+        # SPM Unit childcare deductions
+        childcare_deduction = spm_unit("md_tanf_childcare_deduction", period)
+        return max(grant_standard - (income - childcare_deduction), 0)

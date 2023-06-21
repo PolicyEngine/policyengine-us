@@ -6,27 +6,25 @@
         employment_income: 12000
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 2400
-        #childcare_expenses: 0
+        child_support_received: 0
         alimony_income: 1200
       person2:
         employment_income: 0
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
         child_support_received: 0
-        #childcare_expenses: 0
         alimony_income: 0
       person3: 
         employment_income: 0
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
         child_support_received: 0
-        #childcare_expenses: 0
         alimony_income: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
         md_tanf_maximum_benefit: 7632
+        childcare_expenses: 2400
         md_tanf_net_countable_income: 6000
     households:
       household:
@@ -42,20 +40,19 @@
         employment_income: 3600
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
-        child_support_received: 600
-        #childcare_expenses: 0
+        child_support_received: 0
         alimony_income: 0
       person2:
         employment_income: 0
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
         child_support_received: 0
-        #childcare_expenses: 0
         alimony_income: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
         md_tanf_maximum_benefit: 6036
+        childcare_expenses: 600
         md_tanf_net_countable_income: 1560
     households: 
       household:
@@ -72,19 +69,18 @@
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
         child_support_received: 0
-        #childcare_expenses: 0
         alimony_income: 0
       person2:
         employment_income: 0
         taxable_self_employment_income: 0
         #armed_services_basic_allowance_for_housing: 0
         child_support_received: 0
-        #childcare_expenses: 0
         alimony_income: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
         md_tanf_maximum_benefit: 6036
+        childcare_expenses: 2400
         md_tanf_net_countable_income: 6600
     households:
       household:
