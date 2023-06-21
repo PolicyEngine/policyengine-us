@@ -1,0 +1,20 @@
+description: North Carolina Max amount of Itemized Deductions (Property Tax).
+metadata:
+  lable: North Caroliona Itemized Deduction Property Tax Limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference: North Carolina Department of Revenue
+    href: https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions 
+
+SINGLE:
+  2023-01-01: 10_000
+JOINT:
+  2023-01-01: 10_000
+WIDOW:
+  2023-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2023-01-01: 10_000
+SEPARATE:
+  2023-01-01: 5_000
