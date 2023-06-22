@@ -24,7 +24,7 @@ class az_increased_excise_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.increased_excise_tax_credit
-        line12 = tax_unit(
+        agi = tax_unit(
             "adjusted_gross_income", period
         )  # should I remove "federal"?
         filing_status = tax_unit("filing_status", period)
