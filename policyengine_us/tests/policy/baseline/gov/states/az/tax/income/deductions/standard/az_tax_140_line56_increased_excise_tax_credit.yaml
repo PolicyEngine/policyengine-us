@@ -5,7 +5,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    federal_adjusted_gross_income: 25_001 # Should I remove "federal"
+    adjusted_gross_income: 25_001 # Should I remove "federal"
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 0
@@ -15,7 +15,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    federal_adjusted_gross_income: 25_001 
+    adjusted_gross_income: 25_001 
     tax_unit_dependents: 3
   output:
     az_family_tax_credit: 0
@@ -25,7 +25,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    federal_adjusted_gross_income: 24_999 
+    adjusted_gross_income: 24_999 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 75 
@@ -35,7 +35,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    federal_adjusted_gross_income: 24_999 
+    adjusted_gross_income: 24_999 
     tax_unit_dependents: 3
   output:
     az_family_tax_credit: 100 
@@ -45,7 +45,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    federal_adjusted_gross_income: 25_001 
+    adjusted_gross_income: 25_001 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 0
@@ -55,7 +55,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    federal_adjusted_gross_income: 25_001 
+    adjusted_gross_income: 25_001 
     tax_unit_dependents: 3
   output:
     az_family_tax_credit: 0
@@ -65,7 +65,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    federal_adjusted_gross_income: 24_999 
+    adjusted_gross_income: 24_999 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 50 
@@ -75,7 +75,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    federal_adjusted_gross_income: 24_999 
+    adjusted_gross_income: 24_999 
     tax_unit_dependents: 4
   output:
     az_family_tax_credit: 100 
@@ -85,7 +85,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    federal_adjusted_gross_income: 12_501 
+    adjusted_gross_income: 12_501 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 0
@@ -95,7 +95,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    federal_adjusted_gross_income: 12_501 
+    adjusted_gross_income: 12_501 
     tax_unit_dependents: 4
   output:
     az_family_tax_credit: 0
@@ -105,7 +105,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    federal_adjusted_gross_income: 12_499 
+    adjusted_gross_income: 12_499 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 50 
@@ -115,7 +115,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    federal_adjusted_gross_income: 12_499 
+    adjusted_gross_income: 12_499 
     tax_unit_dependents: 4
   output:
     az_family_tax_credit: 100 
@@ -125,7 +125,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    federal_adjusted_gross_income: 12_501 
+    adjusted_gross_income: 12_501 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 0
@@ -135,7 +135,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    federal_adjusted_gross_income: 12_501 
+    adjusted_gross_income: 12_501 
     tax_unit_dependents: 4
   output:
     az_family_tax_credit: 0
@@ -145,7 +145,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    federal_adjusted_gross_income: 12_499 
+    adjusted_gross_income: 12_499 
     tax_unit_dependents: 1
   output:
     az_family_tax_credit: 50 
@@ -155,7 +155,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    federal_adjusted_gross_income: 12_499 
+    adjusted_gross_income: 12_499 
     tax_unit_dependents: 4
   output:
     az_family_tax_credit: 100 
