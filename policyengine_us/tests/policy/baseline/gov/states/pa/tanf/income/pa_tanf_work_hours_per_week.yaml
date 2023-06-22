@@ -1,0 +1,9 @@
+- name: work 4 days per week, 2 hours per day, work hours per week is 8
+  period: 2023
+  input:
+    state_code: PA
+    work_days_per_week: 4
+    work_hours_per_day: 2
+  output:
+    work_hours_per_week: 8
+
