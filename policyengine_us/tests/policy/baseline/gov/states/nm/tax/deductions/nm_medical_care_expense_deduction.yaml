@@ -1,0 +1,9 @@
+- name: 2015 single filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+  period: 2015
+  input:
+    state_code: NM
+    adjusted_gross_income: 15_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SINGLE
+  output:
+    nm_mediacal_care_expense_deduction: 250
