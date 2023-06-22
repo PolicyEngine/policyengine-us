@@ -5,7 +5,7 @@
     quality_rating_of_child_care_facility: 5
     state_code: LA
   output:
-    la_child_expense_tax_credits_nonrefundable: 26_000*2
+    la_child_tax_credit_non_refundable: 26_000*2
 
 
 - name: LA nonrefundable child care expense tax credit unit test 2
@@ -15,7 +15,7 @@
     quality_rating_of_child_care_facility: 4
     state_code: LA
   output:
-    la_child_expense_tax_credits_nonrefundable: 26_000*1.5
+    la_child_tax_credit_non_refundable: 26_000*1.5
 
 - name: LA nonrefundable child care expense tax credit unit test 3
   period: 2018
@@ -24,7 +24,7 @@
     quality_rating_of_child_care_facility: 3
     state_code: LA
   output:
-    la_child_expense_tax_credits_nonrefundable: 26_000*1
+    la_child_tax_credit_non_refundable: 26_000*1
 
 - name: LA nonrefundable child care expense tax credit unit test 4
   period: 2018
@@ -33,7 +33,7 @@
     quality_rating_of_child_care_facility: 2
     state_code: LA
   output:
-    la_child_expense_tax_credits_nonrefundable: 26_000*0.5
+    la_child_tax_credit_non_refundable: 26_000*0.5
 
 - name: LA nonrefundable child care expense tax credit unit test 5
   period: 2018
@@ -42,6 +42,6 @@
     quality_rating_of_child_care_facility: 1
     state_code: LA
   output:
-    la_child_expense_tax_credits_nonrefundable: 0
+    la_child_tax_credit_non_refundable: 0
 
 

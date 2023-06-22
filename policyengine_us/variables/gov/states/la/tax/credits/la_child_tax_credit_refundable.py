@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class la_child_expense_tax_credits_refundable(Variable):
+class la_child_tax_credit_refundable(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana refundable child expense tax credits"
@@ -15,6 +15,7 @@ class la_child_expense_tax_credits_refundable(Variable):
             period
         ).gov.states.la.tax.credits.child_care_expense_credit
         # determine LA refundable amount
+        us_agi=tax_unit("adjusted_gross_income",period)
         quality_rating = tax_unit(
             "quality_rating_of_child_care_facility", period
         )

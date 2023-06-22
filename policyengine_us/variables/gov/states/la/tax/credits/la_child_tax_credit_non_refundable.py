@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class la_child_expense_tax_credits_non_refundable(Variable):
+class la_child_tax_credit_non_refundable(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana non refundable Child Expense Tax credit"
@@ -15,7 +15,8 @@ class la_child_expense_tax_credits_non_refundable(Variable):
             period
         ).gov.states.la.tax.credits.child_care_expense_credit
         # determine LA nonrefundable amount
+        us_agi=tax_unit("adjusted_gross_income",period)
         quality_rating = tax_unit(
             "quality_rating_of_child_care_facility", period
         )
-        return us_agi * p.nonrefundable.calc(quality_rating)
+        return us_agi * p.non_refundable.calc(quality_rating)

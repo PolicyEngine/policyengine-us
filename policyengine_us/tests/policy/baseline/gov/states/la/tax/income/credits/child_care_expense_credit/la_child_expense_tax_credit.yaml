@@ -1,20 +1,18 @@
 - name: LA child care expense tax credit unit test 1
-   period: 2018
-   input:
-      adjusted_gross_income: 26_000
-      la_child_expense_tax_credits_non_refundable: 26_000
-      la_child_tax_credit_refundable: 21_000
-      state_code: LA
-   output:
-      la_child_expense_tax_credits_non_refundable: 26_000
+  period: 2018
+  input:
+   adjusted_gross_income: 26_000
+   la_child_tax_credit_non_refundable: 26_000
+   state_code: LA
+  output:
+   la_child_tax_credit_non_refundable: 26_000
 
 - name: LA child care expense tax credit unit test 2
-   period: 2007
-   input:
-      adjusted_gross_income: 24_000
-      la_child_expense_tax_credits_non_refundable: 26_000
-      refundable: 24_000
-      state_code: LA
-   output:
-      la_child_expense_tax_credits_refundable: 24_000
+  period: 2007
+  input:
+   adjusted_gross_income: 24_000
+   la_child_tax_credit_refundable: 24_000
+   state_code: LA
+  output:
+   la_child_tax_credit_refundable: 24_000
    

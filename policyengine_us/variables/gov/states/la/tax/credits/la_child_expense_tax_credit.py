@@ -16,9 +16,9 @@ class la_child_expense_tax_credit(Variable):
         ).gov.states.la.tax.credits.child_care_expense_credit
         # determine if it is nonrefundable or refundable
         us_agi = tax_unit("adjusted_gross_income", period)
-        nonrefundable = tax_unit("la_child_tax_credit_non_refundable", period)
+        non_refundable = tax_unit("la_child_tax_credit_non_refundable", period)
         refundable = tax_unit("la_child_tax_credit_refundable", period)
 
         agi_eligible = us_agi > p.threshold
 
-        return where(agi_eligible, nonrefundable, refundable)
+        return where(agi_eligible, non_refundable, refundable)

@@ -5,7 +5,7 @@
     quality_rating_of_child_care_facility: 5
     state_code: LA
   output:
-    la_child_expense_tax_credits_refundable: 20_000*2
+    la_child_tax_credit_refundable: 20_000*2
 
 - name: LA refundable child care expense tax credit unit test 2
   period: 2007
@@ -14,7 +14,7 @@
     quality_rating_of_child_care_facility: 4
     state_code: LA
   output:
-    la_child_expense_tax_credits_refundable: 20_000*1.5
+    la_child_tax_credit_refundable: 20_000*1.5
 
 - name: LA refundable child care expense tax credit unit test 3
   period: 2007
@@ -23,7 +23,7 @@
     quality_rating_of_child_care_facility: 3
     state_code: LA
   output:
-    la_child_expense_tax_credits_refundable: 20_000*1
+    la_child_tax_credit_refundable: 20_000*1
 
 - name: LA refundable child care expense tax credit unit test 4
   period: 2007
@@ -32,7 +32,7 @@
     quality_rating_of_child_care_facility: 2
     state_code: LA
   output:
-    la_child_expense_tax_credits_refundable: 20_000*0.5
+    la_child_tax_credit_refundable: 20_000*0.5
 
 - name: LA refundable child care expense tax credit unit test 5
   period: 2007
@@ -41,4 +41,4 @@
     quality_rating_of_child_care_facility: 1
     state_code: LA
   output:
-    la_child_expense_tax_credits_refundable: 0
+    la_child_tax_credit_refundable: 0
