@@ -29,7 +29,7 @@ class az_increased_excise_tax_credit(Variable):
         )  # should I remove "federal"?
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        max_income = select(
+        max_income = p.maximum[filing_status]
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
