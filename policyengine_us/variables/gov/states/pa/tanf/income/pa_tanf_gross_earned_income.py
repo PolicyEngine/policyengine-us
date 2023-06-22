@@ -9,4 +9,4 @@ class pa_tanf_gross_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.PA
 
-    adds = "gov.states.pa.tanf.income.earned"
+    adds = "gov.states.pa.tanf.income.pa_tanf_earned_income"

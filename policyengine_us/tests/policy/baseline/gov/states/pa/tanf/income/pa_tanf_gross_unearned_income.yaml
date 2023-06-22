@@ -1,1 +1,16 @@
+- name: $100 of each unearned income, $900 per year  
+  period: 2023
+  input:
+    state_code: PA
+    veterans_benefits: 100
+    rental_income: 100
+    alimony_income: 100
+    dividend_income: 100
+    interest_income: 100
+    miscellaneous_income: 100    
+    pension_income: 100    
+    unemployment_compensation: 100    
+    social_security: 100  
+  output:
+    pa_tanf_gross_unearned_income: 900 # 900*12 = 10_800
 

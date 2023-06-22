@@ -1,1 +1,9 @@
-
+- name: $100 of each earned income, $300 per year
+  period: 2023
+  input:
+    state_code: PA
+    employment_income: 100
+    rental_income: 100
+    self_employment_income: 100
+  output:
+    pa_tanf_gross_earned_income: 300

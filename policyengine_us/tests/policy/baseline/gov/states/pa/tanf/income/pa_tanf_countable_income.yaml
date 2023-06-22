@@ -1,18 +1,55 @@
-# - name: No earned income or unearned income, $0 total countable income.
-#   period: 2023
-#   input:
-#     state_code: PA
-#     pa_tanf_gross_earned_income: 0
-#     pa_tanf_countable_gross_unearned_income: 0
-#   output:
-#     pa_tanf_countable_income: 0
+- name: No earned income or unearned income with disabled and full-time eligibility, $0 total countable income.
+  period: 2023
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 0
+    pa_tanf_gross_unearned_income: 0
+    pa_tanf_personal_expense_full_time_eligible: true
+    is_ssi_disabled: true
+  output:
+    pa_tanf_countable_income: 0
 
   
-# - name: $4,020 earned income or $1,000 unearned income, $0 total countable income.
-#   period: 2023
-#   input:
-#     state_code: PA
-#     pa_tanf_gross_earned_income: 4_020
-#     pa_tanf_countable_gross_unearned_income: 1_000
-#   output:
-#     pa_tanf_countable_income: 1_693
+- name: $500 earned income and $400 unearned income monthly with part-time employment and not disabled, $4860 countable income yearly
+  period: 2023
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 500
+    pa_tanf_gross_unearned_income: 400
+    pa_tanf_personal_expense_full_time_eligible: false
+    is_ssi_disabled: false
+  output:
+    pa_tanf_countable_income: 4_860 # (500*12 - 90*12) * 0.5 - 200*12 + 400*12 = 4_860
+
+- name: $500 earned income and $400 unearned income monthly with full-time employment and not disabled, $4860 countable income yearly
+  period: 2023
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 500
+    pa_tanf_gross_unearned_income: 400
+    pa_tanf_personal_expense_full_time_eligible: true
+    is_ssi_disabled: false
+  output:
+    pa_tanf_countable_income: 4_860 # (500*12 - 90*12) * 0.5 - 200*12 + 400*12 = 4_860
+
+- name: $800 earned income and $400 unearned income monthly with part-time employment and disabled, $4860 countable income yearly
+  period: 2023
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 800
+    pa_tanf_gross_unearned_income: 400
+    pa_tanf_personal_expense_full_time_eligible: false
+    is_ssi_disabled: true
+  output:
+    pa_tanf_countable_income: 4_860 # (800*12 - 90*12) * 0.5 - 200*12 - 150*12 + 400*12 = 4_860
+
+- name: $900 earned income and $400 unearned income monthly with full-time employment and disabled, $4860 countable income yearly
+  period: 2023
+  input:
+    state_code: PA
+    pa_tanf_gross_earned_income: 900
+    pa_tanf_gross_unearned_income: 400
+    pa_tanf_personal_expense_full_time_eligible: true
+    is_ssi_disabled: true
+  output:
+    pa_tanf_countable_income: 5_160 # (900*12 - 90*12) * 0.5 - 200*12 - 175*12 + 400*12 = 5_160
