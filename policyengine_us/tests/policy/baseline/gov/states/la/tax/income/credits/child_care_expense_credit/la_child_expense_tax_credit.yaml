@@ -1,0 +1,10 @@
+name: LA child care expense tax credit unit test 1
+ period: 2018
+ input:
+   agi_:26_000
+   la_child_expense_tax_credits_nonrefundable: 26_000
+   refundable: 21_000
+   state_code: LA
+ output:
+  la_child_:26_000
+   
