@@ -1,0 +1,16 @@
+- name: work hours per week is 40, pa_tanf_personal_expense_full_time_eligible retur
+  period: 2023
+  input:
+    state_code: PA
+    work_hours_per_week: 40
+  output:
+    pa_tanf_personal_expense_full_time_eligible: true
+
+- name:  work hours per week is 8
+  period: 2023
+  input:
+    state_code: PA
+    work_hours_per_week: 8
+  output:
+    pa_tanf_personal_expense_full_time_eligible: false
+
