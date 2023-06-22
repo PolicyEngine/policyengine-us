@@ -6,11 +6,11 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        taxable_social_security: 0
+        social_security: 0
       person2:
         is_tax_unit_spouse: true
         age: 70
-        taxable_social_security: 0
+        social_security: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -33,7 +33,7 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        taxable_social_security: 0
+        social_security: 0
     spm_units:
       spm_unit:
         members: [person1]
@@ -56,11 +56,11 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        taxable_social_security: 0
+        social_security: 0
       person2:
         is_tax_unit_spouse: true
         age: 70
-        taxable_social_security: 1
+        social_security: 1
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -83,11 +83,11 @@
       person1:
         is_tax_unit_head: true
         age: 70
-        taxable_social_security: 0
+        social_security: 0
       person2:
         is_tax_unit_spouse: true
         age: 69
-        taxable_social_security: 0
+        social_security: 0
     spm_units:
       spm_unit:
         members: [person1, person2]

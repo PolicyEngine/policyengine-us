@@ -70,7 +70,7 @@ class nj_pension_retirement_exclusion(Variable):
         exempt_pension_income = add(
             tax_unit, period, ["tax_exempt_pension_income"]
         )
-        fed_taxable_ss = add(tax_unit, period, ["taxable_social_security"])
+        fed_taxable_ss = add(tax_unit, period, ["social_security"])
         agi = tax_unit("adjusted_gross_income", period)
         qualifying_income = (
             agi

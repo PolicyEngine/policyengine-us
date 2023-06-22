@@ -27,7 +27,7 @@ class nj_other_retirement_special_exclusion(Variable):
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
 
-        social_security = person("taxable_social_security", period)
+        social_security = person("social_security", period)
         head_social_security = tax_unit.sum(where(is_head, social_security, 0))
         spouse_social_security = tax_unit.sum(
             where(is_spouse, social_security, 0)
