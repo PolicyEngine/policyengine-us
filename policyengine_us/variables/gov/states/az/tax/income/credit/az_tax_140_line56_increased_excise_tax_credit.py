@@ -47,7 +47,7 @@ class az_increased_excise_tax_credit(Variable):
         )
         eligible = line12 <= max_income
         dependents1 = tax_unit("tax_unit_dependents", period)
-        dependents2 = select(
+        dependents2 = p.dependent2[filing_status]
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
