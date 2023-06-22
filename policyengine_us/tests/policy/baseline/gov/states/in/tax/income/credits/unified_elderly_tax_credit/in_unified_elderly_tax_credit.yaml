@@ -1,0 +1,179 @@
+- name: Both people ineligible
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 900
+      spouse:
+        in_unified_elderly_tax_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 64
+        age_spouse: 64
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0
+
+- name: Head eligible in joint filing
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 900
+      spouse:
+        in_unified_elderly_tax_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 65
+        age_spouse: 64
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 50
+
+- name: Spouse eligible in joint filing
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 2_000
+      spouse:
+        in_unified_elderly_tax_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 65
+        age_spouse: 64
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 40
+
+- name: Both eligible in joint filing
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 2_000
+      spouse:
+        in_unified_elderly_tax_income: 1_100
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 65
+        age_spouse: 65
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 80
+
+- name: Joint inelgible based on income
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 1_000
+      spouse:
+        in_unified_elderly_tax_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 65
+        age_spouse: 65
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0
+
+- name: Joint inelgible based on income 2
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 1_000
+      spouse:
+        in_unified_elderly_tax_income: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 65
+        age_spouse: 64
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0
+
+- name: Single eligible
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 999
+    tax_units:
+      tax_unit:
+        members: [head]
+        age_head: 65
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 100
+
+- name: Single ineligible based on age
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 999
+    tax_units:
+      tax_unit:
+        members: [head]
+        age_head: 64
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0
+
+- name: Single ineligible based on income
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 2_500
+    tax_units:
+      tax_unit:
+        members: [head]
+        age_head: 64
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0

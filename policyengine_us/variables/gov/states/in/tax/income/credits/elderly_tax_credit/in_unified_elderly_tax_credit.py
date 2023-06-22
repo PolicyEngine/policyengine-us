@@ -27,7 +27,8 @@ class in_unified_elderly_tax_credit(Variable):
         head_eligible = age_head >= p.age_eligibility
         spouse_eligible = spouse_age >= p.age_eligibility
         both_eligible = head_eligible and spouse_eligible
-        married_amount = where(
+        one_eligible = head_eligible | spouse_eligible
+        married_amount = one_eligible * where(
             both_eligible,
             p.amount.married.two_aged.calc(total_income),
             p.amount.married.one_aged.calc(total_income),

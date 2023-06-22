@@ -7,7 +7,9 @@ class in_unified_elderly_tax_income(Variable):
     label = "Indiana unified elderly tax credit income"
     unit = USD
     definition_period = YEAR
-    documention = "Income that is utilized for the elderly credit calculation"
+    documentation = (
+        "Income that is utilized for the elderly credit calculation"
+    )
     reference = "https://forms.in.gov/Download.aspx?id=15394 "
     defined_for = StateCode.IN
 

@@ -1,0 +1,27 @@
+- name: No income
+  period: 2023
+  input:
+    state_code: IN
+    employment_income: 0
+    self_employment_income: 0
+    interest_income: 0
+    dividend_income: 0
+    rental_income: 0
+    unemployment_compensation: 0
+    pension_income: 0
+  output:
+    in_unified_elderly_tax_income: 0
+
+- name: Simple addition
+  period: 2023
+  input:
+    state_code: IN
+    employment_income: 0
+    self_employment_income: 500
+    interest_income: 0
+    dividend_income: 100
+    rental_income: 0
+    unemployment_compensation: 1_000
+    pension_income: 0
+  output:
+    in_unified_elderly_tax_income: 1_600
