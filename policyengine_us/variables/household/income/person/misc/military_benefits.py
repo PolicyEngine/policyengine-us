@@ -1,9 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class military_benefit(Variable):
+class military_benefits(Variable):
     value_type = float
     entity = Person
-    label = "Military benefit"
+    label = "Military benefits"
     unit = USD
     definition_period = YEAR
