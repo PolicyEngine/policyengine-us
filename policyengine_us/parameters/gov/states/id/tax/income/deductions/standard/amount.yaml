@@ -1,6 +1,6 @@
 description: Idaho provides this base standard deduction.
 metadata:
-  label: Idaho base standard deduction
+  label: Idaho standard deduction base
   period: year
   unit: currency-USD
   breakdown:
@@ -8,14 +8,21 @@ metadata:
   reference:
   - title: Itemized Deduction Worksheet for Idaho
     href: https://tax.idaho.gov/wp-content/uploads/forms/EIS00407/EIS00407_01-05-2023.pdf
+  - title: Form 40 — Instructions Individual Income Tax Return
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf
   
 JOINT:
+  2021-01-01: 25_100
   2023-01-01: 25_900
 HEAD_OF_HOUSEHOLD:
+  2021-01-01: 18_800
   2023-01-01: 19_400
 WIDOW:
+  2021-01-01: 25_100
   2023-01-01: 25_900
 SINGLE:
+  2021-01-01: 12_550
   2023-01-01: 12_950
 SEPARATE:
+  2021-01-01: 12_550
   2023-01-01: 12_950

@@ -1,9 +1,11 @@
 description: Idaho allows for an addition adding to the income earned by dependents if income is more than this number
 values:
-  2023-01-01: 750
+  2021-01-01: 750
 metadata:
   unit: currency-USD
-  label: Idaho dependent income threshold for adding the addition
+  label: Idaho dependent addition income threshold
   reference:
   - title: Individual Income Tax General Information
     href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf
+  - title: Form 40 — Instructions Individual Income Tax Return
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf

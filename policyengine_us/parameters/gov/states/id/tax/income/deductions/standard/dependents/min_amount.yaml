@@ -1,9 +1,12 @@
 description: Idaho allows for this number as the minimum income earned by dependents for deductions
 values:
+  2021-01-01: 1_100
   2023-01-01: 1_150
 metadata:
   unit: currency-USD
-  label: Idaho minimum dependent income for deduction
+  label: Idaho deduction minimum dependent income
   reference:
   - title: Individual Income Tax General Information
     href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf
+  - title: Form 40 — Instructions Individual Income Tax Return
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf
