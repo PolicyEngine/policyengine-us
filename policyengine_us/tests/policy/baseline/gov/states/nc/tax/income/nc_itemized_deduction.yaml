@@ -1,0 +1,19 @@
+- name: Calculation1
+  period: 2023
+  input:
+    filing_status: JOINT
+    mortgage_taxes: 6000
+    property_taxes: 6000
+    state_code: NC
+  output:
+    nc_income_tax: 12000
+
+- name: Calculation2
+  period: 2023
+  input:
+    filing_status: WIDOW
+    mortgage_taxes: 16000
+    property_taxes: 6000
+    state_code: NC
+  output:
+    nc_income_tax: 16000
