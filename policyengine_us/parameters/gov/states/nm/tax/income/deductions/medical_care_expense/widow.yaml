@@ -1,6 +1,6 @@
 description: New Mexico medical care expense deduction at these rates for widow(er) filers, depending on the adjusted gross income.
 metadata:
-  type: marginal_rate
+  type: single_amount
   threshold_unit: currency-USD
   rate_unit: /1
   threshold_period: year
@@ -11,13 +11,13 @@ metadata:
 brackets:
   - threshold:
       2015-01-01: 0
-    rate:
+    amount:
       2015-01-01: 0.25
   - threshold:
       2015-01-01: 30_000
-    rate:
+    amount:
       2015-01-01: 0.15
   - threshold:
       2015-01-01: 70_000
-    rate:
+    amount:
       2015-01-01: 0.1
