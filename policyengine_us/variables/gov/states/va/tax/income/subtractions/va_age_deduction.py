@@ -61,11 +61,11 @@ class va_age_deduction(Variable):
         )
 
         # Special case: for all married taxpayers, the age deduction will differ when filing separately vs. filing jointly.
-        married_filing_status = where(joint, 1, count_eligible)
+        divisor = where(
+            joint, 1, count_eligible
+        )  # divisor is 2 if and only if the couple is married filling seprately, and both are eligible
 
         # Calculate the age deduction amount for each filing
-        age_deduction = (
-            maximum_allowable_deduction - reduction
-        ) / married_filing_status
+        age_deduction = (maximum_allowable_deduction - reduction) / divisor
 
         return where(math.isnan(age_deduction), 0, age_deduction)
