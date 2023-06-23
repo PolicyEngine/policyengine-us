@@ -3,7 +3,7 @@
   input:
     people:
       person1:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_head: 1
         age: 60
     tax_units:
@@ -21,7 +21,7 @@
   input:
     people:
       person1:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_head: 1
         age: 45
     tax_units:
@@ -40,11 +40,11 @@
   input:
     people:
       person1:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_head: 1
         age: 60
       person2:
-        military_benefit: 8_000
+        military_benefits: 8_000
         is_tax_unit_spouse: 1
         age: 60
     tax_units:
@@ -63,11 +63,11 @@
   input:
     people:
       person1:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_head: 1
         age: 50
       person2:
-        military_benefit: 8_000
+        military_benefits: 8_000
         is_tax_unit_spouse: 1
         age: 60
     tax_units:
@@ -86,11 +86,11 @@
   input:
     people:
       person1:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_head: 1
         age: 87
       person2:
-        military_benefit: 16_000
+        military_benefits: 16_000
         is_tax_unit_spouse: 1
         age: 85
     tax_units:
@@ -109,15 +109,15 @@
   input:
     people:
       person1:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_head: 1
         age: 87
       person2:
-        military_benefit: 5_000
+        military_benefits: 5_000
         is_tax_unit_spouse: 1
         age: 85
       person3:
-        military_benefit: 9_000
+        military_benefits: 9_000
         is_tax_unit_dependent: 1
     tax_units:
       tax_unit:
@@ -135,7 +135,7 @@
   input:
     people:
       person1:
-        military_benefit: 20_000
+        military_benefits: 20_000
         is_tax_unit_head: 1
         age: 84
     tax_units:

@@ -19,7 +19,7 @@ class va_military_benefit_subtraction(Variable):
         ).gov.states.va.tax.income.subtractions.military_benefit
 
         subtractable_military_benefit = min_(
-            person("military_benefit", period), p.amount
+            person("military_benefits", period), p.amount
         )
 
         age = person("age", period)
