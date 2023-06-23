@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.338.0] - 2023-06-23 02:46:38
+
+### Added
+
+- Virginia Age Deduction
+
 ## [0.337.1] - 2023-06-22 00:40:11
 
 ### Fixed
@@ -4011,6 +4017,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.338.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.337.1...0.338.0
 [0.337.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.337.0...0.337.1
 [0.337.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.336.0...0.337.0
 [0.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.335.1...0.336.0
