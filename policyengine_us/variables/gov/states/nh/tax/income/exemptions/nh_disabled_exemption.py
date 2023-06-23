@@ -27,6 +27,6 @@ class nh_disabled_exemption(Variable):
 
         # Calculate total blind exemption.
         return (
-            tax_unit.sum(head_eligible + spouse_eligible)
+            (head_eligible + spouse_eligible)
             * p.amount.disabled_addition
         )
