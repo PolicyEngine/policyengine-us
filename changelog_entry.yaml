@@ -1,5 +1,4 @@
 - bump: patch
   changes:
     fixed:
-    - Incorrect handling of federal self-employment tax in Iowa federal tax deduction logic.
-    - Incorrect handling of federal QBID (qualified business income deduction) in Iowa QBID logic.
+    - Incorrect allocation of tax-unit real estate taxes to persons in Iowa AMT logic.
