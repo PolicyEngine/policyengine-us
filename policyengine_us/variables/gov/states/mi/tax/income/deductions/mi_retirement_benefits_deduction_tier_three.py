@@ -32,5 +32,8 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
         return (
             rb3_age_eligibility
             * rb3_amount
-            * (tax_unit("social_security_exempt_retirement_benefits", period) > 0)
+            * (
+                tax_unit("social_security_exempt_retirement_benefits", period)
+                > 0
+            )
         )
