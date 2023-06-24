@@ -24,7 +24,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         age_older = tax_unit("greater_age_head_spouse", period)
         # Interest, Dividends, and Capital Gains Deduction
         idcg_aged_eligibility = age_older >= p.senior_age
-        idcg_amount_per_aged = p.senior_amount[filing_status]
+        idcg_amount = p.senior_amount[filing_status]
         income = tax_unit("mi_interest_dividends_capital_gains_income", period)
 
-        return min_(idcg_aged_eligibility * idcg_amount_per_aged, income)
+        return min_(idcg_aged_eligibility * idcg_amount, income)

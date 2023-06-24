@@ -27,10 +27,10 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
         rb3_age_eligibility = (age_older >= p.min_age) & (
             age_older <= p.max_age
         )
-        rb3_amount_per_aged = p.amount[filing_status]
+        rb3_amount = p.amount[filing_status]
 
         return (
             rb3_age_eligibility
-            * rb3_amount_per_aged
-            * tax_unit("is_social_security_retirement", period)
+            * rb3_amount
+            * (tax_unit("social_security_exempt_retirement_benefits", period) > 0)
         )

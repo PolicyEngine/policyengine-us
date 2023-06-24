@@ -28,6 +28,6 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
         # Retirement Benefits Deduction Tier 1
         rb1_birth_year = -(age_older - period.start.year)
         rb1_age_eligibility = rb1_birth_year < p.birth_year
-        rb1_amount_per_aged = p.amount[filing_status]
+        rb1_amount = p.amount[filing_status]
 
-        return rb1_age_eligibility * rb1_amount_per_aged
+        return rb1_age_eligibility * rb1_amount

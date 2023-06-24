@@ -13,7 +13,7 @@
     state_code: MI
     filing_status: SINGLE
     greater_age_head_spouse: 66
-    is_social_security_retirement: true
+    social_security_exempt_retirement_benefits: 1_000
   output: # 0 + 0 + 15000 + 0
     mi_standard_deduction_and_pension_benefit: 15_000
 
@@ -70,7 +70,7 @@
     state_code: MI
     filing_status: JOINT
     greater_age_head_spouse: 67
-    is_social_security_retirement: true
+    social_security_exempt_retirement_benefits: 2_000
   output: # 40000 > 30000
     mi_standard_deduction_and_pension_benefit: 40_000
 
@@ -108,7 +108,7 @@
     state_code: MI
     filing_status: WIDOW
     greater_age_head_spouse: 67
-    is_social_security_retirement: true
+    social_security_exempt_retirement_benefits: 3_000
   output: # 20000 > 15000
     mi_standard_deduction_and_pension_benefit: 20_000
 

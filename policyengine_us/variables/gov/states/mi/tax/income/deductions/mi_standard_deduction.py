@@ -26,6 +26,6 @@ class mi_standard_deduction(Variable):
         sd_age_eligibility = (age_older >= p.min_age) & (
             sd_birth_year >= p.birth_year
         )
-        sd_amount_per_aged = p.amount[filing_status]
+        sd_amount = p.amount[filing_status]
 
-        return sd_age_eligibility * sd_amount_per_aged
+        return sd_age_eligibility * sd_amount
