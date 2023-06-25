@@ -1,0 +1,27 @@
+description: New Mexico provides this amount for standard deduction.
+metadata:
+  threshold_unit: currency_USD
+  threshold_period: year
+  breakdown:
+  - filing_status
+  label: New Mexico standard deduction
+  reference:
+    - title: Instructions for Form 1040 and Form 1040-SR Standard Deduction Worksheet for Dependents--Line 12
+      href: https://www.irs.gov/instructions/i1040gi#en_US_2022_publink24811vd0e10057
+    - title: 2022 Personal Income Tax Form Packet LINE 12. Federal Standard or Itemized Deduction Amount
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
+SINGLE:
+  2022-01-01: 12_950
+JOINT:
+  2022-01-01: 25_900
+SEPARATE:
+  2018-01-01: 12_950
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 19_400
+WIDOW:
+  202-01-01: 25_900
+
+
+
+
+
