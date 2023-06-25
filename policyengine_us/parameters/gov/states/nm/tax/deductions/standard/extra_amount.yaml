@@ -1,0 +1,23 @@
+description: New Mexico provides this additional standard deduction to elderly and blind filers.
+metadata:
+  label: New Mexico extra standard deduction for elderly and blind
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Instructions for Form 1040 and Form 1040-SR Standard Deduction Worksheet for Dependents--Line 12
+      href: https://www.irs.gov/instructions/i1040gi#en_US_2022_publink24811vd0e10057
+  - title: 2022 Personal Income Tax Form Packet LINE 12. Federal Standard or Itemized Deduction Amount
+      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
+
+JOINT:
+  2022-01-01: 1_400
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 1_750
+WIDOW:
+  2022-01-01: 1_400
+SINGLE:
+  2022-01-01: 1_750
+SEPARATE:
+  2022-01-01: 1_400
