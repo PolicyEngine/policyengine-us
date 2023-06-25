@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class md_two_income_subtraction(Variable):
@@ -26,9 +27,9 @@ class md_two_income_subtraction(Variable):
         couple_gross_income = tax_unit.sum(
             where(is_head | is_spouse, gross_income, 0)
         )
-        head_frac = where(
-            couple_gross_income > 0, head_gross_income / couple_gross_income, 1
-        )
+        head_frac = np.ones_like(couple_gross_income)
+        mask = couple_gross_income > 0
+        head_frac[mask] = head_gross_income[mask] / couple_gross_income[mask]
         head_us_agi = head_frac * us_agi
         spouse_us_agi = (1 - head_frac) * us_agi
 
