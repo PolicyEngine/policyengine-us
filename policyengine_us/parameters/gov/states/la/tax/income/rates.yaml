@@ -1,5 +1,4 @@
-description: The tax rates for individual residents in Louisiana. 
-# threshold value is bottom of the tax bracket; thresholds are <=
+description: Louisiana provides this personal income tax rate.
 brackets:
  - threshold:
      2022-01-01: 0
@@ -17,10 +16,9 @@ brackets:
 
 metadata:
   reference:
-    
     - title: LA Legal Code |  Section 47:32
       href: https://www.legis.la.gov/legis/Law.aspx?d=101946
-  label: LA Resident Individual Tax Rates
+  label: Louisiana Income Tax rate
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1

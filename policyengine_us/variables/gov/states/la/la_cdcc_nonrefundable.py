@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_cdcc_nonrefundable(Variable):
+class la_cdcc_non_refundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana nonrefundable cdcc"
+    label = "Louisiana non refundable cdcc"
     unit = USD
     definition_period = YEAR
     reference = "http://legis.la.gov/Legis/Law.aspx?d=101769"
@@ -17,5 +17,5 @@ class la_cdcc_nonrefundable(Variable):
         agi_eligible = us_agi > p.cdcc.agi_threshold
         # determine LA nonrefundable cdcc amount
         us_cdcc = tax_unit("cdcc", period)
-        la_cdcc = us_cdcc * p.cdcc.non_refundable.fraction.calc(us_agi)
+        la_cdcc = us_cdcc * p.cdcc.non_refundable.rate.calc(us_agi)
         return agi_eligible * la_cdcc
