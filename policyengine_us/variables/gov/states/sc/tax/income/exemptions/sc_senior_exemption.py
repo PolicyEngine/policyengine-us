@@ -31,7 +31,7 @@ class sc_senior_exemption(Variable):
         spouse_eligible = ((age_spouse >= p.age_threshold) * joint).astype(int)
 
         # Get SC retirement income deduction and military retirement income deduction
-        retirement_income_deduction = tax_unit(
+        head_deductions = add(tax_unit, period, ["sc_retirement_income_deduction_head", "sc_military_retirement_income_deduction_head"])
             "sc_retirement_income_deduction", period
         )
         retirement_income_deduction_spouse = tax_unit(
