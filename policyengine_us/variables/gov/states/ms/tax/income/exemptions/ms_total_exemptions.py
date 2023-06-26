@@ -9,4 +9,9 @@ class ms_total_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    adds = ["ms_regular_exemption", "ms_dependents_exemption"]
+    adds = [
+        "ms_regular_exemption",
+        "ms_dependents_exemption",
+        "ms_aged_exemption",
+        "ms_blind_exemption",
+    ]
