@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class taxable_social_security(Variable):
