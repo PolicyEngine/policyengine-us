@@ -51,12 +51,12 @@ class mo_qualified_health_insurance_premiums(Variable):
         # Cap at federal taxable income.
         taxable_income = tax_unit("taxable_income", period)
         # Allocate proportionally across people in the tax unit based on share
-        # of premiums. Use where statement to avoid dividing by zero.
-        person_share_of_tax_unit_premiums = where(
-            tax_unit_premiums > 0, person_premiums / tax_unit_premiums, 0
-        )
+        # of premiums.
+        person_share = np.zeros_like(tax_unit_premiums)
+        mask = tax_unit_premiums > 0
+        person_share[mask] = person_premiums[mask] / tax_unit_premiums[mask]
 
-        return person_share_of_tax_unit_premiums * where(
+        return person_share * where(
             itemizes,
             min_(itemized_premiums_amount, taxable_income),
             min_(tax_unit_premiums, taxable_income),
