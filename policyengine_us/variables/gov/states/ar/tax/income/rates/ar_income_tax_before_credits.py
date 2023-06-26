@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class ar_income_tax_before_credits(Variable):
@@ -11,7 +12,7 @@ class ar_income_tax_before_credits(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ar.tax.income.rates.main
         taxable_income = tax_unit("ar_taxable_income", period)
-        return parameters(period).gov.states.ar.tax.income.main.calc(
-            taxable_income
-        )
+
+        return p.calc(taxable_income)
