@@ -37,11 +37,10 @@ class mo_qualified_health_insurance_premiums(Variable):
             period,
             ["medical_out_of_pocket_expenses", "health_insurance_premiums"],
         )
-        # Apply a where statement to avoid division by zero.
-        med_expense_ratio = where(
-            tax_unit_health_expenses > 0,
-            med_expense_deduction / tax_unit_health_expenses,
-            0,
+        med_expense_ratio = np.zeros_like(tax_unit_health_expenses)
+        mask = tax_unit_health_expenses > 0
+        med_expense_ratio[mask] = (
+            med_expense_deduction[mask] / tax_unit_health_expenses[mask]
         )
 
         person_premiums = person("health_insurance_premiums", period)
