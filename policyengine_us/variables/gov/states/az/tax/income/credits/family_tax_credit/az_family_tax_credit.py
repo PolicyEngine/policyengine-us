@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_family_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "AZ joint credit"
+    label = "Arizona Family Tax Credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
