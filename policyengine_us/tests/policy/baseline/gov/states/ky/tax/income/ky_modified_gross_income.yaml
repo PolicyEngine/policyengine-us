@@ -1,0 +1,31 @@
+- name: Family Size 1
+  period: 2023
+  input:
+    ky_family_size: 1
+    state_code: KY
+  output:
+    ky_modified_gross_income: 13_590
+
+- name: Family Size 2  
+  period: 2023
+  input:
+    ky_family_size: 2
+    state_code: KY
+  output:
+    ky_modified_gross_income: 18_310
+
+- name: Family Size 3
+  period: 2023
+  input:
+    ky_family_size: 3
+    state_code: KY
+  output:
+    ky_modified_gross_income: 23_030
+
+- name: Family Size 4
+  period: 2023
+  input:
+    ky_family_size: 4
+    state_code: KY
+  output:
+    ky_modified_gross_income: 27_750

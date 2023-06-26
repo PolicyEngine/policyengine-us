@@ -1,0 +1,47 @@
+- name: Single - under age 65
+  period: 2023
+  input:
+    ky_filing_status: SINGLE
+    state_code: KY
+  output:
+    ky_gross_income_adjustments: 2_770
+
+- name: Single - age 65 or over or blind
+  period: 2023
+  input:
+    ky_filing_status: SINGLE_65_OR_OVER_OR_BLIND
+    state_code: KY
+  output:
+    ky_gross_income_adjustments: 3_570
+
+- name: Single - age 65 or over and blind
+  period: 2023
+  input:
+    ky_filing_status: SINGLE_65_OR_OVER_AND_BLIND
+    state_code: KY
+  output:
+    ky_gross_income_adjustments: 4_370
+
+- name: Taxpayer and spouse - both under age 65 or over
+  period: 2023
+  input:
+    ky_filing_status: TAXPAYER_SPOUSE_BOTH_UNDER_OR_OVER_65
+    state_code: KY
+  output:
+    ky_gross_income_adjustments: 2_770
+
+- name: Taxpayer and spouse - one age 65 or over
+  period: 2023
+  input:
+    ky_filing_status: TAXPAYER_SPOUSE_ONE_65_OR_OVER
+    state_code: KY
+  output:
+    ky_gross_income_adjustments: 3_570
+
+- name: Taxpayer and spouse - both age 65 or over
+  period: 2023
+  input:
+    ky_filing_status: TAXPAYER_SPOUSE_BOTH_65_OR_OVER
+    state_code: KY
+  output:
+    ky_gross_income_adjustments: 4_370
