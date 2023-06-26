@@ -25,9 +25,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_c(Variable):
         ind_taxable_ben = person("taxable_social_security", period)
         unit_taxable_ben = tax_unit.sum(ind_taxable_ben)
         unit_deduction = max_(0, unit_taxable_ben - unit_agi_over_allowance)
-        ind_frac = where(
-            ind_taxable_ben > 0,
-            ind_taxable_ben / unit_taxable_ben,
-            0,
-        )
+        ind_frac = np.zeros_like(ind_taxable_ben)
+        mask = ind_taxable_ben > 0
+        ind_frac[mask] = ind_taxable_ben[mask] / unit_taxable_ben[mask]
         return ind_frac * unit_deduction
