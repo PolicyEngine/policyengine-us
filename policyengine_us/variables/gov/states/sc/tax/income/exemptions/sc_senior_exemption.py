@@ -31,28 +31,17 @@ class sc_senior_exemption(Variable):
         spouse_eligible = ((age_spouse >= p.age_threshold) * joint).astype(int)
 
         # Get SC retirement income deduction and military retirement income deduction
+        
         head_deductions = add(tax_unit, period, ["sc_retirement_income_deduction_head", "sc_military_retirement_income_deduction_head"])
-            "sc_retirement_income_deduction", period
-        )
-        retirement_income_deduction_spouse = tax_unit(
-            "sc_retirement_income_deduction_spouse", period
-        )
-        sc_military_retirement_income_deduction = tax_unit(
-            "sc_military_retirement_income_deduction", period
-        )
-        sc_military_retirement_income_deduction_spouse = tax_unit(
-            "sc_military_retirement_income_deduction_spouse", period
-        )
+        spouse_deductions = add(tax_unit, period, ["sc_retirement_income_deduction_spouse", "sc_military_retirement_income_deduction_spouse"])
 
         # Calculate senior exemption. The exemption can not be less than 0. Add head and spouse together.
-        return max_(
-            head_eligible * p.amount
-            - retirement_income_deduction
-            - sc_military_retirement_income_deduction,
-            0,
-        ) + max_(
-            spouse_eligible * p.spouse_amount
-            - retirement_income_deduction_spouse
-            - sc_military_retirement_income_deduction_spouse,
-            0,
+        # Per the legal code, this applies separately:
+        # "(2) In the case of married taxpayers who file a joint federal income tax return, the reduction required by item (1) applies to each individual separately"
+        head_exemption = max_(
+            head_eligible * p.amount - head_deductions, 0
         )
+        spouse_exemption = max_(
+            spouse_eligible * p.spouse_amount - spouse_deductions, 0
+        )
+        return head_exemption + spouse_exemption
