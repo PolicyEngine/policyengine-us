@@ -11,5 +11,5 @@ class nh_income_tax_before_refundable_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("nh_taxable_income", period)
-        rate = parameters(period).gov.states.nh.tax.income.main
+        rate = parameters(period).gov.states.nh.tax.income.rate
         return income * rate
