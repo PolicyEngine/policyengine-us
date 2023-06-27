@@ -6,7 +6,7 @@ class de_eitc(Variable):
     entity = TaxUnit
     label = "Delaware EITC"
     unit = USD
-    documentation = "Refundable and non-refundable Delaware EITC page 8"
+    documentation = "Refundable and non-refundable Delaware EITC"
     definition_period = YEAR
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
     defined_for = StateCode.DE
