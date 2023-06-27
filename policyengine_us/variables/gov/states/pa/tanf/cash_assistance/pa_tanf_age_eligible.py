@@ -19,6 +19,4 @@ class pa_tanf_age_eligible(Variable):
 
         # Get age
         is_eligible_age = age < p.age_eligibility
-        eligible = spm_unit.any(is_eligible_age | student_eligible)
-
-        return eligible
+        return spm_unit.any(is_eligible_age | student_eligible)
