@@ -11,5 +11,10 @@ class mt_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)
+        filing_status = tax_unit("filing_status", period)
         rate = parameters(period).gov.states.mt.tax.income.credits.eitc.rate
-        return eitc * rate
+        return where(
+            filing_status == filing_status.possible_values.SEPARATE,
+            0,
+            eitc * rate,
+        )
