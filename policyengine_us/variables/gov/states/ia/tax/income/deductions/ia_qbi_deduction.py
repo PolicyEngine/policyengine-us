@@ -16,6 +16,12 @@ class ia_qbi_deduction(Variable):
     defined_for = StateCode.IA
 
     def formula(person, period, parameters):
-        fed_qbid = person("qbid_amount", period)
+        fed_indv_qbid = person("qbid_amount", period)
+        tax_unit = person.tax_unit
+        fed_unit_qbid = tax_unit("qualified_business_income_deduction", period)
+        reduction_factor = where(
+            fed_indv_qbid > 0, fed_unit_qbid / fed_indv_qbid, 1.0
+        )
+        fed_qbid = fed_indv_qbid * reduction_factor
         p = parameters(period).gov.states.ia.tax.income
         return fed_qbid * p.deductions.qualified_business_income.fraction
