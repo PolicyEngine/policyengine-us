@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class pa_tanf_countable_recourses(Variable):
+class pa_tanf_countable_resources(Variable):
     value_type = float
     entity = SPMUnit
     label = "PA TANF countable resources"
