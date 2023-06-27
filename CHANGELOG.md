@@ -5,6 +5,60 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.341.0] - 2023-06-26 02:49:08
+
+### Added
+
+- Georgia dependent care credit.
+
+## [0.340.0] - 2023-06-26 00:25:29
+
+### Added
+
+- Mississippi aged and blind exemptions.
+
+## [0.339.1] - 2023-06-24 19:55:52
+
+### Fixed
+
+- Incorrect allocation of tax-unit real estate taxes to persons in Iowa AMT logic.
+
+## [0.339.0] - 2023-06-23 17:41:32
+
+### Added
+
+- Delaware cdcc.
+
+## [0.338.0] - 2023-06-23 02:46:38
+
+### Added
+
+- Virginia Age Deduction
+
+## [0.337.1] - 2023-06-22 00:40:11
+
+### Fixed
+
+- Missing rental_income as source of Iowa gross income.
+
+## [0.337.0] - 2023-06-20 21:40:43
+
+### Added
+
+- Georgia personal income tax rate schedule.
+
+## [0.336.0] - 2023-06-20 21:15:16
+
+### Added
+
+- New Hampshire Education Tax Credit.
+
+## [0.335.1] - 2023-06-18 20:18:56
+
+### Fixed
+
+- Iowa exemption credit logic for head-of-household filing units.
+
 ## [0.335.0] - 2023-06-12 15:05:19
 
 ### Fixed
@@ -3987,6 +4041,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.340.0...0.341.0
+[0.340.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.1...0.340.0
+[0.339.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.0...0.339.1
+[0.339.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.338.0...0.339.0
+[0.338.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.337.1...0.338.0
+[0.337.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.337.0...0.337.1
+[0.337.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.336.0...0.337.0
+[0.336.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.335.1...0.336.0
+[0.335.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.335.0...0.335.1
 [0.335.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.334.0...0.335.0
 [0.334.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.333.1...0.334.0
 [0.333.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.333.0...0.333.1
