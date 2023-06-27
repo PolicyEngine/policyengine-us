@@ -6,7 +6,7 @@ class vt_taxable_income(Variable):
     entity = TaxUnit
     label = "Vermont taxable income"
     unit = USD
-    documentation = "VT AGI less taxable income deductions"
+    documentation = "VT AGI less taxable income deductions and exemptions"
     definition_period = YEAR
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf"
