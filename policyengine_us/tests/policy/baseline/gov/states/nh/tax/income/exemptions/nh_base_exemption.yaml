@@ -1,110 +1,26 @@
-- name: Single filer with dependents gets the base exemption before 2027.
+- name: No income tax
   period: 2022
   input:
-    people:
-      head:
-        dividend_income: 1_400
-        interest_income: 1_000
-      dependent_1:
-        dividend_income: 1_400
-        interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, dependent_1]
-    households:
-      household:
-        members: [head, dependent_1]
-        state_code: NH
+    state_code: NH
+    exemptions: 2
+    nh_income_tax: 0
   output:
-    nh_base_exemption: 4_800
+    nh_base_exemption: 0
 
-- name: Single filer gets the base exemption before 2027.
+- name: One exemption
   period: 2022
   input:
-    people:
-      head:
-        dividend_income: 1_600
-        interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head]
-    households:
-      household:
-        members: [head]
-        state_code: NH
+    state_code: NH
+    exemptions: 1
+    nh_income_tax: 1
   output:
     nh_base_exemption: 2_400
 
-- name: Single filer gets the base exemption before 2027.
+- name: Three exemption
   period: 2022
   input:
-    people:
-      head:
-        dividend_income: 1_000
-        interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head]
-    households:
-      household:
-        members: [head]
-        state_code: NH
+    state_code: NH
+    exemptions: 3
+    nh_income_tax: 1
   output:
-    nh_base_exemption: 2_000
-
-- name: Joint filers get the base exemption before 2027.
-  period: 2022
-  input:
-    people:
-      head:
-        dividend_income: 2_000
-        interest_income: 1_000
-      spouse:
-        dividend_income: 0
-        interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-    households:
-      household:
-        members: [head, spouse]
-        state_code: NH
-  output:
-    nh_base_exemption: 3_400
-
-- name: Joint filers get no base exemptions in or after 2027.
-  period: 2027
-  input:
-    people:
-      head:
-        dividend_income: 1_000
-        interest_income: 1_000
-      spouse:
-        dividend_income: 1_000
-        interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-    households:
-      household:
-        members: [head, spouse]
-        state_code: NH
-  output:
-    nh_base_exemption: 0
-
-- name: Single filer gets no base exemptions in or after 2027.
-  period: 2027
-  input:
-    people:
-      head:
-        dividend_income: 1_000
-        interest_income: 1_000
-    tax_units:
-      tax_unit:
-        members: [head]
-    households:
-      household:
-        members: [head]
-        state_code: NH
-  output:
-    nh_base_exemption: 0
+    nh_base_exemption: 7_200
