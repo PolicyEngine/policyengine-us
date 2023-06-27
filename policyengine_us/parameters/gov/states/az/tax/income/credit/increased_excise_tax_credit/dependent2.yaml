@@ -1,20 +1,20 @@
 description: Arizona Tax-140 calculated dependents based on formula in Line 56 from 
 metadata:
   period: year
-  unit: rate
+  unit: /1
   label: Arizona Tax-140 calculated dependents depends on filing status
   breakdown:
-    - filing_status
+  - filing_status
 SINGLE:
   2021-01-01: 1
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 2
 JOINT:
   2021-01-01: 1
-# WIDOW:
-#   2021-01-01: 1
+WIDOW:
+  2021-01-01: 1
 SEPARATE:
   2021-01-01: 1
-reference:
+  reference:
   - title: Arizona Form 140
     href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet # From Year 2022 Line 56

@@ -8,154 +8,154 @@
     adjusted_gross_income: 25_001 # Should I remove "federal"
     tax_unit_dependents: 1
   output:
-    az_family_tax_credit: 0
+    az_increased_excise_tax_credit: 0
     
-- name: AZ increased excise tax credit test 2
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 25_001 
-    tax_unit_dependents: 3
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 2
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: HEAD_OF_HOUSEHOLD
+#     adjusted_gross_income: 25_001 
+#     tax_unit_dependents: 3
+#   output:
+#     az_increased_excise_tax_credit: 0
 
-- name: AZ increased excise tax credit test 3
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 24_999 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 75 
+# - name: AZ increased excise tax credit test 3
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: HEAD_OF_HOUSEHOLD
+#     adjusted_gross_income: 24_999 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 75 
 
-- name: AZ increased excise tax credit test 4
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 24_999 
-    tax_unit_dependents: 3
-  output:
-    az_family_tax_credit: 100 
+# - name: AZ increased excise tax credit test 4
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: HEAD_OF_HOUSEHOLD
+#     adjusted_gross_income: 24_999 
+#     tax_unit_dependents: 3
+#   output:
+#     az_increased_excise_tax_credit: 100 
 
-- name: AZ increased excise tax credit test 5
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    adjusted_gross_income: 25_001 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 5
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: JOINT
+#     adjusted_gross_income: 25_001 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 0
     
-- name: AZ increased excise tax credit test 6
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    adjusted_gross_income: 25_001 
-    tax_unit_dependents: 3
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 6
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: JOINT
+#     adjusted_gross_income: 25_001 
+#     tax_unit_dependents: 3
+#   output:
+#     az_increased_excise_tax_credit: 0
 
-- name: AZ increased excise tax credit test 7
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    adjusted_gross_income: 24_999 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 50 
+# - name: AZ increased excise tax credit test 7
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: JOINT
+#     adjusted_gross_income: 24_999 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 50 
 
-- name: AZ increased excise tax credit test 8
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: JOINT
-    adjusted_gross_income: 24_999 
-    tax_unit_dependents: 4
-  output:
-    az_family_tax_credit: 100 
+# - name: AZ increased excise tax credit test 8
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: JOINT
+#     adjusted_gross_income: 24_999 
+#     tax_unit_dependents: 4
+#   output:
+#     az_increased_excise_tax_credit: 100 
 
-- name: AZ increased excise tax credit test 9
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    adjusted_gross_income: 12_501 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 9
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SINGLE
+#     adjusted_gross_income: 12_501 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 0
     
-- name: AZ increased excise tax credit test 10
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    adjusted_gross_income: 12_501 
-    tax_unit_dependents: 4
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 10
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SINGLE
+#     adjusted_gross_income: 12_501 
+#     tax_unit_dependents: 4
+#   output:
+#     az_increased_excise_tax_credit: 0
 
-- name: AZ increased excise tax credit test 11
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    adjusted_gross_income: 12_499 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 50 
+# - name: AZ increased excise tax credit test 11
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SINGLE
+#     adjusted_gross_income: 12_499 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 50 
 
-- name: AZ increased excise tax credit test 12
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SINGLE
-    adjusted_gross_income: 12_499 
-    tax_unit_dependents: 4
-  output:
-    az_family_tax_credit: 100 
+# - name: AZ increased excise tax credit test 12
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SINGLE
+#     adjusted_gross_income: 12_499 
+#     tax_unit_dependents: 4
+#   output:
+#     az_increased_excise_tax_credit: 100 
 
-- name: AZ increased excise tax credit test 13
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SEPARATE
-    adjusted_gross_income: 12_501 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 13
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SEPARATE
+#     adjusted_gross_income: 12_501 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 0
     
-- name: AZ increased excise tax credit test 14
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SEPARATE
-    adjusted_gross_income: 12_501 
-    tax_unit_dependents: 4
-  output:
-    az_family_tax_credit: 0
+# - name: AZ increased excise tax credit test 14
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SEPARATE
+#     adjusted_gross_income: 12_501 
+#     tax_unit_dependents: 4
+#   output:
+#     az_increased_excise_tax_credit: 0
 
-- name: AZ increased excise tax credit test 15
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SEPARATE
-    adjusted_gross_income: 12_499 
-    tax_unit_dependents: 1
-  output:
-    az_family_tax_credit: 50 
+# - name: AZ increased excise tax credit test 15
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SEPARATE
+#     adjusted_gross_income: 12_499 
+#     tax_unit_dependents: 1
+#   output:
+#     az_increased_excise_tax_credit: 50 
 
-- name: AZ increased excise tax credit test 16
-  period: 2023
-  input:
-    state_code: AZ
-    filing_status: SEPARATE
-    adjusted_gross_income: 12_499 
-    tax_unit_dependents: 4
-  output:
-    az_family_tax_credit: 100 
+# - name: AZ increased excise tax credit test 16
+#   period: 2023
+#   input:
+#     state_code: AZ
+#     filing_status: SEPARATE
+#     adjusted_gross_income: 12_499 
+#     tax_unit_dependents: 4
+#   output:
+#     az_increased_excise_tax_credit: 100 

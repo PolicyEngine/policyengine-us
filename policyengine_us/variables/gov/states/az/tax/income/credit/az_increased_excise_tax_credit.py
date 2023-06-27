@@ -27,42 +27,12 @@ class az_increased_excise_tax_credit(Variable):
         ).gov.states.az.tax.income.credits.increased_excise_tax_credit
         agi = tax_unit(
             "adjusted_gross_income", period
-        )  # should I remove "federal"?
+        )
         filing_status = tax_unit("filing_status", period)
         max_income = p.maximum[filing_status]
-        # [
-        #         filing_status == status.SINGLE,
-        #         filing_status == status.JOINT,
-        #         filing_status == status.HEAD_OF_HOUSEHOLD,
-        #         filing_status == status.SEPARATE,
-        #         # filing_status == status.WIDOW,
-        #     ],
-        #     [
-        #         p.maximum,
-        #         p.maximum,
-        #         p.maximum,
-        #         p.maximum,
-        #         # p.maximum,
-        #     ],
-        # )
         eligible = agi <= max_income
         dependents1 = tax_unit("tax_unit_dependents", period)
         dependents2 = p.dependent2[filing_status]
-        #     [
-        #         filing_status == status.SINGLE,
-        #         filing_status == status.JOINT,
-        #         filing_status == status.HEAD_OF_HOUSEHOLD,
-        #         filing_status == status.SEPARATE,
-        #         # filing_status == status.WIDOW,
-        #     ],
-        #     [
-        #         p.dependent2,
-        #         p.dependent2,
-        #         p.dependent2,
-        #         p.dependent2,
-        #         # p.dependent2,
-        #     ],
-        # )
         total_dependents = dependents1 + dependents2
         current_credit = total_dependents * p.credit_based_on_cal_dependents
-        return eligible * min(current_credit, p.max_amount)
+        return eligible * min_(current_credit, p.max_amount)
