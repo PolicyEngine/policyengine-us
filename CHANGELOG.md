@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.341.0] - 2023-06-26 02:49:08
+
+### Added
+
+- Georgia dependent care credit.
+
+## [0.340.0] - 2023-06-26 00:25:29
+
+### Added
+
+- Mississippi aged and blind exemptions.
+
+## [0.339.1] - 2023-06-24 19:55:52
+
+### Fixed
+
+- Incorrect allocation of tax-unit real estate taxes to persons in Iowa AMT logic.
+
 ## [0.339.0] - 2023-06-23 17:41:32
 
 ### Added
@@ -4023,6 +4041,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.340.0...0.341.0
+[0.340.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.1...0.340.0
+[0.339.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.0...0.339.1
 [0.339.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.338.0...0.339.0
 [0.338.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.337.1...0.338.0
 [0.337.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.337.0...0.337.1
