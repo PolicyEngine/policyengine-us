@@ -4,6 +4,7 @@
     filing_status: JOINT
     tax_unit_dependent_elsewhere: true
     tax_unit_spouse_dependent_elsewhere: true
+    tax_unit_count_dependents: 0
     state_code: VT
   output:
     vt_personal_exemptions: 0 # 0*4500
@@ -14,6 +15,7 @@
     filing_status: JOINT
     tax_unit_dependent_elsewhere: true
     tax_unit_spouse_dependent_elsewhere: true
+    tax_unit_count_dependents: 2
     state_code: VT
   output:
     vt_personal_exemptions: 9_000 # 2*4500
@@ -24,6 +26,7 @@
     filing_status: JOINT
     tax_unit_dependent_elsewhere: true
     tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
     state_code: VT
   output:
     vt_personal_exemptions: 4_500 # 1*4500
@@ -34,6 +37,7 @@
     filing_status: JOINT
     tax_unit_dependent_elsewhere: true
     tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
     state_code: VT
   output:
     vt_personal_exemptions: 13_500 # 3*4500
@@ -44,6 +48,7 @@
     filing_status: JOINT
     tax_unit_dependent_elsewhere: false
     tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
     state_code: VT
   output:
     vt_personal_exemptions: 9_000 # 2*4500
@@ -54,6 +59,7 @@
     filing_status: JOINT
     tax_unit_dependent_elsewhere: false
     tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
     state_code: VT
   output:
     vt_personal_exemptions: 18_000 # 4*4500
@@ -63,6 +69,7 @@
   input:
     filing_status: SINGLE
     tax_unit_dependent_elsewhere: true
+    tax_unit_count_dependents: 0
     state_code: VT
   output:
     vt_personal_exemptions: 0 # 0*4500
@@ -72,6 +79,7 @@
   input:
     filing_status: SINGLE
     tax_unit_dependent_elsewhere: true
+    tax_unit_count_dependents: 2
     state_code: VT
   output:
     vt_personal_exemptions: 9_000 # 2*4500
@@ -81,6 +89,7 @@
   input:
     filing_status: SINGLE
     tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
     state_code: VT
   output:
     vt_personal_exemptions: 4_500 # 1*4500
@@ -90,6 +99,7 @@
   input:
     filing_status: SINGLE
     tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
     state_code: VT
   output:
     vt_personal_exemptions: 13_500 # 3*4500
@@ -99,6 +109,7 @@
   input:
     filing_status: SINGLE
     tax_unit_dependent_elsewhere: false
-    state_code: VT
+    tax_unit_count_dependents: 0
+    state_code: NY
   output:
     vt_personal_exemptions: 0 
