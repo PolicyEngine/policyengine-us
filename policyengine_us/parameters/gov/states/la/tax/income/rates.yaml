@@ -1,25 +1,25 @@
 description: Louisiana provides this personal income tax rate.
-brackets:
-    - threshold:
-      2022-01-01: 0
-      rate:
-          2022-01-01: 0.0185
-    - threshold:
-      2022-01-01: 12_500
-      rate:
-          2022-01-01: 0.0315
-    - threshold:
-      2022-01-01: 50_000
-      rate:
-          2022-01-01: 0.0425
 
+brackets:
+  - threshold:
+      2022-01-01: 0
+    rate:
+      2022-01-01: 0.0185
+  - threshold:
+      2022-01-01: 12_500
+    rate:
+      2022-01-01: 0.0315
+  - threshold:
+      2022-01-01: 50_000
+    rate:
+      2022-01-01: 0.0425
 
 metadata:
   reference:
-    - title: LA Legal Code |  Section 47:32
+    - title: LA Legal Code | Section 47:32
       href: https://www.legis.la.gov/legis/Law.aspx?d=101946
   label: Louisiana Income Tax rate
   type: marginal_rate
   threshold_unit: currency-USD
-  rate_unit: /1
+  rate_unit: "/1"
   period: year
