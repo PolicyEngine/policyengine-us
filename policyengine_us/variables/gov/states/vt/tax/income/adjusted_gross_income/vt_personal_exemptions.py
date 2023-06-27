@@ -18,7 +18,8 @@ class vt_personal_exemptions(Variable):
         ).gov.states.vt.tax.income.exemption.personal
 
         # First, determine whether either the head or the spouse of the tax unit is claimable as a dependent in another unit.(line 5a, line5b)
-        claimable_count = add(tax_unit, period, ["dsi_spouse", "dsi"])
+        claimable_count = float(tax_unit("dsi", period))
+        claimable_count += float(tax_unit("dsi_spouse", period))
         eligible_count = select(
             [
                 claimable_count == 0,
@@ -28,6 +29,5 @@ class vt_personal_exemptions(Variable):
             [2, 1, 0],
         )
         # Then, add number of other dependents claimed on federal Form 1040.(line 5c)
-        # eligible_count += tax_unit("tax_unit_count_dependents", period)
-        # return eligible_count * personal_eligibility_amount
-        return claimable_count
+        eligible_count += tax_unit("tax_unit_count_dependents", period)
+        return eligible_count * personal_eligibility_amount
