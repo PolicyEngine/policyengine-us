@@ -5,7 +5,7 @@
     cdcc: 2_000
     state_code: LA
   output:
-    la_cdcc_nonrefundable: 0
+    la_cdcc_non_refundable: 0
 
 
 - name: LA nonrefundable cdcc unit test 2
@@ -15,4 +15,4 @@
     cdcc: 2_000
     state_code: LA
   output:
-    la_cdcc_nonrefundable: 600 # 2_000 * 0.3
+    la_cdcc_non_refundable: 600 # 2_000 * 0.3
