@@ -1,7 +1,7 @@
-description: Delaware provides these personal credits.
+description: Delaware provides these personal credits based on filing status.
 metadata:
   reference:
-    - title: Delaware individual income tax instructions for 2022 page 8 line 26a
+    - title: Delaware individual income tax instructions for 2022 line 26a
       href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf
   label: Delaware Personal Credits amount
   unit: currency-USD
@@ -9,12 +9,17 @@ metadata:
   breakdown:
     - filing_status
 JOINT:
+  2021-01-01: 110
   2022-01-01: 110
 SINGLE:
+  2021-01-01: 220
   2022-01-01: 220
 SEPARATE:
+  2021-01-01: 110
   2022-01-01: 110
 HEAD_OF_HOUSEHOLD:
+  2021-01-01: 110
   2022-01-01: 110
 WIDOW:
+  2021-01-01: 220
   2022-01-01: 220

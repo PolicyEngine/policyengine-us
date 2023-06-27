@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_personal(Variable):
+class de_personal_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Delaware personal credit"
