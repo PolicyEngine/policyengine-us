@@ -1,0 +1,22 @@
+description: Delaware provides exclusions from gross income for these filling status
+metadata:
+  reference:
+    - title: Delaware individual income tax instructions for 2021 page 78 line 11
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf
+    - title: Delaware individual income tax instructions for 2022 page 78 line 11
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf
+  label: Delaware gross income exclusion filling status
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+JOINT:
+  2022-01-01: 1
+SINGLE:
+  2022-01-01: 1
+SEPARATE:
+  2022-01-01: 1
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 0
+WIDOW:
+  2022-01-01: 0
