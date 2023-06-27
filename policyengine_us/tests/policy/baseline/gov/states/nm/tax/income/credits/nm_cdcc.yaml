@@ -1,0 +1,63 @@
+- name: 1 dependent child in NM (eligible and cap reached)
+  period: 2022
+  input:
+    nm_cdcc_max: 480
+    state_code: NM
+    cdcc_relevant_expenses: 7000
+  output:
+    nm_cdcc: 480
+
+- name: 1 dependent child in NM (eligible but cap not reached)
+  period: 2022
+  input:
+    nm_cdcc_max: 480
+    state_code: NM
+    cdcc_relevant_expenses: 500
+  output:
+    nm_cdcc: 200
+
+- name: 1 dependent child in NM (ineligible case 1)
+  period: 2022
+  input:
+    nm_cdcc_max: 0
+    state_code: NM
+    cdcc_relevant_expenses: 400
+  output:
+    nm_cdcc: 0
+
+- name: 1 dependent child in NM (ineligible case 2)
+  period: 2022
+  input:
+    nm_cdcc_max: 0
+    state_code: NM
+    cdcc_relevant_expenses: 0
+  output:
+    nm_cdcc: 0
+
+- name: 2 dependent children in NM (eligible and cap reached)
+  period: 2022
+  input:
+    nm_cdcc_max: 1200
+    state_code: NM
+    cdcc_relevant_expenses: 7000
+  output:
+    nm_cdcc: 1200
+
+- name: 2 dependent children in NM (eligible but cap not reached)
+  period: 2022
+  input:
+    nm_cdcc_max: 1200
+    state_code: NM
+    cdcc_relevant_expenses: 500
+  output:
+    nm_cdcc: 200
+
+- name: 2 dependent children in NM (ineligible)
+  period: 2022
+  input:
+    nm_cdcc_max: 0
+    state_code: NM
+    cdcc_relevant_expenses: 5000
+  output:
+    nm_cdcc: 0
+

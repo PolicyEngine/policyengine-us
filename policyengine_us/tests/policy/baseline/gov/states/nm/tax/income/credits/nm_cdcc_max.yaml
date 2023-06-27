@@ -1,0 +1,230 @@
+- name: 1 child with parents claim files jointly and both parents are employed 
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 0
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 1 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 480
+
+
+- name: 2 children with parents claim files jointly and both parents are employed 
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 0
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 2
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 1200
+
+
+- name: More than 2 children with parents claim files jointly and both parents are employed 
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 0
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 5 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 1200
+
+
+- name: 1 child with parents claim files jointly but only one of them is employed
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 0
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 1 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 0
+
+- name: 1 child with parents claim files jointly but only one of them is employed, another one is disabled
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 0
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: True
+        count_cdcc_eligible: 1 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 480
+
+- name: 1 children with parents claim files jointly and both parents are employed, spents did not meet the cost of maintaining the household for child care (violated Limitation 1)
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 1_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 0
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 1 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 0
+
+
+- name: 1 child with parents claim files jointly and both parents are employed, but recieved other public assistances.
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 1_000
+        nm_modified_gross_income: 0   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 1 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 0
+
+- name: 1 child with parents claim files jointly and both parents are employed, nm_modified_gross_income double the federal minimum wage.
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 7_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head,spouse]
+        cdcc_relevant_expenses: 4_000
+        nm_maintaining_household: 7_000 
+        nm_public_assistance_income: 1_000
+        nm_modified_gross_income: 40_000   
+        head_is_disabled: false
+        spouse_is_disabled: false
+        count_cdcc_eligible: 1 
+        filing_status: JOINT #JOINT/SEPARATE
+    households:
+      household:
+        members: [head,spouse]
+        state_code: NM
+  output:
+    nm_cdcc_max: 0
+
+
+    
