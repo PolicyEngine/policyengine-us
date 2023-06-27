@@ -1,4 +1,4 @@
-- name: 2015 single filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 single filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -8,7 +8,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 single filer adjsuted gross income = 15_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 single filer adjsuted gross income = 15_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -18,7 +18,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 single filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 single filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -28,7 +28,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 single filer adjsuted gross income = 35_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 single filer adjsuted gross income = 35_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -38,7 +38,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 single filer adjsuted gross income = 45_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 single filer adjsuted gross income = 45_000 and medical out of pocket expense = 1_000, the deduction amount is 100
   period: 2015
   input:
     state_code: NM
@@ -48,7 +48,7 @@
   output:
     nm_mediacal_care_expense_deduction: 100
 
-- name: 2015 separate filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 separate filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -58,7 +58,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 separate filer adjsuted gross income = 15_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 separate filer adjsuted gross income = 15_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -68,7 +68,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 separate filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 separate filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -78,7 +78,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 separate filer adjsuted gross income = 35_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 separate filer adjsuted gross income = 35_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -88,7 +88,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 separate filer adjsuted gross income = 45_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 separate filer adjsuted gross income = 45_000 and medical out of pocket expense = 1_000, the deduction amount is 100
   period: 2015
   input:
     state_code: NM
@@ -98,7 +98,7 @@
   output:
     nm_mediacal_care_expense_deduction: 100
 
-- name: 2015 joint filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 joint filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -108,7 +108,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 joint filer adjsuted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 joint filer adjsuted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -118,7 +118,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 joint filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 joint filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -128,7 +128,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 joint filer adjsuted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 joint filer adjsuted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -138,7 +138,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 joint filer adjsuted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 joint filer adjsuted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 100
   period: 2015
   input:
     state_code: NM
@@ -148,7 +148,7 @@
   output:
     nm_mediacal_care_expense_deduction: 100
 
-- name: 2015 widow filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 widow filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -158,7 +158,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 widow filer adjsuted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 widow filer adjsuted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -168,7 +168,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 widow filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 widow filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -178,7 +178,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 widow filer adjsuted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 widow filer adjsuted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -188,7 +188,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 widow filer adjsuted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 widow filer adjsuted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 100
   period: 2015
   input:
     state_code: NM
@@ -198,7 +198,7 @@
   output:
     nm_mediacal_care_expense_deduction: 100
 
-- name: 2015 head of household filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 head of household filer adjsuted gross income = 10_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -208,7 +208,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 head of household filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 head of household filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 250
   period: 2015
   input:
     state_code: NM
@@ -218,7 +218,7 @@
   output:
     nm_mediacal_care_expense_deduction: 250
 
-- name: 2015 head of household filer adjsuted gross income = 40_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 head of household filer adjsuted gross income = 40_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -228,7 +228,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 head of household filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 head of household filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 150
   period: 2015
   input:
     state_code: NM
@@ -238,7 +238,7 @@
   output:
     nm_mediacal_care_expense_deduction: 150
 
-- name: 2015 head of household filer adjsuted gross income = 60_000 and medical out of pocket expense = 1_000, the deduction amount is 2_500
+- name: 2015 head of household filer adjsuted gross income = 60_000 and medical out of pocket expense = 1_000, the deduction amount is 100
   period: 2015
   input:
     state_code: NM
@@ -247,3 +247,153 @@
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     nm_mediacal_care_expense_deduction: 100
+
+- name: 2025 single filer adjsuted gross income = 15_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 15_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SINGLE
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 single filer adjsuted gross income = 35_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 35_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SINGLE
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 single filer adjsuted gross income = 45_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 45_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SINGLE
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 separate filer adjsuted gross income = 15_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 15_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SEPARATE
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 separate filer adjsuted gross income = 35_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 35_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SEPARATE
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 separate filer adjsuted gross income = 45_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 45_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: SEPARATE
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 joint filer adjsuted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 30_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: JOINT
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 joint filer adjsuted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 70_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: JOINT
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 joint filer adjsuted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 80_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: JOINT
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 widow filer adjsuted gross income = 30_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 30_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: WIDOW
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 widow filer adjsuted gross income = 70_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 70_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: WIDOW
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 widow filer adjsuted gross income = 80_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 80_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: WIDOW
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 head of household filer adjsuted gross income = 20_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 20_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 head of household filer adjsuted gross income = 50_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 50_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nm_mediacal_care_expense_deduction: 0
+
+- name: 2025 head of household filer adjsuted gross income = 60_000 and medical out of pocket expense = 1_000, the deduction amount is 0
+  period: 2025
+  input:
+    state_code: NM
+    adjusted_gross_income: 60_000
+    medical_out_of_pocket_expenses: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nm_mediacal_care_expense_deduction: 0
