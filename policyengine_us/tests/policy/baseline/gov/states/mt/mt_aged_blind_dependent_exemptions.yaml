@@ -1,4 +1,4 @@
-- name: HEAD(over 65, not blind, have 2 dependents) & SPOUSE(under 65, blind) #6*2710=16260
+- name: HEAD(over 65, not blind, have 2 dependents) & SPOUSE(under 65, blind) #7*2710=18970
   period: 2021
   input:
     people:
@@ -11,11 +11,15 @@
         is_blind: 1
         is_tax_unit_spouse: 1
       person3:
+        age: 26
+        is_tax_unit_dependent: 1
+        is_child: false
+        is_disabled: false
+      person4:
         age: 11
         is_tax_unit_dependent: 1
-      person4:
-        age: 25
-        is_tax_unit_dependent: 1
+        is_child: true
+        is_disabled: true
     tax_units:
       tax_unit:
         members: [person1, person2, person3, person4]
@@ -24,4 +28,4 @@
         members: [person1, person2, person3, person4]
         state_code: MT
   output:
-    mt_aged_blind_dependent_exemptions: 16_260
+    mt_aged_blind_dependent_exemptions: 18_970

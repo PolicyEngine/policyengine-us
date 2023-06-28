@@ -15,4 +15,9 @@ class mt_dependent_exemption(Variable):
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         num_dependents = tax_unit.sum(dependent)
-        return num_dependents * p.amount
+        disabled_children = person("is_disabled", period) & person(
+            "is_child", period
+        )
+        num_disabled_children = tax_unit.sum(disabled_children)
+
+        return (num_dependents + num_disabled_children) * p.amount
