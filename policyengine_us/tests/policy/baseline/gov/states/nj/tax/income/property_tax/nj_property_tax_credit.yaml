@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_property_tax_deduction_or_credit_eligible: true
+    nj_property_tax_credit_eligible: true
     nj_taking_property_tax_deduction: false
     state_code: NJ
   output:
@@ -12,8 +12,20 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_property_tax_deduction_or_credit_eligible: true
+    nj_property_tax_credit_eligible: true
     nj_taking_property_tax_deduction: true
     state_code: NJ
   output:
     nj_property_tax_credit: 0
+
+- name: NJ property tax credit is $25 if eligible, not taking deduction, and filing separate but maintain same home.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    nj_property_tax_credit_eligible: true
+    nj_taking_property_tax_deduction: false
+    filing_status: SEPARATE
+    cohabitating_spouses: true
+    state_code: NJ
+  output:
+    nj_property_tax_credit: 25

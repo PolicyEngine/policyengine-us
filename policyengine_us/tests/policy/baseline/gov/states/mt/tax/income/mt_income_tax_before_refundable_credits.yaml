@@ -1,0 +1,44 @@
+- name: No income 
+  period: 2021
+  input:
+     filing_status: SINGLE
+     mt_taxable_income: 0
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 0
+
+- name: Temporary rate calculation #((5_000 - 2_900) * 0.02 + 2_900 * 0.01)
+  period: 2021
+  input:
+     filing_status: SINGLE
+     mt_taxable_income: 5_000
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 71
+
+- name: Progressive rate - Joint filing # 5_000 * 0.047
+  period: 2024
+  input:
+     filing_status: JOINT
+     mt_taxable_income: 5_000
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 235
+
+- name: Progressive rate - Single filing # ((25_000 - 20_500) * 0.065 + 20_500 * 0.047)
+  period: 2025
+  input:
+     filing_status: SINGLE
+     mt_taxable_income: 25_000
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 1_256
+
+- name: Progressive rate - head of household # ((35_000 - 30_750) * 0.065 + 30_750 * 0.047)
+  period: 2025
+  input:
+     filing_status: HEAD_OF_HOUSEHOLD
+     mt_taxable_income: 35_000
+     state_code: MT
+  output:
+    mt_income_tax_before_refundable_credits: 1_721.5
