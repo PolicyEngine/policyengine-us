@@ -1,8 +1,4 @@
 from policyengine_us.model_api import *
-import warnings
-
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
 
 
 class ma_limited_income_tax_credit(Variable):
