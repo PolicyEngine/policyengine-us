@@ -1,4 +1,4 @@
-description: OH Retirement Income Credit AGI Credit Amount
+description: Ohio provides this credit amount under the Retirement Income Credit AGI Credit.
 brackets:
   - threshold:
       2021-01-01: -1
@@ -28,9 +28,9 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
   type: single_amount
-  label: OH Retirement Income Credit Amount
+  label: Ohio Retirement Income Credit amount
   reference:
-    - title: Ohio Income Tax Form
+    - title: Ohio Income Tax Form Line 2 – Retirement Credit R.C. 5747.055(B)
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
-    - title: Ohio Income Tax Form
+    - title: Ohio Income Tax Form Lump Sum Retirement Credit Worksheet
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=29
