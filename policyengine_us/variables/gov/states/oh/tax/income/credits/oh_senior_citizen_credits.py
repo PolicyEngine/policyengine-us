@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_senior_citizen_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio senior citizen credits"
+    label = "Ohio senior citizen credit"
     unit = USD
     definition_period = YEAR
     reference = (
