@@ -3347,3 +3347,58 @@
     added:
     - Working Families Tax Cut Act parameters.
   date: 2023-06-08 22:01:14
+- bump: minor
+  changes:
+    fixed:
+    - West Virginia tax rate schedule.
+  date: 2023-06-12 15:05:19
+- bump: patch
+  changes:
+    fixed:
+    - Iowa exemption credit logic for head-of-household filing units.
+  date: 2023-06-18 20:18:56
+- bump: minor
+  changes:
+    added:
+    - New Hampshire Education Tax Credit.
+  date: 2023-06-20 21:15:16
+- bump: minor
+  changes:
+    added:
+    - Georgia personal income tax rate schedule.
+  date: 2023-06-20 21:40:43
+- bump: patch
+  changes:
+    fixed:
+    - Missing rental_income as source of Iowa gross income.
+  date: 2023-06-22 00:40:11
+- bump: minor
+  changes:
+    added:
+    - Virginia Age Deduction
+  date: 2023-06-23 02:46:38
+- bump: minor
+  changes:
+    added:
+    - Delaware cdcc.
+  date: 2023-06-23 17:41:32
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect allocation of tax-unit real estate taxes to persons in Iowa AMT logic.
+  date: 2023-06-24 19:55:52
+- bump: minor
+  changes:
+    added:
+    - Mississippi aged and blind exemptions.
+  date: 2023-06-26 00:25:29
+- bump: minor
+  changes:
+    added:
+    - Georgia dependent care credit.
+  date: 2023-06-26 02:49:08
+- bump: minor
+  changes:
+    added:
+    - Mississippi personal standard deduction.
+  date: 2023-06-28 02:08:31
