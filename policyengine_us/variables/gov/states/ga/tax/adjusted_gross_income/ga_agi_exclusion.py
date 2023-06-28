@@ -18,56 +18,91 @@ class ga_agi_exclusion(Variable):
         p = parameters(period).gov.states.ga.tax.income.agi.exclusions
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
+        earned_income = person("earned_income", period)
+        earned_income_exclusion = min_(
+            p.retirement.cap.earned_income, earned_income
+        )
+        retirement_income = (
+            person("ga_retirement_income", period) + earned_income_exclusion
+        )
 
-        cap = p.cap
-        retirement_income = person("ga_retirement_income", period)
-
-        # check disability and age eligibility
+        # Retirement Exclusions
+        ## check disability, age eligibility and caps
         disabled = person("is_disabled", period)
-        aged = person("age", period) >= p.age
+        age_low = (person("age", period) >= p.retirement.age.low) & (
+            person("age", period) < p.retirement.age.high
+        )
+        age_high = person("age", period) >= p.retirement.age.high
+        cap_low_age = p.retirement.cap.exclusion_low_age
+        cap_high_age = p.retirement.cap.exclusion_high_age
 
-        # head exclusion
+        ## head exclusion
         head = person("is_tax_unit_head", period)
-        head_exclusion_eligible = where(
-            head & (disabled | aged), retirement_income, 0
+        head_exclusion = tax_unit.sum(
+            where(
+                head & (disabled | age_low),
+                min_(retirement_income, cap_low_age),
+                where(
+                    (head & age_high), min_(retirement_income, cap_high_age), 0
+                ),
+            )
         )
-        head_exclusion = min_(tax_unit.sum(head_exclusion_eligible), cap)
 
-        # spouse exclusion
+        ## spouse exclusion
         spouse = person("is_tax_unit_spouse", period)
-        spouse_exclusion_eligible = where(
-            (filing_status == status.JOINT) & (spouse & (disabled | aged)), retirement_income, 0
+        spouse_exclusion = tax_unit.sum(
+            where(
+                (filing_status == status.JOINT)
+                & spouse
+                & (disabled | age_low),
+                min_(retirement_income, cap_low_age),
+                where(
+                    (filing_status == status.JOINT) & (spouse & age_high),
+                    min_(retirement_income, cap_high_age),
+                    0,
+                ),
+            )
         )
 
-        spouse_exclusion = min_(tax_unit.sum(spouse_exclusion_eligible), cap)
-
-        # total retirement exclusion
+        # total retirement exclusions
         total_retirement_exclusion = head_exclusion + spouse_exclusion
 
-        # military retirement income exclusion
+        # Military Retirement Income Exclusions
         military_age = person("age", period) < p.military.age
         military_income = person("military_retirement_pay", period)
-        earned_income = person("earned_income", period)
 
-        # head military exclusion
+        ## head military exclusion
         head_base = where(head & military_age, p.military.amount, 0)
         head_additional = where(
-            head & (earned_income > p.military.additional_threshold), p.military.additional_amount,0)
-        
-        # ? does additional also require the 62 years old????????????????
-        head_military_exclusion = min_(
-            tax_unit.sum(head_base + head_additional), military_income)  # ???
+            head
+            & military_age
+            & (earned_income > p.military.additional_threshold),
+            p.military.additional_amount,
+            0,
+        )
 
-        # spouse military exclusion
+        head_military_exclusion = tax_unit.sum(
+            min_((head_base + head_additional), military_income)
+        )
+
+        ## spouse military exclusion
         spouse_base = where(spouse & military_age, p.military.amount, 0)
         spouse_additional = where(
-            spouse & (earned_income > p.military.additional_threshold), p.military.additional_amount,0)
+            spouse
+            & military_age
+            & (earned_income > p.military.additional_threshold),
+            p.military.additional_amount,
+            0,
+        )
 
-        spouse_military_exclusion = min_(
-            tax_unit.sum(spouse_base + spouse_additional), military_income)  # ???
+        spouse_military_exclusion = tax_unit.sum(
+            min_((spouse_base + spouse_additional), military_income)
+        )
 
-        # total military exclusion
-        total_military_exclusion = head_military_exclusion + spouse_military_exclusion
-    
-        # total deduction
+        # total military exclusions
+        total_military_exclusion = (
+            head_military_exclusion + spouse_military_exclusion
+        )
+
+        # Total Exclusions
         return total_retirement_exclusion + total_military_exclusion

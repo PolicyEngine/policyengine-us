@@ -1,4 +1,4 @@
-- name: head disable but not age eligible # this works
+- name: head is disable but not age eligible 
   period: 2023
   input:
     people:
@@ -11,6 +11,7 @@
         dividend_income: 100
         rental_income: 100
         capital_gains: 100
+        earned_income: 100
     tax_units:
       tax_unit:
         members: [person1]
@@ -19,22 +20,22 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 100*5
+    ga_agi_exclusion: 100*6
 
-
-- name: head age eligible and spouse is disable
+- name: head is low age eligible and spouse is disable
   period: 2023
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_disabled: false
-        age: 66
+        age: 62
         pension_income: 100
         interest_income: 100
         dividend_income: 100
         rental_income: 100
         capital_gains: 100
+        earned_income: 5_000
       person2:
         is_tax_unit_spouse: true
         is_disabled: true
@@ -44,6 +45,7 @@
         dividend_income: 100
         rental_income: 100
         capital_gains: 100
+        earned_income: 5_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -52,4 +54,112 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 100*5*2
+    ga_agi_exclusion: 4_000 + 100*5 + 4_000 + 100*5
+
+- name: head is high age eligible and spouse is disable, both are not eligible for military exclusions
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 66
+        pension_income: 2_000
+        interest_income: 2_000
+        dividend_income: 2_000
+        rental_income: 2_000
+        capital_gains: 2_000
+        military_retirement_pay: 20_000
+        earned_income: 17_000
+      person2:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        age: 50
+        pension_income: 100
+        interest_income: 100
+        dividend_income: 100
+        rental_income: 100
+        capital_gains: 100
+        military_retirement_pay: 0
+        earned_income: 17_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_agi_exclusion: 10_000 + 4_000 + 100*5 + 4_000 
+  
+- name: spouse is disable and low age eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 60
+        pension_income: 1000
+        interest_income: 1000
+        dividend_income: 1000
+        rental_income: 1000
+        capital_gains: 1000
+        military_retirement_pay: 0
+        earned_income: 17_000
+      person2:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        age: 62
+        pension_income: 20_000
+        interest_income: 20_000
+        dividend_income: 20_000
+        rental_income: 20_000
+        capital_gains: 20_000
+        military_retirement_pay: 0
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_agi_exclusion: 35_000
+
+- name: head is high age eligible and spouse is disable + spouse is military exclusions eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 65
+        pension_income: 21_100
+        interest_income: 21_100
+        dividend_income: 21_100
+        rental_income: 21_100
+        capital_gains: 21_100
+        military_retirement_pay: 20_000
+        earned_income: 17_000
+      person2:
+        is_tax_unit_head: true
+        is_disabled: true
+        age: 60
+        pension_income: 100
+        interest_income: 100
+        dividend_income: 100
+        rental_income: 100
+        capital_gains: 100
+        military_retirement_pay: 20_000
+        earned_income: 17_000
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_agi_exclusion: 65_000 + 500 + 4_000 + 17_500
