@@ -14,9 +14,13 @@ class ia_exemption_credit(Variable):
     defined_for = StateCode.IA
 
     def formula(tax_unit, period, parameters):
+        # count adult and dependent exemptions
         adult_count = tax_unit("num", period)
+        filing_status = tax_unit("filing_status", period)
+        hoh_status = filing_status.possible_values.HEAD_OF_HOUSEHOLD
+        hoh_bonus = where(filing_status == hoh_status, 1, 0)
         dependent_count = tax_unit("tax_unit_dependents", period)
-        # count additional exemptions based on being elderly and/or blind
+        # count extra adult exemptions based on being elderly and/or blind
         p = parameters(period).gov.states.ia.tax.income
         exemption = p.credits.exemption
         elder_head = tax_unit("age_head", period) >= exemption.elderly_age
@@ -27,7 +31,7 @@ class ia_exemption_credit(Variable):
         blind_count = blind_head.astype(int) + blind_spouse.astype(int)
         additional_count = elder_count + blind_count
         return (
-            adult_count * exemption.personal
+            (adult_count + hoh_bonus) * exemption.personal
             + additional_count * exemption.additional
             + dependent_count * exemption.dependent
         )
