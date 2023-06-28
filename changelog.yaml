@@ -3203,3 +3203,202 @@
     - Itemization decisions now use deduction size, not liability change for speed.
     - Added defined_fors for optimisation.
   date: 2023-05-10 22:25:05
+- bump: patch
+  changes:
+    removed:
+    - NYC dependent exemption, given logic currently adopts NYS taxable income.
+    - Unused parameter name fields.
+  date: 2023-05-16 02:34:19
+- bump: minor
+  changes:
+    added:
+    - Switch to branch to determine itemization.
+  date: 2023-05-16 03:46:12
+- bump: patch
+  changes:
+    added:
+    - Federal and state AGI calibration data for tax year 2020.
+    - AGI and income tax statistics for high-income taxpayers by top 1%, 5%, and 10%
+      of returns for tax year 2020.
+  date: 2023-05-18 14:42:51
+- bump: minor
+  changes:
+    added:
+    - Rhode Island personal income tax schedule.
+  date: 2023-05-21 02:07:26
+- bump: minor
+  changes:
+    added:
+    - New Jersey property tax deduction or credit.
+  date: 2023-05-22 16:56:40
+- bump: minor
+  changes:
+    added:
+    - Michigan income tax rate.
+  date: 2023-05-23 04:13:36
+- bump: patch
+  changes:
+    changed:
+    - Core bump.
+  date: 2023-05-23 07:48:13
+- bump: minor
+  changes:
+    added:
+    - Kentucky income tax rate.
+  date: 2023-05-25 05:21:32
+- bump: minor
+  changes:
+    added:
+    - Colorado SSI State Supplement
+  date: 2023-05-25 19:14:24
+- bump: minor
+  changes:
+    added:
+    - New Jersey income tax formula.
+  date: 2023-05-26 02:04:07
+- bump: minor
+  changes:
+    added:
+    - Python 3.10 support.
+  date: 2023-05-27 04:37:24
+- bump: minor
+  changes:
+    added:
+    - Adjust New Jersey property tax deduction/credit for separate but cohabitating.
+  date: 2023-05-27 05:06:06
+- bump: minor
+  changes:
+    added:
+    - North Carolina income tax schedule.
+  date: 2023-05-27 05:39:37
+- bump: minor
+  changes:
+    added:
+    - Montana personal income tax schedule.
+  date: 2023-05-27 05:42:06
+- bump: minor
+  changes:
+    added:
+    - Iowa state income tax.
+  date: 2023-05-27 15:54:35
+- bump: minor
+  changes:
+    added:
+    - New Hampshire income tax schedule.
+  date: 2023-05-27 16:33:26
+- bump: patch
+  changes:
+    fixed:
+    - Divide-by-zero error in ia_prorate_fraction.
+  date: 2023-05-27 18:05:33
+- bump: patch
+  changes:
+    fixed:
+    - Divide by zero in NYC CDCC.
+  date: 2023-05-28 17:06:47
+- bump: patch
+  changes:
+    fixed:
+    - A bug causing itemization to be too frequently chosen.
+  date: 2023-05-29 00:20:03
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect logic in federal tax_unit_itemizes formula.
+  date: 2023-05-30 06:23:37
+- bump: minor
+  changes:
+    added:
+    - Old Age Pension
+  date: 2023-05-30 16:14:28
+- bump: patch
+  changes:
+    fixed:
+    - Add six states to list used by state_income_tax formula.
+  date: 2023-05-31 02:23:18
+- bump: minor
+  changes:
+    added:
+    - Rhode Island Standard Deduction.
+  date: 2023-05-31 23:56:45
+- bump: patch
+  changes:
+    fixed:
+    - Missing taxable_social_security in list of NJ AGI subtractions relative to federal
+      AGI.
+  date: 2023-05-31 23:59:55
+- bump: minor
+  changes:
+    changed:
+    - Delaware personal income tax rate.
+  date: 2023-06-05 02:11:50
+- bump: minor
+  changes:
+    added:
+    - Vermont AGI.
+  date: 2023-06-06 15:49:45
+- bump: patch
+  changes:
+    added:
+    - Federal AGI by income source.
+  date: 2023-06-08 15:10:11
+- bump: minor
+  changes:
+    added:
+    - Working Families Tax Cut Act parameters.
+  date: 2023-06-08 22:01:14
+- bump: minor
+  changes:
+    fixed:
+    - West Virginia tax rate schedule.
+  date: 2023-06-12 15:05:19
+- bump: patch
+  changes:
+    fixed:
+    - Iowa exemption credit logic for head-of-household filing units.
+  date: 2023-06-18 20:18:56
+- bump: minor
+  changes:
+    added:
+    - New Hampshire Education Tax Credit.
+  date: 2023-06-20 21:15:16
+- bump: minor
+  changes:
+    added:
+    - Georgia personal income tax rate schedule.
+  date: 2023-06-20 21:40:43
+- bump: patch
+  changes:
+    fixed:
+    - Missing rental_income as source of Iowa gross income.
+  date: 2023-06-22 00:40:11
+- bump: minor
+  changes:
+    added:
+    - Virginia Age Deduction
+  date: 2023-06-23 02:46:38
+- bump: minor
+  changes:
+    added:
+    - Delaware cdcc.
+  date: 2023-06-23 17:41:32
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect allocation of tax-unit real estate taxes to persons in Iowa AMT logic.
+  date: 2023-06-24 19:55:52
+- bump: minor
+  changes:
+    added:
+    - Mississippi aged and blind exemptions.
+  date: 2023-06-26 00:25:29
+- bump: minor
+  changes:
+    added:
+    - Georgia dependent care credit.
+  date: 2023-06-26 02:49:08
+- bump: minor
+  changes:
+    added:
+    - Mississippi personal standard deduction.
+  date: 2023-06-28 02:08:31

@@ -1,0 +1,344 @@
+- name: Tax unit with taxsimid 4506 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 28
+        employment_income: 104_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 28
+        employment_income: 148_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+      person4:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+      person5:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+      person6:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-05-05 version
+    # federal income tax results used by Iowa income tax:
+    filing_status: JOINT
+    # federal CTC was fully refundable in 2021, but composition is flawed
+    non_refundable_ctc: -4_000.00  # a negative credit is nonsensical
+    refundable_ctc: 1_2000.00  # the correct amount in this case is $8000
+    income_tax_before_refundable_credits: 46_502.80  # $4000 too large
+    # formula for ia_fedtax_deduction works around the above federal CTC flaw
+    additional_medicare_tax: 18.18  # neither this nor SECA tax part of fedtax
+    # Iowa income tax results:
+    ia_net_income: [104_010, 148_010, 0, 0, 0, 0]
+    # ia_prorate_fraction: [0.41270533 0.58729464, 0, 0, 0, 0]
+    ia_standard_deduction_indiv: [2130, 2130, 0, 0, 0, 0]
+    ia_standard_deduction_joint: [5240,    0, 0, 0, 0, 0]
+    # aggregate IA fedtax is 46_502.80 + -4_000.00 - 18.18 = 42_484.62
+    ia_fedtax_deduction: [17_533.63, 24_950.99, 0, 0, 0, 0]
+    ia_taxable_income_indiv: [84_346.37, 120_929.01, 0, 0, 0, 0]
+    ia_taxable_income_joint: [204_295.38,      0.00, 0, 0, 0, 0]
+    ia_regular_tax_indiv: [ 5_184.05, 8_304.55, 0, 0, 0, 0]
+    ia_regular_tax_joint: [15_415.70,     0.00, 0, 0, 0, 0]
+    ia_alternate_tax_indiv: [ 8_396.80, 11_948.95, 0, 0, 0, 0]
+    ia_alternate_tax_joint: [20_345.76,      0.00, 0, 0, 0, 0]
+    # base tax is minimum of regular tax and alternate tax:
+    ia_base_tax_indiv: [ 5_184.05, 8_304.55, 0, 0, 0, 0]
+    ia_base_tax_joint: [15_415.70,     0.00, 0, 0, 0, 0]
+    # Iowa alternative minimum tax:
+    ia_amt_indiv: [0, 0, 0, 0, 0, 0]
+    ia_amt_joint: [0, 0, 0, 0, 0, 0]
+    # Iowa income tax is sum of base tax and alternative minimum tax:
+    ia_income_tax_indiv: 13_488.60  # person amounts aggregated for tax unit
+    ia_income_tax_joint: 15_415.70  # person amounts aggregated for tax unit
+    # decide whether or not to file separately on Iowa return:
+    ia_files_separately: true
+    ia_income_tax_before_credits: 13_488.60
+    ia_exemption_credit: 240  # = 6 * 40
+    ia_income_tax: 13_248.60
+
+- name: Tax unit with taxsimid 37860 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 72
+        employment_income: 30_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 72
+        employment_income: 22_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 16
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-05-06 version
+    ia_income_tax: 1_376.25
+
+- name: Tax unit with taxsimid 70540 in p21.its.csv and p21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        employment_income: 9_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 69
+        employment_income: 30_010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-05-06 version
+    ia_regular_tax_indiv:  [   90.31, 1_117.14]
+    ia_regular_tax_joint:  [1_453.34,     0.00]
+    ia_alternate_tax_indiv: [ 138.27,   460.54]
+    ia_alternate_tax_joint: [ 598.81,     0.00]
+    # base tax is minimum of regular tax and alternate tax:
+    ia_base_tax_indiv: [ 90.31, 460.54]
+    ia_base_tax_joint: [598.81,   0.00]
+    # if sep/jnt decision made at this stage, couple would file separately
+    # but the IA AMT calculations below reverse that decision
+    # Iowa alternative minimum tax:
+    # (cannot yet validate the following ia_amt_indiv results because
+    #  the 2023-0506 patched version of TAXSIM35 incorrectly makes the
+    #  IA sep/jnt filing decision BEFORE applying the AMT to base tax)
+    ia_amt_indiv: [0, 148.56]  # 2023-05-06 TAXSIM35 logic 
+    ia_amt_joint: [0,   0.00]
+    # Iowa income tax is sum of base tax and alternative minimum tax:
+    ia_income_tax_indiv: 699.41  # = 90.31 + (460.54 + 148.56)
+    ia_income_tax_joint: 598.81  # person amounts aggregated for tax unit
+    # decide whether or not to file separately on Iowa return:
+    ia_files_separately: false
+    ia_income_tax_before_credits: 598.81
+    ia_exemption_credit: 120
+    ia_income_tax: 478.81  # the incorrect TAXSIM35 result is 430.85
+
+- name: Tax unit with taxsimid 4731 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 71
+        employment_income: 6_010
+        qualified_dividend_income: 505.0
+        taxable_interest_income: 5_505.0
+        long_term_capital_gains: 1_505.0
+        rental_income: 505.0
+        taxable_private_pension_income: 1_500.0
+        social_security: 4_500.0
+        rent: 3_000
+        self_employment_income: 93_010
+        business_is_qualified: true
+        business_is_sstb: false
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 71
+        employment_income: 1_010
+        qualified_dividend_income: 505.0
+        taxable_interest_income: 5_505.0
+        long_term_capital_gains: 1_505.0
+        rental_income: 505.0
+        taxable_private_pension_income: 1_500.0
+        social_security: 4_500.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-06-22 version
+    ia_income_tax: 5_620.59
+
+- name: Tax unit with taxsimid 2782 in j21.its.csv and j21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        qualified_dividend_income: 1_005.0
+        taxable_interest_income: 5_505.0
+        long_term_capital_gains: 5_005.0
+        rental_income: 2_005.0
+        taxable_private_pension_income: 1_000.0
+        rent: 19_000
+        self_employment_income: 46_010
+        business_is_qualified: true
+        business_is_sstb: true
+        w2_wages_from_qualified_business: 100e6
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        qualified_dividend_income: 1_005.0
+        taxable_interest_income: 5_505.0
+        long_term_capital_gains: 5_005.0
+        rental_income: 2_005.0
+        taxable_private_pension_income: 1_000.0
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person4:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person5:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-06-22 version
+    qbid_amount: [8_551.90, 0, 0, 0, 0]
+    qualified_business_income_deduction: 6_395.90
+    ia_qbi_deduction: [3_197.95, 0, 0, 0, 0]
+    ia_income_tax: 2_648.36
+
+- name: Tax unit with taxsimid 64550 in q21.its.csv and q21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 59
+        employment_income: 144_010
+        social_security: 4_500
+        real_estate_taxes: 24_000
+        interest_expense: 4_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        is_tax_unit_spouse: true
+        age: 59
+        employment_income: 157_010
+        social_security: 4_500
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        premium_tax_credit: 0  # not in TAXSIM35
+        local_income_tax: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:  # expected ia_income_tax from patched TAXSIM35 2023-06-23 version
+    ia_income_tax: 14_590.43
