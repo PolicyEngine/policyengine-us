@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="0.314.1",
+    version="0.342.0",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -37,8 +37,8 @@ setup(
         "microdf_python",
         "pandas",
         "pathlib",
-        "policyengine-core>=2.0.1,<3",
-        "pytest==5.4.3",
+        "policyengine-core>=2.1,<3",
+        "pytest",
         "pytest-dependency",
         "pyyaml",
         "requests",
@@ -68,7 +68,7 @@ setup(
         ],
     },
     # Windows CI requires Python 3.9.
-    python_requires=">=3.7,<3.10",
+    python_requires=">=3.7",
     entry_points={
         "console_scripts": [
             "policyengine-us = policyengine_us.tools.cli:main",

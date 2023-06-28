@@ -1,0 +1,23 @@
+description: Iowa calculates reportable social security using this income deduction.
+metadata:
+  label: Iowa reportable social security income deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 IA1040 Income Tax Return instructions, Step 4
+    href: https://tax.iowa.gov/sites/default/files/2023-01/2021%20Expanded%20Instructions_010323.pdf#page=11
+  - title: 2022 IA1040 Income Tax Return instructions, Step 4
+    href: https://tax.iowa.gov/sites/default/files/2023-03/2022%20Expanded%20Instructions_022023.pdf#page=10
+
+JOINT:
+  2021-01-01: 32_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 25_000
+WIDOW:
+  2021-01-01: 25_000
+SINGLE:
+  2021-01-01: 25_000
+SEPARATE:
+  2021-01-01: 25_000
