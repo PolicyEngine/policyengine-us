@@ -4,9 +4,7 @@ from policyengine_us.model_api import *
 class oh_non_public_school_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = (
-        "Ohio Nonchartered, Nonpublic, School Tuition Credit AGI Credit Rates"
-    )
+    label = "Ohio Nonchartered, Nonpublic, School Tuition Credit AGI Credit"
     unit = USD
     definition_period = YEAR
     reference = "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=21"
