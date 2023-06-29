@@ -3423,3 +3423,59 @@
     - Add Iowa income tax to net income tree.
     - Add readmes to state parameter folders.
   date: 2023-06-29 16:17:02
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in ok_eitc module.
+  date: 2023-06-29 19:14:10
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unnecessary 'import numpy' and 'import warn' statements by removing
+      them.
+  date: 2023-06-29 19:17:23
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in ok_child_care_child_tax_credit module.
+  date: 2023-06-29 19:20:39
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warnings in mo_net_state_income_taxes module.
+  date: 2023-06-29 19:28:53
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warnings in mo_qualified_health_insurance_premiums module.
+  date: 2023-06-29 19:57:47
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in mo_taxable_income module.
+  date: 2023-06-29 20:05:36
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in mo_pension_and_ss_or_ssd_deduction_section_c module.
+  date: 2023-06-29 20:14:24
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in mo_pension_and_ss_or_ssd_deduction_section_b module.
+  date: 2023-06-29 20:21:22
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in md_two_income_subtraction module.
+  date: 2023-06-29 20:29:05
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in ma_limited_income_tax_credit module.
+  date: 2023-06-29 20:36:18
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in taxable_social_security.py module.
+  date: 2023-06-29 20:40:02
