@@ -56,6 +56,7 @@ class mo_qualified_health_insurance_premiums(Variable):
         taxable_income = tax_unit("taxable_income", period)
         # Allocate proportionally across people in the tax unit based on share
         # of premiums.
+        # Use a mask rather than where to avoid a divide-by-zero warning. Default to zero.
         person_share = np.zeros_like(tax_unit_premiums)
         mask = tax_unit_premiums > 0
         person_share[mask] = person_premiums[mask] / tax_unit_premiums[mask]
