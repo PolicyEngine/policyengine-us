@@ -22,17 +22,30 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
 
         agi = tax_unit("adjusted_gross_income", period)
         exemption_num = tax_unit("nm_number_of_exemption", period)
-        print(type(p))
-
-        rebate = 1
+        
+        rebate = select(
+            [
+                exemption_num == 1,
+                exemption_num == 2,
+                exemption_num == 3,
+                exemption_num == 4,
+                exemption_num == 5,
+                exemption_num >= 6
+            ],
+            [
+                p.exemption_amount1.calc(agi),
+                p.exemption_amount2.calc(agi),
+                p.exemption_amount3.calc(agi),
+                p.exemption_amount4.calc(agi),
+                p.exemption_amount5.calc(agi),
+                p.exemption_amount6.calc(agi)
+            ],
+        )
 
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values.SEPARATE
 
         if filing_status == statuses:
-            rebate /= 2
-
+            return rebate / 2
+            
         return rebate
-
-
-nm_low_income_comprehensive_tax_rebate(Variable)

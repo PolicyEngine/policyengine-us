@@ -1,4 +1,4 @@
-description: New Mexico low income comprehensive tax rebate when tax unit qualify 6 exemptions
+description: New Mexico low income comprehensive tax rebate when tax unit qualify 6 or more exemptions
 brackets:
   - threshold:
       2021-01-01: 0
@@ -92,10 +92,9 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: currency-USD
   type: single_amount
-  label: New Mexico Income Tax Rebate with 6 exemptions
+  label: New Mexico Income Tax Rebate with 6 or more exemptions
   reference:
     - title: New Mexico 2022 PIT-RC, page 58, SECTION II LOW INCOME COMPREHENSIVE TAX REBATE
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=58
     - title: New Mexico 2022 PIT-RC, page 70, TABLE 1 - 2022 Low Income Comprehensive Tax Rebate Table
       href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=70
-    
