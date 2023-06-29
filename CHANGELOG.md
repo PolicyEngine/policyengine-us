@@ -4047,6 +4047,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.342.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.341.0...0.342.0
 [0.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.340.0...0.341.0
 [0.340.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.1...0.340.0
 [0.339.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.0...0.339.1
