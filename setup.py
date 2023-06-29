@@ -7,7 +7,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="policyengine-us",
-    version="0.337.1",
+    version="0.345.5",
     author="PolicyEngine",
     author_email="hello@policyengine.org",
     long_description=readme,
@@ -42,6 +42,7 @@ setup(
         "pytest-dependency",
         "pyyaml",
         "requests",
+        "scipy==1.10.1",
         "synthimpute",
         "tables",
         "tabulate",
