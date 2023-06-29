@@ -33,7 +33,8 @@ class mo_net_state_income_taxes(Variable):
         # https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
 
         net_state_income_taxes = tax_unit("state_income_tax", period)
-
+        # Compute the share of SALT from net state income taxes.
+        # Use a mask rather than where to avoid a divide-by-zero warning. Default to one.
         tax_ratio = np.ones_like(net_state_income_taxes)
         mask = state_and_local_sales_or_income_tax != 0
         tax_ratio[mask] = (
