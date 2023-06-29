@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.344.0] - 2023-06-29 13:46:58
+
+### Added
+
+- Missing 2021 NH state income tax rate.
+
 ## [0.343.0] - 2023-06-29 09:40:04
 
 ### Changed
@@ -4053,6 +4059,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.344.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.343.0...0.344.0
 [0.343.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.342.0...0.343.0
 [0.342.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.341.0...0.342.0
 [0.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.340.0...0.341.0
