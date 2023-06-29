@@ -25,9 +25,7 @@ class az_increased_excise_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.increased_excise_tax_credit
-        agi = tax_unit(
-            "adjusted_gross_income", period
-        )
+        agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         max_income = p.maximum[filing_status]
         eligible = agi <= max_income
