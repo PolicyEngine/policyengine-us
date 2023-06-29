@@ -12,5 +12,5 @@ class va_pregnant_women_pregnant_eligibility(Variable):
         person = spm_unit.members
         pregnant = person("is_pregnant", period)
         unit_size = spm_unit("spm_unit_size", period)
-        
+
         return (spm_unit.any(pregnant)) & (unit_size >= 2)

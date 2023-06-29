@@ -9,6 +9,10 @@ class va_pregnant_women_eligibility(Variable):
     defined_for = StateCode.VA
 
     def formula(spm_unit, period, parameters):
-        pregnant_eligible = spm_unit("va_pregnant_women_pregnant_eligibility", period)
-        income_eligible = spm_unit("va_pregnant_women_income_eligibility", period)
+        pregnant_eligible = spm_unit(
+            "va_pregnant_women_pregnant_eligibility", period
+        )
+        income_eligible = spm_unit(
+            "va_pregnant_women_income_eligibility", period
+        )
         return pregnant_eligible & income_eligible

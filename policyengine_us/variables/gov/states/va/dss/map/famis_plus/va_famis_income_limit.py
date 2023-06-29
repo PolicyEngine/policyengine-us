@@ -14,4 +14,7 @@ class va_famis_income_limit(Variable):
         additional = unit_size - ceiling
         p = parameters(period).gov.states.va.dss.map.famis_plus
 
-        return p.income_limit_main[ceiling] + additional * p.income_limit_additional
+        return (
+            p.income_limit_main[ceiling]
+            + additional * p.income_limit_additional
+        )

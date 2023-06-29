@@ -15,4 +15,3 @@ class va_famis_age_eligibility(Variable):
         age = person("age", period)
 
         return spm_unit.any((age <= p) & (child))
-

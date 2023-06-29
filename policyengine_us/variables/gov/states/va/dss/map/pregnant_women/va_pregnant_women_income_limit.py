@@ -14,4 +14,7 @@ class va_pregnant_women_income_limit(Variable):
         additional = unit_size - ceiling
         p = parameters(period).gov.states.va.dss.map.pregnant_women
 
-        return p.income_limit_main[ceiling] + additional * p.income_limit_additional
+        return (
+            p.income_limit_main[ceiling]
+            + additional * p.income_limit_additional
+        )
