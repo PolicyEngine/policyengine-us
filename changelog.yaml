@@ -3402,3 +3402,8 @@
     added:
     - Mississippi personal standard deduction.
   date: 2023-06-28 02:08:31
+- bump: minor
+  changes:
+    changed:
+    - Added scipy as explicit dependency and fixed version to downgraded 1.10.1
+  date: 2023-06-29 09:40:04
