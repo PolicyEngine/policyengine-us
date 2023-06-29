@@ -1,0 +1,35 @@
+- name: Is pregnant eligible and income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_pregnant_women_pregnant_eligibility: true
+    va_pregnant_women_income_eligibility: true
+  output:
+    va_pregnant_women_eligibility: true
+
+- name: Is pregnant eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_pregnant_women_pregnant_eligibility: true
+    va_pregnant_women_income_eligibility: false
+  output:
+    va_pregnant_women_eligibility: false
+
+- name: Is income eligible but not pregnant eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_pregnant_women_pregnant_eligibility: false
+    va_pregnant_women_income_eligibility: true
+  output:
+    va_pregnant_women_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: DC
+    va_pregnant_women_pregnant_eligibility: true
+    va_pregnant_women_income_eligibility: true
+  output:
+    va_pregnant_women_eligibility: false

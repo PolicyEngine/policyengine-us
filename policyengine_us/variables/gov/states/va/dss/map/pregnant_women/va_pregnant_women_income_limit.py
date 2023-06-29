@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_famis_income_limit(Variable):
+class va_pregnant_women_income_limit(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA FAMIS Plus income limit"
+    label = "VA Pregnant Women income limit"
     definition_period = YEAR
     defined_for = StateCode.VA
 
@@ -12,6 +12,6 @@ class va_famis_income_limit(Variable):
         unit_size = spm_unit("spm_unit_size", period)
         ceiling = min_(unit_size, 8)
         additional = unit_size - ceiling
-        p = parameters(period).gov.states.va.dss.map.famis_plus
+        p = parameters(period).gov.states.va.dss.map.pregnant_women
 
         return p.income_limit_main[ceiling] + additional * p.income_limit_additional
