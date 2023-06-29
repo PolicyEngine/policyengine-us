@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.345.7] - 2023-06-29 20:05:36
+
+### Fixed
+
+- Numpy array divide warning in mo_taxable_income module.
+
 ## [0.345.6] - 2023-06-29 19:57:47
 
 ### Fixed
@@ -4102,6 +4108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.345.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.6...0.345.7
 [0.345.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.5...0.345.6
 [0.345.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.4...0.345.5
 [0.345.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.3...0.345.4
