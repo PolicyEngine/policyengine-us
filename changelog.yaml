@@ -3434,3 +3434,8 @@
     - Presence of unnecessary 'import numpy' and 'import warn' statements by removing
       them.
   date: 2023-06-29 19:17:23
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in ok_child_care_child_tax_credit module.
+  date: 2023-06-29 19:20:39

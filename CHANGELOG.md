@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.345.4] - 2023-06-29 19:20:39
+
+### Fixed
+
+- Numpy array divide warning in ok_child_care_child_tax_credit module.
+
 ## [0.345.3] - 2023-06-29 19:17:23
 
 ### Fixed
@@ -4084,6 +4090,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.345.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.3...0.345.4
 [0.345.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.2...0.345.3
 [0.345.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.1...0.345.2
 [0.345.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.0...0.345.1
