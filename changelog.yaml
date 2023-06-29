@@ -3402,3 +3402,24 @@
     added:
     - Mississippi personal standard deduction.
   date: 2023-06-28 02:08:31
+- bump: minor
+  changes:
+    changed:
+    - Added scipy as explicit dependency and fixed version to downgraded 1.10.1
+  date: 2023-06-29 09:40:04
+- bump: minor
+  changes:
+    added:
+    - Missing 2021 NH state income tax rate.
+  date: 2023-06-29 13:46:58
+- bump: minor
+  changes:
+    fixed:
+    - Montana EITC.
+  date: 2023-06-29 13:51:42
+- bump: patch
+  changes:
+    fixed:
+    - Add Iowa income tax to net income tree.
+    - Add readmes to state parameter folders.
+  date: 2023-06-29 16:17:02
