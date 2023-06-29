@@ -26,6 +26,8 @@ class md_two_income_subtraction(Variable):
         couple_gross_income = tax_unit.sum(
             where(is_head | is_spouse, gross_income, 0)
         )
+        # Compute the head's share of the couple's cross income.
+        # Use a mask rather than where to avoid a divide-by-zero warning. Default to one.
         head_frac = np.ones_like(couple_gross_income)
         mask = couple_gross_income > 0
         head_frac[mask] = head_gross_income[mask] / couple_gross_income[mask]
