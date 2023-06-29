@@ -23,4 +23,7 @@ class va_agi(Variable):
         "va_disability_income_subtraction",
         "va_federal_state_employees_subtraction",
         "va_military_benefit_subtraction",
+        "va_retirement_plan_taxed_subtraction",
+        "va_unemployment_compensation_benefit_subtraction",
+        "va_real_estate_investment_trust_subtraction",
     ]
