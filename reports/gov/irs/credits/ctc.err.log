@@ -138,16 +138,16 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/p
 [0;32m--> 732[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    733[0m [38;5;28;01melse[39;00m:
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/tools/general.py:45[0m, in [0;36mvariable_alias.<locals>.<lambda>[0;34m(entity, period)[0m
-[1;32m     44[0m class_dict [38;5;241m=[39m [38;5;28mdict[39m(variable_cls[38;5;241m.[39m[38;5;18m__dict__[39m)
-[0;32m---> 45[0m class_dict[[38;5;124m"[39m[38;5;124mformula[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mlambda[39;00m entity, period: [43mentity[49m[43m([49m
-[1;32m     46[0m [43m    [49m[43mvariable_cls[49m[38;5;241;43m.[39;49m[38;5;18;43m__name__[39;49m[43m,[49m[43m [49m[43mperiod[49m
-[1;32m     47[0m [43m[49m[43m)[49m
-[1;32m     48[0m [38;5;28;01mreturn[39;00m [38;5;28mtype[39m(
-[1;32m     49[0m     name,
-[1;32m     50[0m     variable_cls[38;5;241m.[39m[38;5;18m__bases__[39m,
-[1;32m     51[0m     class_dict,
-[1;32m     52[0m )
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/tools/general.py:44[0m, in [0;36mvariable_alias.<locals>.<lambda>[0;34m(entity, period)[0m
+[1;32m     43[0m class_dict [38;5;241m=[39m [38;5;28mdict[39m(variable_cls[38;5;241m.[39m[38;5;18m__dict__[39m)
+[0;32m---> 44[0m class_dict[[38;5;124m"[39m[38;5;124mformula[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mlambda[39;00m entity, period: [43mentity[49m[43m([49m
+[1;32m     45[0m [43m    [49m[43mvariable_cls[49m[38;5;241;43m.[39;49m[38;5;18;43m__name__[39;49m[43m,[49m[43m [49m[43mperiod[49m
+[1;32m     46[0m [43m[49m[43m)[49m
+[1;32m     47[0m [38;5;28;01mreturn[39;00m [38;5;28mtype[39m(
+[1;32m     48[0m     name,
+[1;32m     49[0m     variable_cls[38;5;241m.[39m[38;5;18m__bases__[39m,
+[1;32m     50[0m     class_dict,
+[1;32m     51[0m )
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -627,16 +627,16 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/p
 [0;32m--> 732[0m     array [38;5;241m=[39m [43mformula[49m[43m([49m[43mpopulation[49m[43m,[49m[43m [49m[43mperiod[49m[43m)[49m
 [1;32m    733[0m [38;5;28;01melse[39;00m:
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/tools/general.py:45[0m, in [0;36mvariable_alias.<locals>.<lambda>[0;34m(entity, period)[0m
-[1;32m     44[0m class_dict [38;5;241m=[39m [38;5;28mdict[39m(variable_cls[38;5;241m.[39m[38;5;18m__dict__[39m)
-[0;32m---> 45[0m class_dict[[38;5;124m"[39m[38;5;124mformula[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mlambda[39;00m entity, period: [43mentity[49m[43m([49m
-[1;32m     46[0m [43m    [49m[43mvariable_cls[49m[38;5;241;43m.[39;49m[38;5;18;43m__name__[39;49m[43m,[49m[43m [49m[43mperiod[49m
-[1;32m     47[0m [43m[49m[43m)[49m
-[1;32m     48[0m [38;5;28;01mreturn[39;00m [38;5;28mtype[39m(
-[1;32m     49[0m     name,
-[1;32m     50[0m     variable_cls[38;5;241m.[39m[38;5;18m__bases__[39m,
-[1;32m     51[0m     class_dict,
-[1;32m     52[0m )
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/tools/general.py:44[0m, in [0;36mvariable_alias.<locals>.<lambda>[0;34m(entity, period)[0m
+[1;32m     43[0m class_dict [38;5;241m=[39m [38;5;28mdict[39m(variable_cls[38;5;241m.[39m[38;5;18m__dict__[39m)
+[0;32m---> 44[0m class_dict[[38;5;124m"[39m[38;5;124mformula[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mlambda[39;00m entity, period: [43mentity[49m[43m([49m
+[1;32m     45[0m [43m    [49m[43mvariable_cls[49m[38;5;241;43m.[39;49m[38;5;18;43m__name__[39;49m[43m,[49m[43m [49m[43mperiod[49m
+[1;32m     46[0m [43m[49m[43m)[49m
+[1;32m     47[0m [38;5;28;01mreturn[39;00m [38;5;28mtype[39m(
+[1;32m     48[0m     name,
+[1;32m     49[0m     variable_cls[38;5;241m.[39m[38;5;18m__bases__[39m,
+[1;32m     50[0m     class_dict,
+[1;32m     51[0m )
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    133[0m [38;5;28;01melse[39;00m:
@@ -1153,19 +1153,19 @@ File [0;32m/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/p
 [1;32m    733[0m [38;5;28;01melse[39;00m:
 [1;32m    734[0m     array [38;5;241m=[39m formula(population, period, parameters_at)
 
-File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/tools/general.py:45[0m, in [0;36mvariable_alias.<locals>.<lambda>[0;34m(entity, period)[0m
-[1;32m     41[0m [38;5;250m[39m[38;5;124;03m"""[39;00m
-[1;32m     42[0m [38;5;124;03mCopy a variable class and return a new class.[39;00m
-[1;32m     43[0m [38;5;124;03m"""[39;00m
-[1;32m     44[0m class_dict [38;5;241m=[39m [38;5;28mdict[39m(variable_cls[38;5;241m.[39m[38;5;18m__dict__[39m)
-[0;32m---> 45[0m class_dict[[38;5;124m"[39m[38;5;124mformula[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mlambda[39;00m entity, period: [43mentity[49m[43m([49m
-[1;32m     46[0m [43m    [49m[43mvariable_cls[49m[38;5;241;43m.[39;49m[38;5;18;43m__name__[39;49m[43m,[49m[43m [49m[43mperiod[49m
-[1;32m     47[0m [43m[49m[43m)[49m
-[1;32m     48[0m [38;5;28;01mreturn[39;00m [38;5;28mtype[39m(
-[1;32m     49[0m     name,
-[1;32m     50[0m     variable_cls[38;5;241m.[39m[38;5;18m__bases__[39m,
-[1;32m     51[0m     class_dict,
-[1;32m     52[0m )
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/tools/general.py:44[0m, in [0;36mvariable_alias.<locals>.<lambda>[0;34m(entity, period)[0m
+[1;32m     40[0m [38;5;250m[39m[38;5;124;03m"""[39;00m
+[1;32m     41[0m [38;5;124;03mCopy a variable class and return a new class.[39;00m
+[1;32m     42[0m [38;5;124;03m"""[39;00m
+[1;32m     43[0m class_dict [38;5;241m=[39m [38;5;28mdict[39m(variable_cls[38;5;241m.[39m[38;5;18m__dict__[39m)
+[0;32m---> 44[0m class_dict[[38;5;124m"[39m[38;5;124mformula[39m[38;5;124m"[39m] [38;5;241m=[39m [38;5;28;01mlambda[39;00m entity, period: [43mentity[49m[43m([49m
+[1;32m     45[0m [43m    [49m[43mvariable_cls[49m[38;5;241;43m.[39;49m[38;5;18;43m__name__[39;49m[43m,[49m[43m [49m[43mperiod[49m
+[1;32m     46[0m [43m[49m[43m)[49m
+[1;32m     47[0m [38;5;28;01mreturn[39;00m [38;5;28mtype[39m(
+[1;32m     48[0m     name,
+[1;32m     49[0m     variable_cls[38;5;241m.[39m[38;5;18m__bases__[39m,
+[1;32m     50[0m     class_dict,
+[1;32m     51[0m )
 
 File [0;32m/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/policyengine_core/populations/population.py:134[0m, in [0;36mPopulation.__call__[0;34m(self, variable_name, period, options)[0m
 [1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39msimulation[38;5;241m.[39mcalculate_divide(
