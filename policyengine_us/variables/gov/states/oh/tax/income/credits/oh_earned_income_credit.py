@@ -16,7 +16,5 @@ class oh_earned_income_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("earned_income_tax_credit", period)
-        rate = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.earned_income_credit_rate
+        rate = parameters(period).gov.states.oh.tax.income.credits.eitc.rates
         return federal_eitc * rate
