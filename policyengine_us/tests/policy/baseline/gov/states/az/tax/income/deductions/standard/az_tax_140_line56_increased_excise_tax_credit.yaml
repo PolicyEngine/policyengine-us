@@ -29,11 +29,11 @@
 #     tax_unit_dependents: 1
 #   output:
 #     az_increased_excise_tax_credit: 75 
-
+#
 # - name: AZ increased excise tax credit test 4
 #   period: 2023
 #   input:
-#     state_code: AZ
+#     state_code: AZ 
 #     filing_status: HEAD_OF_HOUSEHOLD
 #     adjusted_gross_income: 24_999 
 #     tax_unit_dependents: 3
