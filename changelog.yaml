@@ -3428,3 +3428,9 @@
     fixed:
     - Numpy array divide warning in ok_eitc module.
   date: 2023-06-29 19:14:10
+- bump: patch
+  changes:
+    fixed:
+    - Presence of unnecessary 'import numpy' and 'import warn' statements by removing
+      them.
+  date: 2023-06-29 19:17:23

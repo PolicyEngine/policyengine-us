@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.345.3] - 2023-06-29 19:17:23
+
+### Fixed
+
+- Presence of unnecessary 'import numpy' and 'import warn' statements by removing them.
+
 ## [0.345.2] - 2023-06-29 19:14:10
 
 ### Fixed
@@ -4078,6 +4084,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.345.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.2...0.345.3
 [0.345.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.1...0.345.2
 [0.345.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.0...0.345.1
 [0.345.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.344.0...0.345.0
