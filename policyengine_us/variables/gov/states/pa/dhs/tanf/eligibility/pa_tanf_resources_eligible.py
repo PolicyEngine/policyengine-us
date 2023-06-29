@@ -10,8 +10,8 @@ class pa_tanf_resources_eligible(Variable):
     defined_for = StateCode.PA
 
     def formula(spm_unit, period, parameters):
-        maximum_assets = parameters(
+        resource_limit = parameters(
             period
-        ).gov.states.pa.dhs.tanf.maximum_asset_value
-        total_assets = spm_unit("pa_tanf_countable_recourses", period)
-        return total_assets <= maximum_assets
+        ).gov.states.pa.dhs.tanf.resource_limit
+        total_assets = spm_unit("pa_tanf_countable_resources", period)
+        return total_assets <= resource_limit
