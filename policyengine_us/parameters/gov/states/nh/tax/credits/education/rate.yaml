@@ -1,0 +1,21 @@
+description: New Hampshire's Education Tax Credit equals this share of charitable donations, depending on the amount.
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: New Hampshire Education Tax Credit 
+  reference: 
+    - title: TITLE V- TAXATION - CHAPTER 77-G - EDUCATION TAX CREDIT - Section 77-G:4
+      href: https://www.gencourt.state.nh.us/rsa/html/V/77-G/77-G-4.htm 
+    - title: The NH Education Tax Credit Program
+      href: https://www.revenue.nh.gov/quick-links/education-tax-credit.htm
+brackets:
+  - threshold:  
+      2013-01-01: 0
+    rate:
+      2013-01-01: 0.85
+  - threshold:  
+      2013-01-01: 600_000
+    rate:
+      2013-01-01: 0
