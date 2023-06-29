@@ -35,7 +35,7 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
         unit_pvt_pen_val = tax_unit.sum(ind_pvt_pen_val)  # line8
         unit_deduction = max_(0, unit_pvt_pen_val - excess_agi)  # line9
     # Compute the individual's share of the tax unit's taxable private pension income.
-    # Use a mask rather than where to avoid a divide-by-zero warning.
+        # Use a mask rather than where to avoid a divide-by-zero warning. Default to zero.
         ind_share = np.zeros_like(ind_pvt_pen_val)
         mask = ind_pvt_pen_val > 0
         ind_share[mask] = ind_pvt_pen_val[mask] / unit_pvt_pen_val[mask]
