@@ -14,4 +14,6 @@ class pa_tanf_resources_eligible(Variable):
             period
         ).gov.states.pa.dhs.tanf.resource_limit
         total_assets = spm_unit("pa_tanf_countable_resources", period)
-        return total_assets <= resource_limit
+        return (
+            spm_unit("pa_tanf_countable_resources", period) <= resource_limit
+        )
