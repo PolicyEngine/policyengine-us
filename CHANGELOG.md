@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.345.9] - 2023-06-29 20:21:22
+
+### Fixed
+
+- Numpy array divide warning in mo_pension_and_ss_or_ssd_deduction_section_b module.
+
 ## [0.345.8] - 2023-06-29 20:14:24
 
 ### Fixed
@@ -4114,6 +4120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.345.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.8...0.345.9
 [0.345.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.7...0.345.8
 [0.345.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.6...0.345.7
 [0.345.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.5...0.345.6
