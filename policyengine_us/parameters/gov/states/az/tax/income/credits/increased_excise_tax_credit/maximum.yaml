@@ -1,10 +1,15 @@
 description: Arizona State provides the following maximum amount under Increased Excise Tax Credit (of Totaling Payments and Refundable Credits)
 metadata:
+  label: Arizona Increased Excise Tax Credit Maximum Amount
   period: year
+  type: single_amount
   unit: currency-USD
-  label: AZ Increased Excise Tax Credit Maximum Amount
   breakdown:
   - filing_status
+  reference:
+  - title: Arizona Form 140
+    href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet # From Year 2022 Line 56
+
 
 SINGLE:
   2021-01-01: 12_500
@@ -13,11 +18,7 @@ HEAD_OF_HOUSEHOLD:
 JOINT:
   2021-01-01: 25_000
 WIDOW:
-  2021-01-01: 100
+  2021-01-01: 25_000
 SEPARATE:
   2021-01-01: 12_500
 
-  reference:
-    - title: Arizona Form 140
-      href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet # From Year 2022 Line 56
-      
