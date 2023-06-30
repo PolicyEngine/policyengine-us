@@ -5,15 +5,15 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        age_head: 67
       person2:
         is_tax_unit_spouse: true
         is_tax_unit_dependent: false
-        age_spouse: 63
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT 
+        age_head: 67
+        age_spouse: 63
     households:
       household:
         members: [person1, person2]
