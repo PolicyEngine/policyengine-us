@@ -16,5 +16,9 @@ class ri_property_tax_credit(Variable):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         agi = tax_unit("adjusted_gross_income", period)
         num_household = tax_unit("tax_unit_size", period)
-        credit = where(num_household == 1, p.rate1.calc(agi), p.rate2.calc(agi))
+        credit = where(
+            num_household == 1,
+            p.rate1.calc(agi) * agi,
+            p.rate2.calc(agi) * agi,
+        )
         return min_(credit, p.max_amount)
