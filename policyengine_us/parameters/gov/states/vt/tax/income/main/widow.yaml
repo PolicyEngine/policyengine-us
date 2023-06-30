@@ -1,32 +1,30 @@
-description: Progressive rate schedule for a widow in ME. 
+description: Progressive rate schedule for a widow filer in VT. 
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: ME State income tax rates for widow filers
+  label: VT State income tax rates for widow filers
   reference:
-    - title: Maine §5111. Imposition and rate of tax
-      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5111.html
-    - title: Maine 2022 Individual Income Tax Form 1040ME
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_dwnld_ff.pdf
-    - title: Maine 2022 Individual Income Tax Tables
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_tax_tables.pdf
-    - title: Maine 2023	Individual Income Tax Rate Schedules
-      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2023.pdf
+    - title: Vermont §5822. Tax on income of individuals, estates, and trusts
+      href: https://legislature.vermont.gov/statutes/section/32/151/05822
+    - title: Vermont 2022 Income Tax Return Form N-111
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf
+    - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf
 brackets:
   - threshold:
-      2017-01-01: 0
+      2022-01-01: 0
     rate:
-      2017-01-01: 0.058
+      2022-01-01: 0.035
   - threshold:
-      2017-01-01: 42_100
-      2022-01-01: 46_000
-      2023-01-01: 49_050
+      2022-01-01: 70_450
     rate:
-      2017-01-01: 0.0675
+      2022-01-01: 0.066
   - threshold:
-      2017-01-01: 100_000
-      2022-01-01: 108_900
-      2023-01-01: 116_100
+      2022-01-01: 170_300
     rate:
-      2017-01-01: 0.0715
+      2022-01-01: 0.0760
+  - threshold:
+      2022-01-01: 259_500
+    rate:
+      2022-01-01: 0.0875
