@@ -23,4 +23,7 @@ class nyc_cdcc_age_restricted_expenses(Variable):
         tax_unit_childcare_expenses = tax_unit(
             "tax_unit_childcare_expenses", period
         )
-        return qualifying_children * tax_unit_childcare_expenses / children
+        qualifying_child_share = where(
+            children > 0, qualifying_children / children, 0
+        )
+        return tax_unit_childcare_expenses * qualifying_child_share

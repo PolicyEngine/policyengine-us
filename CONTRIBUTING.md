@@ -1,4 +1,4 @@
-Thank you for wanting to contribute to OpenFisca! :smiley:
+Thank you for wanting to contribute to PolicyEngine! :smiley:
 
 TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](http://semver.org/).
 
