@@ -22,7 +22,6 @@
 
 - name: single filing, agi in 1st tax bracket, 1 exemption
   period: 2021
-  absolute_error_margin: 0.001
   input:
     state_code: NM
     adjusted_gross_income: 1_000
@@ -44,7 +43,6 @@
 
 - name: single filing, agi in 2nd tax bracket, 1 exemption
   period: 2021
-  absolute_error_margin: 0.001
   input:
     state_code: NM
     adjusted_gross_income: 2_501
@@ -66,7 +64,6 @@
 
 - name: single filing, agi in 3rd tax bracket, 1 exemption
   period: 2021
-  absolute_error_margin: 0.001
   input:
     state_code: NM
     adjusted_gross_income: 8_000
@@ -88,7 +85,6 @@
 
 - name: single filing, agi in 4th tax bracket, 1 exemption
   period: 2021
-  absolute_error_margin: 0.001
   input:
     state_code: NM
     adjusted_gross_income: 9_000
@@ -110,7 +106,6 @@
 
 - name: single filing, agi in 5th tax bracket, 1 exemption
   period: 2021
-  absolute_error_margin: 0.001
   input:
     state_code: NM
     adjusted_gross_income: 10_000
@@ -124,7 +119,7 @@
   absolute_error_margin: 0.001
   input:
     state_code: NM
-    adjusted_gross_income: 10_001
+    adjusted_gross_income: 11_500
     nm_number_of_exemption: 1
     filing_status: SEPARATE
   output:
@@ -135,8 +130,29 @@
   absolute_error_margin: 0.001
   input:
     state_code: NM
-    adjusted_gross_income: 10_001
+    adjusted_gross_income: 11_500
     nm_number_of_exemption: 1
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 145
+
+- name: separate filing, agi in 6th tax bracket, 1 exemption
+  period: 2021
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    adjusted_gross_income: 11_501
+    nm_number_of_exemption: 1
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 65
+
+- name: single filing, agi in 6th tax bracket, 1 exemption
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 11_501
+    nm_number_of_exemption: 1
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 130
