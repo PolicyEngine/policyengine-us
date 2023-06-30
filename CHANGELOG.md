@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.346.0] - 2023-06-30 02:00:30
+
+### Added
+
+- Ohio Earned Income Tax Credit.
+
 ## [0.345.12] - 2023-06-29 20:40:02
 
 ### Fixed
@@ -4138,6 +4144,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.12...0.346.0
 [0.345.12]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.11...0.345.12
 [0.345.11]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.10...0.345.11
 [0.345.10]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.9...0.345.10
