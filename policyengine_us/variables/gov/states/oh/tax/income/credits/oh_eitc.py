@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 # This credit is Non-refundable
-class oh_earned_income_credit(Variable):
+class oh_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Ohio Earned Income Credit"
