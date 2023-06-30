@@ -1,8 +1,4 @@
 from policyengine_us.model_api import *
-import warnings
-
-warnings.filterwarnings("ignore")
-warnings.simplefilter("ignore")
 
 
 class tax_unit_childcare_expenses(Variable):
