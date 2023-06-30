@@ -1,0 +1,26 @@
+- name: Countable Income
+  period: 2023
+  input:
+    co_oap_eligible: true
+    ssi_countable_income: 1_000
+    ssi: 0
+  output:
+    co_oap: 10_424
+
+- name: Has some SSI
+  period: 2023
+  input:
+    co_oap_eligible: true
+    ssi_countable_income: 0
+    ssi: 2_000
+  output:
+    co_oap: 9_424
+
+- name: More total income than grant standard
+  period: 2023
+  input:
+    co_oap_eligible: true
+    ssi_countable_income: 6_000
+    ssi: 6_000
+  output:
+    co_oap: 0

@@ -6,39 +6,37 @@ class tax_unit_itemizes(Variable):
     entity = TaxUnit
     label = "Itemizes tax deductions"
     unit = USD
-    documentation = "Whether this tax unit elects to itemize deductions, rather than claim standard deductions."
+    documentation = "Whether tax unit elects to itemize deductions rather than claim the standard deduction."
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # First, apply a shortcut. We can't simulate SALT before federal income tax
-        # (due to circular dependencies), but we can compare the deduction sizes assuming
-        # the SALT is maxed out at its cap.
-        ded = parameters(period).gov.irs.deductions
-        federal_deductions_if_itemizing = ded.deductions_if_itemizing
-        deductions_if_itemizing = [
-            deduction
-            for deduction in federal_deductions_if_itemizing
-            if deduction
-            not in [
-                "salt_deduction",
-                # Exclude QBID to avoid circular reference.
-                "qualified_business_income_deduction",
-            ]
-        ]
-        filing_status = tax_unit("filing_status", period)
-        salt_cap = ded.itemized.salt_and_real_estate.cap[filing_status]
-        itemized_deductions = (
-            add(tax_unit, period, deductions_if_itemizing) + salt_cap
-        )
-        # Ignore QBID here, it requires SALT.
-        deductions_if_not_itemizing = tax_unit("standard_deduction", period)
-
         if parameters(period).simulation.branch_to_determine_itemization:
-            tax_if_itemizing = tax_unit("tax_liability_if_itemizing", period)
-            tax_if_not_itemizing = tax_unit(
+            # determine federal itemization behavior by comparing tax liability
+            tax_liability_if_itemizing = tax_unit(
+                "tax_liability_if_itemizing", period
+            )
+            tax_liability_if_not_itemizing = tax_unit(
                 "tax_liability_if_not_itemizing", period
             )
-            return tax_if_itemizing < tax_if_not_itemizing
+            return tax_liability_if_itemizing < tax_liability_if_not_itemizing
         else:
-            # Decide by non-SALT deduction size.
-            return itemized_deductions > deductions_if_not_itemizing
+            # determine federal itemization behavior by comparing deductions
+            standard_deduction = tax_unit("standard_deduction", period)
+            # itemized deductions cannot be accurately calculated because
+            #   the state_income_tax part of the salt_deduction must be
+            #   ignored in order to avoid circular logic errors
+            p = parameters(period).gov.irs.deductions
+            deductions = [
+                deduction
+                for deduction in p.itemized_deductions
+                if deduction not in ["salt_deduction"]
+            ]
+            partial_itemized_deductions = add(tax_unit, period, deductions)
+            # add back the possibly capped local real estate taxes,
+            #   which have no circular logic problems
+            filing_status = tax_unit("filing_status", period)
+            itemized_deductions = partial_itemized_deductions + min_(
+                add(tax_unit, period, ["real_estate_taxes"]),
+                p.itemized.salt_and_real_estate.cap[filing_status],
+            )
+            return itemized_deductions > standard_deduction
