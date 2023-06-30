@@ -1,0 +1,17 @@
+- name: Low Income
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 3_000
+    tax_unit_size: 1
+  output:
+    ri_property_tax_credit: 90
+
+- name: High Income
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 13_000
+    tax_unit_size: 2
+  output:
+    ri_income_tax_before_refundable_credits: 600

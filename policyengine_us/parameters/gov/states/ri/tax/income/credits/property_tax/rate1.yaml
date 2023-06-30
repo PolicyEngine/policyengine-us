@@ -1,0 +1,27 @@
+description: Rhode Island claimant is entitled to a credit on property taxes, which percentage is based upon income level and household size of 1.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Rhode Island property tax credit rate for household size of 1 
+  reference:
+    - title: Property Tax Relief R.I. Gen. Laws § 44-33-9
+      href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-33/44-33-9.htm
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.03
+  - threshold:
+      2021-01-01: 6_000
+    amount:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 9_000
+    amount:
+      2021-01-01: 0.05
+  - threshold:
+      2021-01-01: 12_000
+    amount:
+      2021-01-01: 0.06
