@@ -20,11 +20,12 @@ class id_standard_deduction(Variable):
         # check if filer can be claimed as a dependent
         is_dependent = person("is_tax_unit_dependent", period)
         # earned income calculation
-        earned_income = tax_unit("earned_income", period)
+        earned_income = person("earned_income", period)
+        dependet_earned_income = tax_unit.any(is_dependent * earned_income)
         earned_income_amount = where(
-            earned_income < p.dependents.income_threshold,
+            dependet_earned_income < p.dependents.income_threshold,
             p.dependents.min_amount,
-            earned_income + p.dependents.addition,
+            dependet_earned_income + p.dependents.addition,
         )
         # if dependent calculation
         dependent_amount = where(

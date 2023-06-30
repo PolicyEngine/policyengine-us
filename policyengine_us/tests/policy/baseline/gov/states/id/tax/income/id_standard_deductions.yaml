@@ -1,0 +1,42 @@
+- name: ID standard deduction test 1
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age_head: 67
+      person2:
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age_spouse: 63
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT 
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_standard_deductions: 27_300
+
+- name: ID standard deduction test 2
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: true
+        age: 20
+        earned_income: 1100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_standard_deductions: 1500 
