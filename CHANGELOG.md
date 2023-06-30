@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.345.7] - 2023-06-29 20:05:36
+
+### Fixed
+
+- Numpy array divide warning in mo_taxable_income module.
+
+## [0.345.6] - 2023-06-29 19:57:47
+
+### Fixed
+
+- Numpy array divide warnings in mo_qualified_health_insurance_premiums module.
+
+## [0.345.5] - 2023-06-29 19:28:53
+
+### Fixed
+
+- Numpy array divide warnings in mo_net_state_income_taxes module.
+
+## [0.345.4] - 2023-06-29 19:20:39
+
+### Fixed
+
+- Numpy array divide warning in ok_child_care_child_tax_credit module.
+
+## [0.345.3] - 2023-06-29 19:17:23
+
+### Fixed
+
+- Presence of unnecessary 'import numpy' and 'import warn' statements by removing them.
+
+## [0.345.2] - 2023-06-29 19:14:10
+
+### Fixed
+
+- Numpy array divide warning in ok_eitc module.
+
+## [0.345.1] - 2023-06-29 16:17:02
+
+### Fixed
+
+- Add Iowa income tax to net income tree.
+- Add readmes to state parameter folders.
+
+## [0.345.0] - 2023-06-29 13:51:42
+
+### Fixed
+
+- Montana EITC.
+
+## [0.344.0] - 2023-06-29 13:46:58
+
+### Added
+
+- Missing 2021 NH state income tax rate.
+
+## [0.343.0] - 2023-06-29 09:40:04
+
+### Changed
+
+- Added scipy as explicit dependency and fixed version to downgraded 1.10.1
+
 ## [0.342.0] - 2023-06-28 02:08:31
 
 ### Added
@@ -4047,6 +4108,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.345.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.6...0.345.7
+[0.345.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.5...0.345.6
+[0.345.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.4...0.345.5
+[0.345.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.3...0.345.4
+[0.345.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.2...0.345.3
+[0.345.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.1...0.345.2
+[0.345.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.0...0.345.1
+[0.345.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.344.0...0.345.0
+[0.344.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.343.0...0.344.0
+[0.343.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.342.0...0.343.0
 [0.342.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.341.0...0.342.0
 [0.341.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.340.0...0.341.0
 [0.340.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.339.1...0.340.0
