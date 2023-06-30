@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.346.0] - 2023-06-30 02:00:30
+
+### Added
+
+- Ohio Earned Income Tax Credit.
+
+## [0.345.12] - 2023-06-29 20:40:02
+
+### Fixed
+
+- Numpy array divide warning in taxable_social_security.py module.
+
+## [0.345.11] - 2023-06-29 20:36:18
+
+### Fixed
+
+- Numpy array divide warning in ma_limited_income_tax_credit module.
+
+## [0.345.10] - 2023-06-29 20:29:05
+
+### Fixed
+
+- Numpy array divide warning in md_two_income_subtraction module.
+
+## [0.345.9] - 2023-06-29 20:21:22
+
+### Fixed
+
+- Numpy array divide warning in mo_pension_and_ss_or_ssd_deduction_section_b module.
+
+## [0.345.8] - 2023-06-29 20:14:24
+
+### Fixed
+
+- Numpy array divide warning in mo_pension_and_ss_or_ssd_deduction_section_c module.
+
 ## [0.345.7] - 2023-06-29 20:05:36
 
 ### Fixed
@@ -4108,6 +4144,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.12...0.346.0
+[0.345.12]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.11...0.345.12
+[0.345.11]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.10...0.345.11
+[0.345.10]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.9...0.345.10
+[0.345.9]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.8...0.345.9
+[0.345.8]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.7...0.345.8
 [0.345.7]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.6...0.345.7
 [0.345.6]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.5...0.345.6
 [0.345.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.4...0.345.5
