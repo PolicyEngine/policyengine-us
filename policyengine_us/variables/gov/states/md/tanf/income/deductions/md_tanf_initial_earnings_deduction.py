@@ -19,19 +19,12 @@ class md_tanf_initial_earnings_deduction(Variable):
             "md_tanf_countable_gross_earned_income", period
         )
         # Determine if the SPM unit has any self-employment income.
-        self_employment_income_ind = person(
-            "taxable_self_employment_income", period
+        self_employment_income = spm_unit(
+            "md_tanf_self_employment_income", period
         )
-        self_employment_income = spm_unit.sum(self_employment_income_ind)
-
+        non_self_employment_income = earned_income - self_employment_income
         # Get the policy parameters.
 
-        return select(
-            # First arg: self employed or not
-            [self_employment_income > 0, earned_income > 0],
-            # Second arg: multiply by the percent deduction (0.2, 0.5)
-            [self_employment_income * p.self_employed, earned_income * p.new],
-            # Third arg: default value to return if none of the conditions are True
-            default=0,
+        return (self_employment_income * p.self_employed) + (
+            non_self_employment_income * p.new
         )
-        # Return if initially eligible

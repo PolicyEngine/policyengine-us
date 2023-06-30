@@ -19,15 +19,7 @@ class md_tanf_continuous_earnings_deduction(Variable):
         self_employment_income = spm_unit(
             "md_tanf_self_employment_income", period
         )
-
-        return select(
-            # First arg: self employed or not
-            [self_employment_income > 0, earned_income > 0],
-            # Second arg: multiply by the percent deduction (0.4, 0.5)
-            [
-                self_employment_income * p.self_employed,
-                earned_income * p.not_self_employed,
-            ],
-            # Third arg: default value to return if none of the conditions are True
-            default=0,
+        non_self_employment_income = earned_income - self_employment_income
+        return (self_employment_income * p.self_employed) + (
+            non_self_employment_income * p.not_self_employed
         )

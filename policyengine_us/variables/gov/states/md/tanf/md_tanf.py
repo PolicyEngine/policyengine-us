@@ -16,4 +16,4 @@ class md_tanf(Variable):
         income = spm_unit("md_tanf_net_countable_income", period)
         # SPM Unit childcare deductions
         childcare_deduction = spm_unit("md_tanf_childcare_deduction", period)
-        return max(grant_standard - (income - childcare_deduction), 0)
+        return max_(grant_standard - (income - childcare_deduction), 0)

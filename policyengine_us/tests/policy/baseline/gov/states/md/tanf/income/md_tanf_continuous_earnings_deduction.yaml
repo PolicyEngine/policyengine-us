@@ -16,7 +16,7 @@
   output:
     md_tanf_continuous_earnings_deduction: 40
 
-- name:  If self-employed, 40% deduction.
+- name:  If self-employed, 50% deduction.
   period: 2023
   input:
     md_tanf_countable_gross_earned_income: 100
@@ -24,3 +24,12 @@
     state_code: MD
   output:
     md_tanf_continuous_earnings_deduction: 50
+
+- name:  If self-employed and non-self-employed, combined deduction
+  period: 2023
+  input:
+    md_tanf_countable_gross_earned_income: 100
+    md_tanf_self_employment_income: 80
+    state_code: MD
+  output:
+    md_tanf_continuous_earnings_deduction: 48

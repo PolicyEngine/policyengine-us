@@ -25,5 +25,5 @@ class md_tanf_childcare_deduction(Variable):
         return children * where(
             full_time,
             p.fulltime_childcare_expenses,
-            p.parttime_childcare_expenses,
+            p.part_time_childcare_expenses,
         )
