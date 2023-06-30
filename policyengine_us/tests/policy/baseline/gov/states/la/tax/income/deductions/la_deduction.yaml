@@ -1,6 +1,5 @@
 - name: Outside Louisiana, no Louisiana deductions
   period: 2022
-  absolute_error_margin: 0
   input:
     state_code: NY
     filing_status: SINGLE
@@ -12,7 +11,7 @@
   input:
     state_code: LA
     filing_status: SINGLE
-    medical_expenses: 20_000
+    medical_expense_deduction: 20_000
   output:
     la_standard_deduction: 12_950
     la_itemized_deductions: 7_050
@@ -22,7 +21,7 @@
   input:
     state_code: LA
     filing_status: HEAD_OF_HOUSEHOLD
-    medical_expenses: 20_000
+    medical_expense_deduction: 20_000
   output:
     la_standard_deduction: 19_400
     la_itemized_deductions: 600
@@ -32,7 +31,7 @@
   input:
     state_code: LA
     filing_status: WIDOW
-    medical_expenses: 20_000
+    medical_expense_deduction: 20_000
   output:
     la_itemized_deductions: 0
     la_standard_deduction: 25_900
