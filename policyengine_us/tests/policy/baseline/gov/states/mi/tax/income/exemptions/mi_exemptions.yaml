@@ -6,7 +6,7 @@
   output:
     mi_exemptions: 5_000
 
-- name: 2 dependents, is not stillborn parent, not disabled, is not a dependent
+- name: 2 dependents, no stillborn parent, no disabled, is not a dependent
   period: 2022
   input:
     head_spouse_count: 1
@@ -36,12 +36,38 @@
 - name: no dependents, is not stillborn parent, is disabled, is disabled veteran, is not a dependent
   period: 2022
   input:
-    head_spouse_count: 1
-    head_is_disabled: 1
-    tax_unit_disabled_veteran: 1
-    state_code: MI
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        head_spouse_count: 1
+        head_is_disabled: 1
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
   output: # 5_000 + 2_900 + 400
     mi_exemptions: 8_300
+
+- name: 1 dependent, no stillborn parent, 1 disabled, 1 disabled veteran, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: false
+      person2:
+        is_fully_disabled_service_connected_veteran: true
+    tax_units:
+      tax_unit:
+        head_spouse_count: 2
+        head_is_disabled: 1
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # 5_000 * 2 + 2_900 + 400
+    mi_exemptions: 13_300
 
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2021
