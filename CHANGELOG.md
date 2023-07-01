@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.346.1] - 2023-07-01 18:42:32
+
+### Fixed
+
+- Array divide-by-zero warning in IA income tax code.
+
 ## [0.346.0] - 2023-06-30 02:00:30
 
 ### Added
@@ -4144,6 +4150,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.346.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.0...0.346.1
 [0.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.12...0.346.0
 [0.345.12]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.11...0.345.12
 [0.345.11]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.10...0.345.11

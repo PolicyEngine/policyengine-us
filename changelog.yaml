@@ -3484,3 +3484,8 @@
     added:
     - Ohio Earned Income Tax Credit.
   date: 2023-06-30 02:00:30
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warning in IA income tax code.
+  date: 2023-07-01 18:42:32
