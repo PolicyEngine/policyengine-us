@@ -2,25 +2,52 @@
   period: 2022
   input:
     state_code: NH
-    exemptions: 2
+    filing_status: SINGLE
     nh_income_tax: 0
   output:
     nh_base_exemption: 0
 
-- name: One exemption
+- name: Single filing
   period: 2022
   input:
     state_code: NH
-    exemptions: 1
+    filing_status: SINGLE
     nh_income_tax: 1
   output:
     nh_base_exemption: 2_400
 
-- name: Three exemption
+- name: Joint filing
   period: 2022
   input:
     state_code: NH
-    exemptions: 3
+    filing_status: JOINT
     nh_income_tax: 1
   output:
-    nh_base_exemption: 7_200
+    nh_base_exemption: 4_800
+
+- name: Separate filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: SEPARATE
+    nh_income_tax: 1
+  output:
+    nh_base_exemption: 2_400
+
+- name: Head of household filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: HEAD_OF_HOUSEHOLD
+    nh_income_tax: 1
+  output:
+    nh_base_exemption: 2_400
+
+- name: Widow filing
+  period: 2022
+  input:
+    state_code: NH
+    filing_status: WIDOW
+    nh_income_tax: 1
+  output:
+    nh_base_exemption: 2_400
