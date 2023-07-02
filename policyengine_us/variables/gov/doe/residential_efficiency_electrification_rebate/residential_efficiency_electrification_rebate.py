@@ -46,7 +46,7 @@ class residential_efficiency_electrification_rebate(Variable):
         reduction = np.zeros_like(average_home_energy_use_in_state)
         mask = average_home_energy_use_in_state > 0
         reduction[mask] = (
-            low_cap_per_percent / average_home_energy_use_in_state
+            low_cap_per_percent[mask] / average_home_energy_use_in_state[mask]
         )
         low_cap_per_kwh_reduction = 100 * reduction
         low_cap = low_cap_per_kwh_reduction * savings_kwh
