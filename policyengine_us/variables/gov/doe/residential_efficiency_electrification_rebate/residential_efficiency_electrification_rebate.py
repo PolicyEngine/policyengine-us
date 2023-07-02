@@ -25,9 +25,6 @@ class residential_efficiency_electrification_rebate(Variable):
         savings_pct = np.zeros_like(current_kwh)
         mask = current_kwh > 0
         savings_pct[mask] = savings_kwh[mask] / current_kwh[mask]
-        """
-        savings_pct = savings_kwh / current_kwh
-        """
         income_ami = tax_unit.household("household_income_ami_ratio", period)
         high_cap = p.cap.high.calc(income_ami)
         medium_cap = p.cap.medium.calc(income_ami)
@@ -37,11 +34,6 @@ class residential_efficiency_electrification_rebate(Variable):
             "average_home_energy_use_in_state", period
         )
         low_cap_per_percent = p.cap.low.calc(income_ami)
-        """
-        low_cap_per_kwh_reduction = 100 * (
-            low_cap_per_percent / average_home_energy_use_in_state
-        )
-        """
         # avoid array divide-by-zero warnings by not using where() function
         reduction = np.zeros_like(average_home_energy_use_in_state)
         mask = average_home_energy_use_in_state > 0
