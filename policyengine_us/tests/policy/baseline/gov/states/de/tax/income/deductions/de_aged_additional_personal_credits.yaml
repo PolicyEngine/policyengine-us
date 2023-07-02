@@ -5,7 +5,7 @@
     age_head: 65
     age_spouse: 65
   output:
-    de_aged_personal_credits_deduction: 220
+    de_aged_personal_credits: 220
 
 - name: yourself and spouse are both above 65 in 2022.
   period: 2022
@@ -14,7 +14,7 @@
     age_head: 65
     age_spouse: 65
   output:
-    de_aged_personal_credits_deduction: 220    
+    de_aged_personal_credits: 220    
 
 - name: yourself >= age 65 but spouse is not.
   period: 2022
@@ -23,7 +23,7 @@
     age_head: 65
     age_spouse: 64
   output:
-    de_aged_personal_credits_deduction: 110
+    de_aged_personal_credits: 110
 
 - name: yourself < age 65 but spouse >= 65.
   period: 2023
@@ -32,7 +32,7 @@
     age_head: 64
     age_spouse: 65
   output:
-    de_aged_personal_credits_deduction: 110
+    de_aged_personal_credits: 110
 
 - name: both yourself and spouse under 65.
   period: 2023
@@ -41,4 +41,4 @@
     age_head: 64
     age_spouse: 64
   output:
-    de_aged_personal_credits_deduction: 0
+    de_aged_personal_credits: 0

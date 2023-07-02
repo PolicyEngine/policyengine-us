@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class de_aged_personal_credits_deduction(Variable):
+class de_aged_personal_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware aged additional personal credits deduction"
+    label = "Delaware aged additional personal credits"
     unit = USD
     definition_period = YEAR
 
