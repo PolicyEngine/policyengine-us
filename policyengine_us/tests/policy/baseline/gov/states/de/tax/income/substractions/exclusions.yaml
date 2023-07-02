@@ -1,0 +1,10 @@
+- name: If filing single, age 65, earn income $1k, Line 10 result 5k, exclusion is $2k.
+  period: 2022
+  input:
+    state_code: DE
+    filing_status: SINGLE
+    # age_head: 65
+    income_head: 1_000
+    #substraction_head: 5_000
+  output:
+    de_elder_disabled_income_exclusion: 2_000
