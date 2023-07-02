@@ -16,6 +16,12 @@ class sc_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         # Get South Carolina CDCC rate.
         p = parameters(period).gov.states.sc.tax.income.credits.cdcc
+        p2 = parameters(period).gov.irs.credits.cdcc
+
+        # Year 2021 is different from federal cdcc
+        max_decoupled_year_offset = p.max_care_expense_year_offset
+        period_max = period.offset(max_decoupled_year_offset)
+        sc_max_care_expense = parameters(period_max).gov.irs.credits.cdcc.max
 
         # Get child care expenses.
         childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
@@ -26,10 +32,10 @@ class sc_cdcc(Variable):
 
         # Number of qualifying people
         count_cdcc_eligible = min_(
-            tax_unit("count_cdcc_eligible", period), p.dependent_cap
+            tax_unit("count_cdcc_eligible", period), p2.eligibility.max
         )
-
+        # Maximum value cannot exceed cap
         # Calculate total CDCC
         max_match = childcare_expenses * p.rate
-        cap = p.amount * count_cdcc_eligible
+        cap = sc_max_care_expense * count_cdcc_eligible * p.rate
         return eligible * min_(max_match, cap)
