@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.md.tanf.md_tanf_count_children import (
-    md_tanf_count_children,
-)
 
 
 class md_tanf_childcare_deduction(Variable):
@@ -17,13 +14,16 @@ class md_tanf_childcare_deduction(Variable):
         person = spm_unit.members
         work_hours = person("work_hours_per_week", period)
         # Get the policy parameters.
-        p = parameters(
+        p1 = parameters(
             period
         ).gov.states.md.tanf.income.deductions.earnings_exclusion
-        full_time = spm_unit.any(work_hours >= p.fulltime_hours)
+        p2 = parameters(
+            period
+        ).gov.states.md.tanf.income.deductions.childcare_expenses
+        full_time = spm_unit.any(work_hours >= p1.fulltime_hours)
 
         return children * where(
             full_time,
-            p.fulltime_childcare_expenses,
-            p.part_time_childcare_expenses,
+            p2.full_time,
+            p2.part_time,
         )

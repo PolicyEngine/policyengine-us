@@ -5,7 +5,7 @@ class md_tanf_is_child(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "Wether is a child for MD TANF based on age, education, etc."
+    label = "Is a child under Maryland TANF program"
     defined_for = StateCode.MD
 
     def formula(person, period, parameters):
