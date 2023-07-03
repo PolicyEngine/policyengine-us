@@ -3494,3 +3494,30 @@
     fixed:
     - Array divide-by-zero warnings in NYC local income tax code.
   date: 2023-07-01 20:40:02
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in tax_unit_childcare_expenses formula.
+  date: 2023-07-03 01:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in ssi_unearned_income_deemed_from_ineligible_parent
+      formula.
+  date: 2023-07-03 01:28:34
+- bump: minor
+  changes:
+    added:
+    - South Carolina Earned Income Tax Credit.
+  date: 2023-07-03 01:41:44
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in residential_efficiency_electrification_rebate
+      formula.
+  date: 2023-07-03 01:44:43
+- bump: minor
+  changes:
+    added:
+    - South Carolina Senior Exemption.
+  date: 2023-07-03 01:54:59
