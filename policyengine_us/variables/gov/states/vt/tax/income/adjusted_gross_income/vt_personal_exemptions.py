@@ -32,5 +32,4 @@ class vt_personal_exemptions(Variable):
         total_exemption_count = eligible_count + tax_unit(
             "tax_unit_count_dependents", period
         )
-        # return total_exemption_count * personal_eligibility_amount
-        return tax_unit("tax_unit_count_dependents", period)
+        return total_exemption_count * personal_eligibility_amount
