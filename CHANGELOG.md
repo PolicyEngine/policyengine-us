@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.348.0] - 2023-07-03 01:54:59
+
+### Added
+
+- South Carolina Senior Exemption.
+
 ## [0.347.1] - 2023-07-03 01:44:43
 
 ### Fixed
@@ -4180,6 +4186,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.348.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.347.1...0.348.0
 [0.347.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.347.0...0.347.1
 [0.347.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.4...0.347.0
 [0.346.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.3...0.346.4
