@@ -10,3 +10,4 @@ class nh_taxable_income(Variable):
     reference = "https://www.gencourt.state.nh.us/rsa/html/V/77/77-4.htm "
     defined_for = StateCode.NH
     adds = ["dividend_income", "interest_income"]
+    subtracts = ["nh_total_exemptions"]
