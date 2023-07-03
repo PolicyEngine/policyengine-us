@@ -11,6 +11,8 @@ DEFAULT_SITUATION = {
 }
 
 EXEMPTIONS = (
+    "household_income_decile",  # because DEFAULT_SITUATION has no weights
+    "spm_unit_income_decile",  # because DEFAULT_SITUATION has no weights
     "tanf_max_amount",
     "tanf",
     "tanf_amount_if_eligible",
