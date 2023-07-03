@@ -38,4 +38,3 @@ class sc_cdcc(Variable):
         # Calculate total CDCC
         capped_expenses = min_(childcare_expenses, sc_max_care_expense * count_cdcc_eligible)
         return eligible * capped_expenses * p.rate
-
