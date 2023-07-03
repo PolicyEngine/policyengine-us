@@ -16,7 +16,7 @@ class sc_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         # Get South Carolina CDCC rate.
         p_sc = parameters(period).gov.states.sc.tax.income.credits.cdcc
-        p2 = parameters(period).gov.irs.credits.cdcc
+        p_us = parameters(period).gov.irs.credits.cdcc
 
         # Year 2021 is different from federal cdcc
         max_decoupled_year_offset = p.max_care_expense_year_offset
