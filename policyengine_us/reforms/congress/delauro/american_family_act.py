@@ -2,7 +2,6 @@ from policyengine_us.model_api import *
 
 
 def create_american_family_act_with_baby_bonus() -> Reform:
-
     class ctc_child_individual_maximum_arpa(Variable):
         value_type = float
         entity = Person
@@ -14,9 +13,13 @@ def create_american_family_act_with_baby_bonus() -> Reform:
         def formula(person, period, parameters):
             age = person("age", period)
             is_dependent = person("is_tax_unit_dependent", period)
-            amount_pre_baby_bonus = parameters(period).gov.irs.credits.ctc.amount.arpa.calc(age)
+            amount_pre_baby_bonus = parameters(
+                period
+            ).gov.irs.credits.ctc.amount.arpa.calc(age)
             # Add the baby bonus.
-            baby_bonus_amount = parameters(period).gov.contrib.cps.american_family_act.baby_bonus
+            baby_bonus_amount = parameters(
+                period
+            ).gov.contrib.cps.american_family_act.baby_bonus
             is_baby = age == 0
             baby_bonus = baby_bonus_amount * is_baby
             amount = amount_pre_baby_bonus + baby_bonus
