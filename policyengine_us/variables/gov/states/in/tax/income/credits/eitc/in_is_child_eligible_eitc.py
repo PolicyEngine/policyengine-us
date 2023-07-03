@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class is_child_eligible_eic(Variable):
+class is_child_eligible_eitc(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
@@ -12,4 +12,5 @@ class is_child_eligible_eic(Variable):
         is_19 = person("age", period) < 19
         is_24 = person("age", period) < 24
         full_time_student = person("is_full_time_student", period)
-        return is_19 | (is_24 && full_time_student)
+        child_disabled = person("is_disabled", period)
+        return (is_19 | (is_24 & full_time_student)) | child_disabled
