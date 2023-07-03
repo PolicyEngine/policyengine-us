@@ -1,0 +1,85 @@
+- name: If filing jointly, head and spouse are both above 65, exemption is $3k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 65
+  output:
+    ms_aged_exemption: 3_000
+
+- name: If filing jointly, head >= age 65 but spouse is not, exemption is $1.5k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 64
+  output:
+    ms_aged_exemption: 1_500
+
+- name: If filing jointly, head < age 65 but spouse >= 65, exemption is $1.5k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: JOINT
+    age_head: 64
+    age_spouse: 65
+  output:
+    ms_aged_exemption: 1_500
+
+- name: If filing jointly, head and spouse are under age 65, exemption is $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: JOINT
+    age_head: 64
+    age_spouse: 64
+  output:
+    ms_aged_exemption: 0
+
+- name: If filing separately, head and spouse are both above 65, exemption is $1.5k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: SEPARATE
+    age_head: 65
+    age_spouse: 65
+  output:
+    ms_aged_exemption: 1_500
+
+- name: If filing separately, head and spouse are both under 65, exemption is $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: SEPARATE
+    age_head: 64
+    age_spouse: 64
+  output:
+    ms_aged_exemption: 0
+
+- name: If filing single and age >= 65, exemption is $1.5k.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    age_head: 65
+  output:
+    ms_aged_exemption: 1_500
+
+- name: If filing single and age < 65, exemption is $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: MS
+    filing_status: SINGLE
+    age_head: 64
+  output:
+    ms_aged_exemption: 0
