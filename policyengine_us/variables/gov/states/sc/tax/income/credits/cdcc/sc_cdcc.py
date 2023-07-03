@@ -19,7 +19,7 @@ class sc_cdcc(Variable):
         p_us = parameters(period).gov.irs.credits.cdcc
 
         # Year 2021 is different from federal cdcc
-        max_decoupled_year_offset = p.max_care_expense_year_offset
+        max_decoupled_year_offset = p_sc.max_care_expense_year_offset
         period_max = period.offset(max_decoupled_year_offset)
         sc_max_care_expense = parameters(period_max).gov.irs.credits.cdcc.max
 
@@ -32,11 +32,11 @@ class sc_cdcc(Variable):
 
         # Number of qualifying people
         count_cdcc_eligible = min_(
-            tax_unit("count_cdcc_eligible", period), p2.eligibility.max
+            tax_unit("count_cdcc_eligible", period), p_us.eligibility.max
         )
         # Maximum value cannot exceed cap
         # Calculate total CDCC
         capped_expenses = min_(
             childcare_expenses, sc_max_care_expense * count_cdcc_eligible
         )
-        return eligible * capped_expenses * p.rate
+        return eligible * capped_expenses * p_sc.rate
