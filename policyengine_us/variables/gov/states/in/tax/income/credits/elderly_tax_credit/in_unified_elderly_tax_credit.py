@@ -15,7 +15,7 @@ class in_unified_elderly_tax_credit(Variable):
         p = (
             parameters(period)
             .gov.states["in"]
-            .tax.income.credits.unified_tax_credit_for_elderly
+            .tax.income.credits.unified_elderly
         )
         income = person("in_unified_elderly_tax_income", period)
         total_income = tax_unit.sum(income)
@@ -26,12 +26,12 @@ class in_unified_elderly_tax_credit(Variable):
         married = status.JOINT
         head_eligible = age_head >= p.age_eligibility
         spouse_eligible = spouse_age >= p.age_eligibility
-        both_eligible = head_eligible and spouse_eligible
-        one_eligible = head_eligible | spouse_eligible
-        married_amount = one_eligible * where(
+        both_eligible = head_eligible & spouse_eligible
+        eligible = head_eligible | spouse_eligible
+        married_amount = where(
             both_eligible,
             p.amount.married.two_aged.calc(total_income),
             p.amount.married.one_aged.calc(total_income),
         )
         single_amount = p.amount.single.calc(total_income) * head_eligible
-        return where(married, married_amount, single_amount)
+        return eligible * where(married, married_amount, single_amount)
