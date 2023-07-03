@@ -3521,3 +3521,11 @@
     added:
     - South Carolina Senior Exemption.
   date: 2023-07-03 01:54:59
+- bump: patch
+  changes:
+    fixed:
+    - Updated Colorado SNAP parameters.
+    - Deduct child support from SNAP net income in all states.
+    - Deduct child support from SNAP gross income in certain states previously deducted
+      from net income only.
+  date: 2023-07-03 03:23:08
