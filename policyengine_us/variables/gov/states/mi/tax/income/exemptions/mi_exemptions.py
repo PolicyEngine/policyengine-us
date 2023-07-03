@@ -40,9 +40,10 @@ class mi_exemptions(Variable):
 
         # Dependent on other return exemptions
         filing_status = tax_unit("filing_status", period)
-        is_dependent = tax_unit("dsi", period).astype(int)
+        is_dependent_on_other_return = tax_unit("dsi", period).astype(int)
         is_dependent_exemption = (
-            is_dependent * p.dependent_on_other_return[filing_status]
+            is_dependent_on_other_return
+            * p.dependent_on_other_return[filing_status]
         )
 
         # Total exemptions
