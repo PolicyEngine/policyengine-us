@@ -3499,3 +3499,9 @@
     fixed:
     - Array divide-by-zero warnings in tax_unit_childcare_expenses formula.
   date: 2023-07-03 01:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in ssi_unearned_income_deemed_from_ineligible_parent
+      formula.
+  date: 2023-07-03 01:28:34
