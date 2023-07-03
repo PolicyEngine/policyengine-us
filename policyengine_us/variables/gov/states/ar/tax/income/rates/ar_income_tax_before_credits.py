@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
-#import numpy as np
+
+# import numpy as np
 
 
 class ar_income_tax_before_credits(Variable):
