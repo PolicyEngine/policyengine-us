@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.346.3] - 2023-07-03 01:25:42
+
+### Fixed
+
+- Array divide-by-zero warnings in tax_unit_childcare_expenses formula.
+
 ## [0.346.2] - 2023-07-01 20:40:02
 
 ### Fixed
@@ -4156,6 +4162,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.346.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.2...0.346.3
 [0.346.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.1...0.346.2
 [0.346.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.0...0.346.1
 [0.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.12...0.346.0
