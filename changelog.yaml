@@ -3544,3 +3544,8 @@
     added:
     - South Carolina CDCC.
   date: 2023-07-03 04:00:22
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in hud_income_level formula.
+  date: 2023-07-03 15:11:47
