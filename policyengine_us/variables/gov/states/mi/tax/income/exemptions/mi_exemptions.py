@@ -25,12 +25,12 @@ class mi_exemptions(Variable):
         dependent_exemption = dependent * p.dependent
 
         # Stillborn Exemptions
-        stillborn = tax_unit("tax_unit_stillborn_parent", period)
+        stillborn = tax_unit("tax_unit_stillbirths", period)
         stillborn_exemption = stillborn * p.stillborn
 
         # Disabled exemptions
-        disabled = tax_unit("head_is_disabled", period)
-        disabled_exemption = disabled * p.disabled
+        disabled_people = add(tax_unit, period, ["is_disabled"])
+        disabled_exemption = disabled_people * p.disabled
 
         # Disabled veteran exemptions
         disabled_veteran = add(
