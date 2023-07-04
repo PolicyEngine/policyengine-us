@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.355.0] - 2023-07-04 12:33:34
+
+### Added
+
+- Pennsylvania TANF resource limit.
+
 ## [0.354.0] - 2023-07-04 02:35:17
 
 ### Added
@@ -4246,6 +4252,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.355.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.354.0...0.355.0
 [0.354.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.353.0...0.354.0
 [0.353.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.352.0...0.353.0
 [0.352.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.351.0...0.352.0
