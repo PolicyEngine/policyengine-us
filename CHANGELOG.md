@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.356.0] - 2023-07-04 12:42:02
+
+### Added
+
+- Virginia military benefit subtraction.
+
+## [0.355.0] - 2023-07-04 12:33:34
+
+### Added
+
+- Pennsylvania TANF resource limit.
+
+## [0.354.0] - 2023-07-04 02:35:17
+
+### Added
+
+- Vermont taxable income.
+
+## [0.353.0] - 2023-07-04 00:59:54
+
+### Added
+
+- 2021 NH exemption parameter values.
+
+## [0.352.0] - 2023-07-04 00:13:18
+
+### Added
+
+- Subtraction of exemptions in calculation of NH taxable income.
+
+### Fixed
+
+- Calculation of NH old-age exemption amount.
+
+## [0.351.0] - 2023-07-03 22:17:34
+
+### Added
+
+- New Hampshire Exemptions.
+
 ## [0.350.1] - 2023-07-03 15:11:47
 
 ### Fixed
@@ -4218,6 +4258,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.356.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.355.0...0.356.0
+[0.355.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.354.0...0.355.0
+[0.354.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.353.0...0.354.0
+[0.353.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.352.0...0.353.0
+[0.352.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.351.0...0.352.0
+[0.351.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.350.1...0.351.0
 [0.350.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.350.0...0.350.1
 [0.350.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.349.0...0.350.0
 [0.349.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.348.2...0.349.0
