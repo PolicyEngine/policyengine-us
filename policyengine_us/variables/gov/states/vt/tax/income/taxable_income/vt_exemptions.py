@@ -9,3 +9,5 @@ class vt_exemptions(Variable):
     definition_period = YEAR
     reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html"
     defined_for = StateCode.VT
+
+    adds = ["vt_personal_exemptions"]

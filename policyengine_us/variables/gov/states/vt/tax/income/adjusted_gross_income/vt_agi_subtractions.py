@@ -13,5 +13,3 @@ class vt_agi_subtractions(Variable):
         title="2022 Schedule IN-112 Vermont Tax Adjustments and Credits, PART 1 SUBTRACTIONS FROM FEDERAL ADJUSTED GROSS INCOME",
         href="https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf",
     )
-
-    adds = ["vt_personal_exemptions"]
