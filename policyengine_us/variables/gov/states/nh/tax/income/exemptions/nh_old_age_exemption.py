@@ -13,20 +13,14 @@ class nh_old_age_exemption(Variable):
         # Then get the NH old age exemptions part of the parameter tree.
         p = parameters(period).gov.states.nh.tax.income.exemptions
 
-        # Get the individual age.
-        age_head = tax_unit("age_head", period)
-
         # Check if the individual's eligiblity.
-        head_eligible = tax_unit.sum(age_head >= p.old_age_eligibility).astype(
-            int
-        )
-
-        # Get the individual's spouse age.
-        age_spouse = tax_unit("age_spouse", period)
+        head_eligible = (
+            tax_unit("age_head", period) >= p.old_age_eligibility
+        ).astype(int)
 
         # Check if the individual spouse's eligiblity.
-        spouse_eligible = tax_unit.sum(
-            age_spouse >= p.old_age_eligibility
+        spouse_eligible = (
+            tax_unit("age_spouse", period) >= p.old_age_eligibility
         ).astype(int)
 
         # Calculate total blind exemption.
