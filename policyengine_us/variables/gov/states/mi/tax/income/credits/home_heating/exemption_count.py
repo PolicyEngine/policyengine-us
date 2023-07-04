@@ -6,6 +6,5 @@ class exemption_count(Variable):
     entity = TaxUnit
     label = "Household exemption count"
     defined_for = StateCode.MI
-    unit = people
     definition_period = YEAR
 #todo: exemption calculation

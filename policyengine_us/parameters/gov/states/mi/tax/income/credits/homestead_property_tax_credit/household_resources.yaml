@@ -1,0 +1,30 @@
+description: Michigan allows for the following resourses to be utilized for the homestead property tax credit calculation.
+values:
+  2023-01-01:
+    - employment_income
+    - self_employment_income
+    - strike_benefits
+    - dividend_income
+    - interest_income
+    - farm_income
+    - qualified_business_income
+    - rental_income
+    - farm_rent_income
+    - pension_income
+    - net_capital_gain
+    - alimony_income
+    - social_security
+    - ssi 
+    - child_support_received
+    - unemployment_compensation
+    - # Gifts received or 
+    - # Expenses paid on your behalf
+    - miscellaneous_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    - gi_cash_assistance
+    - tanf
+    - general_assistance
+metadata:
+  unit: list
