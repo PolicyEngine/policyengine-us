@@ -21,7 +21,7 @@ class vt_personal_exemptions(Variable):
         is_joint = filing_status == filing_status.possible_values.JOINT
         # Then, determine whether either the head or the spouse of the tax unit is claimable as a dependent in another unit.(line 5a, line 5b)
         claimable_head = (tax_unit("dsi", period)).astype(int)
-        claimable_spouse = (tax_unit("dsi_spouse", period)).astyp(int)
+        claimable_spouse = (tax_unit("dsi_spouse", period)).astype(int)
         claimable_count = claimable_head + claimable_spouse
         eligible_count = select(
             [
