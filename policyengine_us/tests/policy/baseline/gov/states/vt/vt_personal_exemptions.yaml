@@ -113,3 +113,33 @@
     state_code: NY
   output:
     vt_personal_exemptions: 0 
+
+- name: "Head of household, not claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_500 # 3*4500
+
+- name: "Head of household, not claimable elsewhere, with two dependents"
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_050 # 3*4350
+
+- name: "Widow, not claimable elsewhere, with two dependents (test with vt_agi_subtractions output)"
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_agi_subtractions: 13_050 # 3*4350
