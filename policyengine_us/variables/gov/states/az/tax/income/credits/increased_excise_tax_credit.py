@@ -14,7 +14,7 @@ from policyengine_us.model_api import *
 class az_increased_excise_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "AZ Totaling Payments and Refundable Credits - increased excise tax credit"
+    label = "Arizona Increased excise tax credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
