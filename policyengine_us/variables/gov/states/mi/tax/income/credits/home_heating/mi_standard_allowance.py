@@ -14,19 +14,20 @@ class mi_standard_allowance(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-         p = parameters(
+        p = parameters(
             period
-        ).gov.states.mi.tax.income.credits.home_heating.standard.allowance
+        ).gov.states.mi.tax.income.credits.home_heating_credit.standard.allowance
         # determine count of exemption
-        count = tax_unit("exemption_count", period)
-        income = tax_unit("mi_taxable_income", period)
+        exemption_count = tax_unit("exemption_count", period)
+        mi_taxable_income = tax_unit("mi_taxable_income", period)
         # additional income ceiling and standard allowance amount for over six exemptions
-        additional_ceiling = p.additional_income * (count - p.additional_exemption_limit)
-        additional_allowance = p.additional_allowance * (count - p.additional_exemption_limit)
+        additional_ceiling = p.additional_income * max((exemption_count - p.additional_exemption_limit),0)
+        additional_allowance = p.additional_allowance_exemption * max((exemption_count - p.additional_exemption_limit),0)
         # determine standard allowance
-         return where(
-            income <= p.income_base.amount.calc(count) + additional_ceiling,
-            p.exemption_base.amount.calc(count) + additional_allowance,
+        
+        return  where(
+            mi_taxable_income <= p.income_base.calc(exemption_count) + additional_ceiling,
+            p.exemption_base.calc(exemption_count) + additional_allowance,
             0
         )
 
