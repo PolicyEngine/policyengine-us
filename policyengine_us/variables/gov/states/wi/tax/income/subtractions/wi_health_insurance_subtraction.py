@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class wi_medical_insurance_subtraction(Variable):
+class wi_health_insurance_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI medical insurance subtraction from federal adjusted gross income"
+    label = "WI health insurance subtraction from federal adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = (
