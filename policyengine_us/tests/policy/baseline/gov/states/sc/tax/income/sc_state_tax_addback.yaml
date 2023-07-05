@@ -1,0 +1,11 @@
+- name: Test case 1 #salt has a cap of 5000 for seperate
+  period: 2021
+  input:
+    filling_status:
+    itemized_deductions:
+    deductions_if_not_itemizing:
+    real_estate_taxes:
+    state_code: SC
+  output:
+    sc_itemized_deductions: 7_465
+
