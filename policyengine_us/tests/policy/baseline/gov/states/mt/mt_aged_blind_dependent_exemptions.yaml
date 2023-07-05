@@ -29,3 +29,49 @@
         state_code: MT
   output:
     mt_aged_blind_dependent_exemptions: 18_970
+
+- name: HEAD(under 65, not blind, have 0 dependents) #1*2710=2710
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 32
+        is_tax_unit_head: 1
+        is_blind: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_aged_blind_dependent_exemptions: 2_710
+
+- name: HEAD(under 65, blind, have 1 dependents) & SPOUSE(under 65, not blind) #4*2710=10840
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 44
+        is_tax_unit_head: 1
+        is_blind: 1
+      person2:
+        age: 44
+        is_blind: 0
+        is_tax_unit_spouse: 1
+      person3:
+        age: 17
+        is_tax_unit_dependent: 1
+        is_child: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_aged_blind_dependent_exemptions: 10_840
+
