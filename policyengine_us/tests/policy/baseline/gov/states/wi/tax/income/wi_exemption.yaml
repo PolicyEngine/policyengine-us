@@ -1,0 +1,17 @@
+- name: WI exemption unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    xtot: 5
+    state_code: WI
+  output:
+    wi_exemption: 5 * 750
+
+- name: WI exemption unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    xtot: 5
+    state_code: WI
+  output:
+    wi_exemption: 5 * 750

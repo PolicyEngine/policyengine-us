@@ -20,6 +20,7 @@ class wi_exemption(Variable):
         # compute base exemption amount
         p.parameters(period).gov.states.wi.tax.income
         base_amount = tax_unit("xtot", period) * p.exemption.base
+        print("\n>>>>>> base_amount=", base_amount)
         # compute extra exemption amount
         elderly_head = (
             tax_unit("age_head", period) >= p.exemption.old_age
@@ -28,5 +29,6 @@ class wi_exemption(Variable):
             tax_unit("age_spouse", period) >= p.exemption.old_age
         ).astype(int)
         extra_amount = (elderly_head + elderly_spouse) * p.exemption.extra
+        print(">>>>>> extr_amount=", extra_amount)
         # return total exemption amount
         return base_amount + extra_amount
