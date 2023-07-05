@@ -1,16 +1,55 @@
-- name: New Hampshire integration
+- name: Joint filers, head income = 200_000, spouse income = 200_000, the tax ammount = 15_808
   period: 2023
   input:
     people:
       person1:
         is_tax_unit_head: true
-        dividend_income: 1_000
+        dividend_income: 200_000
       person2:
         is_tax_unit_spouse: true
-        interest_income: 2_000
+        interest_income: 200_000
     households:
       household:
         members: [person1, person2]
         state_code: NH
   output:  
-    nh_income_tax: 120
+    nh_income_tax: 15_808
+
+- name: Joint filers, head income = 50_000, age = 30 and is blind; spouse income = 50_000, age = 30 and is disabled, the tax ammount = 3_721
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dividend_income: 50_000
+        # is_blind: true
+        is_disabled: true
+        age: 30
+      person2:
+        is_tax_unit_spouse: true
+        interest_income: 50_000
+        # is_disabled: true
+        # age: 30
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:  
+    nh_taxable_income: 3_721
+
+- name: In 2023, single filers, the filer is disabled at the age of 65, the filer will get this exemption.
+  period: 2023
+  input:
+    state_code: NH
+    is_disabled: true
+    age: 60
+  output:
+    nh_disabled_exemption: 1_200
+
+- name: In 2023, single filers, the filer is blind, the filer will get this exemption.
+  period: 2023
+  input:
+    state_code: NH
+    is_blind: true
+  output:
+    nh_blind_exemption: 1_200
