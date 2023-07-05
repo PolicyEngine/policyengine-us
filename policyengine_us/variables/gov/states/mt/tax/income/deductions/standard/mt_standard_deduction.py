@@ -12,8 +12,10 @@ class mt_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("mt_agi", period)
         # standard deduction is a percentage of AGI that
         # is bounded by a min/max by filing status.
-        min_amount = max_((p.rate * agi), p.min[filing_status])
-        return min_(min_amount, p.max[filing_status])
+        min_amount = p.min[filing_status]
+        max_amount = p.max[filing_status]
+        unbounded = p.rate * agi
+        return max_(min_(unbounded, max_amount), min_amount)
