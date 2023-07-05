@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class nm_aged_blind_exemption(Variable):
@@ -8,7 +7,12 @@ class nm_aged_blind_exemption(Variable):
     label = "New Mexico aged and blind exemption"
     unit = USD
     definition_period = YEAR
-    reference = ""
+    reference = (
+        # 7-2-5.2. EXEMPTION--INCOME OF PERSONS SIXTY-FIVE AND OLDER OR BLIND
+        "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf",
+        # Tax Form Instructions Page ADJ-5 TABLE 1. Exemptions for Persons 65 or Older or Blind
+        "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf",
+    )
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
