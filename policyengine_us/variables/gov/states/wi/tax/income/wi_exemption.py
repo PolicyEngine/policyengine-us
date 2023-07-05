@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wi_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI exemption"
+    label = "Wisconsin exemption"
     unit = USD
     definition_period = YEAR
     reference = (

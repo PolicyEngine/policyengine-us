@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wi_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI Adjusted Gross Income"
+    label = "Wisconsin Adjusted Gross Income"
     unit = USD
     definition_period = YEAR
     reference = (
