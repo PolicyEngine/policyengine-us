@@ -21,21 +21,28 @@ class residential_efficiency_electrification_rebate(Variable):
             period,
         )
         current_kwh = tax_unit.household("current_home_energy_use", period)
-        savings_pct = savings_kwh / current_kwh
+        # avoid array divide-by-zero warnings by not using where() function
+        savings_pct = np.zeros_like(current_kwh)
+        mask = current_kwh > 0
+        savings_pct[mask] = savings_kwh[mask] / current_kwh[mask]
         income_ami = tax_unit.household("household_income_ami_ratio", period)
         high_cap = p.cap.high.calc(income_ami)
         medium_cap = p.cap.medium.calc(income_ami)
-        # Low cap is a dollar amount per given percentage reduction of energy use
-        # per dwelling unit for the average home in the state.
+        # Low cap is a dollar amount per given percentage reduction of energy
+        # use per dwelling unit for the average home in the state
         average_home_energy_use_in_state = tax_unit.household(
             "average_home_energy_use_in_state", period
         )
         low_cap_per_percent = p.cap.low.calc(income_ami)
-        low_cap_per_kwh_reduction = 100 * (
-            low_cap_per_percent / average_home_energy_use_in_state
+        # avoid array divide-by-zero warnings by not using where() function
+        reduction = np.zeros_like(average_home_energy_use_in_state)
+        mask = average_home_energy_use_in_state > 0
+        reduction[mask] = (
+            low_cap_per_percent[mask] / average_home_energy_use_in_state[mask]
         )
+        low_cap_per_kwh_reduction = 100 * reduction
         low_cap = low_cap_per_kwh_reduction * savings_kwh
-        # Uncapped amount is a percent of project costs.
+        # Uncapped amount is a percent of project costs
         percent = p.percent.calc(income_ami)
         uncapped = percent * expenditures
         cap = select(
