@@ -1,5 +1,13 @@
 description: Delaware provides exclusions from gross income for Line 10 result.
-values:
+JOINT:
+  2021-01-01: 20_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 20_000
+WIDOW:
+  2021-01-01: 10_000
+SINGLE:
+  2021-01-01: 10_000
+SEPARATE:
   2021-01-01: 10_000
 metadata:
   reference:
@@ -7,6 +15,9 @@ metadata:
       href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf
     - title: "Delaware individual income tax instructions for 2021 Page 7 Line 11"
       href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf
+    - title: Delaware State Taxes, Part II, Chapter 11, Subchapter 2, § 1106. Modifications,(b), (2) 
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
   unit: year
-  name: de_gross_income_exclusion_Line10_threshold
   label: Delaware gross income exclusion Line 10 threshold
+  breakdown:
+  - filing_status

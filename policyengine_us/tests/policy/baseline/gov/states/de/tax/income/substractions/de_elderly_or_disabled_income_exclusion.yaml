@@ -1,0 +1,46 @@
+- name: If filing single, age is 60, not disabled, earned income is 1000, Line 10 result is 1000, exemption is $2000.
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        earned_income: 1_000
+      spouse:
+        is_tax_unit_spouse: true
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        disabled_head: false
+        disabled_spouse: false
+        age_spouse: 60
+        age_head: 60
+        de_pre_exclusions_agi: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion: 4_000
+
+- name: Single - make better name
+  period: 2023
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        earned_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        disabled_head: false
+        age_head: 60
+        de_pre_exclusions_agi: 1_000
+    households:
+      household:
+        members: [head]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion: 2_000
