@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wi_income_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI subtractions from federal adjusted gross income"
+    label = "Wisconsin subtractions from federal adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = (

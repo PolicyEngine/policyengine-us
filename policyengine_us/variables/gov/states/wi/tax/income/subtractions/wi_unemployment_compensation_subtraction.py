@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wi_unemployment_compensation_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI unemployment compensation subtraction from federal adjusted gross income"
+    label = "Wisconsin unemployment compensation subtraction from federal AGI"
     unit = USD
     definition_period = YEAR
     reference = (

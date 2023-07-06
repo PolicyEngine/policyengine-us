@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class wi_capital_gain_loss_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "WI capital gain/loss subtraction from federal adjusted gross income"
+    label = "Wisconsin capital gain/loss subtraction from federal AGI"
     unit = USD
     definition_period = YEAR
     reference = (
