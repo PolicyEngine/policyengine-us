@@ -1,0 +1,11 @@
+description: North Carolina Max amount of Itemized Deductions (Mortgage Interest and Property Tax).
+values:
+  2023-01-01: 20_000
+metadata:
+  lable: North Caroliona Itemized Deduction Mortgage Interest and Property Tax limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference: North Carolina Department of Revenue
+    href: https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions 

@@ -25,7 +25,7 @@ class nc_itemized_deductions(Variable):
 
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
 
-        mortgage_interest_and_real_estate_property_taxes  = min_(20000, add(mortgage_deduction,property_taxes,salt))
+        mortgage_interest_and_real_estate_property_taxes  = min_(p.mortgage_and_property_taxes_limit, (mortgage_deduction + property_taxes,salt))
 
         #  If the amount of the home mortgage interest and real estate taxes paid by both spouses exceeds $20,000, 
         #  these deductions must be prorated based on the percentage paid by each spouse.
@@ -40,7 +40,7 @@ class nc_itemized_deductions(Variable):
             max_eligibles, tax_unit("count_cdcc_eligible", period)
         )
         us_expenses = tax_unit("cdcc_relevant_expenses", period)
-        medical = min_(md_max_care_expense * num_eligibles, us_expenses)
+        medical = min_(nc_max_care_expense * num_eligibles, us_expenses)
 
         # Charitable Contributions.
 
