@@ -1,0 +1,15 @@
+- name: having 5 children receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    children_recieving_tanf_number: 5
+  output:
+    children_recieving_tanf_number: 5
+
+- name: having 0 children receiving tanf
+  period: 2023
+  input:
+    state_code: PA
+    children_recieving_tanf_number: 0
+  output:
+    children_recieving_tanf_number: 0
