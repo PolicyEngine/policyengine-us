@@ -12,30 +12,32 @@ class sc_state_tax_addback(Variable):
 
     def formula(tax_unit, period, parameters):
         p_us = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p_us.itemized_deductions
-        ]
+        itm_deds = [deduction for deduction in p_us.itemized_deductions]
         deds_if_not_itm = [
-            deduction
-            for deduction in p_us.deductions_if_not_itemizing
+            deduction for deduction in p_us.deductions_if_not_itemizing
         ]
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
-        # line 1 
+        # line 1
         federal_itemized_deduction = add(tax_unit, period, itm_deds)
-        # line 2 
-        federal_deduction_if_not_itemizing = add(tax_unit, period, deds_if_not_itm)*eligible
+        # line 2
+        federal_deduction_if_not_itemizing = (
+            add(tax_unit, period, deds_if_not_itm) * eligible
+        )
         # line 3
-        less_itm_amount = max_(0,federal_itemized_deduction - federal_deduction_if_not_itemizing)
+        less_itm_amount = max_(
+            0, federal_itemized_deduction - federal_deduction_if_not_itemizing
+        )
         # line 4
-        salt = tax_unit("state_and_local_sales_or_income_tax",period)
-        # line 5 
+        salt = tax_unit("state_and_local_sales_or_income_tax", period)
+        # line 5
         capped_property_taxes = min_(
             add(tax_unit, period, ["real_estate_taxes"]),
-            p_us.itemized.salt_and_real_estate.cap[filing_status]
+            p_us.itemized.salt_and_real_estate.cap[filing_status],
         )
-        less_income_amount = p_us.itemized.salt_and_real_estate.cap[filing_status] - capped_property_taxes
+        less_income_amount = (
+            p_us.itemized.salt_and_real_estate.cap[filing_status]
+            - capped_property_taxes
+        )
         # compare line 3,4,5. get the minimum
         return min(less_itm_amount, salt, less_income_amount)
-       
