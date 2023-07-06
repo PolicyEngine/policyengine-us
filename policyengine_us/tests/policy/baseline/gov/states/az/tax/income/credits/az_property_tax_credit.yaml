@@ -1,0 +1,49 @@
+- name: AZ property tax credit unit test 1
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    adjusted_gross_income: 5_000
+    age: 66
+  output:
+    az_property_tax_credit: 123
+
+- name: AZ property tax credit unit test 2
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    adjusted_gross_income: 2_800
+    age: 66
+  output:
+    az_property_tax_credit: 256
+
+- name: AZ property tax credit unit test 3
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: WIDOW
+    adjusted_gross_income: 3_000
+    age: 45
+  output:
+    az_property_tax_credit: 0
+
+- name: AZ property tax credit unit test 4
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 4_000
+    age: 80
+  output:
+    az_property_tax_credit: 279
+
+- name: AZ property tax credit unit test 5
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    adjusted_gross_income: 5_500
+    age: 79
+  output:
+    az_property_tax_credit: 56

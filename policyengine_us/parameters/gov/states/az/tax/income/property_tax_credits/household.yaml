@@ -1,0 +1,100 @@
+description: Arizona offers property tax credits for household under different levels of income.
+metadata:
+  reference:
+    - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
+      href: https://azdor.gov/forms/tax-credits-forms/property-tax-refund-credit-claim-form-fillable
+  threshold_unit: currency-USD
+  rate_unit: currency-USD
+  type: single_amount
+  period: year
+  label: Arizona property tax credit amount for household
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 502
+  - threshold:
+      2022-01-01: 2_501
+    amount:
+      2022-01-01: 479
+  - threshold:
+      2022-01-01: 2_651
+    amount:
+      2022-01-01: 457
+  - threshold:
+      2022-01-01: 2_801
+    amount:
+      2022-01-01: 435
+  - threshold:
+      2022-01-01: 2_951
+    amount:
+      2022-01-01: 412
+  - threshold:
+      2022-01-01: 3_101
+    amount:
+      2022-01-01: 390
+  - threshold:
+      2022-01-01: 3_251
+    amount:
+      2022-01-01: 368
+  - threshold:
+      2022-01-01: 3_401
+    amount:
+      2022-01-01: 345
+  - threshold:
+      2022-01-01: 3_551
+    amount:
+      2022-01-01: 323
+  - threshold:
+      2022-01-01: 3_701
+    amount:
+      2022-01-01: 301
+  - threshold:
+      2022-01-01: 3_851
+    amount:
+      2022-01-01: 279
+  - threshold:
+      2022-01-01: 4_001
+    amount:
+      2022-01-01: 256
+  - threshold:
+      2022-01-01: 4_151
+    amount:
+      2022-01-01: 234
+  - threshold:
+      2022-01-01: 4_301
+    amount:
+      2022-01-01: 212
+  - threshold:
+      2022-01-01: 4_451
+    amount:
+      2022-01-01: 189
+  - threshold:
+      2022-01-01: 4_601
+    amount:
+      2022-01-01: 167
+  - threshold:
+      2022-01-01: 4_751
+    amount:
+      2022-01-01: 145
+  - threshold:
+      2022-01-01: 4_901
+    amount:
+      2022-01-01: 123
+  - threshold:
+      2022-01-01: 5_051
+    amount:
+      2022-01-01: 100
+  - threshold:
+      2022-01-01: 5_201
+    amount:
+      2022-01-01: 78
+  - threshold:
+      2022-01-01: 5_351
+    amount:
+      2022-01-01: 56
+  - threshold:
+      2022-01-01: 5_501
+    amount:
+      2022-01-01: 0
+
