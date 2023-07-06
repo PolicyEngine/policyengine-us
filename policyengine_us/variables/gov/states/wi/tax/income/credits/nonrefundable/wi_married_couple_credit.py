@@ -19,14 +19,10 @@ class wi_married_couple_credit(Variable):
     def formula(tax_unit, period, parameters):
         fstatus = tax_unit("filing_status", period)
         eligible = fstatus == fstatus.possible_values.JOINT
-        print("\n>>>> eligible", eligible)
-        person = tax_unit.person
         p = parameters(period).gov.states.wi.tax.income.credits.nonrefundable
-        print(">>>> sources", p.married_couple.income_sources)
-        income = add(person, period, p.married_couple.income_sources)
-        print(">>>> income", income)
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
+        income = add(tax_unit.members, period, p.married_couple.income_sources)
+        is_head = tax_unit.members("is_tax_unit_head", period)
+        is_spouse = tax_unit.members("is_tax_unit_spouse", period)
         head_income = tax_unit.sum(is_head * income)
         spouse_income = tax_unit.sum(is_spouse * income)
         lower_income = min_(head_income, spouse_income)
