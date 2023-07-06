@@ -3474,3 +3474,110 @@
     fixed:
     - Numpy array divide warning in ma_limited_income_tax_credit module.
   date: 2023-06-29 20:36:18
+- bump: patch
+  changes:
+    fixed:
+    - Numpy array divide warning in taxable_social_security.py module.
+  date: 2023-06-29 20:40:02
+- bump: minor
+  changes:
+    added:
+    - Ohio Earned Income Tax Credit.
+  date: 2023-06-30 02:00:30
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warning in IA income tax code.
+  date: 2023-07-01 18:42:32
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in NYC local income tax code.
+  date: 2023-07-01 20:40:02
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in tax_unit_childcare_expenses formula.
+  date: 2023-07-03 01:25:42
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in ssi_unearned_income_deemed_from_ineligible_parent
+      formula.
+  date: 2023-07-03 01:28:34
+- bump: minor
+  changes:
+    added:
+    - South Carolina Earned Income Tax Credit.
+  date: 2023-07-03 01:41:44
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in residential_efficiency_electrification_rebate
+      formula.
+  date: 2023-07-03 01:44:43
+- bump: minor
+  changes:
+    added:
+    - South Carolina Senior Exemption.
+  date: 2023-07-03 01:54:59
+- bump: patch
+  changes:
+    fixed:
+    - Updated Colorado SNAP parameters.
+    - Deduct child support from SNAP net income in all states.
+    - Deduct child support from SNAP gross income in certain states previously deducted
+      from net income only.
+  date: 2023-07-03 03:23:08
+- bump: patch
+  changes:
+    fixed:
+    - Lowercase Age variable.
+  date: 2023-07-03 03:49:40
+- bump: minor
+  changes:
+    added:
+    - Indiana unified elderly tax credit.
+  date: 2023-07-03 03:53:37
+- bump: minor
+  changes:
+    added:
+    - South Carolina CDCC.
+  date: 2023-07-03 04:00:22
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in hud_income_level formula.
+  date: 2023-07-03 15:11:47
+- bump: minor
+  changes:
+    added:
+    - New Hampshire Exemptions.
+  date: 2023-07-03 22:17:34
+- bump: minor
+  changes:
+    added:
+    - Subtraction of exemptions in calculation of NH taxable income.
+    fixed:
+    - Calculation of NH old-age exemption amount.
+  date: 2023-07-04 00:13:18
+- bump: minor
+  changes:
+    added:
+    - 2021 NH exemption parameter values.
+  date: 2023-07-04 00:59:54
+- bump: minor
+  changes:
+    added:
+    - Vermont taxable income.
+  date: 2023-07-04 02:35:17
+- bump: minor
+  changes:
+    added:
+    - Pennsylvania TANF resource limit.
+  date: 2023-07-04 12:33:34
+- bump: minor
+  changes:
+    added:
+    - Virginia military benefit subtraction.
+  date: 2023-07-04 12:42:02
