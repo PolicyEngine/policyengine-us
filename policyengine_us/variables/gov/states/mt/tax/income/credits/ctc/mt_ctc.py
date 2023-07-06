@@ -25,21 +25,12 @@ class mt_ctc(Variable):
         eligible = (age > p.child_age_eligibility) & dependent
         eligible_sum = tax_unit.sum(eligible)
 
-        # dependent = person("is_tax_unit_dependent", period)
-        # meets_age_limit = person("age", period) < p.child_age_eligibility
-        # has_eligible_child = dependent & meets_age_limit
-        # eligible_children = tax_unit.any(has_eligible_child)
-
         eligible = income_eligible * investment_income_eligible
 
         credit = eligible_sum * p.base * eligible
-        
+
         # reduction
         excess = max_(gross_income - p.reduction.threshold, 0)
         increments = excess // p.reduction.increment
         reduction_rate = p.reduction.rate * increments
-        reduced_credit = max_((credit - reduction_rate), 0)
-        return reduced_credit
-        # return where(
-        #     (gross_income > p.reduction.threshold), reduced_credit, credit
-        # )
+        return max_(credit - reduction_rate, 0)
