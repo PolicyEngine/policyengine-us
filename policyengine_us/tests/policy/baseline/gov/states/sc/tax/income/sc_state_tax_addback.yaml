@@ -1,11 +1,60 @@
 - name: Test case 1 #salt has a cap of 5000 for seperate
   period: 2021
   input:
-    filling_status:
-    itemized_deductions:
-    deductions_if_not_itemizing:
-    real_estate_taxes:
+    filing_status: SEPARATE
+    charitable_deduction: 1000
+    interest_deduction: 1000
+    salt_deduction: 1000
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    qualified_business_income_deduction: 2000
+    standard_deduction: 4000
+    real_estate_taxes: 3000
+    state_and_local_sales_or_income_tax: 1000
     state_code: SC
   output:
-    sc_itemized_deductions: 7_465
+    sc_state_tax_addback: 1000
+    # line 3 = 3000 - 0 = 3000
+    # line 4 = 1000
+    # line 5 = 5000 - 3000 = 2000
+  
+- name: Test case 2 #salt has a cap of 10000 for JOINT
+  period: 2021
+  input:
+    filing_status: JOINT
+    charitable_deduction: 1000
+    interest_deduction: 1000
+    salt_deduction: 1000
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    qualified_business_income_deduction: 2000
+    standard_deduction: 4000
+    real_estate_taxes: 3000
+    state_and_local_sales_or_income_tax: 1000
+    state_code: SC
+  output:
+    sc_state_tax_addback: 0
+    # line 3 = 3000 - 6000 = 0 
+    # line 4 = 1000
+    # line 5 = 10000 - 3000 = 7000
 
+- name: Test case 3 #salt has a cap of 10000 for JOINT
+  period: 2021
+  input:
+    filing_status: JOINT
+    charitable_deduction: 3000
+    interest_deduction: 1000
+    salt_deduction: 1000
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    qualified_business_income_deduction: 0
+    standard_deduction: 1000
+    real_estate_taxes: 8000
+    state_and_local_sales_or_income_tax: 6000
+    state_code: SC
+  output:
+    sc_state_tax_addback: 2000
+    # line 3 = 5000 - 1000 = 4000 
+    # line 4 = 6000
+    # line 5 = 10000 - 8000 = 2000
+    
