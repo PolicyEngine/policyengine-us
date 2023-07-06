@@ -1,0 +1,30 @@
+description: Indiana provides the following amounts under the unified elderly tax credit for married filers with one aged person.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Indiana unified elderly tax credit married one aged 
+  reference:
+    - title: SC-40 Unified Tax Credit for the Elderly 2022
+      href: https://forms.in.gov/Download.aspx?id=15394 
+    - title: SC-40 Unified Tax Credit for the Elderly 2021
+      href: https://www.taxformfinder.org/indiana/form-sc-40 
+    - title: Indiana Code, TITLE 6. Taxation, ARTICLE 3. OTHER STATE INCOME TAXES, CHAPTER 3. Credits, 6-3-3-9. Unified tax credit for the elderly
+      href: https://iga.in.gov/laws/2018/ic/titles/6#6-3-3-9
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 1_000
+    amount:
+      2021-01-01: 50
+  - threshold:
+      2021-01-01: 3_000
+    amount:
+      2021-01-01: 40
+  - threshold:
+      2021-01-01: 3_500
+    amount:
+      2021-01-01: 0
