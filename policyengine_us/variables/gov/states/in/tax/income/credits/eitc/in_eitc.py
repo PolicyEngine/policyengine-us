@@ -12,4 +12,5 @@ class in_eitc(Variable):
         person = tax_unit.members
         eligible_children = tax_unit.sum(person("is_child_eligible_eitc", period))
         p = parameters(period).gov.states["in"].tax.icnome.credits
-        
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        filing_status = tax_unit("filing_status", period)
