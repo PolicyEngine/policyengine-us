@@ -14,9 +14,9 @@ class pa_tanf_age_eligible(Variable):
         age = person("age", period)
         # Get full time students
         student_eligible = person("is_full_time_student", period) & (
-            age == p.age_eligibility
+            age == p.age_limit
         )
 
         # Get age
-        is_eligible_age = age < p.age_eligibility
+        is_eligible_age = age < p.age_limit
         return spm_unit.any(is_eligible_age | student_eligible)
