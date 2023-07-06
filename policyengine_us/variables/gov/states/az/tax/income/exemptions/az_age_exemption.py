@@ -16,9 +16,9 @@ class az_age_exemption(Variable):
         p = parameters(period).gov.states.az.tax.income.exemptions
 
         age_head = tax_unit("age_head", period)
-        head_eligible = (age_head >= 65).astype(int)
+        head_eligible = (age_head >= p.min_age).astype(int)
 
         age_spouse = tax_unit("age_spouse", period)
-        spouse_eligible = (age_spouse >= 65).astype(int)
+        spouse_eligible = (age_spouse >= p.min_age).astype(int)
 
         return (head_eligible + spouse_eligible * joint) * p.age
