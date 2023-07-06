@@ -1,0 +1,7 @@
+- name: WI retirement_income_subtraction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    state_code: WI
+  output:
+    wi_retirement_income_subtraction: 0

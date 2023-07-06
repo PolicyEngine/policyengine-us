@@ -1,0 +1,7 @@
+- name: WI capital_gain_loss_addition unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    state_code: WI
+  output:
+    wi_capital_gain_loss_addition: 0
