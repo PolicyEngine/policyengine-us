@@ -1,0 +1,60 @@
+description: Hawaii taxes single filers at these rates by taxable income.
+brackets:
+  - threshold:
+      2017-01-01: 0
+    rate:
+      2017-01-01: 0.014
+  - threshold:
+      2017-01-01: 2_400
+    rate:
+      2017-01-01: 0.032
+  - threshold:
+      2017-01-01: 4_800
+    rate:
+      2017-01-01: 0.055
+  - threshold:
+      2017-01-01: 9_600
+    rate:
+      2017-01-01: 0.064
+  - threshold:
+      2017-01-01: 14_400
+    rate:
+      2017-01-01: 0.068
+  - threshold:
+      2017-01-01: 19_200
+    rate:
+      2017-01-01: 0.072
+  - threshold:
+      2017-01-01: 36_000
+    rate:
+      2017-01-01: 0.076
+  - threshold:
+      2017-01-01: 48_000
+    rate:
+      2017-01-01: 0.079
+  - threshold:
+      2017-01-01: 48_000
+    rate:
+      2017-01-01: 0.0825
+  - threshold:
+      2017-01-01: 150_000
+    rate:
+      2017-01-01: 0.09
+  - threshold:
+      2017-01-01: 175_000
+    rate:
+      2017-01-01: 0.1
+  - threshold:
+      2017-01-01: 200_000
+    rate:
+      2017-01-01: 0.11
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Hawaii single income tax rate
+  reference:
+    - title: Tax Rate Schedules For Taxable Years Beginning After December 31, 2017
+      href: https://tax.hawaii.gov/forms/d_18table-on/d_18table-on_p13/

@@ -1,0 +1,23 @@
+- name: No income
+  period: 2023
+  input:
+    ky_taxable_income: 0
+    state_code: KY
+  output:
+    ky_income_tax_before_refundable_credits: 0
+
+- name: 2023 tax rate
+  period: 2023
+  input:
+    ky_taxable_income: 1_000
+    state_code: KY
+  output:
+    ky_income_tax_before_refundable_credits: 45
+
+- name: 2022 tax rate
+  period: 2022
+  input:
+    ky_taxable_income: 1_000
+    state_code: KY
+  output:
+    ky_income_tax_before_refundable_credits: 50

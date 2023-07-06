@@ -1,0 +1,23 @@
+- name: 2023 rate 
+  period: 2023
+  input:
+    state_code: NH
+    nh_taxable_income: 2_000
+  output:
+    nh_income_tax_before_refundable_credits: 80
+
+- name: 2025 rate 
+  period: 2025
+  input:
+    state_code: NH
+    nh_taxable_income: 2_000
+  output:
+    nh_income_tax_before_refundable_credits: 40
+
+- name: No income
+  period: 2023
+  input:
+    state_code: NH
+    nh_taxable_income: 0
+  output:
+    nh_income_tax_before_refundable_credits: 0

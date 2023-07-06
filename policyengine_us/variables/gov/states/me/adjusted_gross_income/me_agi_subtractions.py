@@ -9,7 +9,10 @@ class me_agi_subtractions(Variable):
     documentation = "Subtractions from ME AGI over federal AGI."
     definition_period = YEAR
     defined_for = StateCode.ME
-    dict(
-        title="Schedule 1S, Income Subtraction Modifications",
-        href="https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf",
-    )
+    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_1s_ff.pdf"
+
+    adds = [
+        "tax_unit_taxable_social_security",
+        "us_govt_interest",
+        "me_pension_income_deduction",
+    ]

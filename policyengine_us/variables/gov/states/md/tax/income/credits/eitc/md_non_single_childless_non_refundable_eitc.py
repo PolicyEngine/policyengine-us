@@ -21,7 +21,7 @@ class md_non_single_childless_non_refundable_eitc(Variable):
             "md_qualifies_for_single_childless_eitc", period
         )
         eligible = ~single_childless
-        uncapped = p.non_refundable_match * federal_eitc
+        uncapped = p.match.non_refundable * federal_eitc
         amount = eligible * min_(tax_before_credits, uncapped)
         has_children = add(tax_unit, period, ["is_child"]) > 0
         mca = parameters(period).gov.contrib.maryland_child_alliance
