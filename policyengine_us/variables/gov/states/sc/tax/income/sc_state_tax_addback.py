@@ -39,4 +39,7 @@ class sc_state_tax_addback(Variable):
             p.itemized.salt_and_real_estate.cap[filing_status],
         )
         p_sc = parameters(period).gov.states.sc.tax.income
+
+        # line 5
+        # compare linee 3,4,5. get the minimum 
         
