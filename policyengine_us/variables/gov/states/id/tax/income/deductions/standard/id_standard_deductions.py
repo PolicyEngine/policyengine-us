@@ -27,7 +27,7 @@ class id_standard_deductions(Variable):
             p.dependents.min_amount,
             dependet_earned_income + p.dependents.addition,
         )
-        print(dependet_earned_income)
+
         # if dependent calculation
         dependent_amount = where(
             tax_unit.any(head & is_dependent),

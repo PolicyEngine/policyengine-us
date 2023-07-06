@@ -1,0 +1,46 @@
+- name: ID itemized deduction test 1
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        charitable_cash_donations: 0
+        charitable_non_cash_donations: 0
+        real_estate_taxes: 20_000
+        medical_expense: 5_000
+        earned_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_itemized_deductions: 2
+  
+
+- name: ID itemized deduction test 2
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        charitable_cash_donations: 500
+        charitable_non_cash_donations: 0
+        real_estate_taxes: 2_200
+        medical_expense: 5_000
+        earned_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_itemized_deductions: 0
