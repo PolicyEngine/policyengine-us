@@ -11,7 +11,7 @@ class de_tax_liability_if_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        refundable_branch = simulation.get_branch("de_refudable_eitc")
+        refundable_branch = simulation.get_branch("de_refundable_eitc")
         refundable_branch.set_input(
             "de_tax_unit_eitc_refundable",
             period,
