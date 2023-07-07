@@ -13,9 +13,9 @@ class va_map_pregnant_income_eligibility(Variable):
             spm_unit,
             period,
             [
-                "va_pregnant_women_earned_income",
-                "va_pregnant_women_unearned_income",
-            ],
+                "va_map_earned_income",
+                "va_map_unearned_income",
+            ]
         )
-        limit = spm_unit("va_pregnant_women_income_limit", period)
+        limit = spm_unit("va_map_pregnant_income_limit", period)
         return income <= limit

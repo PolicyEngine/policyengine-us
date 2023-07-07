@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_map_famis_income_eligibility(Variable):
+class va_map_abd_income_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "VA MAP FAMIS Plus income eligibility"
+    label = "VA MAP ABD income eligibility"
     definition_period = YEAR
     defined_for = StateCode.VA
 
@@ -17,5 +17,12 @@ class va_map_famis_income_eligibility(Variable):
                 "va_map_unearned_income",
             ]
         )
-        limit = spm_unit("va_map_famis_income_limit", period)
+
+        p = parameters(period).gov.states.va.dss.map.abd
+        person = spm_unit.members
+        married = person("is_married", period)
+        limit = p.income_limit_single
+        if spm_unit.any(married):
+            limit = p.income_limit_couple
+
         return income <= limit
