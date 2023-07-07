@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nm_low_income_comprehensive_tax_rebate(Variable):
     value_type = float
     entity = TaxUnit
-    label = "NM low income comprehensive tax rebate"
+    label = "New Mexico low income comprehensive tax rebate"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -44,7 +44,4 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values.SEPARATE
 
-        if filing_status == statuses:
-            return rebate / 2
-
-        return rebate
+        return where(filing_status == statuses, rebate / 2, rebate)
