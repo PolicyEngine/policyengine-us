@@ -1,10 +1,12 @@
 description: Ohio reduces the Unreimbursed Medical Care Expenses by the following percentage of the federal AGI.
 values:
-  2022-01-01: 0.075
+  2021-01-01: 0.075
 metadata:
   unit: /1
   label: Ohio Unreimbursed Medical Care Expenses rate
   reference:
+    - title: Ohio Tax Form 2021 - Unreimbursed Medical Care Expenses Worksheet (Ohio Schedule of Adjustments, Line 36)
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=18
     - title: Ohio Tax Form - Deductions Line 36 – Unreimbursed Medical & Health Care Expenses
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=18
     - title: Ohio Tax Form - Unreimbursed Medical Care Expenses Worksheet (Ohio Schedule of Adjustments, Line 36)
