@@ -15,4 +15,6 @@ class wi_childcare_expense_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        return 0
+        us_cdcc = tax_unit("cdcc", period)
+        p = parameters(period).gov.states.wi.tax.income
+        return us_cdcc * p.credits.nonrefundable.childcare_expense.rate
