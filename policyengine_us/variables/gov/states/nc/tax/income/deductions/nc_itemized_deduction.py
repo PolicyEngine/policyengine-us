@@ -18,7 +18,7 @@ class nc_itemized_deductions(Variable):
         filing_status = tax_unit("filing_status", period)
 
         mortgage_deduction = min_(p.mortgage_limit,
-        add(tax_unit, period, ["mortgage_taxes"]))
+        add(tax_unit, period, ["mortgage_interest"]))
         
         property_taxes = min_(p.property_taxes_limit[filing_status],
         add(tax_unit, period, ["property_tax_primary_residence"]))
@@ -45,6 +45,8 @@ class nc_itemized_deductions(Variable):
         # Charitable Contributions.
 
         charitable = tax_unit("charitable_deduction", period)
+
+        itemized_deductions = mortgage_interest_and_real_estate_property_taxes + medical + charitable
 
         return itemized_deductions
 
