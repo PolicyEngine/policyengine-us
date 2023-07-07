@@ -15,41 +15,29 @@
   output:  
     nh_income_tax: 15_808
 
-- name: Joint filers, head income = 50_000, age = 30 and is blind; spouse income = 50_000, age = 30 and is disabled, the tax ammount = 3_721
+- name: Joint filers, head income = 50_000, age = 70 and is blind; spouse income = 50_000, age = 60 and is disabled, the tax ammount = 4_580
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head: true
         dividend_income: 50_000
-        # is_blind: true
-        is_disabled: true
-        age: 30
+        is_blind: true
+        is_ssi_disabled: false
+        age: 70
       person2:
         is_tax_unit_spouse: true
         interest_income: 50_000
-        # is_disabled: true
-        # age: 30
+        is_ssi_disabled: true
+        age: 60
     households:
       household:
         members: [person1, person2]
         state_code: NH
   output:  
-    nh_taxable_income: 3_721
-
-- name: In 2023, single filers, the filer is disabled at the age of 65, the filer will get this exemption.
-  period: 2023
-  input:
-    state_code: NH
-    is_disabled: true
-    age: 60
-  output:
-    nh_disabled_exemption: 1_200
-
-- name: In 2023, single filers, the filer is blind, the filer will get this exemption.
-  period: 2023
-  input:
-    state_code: NH
-    is_blind: true
-  output:
+    nh_old_age_exemption: 1_200
+    nh_base_exemption: 4_800
     nh_blind_exemption: 1_200
+    nh_disabled_exemption: 1_200
+    nh_taxable_income: 91_600
+    nh_income_tax: 4_580
