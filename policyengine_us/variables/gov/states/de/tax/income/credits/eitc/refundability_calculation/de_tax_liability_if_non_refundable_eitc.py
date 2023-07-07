@@ -12,10 +12,10 @@ class de_tax_liability_if_non_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        non_itemized_branch = simulation.get_branch("de_non_refudable_eitc")
-        non_itemized_branch.set_input(
+        non_refundable_branch = simulation.get_branch("de_non_refudable_eitc")
+        non_refundable_branch.set_input(
             "de_tax_unit_eitc_refundable",
             period,
             np.zeros((tax_unit.count,), dtype=bool),
         )
-        return non_itemized_branch.calculate("de_income_tax", period)
+        return non_refundable_branch.calculate("de_income_tax", period)
