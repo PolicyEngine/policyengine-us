@@ -25,6 +25,12 @@ class de_tax_unit_eitc_refundable(Variable):
                 < tax_liability_if_not_itemizing
             )
         else:
+            de_tax_liability_if_refundable_eitc = tax_unit(
+                "de_tax_liability_if_refundable_eitc", period
+            )
+            tax_liability_if_not_itemizing = tax_unit(
+                "de_tax_liability_if_non_refundable_eitc", period
+            )
             return (
                 de_tax_liability_if_refundable_eitc
                 >= tax_liability_if_not_itemizing
