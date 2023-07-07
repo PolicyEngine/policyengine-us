@@ -9,4 +9,18 @@ class ri_agi_subtractions(Variable):
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf"
     defined_for = StateCode.RI
-    adds = "gov.states.ri.tax.income.agi.subtractions"
+
+    def formula(tax_unit, period, parameters):
+        income = tax_unit("adjusted_gross_income", period)
+        filing_status = tax_unit("filing_status", period)
+        child_count = tax_unit("eitc_child_count", period)
+        p = parameters(
+            period
+        ).gov.states.ri.tax.income.adjusted_gross_income.subtractions
+        rebates = where(
+            income <= p.child_tax_rebates_cap[filing_status]
+            and child_count <= p.max_child,
+            child_count * p.child_tax_rebates_amount,
+            0,
+        )
+        return rebates
