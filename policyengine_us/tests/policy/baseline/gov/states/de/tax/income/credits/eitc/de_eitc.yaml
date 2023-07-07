@@ -1,0 +1,35 @@
+- name: No EITC
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 0
+    de_non_refundable_eitc: 0
+  output:
+    de_eitc: 0
+
+- name: Refundable larger than non-refundable
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 1_000
+    de_non_refundable_eitc: 100
+  output:
+    de_eitc: 1_000
+
+- name: Refundable smaller than non-refundable
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 50
+    de_non_refundable_eitc: 1_100
+  output:
+    de_eitc: 1_100
+
+- name: Equal amounts
+  period: 2022
+  input:
+    state_code: DE
+    de_refundable_eitc: 50
+    de_non_refundable_eitc: 50
+  output:
+    de_eitc: 50
