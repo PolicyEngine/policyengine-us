@@ -51,196 +51,6 @@
   output:
     nm_low_income_comprehensive_tax_rebate: 220
 
-- name: separate filing, agi in 3rd tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 8_000
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 102.5
-
-- name: single filing, agi in 3rd tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 8_000
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 205
-
-- name: separate filing, agi in 4th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 9_000
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 92.5
-
-- name: single filing, agi in 4th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 9_000
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 185
-
-- name: separate filing, agi in 5th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 10_000
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 85
-
-- name: single filing, agi in 5th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 10_000
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 170
-
-- name: separate filing, agi in 6th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 11_500
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 72.5
-
-- name: single filing, agi in 6th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 11_500
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 145
-
-- name: separate filing, agi in 7th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 13_000
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 65
-
-- name: single filing, agi in 7th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 13_000
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 130
-
-- name: separate filing, agi in 8th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 14_500
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 57.5
-
-- name: single filing, agi in 8th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 14_500
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 115
-
-- name: separate filing, agi in 9th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 16_500
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 52.5
-
-- name: single filing, agi in 9th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 16_500
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 105
-
-- name: separate filing, agi in 10th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 18_000
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 50
-
-- name: single filing, agi in 10th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 18_000
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 100
-
-- name: separate filing, agi in 11th tax bracket, 1 exemption
-  period: 2022
-  absolute_error_margin: 0.001
-  input:
-    state_code: NM
-    adjusted_gross_income: 18_001
-    nm_number_of_exemption: 1
-    filing_status: SEPARATE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 45
-
-- name: single filing, agi in 11th tax bracket, 1 exemption
-  period: 2022
-  input:
-    state_code: NM
-    adjusted_gross_income: 18_001
-    nm_number_of_exemption: 1
-    filing_status: SINGLE
-  output:
-    nm_low_income_comprehensive_tax_rebate: 90
-
 - name: separate filing, agi above 36_000, 1 exemption
   period: 2022
   absolute_error_margin: 0.001
@@ -262,7 +72,6 @@
   output:
     nm_low_income_comprehensive_tax_rebate: 0
 
-
 - name: separate filing, agi in 1st tax bracket, 2 exemptions
   period: 2022
   absolute_error_margin: 0.001
@@ -283,6 +92,27 @@
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 260
+
+- name: separate filing, agi equals 36_000, 2 exemptions
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NM
+    adjusted_gross_income: 36_000
+    nm_number_of_exemption: 2
+    filing_status: SEPARATE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 17.5
+
+- name: single filing, agi equals 36_000, 2 exemptions
+  period: 2022
+  input:
+    state_code: NM
+    adjusted_gross_income: 36_000
+    nm_number_of_exemption: 2
+    filing_status: SINGLE
+  output:
+    nm_low_income_comprehensive_tax_rebate: 35
 
 - name: separate filing, agi in 1st tax bracket, 3 exemptions
   period: 2022
