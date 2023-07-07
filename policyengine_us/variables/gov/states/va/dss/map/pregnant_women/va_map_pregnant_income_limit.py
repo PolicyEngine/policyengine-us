@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_pregnant_women_income_limit(Variable):
+class va_map_pregnant_income_limit(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA Pregnant Women income limit"
+    label = "VA MAP Pregnant Women income limit"
     definition_period = YEAR
     defined_for = StateCode.VA
 

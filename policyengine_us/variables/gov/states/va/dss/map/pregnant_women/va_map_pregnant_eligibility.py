@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_pregnant_women_eligibility(Variable):
+class va_map_pregnant_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "VA Pregnant Women eligibility"
+    label = "VA MAP Pregnant Women eligibility"
     definition_period = YEAR
     defined_for = StateCode.VA
 

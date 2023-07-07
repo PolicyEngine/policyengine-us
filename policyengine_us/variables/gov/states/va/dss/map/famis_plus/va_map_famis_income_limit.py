@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_famis_income_limit(Variable):
+class va_map_famis_income_limit(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA FAMIS Plus income limit"
+    label = "VA MAP FAMIS Plus income limit"
     definition_period = YEAR
     defined_for = StateCode.VA
 

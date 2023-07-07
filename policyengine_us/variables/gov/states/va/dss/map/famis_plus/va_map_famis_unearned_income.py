@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class va_famis_earned_income(Variable):
+class va_map_famis_unearned_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA FAMIS Plus earned income"
+    label = "VA MAP FAMIS Plus unearned income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
 
-    adds = "gov.states.va.dss.map.earned"
+    adds = "gov.states.va.dss.map.unearned"

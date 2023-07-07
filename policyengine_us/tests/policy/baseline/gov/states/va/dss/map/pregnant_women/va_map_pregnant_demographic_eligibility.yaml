@@ -15,7 +15,7 @@
         members: [parent1, parent2]
         spm_unit_size: 2
   output:
-    va_pregnant_women_pregnant_eligibility: false
+    va_map_pregnant_demographic_eligibility: false
 
 - name: One is pregant but household size is 1.
   period: 2023
@@ -32,7 +32,7 @@
         members: [parent]
         spm_unit_size: 1
   output:
-    va_pregnant_women_pregnant_eligibility: false
+    va_map_pregnant_demographic_eligibility: false
 
 - name: One is pregant.
   period: 2023
@@ -51,7 +51,7 @@
         members: [parent1, parent2]
         spm_unit_size: 2
   output:
-    va_pregnant_women_pregnant_eligibility: true
+    va_map_pregnant_demographic_eligibility: true
 
 - name: Only apply to VA.
   period: 2023
@@ -70,4 +70,4 @@
         members: [parent1, parent2]
         spm_unit_size: 2
   output:
-    va_pregnant_women_pregnant_eligibility: false
+    va_map_pregnant_demographic_eligibility: false

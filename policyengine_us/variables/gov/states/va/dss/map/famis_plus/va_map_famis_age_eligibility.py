@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_famis_age_eligibility(Variable):
+class va_map_famis_age_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "VA FAMIS Plus age eligibility"
+    label = "VA MAP FAMIS Plus age eligibility"
     definition_period = YEAR
     defined_for = StateCode.VA
 

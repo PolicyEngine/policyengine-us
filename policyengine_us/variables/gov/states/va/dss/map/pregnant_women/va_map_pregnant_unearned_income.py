@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_pregnant_women_unearned_income(Variable):
+class va_map_pregnant_unearned_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA Pregnant Women unearned income"
+    label = "VA MAP Pregnant Women unearned income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
