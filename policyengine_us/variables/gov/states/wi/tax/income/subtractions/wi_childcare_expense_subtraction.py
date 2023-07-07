@@ -14,4 +14,14 @@ class wi_childcare_expense_subtraction(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        return 0
+        subtraction = parameters(period).gov.states.wi.tax.income.subtractions
+        uncapped_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        eligible_dependents = tax_unit("count_cdcc_eligible", period)
+        count_eligible = min_(
+            eligible_dependents, subtraction.childcare_expense.max_dependents
+        )
+        return min_(
+            uncapped_expenses,
+            count_eligible * subtraction.childcare_expense.max_amount,
+            tax_unit("min_head_spouse_earned", period),
+        )
