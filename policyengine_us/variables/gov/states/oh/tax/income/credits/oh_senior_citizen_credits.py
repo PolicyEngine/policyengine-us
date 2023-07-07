@@ -22,7 +22,7 @@ class oh_senior_citizen_credits(Variable):
         )
 
         age = person("age", period)
-        any_elderly = tax_unit.any(age > p.age_threshold)
+        any_elderly = tax_unit.any(age >= p.age_threshold)
         income_eligible = tax_unit("oh_agi", period) < p.agi_cap
 
         return (

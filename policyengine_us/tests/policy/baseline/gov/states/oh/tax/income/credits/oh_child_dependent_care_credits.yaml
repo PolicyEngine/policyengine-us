@@ -2,17 +2,17 @@
   period: 2021
   input:
     state_code: OH
-    oh_agi: 19999
-    cdcc: 2000
+    oh_agi: 19_999
+    cdcc: 2_000
   output:
-    oh_child_dependent_care_credits: 2000
+    oh_child_dependent_care_credits: 2_000
 
 - name: child and dependent care credit test, just above lower threshold AGI (.25 * federal CDCC)
   period: 2021
   input:
     state_code: OH
-    oh_agi: 20000
-    cdcc: 2000
+    oh_agi: 20_000
+    cdcc: 2_000
   output:
     oh_child_dependent_care_credits: 500
 
@@ -20,8 +20,8 @@
   period: 2021
   input:
     state_code: OH
-    oh_agi: 30000
-    cdcc: 2000
+    oh_agi: 30_000
+    cdcc: 2_000
   output:
     oh_child_dependent_care_credits: 500
 
@@ -29,7 +29,7 @@
   period: 2021
   input:
     state_code: OH
-    oh_agi: 40000
-    cdcc: 2000
+    oh_agi: 40_000
+    cdcc: 2_000
   output:
     oh_child_dependent_care_credits: 0
