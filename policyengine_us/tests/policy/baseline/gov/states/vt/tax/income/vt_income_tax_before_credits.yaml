@@ -1,7 +1,7 @@
 - name: Single filer, taxable income is $20K in 2022. The main income tax is $700.
   period: 2022
   input:
-    me_taxable_income: 20_000
+    vt_taxable_income: 20_000
     filing_status: SINGLE
     state_code: VT
   output:
@@ -11,149 +11,70 @@
 - name: Single filer, taxable income is $50K in 2022. The main income tax is $1993.35.
   period: 2022
   input:
-    me_taxable_income: 50_000
+    vt_taxable_income: 50_000
     filing_status: SINGLE
     state_code: VT
   output:
    # .035*42150 + .066*(50000-42150) = 1993.35
-    me_income_tax_before_credits: 1993.35
+    vt_income_tax_before_credits: 1993.35
 
-# - name: Single filer, taxable income is $55K in 2022. The main income tax is $3496.2.
-#   period: 2022
-#   input:
-#     me_taxable_income: 55_000
-#     filing_status: SINGLE
-#     state_code: VT
-#   output:
-#    # .035*23000 + .066*(54450-23000) + .076*(55000-54450) = 3496.2
-#     me_income_tax_before_credits: 3_496.2
+- name: Single filer, taxable income is $150K in 2022. The main income tax is $9071.35.
+  period: 2022
+  input:
+    vt_taxable_income: 150_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+   # .035*42150 + .066*(102200-42150) + .076*(150000-102200) = 9071.35
+    vt_income_tax_before_credits: 9_071.35
 
-# - name: Separate filer, taxable income is $55K in 2022. The main income tax is $3496.2.
-#   period: 2022
-#   input:
-#     me_taxable_income: 55_000
-#     filing_status: SEPARATE
-#     state_code: ME
-#   output:
-#    # .058*23000 + .0675*(54450-23000) + .0715*(55000-54450) = 3496.2
-#     me_income_tax_before_credits: 3_496.2
+- name: Single filer, taxable income is $250K in 2022. The main income tax is $17095.125.
+  period: 2022
+  input:
+    vt_taxable_income: 250_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+   # .035*42150 + .066*(102200-42150) + .076*(213150-102200) + .0875*(250000-213150) = 17095.125
+    vt_income_tax_before_credits: 17_095.125
 
-# - name: Head of household filer, taxable income is $20K in 2022. The main income tax is $1160.
-#   period: 2022
-#   input:
-#     me_taxable_income: 20_000
-#     filing_status: HEAD_OF_HOUSEHOLD
-#     state_code: ME
-#   output:
-#    # .058*20000 = 1160
-#     me_income_tax_before_credits: 1_160
+- name: Joint filer, taxable income is $300K in 2022. The main income tax is $19378.8.
+  period: 2022
+  input:
+    vt_taxable_income: 300_000
+    filing_status: JOINT
+    state_code: VT
+  output:
+   # .035*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19378.8
+    vt_income_tax_before_credits: 19_378.8
 
-# - name: Head of household filer, taxable income is $35K in 2022. The main income tax is $2034.75.
-#   period: 2022
-#   input:
-#     me_taxable_income: 35_000
-#     filing_status: HEAD_OF_HOUSEHOLD
-#     state_code: ME
-#   output:
-#    # .058*34500 + .0675*(35000-34500) = 2034.75
-#     me_income_tax_before_credits: 2_034.75
+- name: Head of household filer, taxable income is $250K in 2022. The main income tax is $15879.975.
+  period: 2022
+  input:
+    vt_taxable_income: 250_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: VT
+  output:
+   # .035*56500 + .066*(145950-56500) + .076*(236350-145950) + .0875*(250000-236350) = 15945.975
+    vt_income_tax_before_credits: 15_945.975
 
-# - name: Head of household filer, taxable income is $85K in 2022. The main income tax is $5422.95.
-#   period: 2022
-#   input:
-#     me_taxable_income: 85_000
-#     filing_status: HEAD_OF_HOUSEHOLD
-#     state_code: ME
-#   output:
-#    # .058*34500 + .0675*(81700-34500) + .0715*(85000-81700) = 5422.95
-#     me_income_tax_before_credits: 5_422.95
+- name: Widow filer, taxable income is $300K in 2022. The main income tax is $19378.8.
+  period: 2022
+  input:
+    vt_taxable_income: 300_000
+    filing_status: WIDOW
+    state_code: VT
+  output:
+   # .035*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19378.8
+    vt_income_tax_before_credits: 19_378.8
 
-# - name: Joint filer, taxable income is $20K in 2022. The main income tax is $1160.
-#   period: 2022
-#   input:
-#     me_taxable_income: 20_000
-#     filing_status: JOINT
-#     state_code: ME
-#   output:
-#    # .058*20000 = 1160
-#     me_income_tax_before_credits: 1_160
-
-# - name: Joint filer, taxable income is $50K in 2022. The main income tax is $2938.
-#   period: 2022
-#   input:
-#     me_taxable_income: 50_000
-#     filing_status: JOINT
-#     state_code: ME
-#   output:
-#    # .058*46000 + .0675*(50000-46000) = 2938
-#     me_income_tax_before_credits: 2_938
-
-# - name: Joint filer, taxable income is $110K in 2022. The main income tax is $6992.4.
-#   period: 2022
-#   input:
-#     me_taxable_income: 110_000
-#     filing_status: JOINT
-#     state_code: ME
-#   output:
-#    # .058*46000 + .0675*(108900-46000) + .0715*(110000-108900) = 6992.4
-#     me_income_tax_before_credits: 6_992.4
-
-# - name: Surviving spouses filer, taxable income is $110K in 2022. The main income tax is $6992.4.
-#   period: 2022
-#   input:
-#     me_taxable_income: 110_000
-#     filing_status: WIDOW
-#     state_code: ME
-#   output:
-#    # .058*46000 + .0675*(108900-46000) + .0715*(110000-108900) = 6992.4
-#     me_income_tax_before_credits: 6_992.4
-
-# - name: Single filer, taxable income is $60K in 2023. The main income tax is $3825.05.
-#   period: 2023
-#   input:
-#     me_taxable_income: 60_000
-#     filing_status: SINGLE
-#     state_code: ME
-#   output:
-#    # .058*24500 + .0675*(58050-24500) + .0715*(60000-58050) = 3825.05
-#     me_income_tax_before_credits: 3_825.05
-
-# - name: Separate filer, taxable income is $60K in 2023. The main income tax is $3825.05.
-#   period: 2023
-#   input:
-#     me_taxable_income: 60_000
-#     filing_status: SEPARATE
-#     state_code: ME
-#   output:
-#    # .058*24500 + .0675*(58050-24500) + .0715*(60000-58050) = 3825.05
-#     me_income_tax_before_credits: 3_825.05
-
-# - name: Head of household filer, taxable income is $90K in 2023. The main income tax is $5737.475.
-#   period: 2023
-#   input:
-#     me_taxable_income: 90_000
-#     filing_status: HEAD_OF_HOUSEHOLD
-#     state_code: ME
-#   output:
-#    # .058*36750 + .0675*(87100-36750) + .0715*(90000-87100) = 5737.475
-#     me_income_tax_before_credits: 5_737.475
-
-# - name: Joint filer, taxable income is $120K in 2023. The main income tax is $7649.625.
-#   period: 2023
-#   input:
-#     me_taxable_income: 120_000
-#     filing_status: JOINT
-#     state_code: ME
-#   output:
-#    # .058*49050 + .0675*(116100-49050) + .0715*(120000-116100) = 7649.625
-#     me_income_tax_before_credits: 7_649.625
-
-# - name: Surviving spouses filer, taxable income is $120K in 2023. The main income tax is $7649.625.
-#   period: 2023
-#   input:
-#     me_taxable_income: 120_000
-#     filing_status: WIDOW
-#     state_code: ME
-#   output:
-#    # .058*49050 + .0675*(116100-49050) + .0715*(120000-116100) = 7649.625
-#     me_income_tax_before_credits: 7_649.625
+- name: Separate filer, taxable income is $150K in 2022. The main income tax is $9688.47.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    vt_taxable_income: 150_000
+    filing_status: SEPARATE
+    state_code: VT
+  output:
+   # .035*35255 + .066*(85150-35255) + .076*(129750-85150) + .0875*(150000-129750) = 9688.47
+    vt_income_tax_before_credits: 9_688.47
