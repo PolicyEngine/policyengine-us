@@ -1,0 +1,11 @@
+description: Wisconsin maximum number of dependents qualifiable
+metadata:
+  unit: person
+  name: cdcc_max_dependents
+  label: Wisconsin maximum dependents for care expense AGI subtraction
+  reference:
+    - title: 2021 Wisconsin Form 1 Schedule SB instructions
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-Inst.pdf#page=7
+values:
+  2021-01-01: 2
+  2022-01-01: 0  # Wisconsin AGI subtraction replaced by nonrefundable credit
