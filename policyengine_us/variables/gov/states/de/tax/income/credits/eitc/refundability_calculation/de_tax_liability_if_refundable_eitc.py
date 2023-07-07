@@ -13,6 +13,8 @@ class de_tax_liability_if_refundable_eitc(Variable):
         simulation = tax_unit.simulation
         refudable_branch = simulation.get_branch("de_refudable_eitc")
         refudable_branch.set_input(
-            "de_tax_unit_eitc_refundable", period, np.ones((tax_unit.count,), dtype=bool)
+            "de_tax_unit_eitc_refundable",
+            period,
+            np.ones((tax_unit.count,), dtype=bool),
         )
         return refudable_branch.calculate("de_income_tax", period)

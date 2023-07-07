@@ -10,7 +10,9 @@ class de_tax_unit_eitc_refundable(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        if parameters(period).simulation.de.branch_to_determine_if_refundable_eitc:
+        if parameters(
+            period
+        ).simulation.de.branch_to_determine_if_refundable_eitc:
             # determine federal itemization behavior by comparing tax liability
             de_tax_liability_if_refundable_eitc = tax_unit(
                 "de_tax_liability_if_refundable_eitc", period
@@ -18,6 +20,12 @@ class de_tax_unit_eitc_refundable(Variable):
             tax_liability_if_not_itemizing = tax_unit(
                 "de_tax_liability_if_non_refundable_eitc", period
             )
-            return de_tax_liability_if_refundable_eitc < tax_liability_if_not_itemizing
+            return (
+                de_tax_liability_if_refundable_eitc
+                < tax_liability_if_not_itemizing
+            )
         else:
-            return de_tax_liability_if_refundable_eitc >= tax_liability_if_not_itemizing
+            return (
+                de_tax_liability_if_refundable_eitc
+                >= tax_liability_if_not_itemizing
+            )
