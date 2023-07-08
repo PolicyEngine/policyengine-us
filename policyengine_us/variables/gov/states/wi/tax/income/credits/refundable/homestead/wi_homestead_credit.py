@@ -17,4 +17,15 @@ class wi_homestead_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        return 0
+        p = parameters(period).gov.states.wi.tax.income.credits.refundable
+        uncapped_ptax = tax_unit("wi_homestead_property_tax", period)
+        capped_ptax = min_(p.homestead.property_tax.max, uncapped_ptax)
+        hinc = tax_unit("wi_homestead_income", period)
+        phase_out = where(
+            hinc <= p.homestead.phase_out.start,
+            0,
+            (hinc - p.homestead.phase_out.start) * p.homestead.phase_out.rate,
+        )
+        hcredit = max_(0, capped_ptax - phase_out) * p.homestead.rate
+        eligible = tax_unit("wi_homestead_eligible", period)
+        return eligible * hcredit
