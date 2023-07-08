@@ -20,8 +20,14 @@ class me_itemized_deductions_pre_phaseout(Variable):
         # Get the Maine itemizing deduction parameters.
         p = parameters(period).gov.states.me.tax.income.deductions.itemized
 
-        # Get federal itemized deductions.
-        deduction = tax_unit("taxable_income_deductions_if_itemizing", period)
+        # Get federal itemized deductions, minus state and local income tax (Section 3A).
+        fed_p = parameters(period).gov.irs.deductions
+        itemized_deductions = [
+            deduction
+            for deduction in fed_p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        deduction = add(tax_unit, period, itemized_deductions)
 
         # Get medical (and dental) expenses.
         medical_expenses = tax_unit("medical_expense_deduction", period)

@@ -27,4 +27,5 @@ class me_deductions(Variable):
         phaseout_amount = max_deduction * phaseout_percent
 
         # Calculate the deduction after phaseout (Line 8).
+        # Note this cannot be negative because phaseout_percent is capped at 1.
         return max_deduction - phaseout_amount
