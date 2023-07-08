@@ -12,9 +12,14 @@ class wi_property_tax_credit(Variable):
         "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=17"
         "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=2"
         "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf#page=17"
-        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf#page=19"
     )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        return 0
+        rent = add(tax_unit, period, ["rent"])
+        ptax = add(tax_unit, period, ["real_estate_taxes"])
+        p = parameters(period).gov.states.wi.tax.income
+        ptc = p.credits.nonrefundable.propety_tax
+        proptax = ptax + rent * ptc.rent_fraction
+        return min_(ptc.max, proptax * ptc.rate)
