@@ -3592,3 +3592,9 @@
     - Metadata to incomplete parameter subtrees indicating they don't affect economy
       and household.
   date: 2023-07-06 18:49:09
+- bump: patch
+  changes:
+    fixed:
+    - Use eitc_relevant_investment_income variable in eitc_eligible formula to eliminate
+      code duplication.
+  date: 2023-07-08 14:58:40
