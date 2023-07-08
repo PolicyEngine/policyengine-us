@@ -9,6 +9,7 @@
         irs_gross_income: 25_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
       person2:
         is_tax_unit_spouse: true
@@ -16,6 +17,7 @@
         irs_gross_income: 25_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
     spm_units:
       spm_unit:
@@ -42,6 +44,7 @@
         irs_gross_income: 25_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
       person2:
         is_tax_unit_spouse: true
@@ -49,6 +52,7 @@
         irs_gross_income: 25_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
     spm_units:
       spm_unit:
@@ -75,6 +79,7 @@
         irs_gross_income: 150_001
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
       person2:
         is_tax_unit_spouse: true
@@ -82,6 +87,7 @@
         irs_gross_income: 0
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
     spm_units:
       spm_unit:
@@ -108,6 +114,7 @@
         irs_gross_income: 50_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 1_501
       person2:
         is_tax_unit_spouse: true
@@ -115,6 +122,7 @@
         irs_gross_income: 0
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 1_500
     spm_units:
       spm_unit:
@@ -141,6 +149,43 @@
         irs_gross_income: 150_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
+        earned_income: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 0
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        taxable_social_security: 0
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_pension_retirement_exclusion: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion: 37_500
+
+- name: Subtracting SS makes unit income eligible, can exclude 25% of married filing jointly with income in ($125k,150k].
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 150_001
+        taxable_interest_income: 0
+        taxable_pension_income: 0
+        taxable_social_security: 1
         earned_income: 0
       person2:
         is_tax_unit_spouse: true
@@ -175,6 +220,7 @@
         irs_gross_income: 150_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
     spm_units:
       spm_unit:
@@ -202,6 +248,7 @@
         irs_gross_income: 150_000
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
       person2:
         is_tax_unit_spouse: true
@@ -209,6 +256,7 @@
         irs_gross_income: 0
         taxable_interest_income: 0
         taxable_pension_income: 0
+        taxable_social_security: 0
         earned_income: 0
     spm_units:
       spm_unit:

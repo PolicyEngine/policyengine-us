@@ -18,10 +18,6 @@ class nj_other_retirement_income_exclusion(Variable):
         # Get the pension/retirement exclusion portion of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
 
-        # Pension exclusion available for household head and/or spouse if eligible based on age.
-        eligible_head = tax_unit("age_head", period) >= p.age_threshold
-        eligible_spouse = tax_unit("age_spouse", period) >= p.age_threshold
-
         # Get the total income (line 27) for head and spouse above age threshold.
         person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
@@ -29,22 +25,25 @@ class nj_other_retirement_income_exclusion(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
-        eligible_member = (is_head * eligible_head) | (
-            is_spouse * eligible_spouse * joint
-        )
+        age_eligible = person("age", period) >= p.age_threshold
+        eligible_head = age_eligible * is_head
+        eligible_spouse = age_eligible * is_spouse
         gross_income = person("irs_gross_income", period)
         exempt_interest_income = person("tax_exempt_interest_income", period)
         exempt_pension_income = person("tax_exempt_pension_income", period)
         fed_taxable_ss = person("taxable_social_security", period)
-        qualifying_income = tax_unit.sum(
-            where(
-                eligible_member,
-                gross_income
-                - exempt_interest_income
-                - exempt_pension_income
-                - fed_taxable_ss,
-                0,
-            )
+        person_qualifying_income = (
+            gross_income
+            - exempt_interest_income
+            - exempt_pension_income
+            - fed_taxable_ss
+        )
+        qualifying_income = where(
+            joint,
+            tax_unit.sum(
+                person_qualifying_income * (eligible_head + eligible_spouse)
+            ),
+            tax_unit.sum(person_qualifying_income * eligible_head),
         )
 
         # Determine income eligibility.
