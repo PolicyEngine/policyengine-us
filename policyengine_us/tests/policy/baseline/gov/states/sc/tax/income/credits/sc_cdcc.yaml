@@ -1,0 +1,87 @@
+- name: One cdcc eligible person, with $1000 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 1_000
+    count_cdcc_eligible: 1
+  output:
+    sc_cdcc: 70
+    # 1,000*0.07 = 70
+
+- name: One cdcc eligible person, with $4000 spending on federal child care expense
+  period: 2021
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 4_000
+    count_cdcc_eligible: 1
+  output:
+    sc_cdcc: 210
+    # 4,000*0.07 = 280 can not be greater than 210
+
+- name: Two cdcc eligible people, with $7000 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 7_000
+    count_cdcc_eligible: 2
+  output:
+    sc_cdcc: 420
+    # 7,000*0.07 = 490 can not be greater than 420
+
+- name: Four cdcc eligible people, with $7000 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 7_000
+    count_cdcc_eligible: 4
+  output:
+    sc_cdcc: 420
+    # 7,000*0.07 = 490 can not be greater than 420
+
+- name: Two cdcc eligible people, with $18_000 spending on federal child care expense
+  period: 2021
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 18_000
+    count_cdcc_eligible: 2
+  output:
+    sc_cdcc: 420
+    # 18,000*0.07 = 1260 cannot be greater than 420
+
+- name: No cdcc eligible people, with $0 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 0
+    count_cdcc_eligible: 0
+  output:
+    sc_cdcc: 0
+
+- name: No cdcc eligible people, with $4000 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 4_000
+    count_cdcc_eligible: 0
+  output:
+    sc_cdcc: 0
+
+- name: One cdcc eligible person, with $9000 spending on federal child care expense
+  period: 2020
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 9_000
+    count_cdcc_eligible: 1
+  output:
+    sc_cdcc: 210
+    # 1,000*0.07 = 70
+
+- name: One cdcc eligible person, with $9000 spending on federal child care expense
+  period: 2022
+  input:
+    state_code: SC
+    tax_unit_childcare_expenses: 9_000
+    count_cdcc_eligible: 1
+  output:
+    sc_cdcc: 210
+    # 9,000*0.07 = 630 can not be greater than 210

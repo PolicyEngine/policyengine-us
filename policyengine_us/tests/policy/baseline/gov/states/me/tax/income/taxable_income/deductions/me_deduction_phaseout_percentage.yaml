@@ -1,0 +1,159 @@
+- name: Phaseout percent is zero outside of Maine.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    me_agi: 100_000
+    filing_status: SINGLE
+  output:
+    me_deduction_phaseout_percentage: 0
+
+- name: Phaseout percent is zero for single filer with income before phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 85_849
+    filing_status: SINGLE
+  output:
+    me_deduction_phaseout_percentage: 0
+
+- name: Phaseout percent is zero for separate filer with income before phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 85_849
+    filing_status: SEPARATE
+  output:
+    me_deduction_phaseout_percentage: 0
+
+- name: Phaseout percent is zero for head of household filer with income before phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 128_749
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    me_deduction_phaseout_percentage: 0
+
+- name: Phaseout percent is zero for joint filer with income before phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 171_699
+    filing_status: JOINT
+  output:
+    me_deduction_phaseout_percentage: 0
+
+- name: Phaseout percent is zero for widow filer with income before phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 171_699
+    filing_status: WIDOW
+  output:
+    me_deduction_phaseout_percentage: 0
+
+- name: Phaseout percent is (income - phaseout_start) / phaseout_width for single filer with income above phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 100_850
+    filing_status: SINGLE
+  output:
+    me_deduction_phaseout_percentage: 0.2 # (100,850-85,850)/75,000
+
+- name: Phaseout percent is (income - phaseout_start) / phaseout_width for separate filer with income above phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 100_850
+    filing_status: SEPARATE
+  output:
+    me_deduction_phaseout_percentage: 0.2 # (100,850-85,850)/75,000
+
+- name: Phaseout percent is (income - phaseout_start) / phaseout_width for head of household filer with income above phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 146_750
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    me_deduction_phaseout_percentage: 0.16 # (146,750-128,750)/112,500
+
+- name: Phaseout percent is (income - phaseout_start) / phaseout_width for joint filer with income above phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 195_700
+    filing_status: JOINT
+  output:
+    me_deduction_phaseout_percentage: 0.16 # (195,700-171,700)/150,000
+
+- name: Phaseout percent is (income - phaseout_start) / phaseout_width for widow filer with income above phaseout start.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 195_700
+    filing_status: WIDOW
+  output:
+    me_deduction_phaseout_percentage: 0.16 # (195,700-171,700)/150,000
+
+- name: Phaseout percent is capped at 1.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 160_851
+    filing_status: SINGLE
+  output:
+    me_deduction_phaseout_percentage: 1
+
+- name: Phaseout percent is capped at 1.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 160_851
+    filing_status: SEPARATE
+  output:
+    me_deduction_phaseout_percentage: 1
+
+- name: Phaseout percent is capped at 1.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 241_251
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    me_deduction_phaseout_percentage: 1
+
+- name: Phaseout percent is capped at 1.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 321_701
+    filing_status: JOINT
+  output:
+    me_deduction_phaseout_percentage: 1
+
+- name: Phaseout percent is capped at 1.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_agi: 321_701
+    filing_status: WIDOW
+  output:
+    me_deduction_phaseout_percentage: 1
