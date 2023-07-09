@@ -2,7 +2,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    wi_agi: 900
+    adjusted_gross_income: 900
     tax_unit_dependents: 0
     state_code: WI
   output:
@@ -12,7 +12,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    wi_agi: 900
+    adjusted_gross_income: 900
     tax_unit_dependents: 1
     state_code: WI
   output:
