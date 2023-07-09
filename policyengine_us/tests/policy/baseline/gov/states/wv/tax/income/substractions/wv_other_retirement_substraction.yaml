@@ -1,0 +1,17 @@
+- name: West Virgina other retirement subtraction if combined amounts of retirement income received from The West Virginia Teachers' Retirement System 
+        and/or The West Virginia Public Employees' Retirement System and from Federal Retirement is more than $2000.
+  period: 2022
+  input:
+    state_code: WV
+    wv_retirement_income: 3_000
+  output:
+    wv_other_retirement_substraction: 2_000
+
+- name: West Virgina other retirement subtraction if combined amounts of retirement income received from The West Virginia Teachers' Retirement System 
+        and/or The West Virginia Public Employees' Retirement System and from Federal Retirement is less than $2000.
+  period: 2022
+  input:
+    state_code: WV
+    wv_retirement_income: 1_000
+  output:
+    wv_other_retirement_substraction: 1_000
