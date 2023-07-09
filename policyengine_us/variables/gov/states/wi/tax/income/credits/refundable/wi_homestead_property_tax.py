@@ -8,13 +8,14 @@ class wi_homestead_property_tax(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf#page=3"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=27"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf#page=3"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf#page=28"
-        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleH.pdf#page=2"
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleH.pdf#page=2"
     )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        return 0
+        ptax_owner = add(tax_unit, period, ["real_estate_taxes"])
+        rent = add(tax_unit, period, ["rent"])
+        p = paramters(period).gov.states.wi.tax.income.credits.refundable
+        ptax_renter = rent * p.homestead.property_tax.rent_ratio
+        return ptax_owner + ptax_renter
