@@ -38,7 +38,7 @@ class de_elderly_or_disabled_income_exclusion(Variable):
 
         # Get the individual filer's income.
         is_head = person("is_tax_unit_head", period)
-        
+
         # Get the tax unit income
         income = person("earned_income", period)
         head_income = tax_unit.sum(is_head * income)
