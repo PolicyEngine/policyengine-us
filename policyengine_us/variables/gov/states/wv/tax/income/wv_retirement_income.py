@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wv_taxable_income(Variable):
+class wv_retirement_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "West Virginia other retirement subtraction"
