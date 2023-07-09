@@ -5,6 +5,132 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.358.0] - 2023-07-08 15:17:06
+
+### Added
+
+- Add logic for Maine itemized deductions.
+
+## [0.357.2] - 2023-07-08 14:58:40
+
+### Fixed
+
+- Use eitc_relevant_investment_income variable in eitc_eligible formula to eliminate code duplication.
+
+## [0.357.1] - 2023-07-06 18:49:09
+
+### Added
+
+- Metadata to incomplete parameter subtrees indicating they don't affect economy and household.
+
+## [0.357.0] - 2023-07-06 04:52:15
+
+### Added
+
+- Pennsylvania TANF age eligibility.
+
+## [0.356.0] - 2023-07-04 12:42:02
+
+### Added
+
+- Virginia military benefit subtraction.
+
+## [0.355.0] - 2023-07-04 12:33:34
+
+### Added
+
+- Pennsylvania TANF resource limit.
+
+## [0.354.0] - 2023-07-04 02:35:17
+
+### Added
+
+- Vermont taxable income.
+
+## [0.353.0] - 2023-07-04 00:59:54
+
+### Added
+
+- 2021 NH exemption parameter values.
+
+## [0.352.0] - 2023-07-04 00:13:18
+
+### Added
+
+- Subtraction of exemptions in calculation of NH taxable income.
+
+### Fixed
+
+- Calculation of NH old-age exemption amount.
+
+## [0.351.0] - 2023-07-03 22:17:34
+
+### Added
+
+- New Hampshire Exemptions.
+
+## [0.350.1] - 2023-07-03 15:11:47
+
+### Fixed
+
+- Array divide-by-zero warnings in hud_income_level formula.
+
+## [0.350.0] - 2023-07-03 04:00:22
+
+### Added
+
+- South Carolina CDCC.
+
+## [0.349.0] - 2023-07-03 03:53:37
+
+### Added
+
+- Indiana unified elderly tax credit.
+
+## [0.348.2] - 2023-07-03 03:49:40
+
+### Fixed
+
+- Lowercase Age variable.
+
+## [0.348.1] - 2023-07-03 03:23:08
+
+### Fixed
+
+- Updated Colorado SNAP parameters.
+- Deduct child support from SNAP net income in all states.
+- Deduct child support from SNAP gross income in certain states previously deducted from net income only.
+
+## [0.348.0] - 2023-07-03 01:54:59
+
+### Added
+
+- South Carolina Senior Exemption.
+
+## [0.347.1] - 2023-07-03 01:44:43
+
+### Fixed
+
+- Array divide-by-zero warnings in residential_efficiency_electrification_rebate formula.
+
+## [0.347.0] - 2023-07-03 01:41:44
+
+### Added
+
+- South Carolina Earned Income Tax Credit.
+
+## [0.346.4] - 2023-07-03 01:28:34
+
+### Fixed
+
+- Array divide-by-zero warnings in ssi_unearned_income_deemed_from_ineligible_parent formula.
+
+## [0.346.3] - 2023-07-03 01:25:42
+
+### Fixed
+
+- Array divide-by-zero warnings in tax_unit_childcare_expenses formula.
+
 ## [0.346.2] - 2023-07-01 20:40:02
 
 ### Fixed
@@ -4156,6 +4282,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.358.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.357.2...0.358.0
+[0.357.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.357.1...0.357.2
+[0.357.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.357.0...0.357.1
+[0.357.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.356.0...0.357.0
+[0.356.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.355.0...0.356.0
+[0.355.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.354.0...0.355.0
+[0.354.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.353.0...0.354.0
+[0.353.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.352.0...0.353.0
+[0.352.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.351.0...0.352.0
+[0.351.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.350.1...0.351.0
+[0.350.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.350.0...0.350.1
+[0.350.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.349.0...0.350.0
+[0.349.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.348.2...0.349.0
+[0.348.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.348.1...0.348.2
+[0.348.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.348.0...0.348.1
+[0.348.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.347.1...0.348.0
+[0.347.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.347.0...0.347.1
+[0.347.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.4...0.347.0
+[0.346.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.3...0.346.4
+[0.346.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.2...0.346.3
 [0.346.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.1...0.346.2
 [0.346.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.346.0...0.346.1
 [0.346.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.345.12...0.346.0
