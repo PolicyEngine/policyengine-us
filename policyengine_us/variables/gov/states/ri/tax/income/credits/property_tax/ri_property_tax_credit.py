@@ -18,7 +18,7 @@ class ri_property_tax_credit(Variable):
         num_household = tax_unit("tax_unit_size", period)
         credit = where(
             num_household == 1,
-            p.rate1.calc(agi) * agi,
-            p.rate2.calc(agi) * agi,
+            p.rate.one_person.calc(agi) * agi,
+            p.rate.multiple_people.calc(agi) * agi,
         )
         return min_(credit, p.max_amount)
