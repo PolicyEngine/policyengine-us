@@ -36,39 +36,24 @@ class OutputDataset(Dataset):
         )
 
         sim.default_calculation_period = self.output_year
-
-        PERSON_VARIABLES = [
-            "age",
-            "person_household_id",
-        ]
-
-        HOUSEHOLD_VARIABLES = [
-            "household_id",
-            "household_weight",
-            "state_code",
-        ]
-
-        PROGRAM_VARIABLES = [
+        VARIABLES = [
             "income_tax",
+            "employment_income",
+            "adjusted_gross_income",
+            "snap",
+            "social_security",
+            "ssi",
+            "household_count_people",
+            "household_weight",
+            "household_id",
         ]
 
         variables = sim.tax_benefit_system.variables
 
-        person = pd.DataFrame()
-
-        for variable in PERSON_VARIABLES:
-            person[variable] = sim.calculate(variable, map_to="person").values
-
         household = pd.DataFrame()
 
-        for variable in HOUSEHOLD_VARIABLES:
-            household[variable] = sim.calculate(variable).values
-
-        for variable in PROGRAM_VARIABLES:
+        for variable in VARIABLES:
             if variables[variable].entity.key != "household":
-                person[variable] = sim.calculate(
-                    variable, map_to="person"
-                ).values
                 household[variable] = sim.calculate(
                     variable, map_to="household"
                 ).values
@@ -80,13 +65,8 @@ class OutputDataset(Dataset):
             else:
                 household[variable] = sim.calculate(variable).values
 
-        person["person_household_id"] = sim.calculate(
-            "household_id", map_to="person"
-        ).values
-
         self.save_dataset(
             dict(
-                person=person,
                 household=household,
             )
         )
