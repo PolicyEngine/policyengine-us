@@ -4,13 +4,13 @@ from policyengine_us.model_api import *
 class mi_interest_dividends_capital_gains_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan standard deduction"
+    label = "Michigan interest, dividends, and capital gains deduction"
     unit = USD
     definition_period = YEAR
-    documentation = "Michigan interest, dividends, and capital gains deduction for age above 77."
+    documentation = "Michigan interest, dividends, and capital gains deduction of qualifying age."
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf?rev=86a928564e3f42449c531309673f5da7&hash=7147C48E7C9B1B8171B72DC34A66642A",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
     )
     defined_for = StateCode.MI
 

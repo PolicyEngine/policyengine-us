@@ -55,6 +55,16 @@
   output:
     mi_standard_deduction_and_pension_benefit: 20_000
 
+- name: 2022 single filer who is at the standard deduction age threshold, and eligible for an increase
+  period: 2022
+  input:
+    state_code: MI
+    filing_status: SINGLE
+    greater_age_head_spouse: 72
+    social_security_exempt_retirement_benefits: 3_000
+  output: # 20000 + 15000
+    mi_standard_deduction_and_pension_benefit: 35_000
+
 - name: 2022 joint filer and their spouse are not at the age threshold
   period: 2022
   input:
