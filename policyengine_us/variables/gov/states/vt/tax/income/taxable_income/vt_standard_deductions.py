@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class vt_standard_deduction(Variable):
+class vt_standard_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "VT standard deduction"
