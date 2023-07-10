@@ -1,10 +1,19 @@
-description: Ohio Senior Citizen Credit AGI Limit
-values:
-  2021-01-01: 100_000
+description: Ohio Senior Citizen Credit AGI amount
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 50
+  - threshold:
+      2021-01-01: 100_000
+    amount:
+      2021-01-01: 0
 metadata:
-  unit: currency-USD
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
   period: year
-  label: OH Senior Citizen Credit
+  type: single_amount
+  label: OH Senior Citizen Credit amount
   reference:
     - title: Ohio 2021 Instructions for Filing Original and Amended - Line 4 – Senior Citizen Credit
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
