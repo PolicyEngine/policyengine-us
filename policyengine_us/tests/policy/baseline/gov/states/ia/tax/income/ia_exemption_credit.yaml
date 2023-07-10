@@ -19,7 +19,7 @@
         members: [person1, person2]
         state_code: IA
   output:
-    ia_exemption_credit: 100  # = 40 + 20 + 40
+    ia_exemption_credit: 140  # = 40(adult) + 40(hoh) + 20(child) + 40(aged)
 
 - name: IA exemption credit unit test 2
   period: 2022
