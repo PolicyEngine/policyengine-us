@@ -17,10 +17,8 @@ class wi_caploss(Variable):
         # calculate Schedule WD, Line 18
         gains = ["long_term_capital_gains", "short_term_capital_gains"]
         gains_pos = add(tax_unit, period, gains)
-        print("\n>>> gains", gains_pos)
         losses = ["long_term_capital_losses", "short_term_capital_losses"]
         losses_pos = add(tax_unit, period, losses)
-        print(">>> losses", losses_pos)
         netcg = gains_pos - losses_pos
         # return Schedule WD, Line 28, as a positive amount as on form
         p = parameters(period).gov.states.wi.tax.income.additions

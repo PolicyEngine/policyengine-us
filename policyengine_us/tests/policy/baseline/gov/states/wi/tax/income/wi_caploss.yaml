@@ -9,3 +9,15 @@
     state_code: WI
   output:
     wi_caploss: 3
+
+- name: wi_caploss unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: 0
+    short_term_capital_losses: 0
+    long_term_capital_gains: 0
+    long_term_capital_losses: 900
+    state_code: WI
+  output:
+    wi_caploss: 500
