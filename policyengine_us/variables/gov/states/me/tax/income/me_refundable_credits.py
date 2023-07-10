@@ -9,4 +9,4 @@ class me_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    adds = ["me_refundable_child_care_credit", "me_eitc"]
+    adds = "gov.states.me.tax.income.credits.refundable"
