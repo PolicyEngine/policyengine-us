@@ -38,29 +38,32 @@ class ga_agi_exclusion(Variable):
 
         ## head exclusion
         head = person("is_tax_unit_head", period)
+        head_high_exclusion = where(
+            (head & age_high), min_(retirement_income, cap_high_age), 0
+        )
         head_exclusion = tax_unit.sum(
             where(
                 head & (disabled | age_low),
                 min_(retirement_income, cap_low_age),
-                where(
-                    (head & age_high), min_(retirement_income, cap_high_age), 0
-                ),
+                head_high_exclusion,
             )
         )
 
         ## spouse exclusion
         spouse = person("is_tax_unit_spouse", period)
+        spouse_high_exclusion = where(
+            (filing_status == status.JOINT) & (spouse & age_high),
+            min_(retirement_income, cap_high_age),
+            0,
+        )
+
         spouse_exclusion = tax_unit.sum(
             where(
                 (filing_status == status.JOINT)
                 & spouse
                 & (disabled | age_low),
                 min_(retirement_income, cap_low_age),
-                where(
-                    (filing_status == status.JOINT) & (spouse & age_high),
-                    min_(retirement_income, cap_high_age),
-                    0,
-                ),
+                spouse_high_exclusion,
             )
         )
 
