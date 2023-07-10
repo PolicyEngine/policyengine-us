@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_itemized_deductions_indiv(Variable):
+class va_itemized_deductions_spouse(Variable):
     value_type = float
     entity = Person
-    label = "Virginia itemized deduction for filling separately"
+    label = "Virginia itemized deduction for spouse when filling separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,4 +15,4 @@ class va_itemized_deductions_indiv(Variable):
 
     def formula(person, period, parameters):
         unit_deds = person.tax_unit("va_itemized_deductions_joint", period)
-        return unit_deds * person("ia_prorate_fraction", period)
+        return unit_deds * (1 - person("va_prorate_fraction_head", period))
