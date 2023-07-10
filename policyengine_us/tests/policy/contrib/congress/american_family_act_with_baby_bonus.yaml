@@ -1,0 +1,6 @@
+- name: WFTCA for a single filer
+  period: 2023
+  input:
+    gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.SINGLE: 2_000
+  output:
+    bonus_guaranteed_deduction: 2_000
