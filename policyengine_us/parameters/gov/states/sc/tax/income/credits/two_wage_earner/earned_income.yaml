@@ -1,0 +1,18 @@
+description: South Carolina counts these income sources as earned income.
+values:
+  2021-01-01:
+    - employment_income  
+    # - commisions
+    # - sub_pay 
+    - self_employment_income  
+    - qualified_business_income  
+    - partnership_s_corp_income 
+    - farm_income 
+    
+metadata:
+  unit: list
+  reference:
+    - title: Instructions - 2021 SC1040 - South Carolina Individual Income Tax Return
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=22
+    - title: SC Legal Code |  Section 12-6-3330
+      href: https://www.scstatehouse.gov/code/t12c006.php
