@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 
 
-def create_eitc_winship_reform(parameters, period):
-    if not parameters(period).gov.contrib.winship:
+def create_eitc_winship_reform(parameters, period, bypass=False):
+    if not bypass and not parameters(period).gov.contrib.winship:
         return None
 
     # Compute EITC under filer_earned = tax_unit_head_earned
@@ -70,3 +70,5 @@ def create_eitc_winship_reform(parameters, period):
             self.update_variable(earned_income_tax_credit)
 
     return winship_eitc_reform
+
+winship_reform = create_eitc_winship_reform(None, None, bypass=True)
