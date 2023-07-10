@@ -8,6 +8,7 @@ class va_other_additions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
+        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/",
+        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=24",
     )
     defined_for = StateCode.VA
