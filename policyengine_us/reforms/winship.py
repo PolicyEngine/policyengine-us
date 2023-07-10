@@ -71,4 +71,5 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
 
     return winship_eitc_reform
 
+
 winship_reform = create_eitc_winship_reform(None, None, bypass=True)
