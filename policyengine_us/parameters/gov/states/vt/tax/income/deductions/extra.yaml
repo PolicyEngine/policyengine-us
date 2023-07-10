@@ -1,0 +1,32 @@
+description: Vermont provides this extra standard deduction amount for each aged/blind head/spouse.
+metadata:
+  label: Vermont extra standard deduction amount for each aged/blind head/spouse
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: HOLD
+    href: HOLD
+  - title: HOLD
+    href: HOLD
+
+JOINT:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 1_050
+
+HEAD_OF_HOUSEHOLD:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 1_050
+
+WIDOW:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 1_050
+
+SINGLE:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 1_050
+
+SEPARATE:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 1_050

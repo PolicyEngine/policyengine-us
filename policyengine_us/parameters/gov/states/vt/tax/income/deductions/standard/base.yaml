@@ -1,0 +1,36 @@
+description: Vermont provides a base standard deduction of this amount.
+metadata:
+  label: VT base standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: HOLD
+      href: HOLD
+    - title: HOLD
+      href: HOLD
+    - title: HOLD
+      href: HOLD
+    - title: HOLD
+      href: HOLD
+JOINT:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 12_700
+  2022-01-01: 13_050
+HEAD_OF_HOUSEHOLD:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 9_500
+  2022-01-01: 9_800
+WIDOW:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 12_700
+  2022-01-01: 13_050
+SINGLE:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 6_350
+  2022-01-01: 6_500
+SEPARATE:
+  # Rose with inflation, not all dates documented.
+  2021-01-01: 6_350
+  2022-01-01: 6_500
