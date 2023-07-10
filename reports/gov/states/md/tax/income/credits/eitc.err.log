@@ -30,5 +30,13 @@ Cell [0;32mIn[3], line 3[0m
 [0;32m----> 3[0m sim [38;5;241m=[39m [43mMicrosimulation[49m[43m([49m[43mdataset_year[49m[38;5;241;43m=[39;49m[38;5;241;43m2020[39;49m[43m)[49m
 [1;32m      5[0m sim[38;5;241m.[39mcalc([38;5;124m"[39m[38;5;124mmd_eitc[39m[38;5;124m"[39m, period[38;5;241m=[39m[38;5;241m2022[39m)[38;5;241m.[39msum() [38;5;241m/[39m [38;5;241m1e6[39m
 
+File [0;32m~/work/policyengine-us/policyengine-us/policyengine_us/system.py:86[0m, in [0;36mMicrosimulation.__init__[0;34m(self, *args, **kwargs)[0m
+[1;32m     85[0m [38;5;28;01mdef[39;00m [38;5;21m__init__[39m([38;5;28mself[39m, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[0;32m---> 86[0m     [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__init__[39;49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+[1;32m     88[0m     reform [38;5;241m=[39m create_structural_reforms_from_parameters(
+[1;32m     89[0m         [38;5;28mself[39m[38;5;241m.[39mtax_benefit_system[38;5;241m.[39mparameters, [38;5;124m"[39m[38;5;124m2023-01-01[39m[38;5;124m"[39m
+[1;32m     90[0m     )
+[1;32m     91[0m     [38;5;28;01mif[39;00m reform [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+
 [0;31mTypeError[0m: __init__() got an unexpected keyword argument 'dataset_year'
 
