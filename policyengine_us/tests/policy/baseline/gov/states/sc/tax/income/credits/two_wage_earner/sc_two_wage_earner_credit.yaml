@@ -6,7 +6,7 @@
         is_tax_unit_head: true
         sc_gross_earned_income: 40_000
       person2:
-      is_tax_unit_spouse: true
+        is_tax_unit_spouse: true
         sc_gross_earned_income: 16_000
     tax_units:
       tax_unit:
@@ -92,4 +92,3 @@
     sc_two_wage_earner_credits: 126
     # less of (head or spouse income)*0.007 
     # 18_000* 0.007 = $126
-    
