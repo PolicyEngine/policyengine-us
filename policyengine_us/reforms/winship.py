@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 def create_eitc_winship_reform(parameters, period, bypass=False):
-    if not bypass and not parameters(period).gov.contrib.winship:
+    if not bypass and not parameters(period).gov.contrib.individual_eitc:
         return None
 
     # Compute EITC under filer_earned = tax_unit_head_earned
@@ -62,7 +62,11 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
             )
             spouse_eitc = spouse_only_branch.calculate("original_eitc", period)
 
-            return (agi < 100_000) * (head_eitc + spouse_eitc)
+            agi_limit = parameters(
+                period
+            ).gov.contrib.individual_eitc.agi_eitc_limit
+
+            return (agi < agi_limit) * (head_eitc + spouse_eitc)
 
     class winship_eitc_reform(Reform):
         def apply(self):
