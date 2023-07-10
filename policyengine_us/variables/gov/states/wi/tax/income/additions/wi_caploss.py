@@ -15,12 +15,14 @@ class wi_caploss(Variable):
 
     def formula(tax_unit, period, parameters):
         # calculate Schedule WD, Line 18
-        ltcg_pos = add(tax_unit, period, ["long_term_capital_gains"])
-        stcg_pos = add(tax_unit, period, ["short_term_capital_gains"])
-        ltcg_neg = add(tax_unit, period, ["long_term_capital_losses"])
-        stcg_neg = add(tax_unit, period, ["short_term_capital_losses"])
-        totcg = ltcg_pos + stcg_pos - ltcg_neg - stcg_neg
+        gains = ["long_term_capital_gains", "short_term_capital_gains"]
+        gains_pos = add(tax_unit, period, gains)
+        print("\n>>> gains", gains_pos)
+        losses = ["long_term_capital_losses", "short_term_capital_losses"]
+        losses_pos = add(tax_unit, period, losses)
+        print(">>> losses", losses_pos)
+        netcg = gains_pos - losses_pos
         # return Schedule WD, Line 28, as a positive amount as on form
         p = parameters(period).gov.states.wi.tax.income.additions
         limit = p.capital_loss.limit
-        return where(totcg < 0, min_(limit, -totcg), 0)
+        return where(netcg < 0, min_(limit, -netcg), 0)
