@@ -10,7 +10,10 @@ class vt_standard_deductions(Variable):
     documentation = (
         "Vermont standard deduction, including bonus for aged or blind."
     )
-    reference = "Hold"
+    reference = (
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf",  # Line4
+        "http://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(C)(ii)(iii)
+    )
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
