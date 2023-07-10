@@ -13,4 +13,13 @@ class va_itemized_deductions(Variable):
     )
     defined_for = StateCode.VA
 
-    adds = ["tax_liability_if_itemizing"]
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.deductions
+        itm_deds = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        va_itemized_deductions_less_salt = add(tax_unit, period, itm_deds)
+
+        return va_itemized_deductions_less_salt
