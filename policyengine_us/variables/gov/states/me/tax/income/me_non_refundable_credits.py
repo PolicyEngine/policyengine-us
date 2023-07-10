@@ -9,4 +9,4 @@ class me_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.ME
 
-    adds = "gov.states.me.tax.income.credits.refundable"
+    adds = "gov.states.me.tax.income.credits.non_refundable"
