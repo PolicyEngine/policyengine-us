@@ -8,8 +8,9 @@ class va_prorate_fraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/","§ 58.1-322.03.(1.a.)",
-        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=18"
+        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/",
+        "§ 58.1-322.03.(1.a.)",
+        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=18",
     )
     defined_for = StateCode.VA
 
@@ -19,5 +20,5 @@ class va_prorate_fraction(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
         head = person("is_tax_unit_head", period)
         head_agi = federal_agi * head
-        
+
         return head_agi / federal_agi

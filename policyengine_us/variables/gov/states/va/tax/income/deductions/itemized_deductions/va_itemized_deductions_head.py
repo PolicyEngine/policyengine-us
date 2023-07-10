@@ -8,8 +8,9 @@ class va_itemized_deductions_head(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/","§ 58.1-322.03.(1.a.)",
-        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=18"
+        "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/",
+        "§ 58.1-322.03.(1.a.)",
+        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=18",
     )
     defined_for = StateCode.VA
 
