@@ -1,5 +1,4 @@
-description: Combined amounts of retirement income reported on the federal return received from The West Virginia Teachers' Retirement System 
-             and/or The West Virginia Public Employees' Retirement System and from Federal Retirement must not exceed this amount.
+description: West Virginia provides a retirement subtraction of up to this maximum amount.
              
 values:
   2022-01-01: 2_000
@@ -7,7 +6,7 @@ values:
 metadata:
   period: year
   unit: currency-USD
-  label: West Virginia other retirement subtraction
+  label: West Virginia other retirement subtraction max amount
   reference:
   - title: Code of West Virginia §11-21-12 (c)(5)
     href: https://code.wvlegislature.gov/11-21-12/
