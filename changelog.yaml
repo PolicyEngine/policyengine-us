@@ -3613,3 +3613,9 @@
     added:
     - Integrate Maine income tax into net income.
   date: 2023-07-10 12:24:29
+- bump: patch
+  changes:
+    fixed:
+    - Array divide-by-zero warnings in household/spmunit income decile variable tests
+      by moving the tests.
+  date: 2023-07-10 18:16:02
