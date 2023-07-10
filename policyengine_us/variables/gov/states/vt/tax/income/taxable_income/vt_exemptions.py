@@ -7,7 +7,10 @@ class vt_exemptions(Variable):
     label = "Vermont income exemptions"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html"
+    reference = (
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf",
+        "http://legislature.vermont.gov/statutes/section/32/151/05811",
+    )
     defined_for = StateCode.VT
 
     adds = ["vt_personal_exemptions"]
