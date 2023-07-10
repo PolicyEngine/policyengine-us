@@ -20,10 +20,7 @@ class ga_exemptions(Variable):
 
         # Personal Exemptions
         person = tax_unit.members
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        num_exemptions = tax_unit.sum(head + spouse)
-        personal_exemptions = num_exemptions * p.personal[filing_status]
+        personal_exemptions = p.personal[filing_status]
 
         # Dependent exemptions
         dependents = tax_unit(
