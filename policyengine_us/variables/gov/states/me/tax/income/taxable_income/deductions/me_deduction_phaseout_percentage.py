@@ -1,13 +1,16 @@
 from policyengine_us.model_api import *
 
 
-class me_deduction(Variable):
+class me_deduction_phaseout_percentage(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maine deduction"
+    label = "Maine deduction phaseout percentage"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf"
+    reference = (
+        "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html",
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_item_stand_%20ded_phaseout_wksht.pdf",
+    )
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
@@ -25,15 +28,6 @@ class me_deduction(Variable):
         phaseout_start = p.start[filing_status]
         excess = max_(me_agi - phaseout_start, 0)  # Line 3
         phaseout_width = p.width[filing_status]  # Line 4
-        phaseout_percent = min_(1, excess / phaseout_width)  # Line 5
 
-        # Get their deduction prior to phaseout. Max of itemized and standard (Line 6)
-        max_deduction = max_(
-            tax_unit("me_itemized_deductions", period),
-            tax_unit("me_standard_deduction", period),
-        )
-
-        # Calculate the phaseout amount (Line 7)
-        phaseout_amount = max_deduction * phaseout_percent
-
-        return max_deduction - phaseout_amount  # Line 8
+        # Calculate the phaseout percent (Line 5)
+        return min_(1, excess / phaseout_width)
