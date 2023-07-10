@@ -51,6 +51,7 @@ def create_eitc_winship_reform(parameters, period, bypass=False):
             head_only_branch.set_input(
                 "filer_earned", period, filer_earned_head_only
             )
+            # Phase out with respect to individual earned income, instead of AGI.
             head_only_branch.set_input(
                 "adjusted_gross_income", period, filer_earned_head_only
             )
