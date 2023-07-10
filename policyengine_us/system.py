@@ -37,12 +37,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         # We initialize our tax and benefit system with the general constructor
         super().__init__(entities)
 
-        print("Initializing system")
-
         reform = create_structural_reforms_from_parameters(
             self.parameters, "2023-01-01"
         )
-        print("Created structural reforms")
         if reform is not None:
             self.apply_reform(reform)
 
