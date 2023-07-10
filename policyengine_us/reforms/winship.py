@@ -2,7 +2,10 @@ from policyengine_us.model_api import *
 
 
 def create_eitc_winship_reform(parameters, period, bypass=False):
-    if not bypass and not parameters(period).gov.contrib.individual_eitc:
+    if (
+        not bypass
+        and not parameters(period).gov.contrib.individual_eitc.enabled
+    ):
         return None
 
     # Compute EITC under filer_earned = tax_unit_head_earned

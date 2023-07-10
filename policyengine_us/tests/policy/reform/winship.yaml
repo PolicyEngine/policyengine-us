@@ -3,6 +3,7 @@
   absolute_error_margin: 10
   reforms: policyengine_us.reforms.winship.winship_reform
   input:
+    gov.contrib.individual_eitc.agi_eitc_limit: 100_000
     people:
       head:
         employment_income: 20_000
