@@ -16,7 +16,7 @@ class mi_standard_allowance(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.credits.home_heating_credit.standard.allowance
+        ).gov.states.mi.tax.income.credits.home_heating_credit.standard_allowance
         # determine count of exemption
         exemption_count = tax_unit("exemption_count", period)
         mi_taxable_income = tax_unit("mi_taxable_income", period)
