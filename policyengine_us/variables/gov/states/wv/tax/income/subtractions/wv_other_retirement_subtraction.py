@@ -15,4 +15,4 @@ class wv_other_retirement_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.other_retirement
-        return min(retirement_income, p.amount)
+        return min(retirement_income, p.max_amount)
