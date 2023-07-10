@@ -14,5 +14,5 @@ class de_eitc(Variable):
     def formula(tax_unit, period, parameters):
         refundable_eitc = tax_unit("de_refundable_eitc", period)
         non_refundable_eitc = tax_unit("de_non_refundable_eitc", period)
-        refundability = tax_unit("de_tax_unit_eitc_refundable", period)
-        return where(refundability, refundable_eitc, non_refundable_eitc)
+        claims_refundable = tax_unit("de_claims_refundable_eitc", period)
+        return where(claims_refundable, refundable_eitc, non_refundable_eitc)

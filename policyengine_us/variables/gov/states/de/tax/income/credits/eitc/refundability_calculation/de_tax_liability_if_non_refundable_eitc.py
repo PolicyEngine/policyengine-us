@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_core.tracers import SimpleTracer
 
 
 class de_tax_liability_if_non_refundable_eitc(Variable):
@@ -14,7 +13,7 @@ class de_tax_liability_if_non_refundable_eitc(Variable):
         simulation = tax_unit.simulation
         non_refundable_branch = simulation.get_branch("de_non_refundable_eitc")
         non_refundable_branch.set_input(
-            "de_tax_unit_eitc_refundable",
+            "de_claims_refundable_eitc",
             period,
             np.zeros((tax_unit.count,), dtype=bool),
         )

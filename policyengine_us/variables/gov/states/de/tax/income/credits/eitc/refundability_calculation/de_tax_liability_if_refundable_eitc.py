@@ -13,7 +13,7 @@ class de_tax_liability_if_refundable_eitc(Variable):
         simulation = tax_unit.simulation
         refundable_branch = simulation.get_branch("de_refundable_eitc")
         refundable_branch.set_input(
-            "de_tax_unit_eitc_refundable",
+            "de_claims_refundable_eitc",
             period,
             np.ones((tax_unit.count,), dtype=bool),
         )
