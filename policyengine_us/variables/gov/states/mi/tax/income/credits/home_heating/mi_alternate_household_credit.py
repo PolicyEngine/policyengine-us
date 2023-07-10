@@ -17,15 +17,22 @@ class mi_alternate_household_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.credits.home_heating_credit.standard.allowance
-
+        ).gov.states.mi.tax.income.credits.home_heating_credit
         mi_household_resources = tax_unit("mi_household_resources",period)
 
         # determine heating cost
         heating_cost=tax_unit("heating_cost",period)
 
+        #calculate alternate credit (tax form line 42)
+        alternate_credit= min(p.alternate_credit.alternate_credit_upperlimit,heating_cost)
+
+        #calculate alternate credit difference (tax form line 44)
+        difference= max(
+            (alternate_credit - mi_household_resources * p.total_household_resources.total_household_resources_rate_alternate)
+            ,0)
+
         # determine mi_alternate_household_credit
-        return p.alternate_credit_rate * max((min(p.alternate_credit_upperlimit,heating_cost)-mi_household_resources * p.total_household_resources_rate_alternate),0)
+        return p.alternate_credit.alternate_credit_rate * difference
        
 
 

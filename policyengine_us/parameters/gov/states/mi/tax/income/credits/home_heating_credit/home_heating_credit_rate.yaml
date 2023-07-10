@@ -1,10 +1,13 @@
-description: Compare total heating cost with this value and take the lower as alternate credit.
+##add reference
+description: Multiply line 46 by this rate for home heating credit.
 values:
-  2022-01-01: 3_340
+  2021-01-01: 1
+  2022-01-01: 0.9
+  
 metadata:
   period: year
-  unit: currency_USD
-  label: alternate_credit_upperlimit
+  unit: /1
+  label: home heating credit rate
   reference:
   - title: 2022 MICHIGAN Home Heating Credit Claim MI-1040CR-7
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040CR7.pdf?rev=c36e54deae424566bb6abd1cbe8af7cb&hash=B39BA9887DD31395E754CC0641EFB512
