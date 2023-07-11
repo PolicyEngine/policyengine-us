@@ -46,7 +46,7 @@ class pa_tanf_countable_income(Variable):
         earnings_after_deduction_eid = max(
             annual_gross_earnings - annual_flat_exclusion_eid, 0
         ) * (1 - p_eid_wed.eid_percentage)
-        earnings_after_deduction_eid_wed = max(
+        earnings_after_deduction_eid_wed = max_(
             earnings_after_deduction_eid - annual_flat_exclusion_wed, 0
         )
 
