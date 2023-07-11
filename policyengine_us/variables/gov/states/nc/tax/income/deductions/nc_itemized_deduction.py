@@ -46,7 +46,7 @@ class nc_itemized_deductions(Variable):
 
         charitable = tax_unit("charitable_deduction", period)
 
-        itemized_deductions = mortgage_interest_and_real_estate_property_taxes + medical + charitable
+        nc_itemized_deductions= mortgage_interest_and_real_estate_property_taxes + medical + charitable
 
-        return itemized_deductions
+        return nc_itemized_deductions
 

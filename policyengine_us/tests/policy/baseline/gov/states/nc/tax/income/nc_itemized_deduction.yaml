@@ -1,19 +1,44 @@
-- name: Calculation1
+- name: Test1
   period: 2023
   input:
     filing_status: JOINT
-    mortgage_taxes: 6000
-    property_taxes: 6000
+    tax_unit_itemizes: true
+    mortgage_interest: 6_000
+    property_tax_primary_residence: 6_000
+    state_and_local_sales_or_income_tax: 10_000
+    count_cdcc_eligible: 2
+    cdcc_relevant_expenses: 1_000
+    charitable_deduction: 3_500
     state_code: NC
   output:
-    nc_income_tax: 12000
+    nc_income_tax: 20_000 + 3_500 + 2_000
 
-- name: Calculation2
+- name: Test2
   period: 2023
   input:
     filing_status: WIDOW
-    mortgage_taxes: 16000
-    property_taxes: 6000
+    tax_unit_itemizes: true
+    mortgage_taxes: 1_000
+    property_taxes: 1_000
+    state_and_local_sales_or_income_tax: 1_000
+    count_cdcc_eligible: 1
+    cdcc_relevant_expenses: 1_000
+    charitable_deduction: 1_500
     state_code: NC
   output:
-    nc_income_tax: 16000
+    nc_income_tax: 3_000 + 1_000 + 1_500
+
+- name: Test3
+  period: 2023
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    mortgage_interest: 3_000
+    property_tax_primary_residence: 3_000
+    state_and_local_sales_or_income_tax: 1_000
+    count_cdcc_eligible: 2
+    cdcc_relevant_expenses: 1_500
+    charitable_deduction: 2_500
+    state_code: NC
+  output:
+    nc_income_tax: 7_000 + 3_000 + 2_500

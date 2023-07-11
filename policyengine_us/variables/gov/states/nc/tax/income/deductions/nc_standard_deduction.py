@@ -15,4 +15,5 @@ class nc_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nc.tax.income
         filing_status = tax_unit("filing_status", period)
-        return p.deductions.standard.amount[filing_status]
+        nc_standard_deductions = p.deductions.standard.amount[filing_status]
+        return nc_standard_deductions

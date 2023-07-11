@@ -1,0 +1,41 @@
+description: North Carolina Child Deduction Amount by Filling Status (Widow)
+brackets:
+  - threshold: 
+      2023-01-01: 0
+    amount:
+      2023-01-01: 3_000
+  - threshold:
+      2023-01-01: 40_000
+    amount:
+      2023-01-01: 2_500
+  - threshold:
+      2023-01-01: 60_000
+    amount:
+      2023-01-01: 2_000
+  - threshold:
+      2023-01-01: 80_000
+    amount:
+      2023-01-01: 1_500
+  - threshold:
+      2023-01-01: 100_000
+    amount:
+      2023-01-01: 1_000
+  - threshold:
+      2023-01-01: 120_000
+    amount:
+      2023-01-01: 500
+  - threshold:
+      2023-01-01: 140_000
+    amount:
+      2023-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: currency_USD
+  threshold_period: year
+  amount_unit: /1
+  name: nc_cdcc_amount_widow
+  lable: NC CDCC Widow
+  reference:
+    -title: North Carolina Child Deduction
+     href: https://www.ncdor.gov/taxes-forms/north-carolina-child-deduction
