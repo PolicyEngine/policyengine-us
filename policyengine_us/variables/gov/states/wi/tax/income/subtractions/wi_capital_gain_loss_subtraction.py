@@ -29,4 +29,4 @@ class wi_capital_gain_loss_subtraction(Variable):
         # calculate Schedule WD, Line 29a
         us_cg = totcg
         # return Schedule SB capital gain subtraction (WB Line 29d)
-        return max_(0, us_cg - wi_cg)        
+        return max_(0, us_cg - wi_cg)
