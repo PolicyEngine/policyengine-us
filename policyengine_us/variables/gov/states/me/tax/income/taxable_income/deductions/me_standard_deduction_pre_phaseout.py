@@ -13,12 +13,6 @@ class me_standard_deduction_pre_phaseout(Variable):
     )
     defined_for = StateCode.ME
 
-    def formula(tax_unit, period, parameters):
-        # Get filing status.
-        filing_status = tax_unit("filing_status", period)
-
-        # Get standard deduction part of parameters tree
-        p = parameters(period).gov.states.me.tax.income.deductions.standard
-
-        # Get standard deduction for filing status
-        return p.amount[filing_status]
+    # The Maine legislation states that this (pre-phaseout) deduction
+    # is equal to the federal standard deduction.
+    adds = ["standard_deduction"]
