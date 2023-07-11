@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ms_itemized_exemption(Variable):
+class ms_itemized_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Mississippi itemized exemption"
+    label = "Mississippi itemized deduction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MS
@@ -21,11 +21,11 @@ class ms_itemized_exemption(Variable):
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         itm_deds_max = itm_deds_less_salt + uncapped_property_taxes
         # calculate itemized deductions total amount
-        p = parameters(period).gov.states.ms.tax.income.exemptions
+        p = parameters(period).gov.states.ms.tax.income.deductions.itemized
         exempt_deds = add(
             tax_unit,
             period,
-            ["medical_dental_expense", "taxes_paid" , "interest_paid" , "charitable_contribution" , "casualty_theft_loss" , "other_miscellaneous_deductions"],
+            ["medical_expense_deduction", "casualty_loss_deduction", "itemized_taxable_income_deductions" , "interest_deduction" , "charitable_contribution", "misc_deduction"],
         )
         net_deds = max_(0, ms_itm_deds - exempt_deds)
         net_deds_offset = p.deduction_fraction * net_deds
