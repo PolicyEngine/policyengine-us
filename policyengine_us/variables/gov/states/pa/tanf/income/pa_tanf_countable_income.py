@@ -43,7 +43,7 @@ class pa_tanf_countable_income(Variable):
         annual_gross_earnings = gross_earnings * MONTHS_IN_YEAR
         annual_gross_unearned_income = gross_unearned_income * MONTHS_IN_YEAR
 
-        earnings_after_deduction_eid = max(
+        earnings_after_deduction_eid = max_(
             annual_gross_earnings - annual_flat_exclusion_eid, 0
         ) * (1 - p_eid_wed.eid_percentage)
         earnings_after_deduction_eid_wed = max_(
