@@ -9,9 +9,7 @@ class az_exemptions(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    def formula(tax_unit, period, parameters):
-
-        adds = [
+    adds = [
         "az_age_exemption",
         "az_blind_exemption",
         "az_parents_grandparents_exemption",
