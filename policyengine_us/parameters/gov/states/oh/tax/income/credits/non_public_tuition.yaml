@@ -1,7 +1,7 @@
-description: Ohio provides this Nonchartered, Nonpublic, School Tuition Credit AGI Credit amount.
+description: Ohio caps the Nonchartered, Nonpublic, School Tuition Credit at this amount, depending on federal adjusted gross income.
 brackets:
   - threshold:
-      2021-01-01: -1
+      2021-01-01: -.inf
     amount:
       2021-01-01: 500
   - threshold: 
