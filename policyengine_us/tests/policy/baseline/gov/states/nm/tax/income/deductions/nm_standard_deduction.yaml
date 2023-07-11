@@ -52,6 +52,131 @@
   output:
     nm_standard_deduction: 14_700
 
+- name: Joint filers, elderly but not blind
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 27_300
+
+- name: Separate filers, elderly but not blind
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 14_350
+
+- name: Head of household filers, elderly but not blind
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 21_150
+
+- name: Widow(er) filers, elderly but not blind
+  period: 2022
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 27_300
+
+- name: Single filers, non-elderly but blind
+  period: 2022
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 14_700
+
+- name: Joint filers, non-elderly but blind
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 27_300
+
+- name: Separate filers, non-elderly but blind
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 14_350
+
+- name: Head of household filers, non-elderly but blind
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 21_150
+
+- name: Widow(er) filers, non-elderly but blind
+  period: 2022
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 27_300
+
+- name: Single filers, elderly and blind
+  period: 2022
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 16_450
+
+- name: Joint filers, elderly and blind
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 28_700
+
+- name: Separate filers, elderly and blind
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 15_750
+
+- name: Head of household filers, elderly and blind
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 22_900
+
+- name: Widow(er) filers, elderly and blind
+  period: 2022
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 28_700
 
 - name: Single filers, non-elderly and not blind
   period: 2021
@@ -106,3 +231,129 @@
     state_code: NM
   output:
     nm_standard_deduction: 14_250
+
+- name: Joint filers, elderly but not blind
+  period: 2021
+  input:
+    filing_status: JOINT
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 26_450
+
+- name: Separate filers, elderly but not blind
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 13_900
+
+- name: Head of household filers, elderly but not blind
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 20_500
+
+- name: Widow(er) filers, elderly but not blind
+  period: 2021
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 26_450
+
+- name: Single filers, non-elderly but blind
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 14_250
+
+- name: Joint filers, non-elderly but blind
+  period: 2021
+  input:
+    filing_status: JOINT
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 26_450
+
+- name: Separate filers, non-elderly but blind
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 13_900
+
+- name: Head of household filers, non-elderly but blind
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 20_500
+
+- name: Widow(er) filers, non-elderly but blind
+  period: 2021
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 26_450
+    
+- name: Single filers, elderly and blind
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 15_950
+
+- name: Joint filers, elderly and blind
+  period: 2021
+  input:
+    filing_status: JOINT
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 27_800
+
+- name: Separate filers, elderly and blind
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 15_250
+
+- name: Head of household filers, elderly and blind
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 22_200
+
+- name: Widow(er) filers, elderly and blind
+  period: 2021
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 2
+    state_code: NM
+  output:
+    nm_standard_deduction: 27_800
