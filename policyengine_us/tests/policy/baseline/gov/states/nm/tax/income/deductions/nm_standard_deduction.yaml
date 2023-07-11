@@ -10,7 +10,6 @@
 - name: Joint filers, both non-elderly and not blind
   period: 2022
   input:
-
     filing_status: JOINT
     aged_blind_count: 0
     state_code: NM
@@ -54,4 +53,38 @@
     nm_standard_deduction: 14_700
 
 
+- name: Single filers, non-elderly and not blind
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    state_code: NM
+  output:
+    nm_standard_deduction: 12_550
 
+- name: Joint filers, both non-elderly and not blind
+  period: 2021
+  input:
+    filing_status: JOINT
+    aged_blind_count: 0
+    state_code: NM
+  output:
+    nm_standard_deduction: 25_100
+
+- name: Separate filers, non-elderly and not blind
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    aged_blind_count: 0
+    state_code: NM
+  output:
+    nm_standard_deduction: 12_550
+
+- name: Head of household filers, non-elderly and not blind
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 0
+    state_code: NM
+  output:
+    nm_standard_deduction: 18_800

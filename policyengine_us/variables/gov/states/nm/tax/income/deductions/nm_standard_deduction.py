@@ -6,7 +6,7 @@ class nm_standard_deduction(Variable):
     entity = TaxUnit
     label = "New Mexico standard deduction"
     unit = USD
-    documentation = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm"
+    documentation = ‘https://www.irs.gov/instructions/i1040gi#en_US_2022_publink24811vd0e10057’
     definition_period = YEAR
     defined_for = StateCode.NM
     # adds = ["basic_standard_deduction", "additional_standard_deduction"]
