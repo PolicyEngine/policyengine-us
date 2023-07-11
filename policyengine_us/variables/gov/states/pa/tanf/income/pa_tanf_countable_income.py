@@ -60,7 +60,6 @@ class pa_tanf_countable_income(Variable):
             ),
             0,
         )
-        print(earnings_after_deduction_personal_expense)
         return (
             earnings_after_deduction_personal_expense
             + annual_gross_unearned_income
