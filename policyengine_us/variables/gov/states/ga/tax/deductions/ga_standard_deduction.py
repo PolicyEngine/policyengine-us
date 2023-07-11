@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ga_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "georgia standard deduction"
+    label = "Georgia standard deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -18,23 +18,23 @@ class ga_standard_deduction(Variable):
         p = parameters(period).gov.states.ga.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        base_amt = p.base_amount[filing_status]
-        # $1,300 for self bild and self aged each
+        base = p.base_amount[filing_status]
+        # Head gets extra standard deduction if aged and/or blind.
         head = person("is_tax_unit_head", period)
         blind = person("is_blind", period)
         aged = person("age", period) >= p.aged.age_eligible
-        extra_amt_head = tax_unit.sum(
-            head * blind * p.blind.self + head * aged * p.aged.self
+        extra_head = tax_unit.sum(
+            head * (blind * p.blind.self + aged * p.aged.self)
         )
-        # $1,300 for spouse bild and self aged each
+        # Spouse gets extra standard deduction if aged and/or blind and filing jointly.
+
         spouse = person("is_tax_unit_spouse", period)
-        extra_amt_spouse = where(
+        extra_spouse = where(
             filing_status == status.JOINT,
             tax_unit.sum(
-                spouse * blind * p.blind.self + spouse * aged * p.aged.self
+                spouse * (blind * p.blind.spouse + aged * p.aged.spouse)
             ),
             0,
         )
         # total extra deduction
-        extra_amt = extra_amt_head + extra_amt_spouse
-        return base_amt + extra_amt
+        return base + extra_head + extra_spouse
