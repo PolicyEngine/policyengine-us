@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.360.0] - 2023-07-10 21:27:49
+
+### Added
+
+- Scott Winship EITC reform.
+
+## [0.359.1] - 2023-07-10 18:16:02
+
+### Fixed
+
+- Array divide-by-zero warnings in household/spmunit income decile variable tests by moving the tests.
+
+## [0.359.0] - 2023-07-10 12:24:29
+
+### Added
+
+- Integrate Maine income tax into net income.
+
+## [0.358.1] - 2023-07-10 00:57:09
+
+### Added
+
+- Renamed ssbenefits.yaml to taxable_social_security.yaml
+
+## [0.358.0] - 2023-07-08 15:17:06
+
+### Added
+
+- Add logic for Maine itemized deductions.
+
+## [0.357.2] - 2023-07-08 14:58:40
+
+### Fixed
+
+- Use eitc_relevant_investment_income variable in eitc_eligible formula to eliminate code duplication.
+
 ## [0.357.1] - 2023-07-06 18:49:09
 
 ### Added
@@ -4270,6 +4306,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.360.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.359.1...0.360.0
+[0.359.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.359.0...0.359.1
+[0.359.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.358.1...0.359.0
+[0.358.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.358.0...0.358.1
+[0.358.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.357.2...0.358.0
+[0.357.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.357.1...0.357.2
 [0.357.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.357.0...0.357.1
 [0.357.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.356.0...0.357.0
 [0.356.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.355.0...0.356.0
