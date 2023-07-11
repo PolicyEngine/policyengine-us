@@ -81,10 +81,28 @@
     nm_standard_deduction: 12_550
 
 - name: Head of household filers, non-elderly and not blind
-  period: 2022
+  period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
     aged_blind_count: 0
     state_code: NM
   output:
     nm_standard_deduction: 18_800
+
+- name: Widow(er) filers, non-elderly and not blind
+  period: 2021
+  input:
+    filing_status: WIDOW
+    aged_blind_count: 0
+    state_code: NM
+  output:
+    nm_standard_deduction: 25_100
+
+- name: Single filers, elderly but not blind
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 1
+    state_code: NM
+  output:
+    nm_standard_deduction: 14_250
