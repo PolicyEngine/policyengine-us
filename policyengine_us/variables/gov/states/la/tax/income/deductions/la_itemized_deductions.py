@@ -13,5 +13,5 @@ class la_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         medical_expenses = tax_unit("medical_expense_deduction", period)
         return max(
-            medical_expenses - tax_unit("la_standard_deduction", period), 0
+            medical_expenses - tax_unit("standard_deduction", period), 0
         )

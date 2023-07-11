@@ -13,7 +13,6 @@
     filing_status: SINGLE
     medical_expense_deduction: 20_000
   output:
-    la_standard_deduction: 12_950
     la_itemized_deductions: 7_050
 
 - name: Louisiana deduction given Head of Household status, with medical expenses 20_000
@@ -23,7 +22,6 @@
     filing_status: HEAD_OF_HOUSEHOLD
     medical_expense_deduction: 20_000
   output:
-    la_standard_deduction: 19_400
     la_itemized_deductions: 600
 
 - name: Louisiana deduction given Head of Widow status, with medical expenses 20_000
@@ -34,5 +32,4 @@
     medical_expense_deduction: 20_000
   output:
     la_itemized_deductions: 0
-    la_standard_deduction: 25_900
 
