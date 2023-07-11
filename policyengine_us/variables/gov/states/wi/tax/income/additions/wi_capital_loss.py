@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wi_caploss(Variable):
+class wi_capital_loss(Variable):
     value_type = float
     entity = TaxUnit
     label = "Wisconsin capital loss (limited differently than US capital loss)"
@@ -15,11 +15,8 @@ class wi_caploss(Variable):
 
     def formula(tax_unit, period, parameters):
         # calculate Schedule WD, Line 18
-        gains = ["long_term_capital_gains", "short_term_capital_gains"]
-        gains_pos = add(tax_unit, period, gains)
-        losses = ["long_term_capital_losses", "short_term_capital_losses"]
-        losses_pos = add(tax_unit, period, losses)
-        netcg = gains_pos - losses_pos
+        gain_sources = ["short_term_capital_gains", "long_term_capital_gains"]
+        netcg = add(tax_unit, period, gain_sources)
         # return Schedule WD, Line 28, as a positive amount as on form
         p = parameters(period).gov.states.wi.tax.income.additions
         limit = p.capital_loss.limit

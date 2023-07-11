@@ -8,12 +8,12 @@ class wi_capital_gain_loss_addition(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleAD.pdf"
         "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleAD-inst.pdf#page=2"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleADf.pdf"
         "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleAD-Inst.pdf#page=2"
     )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        return 0
+        us_capital_loss = tax_unit("maximum_capital_loss", period)
+        wi_capital_loss = tax_unit("wi_capital_loss", period)
+        return max_(0, us_capital_loss - wi_capital_loss)
