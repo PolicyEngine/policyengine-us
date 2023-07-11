@@ -1,6 +1,18 @@
-- name: WFTCA for a single filer
-  period: 2023
+- name: Family with new born dependent child and a 200 dollar baby bonus.
+  period: 2021
+  reforms: policyengine_us.reforms.congress.delauro.american_family_act.create_american_family_act_with_baby_bonus_reform
   input:
-    gov.contrib.congress.wftca.bonus_guaranteed_deduction.amount.SINGLE: 2_000
+    gov.contrib.congress.delauro.american_family_act.baby_bonus : 200
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      spouse:
+        age: 42
+        is_tax_unit_dependent: false
+      dependent:
+        age: 0
+        is_tax_unit_dependent: true
   output:
-    bonus_guaranteed_deduction: 2_000
+    ctc_child_individual_maximum_arpa: [0, 0, 3_800]
+

@@ -19,7 +19,7 @@ def create_american_family_act_with_baby_bonus() -> Reform:
             # Add the baby bonus.
             baby_bonus_amount = parameters(
                 period
-            ).gov.contrib.cps.american_family_act.baby_bonus
+            ).gov.contrib.contrib.congress.delauro.american_family_act.baby_bonus
             is_baby = age == 0
             baby_bonus = baby_bonus_amount * is_baby
             amount = amount_pre_baby_bonus + baby_bonus
