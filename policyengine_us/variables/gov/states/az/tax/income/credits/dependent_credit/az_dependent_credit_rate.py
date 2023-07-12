@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_dependent_credit_rate(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona dependent care credit phase out"
+    label = "Arizona dependent care credit rate"
     unit = USD
     documentation = "https://azdor.gov/file/12346/download?token=7FAdFbnT"
     definition_period = YEAR
