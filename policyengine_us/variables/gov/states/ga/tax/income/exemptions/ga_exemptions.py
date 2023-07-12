@@ -19,7 +19,6 @@ class ga_exemptions(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # Personal Exemptions
-        person = tax_unit.members
         personal_exemptions = p.personal[filing_status]
 
         # Dependent exemptions
