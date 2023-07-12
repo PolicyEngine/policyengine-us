@@ -1,0 +1,38 @@
+description: Montana used credit multiplier rate in credit computation, based on gross household income.
+metadata:
+  label: Montana Credit Multiplier Table
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  reference:
+  - title: MT Code, Taxation - Individual Income Tax, § 15-30-2340 (5)
+    href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0400/0150-0300-0230-0400.html
+  - title: 2022 Form of Montana Individual Income Tax Return
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf
+  - title: 2021 Form of Montana Individual Income Tax Return
+    href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1
+  - threshold:
+      2021-01-01: 35_000
+    amount:
+      2021-01-01: 0.4
+  - threshold:
+      2021-01-01: 37_501
+    amount:
+      2021-01-01: 0.3
+  - threshold:
+      2021-01-01: 40_001
+    amount:
+      2021-01-01: 0.2
+  - threshold:
+      2021-01-01: 42_501
+    amount:
+      2021-01-01: 0.1
+  - threshold:
+      2021-01-01: 42_000
+    amount:
+      2021-01-01: 0
