@@ -1,5 +1,7 @@
 Thank you for wanting to contribute to PolicyEngine! :smiley:
 
+In addition to this guide, [this document](https://docs.google.com/document/d/1BiajMUJZFzG24Ju5lTybCAW8tp59B3E_DNhS8eJkuR0/edit) contains suggestions on developing tax-benefit programs in PolicyEngine.
+
 TL;DR: [GitHub Flow](https://guides.github.com/introduction/flow/), [SemVer](http://semver.org/).
 
 ## Onboarding: Installation
