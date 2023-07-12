@@ -22,8 +22,8 @@ class id_itemized_deductions(Variable):
             if deduction not in ["salt_deduction"]
         ]
         itm_deds_less_salt = add(tax_unit, period, itm_deds)
-        #uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        medical_expense = add(tax_unit, period, ["medical_expense"]) 
+        # uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        medical_expense = add(tax_unit, period, ["medical_expense"])
         print(medical_expense)
 
         person = tax_unit.members
@@ -36,8 +36,9 @@ class id_itemized_deductions(Variable):
         print(medical_expense_deds)
 
         itemized_deds_amt = (
-            #itm_deds_less_salt + uncapped_property_taxes + medical_expense
-            itm_deds_less_salt + medical_expense_deds
+            # itm_deds_less_salt + uncapped_property_taxes + medical_expense
+            itm_deds_less_salt
+            + medical_expense_deds
         )
         print(itemized_deds_amt)
 
