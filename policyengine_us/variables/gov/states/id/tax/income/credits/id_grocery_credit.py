@@ -13,8 +13,8 @@ class id_grocery_credit_refund(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.id.tax.income.credits.gc
-        
+
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
-        person_over_65 = person("age", period) > p.65_older_eligibility
+        person_over_65 = person("age", period) > p.age_older_eligibility
         return person * person_over_65 * p.amount
