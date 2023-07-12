@@ -1,0 +1,13 @@
+description: DC subtracts these variables from US adjusted gross income when computing its gross income.
+metadata:
+  unit: variable
+  label: DC subtractions from US adjusted gross income
+  reference:
+    - title: 2021 Form D40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=18
+    - title: 2022 Form D40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=17
+values:
+  2021-01-01:
+    - tax_unit_taxable_social_security
+    - tax_unit_taxable_unemployment_compensation
