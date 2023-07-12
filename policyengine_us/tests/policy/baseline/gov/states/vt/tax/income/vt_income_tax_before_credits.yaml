@@ -1,3 +1,54 @@
+- name: Single filer, taxable income is $250K in 2021. The main income tax is $17233.625.
+  period: 2021
+  input:
+    vt_taxable_income: 250_000
+    filing_status: SINGLE
+    state_code: VT
+  output:
+   # .035*40950 + .066*(99200-40950) + .076*(206950-99200) + .0875*(250000-206950) = 17233.625
+    vt_income_tax_before_credits: 17_233.625
+
+- name: Joint filer, taxable income is $300K in 2021. The main income tax is $19578.675.
+  period: 2021
+  input:
+    vt_taxable_income: 300_000
+    filing_status: JOINT
+    state_code: VT
+  output:
+   # .035*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19578.675
+    vt_income_tax_before_credits: 19_578.675
+
+- name: Head of household filer, taxable income is $250K in 2021. The main income tax is $16118.975.
+  period: 2021
+  input:
+    vt_taxable_income: 250_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: VT
+  output:
+   # .035*54850 + .066*(141700-54850) + .076*(229450-141700) + .0875*(250000-229450) = 16118.975
+    vt_income_tax_before_credits: 16_118.975
+
+- name: Widow filer, taxable income is $300K in 2021. The main income tax is $19578.675.
+  period: 2021
+  input:
+    vt_taxable_income: 300_000
+    filing_status: WIDOW
+    state_code: VT
+  output:
+   # .035*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19578.675
+    vt_income_tax_before_credits: 19_578.675
+
+- name: Separate filer, taxable income is $150K in 2021. The main income tax is $9789.3375.
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    vt_taxable_income: 150_000
+    filing_status: SEPARATE
+    state_code: VT
+  output:
+   # .035*34200 + .066*(82675-34200) + .076*(125975-82675) + .0875*(150000-125975) = 9789.3375
+    vt_income_tax_before_credits: 9_789.3375
+
 - name: Single filer, taxable income is $20K in 2022. The main income tax is $700.
   period: 2022
   input:

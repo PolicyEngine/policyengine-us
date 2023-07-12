@@ -3,7 +3,7 @@ metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: VT State income tax rates for head-of-household filers
+  label: Vermont State income tax rates for head-of-household filers
   reference:
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
       href: https://legislature.vermont.gov/statutes/section/32/151/05822
@@ -11,20 +11,26 @@ metadata:
       href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf
     - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
       href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf
+    - title: Vermont 2021 Income Tax Rate Schedules
+      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf
 brackets:
   - threshold:
+      2021-01-01: 0
       2022-01-01: 0
     rate:
-      2022-01-01: 0.035
+      2021-01-01: 0.035
   - threshold:
+      2021-01-01: 54_850
       2022-01-01: 56_500
     rate:
-      2022-01-01: 0.066
+      2021-01-01: 0.066
   - threshold:
+      2021-01-01: 141_700
       2022-01-01: 145_950
     rate:
-      2022-01-01: 0.076
+      2021-01-01: 0.076
   - threshold:
+      2021-01-01: 229_450
       2022-01-01: 236_350
     rate:
-      2022-01-01: 0.0875
+      2021-01-01: 0.0875
