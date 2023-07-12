@@ -12,5 +12,5 @@ class az_dependent_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         amount = tax_unit("az_dependent_credit_amount", period)
-        phase_out = tax_unit("az_dependent_credit_phase_out", period)
-        return amount * phase_out
+        credit_rate = tax_unit("az_dependent_credit_rate", period)
+        return amount * credit_rate

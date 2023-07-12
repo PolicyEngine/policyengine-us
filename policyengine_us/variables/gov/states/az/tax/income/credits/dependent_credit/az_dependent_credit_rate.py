@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_dependent_credit_phase_out(Variable):
+class az_dependent_credit_rate(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona dependent care credit phase out"
@@ -17,4 +17,4 @@ class az_dependent_credit_phase_out(Variable):
         ).gov.states.az.tax.income.credits.dependent_credit.reduction
         filing_status = tax_unit("filing_status", period)
         threshold = max_(income - p.start[filing_status], 0)
-        return p.rate.calc(threshold)
+        return p.credit_rate.calc(threshold)

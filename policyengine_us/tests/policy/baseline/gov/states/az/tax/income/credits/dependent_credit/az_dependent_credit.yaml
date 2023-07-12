@@ -4,7 +4,7 @@
   input:
     state_code: AZ
     az_dependent_credit_amount: 100
-    az_dependent_credit_phase_out: 0.3
+    az_dependent_credit_rate: 0.3
   output:
     az_dependent_credit: 30
 
@@ -13,7 +13,7 @@
   input:
     state_code: AZ
     az_dependent_credit_amount: 100
-    az_dependent_credit_phase_out: 0
+    az_dependent_credit_rate: 0
   output:
     az_dependent_credit: 0
 
@@ -22,6 +22,6 @@
   input:
     state_code: AZ
     az_dependent_credit_amount: 0
-    az_dependent_credit_phase_out: 0.3
+    az_dependent_credit_rate: 0.3
   output:
     az_dependent_credit: 0

@@ -1,10 +1,10 @@
-description: Arizona provides this base amount for dependent based on age. 
+description: Arizona provides this dependent credit percentage based on increments of the filers federal AGI.
 metadata:
   type: single_amount
   period: year
   threshold_unit: currency-USD
   amount_unit: /1
-  label: Arizona Dependent Credit Amount
+  label: Arizona Dependent Credit Credit Rate
   reference:
   - title: Arizona Form 140 - 2021 Resident Personal Income Tax Return
     href: https://azdor.gov/forms/individual/form-140-resident-personal-income-tax-form-calculating
