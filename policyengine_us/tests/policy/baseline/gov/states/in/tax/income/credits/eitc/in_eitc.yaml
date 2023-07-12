@@ -1,0 +1,21 @@
+- name: Joint filing one children
+  period: 2023
+  input:
+    people:
+      head:
+        in_unified_elderly_tax_income: 900
+      spouse:
+        in_unified_elderly_tax_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        age_head: 64
+        age_spouse: 64
+        age_child: 15
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child, child]
+        state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0
