@@ -21,4 +21,4 @@ class wi_itemized_deduction_credit(Variable):
         wi_stdded = tax_unit("wi_standard_deduction", period)
         excess_itmded = max_(0, wi_itmded - wi_stdded)
         p = parameters(period).gov.states.wi.tax.income
-        return excess_itmded * p.credits.nonrefundable.itemized_deduction.rate
+        return excess_itmded * p.credits.itemized_deduction.rate

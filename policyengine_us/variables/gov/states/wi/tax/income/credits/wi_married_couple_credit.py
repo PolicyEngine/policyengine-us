@@ -19,7 +19,7 @@ class wi_married_couple_credit(Variable):
     def formula(tax_unit, period, parameters):
         fstatus = tax_unit("filing_status", period)
         eligible = fstatus == fstatus.possible_values.JOINT
-        p = parameters(period).gov.states.wi.tax.income.credits.nonrefundable
+        p = parameters(period).gov.states.wi.tax.income.credits
         income = add(tax_unit.members, period, p.married_couple.income_sources)
         is_head = tax_unit.members("is_tax_unit_head", period)
         is_spouse = tax_unit.members("is_tax_unit_spouse", period)

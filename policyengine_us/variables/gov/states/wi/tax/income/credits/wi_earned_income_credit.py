@@ -17,7 +17,7 @@ class wi_earned_income_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.wi.tax.income.credits.refundable
+        p = parameters(period).gov.states.wi.tax.income.credits
         inv_income = tax_unit("eitc_relevant_investment_income", period)
         ineligible = inv_income > p.earned_income.investment_income_limit
         us_eitc = tax_unit("earned_income_tax_credit", period)

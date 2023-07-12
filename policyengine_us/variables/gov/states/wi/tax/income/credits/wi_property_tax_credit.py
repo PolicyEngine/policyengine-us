@@ -19,7 +19,6 @@ class wi_property_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         rent = add(tax_unit, period, ["rent"])
         ptax = add(tax_unit, period, ["real_estate_taxes"])
-        p = parameters(period).gov.states.wi.tax.income
-        ptc = p.credits.nonrefundable.property_tax
-        proptax = ptax + rent * ptc.rent_fraction
-        return min_(ptc.max, proptax * ptc.rate)
+        p = parameters(period).gov.states.wi.tax.income.credits.property_tax
+        proptax = ptax + rent * p.rent_fraction
+        return min_(p.max, proptax * p.rate)

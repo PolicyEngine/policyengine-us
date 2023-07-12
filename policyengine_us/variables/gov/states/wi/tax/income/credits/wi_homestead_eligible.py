@@ -10,7 +10,7 @@ class wi_homestead_eligible(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.wi.tax.income.credits.refundable
+        p = parameters(period).gov.states.wi.tax.income.credits
         # minimum age eligibility
         head_age = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)

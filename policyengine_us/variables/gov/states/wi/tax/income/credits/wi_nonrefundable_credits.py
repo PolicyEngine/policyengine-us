@@ -15,4 +15,4 @@ class wi_nonrefundable_credits(Variable):
         "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
     )
     defined_for = StateCode.WI
-    adds = "gov.states.wi.tax.income.credits.nonrefundable.sources"
+    adds = "gov.states.wi.tax.income.credits.non_refundable"
