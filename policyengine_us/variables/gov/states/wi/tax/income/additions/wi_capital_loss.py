@@ -15,8 +15,8 @@ class wi_capital_loss(Variable):
 
     def formula(tax_unit, period, parameters):
         # calculate Schedule WD, Line 18
-        gain_sources = ["short_term_capital_gains", "long_term_capital_gains"]
-        netcg = add(tax_unit, period, gain_sources)
+        GAIN_SOURCES = ["short_term_capital_gains", "long_term_capital_gains"]
+        netcg = add(tax_unit, period, GAIN_SOURCES)
         # return Schedule WD, Line 28, as a positive amount as on form
         p = parameters(period).gov.states.wi.tax.income.additions
         limit = p.capital_loss.limit
