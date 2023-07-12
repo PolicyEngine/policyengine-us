@@ -17,10 +17,10 @@ class nj_income_tax(Variable):
             "nj_income_tax_before_refundable_credits", period
         )
         refundable_credits = tax_unit("nj_refundable_credits", period)
-        # if AGI is below filing threshold, tax should not be positive, but
-        #  tax could still be negative if filer is due refundable credits
+        # if AGI is at or below filing threshold, tax should not be positive,
+        #  but tax could still be negative if filer is due refundable credits
         return where(
-            agi < p.filing_threshold[filing_status],
+            agi <= p.filing_threshold[filing_status],
             min_(0, income_tax - refundable_credits),
             income_tax - refundable_credits,
         )
