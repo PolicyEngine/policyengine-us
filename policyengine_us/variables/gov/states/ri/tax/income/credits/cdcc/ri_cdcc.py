@@ -10,7 +10,7 @@ class ri_cdcc(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        ri_income_tax = tax_unit("ri_income_tax", period)
+        # ri_income_tax = tax_unit("ri_income_tax", period)
         fed_cdcc = tax_unit("cdcc", period)
         rate = parameters(period).gov.states.ri.tax.income.credits.cdcc.rate
-        return min_(fed_cdcc * rate, ri_income_tax)
+        return fed_cdcc * rate
