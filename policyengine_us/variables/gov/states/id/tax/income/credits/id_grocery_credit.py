@@ -17,4 +17,6 @@ class id_grocery_credit_refund(Variable):
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         person_over_65 = person("age", period) > p.age_older_eligibility
-        return person * person_over_65 * p.amount
+
+        totalcredits = ((person + dependent) * p.amount) + (person_over_65 * (p.amount + p.amount_65_older))
+        return totalcredits
