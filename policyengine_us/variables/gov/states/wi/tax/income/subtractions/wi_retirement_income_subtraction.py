@@ -13,7 +13,7 @@ class wi_retirement_income_subtraction(Variable):
         "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf"
         "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=7"
     )
-    defined_for = StateCode.WI
+    defined_for = "wi_retirement_income_subtraction_agi_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wi.tax.income
@@ -26,7 +26,4 @@ class wi_retirement_income_subtraction(Variable):
         uncapped_retinc = retirement_income * age_eligible * head_or_spouse
         capped_retinc = min_(psri.max_amount, uncapped_retinc)
         unit_retinc = tax_unit.sum(capped_retinc)
-        agi = tax_unit("adjusted_gross_income", period)
-        fstatus = tax_unit("filing_status", period)
-        agi_eligible = agi < psri.max_agi[fstatus]
-        return agi_eligible * unit_retinc
+        return unit_retinc
