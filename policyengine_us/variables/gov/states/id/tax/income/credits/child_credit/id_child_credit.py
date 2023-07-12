@@ -17,6 +17,6 @@ class id_child_credit(Variable):
         meets_age_limit = person("age", period) < p.eligible_age
         eligible = meets_age_limit & person("is_child_of_tax_head", period)
         # Count number of eligible children in the tax unit.
-        count_eligible = tax_unit.sum(eligible)
+        count_eligible = tax_unit("ctc_qualifying_children", period)
         # Multiply by the amount per child.
         return count_eligible * p.amount
