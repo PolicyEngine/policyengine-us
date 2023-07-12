@@ -1,0 +1,20 @@
+- name: Tax unit with taxsimid 9 in o21.its.csv and o21.ots.csv
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 31
+      person2:
+        is_tax_unit_dependent: false
+        age: 67
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: ID
+  output:  
+    id_grocery_credit: 220
+
