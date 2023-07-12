@@ -8,4 +8,7 @@ class ky_modified_gross_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.KY
-    adds = "gov.states.ky.tax.income.modified_gross_income.sources"
+    
+    def formula(tax_unit, period, parameters):
+        household_size = tax_unit("tax_unit_size", period)
+        return parameters(period).gov.states.ky.tax.income.modified_gross_income.sources.calc(household_size)

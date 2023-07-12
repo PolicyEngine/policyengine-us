@@ -1,0 +1,16 @@
+description: Kentucky Adjusted Gross Income for single filers under age 65
+values:
+  under_65:
+    - threshold:
+        2023-01-01: 0
+      amount:
+        2023-01-01: 2_770
+
+metadata:
+  type: single_amount
+  threshold_unit: filer-status
+  amount_unit: currency-USD
+  label: Kentucky Adjusted Gross Income for single under 65
+  reference:
+    - title: Do I Need to File a Return
+      href: https://revenue.ky.gov/Individual/Individual-Income-Tax/Pages/Do-I-Need-to-File-a-Return.aspx

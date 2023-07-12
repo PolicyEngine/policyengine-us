@@ -1,12 +1,32 @@
 description: Kentucky modified gross income sources.
 values:
-  2023-01-01:
-    - ky_family_size
 
-
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: 0
+  - threshold:
+      2023-01-01: 1
+    amount:
+      2023-01-01: 13_590
+  - threshold:
+      2023-01-01: 2
+    amount:
+      2023-01-01: 18_310
+  - threshold:
+      2023-01-01: 3
+    amount:
+      2023-01-01: 23_030
+  - threshold:
+      2023-01-01: 4
+    amount:
+      2023-01-01: 27_750
 
 metadata:
-  unit: variable
+  type: single_amount
+  threshold_unit: family-size
+  amount_unit: currency-USD
   label: Kentucky modified gross income sources
   reference:
   - title: Do I Need to File a Return
