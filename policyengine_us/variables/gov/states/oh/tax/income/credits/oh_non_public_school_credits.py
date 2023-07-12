@@ -11,12 +11,10 @@ class oh_non_public_school_credits(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        rates = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.non_public_tuition
+        p = parameters(period).gov.states.oh.tax.income.credits
 
         agi = tax_unit("adjusted_gross_income", period)
         person = tax_unit.members
         tuition = tax_unit.sum(person("non_public_school_tuition", period))
-        cap = rates.calc(agi)
+        cap = p.non_public_tuition.calc(agi)
         return min_(tuition, cap)
