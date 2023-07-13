@@ -10,4 +10,4 @@ class ri_agi(Variable):
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf"
     defined_for = StateCode.RI
     adds = ["adjusted_gross_income"]
-    subtracts = ["ri_agi_subtractions"]
+    subtracts = ["child_tax_rebates","social_security"]

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ri_agi_subtractions(Variable):
+class child_tax_rebates(Variable):
     value_type = float
     entity = TaxUnit
-    label = "RI AGI subtractions from federal AGI"
+    label = "RI Child Tax Rebates"
     unit = USD
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf"
@@ -18,9 +18,9 @@ class ri_agi_subtractions(Variable):
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions
         rebates = where(
-            income <= p.child_tax_rebates_cap[filing_status]
-            and child_count <= p.max_child,
-            child_count * p.child_tax_rebates_amount,
+            income <= p.child_tax_rebates.child_tax_rebates_cap[filing_status]
+            and child_count <= p.child_tax_rebates.max_child,
+            child_count * p.child_tax_rebates.child_tax_rebates_amount,
             0,
         )
         return rebates
