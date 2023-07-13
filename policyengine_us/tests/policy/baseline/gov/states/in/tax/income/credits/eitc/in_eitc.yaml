@@ -1,21 +1,22 @@
-- name: Joint filing one children
+- name: Eligible family with one child
   period: 2023
   input:
     people:
       head:
-        in_unified_elderly_tax_income: 900
+        is_child_eligible_eitc: false
       spouse:
-        in_unified_elderly_tax_income: 1_000
+        is_child_eligible_eitc: false
+      child:
+        is_child_eligible_eitc: true
     tax_units:
       tax_unit:
-        members: [head, spouse]
-        age_head: 64
-        age_spouse: 64
-        age_child: 15
-        filing_status: JOINT
+        members: [head, spouse, child]
+        earned_income_tax_credit: 1_000
+        employment_income: 43_449
+        adjusted_gross_income: 43_449
     households:
       household:
-        members: [head, spouse, child, child]
+        members: [head, spouse, child]
         state_code: IN
   output:
-    in_unified_elderly_tax_credit: 0
+    in_eitc: 100
