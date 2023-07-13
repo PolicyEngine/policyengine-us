@@ -28,6 +28,8 @@ class az_itemized_deduction_adjustments(Variable):
         # Adjustment to Interest Deduction
         # line5=If you received a federal credit for interest paid on mortgage credit certificates (from federal Form 8396),
         #  enter the amount of mortgage interest you paid for 2022 that is equal to the amount of your 2022federal credit.
+        line5 = 0 # Currently, I considere it is 0. 
+
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
@@ -49,7 +51,9 @@ class az_itemized_deduction_adjustments(Variable):
         # )
 
 
-        # Adjustment to State Income Taxes
+        # Adjustment to State Income Taxes (line7)
+        # Did you claim sales taxes rather than income taxes on your federal Schedule A?
+        # If yes, line7=0. I assume we claim income taxes on federal Sechedule A.
         line1A=tax_unit("state_and_local_sales_or_income_tax", period) 
         # line2A= Amount included in the line 1A for which you claimed an Arizona credit
         line3A = line1A-line2A

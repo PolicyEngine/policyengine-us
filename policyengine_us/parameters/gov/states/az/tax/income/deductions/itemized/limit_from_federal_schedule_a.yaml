@@ -3,18 +3,27 @@ description: Arizona provides filers a itemized deduction adjustment for State I
   period: year
   unit: currency-USD
   breakdown:
-  - filing_status
+    - filing_status
   reference:
-  - title: 2022 Form 140 Schedule A Adjustment to State Income Taxes
-    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf #Year 2022
+    - title: Itemized deductions §43-1042 
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01042.htm
+    - title: 2022 Form 140 Schedule A Adjustment to State Income Taxes Page 2
+      href: https://azdor.gov/forms/individual/itemized-deduction-adjustments-form
+    - title: 2021 Form 140 Schedule A Adjustment to State Income Taxes Page 2
+      href: https://azdor.gov/forms/individual/itemized-deduction-adjustments-form
 
 JOINT:
+  2021-01-01: 10_000
   2022-01-01: 10_000
 HEAD_OF_HOUSEHOLD:
+  2021-01-01: 10_000
   2022-01-01: 10_000
 WIDOW:
+  2021-01-01: 10_000
   2022-01-01: 10_000
 SINGLE:
+  2021-01-01: 10_000
   2022-01-01: 10_000
 SEPARATE:
+  2021-01-01: 5_000
   2022-01-01: 5_000
