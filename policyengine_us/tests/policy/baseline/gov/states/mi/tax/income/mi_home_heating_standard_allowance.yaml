@@ -1,7 +1,7 @@
 - name: exemption of 3 at 25_000 household income
   period: 2022
   input:
-    exemption_count: 3
+    mi_exemption_count: 3
     mi_taxable_income: 25_000
     state_code: MI
   output:
@@ -10,7 +10,7 @@
 - name: exemption of 4 at 35_000 household income
   period: 2022
   input:
-    exemption_count: 4
+    mi_exemption_count: 4
     mi_taxable_income: 35_000
     state_code: MI
   output:
@@ -19,7 +19,7 @@
 - name: exemption of 7 at 35_000 household income
   period: 2022
   input:
-    exemption_count: 7
+    mi_exemption_count: 7
     mi_taxable_income: 45_000
     state_code: MI
   output:
@@ -29,7 +29,7 @@
 - name: exemption of 7 at 50_000 household income
   period: 2022
   input:
-    exemption_count: 7
+    mi_exemption_count: 7
     mi_taxable_income: 50_000
     state_code: MI
   output:

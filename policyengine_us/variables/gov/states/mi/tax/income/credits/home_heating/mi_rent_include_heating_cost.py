@@ -1,9 +1,8 @@
 from policyengine_us.model_api import *
 
-class rent_include_heating_cost(Variable):
+
+class mi_rent_include_heating_cost(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Rent include heating cost"
+    label = "Michigan whether rent included in heating cost"
     definition_period = YEAR
-
-

@@ -1,38 +1,38 @@
 - name: rent not include heating cost, heating cost below 3_340
   period: 2022
   input:
-    exemption_count: 3
+    mi_exemption_count: 3
     mi_taxable_income: 25_000
     mi_household_resources: 800
-    rent_include_heating_cost: False
-    heating_cost: 500
+    mi_rent_include_heating_cost: False
+    mi_heating_cost: 500
     state_code: MI
   output:
-    heating_credit: 774
+    mi_heating_credit: 774
 
 - name: rent not include heating cost, heating cost over 3_340
   period: 2022
   absolute_error_margin: 0.1
   input:
-    exemption_count: 3
+    mi_exemption_count: 3
     mi_taxable_income: 25_000
     mi_household_resources: 800
-    rent_include_heating_cost: False
-    heating_cost: 3_350
+    mi_rent_include_heating_cost: False
+    mi_heating_cost: 3_350
     state_code: MI
   output:
-    heating_credit: 2048.76
+    mi_heating_credit: 2048.76
     
 
 - name: rent include heating cost
   period: 2022
   input:
-    exemption_count: 3
+    mi_exemption_count: 3
     mi_taxable_income: 25_000
     mi_household_resources: 800
-    rent_include_heating_cost: True
-    heating_cost: 3_350
+    mi_rent_include_heating_cost: True
+    mi_heating_cost: 3_350
     state_code: MI
   output:
-    heating_credit: 387
+    mi_heating_credit: 387
 
