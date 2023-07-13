@@ -25,13 +25,13 @@ class nm_itemized_deductions(Variable):
         total_salt = (
             add(tax_unit, period, ["real_estate_taxes"]) + slat_sales_or_income
         )
-        
+
         # ratio = round(slat_sales_or_income[0] / total_salt[0], 4)
 
         salt_ratio = np.zeros_like(total_salt)
         mask = total_salt != 0
         salt_ratio[mask] = slat_sales_or_income[mask] / total_salt[mask]
-        
+
         salt_cap = p.itemized.salt_and_real_estate.cap[filing_status]
         # salt_claimed = tax_unit("salt_deduction", period)
 
