@@ -8,5 +8,5 @@ class nm_income_tax(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NM
-    adds = ["nm_income_tax_before_refundable_credits"]
+    adds = ["nm_income_tax_before_non_refundable_credits"]
     subtracts = ["nm_refundable_credits"]
