@@ -1,4 +1,20 @@
-- name: $12,950 for single.
+- name: dc_standard_deduction unit test 1
+  period: 2021
+  input:
+    state_code: DC
+    filing_status: SINGLE
+  output:
+    dc_standard_deduction: 12_550
+
+- name: dc_standard_deduction unit test 2
+  period: 2021
+  input:
+    state_code: DC
+    filing_status: JOINT
+  output:
+    dc_standard_deduction: 25_100
+
+- name: dc_standard_deduction unit test 3
   period: 2022
   input:
     state_code: DC
@@ -6,7 +22,7 @@
   output:
     dc_standard_deduction: 12_950
 
-- name: $25,900 for joint.
+- name: dc_standard_deduction unit test 4
   period: 2022
   input:
     state_code: DC
