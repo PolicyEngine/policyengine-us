@@ -18,26 +18,11 @@ class eitc_eligible(Variable):
         min_age = parameters.gov.irs.credits.eitc.eligibility.age.min(period)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         meets_age_requirements = (age >= min_age) & (age <= max_age)
-        no_loss_capital_gains = max_(
-            0,
-            add(tax_unit, period, ["capital_gains"]),
-        )
-        eitc_investment_income = (
-            add(
-                tax_unit,
-                period,
-                ["net_investment_income", "tax_exempt_interest_income"],
-            )
-            # Replace limited-loss capital gains with no-loss capital gains.
-            - tax_unit("c01000", period)  # Limited-loss capital gains.
-            + no_loss_capital_gains
-        )
-        inv_income_disqualified = (
-            eitc_investment_income > eitc.phase_out.max_investment_income
-        )
+        invinc = tax_unit("eitc_relevant_investment_income", period)
+        invinc_disqualified = invinc > eitc.phase_out.max_investment_income
         demographic_eligible = has_child | tax_unit.any(meets_age_requirements)
         # Define eligibility before considering separate filer limitation.
-        eligible = demographic_eligible & ~inv_income_disqualified
+        eligible = demographic_eligible & ~invinc_disqualified
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
             return eligible
