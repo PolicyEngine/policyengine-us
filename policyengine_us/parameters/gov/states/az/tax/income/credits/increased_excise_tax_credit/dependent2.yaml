@@ -4,17 +4,26 @@ metadata:
   unit: /1
   label: Arizona Increase excise tax credit calculated dependents 
   breakdown:
-  - filing_status
+    - filing_status
   reference:
-  - title: Arizona Form 140
-    href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet # From Year 2022 Line 56
+    - title: Taxation of Income § 43-1072.01 - Credit for increased excise taxes paid
+      href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01072-01.htm
+    - title: AZ tax-140 From Year 2022 Line 56 Page 25
+      href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet 
+    - title: AZ tax-140 From Year 2021 Line 56 Page 24
+      href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet
 SINGLE:
   2021-01-01: 1
+  2022-01-01: 1
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 2
+  2022-01-01: 2
 JOINT:
   2021-01-01: 1
+  2022-01-01: 1
 WIDOW:
   2021-01-01: 1
+  2022-01-01: 1
 SEPARATE:
   2021-01-01: 1
+  2022-01-01: 1
