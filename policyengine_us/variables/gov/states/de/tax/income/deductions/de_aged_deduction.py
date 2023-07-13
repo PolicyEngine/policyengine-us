@@ -7,6 +7,7 @@ class de_aged_deduction(Variable):
     label = "Delaware aged additional standard deduction"
     unit = USD
     definition_period = YEAR
+    defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.de.tax.income.deductions
