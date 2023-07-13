@@ -1,20 +1,10 @@
-description: Maximum NM CDCC by number of qualifying dependents.
-brackets:
-  - threshold:
-      2022-01-01: 1
-    amount:
-      2022-01-01: 480
-  - threshold:
-      2022-01-01: 2
-    amount:
-      2022-01-01: 1_200
+description: Maximum New Mexico CDCC maximum amount for one dependent.
+values:
+  2021-01-01: 480 
   
 metadata:
-  type: single_amount
-  threshold_unit: person
-  amount_unit: currency-USD
-  amount_period: year
-  label: New Mexico CDCC max amount
+  unit: currency-USD
+  label: New Mexico CDCC one dependent max amount
   reference:
     - title: New Mexico Administrative Code, § 3.3.13.9 - CREDIT FOR EXPENSES FOR DEPENDENT CHILD DAY CARE NECESSARY TO ENABLE GAINFUL EMPLOYMENT TO PREVENT INDIGENCY
       href: https://www.law.cornell.edu/regulations/new-mexico/3-3-13-9-NMAC 
