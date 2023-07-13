@@ -3,7 +3,7 @@
   input:
     state_code: NM
     nm_income_tax_before_non_refundable_credits: 2_000
-    nm_non_refundable_credit: 500
+    nm_non_refundable_credits: 500
     nm_refundable_credits: 1_000
   output:
     nm_income_tax: 500 # 2,000 - 500 - 1,000
@@ -13,17 +13,17 @@
   input:
     state_code: NM
     nm_income_tax_before_non_refundable_credits: 2_000
-    nm_non_refundable_credit: 2_500
+    nm_non_refundable_credits: 2_500
     nm_refundable_credits: 1_000
   output:
-    nm_income_tax: - 1_000 
+    nm_income_tax: (-1_000)
 
 - name: No refudable credits
   period: 2023
   input:
     state_code: NM
     nm_income_tax_before_non_refundable_credits: 2_000
-    nm_non_refundable_credit: 2_500
+    nm_non_refundable_credits: 2_500
     nm_refundable_credits: 0
   output:
     nm_income_tax: 0 

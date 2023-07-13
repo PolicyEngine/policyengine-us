@@ -13,7 +13,7 @@ class nm_income_tax(Variable):
         before_non_refundable_credits = tax_unit(
             "nm_income_tax_before_non_refundable_credits", period
         )
-        non_refundable_credits = tax_unit("nm_non_refundable_credit", period)
+        non_refundable_credits = tax_unit("nm_non_refundable_credits", period)
         refundable_credits = tax_unit("nm_refundable_credits", period)
         capped_non_refunable_credits = max_(
             before_non_refundable_credits - non_refundable_credits, 0
