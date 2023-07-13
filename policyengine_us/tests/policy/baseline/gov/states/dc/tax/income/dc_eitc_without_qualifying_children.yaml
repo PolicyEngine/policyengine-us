@@ -1,40 +1,43 @@
-- name: Max EITC no phase out AGI
-  period: 2023
+- name: dc_eitc_without_qualified_children unit test 1
+  absolute_error_margin: 0.01
+  period: 2022
   input:
-    state_code: DC
+    earned_income_tax_credit: 560
     tax_unit_earned_income: 15_000
     adjusted_gross_income: 20_532
-    earned_income_tax_credit: 560
+    state_code: DC
   output:
     dc_eitc_without_qualifying_child: 560
 
-- name: Max EITC no phase out employment income
-  period: 2023
+- name: dc_eitc_without_qualified_children unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
   input:
-    state_code: DC
+    earned_income_tax_credit: 560
     tax_unit_earned_income: 20_532
     adjusted_gross_income: 15_000
-    earned_income_tax_credit: 560
+    state_code: DC
   output:
     dc_eitc_without_qualifying_child: 560
 
-- name: EITC income within phase out
-  period: 2023
+- name: dc_eitc_without_qualified_children unit test 3
   absolute_error_margin: 0.01
+  period: 2022
   input:
-    state_code: DC
-    tax_unit_earned_income: 25_000
-    adjusted_gross_income: 25_000
     earned_income_tax_credit: 560
+    tax_unit_earned_income: 22_532
+    adjusted_gross_income: 22_532
+    state_code: DC
   output:
-    dc_eitc_without_qualifying_child: 181.1136
+    dc_eitc_without_qualifying_child: 390.40  # 560 - (22532 - 20532) * 0.0848
 
-- name: Fully phased out
-  period: 2023
+- name: dc_eitc_without_qualified_children unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
   input:
+    earned_income_tax_credit: 900
+    tax_unit_earned_income: 27_743
+    adjusted_gross_income: 27_743
     state_code: DC
-    tax_unit_earned_income: 27_136
-    adjusted_gross_income: 27_136
-    earned_income_tax_credit: 560
   output:
-    dc_eitc_without_qualifying_child: 0
+    dc_eitc_without_qualifying_child: 221.60  # 900 - (27743 - 19743) * 0.0848
