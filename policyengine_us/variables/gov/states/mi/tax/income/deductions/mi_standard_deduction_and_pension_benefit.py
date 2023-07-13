@@ -17,8 +17,8 @@ class mi_standard_deduction_and_pension_benefit(Variable):
     defined_for = StateCode.MI
 
     adds = [
-        "mi_standard_deduction",
-        "mi_standard_deduction_increase",
+        "mi_standard_deduction_tier_two",
+        "mi_standard_deduction_tier_three",
         "mi_retirement_benefits_deduction_tier_one",
         "mi_retirement_benefits_deduction_tier_three",
         "mi_interest_dividends_capital_gains_deduction",

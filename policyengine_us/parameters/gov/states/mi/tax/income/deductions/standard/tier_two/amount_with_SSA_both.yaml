@@ -1,9 +1,10 @@
-description: Michigan provides a standard deduction increase addition for recipients born after this year. 
-values:
-  2021-01-01: 1946
+description: Michigan provides this standard deduction amount if you or your spouse are of qualifying age and qualifying condition.
 metadata:
-  unit: year
-  label: Michigan standard deduction increase addition age max threshold
+  label: Michigan standard deduction for qualifying seniors
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
   reference:
     - title: Michigan Legal Code Section 206.30 - (9)(c)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30
@@ -11,3 +12,18 @@ metadata:
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=15
     - title: 2021 Michigan Taxpayer Assistance Manual
       href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=42
+
+SINGLE:
+  2021-01-01: 35_000
+
+JOINT:
+  2021-01-01: 70_000
+
+WIDOW:
+  2021-01-01: 35_000
+
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 35_000
+
+SEPARATE:
+  2021-01-01: 35_000
