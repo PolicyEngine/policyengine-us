@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.362.0] - 2023-07-13 05:06:26
+
+### Added
+
+- Ohio Non public school credit.
+
 ## [0.361.0] - 2023-07-12 14:08:34
 
 ### Added
@@ -4318,6 +4324,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.362.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.361.0...0.362.0
 [0.361.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.360.1...0.361.0
 [0.360.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.360.0...0.360.1
 [0.360.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.359.1...0.360.0
