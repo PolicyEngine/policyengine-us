@@ -1,4 +1,5 @@
 description: North Carolina Child Deduction Amount by Filling Status (Head of Household)
+
 brackets:
   - threshold: 
       2023-01-01: 0
@@ -34,8 +35,7 @@ metadata:
   threshold_unit: currency_USD
   threshold_period: year
   amount_unit: /1
-  name: nc_cdcc_amount_head_of_household
   lable: NC CDCC Head of Household
   reference:
-    -title: North Carolina Child Deduction
-     href: https://www.ncdor.gov/taxes-forms/north-carolina-child-deduction
+    - title: North Carolina Child Deduction
+      href: https://www.ncdor.gov/taxes-forms/north-carolina-child-deduction
