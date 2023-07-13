@@ -7,10 +7,7 @@ class mi_standard_allowance(Variable):
     label = "Michigan home heating credit standard allowance"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance"
-       
-    )
+    reference = "https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance"
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
@@ -18,19 +15,20 @@ class mi_standard_allowance(Variable):
             period
         ).gov.states.mi.tax.income.credits.home_heating_credit.standard_allowance
         # determine count of exemption
-        exemption_count = tax_unit("exemption_count", period)
+        mi_exemption_count = tax_unit("mi_exemption_count", period)
         mi_taxable_income = tax_unit("mi_taxable_income", period)
         # additional income ceiling and standard allowance amount for over six exemptions
-        additional_ceiling = p.additional_income * max((exemption_count - p.additional_exemption_limit),0)
-        additional_allowance = p.additional_allowance_exemption * max((exemption_count - p.additional_exemption_limit),0)
-        # determine standard allowance
-        
-        return  where(
-            mi_taxable_income <= p.income_base.calc(exemption_count) + additional_ceiling,
-            p.exemption_base.calc(exemption_count) + additional_allowance,
-            0
+        additional_ceiling = p.additional_income * max_(
+            (mi_exemption_count - p.additional_exemption_limit), 0
         )
+        additional_allowance = p.additional_allowance_exemption * max_(
+            (mi_exemption_count - p.additional_exemption_limit), 0
+        )
+        # determine standard allowance
 
-
-
-       
+        return where(
+            mi_taxable_income
+            <= p.income_base.calc(mi_exemption_count) + additional_ceiling,
+            p.exemption_base.calc(mi_exemption_count) + additional_allowance,
+            0,
+        )

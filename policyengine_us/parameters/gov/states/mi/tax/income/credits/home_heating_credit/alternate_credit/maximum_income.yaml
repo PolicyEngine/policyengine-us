@@ -1,0 +1,32 @@
+## table B
+description: Michigan allow the following maximum income for alternate credit computation
+metadata:
+  type: single_amount
+  threshold_unit: people
+  amount_unit: currency-USD
+  label: Michigan maximum income for the alternate credit computation
+  reference:
+    - title: TABLE A - 2022 Home Heating Credit (MI-1040CR-7) Standard Allowance
+      href: https://www.michigan.gov/taxes/iit/accordion/credits/table-a-2022-home-heating-credit-mi-1040cr-7-standard-allowance
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 15_237
+      2022-01-01: 16_387
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 20_504
+      2022-01-01: 22_051
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 25_775
+      2022-01-01: 27_720
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 27_700
+      2022-01-01: 30_364
+  
