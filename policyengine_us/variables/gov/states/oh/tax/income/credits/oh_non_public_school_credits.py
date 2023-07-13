@@ -12,7 +12,6 @@ class oh_non_public_school_credits(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.oh.tax.income.credits
-
         agi = tax_unit("adjusted_gross_income", period)
         person = tax_unit.members
         tuition = tax_unit.sum(person("non_public_school_tuition", period))
