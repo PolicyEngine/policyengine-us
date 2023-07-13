@@ -26,17 +26,31 @@ class az_itemized_deduction_adjustments(Variable):
         line3_4_adjustments_medical=abs_(expense - medical_floor)
 
         # Adjustment to Interest Deduction
-        # line5=enter the amount of mortgage interest you paid for 2022 that is equal to the amount of your 2022 federal credit
+        # line5=If you received a federal credit for interest paid on mortgage credit certificates (from federal Form 8396),
+        #  enter the amount of mortgage interest you paid for 2022 that is equal to the amount of your 2022federal credit.
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
-        cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
-        non_cash_donations = add(tax_unit, period, ["charitable_non_cash_donations"])
-        line6 = cash_donations+non_cash_donations
+        # From charitable_deduction.py
+        # cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
+        # non_cash_donations = add(
+        #     tax_unit, period, ["charitable_non_cash_donations"]
+        # )
+        # positive_agi = tax_unit("positive_agi", period)
+        # ceiling = parameters(
+        #     period
+        # ).gov.irs.deductions.itemized.charity.ceiling
+        # capped_non_cash_donations = min_(
+        #     non_cash_donations, ceiling.non_cash * positive_agi
+        # )
+        # return min_(
+        #     capped_non_cash_donations + cash_donations,
+        #     ceiling.all * positive_agi,
+        # )
 
 
         # Adjustment to State Income Taxes
-        line1A=tax_unit("az_income_tax_before_credits", period) 
+        line1A=tax_unit("state_and_local_sales_or_income_tax", period) 
         # line2A= Amount included in the line 1A for which you claimed an Arizona credit
         line3A = line1A-line2A
         p = parameters(period).gov.states.az.tax.income.deductions.itemized
@@ -47,6 +61,7 @@ class az_itemized_deduction_adjustments(Variable):
 
         # Other Adjustments
         # line8 = Amount allowed as a federal itemized deduction that relates to income not subject to Arizona tax
+        # This part was marked as notincluded after meeting
 
         # adjusted itemized deduction
         line9=line3+line5
