@@ -7,7 +7,10 @@ class mt_itemized_deductions(Variable):
     label = "Montana itemized deductions"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
+    reference = (
+    "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
+    "https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0310/0150-0300-0210-0310.html"
+    )
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
