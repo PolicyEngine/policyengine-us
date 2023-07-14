@@ -32,12 +32,12 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
                 exemption_num >= 6,
             ],
             [
-                p.exemption_amount1.calc(agi),
-                p.exemption_amount2.calc(agi),
-                p.exemption_amount3.calc(agi),
-                p.exemption_amount4.calc(agi),
-                p.exemption_amount5.calc(agi),
-                p.exemption_amount6.calc(agi),
+                p.one_exemption.calc(agi),
+                p.two_exemptions.calc(agi),
+                p.three_exemptions.calc(agi),
+                p.four_exemptions.calc(agi),
+                p.five_exemptions.calc(agi),
+                p.six_exemptions.calc(agi),
             ],
         )
 
