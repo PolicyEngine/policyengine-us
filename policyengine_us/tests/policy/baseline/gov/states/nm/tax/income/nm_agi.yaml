@@ -1,0 +1,17 @@
+- name: nm agi test case
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 10_000
+    nm_agi_additions: 100
+    tax_exempt_interest_income: 200
+    dividend_income: 300
+    us_govt_interest: 400
+    tax_unit_taxable_social_security: 500
+    nm_aged_blind_exemption: 600
+    nm_mediacal_care_expense_deduction: 700
+    investment_in_529_plan: 800
+    military_service_income: 900
+    nm_itemized_deductions: 100
+  output:
+    nm_agi: 5_600
