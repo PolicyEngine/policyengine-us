@@ -8,17 +8,17 @@ class dc_eitc_without_qualifying_child(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04"  # (f)
-    defined_for = StateCode.DC
+    defined_for = "eitc_eligible"
 
     def formula(tax_unit, period, parameters):
-        # apply DC match rate to federal EITC
-        us_eitc = tax_unit("earned_income_tax_credit", period)
-        p = parameters(period).gov.states.dc.tax.income.credits
-        matched_eitc = us_eitc * p.eitc.without_children.match
-        # phase out matched_eitc for income above DC phase-out threshold
+        # calculate DC EITC amount before phase out
         earnings = tax_unit("tax_unit_earned_income", period)
+        p = parameters(period).gov.states.dc.tax.income.credits
+        uncapped_eitc = earnings * p.eitc.without_children.phase_in.rate
+        capped_eitc = min_(p.eitc.without_children.phase_in.max, uncapped_eitc)
+        # phase out capped_eitc for income above DC phase-out threshold
         us_agi = tax_unit("adjusted_gross_income", period)
         greater_of = max_(earnings, us_agi)
-        excess = max_(greater_of - p.eitc.without_children.phase_out.start, 0)
+        excess = max_(0, greater_of - p.eitc.without_children.phase_out.start)
         phase_out_amount = excess * p.eitc.without_children.phase_out.rate
-        return max_(matched_eitc - phase_out_amount, 0)
+        return max_(0, capped_eitc - phase_out_amount)
