@@ -1,10 +1,10 @@
-description: New Mexico provides the following maximum amount under the credit for child and dependent care credit.
+
+description: New Mexico provides the credit child and dependent day care for filer with modified AGI below this threshold.
 values:
-  2021-01-01: 480 
-  
+  2021-01-01: 30_160
 metadata:
-  unit: currency-USD
-  label: New Mexico credit for child and dependent care max amount
+  unit: /1
+  label: New Mexico credit for dependent day care income threshold
   reference:
     - title: New Mexico Administrative Code, § 3.3.13.9 - CREDIT FOR EXPENSES FOR DEPENDENT CHILD DAY CARE NECESSARY TO ENABLE GAINFUL EMPLOYMENT TO PREVENT INDIGENCY
       href: https://www.law.cornell.edu/regulations/new-mexico/3-3-13-9-NMAC 

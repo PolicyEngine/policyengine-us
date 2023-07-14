@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class nm_modified_gross_income(Variable):
+class nm_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = " a modified gross income, including child support payments for New Mexico"
+    label = "New Mexico modified gross income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NM
