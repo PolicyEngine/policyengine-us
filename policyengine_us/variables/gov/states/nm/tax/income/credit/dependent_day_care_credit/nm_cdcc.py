@@ -18,7 +18,7 @@ class nm_cdcc(Variable):
         fed_cdcc = tax_unit("cdcc", period)
         # Filer has to be be gainfully employed to receive credit
         employed = tax_unit("earned_income", period) > 0
-        # Filer can not receive tanf to be eligible 
+        # Filer can not receive tanf to be eligible
         tanf = tax_unit("tanf", period) == 0
         # Filers have to have state agi below $30,160
         nm_agi = tax_unit("nm_agi"), period
@@ -27,7 +27,3 @@ class nm_cdcc(Variable):
         # The maximum nm amount is subtracted from the federal cdcc amount
         nm_cdcc = max_(fed_cdcc - nm_cdcc_max, 0)
         return eligible * nm_cdcc
-
-
-
-
