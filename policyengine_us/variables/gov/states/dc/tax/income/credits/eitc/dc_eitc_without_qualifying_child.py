@@ -16,7 +16,7 @@ class dc_eitc_without_qualifying_child(Variable):
         p = parameters(period).gov.states.dc.tax.income.credits
         uncapped_eitc = earnings * p.eitc.without_children.phase_in.rate
         capped_eitc = min_(p.eitc.without_children.phase_in.max, uncapped_eitc)
-        # phase out capped_eitc for income above DC phase-out threshold
+        # phase out capped_eitc for income above DC phase-out start threshold
         us_agi = tax_unit("adjusted_gross_income", period)
         greater_of = max_(earnings, us_agi)
         excess = max_(0, greater_of - p.eitc.without_children.phase_out.start)
