@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.364.1] - 2023-07-14 04:26:18
+
+### Added
+
+- Updated Maine parameters to include 2021 tax year values.
+
+## [0.364.0] - 2023-07-13 21:30:09
+
+### Added
+
+- Delaware standard deduction.
+
+## [0.363.0] - 2023-07-13 20:28:21
+
+### Added
+
+- New Mexico Personal Income Tax Schedule.
+
+## [0.362.0] - 2023-07-13 05:06:26
+
+### Added
+
+- Ohio Non public school credit.
+
+## [0.361.0] - 2023-07-12 14:08:34
+
+### Added
+
+- New Hampshire income tax to net income tree.
+
+## [0.360.1] - 2023-07-12 11:35:25
+
+### Added
+
+- Change Maine pre-phaseout standard deduction to equal the federal standard deduction.
+
 ## [0.360.0] - 2023-07-10 21:27:49
 
 ### Added
@@ -4306,6 +4342,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.364.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.364.0...0.364.1
+[0.364.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.363.0...0.364.0
+[0.363.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.362.0...0.363.0
+[0.362.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.361.0...0.362.0
+[0.361.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.360.1...0.361.0
+[0.360.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.360.0...0.360.1
 [0.360.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.359.1...0.360.0
 [0.359.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.359.0...0.359.1
 [0.359.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.358.1...0.359.0
