@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_agi(Variable):
+class dc_taxable_income_indiv(Variable):
     value_type = float
     entity = Person
-    label = "DC AGI (adjusted gross income) for each person in tax unit"
+    label = "DC taxable income (can be negative) when married couple files separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -12,5 +12,5 @@ class dc_agi(Variable):
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=34"
     )
     defined_for = StateCode.DC
-    adds = ["adjusted_gross_income_person", "dc_income_additions"]
-    subtracts = ["dc_income_subtractions"]
+    adds = ["dc_agi"]
+    subtracts = ["dc_deduction_indiv"]

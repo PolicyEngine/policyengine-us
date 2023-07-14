@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class dc_disabled_exclusion_subtraction(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "DC disabled exclusion subtraction"
     unit = USD
     definition_period = YEAR
@@ -15,5 +15,5 @@ class dc_disabled_exclusion_subtraction(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, paramters):
+    def formula(person, period, paramters):
         return 0

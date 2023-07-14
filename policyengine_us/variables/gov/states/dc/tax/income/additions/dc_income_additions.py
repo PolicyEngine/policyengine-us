@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class dc_income_additions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "DC additions to federal adjusted gross income"
     unit = USD
     definition_period = YEAR
@@ -13,5 +13,5 @@ class dc_income_additions(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         return 0

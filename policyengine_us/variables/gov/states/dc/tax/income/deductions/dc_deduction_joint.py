@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_deduction(Variable):
+class dc_deduction_joint(Variable):
     value_type = float
     entity = TaxUnit
-    label = "DC deduction"
+    label = "DC deduction for each tax unit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DC

@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class dc_self_employment_loss_addition(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "DC excess self-employment loss addition"
     unit = USD
     definition_period = YEAR
@@ -13,5 +13,5 @@ class dc_self_employment_loss_addition(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         return 0

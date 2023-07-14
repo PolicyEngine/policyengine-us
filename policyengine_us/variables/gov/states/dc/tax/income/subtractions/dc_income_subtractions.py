@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class dc_income_subtractions(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "DC subtractions from federal adjusted gross income"
     unit = USD
     definition_period = YEAR
