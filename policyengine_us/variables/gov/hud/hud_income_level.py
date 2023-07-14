@@ -25,7 +25,12 @@ class hud_income_level(Variable):
         size = spm_unit("spm_unit_size", period)
         # Get area median income.
         ami = spm_unit("ami", period)
-        income_ami_ratio = annual_income / ami
+        # avoid array divide-by-zero warning by not using where() function
+        # see following GitHub issue for more details:
+        # https://github.com/PolicyEngine/policyengine-us/issues/2496
+        income_ami_ratio = np.zeros_like(ami)
+        mask = ami != 0
+        income_ami_ratio[mask] = annual_income[mask] / ami[mask]
         # Look up thresholds for each income level.
         p = parameters(period).gov.hud.ami_limit
         size_limit = p.family_size

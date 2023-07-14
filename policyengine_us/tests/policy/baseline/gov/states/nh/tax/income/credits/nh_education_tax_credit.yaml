@@ -1,0 +1,125 @@
+- name: In 2013, charitable cash donations = 600_000, charitable non cash donations = 0, the credit amount is 510_000
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 600_000
+    charitable_non_cash_donations: 0
+  output:
+    nh_education_tax_credit: 510_000
+
+- name: In 2013, charitable cash donations = 0, charitable non cash donations = 600_000, the credit amount is 510_000
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 600_000
+  output:
+    nh_education_tax_credit: 510_000
+
+- name: In 2013, charitable cash donations = 700_000, charitable non cash donations = 0, the credit amount is 510_000
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 700_000
+    charitable_non_cash_donations: 0
+  output:
+    nh_education_tax_credit: 510_000
+
+- name: In 2013, charitable cash donations = 0, charitable non cash donations = 700_000, the credit amount is 510_000
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 700_000
+  output:
+    nh_education_tax_credit: 510_000
+
+- name: In 2013, charitable cash donations = 0, charitable non cash donations = 0, the credit amount is 0
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 0
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2013, charitable cash donations = 300_000, charitable non cash donations = 300_000, the credit amount is 510_000
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 300_000
+    charitable_non_cash_donations: 300_000
+  output:
+    nh_education_tax_credit: 510_000
+
+- name: In 2013, charitable cash donations = 400_000, charitable non cash donations = 400_000, the credit amount is 510_000
+  period: 2013
+  input:
+    state_code: NH
+    charitable_cash_donations: 400_000
+    charitable_non_cash_donations: 400_000
+  output:
+    nh_education_tax_credit: 510_000
+
+- name: In 2012, charitable cash donations = 600_000, charitable non cash donations = 0, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 600_000
+    charitable_non_cash_donations: 0
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2012, charitable cash donations = 0, charitable non cash donations = 600_000, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 600_000
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2012, charitable cash donations = 700_000, charitable non cash donations = 0, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 700_000
+    charitable_non_cash_donations: 0
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2012, charitable cash donations = 0, charitable non cash donations = 700_000, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 700_000
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2012, charitable cash donations = 0, charitable non cash donations = 0, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 0
+    charitable_non_cash_donations: 0
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2012, charitable cash donations = 300_000, charitable non cash donations = 300_000, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 300_000
+    charitable_non_cash_donations: 300_000
+  output:
+    nh_education_tax_credit: 0
+
+- name: In 2012, charitable cash donations = 400_000, charitable non cash donations = 400_000, the credit amount is 0
+  period: 2012
+  input:
+    state_code: NH
+    charitable_cash_donations: 400_000
+    charitable_non_cash_donations: 400_000
+  output:
+    nh_education_tax_credit: 0
