@@ -1,0 +1,13 @@
+description: VA MAP counts these components as resources.
+values:
+  2023-02-01:
+    - bank_accounts
+    - stocks
+    - bonds
+    - cash_value
+    - property
+metadata:
+  unit: list
+  reference:
+    - title: VA Medical Assistance Programs
+      href: https://www.dss.virginia.gov/benefit/medical_assistance/index.cgi

@@ -14,6 +14,7 @@ class va_map_abd_demographic_eligibility(Variable):
         age = person("age", period)
         blind = person("is_blind", period)
         disabled = person("is_disabled", period)
-        abd = (age >= p) | blind | disabled
+        ssi = person("ssi", period)
+        abd = ((age >= p) | blind | disabled) & (ssi == 0)
 
         return spm_unit.any(abd)

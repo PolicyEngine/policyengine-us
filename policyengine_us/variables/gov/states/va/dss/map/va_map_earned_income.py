@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class va_map_earned_income(Variable):
     value_type = float
-    entity = SPMUnit
+    entity = Person
     label = "VA MAP earned income"
     unit = USD
     definition_period = YEAR

@@ -1,4 +1,4 @@
-- name: Is pregnant eligible and income eligible.
+- name: Is demographic eligible and income eligible.
   period: 2023
   input:
     state_code: VA
@@ -7,7 +7,7 @@
   output:
     va_map_pregnant_eligibility: true
 
-- name: Is pregnant eligible but not income eligible.
+- name: Is demographic eligible but not income eligible.
   period: 2023
   input:
     state_code: VA
@@ -16,7 +16,7 @@
   output:
     va_map_pregnant_eligibility: false
 
-- name: Is income eligible but not pregnant eligible.
+- name: Is demographic eligible but not pregnant eligible.
   period: 2023
   input:
     state_code: VA

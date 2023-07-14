@@ -9,12 +9,15 @@ class va_map_abd_resources_eligibility(Variable):
     defined_for = StateCode.VA
 
     def formula(spm_unit, period, parameters):
-        resources = add(spm_unit, period, 'va_map_countable_resources')
-        p = parameters(period).gov.states.va.dss.map.abd
         person = spm_unit.members
-        married = person("is_married", period)
-        limit = p.resources_limit_single
-        if spm_unit.any(married):
-            limit = p.resources_limit_couple
-
+        resource = person("va_map_resources", period)
+        mother = person("is_mother")
+        father = person("is_father")
+        c = mother | father
+        resources = spm_unit.sum(resources) * c
+        
+        p = parameters(period).gov.states.va.dss.map.abd
+        married = spm_unit("is_married", period)
+        limit = where(married, p.resources_limit_couple, p.resources_limit_single)
+        
         return resources <= limit

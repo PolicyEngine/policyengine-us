@@ -9,13 +9,9 @@ class va_map_famis_income_eligibility(Variable):
     defined_for = StateCode.VA
 
     def formula(spm_unit, period, parameters):
-        income = add(
-            spm_unit,
-            period,
-            [
-                "va_map_earned_income",
-                "va_map_unearned_income",
-            ]
-        )
+        person = spm_unit.members
+        earned = person("va_map_earned_income", period) 
+        unearned = person("va_map_unearned_income", period)
+        income = spm_unit.sum(earned + uneanred)
         limit = spm_unit("va_map_famis_income_limit", period)
         return income <= limit

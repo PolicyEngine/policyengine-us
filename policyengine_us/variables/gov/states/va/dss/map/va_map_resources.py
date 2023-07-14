@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class va_map_countable_resources(Variable):
+class va_map_resources(Variable):
     value_type = float
-    entity = SPMUnit
-    label = "VA MAP countable resources"
+    entity = Person
+    label = "VA MAP resources"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
+
+    adds = "gov.states.va.dss.map.unearned"

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_map_abd_income_eligibility(Variable):
-    value_type = bool
+class va_map_mb_income(Variable):
+    value_type = float
     entity = SPMUnit
-    label = "VA MAP ABD income eligibility"
+    label = "VA MAP MB QI countable income"
     definition_period = YEAR
     defined_for = StateCode.VA
 
@@ -15,10 +15,5 @@ class va_map_abd_income_eligibility(Variable):
         mother = person("is_mother")
         father = person("is_father")
         c = mother | father
-        income = spm_unit.sum(earned + unearned) * c
-
-        p = parameters(period).gov.states.va.dss.map.abd
-        married = spm_unit("is_married", period)
-        limit = where(married, p.income_limit_couple, p.income_limit_single)
-
-        return income <= limit
+        
+        return spm_unit.sum(earned + unearned) * c
