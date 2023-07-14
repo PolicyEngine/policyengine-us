@@ -2,7 +2,6 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    earned_income_tax_credit: 560
     tax_unit_earned_income: 15_000
     adjusted_gross_income: 20_532
     state_code: DC
@@ -13,7 +12,6 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    earned_income_tax_credit: 560
     tax_unit_earned_income: 20_532
     adjusted_gross_income: 15_000
     state_code: DC
@@ -24,7 +22,6 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    earned_income_tax_credit: 560
     tax_unit_earned_income: 22_532
     adjusted_gross_income: 22_532
     state_code: DC
@@ -35,9 +32,8 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
-    earned_income_tax_credit: 900
     tax_unit_earned_income: 27_743
     adjusted_gross_income: 27_743
     state_code: DC
   output:
-    dc_eitc_without_qualifying_child: 221.60  # 900 - (27743 - 19743) * 0.0848
+    dc_eitc_without_qualifying_child: 823.60  # 1502 - (27743 - 19743) * 0.0848
