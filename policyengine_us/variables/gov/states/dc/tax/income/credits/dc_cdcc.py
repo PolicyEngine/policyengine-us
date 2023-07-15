@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class dc_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "DC child and dependent care expense credit"
+    label = "DC child and dependent care credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,4 +14,6 @@ class dc_cdcc(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        return 0
+        us_cdcc = tax_unit("cdcc", period)
+        p_dc = parameters(period).gov.states.dc.tax.income.credits
+        return us_cdcc * p_dc.cdcc.match
