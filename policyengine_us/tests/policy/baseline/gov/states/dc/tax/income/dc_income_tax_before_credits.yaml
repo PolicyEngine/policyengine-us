@@ -1,39 +1,17 @@
 - name: dc_income_tax_before_credits unit test 1
   period: 2021
   input:
-    dc_taxable_income: -900
+    dc_files_separately: true
+    dc_income_tax_before_credits_indiv: 900
     state_code: DC
   output:
-    dc_income_tax_before_credits: 0
+    dc_income_tax_before_credits: 900
 
 - name: dc_income_tax_before_credits unit test 2
-  period: 2021
-  input:
-    dc_taxable_income: 200_000
-    state_code: DC
-  output:
-    dc_income_tax_before_credits: 15_400
-
-- name: dc_income_tax_before_credits unit test 3
-  period: 2021
-  input:
-    dc_taxable_income: 2_000_000
-    state_code: DC
-  output:
-    dc_income_tax_before_credits: 174_525
-
-- name: dc_income_tax_before_credits unit test 4
   period: 2022
   input:
-    dc_taxable_income: 200_000
+    dc_files_separately: false
+    dc_income_tax_before_credits_joint: 900
     state_code: DC
   output:
-    dc_income_tax_before_credits: 15_400
-
-- name: dc_income_tax_before_credits unit test 5
-  period: 2022
-  input:
-    dc_taxable_income: 2_000_000
-    state_code: DC
-  output:
-    dc_income_tax_before_credits: 199_025
+    dc_income_tax_before_credits: 900

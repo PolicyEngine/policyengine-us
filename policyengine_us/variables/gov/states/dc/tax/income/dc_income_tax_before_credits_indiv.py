@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class dc_income_tax_before_credits(Variable):
+class dc_income_tax_before_credits_indiv(Variable):
     value_type = float
     entity = TaxUnit
-    label = "DC income tax before credits"
+    label = "DC income tax before credits when married couples file separately"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,8 +14,7 @@ class dc_income_tax_before_credits(Variable):
     defined_for = StateCode.DC
 
     def formula(tax_unit, period, parameters):
-        return where(
-            tax_unit("dc_files_separately", period),
-            tax_unit("dc_income_tax_before_credits_indiv", period),
-            tax_unit("dc_income_tax_before_credits_joint", period),
-        )
+        person = tax_unit.members
+        taxinc = max_(0, person("dc_taxable_income_indiv", period))
+        p = parameters(period).gov.states
+        return tax_unit.sum(p.dc.tax.income.rates.calc(taxinc))
