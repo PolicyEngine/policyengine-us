@@ -14,6 +14,19 @@ class dc_self_employment_loss_addition(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        loss = max_(0, -person("self_employment_income", period))
+        loss_person = max_(0, -person("self_employment_income", period))
+        loss_taxunit = person.tax_unit.sum(loss_person)
         p = parameters(period).gov.states.dc.tax.income.additions
-        return max_(0, loss - p.self_employment_loss.threshold)
+        addition_taxunit = max_(
+            0, loss_taxunit - p.self_employment_loss.threshold
+        )
+        # allocate taxunit addition in proportion to head and spouse losses
+        filing_status = person.tax_unit("filing_status", period)
+        is_joint = filing_status == filing_status.possible_values.JOINT
+        loss_fraction = np.zeros_like(loss_person)
+        mask = loss_taxunit > 0
+        loss_fraction[mask] = loss_person[mask] / loss_taxunit[mask]
+        addition_fraction = where(is_joint, loss_fraction, 1)
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
+        return (is_head | is_spouse) * addition_taxunit * addition_fraction

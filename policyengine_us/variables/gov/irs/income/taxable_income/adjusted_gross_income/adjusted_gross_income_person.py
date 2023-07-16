@@ -17,11 +17,11 @@ class adjusted_gross_income_person(Variable):
             "self_employed_health_insurance_ald",
             "self_employed_pension_contribution_ald",
         ]
-        alds = parameters(period).gov.irs.ald.deductions
         person_ald_vars = [f"{ald}_person" for ald in PERSON_ALDS]
         ald_sum_person = add(person, period, person_ald_vars)
         # split other alds evenly between spouses
-        other_alds = list(set(alds) - set(PERSON_ALDS))
+        all_alds = parameters(period).gov.irs.ald.deductions
+        other_alds = list(set(all_alds) - set(PERSON_ALDS))
         ald_sum_taxunit = add(person.tax_unit, period, other_alds)
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
