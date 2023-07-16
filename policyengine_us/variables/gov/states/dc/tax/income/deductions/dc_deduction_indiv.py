@@ -20,5 +20,7 @@ class dc_deduction_indiv(Variable):
         # Here we allocate in proportion to head and spouse DC AGI
         person_agi = person("dc_agi", period)
         tax_unit_agi = person.tax_unit.sum(person_agi)
-        frac = where(tax_unit_agi > 0, person_agi / tax_unit_agi, 0)
-        return frac * tax_unit_deduction
+        share = np.zeros_like(tax_unit_agi)
+        mask = tax_unit_agi > 0
+        share[mask] = person_agi[mask] / tax_unit_agi[mask]
+        return share * tax_unit_deduction
