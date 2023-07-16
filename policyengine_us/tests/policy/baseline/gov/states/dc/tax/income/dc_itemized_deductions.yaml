@@ -37,7 +37,7 @@
       person2:
         is_tax_unit_spouse: true
         dc_agi: 200_000
-        real_estate_taxes: 9_000
+        real_estate_taxes: 12_000
       person3:
         is_tax_unit_dependent: true
     tax_units:
@@ -52,4 +52,4 @@
         members: [person1, person2, person3]
         state_code: DC
   output:
-    dc_itemized_deductions: 5_000  # = 1_000 + (9_000 - 100_000 * 0.05)
+    dc_itemized_deductions: 8_000  # = 1_000 + (12_000 - 100_000 * 0.05)

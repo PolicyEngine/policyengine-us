@@ -24,12 +24,8 @@ class dc_itemized_deductions(Variable):
         ]
         us_itm_deds_less_salt = add(tax_unit, period, items)
         # calculate DC itemized deductions before partial phase-out
-        filing_status = tax_unit("filing_status", period)
-        capped_property_taxes = min_(
-            add(tax_unit, period, ["real_estate_taxes"]),
-            p_us.itemized.salt_and_real_estate.cap[filing_status],
-        )
-        dc_itm_deds = us_itm_deds_less_salt + capped_property_taxes
+        uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        dc_itm_deds = us_itm_deds_less_salt + uncapped_property_taxes
         # apply partial phase-out of DC itemized deductions
         EXEMPT_ITEMS = [
             "medical_expense_deduction",
@@ -38,6 +34,7 @@ class dc_itemized_deductions(Variable):
         exempt_deds = add(tax_unit, period, EXEMPT_ITEMS)
         nonexempt_deds = max_(0, dc_itm_deds - exempt_deds)
         dc_agi = add(tax_unit, period, ["dc_agi"])
+        filing_status = tax_unit("filing_status", period)
         p_dc = parameters(period).gov.states.dc.tax.income.deductions
         phase_out_start = p_dc.itemized.phase_out.start[filing_status]
         excess_agi = max_(0, dc_agi - phase_out_start)
