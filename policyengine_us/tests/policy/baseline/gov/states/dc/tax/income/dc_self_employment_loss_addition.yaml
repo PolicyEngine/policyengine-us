@@ -1,0 +1,9 @@
+- name: dc_self_employment_loss_addition unit test 1
+  period: 2021
+  input:
+    employment_income: 80_000
+    self_employment_income: -20_000
+    state_code: DC
+  output:
+    adjusted_gross_income_person: 60_000
+    dc_agi: 68_000

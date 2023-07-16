@@ -12,6 +12,4 @@ class dc_income_additions(Variable):
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55"
     )
     defined_for = StateCode.DC
-
-    def formula(person, period, parameters):
-        return 0
+    adds = "gov.states.dc.tax.income.additions.sources"

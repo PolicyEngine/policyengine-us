@@ -14,4 +14,6 @@ class dc_self_employment_loss_addition(Variable):
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        return 0
+        loss = max_(0, -person("self_employment_income", period))
+        p = parameters(period).gov.states.dc.tax.income.additions
+        return max_(0, loss - p.self_employment_loss.threshold)
