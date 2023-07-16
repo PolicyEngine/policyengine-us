@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class de_non_refundable_eitc(Variable):
+class de_non_refundable_eitc_if_claimed(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware non-refundable EITC"
+    label = "Delaware non-refundable EITC if claimed"
     unit = USD
     documentation = "Non-refundable EITC credit reducing DE State income tax."
     definition_period = YEAR
@@ -12,9 +12,6 @@ class de_non_refundable_eitc(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        # Either claims refundable or non-refundable, but not both.
-        claims = ~tax_unit("de_claims_refundable_eitc", period)
-        amount_if_claimed = tax_unit(
-            "de_non_refundable_eitc_if_claimed", period
-        )
-        return claims * amount_if_claimed
+        federal_eitc = tax_unit("earned_income_tax_credit", period)
+        p = parameters(period).gov.states.de.tax.income.credits.eitc
+        return p.non_refundable * federal_eitc

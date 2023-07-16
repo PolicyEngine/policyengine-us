@@ -8,6 +8,7 @@ class de_claims_refundable_eitc(Variable):
     unit = USD
     documentation = "Whether tax unit selects the refundable or non-refundable earned income tax credit."
     definition_period = YEAR
+    defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
         de_tax_liability_if_refundable_eitc = tax_unit(
@@ -20,4 +21,3 @@ class de_claims_refundable_eitc(Variable):
             de_tax_liability_if_refundable_eitc
             < de_tax_liability_if_non_refundable_eitc
         )
-        

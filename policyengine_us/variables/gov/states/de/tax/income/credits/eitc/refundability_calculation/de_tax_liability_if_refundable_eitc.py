@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class de_tax_liability_if_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware tax liability if refudnable EITC"
+    label = "Delaware tax liability if refundable EITC"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
