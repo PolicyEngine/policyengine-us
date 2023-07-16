@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_tax_liability_if_refundable_eitc(Variable):
+class de_tax_liability_if_claiming_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Delaware tax liability if refundable EITC"
