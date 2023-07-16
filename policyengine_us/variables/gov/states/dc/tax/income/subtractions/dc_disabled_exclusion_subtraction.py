@@ -15,5 +15,17 @@ class dc_disabled_exclusion_subtraction(Variable):
     )
     defined_for = StateCode.DC
 
-    def formula(person, period, paramters):
-        return 0
+    def formula(person, period, parameters):
+        # determine disablity-related eligibility
+        is_disabled = person("is_permanently_and_totally_disabled", period)
+        gets_ssi = person("ssi", period) > 0
+        gets_ssdi = person("social_security_disability", period) > 0
+        disabled_eligible = is_disabled & (gets_ssi | gets_ssdi)
+        # determine income-related eligibility
+        INCOME_SOURCES = ["household_market_income", "household_benefits"]
+        household_income = add(person.household, period, INCOME_SOURCES)
+        p = parameters(period).gov.states.dc.tax.income.subtractions
+        income_eligible = household_income < p.disabled_exclusion.income_limit
+        # return subtraction amount if meet both eligibilty requirements
+        subtraction_amount = p.disabled_exclusion.amount
+        return (disabled_eligible & income_eligible) * subtraction_amount
