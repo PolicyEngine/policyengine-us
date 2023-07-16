@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class de_tax_liability_if_claiming_refundable_eitc(Variable):
+class de_income_tax_if_claiming_refundable_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware tax liability if refundable EITC"
+    label = "Delaware tax liability if claiming refundable Delaware EITC"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE

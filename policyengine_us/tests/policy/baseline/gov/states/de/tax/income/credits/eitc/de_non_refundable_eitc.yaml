@@ -1,15 +1,19 @@
-- name: No EITC
+- name: Not claimed
   period: 2022
   input:
     state_code: DE
-    earned_income_tax_credit: 0
+    # Claims refundable, not non-refundable.
+    de_claims_refundable_eitc: true
+    de_non_refundable_eitc_if_claimed: 100
   output:
     de_non_refundable_eitc: 0
 
-- name: Non refundable rate of 20%
+- name: Claimed
   period: 2022
   input:
     state_code: DE
-    earned_income_tax_credit: 1_000
+    # Claims non-refundable.
+    de_claims_refundable_eitc: false
+    de_non_refundable_eitc_if_claimed: 100
   output:
-    de_non_refundable_eitc: 200
+    de_non_refundable_eitc: 100

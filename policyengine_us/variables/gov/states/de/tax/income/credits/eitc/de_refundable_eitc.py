@@ -13,4 +13,4 @@ class de_refundable_eitc(Variable):
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf"
     defined_for = "de_claims_refundable_eitc"
 
-    adds = "de_refundable_eitc_if_claimed"
+    adds = ["de_refundable_eitc_if_claimed"]

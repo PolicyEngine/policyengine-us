@@ -10,6 +10,8 @@ class de_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        before_non_refundable_credits = tax_unit("de_income_tax_before_non_refundable_credits", period)
+        before_non_refundable_credits = tax_unit(
+            "de_income_tax_before_non_refundable_credits", period
+        )
         non_refundable_credits = tax_unit("de_non_refundable_credits", period)
         return max_(before_non_refundable_credits - non_refundable_credits, 0)
