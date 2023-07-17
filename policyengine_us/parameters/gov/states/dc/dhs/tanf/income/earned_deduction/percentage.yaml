@@ -1,7 +1,8 @@
 description: DC excludes this share of earnings from TANF countable income, except for determining need for new applicants.
 
 values:
-  2020-10-01: 2/3
+  # Actually 2/3, but yaml does not accept "2/3".
+  2020-10-01: 0.67
 
 metadata:
   unit: /1
