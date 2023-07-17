@@ -1,0 +1,53 @@
+- name: Single household with $1,000 income
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_before_non_refundable_credits: 30
+
+- name: Separate household with $20,000 income
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 20_000
+    filing_status: SEPARATE
+  output:
+    ct_income_tax_before_non_refundable_credits: 800
+
+- name: Head of household with $1,000 income
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_income_tax_before_non_refundable_credits: 30
+
+- name: Widow household with $16,000 income
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 16_000
+    filing_status: WIDOW
+  output:
+    ct_income_tax_before_non_refundable_credits: 680
+
+- name: Joint household with $1,000 income
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 1_000
+    filing_status: JOINT
+  output:
+    ct_income_tax_before_non_refundable_credits: 30
+
+- name: Joint household with $30,000 income
+  period: 2022
+  input:
+    state_code: CT
+    ct_taxable_income: 30_000
+    filing_status: JOINT
+  output:
+    ct_income_tax_before_non_refundable_credits: 1_100
