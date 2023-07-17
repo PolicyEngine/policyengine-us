@@ -4,15 +4,17 @@
     people:
       head:
         is_child_eligible_eitc: false
+        earned_income: 43_449
       spouse:
         is_child_eligible_eitc: false
+        earned_income: 0
       child:
         is_child_eligible_eitc: true
+        earned_income: 0
     tax_units:
       tax_unit:
         members: [head, spouse, child]
         earned_income_tax_credit: 1_000
-        employment_income: 43_449
         adjusted_gross_income: 43_449
     households:
       household:
@@ -20,3 +22,31 @@
         state_code: IN
   output:
     in_eitc: 100
+
+- name: Eligible family with two children
+  period: 2023
+  input:
+    people:
+      head:
+        is_child_eligible_eitc: false
+        earned_income: 43_449
+      spouse:
+        is_child_eligible_eitc: false
+        earned_income: 0
+      child1:
+        is_child_eligible_eitc: true
+        earned_income: 0
+      child2:
+        is_child_eligible_eitc: true
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        earned_income_tax_credit: 1_000
+        adjusted_gross_income: 43_449
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IN
+  output:
+    in_eitc: 0
