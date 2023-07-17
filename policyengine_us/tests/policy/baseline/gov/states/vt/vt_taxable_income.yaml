@@ -3,7 +3,7 @@
   input:
     vt_agi: 2_000
     vt_standard_deductions: 1_000
-    vt_exemptions: 1_000
+    vt_personal_exemptions: 1_000
     state_code: VT
   output:
     vt_taxable_income: 0
@@ -20,7 +20,7 @@
   input:
     vt_agi: 4_000
     vt_standard_deductions: 1_000
-    vt_exemptions: 1_000
+    vt_personal_exemptions: 1_000
     state_code: VT
   output:
     vt_taxable_income: 2_000
@@ -30,7 +30,7 @@
   input:
     vt_agi: 1_000
     vt_standard_deductions: 1_000
-    vt_exemptions: 1_000
+    vt_personal_exemptions: 1_000
     state_code: VT
   output:
     vt_taxable_income: 0
