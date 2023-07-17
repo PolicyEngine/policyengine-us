@@ -19,15 +19,23 @@ class dc_kccatc(Variable):
         taxinc = tax_unit("dc_taxable_income_joint", period)
         filing_status = tax_unit("filing_status", period)
         income_eligible = taxinc <= p.kccatc.income_limit[filing_status]
-        # determine count of age eligible children
+        # determine count of KCCATC age eligible children
         person = tax_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
-        age_eligible = is_dependent & (age <= p.kccatc.max_age)
-        eligible_child_count = tax_unit.sum(age_eligible)
+        kccatc_age_eligible = is_dependent & (age <= p.kccatc.max_age)
+        kccatc_eligible_count = tax_unit.sum(kccatc_age_eligible)
+        # determine count of federal CDCC age eligible children
+        cdcc = parameters(period).gov.irs.credits.cdcc.eligibility
+        cdcc_age_eligible = is_dependent & (age < cdcc.child_age)
+        cdcc_eligible_count = tax_unit.sum(cdcc_age_eligible)
         # calculate KCCATC amount
-        max_kccatc = eligible_child_count * p.kccatc.max_amount
+        max_kccatc = kccatc_eligible_count * p.kccatc.max_amount
         total_care_expenses = tax_unit("tax_unit_childcare_expenses", period)
-        kccatc = min_(total_care_expenses, max_kccatc)
+        ratio = np.zeros_like(cdcc_eligible_count)
+        mask = cdcc_eligible_count > 0
+        ratio[mask] = kccatc_eligible_count[mask] / cdcc_eligible_count[mask]
+        kccatc_care_expenses = total_care_expenses * ratio
+        kccatc = min_(kccatc_care_expenses, max_kccatc)
         # return calculated kccatc amount if income eligible
         return income_eligible * kccatc
