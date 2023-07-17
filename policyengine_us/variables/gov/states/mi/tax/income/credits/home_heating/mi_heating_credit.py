@@ -26,6 +26,7 @@ class mi_heating_credit(Variable):
         )
         standard_allowance = tax_unit("mi_standard_allowance", period)
         mi_household_resources = tax_unit("mi_household_resources", period)
+        mi_exemption_count = tax_unit("mi_exemption_count", period)
         
 
         # calculate initial home heating credit
@@ -35,8 +36,15 @@ class mi_heating_credit(Variable):
                 p.standard_allowance.reduced_standard_allowance_rate
                 * mi_reduced_standard_allowance
             ),
-            max_(mi_reduced_standard_allowance, mi_alternate_household_credit),
+            max_(mi_reduced_standard_allowance, mi_alternate_household_credit)
+        )
+        # check total house resource comply with alternate credit maximum income  (table B)
+        alternate_hhc = where(
+            mi_household_resources
+            <= p.alternate_credit.maximum_income.calc(mi_exemption_count),
+            initial_hhc,
+            0,
         )
 
         # determine final home heating credit
-        return p.home_heating_credit_rate * initial_hhc
+        return p.home_heating_credit_rate * alternate_hhc

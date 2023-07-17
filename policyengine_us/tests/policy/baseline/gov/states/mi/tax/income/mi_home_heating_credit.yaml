@@ -36,3 +36,15 @@
   output:
     mi_heating_credit: 387
 
+- name: total household resources exceeds alternate credit maximum income
+  period: 2022
+  input:
+    mi_exemption_count: 3
+    mi_taxable_income: 25_000
+    mi_household_resources: 28_000
+    mi_rent_include_heating_cost: True
+    mi_heating_cost: 3_350
+    state_code: MI
+  output:
+    mi_heating_credit: 0
+

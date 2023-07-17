@@ -23,7 +23,7 @@ class mi_alternate_household_credit(Variable):
 
         # calculate alternate credit (tax form line 42)
         alternate_credit = min_(
-            p.alternate_credit.alternate_credit_upperlimit, mi_heating_cost
+            p.alternate_credit.upperlimit, mi_heating_cost
         )
 
         # calculate alternate credit difference (tax form line 44)
@@ -37,4 +37,4 @@ class mi_alternate_household_credit(Variable):
         )
 
         # determine mi_alternate_household_credit
-        return p.alternate_credit.alternate_credit_rate * difference
+        return p.alternate_credit.rate_amount * difference

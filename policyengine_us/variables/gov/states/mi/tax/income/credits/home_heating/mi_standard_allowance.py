@@ -18,11 +18,11 @@ class mi_standard_allowance(Variable):
         mi_exemption_count = tax_unit("mi_exemption_count", period)
         mi_taxable_income = tax_unit("mi_taxable_income", period)
         # additional income ceiling and standard allowance amount for over six exemptions
-        additional_ceiling = p.additional_income * max_(
-            (mi_exemption_count - p.additional_exemption_limit), 0
+        additional_ceiling = p.additional_exemption.income * max_(
+            (mi_exemption_count - p.additional_exemption.limit), 0
         )
-        additional_allowance = p.additional_allowance_exemption * max_(
-            (mi_exemption_count - p.additional_exemption_limit), 0
+        additional_allowance = p.additional_exemption.allowance * max_(
+            (mi_exemption_count - p.additional_exemption.limit), 0
         )
         # determine standard allowance
 
