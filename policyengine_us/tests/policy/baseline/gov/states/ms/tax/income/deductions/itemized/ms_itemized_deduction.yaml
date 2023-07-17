@@ -1,0 +1,10 @@
+- name: MS itemized deduction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    interest_deduction: 10_000
+    state_code: MS
+  output:
+    ms_itemized_deductions: 10_000
