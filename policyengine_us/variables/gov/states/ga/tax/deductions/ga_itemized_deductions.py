@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ga_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Sum of itemized deductions applicable to Georgia taxable income calculation"
+    label = "Georgia itemized deduction"
     unit = USD
     definition_period = YEAR
     reference = (
