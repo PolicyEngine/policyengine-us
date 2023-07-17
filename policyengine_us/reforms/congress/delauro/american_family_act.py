@@ -19,7 +19,7 @@ def create_american_family_act_with_baby_bonus() -> Reform:
             # Add the baby bonus.
             baby_bonus_amount = parameters(
                 period
-            ).gov.contrib.contrib.congress.delauro.american_family_act.baby_bonus
+            ).gov.contrib.congress.delauro.american_family_act.baby_bonus
             is_baby = age == 0
             baby_bonus = baby_bonus_amount * is_baby
             amount = amount_pre_baby_bonus + baby_bonus
@@ -32,10 +32,20 @@ def create_american_family_act_with_baby_bonus() -> Reform:
     return reform
 
 
-def create_american_family_act_with_baby_bonus_reform(parameters, period):
+def create_american_family_act_with_baby_bonus_reform(
+    parameters, period, bypass: bool = False
+):
+    if bypass:
+        return create_american_family_act_with_baby_bonus()
+
     p = parameters(period).gov.contrib.congress.delauro.american_family_act
 
     if p.baby_bonus > 0:
         return create_american_family_act_with_baby_bonus()
     else:
         return None
+
+
+american_family_act = create_american_family_act_with_baby_bonus_reform(
+    None, None, bypass=True
+)
