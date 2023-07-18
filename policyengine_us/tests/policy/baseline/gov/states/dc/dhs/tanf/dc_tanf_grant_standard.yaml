@@ -1,4 +1,4 @@
-- name: If one person, grand standard is $437 * 12/yr.
+- name: If one person, grant standard is $437 * 12/yr.
   period: 2023
   input:
     state_code: DC
@@ -6,7 +6,7 @@
   output:
     dc_tanf_grant_standard: 437 * 12
 
-- name: If ten person, grand standard is $1750 * 12/yr.
+- name: If ten people, grant standard is $1750 * 12/yr.
   period: 2023
   input:
     state_code: DC
