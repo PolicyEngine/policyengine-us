@@ -23,7 +23,7 @@ class de_pension_exclusion(Variable):
 
         # determine military eligiblity
         is_military = tax_unit("is_military", period)
-        military_eligible = (is_military | under_60_head_eligible).astype(int)
+        military_eligible = (is_military & under_60_head_eligible).astype(int)
 
         # determine pension exclusion value based on military status
         exclusion_value = where(military_eligible, p.max_pension_amount_military, p.max_pension_amount_non_military)
