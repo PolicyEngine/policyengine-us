@@ -4,7 +4,7 @@
     state_code: PA
     age: 19
     is_pregnant: false
-    children_recieving_tanf_number: 0
+    pa_tanf_age_eligible: false
   output:
     pa_tanf_age_eligible_on_pregnant_women_limitation: false
 
@@ -14,7 +14,7 @@
     state_code: PA
     age: 17
     is_pregnant: false
-    children_recieving_tanf_number: 0
+    pa_tanf_age_eligible: false
   output:
     pa_tanf_age_eligible_on_pregnant_women_limitation: false
 
@@ -24,7 +24,7 @@
     state_code: PA
     age: 17
     is_pregnant: true
-    children_recieving_tanf_number: 0
+    pa_tanf_age_eligible: false
   output:
     pa_tanf_age_eligible_on_pregnant_women_limitation: true
 
@@ -34,7 +34,7 @@
     state_code: PA
     age: 17
     is_pregnant: true
-    children_recieving_tanf_number: 2
+    pa_tanf_age_eligible: true
   output:
     pa_tanf_age_eligible_on_pregnant_women_limitation: true
 
@@ -44,7 +44,7 @@
     state_code: PA
     age: 19
     is_pregnant: true
-    children_recieving_tanf_number: 0
+    pa_tanf_age_eligible: false
   output:
     pa_tanf_age_eligible_on_pregnant_women_limitation: true
 
@@ -54,6 +54,6 @@
     state_code: PA
     age: 20
     is_pregnant: true
-    children_recieving_tanf_number: 2
+    pa_tanf_age_eligible: true
   output:
     pa_tanf_age_eligible_on_pregnant_women_limitation: false
