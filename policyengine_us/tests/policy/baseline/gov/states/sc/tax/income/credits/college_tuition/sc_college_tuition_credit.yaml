@@ -1,0 +1,29 @@
+- name: $6k tuition, 15 semester hours
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_hours: 15
+    sc_qualified_tuition: 6_000
+  output:
+    sc_college_tuition_credit: 1500
+    # 12,268*15/30 = 6,134 6,000*0.5 = 3,000 
+
+- name: $2k tuition, 12 semester hours
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_hours: 30
+    sc_qualified_tuition: 2_000
+  output:
+    sc_college_tuition_credit: 1_000
+    # 12,268*12/30 = 4,907 2,000*0.5 = 1000
+
+- name: $15k tuition, 30 semester hours
+  period: 2022
+  input:
+    state_code: SC
+    sc_total_hours: 30
+    sc_qualified_tuition: 15_000
+  output:
+    sc_college_tuition_credit: 1500
+    # 12,268*30/30 = 12,268 12,268*0.5 = 6,134 
