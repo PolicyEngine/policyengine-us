@@ -2,6 +2,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
+    eitc_phased_in: 560
     tax_unit_earned_income: 15_000
     adjusted_gross_income: 20_532
     state_code: DC
@@ -12,6 +13,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
+    eitc_phased_in: 560
     tax_unit_earned_income: 20_532
     adjusted_gross_income: 15_000
     state_code: DC
@@ -22,6 +24,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
+    eitc_phased_in: 560
     tax_unit_earned_income: 22_532
     adjusted_gross_income: 22_532
     state_code: DC
@@ -32,6 +35,7 @@
   absolute_error_margin: 0.01
   period: 2021
   input:
+    eitc_phased_in: 1_502
     tax_unit_earned_income: 27_743
     adjusted_gross_income: 27_743
     state_code: DC
