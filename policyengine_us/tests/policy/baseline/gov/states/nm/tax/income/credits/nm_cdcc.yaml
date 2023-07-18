@@ -1,63 +1,144 @@
-- name: 1 dependent child in NM (eligible and cap reached)
+- name: Calculation of NM cdcc subtarcted from federal cdcc
   period: 2022
   input:
-    nm_cdcc_max: 480
-    state_code: NM
-    cdcc_relevant_expenses: 7000
+    people:
+      head:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        nm_agi: 30_160
+        cdcc: 2_000
+        tax_unit_earned_income: 100
+        nm_cdcc_max_amount: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: NM
+    spm_units:
+      spm_unit:
+        members: [head]
+        tanf: 0
   output:
-    nm_cdcc: 480
+    nm_cdcc: 800
 
-- name: 1 dependent child in NM (eligible but cap not reached)
+- name: Ineligible if recieve tanf
   period: 2022
   input:
-    nm_cdcc_max: 480
-    state_code: NM
-    cdcc_relevant_expenses: 500
-  output:
-    nm_cdcc: 200
-
-- name: 1 dependent child in NM (ineligible case 1)
-  period: 2022
-  input:
-    nm_cdcc_max: 0
-    state_code: NM
-    cdcc_relevant_expenses: 400
-  output:
-    nm_cdcc: 0
-
-- name: 1 dependent child in NM (ineligible case 2)
-  period: 2022
-  input:
-    nm_cdcc_max: 0
-    state_code: NM
-    cdcc_relevant_expenses: 0
-  output:
-    nm_cdcc: 0
-
-- name: 2 dependent children in NM (eligible and cap reached)
-  period: 2022
-  input:
-    nm_cdcc_max: 1200
-    state_code: NM
-    cdcc_relevant_expenses: 7000
-  output:
-    nm_cdcc: 1200
-
-- name: 2 dependent children in NM (eligible but cap not reached)
-  period: 2022
-  input:
-    nm_cdcc_max: 1200
-    state_code: NM
-    cdcc_relevant_expenses: 500
-  output:
-    nm_cdcc: 200
-
-- name: 2 dependent children in NM (ineligible)
-  period: 2022
-  input:
-    nm_cdcc_max: 0
-    state_code: NM
-    cdcc_relevant_expenses: 5000
+    people:
+      head:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        nm_agi: 30_160
+        cdcc: 2_000
+        tax_unit_earned_income: 100
+        nm_cdcc_max_amount: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: NM
+    spm_units:
+      spm_unit:
+        members: [head]
+        tanf: 1
   output:
     nm_cdcc: 0
 
+- name: Ineligible if earned income is zero
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        nm_agi: 30_160
+        cdcc: 2_000
+        tax_unit_earned_income: 0
+        nm_cdcc_max_amount: 1_200
+    households:
+      household:
+        members: [head]
+        state_code: NM
+    spm_units:
+      spm_unit:
+        members: [head]
+        tanf: 0
+  output:
+    nm_cdcc: 0
+
+- name: Capped at the max amount
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        nm_agi: 30_160
+        cdcc: 2_000
+        tax_unit_earned_income: 1
+        nm_cdcc_max_amount: 0
+    households:
+      household:
+        members: [head]
+        state_code: NM
+    spm_units:
+      spm_unit:
+        members: [head]
+        tanf: 0
+  output:
+    nm_cdcc: 0
+
+
+- name: Capped at the max amount
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        nm_agi: 30_161
+        cdcc: 2_000
+        tax_unit_earned_income: 1
+        nm_cdcc_max_amount: 0
+    households:
+      household:
+        members: [head]
+        state_code: NM
+    spm_units:
+      spm_unit:
+        members: [head]
+        tanf: 0
+  output:
+    nm_cdcc: 0
+
+- name: Federal cap can not be 0
+  period: 2022
+  input:
+    people:
+      head:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head]
+        nm_agi: 30_160
+        cdcc: 1_000
+        tax_unit_earned_income: 1
+        nm_cdcc_max_amount: 1_500
+    households:
+      household:
+        members: [head]
+        state_code: NM
+    spm_units:
+      spm_unit:
+        members: [head]
+        tanf: 0
+  output:
+    nm_cdcc: 0

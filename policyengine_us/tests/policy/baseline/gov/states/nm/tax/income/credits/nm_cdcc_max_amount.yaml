@@ -1,0 +1,47 @@
+- name: 1 child with expenses capped at 480 per child
+  period: 2022
+  input:
+    people:
+      head:
+        is_cdcc_eligible: false
+      child:
+        is_cdcc_eligible: true
+        daily_childcare_expenses: 6
+        childcare_days_per_year: 365
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 480
+
+- name: 3 children with expenses capped at $1,200 total
+  period: 2022
+  input:
+    people:
+      head:
+        is_cdcc_eligible: false
+      child1:
+        is_cdcc_eligible: true
+        daily_childcare_expenses: 6
+        childcare_days_per_year: 365
+      child2:
+        is_cdcc_eligible: true
+        daily_childcare_expenses: 6
+        childcare_days_per_year: 365
+      child3:
+        is_cdcc_eligible: true
+        daily_childcare_expenses: 6
+        childcare_days_per_year: 365
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2, child3]
+    households:
+      household:
+        members: [head, child1, child2, child3]
+        state_code: NM
+  output:
+    nm_cdcc_max_amount: 1_200
