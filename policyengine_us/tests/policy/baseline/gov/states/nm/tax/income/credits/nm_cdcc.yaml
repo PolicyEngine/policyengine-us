@@ -82,7 +82,7 @@
         nm_agi: 30_160
         cdcc: 2_000
         tax_unit_earned_income: 1
-        nm_cdcc_max_amount: 0
+        nm_cdcc_max_amount: 1_200
     households:
       household:
         members: [head]
@@ -92,10 +92,10 @@
         members: [head]
         tanf: 0
   output:
-    nm_cdcc: 0
+    nm_cdcc: 800
 
 
-- name: Capped at the max amount
+- name: Agi uneligible
   period: 2022
   input:
     people:
