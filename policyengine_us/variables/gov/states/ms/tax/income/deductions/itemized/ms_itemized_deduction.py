@@ -9,9 +9,10 @@ class ms_itemized_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
-    references = ("https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf"
-                  "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf"
-                  )
+    references = (
+        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf"
+        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf"
+    )
 
     def formula(tax_unit, period, parameters):
         # compute itemized deduction maximum
@@ -41,7 +42,7 @@ class ms_itemized_deduction(Variable):
         )
         net_deds = max_(0, exempt_deds)
 
-        agi = tax_unit("adjusted_gross_income", period) 
-        #excess_agi = max_(0, agi - p.agi_threshold[filing_status])
+        agi = tax_unit("adjusted_gross_income", period)
+        # excess_agi = max_(0, agi - p.agi_threshold[filing_status])
 
         return max_(0, exempt_deds)
