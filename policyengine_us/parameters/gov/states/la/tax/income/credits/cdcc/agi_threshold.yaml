@@ -1,7 +1,6 @@
-- description: |
-    Louisiana provides a refundable CDCC below this threshold of the federal AGI threshold.
-  values:
-    - '2006-01-01': 25_000  # Threshold amount in USD
+description: Louisiana provides a refundable CDCC below this threshold of the federal AGI threshold.
+values:
+  2006-01-01: 25_000
 
 metadata:
   period: year
