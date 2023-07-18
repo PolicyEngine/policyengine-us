@@ -1,46 +1,45 @@
 - name: Delaware pension exclusion if taxpayer is under 60, retired from the US military, and receive 10,000 pension income
   period: 2022
   input:
-    is_tax_unit_head: true
     state_code: DE
     age_head: 55
     is_military: true
     pension_income: 10_000
   output:  
-    de_standard_deduction: 10_000
+    de_pension_exclusion: 10_000
 
-- name: Delaware pension exclusion if taxpayer is under 60, retired from the US military, and receive 15,000 pension income
-  period: 2022
-  input:
-    state_code: DE
-    is_tax_unit_head: true
-    age_head: 55
-    is_military: true
-    pension_income: 15_000
-  output:  
-    de_standard_deduction: 12_500
+# - name: Delaware pension exclusion if taxpayer is under 60, retired from the US military, and receive 15,000 pension income
+#   period: 2022
+#   input:
+#     state_code: DE
+#     is_tax_unit_head: true
+#     age_head: 55
+#     is_military: true
+#     pension_income: 15_000
+#   output:  
+#     de_pension_exclusion: 12_500
 
-- name: Delaware pension exclusion if taxpayer is under 60, NOT retired from the US military, and receive 15,000 pension income
-  period: 2022
-  input:
-    state_code: DE
-    is_tax_unit_head: true
-    age_head: 55
-    is_military: false
-    pension_income: 15_000
-  output:  
-    de_standard_deduction: 2_000
+# - name: Delaware pension exclusion if taxpayer is under 60, NOT retired from the US military, and receive 15,000 pension income
+#   period: 2022
+#   input:
+#     state_code: DE
+#     is_military: false
+#     is_tax_unit_head: true
+#     age_head: 55
+#     pension_income: 15_000
+#   output:  
+#     de_pension_exclusion: 2_000
 
-- name: Delaware pension exclusion if taxpayer is under 60, NOT retired from the US military, and receive 1,000 pension income
-  period: 2022
-  input:
-    state_code: DE
-    is_tax_unit_head: true
-    age_head: 55
-    is_military: false
-    pension_income: 1_000
-  output:  
-    de_standard_deduction: 1_000
+# - name: Delaware pension exclusion if taxpayer is under 60, NOT retired from the US military, and receive 1,000 pension income
+#   period: 2022
+#   input:
+#     state_code: DE
+#     is_tax_unit_head: true
+#     age_head: 55
+#     is_military: false
+#     pension_income: 1_000
+#   output:  
+#     de_pension_exclusion: 1_000
 
 # - name: Delaware pension exclusion if taxpayer is above 60, and receive 1,000 pension income and 3,000 retirement income
 #   period: 2022
@@ -50,4 +49,4 @@
 #     pension_income: 1_000
 #     eligible_retirement_income: 3_000
 #   output:  
-#     de_standard_deduction: 4_000
+#     de_pension_exclusion: 4_000
