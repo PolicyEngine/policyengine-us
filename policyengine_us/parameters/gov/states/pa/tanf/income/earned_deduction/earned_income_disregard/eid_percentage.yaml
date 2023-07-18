@@ -1,10 +1,10 @@
 description: Pennsylvania applies this percentage of the Earned Income Disregard(EID) to each eligible employed client's earned income.
 values:
-  2021-01-01: 0.50
+  2023-01-01: 6 # 0.50*12
 
 metadata:
   unit: /1
-  period: month
+  period: year
   label: Pennsylvania TANF earned income disregard percentage
   reference:
     - title: Cash Assistance Hankbook | 160.21 TANF Earned Income Disregard (EID)

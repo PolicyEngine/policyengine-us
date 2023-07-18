@@ -1,10 +1,10 @@
 description: Pennsylvania deducts this amount from each adult budget member’s earned income when the individual is eligible for the Earned Income Disregard (EID).
 values:
-  2023-01-01: 200
+  2023-01-01: 2_400 # 200 * 12
 
 metadata:
   unit: currency-USD
-  period: month
+  period: year
   label: Pennsylvania TANF work expense deductions
   reference:
     - title: Cash Assistance Hankbook | 160.22 Work Expense Deduction (WED)
