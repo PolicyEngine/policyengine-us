@@ -17,7 +17,8 @@ class nm_cdcc_max_amount(Variable):
         # For each dependent we take the number of days in daycare
         # the daily amount can not exceed $8
         daily_expenses = min_(
-            person("daily_childcare_expenses", period), p.max_amount.daily_exepnses
+            person("daily_childcare_expenses", period),
+            p.max_amount.daily_exepnses,
         )
         childcare_days = person("childcare_days_per_year", period)
         total_expenses = eligible_dependent * (childcare_days * daily_expenses)
