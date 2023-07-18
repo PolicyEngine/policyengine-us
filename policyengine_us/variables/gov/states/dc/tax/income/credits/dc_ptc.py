@@ -25,8 +25,8 @@ class dc_ptc(Variable):
         us_agi = max_(0, tax_unit("adjusted_gross_income", period))
         ptax_offset = us_agi * where(
             is_elderly,
-            p_dc.ptc.fraction_elderly.calc(us_agi),
-            p_dc.ptc.fraction_nonelderly.calc(us_agi),
+            p_dc.ptc.fraction_elderly.calc(us_agi, right=True),
+            p_dc.ptc.fraction_nonelderly.calc(us_agi, right=True),
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
         return min_(p_dc.ptc.max, uncapped_ptc)
