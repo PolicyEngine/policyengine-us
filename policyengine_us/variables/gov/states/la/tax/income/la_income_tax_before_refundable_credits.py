@@ -7,7 +7,7 @@ class la_income_tax_before_refundable_credits(Variable):
     label = "Louisiana income tax before refundable credits"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.NM
+    defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
         before_non_refundable_credits = tax_unit(
