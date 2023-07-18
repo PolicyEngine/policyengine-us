@@ -16,16 +16,16 @@ class oh_retirement_income_credits(Variable):
         ).gov.states.oh.tax.income.credits.retirement_income
 
         person = tax_unit.members
-        pension_income = sum(person("pension_income", period))
+        pension_income = tax_unit.sum(person("pension_income", period))
 
         agi = tax_unit("oh_agi", period)
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
 
-        eligible = agi < p.agi_cap and pension_income > 0
+        eligible = agi < p.agi_cap
         return (
-            p.agi_credit_amount.calc(agi)
+            p.pension_credit_amount.calc(pension_income)
             * eligible
             * has_not_taken_lump_sum_distribution
         )
