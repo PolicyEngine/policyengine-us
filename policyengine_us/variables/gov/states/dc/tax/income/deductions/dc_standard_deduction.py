@@ -8,8 +8,4 @@ class dc_standard_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DC
-
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.dc.tax.income.deductions.standard
-        filing_status = tax_unit("filing_status", period)
-        return p.amount[filing_status]
+    adds = ["basic_standard_deduction", "additional_standard_deduction"]
