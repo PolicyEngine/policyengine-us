@@ -1,12 +1,3 @@
-# Questions:
-# 1. Doesn't mention widow?
-# 2. Should I remove "federal"?
-
-# Some details that don't include in the coding:
-# 1. valid SSN for employement
-# 2. prison issues
-# 3. You are not claimed as a dependent by any other taxpayer
-# 4. The credit cannot exceed $100 per household. Do not claim this credit if someone else in your household has already claimed $100 of the credit. If someone else in your household has claimed less than $100, you may claim the credit as long as all credit claims filed from your household do not exceed $100
 
 from policyengine_us.model_api import *
 
