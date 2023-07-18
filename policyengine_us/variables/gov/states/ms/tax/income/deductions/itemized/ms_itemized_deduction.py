@@ -9,6 +9,10 @@ class ms_itemized_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.MS
 
+    references = ("https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf"
+                  "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf"
+                  )
+
     def formula(tax_unit, period, parameters):
         # compute itemized deduction maximum
         p = parameters(period).gov.irs.deductions
@@ -18,9 +22,8 @@ class ms_itemized_deduction(Variable):
             if deduction not in ["salt_deduction"]
         ]
         itm_deds_less_salt = add(tax_unit, period, itm_deds)
+
         filing_status = tax_unit("filing_status", period)
-        # uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        # itm_deds_max = itm_deds_less_salt + uncapped_property_taxes
 
         # calculate itemized deductions total amount
         p = parameters(period).gov.states.ms.tax.income.deductions.itemized
@@ -37,11 +40,8 @@ class ms_itemized_deduction(Variable):
             ],
         )
         net_deds = max_(0, exempt_deds)
-        # net_deds_offset = p.deduction_fraction * net_deds # what is deduction_fraction
 
-        agi = tax_unit("adjusted_gross_income", period)  # why use pe's agi
-        excess_agi = max_(0, agi - p.agi_threshold[filing_status])
+        agi = tax_unit("adjusted_gross_income", period) 
+        #excess_agi = max_(0, agi - p.agi_threshold[filing_status])
 
-        # excess_agi_offset = p.excess_agi_fraction * excess_agi
-        offset = min_(net_deds, excess_agi)
-        return max_(0, offset)
+        return max_(0, exempt_deds)
