@@ -6,6 +6,7 @@ class vt_interest_and_dividend_add_back(Variable):
     entity = TaxUnit
     label = "Vermont agi interest and dividend income add back"
     definition_period = YEAR
+    defined_for = StateCode.VT
     documentation = "Part of additions to VT AGI over federal AGI. The amount equals to interest and dividend income from non-Vermont state and local obligations which are exempted from federal taxable income are taxable in Vermont."
     reference = [
         {

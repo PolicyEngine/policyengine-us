@@ -6,6 +6,7 @@ class vt_bonus_depreciation_add_back(Variable):
     entity = TaxUnit
     label = "Vermont agi bonus depreciation add back"
     definition_period = YEAR
+    defined_for = StateCode.VT
     documentation = "Part of additions to VT AGI over federal AGI. The amount equals to the difference between the depreciation calculated by standard MACRS methods and the depreciation calculated using the federal bonus depreciation for assets placed in service in 2022."
     reference = [
         {
