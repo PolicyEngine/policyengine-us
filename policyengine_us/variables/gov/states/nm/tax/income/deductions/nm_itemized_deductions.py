@@ -9,6 +9,7 @@ class nm_itemized_deductions(Variable):
     definition_period = YEAR
     reference = (
         "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=28",
+        "https://casetext.com/regulation/new-mexico-administrative-code/title-3-taxation/chapter-3-personal-income-taxes/part-11-tax-credit-income-allocation-and-apportionment/section-33118-computation-for-non-resident-taxpayers-who-have-new-mexico-royalty-income",
     )
     defined_for = StateCode.NM
 
