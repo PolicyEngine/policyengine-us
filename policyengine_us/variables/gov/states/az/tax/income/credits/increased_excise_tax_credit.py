@@ -20,8 +20,8 @@ class az_increased_excise_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         max_income = p.maximum[filing_status]
         eligible = agi <= max_income
-        dependents1 = tax_unit("tax_unit_dependents", period)
-        dependents2 = p.dependent2[filing_status]
+        head_or_spouse_dependents = tax_unit("tax_unit_dependents", period)
+        dependents_eligible = p.dependent2[filing_status]
         total_dependents = dependents1 + dependents2
         current_credit = total_dependents * p.credit_based_on_cal_dependents
         return eligible * min_(current_credit, p.max_amount)
