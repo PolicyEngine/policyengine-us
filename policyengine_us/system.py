@@ -17,6 +17,9 @@ from policyengine_us.variables.household.demographic.geographic.state.in_state i
     create_50_state_variables,
 )
 from policyengine_us.tools.parameters import backdate_parameters
+from policyengine_us.reforms import create_structural_reforms_from_parameters
+
+from policyengine_us.reforms import create_structural_reforms_from_parameters
 
 COUNTRY_DIR = Path(__file__).parent
 
@@ -35,6 +38,12 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
     def __init__(self):
         # We initialize our tax and benefit system with the general constructor
         super().__init__(entities)
+
+        reform = create_structural_reforms_from_parameters(
+            self.parameters, "2023-01-01"
+        )
+        if reform is not None:
+            self.apply_reform(reform)
 
         self.add_variables(*create_50_state_variables())
 
@@ -55,6 +64,15 @@ class Simulation(CoreSimulation):
     default_input_period = 2022
     datasets = DATASETS
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        reform = create_structural_reforms_from_parameters(
+            self.tax_benefit_system.parameters, "2023-01-01"
+        )
+        if reform is not None:
+            self.apply_reform(reform)
+
 
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
@@ -65,6 +83,15 @@ class Microsimulation(CoreMicrosimulation):
     default_calculation_period = 2023
     default_input_period = 2023
     datasets = DATASETS
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        reform = create_structural_reforms_from_parameters(
+            self.tax_benefit_system.parameters, "2023-01-01"
+        )
+        if reform is not None:
+            self.apply_reform(reform)
 
 
 class IndividualSim(CoreIndividualSim):  # Deprecated
