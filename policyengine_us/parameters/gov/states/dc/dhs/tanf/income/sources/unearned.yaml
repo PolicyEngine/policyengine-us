@@ -1,0 +1,19 @@
+description: DC TANF counts these income sources as unearned income.
+values:
+  2020-01-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    - ssi
+metadata:
+  unit: list
+  reference:
+    title: Code of the District of Columbia | § 4205.05. Definitions.
+    href: https://code.dccouncil.gov/us/dc/council/code/sections/4-205.05
