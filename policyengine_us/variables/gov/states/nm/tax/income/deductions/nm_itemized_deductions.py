@@ -19,18 +19,18 @@ class nm_itemized_deductions(Variable):
         p = parameters(period).gov.irs.deductions
 
         # tax/income, federal Schedule A, line 5a. 1
-        slat_sales_or_income = tax_unit(
+        salt_sales_or_income = tax_unit(
             "state_and_local_sales_or_income_tax", period
         )
         # state_and_local_tax, line 5d. 2
         total_salt = (
-            add(tax_unit, period, ["real_estate_taxes"]) + slat_sales_or_income
+            add(tax_unit, period, ["real_estate_taxes"]) + salt_sales_or_income
         )
-        # ratio = round(slat_sales_or_income[0] / total_salt[0], 4)
+        # ratio = round(salt_sales_or_income[0] / total_salt[0], 4)
         # ratio. 3
         salt_ratio = np.zeros_like(total_salt)
         mask = total_salt != 0
-        salt_ratio[mask] = slat_sales_or_income[mask] / total_salt[mask]
+        salt_ratio[mask] = salt_sales_or_income[mask] / total_salt[mask]
 
         # line 5e. 4
         salt_cap = p.itemized.salt_and_real_estate.cap[filing_status]
@@ -41,9 +41,13 @@ class nm_itemized_deductions(Variable):
         salt = min_(salt_claimed * salt_ratio, salt_claimed)
 
         standard_deduction = tax_unit("standard_deduction", period)
-        itm_deds = [deduction for deduction in p.itemized_deductions]
-        us_itmemized_deductions = add(tax_unit, period, itm_deds)
-        item_deds = max_(us_itmemized_deductions - standard_deduction, 0)
+        itm_deds = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        us_itemized_deductions = add(tax_unit, period, itm_deds) + salt_claimed
+        item_deds = max_(us_itemized_deductions - standard_deduction, 0)
 
         nm_item = min_(salt, item_deds)
         return where(itemizes, nm_item, 0)
