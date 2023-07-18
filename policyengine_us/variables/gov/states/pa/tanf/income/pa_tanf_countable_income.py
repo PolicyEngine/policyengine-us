@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class pa_tanf_countable_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "PA TANF countable income"
+    label = "Pennsylvania TANF countable income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.PA
