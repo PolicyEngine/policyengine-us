@@ -16,9 +16,19 @@ class ri_property_tax_credit(Variable):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         agi = tax_unit("adjusted_gross_income", period)
         num_household = tax_unit("tax_unit_size", period)
-        credit = where(
+
+        person = tax_unit.members
+        direct_property_taxes = tax_unit.sum(person("real_estate_taxes", period))
+        rent = tax_unit("rents", period)
+        paid_property_taxes = (direct_property_taxes + rent) > 0
+
+        base = where(
             num_household == 1,
             p.rate.one_person.calc(agi) * agi,
             p.rate.multiple_people.calc(agi) * agi,
         )
+        exceed = max_(direct_property_taxes + rent - base, 0)
+        credit = exceed * paid_property_taxes
+  
         return min_(credit, p.max_amount)
+        #return base/agi

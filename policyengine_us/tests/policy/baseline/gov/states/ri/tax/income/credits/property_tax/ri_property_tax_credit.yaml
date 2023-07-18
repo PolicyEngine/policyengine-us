@@ -4,15 +4,19 @@
     state_code: RI
     adjusted_gross_income: 3_000
     tax_unit_size: 1
+    real_estate_taxes: 50
+    rents: 0
   output:
-    ri_property_tax_credit: 90
+    ri_property_tax_credit: 0
 
 - name: High Income, household size of 1
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 13_000
+    adjusted_gross_income: 2_000
     tax_unit_size: 1
+    real_estate_taxes: 1000
+    rents: 1000
   output:
     ri_property_tax_credit: 600
 
@@ -22,6 +26,8 @@
     state_code: RI
     adjusted_gross_income: 3_000
     tax_unit_size: 2
+    real_estate_taxes: 150
+    rents: 0
   output:
     ri_property_tax_credit: 90
 
@@ -31,5 +37,7 @@
     state_code: RI
     adjusted_gross_income: 13_000
     tax_unit_size: 2
+    real_estate_taxes: 0
+    rents: 700
   output:
-    ri_property_tax_credit: 600
+    ri_property_tax_credit: 50
