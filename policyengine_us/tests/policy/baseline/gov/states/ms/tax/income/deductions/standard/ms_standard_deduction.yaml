@@ -1,0 +1,39 @@
+- name: MS Standard deduction if single filer
+  period: 2020
+  input:
+    filing_status: SINGLE
+    state_code: MS
+  output:
+    ms_standard_deduction: 2_300
+
+- name: MS Standard deduction if head of household filer
+  period: 2020
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: MS
+  output:
+    ms_standard_deduction: 3_400
+
+- name: MS Standard deduction if married filing jointly
+  period: 2020
+  input:
+    filing_status: JOINT
+    state_code: MS
+  output:  
+    ms_standard_deduction: 4_600
+
+- name: MS Standard deduction if widow filter
+  period: 2020
+  input:
+    filing_status: WIDOW
+    state_code: MS
+  output:  
+    ms_standard_deduction: 4_600
+
+- name: MS Standard deduction if married filing separately
+  period: 2020
+  input:
+    filing_status: SEPARATE
+    state_code: MS
+  output:  
+    ms_standard_deduction: 2_300

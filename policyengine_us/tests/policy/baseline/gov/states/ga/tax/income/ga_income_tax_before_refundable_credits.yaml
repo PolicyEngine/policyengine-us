@@ -1,0 +1,44 @@
+- name: Single filer #((3_000 - 2_250) * 0.03 + ((2_250 - 750) * 0.02 + 750 * 0.01) = 22.5 + 30 + 7.5
+  period: 2022
+  input:
+    ga_taxable_income: 3_000
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 60
+
+- name: Single filer w/o income
+  period: 2022
+  input:
+    ga_taxable_income: 0
+    filing_status: SINGLE
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 0
+
+- name: Joint filer 
+  period: 2022
+  input:
+    ga_taxable_income: 1_100
+    filing_status: JOINT
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 12
+
+- name: Separate filer 
+  period: 2022
+  input:
+    ga_taxable_income: 600
+    filing_status: SEPARATE
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 7
+
+- name: Head of household filer 
+  period: 2022
+  input:
+    ga_taxable_income: 1_100
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: GA
+  output:
+    ga_income_tax_before_refundable_credits: 12
