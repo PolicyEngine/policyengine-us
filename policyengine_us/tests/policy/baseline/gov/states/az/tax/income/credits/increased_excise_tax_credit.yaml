@@ -5,7 +5,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 25_001 # Should I remove "federal"
+    adjusted_gross_income: 25_001
     tax_unit_dependents: 1
   output:
     az_increased_excise_tax_credit: 0
@@ -15,7 +15,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 25_001 
+    adjusted_gross_income: 25_001
     tax_unit_dependents: 3
   output:
     az_increased_excise_tax_credit: 0
