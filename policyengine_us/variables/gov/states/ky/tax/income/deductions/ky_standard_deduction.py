@@ -10,6 +10,4 @@ class ky_standard_deduction(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        return parameters(
-            period
-        ).gov.states.ky.tax.income.deductions.standard
+        return parameters(period).gov.states.ky.tax.income.deductions.standard
