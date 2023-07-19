@@ -1,0 +1,24 @@
+description: Wisconsin phases out its standard deduction for head of household filers according to this schedule.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD  # Wisconsin AGI
+  rate_unit: /1
+  reference:
+    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
+      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 16_150
+      2022-01-01: 16_990
+    rate:
+      2021-01-01: 0.22515
+  - threshold:
+      2021-01-01: 47_248
+      2022-01-01: 49_705
+    rate:
+      2021-01-01: 0.12

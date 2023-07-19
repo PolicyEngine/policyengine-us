@@ -28,6 +28,7 @@ class household_refundable_tax_credits(Variable):
         "wa_refundable_credits",  # Washington.
         "nyc_refundable_credits",  # New York City.
         "ut_refundable_credits",  # Utah.
+        "wi_refundable_credits",  # Wisconsin.
     ]
 
     def formula(household, period, parameters):
