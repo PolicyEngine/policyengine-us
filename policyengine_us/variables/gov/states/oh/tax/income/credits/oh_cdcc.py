@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class oh_child_dependent_care_credits(Variable):
+class oh_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Ohio senior citizen credits"
+    label = "Ohio child and dependent care credit"
     unit = USD
     definition_period = YEAR
     reference = (

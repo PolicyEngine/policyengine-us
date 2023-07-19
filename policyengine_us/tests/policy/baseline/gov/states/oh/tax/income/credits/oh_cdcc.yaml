@@ -5,7 +5,7 @@
     oh_agi: 19_999
     cdcc: 2_000
   output:
-    oh_child_dependent_care_credits: 2_000
+    oh_cdcc: 2_000
 
 - name: child and dependent care credit test, just above lower threshold AGI (.25 * federal CDCC)
   period: 2021
@@ -14,7 +14,7 @@
     oh_agi: 20_000
     cdcc: 2_000
   output:
-    oh_child_dependent_care_credits: 500
+    oh_cdcc: 500
 
 - name: child and dependent care credit test, solidly above lower threshold AGI (.25 * federal CDCC)
   period: 2021
@@ -23,7 +23,7 @@
     oh_agi: 39_999
     cdcc: 2_000
   output:
-    oh_child_dependent_care_credits: 500
+    oh_cdcc: 500
 
 - name: child and dependent care credit test above upper threshold (ineligible)
   period: 2021
@@ -32,4 +32,4 @@
     oh_agi: 40_000
     cdcc: 2_000
   output:
-    oh_child_dependent_care_credits: 0
+    oh_cdcc: 0
