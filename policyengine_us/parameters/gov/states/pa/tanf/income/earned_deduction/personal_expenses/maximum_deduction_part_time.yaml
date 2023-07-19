@@ -1,10 +1,10 @@
 description: Pennsylvania deducts up to this amount per month for each incapacitated adult when the client works part-time.
 values:
-  2023-01-01: 1_800 # 150*12
+  2023-01-01: 150
 
 metadata:
   unit: currency-USD
-  period: year
+  period: month
   label: Pennsylvania TANF personal expenses deduction for part-time incapacitated adult
   reference:
     - title: Cash Assistance Hankbook | 160.23 TANF Personal Expenses

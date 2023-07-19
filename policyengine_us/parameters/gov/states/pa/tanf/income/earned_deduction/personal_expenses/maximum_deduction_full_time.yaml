@@ -1,10 +1,10 @@
 description: Pennsylvania deducts up to this amount for each incapacitated adult when the client works full-time.
 values:
-  2023-01-01: 2_100 # 175*12
+  2023-01-01: 175
 
 metadata:
   unit: currency-USD
-  period: year
+  period: month
   label: Pennsylvania TANF personal expenses deduction for full-time incapacitated adult
   reference:  
     - title: Cash Assistance Hankbook | 160.23 TANF Personal Expenses
