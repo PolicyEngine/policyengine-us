@@ -1,0 +1,22 @@
+description: Montana subtracts this amount from exceeding part of modified income (compared with income cap) depending on filing status. 
+metadata:
+  label: Montana social security subtraction exceeding income cap
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Montana Individual Income Tax Return Form, Taxable Social Security Benefits Schedule, Line 12
+    href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf
+  - title: 2021 Montana Individual Income Tax Return Form, Taxable Social Security Benefits Schedule, Line 12
+    href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf
+JOINT:
+  2021-01-01: 12_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 9_000
+WIDOW:
+  2021-01-01: 9_000
+SINGLE:
+  2021-01-01: 9_000
+SEPARATE:
+  2021-01-01: 6_000
