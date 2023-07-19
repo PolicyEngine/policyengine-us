@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.372.0] - 2023-07-19 19:22:25
+
+### Added
+
+- Added Ohio Child Care and Dependent Care Credit.
+- Added Ohio Senior Citizen Credit.
+
 ## [0.371.0] - 2023-07-19 15:52:37
 
 ### Added
@@ -4396,6 +4403,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.372.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.371.0...0.372.0
 [0.371.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.370.1...0.371.0
 [0.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.370.0...0.370.1
 [0.370.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.369.0...0.370.0
