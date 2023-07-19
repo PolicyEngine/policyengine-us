@@ -214,3 +214,32 @@
   output:
     adjusted_gross_income: 57_601
     dc_ptc: 0  # inelgible for property tax credit
+
+- name: dc_ptc unit test 8
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 69
+        rent: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 67
+        rent: 10_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: -3_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_ptc: 1_250  # = min(1250, 20000 * 20% - 0 * 5%)
