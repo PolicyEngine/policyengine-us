@@ -18,17 +18,18 @@ class ri_property_tax_credit(Variable):
         num_household = tax_unit("tax_unit_size", period)
 
         person = tax_unit.members
-        direct_property_taxes = tax_unit.sum(person("real_estate_taxes", period))
-        rent = tax_unit("rents", period)
+        direct_property_taxes = tax_unit.sum(
+            person("real_estate_taxes", period)
+        )
+        rent = tax_unit.sum(person("rent", period))
         paid_property_taxes = (direct_property_taxes + rent) > 0
 
         base = where(
             num_household == 1,
-            p.rate.one_person.calc(agi) * agi,
-            p.rate.multiple_people.calc(agi) * agi,
+            p.rate.one_person.calc(agi),
+            p.rate.multiple_people.calc(agi),
         )
-        exceed = max_(direct_property_taxes + rent - base, 0)
-        credit = exceed * paid_property_taxes
-  
+        credit_amount = base * agi
+        exceedance = max_(direct_property_taxes + rent - credit_amount, 0)
+        credit = exceedance * paid_property_taxes
         return min_(credit, p.max_amount)
-        #return base/agi
