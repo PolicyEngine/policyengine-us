@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class maximum_capital_loss(Variable):
+class limited_capital_loss(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maximum capital loss deduction"
+    label = "Limited capital loss deduction"
     unit = USD
     documentation = "The capital loss deductible from gross income."
     definition_period = YEAR

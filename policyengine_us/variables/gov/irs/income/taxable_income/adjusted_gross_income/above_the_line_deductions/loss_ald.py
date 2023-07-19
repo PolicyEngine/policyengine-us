@@ -18,5 +18,5 @@ class loss_ald(Variable):
         person = tax_unit.members
         indiv_se_loss = max_(0, -person("self_employment_income", period))
         self_employment_loss = tax_unit.sum(indiv_se_loss)
-        capital_loss = tax_unit("maximum_capital_loss", period)
-        return min_(max_loss, self_employment_loss + capital_loss)
+        limited_capital_loss = tax_unit("limited_capital_loss", period)
+        return min_(max_loss, self_employment_loss + limited_capital_loss)
