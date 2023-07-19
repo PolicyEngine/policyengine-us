@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class vt_income_tax_before_credits(Variable):
     value_type = float
     entity = TaxUnit
