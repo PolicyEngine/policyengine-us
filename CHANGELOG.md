@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.370.1] - 2023-07-19 13:13:44
+
+### Fixed
+
+- DC property tax credit corner cases with negative federal AGI.
+
 ## [0.370.0] - 2023-07-18 22:26:55
 
 ### Added
@@ -4384,6 +4390,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.370.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.370.0...0.370.1
 [0.370.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.369.0...0.370.0
 [0.369.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.368.1...0.369.0
 [0.368.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.368.0...0.368.1

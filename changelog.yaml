@@ -3689,3 +3689,8 @@
     added:
     - New Mexico Itemized Deductions.
   date: 2023-07-18 22:26:55
+- bump: patch
+  changes:
+    fixed:
+    - DC property tax credit corner cases with negative federal AGI.
+  date: 2023-07-19 13:13:44
