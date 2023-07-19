@@ -15,11 +15,8 @@ class pa_tanf_age_eligible_on_pregnant_women_limitation(Variable):
         is_eligible_age = age < p.age_limit
         is_pregnant = person("is_pregnant", period)
         is_children_receiving_tanf = spm_unit("pa_tanf_age_eligible", period)
-        return spm_unit.any(
-            (
-                (1 - is_eligible_age)
-                * is_pregnant
-                * (1 - is_children_receiving_tanf)
-            )
-            or (is_eligible_age * is_pregnant)
+        # Must be pregnant and either of a qualifying age or children not receiving TANF.
+        eligible = is_pregnant & (
+            is_eligible_age | ~is_children_receiving_tanf
         )
+        return spm_unit.any(eligible)
