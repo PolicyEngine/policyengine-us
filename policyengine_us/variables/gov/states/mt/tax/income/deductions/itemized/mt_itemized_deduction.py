@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_itemized_deductions(Variable):
+class mt_itemized_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana itemized deductions"
+    label = "Montana itemized deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -26,5 +26,5 @@ class mt_itemized_deductions(Variable):
             add(tax_unit, period, ["real_estate_taxes"]),
             p.itemized.salt_and_real_estate.cap[filing_status],
         )
-        mt_itm_deds = us_itm_deds_less_salt + capped_property_taxes
-        return mt_itm_deds
+
+        return us_itm_deds_less_salt + capped_property_taxes

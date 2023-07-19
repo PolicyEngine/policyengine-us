@@ -9,7 +9,7 @@
      casualty_loss_deduction: 400
      state_code: MT
   output:
-    mt_itemized_deductions: 7_465
+    mt_itemized_deduction: 7_465
 
 - name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
   period: 2022
@@ -22,7 +22,7 @@
      casualty_loss_deduction: 0
      state_code: MT
   output:
-    mt_itemized_deductions: 14_234
+    mt_itemized_deduction: 14_234
 
 - name: Test case 3 #sum all terms
   period: 2021
@@ -35,4 +35,4 @@
      casualty_loss_deduction: 745
      state_code: MT
   output:
-    mt_itemized_deductions: 5_814
+    mt_itemized_deduction: 5_814
