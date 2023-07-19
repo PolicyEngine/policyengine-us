@@ -1,0 +1,23 @@
+description: New Mexico provides this maximum Low Income Property Tax Rebate amount based on filing status.
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Mexico Low Income Property Tax Rebate amount for Married couples filing separate
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 New Mexico personal income tax form packet
+    href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
+  - title: 2021 New Mexico personal income tax form packet
+    href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf
+
+JOINT:
+  2021-01-01: 350
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 350
+WIDOW:
+  2021-01-01: 350
+SINGLE:
+  2021-01-01: 350
+SEPARATE:
+  2021-01-01: 175

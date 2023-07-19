@@ -1,0 +1,49 @@
+description: New Mexico provides this Low Income Property Tax Rebate percentage, based on their AGI.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Additional low income property tax rebate percentage
+  reference:
+   - title: 2022 New Mexico personal income tax form packet
+    href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
+  - title: 2021 New Mexico personal income tax form packet
+    href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0.75
+  - threshold:
+      2021-01-01: 8_000
+    amount:
+      2021-01-01: 0.70
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 0.65
+  - threshold:
+      2021-01-01: 12_000
+    amount:
+      2021-01-01: 0.60
+  - threshold:
+      2021-01-01: 14_000
+    amount:
+      2021-01-01: 0.55
+  - threshold:
+      2021-01-01: 16_000
+    amount:
+      2021-01-01: 0.50
+  - threshold:
+      2021-01-01: 20_000
+    amount:
+      2021-01-01: 0.45
+  - threshold:
+      2021-01-01: 22_000
+    amount:
+      2021-01-01: 0.40
+  - threshold:
+      2021-01-01: 24_000
+    amount:
+      2021-01-01: 0.35
