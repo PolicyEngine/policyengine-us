@@ -9,6 +9,5 @@ class capital_loss(Variable):
     documentation = "Losses from transactions involving property."
     definition_period = YEAR
 
-    def formula(tax_unit, period, parameters):
-        capital_gains = tax_unit("capital_gains", period)
-        return max_(0, -capital_gains)
+    def formula(person, period, parameters):
+        return max_(0, -person("capital_gains", period))
