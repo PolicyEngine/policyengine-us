@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class capital_loss(Variable):
+class capital_losses(Variable):
     value_type = float
     entity = Person
-    label = "Capital loss"
+    label = "Capital losses (expressed as a non-negative number)"
     unit = USD
     documentation = "Losses from transactions involving property."
     definition_period = YEAR
