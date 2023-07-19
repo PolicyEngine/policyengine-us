@@ -25,5 +25,4 @@ class wi_retirement_income_subtraction(Variable):
         head_or_spouse = ~person("is_tax_unit_dependent", period)
         uncapped_retinc = retirement_income * age_eligible * head_or_spouse
         capped_retinc = min_(psri.max_amount, uncapped_retinc)
-        unit_retinc = tax_unit.sum(capped_retinc)
-        return unit_retinc
+        return tax_unit.sum(capped_retinc)

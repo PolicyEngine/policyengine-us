@@ -1,4 +1,4 @@
-description: Wisconsin deduction is phased-out above this AGI for SINGLE filing units.
+description: Wisconsin phases out its standard deduction for head of household filers according to this schedule.
 metadata:
   type: marginal_rate
   threshold_period: year
@@ -15,5 +15,10 @@ brackets:
   - threshold:
       2021-01-01: 16_150
       2022-01-01: 16_990
+    rate:
+      2021-01-01: 0.22515
+  - threshold:
+      2021-01-01: 47_248
+      2022-01-01: 49_705
     rate:
       2021-01-01: 0.12

@@ -24,5 +24,4 @@ class wi_homestead_credit(Variable):
         phase_out_start = p.homestead.phase_out.start
         phase_out_rate = p.homestead.phase_out.rate
         phase_out = max_(0, hincome - phase_out_start) * phase_out_rate
-        hcredit = max_(0, capped_ptax - phase_out) * p.homestead.rate
-        return hcredit
+        return max_(0, capped_ptax - phase_out) * p.homestead.rate
