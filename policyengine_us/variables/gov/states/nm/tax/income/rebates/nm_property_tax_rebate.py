@@ -30,5 +30,4 @@ class nm_property_tax_rebate(Variable):
         rebate = max_(0, rent_and_ptax - max_liability)
         # Cap is based on filing status
         filing_status = person.tax_unit("filing_status", period)
-        print(max_liability)
         return eligible * min_(rebate, p.cap[filing_status])
