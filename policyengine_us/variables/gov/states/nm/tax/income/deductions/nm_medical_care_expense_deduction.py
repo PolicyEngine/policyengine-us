@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nm_mediacal_care_expense_deduction(Variable):
+class nm_medical_care_expense_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico medical care expense deduction"
