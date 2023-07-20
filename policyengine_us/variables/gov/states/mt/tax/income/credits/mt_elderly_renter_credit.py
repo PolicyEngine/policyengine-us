@@ -15,7 +15,7 @@ class mt_elderly_renter_credit(Variable):
             period
         ).gov.states.mt.tax.income.credits.elderly_renter_credit
         age_head = tax_unit("age_head", period)
-        gross_household_income = tax_unit("mt_gross_household_income", period)
+        gross_household_income = tax_unit("mt_agi", period)
         eligibility = (age_head >= p.age_min) & (
             gross_household_income < p.income_max
         )
@@ -29,8 +29,12 @@ class mt_elderly_renter_credit(Variable):
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         rate = p.rate
-        cap = p.cap
-        temp2 = max_(rent * rate + property_tax - net_household_income, 0)
-        temp3 = min_(temp2, cap)
-        total = p.credit_multiplier.calc(gross_household_income) * temp3
-        return eligibility * total
+        cap = p.max_amount
+        credit_amount = max_(
+            rent * rate + property_tax - net_household_income, 0
+        )
+        capped_credit = min_(credit_amount, cap)
+        total_credit = (
+            p.credit_multiplier.calc(gross_household_income) * capped_credit
+        )
+        return eligibility * total_credit
