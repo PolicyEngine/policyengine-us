@@ -1,0 +1,28 @@
+description: Wisconsin matches this fraction of the federal EITC, depending on the number of EITC-eligible children.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: /1
+  label: Wisconsin EITC as fraction of federal EITC
+  reference:
+    - title: 2021 Wisconsin Form 1 instructions for Line 26
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf#page=27
+    - title: 2022 Wisconsin Form 1 instructions for Line 29
+      href: https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf#page=27
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      0000-01-01: 1
+    amount:
+      2021-01-01: 0.04
+  - threshold:
+      0000-01-01: 2
+    amount:
+      2021-01-01: 0.11
+  - threshold:
+      0000-01-01: 3
+    amount:
+      2021-01-01: 0.34
