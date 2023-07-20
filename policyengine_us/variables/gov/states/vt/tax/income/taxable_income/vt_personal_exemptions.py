@@ -13,7 +13,7 @@ class vt_personal_exemptions(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.vt.tax.income.exemption.personal
+        p = parameters(period).gov.states.vt.tax.income.exemption
         # First, Need to determine the tax unit filing status, if they are filing jointly
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT
