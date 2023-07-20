@@ -1,41 +1,59 @@
-description: North Carolina Child Deduction Amount by Filling Status (Married)
+description: North Carolina provides this amount under the child deduction for married filers.
 brackets:
   - threshold: 
       2023-01-01: 0
+      2021-01-01: 0
     amount:
       2023-01-01: 3_000
+      2021-01-01: 2_500
   - threshold:
       2023-01-01: 40_000
+      2021-01-01: 40_000
     amount:
       2023-01-01: 2_500
+      2021-01-01: 2_000
   - threshold:
       2023-01-01: 60_000
+      2021-01-01: 60_000
     amount:
       2023-01-01: 2_000
+      2021-01-01: 1_500
   - threshold:
       2023-01-01: 80_000
+      2021-01-01: 80_000
     amount:
       2023-01-01: 1_500
+      2021-01-01: 1_000
   - threshold:
       2023-01-01: 100_000
+      2021-01-01: 100_000
     amount:
       2023-01-01: 1_000
+      2021-01-01: 500
   - threshold:
       2023-01-01: 120_000
+      2021-01-01: 120_000
     amount:
       2023-01-01: 500
+      2021-01-01: 0
   - threshold:
       2023-01-01: 140_000
+      2021-01-01: 140_000
     amount:
       2023-01-01: 0
+      2021-01-01: 0
 
 metadata:
   type: single_amount
   threshold_unit: currency_USD
   threshold_period: year
-  amount_unit: /1
+  amount_unit: currency-USD
   name: nc_cdcc_amount_married
-  lable: NC CDCC Married
+  lable: North Carolina CDCC Married
   reference:
     - title: North Carolina Child Deduction
-      href: https://www.ncdor.gov/taxes-forms/north-carolina-child-deduction
+      href: https://www.ncdor.gov/taxes-forms/north-carolina-child-deduction 
+    - title: 2022 D-400 Individual Income Tax Return
+      href: https://www.ncdor.gov/2022-d-400-web-fill-version/open
+    - title: 2021 D-400 Individual Income Tax Return
+      href: https://www.ncdor.gov/2021-d-400-individual-income-tax-return-web-fill/open
