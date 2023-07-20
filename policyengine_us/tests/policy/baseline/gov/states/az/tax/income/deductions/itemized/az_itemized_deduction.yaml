@@ -1,0 +1,32 @@
+- name: AZ itemized deduction test 1
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    medical_expense: 2_000
+    positive_agi: 60_000
+    charitable_deduction: 2_000
+    state_and_local_sales_or_income_tax: 6_000
+    az_total_credit: 900
+    filing_status: SINGLE
+    salt_deduction: 800
+    az_total_allowed_itemized_deduction_irs: 2_000
+  output:
+    az_itemized_deduction_adjustments: 1_800
+
+
+- name: AZ itemized deduction test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    medical_expense: 2_000
+    positive_agi: 60_000
+    charitable_deduction: 2_000
+    state_and_local_sales_or_income_tax: 6_000
+    az_total_credit: 900
+    filing_status: SEPARATE
+    salt_deduction: 800
+    az_total_allowed_itemized_deduction_irs: 2_000
+  output:
+    az_itemized_deduction_adjustments: 1_700
