@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class la_itemized_deductions(Variable):
+class la_itemized_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana itemized deduction"
@@ -11,7 +11,8 @@ class la_itemized_deductions(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
+        itemizes = tax_unit("tax_unit_itemizes", period)
         medical_expenses = tax_unit("medical_expense_deduction", period)
-        return max(
+        return itemizes * max_(
             medical_expenses - tax_unit("standard_deduction", period), 0
         )
