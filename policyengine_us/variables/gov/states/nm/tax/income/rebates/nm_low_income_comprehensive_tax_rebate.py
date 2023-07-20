@@ -20,17 +20,17 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nm.tax.rebates.low_income_rebate
 
-        agi = tax_unit("adjusted_gross_income", period)
-        exemption_num = tax_unit("exemptions", period)
+        agi = tax_unit("nm_modified_gross_income", period)
+        exemptions = tax_unit("exemptions", period)
 
         rebate = select(
             [
-                exemption_num == 1,
-                exemption_num == 2,
-                exemption_num == 3,
-                exemption_num == 4,
-                exemption_num == 5,
-                exemption_num >= 6,
+                exemptions == 1,
+                exemptions == 2,
+                exemptions == 3,
+                exemptions == 4,
+                exemptions == 5,
+                exemptions >= 6,
             ],
             [
                 p.amount.one_exemption.calc(agi),
@@ -43,6 +43,9 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
         )
 
         filing_status = tax_unit("filing_status", period)
-        statuses = filing_status.possible_values.SEPARATE
-
-        return where(filing_status == statuses, rebate / p.divisor, rebate)
+        divisor = where(
+            filing_status == filing_status.possible_values.SEPARATE,
+            p.divisor,
+            1,
+        )
+        return rebate / divisor
