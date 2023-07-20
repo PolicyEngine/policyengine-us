@@ -10,7 +10,7 @@ class pa_tanf_age_eligible_on_pregnant_women_limitation(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        p = parameters(period).gov.states.pa.tanf.pregnancy_eligibility
+        p = parameters(period).gov.states.pa.dhs.tanf.pregnancy_eligibility
         age = person("age", period)
         is_eligible_age = age < p.age_limit
         is_pregnant = person("is_pregnant", period)
