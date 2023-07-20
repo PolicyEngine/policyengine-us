@@ -18,7 +18,7 @@
         members: [head, spouse]
         state_code: IN
   output:
-    in_eitc: 50
+    in_eic: 50
 
 - name: Eligible family with no child using 2021 data
   period: 2021
@@ -40,7 +40,7 @@
         members: [head, spouse]
         state_code: IN
   output:
-    in_eitc: 50
+    in_eic: 50
   
 - name: Ineligible family with no child using 2022 data
   period: 2023
@@ -62,7 +62,7 @@
         members: [head, spouse]
         state_code: IN
   output:
-    in_eitc: 0
+    in_eic: 0
 
 - name: Eligible family with one child using 2022 data
   period: 2023
@@ -87,7 +87,7 @@
         members: [head, spouse, child]
         state_code: IN
   output:
-    in_eitc: 100
+    in_eic: 100
   
 - name: Ineligible family with one ELIGIBLE child using 2022 data
   period: 2023
@@ -115,7 +115,7 @@
         members: [head, spouse, child, child2]
         state_code: IN
   output:
-    in_eitc: 0
+    in_eic: 0
 
 - name: Eligible family with two ELIGIBLE children, 3 children, using 2022 data
   period: 2023
@@ -146,7 +146,7 @@
         members: [head, spouse, child1, child2, child3]
         state_code: IN
   output:
-    in_eitc: 500
+    in_eic: 500
 
 - name: Eligible family with two ELIGIBLE children, 3 children, using 2022 data
   period: 2023
@@ -177,7 +177,7 @@
         members: [head, spouse, child1, child2, child3]
         state_code: IN
   output:
-    in_eitc: 500
+    in_eic: 500
 
 - name: Eligible family with two ELIGIBLE children, 3 children, using 2021 data
   period: 2021
@@ -208,7 +208,7 @@
         members: [head, spouse, child1, child2, child3]
         state_code: IN
   output:
-    in_eitc: 500
+    in_eic: 500
 
 
   
