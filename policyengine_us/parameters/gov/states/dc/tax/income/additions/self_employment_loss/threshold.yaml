@@ -1,0 +1,13 @@
+description: DC AGI excludes self-employment losses in excess of this threshold.
+metadata:
+  unit: currency-USD
+  label: DC AGI addition self-employment loss threshold
+  reference:
+    - title: Code of the District of Columbia § 47–1803.02. Gross income — Items included and excluded; "adjusted gross income" defined.
+      href: https://code.dccouncil.gov/us/dc/council/code/sections/47-1803.02
+    - title: 2021 DC Form D-40 Booklet, Calculation A, Line 6
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=63
+    - title: 2022 DC Form D-40 Booklet, Calculation A, Line 6
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55
+values:
+  2021-01-01: 12_000

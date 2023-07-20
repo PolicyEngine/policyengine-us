@@ -1,7 +1,7 @@
 """
 This file defines our country's tax and benefit system.
 
-A tax and benefit system is the higher-level instance in OpenFisca.
+A tax and benefit system is the higher-level instance in PolicyEngine.
 Its goal is to model the legislation of a country.
 Basically a tax and benefit system contains simulation variables (source code) and legislation parameters (data).
 

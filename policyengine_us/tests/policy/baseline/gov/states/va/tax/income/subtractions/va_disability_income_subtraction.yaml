@@ -1,0 +1,104 @@
+- name: VA disability income of amount less than $20,000, only person in tax unit
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        is_tax_unit_head: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    va_disability_income_subtraction: 15_000
+
+- name: VA disability income of amount less than $20,000, both head and spouse eligible in tax unit
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 14_000
+        is_tax_unit_head: 1
+      person2:
+        disability_benefits: 13_000
+        is_tax_unit_spouse: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # 14,000+13,000
+    va_disability_income_subtraction: 27_000
+
+- name: VA disability income of amount less than $20,000 for head and spouse and a dependent eligible in tax unit
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 14_000
+        is_tax_unit_head: 1
+      person2:
+        disability_benefits: 12_000
+        is_tax_unit_spouse: 1
+      person3:
+        disability_benefits: 13_000
+        is_tax_unit_dependent: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # 14,000+12,000 since dependent should not be added
+    va_disability_income_subtraction: 26_000
+
+- name: VA disability income of amount more than $20,000, only person in tax unit
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 34_000
+        is_tax_unit_head: 1
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    # the maximum of allowable subtraction is $20,000
+    va_disability_income_subtraction: 20_000
+
+- name: VA disability income of amount more than $20,000 for both spouse and a dependent, less than $20,000 for head
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        is_tax_unit_head: 1
+      person2:
+        disability_benefits: 21_000
+        is_tax_unit_spouse: 1
+      person3:
+        disability_benefits: 23_000
+        is_tax_unit_dependent: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    # $15,000 + $ 20,000(max) and ignore the dependent
+    va_disability_income_subtraction: 35_000
+

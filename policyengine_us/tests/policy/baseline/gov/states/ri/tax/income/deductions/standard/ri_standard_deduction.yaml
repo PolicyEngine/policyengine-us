@@ -1,0 +1,32 @@
+- name: Single filer
+  period: 2022
+  input:
+    state_code: RI
+    filing_status: SINGLE
+  output:
+    ri_standard_deduction: 9_300
+
+- name: Married filing jointly
+  period: 2022
+  input:
+    state_code: RI
+    filing_status: JOINT
+  output:
+    ri_standard_deduction: 18_600
+
+- name: Head of household filer
+  period: 2023
+  input:
+    state_code: RI
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ri_standard_deduction: 15_050
+
+- name: Married filing separately 
+  period: 2023
+  input:
+    state_code: RI
+    filing_status: SEPARATE
+  output:
+    ri_standard_deduction: 10_025
+
