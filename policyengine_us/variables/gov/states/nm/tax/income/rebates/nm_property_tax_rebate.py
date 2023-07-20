@@ -12,13 +12,12 @@ class nm_property_tax_rebate(Variable):
     defined_for = "nm_property_tax_rebate_eligible"
 
     def formula(tax_unit, period, parameters):
-        agi = tax_unit("nm_agi", period)
         # Get property tax paid
         ptax_owner = add(tax_unit, period, ["real_estate_taxes"])
         # Get rent and multiply by 6%
         rent = add(tax_unit, period, ["rent"])
         p = parameters(period).gov.states.nm.tax.income.rebates.property_tax
-        rent_percent = rent * p.rate
+        rent_percent = rent * p.rent_rate
         rent_and_ptax = ptax_owner + rent_percent
         # Get the maximum property tax liability
         agi = tax_unit("nm_agi", period)
