@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class sc_two_wage_earner_credits(Variable):
+class sc_two_wage_earner_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "South Carolina two wage earner credit"
