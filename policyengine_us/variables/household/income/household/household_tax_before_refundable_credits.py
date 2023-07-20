@@ -32,6 +32,7 @@ class household_tax_before_refundable_credits(Variable):
         "flat_tax",
         "nyc_income_tax_before_refundable_credits",
         "ut_income_tax_before_refundable_credits",
+        "wi_income_tax_before_refundable_credits",
     ]
 
     def formula(household, period, parameters):

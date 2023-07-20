@@ -1,0 +1,34 @@
+- name: No children and under 18, not eligible.
+  period: 2022
+  input:
+    age: 17
+    state_code: NM
+    tax_unit_children: 0
+  output:
+    nm_working_families_credit_eligible: false
+
+- name: No children and over 18, eligible.
+  period: 2022
+  input:
+    age: 18
+    state_code: NM
+  output:
+    nm_working_families_credit_eligible: true
+
+- name: Children and under 18, eligible.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 17
+      child:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    nm_working_families_credit_eligible: true
