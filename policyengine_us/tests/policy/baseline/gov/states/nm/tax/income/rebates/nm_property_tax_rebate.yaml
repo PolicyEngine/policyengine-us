@@ -1,20 +1,9 @@
-- name: Below agi eligibility 
+- name: Ineligible
   period: 2023
   input:
     state_code: NM
     nm_agi: 3_000
-    age: 64
-    real_estate_taxes: 1_000
-    rent: 200
-  output:
-    nm_property_tax_rebate: 0
-
-- name: Above agi eligibility 
-  period: 2023
-  input:
-    state_code: NM
-    nm_agi: 16_001
-    age: 65
+    nm_property_tax_rebate_eligible: false
     real_estate_taxes: 1_000
     rent: 200
     filing_status: SINGLE
@@ -26,7 +15,7 @@
   input:
     state_code: NM
     nm_agi: 16_000
-    age: 65
+    nm_property_tax_rebate_eligible: true
     real_estate_taxes: 0
     rent: 0
     filing_status: SINGLE
@@ -38,7 +27,7 @@
   input:
     state_code: NM
     nm_agi: 16_000
-    age: 65
+    nm_property_tax_rebate_eligible: true
     real_estate_taxes: 1_000
     rent: 0
     filing_status: JOINT
@@ -50,7 +39,7 @@
   input:
     state_code: NM
     nm_agi: 16_000
-    age: 65
+    nm_property_tax_rebate_eligible: true
     real_estate_taxes: 180
     rent: 0
     filing_status: JOINT
@@ -62,7 +51,7 @@
   input:
     state_code: NM
     nm_agi: 16_000
-    age: 65
+    nm_property_tax_rebate_eligible: true
     real_estate_taxes: 1_000
     rent: 0
     filing_status: SEPARATE
@@ -74,7 +63,7 @@
   input:
     state_code: NM
     nm_agi: 16_000
-    age: 65
+    nm_property_tax_rebate_eligible: true
     real_estate_taxes: 0
     rent: 5_000
     filing_status: JOINT
