@@ -1,10 +1,12 @@
 from policyengine_us.model_api import *
 
+# reference: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0902%20TCA%20Earned%20Income%20rev%2011.22.doc
 
-class md_tanf_net_initial_countable_income(Variable):
+
+class md_tanf_net_countable_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Maryland TANF net initial countable income"
+    label = "Maryland TANF net countable income"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MD
@@ -18,11 +20,11 @@ class md_tanf_net_initial_countable_income(Variable):
             "md_tanf_countable_gross_unearned_income", period
         )
         # Get countinuous deductions for the SPM unit.
-        initial_deductions = spm_unit(
-            "md_tanf_initial_earnings_deduction", period
+        continuous_deductions = spm_unit(
+            "md_tanf_continuous_earnings_deduction", period
         )
-        # Get alimony deductions for the SPM unit.
 
+        # Get alimony deductions for the SPM unit.
         person = spm_unit.members
         alimony_deduction_ind = person("alimony_income", period)
         alimony_deduction = spm_unit.sum(alimony_deduction_ind)
@@ -35,7 +37,7 @@ class md_tanf_net_initial_countable_income(Variable):
         return (
             gross_earned_income
             + gross_unearned_income
-            - initial_deductions
+            - continuous_deductions
             - alimony_deduction
             - child_support_deduction
             - childcare_deduction

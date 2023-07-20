@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
 
+# reference: "https://www.law.cornell.edu/uscode/text/26/1402#a"
+
 
 class md_tanf_self_employment_income(Variable):
     value_type = float
