@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_two_wage_earner_credits: 112
+    sc_two_wage_earner_credit: 112
     # less of (head or spouse income)*0.007 
     # 16_000* 0.007 = $112
 
@@ -44,7 +44,7 @@
         members: [person1, person2, person3]
         state_code: SC
   output:
-    sc_two_wage_earner_credits: 126
+    sc_two_wage_earner_credit: 126
     # less of (head or spouse income)*0.007 
     # 18_000* 0.007 = $126
 
@@ -67,7 +67,7 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_two_wage_earner_credits: 0
+    sc_two_wage_earner_credit: 0
     # only filling joint is eligible
 
 - name: If filing jointly, head income is 18_000, spouse income is 18_000, credit is 126
@@ -89,6 +89,6 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_two_wage_earner_credits: 126
+    sc_two_wage_earner_credit: 126
     # less of (head or spouse income)*0.007 
     # 18_000* 0.007 = $126
