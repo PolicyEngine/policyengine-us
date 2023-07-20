@@ -17,19 +17,19 @@ class nm_working_families_credit_eligible(Variable):
         age = person("age", period)
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.
-        eitc = parameters.gov.irs.credits.eitc(period)
+        p = parameters.gov.irs.credits.eitc(period)
         age_eligible = parameters(
             period
         ).gov.states.nm.tax.income.credits.working_families_tax.age_eligibility.calc(
             age
         )
         invinc = tax_unit("eitc_relevant_investment_income", period)
-        invinc_disqualified = invinc > eitc.phase_out.max_investment_income
+        invinc_disqualified = invinc > p.phase_out.max_investment_income
         demographic_eligible = has_child | tax_unit.any(age_eligible)
         # Define eligibility before considering separate filer limitation.
         eligible = demographic_eligible & ~invinc_disqualified
         # This parameter is true if separate filers are eligible.
-        if eitc.eligibility.separate_filer:
+        if p.eligibility.separate_filer:
             return eligible
         # If separate filers are not eligible, check if the filer is separate.
         filing_status = tax_unit("filing_status", period)
