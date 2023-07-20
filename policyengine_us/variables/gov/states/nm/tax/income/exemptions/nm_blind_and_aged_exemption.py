@@ -8,10 +8,12 @@ class nm_aged_blind_exemption(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        # 7-2-5.2. EXEMPTION--INCOME OF PERSONS SIXTY-FIVE AND OLDER OR BLIND
+        # 7-2-5.2. EXEMPTION--INCOME OF PERSONS SIXTY-FIVE AND OLDER OR BLIND Page 22
         "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf",
         # Tax Form Instructions Page ADJ-5 TABLE 1. Exemptions for Persons 65 or Older or Blind
         "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf",
+        # 7-2-5.2. Exemption; income of persons sixty-five and older or blind
+        "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503666/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsogJQAaZNlKEIARUSFcAT2gBydRIiEwuBIuVrN23fpABlPKQBCagEoBRADKOAagEEAcgGFHE0jAAI2hSdjExIA",
     )
     defined_for = StateCode.NM
 
@@ -24,23 +26,24 @@ class nm_aged_blind_exemption(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         age_threshold = p.age_threshold
 
-        # check if taxpayer is blind or aged
-        blind_head = tax_unit("blind_head", period).astype(int)
-        aged_head = (tax_unit("age_head", period) >= age_threshold).astype(int)
+        # Check if taxpayer is blind or aged.
+        blind_head = tax_unit("blind_head", period)
+        aged_head = tax_unit("age_head", period) >= age_threshold
 
-        # check if taxpayer is eligible (Taxpayers cannot take exemptions for being both 65 or older and blind.)
+        # Check if taxpayer is eligible.
+        # New Mexico does not double exemptions if the same individual is both aged and blind.
         head_eligible = blind_head | aged_head
 
-        # check if spouse is blind or aged
-        blind_spouse = tax_unit("blind_spouse", period).astype(int)
-        aged_spouse = (tax_unit("age_spouse", period) >= age_threshold).astype(
-            int
-        )
+        # Check if spouse is blind or aged.
+        blind_spouse = tax_unit("blind_spouse", period)
+        aged_spouse = tax_unit("age_spouse", period) >= age_threshold
 
-        # check if spouse is eligible
+        # Check if spouse is eligible.
         spouse_eligible = blind_spouse | aged_spouse
 
-        eligible_count = head_eligible + spouse_eligible
+        eligible_count = head_eligible.astype(int) + spouse_eligible.astype(
+            int
+        )
 
         # Use `right=True` to reflect "over ... but not over ...".
         amount = select(

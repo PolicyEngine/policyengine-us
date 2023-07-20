@@ -1,4 +1,4 @@
-- name: 2023 single filer, not blind, age < 65, adjsuted gross income = 18_000, the exemption amount is 0
+- name: 2023 single filer, not blind, age < 65, adjusted gross income = 18_000, the exemption amount is 0
   period: 2023
   input:
     state_code: NM
@@ -9,7 +9,7 @@
   output:
     nm_aged_blind_exemption: 0
 
-- name: 2023 single filer, blind, age < 65, adjsuted gross income = 18_000, the exemption amount is 8_000
+- name: 2023 single filer, blind, age < 65, adjusted gross income = 18_000, the exemption amount is 8_000
   period: 2023
   input:
     state_code: NM
@@ -20,7 +20,7 @@
   output:
     nm_aged_blind_exemption: 8_000
 
-- name: 2023 single filer, not blind, age > 65, adjsuted gross income = 18_000, the exemption amount is 8_000
+- name: 2023 single filer, not blind, age > 65, adjusted gross income = 18_000, the exemption amount is 8_000
   period: 2023
   input:
     state_code: NM
@@ -31,7 +31,7 @@
   output:
     nm_aged_blind_exemption: 8_000
 
-- name: 2023 single filer, blind, age > 65, adjsuted gross income = 18_000, the exemption amount is 8_000
+- name: 2023 single filer, blind, age > 65, adjusted gross income = 18_000, the exemption amount is 8_000
   period: 2023
   input:
     state_code: NM
@@ -42,7 +42,7 @@
   output:
     nm_aged_blind_exemption: 8_000
 
-- name: 2023 single filer, blind, age < 65, adjsuted gross income = 19_500, the exemption amount is 7_000
+- name: 2023 single filer, blind, age < 65, adjusted gross income = 19_500, the exemption amount is 7_000
   period: 2023
   input:
     state_code: NM
@@ -53,7 +53,7 @@
   output:
     nm_aged_blind_exemption: 7_000
 
-- name: 2023 single filer, blind, age > 65, adjsuted gross income = 21_000, the exemption amount is 6_000
+- name: 2023 single filer, blind, age > 65, adjusted gross income = 21_000, the exemption amount is 6_000
   period: 2023
   input:
     state_code: NM
@@ -64,7 +64,7 @@
   output:
     nm_aged_blind_exemption: 6_000
 
-- name: 2023 joint filer, both blind, both age > 65, adjsuted gross income = 30_000, the exemption amount is 16_000
+- name: 2023 joint filer, both blind, both age > 65, adjusted gross income = 30_000, the exemption amount is 16_000
   period: 2023
   input:
     state_code: NM
@@ -77,7 +77,7 @@
   output:
     nm_aged_blind_exemption: 16_000
 
-- name: 2023 joint filer, both blind, both age < 65, adjsuted gross income = 30_000, the exemption amount is 16_000
+- name: 2023 joint filer, both blind, both age < 65, adjusted gross income = 30_000, the exemption amount is 16_000
   period: 2023
   input:
     state_code: NM
@@ -90,7 +90,7 @@
   output:
     nm_aged_blind_exemption: 16_000
 
-- name: 2023 joint filer, both not blind, both age < 65, adjsuted gross income = 30_000, the exemption amount is 0
+- name: 2023 joint filer, both not blind, both age < 65, adjusted gross income = 30_000, the exemption amount is 0
   period: 2023
   input:
     state_code: NM
@@ -103,7 +103,7 @@
   output:
     nm_aged_blind_exemption: 0
 
-- name: 2023 joint filer, both not blind, both age > 65, adjsuted gross income = 30_000, the exemption amount is 16_000
+- name: 2023 joint filer, both not blind, both age > 65, adjusted gross income = 30_000, the exemption amount is 16_000
   period: 2023
   input:
     state_code: NM
@@ -116,7 +116,7 @@
   output:
     nm_aged_blind_exemption: 16_000
 
-- name: 2023 separate filer, not blind, age < 65, adjsuted gross income = 18_000, the exemption amount is 0
+- name: 2023 separate filer, not blind, age < 65, adjusted gross income = 18_000, the exemption amount is 0
   period: 2023
   input:
     state_code: NM
@@ -127,7 +127,7 @@
   output:
     nm_aged_blind_exemption: 0
 
-- name: 2023 single filer, blind, age < 65, adjsuted gross income = 18_000, the exemption amount is 6_000
+- name: 2023 single filer, blind, age < 65, adjusted gross income = 18_000, the exemption amount is 6_000
   period: 2023
   input:
     state_code: NM
@@ -138,7 +138,7 @@
   output:
     nm_aged_blind_exemption: 6_000
 
-- name: 2023 single filer, blind, age > 65, adjsuted gross income = 18_000, the exemption amount is 6_000
+- name: 2023 single filer, blind, age > 65, adjusted gross income = 18_000, the exemption amount is 6_000
   period: 2023
   input:
     state_code: NM
@@ -149,7 +149,7 @@
   output:
     nm_aged_blind_exemption: 6_000
 
-- name: 2023 widow(er) filer, blind, age < 65, adjsuted gross income = 42_000, the exemption amount is 4_000
+- name: 2023 widow(er) filer, blind, age < 65, adjusted gross income = 42_000, the exemption amount is 4_000
   period: 2023
   input:
     state_code: NM
@@ -160,7 +160,7 @@
   output:
     nm_aged_blind_exemption: 4_000
 
-- name: 2023 head of household filer, blind, age > 65, adjsuted gross income = 39_000, the exemption amount is 5_000
+- name: 2023 head of household filer, blind, age > 65, adjusted gross income = 39_000, the exemption amount is 5_000
   period: 2023
   input:
     state_code: NM
@@ -170,3 +170,42 @@
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     nm_aged_blind_exemption: 5_000
+
+- name: 2023 joint filer, both not blind, both age > 65, adjusted gross income = 35_000, the exemption amount is 13_000
+  period: 2023
+  input:
+    state_code: NM
+    adjusted_gross_income: 35_000
+    blind_head: false
+    blind_spouse: false
+    age_head: 67
+    age_spouse: 67
+    filing_status: JOINT
+  output:
+    nm_aged_blind_exemption: 12_000
+
+- name: 2023 joint filer, both blind, both age > 65, adjusted gross income = 35_000, the exemption amount is 13_000
+  period: 2023
+  input:
+    state_code: NM
+    adjusted_gross_income: 35_000
+    blind_head: true
+    blind_spouse: true
+    age_head: 67
+    age_spouse: 67
+    filing_status: JOINT
+  output:
+    nm_aged_blind_exemption: 12_000
+
+- name: 2023 joint filer, head not blind and age = 65, spouse blind and age = 45, adjusted gross income = 28_000, the exemption amount is 16_000
+  period: 2023
+  input:
+    state_code: NM
+    adjusted_gross_income: 28_000
+    blind_head: false
+    blind_spouse: true
+    age_head: 65
+    age_spouse: 45
+    filing_status: JOINT
+  output:
+    nm_aged_blind_exemption: 16_000
