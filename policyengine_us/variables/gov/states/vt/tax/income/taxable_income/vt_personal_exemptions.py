@@ -27,4 +27,4 @@ class vt_personal_exemptions(Variable):
         # Last, add number of other dependents claimed on federal Form 1040.(line 5c)
         dependents = tax_unit("tax_unit_count_dependents", period)
         total_exemption_count = eligible_count + dependents
-        return total_exemption_count * p
+        return total_exemption_count * p.personal
