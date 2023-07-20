@@ -179,7 +179,7 @@ class pa_tanf_cash_assistance_payout(Variable):
                 p.third_group.additional_person
                 * max(0, (people - p.number_of_persons_threshold)),
                 p.fourth_group.additional_person
-                * max(0, (people - p.number_of_persons_threshold)),
+                * max_(0, (people - p.number_of_persons_threshold)),
             ],
         )
 
