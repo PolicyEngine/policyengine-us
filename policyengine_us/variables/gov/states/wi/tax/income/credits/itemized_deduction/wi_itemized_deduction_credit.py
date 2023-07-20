@@ -15,9 +15,7 @@ class wi_itemized_deduction_credit(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        us_ideds = parameters(period).gov.irs.deductions.itemized_deductions
-        wi_ideds = [ided for ided in us_ideds if ided != "salt_deduction"]
-        wi_itmded = add(tax_unit, period, wi_ideds)
+        wi_itmded = tax_unit("itemized_deductions_less_salt", period)
         wi_stdded = tax_unit("wi_standard_deduction", period)
         excess_itmded = max_(0, wi_itmded - wi_stdded)
         p = parameters(period).gov.states.wi.tax.income
