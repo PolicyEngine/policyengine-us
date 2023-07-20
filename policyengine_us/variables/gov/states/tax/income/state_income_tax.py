@@ -10,12 +10,14 @@ class state_income_tax(Variable):
     adds = [
         # state income tax variables listed in alphabetical order:
         "ca_income_tax",
+        "dc_income_tax",
         # "ia_income_tax",  --- activating will cause circular logic errors
         "il_income_tax",
         "ks_income_tax",
         "ky_income_tax",
         "ma_income_tax",
         "md_income_tax",
+        "me_income_tax",
         "mn_income_tax",
         "mt_income_tax",
         # "mo_income_tax",  --- activating will cause circular logic errors
@@ -31,6 +33,7 @@ class state_income_tax(Variable):
         "ri_income_tax",
         "ut_income_tax",
         "wa_income_tax",
+        "wi_income_tax",
     ]
 
     def formula(tax_unit, period, parameters):
