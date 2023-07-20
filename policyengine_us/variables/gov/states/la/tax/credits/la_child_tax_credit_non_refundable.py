@@ -15,7 +15,7 @@ class la_child_tax_credit_non_refundable(Variable):
             period
         ).gov.states.la.tax.credits.child_care_expense_credit
         # determine LA nonrefundable amount
-        us_agi=tax_unit("adjusted_gross_income",period)
+        us_agi = tax_unit("adjusted_gross_income", period)
         quality_rating = tax_unit(
             "quality_rating_of_child_care_facility", period
         )
