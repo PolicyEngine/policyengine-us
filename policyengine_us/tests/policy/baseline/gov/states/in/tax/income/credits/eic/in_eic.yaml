@@ -3,10 +3,10 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 15_999
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
@@ -25,10 +25,10 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 15_899
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
@@ -47,10 +47,10 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 15_999
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
@@ -69,13 +69,13 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 43_449
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
       child:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
     tax_units:
       tax_unit:
@@ -94,16 +94,16 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 43_450
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
       child:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child2:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
@@ -122,19 +122,19 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 39_398
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 10_000
       child1:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child2:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child3: 
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
@@ -153,19 +153,19 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 39_398
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 10_000
       child1:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child2:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child3: 
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
@@ -184,19 +184,19 @@
   input:
     people:
       head:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 37_899
       spouse:
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 10_000
       child1:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child2:
-        in_is_child_eligible_eic: true
+        in_eic_eligible_child: true
         earned_income: 0
       child3: 
-        in_is_child_eligible_eic: false
+        in_eic_eligible_child: false
         earned_income: 0
     tax_units:
       tax_unit:
