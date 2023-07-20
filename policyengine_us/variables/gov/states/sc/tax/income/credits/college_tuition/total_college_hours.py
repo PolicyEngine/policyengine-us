@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class sc_qualified_tuition(Variable):
+class total_college_hours(Variable):
     value_type = float
     entity = TaxUnit
-    label = "South Carolina Qualified Tuition"
+    label = "Total annual hours of college attended"
     defined_for = StateCode.SC
-    unit = USD
+    unit = "hour"
     definition_period = YEAR

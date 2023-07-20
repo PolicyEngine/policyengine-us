@@ -1,11 +1,11 @@
-description: South Carolina credited this percentage of college tuition under the tuition credit.
+description: South Carolina limits its tuition credit to this amount.
 values: 
-  2021-01-01: 0.5
+  2021-01-01: 1_500
 
 metadata:
-  unit: /1
+  unit: currency-USD
   period: year
-  label: South Carolina college tuition credit rate
+  label: South Carolina tuition credit max amount
   reference: 
   - title: SC I-319 2021
     href: https://dor.sc.gov/forms-site/Forms/I319_2021.pdf
