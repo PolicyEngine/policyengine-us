@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class food_excise(Variable):
+class hi_food_excise(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii food and excise tax credit"
@@ -11,18 +11,34 @@ class food_excise(Variable):
     reference = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0085.htm"
 
     def formula(tax_unit, period, parameters):
-        #what is tax_unit?
-        person = tax_unit.members
+        # First we need to grab the parameter path
+        p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
+        # Take the tax unit income
+        income = tax_unit("adjusted_gross_income", period)
+        # Take the filing status
+        filing_status = tax_unit("filing_status", period)
+        status = filing_status.possible_values
+        # Take the number of exemptions
+        exemptions = tax_unit("exemptions", period)
+        # Determine the amount per exemption based on income
+        amount_per_exemption = select(
+            [
+                filing_status == status.SINGLE,
+                filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
+                filing_status == status.SEPARATE,
+                filing_status == status.WIDOW,
+            ],
+            [
+                p.amount.single.calc(income),
+                p.amount.joint.calc(income),
+                p.amount.head_of_household.calc(income),
+                p.amount.separate.calc(income),
+                p.amount.widow.calc(income),
+            ],
+        )
+        # Multiply amount by number of exemptions
+        return exemptions * amount_per_exemption
 
-        single_params = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax.AGI_single
-        married_params = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax.AGI_married
 
-        if person.status = single: 
-            single_credit = person.income in single_params
-            return single_credit*number of qualified persons + number of minor children*110
-
-        if person.status = married:
-            married_credit = person.income in married_params
-            return married_credit*number of qualified persons + number of minor children*110
-
-        
+#TODO: minor exemptions - law vs tax code
