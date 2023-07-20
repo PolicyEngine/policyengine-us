@@ -11,7 +11,7 @@ class nm_property_tax_rebate_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nm.tax.income.rebates.property_tax
-        # Head or spoue eligible if 65 or over
+        # Head or spouse eligible if 65 or over.
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         head_age_eligible = age_head >= p.age_eligibility
