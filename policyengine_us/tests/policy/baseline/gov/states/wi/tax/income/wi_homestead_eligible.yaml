@@ -1,0 +1,97 @@
+- name: wi_homestead_eligible unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age_head: 18
+    age_spouse: 17
+    employment_income: 8_000
+    head_is_disabled: false
+    spouse_is_disabled: false
+    wi_homestead_income: 9_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: true
+
+- name: wi_homestead_eligible unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age_head: 17
+    age_spouse: 17
+    employment_income: 8_000
+    head_is_disabled: false
+    spouse_is_disabled: false
+    wi_homestead_income: 9_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: false
+
+- name: wi_homestead_eligible unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age_head: 18
+    age_spouse: 17
+    employment_income: 0
+    head_is_disabled: false
+    spouse_is_disabled: false
+    wi_homestead_income: 9_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: false
+
+- name: wi_homestead_eligible unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age_head: 62
+    age_spouse: 60
+    employment_income: 0
+    head_is_disabled: false
+    spouse_is_disabled: false
+    wi_homestead_income: 9_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: true
+
+- name: wi_homestead_eligible unit test 5
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    age_head: 61
+    age_spouse: 60
+    employment_income: 0
+    head_is_disabled: false
+    spouse_is_disabled: false
+    wi_homestead_income: 9_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: false
+
+- name: wi_homestead_eligible unit test 6
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    age_head: 61
+    age_spouse: 60
+    employment_income: 0
+    head_is_disabled: false
+    spouse_is_disabled: true
+    wi_homestead_income: 9_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: true
+
+- name: wi_homestead_eligible unit test 7
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age_head: 18
+    age_spouse: 17
+    employment_income: 8_000
+    head_is_disabled: false
+    spouse_is_disabled: false
+    wi_homestead_income: 25_000
+    state_code: WI
+  output:
+    wi_homestead_eligible: false
