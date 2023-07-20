@@ -14,7 +14,9 @@ class nm_property_tax_rebate_eligible(Variable):
         # Head or spoue eligible if 65 or over
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        age_eligible = (age_head | age_spouse) >= p.age_eligibility
+        head_age_eligible = age_head >= p.age_eligibility
+        spouse_age_eligible = age_spouse >= p.age_eligibility
+        age_eligible = head_age_eligible | spouse_age_eligible
         # Person eligible if income at or below $16,000
         agi = tax_unit("nm_agi", period)
         agi_eligible = agi <= p.income_threshold
