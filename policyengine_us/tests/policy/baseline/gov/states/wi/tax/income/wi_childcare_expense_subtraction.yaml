@@ -1,0 +1,43 @@
+- name: WI childcare_expense_subtraction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    tax_unit_childcare_expenses: 10_000
+    count_cdcc_eligible: 3
+    min_head_spouse_earned: 30_000
+    state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 6_000
+
+- name: WI childcare_expense_subtraction unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    tax_unit_childcare_expenses: 10_000
+    count_cdcc_eligible: 3
+    min_head_spouse_earned: 2_000
+    state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 2_000
+
+- name: WI childcare_expense_subtraction unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    tax_unit_childcare_expenses: 2_000
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 3_000
+    state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 2_000
+
+- name: WI childcare_expense_subtraction unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    tax_unit_childcare_expenses: 10_000
+    count_cdcc_eligible: 3
+    min_head_spouse_earned: 30_000
+    state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 0
