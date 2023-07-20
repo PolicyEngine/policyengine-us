@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_exemption_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "OH Exemption Credit"
+    label = "Ohio Exemption Credit"
     unit = USD
     definition_period = YEAR
     reference = (
