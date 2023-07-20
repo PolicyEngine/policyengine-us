@@ -3,6 +3,7 @@
   input:
     state_code: NY
     standard_deduction: 12_950
+    tax_unit_itemizes: 0
   output:
     la_itemized_deductions: 0
 
@@ -12,6 +13,7 @@
     state_code: LA
     standard_deduction: 12_950
     medical_expense_deduction: 20_000
+    tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 7_050
 
@@ -21,6 +23,7 @@
     state_code: LA
     standard_deduction: 19_400
     medical_expense_deduction: 20_000
+    tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 600
 
@@ -30,6 +33,7 @@
     state_code: LA
     standard_deduction: 25_900
     medical_expense_deduction: 20_000
+    tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 0
 
