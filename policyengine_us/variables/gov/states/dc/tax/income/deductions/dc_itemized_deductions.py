@@ -29,9 +29,9 @@ class dc_itemized_deductions(Variable):
         nonexempt_deds = max_(0, dc_itm_deds - exempt_deds)
         dc_agi = add(tax_unit, period, ["dc_agi"])
         filing_status = tax_unit("filing_status", period)
-        dc = parameters(period).gov.states.dc.tax.income.deductions
-        phase_out_start = dc.itemized.phase_out.start[filing_status]
+        p = parameters(period).gov.states.dc.tax.income.deductions
+        phase_out_start = p.itemized.phase_out.start[filing_status]
         excess_agi = max_(0, dc_agi - phase_out_start)
-        phase_out_amount = excess_agi * dc.itemized.phase_out.rate
+        phase_out_amount = excess_agi * p.itemized.phase_out.rate
         limited_nonexempt_deds = max_(0, nonexempt_deds - phase_out_amount)
         return exempt_deds + limited_nonexempt_deds

@@ -27,6 +27,6 @@ class ok_itemized_deductions(Variable):
         ]
         exempt_deds = add(tax_unit, period, EXEMPT_ITEMS)
         net_deds = max_(0, ok_itm_deds - exempt_deds)
-        ok = parameters(period).gov.states.ok.tax.income
-        limited_net_deds = min_(net_deds, ok.deductions.itemized.limit)
+        p = parameters(period).gov.states.ok.tax.income
+        limited_net_deds = min_(net_deds, p.deductions.itemized.limit)
         return itemizing * (exempt_deds + limited_net_deds)
