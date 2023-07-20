@@ -10,10 +10,10 @@ class la_blind_or_disabled_exemption(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
+        amount = parameters(
             period
-        ).gov.states.la.tax.income.exemptions.blind_or_disabled
+        ).gov.states.la.tax.income.exemptions.amount.blind_or_disabled
         blind_head = tax_unit("blind_head", period)
         disabled_head = tax_unit("disabled_head", period)
         head_eligible = (blind_head | disabled_head).astype(int)
-        return head_eligible * p
+        return head_eligible * amount
