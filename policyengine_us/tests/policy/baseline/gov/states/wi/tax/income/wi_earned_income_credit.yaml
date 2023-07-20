@@ -1,0 +1,21 @@
+- name: WI earned_income_credit unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    earned_income_tax_credit: 900
+    eitc_relevant_investment_income: 0
+    eitc_child_count: 2
+    state_code: WI
+  output:
+    wi_earned_income_credit: 99
+
+- name: WI earned_income_credit unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    earned_income_tax_credit: 900
+    eitc_relevant_investment_income: 4_000
+    eitc_child_count: 2
+    state_code: WI
+  output:
+    wi_earned_income_credit: 0
