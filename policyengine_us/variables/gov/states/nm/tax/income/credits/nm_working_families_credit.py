@@ -11,7 +11,12 @@ class nm_working_families_credit(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        eitc = tax_unit("earned_income_tax_credit", period)
+        eligible = tax_unit("nm_working_families_credit_eligible", period)
+        maximum = tax_unit("eitc_maximum", period)
+        phased_in = tax_unit("eitc_phased_in", period)
+        reduction = tax_unit("eitc_reduction", period)
+        limitation = max_(0, maximum - reduction)
+        eitc = eligible * min_(phased_in, limitation)
         rate = parameters(
             period
         ).gov.states.nm.tax.income.credits.working_families_tax.match
