@@ -11,9 +11,13 @@ class nm_medical_expense_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.nm.tax.income.credits.unreimbursed_medical_expense
+        p = parameters(
+            period
+        ).gov.states.nm.tax.income.credits.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_exepenses = tax_unit("medical_out_of_pocket_expenses", period)
+        medical_exepenses = add(
+            tax_unit, period, ["medical_out_of_pocket_expenses"]
+        )
         age_eligible = tax_unit.any(age >= p.age_eligibility)
         expense_eligible = medical_exepenses >= p.min_expenses
         eligible = age_eligible & expense_eligible
