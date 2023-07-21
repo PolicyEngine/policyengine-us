@@ -18,6 +18,6 @@ class nm_social_security_income_exemption(Variable):
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.social_security_income
-        income = tax_unit("nm_agi", period)
-        income_limit = income <= p.income_limit[filing_status]
+        agi = tax_unit("adjusted_gross_income", period)
+        income_limit = agi <= p.income_limit[filing_status]
         return where(income_limit, social_security_income, 0)

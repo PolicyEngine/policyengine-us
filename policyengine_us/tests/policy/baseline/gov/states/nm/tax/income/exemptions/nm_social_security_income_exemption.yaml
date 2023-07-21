@@ -4,7 +4,7 @@
     state_code: NM
     filing_status: SINGLE
     tax_unit_taxable_social_security: 0
-    nm_agi: 0
+    adjusted_gross_income: 0
   output:
     nm_social_security_income_exemption: 0
 
@@ -14,7 +14,7 @@
     state_code: NM
     filing_status: SINGLE
     tax_unit_taxable_social_security: 70_000
-    nm_agi: 100_001
+    adjusted_gross_income: 100_001
   output:
     nm_social_security_income_exemption: 0
 
@@ -24,7 +24,7 @@
     state_code: NM
     filing_status: SINGLE
     tax_unit_taxable_social_security: 80_000
-    nm_agi: 100_000
+    adjusted_gross_income: 100_000
   output:
     nm_social_security_income_exemption: 80_000
 
@@ -34,6 +34,6 @@
     state_code: NM
     filing_status: JOINT
     tax_unit_taxable_social_security: 149_000
-    nm_agi: 150_000
+    adjusted_gross_income: 150_000
   output:
     nm_social_security_income_exemption: 149_000
