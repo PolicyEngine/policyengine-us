@@ -18,11 +18,9 @@ class nm_net_capital_gain_deduction(Variable):
         # Filers can deduct 100% of CG up to a cap, or 40% uncapped, whichever is greater.
         percent_element = p.rate * net_capital_gains
         filing_status = tax_unit("filing_status", period)
-        separate = (
-            filing_status == filing_status.possible_values.SEPARATE
-        )
+        separate = filing_status == filing_status.possible_values.SEPARATE
         # Halve the deduction if filing separately.
-        denominator = where(separate, 2 ,1)
+        denominator = where(separate, 2, 1)
         amount_element_cap = p.max_amount
         amount_element = min_(net_capital_gains, amount_element_cap)
         numerator = max_(percent_element, amount_element)
