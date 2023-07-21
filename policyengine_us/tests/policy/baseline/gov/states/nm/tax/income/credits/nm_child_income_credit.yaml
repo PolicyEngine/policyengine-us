@@ -2,8 +2,8 @@
   period: 2023
   input:
     state_code: NM
-    tax_unit_children: 0
-    nm_agi: 10_000
+    eitc_child_count: 0
+    adjusted_gross_income: 10_000
     filing_status: JOINT
   output:
     nm_child_income_credit: 0
@@ -12,8 +12,8 @@
   period: 2023
   input:
     state_code: NM
-    tax_unit_children: 2
-    nm_agi: 50_000
+    eitc_child_count: 2
+    adjusted_gross_income: 50_000
     filing_status: JOINT
   output:
     nm_child_income_credit: 800
@@ -22,8 +22,8 @@
   period: 2023
   input:
     state_code: NM
-    tax_unit_children: 2
-    nm_agi: 50_000
+    eitc_child_count: 2
+    adjusted_gross_income: 50_000
     filing_status: SEPARATE
   output:
     nm_child_income_credit: 400
@@ -32,8 +32,8 @@
   period: 2023
   input:
     state_code: NM
-    tax_unit_children: 3
-    nm_agi: 350_001
+    eitc_child_count: 3
+    adjusted_gross_income: 350_001
     filing_status: SINGLE
   output:
     nm_child_income_credit: 75

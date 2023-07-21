@@ -10,10 +10,13 @@ class nm_child_income_credit(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("nm_agi", period)
-        children = tax_unit("tax_unit_children", period)
+        agi = tax_unit("adjusted_gross_income", period)
+        # The law 7-2-18.34(J)(2) defines qualifying children as those from IRC 152(c).
+        # IRC 152(c) refers to the EITC qualifying children.
+        # https://www.law.cornell.edu/uscode/text/26/152#c
+        children = tax_unit("eitc_child_count", period)
         p = parameters(period).gov.states.nm.tax.income.credits.child_income
-        amount = p.amount.calc(income) * children
+        amount = p.amount.calc(agi) * children
         # Halve the credit if married filing separately.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
