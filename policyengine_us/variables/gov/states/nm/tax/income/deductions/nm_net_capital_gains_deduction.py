@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nm_net_capital_gain_deduction(Variable):
+class nm_net_capital_gains_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico net capital gain deduction"
