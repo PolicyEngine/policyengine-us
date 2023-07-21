@@ -20,19 +20,14 @@ class sc_state_tax_addback(Variable):
             for deduction in p_us.itemized_deductions
             if deduction not in ["salt_deduction"]
         ]
-        ##deds_if_not_itm = [
-        #    #deduction for deduction in p_us.deductions_if_not_itemizing
-        ##]
-        #us_itemizing = add(tax_unit,period,["tax_unit_itemizes"])
         us_itemizing = tax_unit("tax_unit_itemizes", period)
-        #standard_deduction = add(tax_unit,period,["standard_deduction"])
         standard_deduction = tax_unit("standard_deduction", period)
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
         # line 1
         federal_itemized_deduction = add(tax_unit, period, itm_deds)*us_itemizing
         # line 2
-        federal_standard_deduction = standard_deduction* eligible  #*add(tax_unit, period, deds_if_not_itm) 
+        federal_standard_deduction = standard_deduction* eligible  
         # line 3
         less_itm_amount = max_(
             0, federal_itemized_deduction - federal_standard_deduction
