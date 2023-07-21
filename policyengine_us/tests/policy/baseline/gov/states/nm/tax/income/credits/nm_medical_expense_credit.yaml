@@ -13,6 +13,7 @@
     state_code: NM
     age: 65
     medical_expense: 27_999
+    filing_status: JOINT
   output:
     nm_medical_expense_credit: 0
 
@@ -22,8 +23,19 @@
     state_code: NM
     age: 65
     medical_expense: 28_000
+    filing_status: JOINT
   output:
     nm_medical_expense_credit: 2_800
+
+- name: Eligible - halved for separate filers
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 28_000
+    filing_status: SEPARATE
+  output:
+    nm_medical_expense_credit: 1_400
 
 - name: Output always $2,800
   period: 2023
@@ -31,5 +43,6 @@
     state_code: NM
     age: 65
     medical_expense: 40_000
+    filing_status: JOINT
   output:
     nm_medical_expense_credit: 2_800

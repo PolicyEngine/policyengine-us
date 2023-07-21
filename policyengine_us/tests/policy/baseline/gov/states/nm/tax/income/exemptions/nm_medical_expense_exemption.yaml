@@ -4,6 +4,7 @@
     state_code: NM
     age: 64
     medical_expense: 30_000
+    filing_status: JOINT
   output:
     nm_medical_expense_exemption: 0
 
@@ -13,6 +14,7 @@
     state_code: NM
     age: 65
     medical_expense: 27_999
+    filing_status: JOINT
   output:
     nm_medical_expense_exemption: 0
 
@@ -22,8 +24,19 @@
     state_code: NM
     age: 65
     medical_expense: 28_000
+    filing_status: JOINT
   output:
     nm_medical_expense_exemption: 3_000
+
+- name: Eligible - halved for separate filers
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 28_000
+    filing_status: SEPARATE
+  output:
+    nm_medical_expense_exemption: 1_500
 
 - name: Output always $3,000
   period: 2023
@@ -31,5 +44,6 @@
     state_code: NM
     age: 65
     medical_expense: 40_000
+    filing_status: JOINT
   output:
     nm_medical_expense_exemption: 3_000
