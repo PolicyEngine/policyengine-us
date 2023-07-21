@@ -301,79 +301,33 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">policyengine_us.tools.documentation</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">variable_summary</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">variation_chart</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">variable_summary</span><span class="p">(</span><span class="s2">&quot;lifeline&quot;</span><span class="p">)</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
+<span class="n">File</span> <span class="o">~/</span><span class="n">work</span><span class="o">/</span><span class="n">policyengine</span><span class="o">-</span><span class="n">us</span><span class="o">/</span><span class="n">policyengine</span><span class="o">-</span><span class="n">us</span><span class="o">/</span><span class="n">policyengine_us</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">documentation</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">9</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">policyengine_core.enums</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="ne">----&gt; </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">policyengine_core.charts</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="n">LIGHTER_BLUE</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="n">LIGHT_BLUE</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="n">BLUE</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">DARK_BLUE</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span>     <span class="n">format_fig</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span>     <span class="n">display_fig</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">policyengine_us.system</span> <span class="kn">import</span> <span class="n">system</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">from</span> <span class="nn">policyengine_us</span> <span class="kn">import</span> <span class="n">Simulation</span>
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Value</th>
-    </tr>
-    <tr>
-      <th>Metadata</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Name</th>
-      <td>lifeline</td>
-    </tr>
-    <tr>
-      <th>Label</th>
-      <td>Lifeline</td>
-    </tr>
-    <tr>
-      <th>Entity</th>
-      <td>spm_unit</td>
-    </tr>
-    <tr>
-      <th>Definition period</th>
-      <td>year</td>
-    </tr>
-    <tr>
-      <th>Has a formula</th>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>Value type</th>
-      <td>float</td>
-    </tr>
-    <tr>
-      <th>Unit</th>
-      <td>currency-USD</td>
-    </tr>
-    <tr>
-      <th>Documentation</th>
-      <td>Amount of Lifeline phone and broadband benefit</td>
-    </tr>
-    <tr>
-      <th>Reference</th>
-      <td>[https://www.law.cornell.edu/cfr/text/47/54.403]</td>
-    </tr>
-    <tr>
-      <th>Quantity type</th>
-      <td>flow</td>
-    </tr>
-    <tr>
-      <th>Defined for</th>
-      <td>All entities</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
+<span class="ne">ImportError</span>: cannot import name &#39;LIGHTER_BLUE&#39; from &#39;policyengine_core.charts&#39; (/opt/hostedtoolcache/Python/3.9.17/x64/lib/python3.9/site-packages/policyengine_core/charts/__init__.py)
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="values-by-income">
@@ -400,23 +354,6 @@ On behalf of the <a class="reference external" href="https://fcc.gov">Federal Co
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">variation_chart</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="s2">&quot;lifeline&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">additional_data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>         <span class="n">spm_units</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>             <span class="n">spm_unit</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>                 <span class="n">broadband_cost</span><span class="o">=</span><span class="mi">40</span> <span class="o">*</span> <span class="mi">12</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>             <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>         <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="p">),</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="p">)</span>
-
-<span class="ne">TypeError</span>: variation_chart() got an unexpected keyword argument &#39;additional_data&#39;
-</pre></div>
-</div>
 </div>
 </div>
 </section>
