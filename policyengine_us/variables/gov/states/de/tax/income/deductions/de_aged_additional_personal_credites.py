@@ -10,12 +10,12 @@ class de_aged_personal_credits(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.de.tax.income.deductions
+        p = parameters(period).gov.states.de.tax.income.credits.personal_credits
 
         age_head = tax_unit("age_head", period)
-        head_eligible = p.age_eligibility.calc(age_head)
+        head_amount = p.aged.calc(age_head)
 
         age_spouse = tax_unit("age_spouse", period)
-        spouse_eligible = p.age_eligibility.calc(age_spouse)
+        spouse_amount = p.aged.calc(age_spouse)
 
-        return head_eligible + spouse_eligible
+        return head_amount + spouse_amount
