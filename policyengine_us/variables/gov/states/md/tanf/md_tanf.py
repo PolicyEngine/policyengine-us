@@ -1,5 +1,7 @@
 from policyengine_us.model_api import *
 
+# reference: https://dhs.maryland.gov/documents/Manuals/Temporary-Cash-Assistance-Manual/0900-Financial-Eligibility/0907%20Income%20Calculation%20of%20Ineligible%20Member%20rev%2011.22.doc
+
 
 class md_tanf(Variable):
     value_type = float
