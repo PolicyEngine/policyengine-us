@@ -10,7 +10,12 @@ class de_aged_personal_credits(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.de.tax.income.credits.personal_credits
+        p = parameters(
+            period
+        ).gov.states.de.tax.income.credits.personal_credits
+
+        # Legal code says "An additional $110 in the case of each resident person age 60 or over."
+        # Tax form limits it to heads and spouses, not elderly dependents.
 
         age_head = tax_unit("age_head", period)
         head_amount = p.aged.calc(age_head)
