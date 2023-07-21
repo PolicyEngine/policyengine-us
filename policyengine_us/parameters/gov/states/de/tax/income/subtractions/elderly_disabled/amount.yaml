@@ -1,14 +1,14 @@
-description: Delaware provides exclusions from gross income to people income less than this amount.
+description: Delaware provides this exclusion amount to filers based on filing status.
 JOINT:
-  2021-01-01: 5_000
+  2021-01-01: 4_000
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 2_500
+  2021-01-01: 2_000
 WIDOW:
-  2021-01-01: 2_500
+  2021-01-01: 2_000
 SINGLE:
-  2021-01-01: 2_500
+  2021-01-01: 2_000
 SEPARATE:
-  2021-01-01: 2_500
+  2021-01-01: 2_000
 metadata:
   reference:
     - title: "PIT-RES_TY21_2021-02_Instruction Page 7 Line 11"
@@ -21,4 +21,4 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
-  label: Delaware gross income exclusion minimum income threshold
+  label: Delaware exclusion amount

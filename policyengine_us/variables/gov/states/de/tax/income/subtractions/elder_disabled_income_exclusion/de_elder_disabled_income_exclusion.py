@@ -20,7 +20,7 @@ class de_elderly_or_disabled_income_exclusion(Variable):
         # Then get the DE blind ir disabled exemptions part of the parameter tree.
         p = parameters(
             period
-        ).gov.states.de.tax.income.substractions.elderly_disabled
+        ).gov.states.de.tax.income.subtractions.elderly_disabled
 
         # Get the individual disabled status.
         disabled_head = tax_unit("disabled_head", period)
@@ -52,12 +52,6 @@ class de_elderly_or_disabled_income_exclusion(Variable):
         income_threshod = p.minimum_income[filing_status]
         income_eligible = (total_income <= income_threshod).astype(int)
 
-        # Get the individual filer's substraction result from Line 10.
-        # substraction_head = tax_unit("substraction_head", period)
-
-        # Determine if head of household (filer) is eligible.
-        # substraction_head_eligible = (substraction_head <= p.substrsaction_result).astype(int)
-
         # Check if the individual's eligiblity.
         head_eligible = (disabled_head | age_head_eligible).astype(int)
         spouse_eligible = (disabled_spouse | age_spouse_eligible).astype(int)
@@ -66,14 +60,12 @@ class de_elderly_or_disabled_income_exclusion(Variable):
             head_eligible & spouse_eligible,
             head_eligible,
         )
-        # head_eligible = (disabled_head | age_head_eligible | income_head_eligible | substraction_head_eligible).astype(int)
 
         pre_exclsuions_agi = tax_unit("de_pre_exclusions_agi", period)
         agi_eligible = (
-            pre_exclsuions_agi <= p.substraction_result[filing_status]
+            pre_exclsuions_agi <= p.subtraction_result[filing_status]
         )
 
         eligible = age_or_disability_eligible & income_eligible & agi_eligible
-        # Calculate total blind exemption.
-        # print(age_head_eligible)
-        return eligible * p.exclusion_amount[filing_status]
+
+        return eligible * p.amount[filing_status]

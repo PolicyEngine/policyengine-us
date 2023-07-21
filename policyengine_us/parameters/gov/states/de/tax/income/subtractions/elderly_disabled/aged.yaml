@@ -1,14 +1,6 @@
-description: Delaware provides exclusions from gross income for Line 10 result.
-JOINT:
-  2021-01-01: 20_000
-HEAD_OF_HOUSEHOLD:
-  2021-01-01: 10_000
-WIDOW:
-  2021-01-01: 10_000
-SINGLE:
-  2021-01-01: 10_000
-SEPARATE:
-  2021-01-01: 10_000
+description: Delaware provides an exclusion for filer at or above this age. 
+values:
+  2021-01-01: 60
 metadata:
   reference:
     - title: "Delaware individual income tax instructions for 2022 Page 7 Line 11"
@@ -18,6 +10,4 @@ metadata:
     - title: Delaware State Taxes, Part II, Chapter 11, Subchapter 2, § 1106. Modifications,(b), (2) 
       href: https://delcode.delaware.gov/title30/c011/sc02/index.html
   unit: year
-  label: Delaware gross income exclusion Line 10 threshold
-  breakdown:
-  - filing_status
+  label: Delaware gross income exclusion age threshold

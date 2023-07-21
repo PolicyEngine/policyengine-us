@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_subtarctions(Variable):
+class de_subtractions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Delaware subtractions"
