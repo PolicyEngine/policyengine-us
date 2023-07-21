@@ -10,6 +10,7 @@ class nm_social_security_income_exemption(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
+        # This is the amount of Social Security included in AGI.
         social_security_income = tax_unit(
             "tax_unit_taxable_social_security", period
         )
@@ -17,7 +18,6 @@ class nm_social_security_income_exemption(Variable):
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.social_security_income
-        income_eligible = (
-            social_security_income <= p.income_limit[filing_status]
-        )
-        return where(income_eligible, social_security_income, 0)
+        income = tax_unit("nm_agi", period)
+        income_limit = income <= p.income_limit[filing_status]
+        return where(income_limit, social_security_income, 0)
