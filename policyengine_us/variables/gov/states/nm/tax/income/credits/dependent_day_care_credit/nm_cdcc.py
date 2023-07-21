@@ -11,8 +11,6 @@ class nm_cdcc(Variable):
     reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf"  # p63
 
     def formula(tax_unit, period, parameters):
-        spm_unit = tax_unit.spm_unit
-        p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         # Maximum New Mexico CDCC amount
         nm_cdcc_max = tax_unit("nm_cdcc_max_amount", period)
         # Federal child and dependent care credit

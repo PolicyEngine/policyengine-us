@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nm_cdcc_max_amount(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New Mexico maximum credit for child and dependent day care amount"
+    label = "New Mexico maximum credit for child and dependent day care credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NM
