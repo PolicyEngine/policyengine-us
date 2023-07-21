@@ -16,7 +16,7 @@ class nm_cdcc_eligible(Variable):
         # Filer has to be be gainfully employed to receive credit
         employed = tax_unit("tax_unit_earned_income", period) > 0
         # Filer can not receive tanf to be eligible
-        tanf = tax_unit.spm_unit("tanf", period) 
+        tanf = tax_unit.spm_unit("tanf", period)
         total_tanf_eligible = tax_unit.sum(tanf) == 0
         # Filers have to have state agi below $30,160
         nm_agi = tax_unit("nm_agi", period)
