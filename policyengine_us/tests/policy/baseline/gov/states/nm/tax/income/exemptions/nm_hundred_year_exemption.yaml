@@ -5,6 +5,7 @@
     age_head: 99
     age_spouse: 99
     nm_agi: 10_000
+    filing_status: JOINT
   output:
     nm_hundred_year_exemption: 0
 
@@ -15,6 +16,7 @@
     age_head: 100
     age_spouse: 99
     nm_agi: 10_000
+    filing_status: JOINT
   output:
     nm_hundred_year_exemption: 5_000
 
@@ -25,6 +27,7 @@
     age_head: 99
     age_spouse: 100
     nm_agi: 10_000
+    filing_status: JOINT
   output:
     nm_hundred_year_exemption: 5_000
 
@@ -35,5 +38,16 @@
     age_head: 100
     age_spouse: 100
     nm_agi: 10_000
+    filing_status: JOINT
+  output:
+    nm_hundred_year_exemption: 10_000
+
+- name: Single person eligible - full exemption
+  period: 2023
+  input:
+    state_code: NM
+    age_head: 100
+    nm_agi: 10_000
+    filing_status: SINGLE
   output:
     nm_hundred_year_exemption: 10_000
