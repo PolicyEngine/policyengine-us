@@ -19,4 +19,9 @@ class nm_medical_expense_exemption(Variable):
         age_eligible = tax_unit.any(age >= p.age_eligibility)
         expense_eligible = medical_exepense >= p.min_expenses
         eligible = age_eligible & expense_eligible
-        return eligible * p.amount
+        # Exemption is halved for married filing separately
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        denominator = where(separate, 2, 1)
+        numerator = eligible * p.amount
+        return numerator / denominator

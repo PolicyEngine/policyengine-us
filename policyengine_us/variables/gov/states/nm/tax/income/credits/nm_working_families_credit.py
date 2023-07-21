@@ -20,4 +20,9 @@ class nm_working_families_credit(Variable):
         rate = parameters(
             period
         ).gov.states.nm.tax.income.credits.working_families_tax.match
-        return eitc * rate
+        # Credit is halved for married filing separately
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        denominator = where(separate, 2, 1)
+        numerator = eitc * rate
+        return numerator / denominator
