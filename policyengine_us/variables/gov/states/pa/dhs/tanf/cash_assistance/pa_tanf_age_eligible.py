@@ -10,7 +10,7 @@ class pa_tanf_age_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        p = parameters(period).gov.states.pa.tanf.cash_assistance
+        p = parameters(period).gov.states.pa.dhs.tanf.cash_assistance
         age = person("age", period)
         # Get full time students
         student_eligible = person("is_full_time_student", period) & (
