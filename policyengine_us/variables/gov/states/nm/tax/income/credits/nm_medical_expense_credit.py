@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nm_medical_expense_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New Mexico unreimbursed medical expense credit"
+    label = "New Mexico unreimbursed medical expense care credit"
     definition_period = YEAR
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503776/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDswgGwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
     defined_for = StateCode.NM

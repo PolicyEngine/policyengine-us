@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nm_medical_expense_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New Mexico unreimbursed medical expense exemption"
+    label = "New Mexico unreimbursed medical expense care exemption"
     definition_period = YEAR
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503680/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsADh4BKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
     defined_for = StateCode.NM
