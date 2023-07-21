@@ -7,8 +7,8 @@ class sc_state_tax_addback(Variable):
     label = "South Carolina State Tax addback"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf"
     reference = (
+        "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf",
         "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2"
     )
     defined_for = StateCode.SC
@@ -20,20 +20,22 @@ class sc_state_tax_addback(Variable):
             for deduction in p_us.itemized_deductions
             if deduction not in ["salt_deduction"]
         ]
-        deds_if_not_itm = [
-            deduction for deduction in p_us.deductions_if_not_itemizing
-        ]
-        # us_itemizing = add(tax_unit,period,["tax_unit_itemizes"])
-        # standard_deduction = add(tax_unit,period,["standard_deduction"])
+        ##deds_if_not_itm = [
+        #    #deduction for deduction in p_us.deductions_if_not_itemizing
+        ##]
+        #us_itemizing = add(tax_unit,period,["tax_unit_itemizes"])
+        us_itemizing = tax_unit("tax_unit_itemizes", period)
+        #standard_deduction = add(tax_unit,period,["standard_deduction"])
+        standard_deduction = tax_unit("standard_deduction", period)
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
         # line 1
-        federal_itemized_deduction = add(tax_unit, period, itm_deds)
+        federal_itemized_deduction = add(tax_unit, period, itm_deds)*us_itemizing
         # line 2
-        federal_deduction = add(tax_unit, period, deds_if_not_itm) * eligible
+        federal_standard_deduction = standard_deduction* eligible  #*add(tax_unit, period, deds_if_not_itm) 
         # line 3
         less_itm_amount = max_(
-            0, federal_itemized_deduction - federal_deduction
+            0, federal_itemized_deduction - federal_standard_deduction
         )
         # line 4
         salt = tax_unit("state_and_local_sales_or_income_tax", period)

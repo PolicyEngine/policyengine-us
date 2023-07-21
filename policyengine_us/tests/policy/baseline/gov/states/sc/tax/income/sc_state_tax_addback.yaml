@@ -2,19 +2,20 @@
   period: 2021
   input:
     filing_status: SEPARATE
+    tax_unit_itemizes: true
     charitable_deduction: 1000
     interest_deduction: 1000
-    salt_deduction: 1000
+    #salt_deduction: 1000
     medical_expense_deduction: 0
     casualty_loss_deduction: 0
-    qualified_business_income_deduction: 2000
+    #qualified_business_income_deduction: 2000
     standard_deduction: 4000
     real_estate_taxes: 3000
     state_and_local_sales_or_income_tax: 1000
     state_code: SC
   output:
     sc_state_tax_addback: 1000
-    # line 3 = 3000 - 0 = 3000
+    # line 3 = 2000 - 0 = 2000
     # line 4 = 1000
     # line 5 = 5000 - 3000 = 2000
   
@@ -22,19 +23,20 @@
   period: 2021
   input:
     filing_status: JOINT
+    tax_unit_itemizes: true
     charitable_deduction: 1000
     interest_deduction: 1000
-    salt_deduction: 1000
+    #salt_deduction: 1000
     medical_expense_deduction: 0
     casualty_loss_deduction: 0
-    qualified_business_income_deduction: 2000
+    #qualified_business_income_deduction: 2000
     standard_deduction: 4000
     real_estate_taxes: 3000
     state_and_local_sales_or_income_tax: 1000
     state_code: SC
   output:
     sc_state_tax_addback: 0
-    # line 3 = 3000 - 6000 = 0 
+    # line 3 = 2000 - 4000 = 0 
     # line 4 = 1000
     # line 5 = 10000 - 3000 = 7000
 
@@ -42,19 +44,61 @@
   period: 2021
   input:
     filing_status: JOINT
+    tax_unit_itemizes: true
     charitable_deduction: 3000
     interest_deduction: 1000
-    salt_deduction: 1000
+    #salt_deduction: 1000
     medical_expense_deduction: 0
     casualty_loss_deduction: 0
-    qualified_business_income_deduction: 0
+    #qualified_business_income_deduction: 0
     standard_deduction: 1000
     real_estate_taxes: 8000
     state_and_local_sales_or_income_tax: 6000
     state_code: SC
   output:
     sc_state_tax_addback: 2000
-    # line 3 = 5000 - 1000 = 4000 
+    # line 3 = 4000 - 1000 = 3000 
     # line 4 = 6000
     # line 5 = 10000 - 8000 = 2000
     
+- name: Test case 4 #salt has a cap of 10000 for JOINT
+  period: 2021
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    charitable_deduction: 1000
+    interest_deduction: 1000
+    #salt_deduction: 4500
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    #qualified_business_income_deduction: 2000
+    standard_deduction: 4000
+    real_estate_taxes: 3000
+    state_and_local_sales_or_income_tax: 1000
+    state_code: SC
+  output:
+    sc_state_tax_addback: 0
+    # line 3 = 2000 - 4000 = 0 
+    # line 4 = 1000
+    # line 5 = 10000 - 3000 = 7000
+
+- name: Test case 5 #salt has a cap of 10000 for JOINT
+  period: 2021
+  input:
+    filing_status: JOINT
+    tax_unit_itemizes: false
+    charitable_deduction: 3000
+    interest_deduction: 1000
+    #salt_deduction: 1000
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    #qualified_business_income_deduction: 0
+    standard_deduction: 1000
+    real_estate_taxes: 8000
+    state_and_local_sales_or_income_tax: 6000
+    state_code: SC
+  output:
+    sc_state_tax_addback: 0
+    # line 3 = 0 - 1000 = 0  tax_unit_itemizes false
+    # line 4 = 6000
+    # line 5 = 10000 - 8000 = 2000
