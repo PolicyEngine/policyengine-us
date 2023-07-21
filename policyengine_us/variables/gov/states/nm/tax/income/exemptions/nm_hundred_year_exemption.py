@@ -19,7 +19,7 @@ class nm_hundred_year_exemption(Variable):
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         # Halve the exemption if only one of head and spouse is eligible of a joint filer.
-        divisor = where(joint, 2 ,1)
+        divisor = where(joint, 2, 1)
         numerator = head_eligible.astype(int) + spouse_eligible.astype(int)
         # Exempt AGI apportioned among eligible spouses.
         # That is, assume all income is community property.
