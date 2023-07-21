@@ -2,8 +2,9 @@
   period: 2021
   input:
     state_code: NM
-    nm_agi: 74_999
+    adjusted_gross_income: 74_999
     filing_status: SINGLE
+    dsi: false
   output:
     nm_2021_income_rebate: 250
 
@@ -11,8 +12,9 @@
   period: 2021
   input:
     state_code: NM
-    nm_agi: 75_000
+    adjusted_gross_income: 75_000
     filing_status: SEPARATE
+    dsi: false
   output:
     nm_2021_income_rebate: 0
 
@@ -20,8 +22,9 @@
   period: 2021
   input:
     state_code: NM
-    nm_agi: 149_999
+    adjusted_gross_income: 149_999
     filing_status: JOINT
+    dsi: false
   output:
     nm_2021_income_rebate: 500
 
@@ -29,7 +32,18 @@
   period: 2021
   input:
     state_code: NM
-    nm_agi: 150_000
+    adjusted_gross_income: 150_000
     filing_status: WIDOW
+    dsi: false
+  output:
+    nm_2021_income_rebate: 0
+
+- name: Ineligible if depedent on another return
+  period: 2021
+  input:
+    state_code: NM
+    adjusted_gross_income: 149_999
+    filing_status: JOINT
+    dsi: true
   output:
     nm_2021_income_rebate: 0
