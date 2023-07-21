@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_food_excise(Variable):
+class hi_food_excise_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii food and excise tax credit"
@@ -41,4 +41,4 @@ class hi_food_excise(Variable):
         return exemptions * amount_per_exemption
 
 
-#TODO: minor exemptions - law vs tax code
+# TODO: minor exemptions - law vs tax code

@@ -1,0 +1,59 @@
+- name: SINGLE under 5_000 with 1 exemption
+  period: 2022
+  input:
+    adjusted_gross_income: 4_000
+    filing_status: SINGLE
+    exemptions: 1
+    state_code: HI
+  output:
+    hi_food_excise_credit: 110
+
+- name: JOINT under 5_000 with 1 exemption
+  period: 2022
+  input:
+    adjusted_gross_income: 4_000
+    filing_status: JOINT
+    exemptions: 1
+    state_code: HI
+  output:
+    hi_food_excise_credit: 110
+
+- name: SINGLE over 30_000 with 1 exemption
+  period: 2022
+  input:
+    adjusted_gross_income: 40_000
+    filing_status: SINGLE
+    exemptions: 1
+    state_code: HI
+  output:
+    hi_food_excise_credit: 0
+
+- name: JOINT over 30_000 with 1 exemption
+  period: 2022
+  input:
+    adjusted_gross_income: 40_000
+    filing_status: JOINT
+    exemptions: 1
+    state_code: HI
+  output:
+    hi_food_excise_credit: 35
+
+- name: SINGLE under 5_000 with 2 exemption
+  period: 2022
+  input:
+    adjusted_gross_income: 4_000
+    filing_status: SINGLE
+    exemptions: 2
+    state_code: HI
+  output:
+    hi_food_excise_credit: 220
+
+- name: JOINT under 5_000 with 2 exemption
+  period: 2022
+  input:
+    adjusted_gross_income: 4_000
+    filing_status: JOINT
+    exemptions: 2
+    state_code: HI
+  output:
+    hi_food_excise_credit: 220
