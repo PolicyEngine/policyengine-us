@@ -1,0 +1,47 @@
+- name: Joint
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: JOINT
+  output:
+    nm_supplemental_2021_income_rebate: 1_000
+
+- name: Single
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: SINGLE
+  output:
+    nm_supplemental_2021_income_rebate: 500
+
+- name: Only available in 2021
+  period: 2022
+  input:
+    state_code: NM
+    filing_status: SEPARATE
+  output:
+    nm_supplemental_2021_income_rebate: 0
+
+- name: Separate
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: SEPARATE
+  output:
+    nm_supplemental_2021_income_rebate: 500
+
+- name: Widow
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: WIDOW
+  output:
+    nm_supplemental_2021_income_rebate: 1_000
+
+- name: Head of Household
+  period: 2021
+  input:
+    state_code: NM
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    nm_supplemental_2021_income_rebate: 1_000
