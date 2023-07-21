@@ -1,0 +1,39 @@
+- name: No children
+  period: 2023
+  input:
+    state_code: NM
+    tax_unit_children: 0
+    nm_agi: 10_000
+    filing_status: JOINT
+  output:
+    nm_child_income_credit: 0
+
+- name: Two children with $50,000 of income - joint
+  period: 2023
+  input:
+    state_code: NM
+    tax_unit_children: 2
+    nm_agi: 50_000
+    filing_status: JOINT
+  output:
+    nm_child_income_credit: 800
+
+- name: Two children with $50,000 of income - separate
+  period: 2023
+  input:
+    state_code: NM
+    tax_unit_children: 2
+    nm_agi: 50_000
+    filing_status: SEPARATE
+  output:
+    nm_child_income_credit: 400
+
+- name: Three children with $350,001 of income - single
+  period: 2023
+  input:
+    state_code: NM
+    tax_unit_children: 3
+    nm_agi: 350_001
+    filing_status: SINGLE
+  output:
+    nm_child_income_credit: 75
