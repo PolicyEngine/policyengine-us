@@ -12,7 +12,8 @@ class nm_deduction_for_certain_dependents(Variable):
 
     def formula(tax_unit, period, parameters):
         dependent_on_another_return = tax_unit("dsi", period)
-        # The deduction does not apply if c04600 is claimed
+        # The deduction does not apply if an exemption under IRS 151 is claimed
+        # IRS 151 referes to the personal exemption.
         federal_exemption_amount = tax_unit("c04600", period)
         exemption_eligible = federal_exemption_amount == 0
         eligible = ~dependent_on_another_return * exemption_eligible
