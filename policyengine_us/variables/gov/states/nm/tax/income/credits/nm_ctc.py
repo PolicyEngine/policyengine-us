@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nm_child_income_credit(Variable):
+class nm_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico child income tax credit"
@@ -15,8 +15,9 @@ class nm_child_income_credit(Variable):
         # IRC 152(c) refers to the EITC qualifying children.
         # https://www.law.cornell.edu/uscode/text/26/152#c
         children = tax_unit("eitc_child_count", period)
-        p = parameters(period).gov.states.nm.tax.income.credits.child_income
-        amount = p.amount.calc(agi) * children
+        p = parameters(period).gov.states.nm.tax.income.credits.ctc
+        amount_per_child = p.amount.calc(agi)
+        amount = amount_per_child * children
         # Halve the credit if married filing separately.
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

@@ -6,7 +6,7 @@
     adjusted_gross_income: 10_000
     filing_status: JOINT
   output:
-    nm_child_income_credit: 0
+    nm_ctc: 0
 
 - name: Two children with $50,000 of income - joint
   period: 2023
@@ -16,7 +16,7 @@
     adjusted_gross_income: 50_000
     filing_status: JOINT
   output:
-    nm_child_income_credit: 800
+    nm_ctc: 800
 
 - name: Two children with $50,000 of income - separate
   period: 2023
@@ -26,7 +26,7 @@
     adjusted_gross_income: 50_000
     filing_status: SEPARATE
   output:
-    nm_child_income_credit: 400
+    nm_ctc: 400
 
 - name: Three children with $350,001 of income - single
   period: 2023
@@ -36,4 +36,4 @@
     adjusted_gross_income: 350_001
     filing_status: SINGLE
   output:
-    nm_child_income_credit: 75
+    nm_ctc: 75
