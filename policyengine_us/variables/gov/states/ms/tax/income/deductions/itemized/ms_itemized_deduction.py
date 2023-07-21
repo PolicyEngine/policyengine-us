@@ -8,7 +8,7 @@ class ms_itemized_deduction(Variable):
     unit = USD
     definition_period = YEAR
 
-    references = (
+    reference = (
         "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf"
         "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf"
     )
