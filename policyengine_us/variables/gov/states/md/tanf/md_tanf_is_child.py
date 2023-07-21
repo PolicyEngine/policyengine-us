@@ -19,7 +19,7 @@ class md_tanf_is_child(Variable):
         k12 = person("is_in_k12_school", period)
         k12_age_eligible = k12 & age_eligible
         # age 19 and a full time student
-    years_19 = person("age", period) == p.age_limit
+        years_19 = person("age", period) == p.age_limit
         full_time_student = person("is_full_time_college_student", period)
         school_enrolled_19_year_old = full_time_student & years_19
         # return
