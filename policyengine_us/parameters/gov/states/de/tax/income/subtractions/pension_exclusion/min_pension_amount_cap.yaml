@@ -1,13 +1,17 @@
 description: Delaware allows an exclusion of taxable pension income for non-military to get its net income that is capped at this amount.
 values:
-    2022-01-01: 2_000
+    2021-01-01: 2_000
 metadata:
   unit: currency-USD
   period: year
   label: Delaware Max Pension Exclusion Amount for non-military
   reference:
+    - title: Delaware individual income tax instructions for 2021
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-02_Instructions.pdf#page=6
+    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3) - a
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html
     - title: Delaware individual income tax instructions for 2022
       href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6
-    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3)
+    - title: The Delaware Code - Title 30 - Chapter 11 - Subchapter II - § 1106 - (b) - (3) - b
       href: https://delcode.delaware.gov/title30/c011/sc02/index.html
   

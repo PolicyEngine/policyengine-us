@@ -32,8 +32,8 @@ class de_pension_exclusion(Variable):
         # determine pension exclusion value based on military status
         exclusion_value = where(
             military_eligible,
-            p.max_pension_amount_military,
-            p.max_pension_amount_non_military,
+            p.max_pension_amount_cap,
+            p.min_pension_amount_cap,
         )
 
         # determine pension exclusion amount
@@ -66,7 +66,7 @@ class de_pension_exclusion(Variable):
         )
         pension_exclusion_above_60 = where(
             above_60_head_eligible,
-            min_(p.max_pension_amount_military, total_income_above_60),
+            min_(p.max_pension_amount_cap, total_income_above_60),
             0,
         )
 
