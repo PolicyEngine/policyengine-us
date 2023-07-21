@@ -1,0 +1,43 @@
+- name: wi_homestead_credit unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    wi_homestead_eligible: true
+    wi_homestead_income: 8_000
+    wi_homestead_property_tax: 1_000
+    state_code: WI
+  output:
+    wi_homestead_credit: 800  # = 1_000 * 0.80
+
+- name: wi_homestead_credit unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    wi_homestead_eligible: true
+    wi_homestead_income: 8_060 + 10_000
+    wi_homestead_property_tax: 1_000
+    state_code: WI
+  output:
+    wi_homestead_credit: 97.2  # = (1_000 - 878.50) * 0.80
+
+- name: wi_homestead_credit unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    wi_homestead_eligible: true
+    wi_homestead_income: 8_000
+    wi_homestead_property_tax: 1_500
+    state_code: WI
+  output:
+    wi_homestead_credit: 1_168  # = min(1_460,1_500) * 0.80
+
+- name: wi_homestead_credit unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    wi_homestead_eligible: false
+    wi_homestead_income: 8_000
+    wi_homestead_property_tax: 1_500
+    state_code: WI
+  output:
+    wi_homestead_credit: 0
