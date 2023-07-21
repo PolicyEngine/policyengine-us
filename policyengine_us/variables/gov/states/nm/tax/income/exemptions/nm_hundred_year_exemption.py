@@ -14,10 +14,13 @@ class nm_hundred_year_exemption(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         p = parameters(period).gov.states.nm.tax.income.exemptions.hundred_year
-        head_eligible = (age_head) >= p.age_eligibility
-        spouse_eligible = (age_spouse) >= p.age_eligibility
-        both_eligible = head_eligible & spouse_eligible
-        one_eligible = head_eligible | spouse_eligible
-        agi = tax_unit("nm_agi", period)
-        # If only one person is eligible, their exemption halves
-        return one_eligible * where(both_eligible, agi, agi / 2)
+        head_eligible = age_head >= p.age_eligibility
+        spouse_eligible = age_spouse >= p.age_eligibility
+        filing_status = tax_unit("filing_status", period)
+        joint = filing_status == filing_status.possible_values.JOINT
+        # Halve the exemption if only one of head and spouse is eligible of a joint filer.
+        divisor = where(joint, 2 ,1)
+        numerator = head_eligible.astype(int) + spouse_eligible.astype(int)
+        # Exempt AGI apportioned among eligible spouses.
+        # That is, assume all income is community property.
+        return tax_unit("agi", period) * numerator / divisor
