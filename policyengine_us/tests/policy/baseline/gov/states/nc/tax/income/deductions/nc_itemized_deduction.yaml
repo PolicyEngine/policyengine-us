@@ -59,11 +59,25 @@
   input:
     filing_status: SINGLE
     tax_unit_itemizes: true
-    mortgage_interest: 3_000
-    property_tax_primary_residence: 3_000
-    state_and_local_sales_or_income_tax: 1_000
-    medical_expense_deduction: 1_000
-    charitable_deduction: 2_500
+    mortgage_interest: 2_000
+    property_tax_primary_residence: 0
+    state_and_local_sales_or_income_tax: 0
+    medical_expense_deduction: 2_000
+    charitable_deduction: 2_000
     state_code: NC
   output:
-    nc_itemized_deductions: 10_500 # 7_000 + 1_000 + 2_500
+    nc_itemized_deductions: 6_000 # 2_000 + 2_000 + 2_000
+
+- name: Test6
+  period: 2023
+  input:
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    mortgage_interest: 0
+    property_tax_primary_residence: 0
+    state_and_local_sales_or_income_tax: 0
+    medical_expense_deduction: 2_000
+    charitable_deduction: 3_000
+    state_code: NC
+  output:
+    nc_itemized_deductions: 5_000 #3_000 + 2_000
