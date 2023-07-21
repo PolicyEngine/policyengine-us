@@ -17,7 +17,9 @@ class nm_deduction_for_certain_dependents(Variable):
         exemption_eligible = federal_exemption_amount == 0
         eligible = ~dependent_on_another_return * exemption_eligible
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.nm.tax.income.deductions.certain_dependents
+        p = parameters(
+            period
+        ).gov.states.nm.tax.income.deductions.certain_dependents
         # The law 7-2-18.34(J)(2) defines qualifying children as those from IRC 152(c).
         # IRC 152(c) refers to the EITC qualifying children.
         # https://www.law.cornell.edu/uscode/text/26/152#c
