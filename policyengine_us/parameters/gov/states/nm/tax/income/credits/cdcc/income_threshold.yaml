@@ -1,13 +1,10 @@
 description: New Mexico provides the credit child and dependent day care for filer with modified AGI below this threshold.
 values:
   2021-01-01: 30_160
+  # 7.25*40*52*2
 metadata:
   unit: /1
   label: New Mexico credit for dependent day care income threshold
   reference:
-    - title: New Mexico Administrative Code, § 3.3.13.9 - CREDIT FOR EXPENSES FOR DEPENDENT CHILD DAY CARE NECESSARY TO ENABLE GAINFUL EMPLOYMENT TO PREVENT INDIGENCY
-      href: https://www.law.cornell.edu/regulations/new-mexico/3-3-13-9-NMAC 
-    - title: 2022 New Mexico Income Tax Form Intructions
-      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf 
-    - title: 2021 New Mexico Income Tax Form Intructions
-      href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/608063af-0c4c-4f28-ba42-cf40e04557ca/PITbook2021.pdf
+    - title: 2022 Federal minimum wage
+      href: https://www.usa.gov/minimum-wage#:~:text=The%20federal%20minimum%20wage%20is,at%20least%20%247.25%20per%20hour.

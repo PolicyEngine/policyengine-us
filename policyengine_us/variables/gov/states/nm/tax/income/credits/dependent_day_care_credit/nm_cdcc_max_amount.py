@@ -18,13 +18,13 @@ class nm_cdcc_max_amount(Variable):
         # the daily amount can not exceed $8
         daily_expenses = min_(
             person("daily_childcare_expenses", period),
-            p.max_amount.daily_exepnses,
+            p.max_amount.per_day,
         )
         childcare_days = person("childcare_days_per_year", period)
         total_expenses = eligible_dependent * (childcare_days * daily_expenses)
         # These costs are multiplied by 0.4 and capped at $480 per child
         reimbursed_costs = min_(
-            total_expenses * p.rate, p.max_amount.one_person
+            total_expenses * p.rate, p.max_amount.per_child
         )
         # Total cap is $1,200
         total_costs = tax_unit.sum(reimbursed_costs)

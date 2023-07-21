@@ -17,15 +17,7 @@ class nm_cdcc(Variable):
         nm_cdcc_max = tax_unit("nm_cdcc_max_amount", period)
         # Federal child and dependent care credit
         fed_cdcc = tax_unit("cdcc", period)
-        # Filer has to be be gainfully employed to receive credit
-        employed = tax_unit("tax_unit_earned_income", period) > 0
-        # Filer can not receive tanf to be eligible
-        tanf = spm_unit("tanf", period)
-        total_tanf_eligible = tax_unit.sum(tanf) == 0
-        # Filers have to have state agi below $30,160
-        nm_agi = tax_unit("nm_agi", period)
-        agi_eligible = nm_agi <= p.income_threshold
-        eligible = employed & total_tanf_eligible & agi_eligible
         # The maximum nm amount is subtracted from the federal cdcc amount
         nm_cdcc = max_(fed_cdcc - nm_cdcc_max, 0)
+        eligible = tax_unit("nm_cdcc_eligible", period)
         return eligible * nm_cdcc
