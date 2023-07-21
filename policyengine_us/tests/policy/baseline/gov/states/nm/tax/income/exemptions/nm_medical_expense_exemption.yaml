@@ -1,0 +1,35 @@
+- name: Below age eligibility
+  period: 2023
+  input:
+    state_code: NM
+    age: 64
+    medical_out_of_pocket_expenses: 30_000
+  output:
+    nm_medical_expense_exemption: 0
+
+- name: Below expense eligibility
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_out_of_pocket_expenses: 27_000
+  output:
+    nm_medical_expense_exemption: 0
+
+- name: Eligible
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_out_of_pocket_expenses: 30_000
+  output:
+    nm_medical_expense_exemption: 3_000
+
+- name: Output alw
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_out_of_pocket_expenses: 40_000
+  output:
+    nm_medical_expense_exemption: 3_000
