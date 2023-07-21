@@ -1,0 +1,35 @@
+- name: No social security income
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 0
+  output:
+    nm_social_security_income_exemption: 0
+
+- name: Social security income above limit
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 100_001
+  output:
+    nm_social_security_income_exemption: 0
+
+- name: Social security income below limit - single
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: SINGLE
+    tax_unit_taxable_social_security: 100_000
+  output:
+    nm_social_security_income_exemption: 100_000
+
+- name: Social security income below limit - joint
+  period: 2023
+  input:
+    state_code: NM
+    filing_status: JOINT
+    tax_unit_taxable_social_security: 150_000
+  output:
+    nm_social_security_income_exemption: 150_000
