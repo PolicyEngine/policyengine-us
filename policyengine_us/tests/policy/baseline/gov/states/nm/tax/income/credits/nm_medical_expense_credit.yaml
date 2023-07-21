@@ -4,6 +4,7 @@
     state_code: NM
     age: 64
     medical_expense: 30_000
+    dsi: false
   output:
     nm_medical_expense_credit: 0
 
@@ -14,6 +15,7 @@
     age: 65
     medical_expense: 27_999
     filing_status: JOINT
+    dsi: false
   output:
     nm_medical_expense_credit: 0
 
@@ -24,6 +26,7 @@
     age: 65
     medical_expense: 28_000
     filing_status: JOINT
+    dsi: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -34,6 +37,7 @@
     age: 65
     medical_expense: 28_000
     filing_status: SEPARATE
+    dsi: false
   output:
     nm_medical_expense_credit: 1_400
 
@@ -44,5 +48,17 @@
     age: 65
     medical_expense: 40_000
     filing_status: SINGLE
+    dsi: false
   output:
     nm_medical_expense_credit: 2_800
+
+- name: Ineligible if dependent on another return
+  period: 2023
+  input:
+    state_code: NM
+    age: 65
+    medical_expense: 40_000
+    filing_status: SINGLE
+    dsi: true
+  output:
+    nm_medical_expense_credit: 0
