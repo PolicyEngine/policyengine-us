@@ -16,12 +16,11 @@ class nm_net_capital_gains_deduction(Variable):
         ).gov.states.nm.tax.income.deductions.net_capital_gains
         net_capital_gains = max_(0, add(tax_unit, period, ["capital_gains"]))
         # Filers can deduct 100% of CG up to a cap, or 40% uncapped, whichever is greater.
-        percent_element = p.rate * net_capital_gains
+        uncapped_element = p.uncapped_element_percent * net_capital_gains
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
         # Halve the deduction if filing separately.
         denominator = where(separate, 2, 1)
-        amount_element_cap = p.max_amount
-        amount_element = min_(net_capital_gains, amount_element_cap)
-        numerator = max_(percent_element, amount_element)
+        capped_element = p.capped_element.calc(net_capital_gains)
+        numerator = max_(uncapped_element, capped_element)
         return numerator / denominator
