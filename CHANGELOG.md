@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.384.0] - 2023-07-21 21:42:08
+
+### Added
+
+- New Mexico net capital gain deduction.
+
 ## [0.383.0] - 2023-07-21 21:17:52
 
 ### Added
@@ -4476,6 +4482,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.383.0...0.384.0
 [0.383.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.382.0...0.383.0
 [0.382.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.381.0...0.382.0
 [0.381.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.380.0...0.381.0
