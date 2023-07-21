@@ -18,7 +18,7 @@
   output:
     nm_social_security_income_exemption: 0
 
-- name: Social security income below limit - single
+- name: AGI below limit - single
   period: 2023
   input:
     state_code: NM
@@ -28,7 +28,7 @@
   output:
     nm_social_security_income_exemption: 80_000
 
-- name: Social security income below limit - joint
+- name: AGI below limit - joint
   period: 2023
   input:
     state_code: NM
