@@ -3,7 +3,7 @@
   input:
     state_code: DE
     age_head: 55
-    military_disabled_head: true
+    is_military: true
     market_income: 10_000
   output:  
     de_pension_exclusion: 10_000
@@ -13,7 +13,7 @@
   input:
     state_code: DE
     age_head: 55
-    military_disabled_head: true
+    is_military: true
     market_income: 15_000
   output:  
     de_pension_exclusion: 12_500
@@ -22,7 +22,7 @@
   period: 2022
   input:
     state_code: DE
-    military_disabled_head: false
+    is_military: false
     age_head: 55
     market_income: 15_000
   output:  
@@ -33,7 +33,7 @@
   input:
     state_code: DE
     age_head: 55
-    military_disabled_head: false
+    is_military: false
     market_income: 1_000
   output:  
     de_pension_exclusion: 1_000
