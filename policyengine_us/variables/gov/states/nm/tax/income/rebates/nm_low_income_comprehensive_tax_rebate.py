@@ -18,9 +18,7 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nm.tax.income.rebates.low_income_rebate
+        p = parameters(period).gov.states.nm.tax.income.rebates.low_income
 
         agi = tax_unit("nm_modified_gross_income", period)
         exemptions = tax_unit("exemptions", period)

@@ -1,23 +1,13 @@
-description: New Mexico provides this maximum amount under the net capital gain deduction, depending on filing status.
+description: New Mexico allows filers to deduct this amount of their net capital gains, depending on filing status, or a percentage of it, whichever is greater.
+values:
+  2019-01-01: 1_000
 metadata:
   label: New Mexico net capital gain deduction max amount
   period: year
   unit: currency-USD
-  breakdown:
-  - filing_status
   reference:
   - title: 2022 New Mexico personal income tax form packet ADJ-6 (page 52)
     href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf
   - title: New Mexico Statutes, 7-2-34. Deduction; net capital gain income.
     href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503882/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgAcwgEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA
 
-JOINT:
-  2019-01-01: 1_000
-HEAD_OF_HOUSEHOLD:
-  2019-01-01: 1_000
-WIDOW:
-  2019-01-01: 1_000
-SINGLE:
-  2019-01-01: 1_000
-SEPARATE:
-  2019-01-01: 500
