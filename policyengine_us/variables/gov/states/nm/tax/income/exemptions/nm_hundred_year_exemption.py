@@ -14,7 +14,10 @@ class nm_hundred_year_exemption(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
         p = parameters(period).gov.states.nm.tax.income.exemptions.hundred_year
-        eligible = (age_head | age_spouse) >= p.age_eligibility
-        total_income = tax_unit("nm_taxable_income", period)
-        # If the head or spouse are over 100, then they get a full exemption
-        return eligible * total_income
+        head_eligible = (age_head) >= p.age_eligibility
+        spouse_eligible = (age_spouse) >= p.age_eligibility
+        both_eligible = head_eligible & spouse_eligible
+        one_eligible = head_eligible | spouse_eligible
+        agi = tax_unit("nm_agi", period)
+        # If only one person is eligible, their exemption halves
+        return one_eligible * where(both_eligible, agi, agi / 2)
