@@ -24,4 +24,5 @@ class nm_net_capital_gain_deduction(Variable):
         amount_element_cap = p.max_amount
         amount_element = min_(net_capital_gains, amount_element_cap)
         amount = max_(percent_element, amount_element)
+        # If filing separately, the filer is entitled to one half of the deduction amount.
         return where(separate_filing, amount / 2, amount)
