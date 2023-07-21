@@ -14,12 +14,12 @@ metadata:
 # Use a scale parameter with two brackets: $200 for under 2, $175 for 2 and older.
 brackets:
   - amount:
-      2020-10-01: 200
+      2023-10-01: 200
     threshold:
-      2020-10-01: 0 # Age zero until the next bracket threshold.
+      2023-10-01: 0 # Age zero until the next bracket threshold.
   - amount:
-      2020-10-01: 175
+      2023-10-01: 175
     threshold:
-      2020-10-01: 2
+      2023-10-01: 2
 
 
