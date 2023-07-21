@@ -3,7 +3,7 @@
   input:
     state_code: NM
     age: 64
-    medical_out_of_pocket_expenses: 30_000
+    medical_expense: 30_000
   output:
     nm_medical_expense_credit: 0
 
@@ -12,7 +12,7 @@
   input:
     state_code: NM
     age: 65
-    medical_out_of_pocket_expenses: 27_000
+    medical_expense: 27_999
   output:
     nm_medical_expense_credit: 0
 
@@ -21,7 +21,7 @@
   input:
     state_code: NM
     age: 65
-    medical_out_of_pocket_expenses: 30_000
+    medical_expense: 28_000
   output:
     nm_medical_expense_credit: 2_800
 
@@ -30,6 +30,6 @@
   input:
     state_code: NM
     age: 65
-    medical_out_of_pocket_expenses: 40_000
+    medical_expense: 40_000
   output:
     nm_medical_expense_credit: 2_800
