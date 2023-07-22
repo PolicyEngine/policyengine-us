@@ -5,6 +5,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.386.0] - 2023-07-22 01:49:59
+
+### Added
+
+- New Mexico child income tax credit.
+
+## [0.385.0] - 2023-07-21 22:19:18
+
+### Added
+
+- New Mexico social security income exemption.
+
+## [0.384.0] - 2023-07-21 21:42:08
+
+### Added
+
+- New Mexico net capital gain deduction.
+
+## [0.383.0] - 2023-07-21 21:17:52
+
+### Added
+
+- New Mexico unreimbursed medical expense credit.
+- New Mexico unreimbursed medical expense exemption.
+
+## [0.382.0] - 2023-07-21 15:45:32
+
+### Added
+
+- New Mexico hundred year exemption.
+
+## [0.381.0] - 2023-07-21 13:49:06
+
+### Added
+
+- New Mexico Medical Care Expense Deduction.
+
+## [0.380.0] - 2023-07-21 03:54:46
+
+### Added
+
+- New Mexico low income comprehensive tax rebate.
+
+## [0.379.0] - 2023-07-21 03:12:51
+
+### Added
+
+- New Mexico low- and middle-income exemption.
+
+## [0.378.0] - 2023-07-21 03:03:35
+
+### Added
+
+- PA TANF pregnancy eligibility.
+
 ## [0.377.1] - 2023-07-20 19:24:35
 
 ### Fixed
@@ -4439,6 +4494,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.385.0...0.386.0
+[0.385.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.384.0...0.385.0
+[0.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.383.0...0.384.0
+[0.383.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.382.0...0.383.0
+[0.382.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.381.0...0.382.0
+[0.381.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.380.0...0.381.0
+[0.380.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.379.0...0.380.0
+[0.379.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.378.0...0.379.0
+[0.378.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.377.1...0.378.0
 [0.377.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.377.0...0.377.1
 [0.377.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.376.0...0.377.0
 [0.376.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.375.0...0.376.0
