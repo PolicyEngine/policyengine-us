@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = "Percent of marginal income gains that do not increase household net income."
+    documentation = "Percent of marginal earnings that the government takes in taxes or reduced benefits."
     entity = Person
     definition_period = YEAR
     value_type = float
@@ -13,7 +13,7 @@ class marginal_tax_rate(Variable):
         mtr_values = np.zeros(person.count, dtype=np.float32)
         simulation = person.simulation
         adult_index_values = person("adult_index", period)
-        DELTA = 1_000
+        delta = parameters(period).simulation.cliff.earnings_rise
         mtr_adult_count = parameters(
             period
         ).simulation.marginal_tax_rate_adults
@@ -28,7 +28,7 @@ class marginal_tax_rate(Variable):
             alt_simulation.set_input(
                 "employment_income",
                 period,
-                person("employment_income", period) + mask * DELTA,
+                person("employment_income", period) + mask * delta,
             )
             alt_person = alt_simulation.person
             household_net_income = person.household(
@@ -40,7 +40,7 @@ class marginal_tax_rate(Variable):
             increase = (
                 household_net_income_higher_earnings - household_net_income
             )
-            mtr_values += where(mask, 1 - increase / DELTA, 0)
+            mtr_values += where(mask, 1 - increase / delta, 0)
         return mtr_values
 
 
