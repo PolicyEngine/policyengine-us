@@ -8,12 +8,12 @@ class nm_cdcc_max_amount(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.NM
-    reference = "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/856ebf4b-3814-49dd-8631-ebe579d6a42b/Personal%20Income%20Tax.pdf"  # p63
+    reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         person = tax_unit.members
-        eligible_dependent = person("is_cdcc_eligible", period)
+        eligible_dependent = person("nm_cdcc_eligible_child", period)
         # For each dependent we take the number of days in daycare
         # the daily amount can not exceed $8
         daily_expenses = min_(

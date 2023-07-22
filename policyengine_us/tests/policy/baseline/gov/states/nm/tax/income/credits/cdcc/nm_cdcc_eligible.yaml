@@ -1,0 +1,83 @@
+- name: Is dependet on another return
+  period: 2022
+  input:
+    dsi: true
+    state_code: NM
+    tax_unit_earned_income: 1
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: false
+
+- name: No earned income
+  period: 2022
+  input:
+    dsi: false
+    state_code: NM
+    tax_unit_earned_income: 0
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: false
+
+- name: No earned income but disabled
+  period: 2022
+  input:
+    dsi: false
+    state_code: NM
+    tax_unit_earned_income: 0
+    is_disabled: true
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: true
+
+- name: Over income threshold
+  period: 2022
+  input:
+    dsi: false
+    state_code: NM
+    tax_unit_earned_income: 0
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_160
+  output:
+    nm_cdcc_eligible: false
+
+- name: Receives tanf
+  period: 2022
+  input:
+    dsi: false
+    state_code: NM
+    tax_unit_earned_income: 0
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 1
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: false
+
+- name: Eligible
+  period: 2022
+  input:
+    dsi: false
+    state_code: NM
+    tax_unit_earned_income: 1
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    tanf: 0
+    nm_modified_gross_income: 30_159
+  output:
+    nm_cdcc_eligible: true
