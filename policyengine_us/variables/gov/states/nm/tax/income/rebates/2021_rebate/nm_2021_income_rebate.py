@@ -18,6 +18,7 @@ class nm_2021_income_rebate(Variable):
             .main
         )
         filing_status = tax_unit("filing_status", period)
-        income_limit = income < p.income_limit[filing_status]
-        eligible = income_limit & ~dependent_on_another_return
-        return where(eligible, p.amount[filing_status], 0)
+        income_eligible = income < p.income_limit[filing_status]
+        eligible = income_eligible & ~dependent_on_another_return
+        amount_if_eligible = p.amount[filing_status]
+        return eligible * amount_if_eligible
