@@ -28,7 +28,7 @@ class mi_heating_credit(Variable):
         )
         standard_allowance = tax_unit("mi_standard_allowance", period)
         mi_household_resources = tax_unit("mi_household_resources", period)
-        mi_exemption_count = tax_unit("mi_exemption_count", period)
+        mi_exemption_count = tax_unit("exemptions", period)
         
 
         # calculate initial home heating credit

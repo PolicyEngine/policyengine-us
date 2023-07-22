@@ -1,7 +1,7 @@
 - name: rent not include heating cost, heating cost below 3_340
   period: 2022
   input:
-    mi_exemption_count: 3
+    exemptions: 3
     mi_taxable_income: 25_000
     mi_household_resources: 800
     mi_rent_include_heating_cost: False
@@ -14,7 +14,7 @@
   period: 2022
   absolute_error_margin: 0.1
   input:
-    mi_exemption_count: 3
+    exemptions: 3
     mi_taxable_income: 25_000
     mi_household_resources: 800
     mi_rent_include_heating_cost: False
@@ -27,7 +27,7 @@
 - name: rent include heating cost
   period: 2022
   input:
-    mi_exemption_count: 3
+    exemptions: 3
     mi_taxable_income: 25_000
     mi_household_resources: 800
     mi_rent_include_heating_cost: True
@@ -39,7 +39,7 @@
 - name: total household resources exceeds alternate credit maximum income
   period: 2022
   input:
-    mi_exemption_count: 3
+    exemptions: 3
     mi_taxable_income: 25_000
     mi_household_resources: 28_000
     mi_rent_include_heating_cost: True

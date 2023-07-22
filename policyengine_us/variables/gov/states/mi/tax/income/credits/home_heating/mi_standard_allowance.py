@@ -18,7 +18,7 @@ class mi_standard_allowance(Variable):
             period
         ).gov.states.mi.tax.income.credits.home_heating_credit.standard_allowance
         # determine count of exemption
-        mi_exemption_count = tax_unit("mi_exemption_count", period)
+        mi_exemption_count = tax_unit("exemptions", period)
         mi_taxable_income = tax_unit("mi_taxable_income", period)
         # additional income ceiling and standard allowance amount for over six exemptions
         additional_ceiling = p.additional_exemption.income * max_(
