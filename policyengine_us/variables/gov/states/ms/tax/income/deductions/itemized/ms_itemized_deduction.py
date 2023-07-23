@@ -27,7 +27,6 @@ class ms_itemized_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
 
         # calculate itemized deductions total amount
-        p = parameters(period).gov.states.ms.tax.income.deductions.itemized
         exempt_deds = add(
             tax_unit,
             period,
