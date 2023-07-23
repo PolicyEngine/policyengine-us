@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.386.0] - 2023-07-22 01:49:59
+
+### Added
+
+- New Mexico child income tax credit.
+
+## [0.385.0] - 2023-07-21 22:19:18
+
+### Added
+
+- New Mexico social security income exemption.
+
 ## [0.384.0] - 2023-07-21 21:42:08
 
 ### Added
@@ -4482,6 +4494,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.385.0...0.386.0
+[0.385.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.384.0...0.385.0
 [0.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.383.0...0.384.0
 [0.383.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.382.0...0.383.0
 [0.382.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.381.0...0.382.0
