@@ -1,4 +1,4 @@
-- name: Is dependet on another return
+- name: Is dependent on another return
   period: 2022
   input:
     dsi: true
@@ -26,7 +26,7 @@
   output:
     nm_cdcc_eligible: false
 
-- name: No earned income but disabled
+- name: No earned income but disabled - eligible 
   period: 2022
   input:
     dsi: false

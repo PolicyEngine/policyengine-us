@@ -14,7 +14,7 @@ class nm_cdcc_max_amount(Variable):
         p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         person = tax_unit.members
         eligible_dependent = person("nm_cdcc_eligible_child", period)
-        # For each dependent we take the number of days in daycare
+        # For each dependent we calculate the number of days in daycare
         # the daily amount can not exceed $8
         daily_expenses = min_(
             person("daily_childcare_expenses", period),
