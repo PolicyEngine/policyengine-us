@@ -1,0 +1,29 @@
+description: Wisconsin uses these income tax brackets for SINGLE filing units.
+metadata:
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD  # Wisconsin taxable income
+  rate_unit: /1
+  reference:
+    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
+      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0354
+  - threshold:
+      2021-01-01: 12_120
+      2022-01-01: 12_760
+    rate:
+      2021-01-01: 0.0465
+  - threshold:
+      2021-01-01: 24_250
+      2022-01-01: 25_520
+    rate:
+      2021-01-01: 0.0530
+  - threshold:
+      2021-01-01: 266_930
+      2022-01-01: 280_950
+    rate:
+      2021-01-01: 0.0765
