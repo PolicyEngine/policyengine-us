@@ -7,9 +7,7 @@ class vt_standard_deductions(Variable):
     label = "VT standard deduction"
     unit = USD
     definition_period = YEAR
-    documentation = (
-        "Vermont standard deduction, including bonus for aged or blind."
-    )
+    documentation = "Vermont standard deduction."
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf",  # Line4
         "http://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(C)(ii)(iii)
@@ -23,6 +21,6 @@ class vt_standard_deductions(Variable):
         base_deduction = p.base[filing_status]
         # Aged/blind extra standard deduction.
         aged_blind_count = tax_unit("aged_blind_count", period)
-        amount_per_aged_blind = p.extra[filing_status]
+        amount_per_aged_blind = p.extra
         aged_blind_deduction = aged_blind_count * amount_per_aged_blind
         return base_deduction + aged_blind_deduction

@@ -1,10 +1,8 @@
-description: Vermont provides this extra standard deduction amount for each aged/blind head/spouse.
+description: Vermont provides this additional standard deduction amount for each aged or blind head or spouse.
 metadata:
-  label: Vermont extra standard deduction amount for each aged/blind head/spouse
+  label: Vermont additional aged or blind, head or spouse, standard deduction amount
   period: year
   unit: currency-USD
-  breakdown:
-  - filing_status
   reference:
     - title: 2021 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
       href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf
@@ -13,17 +11,5 @@ metadata:
     - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(iii) # Legal code specification amount date unknown.
       href: https://legislature.vermont.gov/statutes/section/32/151/05811
 
-JOINT:
-  2021-01-01: 1_050
-
-HEAD_OF_HOUSEHOLD:
-  2021-01-01: 1_050
-
-WIDOW:
-  2021-01-01: 1_050
-
-SINGLE:
-  2021-01-01: 1_050
-
-SEPARATE:
+values:
   2021-01-01: 1_050
