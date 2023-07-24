@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ga_agi_exclusion(Variable):
+class ga_exclusion(Variable):
     value_type = float
     entity = TaxUnit
     label = "Georgia retirement exclusion"
@@ -23,7 +23,8 @@ class ga_agi_exclusion(Variable):
             p.retirement.cap.earned_income, earned_income
         )
         retirement_income = (
-            person("ga_retirement_income", period) + earned_income_exclusion
+            person("pension_and_savings_plan_income", period)
+            + earned_income_exclusion
         )
 
         # Retirement Exclusions
@@ -35,16 +36,19 @@ class ga_agi_exclusion(Variable):
         age_high = person("age", period) >= p.retirement.age.high
         cap_low_age = p.retirement.cap.exclusion_low_age
         cap_high_age = p.retirement.cap.exclusion_high_age
+        exclusion_eligible_low = min_(retirement_income, cap_low_age)
+        exclusion_eligible_high = min_(retirement_income, cap_high_age)
 
         ## head exclusion
         head = person("is_tax_unit_head", period)
+
         head_high_exclusion = where(
-            (head & age_high), min_(retirement_income, cap_high_age), 0
+            (head & age_high), exclusion_eligible_high, 0
         )
         head_exclusion = tax_unit.sum(
             where(
                 head & (disabled | age_low),
-                min_(retirement_income, cap_low_age),
+                exclusion_eligible_low,
                 head_high_exclusion,
             )
         )
@@ -53,7 +57,7 @@ class ga_agi_exclusion(Variable):
         spouse = person("is_tax_unit_spouse", period)
         spouse_high_exclusion = where(
             (filing_status == status.JOINT) & (spouse & age_high),
-            min_(retirement_income, cap_high_age),
+            exclusion_eligible_high,
             0,
         )
 
@@ -62,7 +66,7 @@ class ga_agi_exclusion(Variable):
                 (filing_status == status.JOINT)
                 & spouse
                 & (disabled | age_low),
-                min_(retirement_income, cap_low_age),
+                exclusion_eligible_low,
                 spouse_high_exclusion,
             )
         )
