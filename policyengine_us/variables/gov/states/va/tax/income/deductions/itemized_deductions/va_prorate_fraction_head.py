@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_prorate_fraction(Variable):
+class va_prorate_fraction_head(Variable):
     value_type = float
     entity = Person
     label = "Virginia joint amount proration fraction of head"

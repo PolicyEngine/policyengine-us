@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_itemized_deductions(Variable):
+class va_itemized_deductions_joint(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia itemized deduction"
