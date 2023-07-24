@@ -39,7 +39,8 @@ class nm_cdcc_eligible(Variable):
         )
         agi_eligible = nm_modified_gross_income <= income_limit
         return (
-            emloyment_eligible
+            ~dependent_on_another_return
+            & emloyment_eligible
             & ~receives_tanf
             & agi_eligible
             & ~dependent_on_another_return

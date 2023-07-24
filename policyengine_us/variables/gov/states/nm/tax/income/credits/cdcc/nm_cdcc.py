@@ -11,6 +11,7 @@ class nm_cdcc(Variable):
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         # Maximum New Mexico CDCC amount
         nm_cdcc_max = tax_unit("nm_cdcc_max_amount", period)
         # Federal child and dependent care credit
@@ -18,4 +19,8 @@ class nm_cdcc(Variable):
         # The maximum nm amount is subtracted from the federal cdcc amount
         nm_cdcc = max_(fed_cdcc - nm_cdcc_max, 0)
         eligible = tax_unit("nm_cdcc_eligible", period)
-        return eligible * nm_cdcc
+        full_amount = eligible * nm_cdcc
+        # Separate filers can claim one half of the credit
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return where(separate, full_amount / p.divisor, full_amount)
