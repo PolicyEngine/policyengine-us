@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ky_dependent_care_service(Variable):
+class ky_dependent_care_service_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Kentucky dependent care service credit"
