@@ -18,4 +18,3 @@ class az_temized_deduction(Variable):
         p = parameters(period).gov.irs.deductions
         items = [deduction for deduction in p.itemized_deductions]
         return add(tax_unit, period, items)
-        return federal_itemized_deductions
