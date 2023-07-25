@@ -18,7 +18,7 @@ class az_itemized_deduction_adjustments(Variable):
 
     def formula(tax_unit, period, parameters):
         us_p = parameters(period).gov.irs.deductions
-        line1 = add(tax_unit, period, ["medical_expense"])
+        medical_expenses = add(tax_unit, period, ["medical_expense"])
         medical = parameters(period).gov.irs.deductions.itemized.medical
         line2 = medical.floor * tax_unit("positive_agi", period)
         line3 = line1 - line2 if line1 >= line2 else 0
