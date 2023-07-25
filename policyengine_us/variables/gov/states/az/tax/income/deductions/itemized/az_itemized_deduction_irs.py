@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_temized_deduction(Variable):
+class az_itemized_deduction_irs(Variable):
     value_type = float
     entity = TaxUnit
     label = " Total federal itemized deductions allowed to be taken on federal return"

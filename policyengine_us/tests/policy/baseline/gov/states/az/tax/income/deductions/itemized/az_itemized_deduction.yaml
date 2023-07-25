@@ -10,9 +10,9 @@
     az_total_credit: 900
     filing_status: SINGLE
     salt_deduction: 800
-    az_total_allowed_itemized_deduction_irs: 2_000
+    az_itemized_deduction_irs: 2_000
   output:
-    az_itemized_deduction_adjustments: 1_800
+    az_itemized_deduction: 1_800
 
 
 - name: AZ itemized deduction test 2
@@ -27,9 +27,9 @@
     az_total_credit: 900
     filing_status: SEPARATE
     salt_deduction: 800
-    az_total_allowed_itemized_deduction_irs: 2_000
+    az_itemized_deduction_irs: 2_000
   output:
-    az_itemized_deduction_adjustments: 1_700
+    az_itemized_deduction: 1_700
 
 
 - name: AZ itemized deduction test 3
@@ -44,9 +44,9 @@
     az_total_credit: 900
     filing_status: HEAD_OF_HOUSEHOLD
     salt_deduction: 800
-    az_total_allowed_itemized_deduction_irs: 2_000
+    az_itemized_deduction_irs: 2_000
   output:
-    az_itemized_deduction_adjustments: 1_800
+    az_itemized_deduction: 1_800
 
 - name: AZ itemized deduction test 4
   absolute_error_margin: 0.01
@@ -60,9 +60,9 @@
     az_total_credit: 900
     filing_status: JOINT
     salt_deduction: 800
-    az_total_allowed_itemized_deduction_irs: 2_000
+    az_itemized_deduction_irs: 2_000
   output:
-    az_itemized_deduction_adjustments: 1_800
+    az_itemized_deduction: 1_800
 
 
 - name: AZ itemized deduction test 5
@@ -77,6 +77,6 @@
     az_total_credit: 900
     filing_status: WIDOW
     salt_deduction: 800
-    az_total_allowed_itemized_deduction_irs: 2_000
+    az_itemized_deduction_irs: 2_000
   output:
-    az_itemized_deduction_adjustments: 1_800
+    az_itemized_deduction: 1_800

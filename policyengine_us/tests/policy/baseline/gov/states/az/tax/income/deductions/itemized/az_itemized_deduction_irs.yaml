@@ -1,0 +1,13 @@
+- name: AZ itemized deduction irs test 1
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    charitable_deduction: 100
+    interest_deduction: 200
+    salt_deduction: 300
+    medical_expense_deduction: 400
+    casualty_loss_deduction: 500
+  output:
+    az_itemized_deduction_irs: 1_500
+

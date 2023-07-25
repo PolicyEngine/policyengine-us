@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_itemized_deduction_adjustments(Variable):
+class az_itemized_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona itemized deduction adjustments"
@@ -18,43 +18,57 @@ class az_itemized_deduction_adjustments(Variable):
 
     def formula(tax_unit, period, parameters):
         us_p = parameters(period).gov.irs.deductions
-        medical_expenses = add(tax_unit, period, ["medical_expense"])
+        medical_expense = add(tax_unit, period, ["medical_expense"])
         medical = parameters(period).gov.irs.deductions.itemized.medical
-        line2 = medical.floor * tax_unit("positive_agi", period)
-        line3 = line1 - line2 if line1 >= line2 else 0
-        line4 = line2 - line1 if line2 > line1 else 0
-        
+        medical_expense_irs = medical.floor * tax_unit("positive_agi", period)
+        line3 = (
+            medical_expense - medical_expense_irs
+            if medical_expense >= medical_expense_irs
+            else 0
+        )
+        line4 = (
+            medical_expense_irs - medical_expense
+            if medical_expense_irs > medical_expense
+            else 0
+        )
+
         # Adjustment to Interest Deduction
-        # line5=If you received a federal credit for interest paid on mortgage credit certificates (from federal Form 8396),
+        # mortgage_interest = If you received a federal credit for interest paid on mortgage credit certificates (from federal Form 8396),
         #  enter the amount of mortgage interest you paid for 2022 that is equal to the amount of your 2022federal credit.
-        line5 = 0
-        # Currently, I considere it is 0 since I didn't find anything in variable.gov.irs.income.taxable_income.deductions.itemizing
+        mortgage_interest = 0
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
         # I assume it is the same as federal law
-        line6 = tax_unit("charitable_deduction", period)
+        charitable_deduction = tax_unit("charitable_deduction", period)
 
-        # If yes, line7=0. I assume we claim income taxes on federal Sechedule A.
-        line1A = tax_unit("state_and_local_sales_or_income_tax", period)
+        # I assume we claim income taxes on federal Sechedule A.
+        state_income_tax_before_federal_limitation = tax_unit(
+            "state_and_local_sales_or_income_tax", period
+        )
         # line2A= Amount included in the line 1A for which you claimed an Arizona credit
         line2A = tax_unit("az_total_credit", period)
-        line3A = line1A - line2A
+        line3A = state_income_tax_before_federal_limitation - line2A
         p = parameters(period).gov.states.az.tax.income.deductions.itemized
         filing_status = tax_unit("filing_status", period)
-        line4A = p.itemized_deduction_limit[filing_status]
-        line5A = min_(line3A, line4A)
-        line6A = tax_unit("salt_deduction", period)
-        line7 = line6A - line5A
+        federal_schedule_limit = p.itemized_deduction_limit[filing_status]
+        line5A = min_(line3A, federal_schedule_limit)
+        salt_deduction = tax_unit("salt_deduction", period)
+        adjustment_to_state_income_taxes = salt_deduction - line5A
 
         # This part was marked as not included after meeting
-        line8 = 0
+        other_adjustments = 0
 
         # adjusted itemized deduction
-        line9 = line3 + line5
-        line10 = line4 + line6 + line7 + line8
+        line9 = line3 + mortgage_interest
+        line10 = (
+            line4
+            + charitable_deduction
+            + adjustment_to_state_income_taxes
+            + other_adjustments
+        )
         # line11=Total federal itemized deductions allowed to be taken on federal return
-        line11 = tax_unit("az_total_allowed_itemized_deduction_irs", period)
+        line11 = tax_unit("az_itemized_deduction_irs", period)
         line12 = line9
         line13 = line11 + line12
         line14 = line10
