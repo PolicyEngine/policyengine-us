@@ -18,13 +18,20 @@ class nm_cdcc_eligible(Variable):
         dependent_on_another_return = tax_unit("dsi", period)
         p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         # Filer has to be be gainfully employed to receive credit
+        has_earnings = person("earned_income", period) > 0
+        # If a joint return is filed, both spouses must be gainfully employed
         # unless one person is disabled
-        employed = tax_unit("tax_unit_earned_income", period) > 0
-        disabled = person("is_disabled", period)
+        filing_status = tax_unit("filing_status", period)
+        joint = filing_status == filing_status.possible_values.JOINT
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        disabled_eligible = (head | spouse) & tax_unit.any(disabled)
-        emloyment_eligible = employed | disabled_eligible
+        head_has_earnings = tax_unit.any(head & has_earnings)
+        spouse_has_earnings = tax_unit.any(spouse & has_earnings)
+        both_employed = head_has_earnings & spouse_has_earnings
+        disabled = person("is_disabled", period)
+        disabled_eligible = tax_unit.any((head | spouse) & disabled)
+        joint_eligible = both_employed | disabled_eligible
+        employment_eligible = where(joint, joint_eligible, head_has_earnings)
         # Filer can not receive tanf to be eligible
         receives_tanf = tax_unit.spm_unit("tanf", period) > 0
         # Filers have to have modified gross of income below annual earning
@@ -40,8 +47,7 @@ class nm_cdcc_eligible(Variable):
         agi_eligible = nm_modified_gross_income <= income_limit
         return (
             ~dependent_on_another_return
-            & emloyment_eligible
+            & employment_eligible
             & ~receives_tanf
             & agi_eligible
-            & ~dependent_on_another_return
         )
