@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_income_tax_before_credits(Variable):
+class la_income_tax_before_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana income tax before credits"
+    label = "Louisiana income tax before non-refundable credits"
     defined_for = StateCode.LA
     unit = USD
     definition_period = YEAR
