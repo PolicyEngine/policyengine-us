@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.388.0] - 2023-07-25 12:39:07
+
+### Added
+
+- New Mexico child day care credit.
+
 ## [0.387.1] - 2023-07-24 17:23:30
 
 ### Added
@@ -4509,6 +4515,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.388.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.1...0.388.0
 [0.387.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.0...0.387.1
 [0.387.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.386.0...0.387.0
 [0.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.385.0...0.386.0
