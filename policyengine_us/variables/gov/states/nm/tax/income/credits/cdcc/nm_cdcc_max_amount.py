@@ -7,7 +7,7 @@ class nm_cdcc_max_amount(Variable):
     label = "New Mexico maximum credit for child and dependent day care credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.NM
+    defined_for = "nm_cdcc_eligible"
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
 
     def formula(tax_unit, period, parameters):

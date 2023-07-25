@@ -8,7 +8,6 @@ class nm_cdcc_eligible(Variable):
         "Eligible household for the New Mexico dependent child day care credit"
     )
     defined_for = StateCode.NM
-    unit = USD
     definition_period = YEAR
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
 
@@ -27,10 +26,10 @@ class nm_cdcc_eligible(Variable):
         spouse = person("is_tax_unit_spouse", period)
         head_has_earnings = tax_unit.any(head & has_earnings)
         spouse_has_earnings = tax_unit.any(spouse & has_earnings)
-        both_employed = head_has_earnings & spouse_has_earnings
+        both_have_earnings = head_has_earnings & spouse_has_earnings
         disabled = person("is_disabled", period)
         disabled_eligible = tax_unit.any((head | spouse) & disabled)
-        joint_eligible = both_employed | disabled_eligible
+        joint_eligible = both_have_earnings | disabled_eligible
         employment_eligible = where(joint, joint_eligible, head_has_earnings)
         # Filer can not receive tanf to be eligible
         receives_tanf = tax_unit.spm_unit("tanf", period) > 0
@@ -40,7 +39,7 @@ class nm_cdcc_eligible(Variable):
         minimum_wage = parameters(period).gov.dol.minimum_wage
         income_limit = (
             minimum_wage
-            * p.wage_multiplicator
+            * p.magi_limit_as_percent_of_minimum_wage
             * WEEKS_IN_YEAR
             * p.full_time_hours
         )

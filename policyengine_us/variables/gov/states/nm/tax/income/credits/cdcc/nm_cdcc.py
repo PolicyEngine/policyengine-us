@@ -5,7 +5,7 @@ class nm_cdcc(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico dependent child day care credit"
-    defined_for = StateCode.NM
+    defined_for = "nm_cdcc_eligible"
     unit = USD
     definition_period = YEAR
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
