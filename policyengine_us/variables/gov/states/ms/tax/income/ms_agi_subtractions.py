@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_agi_subtractions(Variable):
+class ms_agi_subtractions(Variable):
     value_type = float
     entity = TaxUnit
     label = "MS AGI subtractions from federal AGI"
