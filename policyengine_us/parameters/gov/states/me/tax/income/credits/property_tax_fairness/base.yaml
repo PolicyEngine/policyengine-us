@@ -1,0 +1,27 @@
+description: Maine provides the following base property tax fariess credit to filers based on their filing status.
+metadata:
+  label: Meine property tax fairness credit base amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  - 
+  reference:
+    - title: Maine Legal code §5219-KK. Property tax fairness credit for tax years beginning on or after January 1, 2014.
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5219-KK.html
+
+JOINT:
+  2014-01-01: 12_000
+  2018-01-01: 12_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 9_600 
+  2018-01-01: 12_000
+WIDOW:
+  2021-01-01: 9_600
+  2018-01-01: 12_000
+SINGLE:
+  2021-01-01: 2_000
+  2018-01-01: 12_000
+SEPARATE:
+  2021-01-01: 6_000
+  2018-01-01: 12_000
