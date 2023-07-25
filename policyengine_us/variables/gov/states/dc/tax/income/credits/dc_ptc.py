@@ -22,7 +22,7 @@ class dc_ptc(Variable):
         head_age = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
         is_elderly = (head_age >= elderly_age) | (spouse_age >= elderly_age)
-        us_agi = max_(0, tax_unit("adjusted_gross_income", period))
+        us_agi = tax_unit("adjusted_gross_income", period)
         ptax_offset = us_agi * where(
             is_elderly,
             p_dc.ptc.fraction_elderly.calc(us_agi, right=True),
