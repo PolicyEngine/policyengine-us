@@ -18,9 +18,7 @@ class nm_cdcc(Variable):
         fed_cdcc = tax_unit("cdcc", period)
         # The maximum nm amount is subtracted from the federal cdcc amount
         nm_cdcc = max_(fed_cdcc - nm_cdcc_max, 0)
-        eligible = tax_unit("nm_cdcc_eligible", period)
-        full_amount = eligible * nm_cdcc
         # Separate filers can claim one half of the credit
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        return where(separate, full_amount / p.divisor, full_amount)
+        return where(separate, nm_cdcc / p.divisor, nm_cdcc)

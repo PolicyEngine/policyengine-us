@@ -18,6 +18,7 @@
     tax_units:
       tax_unit:
         members: [head, child1, child2]
+        nm_cdcc_eligible: true
     households:
       household:
         state_code: NM
@@ -54,6 +55,7 @@
     tax_units:
       tax_unit:
         members: [head, child1, child2, child3, child4]
+        nm_cdcc_eligible: true
     households:
       household:
         state_code: NM
@@ -80,6 +82,7 @@
     tax_units:
       tax_unit:
         members: [head, child1, child2]
+        nm_cdcc_eligible: true
     households:
       household:
         state_code: NM
@@ -101,6 +104,7 @@
     tax_units:
       tax_unit:
         members: [head, child1]
+        nm_cdcc_eligible: true
     households:
       household:
         state_code: NM
@@ -127,6 +131,7 @@
     tax_units:
       tax_unit:
         members: [head, child1, child2]
+        nm_cdcc_eligible: true
     households:
       household:
         state_code: NM
