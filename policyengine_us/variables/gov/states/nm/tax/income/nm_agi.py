@@ -18,10 +18,13 @@ class nm_agi(Variable):
         "tax_exempt_interest_income",  # Line 6
         "dividend_income",  # Line 6
         "us_govt_interest",  # Line 8
-        "tax_unit_taxable_social_security",  # includes railroad retirement benefits, Line 9, Line 24
+        # "tax_unit_taxable_social_security",  # includes railroad retirement benefits, Line 9, Line 24
+        "nm_hundred_year_exemption", # Line 11
         "nm_aged_blind_exemption",  # Line 12
-        "nm_medical_expense_exemption",  # Line 13/17?
-        "investment_in_529_plan",  # Line14
-        "military_service_income",  # Line 16
+        "investment_in_529_plan",  # Line 14
+        "nm_net_capital_gains_deduction", # Line 15
+        "military_service_income",  # Line 16, Line 19
+        "nm_medical_expense_exemption",  # Line 17
         "nm_itemized_deductions",  # Line 20
+        "nm_social_security_income_exemption" # Line 24
     ]
