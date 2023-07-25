@@ -1,10 +1,35 @@
-- name: SINGLE under 5_000 with 1 exemption
+- name: SINGLE under 5_000 with 1 exemption has child
   period: 2022
   input:
     adjusted_gross_income: 4_000
     filing_status: SINGLE
     exemptions: 1
     state_code: HI
+
+
+    # people:
+    #   parent: {}
+    #   child:
+    #     age: 5
+    # tax_units:
+    #   tax_unit:
+    #     members: [parent, child]
+    # households:
+    #   household:
+    #     members: [parent, child]
+    #     state_code: HI
+
+
+    # people:
+    #   person1:
+    #     age: 3
+    #   person2:
+    #     age: 39
+    # tax_units:
+    #   tax_unit:
+    #     members: [person1, person2]
+    #     tax_unit_children: 1
+
   output:
     hi_food_excise_credit: 110
 
