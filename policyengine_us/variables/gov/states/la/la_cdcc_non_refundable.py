@@ -17,5 +17,5 @@ class la_cdcc_non_refundable(Variable):
         agi_eligible = us_agi > p.cdcc.agi_threshold
         # determine LA nonrefundable cdcc amount
         us_cdcc = tax_unit("cdcc", period)
-        la_cdcc = us_cdcc * p.cdcc.non_refundable.rate.calc(us_agi)
-        return agi_eligible * la_cdcc
+        la_non_refundable_cdcc = us_cdcc * p.cdcc.non_refundable.rate.calc(us_agi)
+        return agi_eligible * la_non_refundable_cdcc
