@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "MT CTC"
+    label = "Montana CTC"
     definition_period = YEAR
     unit = USD
     documentation = "Montana Child Tax Credit"
@@ -19,10 +19,11 @@ class mt_ctc(Variable):
         investment_income_eligible = (
             tax_unit("net_investment_income", period) <= p.investment_threshold
         )
+
         person = tax_unit.members
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)
-        eligible = (age > p.child_age_eligibility) & dependent
+        eligible = (age <= p.child_age_eligibility) & dependent
         eligible_sum = tax_unit.sum(eligible)
 
         eligible = income_eligible * investment_income_eligible
@@ -33,4 +34,5 @@ class mt_ctc(Variable):
         excess = max_(gross_income - p.reduction.threshold, 0)
         increments = excess // p.reduction.increment
         reduction_rate = p.reduction.rate * increments
+
         return max_(credit - reduction_rate, 0)
