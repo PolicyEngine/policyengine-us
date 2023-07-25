@@ -20,7 +20,7 @@ class nm_agi(Variable):
         "us_govt_interest",  # Line 8
         "tax_unit_taxable_social_security",  # includes railroad retirement benefits, Line 9, Line 24
         "nm_aged_blind_exemption",  # Line 12
-        "nm_mediacal_care_expense_deduction",  # Line 13/17?
+        "nm_medical_expense_exemption",  # Line 13/17?
         "investment_in_529_plan",  # Line14
         "military_service_income",  # Line 16
         "nm_itemized_deductions",  # Line 20
