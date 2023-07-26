@@ -1,0 +1,19 @@
+- name: wi_homestead_income unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    adjusted_gross_income: 900
+    tax_unit_dependents: 0
+    state_code: WI
+  output:
+    wi_homestead_income: 900
+
+- name: wi_homestead_income unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    adjusted_gross_income: 900
+    tax_unit_dependents: 1
+    state_code: WI
+  output:
+    wi_homestead_income: 400  # = 900 - 500
