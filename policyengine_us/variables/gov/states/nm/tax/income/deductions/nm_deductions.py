@@ -9,10 +9,11 @@ class nm_deductions(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    adds = [
-        "standard_deduction",
-        "nm_itemized_deductions",
-        "nm_deduction_for_certain_dependents",
-        "nm_medical_care_expense_deduction",
-        "nm_net_capital_gains_deduction",
-    ]
+    def formula(tax_unit, period, parameters):
+        itemized_on_federal_return = tax_unit("tax_unit_itemizes", period)
+        itm_ded = tax_unit("nm_itemized_deductions", period)
+        standard_ded = tax_unit("standard_deduction", period)
+        itemized_or_standard = where(itemized_on_federal_return, itm_ded, standard_ded)
+        medical_deduction = tax_unit("nm_medical_care_expense_deduction", period)
+        capital_gains_deduction = tax_unit("nm_net_capital_gains_deduction", period)
+        return itemized_or_standard + medical_deduction + capital_gains_deduction

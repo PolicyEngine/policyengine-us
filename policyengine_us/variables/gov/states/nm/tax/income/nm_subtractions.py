@@ -5,7 +5,7 @@ class nm_subtractions(Variable):
     value_type = float
     entity = TaxUnit
     label = (
-        "New Mexico income subtractions, excluding exemptions and deductions"
+        "New Mexico income subtractions"
     )
     unit = USD
     definition_period = YEAR

@@ -9,4 +9,4 @@ class nm_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NM
 
-    adds = "gov.states.me.tax.income.credits.refundable"
+    adds = "gov.states.nm.tax.income.credits.refundable"
