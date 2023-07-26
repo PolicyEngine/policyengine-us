@@ -10,7 +10,7 @@ from ..cps import CPS_2023
 class CalibratedCPS(Dataset):
     input_dataset: Type[Dataset]
     input_dataset_year: int
-    min_loss: float = 0.01
+    min_loss: float = 0.19
     learning_rate: float = 2e2
     log_dir: str = "."
     time_period: str = None
@@ -66,6 +66,9 @@ class CalibratedCPS(Dataset):
 
         data["household_weight"] = weights
         del data["tax_unit_weight"]
+        del data["person_weight"]
+        del data["family_weight"]
+        del data["spm_unit_weight"]
 
         self.remove()
 

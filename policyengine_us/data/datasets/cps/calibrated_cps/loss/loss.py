@@ -1,4 +1,6 @@
 from .categories import *
+from .income_tax import *
+from .populations import *
 from survey_enhance.reweight import LossCategory
 from policyengine_core.parameters import ParameterNode, uprate_parameters
 from pathlib import Path
@@ -6,18 +8,33 @@ from pathlib import Path
 
 class Demographics(LossCategory):
     weight = 1
-    subcategories = [Population]
-
+    subcategories = [
+        Population,
+        PopulationByAgeAndSex,
+    ]
 
 class Programs(LossCategory):
     weight = 4
     subcategories = [
         EmploymentIncome,
         AdjustedGrossIncome,
+        TaxableInterestIncome,
+        TaxExemptInterestIncome,
+        NonQualifiedDividendIncome,
+        QualifiedDividendIncome,
+        SelfEmploymentIncome,
+        CapitalGains,
+        TaxablePensionIncome,
+        PensionIncome,
+        TaxableIncome,
         IncomeTax,
         SNAP,
         SocialSecurity,
         SSI,
+        AGIByAGI,
+        AGICountByAGI,
+        IncomeTaxByAGI,
+        IncomeTaxCountByAGI,
     ]
 
 
