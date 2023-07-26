@@ -18,7 +18,6 @@ class ms_itemized_deduction(Variable):
         # compute itemized deduction maximum
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
 
-
         # calculate itemized deductions total amount
         exempt_deds = add(
             tax_unit,
