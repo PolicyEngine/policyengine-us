@@ -1,0 +1,36 @@
+- name: VT AGI subtraction amount unit test 1
+  period: 2022
+  input:
+    state_code: ME
+  output:
+    vt_agi_subtractions: 0  
+
+- name: VT AGI subtraction amount unit test 2
+  period: 2022
+  input:
+    state_code: VT
+    us_govt_interest: 1_000
+    vt_medical_expense_deductions: 1_000
+    student_loan_interest: 1_000
+  output:
+    vt_agi_subtractions: 3_000  
+
+- name: VT AGI subtraction amount unit test 3
+  period: 2022
+  input:
+    state_code: VT
+    us_govt_interest: 2_000
+    vt_medical_expense_deductions: 2_000
+    student_loan_interest: 1_000
+  output:
+    vt_agi_subtractions: 5_000    
+
+- name: VT AGI subtraction amount unit test 4
+  period: 2022
+  input:
+    state_code: VT
+    us_govt_interest: 1_000
+    vt_medical_expense_deductions: 3_000
+    student_loan_interest: 1_000
+  output:
+    vt_agi_subtractions: 5_000   
