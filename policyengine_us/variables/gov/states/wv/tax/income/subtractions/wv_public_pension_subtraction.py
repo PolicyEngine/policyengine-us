@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wv_other_retirement_subtraction(Variable):
+class wv_public_pension_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "West Virginia other retirement subtraction"
@@ -11,8 +11,8 @@ class wv_other_retirement_subtraction(Variable):
     reference = "https://code.wvlegislature.gov/11-21-12/"
 
     def formula(tax_unit, period, parameters):
-        retirement_income = tax_unit("wv_retirement_income", period)
+        public_pension_income = person("taxable_public_pension_income", period)
         p = parameters(
             period
-        ).gov.states.wv.tax.income.subtractions.other_retirement
-        return min(retirement_income, p.max_amount)
+        ).gov.states.wv.tax.income.subtractions.public_pension
+        return min_(retirement_income, p.max_amount)
