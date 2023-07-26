@@ -24,18 +24,15 @@ class id_retirement_benefits(Variable):
                             tax_unit("age_head", period) >= age_threshold, 
                             tax_unit("age_head", period) >= age_threshold_disabled)
 
-        if is_eligible == False:
-            retire_ded_amt = 0
-        else:
-            # Base retirement benefits deduction amount
-            base_amt = p.amount[filing_status]
-            # Social Security benefits received amount
-            ss_amt = head("social_security_retirement", period)
-            # Base amount minus social Security benefits received amount
-            ded_amt = max(base_amt - ss_amt, 0)
-            # Qualified retirement benefits included in federal income
-            fi_amt = head("taxable_pension_income", period) + head("military_retirement_pay", period)
-            # The smaller one
-            retire_ded_amt = min(ded_amt, fi_amt)
+        # Base retirement benefits deduction amount
+        base_amt = p.amount[filing_status]
+        # Social Security benefits received amount
+        ss_amt = head("social_security_retirement", period)
+        # Base amount minus social Security benefits received amount
+        ded_amt = max(base_amt - ss_amt, 0)
+        # Qualified retirement benefits included in federal income
+        fi_amt = head("taxable_pension_income", period) + head("military_retirement_pay", period)
+        # The smaller one
+        retire_ded_amt = min(ded_amt, fi_amt)
 
-        return retire_ded_amt
+        return where(is_eligible, retire_ded_amt, 0)
