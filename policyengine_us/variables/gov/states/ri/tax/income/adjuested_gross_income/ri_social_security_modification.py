@@ -32,7 +32,7 @@ class ri_social_security_modification(Variable):
 
         # Status eligibility.
         status_is_eligible = income < p.income_amount[filing_status]
-
+        # tax_unit_social_security
         total_social_security = tax_unit("tax_unit_social_security", period)
         taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period

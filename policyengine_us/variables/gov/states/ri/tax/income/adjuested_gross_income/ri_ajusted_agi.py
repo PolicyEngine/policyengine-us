@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ri_agi(Variable):
+class ri_adjusted_agi(Variable):
     value_type = float
     entity = TaxUnit
     label = "RI AGI modification"

@@ -17,10 +17,17 @@ class ri_child_tax_rebates(Variable):
         p = parameters(
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions
+        rebates_3_child = where(
+            income <= p.child_tax_rebates.child_tax_rebates_cap[filing_status]
+            and child_count > p.child_tax_rebates.max_child,
+            p.child_tax_rebates.max_child
+            * p.child_tax_rebates.child_tax_rebates_amount,
+            0,
+        )
         rebates = where(
             income <= p.child_tax_rebates.child_tax_rebates_cap[filing_status]
             and child_count <= p.child_tax_rebates.max_child,
             child_count * p.child_tax_rebates.child_tax_rebates_amount,
-            0,
+            rebates_3_child,
         )
         return rebates
