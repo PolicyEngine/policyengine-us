@@ -12,17 +12,7 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
     reference = "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S114.html?v=C59-10-S114_2022032320220323"
 
     def formula(tax_unit, period, parameters):
-        federal_itemizing = tax_unit("tax_unit_itemizes", period)
-        p = parameters(period).gov.irs.deductions
-        items = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        federal_itemized_deductions_less_salt = add(tax_unit, period, items)
-        standard_deduction = tax_unit("standard_deduction", period)
-        return where(
-            federal_itemizing,
-            federal_itemized_deductions_less_salt,
-            standard_deduction,
-        )
+        us_itemizing = tax_unit("tax_unit_itemizes", period)
+        itm_ded_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        std_ded = tax_unit("standard_deduction", period)
+        return where(us_itemizing, itm_ded_less_salt, std_ded)
