@@ -23,6 +23,7 @@ class nm_modified_gross_income(Variable):
         "pension_income",
         "unemployment_compensation",
         "employment_income",
+        "veterans_benefits",
         # income such as gambling winnings, insurance settlements, scholarships,
         # grants, VA benefits, trust income and inheritance,
     ]
