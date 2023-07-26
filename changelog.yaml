@@ -3814,3 +3814,8 @@
     added:
     - household_state_income_tax variable to solve circular dependencies.
   date: 2023-07-26 16:33:04
+- bump: patch
+  changes:
+    fixed:
+    - Error-prone {short,long}_term_capital_losses variables by removing them.
+  date: 2023-07-26 16:45:19
