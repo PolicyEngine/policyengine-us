@@ -11,7 +11,7 @@ class ri_exemption(Variable):
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ri.tax.income.exemption
+        p = parameters(period).gov.states.ri.tax.income.exemption.phase_out
 
         num_exemptions = tax_unit("tax_unit_size", period)
 
