@@ -22,18 +22,6 @@ class tax_unit_itemizes(Variable):
         else:
             # determine federal itemization behavior by comparing deductions
             standard_deduction = tax_unit("standard_deduction", period)
-            # itemized deductions cannot be accurately calculated because
-            #   the state_income_tax part of the salt_deduction must be
-            #   ignored in order to avoid circular logic errors
-            partial_itemized_deductions = tax_unit(
-                "itemized_deductions_less_salt", period
-            )
-            # add back the possibly capped local real estate taxes,
-            #   which have no circular logic problems
-            filing_status = tax_unit("filing_status", period)
             p = parameters(period).gov.irs.deductions
-            itemized_deductions = partial_itemized_deductions + min_(
-                add(tax_unit, period, ["real_estate_taxes"]),
-                p.itemized.salt_and_real_estate.cap[filing_status],
-            )
+            itemized_deductions = add(tax_unit, period, p.itemized_deductions)
             return itemized_deductions > standard_deduction
