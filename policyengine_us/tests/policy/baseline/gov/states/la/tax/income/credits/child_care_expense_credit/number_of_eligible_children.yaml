@@ -1,0 +1,17 @@
+- name: LA child care expense tax credit number of eligible children test 1
+  period: 2018
+  input:
+   number_of_eligible_children: 5
+   la_child_expense_tax_credit: 26_000
+   state_code: LA
+  output:
+   la_child_expense_tax_credit: 26_000
+
+- name: LA child care expense tax credit number of eligible children test 2
+  period: 2018
+  input:
+   number_of_eligible_children: 7
+   state_code: LA
+  output:
+   la_child_expense_tax_credit: 0
+   

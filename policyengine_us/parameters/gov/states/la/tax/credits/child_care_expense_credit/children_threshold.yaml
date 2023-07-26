@@ -1,0 +1,15 @@
+description: Louisiana provides Child Care Expense Tax Credit to filer with no more than six children
+values:
+ 2018-01-01: 6
+
+
+metadata:
+ type: single_amount
+ period: year
+ amount_unit: /1
+ label: Louisiana cdcc number of children threshold above which Louisiana cdcc not eligible
+ reference:
+ - title: R.S. 47:6104 
+   href: https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit
+ - title: 2022 Form IT-540-WEB, page 2, line 6C 
+   href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf

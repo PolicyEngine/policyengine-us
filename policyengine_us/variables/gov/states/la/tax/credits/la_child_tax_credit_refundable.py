@@ -13,7 +13,7 @@ class la_child_tax_credit_refundable(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.la.tax.credits.child_care_expense_credit
+        ).gov.states.la.tax.credits.child_care_expense_credit.rate
         # determine LA refundable amount
         us_agi = tax_unit("adjusted_gross_income", period)
         quality_rating = tax_unit(
