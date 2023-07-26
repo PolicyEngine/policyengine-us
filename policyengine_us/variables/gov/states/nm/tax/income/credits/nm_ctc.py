@@ -10,8 +10,8 @@ class nm_ctc(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        # Legal code referes to "adjusted gross income",
-        # and tax form does not specify if federal or state AGI
+        # Legal code refers to "adjusted gross income",
+        # Tax form does not specify if federal or state AGI
         agi = tax_unit("adjusted_gross_income", period)
         # The law 7-2-18.34(J)(2) defines qualifying children as those from IRC 152(c).
         # IRC 152(c) refers to the EITC qualifying children.
