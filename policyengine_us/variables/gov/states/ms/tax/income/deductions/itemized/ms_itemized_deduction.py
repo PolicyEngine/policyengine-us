@@ -16,13 +16,8 @@ class ms_itemized_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # compute itemized deduction maximum
-        p = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        itm_deds_less_salt = add(tax_unit, period, itm_deds)
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+
 
         # calculate itemized deductions total amount
         exempt_deds = add(
