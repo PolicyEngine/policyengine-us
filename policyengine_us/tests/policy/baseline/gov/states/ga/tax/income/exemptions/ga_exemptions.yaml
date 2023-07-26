@@ -7,7 +7,7 @@
   output:
     ga_exemptions: 5_700
 
-- name: Married filing joint filer
+- name: Married filing joint 
   period: 2021
   input:
     filing_status: JOINT
@@ -16,7 +16,7 @@
   output:
     ga_exemptions: 7_400
 
-- name: Head_of_household filer
+- name: Head of household filer
   period: 2020
   input:
     filing_status: HEAD_OF_HOUSEHOLD
