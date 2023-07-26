@@ -1,4 +1,4 @@
-- name: 2021, Single Filer, with zero additional standard deduction
+- name: 2021, Single filer, with zero additional standard deduction
   period: 2021
   input:
     filing_status: SINGLE
@@ -7,7 +7,7 @@
   output:
     vt_standard_deductions: 6_350 #6350+0
 
-- name: 2022, Single Filer, with two additional standard deduction
+- name: 2022, Single filer, with two additional standard deduction
   period: 2022
   input:
     filing_status: SINGLE
@@ -16,7 +16,8 @@
   output:
     vt_standard_deductions: 8_600 #6500+2*1050
 
-- name: 2021, Joint Filer, with three additional standard deduction
+- name: 2021, Joint filer, with three additional standard deduction
+
   period: 2021
   input:
     filing_status: JOINT
@@ -25,7 +26,7 @@
   output:
     vt_standard_deductions: 15_850 #12700+3*1050
 
-- name: 2022, Joint Filer, with three additional standard deduction
+- name: 2022, Joint filer, with three additional standard deduction
   period: 2022
   input:
     filing_status: JOINT
@@ -34,7 +35,7 @@
   output:
     vt_standard_deductions: 16_200 #13050+3*1050
 
-- name: 2022, HOH Filer, with zero additional standard deduction
+- name: 2022, HOH filer, with zero additional standard deduction
   period: 2022
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -43,7 +44,7 @@
   output:
     vt_standard_deductions: 9_800 #9800+0*1050
 
-- name: 2022, Widow Filer, with three additional standard deduction
+- name: 2022, Widow filer, with three additional standard deduction
   period: 2022
   input:
     filing_status: WIDOW
@@ -52,7 +53,7 @@
   output:
     vt_standard_deductions: 16_200 #13050+3*1050
 
-- name: 2022, Separate Filer, with zero additional standard deduction
+- name: 2022, Separate filer, with zero additional standard deduction
   period: 2022
   input:
     filing_status: SEPARATE
@@ -61,7 +62,7 @@
   output:
     vt_standard_deductions: 6_500 #6500+0*1050
 
-- name: Non Vermont Filer
+- name: Non Vermont filer
   period: 2021
   input:
     filing_status: SEPARATE
