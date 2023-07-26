@@ -21,15 +21,15 @@ class az_itemized_deduction(Variable):
         medical_expense = add(tax_unit, period, ["medical_expense"])
         medical = parameters(period).gov.irs.deductions.itemized.medical
         medical_expense_irs = medical.floor * tax_unit("positive_agi", period)
-        line3 = (
-            medical_expense - medical_expense_irs
-            if medical_expense >= medical_expense_irs
-            else 0
+        medical_expense_larger_then_irs_allowed = where(
+            medical_expense >= medical_expense_irs,
+            medical_expense - medical_expense_irs,
+            0,
         )
-        line4 = (
-            medical_expense_irs - medical_expense
-            if medical_expense_irs > medical_expense
-            else 0
+        medical_expense_less_then_irs_allowed = where(
+            medical_expense_irs > medical_expense,
+            medical_expense_irs - medical_expense,
+            0,
         )
 
         # Adjustment to Interest Deduction
@@ -60,16 +60,15 @@ class az_itemized_deduction(Variable):
         other_adjustments = 0
 
         # adjusted itemized deduction
-        line9 = line3 + mortgage_interest
+        line9 = medical_expense_larger_then_irs_allowed + mortgage_interest
         line10 = (
-            line4
+            medical_expense_less_then_irs_allowed
             + charitable_deduction
             + adjustment_to_state_income_taxes
             + other_adjustments
         )
-        # line11=Total federal itemized deductions allowed to be taken on federal return
-        line11 = tax_unit("az_itemized_deduction_irs", period)
+        az_itemized_deductions_less_salt = tax_unit("az_itemized_deductions_less_salt", period)
         line12 = line9
-        line13 = line11 + line12
+        line13 = az_itemized_deductions_less_salt + line12
         line14 = line10
         return max_(line13 - line14, 0)

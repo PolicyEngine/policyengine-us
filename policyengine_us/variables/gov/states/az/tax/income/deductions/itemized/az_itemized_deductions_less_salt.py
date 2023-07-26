@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_itemized_deduction_irs(Variable):
+class az_itemized_deductions_less_salt(Variable):
     value_type = float
     entity = TaxUnit
     label = " Total federal itemized deductions allowed to be taken on federal return"
@@ -16,5 +16,9 @@ class az_itemized_deduction_irs(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions
-        items = [deduction for deduction in p.itemized_deductions]
-        return add(tax_unit, period, items)
+        itm_deds = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        return add(tax_unit, period, itm_deds)

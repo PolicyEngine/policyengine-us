@@ -1,4 +1,4 @@
-- name: AZ itemized deduction irs test 1
+- name: AZ itemized deduction less salt test 1
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -9,5 +9,5 @@
     medical_expense_deduction: 400
     casualty_loss_deduction: 500
   output:
-    az_itemized_deduction_irs: 1_500
+    az_itemized_deductions_less_salt: 1_200
 
