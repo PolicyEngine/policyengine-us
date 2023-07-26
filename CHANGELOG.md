@@ -5,6 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.390.1] - 2023-07-26 16:45:19
+
+### Fixed
+
+- Error-prone {short,long}_term_capital_losses variables by removing them.
+
+## [0.390.0] - 2023-07-26 16:33:04
+
+### Added
+
+- household_state_income_tax variable to solve circular dependencies.
+
+## [0.389.1] - 2023-07-25 16:31:29
+
+### Fixed
+
+- Fragmentation of circular-logic error avoidance.
+
+## [0.389.0] - 2023-07-25 14:08:11
+
+### Added
+
+- Kentucky standard deduction.
+
+## [0.388.0] - 2023-07-25 12:39:07
+
+### Added
+
+- New Mexico child day care credit.
+
+## [0.387.1] - 2023-07-24 17:23:30
+
+### Added
+
+- Display of DC parameters.
+
+## [0.387.0] - 2023-07-24 16:39:00
+
+### Added
+
+- New Mexico deduction for certain dependents.
+- New Mexico 2021 income tax rebate.
+- New Mexico additional 2021 income tax rebate.
+- New Mexico supplemental 2021 income tax rebate.
+
 ## [0.386.0] - 2023-07-22 01:49:59
 
 ### Added
@@ -4494,6 +4539,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.0...0.390.1
+[0.390.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.1...0.390.0
+[0.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.0...0.389.1
+[0.389.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.388.0...0.389.0
+[0.388.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.1...0.388.0
+[0.387.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.0...0.387.1
+[0.387.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.386.0...0.387.0
 [0.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.385.0...0.386.0
 [0.385.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.384.0...0.385.0
 [0.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.383.0...0.384.0
