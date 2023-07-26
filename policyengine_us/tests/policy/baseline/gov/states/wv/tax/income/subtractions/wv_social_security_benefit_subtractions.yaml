@@ -1,0 +1,59 @@
+- name: West Virgina social security subtraction for single individual if federal adjusted gross income is more than $50000.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    wv_agi: 70_000
+    wv_social_security_benefit: 1_000
+  output:
+    wv_social_security_benefit_subtractions: 0
+
+- name: West Virgina social security subtraction for single individual if federal adjusted gross income is less than $50000.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    wv_agi: 40_000
+    wv_social_security_benefit: 1_000
+  output:
+    wv_social_security_benefit_subtractions: 1_000
+
+- name: West Virgina social security subtraction for married couple who decide to file jointly if federal adjusted gross income is more than $100000.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: JOINT
+    wv_agi: 200_000
+    wv_social_security_benefit: 2_000
+  output:
+    wv_other_retirement_subtraction: 0
+
+- name: West Virgina social security subtraction for married couple who decide to file jointly if federal adjusted gross income is less than $100000.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: JOINT
+    wv_agi: 90_000
+    wv_social_security_benefit: 2_000
+  output:
+    wv_other_retirement_subtraction: 2_000
+
+- name: West Virgina social security subtraction for married who decide to file separately and federal adjusted gross income is more than $50000.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    wv_agi: 70_000
+    wv_social_security_benefit: 1_000
+  output:
+    wv_other_retirement_subtraction: 0
+
+- name: West Virgina social security subtraction for married who decide to file separately and federal adjusted gross income is less than $100000.
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    wv_agi: 40_000
+    wv_social_security_benefit: 1_000
+  output:
+    wv_other_retirement_subtraction: 1_000
