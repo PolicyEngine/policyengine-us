@@ -1,0 +1,23 @@
+description: ID allows this amount for maximum retirement benefits deduction 
+metadata:
+  label: Idaho retirement benefit deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Individual Income Tax General Information 2022
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf
+    title: Form 39R Resident Supplemental Schedule 2022
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_12-30-2022.pdf
+    title: TITLE 63 REVENUE AND TAXATION CHAPTER 30 INCOME TAX
+    href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    title: Individual Income Tax Forms and Instructions 2021
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf
+
+SINGLE:
+  2021-01-01: 37_776
+  2022-01-01: 40_140
+JOINT:
+  2021-01-01: 56_664
+  2022-01-01: 60_210
