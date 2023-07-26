@@ -3809,3 +3809,8 @@
     fixed:
     - Fragmentation of circular-logic error avoidance.
   date: 2023-07-25 16:31:29
+- bump: minor
+  changes:
+    added:
+    - household_state_income_tax variable to solve circular dependencies.
+  date: 2023-07-26 16:33:04
