@@ -1,0 +1,59 @@
+description: North Carolina provides this amount under the child deduction for single filers.
+brackets:
+ - threshold:
+     2021-01-01: 0
+   amount:
+     2021-01-01: 2_500
+     2023-01-01: 3_000
+ - threshold:
+     2023-01-01: 20_000
+     2021-01-01: 20_000
+   amount:
+     2023-01-01: 2_500
+     2021-01-01: 2_000
+ - threshold:
+     2023-01-01: 30_000
+     2021-01-01: 30_000
+   amount:
+     2023-01-01: 2_000
+     2021-01-01: 1_500
+ - threshold:
+     2023-01-01: 40_000
+     2021-01-01: 40_000
+   amount:
+     2023-01-01: 1_500
+     2021-01-01: 1_000
+ - threshold:
+     2023-01-01: 50_000
+     2021-01-01: 50_000
+   amount:
+     2023-01-01: 1_000
+     2021-01-01: 500
+ - threshold:
+     2023-01-01: 60_000
+     2021-01-01: 60_000
+   amount:
+     2023-01-01: 500
+     2021-01-01: 0
+ - threshold:
+     2023-01-01: 70_000
+     2021-01-01: 70_000
+   amount:
+     2023-01-01: 0
+     2021-01-01: 0
+
+
+metadata:
+ type: single_amount
+ threshold_unit: currency_USD
+ threshold_period: year
+ amount_unit: currency-USD
+ name: nc_cdcc_amount_single
+ lable: North Carolina CDCC Single
+ reference:
+   - title: North Carolina Child Deduction
+     href: https://www.ncdor.gov/taxes-forms/north-carolina-child-deduction
+   - title: 2022 D-400 Individual Income Tax Return
+     href: https://www.ncdor.gov/2022-d-400-web-fill-version/open
+   - title: 2021 D-400 Individual Income Tax Return
+     href: https://www.ncdor.gov/2021-d-400-individual-income-tax-return-web-fill/open
