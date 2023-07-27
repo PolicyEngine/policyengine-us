@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.396.0] - 2023-07-27 14:50:30
+
+### Added
+
+- Arizona personal income tax schedule.
+
 ## [0.395.0] - 2023-07-27 14:02:37
 
 ### Added
@@ -4570,6 +4576,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.396.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.395.0...0.396.0
 [0.395.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.394.0...0.395.0
 [0.394.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.393.0...0.394.0
 [0.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.392.0...0.393.0
