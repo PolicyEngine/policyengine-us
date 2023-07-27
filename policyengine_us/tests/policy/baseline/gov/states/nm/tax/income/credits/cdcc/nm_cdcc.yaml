@@ -1,0 +1,29 @@
+- name: State CDCC over federal CDCC
+  period: 2022
+  input:
+    nm_cdcc_max_amount: 1_000
+    state_code: NM
+    cdcc: 500
+    nm_cdcc_eligible: true
+  output:
+    nm_cdcc: 0
+
+- name: Ineligible 
+  period: 2022
+  input:
+    nm_cdcc_max_amount: 1_000
+    state_code: NM
+    cdcc: 5_000
+    nm_cdcc_eligible: false
+  output:
+    nm_cdcc: 0
+
+- name: Calculation # 5_000 - 1_000 
+  period: 2022
+  input:
+    nm_cdcc_max_amount: 1_000
+    state_code: NM
+    cdcc: 5_000
+    nm_cdcc_eligible: true
+  output:
+    nm_cdcc: 4_000

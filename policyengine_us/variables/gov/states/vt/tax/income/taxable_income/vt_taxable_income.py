@@ -16,5 +16,5 @@ class vt_taxable_income(Variable):
     def formula(tax_unit, period, parameters):
         agi = tax_unit("vt_agi", period)
         deductions = tax_unit("vt_deductions", period)
-        exemptions = tax_unit("vt_exemptions", period)
+        exemptions = tax_unit("vt_personal_exemptions", period)
         return max_(0, agi - deductions - exemptions)

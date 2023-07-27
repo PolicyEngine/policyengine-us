@@ -24,17 +24,7 @@ class ne_itemized_deductions(Variable):
         #   Federal Schedule A.
         us_itemizing = tax_unit("tax_unit_itemizes", period)
         # calculate US itemized deductions less state non-property taxes
-        p = parameters(period).gov.irs.deductions
-        items = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        us_itm_deds_less_salt = add(tax_unit, period, items)
-        filing_status = tax_unit("filing_status", period)
-        capped_property_taxes = min_(
-            add(tax_unit, period, ["real_estate_taxes"]),
-            p.itemized.salt_and_real_estate.cap[filing_status],
-        )
-        ne_itm_deds = us_itm_deds_less_salt + capped_property_taxes
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        capped_property_taxes = tax_unit("capped_property_taxes", period)
+        ne_itm_deds = itm_deds_less_salt + capped_property_taxes
         return us_itemizing * ne_itm_deds
