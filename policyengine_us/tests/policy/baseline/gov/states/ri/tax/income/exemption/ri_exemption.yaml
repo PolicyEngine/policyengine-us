@@ -1,53 +1,53 @@
-- name: Filer claims full amount of exemption
+- name: Household with 1 exemption and income of 200,000
   period: 2022
   input:
     state_code: RI
     adjusted_gross_income: 200_000
     tax_unit_size: 1
   output:
-    ri_exemption: 4_350
+    ri_exemptions: 4_350
 
-- name: Filer claims limited amount of exemption
+- name: Household with 2 exemptions and income of 217,100
   period: 2022
   input:
     state_code: RI
     adjusted_gross_income: 217_100
     tax_unit_size: 2
   output:
-    ri_exemption: 6_960
+    ri_exemptions: 6_960
 
-- name: Filer claims limited amount of exemption
+- name: Household with 3 exemptions and income of 240,000
   period: 2022
   input:
     state_code: RI
     adjusted_gross_income: 240_000
     tax_unit_size: 3
   output:
-    ri_exemption: 2_610
+    ri_exemptions: 2_610
 
-- name: Filer claims zero amount of exemption
+- name: Household with 4 exemptions and income of 250,000
   period: 2022
   input:
     state_code: RI
     adjusted_gross_income: 250_000
     tax_unit_size: 4
   output:
-    ri_exemption: 0
+    ri_exemptions: 0
 
-- name: Filer claims full amount of exemption
+- name: Household with 1 exemption and income of 200,000
   period: 2021
   input:
     state_code: RI
     adjusted_gross_income: 200_000
     tax_unit_size: 1
   output:
-    ri_exemption: 4_250
+    ri_exemptions: 4_250
 
-- name: Filer claims limited amount of exemption
+- name: Household with 2 exemptions and income of 211,000
   period: 2021
   input:
     state_code: RI
     adjusted_gross_income: 211_000
     tax_unit_size: 2
   output:
-    ri_exemption: 6_800
+    ri_exemptions: 6_800

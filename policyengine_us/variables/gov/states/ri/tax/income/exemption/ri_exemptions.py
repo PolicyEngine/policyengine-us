@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ri_exemption(Variable):
+class ri_exemptions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Rhode Island exemption"
