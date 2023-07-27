@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.396.0] - 2023-07-27 14:50:30
+
+### Added
+
+- Arizona personal income tax schedule.
+
+## [0.395.0] - 2023-07-27 14:02:37
+
+### Added
+
+- Rhode Island EITC.
+
+## [0.394.0] - 2023-07-27 12:55:39
+
+### Added
+
+- Rhode Island Credit for child and dependent care.
+
+## [0.393.0] - 2023-07-27 04:39:54
+
+### Added
+
+- Colorado Personal Income Tax Schedule.
+
+## [0.392.0] - 2023-07-26 20:48:21
+
+### Added
+
+- Delaware additional personal credits.
+
+## [0.391.0] - 2023-07-26 20:32:28
+
+### Added
+
+- New Mexico AGI and Additions.
+- Add New Mexico to income tree.
+
 ## [0.390.1] - 2023-07-26 16:45:19
 
 ### Fixed
@@ -4539,6 +4576,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.396.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.395.0...0.396.0
+[0.395.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.394.0...0.395.0
+[0.394.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.393.0...0.394.0
+[0.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.392.0...0.393.0
+[0.392.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.391.0...0.392.0
+[0.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.1...0.391.0
 [0.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.0...0.390.1
 [0.390.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.1...0.390.0
 [0.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.0...0.389.1
