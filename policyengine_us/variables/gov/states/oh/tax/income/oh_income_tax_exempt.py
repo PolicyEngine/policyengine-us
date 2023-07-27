@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_income_tax_exempt(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "OH income tax exempt"
+    label = "Ohio income tax exempt"
     defined_for = StateCode.OH
     unit = USD
     definition_period = YEAR
