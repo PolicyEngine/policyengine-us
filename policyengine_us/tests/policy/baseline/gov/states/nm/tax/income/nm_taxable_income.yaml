@@ -1,0 +1,21 @@
+- name: Capped at 0
+  period: 2023
+  input:
+    nm_agi: 100
+    nm_deductions: 200
+    nm_exemptions: 300
+    nm_subtractions: 400
+    state_code: NM
+  output:
+    nm_taxable_income: 0
+
+- name: Calculation
+  period: 2023
+  input:
+    nm_agi: 1_500
+    nm_deductions: 200
+    nm_exemptions: 300
+    nm_subtractions: 400
+    state_code: NM
+  output:
+    nm_taxable_income: 600
