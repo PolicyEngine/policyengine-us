@@ -17,5 +17,5 @@ class la_aged_exemption(Variable):
         )
         aged_spouse = (
             tax_unit("age_spouse", period) >= p.age_threshold
-        ).astype(int) 
-        return  p.amount * (aged_head + aged_spouse)
+        ).astype(int)
+        return p.amount * (aged_head + aged_spouse)
