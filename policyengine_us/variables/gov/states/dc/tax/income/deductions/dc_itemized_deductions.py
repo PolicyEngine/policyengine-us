@@ -16,16 +16,10 @@ class dc_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         # follows Calculation F in references
         # calculate US itemized deductions less state non-property taxes
-        p_us = parameters(period).gov.irs.deductions
-        items = [
-            deduction
-            for deduction in p_us.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        us_itm_deds_less_salt = add(tax_unit, period, items)
-        # calculate DC itemized deductions before partial phase-out
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        dc_itm_deds = us_itm_deds_less_salt + uncapped_property_taxes
+        # calculate DC itemized deductions before partial phase-out
+        dc_itm_deds = itm_deds_less_salt + uncapped_property_taxes
         # apply partial phase-out of DC itemized deductions
         EXEMPT_ITEMS = [
             "medical_expense_deduction",
@@ -35,9 +29,9 @@ class dc_itemized_deductions(Variable):
         nonexempt_deds = max_(0, dc_itm_deds - exempt_deds)
         dc_agi = add(tax_unit, period, ["dc_agi"])
         filing_status = tax_unit("filing_status", period)
-        p_dc = parameters(period).gov.states.dc.tax.income.deductions
-        phase_out_start = p_dc.itemized.phase_out.start[filing_status]
+        p = parameters(period).gov.states.dc.tax.income.deductions
+        phase_out_start = p.itemized.phase_out.start[filing_status]
         excess_agi = max_(0, dc_agi - phase_out_start)
-        phase_out_amount = excess_agi * p_dc.itemized.phase_out.rate
+        phase_out_amount = excess_agi * p.itemized.phase_out.rate
         limited_nonexempt_deds = max_(0, nonexempt_deds - phase_out_amount)
         return exempt_deds + limited_nonexempt_deds
