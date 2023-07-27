@@ -9,7 +9,7 @@ class sc_state_tax_addback(Variable):
     definition_period = YEAR
     reference = (
         "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf",
-        "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2"
+        "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2",
     )
     defined_for = StateCode.SC
 
@@ -25,9 +25,11 @@ class sc_state_tax_addback(Variable):
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status != filing_status.possible_values.SEPARATE
         # line 1
-        federal_itemized_deduction = add(tax_unit, period, itm_deds)*us_itemizing
+        federal_itemized_deduction = (
+            add(tax_unit, period, itm_deds) * us_itemizing
+        )
         # line 2
-        federal_standard_deduction = standard_deduction* eligible  
+        federal_standard_deduction = standard_deduction * eligible
         # line 3
         less_itm_amount = max_(
             0, federal_itemized_deduction - federal_standard_deduction
