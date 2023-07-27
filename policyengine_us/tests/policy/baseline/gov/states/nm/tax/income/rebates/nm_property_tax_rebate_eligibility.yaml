@@ -1,0 +1,49 @@
+- name: Both filers ineligible 
+  period: 2023
+  input:
+    state_code: NM
+    age_head: 64
+    age_spouse: 64
+    nm_agi: 16_000
+  output:
+    nm_property_tax_rebate_eligible: false
+
+- name: Head eligible 
+  period: 2023
+  input:
+    state_code: NM
+    age_head: 65
+    age_spouse: 64
+    nm_agi: 16_000
+  output:
+    nm_property_tax_rebate_eligible: true
+
+- name: Spouse eligible 
+  period: 2023
+  input:
+    state_code: NM
+    age_head: 64
+    age_spouse: 65
+    nm_agi: 16_000
+  output:
+    nm_property_tax_rebate_eligible: true
+
+- name: Income ineligible 
+  period: 2023
+  input:
+    state_code: NM
+    age_head: 64
+    age_spouse: 65
+    nm_agi: 16_001
+  output:
+    nm_property_tax_rebate_eligible: false
+
+- name: Both eligible 
+  period: 2023
+  input:
+    state_code: NM
+    age_head: 65
+    age_spouse: 65
+    nm_agi: 16_000
+  output:
+    nm_property_tax_rebate_eligible: true
