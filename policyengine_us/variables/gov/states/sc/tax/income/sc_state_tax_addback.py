@@ -45,4 +45,5 @@ class sc_state_tax_addback(Variable):
             - capped_property_taxes,
         )
         # compare line 3,4,5. get the minimum
-        return min(less_itm_amount, salt, less_income_amount)
+        salt_or_income = min_(salt, less_income_amount)
+        return min_(salt_or_income, less_itm_amount)
