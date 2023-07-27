@@ -7,9 +7,10 @@
      real_estate_taxes: 6_000 #5000
      medical_expense_deduction: 1_000
      casualty_loss_deduction: 400
+     tax_unit_childcare_expenses: 123
      state_code: MT
   output:
-    mt_itemized_deduction: 7_465
+    mt_itemized_deduction: 7_588
 
 - name: Test case 2 #salt has a cap of 10000 for single, head of household and joint
   period: 2022
@@ -20,6 +21,7 @@
      real_estate_taxes: 11_000
      medical_expense_deduction: 3_000 
      casualty_loss_deduction: 0
+     tax_unit_childcare_expenses: 0
      state_code: MT
   output:
     mt_itemized_deduction: 14_234
@@ -33,6 +35,7 @@
      real_estate_taxes: 1_035
      medical_expense_deduction: 3_000
      casualty_loss_deduction: 745
+     tax_unit_childcare_expenses: 1_004
      state_code: MT
   output:
-    mt_itemized_deduction: 5_814
+    mt_itemized_deduction: 6_818

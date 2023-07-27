@@ -18,10 +18,12 @@ class mt_itemized_deduction(Variable):
         itm_deds = [
             deduction
             for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
+            if deduction not in ["salt_deduction", "casualty_loss_deduction"]
         ]
         filing_status = tax_unit("filing_status", period)
-        us_itm_deds_less_salt = add(tax_unit, period, itm_deds)
+        us_itm_deds_less_salt = add(tax_unit, period, itm_deds) + tax_unit(
+            "mt_misc_deduction", period
+        )
         capped_property_taxes = min_(
             add(tax_unit, period, ["real_estate_taxes"]),
             p.itemized.salt_and_real_estate.cap[filing_status],
