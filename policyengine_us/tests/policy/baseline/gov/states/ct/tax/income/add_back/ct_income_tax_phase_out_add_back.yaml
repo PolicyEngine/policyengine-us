@@ -1,0 +1,17 @@
+- name: AGI below start threshold
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 55_999
+    filing_status: SINGLE
+  output:
+    ct_income_tax_phase_out_add_back: 0
+
+- name: Capped at 400 for widow(er)
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 145_500
+    filing_status: WIDOW
+  output:
+    ct_income_tax_phase_out_add_back: 400

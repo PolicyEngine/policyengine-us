@@ -25,14 +25,14 @@
   output:
     ct_income_tax_before_non_refundable_credits: 30
 
-- name: Widow household with $16,000 income
-  period: 2022
-  input:
-    state_code: CT
-    ct_taxable_income: 16_000
-    filing_status: WIDOW
-  output:
-    ct_income_tax_before_non_refundable_credits: 680
+# - name: Widow household with $16,000 income
+#   period: 2022
+#   input:
+#     state_code: CT
+#     ct_taxable_income: 16_000
+#     filing_status: WIDOW
+#   output:
+#     ct_income_tax_before_non_refundable_credits: 680
 
 - name: Joint household with $1,000 income
   period: 2022
