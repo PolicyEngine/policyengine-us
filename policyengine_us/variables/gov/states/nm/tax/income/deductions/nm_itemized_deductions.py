@@ -41,12 +41,8 @@ class nm_itemized_deductions(Variable):
         salt = min_(salt_claimed * salt_ratio, salt_claimed)
 
         standard_deduction = tax_unit("standard_deduction", period)
-        itm_deds = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        us_itemized_deductions = add(tax_unit, period, itm_deds) + salt_claimed
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        us_itemized_deductions = itm_deds_less_salt + salt_claimed
         item_deds = max_(us_itemized_deductions - standard_deduction, 0)
 
         nm_item = min_(salt, item_deds)
