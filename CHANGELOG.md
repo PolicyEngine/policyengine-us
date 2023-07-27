@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.393.0] - 2023-07-27 04:39:54
+
+### Added
+
+- Colorado Personal Income Tax Schedule.
+
 ## [0.392.0] - 2023-07-26 20:48:21
 
 ### Added
@@ -4552,6 +4558,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.392.0...0.393.0
 [0.392.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.391.0...0.392.0
 [0.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.1...0.391.0
 [0.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.0...0.390.1
