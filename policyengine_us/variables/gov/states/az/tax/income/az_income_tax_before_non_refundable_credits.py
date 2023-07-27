@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class az_income_tax_before_credits(Variable):
+class az_income_tax_before_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona income tax before credits"
+    label = "Arizona income tax non-refundable before credits"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
