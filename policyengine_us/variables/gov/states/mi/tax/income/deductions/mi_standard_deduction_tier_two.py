@@ -39,11 +39,11 @@ class mi_standard_deduction_tier_two(Variable):
 
         sd2_amount = where(
             total_eligible == 0,
-            p.amount_without_SSA[filing_status],
+            p.amount.non_qualifying[filing_status],
             where(
                 total_eligible == 1,
-                p.amount_with_SSA_single[filing_status],
-                p.amount_with_SSA_both[filing_status],
+                p.amount.single_qualifying[filing_status],
+                p.amount.both_qualifying[filing_status],
             ),
         )
 
