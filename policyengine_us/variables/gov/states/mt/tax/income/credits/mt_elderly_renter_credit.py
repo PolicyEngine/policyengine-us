@@ -23,7 +23,7 @@ class mt_elderly_renter_credit(Variable):
         # Calculate net_household_income
         standard_exclusion = p.standard_exclusion
         temp1 = max_(gross_household_income - standard_exclusion, 0)
-        net_household_income = p.household_income_reduction.calc(temp1) * temp1
+        net_household_income = p.reduction_rate.calc(temp1) * temp1
 
         # Credit Computation
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
@@ -35,6 +35,6 @@ class mt_elderly_renter_credit(Variable):
         )
         capped_credit = min_(credit_amount, cap)
         total_credit = (
-            p.credit_multiplier.calc(gross_household_income) * capped_credit
+            p.multiplier.calc(gross_household_income) * capped_credit
         )
         return eligibility * total_credit
