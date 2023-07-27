@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class az_itemized_deduction(Variable):
     value_type = float
     entity = TaxUnit
@@ -47,12 +46,12 @@ class az_itemized_deduction(Variable):
             "state_and_local_sales_or_income_tax", period
         )
         # line2A= Amount included in the line 1A for which you claimed an Arizona credit
-        line2A = tax_unit("az_total_credit", period)
-        line3A = state_income_tax_before_federal_limitation - line2A
+        az_total_credit = tax_unit("az_total_credit", period)
+        diff = state_income_tax_before_federal_limitation - az_total_credit
         p = parameters(period).gov.states.az.tax.income.deductions.itemized
         filing_status = tax_unit("filing_status", period)
         federal_schedule_limit = p.itemized_deduction_limit[filing_status]
-        line5A = min_(line3A, federal_schedule_limit)
+        line5A = min_(diff, federal_schedule_limit)
         salt_deduction = tax_unit("salt_deduction", period)
         adjustment_to_state_income_taxes = salt_deduction - line5A
 
@@ -60,15 +59,19 @@ class az_itemized_deduction(Variable):
         other_adjustments = 0
 
         # adjusted itemized deduction
-        line9 = medical_expense_larger_then_irs_allowed + mortgage_interest
-        line10 = (
+        adjustment_medical_mortgage = (
+            medical_expense_larger_then_irs_allowed + mortgage_interest
+        )
+        adjustment_medical_charitable_stateTax_other = (
             medical_expense_less_then_irs_allowed
             + charitable_deduction
             + adjustment_to_state_income_taxes
             + other_adjustments
         )
-        az_itemized_deductions_less_salt = tax_unit("az_itemized_deductions_less_salt", period)
-        line12 = line9
-        line13 = az_itemized_deductions_less_salt + line12
-        line14 = line10
+        az_itemized_deductions_less_salt = tax_unit(
+            "az_itemized_deductions_less_salt", period
+        )
+        # line12 = adjustment_medical_mortgage
+        line13 = az_itemized_deductions_less_salt + adjustment_medical_mortgage
+        line14 = adjustment_medical_charitable_stateTax_other
         return max_(line13 - line14, 0)
