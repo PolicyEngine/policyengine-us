@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class nj_ctc(Variable):
-    value_type = floatz
+    value_type = float
     entity = TaxUnit
     label = "New Jersey Child Tax Credit"
     unit = USD
