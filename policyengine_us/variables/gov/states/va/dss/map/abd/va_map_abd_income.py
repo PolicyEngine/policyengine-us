@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_map_abd_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA MAP ABD income"
+    label = "VA MAP ABD countable income"
     definition_period = YEAR
     defined_for = StateCode.VA
 
