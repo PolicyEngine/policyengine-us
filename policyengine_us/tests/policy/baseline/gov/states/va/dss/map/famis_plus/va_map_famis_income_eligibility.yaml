@@ -3,8 +3,7 @@
   input:
     state_code: VA
     va_map_famis_income_limit: 1_000
-    va_map_famis_earned_income: 0
-    va_map_famis_unearned_income: 0
+    va_map_famis_income: 0
   output:
     va_map_famis_income_eligibility: true
 
@@ -13,8 +12,7 @@
   input:
     state_code: VA
     va_map_famis_income_limit: 1_000
-    va_map_famis_earned_income: 500
-    va_map_famis_unearned_income: 500
+    va_map_famis_income: 1_000
   output:
     va_map_famis_income_eligibility: true
 
@@ -23,8 +21,7 @@
   input:
     state_code: VA
     va_map_famis_income_limit: 1_000
-    va_map_famis_earned_income: 1_000
-    va_map_famis_unearned_income: 1_000
+    va_map_famis_income: 2_000
   output:
     va_map_famis_income_eligibility: false
 
@@ -33,7 +30,6 @@
   input:
     state_code: CA
     va_map_famis_income_limit: 1_000
-    va_map_famis_earned_income: 500
-    va_map_famis_unearned_income: 500
+    va_map_famis_income: 500
   output:
     va_map_famis_income_eligibility: false
