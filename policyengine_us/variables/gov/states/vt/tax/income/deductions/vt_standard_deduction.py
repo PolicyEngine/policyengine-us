@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class vt_standard_deductions(Variable):
+class vt_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Vermont standard deduction"
@@ -19,8 +19,8 @@ class vt_standard_deductions(Variable):
         # Base deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
         base_deduction = p.base[filing_status]
-        # Aged/blind extra standard deduction.
+        # Aged/blind additional standard deduction.
         aged_blind_count = tax_unit("aged_blind_count", period)
-        amount_per_aged_blind = p.extra
+        amount_per_aged_blind = p.additional_amount
         aged_blind_deduction = aged_blind_count * amount_per_aged_blind
         return base_deduction + aged_blind_deduction

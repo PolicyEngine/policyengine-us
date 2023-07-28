@@ -5,7 +5,7 @@
     aged_blind_count: 0
     state_code: VT
   output:
-    vt_standard_deductions: 6_350 #6350+0
+    vt_standard_deduction: 6_350 #6350+0
 
 - name: 2022, Single filer, with two additional standard deduction
   period: 2022
@@ -14,7 +14,7 @@
     aged_blind_count: 2
     state_code: VT
   output:
-    vt_standard_deductions: 8_600 #6500+2*1050
+    vt_standard_deduction: 8_600 #6500+2*1050
 
 - name: 2021, Joint filer, with three additional standard deduction
 
@@ -24,7 +24,7 @@
     aged_blind_count: 3
     state_code: VT
   output:
-    vt_standard_deductions: 15_850 #12700+3*1050
+    vt_standard_deduction: 15_850 #12700+3*1050
 
 - name: 2022, Joint filer, with three additional standard deduction
   period: 2022
@@ -33,7 +33,7 @@
     aged_blind_count: 3
     state_code: VT
   output:
-    vt_standard_deductions: 16_200 #13050+3*1050
+    vt_standard_deduction: 16_200 #13050+3*1050
 
 - name: 2022, HOH filer, with zero additional standard deduction
   period: 2022
@@ -42,7 +42,7 @@
     aged_blind_count: 0
     state_code: VT
   output:
-    vt_standard_deductions: 9_800 #9800+0*1050
+    vt_standard_deduction: 9_800 #9800+0*1050
 
 - name: 2022, Widow filer, with three additional standard deduction
   period: 2022
@@ -51,7 +51,7 @@
     aged_blind_count: 3
     state_code: VT
   output:
-    vt_standard_deductions: 16_200 #13050+3*1050
+    vt_standard_deduction: 16_200 #13050+3*1050
 
 - name: 2022, Separate filer, with zero additional standard deduction
   period: 2022
@@ -60,7 +60,7 @@
     aged_blind_count: 0
     state_code: VT
   output:
-    vt_standard_deductions: 6_500 #6500+0*1050
+    vt_standard_deduction: 6_500 #6500+0*1050
 
 - name: Non Vermont filer
   period: 2021
@@ -69,4 +69,4 @@
     aged_blind_count: 0
     state_code: NY
   output:
-    vt_standard_deductions: 0 #0
+    vt_standard_deduction: 0 #0
