@@ -1,37 +1,158 @@
-- name: SINGLE under 5_000 with 1 exemption has child
+- name: SINGLE under 5_000 with 1 exemption and 1 child
   period: 2022
   input:
-    adjusted_gross_income: 4_000
-    filing_status: SINGLE
-    exemptions: 1
-    state_code: HI
-
-
-    # people:
-    #   parent: {}
-    #   child:
-    #     age: 5
-    # tax_units:
-    #   tax_unit:
-    #     members: [parent, child]
-    # households:
-    #   household:
-    #     members: [parent, child]
-    #     state_code: HI
-
-
-    # people:
-    #   person1:
-    #     age: 3
-    #   person2:
-    #     age: 39
-    # tax_units:
-    #   tax_unit:
-    #     members: [person1, person2]
-    #     tax_unit_children: 1
-
+    people:
+      person1:
+        age: 3
+        is_child: true
+      person2:
+        age: 39
+        is_child: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions: 1
+    households:
+      household: 
+        members: [person1, person2]
+        state_code: HI
   output:
-    hi_food_excise_credit: 110
+    hi_food_excise_credit: 220
+
+- name: SINGLE under 5_000 with 1 exemption, 1 minor child under 18 and 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions: 1
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 220 
+
+- name: JOINT under 5_000 with 1 exemption, 1 minor child under 18 and 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 4_000
+        filing_status: JOINT
+        exemptions: 1
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 220 
+
+- name: JOINT OVER 30_000 with 2 exemption, 1 child under 18 and 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 35_000
+        filing_status: JOINT
+        exemptions: 2
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 200 
+
+- name: SEPARATE OVER 50_000 with 2 exemption, 1 child under 18 and 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 55_000
+        filing_status: SEPARATE
+        exemptions: 2
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 110 
+
+- name: HEAD_OF_HOUSEHOLD OVER 20_000 with 2 exemption, 2 child under 18 and 1 child over 18
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+      person4:
+        age: 17
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        adjusted_gross_income: 25_000
+        filing_status: HEAD_OF_HOUSEHOLD
+        exemptions: 2
+    households:
+      household: 
+        members: [person1, person2, person3, person4] 
+        state_code: HI
+  output:
+    hi_food_excise_credit: 330 
 
 - name: JOINT under 5_000 with 1 exemption
   period: 2022
