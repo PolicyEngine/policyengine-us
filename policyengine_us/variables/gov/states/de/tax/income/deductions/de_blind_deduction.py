@@ -10,7 +10,9 @@ class de_blind_deduction(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.de.tax.income.deductions
+        p = parameters(
+            period
+        ).gov.states.de.tax.income.deductions.additional_standard
 
         blind_head = tax_unit("blind_head", period)
         head_eligible = (blind_head).astype(int)
@@ -18,4 +20,4 @@ class de_blind_deduction(Variable):
         blind_spouse = tax_unit("blind_spouse", period)
         spouse_eligible = (blind_spouse).astype(int)
 
-        return (head_eligible + spouse_eligible) * p.blind
+        return (head_eligible + spouse_eligible) * p.amount.blind

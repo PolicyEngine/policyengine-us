@@ -10,7 +10,9 @@ class de_aged_deduction(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.de.tax.income.deductions
+        p = parameters(
+            period
+        ).gov.states.de.tax.income.deductions.additional_standard
 
         age_head = tax_unit("age_head", period)
         head_eligible = (age_head >= p.age_eligibility).astype(int)
@@ -18,4 +20,4 @@ class de_aged_deduction(Variable):
         age_spouse = tax_unit("age_spouse", period)
         spouse_eligible = (age_spouse >= p.age_eligibility).astype(int)
 
-        return (head_eligible + spouse_eligible) * p.aged
+        return (head_eligible + spouse_eligible) * p.amount.aged
