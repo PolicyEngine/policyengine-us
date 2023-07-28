@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nm_working_families_credit(Variable):
+class nm_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "New Mexico working families credit"
@@ -11,7 +11,7 @@ class nm_working_families_credit(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        eligible = tax_unit("nm_working_families_credit_eligible", period)
+        eligible = tax_unit("nm_eitc_eligible", period)
         maximum = tax_unit("eitc_maximum", period)
         phased_in = tax_unit("eitc_phased_in", period)
         reduction = tax_unit("eitc_reduction", period)
@@ -19,5 +19,5 @@ class nm_working_families_credit(Variable):
         eitc = eligible * min_(phased_in, limitation)
         rate = parameters(
             period
-        ).gov.states.nm.tax.income.credits.working_families_tax.match
+        ).gov.states.nm.tax.income.credits.eitc.match
         return eitc * rate

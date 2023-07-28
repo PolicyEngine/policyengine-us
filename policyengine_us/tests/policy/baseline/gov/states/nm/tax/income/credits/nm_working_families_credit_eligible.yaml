@@ -5,7 +5,7 @@
     state_code: NM
     tax_unit_children: 0
   output:
-    nm_working_families_credit_eligible: false
+    nm_eitc_eligible: false
 
 - name: No children and over 18, eligible.
   period: 2022
@@ -13,7 +13,7 @@
     age: 18
     state_code: NM
   output:
-    nm_working_families_credit_eligible: true
+    nm_eitc_eligible: true
 
 - name: Children and under 18, eligible.
   period: 2022
@@ -31,4 +31,4 @@
         members: [parent, child]
         state_code: NM
   output:
-    nm_working_families_credit_eligible: true
+    nm_eitc_eligible: true
