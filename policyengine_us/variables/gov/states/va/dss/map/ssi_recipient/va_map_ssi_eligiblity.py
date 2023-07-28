@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_map_ssi_eligiblity(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "VA MAP Pregnant Women eligibility"
+    label = "VA MAP SSI eligibility"
     definition_period = YEAR
     defined_for = StateCode.VA
 
