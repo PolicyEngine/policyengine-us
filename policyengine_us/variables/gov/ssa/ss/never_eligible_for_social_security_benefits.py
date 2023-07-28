@@ -12,4 +12,4 @@ class never_eligible_for_social_security_benefits(Variable):
         # Assumption: if person is above age 70 and has no social security benefits, then they are never eligible.
         age = person("age", period)
         social_security = person("social_security", period)
-        return (age >= 70) * (social_security == 0)
+        return (age >= 70) & (social_security == 0)
