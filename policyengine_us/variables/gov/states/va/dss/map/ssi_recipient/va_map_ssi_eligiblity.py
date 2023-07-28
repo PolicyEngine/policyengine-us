@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_map_pregnant_eligibility(Variable):
+class va_map_ssi_eligiblity(Variable):
     value_type = bool
     entity = SPMUnit
     label = "VA MAP Pregnant Women eligibility"
