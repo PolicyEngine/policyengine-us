@@ -1,0 +1,35 @@
+- name: If married, the upper income limit is $19,728.
+  period: 2023
+  input:
+    state_code: VA
+    is_married: true
+    va_map_mb_income: 19_000
+  output:
+    va_map_mb_qmb_income_eligibility: true
+
+- name: If married, the upper income limit is $19,728.
+  period: 2023
+  input:
+    state_code: VA
+    is_married: true
+    va_map_mb_income: 20_000
+  output:
+    va_map_mb_qmb_income_eligibility: false
+
+- name: If not married, the upper income limit is $14,580.
+  period: 2023
+  input:
+    state_code: VA
+    is_married: false
+    va_map_mb_income: 14_000
+  output:
+    va_map_mb_qmb_income_eligibility: true
+
+- name: If not married, the upper income limit is $14,580.
+  period: 2023
+  input:
+    state_code: VA
+    is_married: false
+    va_map_mb_income: 15_000
+  output:
+    va_map_mb_qmb_income_eligibility: false

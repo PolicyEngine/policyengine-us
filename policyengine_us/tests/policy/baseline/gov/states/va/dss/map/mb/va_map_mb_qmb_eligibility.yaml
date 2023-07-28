@@ -1,0 +1,35 @@
+- name: Is income eligible and resources eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_mb_qmb_income_eligibility: true
+    va_map_mb_resources_eligibility: true
+  output:
+    va_map_mb_qmb_eligibility: true
+
+- name: Is income eligible but not resources eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_mb_qmb_income_eligibility: true
+    va_map_mb_resources_eligibility: false
+  output:
+    va_map_mb_qmb_eligibility: false
+
+- name: Is resources eligible but not income eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_mb_qmb_income_eligibility: false
+    va_map_mb_resources_eligibility: true
+  output:
+    va_map_mb_qmb_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: DC
+    va_map_mb_qmb_income_eligibility: true
+    va_map_mb_resources_eligibility: true
+  output:
+    va_map_mb_qmb_eligibility: false

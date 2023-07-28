@@ -1,0 +1,35 @@
+- name: Household with no resource is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_mb_resources_limit: 1_000
+    va_map_mb_resources: 0
+  output:
+    va_map_mb_resources_eligibility: true
+
+- name: Household resources equals limit is eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_mb_resources_limit: 1_000
+    va_map_mb_resources: 1_000
+  output:
+    va_map_mb_resources_eligibility: true
+
+- name: Household resources greater than is not eligible.
+  period: 2023
+  input:
+    state_code: VA
+    va_map_mb_resources_limit: 1_000
+    va_map_mb_resources: 2_000
+  output:
+    va_map_mb_resources_eligibility: false
+
+- name: Only apply to VA.
+  period: 2023
+  input:
+    state_code: CA
+    va_map_mb_resources_limit: 1_000
+    va_map_mb_resources: 0
+  output:
+    va_map_mb_resources_eligibility: false

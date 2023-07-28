@@ -11,4 +11,4 @@ class va_map_abd_income_limit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.va.dss.map.abd
         married = spm_unit("is_married", period)
-        return where(married, p.income_limit_couple, p.income_limit_single)
+        return where(married, p.income_limit_couple, p.income_limit_single) * MONTHS_IN_YEAR
