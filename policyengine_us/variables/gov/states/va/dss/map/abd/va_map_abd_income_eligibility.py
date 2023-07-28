@@ -9,16 +9,6 @@ class va_map_abd_income_eligibility(Variable):
     defined_for = StateCode.VA
 
     def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        earned = person("va_map_earned_income", period) 
-        unearned = person("va_map_unearned_income", period)
-        mother = person("is_mother")
-        father = person("is_father")
-        c = mother | father
-        income = spm_unit.sum(earned + unearned) * c
-
-        p = parameters(period).gov.states.va.dss.map.abd
-        married = spm_unit("is_married", period)
-        limit = where(married, p.income_limit_couple, p.income_limit_single)
-
+        income = spm_unit("va_map_abd_income", period)
+        limit = spm_unit("va_map_abd_income_limit", period)
         return income <= limit
