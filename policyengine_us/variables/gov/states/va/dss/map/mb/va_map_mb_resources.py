@@ -10,7 +10,7 @@ class va_map_mb_resources(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        married = spm_unit("is_married", period)
+        married = add(spm_unit, period, ["is_married"]) > 0
         resources = person("va_map_resources", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)

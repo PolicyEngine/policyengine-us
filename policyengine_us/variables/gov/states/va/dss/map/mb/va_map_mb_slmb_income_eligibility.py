@@ -12,7 +12,7 @@ class va_map_mb_slmb_income_eligibility(Variable):
         p = parameters(period).gov.states.va.dss.map.mb
         income = spm_unit("va_map_mb_income", period)
         monthly_income = income / MONTHS_IN_YEAR
-        married = spm_unit("is_married", period)
+        married = add(spm_unit, period, ["is_married"]) > 0
         if married:
             p = p.income_limit_couple
         else:

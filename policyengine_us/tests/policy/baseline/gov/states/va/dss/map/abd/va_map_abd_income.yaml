@@ -17,8 +17,11 @@
     households:
       household:
         members: [parent1, parent2, child]
-        is_married: true
         state_code: VA
+    families:
+      family:
+        members: [parent1, parent2, child]
+        is_married: true
   output:
     va_map_abd_income: 4_000
 
@@ -41,7 +44,10 @@
     households:
       household:
         members: [person1, person2, child]
-        is_married: false
         state_code: VA
+    families:
+      family:
+        members: [person1, person2, child]
+        is_married: false
   output:
     va_map_abd_income: 2_000

@@ -14,8 +14,11 @@
     households:
       household:
         members: [parent1, parent2, child]
-        is_married: true
         state_code: VA
+    families:
+      family:
+        members: [parent1, parent2, child]
+        is_married: true
   output:
     va_map_abd_resources: 2_000
 
@@ -23,10 +26,10 @@
   period: 2023
   input:
     people:
-      parent1:
+      person1:
         is_tax_unit_head: true
         va_map_resources: 1_000
-      parent2:
+      person2:
         is_tax_unit_spouse: false
         va_map_resources: 1_000
       child:
@@ -34,8 +37,11 @@
         va_map_resources: 500
     households:
       household:
-        members: [parent1, parent2, child]
-        is_married: false
+        members: [person1, person2, child]
         state_code: VA
+    families:
+      family:
+        members: [person1, person2, child]
+        is_married: false
   output:
     va_map_abd_resources: 1_000
