@@ -17,4 +17,4 @@ class va_map_mb_qi_income_eligibility(Variable):
             p = p.income_limit_couple
         else:
             p = p.income_limit_single
-        return p.cal(monthly_income) == 2
+        return p.calc(monthly_income) == 2
