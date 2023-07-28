@@ -26,26 +26,16 @@ class nj_other_retirement_special_exclusion(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
-
-        social_security = person("social_security", period)
-        head_social_security = tax_unit.sum(where(is_head, social_security, 0))
-        spouse_social_security = tax_unit.sum(
-            where(is_spouse, social_security, 0)
+        never_eligible_ss = person(
+            "never_eligible_for_social_security_benefits", period
         )
 
-        head_age_eligible = (
-            tax_unit("age_head", period) >= p.latest_age_social_security_start
-        )
-        head_eligible = head_age_eligible & (head_social_security == 0)
-        spouse_age_eligible = (
-            tax_unit("age_spouse", period)
-            >= p.latest_age_social_security_start
-        )
-        spouse_eligible = spouse_age_eligible & (spouse_social_security == 0)
+        head_eligible = tax_unit.sum(is_head * never_eligible_ss)
+        spouse_eligible = tax_unit.sum(is_spouse * never_eligible_ss)
 
         eligible = where(
             joint,
-            head_eligible & spouse_eligible,
+            head_eligible * spouse_eligible,
             head_eligible,
         )
 
