@@ -5,7 +5,7 @@
     state_code: NM
     tax_unit_children: 0
   output:
-    nm_eitc_eligible: false
+    nm_eitc_demographic_eligible: false
 
 - name: No children and over 18, eligible.
   period: 2022
@@ -13,7 +13,23 @@
     age: 18
     state_code: NM
   output:
-    nm_eitc_eligible: true
+    nm_eitc_demographic_eligible: true
+
+- name: No children and over 65, eligible in 2021.
+  period: 2021
+  input:
+    age: 66
+    state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: No children and over 65, ineligible in 2022.
+  period: 2022
+  input:
+    age: 66
+    state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
 
 - name: Children and under 18, eligible.
   period: 2022
@@ -31,4 +47,4 @@
         members: [parent, child]
         state_code: NM
   output:
-    nm_eitc_eligible: true
+    nm_eitc_demographic_eligible: true
