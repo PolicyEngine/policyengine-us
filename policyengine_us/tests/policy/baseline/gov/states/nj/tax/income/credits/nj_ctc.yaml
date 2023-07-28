@@ -22,7 +22,7 @@
         members: [person1, person2, person3]
         state_code: NJ
   output:
-    nj_child_tax_credit: 1_000
+    nj_ctc: 1_000
 
 - name: Filer with 3 dependents under 6 and taxable income between $30,000 and $40,000 gets $1,200 credit when filing jointly
   period: 2022
@@ -51,7 +51,7 @@
         members: [person1, person2, person3, person4]
         state_code: NJ
   output:
-    nj_child_tax_credit: 1_200
+    nj_ctc: 1_200
 
 - name: Filer with 3 dependents under 6 and taxable income between $40,000 and $50,000 gets $900 credit when filing jointly
   period: 2022
@@ -80,7 +80,7 @@
         members: [person1, person2, person3, person4]
         state_code: NJ
   output:
-    nj_child_tax_credit: 900
+    nj_ctc: 900
 
 - name: Filer with 4 dependents under 6 and taxable income between $50,000 and $60,000 gets $800 credit when filing jointly
   period: 2022
@@ -112,7 +112,7 @@
         members: [person1, person2, person3, person4, person5]
         state_code: NJ
   output:
-    nj_child_tax_credit: 800
+    nj_ctc: 800
 
 - name: Filer with 4 dependents under 6 and taxable income between $50,000 and $60,000 gets $800 credit when filing as head of household
   period: 2022
@@ -144,7 +144,7 @@
         members: [person1, person2, person3, person4, person5]
         state_code: NJ
   output:
-    nj_child_tax_credit: 800
+    nj_ctc: 800
 
 - name: Filer is not eligible for credit when filing separately
   period: 2022
@@ -170,4 +170,4 @@
         members: [person1, person2, person3]
         state_code: NJ
   output:
-    nj_child_tax_credit: 0
+    nj_ctc: 0
