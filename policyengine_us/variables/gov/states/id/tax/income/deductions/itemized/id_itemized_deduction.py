@@ -33,30 +33,25 @@ class id_itemized_deductions(Variable):
             medical_expense - earned_income * p.medical_expense_rate,
             0,
         )
-        print(medical_expense_deds)
 
         itemized_deds_amt = (
             # itm_deds_less_salt + uncapped_property_taxes + medical_expense
             itm_deds_less_salt
             + medical_expense_deds
         )
-        print(itemized_deds_amt)
 
         p = parameters(period).gov.states.id.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         # base standard deduction amount
         standard_deds_base_amt = p.amount[filing_status]
-        print(standard_deds_base_amt)
 
         divided_amt = where(
             (itemized_deds_amt - standard_deds_base_amt) > 0,
             itemized_deds_amt - standard_deds_base_amt,
             0,
         )
-        print(divided_amt)
         divisor = parameters(
             period
         ).gov.states.id.tax.income.deductions.divisor
-        print(divisor)
 
         return np.floor(divided_amt / divisor)

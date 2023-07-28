@@ -21,11 +21,12 @@ class id_standard_deductions(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         # earned income calculation
         earned_income = person("earned_income", period)
-        dependet_earned_income = tax_unit.sum(is_dependent * earned_income)
+        dependent_earned_income = tax_unit.sum(is_dependent * earned_income)
+        addition_amt = p.dependents.single_amount.calc(dependent_earned_income)
         earned_income_amount = where(
-            dependet_earned_income < p.dependents.income_threshold,
+            addition_amt == 0,
             p.dependents.min_amount,
-            dependet_earned_income + p.dependents.addition,
+            dependent_earned_income + addition_amt,
         )
 
         # if dependent calculation
