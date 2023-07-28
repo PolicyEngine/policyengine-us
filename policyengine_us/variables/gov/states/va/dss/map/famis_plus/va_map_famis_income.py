@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_map_mb_income(Variable):
-    value_type = float
+class va_map_famis_income(Variable):
+    value_type = bool
     entity = SPMUnit
-    label = "VA MAP MB QI countable income"
+    label = "VA MAP FAMIS Plus income eligibility"
     definition_period = YEAR
     defined_for = StateCode.VA
 
@@ -12,7 +12,4 @@ class va_map_mb_income(Variable):
         person = spm_unit.members
         earned = person("va_map_earned_income", period) 
         unearned = person("va_map_unearned_income", period)
-        head = person("is_tax_unit_head", period)
-        c = mother | father
-        
-        return spm_unit.sum(earned + unearned) * c
+        return spm_unit.sum(earned + uneanred)
