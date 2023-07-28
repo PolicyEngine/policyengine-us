@@ -1,7 +1,8 @@
 description: VA Medicare Beneficiaries have income limit regarding different covered groups as above for a single.
 
 metadata:
-  period: year
+  unit: currency-USD
+  period: month
   label: VA Medicare Beneficiaries income & resources limit
   type: single_amount
   threshold_unit: currency-USD
@@ -17,13 +18,13 @@ brackets:
   - value:
       2023-01-01: 1
     threshold:
-      2023-01-01: 19_728
+      2023-01-01: 1_644
   - value:
       2023-01-01: 2
     threshold:
-      2023-01-01: 23_664
+      2023-01-01: 1_972
   - value:
       2023-01-01: 3
     threshold:
-      2023-01-01: 26_628
+      2023-01-01: 2_219
 
