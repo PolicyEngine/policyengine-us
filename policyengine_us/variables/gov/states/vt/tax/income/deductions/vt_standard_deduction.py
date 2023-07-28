@@ -7,7 +7,6 @@ class vt_standard_deduction(Variable):
     label = "Vermont standard deduction"
     unit = USD
     definition_period = YEAR
-    documentation = "Vermont standard deduction."
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf",  # Line4
         "http://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(C)(ii)(iii)
