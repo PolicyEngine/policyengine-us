@@ -1,9 +1,7 @@
 from policyengine_us.model_api import *
 
-# policyengine-core test ./policyengine_us/tests/policy/baseline/gov/states/mi/
 
-
-class mi_earned_income_tax_credit(Variable):
+class mi_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan Earned Income Tax Credit"
