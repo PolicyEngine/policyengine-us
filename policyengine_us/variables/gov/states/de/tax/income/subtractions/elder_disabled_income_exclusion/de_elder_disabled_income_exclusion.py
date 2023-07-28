@@ -31,10 +31,10 @@ class de_elderly_or_disabled_income_exclusion(Variable):
 
         # Get spouse age and eligibility
         age_spouse = tax_unit("age_spouse", period)
-        age_spouse_eligible = (age_spouse >= p.aged).astype(int)
+        age_spouse_eligible = (age_spouse >= p.age_threshold).astype(int)
 
         # Determine if individual age is eligible.
-        age_head_eligible = (age_head >= p.aged).astype(int)
+        age_head_eligible = (age_head >= p.age_threshold).astype(int)
 
         # Get the individual filer's income.
         is_head = person("is_tax_unit_head", period)
