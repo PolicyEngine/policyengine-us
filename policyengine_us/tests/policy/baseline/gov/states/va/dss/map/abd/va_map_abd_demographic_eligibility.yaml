@@ -12,7 +12,7 @@
         members: [parent]
         state_code: VA
   output:
-    va_map_famis_age_eligibility: false
+    va_map_abd_demographic_eligibility: false
 
 - name: Age over 65, not blind, not disabled, but receiving ssi is not eligible.
   period: 2023
@@ -28,7 +28,7 @@
         members: [parent]
         state_code: VA
   output:
-    va_map_famis_age_eligibility: false
+    va_map_abd_demographic_eligibility: false
 
 - name: Age 65, not blind, not disabled, is eligible.
   period: 2023
@@ -44,7 +44,7 @@
         members: [parent]
         state_code: VA
   output:
-    va_map_famis_age_eligibility: true
+    va_map_abd_demographic_eligibility: true
 
 - name: Age 64, blind, not disabled, is eligible.
   period: 2023
@@ -60,7 +60,7 @@
         members: [parent]
         state_code: VA
   output:
-    va_map_famis_age_eligibility: true
+    va_map_abd_demographic_eligibility: true
 
 - name: Age 64, not blind, disabled, is eligible.
   period: 2023
@@ -76,7 +76,7 @@
         members: [parent]
         state_code: VA
   output:
-    va_map_famis_age_eligibility: true
+    va_map_abd_demographic_eligibility: true
 
 - name: Only apply to VA.
   period: 2023
@@ -92,5 +92,5 @@
         members: [parent]
         state_code: DC
   output:
-    va_map_famis_age_eligibility: false
+    va_map_abd_demographic_eligibility: false
 

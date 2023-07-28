@@ -3,7 +3,7 @@
   input:
     state_code: VA
     va_map_abd_demographic_eligibility: true
-    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
     va_map_abd_resources_eligibility: true
   output:
     va_map_abd_eligibility: true
@@ -13,7 +13,7 @@
   input:
     state_code: VA
     va_map_abd_demographic_eligibility: true
-    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
     va_map_abd_resources_eligibility: false
   output:
     va_map_abd_eligibility: false
@@ -23,7 +23,7 @@
   input:
     state_code: VA
     va_map_abd_demographic_eligibility: true
-    va_map_abd_demographic_eligibility: false
+    va_map_abd_income_eligibility: false
     va_map_abd_resources_eligibility: true
   output:
     va_map_abd_eligibility: false
@@ -33,7 +33,7 @@
   input:
     state_code: VA
     va_map_abd_demographic_eligibility: false
-    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
     va_map_abd_resources_eligibility: true
   output:
     va_map_abd_eligibility: false
@@ -43,7 +43,7 @@
   input:
     state_code: CA
     va_map_abd_demographic_eligibility: true
-    va_map_abd_demographic_eligibility: true
+    va_map_abd_income_eligibility: true
     va_map_abd_resources_eligibility: true
   output:
     va_map_abd_eligibility: false
