@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.400.0] - 2023-07-28 02:36:06
+
+### Added
+
+- New Mexico income tax parameter visibility.
+
 ## [0.399.0] - 2023-07-28 02:18:59
 
 ### Added
@@ -4594,6 +4600,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.400.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.399.0...0.400.0
 [0.399.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.398.0...0.399.0
 [0.398.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.397.0...0.398.0
 [0.397.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.396.0...0.397.0
