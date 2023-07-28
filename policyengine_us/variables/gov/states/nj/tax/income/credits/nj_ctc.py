@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class nj_ctc(Variable):
-    value_type = float
+    value_type = floatz
     entity = TaxUnit
     label = "New Jersey Child Tax Credit"
     unit = USD
@@ -15,7 +15,7 @@ class nj_ctc(Variable):
 
         # Get amount per qualifying child based on taxable income.
         taxable_income = tax_unit("nj_taxable_income", period)
-        amount_per_qualifying_child = p.rate.calc(taxable_income)
+        amount_per_qualifying_child = p.amount.calc(taxable_income)
 
         # Get number of eligible children dependents
         person = tax_unit.members
