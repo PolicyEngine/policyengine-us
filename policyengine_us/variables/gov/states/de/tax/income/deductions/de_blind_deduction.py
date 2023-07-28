@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class de_blind_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware blind additional standard deduction"
+    label = "Delaware blind deduction"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
@@ -12,7 +12,7 @@ class de_blind_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.de.tax.income.deductions.additional_standard
+        ).gov.states.de.tax.income.deductions.additional
 
         blind_head = tax_unit("blind_head", period)
         head_eligible = (blind_head).astype(int)
