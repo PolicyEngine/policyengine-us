@@ -1,0 +1,33 @@
+description: Colorado matches this percentage of the child care credit, depending on federal AGI.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Colorado child care credit match
+  reference:
+    - title: Colorado Revised Statutes Annotated, Title 39. Taxation (§§ 39-1-101 — 39-36-107), Specific Taxes (§§ 39-20-101 — 39-36-107), Income Tax (Art. 22)Article 22., Income Tax (Pts. 1 — 53), Part 1. General (§§ 39-22-101 — 39-22-129) (1.7)
+      href: https://advance.lexis.com/documentpage/teaserdocument/?pdmfid=1000516&crid=332c1448-d489-4eb9-8b41-1b2a309a2480&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A65HV-06G3-CGX8-050B-00008-00&pddocid=urn%3AcontentItem%3A65HV-06G3-CGX8-050B-00008-00&pdcontentcomponentid=234176&pdteaserkey=h1&pditab=allpods&ecomp=7s65kkk&earg=sr0&prid=2f64ea9c-fb0a-423d-8792-dccfebe94d6c
+    - title: Colorado Individual Tax Filing Guide 104 Book | Page 48 line 7
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=48
+
+brackets:
+  - threshold:
+      1996-01-01: 0
+    amount:
+      1996-01-01: 0.5
+      2019-01-01: 0.5
+  - threshold:
+      1996-01-01: 25_000
+    amount:
+      1996-01-01: 0.3
+      2019-01-01: 0.5
+  - threshold:
+      1996-01-01: 35_000
+    amount:
+      1996-01-01: 0.1
+      2019-01-01: 0.5
+  - threshold:
+      1996-01-01: 60_000
+    amount:
+      1996-01-01: 0
+      2019-01-01: 0
