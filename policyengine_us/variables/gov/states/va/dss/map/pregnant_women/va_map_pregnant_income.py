@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class va_map_famis_income(Variable):
+class va_map_pregnant_income(Variable):
     value_type = float
     entity = SPMUnit
-    label = "VA MAP FAMIS Plus income"
+    label = "VA MAP Pregnant Women income"
     definition_period = YEAR
     defined_for = StateCode.VA
 
@@ -12,4 +12,9 @@ class va_map_famis_income(Variable):
         person = spm_unit.members
         earned = person("va_map_earned_income", period) 
         unearned = person("va_map_unearned_income", period)
-        return spm_unit.sum(earned + uneanred)
+        child = person("is_child")
+        mother = person("is_mother")
+        father = person("is_father")
+        c = child | mother | father
+        
+        return spm_unit.sum(earned + unearned) * c

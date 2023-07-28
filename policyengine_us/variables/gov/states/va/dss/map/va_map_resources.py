@@ -9,4 +9,4 @@ class va_map_resources(Variable):
     definition_period = YEAR
     defined_for = StateCode.VA
 
-    adds = "gov.states.va.dss.map.unearned"
+    adds = "gov.states.va.dss.map.resources"
