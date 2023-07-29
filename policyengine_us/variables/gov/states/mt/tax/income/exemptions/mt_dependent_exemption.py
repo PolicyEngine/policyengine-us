@@ -13,11 +13,20 @@ class mt_dependent_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
         person = tax_unit.members
-        dependent = person("is_tax_unit_dependent", period)
-        num_dependents = tax_unit.sum(dependent)
-        disabled_children = person("is_disabled", period) & person(
-            "is_child", period
+        is_disabled = person("is_disabled", period)
+        employment_income = person("employment_income", period)
+        healthy_qualified_dependent = (
+            person("is_tax_unit_dependent", period)
+            & (employment_income <= p.amount)
+            & (is_disabled == False)
         )
-        num_disabled_children = tax_unit.sum(disabled_children)
+        disabled_qualified_dependent = (
+            person("is_tax_unit_dependent", period)
+            & (employment_income <= p.amount)
+            & (is_disabled == True)
+        )
 
-        return (num_dependents + num_disabled_children) * p.amount
+        num_healthy_dependent = tax_unit.sum(healthy_qualified_dependent)
+        num_disabled_dependent = tax_unit.sum(disabled_qualified_dependent)
+
+        return (num_healthy_dependent + 2 * num_disabled_dependent) * p.amount

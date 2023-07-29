@@ -1,4 +1,4 @@
-- name: HEAD(over 65, not blind, have 2 dependents) & SPOUSE(under 65, blind) #7*2710=18970
+- name: HEAD(over 65, not blind, have 2 dependents with annual income 21000 and 0 separatly) & SPOUSE(under 65, blind) #6*2580=15480
   period: 2021
   input:
     people:
@@ -13,12 +13,12 @@
       person3:
         age: 26
         is_tax_unit_dependent: 1
-        is_child: false
+        employment_income: 21_000
         is_disabled: false
       person4:
         age: 11
         is_tax_unit_dependent: 1
-        is_child: true
+        employment_income: 0
         is_disabled: true
     tax_units:
       tax_unit:
@@ -28,7 +28,7 @@
         members: [person1, person2, person3, person4]
         state_code: MT
   output:
-    mt_aged_blind_dependent_exemptions: 18_970
+    mt_exemptions: 15_480
 
 - name: HEAD(under 65, not blind, have 0 dependents) #1*2710=2710
   period: 2022
@@ -46,10 +46,10 @@
         members: [person1]
         state_code: MT
   output:
-    mt_aged_blind_dependent_exemptions: 2_710
+    mt_exemptions: 2_710
 
-- name: HEAD(under 65, blind, have 1 dependents) & SPOUSE(under 65, not blind) #4*2710=10840
-  period: 2021
+- name: HEAD(under 65, blind, have 1 dependents with annual income of 1000) & SPOUSE(under 65, not blind) #4*2710=10840
+  period: 2022
   input:
     people:
       person1:
@@ -63,7 +63,7 @@
       person3:
         age: 17
         is_tax_unit_dependent: 1
-        is_child: false
+        employment_income: 1_000
         is_disabled: false
     tax_units:
       tax_unit:
@@ -73,5 +73,5 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    mt_aged_blind_dependent_exemptions: 10_840
+    mt_exemptions: 10_840
 
