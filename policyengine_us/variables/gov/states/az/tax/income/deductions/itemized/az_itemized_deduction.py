@@ -32,8 +32,9 @@ class az_itemized_deduction(Variable):
         )
 
         # Adjustment to Interest Deduction
-        # mortgage_interest = If you received a federal credit for interest paid on mortgage credit certificates (from federal Form 8396),
-        #  enter the amount of mortgage interest you paid for 2022 that is equal to the amount of your 2022federal credit.
+        # mortgage_interest = the amount of mortgage interest you paid for 2022 that is equal to
+        # the amount of federal credit, if you received a federal credit for interest paid on
+        # mortgage credit certificates (from federal Form 8396).
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
@@ -55,18 +56,17 @@ class az_itemized_deduction(Variable):
         adjustment_to_state_income_taxes = salt_deduction - line5A
 
         # This part was marked as not included after meeting
-        other_adjustments = 0
+        # other_adjustments = 0
 
         # adjusted itemized deduction
-        adjustment_medical_mortgage = (
-            medical_expense_larger_then_irs_allowed + mortgage_interest
-        )
+        adjustment_medical_mortgage = medical_expense_larger_then_irs_allowed
+        # if we have mortgage interest, we need to add mortgage interest into "adjustment_medical_mortgage".
         adjustment_medical_charitable_stateTax_other = (
             medical_expense_less_then_irs_allowed
             + charitable_deduction
             + adjustment_to_state_income_taxes
-            + other_adjustments
-        )
+        )  
+        # If you have other_adjustments, we need to add "other_adjustments" into "adjustment_medical_charitable_stateTax_other"
         az_itemized_deductions_less_salt = tax_unit(
             "az_itemized_deductions_less_salt", period
         )
