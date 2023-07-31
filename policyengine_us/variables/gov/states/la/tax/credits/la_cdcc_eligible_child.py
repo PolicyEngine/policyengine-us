@@ -15,11 +15,11 @@ class la_cdcc_eligible_child(Variable):
             period
         ).gov.states.la.tax.credits.child_care_expense_credit
 
-        # determine if the number of eligible children is below six
-        eligible_children = tax_unit("number_of_eligible_children", period)
+        # determine if the child is eligible for cdcc
+        eligible_children = person("la_cdcc_eligible_child", period)
         child_expense_tax_credit = tax_unit(
             "la_child_expense_tax_credit", period
         )
-        cdcc_eligible = eligible_children > p.children_threshold
+        cdcc_eligible = eligible_children > p.age_threshold
 
         return where(cdcc_eligible, 0, child_expense_tax_credit)
