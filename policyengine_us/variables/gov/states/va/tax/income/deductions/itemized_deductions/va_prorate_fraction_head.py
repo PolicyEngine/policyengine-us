@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class va_prorate_fraction_head(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Virginia joint amount proration fraction of head"
     unit = USD
     definition_period = YEAR
@@ -17,8 +17,7 @@ class va_prorate_fraction_head(Variable):
     # get proportion of head's share in the combined federal adjusted gross income.
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
+        federal_agi_head = person("adjusted_gross_income_head", period)
         federal_agi = tax_unit("adjusted_gross_income", period)
-        head = person("is_tax_unit_head", period)
-        head_agi = federal_agi * head
-
-        return head_agi / federal_agi
+        prorate_fraction_head = federal_agi_head / federal_agi
+        return prorate_fraction_head[0]

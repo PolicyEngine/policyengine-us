@@ -16,4 +16,6 @@ class va_itemized_deductions_spouse(Variable):
 
     def formula(person, period, parameters):
         unit_deds = person.tax_unit("va_itemized_deductions_joint", period)
-        return unit_deds * (1 - person("va_prorate_fraction_head", period))
+        return unit_deds * (
+            1 - person.tax_unit("va_prorate_fraction_head", period)
+        )
