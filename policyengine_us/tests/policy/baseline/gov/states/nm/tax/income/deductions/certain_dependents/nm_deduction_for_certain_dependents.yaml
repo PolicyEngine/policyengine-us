@@ -21,7 +21,7 @@
   input:
     filing_status: SINGLE
     nm_deduction_for_certain_dependents_eligible: true
-    eitc_child_count: 3
+    tax_unit_dependents: 3
   output:
     nm_deduction_for_certain_dependents: 0
 
@@ -29,7 +29,7 @@
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    eitc_child_count: 3
+    tax_unit_dependents: 3
     nm_deduction_for_certain_dependents_eligible: false
   output:
     nm_deduction_for_certain_dependents: 0
@@ -38,7 +38,7 @@
   period: 2021
   input:
     filing_status: JOINT
-    eitc_child_count: 2
+    tax_unit_dependents: 2
     nm_deduction_for_certain_dependents_eligible: true
   output:
     nm_deduction_for_certain_dependents: 4_000
