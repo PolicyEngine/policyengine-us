@@ -5,6 +5,109 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.401.4] - 2023-07-31 17:25:46
+
+### Added
+
+- More recently completed state income tax models to modelled_policies.yaml.
+
+## [0.401.3] - 2023-07-31 16:55:39
+
+### Added
+
+- README files to tax credit parameters.
+
+## [0.401.2] - 2023-07-31 15:59:35
+
+### Fixed
+
+- Include New Mexico deduction for certain dependents in New Mexico deductions.
+
+## [0.401.1] - 2023-07-30 16:30:59
+
+### Fixed
+
+- Add blind and aged exemptions for New Mexico low income comprehensive tax rebate.
+
+## [0.401.0] - 2023-07-28 15:22:00
+
+### Added
+
+- Tie NM EITC age eligibility to federal rules except for 18-24 inclusion.
+
+## [0.400.0] - 2023-07-28 02:36:06
+
+### Added
+
+- New Mexico income tax parameter visibility.
+
+## [0.399.0] - 2023-07-28 02:18:59
+
+### Added
+
+- New Jersey income tax to net income tree.
+
+## [0.398.0] - 2023-07-28 01:51:38
+
+### Added
+
+- 2023 New Jersey Child Tax Credit update.
+
+## [0.397.0] - 2023-07-28 00:48:34
+
+### Added
+
+- Colorado child care expense credit.
+
+## [0.396.0] - 2023-07-27 14:50:30
+
+### Added
+
+- Arizona personal income tax schedule.
+
+## [0.395.0] - 2023-07-27 14:02:37
+
+### Added
+
+- Rhode Island EITC.
+
+## [0.394.0] - 2023-07-27 12:55:39
+
+### Added
+
+- Rhode Island Credit for child and dependent care.
+
+## [0.393.0] - 2023-07-27 04:39:54
+
+### Added
+
+- Colorado Personal Income Tax Schedule.
+
+## [0.392.0] - 2023-07-26 20:48:21
+
+### Added
+
+- Delaware additional personal credits.
+
+## [0.391.0] - 2023-07-26 20:32:28
+
+### Added
+
+- New Mexico AGI and Additions.
+- Add New Mexico to income tree.
+
+## [0.390.1] - 2023-07-26 16:45:19
+
+### Fixed
+
+- Error-prone {short,long}_term_capital_losses variables by removing them.
+
+## [0.390.0] - 2023-07-26 16:33:04
+
+### Added
+
+- household_state_income_tax variable to solve circular dependencies.
+
 ## [0.389.1] - 2023-07-25 16:31:29
 
 ### Fixed
@@ -4527,6 +4630,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.401.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.3...0.401.4
+[0.401.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.2...0.401.3
+[0.401.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.1...0.401.2
+[0.401.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.0...0.401.1
+[0.401.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.400.0...0.401.0
+[0.400.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.399.0...0.400.0
+[0.399.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.398.0...0.399.0
+[0.398.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.397.0...0.398.0
+[0.397.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.396.0...0.397.0
+[0.396.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.395.0...0.396.0
+[0.395.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.394.0...0.395.0
+[0.394.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.393.0...0.394.0
+[0.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.392.0...0.393.0
+[0.392.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.391.0...0.392.0
+[0.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.1...0.391.0
+[0.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.0...0.390.1
+[0.390.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.1...0.390.0
 [0.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.0...0.389.1
 [0.389.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.388.0...0.389.0
 [0.388.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.1...0.388.0
