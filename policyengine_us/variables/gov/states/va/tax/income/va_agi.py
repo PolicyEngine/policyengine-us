@@ -14,8 +14,7 @@ class va_agi(Variable):
 
     adds = [
         "adjusted_gross_income",
-        "va_interest_on_obligations_of_other_states",
-        "va_other_additions",
+        "va_additions",
     ]
     subtracts = [
         "va_military_basic_pay_subtraction",
