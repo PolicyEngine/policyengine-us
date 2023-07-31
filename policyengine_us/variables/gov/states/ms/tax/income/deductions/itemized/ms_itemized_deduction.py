@@ -15,17 +15,16 @@ class ms_itemized_deduction(Variable):
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
-        # compute itemized deduction maximum
+        # get the parameters for calcualtions
+        agi = tax_unit("adjusted_gross_income", period)
+        misc = tax_unit("misc_deduction", period)
+
+        p = parameters(period).gov.states.ms.tax.income.deductions.itemized
+        
+        # compute itemized deduction maximum less salt
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
 
-        # calculate itemized deductions total amount
-        exempt_deds = add(
-            tax_unit,
-            period,
-            [
-                "itemized_taxable_income_deductions",
-                "misc_deduction",
-            ],
-        )
+        # calculate miscellanous max amount
+        misc_deduction = max_(misc, p.misc_deduction_fraction * agi)
 
-        return exempt_deds + itm_deds_less_salt
+        return itm_deds_less_salt + misc_deduction

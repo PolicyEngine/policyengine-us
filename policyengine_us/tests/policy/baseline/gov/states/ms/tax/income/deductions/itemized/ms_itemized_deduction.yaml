@@ -3,6 +3,7 @@
   period: 2021
   input:
     state_code: MS
+    adjusted_gross_income: 100_000
     charitable_deduction: 100
     medical_expense_deduction: 1_000
   output:
@@ -13,16 +14,18 @@
   period: 2021
   input:
     state_code: MS
+    adjusted_gross_income: 100_000
     medical_expense_deduction: 5_000
     misc_deduction: 1_000
   output:
-    ms_itemized_deduction: 6_000
+    ms_itemized_deduction: 7_000
 
 - name: MS itemized deduction unit test 3
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
+    adjusted_gross_income: 100_000
     medical_expense_deduction: 5_000
     casualty_loss_deduction: 2_000
   output:
@@ -33,8 +36,10 @@
   period: 2021
   input:
     state_code: MS
+    adjusted_gross_income: 100_000
     medical_expense_deduction: 5_000
     casualty_loss_deduction: 2_000
     interest_deduction: 500
+    misc_deduction: 3_000
   output:
-    ms_itemized_deduction: 7_500
+    ms_itemized_deduction: 10_500
