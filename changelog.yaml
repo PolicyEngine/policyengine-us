@@ -3895,3 +3895,9 @@
     added:
     - More recently completed state income tax models to modelled_policies.yaml.
   date: 2023-07-31 17:25:46
+- bump: patch
+  changes:
+    fixed:
+    - Base New Mexico deduction for certain dependents on total dependents, rather
+      than child dependents.
+  date: 2023-07-31 22:39:09

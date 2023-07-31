@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.401.5] - 2023-07-31 22:39:09
+
+### Fixed
+
+- Base New Mexico deduction for certain dependents on total dependents, rather than child dependents.
+
 ## [0.401.4] - 2023-07-31 17:25:46
 
 ### Added
@@ -4630,6 +4636,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.401.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.4...0.401.5
 [0.401.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.3...0.401.4
 [0.401.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.2...0.401.3
 [0.401.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.1...0.401.2
