@@ -34,7 +34,6 @@ class az_itemized_deduction(Variable):
         # Adjustment to Interest Deduction
         # mortgage_interest = If you received a federal credit for interest paid on mortgage credit certificates (from federal Form 8396),
         #  enter the amount of mortgage interest you paid for 2022 that is equal to the amount of your 2022federal credit.
-        mortgage_interest = 0
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
