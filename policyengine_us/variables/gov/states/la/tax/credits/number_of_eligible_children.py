@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class la_cdcc_eligible_child(Variable):
     value_type = int
     entity = TaxUnit
-    label = "Louisiana non-refundable Child Expense Tax Credit"
+    label = "Child eligible for the Louisiana CDCC"
     unit = USD
     definition_period = YEAR
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
