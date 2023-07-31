@@ -3,7 +3,7 @@
   period: 2022
   input:
     state_code: WV
-    wv_taxable_public_pension_income: 3_000
+    taxable_public_pension_income: 3_000
   output:
     wv_public_pension_subtraction: 2_000
 
@@ -12,6 +12,6 @@
   period: 2022
   input:
     state_code: WV
-    wv_taxable_public_pension_income: 1_000
+    taxable_public_pension_income: 1_000
   output:
     wv_public_pension_subtraction: 1_000
