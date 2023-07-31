@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.401.4] - 2023-07-31 17:25:46
+
+### Added
+
+- More recently completed state income tax models to modelled_policies.yaml.
+
 ## [0.401.3] - 2023-07-31 16:55:39
 
 ### Added
@@ -4624,6 +4630,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.401.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.3...0.401.4
 [0.401.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.2...0.401.3
 [0.401.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.1...0.401.2
 [0.401.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.0...0.401.1
