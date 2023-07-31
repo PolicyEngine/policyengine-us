@@ -1,1 +1,1 @@
-# Child and dependent care deduction
+# Child and Dependent Care Credit

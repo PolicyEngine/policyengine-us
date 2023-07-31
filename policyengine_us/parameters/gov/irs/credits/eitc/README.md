@@ -1,1 +1,1 @@
-# Earned income tax credit
+# Earned Income Tax Credit
