@@ -1,0 +1,76 @@
+- name: No children
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    c04600: 0
+    state_code: NM
+    eitc_child_count: 0
+    dsi: false
+  output:
+    nm_deduction_for_certain_dependents: 0
+
+- name: One child - ineligible
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    c04600: 0
+    state_code: NM
+    eitc_child_count: 1
+    dsi: false
+  output:
+    nm_deduction_for_certain_dependents: 0
+
+- name: Single - ineligible
+  period: 2021
+  input:
+    filing_status: SINGLE
+    c04600: 0
+    state_code: NM
+    eitc_child_count: 3
+    dsi: false
+  output:
+    nm_deduction_for_certain_dependents: 0
+
+- name: Exemption claimed - ineligible
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    c04600: 1
+    state_code: NM
+    eitc_child_count: 3
+    dsi: false
+  output:
+    nm_deduction_for_certain_dependents: 0
+
+- name: Two children
+  period: 2021
+  input:
+    filing_status: JOINT
+    c04600: 0
+    state_code: NM
+    eitc_child_count: 2
+    dsi: false
+  output:
+    nm_deduction_for_certain_dependents: 4_000
+
+- name: Five children
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    c04600: 0
+    state_code: NM
+    eitc_child_count: 5
+    dsi: false
+  output:
+    nm_deduction_for_certain_dependents: 16_000
+
+- name: Ineligible if dependent on another return
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    c04600: 0
+    state_code: NM
+    eitc_child_count: 5
+    dsi: true
+  output:
+    nm_deduction_for_certain_dependents: 0
