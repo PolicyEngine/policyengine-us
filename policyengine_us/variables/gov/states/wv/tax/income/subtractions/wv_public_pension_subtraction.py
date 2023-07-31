@@ -12,9 +12,7 @@ class wv_public_pension_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        public_pension_income = person(
-            "wv_taxable_public_pension_income", period
-        )
+        public_pension_income = person("taxable_public_pension_income", period)
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.public_pension
