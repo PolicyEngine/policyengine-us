@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class in_eic_eligible_child(Variable):
+class in_eitc_eligible_child(Variable):
     value_type = bool
     entity = Person
     definition_period = YEAR
-    label = "Child-level eligiblity for parents filing Indiana EIC"
-    documentation = "Whether a child whose parent filing for Indiana EIC meets the demographic requirements."
+    label = "Child-level eligiblity for parents filing Indiana EITC"
+    documentation = "Whether a child whose parent filing for Indiana EITC meets the demographic requirements."
     defined_for = StateCode.IN
 
     def formula(person, period, parameters):
