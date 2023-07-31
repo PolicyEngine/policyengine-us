@@ -9,4 +9,4 @@ class dc_tanf_gross_earned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.DC
 
-    adds = "gov.states.dc.dhs.tanf.income.earned"
+    adds = "gov.states.dc.dhs.tanf.income.sources.earned"
