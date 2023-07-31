@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class va_itemized_deductions_joint(Variable):
+class va_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Virginia itemized deduction"
@@ -16,11 +16,10 @@ class va_itemized_deductions_joint(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions
+        itemizing = tax_unit("tax_unit_itemizes", period)
         itm_deds = [
             deduction
             for deduction in p.itemized_deductions
             if deduction not in ["salt_deduction"]
         ]
-        va_itemized_deductions_less_salt = add(tax_unit, period, itm_deds)
-
-        return va_itemized_deductions_less_salt
+        return itemizing * add(tax_unit, period, itm_deds)

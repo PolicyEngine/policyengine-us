@@ -1,0 +1,26 @@
+- name: VA itemized deduction
+  period: 2022
+  input:
+    tax_unit_itemizes: true
+    charitable_deduction: 2_000
+    interest_deduction: 4_000
+    salt_deduction: 20_000
+    medical_expense_deduction: 3_000
+    casualty_loss_deduction: 3_000
+    state_code: VA
+  output:
+    # add everything but salt deduction
+    va_itemized_deductions: 2_000 + 4_000 + 3_000 + 3_000
+
+- name: VA itemized deduction, did not file through tax_unit_itemizes
+  period: 2022
+  input:
+    tax_unit_itemizes: false
+    charitable_deduction: 2_000
+    interest_deduction: 4_000
+    salt_deduction: 20_000
+    medical_expense_deduction: 3_000
+    casualty_loss_deduction: 3_000
+    state_code: VA
+  output:
+    va_itemized_deductions: 0
