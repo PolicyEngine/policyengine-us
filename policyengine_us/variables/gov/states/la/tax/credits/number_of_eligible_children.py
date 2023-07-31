@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class number_of_eligible_children(Variable):
+class la_cdcc_eligible_child(Variable):
     value_type = int
     entity = TaxUnit
     label = "Louisiana non-refundable Child Expense Tax Credit"
