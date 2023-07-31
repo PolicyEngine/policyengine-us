@@ -10,7 +10,7 @@ class la_cdcc_eligible_child(Variable):
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
     defined_for = StateCode.LA
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(
             period
         ).gov.states.la.tax.credits.child_care_expense_credit
