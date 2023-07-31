@@ -20,7 +20,7 @@ class ms_itemized_deduction(Variable):
         misc = tax_unit("misc_deduction", period)
 
         p = parameters(period).gov.states.ms.tax.income.deductions.itemized
-        
+
         # compute itemized deduction maximum less salt
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
 
