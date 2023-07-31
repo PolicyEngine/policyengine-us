@@ -1,8 +1,8 @@
-- name: No children
+- name: No dependents
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    eitc_child_count: 0
+    tax_unit_dependents: 0
     nm_deduction_for_certain_dependents_eligible: true
   output:
     nm_deduction_for_certain_dependents: 0
@@ -11,7 +11,7 @@
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    eitc_child_count: 1
+    tax_unit_dependents: 1
     nm_deduction_for_certain_dependents_eligible: true
   output:
     nm_deduction_for_certain_dependents: 0
@@ -34,7 +34,7 @@
   output:
     nm_deduction_for_certain_dependents: 0
 
-- name: Two children
+- name: Two dependents
   period: 2021
   input:
     filing_status: JOINT
@@ -43,11 +43,11 @@
   output:
     nm_deduction_for_certain_dependents: 4_000
 
-- name: Five children
+- name: Five dependents
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
-    eitc_child_count: 5
+    tax_unit_dependents: 5
     nm_deduction_for_certain_dependents_eligible: true
   output:
     nm_deduction_for_certain_dependents: 16_000
