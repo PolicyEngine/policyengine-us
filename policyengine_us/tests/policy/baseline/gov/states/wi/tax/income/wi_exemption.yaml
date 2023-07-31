@@ -1,0 +1,16 @@
+- name: WI exemption unit test 1
+  period: 2021
+  input:
+    xtot: 5
+    state_code: WI
+  output:
+    wi_exemption: 5 * 700
+
+- name: WI exemption unit test 2
+  period: 2022
+  input:
+    xtot: 5
+    age_head: 65
+    state_code: WI
+  output:
+    wi_exemption: 5 * 700 + 250
