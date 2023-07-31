@@ -16,4 +16,4 @@ class az_parents_grandparents_exemption(Variable):
 
         grandparents = tax_unit("tax_unit_grandparents", period)
 
-        return (parents + grandparents) * p.parents_grandparents
+        return (parents + grandparents) * p.amount.parents_grandparents

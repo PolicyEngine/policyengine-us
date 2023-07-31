@@ -18,4 +18,4 @@ class az_blind_exemption(Variable):
         blind_spouse = tax_unit("blind_spouse", period)
         spouse_eligible = (blind_spouse).astype(int)
 
-        return (head_eligible + spouse_eligible) * p.blind
+        return (head_eligible + spouse_eligible) * p.amount.blind
