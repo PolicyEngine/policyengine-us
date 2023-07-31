@@ -3875,3 +3875,23 @@
     added:
     - Tie NM EITC age eligibility to federal rules except for 18-24 inclusion.
   date: 2023-07-28 15:22:00
+- bump: patch
+  changes:
+    fixed:
+    - Add blind and aged exemptions for New Mexico low income comprehensive tax rebate.
+  date: 2023-07-30 16:30:59
+- bump: patch
+  changes:
+    fixed:
+    - Include New Mexico deduction for certain dependents in New Mexico deductions.
+  date: 2023-07-31 15:59:35
+- bump: patch
+  changes:
+    added:
+    - README files to tax credit parameters.
+  date: 2023-07-31 16:55:39
+- bump: patch
+  changes:
+    added:
+    - More recently completed state income tax models to modelled_policies.yaml.
+  date: 2023-07-31 17:25:46
