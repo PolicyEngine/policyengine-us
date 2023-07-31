@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ri_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Rhode Island exemption"
+    label = "Rhode Island exemptions"
     unit = USD
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf"
@@ -13,9 +13,9 @@ class ri_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.exemption.phase_out
 
-        num_exemptions = tax_unit("tax_unit_size", period)
+        exemptions = tax_unit("tax_unit_size", period)
 
-        total_exemptions = num_exemptions * p.multiplier
+        total_exemptions = exemptions * p.multiplier
 
         agi = tax_unit("adjusted_gross_income", period)
 
