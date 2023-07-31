@@ -1,15 +1,16 @@
-description: Rhode Island phases the standard deduction out starting at this income threshold.
+description: Rhode Island phases the standard deduction out for filter with income above this income threshold.
 values:
   2021-01-01: 210_750
   2022-01-01: 217_050
-  2023-01-01: 233_750
 
 metadata:
   label: Rhode Island standard deduction phase out start 
   period: year
   unit: currency-USD
   reference:
-  - title: Inflation-adjusted amounts set for tax year 2023
-    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf
-  - title: Rhode Island tax rate schedule and worksheets 2021
-    href: https://tax.ri.gov/media/18021/download?language=en
+  - title: R.I. Gen. Laws § 44-30-2.6
+    href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-30-2.6.HTM
+  - title: 2022 FORM RI-1040
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022_1040WE_w_0.pdf
+  - title: 2021 FORM RI-1040
+    href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-01/2021_1040we_w.pdf
