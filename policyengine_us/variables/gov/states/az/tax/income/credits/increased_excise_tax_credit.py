@@ -22,5 +22,5 @@ class az_increased_excise_tax_credit(Variable):
         head_or_spouse_dependents = tax_unit("tax_unit_dependents", period)
         dependents_eligible = p.number_of_qualifying_dependents[filing_status]
         total_dependents = head_or_spouse_dependents + dependents_eligible
-        current_credit = total_dependents * p.credit_based_on_cal_dependents
-        return eligible * min_(current_credit, p.max_amount)
+        uncapped_credit = total_dependents * p.credit_based_on_cal_dependents
+        return eligible * min_(uncapped_credit, p.max_amount)
