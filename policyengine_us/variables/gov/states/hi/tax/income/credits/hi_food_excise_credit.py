@@ -38,16 +38,14 @@ class hi_food_excise_credit(Variable):
             ],
         )
         # Multiply amount by number of exemptions
+        exemption_total = exemptions * amount_per_exemption
 
         # NEW: add minor child parameter
         person = tax_unit.members
         is_child = person("is_child", period)
-        minor_child = person("age", period) < p.minor_child_age
-
-        return (
-            exemptions * amount_per_exemption
-            + p.minor_child_amount * tax_unit.sum(is_child & minor_child)
+        minor_child = person("age", period) < p.minor_child.age_threshold
+        minor_child_total = p.minor_child.amount * tax_unit.sum(
+            is_child & minor_child
         )
 
-
-# TODO: minor exemptions - law vs tax code
+        return exemption_total + minor_child_total
