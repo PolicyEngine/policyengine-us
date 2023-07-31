@@ -21,7 +21,9 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
         p = parameters(period).gov.states.nm.tax.income.rebates.low_income
 
         agi = tax_unit("nm_modified_gross_income", period)
-        exemptions = tax_unit("exemptions", period)
+        exemptions = tax_unit(
+            "nm_low_income_comprehensive_tax_rebate_exemptions", period
+        )
 
         rebate = select(
             [
