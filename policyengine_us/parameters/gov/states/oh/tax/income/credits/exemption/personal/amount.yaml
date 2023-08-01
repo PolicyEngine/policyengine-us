@@ -1,0 +1,23 @@
+description: Ohio provides a personal exemption amount, depending on modified adjusted gross income. 
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 2_350
+  - threshold: 
+      2021-01-01: 40_001
+    amount:
+      2021-01-01: 2_100
+  - threshold:
+      2021-01-01: 80_001
+    amount:
+      2021-01-01: 1_850
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: year
+  label: Ohio Personal Exemption amount
+  reference:
+    - title: Ohio Revised Code - Section 5747.025： Personal exemptions (A)(1)(2)(3)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.025

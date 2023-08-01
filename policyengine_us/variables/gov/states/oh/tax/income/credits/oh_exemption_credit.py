@@ -17,8 +17,13 @@ class oh_exemption_credit(Variable):
         exemption_count = tax_unit("tax_unit_size", period)
 
         p = parameters(period).gov.states.oh.tax.income
-        personal_exemption_amount = p.credits.exemption.amount.calc(agi)
+        personal_exemption_amount = p.credits.exemption.personal.amount.calc(
+            agi
+        )
         modified_agi = agi - personal_exemption_amount * exemption_count
-        income_eligible = modified_agi < p.credits.exemption.income_limit
-        credit_amount = p.credits.exemption.credit_amount
+        income_eligible = (
+            modified_agi
+            < p.credits.exemption.exemption_credit.income_threshold
+        )
+        credit_amount = p.credits.exemption.exemption_credit.credit_amount
         return income_eligible * exemption_count * credit_amount
