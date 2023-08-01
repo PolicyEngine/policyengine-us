@@ -1,4 +1,4 @@
-- name: 2021, Single filer, with zero additional standard deduction
+- name: 2021, Single filer, with zero additional deductions
   period: 2021
   input:
     filing_status: SINGLE
@@ -7,7 +7,7 @@
   output:
     vt_standard_deduction: 6_350 #6350+0
 
-- name: 2022, Single filer, with two additional standard deduction
+- name: 2022, Single filer, with two additional deductions
   period: 2022
   input:
     filing_status: SINGLE
@@ -16,7 +16,7 @@
   output:
     vt_standard_deduction: 8_600 #6500+2*1050
 
-- name: 2021, Joint filer, with three additional standard deduction
+- name: 2021, Joint filer, with three additional deductions
 
   period: 2021
   input:
@@ -26,7 +26,7 @@
   output:
     vt_standard_deduction: 15_850 #12700+3*1050
 
-- name: 2022, Joint filer, with three additional standard deduction
+- name: 2022, Joint filer, with three additional deductions
   period: 2022
   input:
     filing_status: JOINT
@@ -35,7 +35,7 @@
   output:
     vt_standard_deduction: 16_200 #13050+3*1050
 
-- name: 2022, HOH filer, with zero additional standard deduction
+- name: 2022, HOH filer, with zero additional deductions
   period: 2022
   input:
     filing_status: HEAD_OF_HOUSEHOLD
@@ -44,7 +44,7 @@
   output:
     vt_standard_deduction: 9_800 #9800+0*1050
 
-- name: 2022, Widow filer, with three additional standard deduction
+- name: 2022, Widow(ed) filer, with three additional deductions
   period: 2022
   input:
     filing_status: WIDOW
@@ -53,7 +53,7 @@
   output:
     vt_standard_deduction: 16_200 #13050+3*1050
 
-- name: 2022, Separate filer, with zero additional standard deduction
+- name: 2022, Separate filer, with zero additional deductions
   period: 2022
   input:
     filing_status: SEPARATE
