@@ -15,11 +15,11 @@ class nm_deduction_for_certain_dependents(Variable):
         p = parameters(
             period
         ).gov.states.nm.tax.income.deductions.certain_dependents
-        # The law 7-2-18.34(J)(2) defines qualifying children as those from IRC 152(c).
-        # IRC 152(c) refers to the EITC qualifying children.
-        # https://www.law.cornell.edu/uscode/text/26/152#c
-        children = tax_unit("eitc_child_count", period)
+        # The law 7-2-39(D) defines dependents as those from IRC 152.
+        # IRC 152 refers to all dependents.
+        # https://www.law.cornell.edu/uscode/text/26/152
+        dependents = tax_unit("tax_unit_dependents", period)
         # New Mexico reduces the number of claimable dependents by one.
-        eligible_children = max_(children - 1, 0)
-        amount_per_child = p.amount[filing_status]
-        return amount_per_child * eligible_children
+        countable_dependents = max_(dependents - 1, 0)
+        amount_per_dependent = p.amount[filing_status]
+        return amount_per_dependent * countable_dependents
