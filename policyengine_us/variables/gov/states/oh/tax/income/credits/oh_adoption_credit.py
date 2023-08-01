@@ -8,7 +8,9 @@ class oh_adoption_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        # Ohio 2021 Instructions for Filing Original and Amended - Line 17 – Ohio Adoption Credit
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=21",
+        # Ohio Income - Individual Credits (Education, Displaced Workers & Adoption)
         "https://tax.ohio.gov/wps/portal/gov/tax/help-center/faqs/income+-+individual+credits/income-individual-credits",
     )
     defined_for = StateCode.OH
@@ -26,13 +28,18 @@ class oh_adoption_credit(Variable):
         expenses_less_than_min_credit = (
             eligible_adoption_related_expenses < min_credit
         )
-        expenses_between_min_and_max_credit = (
-            min_credit <= eligible_adoption_related_expenses <= max_credit
-        )
+        # expenses_between_min_and_max_credit = (
+        #     min_credit <= eligible_adoption_related_expenses <= max_credit
+        # )
+        expenses_between_min_and_max_credit = []
+        for i in eligible_adoption_related_expenses:
+            expenses_between_min_and_max_credit.append(
+                min_credit <= i <= max_credit
+            )
+
         expenses_greater_than_max_credit = (
             eligible_adoption_related_expenses > max_credit
         )
-
         return (
             expenses_less_than_min_credit * min_credit
             + expenses_between_min_and_max_credit
