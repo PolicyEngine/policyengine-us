@@ -23,12 +23,6 @@ class ks_itemized_deductions(Variable):
         #   either itemize or take the standard deduction on your Kansas
         #   return, whichever is to your advantage.
         # compute itemized deduction maximum
-        p = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        federal_itm_deds_less_salt = add(tax_unit, period, itm_deds)
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return federal_itm_deds_less_salt + uncapped_property_taxes
+        return itm_deds_less_salt + uncapped_property_taxes
