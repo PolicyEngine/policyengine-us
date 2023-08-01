@@ -1,99 +1,51 @@
+- name: retire income credit pension eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_spouse: True
+        pension_income: 800
+        oh_has_not_taken_oh_lump_sum_credits: True
+      person2:
+        is_tax_unit_head: true
+        pension_income: 300
+        oh_has_not_taken_oh_lump_sum_credits: True
+      person3:
+        pension_income: 500
+        oh_has_not_taken_oh_lump_sum_credits: True
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        oh_agi: 10_000
+  output:
+    oh_retirement_income_credits: 25
+
 - name: retire income credit pension not eligible
   period: 2021
   input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 500
-    oh_has_not_taken_oh_lump_sum_credits: True
+    people:
+      person1:
+        is_tax_unit_spouse: True
+        pension_income: 800
+        oh_has_not_taken_oh_lump_sum_credits: False
+      person2:
+        is_tax_unit_head: true
+        pension_income: 300
+        oh_has_not_taken_oh_lump_sum_credits: True
+      person3:
+        pension_income: 500
+        oh_has_not_taken_oh_lump_sum_credits: True
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        oh_agi: 10_000
   output:
     oh_retirement_income_credits: 0
-
-- name: retire income credit lump sum credit not eligible
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 10_000
-    oh_has_not_taken_oh_lump_sum_credits: False
-  output:
-    oh_retirement_income_credits: 0
-
-- name: retire income credit agi not eligible
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 100_000
-    pension_income: 10_000
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 0
-
-- name: retire income credit tier 1
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 501
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 25
-
-- name: retire income credit tier 2
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 1_500
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 25
-
-- name: retire income credit tier 3
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 1_501
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 50
-
-- name: retire income credit tier 4
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 3_001
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 80
-
-- name: retire income credit tier 5
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 5_001
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 130
-
-- name: retire income credit tier 6
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 8_001
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 200
-
-- name: retire income credit tier 7
-  period: 2021
-  input:
-    state_code: OH
-    oh_agi: 10_000
-    pension_income: 18_001
-    oh_has_not_taken_oh_lump_sum_credits: True
-  output:
-    oh_retirement_income_credits: 200
