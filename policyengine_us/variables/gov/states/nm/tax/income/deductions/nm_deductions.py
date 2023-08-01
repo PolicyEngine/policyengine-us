@@ -18,12 +18,10 @@ class nm_deductions(Variable):
         itemized_or_standard = where(
             itemized_on_federal_return, itm_ded, standard_ded
         )
-        medical_deduction = tax_unit(
-            "nm_medical_care_expense_deduction", period
-        )
-        capital_gains_deduction = tax_unit(
-            "nm_net_capital_gains_deduction", period
-        )
-        return (
-            itemized_or_standard + medical_deduction + capital_gains_deduction
-        )
+        OTHER_DEDUCTIONS = [
+            "nm_medical_care_expense_deduction",
+            "nm_deduction_for_certain_dependents",
+            "nm_net_capital_gains_deduction",
+        ]
+        other_deductions = add(tax_unit, period, OTHER_DEDUCTIONS)
+        return itemized_or_standard + other_deductions
