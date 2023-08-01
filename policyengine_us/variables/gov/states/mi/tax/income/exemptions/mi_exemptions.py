@@ -18,14 +18,14 @@ class mi_exemptions(Variable):
 
         # Personal Exemptions
         person = tax_unit("head_spouse_count", period)
-        personal_exemption = person * p.filer
+        personal_exemption = person * p.base
 
         # Dependent exemptions
         dependents = tax_unit("tax_unit_dependents", period)
         dependent_exemption = dependents * p.dependent
 
         # Stillborn Exemptions
-        stillbirths = tax_unit("tax_unit_stillbirths", period)
+        stillbirths = tax_unit("tax_unit_stillborn_children", period)
         stillborn_exemption = stillbirths * p.stillborn
 
         # Disabled exemptions
@@ -48,10 +48,13 @@ class mi_exemptions(Variable):
 
         # Total exemptions
         return (
-            personal_exemption
+            where(
+                is_dependent_exemption == 0,
+                personal_exemption,
+                is_dependent_exemption,
+            )
             + dependent_exemption
             + stillborn_exemption
             + disabled_exemption
             + disabled_veteran_exemption
-            + is_dependent_exemption
         )

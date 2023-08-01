@@ -19,7 +19,7 @@
   period: 2022
   input:
     head_spouse_count: 1
-    tax_unit_stillbirths: 1
+    tax_unit_stillborn_children: 1
     state_code: MI
   output: # 5_000 + 5_000
     mi_exemptions: 10_000
@@ -69,7 +69,8 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        head_spouse_count: 2
+        head_spouse_count: 1
+        tax_unit_dependents: 1
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -84,8 +85,8 @@
     dsi: true
     filing_status: SINGLE
     state_code: MI
-  output: # 4_900 + 1_500
-    mi_exemptions: 6_400
+  output: 
+    mi_exemptions: 1_500
 
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, married
   period: 2021
@@ -94,8 +95,8 @@
     dsi: true
     filing_status: JOINT
     state_code: MI
-  output: # 4_900 + 3_000
-    mi_exemptions: 7_900
+  output: 
+    mi_exemptions: 3_000
 
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2022
@@ -104,5 +105,5 @@
     dsi: true
     filing_status: SINGLE
     state_code: MI
-  output: # 5_000 + 1_500
-    mi_exemptions: 6_500
+  output: 
+    mi_exemptions: 1_500
