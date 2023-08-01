@@ -19,7 +19,6 @@ class oh_retirement_income_credits(Variable):
         spouse = person("is_tax_unit_spouse", period)
         head = person("is_tax_unit_head", period)
         pension = person("pension_income", period)
-
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
