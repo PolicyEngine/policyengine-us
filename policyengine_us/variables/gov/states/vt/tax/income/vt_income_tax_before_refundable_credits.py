@@ -10,6 +10,8 @@ class vt_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
-        itax_before_credits = tax_unit("vt_income_tax_before_credits", period)
-        nonrefundable_credits = tax_unit("vt_nonrefundable_credits", period)
-        return max_(0, itax_before_credits - nonrefundable_credits)
+        itax_before_credits = tax_unit(
+            "vt_income_tax_before_non_refundable_credits", period
+        )
+        non_refundable_credits = tax_unit("vt_non_refundable_credits", period)
+        return max_(0, itax_before_credits - non_refundable_credits)
