@@ -16,14 +16,18 @@ class oh_retirement_income_credit(Variable):
         ).gov.states.oh.tax.income.credits.retirement_income
 
         person = tax_unit.members
-        spouse = person("is_tax_unit_spouse", period)
-        head = person("is_tax_unit_head", period)
-        pension = person("pension_income", period)
+        is_spouse = person("is_tax_unit_spouse", period)
+        is_head = person("is_tax_unit_head", period)
+        pension_income = person("pension_income", period)
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
-        head_pension = head * pension * has_not_taken_lump_sum_distribution
-        spouse_pension = spouse * pension * has_not_taken_lump_sum_distribution
+        head_pension = (
+            is_head * pension_income * has_not_taken_lump_sum_distribution
+        )
+        spouse_pension = (
+            is_spouse * pension_income * has_not_taken_lump_sum_distribution
+        )
         total_pension_income = tax_unit.sum(head_pension + spouse_pension)
         agi = tax_unit("oh_agi", period)
         eligible = agi < p.income_threshold
