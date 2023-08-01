@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class oh_eligible_adoption_related_expenses(Variable):
     value_type = float
     entity = Person
-    label = "Ohio flag for calculating adoption related expenses"
+    label = "Ohio eligible adoption-related expenses"
     unit = USD
     definition_period = YEAR
     reference = (

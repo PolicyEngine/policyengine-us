@@ -19,27 +19,34 @@ class oh_adoption_credit(Variable):
         eligible_adoption_related_expenses = person(
             "oh_eligible_adoption_related_expenses", period
         )
+        # The minimum amount of Ohio adoption credit
         min_credit = parameters(
             period
         ).gov.states.oh.tax.income.credits.adoption.minimum_credit
+
+        # The maximum amount of Ohio adoption credit
         max_credit = parameters(
             period
         ).gov.states.oh.tax.income.credits.adoption.maximum_credit
+
+        # Identify which interval the expenses fall into
         expenses_less_than_min_credit = (
             eligible_adoption_related_expenses < min_credit
         )
-        # expenses_between_min_and_max_credit = (
-        #     min_credit <= eligible_adoption_related_expenses <= max_credit
-        # )
-        expenses_between_min_and_max_credit = []
-        for i in eligible_adoption_related_expenses:
-            expenses_between_min_and_max_credit.append(
-                min_credit <= i <= max_credit
-            )
+        expenses_between_min_and_max_credit = (
+            min_credit <= eligible_adoption_related_expenses
+        ) & (eligible_adoption_related_expenses <= max_credit)
+
+        # expenses_between_min_and_max_credit = []
+        # for i in eligible_adoption_related_expenses:
+        #     expenses_between_min_and_max_credit.append(
+        #         min_credit <= i <= max_credit
+        #     )
 
         expenses_greater_than_max_credit = (
             eligible_adoption_related_expenses > max_credit
         )
+
         return (
             expenses_less_than_min_credit * min_credit
             + expenses_between_min_and_max_credit
