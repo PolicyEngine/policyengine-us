@@ -8,7 +8,10 @@ class sc_two_wage_earner_credit(Variable):
     defined_for = StateCode.SC
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.sc.gov/forms-site/Forms/SC1040TT_2021.pdf"
+    reference = (
+        "https://dor.sc.gov/forms-site/Forms/SC1040TT_2021.pdf",
+        "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=23",
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
