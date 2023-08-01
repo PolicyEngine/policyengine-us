@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_retirement_income_credits(Variable):
+class oh_retirement_income_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Ohio Retirement Income Credit"
@@ -22,11 +22,10 @@ class oh_retirement_income_credits(Variable):
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
-        pension_income = tax_unit.sum(
-            pension * (spouse | head) * has_not_taken_lump_sum_distribution
-        )
-
+        head_pension = head * pension * has_not_taken_lump_sum_distribution
+        spouse_pension = spouse * pension * has_not_taken_lump_sum_distribution
+        total_pension_income = tax_unit.sum(head_pension + spouse_pension)
         agi = tax_unit("oh_agi", period)
-        eligible = agi < p.agi_cap
+        eligible = agi < p.income_threshold
 
-        return p.pension_credit_amount.calc(pension_income) * eligible
+        return p.amount.calc(total_pension_income) * eligible
