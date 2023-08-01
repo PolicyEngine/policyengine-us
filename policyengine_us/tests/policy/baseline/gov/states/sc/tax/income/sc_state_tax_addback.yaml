@@ -12,7 +12,7 @@
     state_and_local_sales_or_income_tax: 1_000
     state_code: SC
   output:
-    sc_state_tax_addback: 1000
+    sc_state_tax_addback: 1_000
     # line 3 = 2000 - 0 = 2000
     # line 4 = 1000
     # line 5 = 5000 - 3000 = 2000
@@ -50,7 +50,7 @@
     state_and_local_sales_or_income_tax: 6_000
     state_code: SC
   output:
-    sc_state_tax_addback: 2000
+    sc_state_tax_addback: 2_000
     # line 3 = 4000 - 1000 = 3000 
     # line 4 = 6000
     # line 5 = 10000 - 8000 = 2000
