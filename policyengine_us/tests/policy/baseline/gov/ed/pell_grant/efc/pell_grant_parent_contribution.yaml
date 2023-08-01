@@ -1,0 +1,49 @@
+- name: Only assets
+  period: 2023
+  input:
+    pell_grant_parent_income: 0
+    pell_grant_parent_allowances: 0
+    pell_grant_parent_assets: 500
+    pell_grant_students_in_college: 1
+  output:
+    pell_grant_parent_contribution: 60
+
+- name: Income and no allowances
+  period: 2023
+  input:
+    pell_grant_parent_income: 40_000
+    pell_grant_parent_allowances: 0
+    pell_grant_parent_assets: 0
+    pell_grant_students_in_college: 1
+  output:
+    pell_grant_parent_contribution: 11_960
+
+- name: Income and some allowances
+  period: 2023
+  input:
+    pell_grant_parent_income: 20_000
+    pell_grant_parent_allowances: 5_000
+    pell_grant_parent_assets: 0
+    pell_grant_students_in_college: 1
+  output:
+    pell_grant_parent_contribution: 3_300
+
+- name: Income, some allowances, and assets
+  period: 2023
+  input:
+    pell_grant_parent_income: 30_000
+    pell_grant_parent_allowances: 10_000
+    pell_grant_parent_assets: 50_000
+    pell_grant_students_in_college: 1
+  output:
+    pell_grant_parent_contribution: 6_135
+
+- name: Income, some allowances, assets, and 2 students in college
+  period: 2023
+  input:
+    pell_grant_parent_income: 30_000
+    pell_grant_parent_allowances: 10_000
+    pell_grant_parent_assets: 50_000
+    pell_grant_students_in_college: 2
+  output:
+    pell_grant_parent_contribution: 3067.5
