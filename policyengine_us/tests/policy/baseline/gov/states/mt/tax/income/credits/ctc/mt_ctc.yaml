@@ -78,3 +78,27 @@
     mt_ctc: 2_400
     # 1200 * 2
     
+- name: MT child tax credit test 3
+  period: 2022
+  input:
+    people:
+      head:
+        age: 34
+      dep1:
+        age: 5
+        is_tax_unit_dependent: true
+      dep2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dep1, dep2]
+        adjusted_gross_income: 30_000
+        net_investment_income: 0
+    household:
+      state_code: MT
+  output:
+    mt_ctc: 6_600
+    # 3600 + 3000
+
+    
