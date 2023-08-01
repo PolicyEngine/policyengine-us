@@ -48,4 +48,8 @@ class hi_food_excise_credit(Variable):
             is_child & minor_child
         )
 
-        return exemption_total + minor_child_total
+        dependent_on_another_return = tax_unit("dsi", period)
+
+        return (
+            exemption_total + minor_child_total
+        ) * ~dependent_on_another_return
