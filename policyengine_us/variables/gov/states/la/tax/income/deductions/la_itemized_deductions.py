@@ -18,4 +18,4 @@ class la_itemized_deductions(Variable):
         medical_expenses = tax_unit("medical_expense_deduction", period)
         return itemizes * max_(
             medical_expenses - tax_unit("standard_deduction", period), 0
-        ) 
+        )
