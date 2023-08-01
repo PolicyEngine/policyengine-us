@@ -21,5 +21,5 @@ class vt_standard_deduction(Variable):
         # Vermont mirrors the federal definition of aged/blind by citing 26 U.S.C. § 63(f).
         # The aged_blind_count variable captures this, for head and spouse.
         aged_blind_count = tax_unit("aged_blind_count", period)
-        aged_blind_deduction = aged_blind_count * p.additional_amount
+        aged_blind_deduction = aged_blind_count * p.additional
         return base_deduction + aged_blind_deduction
