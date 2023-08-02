@@ -20,4 +20,6 @@ class la_cdcc_non_refundable(Variable):
         la_non_refundable_cdcc = us_cdcc * p.cdcc.non_refundable.rate.calc(
             us_agi
         )
+        if us_agi > 60000 and la_non_refundable_cdcc > p.cdcc.non_refundable.hi_threshold:
+            la_non_refundable_cdcc = p.cdcc.non_refundable.hi_threshold
         return agi_eligible * la_non_refundable_cdcc
