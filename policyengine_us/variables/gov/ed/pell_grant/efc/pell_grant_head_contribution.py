@@ -17,5 +17,7 @@ class pell_grant_head_contribution(Variable):
         base = p.base.calc(available_income)
         additional = p.percent.calc(available_income)
         threshold = p.threshold.calc(available_income)
-        total_head_contribution = base + ((available_income - threshold) * additional)
+        total_head_contribution = base + (
+            (available_income - threshold) * additional
+        )
         return total_head_contribution / dependents

@@ -8,8 +8,14 @@ class pell_grant_dependent_allowances(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        other_allowances = person("pell_grant_dependent_other_allowances", period)
+        other_allowances = person(
+            "pell_grant_dependent_other_allowances", period
+        )
         ipa = parameters(period).gov.ed.pell_grant.efc.dependent.ipa
-        head_available_income = person("pell_grant_head_available_income", period)
-        allowances_from_head = where(head_available_income < 0, -head_available_income, 0)
+        head_available_income = person(
+            "pell_grant_head_available_income", period
+        )
+        allowances_from_head = where(
+            head_available_income < 0, -head_available_income, 0
+        )
         return ipa + allowances_from_head + other_allowances
