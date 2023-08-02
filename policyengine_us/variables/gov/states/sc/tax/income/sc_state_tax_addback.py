@@ -37,14 +37,11 @@ class sc_state_tax_addback(Variable):
         # line 4
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
         # line 5
-        capped_property_taxes = min_(
-            add(tax_unit, period, ["real_estate_taxes"]),
-            p_us.itemized.salt_and_real_estate.cap[filing_status],
-        )
+        real_estate_and_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
         less_income_amount = max_(
             0,
             p_us.itemized.salt_and_real_estate.cap[filing_status]
-            - capped_property_taxes,
+            - real_estate_and_property_taxes
         )
         # compare line 3,4,5. get the minimum
         salt_or_income = min_(salt, less_income_amount)
