@@ -1,0 +1,114 @@
+description: Total Income Tax by top 10 percent of returns based on income size for tax year 2020
+metadata:
+  unit: currency-USD
+  notes: 
+  - (a): The data in the table were compiled from a data file containing Tax Year 2020 individual income tax returns filed through IRS during 2021, excluding returns with negative adjusted gross income. 
+  - (b): The data for federal level below is calculated as the sum of state totals. The United States totals from original table include data from other areas.
+  reference:
+  - title: SOI Tax Stats - Adjusted Gross Income (AGI) Percentile Data by State, Table 1 | Internal Revenue Service, Statistics of Income Division
+    href: https://www.irs.gov/statistics/soi-tax-stats-adjusted-gross-income-agi-percentile-data-by-state
+federal:
+  2020-12-01: 1_233_396_365_000
+by_state:
+  AL:
+    2020-12-01: 10_399_540_000
+  AK:
+    2020-12-01: 1_910_379_000
+  AZ:
+    2020-12-01: 21_397_116_000
+  AR:
+    2020-12-01: 6_647_170_000
+  CA:
+    2020-12-01: 209_574_369_000
+  CO:
+    2020-12-01: 23_689_138_000
+  CT:
+    2020-12-01: 23_657_831_000
+  DE:
+    2020-12-01: 2_805_792_000
+  DC:
+    2020-12-01: 5_021_933_000
+  FL:
+    2020-12-01: 104_784_509_000
+  GA:
+    2020-12-01: 31_298_141_000
+  HI:
+    2020-12-01: 3_750_069_000
+  ID:
+    2020-12-01: 5_046_367_000
+  IL:
+    2020-12-01: 48_483_274_000
+  IN:
+    2020-12-01: 15_281_551_000
+  IA:
+    2020-12-01: 7_231_125_000
+  KS:
+    2020-12-01: 8_291_427_000
+  KY:
+    2020-12-01: 8_521_243_000
+  LA:
+    2020-12-01: 9_204_408_000
+  ME:
+    2020-12-01: 3_380_051_000
+  MD:
+    2020-12-01: 23_113_117_000
+  MA:
+    2020-12-01: 42_050_585_000
+  MI:
+    2020-12-01: 27_100_378_000
+  MN:
+    2020-12-01: 19_228_929_000
+  MS:
+    2020-12-01: 4_494_102_000
+  MO:
+    2020-12-01: 16_064_798_000
+  MT:
+    2020-12-01: 3_060_519_000
+  NE:
+    2020-12-01: 5_243_268_000
+  NV:
+    2020-12-01: 12_878_677_000
+  NH:
+    2020-12-01: 5_783_240_000
+  NJ:
+    2020-12-01: 45_276_427_000
+  NM:
+    2020-12-01: 4_048_246_000
+  NY:
+    2020-12-01: 110_163_400_000
+  NC:
+    2020-12-01: 28_986_621_000
+  ND:
+    2020-12-01: 2_113_285_000
+  OH:
+    2020-12-01: 29_659_663_000
+  OK:
+    2020-12-01: 7_719_542_000
+  OR:
+    2020-12-01: 12_264_732_000
+  PA:
+    2020-12-01: 41_536_933_000
+  RI:
+    2020-12-01: 3_346_806_000
+  SC:
+    2020-12-01: 12_713_253_000
+  SD:
+    2020-12-01: 2_763_119_000
+  TN:
+    2020-12-01: 19_569_943_000
+  TX:
+    2020-12-01: 100_755_236_000
+  UT:
+    2020-12-01: 10_420_380_000
+  VT:
+    2020-12-01: 1_675_539_000
+  VA:
+    2020-12-01: 31_658_027_000
+  WA:
+    2020-12-01: 37_603_387_000
+  WV:
+    2020-12-01: 2_614_588_000
+  WI:
+    2020-12-01: 16_145_999_000
+  WY:
+    2020-12-01: 2_968_193_000

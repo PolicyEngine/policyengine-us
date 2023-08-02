@@ -1,0 +1,17 @@
+description: Modified AGI threshold after which the Utah retirement credit is phased out.
+SINGLE:
+  2022-01-01: 25_000
+JOINT:
+  2022-01-01: 32_000
+SEPARATE:
+  2022-01-01: 16_000
+WIDOW:
+  2022-01-01: 32_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 32_000
+metadata:
+  unit: currency-USD
+  period: year
+  reference:
+    - title: Utah Code §59-10-1019
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1019.html

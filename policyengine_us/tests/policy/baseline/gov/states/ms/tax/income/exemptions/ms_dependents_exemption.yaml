@@ -1,0 +1,31 @@
+- name: Two dependents gets $3k exemption.
+  period: 2020
+  input:
+    state_code: MS
+    tax_unit_dependents: 2
+  output:
+    ms_dependents_exemption: 3_000
+
+- name: One dependent gets $1.5k exemption.
+  period: 2020
+  input:
+    state_code: MS
+    tax_unit_dependents: 1
+  output:
+    ms_dependents_exemption: 1_500
+
+- name: No dependent gets $0 exemption.
+  period: 2020
+  input:
+    state_code: MS
+    tax_unit_dependents: 0
+  output:
+    ms_dependents_exemption: 0
+
+- name: If states is not MS, no exemption.
+  period: 2020
+  input:
+    state_code: CA
+    tax_unit_dependents: 2
+  output:
+    ms_dependents_exemption: 0

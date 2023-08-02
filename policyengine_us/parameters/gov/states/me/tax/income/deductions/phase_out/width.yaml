@@ -1,0 +1,33 @@
+description: Maine phases out its standard/itemized deduction over this amount of Maine AGI above the threshold.
+metadata:
+  unit: currency-USD
+  label: Maine standard/itemized deduction phase-out width
+  reference:
+    - title: §5124-C. Standard deduction
+      href: "https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html"
+    - title: Instructions for Form 1040ME (2022)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_book_gen_instruc_revisedFeb23.pdf
+    - title: Instructions for Form 1040ME (2021)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+    - title: Instructions for Form 1040ME (2020)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/20_1040me_gen_instr.pdf#page=6
+    - title: Instructions for Form 1040ME (2019)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/19_1040me_instr_noncon.pdf#page=5
+    - title: Instructions for Form 1040ME (2018)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/18_1040me_book_noncon.pdf#page=5
+    - title: Instructions for Form 1040ME (2017)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/17_1040me_book_dwnld_sept18.pdf
+    - title: Instructions for Form 1040ME (2016)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/16_1040me_book_download.pdf
+  breakdown:
+    - filing_status
+SINGLE:
+  2016-01-01: 75_000
+SEPARATE:
+  2016-01-01: 75_000
+HEAD_OF_HOUSEHOLD:
+  2016-01-01: 112_500
+JOINT:
+  2016-01-01: 150_000
+WIDOW:
+  2016-01-01: 150_000

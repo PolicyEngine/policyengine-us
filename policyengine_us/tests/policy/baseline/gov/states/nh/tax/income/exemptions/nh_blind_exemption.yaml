@@ -1,0 +1,104 @@
+- name: In 2022, if filing single, not blind, exemption is $0.
+  period: 2022
+  input:
+    state_code: NH
+    blind_head: false
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2027, if filing single, not blind, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    blind_head: false
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2022, if filing single, blind, exemption is $1_200.
+  period: 2022
+  input:
+    state_code: NH
+    blind_head: true
+  output:
+    nh_blind_exemption: 1_200
+
+- name: In 2027, if filing single, blind, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    blind_head: true
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2022, if filing jointly, both head and spouse are not blind, exemption is $0.
+  period: 2022
+  input:
+    state_code: NH
+    blind_head: false
+    blind_spouse: false
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2027, if filing jointly, both head and spouse are not blind, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    blind_head: false
+    blind_spouse: false
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2022, if filing jointly, head = blind but spouse is not, exemption is $1_200.
+  period: 2022
+  input:
+    state_code: NH
+    blind_head: true
+    blind_spouse: false
+  output:
+    nh_blind_exemption: 1_200
+
+
+- name: In 2027, if filing jointly, head = blind but spouse is not, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    blind_head: true
+    blind_spouse: false
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2022, if filing jointly, head is not blind but spouse = blind, exemption is $1_200.
+  period: 2022
+  input:
+    state_code: NH
+    blind_head: false
+    blind_spouse: true
+  output:
+    nh_blind_exemption: 1_200
+
+- name: In 2027, if filing jointly, head is not blind but spouse = blind, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    blind_head: false
+    blind_spouse: true
+  output:
+    nh_blind_exemption: 0
+
+- name: In 2022, if filing jointly, head and spouse both = blind, exemption is $2_400.
+  period: 2022
+  input:
+    state_code: NH
+    blind_head: true
+    blind_spouse: true
+  output:
+    nh_blind_exemption: 2_400
+
+- name: In 2027, if filing jointly, head and spouse both = blind, exemption is $0.
+  period: 2027
+  input:
+    state_code: NH
+    blind_head: true
+    blind_spouse: true
+  output:
+    nh_blind_exemption: 0

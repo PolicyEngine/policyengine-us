@@ -1,0 +1,43 @@
+- name: UT Social Security Benefits Credit max unit test 1
+  period: 2022
+  input:
+    taxable_social_security: 5_000
+    ut_total_income: 20_000
+    tax_exempt_interest_income: 500
+    filing_status: single
+    state_code: UT
+  output:
+    ut_ss_benefits_credit_max: 242.50
+
+- name: UT Social Security Benefits Credit max unit test 2
+  period: 2022
+  input:
+    taxable_social_security: 5_000
+    ut_total_income: 30_000
+    tax_exempt_interest_income: 500
+    filing_status: single
+    state_code: UT
+  output:
+    ut_ss_benefits_credit_max: 242.50
+
+- name: UT Social Security Benefits Credit max unit test 3
+  period: 2022
+  input:
+    taxable_social_security: 5_000
+    ut_total_income: 25_000
+    tax_exempt_interest_income: 500
+    filing_status: single
+    state_code: UT
+  output:
+    ut_ss_benefits_credit_max: 242.50
+
+- name: UT Social Security Benefits Credit max unit test 4
+  period: 2022
+  input:
+    taxable_social_security: 0
+    ut_total_income: 20_000
+    tax_exempt_interest_income: 500
+    filing_status: single
+    state_code: UT
+  output:
+    ut_ss_benefits_credit_max: 0  # no taxable social security income

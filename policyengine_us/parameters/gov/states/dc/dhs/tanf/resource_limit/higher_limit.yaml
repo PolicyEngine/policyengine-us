@@ -1,0 +1,11 @@
+description: DC limits TANF to households with up to this resource amount if they have elderly or disabled members.
+
+metadata:
+  unit: currency-USD
+  label: DC TANF resource limit for households with elderly or disabled people
+  reference:
+    - title: TANF for District Families
+      href: https://dhs.dc.gov/service/tanf-district-families
+
+values:
+  2021-10-01: 3_000

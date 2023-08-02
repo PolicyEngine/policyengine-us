@@ -31,7 +31,7 @@ class md_non_single_childless_refundable_eitc(Variable):
         )
         params = parameters(period)
         p = params.gov.states.md.tax.income.credits.eitc
-        matched_eitc = p.refundable_match * federal_eitc_without_age_minimum
+        matched_eitc = p.match.refundable * federal_eitc_without_age_minimum
         amount = eligible * max_(0, matched_eitc - md_tax_before_credits)
         has_children = add(tax_unit, period, ["is_child"]) > 0
         mca = params.gov.contrib.maryland_child_alliance

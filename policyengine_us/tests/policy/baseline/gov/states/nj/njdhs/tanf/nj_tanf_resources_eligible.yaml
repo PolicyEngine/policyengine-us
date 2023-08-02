@@ -1,0 +1,16 @@
+- name: Households with assets lower than or equal to $2,000 are eligible.
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_countable_resources: 2_000
+  output:
+    nj_tanf_resources_eligible: true
+
+
+- name: Households with assets higher than $2,000 are ineligible. 
+  period: 2023
+  input:
+    state_code: NJ
+    nj_tanf_countable_resources: 4_000
+  output:
+    nj_tanf_resources_eligible: false
