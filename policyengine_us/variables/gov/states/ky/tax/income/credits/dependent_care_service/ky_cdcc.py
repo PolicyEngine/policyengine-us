@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ky_dependent_care_service_credit(Variable):
+class ky_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Kentucky dependent care service credit"
+    label = "Kentucky cdcc"
     unit = USD
     definition_period = YEAR
     reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=29058"  # (d)
