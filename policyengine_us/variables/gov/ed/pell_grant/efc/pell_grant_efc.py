@@ -10,7 +10,10 @@ class pell_grant_efc(Variable):
     def formula(person, period, parameters):
         parent_contribution = person("pell_grant_parent_contribution", period)
         student_contribution = person("pell_grant_student_contribution", period)
-        return parent_contribution + student_contribution
+        parent_income = person("pell_grant_parent_income", period)
+        zero_efc_max = parameters(period).gov.ed.pell_grant.efc.automatic_zero
+        efc = where(parent_income <= zero_efc_max, 0, parent_contribution + student_contribution)
+        return efc
 
 '''
     efc = parent_contrib + student_contrib + student_assets

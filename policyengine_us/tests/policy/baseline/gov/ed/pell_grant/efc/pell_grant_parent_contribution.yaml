@@ -47,3 +47,13 @@
     pell_grant_students_in_college: 2
   output:
     pell_grant_parent_contribution: 3067.5
+
+- name: Negative parent contribution
+  period: 2023
+  input:
+    pell_grant_parent_income: 0
+    pell_grant_parent_allowances: 100_000
+    pell_grant_parent_assets: 0
+    pell_grant_students_in_college: 1
+  output:
+    pell_grant_parent_contribution: -750
