@@ -13,8 +13,9 @@ class pell_grant(Variable):
         coa = person("pell_grant_cost_of_attendance", period)
         months_in_school = person("pell_grant_months_in_school", period)
         efc = person("pell_grant_efc", period)
-        minimum = 700
-        maximum = 6_895
+        p = parameters(period).gov.ed.pell_grant
+        minimum = p.min_grant
+        maximum = p.max_grant
         amount = min_(coa - efc, maximum)
         amount = where(amount < minimum, 0, amount)
-        return amount * (months_in_school / 9)
+        return amount * (months_in_school / p.months_in_school_year)

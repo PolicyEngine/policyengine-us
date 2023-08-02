@@ -5,13 +5,13 @@
     pell_grant_cost_of_attendance: 100_000
     pell_grant_months_in_school: 9
   output:
-    pell_grant: 6_895
+    pell_grant: 7_395
 
 - name: No Pell Grant
   period: 2023
   input:
     pell_grant_efc: 3_000
-    pell_grant_cost_of_attendance: 3_300
+    pell_grant_cost_of_attendance: 3_700
     pell_grant_months_in_school: 9
   output:
     pell_grant: 0

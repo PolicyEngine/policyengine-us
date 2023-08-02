@@ -6,3 +6,4 @@ class pell_grant_months_in_school(Variable):
     entity = Person
     label = "Percent of Year Student is in School"
     definition_period = YEAR
+    default_value = 9
