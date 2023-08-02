@@ -24,16 +24,14 @@ class de_pension_exclusion(Variable):
         above_60_head_eligible = (age_head >= p.min_age).astype(int)
 
         # determine military eligiblity
-        military_disabled_head = tax_unit("is_military", period)
-        military_eligible = (
-            military_disabled_head & under_60_head_eligible
-        ).astype(int)
+        military_retirement = person("military_retired", period) > 0
+        military_eligible = tax_unit.any(military_retirement)
 
         # determine pension exclusion value based on military status
         exclusion_value = where(
             military_eligible,
-            p.max_pension_amount_cap,
-            p.min_pension_amount_cap,
+            p.military_pension_amount_cap,
+            p.non_military_pension_amount_cap,
         )
 
         # determine pension exclusion amount
@@ -47,26 +45,35 @@ class de_pension_exclusion(Variable):
 
         # determine exclusion eligibility
         is_eligible_for_under_60_military = (
-            under_60_head_eligible & military_disabled_head
+            under_60_head_eligible & military_retirement
         ).astype(int)
         is_eligible_for_under_60_non_military = (
-            under_60_head_eligible & ~military_disabled_head
+            under_60_head_eligible & ~military_retirement
         ).astype(int)
 
         # apply the exclusion value or the pension income, whichever is lower, for eligible individuals
+        min_amount_under_60_military = min_(exclusion_value, pension_income)
         pension_exclusion_under_60_military = where(
             is_eligible_for_under_60_military,
-            min_(exclusion_value, pension_income),
+            min_amount_under_60_military,
             0,
+        )
+
+        min_amount_under_60_non_military = min_(
+            exclusion_value, pension_income
         )
         pension_exclusion_under_60_non_military = where(
             is_eligible_for_under_60_non_military,
-            min_(exclusion_value, pension_income),
+            min_amount_under_60_non_military,
             0,
+        )
+
+        min_amount_above_60 = min_(
+            p.military_pension_amount_cap, total_income_above_60
         )
         pension_exclusion_above_60 = where(
             above_60_head_eligible,
-            min_(p.max_pension_amount_cap, total_income_above_60),
+            min_amount_above_60,
             0,
         )
 
