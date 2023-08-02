@@ -8,7 +8,7 @@ class ri_standard_deduction_phase_out(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/ADV_2022_40_Inflation_Adjustments.pdf"
+        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2021-11/2021-tax-rate-and-worksheets.pdf"
         "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20Tax%20Rate%20and%20Worksheets.pdf"
     )
     defined_for = StateCode.RI
@@ -18,7 +18,7 @@ class ri_standard_deduction_phase_out(Variable):
             period
         ).gov.states.ri.tax.income.deductions.standard.phase_out
 
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ri_agi", period)
 
         excess_agi = agi - p.start
 

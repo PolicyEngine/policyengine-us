@@ -2,7 +2,7 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 200_000
+    ri_agi: 200_000
   output:
     ri_standard_deduction_phase_out: 1
 
@@ -10,7 +10,7 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 217_100
+    ri_agi: 217_100
   output:
     ri_standard_deduction_phase_out: 0.8
 
@@ -18,7 +18,7 @@
   period: 2021
   input:
     state_code: RI
-    adjusted_gross_income: 200_000
+    ri_agi: 200_000
   output:
     ri_standard_deduction_phase_out: 1
 
@@ -26,6 +26,6 @@
   period: 2021
   input:
     state_code: RI
-    adjusted_gross_income: 211_000
+    ri_agi: 211_000
   output:
     ri_standard_deduction_phase_out: 0.8
