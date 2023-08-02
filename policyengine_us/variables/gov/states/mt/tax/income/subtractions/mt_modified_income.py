@@ -15,28 +15,31 @@ class mt_modified_income(Variable):
 
     def formula(tax_unit, period, parameters):
         # specify parameters
-        filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.mt.tax.income.subtractions
         total_benefit_fraction = p.social_security.total_benefit_fraction1
         
-        # calculate subtraction amount
-        # ... US-taxable social security benefits
-        us_taxable_oasdi = add(tax_unit, period, ["taxable_social_security"])
-        net_benefits = add(tax_unit, period, ["household_benefits"]) #need adjustment
-
-        us_gross_income = add(tax_unit, period, ["irs_gross_income"])#total income (may need adjustment)
-        adj_income = us_gross_income - us_taxable_oasdi
-
-        total_oasdi = add(tax_unit, period, ["social_security"])
-        oasdi_amount = total_oasdi * total_benefit_fraction
-        tax_exempt_int = add(tax_unit, period, ["tax_exempt_interest_income"])
-        sum_income = adj_income + oasdi_amount + tax_exempt_int
-
-        us_ald = tax_unit("above_the_line_deductions", period)
-        student_loan_int = add(tax_unit, period, ["student_loan_interest"])
-        mn_ald = max_(0, us_ald - student_loan_int)
-        income = max_(0, sum_income - mn_ald)
+        #Line1
+        net_benefits = add(tax_unit, period, ["spm_unit_benefits"])
         
-        net_income = max_(0, income - income_amount)
-        alt_sub_amt = max_(0, alt_amount - (net_income * net_income_fraction))
-        return min_(us_taxable_oasdi, alt_sub_amt)
+        #Line3
+        us_taxable_oasdi = tax_unit(period, ["taxable_social_security"])
+        total_income = tax_unit(period, ["mt_total_income"])
+        adj_income = total_income - us_taxable_oasdi
+
+        mt_agi_additions=tax_unit(period, ["mt_agi_additions"])
+        interest_income=tax_unit(period, ["interest_income"])
+        adj_additions=mt_agi_additions-interest_income
+
+        tax_exempt_int = add(tax_unit, period, ["tax_exempt_interest_income"])
+        
+        #Line6
+        sum_income = net_benefits*total_benefit_fraction +adj_income + adj_additions + tax_exempt_int
+        
+        #Line7
+        mt_adjustments=tax_unit(period, ["mt_adjustments"])
+        student_loan_int = add(tax_unit, period, ["student_loan_interest"])
+        
+        #Line8
+        mt_agi_subtractions=tax_unit(period, ["mt_agi_subtractions"])
+        
+        return mt_agi_subtractions+mt_adjustments-student_loan_int-sum_income

@@ -24,8 +24,8 @@ class mt_social_security_benefit(Variable):
         exceeding_income_fraction=p.social_security.exceeding_income_fraction
         extra_income_fraction = p.social_security.extra_income_fraction
 
-        net_benefits = add(tax_unit, period, ["household_benefits"]) #need adjustment
-        modified_income = us_gross_income - us_taxable_oasdi #need adjustment
+        net_benefits = add(tax_unit, period, ["spm_unit_benefits"])
+        modified_income =tax_unit(period, ["mt_modified_income"])
 
         #if modified_income is less than cap, return 0
         exceeding_income=modified_income - modified_income_cap
