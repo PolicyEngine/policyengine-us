@@ -1,0 +1,26 @@
+- name: Filer with AGI above $60,000 is not eligible.
+  period: 2021
+  input:
+    state_code: CO
+    adjusted_gross_income: 60_001
+    cdcc: 1_000
+  output:
+    co_cdcc: 0
+
+- name: Filer with income at the 50% match level.
+  period: 2021
+  input:
+    state_code: CO
+    adjusted_gross_income: 40_000
+    cdcc: 1_000
+  output:
+    co_cdcc: 500
+
+- name: Filer with income at the 30% match level.
+  period: 2010
+  input:
+    state_code: CO
+    adjusted_gross_income: 30_000
+    cdcc: 1_000
+  output:
+    co_cdcc: 300
