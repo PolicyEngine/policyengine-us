@@ -1,20 +1,20 @@
-description: Louisiana taxes individual income at this rate.
+description: Louisiana taxes the income of single filers at this rate.
 
 brackets:
   - threshold:
-      2021-01-01: 0
+      2009-01-01: 0
     rate:
-      2021-01-01: 0.02
+      2009-01-01: 0.02
       2022-01-01: 0.0185
   - threshold:
-      2021-01-01: 12_500
+      2009-01-01: 12_500
     rate:
-      2021-01-01: 0.04
+      2009-01-01: 0.04
       2022-01-01: 0.0315
   - threshold:
-      2021-01-01: 50_000
+      2009-01-01: 50_000
     rate:
-      2021-01-01: 0.06
+      2009-01-01: 0.06
       2022-01-01: 0.0425
 
 metadata:
@@ -24,7 +24,7 @@ metadata:
     - title: Individual Income Tax-Determination of Tax
       href: https://revenue.louisiana.gov/IndividualIncomeTax#riit
     
-  label: Louisiana Income Tax rate
+  label: Louisiana income tax rate single filers
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
