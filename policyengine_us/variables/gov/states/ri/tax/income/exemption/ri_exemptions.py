@@ -15,12 +15,12 @@ class ri_exemptions(Variable):
 
         exemptions = tax_unit("tax_unit_size", period)
 
-        total_exemptions = exemptions * p.multiplier
+        exemptions_amount = exemptions * p.amount
 
         agi = tax_unit("adjusted_gross_income", period)
 
         excess_agi = agi - p.start
 
-        excess_agi_step = excess_agi / p.increment
+        excess_agi_step = excess_agi / p.reduction.increment
 
-        return p.percentage.calc(excess_agi_step) * total_exemptions
+        return p.reduction.percentage.calc(excess_agi_step) * exemptions_amount
