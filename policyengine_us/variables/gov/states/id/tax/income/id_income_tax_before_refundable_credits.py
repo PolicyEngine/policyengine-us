@@ -10,23 +10,8 @@ class id_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("id_taxable_income", period)
-        rates = parameters(period).gov.states.id.tax.income.main
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                rates.single.calc(income),
-                rates.joint.calc(income),
-                rates.separate.calc(income),
-                rates.widow.calc(income),
-                rates.head_of_household.calc(income),
-            ],
+        before_non_refundable_credits = tax_unit(
+            "id_income_tax_before_non_refundable_credits", period
         )
+        non_refundable_credits = tax_unit("id_non_refundable_credits", period)
+        return max_(before_non_refundable_credits - non_refundable_credits, 0)
