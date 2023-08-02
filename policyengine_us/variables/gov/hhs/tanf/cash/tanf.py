@@ -25,7 +25,7 @@ class tanf(Variable):
         # Obtain amount they would receive if they were eligible.
         amount_if_eligible = spm_unit("tanf_amount_if_eligible", period)
         # Add TANF programs computed in variables/gov/states.
-        STATES_WITH_TANF = ["co", "ny"]
+        STATES_WITH_TANF = ["co", "ny", "dc"]
         state_tanf = add(
             spm_unit, period, [i + "_tanf" for i in STATES_WITH_TANF]
         )

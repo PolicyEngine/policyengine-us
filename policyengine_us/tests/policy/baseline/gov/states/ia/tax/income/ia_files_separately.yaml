@@ -1,0 +1,17 @@
+- name: IA files separately unit test 1
+  period: 2021
+  input:
+    ia_income_tax_indiv: 200
+    ia_income_tax_joint: 300
+    state_code: IA
+  output:
+    ia_files_separately: true
+
+- name: IA files separately unit test 2
+  period: 2022
+  input:
+    ia_income_tax_indiv: 400
+    ia_income_tax_joint: 300
+    state_code: IA
+  output:
+    ia_files_separately: false
