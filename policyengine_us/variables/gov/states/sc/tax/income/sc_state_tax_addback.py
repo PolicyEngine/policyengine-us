@@ -8,7 +8,7 @@ class sc_state_tax_addback(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf",
+        "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
         "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2",
     )
     defined_for = StateCode.SC
