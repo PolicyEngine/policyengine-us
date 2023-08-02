@@ -42,7 +42,7 @@ def convert_param(param: dict) -> dict:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Utility to convert tax-calculator parameters to OpenFisca parameters."
+        description="Utility to convert tax-calculator parameters to PolicyEngine parameters."
     )
     parser.add_argument(
         "--tc-params",

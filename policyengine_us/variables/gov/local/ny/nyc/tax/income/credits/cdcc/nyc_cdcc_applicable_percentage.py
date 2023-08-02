@@ -26,6 +26,4 @@ class nyc_cdcc_applicable_percentage(Variable):
         excess = max_(income - p.phaseout_start, 0)
         capped_excess = min_(excess, phase_out_width)
         percent_excess = capped_excess / phase_out_width
-        applicable_percentage = p.max_rate * (1 - percent_excess)
-
-        return applicable_percentage
+        return p.max_rate * (1 - percent_excess)
