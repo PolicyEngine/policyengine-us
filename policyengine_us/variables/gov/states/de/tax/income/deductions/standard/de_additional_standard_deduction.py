@@ -7,7 +7,9 @@ class de_additional_standard_deduction(Variable):
     label = "Delaware additional standard deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html#1108"
+    reference = (
+        "https://delcode.delaware.gov/title30/c011/sc02/index.html#1108"
+    )
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
