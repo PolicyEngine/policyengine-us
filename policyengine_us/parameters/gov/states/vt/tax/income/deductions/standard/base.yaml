@@ -1,0 +1,31 @@
+description: Vermont provides this standard deduction based on filing status.
+metadata:
+  label: Vermont standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: 2021 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income-Booklet-2021.pdf
+    - title: 2022 VERMONT Income Tax Return Form Instructions-Taxable Income Line 4
+      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf 
+      # Legal code specifies amount with inflation adjustments..
+    - title: Legal Code Titl. 32 V.S.A. § 5811(21)(C)(ii) 
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811 
+
+JOINT:
+  2021-01-01: 12_700
+  2022-01-01: 13_050
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 9_500
+  2022-01-01: 9_800
+WIDOW:
+  2021-01-01: 12_700
+  2022-01-01: 13_050
+SINGLE:
+  2021-01-01: 6_350
+  2022-01-01: 6_500
+SEPARATE:
+  2021-01-01: 6_350
+  2022-01-01: 6_500
