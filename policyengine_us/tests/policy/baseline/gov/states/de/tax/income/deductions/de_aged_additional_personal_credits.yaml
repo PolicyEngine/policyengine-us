@@ -1,0 +1,44 @@
+- name: yourself and spouse are both above 60 in 2021.
+  period: 2021
+  input:
+    state_code: DE
+    age_head: 60
+    age_spouse: 60
+  output:
+    de_aged_personal_credits: 220
+
+- name: yourself and spouse are both above 60 in 2022.
+  period: 2022
+  input:
+    state_code: DE
+    age_head: 60
+    age_spouse: 60
+  output:
+    de_aged_personal_credits: 220    
+
+- name: yourself >= age 60 but spouse is not.
+  period: 2022
+  input:
+    state_code: DE
+    age_head: 65
+    age_spouse: 59
+  output:
+    de_aged_personal_credits: 110
+
+- name: yourself < age 60 but spouse >= 60.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 55
+    age_spouse: 65
+  output:
+    de_aged_personal_credits: 110
+
+- name: both yourself and spouse under 60.
+  period: 2023
+  input:
+    state_code: DE
+    age_head: 55
+    age_spouse: 58
+  output:
+    de_aged_personal_credits: 0

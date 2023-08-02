@@ -1,0 +1,29 @@
+- name: 100% match for childless filers.
+  period: 2023
+  input:
+    md_non_refundable_eitc: 100
+    md_income_tax_before_credits: 0
+    eitc_child_count: 0
+    state_code: MD
+  output:
+    md_refundable_eitc: 100
+
+- name: 45% match for filers with children.
+  period: 2023
+  input:
+    md_non_refundable_eitc: 200
+    md_income_tax_before_credits: 100
+    eitc_child_count: 2
+    state_code: MD
+  output:
+    md_refundable_eitc: 45
+
+- name: Nothing if income tax before credits exceeds non-refundable EITC.
+  period: 2023
+  input:
+    md_non_refundable_eitc: 200
+    md_income_tax_before_credits: 300
+    eitc_child_count: 2
+    state_code: MD
+  output:
+    md_refundable_eitc: 0

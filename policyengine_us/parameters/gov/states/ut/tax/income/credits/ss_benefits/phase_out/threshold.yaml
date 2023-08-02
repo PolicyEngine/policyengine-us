@@ -1,0 +1,17 @@
+description: Modified AGI threshold after which the Utah Social Security Benefits Credit is phased out.
+SINGLE:
+  2022-01-01: 37_000
+JOINT:
+  2022-01-01: 62_000
+SEPARATE:
+  2022-01-01: 31_000
+WIDOW:
+  2022-01-01: 62_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 62_000
+metadata:
+  unit: currency-USD
+  period: year
+  reference:
+    - title: Utah Code §59-10-1044
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1042.html

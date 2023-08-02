@@ -1,0 +1,26 @@
+- name: Over age eligibility
+  period: 2022
+  input:
+    age: 15
+    state_code: NM
+    is_tax_unit_dependent: true
+  output:
+    nm_cdcc_eligible_child: false
+
+- name: Not dependent
+  period: 2022
+  input:
+    age: 14
+    state_code: NM
+    is_tax_unit_dependent: false
+  output:
+    nm_cdcc_eligible_child: false
+
+- name: Eligible
+  period: 2022
+  input:
+    age: 14
+    state_code: NM
+    is_tax_unit_dependent: true
+  output:
+    nm_cdcc_eligible_child: true
