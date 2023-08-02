@@ -15,7 +15,7 @@ class de_additional_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.de.tax.income.deductions.additional_standard
+        ).gov.states.de.tax.income.deductions.standard.additional
 
         age_head = tax_unit("age_head", period)
         aged_head_eligible = (age_head >= p.age_threshold).astype(int)
