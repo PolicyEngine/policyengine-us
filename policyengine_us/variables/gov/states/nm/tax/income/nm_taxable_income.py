@@ -14,7 +14,7 @@ class nm_taxable_income(Variable):
         additions = tax_unit("nm_additions", period)
         deductions = tax_unit("nm_deductions", period)
         exemptions = tax_unit("nm_exemptions", period)
-        other_subtractions = tax_unit(
+        other_deductions_and_exemptions = tax_unit(
             "nm_other_deductions_and_exemptions", period
         )
         return max_(
@@ -23,5 +23,5 @@ class nm_taxable_income(Variable):
             + additions
             - deductions
             - exemptions
-            - other_subtractions,
+            - other_deductions_and_exemptions,
         )
