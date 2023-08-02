@@ -1,0 +1,35 @@
+- name: WI capital_gain_loss_addition unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: -5_000
+    state_code: WI
+  output:
+    wi_capital_gain_loss_addition: 2_500  # = 3_000 - 500
+    
+- name: WI capital_gain_loss_addition unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    short_term_capital_gains: -2_000
+    state_code: WI
+  output:
+    wi_capital_gain_loss_addition: 1_500  # = 2_000 - 500
+
+- name: WI capital_gain_loss_addition unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    long_term_capital_gains: -200
+    state_code: WI
+  output:
+    wi_capital_gain_loss_addition: 0
+
+- name: WI capital_gain_loss_addition unit test 4
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    long_term_capital_gains: 800
+    state_code: WI
+  output:
+    wi_capital_gain_loss_addition: 0
