@@ -12,7 +12,7 @@ class la_blind_or_disabled_exemption(Variable):
     def formula(tax_unit, period, parameters):
         amount = parameters(
             period
-        ).gov.states.la.tax.income.exemptions.amount.blind_or_disabled
+        ).gov.states.la.tax.income.exemptions.blind_or_disabled
         blind_head = tax_unit("blind_head", period)
         disabled_head = tax_unit("disabled_head", period)
         head_eligible = (blind_head | disabled_head).astype(int)
