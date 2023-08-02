@@ -17,16 +17,8 @@
   output:
     la_cdcc_non_refundable: 600 # 2_000 * 0.3
 
-- name: LA nonrefundable cdcc unit test 3
-  period: 2006
-  input:
-    adjusted_gross_income: 70_000
-    cdcc: 2_000
-    state_code: LA
-  output:
-    la_cdcc_non_refundable:  20 # 2_000 * 0.1<25
 
-- name: LA nonrefundable cdcc unit test 4
+- name: LA nonrefundable cdcc unit test 3
   period: 2006
   input:
     adjusted_gross_income: 70_000
@@ -34,3 +26,12 @@
     state_code: LA
   output:
     la_cdcc_non_refundable:  25 # 3_000 * 0.1>25
+
+- name: LA nonrefundable cdcc unit test 4
+  period: 2006
+  input:
+    adjusted_gross_income: 70_000
+    cdcc: 200
+    state_code: LA
+  output:
+    la_cdcc_non_refundable:  20 # 200 * 0.1<25
