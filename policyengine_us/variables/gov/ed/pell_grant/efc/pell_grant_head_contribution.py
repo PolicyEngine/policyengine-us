@@ -11,7 +11,7 @@ class pell_grant_head_contribution(Variable):
         available_income = person("pell_grant_head_available_income", period)
         dependents = person("pell_grant_dependents_in_college", period)
         formula = person("pell_grant_formula", period)
-        if formula == "B":
+        if formula.decode_to_str() == "B":
             return available_income / dependents
         p = parameters(period).gov.ed.pell_grant.efc.head
         base = p.base.calc(available_income)
