@@ -7,12 +7,13 @@ class de_additional_standard_deduction(Variable):
     label = "Delaware additional standard deduction"
     unit = USD
     definition_period = YEAR
+    reference = "https://delcode.delaware.gov/title30/c011/sc02/index.html#1108"
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.de.tax.income.deductions.additional.amount
+        ).gov.states.de.tax.income.deductions.additional_standard
 
         age_head = tax_unit("age_head", period)
         aged_head_eligible = (age_head >= p.age_threshold).astype(int)
