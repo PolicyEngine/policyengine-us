@@ -29,3 +29,14 @@
     nm_cdcc_eligible: false
   output:
     nm_cdcc: 0
+
+- name: nm_cdcc unit test 4
+  period: 2021
+  input:
+    nm_cdcc_max_amount: 900
+    state_code: NM
+    cdcc: 200
+    income_tax_before_credits: 0
+    nm_cdcc_eligible: true
+  output:
+    nm_cdcc: 700
