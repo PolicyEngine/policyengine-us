@@ -4,7 +4,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 10_000
-    exemptions: 0
+    nm_low_income_comprehensive_tax_rebate_exemptions: 0
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 0
@@ -15,7 +15,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 1
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 97.5
@@ -25,7 +25,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 1
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 195
@@ -36,7 +36,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 2_501
-    exemptions: 1
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 110
@@ -46,7 +46,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 2_501
-    exemptions: 1
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 220
@@ -57,7 +57,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 36_001
-    exemptions: 1
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 0
@@ -67,7 +67,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 36_001
-    exemptions: 1
+    nm_low_income_comprehensive_tax_rebate_exemptions: 1
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 0
@@ -78,7 +78,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 2
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 130
@@ -88,7 +88,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 2
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 260
@@ -99,7 +99,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 36_000
-    exemptions: 2
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 17.5
@@ -109,7 +109,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 36_000
-    exemptions: 2
+    nm_low_income_comprehensive_tax_rebate_exemptions: 2
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 35
@@ -120,7 +120,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 3
+    nm_low_income_comprehensive_tax_rebate_exemptions: 3
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 162.5
@@ -130,7 +130,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 3
+    nm_low_income_comprehensive_tax_rebate_exemptions: 3
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 325
@@ -141,7 +141,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 4
+    nm_low_income_comprehensive_tax_rebate_exemptions: 4
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 195
@@ -151,7 +151,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 4
+    nm_low_income_comprehensive_tax_rebate_exemptions: 4
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 390
@@ -162,7 +162,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 5
+    nm_low_income_comprehensive_tax_rebate_exemptions: 5
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 227.5
@@ -172,7 +172,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 5
+    nm_low_income_comprehensive_tax_rebate_exemptions: 5
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 455
@@ -183,7 +183,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 6
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 260
@@ -193,7 +193,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 6
+    nm_low_income_comprehensive_tax_rebate_exemptions: 6
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 520
@@ -204,7 +204,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 7
+    nm_low_income_comprehensive_tax_rebate_exemptions: 7
     filing_status: SEPARATE
   output:
     nm_low_income_comprehensive_tax_rebate: 260
@@ -214,7 +214,7 @@
   input:
     state_code: NM
     nm_modified_gross_income: 1_000
-    exemptions: 7
+    nm_low_income_comprehensive_tax_rebate_exemptions: 7
     filing_status: SINGLE
   output:
     nm_low_income_comprehensive_tax_rebate: 520
