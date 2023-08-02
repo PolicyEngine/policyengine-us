@@ -20,6 +20,8 @@ class federal_eitc_without_age_minimum(Variable):
             "eitc_agi_limit",
             "eitc_child_count",
             "eitc_eligible",
+            "eitc_demographic_eligible",
+            "eitc_investment_income_eligible",
             "eitc_maximum",
             "eitc_phased_in",
             "eitc_reduction",
