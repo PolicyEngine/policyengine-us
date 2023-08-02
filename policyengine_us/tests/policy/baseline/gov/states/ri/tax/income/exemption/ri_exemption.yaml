@@ -2,8 +2,8 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 200_000
-    tax_unit_size: 1
+    ri_agi: 200_000
+    exemptions: 1
   output:
     ri_exemptions: 4_350
 
@@ -11,8 +11,8 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 217_100
-    tax_unit_size: 2
+    ri_agi: 217_100
+    exemptions: 2
   output:
     ri_exemptions: 6_960
 
@@ -20,8 +20,8 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 240_000
-    tax_unit_size: 3
+    ri_agi: 240_000
+    exemptions: 3
   output:
     ri_exemptions: 2_610
 
@@ -29,8 +29,8 @@
   period: 2022
   input:
     state_code: RI
-    adjusted_gross_income: 250_000
-    tax_unit_size: 4
+    ri_agi: 250_000
+    exemptions: 4
   output:
     ri_exemptions: 0
 
@@ -38,8 +38,8 @@
   period: 2021
   input:
     state_code: RI
-    adjusted_gross_income: 200_000
-    tax_unit_size: 1
+    ri_agi: 200_000
+    exemptions: 1
   output:
     ri_exemptions: 4_250
 
@@ -47,7 +47,7 @@
   period: 2021
   input:
     state_code: RI
-    adjusted_gross_income: 211_000
-    tax_unit_size: 2
+    ri_agi: 211_000
+    exemptions: 2
   output:
     ri_exemptions: 6_800

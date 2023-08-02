@@ -11,16 +11,16 @@ class ri_exemptions(Variable):
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ri.tax.income.exemption.phase_out
+        p = parameters(period).gov.states.ri.tax.income.exemption
 
-        exemptions = tax_unit("tax_unit_size", period)
+        exemptions = tax_unit("exemptions", period)
 
-        exemptions_amount = exemptions * p.amount
+        exemption_amount = exemptions * p.amount
 
-        agi = tax_unit("adjusted_gross_income", period)
+        agi = tax_unit("ri_agi", period)
 
-        excess_agi = agi - p.start
+        excess_agi = agi - p.reduction.start
 
         excess_agi_step = excess_agi / p.reduction.increment
 
-        return p.reduction.percentage.calc(excess_agi_step) * exemptions_amount
+        return p.reduction.percentage.calc(excess_agi_step) * exemption_amount
