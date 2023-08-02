@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+import numpy as np
 
 
 class la_cdcc_non_refundable(Variable):
@@ -20,8 +21,13 @@ class la_cdcc_non_refundable(Variable):
         la_non_refundable_cdcc = us_cdcc * p.cdcc.non_refundable.rate.calc(
             us_agi
         )
-        if us_agi > 60000:
-            la_non_refundable_cdcc = min(
-                p.cdcc.non_refundable.hi_threshold, la_non_refundable_cdcc
-            )
+        la_non_refundable_cdcc = np.where(
+            us_agi > p.cdcc.non_refundable.upper_bracket.income_threshold,
+            np.minimum(
+                p.cdcc.non_refundable.upper_bracket.max_amount,
+                la_non_refundable_cdcc,
+            ),
+            la_non_refundable_cdcc,
+        )
+
         return agi_eligible * la_non_refundable_cdcc
