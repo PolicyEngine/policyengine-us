@@ -29,7 +29,7 @@ class oh_retirement_income_credit(Variable):
             is_spouse * pension_income * has_not_taken_lump_sum_distribution
         )
         total_pension_income = tax_unit.sum(head_pension + spouse_pension)
-        agi = tax_unit("oh_agi", period)
-        eligible = agi < p.income_threshold
 
-        return p.amount.calc(total_pension_income) * eligible
+        eligible = tax_unit("oh_retirement_income_credit_eligible", period)
+
+        return p.amount.calc(total_pension_income, right=True) * eligible
