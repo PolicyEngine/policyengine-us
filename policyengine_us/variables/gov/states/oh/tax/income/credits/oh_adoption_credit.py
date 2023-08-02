@@ -22,12 +22,12 @@ class oh_adoption_credit(Variable):
         # The minimum amount of Ohio adoption credit
         min_credit = parameters(
             period
-        ).gov.states.oh.tax.income.credits.adoption.minimum_credit
+        ).gov.states.oh.tax.income.credits.adoption.minimum_amount
 
         # The maximum amount of Ohio adoption credit
         max_credit = parameters(
             period
-        ).gov.states.oh.tax.income.credits.adoption.maximum_credit
+        ).gov.states.oh.tax.income.credits.adoption.maximum_amount
 
         # Identify which interval the expenses fall into
         expenses_less_than_min_credit = (
