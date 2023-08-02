@@ -11,15 +11,11 @@ class id_child_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        print(person("age", period))
         # Get relevant parameter subtree.
         p = parameters(period).gov.states.id.tax.income.credits.child_credit
         # Count number of eligible children in the tax unit.
-        eligible_age = p.age_eligibility
-        count_eligible = sum(
-            [
-                age <= eligible_age
-                for age in person("age", period)
-            ])
+        age = person("age", period)
+        eligible_child = age < p.age_eligibility
+        eligible_children = tax_unit.sum(eligible_child)
         # Multiply by the amount per child.
-        return count_eligible * p.amount
+        return eligible_children * p.amount
