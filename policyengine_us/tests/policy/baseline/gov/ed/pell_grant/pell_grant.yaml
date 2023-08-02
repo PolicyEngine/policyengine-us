@@ -3,7 +3,7 @@
   input:
     pell_grant_efc: 0
     pell_grant_cost_of_attendance: 100_000
-    pell_grant_months_in_school: 1
+    pell_grant_months_in_school: 9
   output:
     pell_grant: 6_895
 
@@ -12,15 +12,15 @@
   input:
     pell_grant_efc: 3_000
     pell_grant_cost_of_attendance: 3_300
-    pell_grant_months_in_school: 1
+    pell_grant_months_in_school: 9
   output:
     pell_grant: 0
 
-- name: Half year Pell Grant
+- name: 5 months in school
   period: 2023
   input:
     pell_grant_efc: 2_000
     pell_grant_cost_of_attendance: 5_000
-    pell_grant_months_in_school: .5
+    pell_grant_months_in_school: 6
   output:
-    pell_grant: 1_500
+    pell_grant: 2000

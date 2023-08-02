@@ -11,6 +11,10 @@ class pell_grant(Variable):
 
     def formula(person, period, parameters):
         coa = person("pell_grant_cost_of_attendance", period)
-        schedule = person("pell_grant_months_in_school", period)
+        months_in_school = person("pell_grant_months_in_school", period)
         efc = person("pell_grant_efc", period)
-        return (coa - efc) * schedule
+        minimum = 700
+        maximum = 6_895
+        amount = min_(coa - efc, maximum)
+        amount = where(amount < minimum, 0, amount)
+        return amount * (months_in_school / 9)
