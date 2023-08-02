@@ -1,35 +1,39 @@
 - name: Automatic 0 EFC
   period: 2023
   input:
-    pell_grant_parent_income: 10_000
-    pell_grant_parent_contribution: 2_000
-    pell_grant_student_contribution: 10_000
+    pell_grant_head_income: 10_000
+    pell_grant_head_contribution: 2_000
+    pell_grant_dependent_contribution: 10_000
+    pell_grant_formula: A
   output:
     pell_grant_efc: 0
 
-- name: No parent contribution
+- name: No head contribution
   period: 2023
   input:
-    pell_grant_parent_income: 30_000
-    pell_grant_parent_contribution: 0
-    pell_grant_student_contribution: 10_000
+    pell_grant_head_income: 30_000
+    pell_grant_head_contribution: 0
+    pell_grant_dependent_contribution: 10_000
+    pell_grant_formula: A
   output:
     pell_grant_efc: 10_000
 
-- name: No student contribution
+- name: No dependent contribution
   period: 2023
   input:
-    pell_grant_parent_income: 50_000
-    pell_grant_parent_contribution: 12_000
-    pell_grant_student_contribution: 0
+    pell_grant_head_income: 50_000
+    pell_grant_head_contribution: 12_000
+    pell_grant_dependent_contribution: 0
+    pell_grant_formula: A
   output:
     pell_grant_efc: 12_000
 
-- name: Both parent and student contributions
+- name: Both head and dependent contributions
   period: 2023
   input:
-    pell_grant_parent_income: 70_000
-    pell_grant_parent_contribution: 20_000
-    pell_grant_student_contribution: 10_000
+    pell_grant_head_income: 70_000
+    pell_grant_head_contribution: 20_000
+    pell_grant_dependent_contribution: 10_000
+    pell_grant_formula: A
   output:
     pell_grant_efc: 30_000

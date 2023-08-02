@@ -8,18 +8,20 @@ class pell_grant_efc(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        parent_contribution = person("pell_grant_parent_contribution", period)
-        student_contribution = person("pell_grant_student_contribution", period)
-        parent_income = person("pell_grant_parent_income", period)
+        head_contribution = person("pell_grant_head_contribution", period)
+        dependent_contribution = person("pell_grant_dependent_contribution", period)
+        head_income = person("pell_grant_head_income", period)
+        formula = person("pell_grant_formula", period).decode_to_str()
         zero_efc_max = parameters(period).gov.ed.pell_grant.efc.automatic_zero
-        efc = where(parent_income <= zero_efc_max, 0, parent_contribution + student_contribution)
-        return efc
-
-'''
-    efc = parent_contrib + student_contrib + student_assets
-*   student_contrib = (total_income - total_allowances) * .5
-*   student_assets = net_worth * .2
-    parrent_contrib = calc_contribution(parrent_available_income + parent_assets) / students_in_college
-    parent_available_income = total_income - allowances
-    parent_assets = net_worth * .12
-'''
+        return select(
+            [
+                formula == "A",
+                formula == "B",
+                formula == "C"
+            ],
+            [
+                where(head_income <= zero_efc_max, 0, head_contribution + dependent_contribution),
+                head_contribution,
+                where(head_income <= zero_efc_max, 0, head_contribution)
+            ]
+        )

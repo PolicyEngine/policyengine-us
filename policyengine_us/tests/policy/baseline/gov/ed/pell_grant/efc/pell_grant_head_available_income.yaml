@@ -1,0 +1,69 @@
+- name: Only assets
+  period: 2023
+  input:
+    pell_grant_head_income: 0
+    pell_grant_head_allowances: 0
+    pell_grant_head_assets: 500
+    pell_grant_formula: A
+  output:
+    pell_grant_head_available_income: 60
+
+- name: Income and no allowances
+  period: 2023
+  input:
+    pell_grant_head_income: 40_000
+    pell_grant_head_allowances: 0
+    pell_grant_head_assets: 0
+    pell_grant_formula: A
+  output:
+    pell_grant_head_available_income: 40_000
+
+- name: Income and some allowances
+  period: 2023
+  input:
+    pell_grant_head_income: 20_000
+    pell_grant_head_allowances: 5_000
+    pell_grant_head_assets: 0
+    pell_grant_formula: A
+  output:
+    pell_grant_head_available_income: 15_000
+
+- name: Income, some allowances, and assets
+  period: 2023
+  input:
+    pell_grant_head_income: 30_000
+    pell_grant_head_allowances: 10_000
+    pell_grant_head_assets: 50_000
+    pell_grant_formula: A
+  output:
+    pell_grant_head_available_income: 26_000
+
+- name: Negative head contribution
+  period: 2023
+  input:
+    pell_grant_head_income: 0
+    pell_grant_head_allowances: 100_000
+    pell_grant_head_assets: 0
+    pell_grant_formula: A
+  output:
+    pell_grant_head_available_income: -100_000
+
+- name: Only assets, formula B
+  period: 2023
+  input:
+    pell_grant_head_income: 0
+    pell_grant_head_allowances: 0
+    pell_grant_head_assets: 1_000
+    pell_grant_formula: B
+  output:
+    pell_grant_head_available_income: 200
+
+- name: Only assets, formula C
+  period: 2023
+  input:
+    pell_grant_head_income: 0
+    pell_grant_head_allowances: 0
+    pell_grant_head_assets: 1_000
+    pell_grant_formula: C
+  output:
+    pell_grant_head_available_income: 70

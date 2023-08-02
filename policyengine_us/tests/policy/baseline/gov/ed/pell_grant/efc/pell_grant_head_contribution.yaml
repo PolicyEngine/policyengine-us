@@ -1,0 +1,53 @@
+- name: Only assets
+  period: 2023
+  input:
+    pell_grant_head_available_income: 60
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 13.2
+
+- name: Income and no allowances
+  period: 2023
+  input:
+    pell_grant_head_available_income: 40_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 11_725
+
+- name: Income and some allowances
+  period: 2023
+  input:
+    pell_grant_head_available_income: 15_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 3_300
+
+- name: Income, some allowances, and assets
+  period: 2023
+  input:
+    pell_grant_head_available_income: 26_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 6_135
+
+- name: Income, some allowances, assets, and 2 dependents in college
+  period: 2023
+  input:
+    pell_grant_head_available_income: 26_000
+    pell_grant_dependents_in_college: 2
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: 3067.5
+
+- name: Negative head contribution
+  period: 2023
+  input:
+    pell_grant_head_available_income: -100_000
+    pell_grant_dependents_in_college: 1
+    pell_grant_formula: A
+  output:
+    pell_grant_head_contribution: -750

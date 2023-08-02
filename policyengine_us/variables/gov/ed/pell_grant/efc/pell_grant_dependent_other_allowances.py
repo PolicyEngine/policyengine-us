@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 
 
-class pell_grant_parent_assets(Variable):
+class pell_grant_dependent_other_allowances(Variable):
     value_type = float
     entity = Person
-    label = "Parent Assets"
+    label = "Dependent Other Allowances"
     definition_period = YEAR

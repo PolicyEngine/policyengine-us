@@ -8,6 +8,4 @@ class spm_unit_pell_grant(Variable):
     documentation = "SPM unit's Pell Grant educational subsidy"
     definition_period = YEAR
     unit = USD 
-
-    def formula(spm_unit, period, parameters):
-        return add(spm_unit, period, ["pell_grant"])
+    adds = ["pell_grant"]
