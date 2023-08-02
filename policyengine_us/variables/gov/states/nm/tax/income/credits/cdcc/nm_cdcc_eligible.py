@@ -35,7 +35,13 @@ class nm_cdcc_eligible(Variable):
         receives_tanf = tax_unit.spm_unit("tanf", period) > 0
         # Filers have to have modified gross income at or below a limit
         nm_modified_gross_income = tax_unit("nm_modified_gross_income", period)
-        income_eligible = nm_modified_gross_income <= p.income_limit
+        income_limit = (
+            parameters(period).gov.dol.minimum_wage
+            * p.income_limit_as_fraction_of_minimum_wage
+            * WEEKS_IN_YEAR
+            * p.full_time_hours
+        )
+        income_eligible = nm_modified_gross_income <= income_limit
         return (
             ~dependent_on_another_return
             & employment_eligible
