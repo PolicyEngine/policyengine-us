@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nc_credit_for_children(Variable):
+class nc_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "North Carolina credit for children"
