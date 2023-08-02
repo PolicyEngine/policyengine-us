@@ -3850,3 +3850,69 @@
     added:
     - Arizona personal income tax schedule.
   date: 2023-07-27 14:50:30
+- bump: minor
+  changes:
+    added:
+    - Colorado child care expense credit.
+  date: 2023-07-28 00:48:34
+- bump: minor
+  changes:
+    added:
+    - 2023 New Jersey Child Tax Credit update.
+  date: 2023-07-28 01:51:38
+- bump: minor
+  changes:
+    added:
+    - New Jersey income tax to net income tree.
+  date: 2023-07-28 02:18:59
+- bump: minor
+  changes:
+    added:
+    - New Mexico income tax parameter visibility.
+  date: 2023-07-28 02:36:06
+- bump: minor
+  changes:
+    added:
+    - Tie NM EITC age eligibility to federal rules except for 18-24 inclusion.
+  date: 2023-07-28 15:22:00
+- bump: patch
+  changes:
+    fixed:
+    - Add blind and aged exemptions for New Mexico low income comprehensive tax rebate.
+  date: 2023-07-30 16:30:59
+- bump: patch
+  changes:
+    fixed:
+    - Include New Mexico deduction for certain dependents in New Mexico deductions.
+  date: 2023-07-31 15:59:35
+- bump: patch
+  changes:
+    added:
+    - README files to tax credit parameters.
+  date: 2023-07-31 16:55:39
+- bump: patch
+  changes:
+    added:
+    - More recently completed state income tax models to modelled_policies.yaml.
+  date: 2023-07-31 17:25:46
+- bump: patch
+  changes:
+    fixed:
+    - Base New Mexico deduction for certain dependents on total dependents, rather
+      than child dependents.
+  date: 2023-07-31 22:39:09
+- bump: minor
+  changes:
+    added:
+    - Mississippi total exemptions.
+  date: 2023-08-01 01:30:32
+- bump: minor
+  changes:
+    added:
+    - Vermont standard deductions.
+  date: 2023-08-02 01:18:20
+- bump: patch
+  changes:
+    changed:
+    - Spelled out acronyms in parameter folder README files.
+  date: 2023-08-02 03:34:56
