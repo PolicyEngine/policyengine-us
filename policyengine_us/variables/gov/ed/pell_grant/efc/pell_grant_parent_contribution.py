@@ -8,14 +8,9 @@ class pell_grant_parent_contribution(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        assets = person("pell_grant_parent_assets", period)
-        allowances = person("pell_grant_parent_allowances", period)
-        income = person("pell_grant_parent_income", period)
+        available_income = person("pell_grant_parent_available_income", period)
         students = person("pell_grant_students_in_college", period)
         p = parameters(period).gov.ed.pell_grant.efc.parent
-        ajusted_assets = assets * p.asset_modification
-        ajusted_income = income - allowances
-        available_income = ajusted_income + ajusted_assets
         base = p.base.calc(available_income)
         additional = p.percent.calc(available_income)
         threshold = p.threshold.calc(available_income)

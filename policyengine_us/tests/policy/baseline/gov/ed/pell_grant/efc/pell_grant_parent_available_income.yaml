@@ -1,0 +1,44 @@
+- name: Only assets
+  period: 2023
+  input:
+    pell_grant_parent_income: 0
+    pell_grant_parent_allowances: 0
+    pell_grant_parent_assets: 500
+  output:
+    pell_grant_parent_available_income: 60
+
+- name: Income and no allowances
+  period: 2023
+  input:
+    pell_grant_parent_income: 40_000
+    pell_grant_parent_allowances: 0
+    pell_grant_parent_assets: 0
+  output:
+    pell_grant_parent_available_income: 40_000
+
+- name: Income and some allowances
+  period: 2023
+  input:
+    pell_grant_parent_income: 20_000
+    pell_grant_parent_allowances: 5_000
+    pell_grant_parent_assets: 0
+  output:
+    pell_grant_parent_available_income: 15_000
+
+- name: Income, some allowances, and assets
+  period: 2023
+  input:
+    pell_grant_parent_income: 30_000
+    pell_grant_parent_allowances: 10_000
+    pell_grant_parent_assets: 50_000
+  output:
+    pell_grant_parent_available_income: 26_000
+
+- name: Negative parent contribution
+  period: 2023
+  input:
+    pell_grant_parent_income: 0
+    pell_grant_parent_allowances: 100_000
+    pell_grant_parent_assets: 0
+  output:
+    pell_grant_parent_available_income: -100_000
