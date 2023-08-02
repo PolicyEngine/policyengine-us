@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class nm_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New Mexico AGI additions to federal AGI"
+    label = "New Mexico additions to federal AGI"
     unit = USD
     definition_period = YEAR
     reference = (
