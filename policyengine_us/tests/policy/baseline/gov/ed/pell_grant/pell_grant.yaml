@@ -2,8 +2,8 @@
   period: 2023
   input:
     pell_grant_efc: 0
-    pell_grant_cost_of_attendence: 100_000
-    pell_grant_student_schedule: 1
+    pell_grant_cost_of_attendance: 100_000
+    pell_grant_months_in_school: 1
   output:
     pell_grant: 6_895
 
@@ -11,8 +11,8 @@
   period: 2023
   input:
     pell_grant_efc: 3_000
-    pell_grant_cost_of_attendence: 3_300
-    pell_grant_student_schedule: 1
+    pell_grant_cost_of_attendance: 3_300
+    pell_grant_months_in_school: 1
   output:
     pell_grant: 0
 
@@ -20,7 +20,7 @@
   period: 2023
   input:
     pell_grant_efc: 2_000
-    pell_grant_cost_of_attendence: 5_000
-    pell_grant_student_schedule: .5
+    pell_grant_cost_of_attendance: 5_000
+    pell_grant_months_in_school: .5
   output:
     pell_grant: 1_500

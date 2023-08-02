@@ -1,7 +1,7 @@
 - name: Only assets
   period: 2023
   input:
-    pell_grant_student_income: 0
+    pell_grant_student_available_income: 0
     pell_grant_student_allowances: 0
     pell_grant_student_assets: 500
   output:
@@ -10,7 +10,7 @@
 - name: Income and no allowances
   period: 2023
   input:
-    pell_grant_student_income: 3_000
+    pell_grant_student_available_income: 3_000
     pell_grant_student_allowances: 0
     pell_grant_student_assets: 0
   output:
@@ -19,7 +19,7 @@
 - name: Income and some allowances
   period: 2023
   input:
-    pell_grant_student_income: 5_000
+    pell_grant_student_available_income: 5_000
     pell_grant_student_allowances: 3_000
     pell_grant_student_assets: 0
   output:
@@ -28,7 +28,7 @@
 - name: Income, allowances, and assets
   period: 2023
   input:
-    pell_grant_student_income: 7_000
+    pell_grant_student_available_income: 7_000
     pell_grant_student_allowances: 5_000
     pell_grant_student_assets: 10_000
   output:

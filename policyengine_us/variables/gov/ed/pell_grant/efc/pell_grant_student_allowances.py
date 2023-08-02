@@ -7,5 +7,5 @@ class pell_grant_student_allowances(Variable):
     label = "Student Allowances"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
+    def formula(person, period, parameters):
         return 7_040

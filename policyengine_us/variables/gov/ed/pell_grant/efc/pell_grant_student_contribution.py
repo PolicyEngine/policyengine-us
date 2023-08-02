@@ -12,6 +12,7 @@ class pell_grant_student_contribution(Variable):
         assets = person("pell_grant_student_assets", period)
         income = person("pell_grant_student_available_income", period)
         allowances = person("pell_grant_student_allowances", period)
-        ajusted_income = (income - allowances) * .5
-        ajusted_assets = assets * .2
+        p = parameters(period).gov.ed.pell_grant.efc.student
+        ajusted_income = (income - allowances) * p.income_modification
+        ajusted_assets = assets * p.asset_modification
         return ajusted_income + ajusted_assets

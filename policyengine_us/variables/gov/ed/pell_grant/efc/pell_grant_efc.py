@@ -7,8 +7,10 @@ class pell_grant_efc(Variable):
     label = "Expected Family Contribution"
     definition_period = YEAR
 
-    def formula(spm_unit, period, parameters):
-        return spm_unit("formula_a", period)
+    def formula(person, period, parameters):
+        parent_contribution = person("pell_grant_parent_contribution", period)
+        student_contribution = person("pell_grant_student_contribution", period)
+        return parent_contribution + student_contribution
 
 '''
     efc = parent_contrib + student_contrib + student_assets

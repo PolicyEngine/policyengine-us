@@ -1,0 +1,34 @@
+description: Expected parent contribution thresholds based on parent income
+brackets:
+  - threshold:
+      2023-01-01: -.inf
+    amount:
+      2023-01-01: 0
+  - threshold:
+      2023-01-01: 17_501
+    amount:
+      2023-01-01: 17_500
+  - threshold:
+      2023-01-01: 22_001
+    amount:
+      2023-01-01: 22_000
+  - threshold:
+      2023-01-01: 26_501
+    amount:
+      2023-01-01: 26_500
+  - threshold:
+      2023-01-01: 31_001
+    amount:
+      2023-01-01: 31_000
+  - threshold:
+      2023-01-01: 35_501
+    amount:
+      2023-01-01: 35_500
+metadata:
+  type: single_amount
+  rate_unit: /1
+  threshold_unit: /1
+  label: Expected parent contribution thresholds based on parent income
+  reference:
+    - title: THE EFC FORMULA, 2022–2023
+      href: https://fsapartners.ed.gov/site/default/files/2021-08/2223EFCFormulaGuide.pdf#page=29
