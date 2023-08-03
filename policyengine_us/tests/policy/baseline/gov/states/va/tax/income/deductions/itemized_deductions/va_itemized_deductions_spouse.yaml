@@ -1,0 +1,21 @@
+- name: VA itemized deductions for spouse
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_itemized_deductions: 10_000
+        va_prorate_fraction_head: 0.2
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # if file jointly on the federal return but separately on state return
+    # allocated to spouse by federal agi
+    va_itemized_deductions_spouse: 8_000
