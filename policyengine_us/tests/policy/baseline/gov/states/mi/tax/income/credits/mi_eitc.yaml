@@ -1,5 +1,4 @@
-
-- name: $1_000 EITC
+- name: $1_000 EITC in 2022
   period: 2022
   input:
     state_code: MI
@@ -7,7 +6,7 @@
   output:  
     mi_eitc: 300
 
-- name: $1_000 EITC
+- name: $1_000 EITC in 2023
   period: 2023
   input:
     state_code: MI
