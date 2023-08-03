@@ -6,3 +6,5 @@ class tax_unit_grandparents(Variable):
     entity = TaxUnit
     label = "Number of grandparents in the tax unit"
     definition_period = YEAR
+
+    adds = ["is_grandparent"]
