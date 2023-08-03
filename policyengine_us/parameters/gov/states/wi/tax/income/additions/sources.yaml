@@ -1,0 +1,19 @@
+description: Wisconsin adds these variables to US adjusted gross income when computing its gross income.
+values:
+  2021-01-01:
+    - tax_exempt_interest_income
+    - wi_capital_gain_loss_addition
+    - c05700  # lump-sum distributions from federal Form 4972
+
+metadata:
+  unit: variable
+  label: WI additions to US adjusted gross income
+  reference:
+  - title: 2021 WI schedule AD
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleADf.pdf
+  - title: 2021 WI schedule AD instructions
+    href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleAD-Inst.pdf
+  - title: 2022 WI schedule AD
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleADf.pdf
+  - title: 2022 WI schedule AD instructions
+    href: https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleAD-Inst.pdf
