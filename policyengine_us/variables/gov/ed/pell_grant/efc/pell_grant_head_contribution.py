@@ -18,8 +18,5 @@ class pell_grant_head_contribution(Variable):
         total_head_contribution = base + (
             (available_income - threshold) * additional
         )
-        return where(
-            formula == "B",
-            available_income / dependents,
-            total_head_contribution / dependents,
-        )
+        total = where(formula == "B", available_income, total_head_contribution)
+        return total / dependents

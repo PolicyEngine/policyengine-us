@@ -16,5 +16,5 @@ class pell_grant(Variable):
         p = parameters(period).gov.ed.pell_grant
         unbounded = coa - efc
         capped = min_(unbounded, p.amount.max)
-        amount = where(capped < p.min_grant, 0, capped)
+        amount = where(capped < p.amount.min, 0, capped)
         return amount * (months_in_school / p.months_in_school_year)
