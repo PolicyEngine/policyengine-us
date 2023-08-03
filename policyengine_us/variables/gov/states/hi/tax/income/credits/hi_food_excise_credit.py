@@ -20,6 +20,7 @@ class hi_food_excise_credit(Variable):
         status = filing_status.possible_values
         # Take the number of exemptions
         exemptions = tax_unit("exemptions", period)
+        dependent_on_another_return = tax_unit("dsi", period)
         # Determine the amount per exemption based on income
         amount_per_exemption = select(
             [
@@ -37,19 +38,19 @@ class hi_food_excise_credit(Variable):
                 p.amount.widow.calc(income),
             ],
         )
-        # Multiply amount by number of exemptions
-        exemption_total = exemptions * amount_per_exemption
+        # dsi does not influence minor child's total
+        exemption_total = (
+            exemptions * amount_per_exemption
+        ) * ~dependent_on_another_return
 
-        # NEW: add minor child parameter
         person = tax_unit.members
         is_child = person("is_child", period)
         minor_child = person("age", period) < p.minor_child.age_threshold
+
+        # add public_support_received
+        public_support_received = person("public_support_received", period)
         minor_child_total = p.minor_child.amount * tax_unit.sum(
-            is_child & minor_child
+            is_child & minor_child & public_support_received
         )
 
-        dependent_on_another_return = tax_unit("dsi", period)
-
-        return (
-            exemption_total + minor_child_total
-        ) * ~dependent_on_another_return
+        return exemption_total + minor_child_total
