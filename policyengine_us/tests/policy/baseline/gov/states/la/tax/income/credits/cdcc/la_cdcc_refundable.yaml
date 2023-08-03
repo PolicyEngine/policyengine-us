@@ -7,7 +7,6 @@
   output:
     la_cdcc_refundable: 500 # 0.25 * 2_000
 
-
 - name: LA refundable cdcc unit test 2
   period: 2007
   input:
@@ -16,8 +15,6 @@
     state_code: LA
   output:
     la_cdcc_refundable: 1_000 # 0.5 * 2_000
-  
-
 
 - name: LA refundable cdcc unit test 3
   period: 2006
@@ -27,3 +24,12 @@
     state_code: LA
   output:
     la_cdcc_refundable: 0
+
+- name: LA refundable cdcc unit test 4
+  period: 2007
+  input:
+    adjusted_gross_income: 25_000
+    cdcc: 2_000
+    state_code: LA
+  output:
+    la_cdcc_refundable: 1_000    #2_000*0.5

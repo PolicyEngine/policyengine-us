@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class la_cdcc_non_refundable(Variable):
@@ -12,22 +11,23 @@ class la_cdcc_non_refundable(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.credits
+        p = parameters(period).gov.states.la.tax.income.credits.cdcc
         # determine AGI eligibility
         us_agi = tax_unit("adjusted_gross_income", period)
-        agi_eligible = us_agi > p.cdcc.agi_threshold
+        agi_eligible = us_agi > p.agi_threshold
         # determine LA nonrefundable cdcc amount
         us_cdcc = tax_unit("cdcc", period)
-        la_non_refundable_cdcc = us_cdcc * p.cdcc.non_refundable.rate.calc(
+        la_non_refundable_cdcc_pre_cap = us_cdcc * p.non_refundable.rate.calc(
             us_agi
         )
-        la_non_refundable_cdcc = np.where(
-            us_agi > p.cdcc.non_refundable.upper_bracket.income_threshold,
-            np.minimum(
-                p.cdcc.non_refundable.upper_bracket.max_amount,
-                la_non_refundable_cdcc,
-            ),
-            la_non_refundable_cdcc,
+        upper_bracket = (
+            us_agi > p.non_refundable.upper_bracket.income_threshold
         )
-
+        upper_bracket_amount = min_(
+            p.non_refundable.upper_bracket.max_amount,
+            la_non_refundable_cdcc_pre_cap,
+        )
+        la_non_refundable_cdcc = where(
+            upper_bracket, upper_bracket_amount, la_non_refundable_cdcc_pre_cap
+        )
         return agi_eligible * la_non_refundable_cdcc
