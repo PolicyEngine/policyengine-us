@@ -75,7 +75,7 @@
   output:
     ri_standard_deduction: 1_810
 
-- name: Married filing separately 
+- name: Married filing separately
   period: 2021
   input:
     state_code: RI
@@ -83,3 +83,21 @@
     ri_standard_deduction_phase_out: 0.4
   output:
     ri_standard_deduction: 3_620
+
+- name: Single filer with full phase_out in 2021
+  period: 2021
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_phase_out: 0
+  output:
+    ri_standard_deduction: 0
+
+- name: Single filer with no phase_out in 2021
+  period: 2021
+  input:
+    state_code: RI
+    filing_status: SINGLE
+    ri_standard_deduction_phase_out: 1
+  output:
+    ri_standard_deduction: 9_050
