@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class la_cdcc_non_refundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana non refundable cdcc"
+    label = "Louisiana non-refundable cdcc"
     unit = USD
     definition_period = YEAR
     reference = "http://legis.la.gov/Legis/Law.aspx?d=101769"
