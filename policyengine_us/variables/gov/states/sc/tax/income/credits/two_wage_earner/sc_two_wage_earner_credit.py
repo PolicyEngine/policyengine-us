@@ -14,7 +14,6 @@ class sc_two_wage_earner_credit(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         # Determine eligibility. Must be a joint filer.
         filing_status = tax_unit("filing_status", period)
         eligible = filing_status == filing_status.possible_values.JOINT
