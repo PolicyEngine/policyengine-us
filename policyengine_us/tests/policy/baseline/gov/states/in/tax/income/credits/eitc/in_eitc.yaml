@@ -40,7 +40,7 @@
         members: [head, spouse]
         state_code: IN
   output:
-    in_eitc: 50
+    in_eitc: 45
   
 - name: Ineligible family with no child using 2022 data
   period: 2023
@@ -181,6 +181,7 @@
 
 - name: Eligible family with two ELIGIBLE children, 3 children, using 2021 data
   period: 2021
+  absolute_error_margin: 0.001
   input:
     people:
       head:
@@ -208,7 +209,7 @@
         members: [head, spouse, child1, child2, child3]
         state_code: IN
   output:
-    in_eitc: 500
+    in_eitc: 450
 
 
   

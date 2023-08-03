@@ -10,7 +10,7 @@ class in_eitc_eligible_child(Variable):
     defined_for = StateCode.IN
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states["in"].tax.income.credits.eic.age
+        p = parameters(period).gov.states["in"].tax.income.credits.eitc.age
         is_19 = person("age", period) < p.child
         is_24 = person("age", period) < p.full_time_student
         full_time_student = person("is_full_time_student", period)

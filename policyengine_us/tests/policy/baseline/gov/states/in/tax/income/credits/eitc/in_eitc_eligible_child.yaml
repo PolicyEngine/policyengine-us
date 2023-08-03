@@ -1,6 +1,7 @@
 - name: Over 18 and not disabled and student
   period: 2023
   input:
+    state_code: IN
     age: 19
     is_full_time_student: false
     is_disabled: false
@@ -10,15 +11,17 @@
 - name: Over 20 and not disabled while being a student
   period: 2023
   input:
+    state_code: IN
     age: 21
     is_full_time_student: true
     is_disabled: false
   output:
-    in_eitc_eligible_child: false
+    in_eitc_eligible_child: true
 
 - name: Disabled
   period: 2023
   input:
+    state_code: IN
     age: 21
     is_full_time_student: false
     is_disabled: true
@@ -28,6 +31,7 @@
 - name: Over 18 and not disabled while being a student 
   period: 2023
   input:
+    state_code: IN
     age: 19
     is_full_time_student: true
     is_disabled: false
@@ -37,6 +41,7 @@
 - name: Under 19 
   period: 2023
   input:
+    state_code: IN
     age: 18
     is_full_time_student: false
     is_disabled: false
