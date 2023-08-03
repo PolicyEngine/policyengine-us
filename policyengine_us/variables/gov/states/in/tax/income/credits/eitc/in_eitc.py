@@ -11,5 +11,5 @@ class in_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states["in"].tax.income.credits.eitc
-        eitc = tax_unit("earned_income_tax_credit", period)  # needs to be > 0
+        eitc = tax_unit("earned_income_tax_credit", period)
         return eitc * p.match
