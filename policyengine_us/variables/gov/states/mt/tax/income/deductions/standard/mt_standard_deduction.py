@@ -18,4 +18,5 @@ class mt_standard_deduction(Variable):
         min_amount = p.min[filing_status]
         max_amount = p.max[filing_status]
         unbounded = p.rate * agi
-        return max_(min_(unbounded, max_amount), min_amount)
+        max_amount = min_(unbounded, max_amount)
+        return max_(max_amount, min_amount)
