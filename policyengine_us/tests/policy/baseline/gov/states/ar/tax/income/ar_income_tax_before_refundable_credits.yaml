@@ -5,7 +5,7 @@
     ar_income_tax_before_non_refundable_credits: 2_000
     ar_non_refundable_credits: 500
   output:
-    nm_income_tax_before_refundable_credits: 1_500
+    ar_income_tax_before_refundable_credits: 1500
 
 - name: Capped at 0 
   period: 2022
