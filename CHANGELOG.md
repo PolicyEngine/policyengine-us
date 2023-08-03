@@ -709,12 +709,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Iowa exemption credit logic for head-of-household filing units.
 
-## [0.335.1] - 2023-06-18 20:18:56
-
-### Fixed
-
-- Iowa exemption credit logic for head-of-household filing units.
-
 ## [0.335.0] - 2023-06-12 15:05:19
 
 ### Fixed
