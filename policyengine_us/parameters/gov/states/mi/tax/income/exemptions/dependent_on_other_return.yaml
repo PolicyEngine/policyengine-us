@@ -1,0 +1,24 @@
+description: Michigan provides this exemption amount for a taxpayer who can be claimed as a dependent on someone else’s return. 
+SINGLE:
+  2021-01-01: 1_500
+JOINT:
+  2021-01-01: 3_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 1_500
+WIDOW:
+  2021-01-01: 1_500
+SEPARATE:
+  2021-01-01: 1_500
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: Michigan dependent on other return exemption amount
+  reference:
+    - title: Michigan Legal Code Section 206.30 - (4)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    - title: Michigan Taxpayer's Guide 2022 - page 23
+      href: https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf#page=23
+    - title: 2021 Michigan Taxpayer Assistance Manual - page 35
+      href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=35
