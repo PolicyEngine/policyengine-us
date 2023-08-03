@@ -23,4 +23,12 @@ class ri_exemptions(Variable):
 
         excess_agi_step = excess_agi / p.reduction.increment
 
-        return p.reduction.percentage.calc(excess_agi_step) * exemption_amount
+        reduced_exemption_amount = (
+            p.reduction.percentage.calc(excess_agi_step) * exemption_amount
+        )
+
+        return where(
+            agi <= p.reduction.start,
+            exemption_amount,
+            reduced_exemption_amount,
+        )
