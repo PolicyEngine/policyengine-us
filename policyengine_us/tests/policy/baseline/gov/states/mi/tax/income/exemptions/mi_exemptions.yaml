@@ -1,7 +1,7 @@
 - name: no dependents, is not stillborn parent, not disabled, is not a dependent
   period: 2022
   input:
-    head_spouse_count: 1
+    tax_unit_size: 1
     state_code: MI
   output:
     mi_exemptions: 5_000
@@ -9,8 +9,7 @@
 - name: 2 dependents, no stillborn parent, no disabled, is not a dependent
   period: 2022
   input:
-    head_spouse_count: 1
-    tax_unit_dependents: 2
+    tax_unit_size: 3
     state_code: MI
   output: # 5_000 * 3
     mi_exemptions: 15_000
@@ -18,7 +17,7 @@
 - name: no dependents, is stillborn parent, not disabled, is not a dependent
   period: 2022
   input:
-    head_spouse_count: 1
+    tax_unit_size: 1
     tax_unit_stillborn_children: 1
     state_code: MI
   output: # 5_000 + 5_000
@@ -32,7 +31,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        head_spouse_count: 1
+        tax_unit_size: 1
         members: [person1]
     household:
       members: [person1]
@@ -49,7 +48,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        head_spouse_count: 1
+        tax_unit_size: 1
         members: [person1]
     household:
       members: [person1]
@@ -69,8 +68,7 @@
         is_disabled: true
     tax_units:
       tax_unit:
-        head_spouse_count: 1
-        tax_unit_dependents: 1
+        tax_unit_size: 2
         members: [person1, person2]
     household:
       members: [person1, person2]
@@ -81,7 +79,7 @@
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2021
   input:
-    head_spouse_count: 1
+    tax_unit_size: 1
     dsi: true
     filing_status: SINGLE
     state_code: MI
@@ -91,7 +89,7 @@
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, married
   period: 2021
   input:
-    head_spouse_count: 1
+    tax_unit_size: 1
     dsi: true
     filing_status: JOINT
     state_code: MI
@@ -101,7 +99,7 @@
 - name: no dependents, is not stillborn parent, not disabled, is a dependent, single
   period: 2022
   input:
-    head_spouse_count: 1
+    tax_unit_size: 1
     dsi: true
     filing_status: SINGLE
     state_code: MI

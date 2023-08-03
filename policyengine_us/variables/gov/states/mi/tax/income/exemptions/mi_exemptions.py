@@ -16,17 +16,11 @@ class mi_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mi.tax.income.exemptions
 
-        # Personal Exemptions
-        person = tax_unit("head_spouse_count", period)
-        personal_exemption = person * p.base
-
-        # Dependent exemptions
-        dependents = tax_unit("tax_unit_dependents", period)
-        dependent_exemption = dependents * p.dependent
-
-        # Stillborn Exemptions
-        stillbirths = tax_unit("tax_unit_stillborn_children", period)
-        stillborn_exemption = stillbirths * p.stillborn
+        # Personal Exemptions & Stillborn Exemptions
+        exemptions = add(
+            tax_unit, period, ["tax_unit_size", "tax_unit_stillborn_children"]
+        )
+        personal_exemption = exemptions * p.personal
 
         # Disabled exemptions
         disabled_people = add(tax_unit, period, ["is_disabled"])
@@ -53,8 +47,6 @@ class mi_exemptions(Variable):
                 personal_exemption,
                 is_dependent_exemption,
             )
-            + dependent_exemption
-            + stillborn_exemption
             + disabled_exemption
             + disabled_veteran_exemption
         )
