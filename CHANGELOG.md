@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.404.0] - 2023-08-03 01:17:19
+
+### Added
+
+- Delaware additional standard deduction.
+- Fixed aged personal credit structure.
+
 ## [0.403.3] - 2023-08-02 18:03:26
 
 ### Fixed
@@ -4666,6 +4673,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.404.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.3...0.404.0
 [0.403.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.2...0.403.3
 [0.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.1...0.403.2
 [0.403.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.0...0.403.1
