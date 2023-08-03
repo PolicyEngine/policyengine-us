@@ -1,0 +1,26 @@
+description: California phases in the CalEITC at this rate, based on the number of children.
+metadata:
+  type: single_amount
+  threshold_unit: child
+  amount_unit: /1
+  label: CalEITC phase-in rate
+  reference:
+    - title: California Revenue and Taxation Code 17052(b)(1)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: 0.0765
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: 0.34
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2015-01-01: 0.4
+  - threshold:
+      2015-01-01: 3
+    amount:
+      2015-01-01: 0.45

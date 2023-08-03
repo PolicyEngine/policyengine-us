@@ -1,0 +1,20 @@
+description: The US provides a energy efficient home improvement credit for these energy efficiency improvements.
+values:
+  2006-01-01:
+    - heat_pump
+    - heat_pump_water_heater
+  # Inflation Reduction Act adds biomass stoves and boilers.
+  # It also includes natural gas heat pumps and heat pump water heaters,
+  # but we lump those together.
+  2023-01-01:
+    - heat_pump
+    - heat_pump_water_heater
+    - biomass_stove_boiler
+metadata:
+  name: energy_efficient_home_improvement_credit_qualifying_heat_pump_heat_pump_water_heater_biomass_stove_boiler_expenditures
+  label: Expenditures on heat pump water heaters, heat pumps, and biomass stovers and boilers that qualify for energy efficient home improvement credit
+  reference:
+    - title: 26 U.S.C. § 25C(d)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#d_3
+    - title: Inflation Reduction Act, Part 3, Section 13301
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=342

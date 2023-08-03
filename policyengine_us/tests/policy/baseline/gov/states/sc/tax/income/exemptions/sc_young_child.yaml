@@ -1,0 +1,37 @@
+- name: 1 child under 6 gets $4,430 young child exemption.
+  period: 2022
+  input:
+    people:
+      parent: {}
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: SC
+  output:
+    sc_young_child_exemption: 4_430
+
+- name: Family with a child age 6 and two children age 4 gets two young child exemptions.
+  period: 2022
+  input:
+    people:
+      parent: {}
+      child1:
+        age: 4
+      child2:
+        age: 4
+      child3:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3]
+    households:
+      household:
+        members: [parent, child1, child2, child3]
+        state_code: SC
+  output:
+    sc_young_child_exemption: 8_860

@@ -1,0 +1,37 @@
+description: OH individual tax on nonbusiness income
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      # The first $25,000 income are not taxed; Ohio has a tax cliff.
+      # This is the rate implied by the starting tax amount $346.16
+      # divided by $25,000.
+      # Separately, we add a variable for being tax exempt, set if income
+      # is below $25,000.
+      2021-01-01: 0.01385
+  - threshold: 
+      2021-01-01: 25_000
+    rate:
+      2021-01-01: 0.02765
+  - threshold:
+      2021-01-01: 44_250
+    rate:
+      2021-01-01: 0.03226
+  - threshold:
+      2021-01-01: 88_450
+    rate:
+      2021-01-01: 0.03688
+  - threshold: 
+      2021-01-01: 110_650
+    rate: 
+      2021-01-01: 0.0399
+metadata:
+  threshold_unit: currency-USD
+  rate_unit: /1
+  type: marginal_rate
+  label: OH AGI Income Tax Rate
+  reference:
+    - title: Ohio Tax Rate Schedule
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.02
+    - title: Ohio Income Tax Form
+      href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=31

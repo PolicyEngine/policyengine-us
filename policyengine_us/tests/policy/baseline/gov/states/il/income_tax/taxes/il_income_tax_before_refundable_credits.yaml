@@ -1,0 +1,24 @@
+- name: "Test #1"
+  period: 2021
+  input:
+    il_income_tax_before_nonrefundable_credits: 12983
+    il_nonrefundable_credits: 1234
+    state_code: IL
+  output:
+    il_income_tax_before_refundable_credits: 12983 - 1234
+- name: "Test #2"
+  period: 2021
+  input:
+    il_income_tax_before_nonrefundable_credits: 87235
+    il_nonrefundable_credits: 1287
+    state_code: IL
+  output:
+    il_income_tax_before_refundable_credits: 87235 - 1287
+- name: "Test #3"
+  period: 2021
+  input:
+    il_income_tax_before_nonrefundable_credits: 1498124
+    il_nonrefundable_credits: 345892
+    state_code: IL
+  output:
+    il_income_tax_before_refundable_credits: 1498124 - 345892

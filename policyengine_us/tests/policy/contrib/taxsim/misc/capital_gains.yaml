@@ -1,0 +1,38 @@
+- name: Tax unit with taxsimid 95009 from t21.its.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 49_000
+        taxable_interest_income: 9_000
+        long_term_capital_gains: 10_000
+        social_security: 21_000
+        real_estate_taxes: 17_000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 9_000
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX  # no state income tax
+  output:  # expected from TAXSIM35
+    taxsim_tfica: 3_748.50
+    income_tax: -1_453.00

@@ -1,5 +1,5 @@
-name: openfisca-us-test
+name: policyengine-us
 dependencies:
-  - python=3.7
+  - python=3.9
   - pip:
-    - openfisca-us
+    - policyengine-us

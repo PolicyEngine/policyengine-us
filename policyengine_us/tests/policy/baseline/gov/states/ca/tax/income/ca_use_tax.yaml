@@ -1,0 +1,23 @@
+- name: CA AGI < $10_000 then pay $0
+  period: 2021
+  input:
+    state_code: CA
+    ca_agi: 8_000
+  output:
+    ca_use_tax: 0
+  
+- name: $100k AGI = $9.
+  period: 2021
+  input:
+    state_code: CA
+    ca_agi: 100_000
+  output:
+    ca_use_tax: 9
+
+- name: CA AGI > $199_999 then you pay 0.008% of AGI
+  period: 2021
+  input:
+    state_code: CA
+    ca_agi: 1_000_000
+  output:
+    ca_use_tax: 80

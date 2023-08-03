@@ -1,0 +1,28 @@
+description: California phases out the CalEITC at this rate, depending on the number of children.
+metadata:
+  rate_unit: currency-USD
+  rate_period: year
+  threshold_unit: child
+  type: single_amount
+  label: CalEITC phase-out rate
+  reference:
+    - title: California Legal code REVENUE AND TAXATION CODE - RTC (2019)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+brackets:
+  - threshold:
+      2015-01-01: 0
+    amount:
+      2015-01-01: 0.0765
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: 0.34
+  - threshold:
+      2015-01-01: 2
+    amount:
+      2015-01-01: 0.40
+  - threshold:
+      2015-01-01: 3
+    amount:
+      2015-01-01: 0.45
+

@@ -1,0 +1,52 @@
+description: NE refundable cdcc as fraction of federal cdcc amount.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 1.0
+  - threshold:
+      2021-01-01: 22_000
+    amount:
+      2021-01-01: 0.9
+  - threshold:
+      2021-01-01: 23_000
+    amount:
+      2021-01-01: 0.8
+  - threshold:
+      2021-01-01: 24_000
+    amount:
+      2021-01-01: 0.7
+  - threshold:
+      2021-01-01: 25_000
+    amount:
+      2021-01-01: 0.6
+  - threshold:
+      2021-01-01: 26_000
+    amount:
+      2021-01-01: 0.5
+  - threshold:
+      2021-01-01: 27_000
+    amount:
+      2021-01-01: 0.4
+  - threshold:
+      2021-01-01: 28_000
+    amount:
+      2021-01-01: 0.3
+  - threshold:
+      2021-01-01: 29_000
+    amount:
+      2021-01-01: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  label: NE refundable cdcc as fraction of federal cdcc amount
+  reference:
+  - title: 2021 NE Form 2441N
+    href: https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_2441n.pdf
+  - title: 2022 NE Form 2441N
+    href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/Form_2441N_Ne_Child_and_Dependent_Care_Expenses_8-618-2022_final_2.pdf
+  - title: 316 Nebraska Administrative Code | Chapter 22 | §019.11
+    href: https://revenue.nebraska.gov/about/legal-information/regulations/chapter-22-individual-income-tax

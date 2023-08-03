@@ -1,0 +1,32 @@
+- name: 100% for up to 80% of AMI (exclusive), capped at $4,000.
+  period: 2023
+  input:
+    electric_load_service_center_upgrade_expenditures: 5_000
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_electric_load_service_center_upgrade_rebate: 4_000
+
+
+- name: 50% for 80-150% of AMI (inclusive on both ends), capped at $4,000.
+  period: 2023
+  input:
+    electric_load_service_center_upgrade_expenditures: 6_000
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    capped_electric_load_service_center_upgrade_rebate: 3_000
+
+- name: Not available pre-2023.
+  period: 2022
+  input:
+    electric_load_service_center_upgrade_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_electric_load_service_center_upgrade_rebate: 0
+
+- name: Not available after September 30, 2031.
+  period: 2032
+  input:
+    electric_load_service_center_upgrade_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_electric_load_service_center_upgrade_rebate: 0

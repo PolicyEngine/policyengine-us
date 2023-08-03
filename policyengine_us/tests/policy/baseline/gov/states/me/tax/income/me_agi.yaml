@@ -1,0 +1,32 @@
+- name: Outside Maine, no ME AGI
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    filing_status: SINGLE
+  output:
+    me_agi: 0
+
+- name: If $0 income and $0 mods, ME agi is $0. 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    adjusted_gross_income: 0 #is there a better way to label this variable to pull from the federal agi variable 
+    me_agi_additions: 0
+    me_agi_subtractions: 0
+  output:
+    me_agi: 0
+
+- name: If $100_000 income and $10_000 add mods and $20_000 sub mods, Maine AGI is $90_000. 
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000  
+    me_agi_additions: 10_000
+    me_agi_subtractions: 20_000
+  output:
+    me_agi: 90_000

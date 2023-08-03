@@ -1,0 +1,11 @@
+description: Pennsylvania caps the use tax at this amount for people outside Philadelphia and Allegheny County.
+values:
+  2021-01-01: 75
+metadata:
+  unit: currency-USD
+  period: year
+  name: rest_of_pa_use_tax_cap
+  label: Rest of PA use tax cap
+  reference:
+    - title: PA Form PA-40 Instructions, page 22
+      href: https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=22

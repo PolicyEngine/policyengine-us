@@ -1,0 +1,15 @@
+- name: No EITC, no matched credit
+  period: 2023
+  input:
+    state_code: DC
+    earned_income_tax_credit: 0
+  output:
+    dc_eitc_with_qualifying_child: 0
+
+- name: 70% match
+  period: 2023
+  input:
+    state_code: DC
+    earned_income_tax_credit: 100
+  output:
+    dc_eitc_with_qualifying_child: 70

@@ -1,0 +1,45 @@
+- name: Cap at $1,200 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    capped_energy_efficient_window_credit: 1_300
+  output:
+    energy_efficient_home_improvement_credit: 1_200
+
+- name: Cap at $2,000 if from heat pumps, etc., after the Inflation Reduction Act.
+  period: 2023
+  input:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 2_000
+  output:
+    energy_efficient_home_improvement_credit: 2_000
+
+- name: Cap at $2,000 if from heat pumps, etc., after the Inflation Reduction Act.
+  period: 2023
+  input:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 1_500
+    capped_energy_efficient_window_credit: 100
+  output:
+    energy_efficient_home_improvement_credit: 1_500
+
+- name: No lifetime cap under the Inflation Reduction Act.
+  period: 2023
+  input:
+    prior_energy_efficient_home_improvement_credits: 1_000_000
+    capped_energy_efficient_window_credit: 100
+  output:
+    energy_efficient_home_improvement_credit: 100
+
+- name: Cap at $500 in 2021.
+  period: 2021
+  input:
+    capped_energy_efficient_window_credit: 400
+    prior_energy_efficient_home_improvement_credits: 200
+  output:
+    # Would be $400, but capped at $500-200=300.
+    energy_efficient_home_improvement_credit: 300
+
+- name: Expires 2032-12-31.
+  period: 2033
+  input:
+    capped_energy_efficient_door_credit: 1
+  output:
+    energy_efficient_home_improvement_credit: 0

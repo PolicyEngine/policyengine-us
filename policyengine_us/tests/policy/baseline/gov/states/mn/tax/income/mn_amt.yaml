@@ -1,0 +1,39 @@
+- name: MN AMT unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    mn_amt_taxable_income: 69_750
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    mn_amt: 675
+
+- name: MN AMT unit test 2
+  period: 2021
+  input:
+    filing_status: SINGLE
+    mn_amt_taxable_income: 400_000
+    mn_basic_tax: 20_000
+    state_code: MN
+  output:
+    mn_amt: 0.0675 * 400_000 - 20_000
+
+- name: MN AMT unit test 3
+  period: 2022
+  input:
+    filing_status: JOINT
+    mn_amt_taxable_income: 92_150
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    mn_amt: 675
+
+- name: MN AMT unit test 4
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    mn_amt_taxable_income: 71_610
+    mn_basic_tax: 0
+    state_code: MN
+  output:
+    mn_amt: 675

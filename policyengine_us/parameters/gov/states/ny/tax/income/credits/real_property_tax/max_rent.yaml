@@ -1,0 +1,10 @@
+description: Renters whose rent is more than this value per year are ineligible for the NY real property tax credit.
+values:
+  2019-01-01: 5_400
+metadata:
+  unit: currency-USD
+  period: year
+  label: NY real property tax maximum rent
+  reference:
+    - title: Section 606 Credits against tax (e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

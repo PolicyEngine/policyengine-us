@@ -1,0 +1,19 @@
+description: Colorado TANF counts these income sources as unearned income.
+values:
+  2021-01-01:
+    - veterans_benefits
+    - rental_income
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    - ssi
+metadata:
+  unit: list
+  reference:
+    title: CODE OF COLORADO REGULATIONS 9 CCR 2503-6 | Income Maintenance (Volume 3) | 3.605.3
+    href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=10321#page=45

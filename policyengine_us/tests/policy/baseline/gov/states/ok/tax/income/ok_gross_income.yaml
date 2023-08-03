@@ -1,0 +1,9 @@
+- name: OK gross income unit test 1
+  period: 2021
+  input:
+    employment_income: 12_000
+    social_security: 2_000
+    earned_income_tax_credit: 800
+    state_code: OK
+  output:
+    ok_gross_income: 12_000 + 2_000 + 800

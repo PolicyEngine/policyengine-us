@@ -1,0 +1,8 @@
+- name: CTC subtracts the reduction from the maximum.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    ctc_maximum: 3
+    ctc_phase_out: 1
+  output:
+    ctc: 2

@@ -1,0 +1,142 @@
+- name: No Values
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 0
+    taxable_social_security: 0
+    filing_status: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: AGI below threshold, private pension income, taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 5_000
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+
+- name: AGI below threshold, private pension income, without taxable social security income, single
+  period: 2021
+  absolute_error_margin: 30_000
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: AGI above threshold, private pension income, taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 95_000
+    taxable_social_security: 15_000
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+
+- name: AGI above threshold, private pension income, without taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 95_000
+    taxable_social_security: 0
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: AGI above threshold, private pension income, taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 105_000
+    taxable_social_security: 10_000
+    filing_status: JOINT
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+
+- name: AGI above threshold, private pension income, without taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 105_000
+    taxable_social_security: 0
+    filing_status: JOINT
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: AGI below threshold, private pension income, taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 5_000 
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+
+- name: AGI below threshold, private pension income, without taxable social security income, single
+  period: 2021
+  absolute_error_margin: 30_000
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 0 
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: AGI above threshold, private pension income, taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 95_000
+    taxable_social_security: 15_000 
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+
+- name: AGI above threshold, private pension income, without taxable social security income, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 95_000
+    taxable_social_security: 0 
+    filing_status: SINGLE
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0
+
+- name: AGI above threshold, private pension income, taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 105_000
+    taxable_social_security: 10_000 
+    filing_status: JOINT
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+
+- name: AGI above threshold, private pension income, without taxable social security income, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 105_000
+    taxable_social_security: 0 
+    filing_status: JOINT
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0.0

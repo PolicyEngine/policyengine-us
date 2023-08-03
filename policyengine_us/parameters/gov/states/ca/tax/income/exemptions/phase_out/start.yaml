@@ -1,0 +1,28 @@
+description: Phase out starting amount of california exemption
+SINGLE:
+  2021-01-01: 212_288
+  2022-01-01: 229_908
+SEPARATE:
+  2021-01-01: 212_288
+  2022-01-01: 229_908
+WIDOW:
+  2021-01-01: 424_581
+  2022-01-01: 459_821
+JOINT:
+  2021-01-01: 424_581
+  2022-01-01: 459_821
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 318_437
+  2022-01-01: 344_867
+
+metadata:
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  label: "California exemption phase out start"
+  reference:
+  - title: 2021 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+  - title: 2022 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html

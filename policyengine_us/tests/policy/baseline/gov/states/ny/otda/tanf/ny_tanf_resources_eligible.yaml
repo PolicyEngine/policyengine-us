@@ -1,0 +1,37 @@
+- name: Households with any member over 60 who have $3,000 assets are eligible.
+  period: 2023
+  input:
+    state_code: NY
+    age: 61
+    ny_tanf_countable_resources: 3000
+  output:
+    ny_tanf_resources_eligible: true
+
+
+- name: Households with any member over 60 who have assets exceeding $3,000 are ineligible. 
+  period: 2023
+  input:
+    state_code: NY
+    age: 61
+    ny_tanf_countable_resources: 4000
+  output:
+    ny_tanf_resources_eligible: false
+
+
+- name: Households with all members under 60 who have assets exceeding $2,000 are ineligible. 
+  period: 2023
+  input:
+    state_code: NY
+    age: 59
+    ny_tanf_countable_resources: 2500
+  output:
+    ny_tanf_resources_eligible: false
+
+- name: Households with all members under 60 who have assets under $2,000 are eligible.
+  period: 2023
+  input:
+    state_code: NY
+    age: 59
+    ny_tanf_countable_resources: 1500
+  output:
+    ny_tanf_resources_eligible: true

@@ -1,0 +1,10 @@
+- name: OK chc unit test 1
+  period: 2021
+  input:
+    adjusted_gross_income: 40_000
+    ok_agi: 20_000
+    cdcc: 2_000
+    ctc: 3_000
+    state_code: OK
+  output:
+    ok_child_care_child_tax_credit: 2_000 * 0.20 * (20_000 / 40_000)

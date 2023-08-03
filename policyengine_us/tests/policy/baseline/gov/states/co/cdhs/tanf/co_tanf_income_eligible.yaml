@@ -1,0 +1,19 @@
+- name: Household with no income is eligible.
+  period: 2023
+  input:
+    state_code: CO
+    co_tanf_need_standard: 1
+    co_tanf_countable_earned_income_need: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf_income_eligible: true
+
+- name: Household with income exceeding need standard is ineligible.
+  period: 2023
+  input:
+    state_code: CO
+    co_tanf_need_standard: 1
+    co_tanf_countable_earned_income_need: 1
+    co_tanf_countable_gross_unearned_income: 1
+  output:
+    co_tanf_income_eligible: false

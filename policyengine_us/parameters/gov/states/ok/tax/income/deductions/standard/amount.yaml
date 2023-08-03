@@ -1,0 +1,23 @@
+description: Oklahoma provides this standard deduction, depending on filing status.
+metadata:
+  label: Oklahoma standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
+  - title: 2022 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf
+
+JOINT:
+  2021-01-01: 12_700
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 9_350
+WIDOW:
+  2021-01-01: 12_700
+SINGLE:
+  2021-01-01: 6_350
+SEPARATE:
+  2021-01-01: 6_350

@@ -1,0 +1,32 @@
+description: SNAP homeless shelter deduction amount.
+
+values:
+  2019-01-01:
+    value: 143
+    metadata:
+      reference:
+        - title: 7 U.S. Code § 2014(e)(6)(D)(i)
+          href: https://www.law.cornell.edu/uscode/text/7/2014#e_6_D_i
+  2020-10-01:
+    value: 156.74
+    metadata:
+      - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2021 Income Eligibility Standards
+        href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY21-Maximum-Allotments-Deductions.pdf
+  2021-10-01:
+    value: 159.73
+    metadata:
+      reference:
+        - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2022 Income Eligibility Standards
+          href: https://fns-prod.azureedge.us/sites/default/files/media/file/FY22-Maximum-Allotments-Deductions.pdf
+  2022-10-01:
+    value: 166.81
+    metadata:
+      reference:
+        - title: Supplemental Nutrition Assistance Program (SNAP) Fiscal Year (FY) 2023 Income Eligibility Standards
+          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
+    
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: SNAP homeless shelter deduction

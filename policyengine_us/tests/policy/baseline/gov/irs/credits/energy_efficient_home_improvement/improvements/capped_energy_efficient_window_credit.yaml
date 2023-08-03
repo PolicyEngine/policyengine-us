@@ -1,0 +1,36 @@
+- name: 10% with a lifetime cap of $200 before the Inflaton Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_window_expenditures: 400
+  output:
+    capped_energy_efficient_window_credit: 40
+
+- name: 10% with a lifetime cap of $200 before the Inflaton Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_window_expenditures: 1_000_000
+  output:
+    capped_energy_efficient_window_credit: 200
+
+- name: 10% with a lifetime cap of $200 before the Inflaton Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_window_expenditures: 1_000
+    prior_energy_efficient_window_credits: 110
+  output:
+    # Would be $100 without the lifetime cap, instead $200 - $110.
+    capped_energy_efficient_window_credit: 90
+
+- name: 30% capped at $600 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_window_expenditures: 1_000
+  output:
+    capped_energy_efficient_window_credit: 300
+
+- name: 30% capped at $600 after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_window_expenditures: 3_200
+  output:
+    capped_energy_efficient_window_credit: 600

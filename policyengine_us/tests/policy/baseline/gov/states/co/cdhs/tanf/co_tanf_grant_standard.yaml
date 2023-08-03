@@ -1,0 +1,36 @@
+- name: If no children and one adult, grant standard is $337/mo.
+  period: 2023
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_grant_standard: 337 * 12
+
+- name: If not eligible, we don't calculate it.
+  period: 2023
+  input:
+    co_tanf_eligible: false
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 0
+  output:
+    co_tanf_grant_standard: 0
+
+- name: If two adults and 12 kids, grant standard is $1,538 + 2 * $82 = $1,702 per month.
+  period: 2023
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 12
+  output:
+    co_tanf_grant_standard: 1_702 * 12
+
+- name: If one pregnant adults and one unborn baby, grant standard is $440 + $10 = $450 per month.
+  period: 2023
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 1
+    is_pregnant: true
+  output:
+    co_tanf_grant_standard: 450 * 12

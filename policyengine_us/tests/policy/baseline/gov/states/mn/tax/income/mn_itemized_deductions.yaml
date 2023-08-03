@@ -1,0 +1,48 @@
+- name: MN itemized deduction unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    interest_deduction: 10_000
+    state_code: MN
+  output:
+    mn_itemized_deductions: 10_000
+
+- name: MN itemized deduction unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 216_050
+    interest_deduction: 10_000
+    state_code: MN
+  output:
+    mn_itemized_deductions: 10_000 - 0.03 * (216_050 - 206_050)
+
+- name: MN itemized deduction unit test 3
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_206_050
+    interest_deduction: 10_000
+    state_code: MN
+  output:
+    mn_itemized_deductions: 10_000 - 0.80 * 10_000
+
+- name: MN itemized deduction unit test 4
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_206_050
+    interest_deduction: 10_000
+    medical_expense_deduction: 400
+    casualty_loss_deduction: 200
+    state_code: MN
+  output:
+    mn_itemized_deductions: (10_000 + 400 + 200) - 0.80 * 10_000
+
+
+

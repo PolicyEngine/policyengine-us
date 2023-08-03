@@ -1,0 +1,89 @@
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 0
+    state_code: MO
+  output:
+    mo_income_tax_before_refundable_credits: 0.0
+
+- name: If exempt, no tax.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    mo_income_tax_exempt: true
+    mo_taxable_income: 99
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 0
+
+- name:  $8,999 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 8_999
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 298.81
+
+- name:  $9,500 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 9_500
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 325.86
+
+- name:  $13,000 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 13_000
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 514.864
+
+- name: no income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 0
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 0.0
+
+- name:  $8,999 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 8_999
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 298.81
+
+- name:  $9,500 MO taxable income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 9_500
+    state_code: MO
+  output:
+    mo_income_tax_before_credits: 325.86
+
+- name:  $13,000 MO taxable income in 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 13_000
+    state_code: MO
+  output:  # output calculated using 2022 bracket thresholds in 2023
+    #   (1.5% * $1,121)                16.815
+    # + (2% * ($2,242 - $1,121))       22.420
+    # + (2.5% * ($3,363 - $2,242))     28.025
+    # + (3% * ($4,484 - $3,363))       33.630
+    # + (3.5% * ($5,605 - $4,484))     39.235
+    # + (4% * ($6,726 - $5,605))       44.840
+    # + (4.5% * ($7,847 - $6,726))     50.445
+    # + (4.95% * ($13,000 - $7,847))  255.0735
+    mo_income_tax_before_credits:     490.4835

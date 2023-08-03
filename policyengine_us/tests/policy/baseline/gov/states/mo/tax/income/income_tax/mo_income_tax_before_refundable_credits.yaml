@@ -1,0 +1,17 @@
+- name: Income tax minus non-refundable credits.
+  period: 2023
+  input:
+    mo_income_tax_before_credits: 100
+    mo_non_refundable_credits: 60
+    state_code: MO
+  output:
+    mo_income_tax_before_refundable_credits: 40
+
+- name: Cannot be negative
+  period: 2023
+  input:
+    mo_income_tax_before_credits: 100
+    mo_non_refundable_credits: 160
+    state_code: MO
+  output:
+    mo_income_tax_before_refundable_credits: 0

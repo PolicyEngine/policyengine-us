@@ -1,0 +1,27 @@
+description: Alabama provides dependent exemption amounts based on the filed AGI amount.
+
+brackets:
+- threshold:
+      2022-01-01: -.inf
+  amount: 
+      2022-01-01: 1_000
+- threshold:
+      2022-01-01: 50_000
+  amount: 
+      2022-01-01: 500
+- threshold:
+      2022-01-01: 100_000
+  amount: 
+      2022-01-01: 300
+
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: year
+  type: single_amount
+  label: Alabama dependent exemption
+  reference:
+  - title: 2022 Alabama Department of Revenue Page 10
+    href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40bk.pdf 
+  - title: The Code of Alabama 1975 Section 40-18-19 (a)(9)
+    href: https://alisondb.legislature.state.al.us/alison/CodeOfAlabama/1975/Coatoc.htm

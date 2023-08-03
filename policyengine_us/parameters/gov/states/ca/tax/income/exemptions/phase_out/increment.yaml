@@ -1,0 +1,28 @@
+description: Phase out increment of california exemption
+SINGLE:
+  2021-01-01: 2_500
+  2022-01-01: 2_500
+SEPARATE:
+  2021-01-01: 1_250
+  2022-01-01: 1_250
+WIDOW:
+  2021-01-01: 2_500
+  2022-01-01: 2_500
+JOINT:
+  2021-01-01: 2_500
+  2022-01-01: 2_500
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 2_500
+  2022-01-01: 2_500
+
+metadata:
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  label: "California exemption phase out increment"
+  reference:
+  - title: 2021 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+  - title: 2022 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html

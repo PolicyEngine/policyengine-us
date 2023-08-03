@@ -1,0 +1,10 @@
+description: Filers with NY AGI under this amount use the alternate parameters.
+values:
+  2000-01-01: 40_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: NY CDCC alternate maximum AGI
+  reference:
+    - title: Section 606 Credits against tax (c)(1)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

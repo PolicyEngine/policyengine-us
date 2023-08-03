@@ -1,0 +1,28 @@
+description: Above-the-line deductions disallowed in Massachusetts income tax.
+values:
+  2001-01-01:
+    - loss_ald # (c)
+    - ira_contributions # (f)
+    - sep_simple_qualified_plan_contributions # (f)
+    - early_withdrawal_penalty # (h)
+    - self_employment_tax_ald
+  2018-01-01:
+    - loss_ald # (c)
+    - ira_contributions # (f)
+    - sep_simple_qualified_plan_contributions # (f)
+    - early_withdrawal_penalty # (h)
+    - self_employment_tax_ald
+    - alimony_income  # is a US ALD only in 2018 through 2025
+  2026-01-01:
+    - loss_ald # (c)
+    - ira_contributions # (f)
+    - sep_simple_qualified_plan_contributions # (f)
+    - early_withdrawal_penalty # (h)
+    - self_employment_tax_ald  
+metadata:
+  unit: variable
+  name: ma_ald_disallowed
+  label: MA Above-the-line deductions disallowed
+  reference:
+    - title: Mass. General Laws c.62 § 2(d)(1)(A)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-2

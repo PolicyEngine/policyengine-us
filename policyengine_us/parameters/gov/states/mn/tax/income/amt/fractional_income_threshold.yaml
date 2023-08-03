@@ -1,0 +1,28 @@
+description: Minnesota has an alternative income tax (AMT) the calculation of which involves this fractional excess income threshold.
+metadata:
+  label: Minnesota fractional excess income threshold
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Minnesota Schedule M1MT form, Line 21
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf#page=1
+  - title: 2022 Minnesota Schedule M1MT form, Line 21
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf#page=1
+
+JOINT:
+  2021-01-01: 79_660
+  2022-01-01: 82_150
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 59_750
+  2022-01-01: 61_610
+WIDOW:
+  2021-01-01: 79_660
+  2022-01-01: 82_150
+SINGLE:
+  2021-01-01: 59_750
+  2022-01-01: 61_610
+SEPARATE:
+  2021-01-01: 39_840
+  2022-01-01: 41_080

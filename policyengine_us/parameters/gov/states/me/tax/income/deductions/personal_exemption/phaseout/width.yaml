@@ -1,0 +1,21 @@
+description: Maine phases out its personal exemption over this amount of Maine AGI above the threshold.
+metadata:
+  unit: currency-USD
+  label: Maine personal exemption phase-out width
+  reference:
+    - title: Instructions for Form 1040ME
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_book_gen_instr_revMay2022.pdf#page=4
+    - title: §5126-A. Personal exemptions on or after January 1, 2018
+      href: https://legislature.maine.gov/statutes/36/title36sec5126-A.html
+  breakdown:
+    - filing_status
+SINGLE:
+  2021-01-01: 125_000
+SEPARATE:
+  2021-01-01: 62_500
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 125_000
+JOINT:
+  2021-01-01: 125_000
+WIDOW:
+  2021-01-01: 62_500

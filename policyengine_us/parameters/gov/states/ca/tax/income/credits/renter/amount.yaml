@@ -1,0 +1,31 @@
+description: California provides a renter credit of this amount.
+SINGLE:
+  2021-01-01: 60
+  2022-01-01: 60
+SEPARATE:
+  2021-01-01: 60
+  2022-01-01: 60
+WIDOW:
+  2021-01-01: 120
+  2022-01-01: 120
+JOINT:
+  2021-01-01: 120
+  2022-01-01: 120
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 120
+  2022-01-01: 120
+
+metadata:
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  label: California renter tax credit amount
+  reference:
+  - title: Cal. Rev. & Tax. Code § 17053.5
+    href: https://casetext.com/statute/california-codes/california-revenue-and-taxation-code/division-2-other-taxes/part-10-personal-income-tax/chapter-2-imposition-of-tax/section-170535-credit-for-qualified-renter
+  - title: 2021 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2021/2021-540-booklet.html
+  - title: 2022 California Form 540 instructions
+    href: https://www.ftb.ca.gov/forms/2022/2022-540-booklet.html
+  economy: false

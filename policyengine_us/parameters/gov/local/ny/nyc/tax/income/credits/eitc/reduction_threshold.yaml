@@ -1,0 +1,50 @@
+description: NYC EITC reduction threshold
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: NYC EITC reduction threshold
+  reference:
+    - title: NYC EITC Worksheet and Table
+      href: https://www.tax.ny.gov/forms/current-forms/it/it215i.htm#nyc-eic-table
+    - title: NYC Tax Code
+      href: https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCadmin/0-0-0-13608
+    - title: NYC EITC Form IT-215
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it215_fill_in.pdf
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 5_000
+    amount:
+      2022-01-01: 4_999
+  - threshold:
+      2022-01-01: 7_500
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 15_000
+    amount:
+      2022-01-01: 14_999
+  - threshold:
+      2022-01-01: 17_500
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 20_000
+    amount:
+      2022-01-01: 19_999
+  - threshold:
+      2022-01-01: 22_500
+    amount:
+      2022-01-01: 0
+  - threshold:
+      2022-01-01: 40_000
+    amount:
+      2022-01-01: 39_999
+  - threshold:
+      2022-01-01: 42_500
+    amount:
+      2022-01-01: 0

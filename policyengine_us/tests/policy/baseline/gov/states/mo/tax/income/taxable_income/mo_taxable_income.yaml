@@ -1,0 +1,25 @@
+- name: No adjusted gross income
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 0
+    mo_federal_income_tax_deduction: 0
+    tax_unit_itemizes: 0
+    standard_deduction: 0
+    mo_itemized_deductions: 0
+    state_code: MO
+  output:
+    mo_taxable_income: 0.0
+
+- name:  Low agi
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 60
+    mo_federal_income_tax_deduction: 0
+    tax_unit_itemizes: 0
+    standard_deduction: 0
+    mo_itemized_deductions: 0
+    state_code: MO
+  output: 
+    mo_taxable_income: 60.00

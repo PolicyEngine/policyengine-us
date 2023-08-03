@@ -1,0 +1,26 @@
+- name: Unmarried non-elderly and not blind with no children
+  period: 2021
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    state_code: KS
+  output:
+    ks_standard_deduction: 3_500
+
+- name: Married both elderly and one blind
+  period: 2022
+  input:
+    filing_status: JOINT
+    aged_blind_count: 3
+    state_code: KS
+  output:
+    ks_standard_deduction: 10_100
+
+- name: Unmarried elderly and not blind with no children
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: KS
+  output:
+    ks_standard_deduction: 6_850

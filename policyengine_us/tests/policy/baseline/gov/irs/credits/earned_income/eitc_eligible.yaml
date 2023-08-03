@@ -1,0 +1,26 @@
+- name: Investment income ineligible.
+  period: 2022
+  input:
+    eitc_investment_income_eligible: false
+    eitc_demographic_eligible: true
+    filing_status: JOINT
+  output:
+    eitc_eligible: false
+
+- name: Demographic ineligible.
+  period: 2022
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: false
+    filing_status: JOINT
+  output:
+    eitc_eligible: false
+
+- name: Eligible.
+  period: 2022
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filing_status: JOINT
+  output:
+    eitc_eligible: true

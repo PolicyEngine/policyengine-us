@@ -1,0 +1,26 @@
+- name: 100% for childless up to the cap.
+  period: 2021
+  input:
+    eitc: 100
+    eitc_child_count: 0
+    state_code: MD
+  output:
+    md_non_refundable_eitc: 100
+
+- name: $530 cap for childless.
+  period: 2021
+  input:
+    eitc: 531
+    eitc_child_count: 0
+    state_code: MD
+  output:
+    md_non_refundable_eitc: 530
+
+- name: 50% of federal if not childless.
+  period: 2021
+  input:
+    eitc: 100
+    eitc_child_count: 2
+    state_code: MD
+  output:
+    md_non_refundable_eitc: 50

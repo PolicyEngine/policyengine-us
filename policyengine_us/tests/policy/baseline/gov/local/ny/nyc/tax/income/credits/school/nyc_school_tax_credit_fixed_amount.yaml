@@ -1,0 +1,64 @@
+- name: Single person gets $63 if income is $250,000 or less.
+  period: 2022
+  input:
+    state_code: NY
+    in_nyc: true
+    nyc_school_credit_income: 250_000
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 63
+
+- name: Requires NYC residence.
+  period: 2022
+  input:
+    state_code: NY
+    in_nyc: false
+    nyc_school_credit_income: 250_000
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 0
+
+- name: Above $250,000, no fixed credit.
+  period: 2022
+  input:
+    state_code: NY
+    in_nyc: true
+    nyc_school_credit_income: 250_001
+    filing_status: SINGLE
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 0
+
+- name: Married filing jointly, $125 if income is $250,000 or less.
+  period: 2022
+  input:
+    state_code: NY
+    in_nyc: true
+    nyc_school_credit_income: 250_000
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 125
+
+- name: Above $250,000, no fixed credit.
+  period: 2022
+  input:
+    state_code: NY
+    in_nyc: true
+    nyc_school_credit_income: 250_001
+    filing_status: JOINT
+  output:
+    # NYC School Tax Instructions
+    # See Page 25 for fixed amount
+    # https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf
+    nyc_school_tax_credit_fixed_amount: 0

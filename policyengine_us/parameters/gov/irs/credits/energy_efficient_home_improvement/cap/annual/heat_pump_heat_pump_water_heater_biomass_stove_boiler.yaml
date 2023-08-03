@@ -1,0 +1,12 @@
+description: The IRS caps energy efficient home improvement credits on heat pumps, heat pump water heaters, and biomass stoves and boilers at this amount per year.
+values:
+  2017-01-01: .inf
+  2023-01-01: 2_000
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_annual_cap_heat_pumps_heat_pump_water_heaters_biomass_stoves_boilers
+  label: Energy efficient home improvement credit cap on heat pumps, heat pump water heaters, and biomass stoves and boilers
+  reference:
+    - title: Inflation Reduction Act, Part 3, Section 13301 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339

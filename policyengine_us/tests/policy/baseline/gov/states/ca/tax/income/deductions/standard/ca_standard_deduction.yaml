@@ -1,0 +1,15 @@
+- name: Single filer 
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: SINGLE
+  output:
+    ca_standard_deduction: 4_803
+
+- name: Joint filer 
+  period: 2021
+  input:
+    state_code: CA
+    filing_status: JOINT
+  output:
+    ca_standard_deduction: 9_606

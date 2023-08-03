@@ -1,0 +1,14 @@
+description: Ignored credits in MO federal income tax deduction calculations.
+values:
+  2018-01-01:
+    - earned_income_tax_credit
+    - recovery_rebate_credit
+metadata:
+  unit: variable
+  name: mo_federal_income_tax_deduction_ignored_credits
+  label: Ignored credits in MO federal income tax deduction
+  reference:
+    - title: Title X TAXATION AND REVENUE section 143.171
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044
+    - title: 2021 MO-1040 form instructions for Line 9
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=7

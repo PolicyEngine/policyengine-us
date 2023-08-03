@@ -1,0 +1,30 @@
+description: The tax rates for individual residents in South Carolina.
+# threshold value is bottom of the tax bracket; thresholds are <=
+brackets:
+ - threshold:
+     2022-01-01: 0
+   rate:
+     2022-01-01: 0.00
+ - threshold:
+     2022-01-01: 3_200
+   rate:
+     2022-01-01: 0.03
+ - threshold:
+     2022-01-01: 16_040
+   rate:
+     2022-01-01: 0.065
+ 
+
+metadata:
+  reference:
+    - title: SC 2022 Income Tax Chart
+      href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2022.pdf
+    - title: SC 2021 Income Tax Chart
+      href: https://dor.sc.gov/forms-site/Forms/SC1040TT_2021.pdf
+    - title: SC Legal Code |  Section 12-6-510
+      href: https://www.scstatehouse.gov/code/t12c006.php
+  label: SC Resident Individual Tax Rates
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  period: year

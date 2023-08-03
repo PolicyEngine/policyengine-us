@@ -1,0 +1,19 @@
+description: The US covers this percentage of expenditures for its high-efficiency electric home program rebate program, based on a household's ratio of income to area median income
+values:
+  0000-01-01: []
+  2023-01-01:
+    - electric_heat_pump_clothes_dryer
+    - electric_load_service_center_upgrade
+    - electric_stove_cooktop_range_or_oven
+    - electric_wiring
+    - heat_pump_water_heater
+    - heat_pump
+    - insulation_air_sealing_ventilation
+  2032-01-01: []
+metadata:
+  unit: program
+  name: high_efficiency_electric_home_rebate_elements
+  label: High efficiency electric home rebate elements
+  reference:
+    - title: Inflation Reduction Act
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=598

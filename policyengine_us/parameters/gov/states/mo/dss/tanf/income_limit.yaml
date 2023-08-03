@@ -1,0 +1,26 @@
+description: Missouri limits its TANF program to households below this income. This is also the maximum benefit.
+1:
+  2022-10-01: 1_632
+2:
+  2022-10-01: 2_808
+3:
+  2022-10-01: 3_504 
+4:
+  2022-10-01: 4_104
+5:
+  2022-10-01: 4_656
+6:
+  2022-10-01: 5_172
+7:
+  2022-10-01: 5_688
+8:
+  2022-10-01: 6_168
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri TANF income limit / maximum benefit
+  breakdown:
+    - range(1, 9)
+  reference:
+    - title: Missouri Department of Social Services | Benefit Program Limit Chart
+      href: https://mydss.mo.gov/media/pdf/benefit-program-limit-chart

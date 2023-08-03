@@ -1,0 +1,17 @@
+- name: Two-person household has $3,052 monthly TANF income limit in 2023.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    spm_unit_size: 2
+    state_code: TX
+  output:
+    tx_tanf_income_limit: 3_052 * 12
+
+- name: Only applies to households in Texas.
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    spm_unit_size: 2
+    state_code: CA
+  output:
+    tx_tanf_income_limit: 0

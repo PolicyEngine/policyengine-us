@@ -1,0 +1,22 @@
+- name: Married with one child, MA, zipcode 012
+  period: 2022
+  input:
+    households:
+      household:
+        state_code: MA
+        zip_code: "01201"
+        members: [primary, spouse, child]
+    tax_units:
+      tax_unit:
+        members: [primary, spouse, child]
+        is_ptc_eligible: true
+    people:
+      primary:
+        age: 26
+      spouse:
+        age: 24
+      child:
+        age: 4
+  output:
+    state_code: MA
+    # second_lowest_silver_plan_cost: # 10_762 Skipped due to long runtime

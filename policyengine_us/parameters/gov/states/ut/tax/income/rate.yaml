@@ -1,0 +1,20 @@
+description: Utah main income tax rate.
+values:
+  2008-01-01: 
+    value: 0.05
+    reference:
+      - title: Utah Code 59-10-104
+        href: https://le.utah.gov/xcode/historical.html?date=1/1/2014&oc=/xcode/Title59/Chapter10/C59-10-S104_1800010118000101.html
+  2018-05-08:
+    value: 0.0495
+    reference:
+      - title: Utah Code 59-10-104
+        href: https://le.utah.gov/xcode/historical.html?date=5/8/2018&oc=/xcode/Title59/Chapter10/C59-10-S104_2018050820180508.html
+  2022-01-01:
+    value: 0.0485
+    reference:
+      - title: Utah Code 59-10-104
+        href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S104.html?v=C59-10-S104_2022050420220504
+metadata:
+  unit: /1
+  label: Utah income tax rate

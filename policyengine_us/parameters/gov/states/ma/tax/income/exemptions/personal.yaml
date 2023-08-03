@@ -1,0 +1,38 @@
+SINGLE:
+  2002-01-01: 3_300
+  # Rises with inflation starting in 2004.
+  # Values from 2015 to 2022 are from Tax Foundation.
+  2015-01-01: 4_400
+SEPARATE:
+  2002-01-01: 3_300
+  # Rises with inflation starting in 2004.
+  # Values from 2015 to 2022 are from Tax Foundation.
+  2015-01-01: 4_400
+WIDOW:
+  2002-01-01: 3_300
+  # Rises with inflation starting in 2004.
+  # Values from 2015 to 2022 are from Tax Foundation.
+  2015-01-01: 4_400
+HEAD_OF_HOUSEHOLD:
+  2002-01-01: 5_100
+  # Rises with inflation starting in 2004.
+  # Values from 2015 to 2022 are from Tax Foundation.
+  2015-01-01: 6_800
+JOINT:
+  2002-01-01: 6_600
+  # Rises with inflation starting in 2004.
+  # Values from 2015 to 2022 are from Tax Foundation.
+  2015-01-01: 8_800
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+  - filing_status
+  label: MA income tax personal exemption
+  reference:
+    - title: "Taxable income: adjusted gross income less deductions and exemptions (b)(2)(A)"
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section3
+    - title: State Individual Income Tax Rates and Brackets (Tax Foundation)
+      href: https://taxfoundation.org/publications/state-individual-income-tax-rates-and-brackets/
+    - title: Form 1 2022 | Massachusetts | Resident Income Tax (line 2)
+      href: https://www.mass.gov/doc/2022-form-1-instructions/download

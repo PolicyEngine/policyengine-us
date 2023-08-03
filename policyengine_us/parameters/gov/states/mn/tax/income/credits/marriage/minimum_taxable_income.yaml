@@ -1,0 +1,14 @@
+description: Minnesota provides a marriage credit for joint filers where their taxable income is at least this minimum amount.
+values:
+  2021-01-01: 40_000
+  2022-01-01: 42_000
+
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota marriage credit minimum taxable income for eligibility
+  reference:
+  - title: 2021 Minnesota Schedule M1MA, Line 7
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_21.pdf
+  - title: 2022 Minnesota Schedule M1MA, Line 7
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1ma_22.pdf

@@ -1,0 +1,20 @@
+description: Standard deduction for NY State tax.
+SINGLE:
+  2021-01-01: 8_000
+JOINT:
+  2021-01-01: 16_050
+SEPARATE:
+  2021-01-01: 8_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 11_200
+WIDOW:
+  2021-01-01: 16_050
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: NY standard deduction
+  reference:
+    - title: NY Form IT-201 Instructions, page 19
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=19

@@ -1,0 +1,28 @@
+description: Minnesota provides this extra standard deduction amount for each aged/blind head/spouse.
+metadata:
+  label: Minnesota extra standard deduction amount for each aged/blind head/spouse
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf#page=11
+  - title: 2022 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=11
+
+JOINT:
+  2021-01-01: 1_300
+  2022-01-01: 1_350
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 1_650
+  2022-01-01: 1_700
+WIDOW:
+  2021-01-01: 1_300
+  2022-01-01: 1_350
+SINGLE:
+  2021-01-01: 1_650
+  2022-01-01: 1_700
+SEPARATE:
+  2021-01-01: 1_300
+  2022-01-01: 1_350

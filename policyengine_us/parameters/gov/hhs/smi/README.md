@@ -1,0 +1,1 @@
+# State Median Income (SMI)

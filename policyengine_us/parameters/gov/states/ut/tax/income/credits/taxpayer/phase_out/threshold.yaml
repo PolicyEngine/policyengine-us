@@ -1,0 +1,35 @@
+description: The Utah taxpayer credit is phased out for taxpayers with incomes above this threshold.
+SINGLE:
+  2022-01-01: 
+    value: 15_548
+    reference:
+      - title: Utah Form TC-40 (2022) line 17
+        href: https://tax.utah.gov/forms/current/tc-40.pdf
+JOINT:
+  2022-01-01:
+    value: 31_096
+    reference:
+      - title: Utah Form TC-40 (2022) line 17
+        href: https://tax.utah.gov/forms/current/tc-40.pdf
+HEAD_OF_HOUSEHOLD:
+  2022-01-01:
+    value: 23_322
+    reference:
+      - title: Utah Form TC-40 (2022) line 17
+        href: https://tax.utah.gov/forms/current/tc-40.pdf
+SEPARATE:
+  2022-01-01:
+    value: 15_548
+    reference:
+      - title: Utah Form TC-40 (2022) line 17
+        href: https://tax.utah.gov/forms/current/tc-40.pdf
+WIDOW:
+  2022-01-01:
+    value: 31_096
+    reference:
+      - title: Utah Form TC-40 (2022) line 17
+        href: https://tax.utah.gov/forms/current/tc-40.pdf
+metadata:
+  unit: currency-USD
+  period: year
+  label: Utah taxpayer credit phase-out threshold

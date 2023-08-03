@@ -1,0 +1,70 @@
+- name: One adult and one child and no income, $440 per year
+  period: 2023
+  input:
+    people:
+      person1:
+        is_adult: true
+      person2:
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_tanf: 440 * 12
+
+- name: 2 adults, one pregnant, 12 other child, $2,000 earned income, $1,000 unearned income, $19,868 per year
+  period: 2023
+  input:
+    people:
+      adult1:
+        is_adult: true
+        veterans_benefits: 700
+        pension_income: 300
+        employment_income: 1_500
+        self_employment_income: 500
+      adult2:
+        is_adult: true
+        is_pregnant: true
+      child1:
+        is_child: true
+      child2:
+        is_child: true
+      child3:
+        is_child: true
+      child4:
+        is_child: true
+      child5:
+        is_child: true
+      child6:
+        is_child: true
+      child7:
+        is_child: true
+      child8:
+        is_child: true
+      child9:
+        is_child: true
+      child10:
+        is_child: true
+      child11:
+        is_child: true
+      child12:
+        is_child: true
+    spm_units:
+      spm_unit:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12]
+    tax_units:
+      tax_unit:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12]
+    households:
+      household:
+        members: [adult1, adult2, child1, child2, child3, child4, child5, child6, child7, child8, child9, child10, child11, child12]
+        state_code: CO
+  output:
+    co_tanf: 19_868

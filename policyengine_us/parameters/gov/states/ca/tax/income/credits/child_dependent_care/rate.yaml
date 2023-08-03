@@ -1,0 +1,34 @@
+description: California matches this percentage of the federal CDCC, based on AGI.
+brackets:
+  - threshold:
+      2000-01-01: -.inf
+    amount:
+      2000-01-01: 0.63
+      2003-01-01: 0.5
+  - threshold:
+      2000-01-01: 40_000
+    amount:
+      2000-01-01: 0.53
+      2003-01-01: 0.43
+  - threshold:
+      2000-01-01: 70_000
+    amount:
+      2000-01-01: 0.42
+      2003-01-01: 0.34
+  - threshold:
+      2000-01-01: 100_000
+    amount:
+      2000-01-01: 0
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: year
+  type: single_amount
+  label: California CDCC match
+  reference: 
+    - title: 2021 Instructions for California Form 3506
+      href: https://www.ftb.ca.gov/forms/2021/2021-3506-instructions.html
+    - title: 2022 Instructions for California Form 3506
+      href: https://www.ftb.ca.gov/forms/2022/2022-3506-instructions.html
+    - title: California Revenue and Taxation Code 17052.6(b)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052.6.

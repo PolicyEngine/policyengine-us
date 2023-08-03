@@ -1,0 +1,15 @@
+- name: Disabled spouse 
+  period: 2022
+  input:
+    is_tax_unit_spouse: true
+    is_ssi_disabled: true
+  output:
+    disabled_spouse: true
+
+- name: Non-disabled
+  period: 2022
+  input:
+    is_tax_unit_spouse: true
+    is_ssi_disabled: false
+  output:
+    disabled_spouse: false

@@ -1,0 +1,35 @@
+- name: Filer with AGI above $100,000 is not eligible.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 100_001
+    cdcc: 1_000
+  output:
+    ca_cdcc: 0
+
+- name: Filer with income at the 50% match level.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 1_000
+    cdcc: 1_000
+  output:
+    ca_cdcc: 500
+
+- name: Filer with income at the 43% match level.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: 50_000
+    cdcc: 1_000
+  output:
+    ca_cdcc: 430
+
+- name: Filer with negative AGI gets a 50% match.
+  period: 2021
+  input:
+    state_code: CA
+    adjusted_gross_income: -50_000
+    cdcc: 1_000
+  output:
+    ca_cdcc: 500

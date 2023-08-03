@@ -1,0 +1,13 @@
+description: The IRS caps energy efficient home improvement credits on energy efficient central air conditioners at this amount per year.
+values:
+  2017-01-01: .inf
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_energy_efficient_central_air_conditioner_cap
+  label: Energy efficient home improvement credit cap on energy-efficient central air conditioners
+  reference:
+    - title: 26 U.S.C. § 25C(b)(3)(C)
+      href: https://www.law.cornell.edu/uscode/text/26/25C#b_3_C
+    - title: Inflation Reduction Act, Part 3, Section 13301 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339

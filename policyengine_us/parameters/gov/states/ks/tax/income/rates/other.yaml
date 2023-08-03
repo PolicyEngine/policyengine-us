@@ -1,0 +1,26 @@
+description: Kansas levies income taxes at these rates for filers who do not file as joint.
+brackets:
+  - threshold:
+      2018-01-01: 0
+    rate:
+      2018-01-01: 0.031
+  - threshold:
+      2018-01-01: 15_000
+    rate:
+      2018-01-01: 0.0525
+  - threshold:
+      2018-01-01: 30_000
+    rate:
+      2018-01-01: 0.057
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Kansas non-joint income tax rates
+  reference:
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+  - title: Kansas 2022 Statute Article 32 §79-32,110_k
+    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0110_section/079_032_0110_k/

@@ -1,0 +1,19 @@
+- name: Total SNAP sums normal and emergency allotments.
+  period: 2022
+  input:
+    snap_normal_allotment: 1
+    snap_emergency_allotment_monthly: 
+      2022-01: 2
+      2022-02: 0
+      2022-03: 0
+      2022-04: 0
+      2022-05: 0
+      2022-06: 0
+      2022-07: 0
+      2022-08: 0
+      2022-09: 0
+      2022-10: 0
+      2022-11: 0
+      2022-12: 0
+  output:
+    snap: 3

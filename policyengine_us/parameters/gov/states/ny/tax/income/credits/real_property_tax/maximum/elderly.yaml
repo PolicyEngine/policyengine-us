@@ -1,0 +1,84 @@
+description: Maximum NY real property tax credit for filers with one elderly taxpayer.
+
+brackets:
+  - threshold:
+      2000-01-01: 0
+    amount:
+      2000-01-01: 375
+  - threshold:
+      2000-01-01: 1_000
+    amount:
+      2000-01-01: 358
+  - threshold:
+      2000-01-01: 2_000
+    amount:
+      2000-01-01: 341
+  - threshold:
+      2000-01-01: 3_000
+    amount:
+      2000-01-01: 324
+  - threshold:
+      2000-01-01: 4_000
+    amount:
+      2000-01-01: 307
+  - threshold:
+      2000-01-01: 5_000
+    amount:
+      2000-01-01: 290
+  - threshold:
+      2000-01-01: 6_000
+    amount:
+      2000-01-01: 273
+  - threshold:
+      2000-01-01: 7_000
+    amount:
+      2000-01-01: 256
+  - threshold:
+      2000-01-01: 8_000
+    amount:
+      2000-01-01: 239
+  - threshold:
+      2000-01-01: 9_000
+    amount:
+      2000-01-01: 222
+  - threshold:
+      2000-01-01: 10_000
+    amount:
+      2000-01-01: 205
+  - threshold:
+      2000-01-01: 11_000
+    amount:
+      2000-01-01: 188
+  - threshold:
+      2000-01-01: 12_000
+    amount:
+      2000-01-01: 171
+  - threshold:
+      2000-01-01: 13_000
+    amount:
+      2000-01-01: 154
+  - threshold:
+      2000-01-01: 14_000
+    amount:
+      2000-01-01: 137
+  - threshold:
+      2000-01-01: 15_000
+    amount:
+      2000-01-01: 120
+  - threshold:
+      2000-01-01: 16_000
+    amount:
+      2000-01-01: 103
+  - threshold:
+      2000-01-01: 17_000
+    amount:
+      2000-01-01: 86
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: currency-USD
+  label: NY real property tax credit elderly maximum amount
+  reference:
+    - title: Section 606 Credits against tax (e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606

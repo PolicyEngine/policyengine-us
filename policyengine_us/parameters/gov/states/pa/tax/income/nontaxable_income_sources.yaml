@@ -1,0 +1,13 @@
+description: Income sources in US AGI but not taxable under the PA income tax.
+values:
+  2021-01-01:
+    - pa_nontaxable_pension_income
+    - taxable_unemployment_compensation
+    - taxable_social_security
+metadata:
+  unit: currency-USD
+  name: nontaxable_income_sources
+  label: PA nontaxable income sources
+  reference:
+    - title: 2021 Pennsylvania PIT Return Instructions (PA-40 IN) 
+      href: https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=8

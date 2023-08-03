@@ -1,0 +1,23 @@
+description: Kansas provides this additional standard deduction to elderly and blind filers.
+metadata:
+  label: Kansas extra standard deduction for elderly and blind
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Form K-40 instructions
+    href: https://www.ksrevenue.gov/pdf/ip22.pdf
+  - title: Kansas 2022 Statute Article 32 §79-32,119(b)
+    href: http://www.kslegislature.org/li/b2023_24/statute/079_000_0000_chapter/079_032_0000_article/079_032_0119_section/079_032_0119_k/
+
+JOINT:
+  1998-01-01: 700
+HEAD_OF_HOUSEHOLD:
+  1998-01-01: 850
+WIDOW:
+  1998-01-01: 850
+SINGLE:
+  1998-01-01: 850
+SEPARATE:
+  1998-01-01: 700

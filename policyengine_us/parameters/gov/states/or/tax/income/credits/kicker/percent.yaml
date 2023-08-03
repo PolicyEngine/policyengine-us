@@ -1,0 +1,15 @@
+description: Oregon returns this portion of the filer's prior-year tax liability before credits via its kicker credit.
+values:
+  2021-01-01: 0.17341
+  2022-01-01: 0
+metadata:
+  unit: /1
+  label: OR kicker rate
+  reference:
+    # Structure of the parameter defined in the law.
+    # Value defined administratively based on budget surplus.
+    # Only offered on odd years
+    - title: Constitution of Oregon 2021 Edition Article IX Section 14 (4)
+      href: https://www.oregonlegislature.gov/bills_laws/Pages/OrConst.aspx
+    - title: 2021 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=19

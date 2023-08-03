@@ -1,0 +1,20 @@
+description: New Jersey requires filing income taxes if income is this amount or higher.
+metadata:
+  unit: currency-USD
+  label: NJ filing threshold
+  reference:
+    - title: Instructions for Form IT-201
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=24
+    - title: NJ Legal Code
+      href: https://lis.njleg.state.nj.us/nxt/gateway.dll?f=templates&fn=default.htm&vid=Publish:10.1048/Enu
+    - filing_status
+SINGLE:
+  2022-01-01: 10_000
+SEPARATE:
+  2022-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 20_000
+JOINT:
+  2022-01-01: 20_000
+WIDOW:
+  2022-01-01: 20_000

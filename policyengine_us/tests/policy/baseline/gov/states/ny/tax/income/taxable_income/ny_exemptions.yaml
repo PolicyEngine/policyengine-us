@@ -1,0 +1,8 @@
+- name: Two dependents, two exemptions.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    tax_unit_count_dependents: 2
+  output:
+    ny_exemptions: 2_000

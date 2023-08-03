@@ -1,0 +1,11 @@
+description: Match rate of the NY Supplemental EITC.
+values:
+  2019-01-01: 0
+  2021-01-01: 0.25
+  2022-01-01: 0
+metadata:
+  unit: /1
+  label: NY Supplemental EITC Match
+  reference:
+    - title: Section 606 Credits against tax (d)(8)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606 # (d)(8)

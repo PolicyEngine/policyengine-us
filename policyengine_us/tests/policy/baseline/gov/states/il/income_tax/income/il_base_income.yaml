@@ -1,0 +1,27 @@
+- name: $10,000 in AGI, $2500 in dividend income, $100 in Schedule M subtractions.
+  period: 2021
+  input:
+    adjusted_gross_income: 10_000
+    dividend_income: 2_500
+    taxable_pension_income: 1_000
+    il_schedule_m_subtractions: 100
+  output:
+    il_base_income: 8_900
+
+- name: $25,000 in AGI, $4,500 in federal tax exempt interest, $1,300 in Schedule M additions, $50 in Schedule M subtractions.
+  period: 2021
+  input:
+    adjusted_gross_income: 25_000
+    tax_exempt_interest_income: 4_500
+    il_schedule_m_additions: 1_300
+    il_schedule_m_subtractions: 50
+  output:
+    il_base_income: 30_750
+
+- name: $5,000 in AGI, $1,300 in social secuirty benefits.
+  period: 2021
+  input:
+    adjusted_gross_income: 5_000
+    taxable_social_security: 1_300
+  output:
+    il_base_income: 3_700

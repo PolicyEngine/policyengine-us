@@ -1,0 +1,58 @@
+description: CA head of household income tax rate
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      2021-01-01: 0.01
+  - threshold:
+      2021-01-01: 18_663
+      2022-01-01: 20_212
+    rate:
+      2021-01-01: 0.02
+  - threshold:
+      2021-01-01: 44_217
+      2022-01-01: 47_887
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 56_999
+      2022-01-01: 61_730
+    rate:
+      2021-01-01: 0.06
+  - threshold:
+      2021-01-01: 70_542
+      2022-01-01: 76_397
+    rate:
+      2021-01-01: 0.08
+  - threshold:
+      2021-01-01: 83_324
+      2022-01-01: 90_240
+    rate:
+      2021-01-01: 0.093
+  - threshold:
+      2021-01-01: 425_251
+      2022-01-01: 460_547
+    rate:
+      2021-01-01: 0.103
+  - threshold:
+      2021-01-01: 510_303
+      2022-01-01: 552_658
+    rate:
+      2021-01-01: 0.113
+  - threshold:
+      2021-01-01: 850_503
+      2022-01-01: 921_059
+    rate:
+      2021-01-01: 0.123
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: CA head of household income tax rate
+  reference: 
+    - title: California Income Tax Rate Schedules for 2021
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-tax-rate-schedules.pdf
+    - title: California Income Tax Rate Schedules for 2022
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-tax-rate-schedules.pdf

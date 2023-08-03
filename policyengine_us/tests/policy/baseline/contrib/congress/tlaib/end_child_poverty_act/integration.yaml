@@ -1,0 +1,42 @@
+- name: "California household with one parent with $40,000 income, two children, and one grandparent."
+  period: 2022
+  input:
+    # ECPA parameters.
+    gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.amount: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.adult_dependent_credit.min_age: 19
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.JOINT: 1_200
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.SINGLE: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.SEPARATE: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.HEAD_OF_HOUSEHOLD: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.amount.WIDOW: 600
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.min_age: 19
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.eligibility.max_age: 64
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.rate: 0.05
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.JOINT: 40_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.SINGLE: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.SEPARATE: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.HEAD_OF_HOUSEHOLD: 20_000
+    gov.contrib.congress.tlaib.end_child_poverty_act.filer_credit.phase_out.start.WIDOW: 20_000
+    # Household.
+    people:
+      head:
+        age: 36
+        is_tax_unit_head: True
+        is_tax_unit_dependent: False
+        employment_income: 21_000
+      child_1:
+        age: 10
+        is_tax_unit_dependent: False
+      child_2:
+        age: 5
+        is_tax_unit_dependent: False
+      dependent_adult:
+        age: 65
+        is_tax_unit_dependent: True
+        is_tax_unit_spouse: False
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2, dependent_adult]
+  output:
+    ecpa_adult_dependent_credit: 600
+    ecpa_filer_credit: 550  # 600 - 0.05 * (21_000 - 20_000).

@@ -1,0 +1,12 @@
+description: Utility cost types which entitle the payer to a specific utility allowance.
+values:
+  2010-01-01:
+    - electricity_expense
+    - gas_and_fuel_expense
+    - water_expense
+    - sewage_expense
+    - phone_expense
+    - trash_expense
+metadata:
+  unit: list
+  label: SNAP utility types

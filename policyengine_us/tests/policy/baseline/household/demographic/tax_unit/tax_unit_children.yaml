@@ -1,0 +1,33 @@
+- name: Number of children in the tax unit (2 kids).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 3
+      person2:
+        age: 13
+      person3:
+        age: 39
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    tax_unit_children: 2
+
+- name: Number of children in the tax unit (no kids).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 33
+      person2:
+        age: 34
+      person3:
+        age: 39
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    tax_unit_children: 0

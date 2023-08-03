@@ -1,0 +1,22 @@
+description: Itemized deductions allowed in Missouri income tax.
+values:
+  1993-01-01:
+    - itemized_taxable_income_deductions # includes casualty_loss_deduction, charitable_deduction, interest_deduction, salt_deduction ,and medical_expense_deduction
+    - misc_deduction
+    - employee_social_security_tax
+    - employee_medicare_tax
+    - additional_medicare_tax
+    - self_employment_tax
+metadata:
+  unit: variable
+  name: mo_itemized_deductions
+  label: MO itemized tax-unit-level deductions
+  reference:
+    - title: 2021 Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-pdf/f1040sa.pdf
+    - title: MO Rev 141.141
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212
+    - title: Form MO-A - 2021 Individual Income Tax Adjustments
+      href: https://dor.mo.gov/forms/MO-A_2021.pdf
+    - title: 2021 MO Form 1040 instructions
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=16

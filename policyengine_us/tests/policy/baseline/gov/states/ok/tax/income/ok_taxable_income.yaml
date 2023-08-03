@@ -1,0 +1,32 @@
+- name: OK taxable income unit test 1
+  period: 2021
+  input:
+    ok_agi: 90_000
+    ok_standard_deduction: 10_000
+    ok_itemized_deductions: 9_000
+    ok_exemptions: 4_000
+    state_code: OK
+  output:
+    ok_taxable_income: 90_000 - 10_000 - 4_000
+
+- name: OK taxable income unit test 2
+  period: 2021
+  input:
+    ok_agi: 90_000
+    ok_standard_deduction: 10_000
+    ok_itemized_deductions: 12_000
+    ok_exemptions: 4_000
+    state_code: OK
+  output:
+    ok_taxable_income: 90_000 - 12_000 - 4_000
+
+- name: OK taxable income unit test 3
+  period: 2022
+  input:
+    ok_agi: 13_000
+    ok_standard_deduction: 10_000
+    ok_itemized_deductions: 9_000
+    ok_exemptions: 4_000
+    state_code: OK
+  output:
+    ok_taxable_income: 0

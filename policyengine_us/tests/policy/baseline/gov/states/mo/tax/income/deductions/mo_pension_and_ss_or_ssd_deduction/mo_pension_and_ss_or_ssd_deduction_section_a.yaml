@@ -1,0 +1,116 @@
+- name: No Values
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 0
+    taxable_social_security: 0
+    taxable_public_pension_income: 0
+    filing_status: 
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0.0
+
+- name: Below threshold income, with taxable social security, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 5_000
+    taxable_public_pension_income: 5_000
+    filing_status: SINGLE
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0
+
+- name: Below threshold income, without taxable social security, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 0
+    taxable_public_pension_income: 5_000
+    filing_status: SINGLE
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 5_000
+
+- name: Below threshold income, with taxable social security, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 5_000
+    taxable_public_pension_income: 5_000
+    filing_status: JOINT
+    mo_pension_and_ss_or_ssd_deduction_section_c: 5_000
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0.0
+
+- name: Below threshold income, without taxable social security, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 30_000
+    taxable_social_security: 0
+    taxable_public_pension_income: 5_000
+    filing_status: JOINT
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 5_000
+
+- name: Above threshold income, with taxable social security, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 100_000
+    taxable_social_security: 5_000
+    taxable_public_pension_income: 5_000
+    filing_status: SINGLE
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0.0
+
+- name: Above threshold income, without taxable social security, single
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 100_000
+    taxable_social_security: 0
+    taxable_public_pension_income: 5_000
+    filing_status: SINGLE
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0.0
+
+- name: Above threshold income, with taxable social security, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 120_000
+    taxable_social_security: 10_000
+    taxable_public_pension_income: 25_000
+    filing_status: JOINT
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 15_000
+
+- name: Above threshold income, without taxable social security, joint
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_adjusted_gross_income: 120_000
+    taxable_social_security: 0
+    taxable_public_pension_income: 25_000
+    filing_status: JOINT
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 5_000

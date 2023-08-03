@@ -1,0 +1,13 @@
+- name: 10% uncapped before the Inflation Reduction Act.
+  period: 2021
+  input:
+    energy_efficient_roof_expenditures: 1_000_000
+  output:
+    capped_energy_efficient_roof_credit: 100_000
+  
+- name: 30% uncapped after the Inflation Reduction Act.
+  period: 2023
+  input:
+    energy_efficient_roof_expenditures: 1_000
+  output:
+    capped_energy_efficient_roof_credit: 300

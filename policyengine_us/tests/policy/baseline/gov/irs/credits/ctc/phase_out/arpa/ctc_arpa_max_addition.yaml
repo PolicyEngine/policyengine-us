@@ -1,0 +1,7 @@
+- name: One child, joint filer.
+  period: 2021
+  input:
+    ctc_child_individual_maximum: 2_000
+    ctc_child_individual_maximum_arpa: 3_600
+  output:
+    ctc_arpa_max_addition: 1_600

@@ -1,0 +1,8 @@
+- name: 2021 Oregon filer who itemizes instead of using standard deduction
+  period: 2021
+  input:
+    state_code: OR
+    or_itemized_deductions: 2
+    or_standard_deduction: 1
+  output:
+    or_deductions: 2

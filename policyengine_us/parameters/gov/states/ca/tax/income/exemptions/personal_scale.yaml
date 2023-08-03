@@ -1,0 +1,24 @@
+description: Scaling factor for personal exemption based on filing status
+
+SINGLE:
+  2021-01-01: 1
+SEPARATE:
+  2021-01-01: 1
+WIDOW:
+  2021-01-01: 2
+JOINT:
+  2021-01-01: 2
+HEAD_OF_HOUSEHOLD: 
+  2021-01-01: 1
+
+metadata:
+  period: year
+  unit: int
+  breakdown:
+  - filing_status
+  label: "California income personal exemption scaling factor"
+  reference:
+  - title: 2021 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2021/2021-540.pdf
+  - title: 2022 Form 540 California Resident Income Tax Return
+    href: https://www.ftb.ca.gov/forms/2022/2022-540.pdf

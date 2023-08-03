@@ -1,0 +1,164 @@
+- name: Taxsim integration test, 50k income, no children, single filer
+  period: 2021
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MO
+  output:
+    income_tax_before_credits: 4_295
+    #taxsim output: 4_295
+    income_tax: 2_895
+    #taxsim output: 2_895
+    mo_adjusted_gross_income: 50_000
+    #taxsim output: 50_000
+    # disable test:
+    state_code: MO
+    #mo_federal_income_tax_deduction: 434.25
+    #mo_taxable_income: 37_015.75
+    #taxsim output: 36_805.76
+    #mo_income_tax: 1_811.71
+    #taxsim output: 1_800
+
+- name: Taxsim integration test, 50k income, childless couple, evenly split income
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 25_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        employment_income: 25_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    income_tax_before_credits: 2_590
+    #taxsim output: 2_590
+    income_tax: -210
+    #taxsim output: -210
+    mo_adjusted_gross_income: [25_000, 25_000]
+    #taxsim output: 50_000
+    # disable test:
+    state_code: MO
+    #mo_federal_income_tax_deduction: -31.5
+    #mo_taxable_income: [12_465.75, 12_465.75]
+    #taxsim output: 24_511.51
+    #mo_income_tax: 972.03
+    #taxsim output: 949
+
+- name: Taxsim integration test, 50k income, couple, one child
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 50_000
+        is_tax_unit_head: true
+      person2:
+        age: 32
+        is_tax_unit_spouse: true
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    income_tax_before_credits: 2_590
+    #taxsim output: 2_590
+    income_tax: -5_210
+    #taxsim output: -4_610
+    mo_adjusted_gross_income: [50_000, 0, 0] 
+    #taxsim output: 50_000
+    # disable test:
+    state_code: MO
+    #mo_federal_income_tax_deduction: -781.5
+    #mo_taxable_income: [25_681.5, 0, 0]
+    #taxsim output: 24_511.51
+    #mo_income_tax: 1_199.67
+    #taxsim output: 1_136
+
+- name: Taxsim integration test, 50k income, single parent, one child
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 50_000
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    income_tax_before_credits: 3_460
+    #taxsim output: 3_460
+    income_tax: -2_940
+    #taxsim output: -2,340
+    mo_adjusted_gross_income: [50_000, 0]
+    #taxsim output: 50_000
+    # disable test:
+    state_code: MO
+    #mo_federal_income_tax_deduction: -441
+    #mo_taxable_income: [31_641, 0]
+    #taxsim output: 30_681
+    #mo_income_tax: 1_521.48
+    #taxsim output: 1_469.64
+
+- name: Taxsim integration test, 50k income, single parent, two children
+  # https://taxsim.app/?year=2021&mstat=headOfHousehold&state=26&page=38&depx=2&age1=4&age2=4&settings.numeric=1&debug=1&pwages=50000
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 50_000
+      person2:
+        age: 4
+      person3:
+        age: 4   
+    tax_units:
+      tax_unit:
+        premium_tax_credit: 0
+        members: [person1, person2, person3]
+    household:
+      members: [person1, person2, person3]
+      state_code: MO
+  output:
+    income_tax_before_credits: 3_460
+    # taxsim incorrectly says $6,000, doesn't capture the young child element.
+    ctc: 7_200
+    income_tax: -7_940
+    #taxsim output: $6,740 ("Income Tax Balance"), offset by $1,200 error.
+    mo_adjusted_gross_income: [50_000, 0, 0]
+    mo_taxable_income: [31_200, 0, 0]
+    #taxsim output: 30_681
+    mo_income_tax: 1_497.66
+    #taxsim output: 1_469.64

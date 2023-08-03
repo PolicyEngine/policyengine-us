@@ -1,0 +1,21 @@
+description: Individual earnings below this amount are subjected to Social Security (OASDI) payroll tax. This parameter is indexed by the rate of growth in average wages, not by the price inflation rate.
+values:
+  2013-01-01: 113_700
+  2014-01-01: 117_000
+  2015-01-01: 118_500
+  2016-01-01: 118_500
+  2017-01-01: 127_200
+  2018-01-01: 128_400
+  2019-01-01: 132_900
+  2020-01-01: 137_700
+  2021-01-01: 142_800
+  2022-01-01: 147_000
+  2023-01-01: 160_200
+metadata:
+  unit: currency-USD
+  period: year
+  name: social_security_tax_cap
+  label: Social Security earnings cap
+  reference:
+    - title: Maximum Taxable Earnings Each Year
+      href: https://www.ssa.gov/benefits/retirement/planner/maxtax.html

@@ -1,0 +1,29 @@
+- name: If ineligible, they get zero.
+  period: 2023
+  input:
+    co_tanf_eligible: false
+    co_tanf_grant_standard: 100
+    co_tanf_countable_earned_income_grant_standard: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf: 0
+
+- name: If eligible, they get difference between grant standard and countable income.
+  period: 2023
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 100
+    co_tanf_countable_earned_income_grant_standard: 0
+    co_tanf_countable_gross_unearned_income: 0
+  output:
+    co_tanf: 100
+
+- name: If countable income exceeds grant standard they get 0.
+  period: 2023
+  input:
+    co_tanf_eligible: true
+    co_tanf_grant_standard: 100
+    co_tanf_countable_earned_income_grant_standard: 90
+    co_tanf_countable_gross_unearned_income: 11
+  output:
+    co_tanf: 0

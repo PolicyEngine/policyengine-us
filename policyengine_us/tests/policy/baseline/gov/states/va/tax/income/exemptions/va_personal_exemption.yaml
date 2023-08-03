@@ -1,0 +1,24 @@
+- name: If not in Virginia, no exemption.
+  period: 2022
+  input:
+    state_code: WA
+  output:
+    va_personal_exemption: 0
+
+- name: Three tax unit counts in the tax unit.
+  period: 2022
+  input:
+    state_code: VA
+    tax_unit_size: 3
+  output:
+    # $930 per person.
+    va_personal_exemption: 2_790
+
+- name: Two tax unit counts in the tax unit.
+  period: 2022
+  input:
+    state_code: VA
+    tax_unit_size: 2
+  output:
+    # $930 per person.
+    va_personal_exemption: 1_860

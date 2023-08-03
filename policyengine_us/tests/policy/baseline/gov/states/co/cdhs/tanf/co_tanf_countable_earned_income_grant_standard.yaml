@@ -1,0 +1,16 @@
+- name: $0 earned income and $0 unearned income, $0 per year
+  period: 2023
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 0
+  output:
+    co_tanf_countable_earned_income_grant_standard: 0
+
+- name: $20,000 earned income and $0 unearned income, $20,000 per year
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: CO
+    co_tanf_countable_gross_earned_income: 20_000
+  output:
+    co_tanf_countable_earned_income_grant_standard: 6_600

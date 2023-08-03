@@ -1,0 +1,17 @@
+- name: Eligible household gets the amount.
+  period: 2022
+  input:
+    state_code: CA
+    ca_care_eligible: true
+    ca_care_amount_if_eligible: 100
+  output:
+    ca_care: 100
+
+- name: Ineligible household gets $0.
+  period: 2022
+  input:
+    state_code: CA
+    ca_care_eligible: false
+    ca_care_amount_if_eligible: 100
+  output:
+    ca_care: 0

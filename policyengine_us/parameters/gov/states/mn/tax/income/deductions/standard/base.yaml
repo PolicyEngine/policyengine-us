@@ -1,0 +1,28 @@
+description: Minnesota provides this base standard deduction amount.
+metadata:
+  label: Minnesota base standard deduction amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf#page=11
+  - title: 2022 Minnesota M1 form instructions
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=11
+
+JOINT:
+  2021-01-01: 25_050
+  2022-01-01: 25_800
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 18_800
+  2022-01-01: 19_400
+WIDOW:
+  2021-01-01: 25_050
+  2022-01-01: 25_800
+SINGLE:
+  2021-01-01: 12_525
+  2022-01-01: 12_900
+SEPARATE:
+  2021-01-01: 12_525
+  2022-01-01: 12_900

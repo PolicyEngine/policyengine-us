@@ -1,0 +1,138 @@
+description: States have secured SNAP emergency allotment approval from the USDA in these periods.
+
+AK:
+  2020-03-01: true
+  2022-09-01: false
+AL:
+  2020-03-01: true
+AR:
+  2020-03-01: true
+  2021-07-01: false
+AZ:
+  2020-03-01: true
+  2022-04-01: false
+CA:
+  2020-03-01: true
+CO:
+  2020-03-01: true
+CT:
+  2020-03-01: true
+DC:
+  2020-03-01: true
+DE:
+  2020-03-01: true
+FL:
+  2020-03-01: true
+  2021-08-01: false
+GA:
+  2020-03-01: true
+  2022-07-01: false
+GU:
+  2020-03-01: true
+HI:
+  2020-03-01: true
+IA:
+  2020-03-01: true
+  2022-03-01: false
+ID:
+  2020-03-01: true
+  2021-04-01: false
+IL:
+  2020-03-01: true
+IN:
+  2020-03-01: true
+  2022-06-01: false
+KS:
+  2020-03-01: true
+KY:
+  2020-03-01: true
+  2022-05-01: false
+LA:
+  2020-03-01: true
+MA:
+  2020-03-01: true
+MD:
+  2020-03-01: true
+ME:
+  2020-03-01: true
+MI:
+  2020-03-01: true
+MN:
+  # MN submitted their request too late to get March 2020 emergency allotments.
+  2020-04-01: true
+MO:
+  2020-03-01: true
+  2021-09-01: false
+MS:
+  2020-03-01: true
+  2021-12-01: false
+MT:
+  2020-03-01: true
+  2021-08-01: false
+NC:
+  2020-03-01: true
+ND:
+  2020-03-01: true
+  2021-06-01: false
+NE:
+  2020-03-01: true
+  2021-08-01: false
+NH:
+  2020-03-01: true
+NJ:
+  2020-03-01: true
+NM:
+  2020-03-01: true
+NV:
+  2020-03-01: true
+  2022-09-01: false
+NY:
+  2020-03-01: true
+OH:
+  2020-03-01: true
+OK:
+  2020-03-01: true
+OR:
+  2020-03-01: true
+PA:
+  2020-03-01: true
+RI:
+  2020-03-01: true
+SC:
+  2020-03-01: true
+SD:
+  2020-03-01: true
+  2021-08-01: false
+TN:
+  2020-03-01: true
+  2021-12-01: false
+TX:
+  2020-03-01: true
+UT:
+  2020-03-01: true
+VA:
+  2020-03-01: true
+VI:
+  2020-03-01: true
+VT:
+  2020-03-01: true
+WA:
+  2020-03-01: true
+WI:
+  2020-03-01: true
+WV:
+  2020-03-01: true
+WY:
+  2020-03-01: true
+  2021-05-01: false
+
+metadata:
+  reference:
+    - title: SNAP COVID-19 Emergency Allotments Guidance
+      href: https://www.fns.usda.gov/snap/covid-19-emergency-allotments-guidance
+    - title: "SNAP Screener: SNAP Emergency Allotments & Maximum Benefit Amounts"
+      href: https://www.snapscreener.com/blog/emergency-allotments
+  unit: bool
+  label: SNAP emergency allotment in effect
+  breakdown:
+  - state_code

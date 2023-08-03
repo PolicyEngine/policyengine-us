@@ -1,0 +1,29 @@
+- name: Anyone with income under $25k gets the max rate, 75%.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    adjusted_gross_income: 25_000
+  output:
+    nyc_cdcc_applicable_percentage: .75
+
+- name: Anyone with income over $30k gets no NYC CDCC (rate=0).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    adjusted_gross_income: 30_001
+  output:
+    nyc_cdcc_applicable_percentage: 0
+
+- name: With income of $27k, the rate is 45%.
+  period: 2022
+  absolute_error_margin: 0.0001
+  input:
+    in_nyc: true
+    nyc_cdcc_eligible: true
+    adjusted_gross_income: 27_000
+  output:
+    nyc_cdcc_applicable_percentage: .45

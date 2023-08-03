@@ -1,0 +1,35 @@
+description: Massachusetts limits the Senior Circuit Breaker credit to filers with qualifying income below this value.
+SINGLE:
+  2001-01-01: 40_000
+  # COLA-adjusted, rounded to next lowest multiple of $1,000.
+  2021-01-01: 62_000
+  2022-01-01: 64_000
+JOINT:
+  2001-01-01: 60_000
+  2021-01-01: 93_000
+  2022-01-01: 96_000
+HEAD_OF_HOUSEHOLD:
+  2001-01-01: 50_000
+  2021-01-01: 78_000
+  2022-01-01: 80_000
+WIDOW:
+  2001-01-01: 40_000
+  2021-01-01: 62_000
+  2022-01-01: 64_000
+SEPARATE:
+  2001-01-01: 40_000
+  2021-01-01: 62_000
+  2022-01-01: 64_000
+metadata:
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+  label: MA Senior Circuit Breaker maximum income
+  reference:
+    - title: Mass. General Laws c.62 § 6(k)
+      href: https://www.mass.gov/info-details/mass-general-laws-c62-ss-6
+    - title: Massachusetts Senior Circuit Breaker Tax Credit | Mass.gov
+      href: https://www.mass.gov/info-details/massachusetts-senior-circuit-breaker-tax-credit
+    - title: 2022 Schedule CB
+      href: https://www.mass.gov/doc/2022-schedule-cb-circuit-breaker-credit/download

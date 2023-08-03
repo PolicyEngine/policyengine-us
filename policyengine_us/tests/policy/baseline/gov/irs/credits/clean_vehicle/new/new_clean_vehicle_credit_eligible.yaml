@@ -1,0 +1,48 @@
+- name: Current law only requires that the battery is at least 4 kWh.
+  period: 2021
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+  output:
+    new_clean_vehicle_credit_eligible: true
+
+- name: Current law only requires that the battery is at least 4 kWh.
+  period: 2021
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 3.9
+  output:
+    new_clean_vehicle_credit_eligible: false
+
+- name: Single filer with $150,000 income and $80,000 van is eligible under IRA.
+  period: 2023
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 80_000
+    adjusted_gross_income: 150_000
+  output:
+    new_clean_vehicle_credit_eligible: true
+
+- name: Single filer with $150,001 income and $80,000 van is ineligible under IRA.
+  period: 2023
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 80_000
+    adjusted_gross_income: 150_001
+  output:
+    new_clean_vehicle_credit_eligible: false
+
+- name: Single filer with $150,000 income and $80,001 van is ineligible under IRA.
+  period: 2023
+  input:
+    purchased_qualifying_new_clean_vehicle: true
+    new_clean_vehicle_battery_capacity: 4
+    new_clean_vehicle_classification: VAN
+    new_clean_vehicle_msrp: 80_001
+    adjusted_gross_income: 150_000
+  output:
+    new_clean_vehicle_credit_eligible: false

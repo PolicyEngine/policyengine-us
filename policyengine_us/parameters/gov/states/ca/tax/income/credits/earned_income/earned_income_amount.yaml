@@ -1,0 +1,30 @@
+description: California stops phasing in the CalEITC at this income level, depending on the number of children.
+metadata:
+  rate_unit: currency-USD
+  rate_period: year
+  threshold_unit: child
+  type: single_amount
+  label: CalEITC phase-in income end
+  reference:
+    - title: California Legal code REVENUE AND TAXATION CODE - RTC (2019)
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=17052
+    - title: California Form 3514 instructions (2021)
+      href: https://www.ftb.ca.gov/forms/2021/2021-3514-instructions.html
+    - title: California Form 3514 instructions (2022)
+      href: https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 3_922
+      2022-01-01: 4_248
+  - threshold:
+      2021-01-01: 1
+    amount:
+      2021-01-01: 5_890
+      2022-01-01: 6_379
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 8_268
+      2022-01-01: 8_954

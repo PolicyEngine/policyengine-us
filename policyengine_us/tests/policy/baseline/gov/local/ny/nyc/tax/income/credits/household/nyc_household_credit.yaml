@@ -1,0 +1,235 @@
+- name: Single person making $0 gets $15.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 0
+    filing_status: SINGLE
+  output:
+    nyc_household_credit: 15
+
+- name: Single person making $5k gets $15.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 5_000
+    filing_status: SINGLE
+  output:
+    nyc_household_credit: 15
+
+- name: Single person making $11k gets $10.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 11_000
+    filing_status: SINGLE
+  output:
+    nyc_household_credit: 10
+
+- name: Single person making over $12.5k gets $0.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 12_501
+    filing_status: SINGLE
+  output:
+    nyc_household_credit: 0
+
+- name: Married couple making $15k gets $30 per tax unit dependent (includes filers) (size=2).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: JOINT
+    tax_unit_size: 2
+  output:
+    nyc_household_credit: 60
+
+- name: Married couple making $15k gets $30 per tax unit dependent (includes filers) (size=4).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: JOINT
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 120
+
+- name: Married couple making $21k gets $10 per tax unit dependent (includes filers).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 21_000
+    filing_status: JOINT
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 40
+
+- name: Married couple making over $22.5k gets no credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 22_501
+    filing_status: JOINT
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 0
+
+- name: Head of household making $15k gets $30 per tax unit dependent (includes self) (size=2).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_size: 2
+  output:
+    nyc_household_credit: 60
+
+- name: Head of household making $15k gets $30 per tax unit dependent (includes self) (size=4).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 120
+
+- name: Head of household making $21k gets $10 per tax unit dependent (includes self).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 21_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 40
+
+- name: Head of household making over $22.5k gets no credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 22_501
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 0
+
+- name: Widow making $15k gets $30 per dependent (includes self) (size=2).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: WIDOW
+    tax_unit_size: 2
+  output:
+    nyc_household_credit: 60
+
+- name: Widow making $15k gets $30 per dependent (includes self) (size=4).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: WIDOW
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 120
+
+- name: Widow making $21k gets $10 per dependent.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 21_000
+    filing_status: WIDOW
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 40
+
+- name: Widow making over $22.5k gets no credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 22_501
+    filing_status: WIDOW
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 0
+
+- name: Separate filers making $15k or less get $15 per tax unit dependent (size=2).
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 15_000
+    filing_status: SEPARATE
+    tax_unit_size: 2
+  output:
+    nyc_household_credit: 30
+
+- name: Separate filers making $18k get $8 per tax unit dependent (size=4).
+  period: 2022
+  absolute_error_margin: 3 # Table has some rounding.
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 18_000
+    filing_status: SEPARATE
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 32
+
+- name: Separate filers making $21k get $5 per tax unit dependent.
+  period: 2022
+  absolute_error_margin: 3 # Table has some rounding.
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 21_000
+    filing_status: SEPARATE
+    tax_unit_size: 6
+  output:
+    nyc_household_credit: 30
+
+- name: Separate filers making over $22.5k gets no credit.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    in_nyc: true
+    adjusted_gross_income: 22_501
+    filing_status: SEPARATE
+    tax_unit_size: 4
+  output:
+    nyc_household_credit: 0

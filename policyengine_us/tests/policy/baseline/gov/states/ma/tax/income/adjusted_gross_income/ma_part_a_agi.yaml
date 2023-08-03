@@ -1,0 +1,22 @@
+- name: Short-term loss offsets $2k of dividends
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    ma_part_a_gross_income: 3_000
+    short_term_capital_gains: -2_500
+    dividend_income: 3_000
+    state_code: MA
+  output:
+    ma_part_a_agi: 1_000
+
+- name: Short-term loss offsets $1.9k of dividends, long-term loss offsets $100 more
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    ma_part_a_gross_income: 3_000
+    short_term_capital_gains: -1_900
+    long_term_capital_gains: -100
+    dividend_income: 3_000
+    state_code: MA
+  output:
+    ma_part_a_agi: 1_000

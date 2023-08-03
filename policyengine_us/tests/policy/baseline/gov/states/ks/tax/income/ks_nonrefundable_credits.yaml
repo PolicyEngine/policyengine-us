@@ -1,0 +1,9 @@
+- name: KS nonrefundable credits unit test 1
+  period: 2021
+  input:
+    ks_cdcc: 100
+    ks_nonrefundable_eitc: 200
+    ks_fstc: 50
+    state_code: KS
+  output:
+    ks_nonrefundable_credits: 100 + 200 + 50

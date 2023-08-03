@@ -1,0 +1,13 @@
+- name: Positive rent value
+  period: 2021
+  input:
+    rent: 2
+  output:
+    rents: true
+  
+- name: No rent value
+  period: 2021
+  input:
+    rent: 0
+  output:
+    rents: false

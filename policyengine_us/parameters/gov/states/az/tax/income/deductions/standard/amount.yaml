@@ -1,0 +1,21 @@
+description: Arizona provides filers a standard deduction of this amount, depending on their filing status.
+metadata:
+  label: Arizona standard deduction
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 Arizona Form 140 Resident Personal Income Tax Booklet
+    href: https://azdor.gov/forms/individual/form-140-arizona-resident-personal-income-tax-booklet
+
+JOINT:
+  2022-01-01: 25_900
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 19_400
+WIDOW:
+  2022-01-01: 25_900
+SINGLE:
+  2022-01-01: 12_950
+SEPARATE:
+  2022-01-01: 12_950

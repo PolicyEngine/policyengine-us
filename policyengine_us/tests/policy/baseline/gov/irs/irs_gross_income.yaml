@@ -1,0 +1,40 @@
+- name: IRS gross income sums income sources.
+  period: 2022
+  input:
+    employment_income: 1
+    self_employment_income: 2
+    dividend_income: 3
+    taxable_interest_income: 4
+  output:
+    irs_gross_income: 1 + 2 + 3 + 4
+
+- name: Tax unit with tax-exempt pension income as sole income source.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: 0
+        is_tax_unit_dependent: 0
+        age: 70
+        tax_exempt_pension_income: 36000
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # suppress all state income tax calculations
+  output:  # expected results from online TAXSIM35 10/24/22 version
+    taxsim_tfica: 0.00
+    income_tax: -1400.00

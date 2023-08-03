@@ -1,0 +1,20 @@
+description: Maximum capital loss deductible from gross income to reach AGI.
+metadata:
+  unit: currency-USD
+  label: Maximum capital loss deductible above-the-line
+  breakdown:
+    - filing_status
+  reference:
+    - title: 26 U.S. Code § 1211 - Limitation on capital losses
+      href: https://www.law.cornell.edu/uscode/text/26/1211
+
+SINGLE:
+  2010-01-01: 3_000
+JOINT:
+  2010-01-01: 3_000
+SEPARATE:
+  2010-01-01: 1_500
+HEAD_OF_HOUSEHOLD:
+  2010-01-01: 3_000
+WIDOW:
+  2010-01-01: 3_000

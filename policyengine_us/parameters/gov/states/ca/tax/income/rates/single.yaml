@@ -1,0 +1,58 @@
+description: CA single filing income tax rate
+brackets:
+  - threshold:
+      0000-01-01: 0
+    rate:
+      2021-01-01: 0.01
+  - threshold:
+      2021-01-01: 9_325
+      2022-01-01: 10_099
+    rate:
+      2021-01-01: 0.02
+  - threshold:
+      2021-01-01: 22_107
+      2022-01-01: 23_942
+    rate:
+      2021-01-01: 0.04
+  - threshold:
+      2021-01-01: 34_892
+      2022-01-01: 37_788
+    rate:
+      2021-01-01: 0.06
+  - threshold:
+      2021-01-01: 48_435
+      2022-01-01: 52_455
+    rate:
+      2021-01-01: 0.08
+  - threshold:
+      2021-01-01: 61_214
+      2022-01-01: 66_295
+    rate:
+      2021-01-01: 0.093
+  - threshold:
+      2021-01-01: 312_686
+      2022-01-01: 338_639
+    rate:
+      2021-01-01: 0.103
+  - threshold:
+      2021-01-01: 375_221
+      2022-01-01: 406_364
+    rate:
+      2021-01-01: 0.113
+  - threshold:
+      2021-01-01: 625_369
+      2022-01-01: 677_275
+    rate:
+      2021-01-01: 0.123
+
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: CA single income tax rate
+  reference:
+    - title: California Income Tax Rate Schedules for 2021
+      href: https://www.ftb.ca.gov/forms/2021/2021-540-tax-rate-schedules.pdf
+    - title: California Income Tax Rate Schedules for 2022
+      href: https://www.ftb.ca.gov/forms/2022/2022-540-tax-rate-schedules.pdf

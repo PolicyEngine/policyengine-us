@@ -1,0 +1,33 @@
+description: Minnesota levies income taxes at these rates for filers who file as head of household.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0535
+  - threshold:
+      2021-01-01: 33_520
+      2022-01-01: 34_570
+    rate:
+      2021-01-01: 0.068
+  - threshold:
+      2021-01-01: 134_700
+      2022-01-01: 138_890
+    rate:
+      2021-01-01: 0.0785
+  - threshold:
+      2021-01-01: 220_730
+      2022-01-01: 227_600
+    rate:
+      2021-01-01: 0.0985
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Minnesota head of household income tax rates
+  reference:
+  - title: 2021 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf#page=35
+  - title: 2022 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=35

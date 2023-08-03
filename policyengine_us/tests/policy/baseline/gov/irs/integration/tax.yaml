@@ -1,0 +1,110 @@
+- name: Tax unit with id 6
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 38
+        employment_income: 172_000
+        social_security: 47_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 32
+        employment_income: 114_000
+      person3:
+        age: 12
+      person4:
+        age: 12
+      person5:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        snap: 0
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        tax_unit_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX  # skip all state income tax calculations
+  output:
+    employee_payroll_tax: 19_499.80
+    adjusted_gross_income: 325_950.00
+    tax_unit_taxable_unemployment_compensation: 0.00
+    tax_unit_taxable_social_security: 39_950.00
+    taxable_income: 301_950.00
+    eitc: 0.00
+    non_refundable_ctc: 4_500.00
+    refundable_ctc: 0.00
+    cdcc: 1_200.00
+    income_tax: 55_347.00
+
+- name: Simplified tax unit with recid 99970 from m21.ita.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 27
+        ssi: 0  # not in USI-Tax-Analyzer
+        state_supplement: 0  # not in USI-Tax-Analyzer
+        wic: 0  # not in USI-Tax-Analyzer
+        employment_income: 64_000
+        qualified_tuition_expenses: 11_000
+        is_eligible_for_american_opportunity_credit: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in USI-Tax-Analyzer
+        tanf: 0  # not in USI-Tax-Analyzer
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in USI-Tax-Analyzer
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # skip all state income tax calculations
+  output:  # expected results from USI-Tax-Analyzer 2.35.0 version
+    taxsim_tfica: 4_896.00
+    income_tax_before_credits: 7_067.50
+    american_opportunity_credit: 2_500.00
+    non_refundable_american_opportunity_credit: 1_500.00
+    refundable_american_opportunity_credit: 1_000.00
+    rrc_arpa: 1_400.00
+    income_tax: 3_167.50
+
+- name: Tax unit with just tax-exempt interest and social security as income
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        tax_exempt_interest_income: 50_000
+        social_security: 60_000
+        ssi: 0  # not in USI-Tax-Analyzer
+        state_supplement: 0  # not in USI-Tax-Analyzer
+        wic: 0  # not in USI-Tax-Analyzer
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0  # not in USI-Tax-Analyzer
+        tanf: 0  # not in USI-Tax-Analyzer
+    tax_units:
+      tax_unit:
+        members: [person1]
+        premium_tax_credit: 0  # not in USI-Tax-Analyzer
+    households:
+      household:
+        members: [person1]
+        state_code: TX  # suppress all state income tax calculations
+  output:  # expected results from USI-Tax-Analyzer 2.35.0 version
+    taxsim_tfica: 0.00
+    income_tax: 1_923.00

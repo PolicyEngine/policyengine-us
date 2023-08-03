@@ -1,0 +1,43 @@
+description: The USDA restricts SNAP to households with assets not exceeding this value.
+standard:
+  description: Maximum value of SNAP-visible assets for households without elderly or disabled members
+  values:
+    2020-10-01:
+      value: 2_250
+      reference:
+        - title: SNAP - Fiscal Year 2021 Cost-of-Living Adjustments
+          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLAMemoFY2021.pdf#page=5
+    2021-10-01:
+      value: 2_500
+      reference:
+        - title: SNAP - Fiscal Year 2022 Cost-of-Living Adjustments
+          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLA%20Memo%20FY2022%20Without%20Maximum%20Allotments.pdf#page=3
+    2022-10-01:
+      value: 2_750
+      reference:
+        - title: SNAP - Fiscal Year 2023 Cost-of-Living Adjustments
+          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
+elderly_disabled:
+  description: Maximum value of SNAP-visible assets for households with elderly or disabled members
+  values:
+    2020-10-01:
+      value: 3_500
+      reference:
+        - title: SNAP - Fiscal Year 2021 Cost-of-Living Adjustments
+          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLAMemoFY2021.pdf#page=5
+    2021-10-01:
+      value: 3_750
+      reference:
+        - title: SNAP - Fiscal Year 2022 Cost-of-Living Adjustments
+          href: https://fns-prod.azureedge.net/sites/default/files/resource-files/COLA%20Memo%20FY2022%20Without%20Maximum%20Allotments.pdf#page=3
+    2022-10-01:
+      value: 4_250
+      reference:
+        - title: SNAP - Fiscal Year 2023 Cost-of-Living Adjustments
+          href: https://fns-prod.azureedge.us/sites/default/files/resource-files/FY23-Maximum-Allotments-Deductions.pdf
+metadata:
+  unit: currency-USD
+  label: SNAP asset limit
+  reference:
+    - title: 7 U.S. Code § 2014(g)(1)(A)
+      href: https://www.law.cornell.edu/uscode/text/7/2014#g_1_A

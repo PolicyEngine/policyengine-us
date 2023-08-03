@@ -1,0 +1,34 @@
+description: Missouri allows filers to deduct this share of federal income taxes (before capping), by AGI. Thresholds are >=.
+brackets:
+  - amount:
+      2021-01-01: 0.35  
+    threshold:
+      2021-01-01: 0
+  - amount:
+      2021-01-01: 0.25  
+    threshold:
+      2021-01-01: 25_000
+  - amount:
+      2021-01-01: 0.15
+    threshold:
+      2021-01-01: 50_000
+  - amount:
+      2021-01-01: 0.05
+    threshold:
+      2021-01-01: 100_000
+  - amount:
+      2021-01-01: 0.00
+    threshold:
+      2021-01-01: 125_000
+metadata:
+  reference:
+    - title: Form MO-1040 line 12
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf
+    - title: MO Rev 143.171
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.171&bid=49937&hl=federal+income+tax+deduction%u2044
+  label: Missouri federal income tax deduction rates
+  name: mo_federal_income_tax_deduction_rates
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year

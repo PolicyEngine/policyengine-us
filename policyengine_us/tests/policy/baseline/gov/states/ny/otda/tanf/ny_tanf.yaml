@@ -1,0 +1,29 @@
+- name: If ineligible, they get zero.
+  period: 2023
+  input:
+    ny_tanf_eligible: false
+    ny_tanf_grant_standard: 100
+    ny_tanf_countable_earned_income: 0
+    ny_tanf_countable_gross_unearned_income: 0
+  output:
+    ny_tanf: 0
+
+- name: If eligible, they get difference between grant standard and countable income.
+  period: 2023
+  input:
+    ny_tanf_eligible: true
+    ny_tanf_grant_standard: 100
+    ny_tanf_countable_earned_income: 0
+    ny_tanf_countable_gross_unearned_income: 0
+  output:
+    ny_tanf: 100
+
+- name: If countable income exceeds grant standard they get 0.
+  period: 2023
+  input:
+    ny_tanf_eligible: true
+    ny_tanf_grant_standard: 100
+    ny_tanf_countable_earned_income: 90
+    ny_tanf_countable_gross_unearned_income: 11
+  output:
+    ny_tanf: 0

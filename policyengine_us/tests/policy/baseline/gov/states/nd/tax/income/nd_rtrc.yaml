@@ -1,0 +1,53 @@
+- name: ND resident-tax-relief credit unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    nd_income_tax_before_credits: 500
+    state_code: ND
+  output:
+    nd_rtrc: 350
+
+- name: ND resident-tax-relief credit unit test 2
+  period: 2022
+  input:
+    filing_status: SINGLE
+    nd_income_tax_before_credits: 200
+    state_code: ND
+  output:
+    nd_rtrc: 200
+
+- name: ND resident-tax-relief credit unit test 3
+  period: 2023
+  input:
+    filing_status: SINGLE
+    nd_income_tax_before_credits: 500
+    state_code: ND
+  output:
+    nd_rtrc: 0
+
+- name: ND resident-tax-relief credit unit test 4
+  period: 2021
+  input:
+    filing_status: JOINT
+    nd_income_tax_before_credits: 900
+    state_code: ND
+  output:
+    nd_rtrc: 700
+
+- name: ND resident-tax-relief credit unit test 5
+  period: 2022
+  input:
+    filing_status: JOINT
+    nd_income_tax_before_credits: 600
+    state_code: ND
+  output:
+    nd_rtrc: 600
+
+- name: ND resident-tax-relief credit unit test 6
+  period: 2023
+  input:
+    filing_status: JOINT
+    nd_income_tax_before_credits: 900
+    state_code: ND
+  output:
+    nd_rtrc: 0

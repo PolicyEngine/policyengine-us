@@ -1,0 +1,12 @@
+description: California CARE recipient households recieve a discount on their energy expenses between 30 and 35%, ballparked here at 32.5% for simplicity.
+values:
+  2021-06-01: 0.325
+metadata:
+  reference:
+    - title: 2021 California Code | Public Utilities Code - PUC | DIVISION 1 - REGULATION OF PUBLIC UTILITIES | PART 1 - PUBLIC UTILITIES ACT | CHAPTER 4 - Regulation of Public Utilities | ARTICLE 2 - Rates | Section 739.1.(c)(1)
+      href: https://law.justia.com/codes/california/2021/code-puc/division-1/part-1/chapter-4/article-2/section-739-1/
+    - title: CARE/FERA Program
+      href: https://www.cpuc.ca.gov/lowincomerates/
+  unit: /1
+  period: year 
+  label: CARE poverty line threshold

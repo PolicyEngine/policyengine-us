@@ -1,0 +1,36 @@
+- name: No adult dependent credit pre-TCJA.
+  period: 2017
+  input: {}
+  output:
+    ctc_adult_individual_maximum: 0
+
+- name: People must be dependents to qualify.
+  period: 2018
+  input:
+    is_tax_unit_dependent: false
+  output:
+    ctc_adult_individual_maximum: 0
+
+- name: People must not be child dependents to qualify.
+  period: 2018
+  input:
+    is_tax_unit_dependent: true
+    ctc_child_individual_maximum: 1
+  output:
+    ctc_adult_individual_maximum: 0
+
+- name: Adult dependents got $500 in TCJA.
+  period: 2018
+  input:
+    is_tax_unit_dependent: true
+    ctc_child_individual_maximum: 0
+  output:
+    ctc_adult_individual_maximum: 500
+
+- name: Returns to zero post-TCJA.
+  period: 2026
+  input:
+    is_tax_unit_dependent: true
+    ctc_child_individual_maximum: 0
+  output:
+    ctc_adult_individual_maximum: 0

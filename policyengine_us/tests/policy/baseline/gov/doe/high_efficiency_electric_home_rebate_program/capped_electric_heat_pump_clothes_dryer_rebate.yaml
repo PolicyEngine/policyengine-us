@@ -1,0 +1,31 @@
+- name: 100% for up to 80% of AMI (exclusive), capped at $840.
+  period: 2023
+  input:
+    electric_heat_pump_clothes_dryer_expenditures: 600
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_electric_heat_pump_clothes_dryer_rebate: 600
+
+- name: 50% for 80-150% of AMI (inclusive on both ends), capped at $840.
+  period: 2023
+  input:
+    electric_heat_pump_clothes_dryer_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 0.5
+  output:
+    capped_electric_heat_pump_clothes_dryer_rebate: 840
+
+- name: Not available pre-2023.
+  period: 2022
+  input:
+    electric_heat_pump_clothes_dryer_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_electric_heat_pump_clothes_dryer_rebate: 0
+
+- name: Not available after September 30, 2031.
+  period: 2032
+  input:
+    electric_heat_pump_clothes_dryer_expenditures: 9_000
+    high_efficiency_electric_home_rebate_percent_covered: 1
+  output:
+    capped_electric_heat_pump_clothes_dryer_rebate: 0

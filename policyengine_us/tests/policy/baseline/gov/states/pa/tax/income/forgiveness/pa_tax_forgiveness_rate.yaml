@@ -1,0 +1,92 @@
+- name: PA income tax forgiveness rate
+  period: 2021
+  input:
+    state_code: PA
+    pa_eligibility_income: 7_700
+  output:
+    pa_tax_forgiveness_rate: 0.5
+
+
+- name: PA income tax forgiveness rate
+  period: 2021
+  input:
+    state_code: PA
+    pa_eligibility_income: 0
+  output:
+    pa_tax_forgiveness_rate: 1
+
+
+- name: PA income tax forgiveness rate
+  period: 2021
+  input:
+    state_code: PA
+    pa_eligibility_income: 90_000
+  output:
+    pa_tax_forgiveness_rate: 0
+
+
+- name: PA income tax forgiveness rate
+  period: 2021
+  input:
+    people:
+      filer: {}
+      grandparent:   
+        is_tax_unit_dependent: true
+        is_child_of_tax_head: false
+      child: 
+        is_tax_unit_dependent: true
+        is_child_of_tax_head: true
+    tax_units:
+      tax_unit:
+        members: [filer, grandparent, child]
+        pa_eligibility_income: 16_300
+        filing_status: SINGLE
+    households:
+      households:
+        state_code: PA
+  output:
+    pa_tax_forgiveness_rate: 0.8
+
+- name: PA income tax forgiveness rate
+  period: 2021
+  input:
+    people:
+      father: {}
+      mother: {}    
+      child: 
+        is_tax_unit_dependent: true
+        is_child_of_tax_head: true
+    tax_units:
+      tax_unit:
+        members: [father, mother, child]
+        pa_eligibility_income: 24_300
+        filing_status: JOINT
+    households:
+      households:
+        state_code: PA
+  output:
+    pa_tax_forgiveness_rate: 0.2
+
+- name: PA income tax forgiveness rate
+  period: 2021
+  input:
+    people:
+      father: {}
+      mother: {}    
+      child 1: 
+        is_tax_unit_dependent: true
+        is_child_of_tax_head: true
+      child 2:
+        is_tax_unit_dependent: true
+        is_child_of_tax_head: true
+    tax_units:
+      tax_unit:
+        members: [father, mother, child 1, child 2]
+        pa_eligibility_income: 34_100
+        filing_status: SEPARATE
+    households:
+      households:
+        state_code: PA
+  output:
+    pa_tax_forgiveness_rate: 0.1
+

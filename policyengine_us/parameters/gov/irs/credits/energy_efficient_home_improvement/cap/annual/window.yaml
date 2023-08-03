@@ -1,0 +1,13 @@
+description: The IRS caps energy efficient home improvement credits on energy efficient windows and skylights at this amount per year.
+values:
+  2017-01-01: .inf
+  2023-01-01: 600
+metadata:
+  unit: currency-USD
+  period: year
+  name: energy_efficient_home_improvement_credit_annual_cap_windows
+  # NB: This is per item of energy property, but we apply it over the whole year.
+  label: Energy efficient home improvement credit cap on windows and skylights
+  reference:
+    - title: Inflation Reduction Act, Part 3, Section 13301 (c)
+      href: https://www.democrats.senate.gov/imo/media/doc/inflation_reduction_act_of_2022.pdf#page=339

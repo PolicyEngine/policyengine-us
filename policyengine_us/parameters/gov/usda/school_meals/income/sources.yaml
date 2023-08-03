@@ -1,0 +1,23 @@
+description: Income sources that count as income for school meal subsidies.
+
+values:
+  2009-01-01:
+    - employment_income
+    - self_employment_income
+    - dividend_income
+    - interest_income
+    - gi_cash_assistance
+    - social_security
+    - ssi
+    - tanf
+    - pension_income
+    - miscellaneous_income
+    - veterans_benefits
+    - unemployment_compensation
+    - strike_benefits
+    - rental_income
+
+metadata:
+  reference:
+    - title: United States Code, Title 7, Subsection 273.9(b)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#b

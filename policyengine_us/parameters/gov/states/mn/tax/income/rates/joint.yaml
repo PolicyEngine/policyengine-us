@@ -1,0 +1,33 @@
+description: Minnesota levies income taxes at these rates for filers who file as joint.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.0535
+  - threshold:
+      2021-01-01: 39_810
+      2022-01-01: 41_050
+    rate:
+      2021-01-01: 0.068
+  - threshold:
+      2021-01-01: 158_140
+      2022-01-01: 163_060
+    rate:
+      2021-01-01: 0.0785
+  - threshold:
+      2021-01-01: 276_200
+      2022-01-01: 284_810
+    rate:
+      2021-01-01: 0.0985
+
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  threshold_period: year
+  label: Minnesota joint income tax rates
+  reference:
+  - title: 2021 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-01/m1_inst_21.pdf#page=35
+  - title: 2022 Minnesota M1 form instructions, Tax Rate Schedules
+    href: https://www.revenue.state.mn.us/sites/default/files/2023-03/m1_inst_22.pdf#page=35

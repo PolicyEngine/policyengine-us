@@ -1,0 +1,17 @@
+- name: ND income tax before credits unit test 1
+  period: 2021
+  input:
+    filing_status: SINGLE
+    nd_taxable_income: 100_000
+    state_code: ND
+  output:  # hand calculated to avoid whole-dollar rounding problems
+    nd_income_tax_before_credits: 1_663.435
+
+- name: ND income tax before credits unit test 2
+  period: 2022
+  input:
+    filing_status: JOINT
+    nd_taxable_income: 500_000
+    state_code: ND
+  output:  # hand calculated to avoid whole-dollar rounding problems
+    nd_income_tax_before_credits: 11_316.07

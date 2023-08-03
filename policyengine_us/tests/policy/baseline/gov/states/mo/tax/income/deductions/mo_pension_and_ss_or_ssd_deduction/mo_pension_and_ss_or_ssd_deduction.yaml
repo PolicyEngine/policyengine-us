@@ -1,0 +1,54 @@
+- name: No values
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction: 0.0
+
+- name: Equal amounts
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 100
+    mo_pension_and_ss_or_ssd_deduction_section_b: 100
+    mo_pension_and_ss_or_ssd_deduction_section_c: 100
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction: 300
+
+- name: No Section A
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 0
+    mo_pension_and_ss_or_ssd_deduction_section_b: 100
+    mo_pension_and_ss_or_ssd_deduction_section_c: 100
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction: 200
+
+- name: No Section B
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 100
+    mo_pension_and_ss_or_ssd_deduction_section_b: 0
+    mo_pension_and_ss_or_ssd_deduction_section_c: 100
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction: 200
+
+- name: No Section C
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    mo_pension_and_ss_or_ssd_deduction_section_a: 100
+    mo_pension_and_ss_or_ssd_deduction_section_b: 100
+    mo_pension_and_ss_or_ssd_deduction_section_c: 0
+    state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction: 200

@@ -1,0 +1,33 @@
+description: Income sources that count as unearned income for SNAP
+
+values:
+  2009-01-01:
+    # (i)
+    - ssi
+    - tanf
+    - general_assistance
+    # (ii)
+    - pension_income # Includes annuities.
+    - veterans_benefits
+    - unemployment_compensation
+    - disability_benefits
+    - workers_compensation
+    - social_security
+    # Assume all rental income meets this criteria (rest is earned):
+    # "gross income minus the cost of doing business derived from rental
+    #  property in which a household member is not actively engaged in the
+    #  management of the property at least 20 hours a week."
+    - rental_income
+    # (iii)
+    - child_support_received
+    - alimony_income
+    # (iv) is scholarships, which we don't model
+    # (v)
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+
+metadata:
+  reference:
+    - title: United States Code, Title 7, Subsection 273.9(b)(2)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2

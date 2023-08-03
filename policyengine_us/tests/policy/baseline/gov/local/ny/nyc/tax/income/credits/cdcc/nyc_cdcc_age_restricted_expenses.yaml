@@ -1,0 +1,29 @@
+- name: Share of childcare expenses on children under four.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 3
+      person2:
+        age: 13
+      person3:
+        age: 39
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 8_000
+        tax_unit_children: 2
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_nyc: true
+  output:
+    nyc_cdcc_age_restricted_expenses: 4_000
+
+- name: If no childcare expenses, should be zero.
+  period: 2022
+  input:
+    in_nyc: true
+  output:
+    nyc_cdcc_age_restricted_expenses: 0

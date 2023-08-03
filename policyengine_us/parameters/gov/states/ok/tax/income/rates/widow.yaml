@@ -1,0 +1,46 @@
+description: Oklahoma levies this income tax schedule for widow(er) filers.
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.005
+      2022-01-01: 0.0025
+  - threshold:
+      2021-01-01: 2_000
+    rate:
+      2021-01-01: 0.01
+      2022-01-01: 0.0075
+  - threshold:
+      2021-01-01: 5_000
+    rate:
+      2021-01-01: 0.02
+      2022-01-01: 0.0175
+  - threshold:
+      2021-01-01: 7_500
+    rate:
+      2021-01-01: 0.03
+      2022-01-01: 0.0275
+  - threshold:
+      2021-01-01: 9_800
+    rate:
+      2021-01-01: 0.04
+      2022-01-01: 0.0375
+  - threshold:
+      2021-01-01: 12_200
+    rate:
+      2021-01-01: 0.05
+      2022-01-01: 0.0475
+        
+metadata:
+  threshold_unit: currency_USD
+  rate_unit: /1
+  threshold_period: year
+  type: marginal_rate
+  label: Oklahoma income tax rates for widow filing units
+  reference:
+  - title: Oklahome Tax Rates, Brackets
+    href: https://www.efile.com/oklahoma-tax-brackets-rates-and-forms/
+  - title: 2021 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
+  - title: 2022 Form 511 instructions
+    href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf

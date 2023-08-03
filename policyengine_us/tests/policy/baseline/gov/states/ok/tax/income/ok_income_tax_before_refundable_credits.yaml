@@ -1,0 +1,17 @@
+- name: OK income tax before refundable credits unit test 1
+  period: 2021
+  input:
+    ok_income_tax_before_credits: 900
+    ok_nonrefundable_credits: 850
+    state_code: OK
+  output:
+    ok_income_tax_before_refundable_credits: 900 - 850
+
+- name: OK income tax before refundable credits unit test 2
+  period: 2021
+  input:
+    ok_income_tax_before_credits: 900
+    ok_nonrefundable_credits: 950
+    state_code: OK
+  output:
+    ok_income_tax_before_refundable_credits: 0

@@ -1,0 +1,23 @@
+- name: spouse_is_disabled unit test with disability
+  period: 2020
+  input:
+    is_tax_unit_spouse: true
+    is_disabled: true
+  output:
+    spouse_is_disabled: true
+
+- name: spouse_is_disabled unit test without disability
+  period: 2020
+  input:
+    is_tax_unit_spouse: true
+    is_disabled: false
+  output:
+    spouse_is_disabled: false
+
+- name: spouse_is_disabled unit test with disability for non-spouse
+  period: 2020
+  input:
+    is_tax_unit_spouse: false
+    is_disabled: true
+  output:
+    spouse_is_disabled: false

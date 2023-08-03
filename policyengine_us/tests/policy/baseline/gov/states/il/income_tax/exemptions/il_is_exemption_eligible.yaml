@@ -1,0 +1,68 @@
+- name: "Joint filing, AGI higher than $500,000"
+  period: 2021
+  input:
+    people:
+      head_of_household:
+        age: 30
+      spouse:
+        age: 27
+    tax_units:
+      tax_unit:
+        members: [head_of_household, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 750_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_is_exemption_eligible: false
+- name: "Joint filing, AGI lower than $500,000"
+  period: 2021
+  input:
+    people:
+      head_of_household:
+        age: 30
+      spouse:
+        age: 27
+    tax_units:
+      tax_unit:
+        members: [head_of_household, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 350_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_is_exemption_eligible: true
+- name: "Not joint filing, AGI higher than $250,000"
+  period: 2021
+  input:
+    people:
+      head_of_household:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head_of_household]
+        filing_status: SINGLE
+        adjusted_gross_income: 350_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_is_exemption_eligible: false
+- name: "Not joint filing, AGI lower than $250,000"
+  period: 2021
+  input:
+    people:
+      head_of_household:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head_of_household]
+        filing_status: SINGLE
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        state_code: IL
+  output:
+    il_is_exemption_eligible: true

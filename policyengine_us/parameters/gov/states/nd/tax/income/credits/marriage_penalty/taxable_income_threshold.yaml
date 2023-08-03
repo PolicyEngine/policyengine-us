@@ -1,0 +1,14 @@
+description: North Dakota has a nonrefundable marriage-penalty credit for joint filers with state taxable income more than this amount.
+values:
+  2021-01-01: 67_812
+  2022-01-01: 69_812
+
+metadata:
+  label: marriage-penalty credit taxable income threshold
+  unit: USD
+  period: year
+  reference:
+  - title: 2021 ND income tax form and instruction booklet, Marriage Penalty Credit Worksheet and line 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/individual/2021-iit/individual-income-tax-booklet-2021.pdf #page15
+  - title: 2022 ND income tax form and instruction booklet, Marriage Penalty Credit Worksheet and line 22
+    href: https://www.tax.nd.gov/sites/www/files/documents/forms/2022-individual-income-tax-booklet.pdf #page14

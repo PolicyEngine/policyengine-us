@@ -1,0 +1,15 @@
+- name: Four exemptions in 2021
+  period: 2021
+  input:
+    ok_count_exemptions: 4
+    state_code: OK
+  output:
+    ok_exemptions: 1_000 * 4
+
+- name: Two exemptions in 2022
+  period: 2022
+  input:
+    ok_count_exemptions: 2
+    state_code: OK
+  output:
+    ok_exemptions: 1_000 * 2

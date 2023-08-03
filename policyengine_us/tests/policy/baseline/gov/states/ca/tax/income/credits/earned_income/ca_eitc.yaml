@@ -1,0 +1,56 @@
+- name: CA EITC, no children, $20k income
+  period: 2022
+  absolute_error_margin: 20
+  input:
+    employment_income: 20_500
+    eitc_child_count: 0
+  output:
+    ca_eitc: 88
+
+- name: Tax unit with taxsimid 95611 in e21.its.csv and e21.ots.csv
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        employment_income: 15010
+        taxable_interest_income: 11010
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person2:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+      person3:
+        age: 11
+        ssi: 0  # not in TAXSIM35
+        state_supplement: 0  # not in TAXSIM35
+        wic: 0  # not in TAXSIM35
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap: 0  # not in TAXSIM35
+        tanf: 0  # not in TAXSIM35
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        premium_tax_credit: 0  # not in TAXSIM35
+        ca_use_tax: 0  # not in TAXSIM35
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+  output:  # expected results from patched TAXSIM35 2023-02-22 version
+    # expected US results:
+    earned_income_tax_credit: 0  # too much investment income to be eligible
+    income_tax: -9648
+    # expected CA results:
+    ca_income_tax_before_credits: 164.14  # this is a PolicyEngineUS output
+    ca_exemptions: 1_058  # treated as a nonrefundable credit
+    ca_income_tax_before_refundable_credits: 0
+    ca_eitc: 0  # too much investment income to be CalEITC eligible
+    ca_income_tax: 0

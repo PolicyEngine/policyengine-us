@@ -1,0 +1,14 @@
+description: The US limits EITC eligibility for filers without children to those below this age.
+metadata:
+  unit: year
+  label: EITC maximum childless age
+  reference:
+    - title: 26 U.S. Code § 32(c)(1)(A)(ii)(II) - Earned income credit
+      href: https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii_II
+    # ARPA removed the age limit.
+    - title: 26 U.S. Code § 32(n)(2) - Earned income credit
+      href: https://www.law.cornell.edu/uscode/text/26/32#n_2
+values:
+  2013-01-01: 64
+  2021-01-01: .inf
+  2022-01-01: 64

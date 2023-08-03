@@ -1,0 +1,14 @@
+description: The IRS caps its new clean vehicle credit capacity bonus at this amount.
+values:
+  2021-01-01: 5_000
+  # End with Inflation Reduction Act.
+  # In effect as of 2022-08-16, but backdating so it shows up as current policy
+  # in PolicyEngine.
+  2022-01-01: 0
+metadata:
+  unit: currency-USD
+  name: new_clean_vehicle_credit_max_amount_for_capacity_bonus
+  label: New clean vehicle credit maximum amount for capacity bonus
+  reference:
+    - title: 26 U.S. Code § 30D - New qualified plug-in electric drive motor vehicles (b)(3)
+      href: https://www.law.cornell.edu/uscode/text/26/30D#b_3

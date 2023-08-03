@@ -1,0 +1,29 @@
+- name: NE income tax before refundable credits unit test 1
+  period: 2021
+  input:
+    income_tax_before_credits: 1_000
+    ne_income_tax_before_credits: 900
+    ne_nonrefundable_credits: 850
+    state_code: NE
+  output:
+    ne_income_tax_before_refundable_credits: 900 - 850
+
+- name: NE income tax before refundable credits unit test 2
+  period: 2021
+  input:
+    income_tax_before_credits: 1_000
+    ne_income_tax_before_credits: 900
+    ne_nonrefundable_credits: 950
+    state_code: NE
+  output:
+    ne_income_tax_before_refundable_credits: 0
+
+- name: NE income tax before refundable credits unit test 3
+  period: 2022
+  input:
+    income_tax_before_credits: 20
+    ne_income_tax_before_credits: 900
+    ne_nonrefundable_credits: 850
+    state_code: NE
+  output:
+    ne_income_tax_before_refundable_credits: 20

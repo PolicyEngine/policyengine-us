@@ -1,0 +1,39 @@
+- name: 100% capped at $300 before the Inflation Reduction Act; biomass not yet included.
+  period: 2021
+  input:
+    heat_pump_expenditures: 50
+    heat_pump_water_heater_expenditures: 50
+    biomass_stove_boiler_expenditures: 50
+  output:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 100
+  
+- name: 100% capped at $300 before the Inflation Reduction Act.
+  period: 2022
+  input:
+    heat_pump_expenditures: 200
+    heat_pump_water_heater_expenditures: 150
+  output:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 300
+
+- name: 30% capped at $2,000 after the Inflation Reduction Act, with rebates.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    heat_pump_expenditures: 1_000
+    heat_pump_water_heater_expenditures: 1_000
+    biomass_stove_boiler_expenditures: 1_000
+    capped_heat_pump_rebate: 1_000
+    capped_heat_pump_water_heater_rebate: 1_000
+  output:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 300
+    
+- name: 30% capped at $2,000 after the Inflation Reduction Act, no rebates.
+  period: 2023
+  input:
+    heat_pump_expenditures: 10_000
+    heat_pump_water_heater_expenditures: 1_000
+    biomass_stove_boiler_expenditures: 1_000
+    capped_heat_pump_rebate: 0
+    capped_heat_pump_water_heater_rebate: 0
+  output:
+    capped_heat_pump_heat_pump_water_heater_biomass_stove_boiler_credit: 2_000
