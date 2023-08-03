@@ -29,7 +29,12 @@ class de_itemized_deductions(Variable):
         exempt_deds = add(
             tax_unit,
             period,
-            ["medical_expense_deduction", "casualty_loss_deduction"],
+            [
+                "medical_expense_deduction",
+                "casualty_loss_deduction",
+                "charitable_deduction",
+                "salt_deduction",
+            ],
         )
         net_deds = max_(0, de_itm_deds - exempt_deds)
         net_deds_offset = p.deduction_fraction * net_deds

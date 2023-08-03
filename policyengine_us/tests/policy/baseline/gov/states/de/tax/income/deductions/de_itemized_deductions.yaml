@@ -40,6 +40,7 @@
     interest_deduction: 10_000
     medical_expense_deduction: 400
     casualty_loss_deduction: 200
+    #salt_deduction: 300
     state_code: DE
   output:
     de_itemized_deductions: (10_000 + 400 + 200) - 0.80 * 10_000
