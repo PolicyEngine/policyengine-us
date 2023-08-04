@@ -17,7 +17,7 @@ class mt_standard_deduction(Variable):
         # is bounded by a min/max by filing status.
         min_amount = p.min[filing_status]
         max_amount = p.max[filing_status]
-        unbounded = p.rate * agi
-        deduction_amount = min_(unbounded, max_amount)
+        uncapped_amount = p.rate * agi
+        deduction_amount = min_(uncapped_amount, max_amount)
 
         return max_(deduction_amount, min_amount)
