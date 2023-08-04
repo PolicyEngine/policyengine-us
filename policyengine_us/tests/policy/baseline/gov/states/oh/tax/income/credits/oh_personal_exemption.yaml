@@ -1,0 +1,20 @@
+- name: 5 people in tax unit and have adjusted gross income of $40,000, the filer is a dependent on another person's return.
+  period: 2021
+  input:
+    state_code: OH
+    tax_unit_size: 5
+    dsi: True
+    oh_agi: 40_000
+  output:
+    oh_personal_exemption: 0
+
+- name: 6 people in tax unit and have adjusted gross income of $30,000, the filer is not a dependent on another person's return.
+  period: 2021
+  input:
+    state_code: OH
+    tax_unit_size: 6
+    dsi: false
+    oh_agi: 30_000
+  output:
+    oh_personal_exemption: 14_400
+    # 6 * 2400 = 14_400
