@@ -6,7 +6,6 @@ class mt_ctc_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the Montana Child Tax Credit"
     definition_period = YEAR
-    unit = USD
     reference = "https://leg.mt.gov/bills/2023/billpdf/HB0268.pdf"
     defined_for = StateCode.MT
 
