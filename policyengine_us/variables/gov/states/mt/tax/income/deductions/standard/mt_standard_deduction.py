@@ -11,8 +11,6 @@ class mt_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        itemizing = tax_unit("tax_unit_itemizes", period)
-        standard_eligible = itemizing == [False]
         p = parameters(period).gov.states.mt.tax.income.deductions.standard
         agi = tax_unit("mt_agi", period)
         # standard deduction is a percentage of AGI that
@@ -22,4 +20,4 @@ class mt_standard_deduction(Variable):
         unbounded = p.rate * agi
         deduction_amount = min_(unbounded, max_amount)
 
-        return standard_eligible * max_(deduction_amount, min_amount)
+        return max_(deduction_amount, min_amount)
