@@ -11,7 +11,7 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_map_pregnant_income: true
+    va_map_ssi_eligiblity: true
 
 - name: No SSI recipient is not eligible.
   period: 2023
@@ -26,4 +26,4 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_map_pregnant_income: false
+    va_map_ssi_eligiblity: false
