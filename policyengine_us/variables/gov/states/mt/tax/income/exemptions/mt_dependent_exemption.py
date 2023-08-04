@@ -13,20 +13,15 @@ class mt_dependent_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
         person = tax_unit.members
-        is_disabled = person("is_disabled", period)
-        employment_income = person("employment_income", period)
-        healthy_qualified_dependent = (
-            person("is_tax_unit_dependent", period)
-            & (employment_income <= p.amount)
-            & (is_disabled == False)
-        )
-        disabled_qualified_dependent = (
-            person("is_tax_unit_dependent", period)
-            & (employment_income <= p.amount)
-            & (is_disabled == True)
-        )
-
-        num_healthy_dependent = tax_unit.sum(healthy_qualified_dependent)
-        num_disabled_dependent = tax_unit.sum(disabled_qualified_dependent)
-
-        return (num_healthy_dependent + 2 * num_disabled_dependent) * p.amount
+        dependent = person("is_tax_unit_dependent", period)
+        # To qualify for an exemption, the dependent must either:
+        # a) have gross income below the exemption amount, or
+        # b) be a qualifying child under IRC 152(c), which defines for the EITC
+        gross_income = person("irs_gross_income", period)
+        meets_income_test = gross_income <= p.amount
+        qualifying_child = person("is_eitc_qualifying_child", period)
+        eligible = dependent & (meets_income_test | qualifying_child)
+        # Disabled dependents get an additional exemption.
+        exemptions_if_eligible = p.disabled + person("is_disabled", period)
+        dependent_exemptions = tax_unit.sum(eligible * exemptions_if_eligible)
+        return dependent_exemptions * p.amount
