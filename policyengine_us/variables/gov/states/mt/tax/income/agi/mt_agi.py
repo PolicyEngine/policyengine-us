@@ -7,7 +7,6 @@ class mt_agi(Variable):
     label = "Montana Adjusted Gross Income"
     unit = USD
     definition_period = YEAR
-    reference = ""
     defined_for = StateCode.MT
 
     # def formula(tax_unit, period, parameters):

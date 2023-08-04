@@ -4,6 +4,7 @@
     state_code: MT
     mt_agi: 12_950
     filing_status: SINGLE
+    tax_unit_itemizes: false
   output:
     mt_standard_deduction: 2_590
 
@@ -13,15 +14,17 @@
     state_code: MT
     mt_agi: 8_000
     filing_status: WIDOW
+    tax_unit_itemizes: false
   output:
     mt_standard_deduction: 2_140
 
-- name: $30,000 for seperate. #0.2*30000=6000 (higher than max)
+- name: $30,000 for separate. #0.2*30000=6000 (higher than max)
   period: 2021
   input:
     state_code: MT
     mt_agi: 30_000
-    filing_status: SEPERATE
+    filing_status: SEPARATE
+    tax_unit_itemizes: false
   output:
     mt_standard_deduction: 4_830
 
@@ -31,6 +34,7 @@
     state_code: MT
     mt_agi: 25_180
     filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_itemizes: false
   output:
     mt_standard_deduction: 5_036
 
@@ -40,5 +44,16 @@
     state_code: MT
     mt_agi: 15_000
     filing_status: JOINT
+    tax_unit_itemizes: false
   output:
     mt_standard_deduction: 4_520
+
+- name: itemized deduction case
+  period: 2022
+  input:
+    state_code: MT
+    mt_agi: 15_000
+    filing_status: JOINT
+    tax_unit_itemizes: true
+  output:
+    mt_standard_deduction: 0
