@@ -1,9 +1,9 @@
-description: Vermont taxes income of widow filers at this rate. 
+description: Vermont taxes income of widow(er) filers at this rate. 
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Vermont State income tax rates for widow filers
+  label: Vermont income tax rates widow(er) filers
   reference:
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
       href: https://legislature.vermont.gov/statutes/section/32/151/05822
@@ -27,9 +27,9 @@ brackets:
       2021-01-01: 165_350
       2022-01-01: 170_300
     rate:
-      2022-01-01: 0.076
+      2021-01-01: 0.076
   - threshold:
       2021-01-01: 251_950
       2022-01-01: 259_500
     rate:
-      2022-01-01: 0.0875
+      2021-01-01: 0.0875
