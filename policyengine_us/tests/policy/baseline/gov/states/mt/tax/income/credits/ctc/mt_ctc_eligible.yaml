@@ -1,0 +1,26 @@
+- name: Eligible 
+  period: 2023
+  input:
+    adjusted_gross_income: 56_000
+    net_investment_income: 10_299
+    state_code: MT
+  output: 
+    mt_ctc_eligible: true
+
+- name: AGI ineligible 
+  period: 2023
+  input:
+    adjusted_gross_income: 56_001
+    net_investment_income: 10_299
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false
+
+- name: Investment income ineligible 
+  period: 2023
+  input:
+    adjusted_gross_income: 56_000
+    net_investment_income: 10_300
+    state_code: MT
+  output: 
+    mt_ctc_eligible: false

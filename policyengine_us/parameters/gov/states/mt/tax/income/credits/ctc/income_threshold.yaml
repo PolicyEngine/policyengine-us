@@ -1,11 +1,13 @@
-description: Upper income limit for Montana child tax credit eligibility.
+description: Montana provides the child tax credit fro filers with income below this threshold.
 values:
-  2021-11-01: 50_000
+  2021-01-01: 0
   2023-01-01: 56_000
 metadata:
   units: currency-USD
   period: year
   label: Montana child tax credit income threshold
   reference:
+  # The Montana Child Tax Credit established in the 2023 House Bill No. 268
+  # not existent before
     - title: 2023 Montana Legislature, House Bill No. 268, Section 1, 7 (d)
       href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
