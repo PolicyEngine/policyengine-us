@@ -3,9 +3,9 @@
   input:
     people:
       parent1:
-        is_prenant: false
+        is_pregnant: false
       parent2:
-        is_prenant: false
+        is_pregnant: false
     households:
       household:
         members: [parent1, parent2]
@@ -22,7 +22,7 @@
   input:
     people:
       parent:
-        is_prenant: true
+        is_pregnant: true
     households:
       household:
         members: [parent]
@@ -39,9 +39,9 @@
   input:
     people:
       parent1:
-        is_prenant: true
+        is_pregnant: true
       parent2:
-        is_prenant: false
+        is_pregnant: false
     households:
       household:
         members: [parent1, parent2]
@@ -58,9 +58,9 @@
   input:
     people:
       parent1:
-        is_prenant: true
+        is_pregnant: true
       parent2:
-        is_prenant: false
+        is_pregnant: false
     households:
       household:
         members: [parent1, parent2]

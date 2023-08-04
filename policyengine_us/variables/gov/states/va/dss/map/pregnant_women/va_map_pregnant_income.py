@@ -12,9 +12,9 @@ class va_map_pregnant_income(Variable):
         person = spm_unit.members
         earned = person("va_map_earned_income", period) 
         unearned = person("va_map_unearned_income", period)
-        child = person("is_child")
-        mother = person("is_mother")
-        father = person("is_father")
+        child = person("is_child", period)
+        mother = person("is_mother", period)
+        father = person("is_father", period)
         c = child | mother | father
         
-        return spm_unit.sum(earned + unearned) * c
+        return spm_unit.sum((earned + unearned) * c)
