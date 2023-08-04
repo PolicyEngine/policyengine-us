@@ -14,6 +14,7 @@ class mt_ctc_eligible(Variable):
         # CTC limited to filers with agi at or below $56,000
         agi = tax_unit("adjusted_gross_income", period)
         income_eligible = agi <= p.income_threshold
+        # CTC limited to filers with investment income below $10,300
         investment_income_eligible = (
             tax_unit("net_investment_income", period) < p.investment_threshold
         )

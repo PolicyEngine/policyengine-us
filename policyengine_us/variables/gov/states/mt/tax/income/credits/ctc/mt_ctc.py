@@ -20,5 +20,4 @@ class mt_ctc(Variable):
         excess = max_(agi - p.reduction.threshold, 0)
         increments = excess // p.reduction.increment
         reduction_rate = p.reduction.rate * increments
-        reduced_credit = max_(child_credit - reduction_rate, 0)
-        return reduced_credit
+        return max_(child_credit - reduction_rate, 0)
