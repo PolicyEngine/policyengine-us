@@ -3947,3 +3947,9 @@
     added:
     - South Carolina two wage earner credit.
   date: 2023-08-03 06:11:59
+- bump: patch
+  changes:
+    removed:
+    - Unused tools/taxcalc/calcfunctions.py module.
+    - Unused excess function in tools/general.py module.
+  date: 2023-08-04 20:07:35
