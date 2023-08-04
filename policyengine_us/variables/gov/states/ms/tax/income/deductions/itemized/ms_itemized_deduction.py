@@ -20,14 +20,12 @@ class ms_itemized_deduction(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         misc = tax_unit("misc_deduction", period)
 
-        p = parameters(period).gov.states.ms.tax.income.deductions.itemized
+        p = parameters(period).gov.irs.deductions.itemized.misc
 
         # compute itemized deduction maximum less salt
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
 
         # calculate maximum miscellanous amount
-        misc_deduction = where(
-            misc > 0, max_(misc, p.misc_deduction_fraction * agi), 0
-        )
+        misc_deduction = min_(misc, p.floor * agi)
 
         return itm_deds_less_salt + misc_deduction
