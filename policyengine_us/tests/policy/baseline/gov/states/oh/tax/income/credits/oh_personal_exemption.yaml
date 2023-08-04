@@ -8,6 +8,16 @@
   output:
     oh_personal_exemption: 0
 
+- name: 2 people in tax unit and have adjusted gross income of $70,000, the filer is a dependent on another person's return.
+  period: 2021
+  input:
+    state_code: OH
+    tax_unit_size: 2
+    dsi: True
+    oh_agi: 70_000
+  output:
+    oh_personal_exemption: 0
+    
 - name: 6 people in tax unit and have adjusted gross income of $30,000, the filer is not a dependent on another person's return.
   period: 2021
   input:
