@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class oh_retirement_income_credit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Ohio Retirement Income Credit Eligible"
     unit = USD

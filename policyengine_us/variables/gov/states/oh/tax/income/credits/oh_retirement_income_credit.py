@@ -8,7 +8,7 @@ class oh_retirement_income_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://codes.ohio.gov/ohio-revised-code/section-5747.055"
-    defined_for = StateCode.OH
+    defined_for = "oh_retirement_income_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
