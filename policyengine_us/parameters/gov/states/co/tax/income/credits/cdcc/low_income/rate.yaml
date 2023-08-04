@@ -1,4 +1,4 @@
-description: Colorado provides the following low income child care expense creit rate, based on federal AGI.
+description: Colorado provides the following low income child care expense credit rate, based on federal AGI.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
@@ -9,14 +9,14 @@ metadata:
       href: https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-1195-child-care-expenses-tax-credit-legislative-declaration-definitions
     - title: 2022 Colorado Individual Income Tax Filing Guide, page 48
       href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf 
+    - title: 2021 Colorado Individual Income Tax Filing Guide, page 46
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR0104Book_2021_V3.pdf 
 brackets:
   - threshold:
-      2021-01-01: 0
+      2018-01-01: 0
     amount:
-      2021-01-01: 0.25
+      2018-01-01: 0.25
   - threshold:
-      2021-01-01: 25_000
+      2018-01-01: 25_000
     amount:
-      2021-01-01: 0
-
-#TODO: 2021 tax form + amount
+      2018-01-01: 0

@@ -1,0 +1,27 @@
+- name: 2 children, one eligible, head and spouse eligible
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 35
+      spouse:
+        age: 43
+      child_1:
+        age: 12
+        childcare_expenses: 1_000
+      child_2:
+        age: 13
+        childcare_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child_1, child_2]
+        adjusted_gross_income: 24_999
+        min_head_spouse_earned: 1_100
+        tax_unit_dependents: 2
+    households:
+      household:
+        state_code: CO
+        members: [head, spouse, child_1, child_2]
+  output:
+    co_low_income_cdcc: 250
