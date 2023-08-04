@@ -2,7 +2,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    tax_unit_size: 5
+    exemptions: 5
     oh_agi: 40_000
     state_code: OH
   output: 
@@ -12,7 +12,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    tax_unit_size: 3
+    exemptions: 3
     oh_agi: 80_000
     state_code: OH
   output: 
@@ -22,7 +22,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    tax_unit_size: 28
+    exemptions: 28
     oh_agi: 80_001
     state_code: OH
   output: 
@@ -32,7 +32,7 @@
   absolute_error_margin: 0.01
   period: 2022
   input:
-    tax_unit_size: 3
+    exemptions: 3
     oh_agi: 50_000
     state_code: OH
   output: 
