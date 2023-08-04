@@ -13,15 +13,24 @@ class hi_food_excise_credit(Variable):
     def formula(tax_unit, period, parameters):
         # First we need to grab the parameter path
         p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
-        # Take the tax unit income
+        # Take the AGI
         income = tax_unit("adjusted_gross_income", period)
-        # Take the filing status
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
+        # Minor children receiving public support will receive full credit regardles of AGI
+        person = tax_unit.members
+        public_support_received = person("public_support_received", period)
+        is_child = person("is_child", period)
+        minor = person("age", period) < p.minor_child.age_threshold
+        eligible_minor_child = is_child & minor & public_support_received
+        minor_children = tax_unit.sum(eligible_minor_child)
+        minor_child_total = p.minor_child.amount * minor_children
         # Take the number of exemptions
         exemptions = tax_unit("exemptions", period)
-        dependent_on_another_return = tax_unit("dsi", period)
+        # Reduce number of exemptions by the number of minor children
+        claimable_exemptions = exemptions - minor_children
         # Determine the amount per exemption based on income
+        # and filing status
+        filing_status = tax_unit("filing_status", period)
+        status = filing_status.possible_values
         amount_per_exemption = select(
             [
                 filing_status == status.SINGLE,
@@ -39,18 +48,9 @@ class hi_food_excise_credit(Variable):
             ],
         )
         # dsi does not influence minor child's total
-        exemption_total = (
-            exemptions * amount_per_exemption
-        ) * ~dependent_on_another_return
-
-        person = tax_unit.members
-        is_child = person("is_child", period)
-        minor_child = person("age", period) < p.minor_child.age_threshold
-
-        # add public_support_received
-        public_support_received = person("public_support_received", period)
-        minor_child_total = p.minor_child.amount * tax_unit.sum(
-            is_child & minor_child & public_support_received
+        exemption_amount = claimable_exemptions * amount_per_exemption
+        # Filer can not be a dependent on another return
+        dependent_on_another_return = tax_unit("dsi", period)
+        return ~dependent_on_another_return * (
+            exemption_amount + minor_child_total
         )
-
-        return exemption_total + minor_child_total
