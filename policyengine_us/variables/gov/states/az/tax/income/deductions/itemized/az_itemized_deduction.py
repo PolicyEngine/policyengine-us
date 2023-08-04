@@ -66,7 +66,8 @@ class az_itemized_deduction(Variable):
             + charitable_deduction
             + adjustment_to_state_income_taxes
         )  
-        # If you have other_adjustments, we need to add "other_adjustments" into "adjustment_medical_charitable_stateTax_other"
+        # If you have other_adjustments, we need to add "other_adjustments" 
+        # into "adjustment_medical_charitable_stateTax_other"
         az_itemized_deductions_less_salt = tax_unit(
             "az_itemized_deductions_less_salt", period
         )
