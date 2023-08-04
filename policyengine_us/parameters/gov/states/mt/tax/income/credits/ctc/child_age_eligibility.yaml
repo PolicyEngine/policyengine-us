@@ -1,5 +1,7 @@
-description: Child Age For Child Tax Credit Eligibility.
+description: Montana provides the child tax credit for children at or below this age threshold.
 values:
+  2020-01-01: 6
+  2021-11-01: 17
   2023-01-01: 5
 metadata:
   units: year
@@ -8,3 +10,6 @@ metadata:
   reference:
     - title: 2023 Montana Legislature, House Bill No. 268, Section 1, 7 (c)
       href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
+    - title: Federal Tax Credit, page 3-4
+      href: https://leg.mt.gov/content/Committees/Interim/2021-2022/Economic%20Affairs/Meetings/November%202021/Federal-Tax-Credits.pdf#page=3
+
