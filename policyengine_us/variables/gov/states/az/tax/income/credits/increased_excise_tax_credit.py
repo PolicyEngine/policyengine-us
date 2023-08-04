@@ -21,5 +21,5 @@ class az_increased_excise_tax_credit(Variable):
         eligible = agi <= max_income
         tax_unit_size = tax_unit("tax_unit_size", period)
         additional_dependent = p.additional_dependent[filing_status]
-        uncapped_credit = total_dependents * p.amount
+        uncapped_credit = tax_unit_size * p.amount
         return eligible * min_(uncapped_credit, p.max_amount)
