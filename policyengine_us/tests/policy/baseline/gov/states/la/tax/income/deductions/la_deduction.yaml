@@ -12,7 +12,7 @@
   input:
     state_code: LA
     standard_deduction: 12_950
-    medical_expense_deduction: 20_000
+    medical_expense: 20_000
     tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 7_050
@@ -22,7 +22,7 @@
   input:
     state_code: LA
     standard_deduction: 19_400
-    medical_expense_deduction: 20_000
+    medical_expense: 20_000
     tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 600
@@ -32,7 +32,7 @@
   input:
     state_code: LA
     standard_deduction: 25_900
-    medical_expense_deduction: 20_000
+    medical_expense: 20_000
     tax_unit_itemizes: 1
   output:
     la_itemized_deductions: 0
