@@ -10,6 +10,7 @@ class sc_state_tax_addback(Variable):
     reference = (
         "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
         "https://dor.sc.gov/forms-site/Forms/SC1040inst_2022.pdf#page=2",
+        "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1130 (2)
     )
     defined_for = StateCode.SC
 
