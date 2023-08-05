@@ -20,7 +20,7 @@ class de_persons_60_or_over_or_disabled_exclusion(Variable):
         # Then get the DE blind ir disabled exemptions part of the parameter tree.
         p = parameters(
             period
-        ).gov.states.de.tax.income.subtractions.exclusions.persons_60_or_over_disabled
+        ).gov.states.de.tax.income.subtractions.exclusions.persons_60_or_over_or_disabled
 
         # Get the individual disabled status.
         disabled_head = tax_unit("disabled_head", period)
@@ -31,10 +31,10 @@ class de_persons_60_or_over_or_disabled_exclusion(Variable):
 
         # Get spouse age and eligibility
         age_spouse = tax_unit("age_spouse", period)
-        age_spouse_eligible = (age_spouse >= p.threshold.age_threshold).astype(int)
+        age_spouse_eligible = (age_spouse >= p.threshold.age).astype(int)
 
         # Determine if individual age is eligible.
-        age_head_eligible = (age_head >= p.age_threshold).astype(int)
+        age_head_eligible = (age_head >= p.threshold.age).astype(int)
 
         # Get the individual filer's income.
         is_head = person("is_tax_unit_head", period)
@@ -49,7 +49,7 @@ class de_persons_60_or_over_or_disabled_exclusion(Variable):
         )
 
         # Determine if filer income is eligible.
-        income_threshod = p.minimum_income[filing_status]
+        income_threshod = p.threshold.income[filing_status]
         income_eligible = (total_income <= income_threshod).astype(int)
 
         # Check if the individual's eligiblity.
@@ -63,7 +63,7 @@ class de_persons_60_or_over_or_disabled_exclusion(Variable):
 
         pre_exclsuions_agi = tax_unit("de_pre_exclusions_agi", period)
         agi_eligible = (
-            pre_exclsuions_agi <= p.subtraction_result[filing_status]
+            pre_exclsuions_agi <= p.threshold.subtraction[filing_status]
         )
 
         eligible = age_or_disability_eligible & income_eligible & agi_eligible

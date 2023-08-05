@@ -10,4 +10,4 @@ class de_agi(Variable):
     defined_for = StateCode.DE
 
     adds = ["de_pre_exclusions_agi"]
-    subtracts = ["de_elder_disabled_income_exclusion"]
+    subtracts = ["de_elderly_or_disabled_income_exclusion"]

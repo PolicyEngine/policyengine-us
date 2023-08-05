@@ -17,7 +17,7 @@
         members: [head]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000
+    de_persons_60_or_over_or_disabled_exclusion: 2_000
 
 - name: If filing SINGLE, individual age is 55, disabled, earned income is less than $2500, Line 10 result is $1000, income exclusion should be $2000.
   period: 2023
@@ -38,7 +38,7 @@
         members: [head]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000
+    de_persons_60_or_over_or_disabled_exclusion: 2_000
 
 - name: If filing SINGLE, individual age is 65, disabled, earned income is $5500, Line 10 result is $1000, income exclusion should be $0.
   period: 2023
@@ -59,7 +59,7 @@
         members: [head]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_persons_60_or_over_or_disabled_exclusion: 0
 
 - name: If filing SINGLE, individual age is 65, disabled, earned income is $1500, Line 10 result is $50000, income exclusion should be $0.
   period: 2023
@@ -80,7 +80,7 @@
         members: [head]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_persons_60_or_over_or_disabled_exclusion: 0
 
 - name: If filing SEPARATE, both head and spouse age are 60, both not disabled, both earned income are less than $2500, Line 10 result is $1000, income exclusion should be $2000.
   period: 2023
@@ -106,7 +106,7 @@
         members: [head, spouse]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000
+    de_persons_60_or_over_or_disabled_exclusion: 2_000
 
 - name: If filing JOINT, both head and spouse age are 60, both not disabled, both earned income is less than $5000, Line 10 result is $20,000, income exclusion should be $4000.
   period: 2023
@@ -132,7 +132,7 @@
         members: [head, spouse]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 4_000
+    de_persons_60_or_over_or_disabled_exclusion: 4_000
 
 - name: If filing JOINT, head age is 60, spouse age is 55, both not disabled, both earned income is less than $2500, Line 10 result is $20,000, income exclusion should be $0.
   period: 2023
@@ -158,7 +158,7 @@
         members: [head, spouse]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_persons_60_or_over_or_disabled_exclusion: 0
 
 - name: If filing JOINT, both head and spouse age are 65, both not disabled, combined earned income is $6000, Line 10 result is $20,000, income exclusion should be $0.
   period: 2023
@@ -184,7 +184,7 @@
         members: [head, spouse]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0    
+    de_persons_60_or_over_or_disabled_exclusion: 0    
 
 
 - name: If filing JOINT, both head and spouse age are 65, both not disabled, combined earned income is $2000, Line 10 result is $50,000, income exclusion should be $0.
@@ -211,4 +211,4 @@
         members: [head, spouse]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0    
+    de_persons_60_or_over_or_disabled_exclusion: 0    
