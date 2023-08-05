@@ -3921,3 +3921,45 @@
     fixed:
     - Equivalised household income is household income-based rather than SPM income-based.
   date: 2023-08-02 13:58:43
+- bump: patch
+  changes:
+    fixed:
+    - New Mexico child day care credit.
+  date: 2023-08-02 18:03:26
+- bump: minor
+  changes:
+    added:
+    - Delaware additional standard deduction.
+    - Fixed aged personal credit structure.
+  date: 2023-08-03 01:17:19
+- bump: minor
+  changes:
+    added:
+    - Check/improve reference for New Mexico AGI subtractions.
+  date: 2023-08-03 05:20:50
+- bump: minor
+  changes:
+    added:
+    - Michigan Exemptions.
+  date: 2023-08-03 05:43:23
+- bump: minor
+  changes:
+    added:
+    - South Carolina two wage earner credit.
+  date: 2023-08-03 06:11:59
+- bump: patch
+  changes:
+    removed:
+    - Unused tools/taxcalc/calcfunctions.py module.
+    - Unused excess function in tools/general.py module.
+  date: 2023-08-04 20:07:35
+- bump: minor
+  changes:
+    added:
+    - Arkansas standard deduction.
+  date: 2023-08-04 21:19:33
+- bump: minor
+  changes:
+    added:
+    - Montana Standard Deduction.
+  date: 2023-08-05 03:01:43
