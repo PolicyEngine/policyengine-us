@@ -1,15 +1,15 @@
-description: West Virginia reduces its status deduction with adjusted federal AGI exceeding this amount.
+description: West Virginia provides its status deduction for filer with adjusted AGI at or below this amount.
 
 metadata:
   period: year
   unit: currency-USD
-  label: Adjusted federal AGI threshold for WV taxpayers eligible for an status deduction
-  breakdown:
+  label: West Virginia social security benefit subtraction income threshold
+
   - filing_status
   reference:
-  - title: West Virginia Personal Income Tax Forms And Instructions 2022
+  - title: West Virginia Personal Income Tax Forms And Instructions 2022 page=25
     href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#Page=25
-  - title: Code of West Virginia §11-21-12 (c)(8)
+  - title: Code of West Virginia §11-21-12 (c)(8)(D)
     href: https://code.wvlegislature.gov/11-21-12/
 
 
