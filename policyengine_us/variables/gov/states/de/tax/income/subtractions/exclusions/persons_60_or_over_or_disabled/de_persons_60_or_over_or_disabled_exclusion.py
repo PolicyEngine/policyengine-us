@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class de_elderly_or_disabled_income_exclusion(Variable):
+class de_persons_60_or_over_or_disabled_exclusion(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware aged or disabled exemption"
+    label = "Delaware persons 60 or over or disabled exclusion"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.DE
@@ -20,7 +20,7 @@ class de_elderly_or_disabled_income_exclusion(Variable):
         # Then get the DE blind ir disabled exemptions part of the parameter tree.
         p = parameters(
             period
-        ).gov.states.de.tax.income.subtractions.elderly_disabled
+        ).gov.states.de.tax.income.subtractions.exclusions.persons_60_or_over_disabled
 
         # Get the individual disabled status.
         disabled_head = tax_unit("disabled_head", period)
@@ -31,7 +31,7 @@ class de_elderly_or_disabled_income_exclusion(Variable):
 
         # Get spouse age and eligibility
         age_spouse = tax_unit("age_spouse", period)
-        age_spouse_eligible = (age_spouse >= p.age_threshold).astype(int)
+        age_spouse_eligible = (age_spouse >= p.threshold.age_threshold).astype(int)
 
         # Determine if individual age is eligible.
         age_head_eligible = (age_head >= p.age_threshold).astype(int)
