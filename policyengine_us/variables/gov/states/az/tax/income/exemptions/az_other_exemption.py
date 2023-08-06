@@ -12,7 +12,7 @@ class az_other_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
 
-        stillbirth = person("is_stillbirth", period).astype(int)
+        stillborn_children = person("is_stillbirth", period).astype(int)
 
         
 
