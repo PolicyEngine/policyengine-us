@@ -1,0 +1,30 @@
+description: Colorado provides the child tax credit at these rates for single filers, depending on their adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Colorado child tax credit single filers rate
+  reference:
+    - title: 
+      href: 
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0.6
+  - threshold:
+      2022-01-01: 25_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0.3
+  - threshold:
+      2015-01-01: 50_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0.1
+  - threshold:
+      2015-01-01: 75_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0

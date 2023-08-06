@@ -1,0 +1,30 @@
+description: Colorado provides the child tax credit at these rates for joint filers, depending on their adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Colorado child tax credit joint filers rate
+  reference:
+    - title: 
+      href: 
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0.6
+  - threshold:
+      2022-01-01: 35_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0.3
+  - threshold:
+      2015-01-01: 60_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0.1
+  - threshold:
+      2015-01-01: 85_000
+    amount:
+      2021-01-01: 0
+      2022-01-01: 0
