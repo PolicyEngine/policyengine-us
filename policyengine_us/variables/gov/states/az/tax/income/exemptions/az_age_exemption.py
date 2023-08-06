@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_age_exemption(Variable):
+class az_aged_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona aged exemption"
