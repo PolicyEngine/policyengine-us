@@ -11,4 +11,6 @@ class va_map_abd_resources_limit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.va.dss.map.abd
         married = add(spm_unit, period, ["is_married"]) > 0
-        return where(married, p.resources_limit_couple, p.resources_limit_single)
+        return where(
+            married, p.resources_limit_couple, p.resources_limit_single
+        )

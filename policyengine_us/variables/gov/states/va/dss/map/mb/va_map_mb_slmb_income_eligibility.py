@@ -13,8 +13,11 @@ class va_map_mb_slmb_income_eligibility(Variable):
         income = spm_unit("va_map_mb_income", period)
         monthly_income = income / MONTHS_IN_YEAR
         married = add(spm_unit, period, ["is_married"]) > 0
-        if married:
-            p = p.income_limit_couple
-        else:
-            p = p.income_limit_single
-        return p.calc(monthly_income) == 1
+        return (
+            where(
+                married,
+                p.income_limit_couple.calc(monthly_income),
+                p.income_limit_single.calc(monthly_income),
+            )
+            == 1
+        )

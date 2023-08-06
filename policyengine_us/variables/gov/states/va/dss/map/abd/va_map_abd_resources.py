@@ -14,5 +14,5 @@ class va_map_abd_resources(Variable):
         resources = person("va_map_resources", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        
+
         return spm_unit.sum(resources * where(married, head | spouse, head))

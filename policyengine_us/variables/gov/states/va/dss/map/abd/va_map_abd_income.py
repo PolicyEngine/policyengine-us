@@ -16,5 +16,5 @@ class va_map_abd_income(Variable):
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         income = earned + unearned
-        
+
         return spm_unit.sum(income * where(married, head | spouse, head))

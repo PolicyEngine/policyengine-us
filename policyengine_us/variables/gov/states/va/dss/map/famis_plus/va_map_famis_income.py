@@ -10,6 +10,6 @@ class va_map_famis_income(Variable):
 
     def formula(spm_unit, period, parameters):
         person = spm_unit.members
-        earned = person("va_map_earned_income", period) 
+        earned = person("va_map_earned_income", period)
         unearned = person("va_map_unearned_income", period)
         return spm_unit.sum(earned + uneanred)
