@@ -16,4 +16,4 @@ class az_other_exemption(Variable):
 
         
 
-        return (stillbirth + spouse_eligible) * p.amount.other
+        return stillborn_children * p.amount.other
