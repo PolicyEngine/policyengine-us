@@ -28,7 +28,7 @@ class ne_taxable_income(Variable):
         itm_ded = tax_unit("ne_itemized_deductions", period)
         deduction = where(
             federal_itemizer,
-            where(itm_ded > std_ded, itm_ded, std_ded),
+            max_(itm_ded, std_ded),
             std_ded,
         )
         return max_(0, agi - deduction)
