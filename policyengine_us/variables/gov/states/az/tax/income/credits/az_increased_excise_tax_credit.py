@@ -18,7 +18,7 @@ class az_increased_excise_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         max_income = p.income_threshold[filing_status]
         eligible = agi <= max_income
-        # The increased excise tax credit is allowed for each person that a 
+        # The increased excise tax credit is allowed for each person that a
         # personal or dependent exemption can be claimed for
         tax_unit_size = tax_unit("tax_unit_size", period)
         uncapped_credit = tax_unit_size * p.amount
