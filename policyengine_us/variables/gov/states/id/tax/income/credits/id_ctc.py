@@ -12,7 +12,8 @@ class id_ctc(Variable):
     def formula(tax_unit, period, parameters):
         # Get relevant parameter subtree.
         p = parameters(period).gov.states.id.tax.income.credits.ctc
-        # Count number of eligible children under the federal ctc.
+        # "the term "qualifying child" has the meaning as defined in section 24(c) of the Internal Revenue Code."
+        # IRC 24(c) defines eligible children under the federal CTC.
         eligible_children = tax_unit("ctc_qualifying_children", period)
         # Multiply by the amount per child.
         return eligible_children * p.amount
