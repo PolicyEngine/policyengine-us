@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 class az_itemized_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona itemized deduction adjustments"
+    label = "Arizona Itemized Deduction Adjustments"
     unit = USD
     documentation = "Arizona Form 140 Schedule A"
     definition_period = YEAR

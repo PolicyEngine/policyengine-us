@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_itemized_deductions_less_salt(Variable):
     value_type = float
     entity = TaxUnit
-    label = " Total federal itemized deductions allowed to be taken on federal return"
+    label = " Total Federal Itemized Deductions allowed to be taken on Federal Return"
     unit = USD
     documentation = "Arizona Form 140 Schedule A Form 140"
     definition_period = YEAR
