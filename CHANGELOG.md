@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.409.2] - 2023-08-06 15:41:27
+
+### Fixed
+
+- Nebraska itemized deduction rule.
+
 ## [0.409.1] - 2023-08-05 20:37:53
 
 ### Fixed
@@ -4711,6 +4717,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.409.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.1...0.409.2
 [0.409.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.0...0.409.1
 [0.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.408.0...0.409.0
 [0.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.407.1...0.408.0
