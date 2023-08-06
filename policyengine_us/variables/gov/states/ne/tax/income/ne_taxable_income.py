@@ -26,9 +26,5 @@ class ne_taxable_income(Variable):
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
         std_ded = tax_unit("ne_standard_deduction", period)
         itm_ded = tax_unit("ne_itemized_deductions", period)
-        deduction = where(
-            federal_itemizer,
-            max_(itm_ded, std_ded),
-            std_ded,
-        )
+        deduction = where(federal_itemizer, max_(itm_ded, std_ded), std_ded)
         return max_(0, agi - deduction)
