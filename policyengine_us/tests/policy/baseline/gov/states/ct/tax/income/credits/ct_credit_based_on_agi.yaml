@@ -1,11 +1,11 @@
-- name: Single household with $60,000 agi
+- name: Single household with $16,000 agi
   period: 2016
   input:
     state_code: CT
-    ct_agi: 60_000
+    ct_agi: 16_000
     filing_status: SINGLE
   output:
-    ct_credit_based_on_agi: 750
+    ct_credit_based_on_agi: 0.75 
 
 - name: Separate household with $20,000 income
   period: 2016
