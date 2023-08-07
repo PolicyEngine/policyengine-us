@@ -1,14 +1,14 @@
 description: Connecticut provides the following credit amount under the AGI credit, based state AGI for separate filers.
 metadata:
-  type: marginal_rate 
+  type: single_value 
   threshold_unit: currency-USD
   rate: /1
-  label: AGI credit separate filers amount
+  label: Connecticut AGI credit separate filers amount
   reference:
     - title: Connecticut General Statutes, Chapter 229, Sec. 12-703, (1), (I)
       href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-703
     - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
-      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=23
 brackets:
   - threshold: 
       2016-01-01: 12_000
