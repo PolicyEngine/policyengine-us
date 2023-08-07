@@ -7,7 +7,9 @@ class ky_cdcc(Variable):
     label = "Kentucky household and dependent care service credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=29058" 
+    reference = (
+        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=29058"
+    )
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
