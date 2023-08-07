@@ -5,6 +5,105 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.410.0] - 2023-08-06 22:29:59
+
+### Added
+
+- Idaho child tax credit.
+
+## [0.409.3] - 2023-08-06 17:03:06
+
+### Fixed
+
+- Lack of documentation on Maryland itemized deduction rule.
+
+## [0.409.2] - 2023-08-06 15:41:27
+
+### Fixed
+
+- Nebraska itemized deduction rule.
+
+## [0.409.1] - 2023-08-05 20:37:53
+
+### Fixed
+
+- Oklahoma itemized deduction rule.
+
+## [0.409.0] - 2023-08-05 03:01:43
+
+### Added
+
+- Montana Standard Deduction.
+
+## [0.408.0] - 2023-08-04 21:19:33
+
+### Added
+
+- Arkansas standard deduction.
+
+## [0.407.1] - 2023-08-04 20:07:35
+
+## [0.407.0] - 2023-08-03 06:11:59
+
+### Added
+
+- South Carolina two wage earner credit.
+
+## [0.406.0] - 2023-08-03 05:43:23
+
+### Added
+
+- Michigan Exemptions.
+
+## [0.405.0] - 2023-08-03 05:20:50
+
+### Added
+
+- Check/improve reference for New Mexico AGI subtractions.
+
+## [0.404.0] - 2023-08-03 01:17:19
+
+### Added
+
+- Delaware additional standard deduction.
+- Fixed aged personal credit structure.
+
+## [0.403.3] - 2023-08-02 18:03:26
+
+### Fixed
+
+- New Mexico child day care credit.
+
+## [0.403.2] - 2023-08-02 13:58:43
+
+### Fixed
+
+- Equivalised household income is household income-based rather than SPM income-based.
+
+## [0.403.1] - 2023-08-02 03:34:56
+
+### Changed
+
+- Spelled out acronyms in parameter folder README files.
+
+## [0.403.0] - 2023-08-02 01:18:20
+
+### Added
+
+- Vermont standard deductions.
+
+## [0.402.0] - 2023-08-01 01:30:32
+
+### Added
+
+- Mississippi total exemptions.
+
+## [0.401.5] - 2023-07-31 22:39:09
+
+### Fixed
+
+- Base New Mexico deduction for certain dependents on total dependents, rather than child dependents.
+
 ## [0.401.4] - 2023-07-31 17:25:46
 
 ### Added
@@ -4630,6 +4729,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.3...0.410.0
+[0.409.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.2...0.409.3
+[0.409.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.1...0.409.2
+[0.409.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.0...0.409.1
+[0.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.408.0...0.409.0
+[0.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.407.1...0.408.0
+[0.407.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.407.0...0.407.1
+[0.407.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.406.0...0.407.0
+[0.406.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.405.0...0.406.0
+[0.405.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.404.0...0.405.0
+[0.404.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.3...0.404.0
+[0.403.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.2...0.403.3
+[0.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.1...0.403.2
+[0.403.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.0...0.403.1
+[0.403.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.402.0...0.403.0
+[0.402.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.5...0.402.0
+[0.401.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.4...0.401.5
 [0.401.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.3...0.401.4
 [0.401.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.2...0.401.3
 [0.401.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.1...0.401.2
