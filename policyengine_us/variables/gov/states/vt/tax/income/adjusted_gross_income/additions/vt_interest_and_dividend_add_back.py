@@ -11,7 +11,7 @@ class vt_interest_and_dividend_add_back(Variable):
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf"
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf"
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf"
+        "https://legislature.vermont.gov/statutes/section/32/151/05811"
     )
 
     def formula(tax_unit, period, parameters):

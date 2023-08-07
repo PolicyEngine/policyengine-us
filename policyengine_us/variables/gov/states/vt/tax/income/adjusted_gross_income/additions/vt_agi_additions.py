@@ -11,5 +11,5 @@ class vt_agi_additions(Variable):
     defined_for = StateCode.VT
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf"
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf"
+        "https://legislature.vermont.gov/statutes/section/32/151/05811"
     )
