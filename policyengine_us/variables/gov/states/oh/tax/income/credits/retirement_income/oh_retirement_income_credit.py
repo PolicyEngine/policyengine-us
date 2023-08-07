@@ -30,6 +30,4 @@ class oh_retirement_income_credit(Variable):
         )
         total_pension_income = tax_unit.sum(head_pension + spouse_pension)
 
-        eligible = tax_unit("oh_retirement_income_credit_eligible", period)
-
-        return p.amount.calc(total_pension_income, right=True) * eligible
+        return p.amount.calc(total_pension_income, right=True) 
