@@ -4,8 +4,7 @@
   input:
     state_code: MS
     adjusted_gross_income: 100_000
-    charitable_deduction: 100
-    medical_expense_deduction: 1_000
+    itm_deds_less_salt: 1_100
     misc_deduction: 0
   output:
     ms_itemized_deduction: 1_100
@@ -16,10 +15,10 @@
   input:
     state_code: MS
     adjusted_gross_income: 100_000
-    medical_expense_deduction: 5_000
+    itm_deds_less_salt: 5_000
     misc_deduction: 1_000
   output:
-    ms_itemized_deduction: 7_000
+    ms_itemized_deduction: 6_000
 
 - name: MS itemized deduction unit test 3
   absolute_error_margin: 0.01
@@ -27,8 +26,7 @@
   input:
     state_code: MS
     adjusted_gross_income: 100_000
-    medical_expense_deduction: 5_000
-    casualty_loss_deduction: 2_000
+    itm_deds_less_salt: 7_000
     misc_deduction: 0
   output:
     ms_itemized_deduction: 7_000
@@ -39,9 +37,7 @@
   input:
     state_code: MS
     adjusted_gross_income: 100_000
-    medical_expense_deduction: 5_000
-    casualty_loss_deduction: 2_000
-    interest_deduction: 500
+    itm_deds_less_salt: 7_500
     misc_deduction: 3_000
   output:
     ms_itemized_deduction: 10_500
