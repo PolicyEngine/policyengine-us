@@ -4,6 +4,10 @@
     state_code: AZ
     tax_unit_parents: 0
     tax_unit_grandparents: 0
+    cohabitating_parents: false
+    cohabitating_grandparents: false
+    care_and_support_payment: 0
+    care_and_support_costs: 0
   output:
     az_parents_grandparents_exemption: 0
 
@@ -13,6 +17,10 @@
     state_code: AZ
     tax_unit_parents: 1
     tax_unit_grandparents: 0
+    cohabitating_parents: true
+    cohabitating_grandparents: false
+    care_and_support_payment: 200
+    care_and_support_costs: 300
   output:
     az_parents_grandparents_exemption: 10_000
 
@@ -22,5 +30,9 @@
     state_code: AZ
     tax_unit_parents: 1
     tax_unit_grandparents: 1
+    cohabitating_parents: false
+    cohabitating_grandparents: true
+    care_and_support_payment: 200
+    care_and_support_costs: 300
   output:
-    az_parents_grandparents_exemption: 20_000
+    az_parents_grandparents_exemption: 10_000

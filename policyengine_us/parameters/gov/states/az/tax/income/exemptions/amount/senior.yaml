@@ -1,17 +1,13 @@
-<<<<<<< HEAD:policyengine_us/parameters/gov/states/az/tax/income/exemptions/amount/senior.yaml
-description: Arizona provides an exemption of this amount for seniors.
-=======
-description: Arizona provides an exemption of this amount for each stillborn child.
->>>>>>> 3bc16f7ad3bdb58e5494449869d00f52d3163fd9:policyengine_us/parameters/gov/states/az/tax/income/exemptions/amount/other.yaml
+description: Arizona provides an exemption of this amount for each senior.
 metadata:
   unit: currency-USD
   period: year
   label: Arizona senior exemption amount
   reference: 
     - title: Arizona Form 140 (2022) Line 40
-      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140-2Df.pdf
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140-2Df.pdf#page=2
     - title: Arizona Form 140 (2021) Line 40
-      href: https://azdor.gov/sites/default/files/2023-03/FORMS-INDIVIDUAL-2020_140_2Df.pdf
+      href: https://azdor.gov/sites/default/files/2023-03/FORMS-INDIVIDUAL-2020_140_2Df.pdf#page=2
     - title: 43-1023. Arizona Exemptions for blind persons and persons sixty-five years of age or older. (B-1)
       href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01023.htm
 
