@@ -9,7 +9,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
     definition_period = YEAR
     documentation = "Michigan interest, dividends, and capital gains deduction of qualifying age."
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30", #(p)
+        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (p)
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
     )
     defined_for = StateCode.MI
@@ -26,9 +26,10 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         idcg_amount = p.senior_amount[filing_status]
         income = add(tax_unit, period, p.income_types)
         # The maximum amount of the deduction will be reduced by the amount of the
-        # deduction claimed for retirement or pension benefits under 
+        # deduction claimed for retirement or pension benefits under
         # subdivision (e) or a deduction claimed under subdivision (f)(i), (ii), (iv), or (v)
-        military_retirement_deduction = tax_unit("mi_military_retirement_pay_deduction", period)
-        
-        
+        military_retirement_deduction = tax_unit(
+            "mi_military_retirement_pay_deduction", period
+        )
+
         return min_(idcg_aged_eligibility * idcg_amount, income)
