@@ -14,13 +14,12 @@ class ok_itemized_deductions(Variable):
     defined_for = StateCode.OK
 
     def formula(tax_unit, period, parameters):
-        # follows Schedule 511-D in references
-        itemizing = tax_unit("tax_unit_itemizes", period)
-        # calculate pre-limit OK itemized deductions
+        # follows Schedule 511-D in references:
+        # ... calculate pre-limit OK itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         capped_property_taxes = tax_unit("capped_property_taxes", period)
         ok_itm_deds = itm_deds_less_salt + capped_property_taxes
-        # apply partial limit on OK itemized deductions
+        # ... apply partial limit on OK itemized deductions
         EXEMPT_ITEMS = [
             "medical_expense_deduction",
             "charitable_deduction",
@@ -29,4 +28,4 @@ class ok_itemized_deductions(Variable):
         net_deds = max_(0, ok_itm_deds - exempt_deds)
         p = parameters(period).gov.states.ok.tax.income
         limited_net_deds = min_(net_deds, p.deductions.itemized.limit)
-        return itemizing * (exempt_deds + limited_net_deds)
+        return exempt_deds + limited_net_deds
