@@ -39,7 +39,9 @@
     state_code: MI
     filing_status: SINGLE
     greater_age_head_spouse: 77
-    mi_interest_dividends_capital_gains_income: 13_000
+    interest_income: 10_000
+    dividend_income: 2_000
+    capital_gains: 1_000
   output: # 0 + 56961 + 0 + 12697
     mi_standard_deduction_and_pension_benefit: 69_658
 
@@ -49,7 +51,9 @@
     state_code: MI
     filing_status: SINGLE
     greater_age_head_spouse: 77
-    mi_interest_dividends_capital_gains_income: 1_000
+    interest_income: 500
+    dividend_income: 400
+    capital_gains: 100
   output: # 0 + 56961 + 0 + 1000
     mi_standard_deduction_and_pension_benefit: 57_961
 
@@ -151,7 +155,9 @@
     state_code: MI
     filing_status: JOINT
     greater_age_head_spouse: 77
-    mi_interest_dividends_capital_gains_income: 13_000
+    interest_income: 10_000
+    dividend_income: 2_000
+    capital_gains: 1_000
   output: # 0 + 113922 + 0 + 13000 > 40000
     mi_standard_deduction_and_pension_benefit: 126_922
 
@@ -198,7 +204,9 @@
     state_code: MI
     filing_status: WIDOW
     greater_age_head_spouse: 77
-    mi_interest_dividends_capital_gains_income: 13_000
+    interest_income: 10_000
+    dividend_income: 2_000
+    capital_gains: 1_000
   output: # 0 + 56961 + 0 + 12697 > 20000
     mi_standard_deduction_and_pension_benefit: 69_658
 
@@ -208,6 +216,8 @@
     state_code: MI
     filing_status: WIDOW
     greater_age_head_spouse: 77
-    mi_interest_dividends_capital_gains_income: 1_000
+    interest_income: 500
+    dividend_income: 400
+    capital_gains: 100
   output: # 0 + 56961 + 0 + 1000 > 20000
     mi_standard_deduction_and_pension_benefit: 57_961
