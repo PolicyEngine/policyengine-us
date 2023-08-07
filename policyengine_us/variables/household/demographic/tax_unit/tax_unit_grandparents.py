@@ -7,4 +7,5 @@ class tax_unit_grandparents(Variable):
     label = "Number of grandparents in the tax unit"
     definition_period = YEAR
 
-    adds = ["is_grandparent"]
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, ["is_grandparent"])

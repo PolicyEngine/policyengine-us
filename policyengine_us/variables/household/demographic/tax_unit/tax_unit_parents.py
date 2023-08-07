@@ -7,4 +7,5 @@ class tax_unit_parents(Variable):
     label = "Number of parents in the tax unit"
     definition_period = YEAR
 
-    adds = ["is_parent"]
+    def formula(tax_unit, period, parameters):
+        return add(tax_unit, period, ["is_parent"])
