@@ -8,7 +8,7 @@ class mo_net_state_income_taxes(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://dor.mo.gov/forms/MO-A_2021.pdf",
+        "https://dor.mo.gov/forms/MO-A_2021.pdf#page=2",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.141&bid=7212",
     )
     defined_for = StateCode.MO
