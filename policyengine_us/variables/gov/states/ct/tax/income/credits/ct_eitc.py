@@ -15,4 +15,12 @@ class ct_eitc(Variable):
         rate = parameters(
             period
         ).gov.states.ct.tax.income.credits.eitc.rate
+        filing_status = tax_unit("filing_status", period)
+        filing_statuses = filing_status.possible_values
+        separate_status = (filing_status == filing_statuses.SINGLE)
+        agi_separate = tax_unit("adjusted_gross_income", period)
+        #how do differentiate the two AGI's?
+        agi_joint = None
+        if separate_status:
+            eitc * rate * (agi_single / agi_joint)
         return eitc * rate
