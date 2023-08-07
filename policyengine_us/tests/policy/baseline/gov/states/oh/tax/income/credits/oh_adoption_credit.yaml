@@ -1,7 +1,7 @@
 - name: In 2021, taxpayer adopted 1 children, the eligible adoption-related expenses were 1_000 , the ohio adoption credit was 1_500
   period: 2021
   input:
-    oh_eligible_adoption_related_expenses: 1_000
+    qualified_adoption_assistance_expense: 1_000
     state_code: OH
   output: 
     oh_tax_unit_adoption_credit: 1_500
@@ -9,7 +9,7 @@
 - name: In 2021, taxpayer adopted 1 children, the eligible adoption-related expenses were 1_500 , the ohio adoption credit was 1_500
   period: 2021
   input:
-    oh_eligible_adoption_related_expenses: 1_500
+    qualified_adoption_assistance_expense: 1_500
     state_code: OH
   output: 
     oh_tax_unit_adoption_credit: 1_500
@@ -17,7 +17,7 @@
 - name: In 2021, taxpayer adopted 1 children, the eligible adoption-related expenses were 3_000 , the ohio adoption credit was 3_000
   period: 2021
   input:
-    oh_eligible_adoption_related_expenses: 3_000
+    qualified_adoption_assistance_expense: 3_000
     state_code: OH
   output: 
     oh_tax_unit_adoption_credit: 3_000
@@ -25,7 +25,7 @@
 - name: In 2021, taxpayer adopted 1 children, the eligible adoption-related expenses were 10_000 , the ohio adoption credit was 10_000
   period: 2021
   input:
-    oh_eligible_adoption_related_expenses: 10_000
+    qualified_adoption_assistance_expense: 10_000
     state_code: OH
   output: 
     oh_tax_unit_adoption_credit: 10_000
@@ -33,7 +33,7 @@
 - name: In 2021, taxpayer adopted 1 children, the eligible adoption-related expenses were 15_000 , the ohio adoption credit was 10_000
   period: 2021
   input:
-    oh_eligible_adoption_related_expenses: 15_000
+    qualified_adoption_assistance_expense: 15_000
     state_code: OH
   output: 
     oh_tax_unit_adoption_credit: 10_000
@@ -43,9 +43,9 @@
   input:
     people:
       child1: 
-        oh_eligible_adoption_related_expenses: 1_000
+        qualified_adoption_assistance_expense: 1_000
       child2:
-        oh_eligible_adoption_related_expenses: 1_200
+        qualified_adoption_assistance_expense: 1_200
     households:
       household:
         members: [child1, child2]
@@ -58,9 +58,9 @@
   input:
     people:
       child1: 
-        oh_eligible_adoption_related_expenses: 1_000
+        qualified_adoption_assistance_expense: 1_000
       child2:
-        oh_eligible_adoption_related_expenses: 5_000
+        qualified_adoption_assistance_expense: 5_000
     households:
       household:
         members: [child1, child2]
@@ -73,9 +73,9 @@
   input:
     people:
       child1: 
-        oh_eligible_adoption_related_expenses: 8_000
+        qualified_adoption_assistance_expense: 8_000
       child2:
-        oh_eligible_adoption_related_expenses: 5_000
+        qualified_adoption_assistance_expense: 5_000
     households:
       household:
         members: [child1, child2]
@@ -88,9 +88,9 @@
   input:
     people:
       child1: 
-        oh_eligible_adoption_related_expenses: 8_000
+        qualified_adoption_assistance_expense: 8_000
       child2:
-        oh_eligible_adoption_related_expenses: 15_000
+        qualified_adoption_assistance_expense: 15_000
     households:
       household:
         members: [child1, child2]
@@ -103,9 +103,9 @@
   input:
     people:
       child1: 
-        oh_eligible_adoption_related_expenses: 15_000
+        qualified_adoption_assistance_expense: 15_000
       child2:
-        oh_eligible_adoption_related_expenses: 20_000
+        qualified_adoption_assistance_expense: 20_000
     households:
       household:
         members: [child1, child2]
@@ -118,13 +118,13 @@
   input:
     people:
       child1: 
-        oh_eligible_adoption_related_expenses: 1_000
+        qualified_adoption_assistance_expense: 1_000
       child2:
-        oh_eligible_adoption_related_expenses: 1_500
+        qualified_adoption_assistance_expense: 1_500
       child3: 
-        oh_eligible_adoption_related_expenses: 10_000
+        qualified_adoption_assistance_expense: 10_000
       child4:
-        oh_eligible_adoption_related_expenses: 15_000      
+        qualified_adoption_assistance_expense: 15_000      
     households:
       household:
         members: [child1, child2, child3, child4]

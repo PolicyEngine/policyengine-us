@@ -17,7 +17,7 @@ class oh_adoption_credit(Variable):
 
     def formula(person, period, parameters):
         eligible_adoption_related_expenses = person(
-            "oh_eligible_adoption_related_expenses", period
+            "qualified_adoption_assistance_expense", period
         )
         # The minimum amount of Ohio adoption credit
         min_credit = parameters(
