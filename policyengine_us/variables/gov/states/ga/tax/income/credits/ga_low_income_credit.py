@@ -11,6 +11,7 @@ class ga_low_income_credit(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
+        exemptions = tax_unit("exemptions", period)
         # federal ajusted gross income
         federal_agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.ga.tax.income.credits.low_income
@@ -23,8 +24,7 @@ class ga_low_income_credit(Variable):
             int
         )  # if so, return 1, otherwise return 0
         aged_count = aged_head + aged_spouse
-        exemptions = tax_unit("exemptions", period)
         total_exemptions = aged_count + exemptions
         # amount threshold
-        amount_per_aged = p.amount.calc(federal_agi)
-        return total_exemptions * amount_per_aged
+        amount_per_exemption = p.amount.calc(federal_agi)
+        return total_exemptions * amount_per_exemption

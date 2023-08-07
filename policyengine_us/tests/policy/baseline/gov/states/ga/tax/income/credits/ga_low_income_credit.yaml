@@ -63,3 +63,25 @@
     exemptions: 0
   output:
     ga_low_income_credit: 0
+
+- name: Georgia low income credits - one aged and one exemption
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 10_500
+    age_head: 65
+    age_spouse: 64
+    exemptions: 1
+  output:
+    ga_low_income_credit: 16
+
+- name: Georgia low income credits - two exemptions
+  period: 2022
+  input:
+    state_code: GA
+    adjusted_gross_income: 10_000
+    age_head: 64
+    age_spouse: 64
+    exemptions: 2
+  output:
+    ga_low_income_credit: 16
