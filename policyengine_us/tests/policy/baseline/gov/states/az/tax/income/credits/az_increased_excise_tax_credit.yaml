@@ -1,4 +1,4 @@
-- name: AZ increased excise tax credit test 1
+- name: Eligible 4-person tax unit gets $100 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: True
@@ -6,7 +6,7 @@
   output:
     az_increased_excise_tax_credit: 100 
 
-- name: AZ increased excise tax credit test 2
+- name: Eligible 3-person tax unit gets $75 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: True
@@ -14,7 +14,7 @@
   output:
     az_increased_excise_tax_credit: 75
 
-- name: AZ increased excise tax credit test 3
+- name: Eligible 2-person tax unit gets $50 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: True
@@ -22,7 +22,7 @@
   output:
     az_increased_excise_tax_credit: 50  
 
-- name: AZ increased excise tax credit test 4
+- name: Eligible 1-person tax unit gets $25 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: True
@@ -30,7 +30,7 @@
   output:
     az_increased_excise_tax_credit: 25 
 
-- name: AZ increased excise tax credit test 5
+- name: Ineligible 4-person tax unit gets $0 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: False
@@ -38,7 +38,7 @@
   output:
     az_increased_excise_tax_credit: 0 
 
-- name: AZ increased excise tax credit test 6
+- name: Ineligible 3-person tax unit gets $0 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: False
@@ -46,7 +46,7 @@
   output:
     az_increased_excise_tax_credit: 0
 
-- name: AZ increased excise tax credit test 7
+- name: Ineligible 2-person tax unit gets $0 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: False
@@ -54,7 +54,7 @@
   output:
     az_increased_excise_tax_credit: 0  
 
-- name: AZ increased excise tax credit test 8
+- name: Ineligible 1-person tax unit gets $0 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: False
@@ -62,7 +62,7 @@
   output:
     az_increased_excise_tax_credit: 0 
 
-- name: AZ increased excise tax credit test 9
+- name: Eligible 5-person tax unit gets $100 for AZ increased excise credit
   period: 2023
   input:
     az_increased_excise_tax_credit_eligible: True

@@ -1,4 +1,4 @@
-- name: AZ increased excise tax credit eligible test 1
+- name: HEAD OF HOUSEHOLD with $25,000 agi is eligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -7,7 +7,7 @@
   output:
     az_increased_excise_tax_credit_eligible: True
   
-- name: AZ increased excise tax credit eligible test 2
+- name: HEAD OF HOUSEHOLD with $25,001 agi is ineligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -16,7 +16,7 @@
   output:
     az_increased_excise_tax_credit_eligible: False
 
-- name: AZ increased excise tax credit eligible test 3
+- name: JOINT with $25,001 agi is ineligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -25,7 +25,7 @@
   output:
     az_increased_excise_tax_credit_eligible: False
 
-- name: AZ increased excise tax credit eligible test 4
+- name: JOINT with $25,000 agi is eligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -34,7 +34,7 @@
   output:
     az_increased_excise_tax_credit_eligible: True
 
-- name: AZ increased excise tax credit eligible test 5
+- name: SINGLE with $12,500 agi is eligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -43,7 +43,7 @@
   output:
     az_increased_excise_tax_credit_eligible: True
 
-- name: AZ increased excise tax credit eligible test 6
+- name: SINGLE with $12,501 agi is ineligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -52,7 +52,7 @@
   output:
     az_increased_excise_tax_credit_eligible: False
 
-- name: AZ increased excise tax credit eligible test 7
+- name: SEPARATE with $12,500 agi is eligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -61,7 +61,7 @@
   output:
     az_increased_excise_tax_credit_eligible: True
 
-- name: AZ increased excise tax credit eligible test 8
+- name: SEPARATE with $12,501 agi is ineligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -70,7 +70,7 @@
   output:
     az_increased_excise_tax_credit_eligible: False
 
-- name: AZ increased excise tax credit eligible test 9
+- name: WIDOW with $25,000 agi is eligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
@@ -79,7 +79,7 @@
   output:
     az_increased_excise_tax_credit_eligible: True
 
-- name: AZ increased excise tax credit eligible test 10
+- name: WIDOW with $25,001 agi is ineligible for AZ increased excise tax credit
   period: 2023
   input:
     state_code: AZ
