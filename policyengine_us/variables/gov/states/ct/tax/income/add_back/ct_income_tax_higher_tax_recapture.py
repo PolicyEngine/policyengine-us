@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import ceil
 
 
 class ct_income_tax_higher_tax_recapture(Variable):
@@ -18,6 +19,6 @@ class ct_income_tax_higher_tax_recapture(Variable):
         brackets = p.brackets[filing_status]
         amount = p.amount[filing_status]
         income_start = max_(income - start, 0)
-        income_bracktes = income_start / brackets
-        amount = income_bracktes * amount
+        income_brackets = ceil(income_start / brackets)
+        amount = income_brackets * amount
         return min_(max_amount, amount)
