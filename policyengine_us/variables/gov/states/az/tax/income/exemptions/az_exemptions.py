@@ -10,8 +10,9 @@ class az_exemptions(Variable):
     defined_for = StateCode.AZ
 
     adds = [
-        "az_age_exemption",
+        "az_aged_exemption",
         "az_blind_exemption",
         "az_parents_grandparents_exemption",
-        "az_other_exemption",
+        "az_senior_exemption",
+        "az_stillborn_exemption",
     ]

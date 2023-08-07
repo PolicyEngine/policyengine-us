@@ -6,7 +6,7 @@
     age_head: 65
     age_spouse: 65
   output:
-    az_age_exemption: 4_200
+    az_aged_exemption: 4_200
 
 - name: if filing joint, head >= age 65 but spouse is not.
   period: 2023
@@ -16,7 +16,7 @@
     age_head: 65
     age_spouse: 64
   output:
-    az_age_exemption: 2_100
+    az_aged_exemption: 2_100
 
 - name: if filing joint,head < age 65 but spouse >= 65.
   period: 2023
@@ -26,7 +26,7 @@
     age_head: 64
     age_spouse: 65
   output:
-    az_age_exemption: 2_100
+    az_aged_exemption: 2_100
 
 - name: if filing joint,both head and spouse under 65.
   period: 2023
@@ -36,7 +36,7 @@
     age_head: 64
     age_spouse: 64
   output:
-    az_age_exemption: 0
+    az_aged_exemption: 0
 
 - name: if filing single, over 65.
   period: 2023
@@ -45,7 +45,7 @@
     filing_status: SINGLE
     age_head: 65
   output:
-    az_age_exemption: 2_100
+    az_aged_exemption: 2_100
 
 - name: if filing single, under 65.
   period: 2023
@@ -54,7 +54,7 @@
     filing_status: SINGLE
     age_head: 64
   output:
-    az_age_exemption: 0
+    az_aged_exemption: 0
 
 - name: if filing separate, both head and spouse over 65.
   period: 2023
@@ -64,7 +64,7 @@
     age_head: 65
     age_spouse: 65
   output:
-    az_age_exemption: 2_100
+    az_aged_exemption: 2_100
 
 - name: if filing separate, head under 65 and spouse over 65.
   period: 2023
@@ -74,4 +74,4 @@
     age_head: 64
     age_spouse: 65
   output:
-    az_age_exemption: 0
+    az_aged_exemption: 0

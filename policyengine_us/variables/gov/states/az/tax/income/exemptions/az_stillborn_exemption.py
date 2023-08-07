@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class az_other_exemption(Variable):
+class az_stillborn_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona other exemption"
+    label = "Arizona stillborn exemption"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
@@ -12,8 +12,6 @@ class az_other_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
 
-        stillbirth = person("is_stillbirth", period).astype(int)
+        stillborn = tax_unit("tax_unit_stillborn_children", period)
 
-        
-
-        return (stillbirth + spouse_eligible) * p.amount.other
+        return stillborn * p.amount.stillborn

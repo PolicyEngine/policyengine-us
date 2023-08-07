@@ -1,8 +1,8 @@
 from policyengine_us.model_api import *
 
 
-class is_stillbirth(Variable):
+class tax_unit_stillborn_children(Variable):
     value_type = bool
     entity = Person
-    label = "Is a stillbirth child"
+    label = "Number of stillborn children"
     definition_period = YEAR
