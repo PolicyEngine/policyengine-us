@@ -3,7 +3,7 @@
   input:
     state_code: ME
   output:
-    vt_medical_expense_deductions: 0  
+    vt_medical_expense_deduction: 0  
 
 - name: VT medical expense deduction amount unit test 2
   period: 2022
@@ -14,7 +14,7 @@
     vt_standard_deductions: 1_000
     vt_personal_exemptions: 1_000
   output:
-    vt_medical_expense_deductions: 0  # max(0,2000-max(0,5000-1000)) = 0
+    vt_medical_expense_deduction: 0  # max(0,2000-max(0,5000-1000)) = 0
 
 - name: VT medical expense deduction amount unit test 3
   period: 2022
@@ -25,7 +25,7 @@
     vt_standard_deductions: 1_000
     vt_personal_exemptions: 1_000
   output:
-    vt_medical_expense_deductions: 2_000  # max(0,2000-max(0,5000-5000)) = 2000 
+    vt_medical_expense_deduction: 2_000  # max(0,2000-max(0,5000-5000)) = 2000 
 
 - name: VT medical expense deduction amount unit test 4
   period: 2022
@@ -36,4 +36,4 @@
     vt_standard_deductions: 1_000
     vt_personal_exemptions: 1_000
   output:
-    vt_medical_expense_deductions: 2_000 # max(0,2000-max(0,4000-5000)) = 2000
+    vt_medical_expense_deduction: 2_000 # max(0,2000-max(0,4000-5000)) = 2000

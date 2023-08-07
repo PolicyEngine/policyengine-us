@@ -10,8 +10,10 @@
   input:
     state_code: VT
     us_govt_interest: 1_000
-    vt_medical_expense_deductions: 1_000
+    vt_medical_expense_deduction: 1_000
     student_loan_interest: 1_000
+    capital_gains_excluded_from_taxable_income: 0
+    vt_retirement_income_exemption: 0
   output:
     vt_agi_subtractions: 3_000  
 
@@ -20,8 +22,10 @@
   input:
     state_code: VT
     us_govt_interest: 2_000
-    vt_medical_expense_deductions: 2_000
+    vt_medical_expense_deduction: 2_000
     student_loan_interest: 1_000
+    capital_gains_excluded_from_taxable_income: 0
+    vt_retirement_income_exemption: 0
   output:
     vt_agi_subtractions: 5_000    
 
@@ -30,7 +34,9 @@
   input:
     state_code: VT
     us_govt_interest: 1_000
-    vt_medical_expense_deductions: 3_000
+    vt_medical_expense_deduction: 3_000
     student_loan_interest: 1_000
+    capital_gains_excluded_from_taxable_income: 0
+    vt_retirement_income_exemption: 0
   output:
     vt_agi_subtractions: 5_000   
