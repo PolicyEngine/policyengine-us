@@ -12,7 +12,9 @@ class az_senior_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.exemptions
 
-        payment_eligible = tax_unit("care_and_support_payment", period) > p.min_payment
-        eligibility  = payment_eligible.astype(int)
-        
+        payment_eligible = (
+            tax_unit("care_and_support_payment", period) > p.min_payment
+        )
+        eligibility = payment_eligible.astype(int)
+
         return p.amount.senior * eligibility

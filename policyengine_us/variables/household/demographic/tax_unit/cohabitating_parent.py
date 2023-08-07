@@ -6,6 +6,4 @@ class cohabitating_parent(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Cohabitating parents"
-    documentation = (
-        "Whether parents in the household are cohabitating."
-    )
+    documentation = "Whether parents in the household are cohabitating."

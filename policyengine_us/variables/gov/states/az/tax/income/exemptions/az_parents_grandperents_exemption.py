@@ -13,13 +13,26 @@ class az_parents_grandparents_exemption(Variable):
         p = parameters(period).gov.states.az.tax.income.exemptions
 
         parents = tax_unit("tax_unit_parents", period)
-        cohabitating_parents = tax_unit("cohabitating_parents",period).astype(int)
-
+        cohabitating_parents = tax_unit("cohabitating_parents", period).astype(
+            int
+        )
 
         grandparents = tax_unit("tax_unit_grandparents", period)
-        cohabitating_grand = tax_unit("cohabitating_grandparents",period).astype(int)
+        cohabitating_grand = tax_unit(
+            "cohabitating_grandparents", period
+        ).astype(int)
 
-        payment_eligible = tax_unit("care_and_support_payment", period) > tax_unit("care_and_support_costs", period) * p.cost_rate
+        payment_eligible = (
+            tax_unit("care_and_support_payment", period)
+            > tax_unit("care_and_support_costs", period) * p.cost_rate
+        )
         eligibility = payment_eligible.astype(int)
 
-        return (parents * cohabitating_parents + grandparents * cohabitating_grand) * eligibility * p.amount.parents_grandparents
+        return (
+            (
+                parents * cohabitating_parents
+                + grandparents * cohabitating_grand
+            )
+            * eligibility
+            * p.amount.parents_grandparents
+        )
