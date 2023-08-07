@@ -11,10 +11,12 @@ class ga_low_income_credit(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
+        # We follow the legal code, which says (in addition to head and spouse):
+        # "multiplied by the number of dependents which the taxpayer is entitled to claim."
+        # The tax form excludes adult dependents:
+        # "Exemptions are self, spouse and natural or legally adopted children"
         exemptions = tax_unit("exemptions", period)
-        # federal ajusted gross income
         p = parameters(period).gov.states.ga.tax.income.credits.low_income
-        federal_agi = tax_unit("adjusted_gross_income", period)
         # age threshold
         age_threshold = p.supplement_age_eligibility
         aged_head = (tax_unit("age_head", period) >= age_threshold).astype(
@@ -25,6 +27,6 @@ class ga_low_income_credit(Variable):
         )  # if so, return 1, otherwise return 0
         aged_count = aged_head + aged_spouse
         total_exemptions = aged_count + exemptions
-        # amount threshold
+        federal_agi = tax_unit("adjusted_gross_income", period)
         amount_per_exemption = p.amount.calc(federal_agi)
         return total_exemptions * amount_per_exemption
