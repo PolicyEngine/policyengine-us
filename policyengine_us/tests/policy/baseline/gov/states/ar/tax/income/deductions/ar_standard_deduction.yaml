@@ -1,0 +1,40 @@
+- name: AR Standard deduction if single filer
+  period: 2022
+  input:
+    filing_status: SINGLE
+    state_code: AR
+  output:
+    ar_standard_deduction: 2_270
+
+- name: AR Standard deduction if married filing jointly
+  period: 2022
+  input:
+    filing_status: JOINT
+    state_code: AR
+  output:  
+    ar_standard_deduction: 4_540 
+
+- name: AR Standard deduction if surviving spouse
+  period: 2022
+  input:
+    filing_status: WIDOW
+    state_code: AR
+  output:  
+    ar_standard_deduction: 2_270 
+
+- name: AR Standard deduction if married filing separately
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    state_code: AR
+  output:  
+    ar_standard_deduction: 2_270
+
+- name: AR Standard deduction if head of household
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: AR
+  output:  
+    ar_standard_deduction: 2_270  
+
