@@ -13,8 +13,8 @@ class ga_low_income_credit(Variable):
     def formula(tax_unit, period, parameters):
         exemptions = tax_unit("exemptions", period)
         # federal ajusted gross income
-        federal_agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.ga.tax.income.credits.low_income
+        federal_agi = tax_unit("adjusted_gross_income", period)
         # age threshold
         age_threshold = p.supplement_age_eligibility
         aged_head = (tax_unit("age_head", period) >= age_threshold).astype(
