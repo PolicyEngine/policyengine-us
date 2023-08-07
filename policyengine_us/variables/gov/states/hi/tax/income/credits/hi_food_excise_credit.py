@@ -17,10 +17,17 @@ class hi_food_excise_credit(Variable):
         income = tax_unit("adjusted_gross_income", period)
         # Minor children receiving public support will receive full credit regardles of AGI
         person = tax_unit.members
-        public_support_received = person("public_support_received", period)
+        # Obtain the amount of support from public agency(tanf)
+        tanf = tax_unit.spm_unit("tanf", period)
+        # Obtain the amount of all support
+        hi_child_support_received = person("hi_child_support_received", period)
+        # Test if the child receive more than half support from public agency(tanf)
+        public_support_over_half = (
+            tanf / hi_child_support_received
+        ) > p.minor_child.support_proportion_threshold
         is_child = person("is_child", period)
         minor = person("age", period) < p.minor_child.age_threshold
-        eligible_minor_child = is_child & minor & public_support_received
+        eligible_minor_child = is_child & minor & public_support_over_half
         minor_children = tax_unit.sum(eligible_minor_child)
         minor_child_total = p.minor_child.amount * minor_children
         # Take the number of exemptions

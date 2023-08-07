@@ -1,9 +1,9 @@
-description: Hawaii provides this amount under the food excise tax credit for each minor child receiving more than half of support from public agency.
+description: Hawaii provides an additional food/excise credit amount for each minor child receiving more than this proportion of support from public agency.
 values:
-  2021-01-01: 110
+  2021-01-01: 0.5
 metadata:
-  unit: currency-USD
-  label: Hawaii food/excise tax credit minor child amount
+  unit: /1
+  label: Hawaii food/excise tax credit minor child public agency support's proportion threshold
   reference:
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.85, (c)
       href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=44
