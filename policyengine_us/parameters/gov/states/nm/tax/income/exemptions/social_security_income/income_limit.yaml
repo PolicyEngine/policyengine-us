@@ -1,0 +1,30 @@
+description: New Mexico exempts taxable Social Security benefits for filers with adjusted gross income at or below this amount.
+metadata:
+  label: New Mexico social security income exemption income limit
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2022 New Mexico personal income tax form packet ADJ-7 Exemption for social security income.
+    href: https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=52
+  - title: New Mexico Statutes, 7-2-5.14. Exemption; social security income.
+    href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503690/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsATh4BKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA
+  - title: 2021 New Mexico personal income tax form packet - absent
+    href: https://taxsim.nber.org/historical_state_tax_forms/NM/2021/2021pit-1-ins.pdf
+
+JOINT:
+  2021-01-01: 0
+  2022-01-01: 150_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 0
+  2022-01-01: 150_000
+WIDOW:
+  2021-01-01: 0
+  2022-01-01: 150_000
+SINGLE:
+  2021-01-01: 0
+  2022-01-01: 100_000
+SEPARATE:
+  2021-01-01: 0
+  2022-01-01: 75_000
