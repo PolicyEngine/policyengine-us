@@ -9,14 +9,14 @@
   output:
     ri_property_tax_credit: 0
 
-- name: High Income, household size of 1 # 20000*6%=1200, 1000+1000-1200=800>600
+- name: High Income, household size of 1 # 20000*6%=1200, 1000+5000*0.2-1200=800>600
   period: 2022
   input:
     state_code: RI
     adjusted_gross_income: 20_000
     tax_unit_size: 1
-    real_estate_taxes: 1000
-    rent: 1000
+    real_estate_taxes: 1_000
+    rent: 5_000
   output:
     ri_property_tax_credit: 600
 
@@ -31,13 +31,13 @@
   output:
     ri_property_tax_credit: 60
 
-- name: High Income, household of 2 or more # 13000*5%=650, 700-650=50
+- name: High Income, household of 2 or more # 13000*5%=650, 3500*0.2-650=50
   period: 2022
   input:
     state_code: RI
     adjusted_gross_income: 13_000
     tax_unit_size: 2
     real_estate_taxes: 0
-    rent: 700
+    rent: 3_500
   output:
     ri_property_tax_credit: 50

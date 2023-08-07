@@ -15,15 +15,15 @@ class ri_property_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
         agi = tax_unit("adjusted_gross_income", period)
-
         threshold_agi_percent = where(
             tax_unit("tax_unit_size", period) == 1,
             p.rate.one_person.calc(agi),
             p.rate.multiple_people.calc(agi),
         )
         threshold = threshold_agi_percent * agi
-        rent_plus_property_tax = add(
-            tax_unit, period, ["real_estate_taxes", "rent"]
-        )
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        rent = add(tax_unit, period, ["rent"])
+        applicable_rent = rent * p.rate.rent
+        rent_plus_property_tax = property_tax + applicable_rent
         uncapped_credit = max_(rent_plus_property_tax - threshold, 0)
         return min_(uncapped_credit, p.max_amount)
