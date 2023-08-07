@@ -6,10 +6,10 @@
   output:
     az_stillborn_exemption: 4_600
 
-- name: Case 1
+- name: no stillborn children
   period: 2023
   input:
     state_code: AZ
-    care_and_support_payment: 300
+    tax_unit_stillborn_children: 0
   output:
-    az_senior_exemption: 2300
+    az_stillborn_exemption: 0
