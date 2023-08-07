@@ -7,5 +7,5 @@ class ms_agi_additions(Variable):
     label = "MS AGI additions to federal AGI"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf"
+    reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=13"
     defined_for = StateCode.MS
