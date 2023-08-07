@@ -5,6 +5,259 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.411.0] - 2023-08-07 22:34:47
+
+### Added
+
+- Kentucky household and dependent care service credit.
+
+## [0.410.2] - 2023-08-07 18:19:00
+
+### Changed
+
+- Hide Idaho and Arkansas parameter folders.
+
+## [0.410.1] - 2023-08-07 01:18:18
+
+### Changed
+
+- Adjusted the page references in pdf files for the New Mexico income tax programs.
+
+## [0.410.0] - 2023-08-06 22:29:59
+
+### Added
+
+- Idaho child tax credit.
+
+## [0.409.3] - 2023-08-06 17:03:06
+
+### Fixed
+
+- Lack of documentation on Maryland itemized deduction rule.
+
+## [0.409.2] - 2023-08-06 15:41:27
+
+### Fixed
+
+- Nebraska itemized deduction rule.
+
+## [0.409.1] - 2023-08-05 20:37:53
+
+### Fixed
+
+- Oklahoma itemized deduction rule.
+
+## [0.409.0] - 2023-08-05 03:01:43
+
+### Added
+
+- Montana Standard Deduction.
+
+## [0.408.0] - 2023-08-04 21:19:33
+
+### Added
+
+- Arkansas standard deduction.
+
+## [0.407.1] - 2023-08-04 20:07:35
+
+## [0.407.0] - 2023-08-03 06:11:59
+
+### Added
+
+- South Carolina two wage earner credit.
+
+## [0.406.0] - 2023-08-03 05:43:23
+
+### Added
+
+- Michigan Exemptions.
+
+## [0.405.0] - 2023-08-03 05:20:50
+
+### Added
+
+- Check/improve reference for New Mexico AGI subtractions.
+
+## [0.404.0] - 2023-08-03 01:17:19
+
+### Added
+
+- Delaware additional standard deduction.
+- Fixed aged personal credit structure.
+
+## [0.403.3] - 2023-08-02 18:03:26
+
+### Fixed
+
+- New Mexico child day care credit.
+
+## [0.403.2] - 2023-08-02 13:58:43
+
+### Fixed
+
+- Equivalised household income is household income-based rather than SPM income-based.
+
+## [0.403.1] - 2023-08-02 03:34:56
+
+### Changed
+
+- Spelled out acronyms in parameter folder README files.
+
+## [0.403.0] - 2023-08-02 01:18:20
+
+### Added
+
+- Vermont standard deductions.
+
+## [0.402.0] - 2023-08-01 01:30:32
+
+### Added
+
+- Mississippi total exemptions.
+
+## [0.401.5] - 2023-07-31 22:39:09
+
+### Fixed
+
+- Base New Mexico deduction for certain dependents on total dependents, rather than child dependents.
+
+## [0.401.4] - 2023-07-31 17:25:46
+
+### Added
+
+- More recently completed state income tax models to modelled_policies.yaml.
+
+## [0.401.3] - 2023-07-31 16:55:39
+
+### Added
+
+- README files to tax credit parameters.
+
+## [0.401.2] - 2023-07-31 15:59:35
+
+### Fixed
+
+- Include New Mexico deduction for certain dependents in New Mexico deductions.
+
+## [0.401.1] - 2023-07-30 16:30:59
+
+### Fixed
+
+- Add blind and aged exemptions for New Mexico low income comprehensive tax rebate.
+
+## [0.401.0] - 2023-07-28 15:22:00
+
+### Added
+
+- Tie NM EITC age eligibility to federal rules except for 18-24 inclusion.
+
+## [0.400.0] - 2023-07-28 02:36:06
+
+### Added
+
+- New Mexico income tax parameter visibility.
+
+## [0.399.0] - 2023-07-28 02:18:59
+
+### Added
+
+- New Jersey income tax to net income tree.
+
+## [0.398.0] - 2023-07-28 01:51:38
+
+### Added
+
+- 2023 New Jersey Child Tax Credit update.
+
+## [0.397.0] - 2023-07-28 00:48:34
+
+### Added
+
+- Colorado child care expense credit.
+
+## [0.396.0] - 2023-07-27 14:50:30
+
+### Added
+
+- Arizona personal income tax schedule.
+
+## [0.395.0] - 2023-07-27 14:02:37
+
+### Added
+
+- Rhode Island EITC.
+
+## [0.394.0] - 2023-07-27 12:55:39
+
+### Added
+
+- Rhode Island Credit for child and dependent care.
+
+## [0.393.0] - 2023-07-27 04:39:54
+
+### Added
+
+- Colorado Personal Income Tax Schedule.
+
+## [0.392.0] - 2023-07-26 20:48:21
+
+### Added
+
+- Delaware additional personal credits.
+
+## [0.391.0] - 2023-07-26 20:32:28
+
+### Added
+
+- New Mexico AGI and Additions.
+- Add New Mexico to income tree.
+
+## [0.390.1] - 2023-07-26 16:45:19
+
+### Fixed
+
+- Error-prone {short,long}_term_capital_losses variables by removing them.
+
+## [0.390.0] - 2023-07-26 16:33:04
+
+### Added
+
+- household_state_income_tax variable to solve circular dependencies.
+
+## [0.389.1] - 2023-07-25 16:31:29
+
+### Fixed
+
+- Fragmentation of circular-logic error avoidance.
+
+## [0.389.0] - 2023-07-25 14:08:11
+
+### Added
+
+- Kentucky standard deduction.
+
+## [0.388.0] - 2023-07-25 12:39:07
+
+### Added
+
+- New Mexico child day care credit.
+
+## [0.387.1] - 2023-07-24 17:23:30
+
+### Added
+
+- Display of DC parameters.
+
+## [0.387.0] - 2023-07-24 16:39:00
+
+### Added
+
+- New Mexico deduction for certain dependents.
+- New Mexico 2021 income tax rebate.
+- New Mexico additional 2021 income tax rebate.
+- New Mexico supplemental 2021 income tax rebate.
+
 ## [0.386.0] - 2023-07-22 01:49:59
 
 ### Added
@@ -4494,6 +4747,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.410.2...0.411.0
+[0.410.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.410.1...0.410.2
+[0.410.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.410.0...0.410.1
+[0.410.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.3...0.410.0
+[0.409.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.2...0.409.3
+[0.409.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.1...0.409.2
+[0.409.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.409.0...0.409.1
+[0.409.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.408.0...0.409.0
+[0.408.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.407.1...0.408.0
+[0.407.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.407.0...0.407.1
+[0.407.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.406.0...0.407.0
+[0.406.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.405.0...0.406.0
+[0.405.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.404.0...0.405.0
+[0.404.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.3...0.404.0
+[0.403.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.2...0.403.3
+[0.403.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.1...0.403.2
+[0.403.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.403.0...0.403.1
+[0.403.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.402.0...0.403.0
+[0.402.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.5...0.402.0
+[0.401.5]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.4...0.401.5
+[0.401.4]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.3...0.401.4
+[0.401.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.2...0.401.3
+[0.401.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.1...0.401.2
+[0.401.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.401.0...0.401.1
+[0.401.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.400.0...0.401.0
+[0.400.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.399.0...0.400.0
+[0.399.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.398.0...0.399.0
+[0.398.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.397.0...0.398.0
+[0.397.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.396.0...0.397.0
+[0.396.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.395.0...0.396.0
+[0.395.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.394.0...0.395.0
+[0.394.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.393.0...0.394.0
+[0.393.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.392.0...0.393.0
+[0.392.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.391.0...0.392.0
+[0.391.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.1...0.391.0
+[0.390.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.390.0...0.390.1
+[0.390.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.1...0.390.0
+[0.389.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.389.0...0.389.1
+[0.389.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.388.0...0.389.0
+[0.388.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.1...0.388.0
+[0.387.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.387.0...0.387.1
+[0.387.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.386.0...0.387.0
 [0.386.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.385.0...0.386.0
 [0.385.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.384.0...0.385.0
 [0.384.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.383.0...0.384.0
