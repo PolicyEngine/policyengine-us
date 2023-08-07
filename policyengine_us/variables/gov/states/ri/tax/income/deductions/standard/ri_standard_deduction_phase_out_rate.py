@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ri_standard_deduction_phase_out(Variable):
+class ri_standard_deduction_phase_out_rate(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Rhode Island standard deduction phase out"
+    label = "Rhode Island standard deduction phase out rate"
     unit = USD
     definition_period = YEAR
     reference = (
