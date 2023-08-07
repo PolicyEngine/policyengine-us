@@ -30,12 +30,12 @@ class vt_medical_expense_deduction(Variable):
             - vt_non_allow_medical_expense_deductions,
         )
         # Get Vermont standard deduction plus personal exemptions (Worksheet line 2).
-        vt_standard_deductions = tax_unit("vt_standard_deductions", period)
+        vt_standard_deduction = tax_unit("vt_standard_deduction", period)
         vt_personal_exemptions = tax_unit("vt_personal_exemptions", period)
         # Subtract standard deduction plus personal exemptions from vt allowed medical expense deduction and return (Worksheet line 3).
         return max_(
             0,
-            vt_standard_deductions
+            vt_standard_deduction
             + vt_personal_exemptions
             - vt_allow_medical_expense_deduction,
         )
