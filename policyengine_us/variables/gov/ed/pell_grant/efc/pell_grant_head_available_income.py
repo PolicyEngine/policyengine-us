@@ -8,7 +8,7 @@ class pell_grant_head_available_income(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        assets = person("pell_grant_head_assets", period)
+        assets = person.tax_unit("pell_grant_head_assets", period)
         allowances = person("pell_grant_head_allowances", period)
         income = person("pell_grant_head_income", period)
         formula = person("pell_grant_formula", period)
