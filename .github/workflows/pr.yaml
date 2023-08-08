@@ -7,10 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Check formatting
+      - name: Check formatting with black
         uses: "lgeiger/black-action@master"
         with:
           args: ". -l 79 --check"
+      - uses: actions/checkout@v3
+      - name: Check formatting with linecheck
+        uses: "linecheck"
+        with:
+          args: "."
   check-version:
     name: Check version
     runs-on: ubuntu-latest
