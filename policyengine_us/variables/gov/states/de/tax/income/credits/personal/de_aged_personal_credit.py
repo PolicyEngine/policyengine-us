@@ -1,12 +1,15 @@
 from policyengine_us.model_api import *
 
 
-class de_aged_personal_credits(Variable):
+class de_aged_personal_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Delaware aged additional personal credits"
+    label = "Delaware aged personal credit"
     unit = USD
     definition_period = YEAR
+    reference = (
+        "https://delcode.delaware.gov/title30/c011/sc02/index.html#1110"
+    )
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):

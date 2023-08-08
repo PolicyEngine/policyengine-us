@@ -1,0 +1,107 @@
+- name: no dependents, is not stillborn parent, not disabled, is not a dependent
+  period: 2022
+  input:
+    tax_unit_size: 1
+    state_code: MI
+  output:
+    mi_exemptions: 5_000
+
+- name: 2 dependents, no stillborn parent, no disabled, is not a dependent
+  period: 2022
+  input:
+    tax_unit_size: 3
+    state_code: MI
+  output: # 5_000 * 3
+    mi_exemptions: 15_000
+
+- name: no dependents, is stillborn parent, not disabled, is not a dependent
+  period: 2022
+  input:
+    tax_unit_size: 1
+    tax_unit_stillborn_children: 1
+    state_code: MI
+  output: # 5_000 + 5_000
+    mi_exemptions: 10_000
+
+- name: no dependents, is not stillborn parent, is disabled, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        tax_unit_size: 1
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 5_000 + 2_900
+    mi_exemptions: 7_900
+
+- name: no dependents, is not stillborn parent, is disabled, is disabled veteran, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        tax_unit_size: 1
+        members: [person1]
+    household:
+      members: [person1]
+      state_code: MI
+  output: # 5_000 + 2_900 + 400
+    mi_exemptions: 8_300
+
+- name: 1 dependent, no stillborn parent, 2 disabled, 1 disabled veteran, is not a dependent
+  period: 2022
+  input:
+    people:
+      person1:
+        is_fully_disabled_service_connected_veteran: false
+        is_disabled: true
+      person2:
+        is_fully_disabled_service_connected_veteran: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        tax_unit_size: 2
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output: # 5_000 * 2 + 2_900 * 2 + 400
+    mi_exemptions: 16_200
+
+- name: no dependents, is not stillborn parent, not disabled, is a dependent, single
+  period: 2021
+  input:
+    tax_unit_size: 1
+    dsi: true
+    filing_status: SINGLE
+    state_code: MI
+  output: 
+    mi_exemptions: 1_500
+
+- name: no dependents, is not stillborn parent, not disabled, is a dependent, married
+  period: 2021
+  input:
+    tax_unit_size: 1
+    dsi: true
+    filing_status: JOINT
+    state_code: MI
+  output: 
+    mi_exemptions: 3_000
+
+- name: no dependents, is not stillborn parent, not disabled, is a dependent, single
+  period: 2022
+  input:
+    tax_unit_size: 1
+    dsi: true
+    filing_status: SINGLE
+    state_code: MI
+  output: 
+    mi_exemptions: 1_500
