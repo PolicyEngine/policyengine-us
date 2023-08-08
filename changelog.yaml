@@ -4033,3 +4033,9 @@
     fixed:
     - Household state income tax variable respects reported state tax switch.
   date: 2023-08-08 17:03:08
+- bump: minor
+  changes:
+    added:
+    - District of Columbia (DC) income tax policy parameter that controls whether
+      married joint taxpayers have the option to compute DC taxes separately.
+  date: 2023-08-08 21:04:05
