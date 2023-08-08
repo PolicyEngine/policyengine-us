@@ -1,4 +1,4 @@
-description: New Mexico modified gross income elements.
+description: New Mexico includes these income sources in its modified gross income concept.
 values:
   2021-01-01:
     - tax_unit_social_security
@@ -10,10 +10,11 @@ values:
     - dividend_income
     - alimony_income
     - child_support_received
-    - rent
+    - rental_income
     - pension_income
     - unemployment_compensation
     - employment_income
+    - self_employment_income
     - veterans_benefits
     # income such as gambling winnings, insurance settlements, scholarships,
     # grants, trust income and inheritance,

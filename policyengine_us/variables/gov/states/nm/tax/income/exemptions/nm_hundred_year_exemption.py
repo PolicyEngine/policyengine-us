@@ -23,4 +23,6 @@ class nm_hundred_year_exemption(Variable):
         numerator = head_eligible.astype(int) + spouse_eligible.astype(int)
         # Exempt AGI apportioned among eligible spouses.
         # That is, assume all income is community property.
-        return tax_unit("nm_agi", period) * numerator / denominator
+        return (
+            tax_unit("adjusted_gross_income", period) * numerator / denominator
+        )

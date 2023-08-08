@@ -22,6 +22,7 @@ class household_state_income_tax(Variable):
         "nd_income_tax_before_refundable_credits",
         "ne_income_tax_before_refundable_credits",
         "nh_income_tax_before_refundable_credits",
+        "nj_income_tax_before_refundable_credits",
         "ny_income_tax_before_refundable_credits",
         "or_income_tax_before_refundable_credits",
         "pa_income_tax",
