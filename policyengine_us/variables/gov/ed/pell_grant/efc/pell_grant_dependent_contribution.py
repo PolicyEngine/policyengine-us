@@ -8,7 +8,7 @@ class pell_grant_dependent_contribution(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        assets = person("pell_grant_dependent_assets", period)
+        assets = person("pell_grant_countable_assets", period)
         income = person("pell_grant_dependent_available_income", period)
         allowances = person("pell_grant_dependent_allowances", period)
         p = parameters(period).gov.ed.pell_grant.efc.dependent

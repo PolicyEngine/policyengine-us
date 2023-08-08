@@ -3,10 +3,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 0
         pell_grant_head_allowances: 0
         pell_grant_formula: A
     tax_unit:
+      pell_grant_head_income: 0
       pell_grant_head_assets: 500
   output:
     pell_grant_head_available_income: 60
@@ -16,10 +16,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 40_000
         pell_grant_head_allowances: 0
         pell_grant_formula: A
     tax_unit:
+      pell_grant_head_income: 40_000
       pell_grant_head_assets: 0
   output:
     pell_grant_head_available_income: 40_000
@@ -29,10 +29,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 20_000
         pell_grant_head_allowances: 5_000
         pell_grant_formula: A
     tax_unit:
+      pell_grant_head_income: 20_000
       pell_grant_head_assets: 0
   output:
     pell_grant_head_available_income: 15_000
@@ -42,10 +42,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 30_000
         pell_grant_head_allowances: 10_000
         pell_grant_formula: A
     tax_unit:
+      pell_grant_head_income: 30_000
       pell_grant_head_assets: 50_000
   output:
     pell_grant_head_available_income: 26_000
@@ -55,10 +55,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 0
         pell_grant_head_allowances: 100_000
         pell_grant_formula: A
     tax_unit:
+      pell_grant_head_income: 0
       pell_grant_head_assets: 0
   output:
     pell_grant_head_available_income: -100_000
@@ -68,10 +68,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 0
         pell_grant_head_allowances: 0
         pell_grant_formula: B
     tax_unit:
+      pell_grant_head_income: 0
       pell_grant_head_assets: 1_000
   output:
     pell_grant_head_available_income: 200
@@ -81,10 +81,10 @@
   input:
     people:
       head:
-        pell_grant_head_income: 0
         pell_grant_head_allowances: 0
         pell_grant_formula: C
     tax_unit:
+      pell_grant_head_income: 0
       pell_grant_head_assets: 1_000
   output:
     pell_grant_head_available_income: 70
