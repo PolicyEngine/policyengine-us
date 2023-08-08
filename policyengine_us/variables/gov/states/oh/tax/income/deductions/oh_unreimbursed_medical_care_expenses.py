@@ -23,4 +23,4 @@ class oh_unreimbursed_medical_care_expenses(Variable):
         rate = parameters(period).gov.irs.deductions.itemized.medical.floor
         adjusted_moop = max_(0, medical_expenses - federal_agi * rate)
 
-        return tax_unit.sum(premiums_expenses + adjusted_moop)
+        return premiums_expenses + adjusted_moop
