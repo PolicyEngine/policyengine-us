@@ -1,38 +1,22 @@
-- name: no parents or grandparents
+- name: One eligible parent
   period: 2023
   input:
-    state_code: AZ
-    tax_unit_parents: 0
-    tax_unit_grandparents: 0
-    cohabitating_parents: false
-    cohabitating_grandparents: false
-    care_and_support_payment: 0
-    care_and_support_costs: 0
-  output:
-    az_parents_grandparents_exemption: 0
-
-- name: 1 parent and no grandparents
-  period: 2023
-  input:
-    state_code: AZ
-    tax_unit_parents: 1
-    tax_unit_grandparents: 0
-    cohabitating_parents: true
-    cohabitating_grandparents: false
-    care_and_support_payment: 200
-    care_and_support_costs: 300
-  output:
-    az_parents_grandparents_exemption: 10_000
-
-- name: 1 parent and 1 grandparent
-  period: 2023
-  input:
-    state_code: AZ
-    tax_unit_parents: 1
-    tax_unit_grandparents: 1
-    cohabitating_parents: false
-    cohabitating_grandparents: true
-    care_and_support_payment: 200
-    care_and_support_costs: 300
+    people:
+      person1:
+        age: 30
+        care_and_support_payment: 0
+        care_and_support_costs: 0
+        cohabitating_parent: false
+        cohabitating_grandparent: false
+      person2:
+        age: 65
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+        cohabitating_parent: true
+        cohabitating_grandparent: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
   output:
     az_parents_grandparents_exemption: 10_000

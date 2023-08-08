@@ -1,15 +1,15 @@
-description: Arizona extends an exemption of this amount for each eligible senior.
+description: Arizona extends the aged exemption to filers at or above this age threshold. 
 metadata:
   unit: currency-USD
   period: year
-  label: Arizona senior exemption amount
+  label: Arizona aged exemption age threshold
   reference: 
-    - title: Arizona Form 140 (2022) Line 40
+    - title: Arizona Form 140 (2022) Line 41
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140-2Df.pdf#page=2
-    - title: Arizona Form 140 (2021) Line 40
+    - title: Arizona Form 140 (2021) Line 41
       href: https://azdor.gov/sites/default/files/2023-03/FORMS-INDIVIDUAL-2020_140_2Df.pdf#page=2
-    - title: 43-1023. Arizona Exemptions for blind persons and persons sixty-five years of age or older. (B-1)
+    - title: 43-1023. Arizona Exemptions for blind persons and persons sixty-five years of age or older. (C)
       href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01023.htm
-
 values:
-  2021-01-01: 2_300
+  2021-01-01: 65
+

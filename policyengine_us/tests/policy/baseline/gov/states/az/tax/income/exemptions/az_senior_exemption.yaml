@@ -2,8 +2,9 @@
   period: 2023
   input:
     state_code: AZ
+    age: 66
     care_and_support_payment: 300
-    care_and_support_cost: 400
+    care_and_support_costs: 400
   output:
     az_senior_exemption: 2_300
 
@@ -11,16 +12,18 @@
   period: 2023
   input:
     state_code: AZ
+    age: 60
     care_and_support_payment: 900
-    care_and_support_cost: 2_000
+    care_and_support_costs: 2_000
   output:
-    az_senior_exemption: 2_300
+    az_senior_exemption: 0
 
 - name: Case 3
   period: 2023
   input:
     state_code: AZ
+    age: 70
     care_and_support_payment: 100
-    care_and_support_cost: 500
+    care_and_support_costs: 500
   output:
     az_senior_exemption: 0
