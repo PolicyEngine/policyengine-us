@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.414.0] - 2023-08-08 01:00:06
+
+### Added
+
+- Michigan earned income tax credit.
+
 ## [0.413.0] - 2023-08-08 00:47:11
 
 ### Added
@@ -4759,6 +4765,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.414.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.413.0...0.414.0
 [0.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.412.0...0.413.0
 [0.412.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.411.0...0.412.0
 [0.411.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.410.2...0.411.0
