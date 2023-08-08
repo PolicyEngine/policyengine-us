@@ -4,13 +4,13 @@
     people:
       person1:
         is_tax_unit_head: true
+        agi_prorate_fraction_head: 0.2
       person2:
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
         va_itemized_deductions: 10_000
-        va_prorate_fraction_head: 0.2
     households:
       household:
         members: [person1, person2]
