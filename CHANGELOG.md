@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.416.0] - 2023-08-08 04:31:30
+
+### Added
+
+- Oregon Child Tax Credit.
+
 ## [0.415.0] - 2023-08-08 01:03:41
 
 ### Added
@@ -4771,6 +4777,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.416.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.415.0...0.416.0
 [0.415.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.414.0...0.415.0
 [0.414.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.413.0...0.414.0
 [0.413.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.412.0...0.413.0
