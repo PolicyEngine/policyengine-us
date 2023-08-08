@@ -12,7 +12,7 @@
   input:
     state_code: OR
     age: 5
-    is_dependent: true
+    is_tax_unit_dependent: true
     or_income_after_subtractions: 0
   output:
     or_ctc: 1_000
@@ -22,7 +22,7 @@
   input:
     state_code: CA
     age: 5
-    is_dependent: true
+    is_tax_unit_dependent: true
     or_income_after_subtractions: 0
   output:
     or_ctc: 0
@@ -32,7 +32,7 @@
   input:
     state_code: OR
     age: 6
-    is_dependent: true
+    is_tax_unit_dependent: true
     or_income_after_subtractions: 0
   output:
     or_ctc: 1_000
@@ -42,7 +42,7 @@
   input:
     state_code: OR
     age: 5
-    is_dependent: true
+    is_tax_unit_dependent: true
     or_income_after_subtractions: 30_000
   output:
     or_ctc: 0
@@ -52,7 +52,7 @@
   input:
     state_code: OR
     age: 5
-    is_dependent: true
+    is_tax_unit_dependent: true
     or_income_after_subtractions: 100_000
   output:
     or_ctc: 0
@@ -62,7 +62,7 @@
   input:
     state_code: OR
     age: 5
-    is_dependent: true
+    is_tax_unit_dependent: true
     or_income_after_subtractions: 27_500
   output:
     or_ctc: 500
