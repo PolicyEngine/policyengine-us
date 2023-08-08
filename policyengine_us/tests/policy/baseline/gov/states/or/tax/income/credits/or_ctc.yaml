@@ -35,7 +35,7 @@
     is_tax_unit_dependent: true
     or_income_after_subtractions: 0
   output:
-    or_ctc: 1_000
+    or_ctc: 0
 
 - name: Fully phases out at $30,000.
   period: 2023
