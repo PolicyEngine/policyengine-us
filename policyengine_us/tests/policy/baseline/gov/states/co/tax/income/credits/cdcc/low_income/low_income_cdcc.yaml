@@ -11,8 +11,11 @@
         age: 12
         childcare_expenses: 1_000
       child_2:
-        age: 13
+        age: 13  
         childcare_expenses: 1_000
+    spm_units:
+      spm_unit:      
+        members: [head, spouse, child_1, child_2]
     tax_units:
       tax_unit:
         members: [head, spouse, child_1, child_2]
