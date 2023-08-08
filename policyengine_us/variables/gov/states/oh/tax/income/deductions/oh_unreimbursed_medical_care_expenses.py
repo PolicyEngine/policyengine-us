@@ -14,11 +14,14 @@ class oh_unreimbursed_medical_care_expenses(Variable):
     defined_for = StateCode.OH
 
     def formula(tax_unit, period, parameters):
-        premiums_expenses = add(tax_unit, period, ["health_insurance_premiums"])
-        medical_expenses = add(tax_unit, period, ["medical_out_of_pocket_expenses"])
+        premiums_expenses = add(
+            tax_unit, period, ["health_insurance_premiums"]
+        )
+        medical_expenses = add(
+            tax_unit, period, ["medical_out_of_pocket_expenses"]
+        )
         # moop
         federal_agi = tax_unit("adjusted_gross_income", period)
-
 
         rate = parameters(period).gov.irs.deductions.itemized.medical.floor
         adjusted_moop = max_(0, medical_expenses - federal_agi * rate)

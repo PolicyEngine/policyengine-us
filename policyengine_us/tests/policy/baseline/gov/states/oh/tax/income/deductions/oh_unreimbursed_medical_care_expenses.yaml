@@ -50,6 +50,7 @@
         medical_out_of_pocket_expenses: 300
     tax_units:
       tax_unit:
+        members: [head, spouse]
         adjusted_gross_income: 2_000
     households:
       household:
