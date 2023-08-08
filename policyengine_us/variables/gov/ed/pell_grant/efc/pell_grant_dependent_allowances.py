@@ -15,7 +15,5 @@ class pell_grant_dependent_allowances(Variable):
         head_available_income = person(
             "pell_grant_head_available_income", period
         )
-        allowances_from_head = where(
-            head_available_income < 0, -head_available_income, 0
-        )
+        allowances_from_head = -min_(head_available_income, 0)
         return ipa + allowances_from_head + other_allowances
