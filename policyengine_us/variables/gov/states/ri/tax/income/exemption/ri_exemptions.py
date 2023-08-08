@@ -19,16 +19,10 @@ class ri_exemptions(Variable):
 
         agi = tax_unit("ri_agi", period)
 
-        excess_agi = agi - p.reduction.start
+        excess_agi = max_(0, agi - p.reduction.start)
 
-        excess_agi_step = excess_agi / p.reduction.increment
+        increments = np.ceil(excess_agi / p.reduction.increment)
 
-        reduced_exemption_amount = (
-            p.reduction.percentage.calc(excess_agi_step) * exemption_amount
-        )
+        percent_reduction = min_(p.reduction.percentage.calc(increments), 1)
 
-        return where(
-            agi <= p.reduction.start,
-            exemption_amount,
-            reduced_exemption_amount,
-        )
+        return exemption_amount * (1 - percent_reduction)
