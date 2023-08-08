@@ -4018,3 +4018,18 @@
     added:
     - Georgia exemptions.
   date: 2023-08-08 01:03:41
+- bump: minor
+  changes:
+    added:
+    - Oregon Child Tax Credit.
+  date: 2023-08-08 04:31:30
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect Missouri itemized deduction logic.
+  date: 2023-08-08 16:22:12
+- bump: patch
+  changes:
+    fixed:
+    - Household state income tax variable respects reported state tax switch.
+  date: 2023-08-08 17:03:08
