@@ -21,13 +21,13 @@ class or_ctc(Variable):
         eligible = age_eligible & dependent
         count_eligible = tax_unit.sum(eligible)
         # Cap the number of qualifying dependents.
-        capped_count_eligible = min(count_eligible, p.child_limit)
+        capped_count_eligible = min_(count_eligible, p.child_limit)
         # Get maximum credit amount.
         max_credit = p.amount * capped_count_eligible
         # Get Oregon adjusted gross income.
         or_agi = tax_unit("or_income_after_subtractions", period)
         # Reduce credit amount over the phaseout range.
-        excess_agi = max(or_agi - p.reduction.start, 0)
+        excess_agi = max_(or_agi - p.reduction.start, 0)
         percent_reduction = min_(excess_agi / p.reduction.width, 1)
         # Return reduced amount.
         return max_credit * (1 - percent_reduction)
