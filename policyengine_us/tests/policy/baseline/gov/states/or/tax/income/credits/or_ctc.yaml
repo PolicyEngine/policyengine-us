@@ -47,6 +47,16 @@
   output:
     or_ctc: 0
 
+- name: Check we're not creating a negative value.
+  period: 2023
+  input:
+    state_code: OR
+    age: 5
+    is_dependent: true
+    or_income_after_subtractions: 100_000
+  output:
+    or_ctc: 0
+
 - name: Halfway phased out at $27,500.
   period: 2023
   input:
