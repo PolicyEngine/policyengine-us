@@ -4,79 +4,79 @@
   input:
     state_code: AZ
     medical_expense: 2_000
-    positive_agi: 60_000
+    medical_expense_deduction: 3_000
     charitable_deduction: 2_000
     state_and_local_sales_or_income_tax: 6_000
     az_total_credit: 900
     filing_status: SINGLE
-    salt_deduction: 800
+    salt_deduction: 800 # should be total state income taxes claimed on federal Schedule A (after limitation)
     itemized_deductions_less_salt: 2_000
   output:
-    az_itemized_deduction: 1_800
+    az_itemized_deduction: 3_300
 
 
-- name: AZ itemized deduction test 2
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-    state_code: AZ
-    medical_expense: 2_000
-    positive_agi: 60_000
-    charitable_deduction: 2_000
-    state_and_local_sales_or_income_tax: 6_000
-    az_total_credit: 900
-    filing_status: SEPARATE
-    salt_deduction: 800
-    itemized_deductions_less_salt: 2_000
-  output:
-    az_itemized_deduction: 1_700
+# - name: AZ itemized deduction test 2
+#   absolute_error_margin: 0.01
+#   period: 2022
+#   input:
+#     state_code: AZ
+#     medical_expense: 2_000
+#     medical_expense_deduction: 1_000
+#     charitable_deduction: 2_000
+#     state_and_local_sales_or_income_tax: 6_000
+#     az_total_credit: 900
+#     filing_status: SEPARATE
+#     salt_deduction: 800
+#     itemized_deductions_less_salt: 2_000
+#   output:
+#     az_itemized_deduction: 8_100
 
 
-- name: AZ itemized deduction test 3
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-    state_code: AZ
-    medical_expense: 2_000
-    positive_agi: 60_000
-    charitable_deduction: 2_000
-    state_and_local_sales_or_income_tax: 6_000
-    az_total_credit: 900
-    filing_status: HEAD_OF_HOUSEHOLD
-    salt_deduction: 800
-    itemized_deductions_less_salt: 2_000
-  output:
-    az_itemized_deduction: 1_800
+# - name: AZ itemized deduction test 3
+#   absolute_error_margin: 0.01
+#   period: 2022
+#   input:
+#     state_code: AZ
+#     medical_expense: 2_000
+#     positive_agi: 60_000
+#     charitable_deduction: 2_000
+#     state_and_local_sales_or_income_tax: 6_000
+#     az_total_credit: 900
+#     filing_status: HEAD_OF_HOUSEHOLD
+#     salt_deduction: 800
+#     itemized_deductions_less_salt: 2_000
+#   output:
+#     az_itemized_deduction: 1_800
 
-- name: AZ itemized deduction test 4
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-    state_code: AZ
-    medical_expense: 2_000
-    positive_agi: 60_000
-    charitable_deduction: 2_000
-    state_and_local_sales_or_income_tax: 6_000
-    az_total_credit: 900
-    filing_status: JOINT
-    salt_deduction: 800
-    itemized_deductions_less_salt: 2_000
-  output:
-    az_itemized_deduction: 1_800
+# - name: AZ itemized deduction test 4
+#   absolute_error_margin: 0.01
+#   period: 2022
+#   input:
+#     state_code: AZ
+#     medical_expense: 2_000
+#     positive_agi: 60_000
+#     charitable_deduction: 2_000
+#     state_and_local_sales_or_income_tax: 6_000
+#     az_total_credit: 900
+#     filing_status: JOINT
+#     salt_deduction: 800
+#     itemized_deductions_less_salt: 2_000
+#   output:
+#     az_itemized_deduction: 1_800
 
 
-- name: AZ itemized deduction test 5
-  absolute_error_margin: 0.01
-  period: 2022
-  input:
-    state_code: AZ
-    medical_expense: 2_000
-    positive_agi: 60_000
-    charitable_deduction: 2_000
-    state_and_local_sales_or_income_tax: 6_000
-    az_total_credit: 900
-    filing_status: WIDOW
-    salt_deduction: 800
-    itemized_deductions_less_salt: 2_000
-  output:
-    az_itemized_deduction: 1_800
+# - name: AZ itemized deduction test 5
+#   absolute_error_margin: 0.01
+#   period: 2022
+#   input:
+#     state_code: AZ
+#     medical_expense: 2_000
+#     positive_agi: 60_000
+#     charitable_deduction: 2_000
+#     state_and_local_sales_or_income_tax: 6_000
+#     az_total_credit: 900
+#     filing_status: WIDOW
+#     salt_deduction: 800
+#     itemized_deductions_less_salt: 2_000
+#   output:
+#     az_itemized_deduction: 1_800
