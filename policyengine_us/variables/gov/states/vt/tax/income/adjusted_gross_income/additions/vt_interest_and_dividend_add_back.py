@@ -9,8 +9,8 @@ class vt_interest_and_dividend_add_back(Variable):
     defined_for = StateCode.VT
     documentation = "Part of additions to VT AGI over federal AGI. The amount equals to interest and dividend income from non-Vermont state and local obligations which are exempted from federal taxable income are taxable in Vermont."
     reference = (
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf"
-        "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf"
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf#page=1"  # Part I ADDITIONS TO FEDERAL ADJUSTED GROSS INCOME
+        "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=1"
         "https://legislature.vermont.gov/statutes/section/32/151/05811"
     )
 
