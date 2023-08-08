@@ -1,0 +1,19 @@
+description: Oregon provides this Child Tax Credit amount based on the child's age.
+brackets:
+  - threshold:
+      0000-01-01: 0
+    amount:
+      0000-01-01: 0
+      2023-01-01: 1_000
+  - threshold:
+      0000-01-01: 6
+    amount:
+      0000-01-01: 0
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  label: Oregon Child Tax Credit amount
+  reference:
+    - title: 2023R1 House Bill 3235 Section 2 (1)(a) [age] and (3)(a) [amount]
+      href: https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled#page=1
