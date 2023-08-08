@@ -1,6 +1,11 @@
-description: Louisiana provides this rate of the federal CDCC as the non-refundable CDCC.
+description: Louisiana provides this rate of the federal CDCC as the Louisiana CDCC.
 
 brackets:
+  - threshold:
+      2006-01-01: 0
+    amount:
+      2006-01-01: 0.25
+      2007-01-01: 0.5
   - threshold:
       2006-01-01: 25_000
     amount:
@@ -19,11 +24,11 @@ metadata:
   threshold_unit: currency-USD
   amount_unit: /1
   period: year
-  label: Louisiana non-refundable CDCC rate
+  label: Louisiana CDCC rate
   reference:
     - title: §297.4. Reduction to tax due; certain child care expenses, part (A)(2)-(4)
       href: http://legis.la.gov/Legis/Law.aspx?d=101769
-    - title: 2022 Louisiana Resident Income Tax Return, page 16-1A
-      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf
-    - title: 2021 Louisiana Resident Income Tax Return, page 16-1A
-      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf
+    - title: 2022 Louisiana Resident Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=16
+    - title: 2021 Louisiana Resident Income Tax Return
+      href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf#page=16

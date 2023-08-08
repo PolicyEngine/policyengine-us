@@ -4,18 +4,10 @@ from policyengine_us.model_api import *
 class la_cdcc_refundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana refundable CDCC"
+    label = "Louisiana refundable Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
     reference = "http://legis.la.gov/Legis/Law.aspx?d=101769"
-    defined_for = StateCode.LA
+    defined_for = "la_cdcc_refundable_eligible"
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.credits
-        # determine AGI eligibility
-        us_agi = tax_unit("adjusted_gross_income", period)
-        agi_eligible = us_agi <= p.cdcc.refundable_income_limit
-        # determine LA refundable cdcc amount
-        us_cdcc = tax_unit("cdcc", period)
-        la_refundable_cdcc = us_cdcc * p.cdcc.refundable.rate
-        return agi_eligible * la_refundable_cdcc
+    adds = ["la_cdcc"]
