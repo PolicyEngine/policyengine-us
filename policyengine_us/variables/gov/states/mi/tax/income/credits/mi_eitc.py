@@ -12,4 +12,4 @@ class mi_eitc(Variable):
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)
         p = parameters(period).gov.states.mi.tax.income.credits.eitc
-        return eitc * p.match_rate
+        return eitc * p.match
