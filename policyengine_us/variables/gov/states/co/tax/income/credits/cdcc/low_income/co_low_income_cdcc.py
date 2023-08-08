@@ -10,7 +10,7 @@ class co_low_income_cdcc(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    def formula(tax_unit, spm_unit, period, parameters):
+    def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.credits.cdcc.low_income
         # Filer is eligible if AGI is below $25,000
         agi = tax_unit("adjusted_gross_income", period)
@@ -18,16 +18,16 @@ class co_low_income_cdcc(Variable):
         # if filing jointly - the lesser of either individual's earned income
         earned_income = tax_unit("min_head_spouse_earned", period)
         # Get sum of all qualified child care expenses
-        expenses = spm_unit("childcare_expenses", period)
-        person = spm_unit.members
+        expenses = tax_unit.spm_unit("childcare_expenses", period)
+        person = tax_unit.members
         age = person("age", period)
         age_eligible = age < p.child_age_limit
         eligible_expenses = age_eligible * expenses
-        total_expenses = spm_unit.sum(eligible_expenses)
+        total_expenses = tax_unit.sum(eligible_expenses)
         capped_expenses = min_(earned_income, total_expenses)
         co_cdcc = capped_expenses * p.rate.calc(agi)
         # Credit is capped at $500 or $1,000 for 1 or over 2 dependents respectfully
         # dependents = tax_unit("tax_unit_dependents", period)
-        spm_unit_count_children = add(spm_unit, period, ["is_child"])
+        spm_unit_count_children = add(tax_unit, period, ["is_child"])
         max_amount = p.max_amount.calc(spm_unit_count_children)
         return min_(co_cdcc, max_amount)
