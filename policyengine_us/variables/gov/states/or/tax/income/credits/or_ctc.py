@@ -14,7 +14,7 @@ class or_ctc(Variable):
         # Get age and dependent status of all people in the tax unit.
         person = tax_unit.members
         age = person("age", period)
-        dependent = person("is_dependent", period)
+        dependent = person("is_tax_unit_dependent", period)
         # Get the number of qualifying dependents in the tax unit.
         p = parameters(period).gov.states["or"].tax.income.credits.ctc
         age_eligible = age < p.ineligible_age
