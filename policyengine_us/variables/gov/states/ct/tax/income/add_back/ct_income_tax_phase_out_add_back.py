@@ -16,9 +16,9 @@ class ct_income_tax_phase_out_add_back(Variable):
         filing_status = tax_unit("filing_status", period)
         start = p.start[filing_status]
         max_amount = p.max_amount[filing_status]
-        brackets = p.brackets[filing_status]
-        amount = p.amount[filing_status]
+        increment = p.increment[filing_status]
+        reduction_amount = p.amount[filing_status]
         income_start = max_(income - start, 0)
-        income_bracktes = ceil(income_start / brackets)
-        amount = income_bracktes * amount
+        income_bracktes = ceil(income_start / increment)
+        amount = income_bracktes * reduction_amount
         return min_(max_amount, amount)

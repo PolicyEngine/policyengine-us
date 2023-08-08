@@ -2,23 +2,23 @@ from policyengine_us.model_api import *
 from numpy import ceil
 
 
-class ct_income_tax_lower_tax_recapture(Variable):
+class ct_personal_exemption(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Connecticut income tax lower tax recapture"
+    label = "Connecticut Personal Exemption"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("ct_agi", period)
-        p = parameters(period).gov.states.ct.tax.income.main.recapture.lower
+        p = parameters(period).gov.states.ct.tax.income.exemptions.personal
         filing_status = tax_unit("filing_status", period)
-        reduction_start = p.start[filing_status]
         max_amount = p.max_amount[filing_status]
-        increment = p.increment[filing_status]
-        reduction_amount = p.amount[filing_status]
+        reduction_start = p.reduction.start[filing_status]
+        increment = p.reduction.increment
+        reduction_amount = p.reduction.amount
         income_start = max_(income - reduction_start, 0)
         income_bracktes = ceil(income_start / increment)
-        amount = income_bracktes * reduction_amount
-        return min_(max_amount, amount)
+        total_reduction_amount = income_bracktes * reduction_amount
+        return max_(max_amount - total_reduction_amount, 0)
