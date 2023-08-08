@@ -13,7 +13,7 @@ jobs:
           args: ". -l 79 --check"
       - uses: actions/checkout@v3
       - name: Check formatting with linecheck
-        uses: "linecheck"
+        uses: "PolicyEngine/linecheck@master"
         with:
           args: "."
   check-version:
