@@ -5,14 +5,13 @@ metadata:
   rate_unit: /1
   label: Vermont income tax rates separate filers
   reference:
+      # Law does not specify inflation adjusted thresholds for each year
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
       href: https://legislature.vermont.gov/statutes/section/32/151/05822
-    - title: Vermont 2022 Income Tax Return Form N-111
-      href: https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf
-    - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions, Page 45
-      href: https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf
     - title: Vermont 2021 Income Tax Rate Schedules
-      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf     
+      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2021.pdf
+    - title: Vermont 2022 Income Tax Return Booklet Forms and Instructions
+      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2022.pdf 
 brackets:
   - threshold:
       2021-01-01: 0
