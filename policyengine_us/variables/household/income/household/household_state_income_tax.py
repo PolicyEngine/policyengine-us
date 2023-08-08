@@ -56,9 +56,7 @@ class household_state_income_tax(Variable):
     def formula(tax_unit, period, parameters):
         if parameters(period).simulation.reported_state_income_tax:
             spm_unit = tax_unit.spm_unit
-            person = spm_unit.members
-            is_head = person("is_tax_unit_head", period)
-            total_tax_unit_heads = spm_unit.sum(is_head)
+            total_tax_unit_heads = add(spm_unit, period, ["is_tax_unit_head"])
             spm_unit_state_tax = spm_unit(
                 "spm_unit_state_tax_reported", period
             )
