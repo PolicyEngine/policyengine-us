@@ -21,7 +21,9 @@ class az_itemized_deduction(Variable):
         medical_expense = add(tax_unit, period, ["medical_expense"])
         # medical = parameters(period).gov.irs.deductions.itemized.medical (will be deleted later)
         # medical_expense_irs = medical.floor * tax_unit("positive_agi", period)  (will be deleted later)
-        medical_expense_deduction =tax_unit("medical_expense_deduction", period)
+        medical_expense_deduction = tax_unit(
+            "medical_expense_deduction", period
+        )
         medical_expense_larger_then_irs_allowed = where(
             medical_expense >= medical_expense_deduction,
             medical_expense - medical_expense_deduction,
@@ -46,35 +48,36 @@ class az_itemized_deduction(Variable):
         # Adjustment to State Income Taxes
         state_income_tax_before_federal_limitation = tax_unit(
             "state_and_local_sales_or_income_tax", period
-        ) # before limitation
-
+        )  # before limitation
+        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        adjustment_to_state_income_taxes = (
+            state_income_tax_before_federal_limitation + real_estate_taxes
+        )
         # In above part, the form said "Total state income taxes on the federal Schedule A before applying the federal limitations"
-        # I feel like state_income_taxes = tax_unit("federal_state_income_tax", period) may be more appropriate then "state_income_tax_before_federal_limitation"  
+        # I feel like state_income_taxes = tax_unit("federal_state_income_tax", period) may be more appropriate then "state_income_tax_before_federal_limitation"
         # since only sales or income tax can be itemized, but not both. (from state_and_local_sales_or_income_tax.py)
-
 
         # line2A = Amount included in the line 1A for which you claimed an Arizona credit
         # line2A = az_total_credit
-        az_total_credit = tax_unit("az_total_credit", period)
-        total_state_income_taxes_unclaimed_for_credit = (
-            state_income_tax_before_federal_limitation - az_total_credit
-        )
-        filing_status = tax_unit("filing_status", period)
-        federal_schedule_limit = parameters(
-            period
-        ).gov.irs.deductions.itemized.salt_and_real_estate.cap[filing_status]
-        allowed_state_income_taxes_for_credit = min_(
-            total_state_income_taxes_unclaimed_for_credit,
-            federal_schedule_limit,
-        )
+        # az_total_credit = tax_unit("az_total_credit", period)
+        # total_state_income_taxes_unclaimed_for_credit = (
+        #     state_income_tax_before_federal_limitation - az_total_credit
+        # )
+        # filing_status = tax_unit("filing_status", period)
+        # federal_schedule_limit = parameters(
+        #     period
+        # ).gov.irs.deductions.itemized.salt_and_real_estate.cap[filing_status]
+        # allowed_state_income_taxes_for_credit = min_(
+        #     total_state_income_taxes_unclaimed_for_credit,
+        #     federal_schedule_limit,
+        # )
 
-        salt_deduction = tax_unit("salt_deduction", period)
-        # what is "total state income taxes claimed on federal Schedule A (after limitation)"?
-        # Is it just salt_deduction?
-
-        adjustment_to_state_income_taxes = (
-            salt_deduction - allowed_state_income_taxes_for_credit
-        )
+        # salt_deduction = tax_unit("salt_deduction", period)
+        # # what is "total state income taxes claimed on federal Schedule A (after limitation)"?
+        # # Is it just salt_deduction?
+        # adjustment_to_state_income_taxes = (
+        #     salt_deduction - allowed_state_income_taxes_for_credit
+        # )
 
         # Other Adjustments
         # This part was marked as not included after meeting
