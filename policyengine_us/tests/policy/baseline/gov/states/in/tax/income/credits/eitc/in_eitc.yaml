@@ -1,0 +1,191 @@
+- name: Eligible family with no child using 2022 data
+  period: 2023
+  input:
+    people:
+      head:
+        earned_income: 15_999
+      spouse:
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        earned_income_tax_credit: 500
+        in_agi: 16_399
+        eitc_child_count: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_eitc: 50
+
+- name: Eligible family with no child using 2021 data
+  period: 2021
+  input:
+    people:
+      head:
+        earned_income: 15_899
+      spouse:
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        earned_income_tax_credit: 500
+        in_agi: 15_899
+        eitc_child_count: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_eitc: 50
+  
+- name: Ineligible family with no child using 2022 data
+  period: 2023
+  input:
+    people:
+      head:
+        earned_income: 15_999
+      spouse:
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        earned_income_tax_credit: 500
+        in_agi: 16_401
+        eitc_child_count: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IN
+  output:
+    in_eitc: 0
+
+- name: Eligible family with one child using 2022 data
+  period: 2023
+  input:
+    people:
+      head:
+        earned_income: 43_449
+      spouse:
+        earned_income: 0
+      child:
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        earned_income_tax_credit: 1_000
+        in_agi: 43_449
+        eitc_child_count: 1
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: IN
+  output:
+    in_eitc: 100
+  
+- name: Ineligible family with one ELIGIBLE child using 2022 data
+  period: 2023
+  input:
+    people:
+      head:
+        earned_income: 43_450
+      spouse:
+        earned_income: 0
+      child:
+        earned_income: 0
+      child2:
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child, child2]
+        earned_income_tax_credit: 1_000
+        in_agi: 43_449
+        eitc_child_count: 1
+    households:
+      household:
+        members: [head, spouse, child, child2]
+        state_code: IN
+  output:
+    in_eitc: 0
+
+- name: Eligible family with two ELIGIBLE children, 3 children, using 2022 data
+  period: 2023
+  input:
+    people:
+      head:
+        earned_income: 39_398
+      spouse:
+        earned_income: 10_000
+      child1:
+        earned_income: 0
+      child2:
+        earned_income: 0
+      child3: 
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        earned_income_tax_credit: 5_000
+        in_agi: 49_398
+        eitc_child_count: 2
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: IN
+  output:
+    in_eitc: 500
+
+- name: Eligible family with two ELIGIBLE children, 3 children, using 2022 data
+  period: 2023
+  input:
+    people:
+      head:
+        earned_income: 39_398
+      spouse:
+        earned_income: 10_000
+      child1:
+        earned_income: 0
+      child2:
+        earned_income: 0
+      child3: 
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        earned_income_tax_credit: 5_000
+        in_agi: 49_398
+        eitc_child_count: 2
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: IN
+  output:
+    in_eitc: 500
+
+- name: Eligible family with two ELIGIBLE children, 3 children, using 2021 data
+  period: 2021
+  input:
+    people:
+      head:
+        earned_income: 37_899
+      spouse:
+        earned_income: 10_000
+      child1:
+        earned_income: 0
+      child2:
+        earned_income: 0
+      child3: 
+        earned_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2, child3]
+        earned_income_tax_credit: 5_000
+        in_agi: 47_899
+        eitc_child_count: 2
+    households:
+      household:
+        members: [head, spouse, child1, child2, child3]
+        state_code: IN
+  output:
+    in_eitc: 500
