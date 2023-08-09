@@ -6,10 +6,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 4_000
     spm_units:
       spm_unit:
@@ -17,10 +21,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 25_000
     households:
       household:
@@ -37,10 +37,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 61
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 4_000
     spm_units:
       spm_unit:
@@ -48,10 +52,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 25_000
     households:
       household:
@@ -68,10 +68,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 2_000
       person3:
         is_tax_unit_head: false
@@ -84,10 +88,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 25_000
     households:
       household:
@@ -104,10 +104,14 @@
       person1:
         is_tax_unit_head: true
         age: 61
+        is_blind: true
+        is_disabled: false
         taxable_pension_income: 1_000
       person2:
         is_tax_unit_spouse: true
         age: 61
+        is_blind: false
+        is_disabled: true
         taxable_pension_income: 4_000
     spm_units:
       spm_unit:
@@ -115,10 +119,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: true
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: true
         adjusted_gross_income: 25_000
     households:
       household:
@@ -135,10 +135,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -146,10 +150,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 100_000
         filing_status: HEAD_OF_HOUSEHOLD
     households:
@@ -167,10 +167,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -178,10 +182,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 100_000
         filing_status: JOINT
     households:
@@ -199,6 +199,8 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
     spm_units:
       spm_unit:
@@ -206,10 +208,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 100_000
         filing_status: SINGLE
     households:
@@ -227,6 +225,8 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
     spm_units:
       spm_unit:
@@ -234,10 +234,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 100_000
         filing_status: WIDOW
     households:
@@ -255,10 +251,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -266,10 +266,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 100_000
         filing_status: SEPARATE
     households:
@@ -287,10 +283,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -298,10 +298,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 110_000
         filing_status: JOINT
     households:
@@ -319,10 +315,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -330,10 +330,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 150_000
         filing_status: JOINT
     households:
@@ -351,10 +347,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -362,10 +362,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 110_000
         filing_status: SINGLE
     households:
@@ -383,6 +379,8 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
     spm_units:
       spm_unit:
@@ -390,10 +388,6 @@
     tax_units:
       tax_unit:
         members: [person1]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 150_000
         filing_status: SINGLE
     households:
@@ -411,10 +405,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -422,10 +420,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 110_000
         filing_status: SEPARATE
     households:
@@ -443,10 +437,14 @@
       person1:
         is_tax_unit_head: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 100_000
       person2:
         is_tax_unit_spouse: true
         age: 62
+        is_blind: false
+        is_disabled: false
         taxable_pension_income: 0
     spm_units:
       spm_unit:
@@ -454,10 +452,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        blind_head: false
-        blind_spouse: false
-        disabled_head: false
-        disabled_spouse: false
         adjusted_gross_income: 150_000
         filing_status: SEPARATE
     households:

@@ -16,7 +16,6 @@ class nj_other_retirement_special_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         # If filer (and spouse, if joint) are never eligible for social security benefits, they are eligible for special exclusion.
-        # We will infer that if above age 70 with no social seurity benefits, then eligible.
         # Get the pension/retirement exclusion portion of the parameter tree.
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
 

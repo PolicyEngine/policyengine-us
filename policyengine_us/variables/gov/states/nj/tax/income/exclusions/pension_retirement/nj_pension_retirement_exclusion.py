@@ -19,64 +19,36 @@ class nj_pension_retirement_exclusion(Variable):
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
 
         # Pension/Retirement exclusion available for household head and/or spouse if eligible.
-        blind_head = tax_unit("blind_head", period)
-        disabled_head = tax_unit("disabled_head", period)
-        age_eligible = tax_unit("age_head", period) >= p.age_threshold
-        eligible_head = age_eligible | blind_head | disabled_head
-
-        blind_spouse = tax_unit("blind_spouse", period)
-        disabled_spouse = tax_unit("disabled_spouse", period)
-        age_eligible = tax_unit("age_spouse", period) >= p.age_threshold
-        eligible_spouse = age_eligible | blind_spouse | disabled_spouse
+        person = tax_unit.members
+        is_blind = person("is_blind", period)
+        is_disabled = person("is_disabled", period)
+        age_eligible = person("age", period) >= p.age_threshold
+        eligible = age_eligible | is_blind | is_disabled
 
         # Calculate the pension/retirement exclusion amount for the head and spouse.
         # This includes social security, interest income, and pension income.
-        person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
         pension_income = person("taxable_pension_income", period)
-        potential_head_exclusion = tax_unit.sum(
-            where(
-                is_head,
-                pension_income,
-                0,
-            )
-        )
-        head_exclusion = eligible_head * potential_head_exclusion
+        head_exclusion = tax_unit.sum(eligible * is_head * pension_income)
 
         # Spouse exclusion available if filing jointly.
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         joint = filing_status == status.JOINT
         is_spouse = person("is_tax_unit_spouse", period)
-        potential_spouse_exclusion = (
-            tax_unit.sum(
-                where(
-                    is_spouse,
-                    pension_income,
-                    0,
-                )
-            )
-            * joint
+        spouse_exclusion = joint * tax_unit.sum(
+            eligible * is_spouse * pension_income
         )
-        spouse_exclusion = joint * eligible_spouse * potential_spouse_exclusion
+
+        # Get the household exclusion amount.
         exclusion_amount = head_exclusion + spouse_exclusion
 
         # Get total income minus exempt interest and pension income to determine exclusion percentage.
         # Line 27 (total income minus 16b and 20b).
         # This should also not include federally taxable SS.
-        exempt_interest_income = add(
-            tax_unit, period, ["tax_exempt_interest_income"]
-        )
-        exempt_pension_income = add(
-            tax_unit, period, ["tax_exempt_pension_income"]
-        )
-        fed_taxable_ss = add(tax_unit, period, ["taxable_social_security"])
         agi = tax_unit("adjusted_gross_income", period)
-        qualifying_income = (
-            agi
-            - exempt_interest_income
-            - exempt_pension_income
-            - fed_taxable_ss
+        qualifying_income = agi - add(
+            tax_unit, period, p.pension.agi_subtractions
         )
 
         # Get the exclusion percentage based on filing status and income.
