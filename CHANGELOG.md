@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.417.3] - 2023-08-09 14:01:59
+
+### Fixed
+
+- DeLauro contrib parameter README.
+
+## [0.417.2] - 2023-08-09 12:23:11
+
+### Added
+
+- Kentucky 2021 income tax rate.
+
+## [0.417.1] - 2023-08-08 23:41:51
+
+### Fixed
+
+- Make DC married filing separately on same return option a bool instead of list.
+
+## [0.417.0] - 2023-08-08 21:04:05
+
+### Added
+
+- District of Columbia (DC) income tax policy parameter that controls whether married joint taxpayers have the option to compute DC taxes separately.
+
+## [0.416.2] - 2023-08-08 17:03:08
+
+### Fixed
+
+- Household state income tax variable respects reported state tax switch.
+
+## [0.416.1] - 2023-08-08 16:22:12
+
+### Fixed
+
+- Incorrect Missouri itemized deduction logic.
+
 ## [0.416.0] - 2023-08-08 04:31:30
 
 ### Added
@@ -4777,6 +4813,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.417.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.417.2...0.417.3
+[0.417.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.417.1...0.417.2
+[0.417.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.417.0...0.417.1
+[0.417.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.416.2...0.417.0
+[0.416.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.416.1...0.416.2
+[0.416.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.416.0...0.416.1
 [0.416.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.415.0...0.416.0
 [0.415.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.414.0...0.415.0
 [0.414.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.413.0...0.414.0
