@@ -23,15 +23,15 @@ class az_parents_grandparents_exemption(Variable):
         ) > 0
         # Eligible parents of ancestors of parents have to be at or over 65 as well as cohabiting with the filer
         age = person("age", period)
+        age_eligible = age>= p.parent_grandparent.min_age
+
         cohabitating_parent = person("cohabitating_parent", period)
-        eligible_parent = (
-            cohabitating_parent & age
-            >= p.parent_grandparent.min_age & payment_eligible
-        )
+        eligible_co_age_p = cohabitating_parent * age_eligible
+        eligible_parent = eligible_co_age_p * payment_eligible
+        
         cohabitating_grandparent = person("cohabitating_grandparent", period)
-        eligible_grandparent = (
-            cohabitating_grandparent & age
-            >= p.parent_grandparent.min_age & payment_eligible
-        )
+        eligible_co_age_g = cohabitating_grandparent * age_eligible
+        eligible_grandparent = eligible_co_age_g * payment_eligible
+        
         total_exemptions = eligible_parent + eligible_grandparent
-        return p.parents_grandparentsa.amount * tax_unit.sum(total_exemptions)
+        return p.parent_grandparent.amount * tax_unit.sum(total_exemptions)

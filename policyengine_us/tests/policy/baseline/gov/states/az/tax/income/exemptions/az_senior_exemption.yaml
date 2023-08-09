@@ -1,29 +1,38 @@
-- name: Case 1
+- name: One eligible senior
   period: 2023
   input:
-    state_code: AZ
-    age: 66
-    care_and_support_payment: 300
-    care_and_support_costs: 400
+    people:
+      person1:
+        age: 40
+        care_and_support_payment: 0
+        care_and_support_costs: 0
+      person2:
+        age: 65
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
   output:
     az_senior_exemption: 2_300
 
-- name: Case 2
+- name: 2 eligible seniors
   period: 2023
   input:
-    state_code: AZ
-    age: 60
-    care_and_support_payment: 900
-    care_and_support_costs: 2_000
+    people:
+      person1:
+        age: 70
+        care_and_support_payment: 300
+        care_and_support_costs: 500
+      person2:
+        age: 65
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
   output:
-    az_senior_exemption: 0
+    az_senior_exemption: 4_600
 
-- name: Case 3
-  period: 2023
-  input:
-    state_code: AZ
-    age: 70
-    care_and_support_payment: 100
-    care_and_support_costs: 500
-  output:
-    az_senior_exemption: 0
