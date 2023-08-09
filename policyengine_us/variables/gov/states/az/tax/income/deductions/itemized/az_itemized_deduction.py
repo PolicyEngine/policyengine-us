@@ -43,7 +43,7 @@ class az_itemized_deduction(Variable):
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
         # I assume it is the same as irs after discussing with Pavel
-        charitable_deduction = tax_unit("charitable_deduction", period)
+        charitable_deduction = tax_unit("az_charitable_deduction", period)
 
         # Adjustment to State Income Taxes
         state_income_tax_before_federal_limitation = tax_unit(
