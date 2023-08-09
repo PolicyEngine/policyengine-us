@@ -1,0 +1,183 @@
+- name: No benefits
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 0
+  output:
+    pell_grant_simplified: false
+
+- name: Has Medicaid
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 1
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 0
+  output:
+    pell_grant_simplified: true
+
+- name: Has SSI
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 1
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 0
+  output:
+    pell_grant_simplified: true
+
+- name: Has WIC
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+        wic: 1
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 0
+  output:
+    pell_grant_simplified: true
+
+- name: Has SNAP
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 1
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 0
+  output:
+    pell_grant_simplified: true
+
+- name: Has Free School Lunch
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 1
+      reduced_price_school_meals: 0
+      tanf: 0
+  output:
+    pell_grant_simplified: true
+
+- name: Has Reduced School Lunch
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 1
+      tanf: 0
+  output:
+    pell_grant_simplified: true
+
+- name: Has TANF
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 1
+  output:
+    pell_grant_simplified: true
+
+- name: Someone else has a benefit
+  period: 2023
+  input:
+    people:
+      main:
+        medicaid: 0
+        ssi: 0
+        wic: 0
+      other:
+        medicaid: 1
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_head_income: 49_999
+    spm_unit:
+      snap: 0
+      free_school_meals: 0
+      reduced_price_school_meals: 0
+      tanf: 1
+  output:
+    pell_grant_simplified: true
+
+- name: Too much income
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 1
+        ssi: 1
+        wic: 1
+    tax_unit:
+      pell_grant_head_income: 50_000
+    spm_unit:
+      snap: 1
+      free_school_meals: 1
+      reduced_price_school_meals: 1
+      tanf: 1
+  output:
+    pell_grant_simplified: false
