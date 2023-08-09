@@ -21,6 +21,7 @@ class va_tanf_countable_unearned_income(Variable):
         p = p.deduction.unearned
         child_support_disregard = p.monthly_child_support * MONTHS_IN_YEAR
         interest_income_disregard = p.montly_interest_income * MONTHS_IN_YEAR
+        # gross unearned minus child support & interest income
         gross_unearned_after_disregard = (
             gross_unearned
             - min_(child_support, child_support_disregard)
