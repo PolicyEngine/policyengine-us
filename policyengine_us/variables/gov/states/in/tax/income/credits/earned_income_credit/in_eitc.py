@@ -8,9 +8,10 @@ class in_eitc(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21"
-    defined_for = StateCode.IN
+    defined_for = "in_eitc_eligible"
 
     def formula(tax_unit, period, parameters):
-        federal_eitc = tax_unit("earned_income_tax_credit", period)
+        # calculate eitc amount with federal formula except max of two children
+        base_eitc = 
         p = parameters(period).gov.states["in"].tax.income
-        return federal_eitc * p.credits.earned_income.match_rate
+        return base_eitc * p.credits.earned_income.match_rate
