@@ -10,8 +10,18 @@ class nm_taxable_income(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        nm_agi = tax_unit("nm_agi", period)
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        additions = tax_unit("nm_additions", period)
         deductions = tax_unit("nm_deductions", period)
         exemptions = tax_unit("nm_exemptions", period)
-        other_subtractions = tax_unit("nm_subtractions", period)
-        return max_(0, nm_agi - deductions - exemptions - other_subtractions)
+        other_deductions_and_exemptions = tax_unit(
+            "nm_other_deductions_and_exemptions", period
+        )
+        return max_(
+            0,
+            federal_agi
+            + additions
+            - deductions
+            - exemptions
+            - other_deductions_and_exemptions,
+        )
