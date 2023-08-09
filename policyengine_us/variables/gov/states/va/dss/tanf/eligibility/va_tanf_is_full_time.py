@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_tanf_is_full_time(Variable):
     value_type = bool
     entity = SPMUnit
-    label = "VA TANF care expenses"
+    label = "VA TANF full-time employee"
     definition_period = YEAR
     defined_for = StateCode.VA
 
