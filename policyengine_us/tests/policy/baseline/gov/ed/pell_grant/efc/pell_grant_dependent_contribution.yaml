@@ -4,8 +4,19 @@
     pell_grant_dependent_available_income: 0
     pell_grant_dependent_allowances: 0
     pell_grant_countable_assets: 500
+    pell_grant_simplified: false
   output:
     pell_grant_dependent_contribution: 100
+
+- name: Only assets, simplified formula
+  period: 2023
+  input:
+    pell_grant_dependent_available_income: 0
+    pell_grant_dependent_allowances: 0
+    pell_grant_countable_assets: 500
+    pell_grant_simplified: true
+  output:
+    pell_grant_dependent_contribution: 0
 
 - name: Income and no allowances
   period: 2023
@@ -13,6 +24,7 @@
     pell_grant_dependent_available_income: 3_000
     pell_grant_dependent_allowances: 0
     pell_grant_countable_assets: 0
+    pell_grant_simplified: false
   output:
     pell_grant_dependent_contribution: 1_500
 
@@ -22,6 +34,7 @@
     pell_grant_dependent_available_income: 5_000
     pell_grant_dependent_allowances: 3_000
     pell_grant_countable_assets: 0
+    pell_grant_simplified: false
   output:
     pell_grant_dependent_contribution: 1_000
 
@@ -31,5 +44,6 @@
     pell_grant_dependent_available_income: 7_000
     pell_grant_dependent_allowances: 5_000
     pell_grant_countable_assets: 10_000
+    pell_grant_simplified: false
   output:
     pell_grant_dependent_contribution: 3_000
