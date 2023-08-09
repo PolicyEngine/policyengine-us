@@ -29,6 +29,5 @@ class co_low_income_cdcc(Variable):
         capped_expenses = min_(earned_income, total_expenses)
         co_cdcc = capped_expenses * p.rate.calc(agi)
         # Credit is capped at $500 or $1,000 for 1 or over 2 dependents respectfully
-        spm_unit_count_children = add(tax_unit, period, ["is_child"])
-        max_amount = p.max_amount.calc(spm_unit_count_children)
+        max_amount = p.max_amount.calc(tax_unit.sum(eligible_child))
         return min_(co_cdcc, max_amount)
