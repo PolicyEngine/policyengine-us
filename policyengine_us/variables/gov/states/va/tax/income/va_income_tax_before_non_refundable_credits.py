@@ -1,0 +1,14 @@
+from policyengine_us.model_api import *
+
+
+class va_income_tax_before_non_refundable_credits(Variable):
+    value_type = float
+    entity = TaxUnit
+    label = "Virginia personal income tax before refundable credits"
+    unit = USD
+    definition_period = YEAR
+    defined_for = StateCode.VA
+
+    def formula(tax_unit, period, parameters):
+        income = tax_unit("va_taxable_income", period)
+        return parameters(period).gov.states.va.tax.income.rates.calc(income)

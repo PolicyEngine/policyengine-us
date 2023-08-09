@@ -1,0 +1,17 @@
+- name: Refundable over non-refundable
+  period: 2022
+  input:
+    state_code: VA
+    va_income_tax_if_claiming_refundable_eitc: 1_000
+    va_income_tax_if_claiming_non_refundable_eitc: 500
+  output:
+    va_claims_refundable_eitc: false
+
+- name: Refundable under non-refundable
+  period: 2022
+  input:
+    state_code: VA
+    va_income_tax_if_claiming_refundable_eitc: 500
+    va_income_tax_if_claiming_non_refundable_eitc: 501
+  output:
+    va_claims_refundable_eitc: true

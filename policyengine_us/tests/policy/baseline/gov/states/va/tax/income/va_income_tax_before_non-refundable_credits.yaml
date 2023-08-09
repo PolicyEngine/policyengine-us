@@ -1,0 +1,15 @@
+- name: No income
+  period: 2022
+  input:
+    state_code: VA
+    va_taxable_income: 0
+  output:
+    va_income_tax_before_non_refundable_credits: 0
+
+- name: $90,000 income #($720 + 5.75% *($90,000 - $17,000))
+  period: 2022
+  input:
+    state_code: VA
+    va_taxable_income: 90_000
+  output:
+    va_income_tax_before_non_refundable_credits: 4_918

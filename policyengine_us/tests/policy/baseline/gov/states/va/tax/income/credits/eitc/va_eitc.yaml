@@ -1,0 +1,19 @@
+- name: Claims refundable
+  period: 2022
+  input:
+    state_code: VA
+    va_refundable_eitc: 100
+    va_non_refundable_eitc: 90
+    va_claims_refundable_eitc: true
+  output:
+    va_eitc: 100
+
+- name: Claims non-refundable
+  period: 2022
+  input:
+    state_code: VA
+    va_refundable_eitc: 90
+    va_non_refundable_eitc: 100
+    va_claims_refundable_eitc: false
+  output:
+    va_eitc: 100
