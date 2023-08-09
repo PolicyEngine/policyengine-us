@@ -27,7 +27,10 @@ class co_low_income_cdcc(Variable):
         eligible_expenses = eligible_child * expenses
         total_expenses = tax_unit.sum(eligible_expenses)
         capped_expenses = min_(earned_income, total_expenses)
-        co_cdcc = capped_expenses * p.rate.calc(agi)
+        co_low_income_cdcc = capped_expenses * p.rate.calc(agi)
         # Credit is capped at $500 or $1,000 for 1 or over 2 dependents respectfully
-        max_amount = p.max_amount.calc(tax_unit.sum(eligible_child))
-        return min_(co_cdcc, max_amount)
+        eligible_children = tax_unit.sum(eligible_child)
+        max_amount = p.max_amount.calc(eligible_children)
+        # Filer is not eligible for the low income cdcc if he received the CO cdcc
+        co_cdcc = tax_unit("co_cdcc", period) > 0
+        return ~co_cdcc * min_(co_low_income_cdcc, max_amount)
