@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class nc_use_tax(variable):
     value_type = float
     entity = TaxUnit
