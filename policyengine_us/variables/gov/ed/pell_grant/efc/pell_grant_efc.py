@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class pell_grant_efc(Variable):
     value_type = float
     entity = Person
-    label = "Expected Family Contribution"
+    label = "Pell Grant expected family contribution"
     definition_period = YEAR
 
     def formula(person, period, parameters):

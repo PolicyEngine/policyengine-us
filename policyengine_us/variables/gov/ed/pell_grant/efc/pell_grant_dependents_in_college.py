@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class pell_grant_dependents_in_college(Variable):
     value_type = int
     entity = TaxUnit
-    label = "Dependents in College"
+    label = "Pell Grant dependents in college"
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):

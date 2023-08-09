@@ -4,5 +4,5 @@ from policyengine_us.model_api import *
 class pell_grant_dependent_available_income(Variable):
     value_type = float
     entity = Person
-    label = "Dependent Availble Income"
+    label = "Pell Grant dependent availble income"
     definition_period = YEAR

@@ -12,7 +12,7 @@ class pell_grant_formula(Variable):
     possible_values = PellGrantFormula
     default_value = PellGrantFormula.A
     entity = Person
-    label = "Formula"
+    label = "Pell Grant formula"
     definition_period = YEAR
 
     def formula(person, period, parameters):
