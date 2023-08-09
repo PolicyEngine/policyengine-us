@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 from numpy import ceil
 
 
-class ct_personal_exemption(Variable):
+class ct_personal_exemptions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Connecticut Personal Exemption"
+    label = "Connecticut Personal Exemptions"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CT
