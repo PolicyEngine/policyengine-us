@@ -1,6 +1,10 @@
 description:  North Carolina Use Tax using this rate for taxpayers without out-of-state purchases records (taxable income over 45,200).
 metadata:
-  unit: /1
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: year
+  name: nc_use_tax_rate
   label: NC Use Tax rate for taxable income over 45,200
   reference:
     - title: NCDOR Use Tax
@@ -10,5 +14,12 @@ metadata:
     - title: 2022 D-401 Instruction Booklet
     href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open
 
-values:
-  2022-01-01: 0.000675
+brackets:
+  - amount:
+      2022-01-01: 0
+    threshold: 
+      2022-01-01: 0
+  - amount:
+      2022-01-01: 0.000675
+    threshold:
+      2022-01-01: 45_200
