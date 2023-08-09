@@ -19,17 +19,18 @@ class in_eitc_eligible(Variable):
         # if Indiana EITC is decoupled from federal EITC
         # ... check separate filing status
         filing_status = tax_unit("filing_status", period)
-        separate = filing_status.possible_values.SEPARATE
+        separate = filing_status == filing_status.possible_values.SEPARATE
         # ... check age eligibility for childless taxpayers
         is_childless = tax_unit("eitc_child_count", period) == 0
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        married = filing_status.possible_values.JOINT
         head_age_eligible = (age_head >= 25) & (age_head <= 64)
         spouse_age_eligible = (age_spouse >= 25) & (age_spouse <= 64)
-        childless_age_eligible = where(
-            is_childless, head_age_eligible | spouse_age_eligible, True
+        married = filing_status.possible_values.JOINT
+        age_eligible = where(
+            married, head_age_eligible | spouse_age_eligible, head_age_eligible
         )
+        childless_age_eligible = where(is_childless, age_eligible, True)
         # ... check investment income eligibility
         invinc = tax_unit("eitc_relevant_investment_income", period)
         invinc_eligible = invinc <= 3800
