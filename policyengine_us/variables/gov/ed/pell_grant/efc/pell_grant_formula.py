@@ -14,3 +14,23 @@ class pell_grant_formula(Variable):
     entity = Person
     label = "Formula"
     definition_period = YEAR
+
+    def formula(person, period, parameters):
+        tax_unit = person.tax_unit
+        count_dependents = tax_unit("tax_unit_dependents", period)
+        has_dependents = count_dependents >= 1
+        is_head = person("is_tax_unit_head", period)
+        is_spouse = person("is_tax_unit_spouse", period)
+        in_head = is_head | is_spouse
+        return select(
+            [
+                has_dependents * ~in_head,
+                ~has_dependents * in_head,
+                has_dependents * in_head
+            ],
+            [
+                PellGrantFormula.A,
+                PellGrantFormula.B,
+                PellGrantFormula.C
+            ]
+        )
