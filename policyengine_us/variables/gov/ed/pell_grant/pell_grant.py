@@ -10,7 +10,7 @@ class pell_grant(Variable):
     unit = USD
 
     def formula(person, period, parameters):
-        coa = person("pell_grant_cost_of_attendance", period)
+        coa = person("cost_of_tuition", period)
         months_in_school = person("pell_grant_months_in_school", period)
         efc = person("pell_grant_efc", period)
         p = parameters(period).gov.ed.pell_grant
