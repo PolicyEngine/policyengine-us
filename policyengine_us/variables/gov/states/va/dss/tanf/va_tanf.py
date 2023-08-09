@@ -23,14 +23,21 @@ class va_tanf(Variable):
         minimum = p.va_tanf_minimum_payment * MONTHS_IN_YEAR
         county = spm_unit.household("county_str", period)
         if_group3 = county in p.localities.group3
-        if up_tanf_eligibility:
-            p = p.up_grant_standard
-        else:
-            p = p.grant_standard
-        if if_group3:
-            p = p.group3
-        else:
-            p = p.group2
-        maximum = p.max * MONTHS_IN_YEAR
+        maximum = (
+            where(
+                up_tanf_eligibility,
+                where(
+                    if_group3,
+                    p.up_grant_standard.group3.max,
+                    p.up_grant_standard.group2.max,
+                ),
+                where(
+                    if_group3,
+                    p.grant_standard.group3.max,
+                    p.grant_standard.group2.max,
+                ),
+            )
+            * MONTHS_IN_YEAR
+        )
 
         return min_(where(payment >= minimum, payment, 0), maximum)
