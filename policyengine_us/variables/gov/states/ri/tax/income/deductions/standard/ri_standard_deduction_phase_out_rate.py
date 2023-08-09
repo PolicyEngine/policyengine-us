@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import ceil
 
 
 class ri_standard_deduction_phase_out_rate(Variable):
@@ -20,8 +21,8 @@ class ri_standard_deduction_phase_out_rate(Variable):
 
         agi = tax_unit("ri_agi", period)
 
-        excess_agi = agi - p.start
+        excess_agi = max_(agi - p.start, 0)
 
-        excess_agi_step = excess_agi / p.increment
+        excess_agi_step = ceil(excess_agi / p.increment)
 
-        return p.percentage.calc(excess_agi_step)
+        return max_(1 - p.percentage * excess_agi_step, 0)
