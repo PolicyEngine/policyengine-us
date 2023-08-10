@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ri_social_security_modification(Variable):
     value_type = float
     entity = TaxUnit
-    label = "RI Social Security Modification"
+    label = "Rhode Island Social Security Modification"
     unit = USD
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
@@ -39,11 +39,13 @@ class ri_social_security_modification(Variable):
         )
         spouse_total_ss = tax_unit.max(total_social_security * spouse)
 
-        your_social_security = where(
-            age_is_eligible & age_conditions, total_social_security, 0
-        )
+        eligible_ss = age_is_eligible & age_conditions
+
+        your_social_security = where(eligible_ss, total_social_security, 0)
+
+        eligible_spouse_ss = age_is_eligible & spouse_eligible
         final_ss = where(
-            age_is_eligible & spouse_eligible,
+            eligible_spouse_ss,
             spouse_total_ss,
             your_social_security,
         )
@@ -51,15 +53,17 @@ class ri_social_security_modification(Variable):
         percentage_social_security = where(
             total_social_security > 0, final_ss / total_social_security, 0
         )
+
+        eligible_mod_ss = age_is_eligible & status_is_eligible
         your_mod_social_security = where(
-            age_is_eligible & status_is_eligible,
+            eligible_mod_ss,
             taxable_social_security * (percentage_social_security),
             0,
         )
-        mod_social_security = where(
-            both_age_is_eligible & status_is_eligible,
+        eligible_spouse_mod_ss = both_age_is_eligible & status_is_eligible
+
+        return where(
+            eligible_spouse_mod_ss,
             taxable_social_security,
             your_mod_social_security,
         )
-
-        return mod_social_security

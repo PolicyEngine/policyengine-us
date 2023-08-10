@@ -10,7 +10,7 @@
     tax_unit_social_security: 0
     tax_unit_taxable_social_security: 16_150
   output:
-    ri_adjusted_agi: 200_100
+    ri_agi: 200_100
 
 - name: One child modification on AGI
   period: 2022
@@ -24,7 +24,7 @@
     tax_unit_social_security: 0
     tax_unit_taxable_social_security: 16_150
   output:
-    ri_adjusted_agi: 89_750
+    ri_agi: 89_750
 
 - name: Four children modification on AGI
   period: 2022
@@ -38,7 +38,7 @@
     tax_unit_social_security: 0
     tax_unit_taxable_social_security: 16_150
   output:
-    ri_adjusted_agi: 89_250
+    ri_agi: 89_250
 
 - name: Older age with eligible social security modification on AGI
   period: 2022
@@ -52,4 +52,4 @@
     tax_unit_social_security: 16_200
     tax_unit_taxable_social_security: 16_150
   output:
-    ri_adjusted_agi: 53_600
+    ri_agi: 53_600
