@@ -18,13 +18,13 @@ class va_tanf_grant_standard(Variable):
         p = parameters(period).gov.states.va.dss.tanf
         main = where(
             county in p.localities.group3,
-            p.up_grant_standard.group3.main[ceiling],
-            p.up_grant_standard.group2.main[ceiling],
+            p.grant_standard.group3.main[ceiling],
+            p.grant_standard.group2.main[ceiling],
         )
         addition = where(
             county in p.localities.group3,
-            p.up_grant_standard.group3.addition,
-            p.up_grant_standard.group2.addition,
+            p.grant_standard.group3.addition,
+            p.grant_standard.group2.addition,
         )
 
         monthly = main + additional * addition
