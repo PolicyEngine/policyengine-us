@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class charitable_deduction(Variable):
+class az_charitable_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona Charitable deduction"
