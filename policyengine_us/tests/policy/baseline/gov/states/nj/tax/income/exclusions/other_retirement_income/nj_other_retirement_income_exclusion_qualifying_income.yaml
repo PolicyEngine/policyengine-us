@@ -1,0 +1,127 @@
+- name: All head and spouse income qualifies.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 25_000
+        tax_exempt_interest_income: 0
+        tax_exempt_pension_income: 0
+        taxable_social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 25_000
+        tax_exempt_interest_income: 0
+        tax_exempt_pension_income: 0
+        taxable_social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_qualifying_income: 50_000
+
+- name: Can only exclude head income due to age.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 25_000
+        tax_exempt_interest_income: 0
+        tax_exempt_pension_income: 0
+        taxable_social_security: 0
+      person2:
+        is_tax_unit_spouse: true
+        age: 61
+        irs_gross_income: 25_000
+        tax_exempt_interest_income: 0
+        tax_exempt_pension_income: 0
+        taxable_social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_qualifying_income: 25_000
+
+- name: Taxable interest, pension, and social security income subtracted from both spouses.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        irs_gross_income: 150_005
+        tax_exempt_interest_income: 1
+        tax_exempt_pension_income: 1
+        taxable_social_security: 1
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 0
+        tax_exempt_interest_income: 1
+        tax_exempt_pension_income: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_qualifying_income: 150_000
+
+- name: Only spouse considered because of age.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 61
+        irs_gross_income: 150_005
+        tax_exempt_interest_income: 1
+        tax_exempt_pension_income: 1
+        taxable_social_security: 1
+      person2:
+        is_tax_unit_spouse: true
+        age: 62
+        irs_gross_income: 100
+        tax_exempt_interest_income: 1
+        tax_exempt_pension_income: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_qualifying_income: 98
