@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class mt_modified_income_benefit_fraction(Variable):
     value_type = float
     entity = TaxUnit
@@ -15,6 +16,6 @@ class mt_modified_income_benefit_fraction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.subtractions
         total_benefit_fraction = p.social_security.total_benefit_fraction1
-        #Line1
+        # Line1
         net_benefits = tax_unit.spm_unit("spm_unit_benefits", period)
         return net_benefits * total_benefit_fraction

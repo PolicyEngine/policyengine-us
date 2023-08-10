@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class mt_agi_subtractions(Variable):
     value_type = float
     entity = TaxUnit
