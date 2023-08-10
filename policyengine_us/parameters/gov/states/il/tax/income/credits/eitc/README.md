@@ -1,1 +1,1 @@
-# EITC
+# Earned Income Tax Credit
