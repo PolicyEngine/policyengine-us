@@ -11,7 +11,7 @@ class nc_ctc(Variable):
     defined_for = StateCode.NC
 
     def formula(tax_unit, period, parameters):
-        ctc_qualifying_children = tax_unit("tax_unit_children", period)
+        ctc_qualifying_children = tax_unit("ctc_qualifying_children", period)
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.nc.tax.income.credits.ctc
