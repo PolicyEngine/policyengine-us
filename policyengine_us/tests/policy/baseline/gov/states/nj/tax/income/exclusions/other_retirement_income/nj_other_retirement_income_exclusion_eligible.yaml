@@ -1,0 +1,91 @@
+- name: Household is below both income and earned income thresholds, so qualifies.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        earned_income: 2_999
+      person2:
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_other_retirement_income_exclusion_qualifying_income: 149_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_eligible: true
+
+- name: Household is above income threshold, so does not qualify.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        earned_income: 2_999
+      person2:
+        earned_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_other_retirement_income_exclusion_qualifying_income: 150_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_eligible: false
+
+- name: Household is above earned income threshold, so does not qualify.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        earned_income: 2_999
+      person2:
+        earned_income: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_other_retirement_income_exclusion_qualifying_income: 149_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_eligible: false
+
+- name: Household is above income and earned income thresholds, so does not qualify.
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      person1:
+        earned_income: 2_000
+      person2:
+        earned_income: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        nj_other_retirement_income_exclusion_qualifying_income: 150_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    nj_other_retirement_income_exclusion_eligible: false
