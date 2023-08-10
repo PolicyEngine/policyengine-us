@@ -3947,3 +3947,140 @@
     added:
     - South Carolina two wage earner credit.
   date: 2023-08-03 06:11:59
+- bump: patch
+  changes:
+    removed:
+    - Unused tools/taxcalc/calcfunctions.py module.
+    - Unused excess function in tools/general.py module.
+  date: 2023-08-04 20:07:35
+- bump: minor
+  changes:
+    added:
+    - Arkansas standard deduction.
+  date: 2023-08-04 21:19:33
+- bump: minor
+  changes:
+    added:
+    - Montana Standard Deduction.
+  date: 2023-08-05 03:01:43
+- bump: patch
+  changes:
+    fixed:
+    - Oklahoma itemized deduction rule.
+  date: 2023-08-05 20:37:53
+- bump: patch
+  changes:
+    fixed:
+    - Nebraska itemized deduction rule.
+  date: 2023-08-06 15:41:27
+- bump: patch
+  changes:
+    fixed:
+    - Lack of documentation on Maryland itemized deduction rule.
+  date: 2023-08-06 17:03:06
+- bump: minor
+  changes:
+    added:
+    - Idaho child tax credit.
+  date: 2023-08-06 22:29:59
+- bump: patch
+  changes:
+    changed:
+    - Adjusted the page references in pdf files for the New Mexico income tax programs.
+  date: 2023-08-07 01:18:18
+- bump: patch
+  changes:
+    changed:
+    - Hide Idaho and Arkansas parameter folders.
+  date: 2023-08-07 18:19:00
+- bump: minor
+  changes:
+    added:
+    - Kentucky household and dependent care service credit.
+  date: 2023-08-07 22:34:47
+- bump: minor
+  changes:
+    added:
+    - Georgia low income credits.
+  date: 2023-08-08 00:37:25
+- bump: minor
+  changes:
+    added:
+    - Arizona increased excise tax credit.
+  date: 2023-08-08 00:47:11
+- bump: minor
+  changes:
+    added:
+    - Michigan earned income tax credit.
+  date: 2023-08-08 01:00:06
+- bump: minor
+  changes:
+    added:
+    - Georgia exemptions.
+  date: 2023-08-08 01:03:41
+- bump: minor
+  changes:
+    added:
+    - Oregon Child Tax Credit.
+  date: 2023-08-08 04:31:30
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect Missouri itemized deduction logic.
+  date: 2023-08-08 16:22:12
+- bump: patch
+  changes:
+    fixed:
+    - Household state income tax variable respects reported state tax switch.
+  date: 2023-08-08 17:03:08
+- bump: minor
+  changes:
+    added:
+    - District of Columbia (DC) income tax policy parameter that controls whether
+      married joint taxpayers have the option to compute DC taxes separately.
+  date: 2023-08-08 21:04:05
+- bump: patch
+  changes:
+    fixed:
+    - Make DC married filing separately on same return option a bool instead of list.
+  date: 2023-08-08 23:41:51
+- bump: patch
+  changes:
+    added:
+    - Kentucky 2021 income tax rate.
+  date: 2023-08-09 12:23:11
+- bump: patch
+  changes:
+    fixed:
+    - DeLauro contrib parameter README.
+  date: 2023-08-09 14:01:59
+- bump: minor
+  changes:
+    added:
+    - Idaho income tax schedule.
+  date: 2023-08-09 18:49:35
+- bump: minor
+  changes:
+    added:
+    - Vermont main income tax rate.
+  date: 2023-08-09 23:21:44
+- bump: minor
+  changes:
+    added:
+    - Arkansas Personal Income Tax Schedule.
+  date: 2023-08-09 23:56:01
+- bump: patch
+  changes:
+    changed:
+    - Eliminated the use of the term subtractions in the New Mexico metadata.
+  date: 2023-08-10 01:01:50
+- bump: minor
+  changes:
+    added:
+    - South Carolina State Tax Addback.
+  date: 2023-08-10 01:08:32
+- bump: minor
+  changes:
+    added:
+    - Add New Jersey pension/retirement and other retirement income exclusions.
+  date: 2023-08-10 01:19:35
