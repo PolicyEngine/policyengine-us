@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class de_persons_60_or_over_or_disabled_exclusion(Variable):
+class de_elderly_or_disabled_income_exclusion(Variable):
     value_type = float
     entity = TaxUnit
     label = "Delaware aged or disabled exclusion"
