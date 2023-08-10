@@ -1,14 +1,14 @@
-description: Connecticut provides the following tax brackets for widow filers.
+description: Connecticut taxes income of widow filers at these rates.
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Connecticut income tax bracket widow filers
+  label: Connecticut income tax rate widow filers
   reference:
     - title: Connecticut General Statutes, Chapter 229, Sec. 12-700, (9), (C)
       href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-700 
     - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
-      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=20
 brackets:
   - threshold:
       2015-01-01: 0
