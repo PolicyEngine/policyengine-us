@@ -32,4 +32,6 @@ class oh_adoption_credit(Variable):
             period
         ).gov.states.oh.tax.income.credits.adoption.maximum_amount
 
-        return min_(max_(eligible_adoption_related_expenses, min_credit), max_credit)
+        return min_(
+            max_(eligible_adoption_related_expenses, min_credit), max_credit
+        )
