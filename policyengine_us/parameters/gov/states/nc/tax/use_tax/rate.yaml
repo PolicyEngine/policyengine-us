@@ -3,8 +3,6 @@ metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: /1
-  period: year
-  name: nc_use_tax_rate
   label: NC Use Tax rate for taxable income over 45,200
   reference:
     - title: NCDOR Use Tax
@@ -15,11 +13,11 @@ metadata:
     href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open
 
 brackets:
-  - amount:
+  - threshold: 
       2022-01-01: 0
-    threshold: 
+    amount:
       2022-01-01: 0
-  - amount:
-      2022-01-01: 0.000675
-    threshold:
+  - threshold:
       2022-01-01: 45_200
+    amount:
+      2022-01-01: 0.000675
