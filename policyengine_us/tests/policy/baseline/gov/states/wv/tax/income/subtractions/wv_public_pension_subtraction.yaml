@@ -2,10 +2,10 @@
   input:
     people:
       person1:
-        is_dependent: false
+        is_tax_unit_dependent: false
         taxable_public_pension_income: 3_000
       person2:
-        is_dependent: true
+        is_tax_unit_dependent: true
         taxable_public_pension_income: 3_000
     households:
       household:
@@ -19,10 +19,10 @@
   input:
     people:
       person1:
-        is_dependent: false
+        is_tax_unit_dependent: false
         taxable_public_pension_income: 1_000
       person2:
-        is_dependent: false
+        is_tax_unit_dependent: false
         taxable_public_pension_income: 500
     households:
       household:
@@ -37,10 +37,10 @@
   input:
     people:
       person1:
-        is_dependent: true
+        is_tax_unit_dependent: true
         taxable_public_pension_income: 1_000
       person2:
-        is_dependent: true
+        is_tax_unit_dependent: true
         taxable_public_pension_income: 500
     households:
       household:
@@ -54,10 +54,10 @@
   input:
     people:
       person1:
-        is_dependent: false
+        is_tax_unit_dependent: false
         taxable_public_pension_income: 1_000
       person2:
-        is_dependent: true
+        is_tax_unit_dependent: true
         taxable_public_pension_income: 800
       person3:
         is_dependent: false
