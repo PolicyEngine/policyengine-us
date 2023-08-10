@@ -1,0 +1,39 @@
+- name: test 1
+  period: 2022
+  input:
+    adjusted_gross_income: 3_500
+    state_code: NC
+  output:
+    nc_use_tax: 2
+
+- name: test 2
+  period: 2022
+  input:
+    adjusted_gross_income: 15_000
+    state_code: NC
+  output:
+    nc_use_tax: 10
+
+- name: test 3
+  period: 2022
+  input:
+    adjusted_gross_income: 15_00
+    state_code: NC
+  output:
+    nc_use_tax: 0
+
+- name: test 4
+  period: 2022
+  input:
+    adjusted_gross_income: 60_000
+    state_code: NC
+  output:
+    nc_use_tax: 40.5
+
+- name: test 5
+  period: 2022
+  input:
+    adjusted_gross_income: 82_000
+    state_code: NC
+  output:
+    nc_use_tax: 55.35
