@@ -1,0 +1,49 @@
+description: CO Income Qualified Senior Housing Income Tax Credit
+metadata:
+  unit: currency-USD
+  type: Single, Married filing joint, Head of Household
+  label: CO Income Qualified Senior Housing Income Tax Credit
+  period: year
+  reference:
+    - title: Income Qualified Senior Housing Income Tax Credit
+      href: https://tax.colorado.gov/income-qualified-senior-housing-income-tax-credit
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17
+   
+brackets:
+  - threshold:
+      2022-01-01: 25_499
+    amount:
+      2022-01-01: 1_000 
+  - threshold:
+      2022-01-01: 25_999
+    amount:
+      2022-01-01: 990 
+  - threshold:
+      2022-01-01: 26_499
+    amount:
+      2022-01-01: 980
+  - threshold:
+      2022-01-01: 26_999
+    amount:
+      2022-01-01: 970
+  - threshold:
+      2022-01-01: 27_499
+    amount:
+      2022-01-01: 960
+  - threshold:
+      2022-01-01: 27_999
+    amount:
+      2022-01-01: 950
+  - threshold:
+      2022-01-01: 28_499
+    amount:
+      2022-01-01: 940
+  - threshold:
+      2022-01-01: 28_999
+    amount:
+      2022-01-01: 930
+  - threshold:
+      2022-01-01: 75_000
+    amount:
+      2022-01-01: 0
