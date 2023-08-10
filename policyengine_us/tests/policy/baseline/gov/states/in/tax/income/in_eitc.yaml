@@ -1,0 +1,19 @@
+- name: in_eitc unit test 1
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: false
+    state_code: IN
+    earned_income_tax_credit: 100
+    in_eitc_eligible: true
+  output:
+    in_eitc: 9
+
+- name: in_eitc unit test 2 INCOMPLETE TEST
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    earned_income_tax_credit: 100
+    in_eitc_eligible: true
+  output:
+    in_eitc: 9
