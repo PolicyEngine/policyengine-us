@@ -22,5 +22,7 @@ class wv_public_pension_subtraction(Variable):
         ).gov.states.wv.tax.income.subtractions.public_pension
         person_capped = min_(federal_pension_income, p.max_amount)
         # Only applies to head and spouse.
-        head_spouse_capped = person_capped * ~person("is_dependent", period)
+        head_spouse_capped = person_capped * ~person(
+            "is_tax_unit_dependent", period
+        )
         return tax_unit.sum(head_spouse_capped)
