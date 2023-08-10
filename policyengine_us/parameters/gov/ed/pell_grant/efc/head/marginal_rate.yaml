@@ -1,34 +1,34 @@
-description: Expected head contribution thresholds based on head income
+description:
 brackets:
   - threshold:
-      2023-01-01: -.inf
-    amount:
       2023-01-01: 0
+    rate:
+      2023-01-01: 0.22
   - threshold:
-      2023-01-01: 17_501
-    amount:
       2023-01-01: 17_500
+    rate:
+      2023-01-01: 0.25
   - threshold:
-      2023-01-01: 22_001
-    amount:
       2023-01-01: 22_000
+    rate:
+      2023-01-01: 0.29
   - threshold:
-      2023-01-01: 26_501
-    amount:
       2023-01-01: 26_500
+    rate:
+      2023-01-01: 0.34
   - threshold:
-      2023-01-01: 31_001
-    amount:
       2023-01-01: 31_000
+    rate:
+      2023-01-01: 0.4
   - threshold:
-      2023-01-01: 35_501
-    amount:
       2023-01-01: 35_500
+    rate:
+      2023-01-01: 0.47
 metadata:
-  type: single_amount
+  type: marginal_rate
+  threshold_period: year
+  threshold_unit: currency-USD
   rate_unit: /1
-  threshold_unit: /1
-  label: Expected head contribution thresholds based on head income
   reference:
     - title: THE EFC FORMULA, 2022–2023
       href: https://fsapartners.ed.gov/site/default/files/2021-08/2223EFCFormulaGuide.pdf#page=29

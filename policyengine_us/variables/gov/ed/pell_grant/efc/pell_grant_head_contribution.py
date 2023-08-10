@@ -12,11 +12,10 @@ class pell_grant_head_contribution(Variable):
         dependents = person.tax_unit("pell_grant_dependents_in_college", period)
         formula = person("pell_grant_formula", period).decode_to_str()
         p = parameters(period).gov.ed.pell_grant.efc.head
-        base = p.base.calc(available_income)
-        additional = p.percent.calc(available_income)
-        threshold = p.threshold.calc(available_income)
-        total_head_contribution = base + (
-            (available_income - threshold) * additional
-        )
+        min_contribution = p.min_contribution
+        negative_rate = p.negative_rate
+        positive_head_contribution = p.marginal_rate.calc(available_income)
+        negative_head_contribution = max_(available_income * negative_rate, min_contribution)
+        total_head_contribution = where(available_income >= 0, positive_head_contribution, negative_head_contribution)
         total = where(formula == "B", available_income, total_head_contribution)
         return total / dependents
