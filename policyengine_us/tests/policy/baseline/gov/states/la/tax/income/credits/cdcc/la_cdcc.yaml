@@ -34,14 +34,14 @@
   output:
     la_cdcc:  20 # 200 * 0.1
 
-- name: LA nonrefundable cdcc unit test 5
+- name: Upper bracket amount cdcc test
   period: 2006
   input:
     adjusted_gross_income: 60_001
     cdcc: 300
     state_code: LA
   output:
-    la_cdcc: 30 # 300 * 0.1 
+    la_cdcc: 25 # 300 * 0.1 >25
 
 - name: LA nonrefundable cdcc unit test 6
   period: 2006
