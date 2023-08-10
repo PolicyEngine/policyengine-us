@@ -1,0 +1,47 @@
+description: Arkansas taxes personal income at these rates.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Arkansas income tax rate
+  reference:
+  - title: Tax Legislation for 2022 Ark. Code § 26-51-201 (a)(1)(A)
+    href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-2-imposition-of-tax/section-26-51-201-effective-90-days-after-sine-die-adjournment-individuals-trusts-and-estates
+
+  - title: 2022 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2022.pdf#page=1
+  - title: 2021 Indexed Tax Brackets
+    href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/TaxBrackets_2021.pdf#page=1
+
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 4_800
+      2022-01-01: 5_100
+    rate:
+      2021-01-01: 0.02
+  - threshold:
+      2021-01-01: 9_500
+      2022-01-01: 10_300
+    rate:
+      2021-01-01: 0.03
+  - threshold:
+      2021-01-01: 14_300
+      2022-01-01: 14_700
+    rate:
+      2021-01-01: 0.034
+  - threshold:
+      2021-01-01: 23_600
+      2022-01-01: 24_300
+    rate:
+      2021-01-01: 0.05
+      2022-01-01: 0.049
+  - threshold:
+      2021-01-01: 39_700
+      2022-01-01: .inf
+    rate:
+      2021-01-01: 0.059
+      2022-01-01: 0.049
