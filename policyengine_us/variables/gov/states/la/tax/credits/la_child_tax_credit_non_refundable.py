@@ -18,11 +18,15 @@ class la_child_tax_credit_non_refundable(Variable):
 
         # determine LA nonrefundable amount
         child_care_credit = tax_unit("la_state_child_care_credit", period)
-        eligible_child = person("la_child_care_expense_credit_eligible_child", period)
+        eligible_child = person(
+            "la_child_care_expense_credit_eligible_child", period
+        )
         quality_rating = person(
             "quality_rating_of_child_care_facility", period
         )
-        child_credit_percent = eligible_child * p.refundable.calc(quality_rating)
+        child_credit_percent = eligible_child * p.refundable.calc(
+            quality_rating
+        )
         amount = child_care_credit * child_credit_percent
 
         return tax_unit.sum(amount)
