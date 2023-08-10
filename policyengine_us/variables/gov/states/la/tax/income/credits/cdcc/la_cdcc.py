@@ -17,10 +17,6 @@ class la_cdcc(Variable):
         us_agi = tax_unit("adjusted_gross_income", period)
         la_cdcc = us_cdcc * p.rate.calc(us_agi, right=True)
         scale = p.rate
-        upper_bracket = (us_agi >scale.thresholds[-1])
-        upper_bracket_amount = min_(
-             p.max_amount_upper_bracket, la_cdcc
-        )
-        return where(
-             upper_bracket, upper_bracket_amount, la_cdcc
-        )
+        upper_bracket = us_agi > scale.thresholds[-1]
+        upper_bracket_amount = min_(p.max_amount_upper_bracket, la_cdcc)
+        return where(upper_bracket, upper_bracket_amount, la_cdcc)
