@@ -1,11 +1,12 @@
 description: Louisiana provides child care credit equals to the lesser of twenty-five dollars to individual resident whose agi is more than sixty-thousand dollars
- 2005-12-31: 25
+values:
+  2005-12-31: 25
 
 
 metadata:
  period: year
  unit: currency-USD
- label: Louisiana child care credit threshold
+ label: Louisiana cdcc higher bracket max amount
  reference:
  - title: RS 47:297.4 
    href: http://legis.la.gov/Legis/Law.aspx?d=101769
