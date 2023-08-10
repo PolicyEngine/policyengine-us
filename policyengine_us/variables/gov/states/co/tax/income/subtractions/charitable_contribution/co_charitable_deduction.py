@@ -16,10 +16,11 @@ class co_charitable_deduction(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
+        itemized = tax_unit("tax_unit_itemizes", period)
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.charitable_contribution
         ferderal_charitable_deduction = tax_unit(
             "charitable_deduction", period
         )
-        return max_(ferderal_charitable_deduction - p.amount, 0)
+        return ~itemized * max_(ferderal_charitable_deduction - p.amount, 0)

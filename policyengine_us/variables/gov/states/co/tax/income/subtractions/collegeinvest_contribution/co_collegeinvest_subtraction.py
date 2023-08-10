@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class co_collegeinvest_deduction(Variable):
+class co_collegeinvest_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado collegeinvest deduction"
+    label = "Colorado collegeinvest subtraction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,11 +16,9 @@ class co_collegeinvest_deduction(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        collegeinvest_amount = add(
-            tax_unit, period, ["co_collegeinvest_amount"]
-        )
+        investment_amount = tax_unit("investment_in_529_plan", period)
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.collegeinvest_contribution
         cap = p.max_amount[tax_unit("filing_status", period)]
-        return min_(collegeinvest_amount, cap)
+        return min_(investment_amount, cap)
