@@ -1,0 +1,12 @@
+- name: Default
+  period: 2023
+  input: {}
+  output:
+    conhabitating_parents: false
+
+- name: Cohabitating grandparents.
+  period: 2023
+  input:
+    is_parent: true
+  output:
+    conhabitating_parents: true
