@@ -1,8 +1,6 @@
 description: Rhode Island phases this percentage of the total exemption amount based on modified adjusted gross income.
 metadata:
-  type: single_amount
-  threshold_unit: 1
-  amount_unit: /1
+  unit: /1
   label: Rhode Island exemption phase out rate 
   reference:
   # The tax form points to this worksheet: Exemption Worksheet for RI-1040NR, Page 1, line 6)
@@ -14,28 +12,5 @@ metadata:
   - title: Rhode Island Legal Code R.I. Gen. Laws § 44-30-2.6 (D)
     href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-30-2.6.HTM
 
-brackets:
-  - threshold:
-      2021-01-01: 0
-    amount:
-      2021-01-01: 1
-  - threshold:
-      2021-01-01: 1
-    amount:
-      2021-01-01: 0.8
-  - threshold:
-      2021-01-01: 2
-    amount:
-      2021-01-01: 0.6
-  - threshold:
-      2021-01-01: 3
-    amount:
-      2021-01-01: 0.4
-  - threshold:
-      2021-01-01: 4
-    amount:
-      2021-01-01: 0.2
-  - threshold:
-      2021-01-01: +.inf
-    amount:
-      2021-01-01: 0
+values:
+ 2021-01-01: 0.2

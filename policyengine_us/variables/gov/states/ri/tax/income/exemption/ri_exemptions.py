@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import ceil
 
 
 class ri_exemptions(Variable):
@@ -21,8 +22,8 @@ class ri_exemptions(Variable):
 
         excess_agi = max_(0, agi - p.reduction.start)
 
-        increments = np.ceil(excess_agi / p.reduction.increment)
+        increments = ceil(excess_agi / p.reduction.increment)
 
-        percent_reduction = min_(p.reduction.percentage.calc(increments), 1)
+        percent_reduction = min_(p.reduction.percentage * increments, 1)
 
         return exemption_amount * (1 - percent_reduction)
