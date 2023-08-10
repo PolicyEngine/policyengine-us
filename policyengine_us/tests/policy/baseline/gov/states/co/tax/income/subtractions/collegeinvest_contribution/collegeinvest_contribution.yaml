@@ -1,0 +1,80 @@
+- name: case 1, File single, invest above capped amount
+  period: 2022
+  input:
+    co_collegeinvest_amount: 25_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 20_000
+    # above capped amount
+
+- name: Case 2, File sinlgle, invest below capped amount 
+  period: 2022
+  input:
+    co_collegeinvest_amount: 15_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 15_000
+    #below capped amount, use co_collegeinvest_contribution
+  
+- name: Case 3, File joint, invest above capped amount
+  period: 2022
+  input:
+    co_collegeinvest_amount: 35_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 30_000
+    # above capped amount
+
+- name: Case 4, File joint, invest below capped amount
+  period: 2022
+  input:
+    co_collegeinvest_amount: 25_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 25_000
+    # below capped amount
+
+- name: Case 5, File single, invest above capped amount
+  period: 2023
+  input:
+    co_collegeinvest_amount: 25_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 20_700
+    # above capped amount
+
+- name: Case 6, File sinlgle, invest below capped amount 
+  period: 2023
+  input:
+    co_collegeinvest_amount: 20_300
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 20_300
+    #below capped amount, use co_collegeinvest_contribution
+  
+- name: Case 7, File joint, invest above capped amount
+  period: 2023
+  input:
+    co_collegeinvest_amount: 35_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 31_000
+    # above capped amount
+
+- name: Case 8, File joint, invest below capped amount
+  period: 2023
+  input:
+    co_collegeinvest_amount: 30_300
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_collegeinvest_deduction: 30_300
+    # below capped amount
+

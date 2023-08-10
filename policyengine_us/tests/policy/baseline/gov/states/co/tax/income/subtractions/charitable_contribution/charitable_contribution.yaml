@@ -1,0 +1,17 @@
+- name: Case 1, above threshold
+  period: 2021
+  input:
+    charitable_deduction: 700
+    state_code: CO
+  output:
+    co_charitable_deduction: 200
+    # 700 - 500 = 200
+
+- name: Case 2, below threshold
+  period: 2021
+  input:
+    charitable_deduction: 400
+    state_code: CO
+  output:
+    co_charitable_deduction: 0
+  
