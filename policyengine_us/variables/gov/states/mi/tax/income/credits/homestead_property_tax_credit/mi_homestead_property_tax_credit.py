@@ -18,7 +18,7 @@ class mi_homestead_property_tax_credit(Variable):
 
         # disabled
         disabled_people = add(tax_unit, period, ["is_disabled"])
-        nf_percentage = where(
+        nrf_percentage = where(
             disabled_people > 0,
             p.disabled.not_refundable_percentage.calc(thr),
             p.not_refundable_percentage,
@@ -26,7 +26,7 @@ class mi_homestead_property_tax_credit(Variable):
 
         # seniors
         age_older = tax_unit("age_head", period)
-        nf_percentage = where(
+        nrf_percentage = where(
             age_older >= p.senior.min_age,
             p.senior.not_refundable_percentage.calc(thr),
             p.not_refundable_percentage,
@@ -41,14 +41,14 @@ class mi_homestead_property_tax_credit(Variable):
         rents = add(tax_unit, period, ["rent"])
         eligibility = where(
             rents > 0,
-            (rents * p.rent_percentage > thr * nf_percentage),
-            (property_value > thr * nf_percentage)
+            (rents * p.rent_percentage > thr * nrf_percentage),
+            (property_value > thr * nrf_percentage)
             & (property_value < p.max_property_value),
         )
         difference = where(
             rents > 0,
-            rents * p.rent_percentage - thr * nf_percentage,
-            property_value - thr * nf_percentage,
+            rents * p.rent_percentage - thr * nrf_percentage,
+            property_value - thr * nrf_percentage,
         )
 
         return min_(eligibility * difference * po_percentage, p.max_amount)
