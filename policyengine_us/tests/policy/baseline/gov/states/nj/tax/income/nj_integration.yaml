@@ -1,4 +1,4 @@
-- name: Single NJ taxpayer with mostly social security income
+- name: Single NJ taxpayer with mostly social security income (no retirement exclusions)
   absolute_error_margin: 0.01
   period: 2021
   input:
@@ -14,11 +14,13 @@
     tax_units:
       tax_unit:
         members: [person1]
+        nj_pension_retirement_exclusion: 0
+        nj_other_retirement_income_exclusion: 0
     households:
       household:
         members: [person1]
         state_code: NJ
   output:
-    taxable_social_security: 3_000  # on federal form
-    adjusted_gross_income: 1_000 + 3_000  #  on federal form
-    nj_agi: 1_000  # NJ does not include social security in AGI
+    taxable_social_security: 3_000 # on federal form
+    adjusted_gross_income: 1_000 + 3_000 #  on federal form
+    nj_agi: 1_000 # NJ does not include social security in AGI
