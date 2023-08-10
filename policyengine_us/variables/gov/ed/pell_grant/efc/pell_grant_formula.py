@@ -26,11 +26,7 @@ class pell_grant_formula(Variable):
             [
                 has_dependents * ~in_head,
                 ~has_dependents * in_head,
-                has_dependents * in_head
+                has_dependents * in_head,
             ],
-            [
-                PellGrantFormula.A,
-                PellGrantFormula.B,
-                PellGrantFormula.C
-            ]
+            [PellGrantFormula.A, PellGrantFormula.B, PellGrantFormula.C],
         )
