@@ -5,7 +5,7 @@
     ct_agi: 16_000
     filing_status: SINGLE
   output:
-    ct_credit_based_on_agi: 0.75 
+    ct_personal_credits: 0.75 
 
 - name: Separate household with $20,000 income
   period: 2016
@@ -14,7 +14,7 @@
     ct_agi: 20_000
     filing_status: SEPARATE
   output:
-    ct_credit_based_on_agi: 0.3
+    ct_personal_credits: 0.3
 
 - name: Head of household with $27,100 income
   period: 2016
@@ -23,17 +23,17 @@
     ct_agi: 27_100
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_credit_based_on_agi: 0.4
+    ct_personal_credits: 0.4
 
 
 - name: Joint household with $100_500 income
-  period: 2022
+  period: 2016
   input:
     state_code: CT
     ct_agi: 100_500
     filing_status: JOINT
   output:
-    ct_credit_based_on_agi: 0
+    ct_personal_credits: 0
 
 - name: Widow household with $30,000 income
   period: 2016
@@ -42,4 +42,4 @@
     ct_agi: 30_000
     filing_status: WIDOW
   output:
-    ct_credit_based_on_agi: 0.7
+    ct_personal_credits: 0.7
