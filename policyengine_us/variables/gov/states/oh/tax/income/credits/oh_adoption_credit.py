@@ -32,21 +32,4 @@ class oh_adoption_credit(Variable):
             period
         ).gov.states.oh.tax.income.credits.adoption.maximum_amount
 
-        # Identify which interval the expenses fall into
-        expenses_less_than_min_credit = (
-            eligible_adoption_related_expenses < min_credit
-        )
-        expenses_between_min_and_max_credit = (
-            min_credit <= eligible_adoption_related_expenses
-        ) & (eligible_adoption_related_expenses <= max_credit)
-
-        expenses_greater_than_max_credit = (
-            eligible_adoption_related_expenses > max_credit
-        )
-
-        return (
-            expenses_less_than_min_credit * min_credit
-            + expenses_between_min_and_max_credit
-            * eligible_adoption_related_expenses
-            + expenses_greater_than_max_credit * max_credit
-        )
+        return min_(max_(eligible_adoption_related_expenses, min_credit), max_credit)
