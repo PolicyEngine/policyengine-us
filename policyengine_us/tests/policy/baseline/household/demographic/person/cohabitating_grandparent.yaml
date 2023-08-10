@@ -2,11 +2,11 @@
   period: 2023
   input: {}
   output:
-    cohabitating_grandparents: false
+    cohabitating_grandparent: false
 
 - name: Cohabitating grandparents.
   period: 2023
   input:
     is_grandparent: true
   output:
-    cohabitating_grandparents: true
+    cohabitating_grandparent: true
