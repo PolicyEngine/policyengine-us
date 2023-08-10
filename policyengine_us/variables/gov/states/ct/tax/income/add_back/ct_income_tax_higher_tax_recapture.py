@@ -18,7 +18,7 @@ class ct_income_tax_higher_tax_recapture(Variable):
         max_amount = p.max_amount[filing_status]
         increment = p.increment[filing_status]
         reduction_amount = p.amount[filing_status]
-        income_start = max_(income - reduction_start, 0)
-        income_brackets = ceil(income_start / increment)
-        amount = income_brackets * reduction_amount
+        excess = max_(income - reduction_start, 0)
+        increments = ceil(excess / increment)
+        amount = increments * reduction_amount
         return min_(max_amount, amount)

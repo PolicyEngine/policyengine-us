@@ -18,7 +18,7 @@ class ct_personal_exemptions(Variable):
         reduction_start = p.reduction.start[filing_status]
         increment = p.reduction.increment
         reduction_amount = p.reduction.amount
-        income_start = max_(income - reduction_start, 0)
-        income_bracktes = ceil(income_start / increment)
-        total_reduction_amount = income_bracktes * reduction_amount
+        excess = max_(income - reduction_start, 0)
+        increments = ceil(excess / increment)
+        total_reduction_amount = increments * reduction_amount
         return max_(max_amount - total_reduction_amount, 0)
