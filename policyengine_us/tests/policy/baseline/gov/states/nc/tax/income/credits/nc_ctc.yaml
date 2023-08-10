@@ -4,7 +4,7 @@
     filing_status: SINGLE
     state_code: NC
     adjusted_gross_income: 15_000
-    tax_unit_children: 0
+    ctc_qualifying_children: 0
   output:  
     nc_ctc: 0
 
@@ -14,7 +14,7 @@
     filing_status: SINGLE
     state_code: NC
     adjusted_gross_income: 15_000
-    tax_unit_children: 1
+    ctc_qualifying_children: 1
   output:  
     nc_ctc: 125
 
@@ -24,7 +24,7 @@
     filing_status: JOINT
     state_code: NC
     adjusted_gross_income: 50_000
-    tax_unit_children: 1
+    ctc_qualifying_children: 1
   output:  
     nc_ctc: 100
 
@@ -35,7 +35,7 @@
     filing_status: HEAD_OF_HOUSEHOLD
     state_code: NC
     adjusted_gross_income: 30_000
-    tax_unit_children: 2
+    ctc_qualifying_children: 2
   output:  
     nc_ctc: 250
 
@@ -46,7 +46,7 @@
     filing_status: JOINT
     state_code: NC
     adjusted_gross_income: 45_000
-    tax_unit_children: 3
+    ctc_qualifying_children: 3
   output:  
     nc_ctc: 300
 
@@ -56,7 +56,7 @@
     filing_status: JOINT
     state_code: NC
     adjusted_gross_income: 145_000
-    tax_unit_children: 6
+    ctc_qualifying_children: 6
   output:  
     nc_ctc: 0
 
@@ -66,6 +66,6 @@
     filing_status: HEAD_OF_HOUSEHOLD
     state_code: NC
     adjusted_gross_income: 45_000
-    tax_unit_children: 2
+    ctc_qualifying_children: 2
   output:  
     nc_ctc: 0
