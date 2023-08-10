@@ -1,4 +1,4 @@
-- name: Unit test 1.
+- name: Unit test 1
   period: 2022
   input:
     filing_status: JOINT
@@ -13,4 +13,4 @@
     mt_agi_subtractions: 4_000
     state_code: MT
   output:
-    mt_social_security_benefit: 0 
+    mt_social_security_benefit: 4250
