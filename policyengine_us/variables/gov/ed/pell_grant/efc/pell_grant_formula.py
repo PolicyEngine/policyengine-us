@@ -24,9 +24,9 @@ class pell_grant_formula(Variable):
         in_head = is_head | is_spouse
         return select(
             [
-                has_dependents * ~in_head,
-                ~has_dependents * in_head,
-                has_dependents * in_head,
+                has_dependents & ~in_head,
+                ~has_dependents & in_head,
+                has_dependents & in_head,
             ],
             [PellGrantFormula.A, PellGrantFormula.B, PellGrantFormula.C],
         )
