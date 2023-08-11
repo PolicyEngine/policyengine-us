@@ -17,9 +17,9 @@
     state_code: IN
     in_eitc_eligible: true
     eitc_child_count: 0
-    employment_income: 11_600
+    employment_income: 8_000
   output:
-    in_eitc: 0.09 * 1_502
+    in_eitc: 0.09 * 545
 
 - name: in_eitc unit test 3
   absolute_error_margin: 0.01
