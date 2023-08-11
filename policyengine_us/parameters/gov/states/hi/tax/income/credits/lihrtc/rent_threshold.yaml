@@ -1,11 +1,10 @@
-description: Hawaii threshold of yearly rent payment amount for low-income household renters to claim the tax credit.
+description: Hawaii allows filers with rent payments above this threshold to qualify for the low-income household renters credit.
 values:
   2022-01-01: 1_000
 
 metadata:
-  type: single_amount
-  threshold_unit: currency-USD
-  amount_unit: currency-USD
+  unit: currency-USD
+  period: currency-USD
   label: Hawaii minimum yearly rent payment amount to claim the credit
   reference:
     - title: Hawaii Income Tax Law, HRS §235-55.7 §18-235-55.7 (b)

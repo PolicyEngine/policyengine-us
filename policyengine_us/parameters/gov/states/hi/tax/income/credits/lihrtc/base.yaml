@@ -1,12 +1,15 @@
-description: Hawaii base income tax credit for low-income household renters.
+description: Hawaii extends this amount for each exemption under the income tax credit for low-income household renters.
 values:
   2022-01-01: 50
+  # 2021-01-01: 
 
 metadata:
-  type: single_amount
-  threshold_unit: currency-USD
-  amount_unit: currency-USD
-  label: Hawaii base income tax credit for low-income household renters.
+  unit: currency-USD
+  period: currency-USD
+  label: Hawaii income tax credit for low-income household renters base amount
   reference:
     - title: Hawaii Income Tax Law, HRS §235-55.7 §18-235-55.7 (b)
       href: https://files.hawaii.gov/tax/legal/har/har_235.pdf page: 105
+    # Need to add form of 2021 and reference
+    #- title: Hawaii Income Tax Law, HRS §235-55.7 §18-235-55.7 (b)
+    # href: https://files.hawaii.gov/tax/legal/har/har_235.pdf page: 105
