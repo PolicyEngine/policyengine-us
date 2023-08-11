@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_chp_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Child Health Plan Plus eligibility"
+    label = "Colorado Child Health Plan Plus eligibility"
     definition_period = YEAR
     defined_for = StateCode.CO
 
