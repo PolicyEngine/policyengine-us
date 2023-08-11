@@ -22,8 +22,8 @@ class hi_low_income_household_renters_tax_credit(Variable):
             1,
             tax_unit("exemptions",period)
         )
-        double = tc_eligible & age_eligible
 
-        credit_amount = p.base * where(double,2,1) * multiple
+        credit_amount = p.base * where(age_eligible,2,1) * multiple
+        eligible_credit_amount = credit_amount * where (tc_eligible,1,0)
         
-        return max(0, tax_before_credit - credit_amount)
+        return max(0, tax_before_credit - eligible_credit_amount)
