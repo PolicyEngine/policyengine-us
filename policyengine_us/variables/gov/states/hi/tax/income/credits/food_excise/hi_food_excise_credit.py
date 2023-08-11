@@ -14,7 +14,12 @@ class hi_food_excise_credit(Variable):
         # Filer can not be a dependent on another return
         dependent_on_another_return = tax_unit("dsi", period)
         total_amount = add(
-            tax_unit, period, ["normal_exemption", "minor_child"]
+            tax_unit,
+            period,
+            [
+                "hi_food_excise_credit_minor_child_amount",
+                "hi_food_excise_exemption_amount",
+            ],
         )
 
         return ~dependent_on_another_return * total_amount

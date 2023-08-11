@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class minor_child(Variable):
+class hi_food_excise_credit_minor_child_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "Minor child amount for the hawaii food excise credit"
@@ -18,6 +18,5 @@ class minor_child(Variable):
         minor = person("age", period) < p.minor_child.age_threshold
         eligible_minor_child = is_child & minor & public_support_over_half
         minor_children = tax_unit.sum(eligible_minor_child)
-        minor_child_amount = p.minor_child.amount * minor_children
 
-        return minor_child_amount
+        return p.minor_child.amount * minor_children

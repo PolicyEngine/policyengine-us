@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class normal_exemption(Variable):
+class hi_food_excise_exemption_amount(Variable):
     value_type = float
     entity = TaxUnit
     label = "Exemption amount for the hawaii food excise credit"
@@ -48,7 +48,5 @@ class normal_exemption(Variable):
                 p.amount.widow.calc(income),
             ],
         )
-        # dsi does not influence minor child's total
-        exemption_amount = claimable_exemptions * amount_per_exemption
 
-        return exemption_amount
+        return claimable_exemptions * amount_per_exemption
