@@ -1,13 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class hi_lihr_eligible(Variable):
+class hi_lihrtc_eligible(Variable):
     value_type = bool 
     entity = TaxUnit
     label = "Hawaii lihrtc eligible"
     definition_period = YEAR
     reference = " https://files.hawaii.gov/tax/legal/har/har_235.pdf#page=105"  # §18-235-55.7 (b)
-    defined_for = StateCode.HI
+    defined_for = "hi_lihrtc_eligible"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members

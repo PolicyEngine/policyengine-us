@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_lihrtc(Variable):
+class hi_low_income_household_renters_tax_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii low income household renters tax credit"
@@ -13,9 +13,9 @@ class hi_lihrtc(Variable):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
 
         tax_before_credit = taxunit("hi_income_tax_before_credits",period)
-        tc_eligible = tax_unit("hi_lihrtc_eligibility", period)
-        age_eligible = tax_unit("hi_lihrtc_age_egligibility",period)
-        disabled = tax_unit("hi_lihrtc_disabled",period)
+        tc_eligible = tax_unit("hi_lihrtc_eligible", period)
+        disabled = tax_unit("is_disabled",period)
+        age_eligible = person("age",period) >= p.agi_threshold
 
         multiple = where(
             disabled,
