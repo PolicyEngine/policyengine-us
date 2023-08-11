@@ -16,8 +16,14 @@ class co_military_retirement_subtraction_spouse(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.co.tax.income.subtractions.military_retirement
+        p = parameters(
+            period
+        ).gov.states.co.tax.income.subtractions.military_retirement
         age_spouse = tax_unit("age_spouse", period)
         spouse_eligible = (age_spouse < p.age_threshold).astype(int)
-        military_retirement_benefits_spouse = tax_unit("military_retirement_benefits_spouse",period)
-        return min_(military_retirement_benefits_spouse, spouse_eligible*p.amount)
+        military_retirement_benefits_spouse = tax_unit(
+            "military_retirement_benefits_spouse", period
+        )
+        return min_(
+            military_retirement_benefits_spouse, spouse_eligible * p.amount
+        )
