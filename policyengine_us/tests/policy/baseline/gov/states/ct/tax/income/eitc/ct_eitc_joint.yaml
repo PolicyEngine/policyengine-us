@@ -3,7 +3,7 @@
   input:
     state_code: CT
     earned_income_tax_credit: 2000
-    is_head: True
+    is_tax_unit_head: True
   output:
     ct_eitc: 610
 
@@ -12,7 +12,7 @@
   input:
     state_code: CT
     earned_income_tax_credit: 2000
-    is_head: False
+    is_tax_unit_head: False
   output:
     ct_eitc: 0
 
@@ -21,7 +21,7 @@
   input:
     state_code: CT
     earned_income_tax_credit: 0
-    is_head: True
+    is_tax_unit_head: True
   output:
     ct_eitc: 0
 
@@ -30,6 +30,6 @@
   input:
     state_code: CT
     earned_income_tax_credit: 0
-    is_head: False
+    is_tax_unit_head: False
   output:
     ct_eitc: 0

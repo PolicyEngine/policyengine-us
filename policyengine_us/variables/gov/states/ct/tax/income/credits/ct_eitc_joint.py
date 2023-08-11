@@ -13,7 +13,7 @@ class ct_eitc_joint(Variable):
     )
     defined_for = StateCode.CT
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         amt = person.tax_unit("ct_eitc_unit", period)
         is_head = person("is_tax_unit_head", period)
         return amt * is_head
