@@ -21,7 +21,7 @@ class in_eitc(Variable):
         kids = min_(2, tax_unit("eitc_child_count", period))  # <<<<<<<<<<<<<
         # ... set maximum "federal" eitc amount
         maximum = fp.eitc.max.calc(kids)
-        #print("\nkids,maximum", kids, maximum)
+        # print("\nkids,maximum", kids, maximum)
         # ... set "federal" eitc phase-in rate
         pi_rate = fp.eitc.phase_in_rate.calc(kids)
         # ... set "federal" eitc phase-in amount
@@ -31,13 +31,13 @@ class in_eitc(Variable):
         po_start = fp.eitc.phase_out.start.calc(kids)
         # ... set "federal" eitc phase-out rate
         po_rate = fp.eitc.phase_out.rate.calc(kids)
-        #print("po_start,po_rate", po_start, po_rate)
+        # print("po_start,po_rate", po_start, po_rate)
         # ... set "federal" eitc reduction
         federal_agi = tax_unit("adjusted_gross_income", period)
         higher_income = max_(earnings, federal_agi)
         reduction = po_rate * max_(0, higher_income - po_start)
         # ... compute decoupled "federal" eitc amount
         amount = min_(phase_in_amount, max_(0, maximum - reduction))
-        #print("reduction,amount", reduction, amount)
+        # print("reduction,amount", reduction, amount)
         # ... match "federal" eitc amount to get Indiana eitc
         return amount * ip.credits.earned_income.match_rate
