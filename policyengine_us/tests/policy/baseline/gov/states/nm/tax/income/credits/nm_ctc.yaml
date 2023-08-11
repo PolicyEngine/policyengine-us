@@ -1,0 +1,39 @@
+- name: No children
+  period: 2023
+  input:
+    state_code: NM
+    eitc_child_count: 0
+    adjusted_gross_income: 10_000
+    filing_status: JOINT
+  output:
+    nm_ctc: 0
+
+- name: Two children with $50,000 of income - joint
+  period: 2023
+  input:
+    state_code: NM
+    eitc_child_count: 2
+    adjusted_gross_income: 50_000
+    filing_status: JOINT
+  output:
+    nm_ctc: 800
+
+- name: Two children with $50,000 of income - separate
+  period: 2023
+  input:
+    state_code: NM
+    eitc_child_count: 2
+    adjusted_gross_income: 50_000
+    filing_status: SEPARATE
+  output:
+    nm_ctc: 400
+
+- name: Three children with $350,001 of income - single
+  period: 2023
+  input:
+    state_code: NM
+    eitc_child_count: 3
+    adjusted_gross_income: 350_001
+    filing_status: SINGLE
+  output:
+    nm_ctc: 75
