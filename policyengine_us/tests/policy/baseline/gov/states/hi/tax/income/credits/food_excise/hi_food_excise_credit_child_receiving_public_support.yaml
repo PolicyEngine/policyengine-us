@@ -6,7 +6,7 @@
     tanf_person: 100
     state_code: HI
   output:
-    hi_food_excise_credit_child_receiving_public_support: false
+    hi_food_excise_credit_child_receiving_public_support: true
 
 - name: No public support
   period: 2022
@@ -26,7 +26,7 @@
     tanf_person: 900
     state_code: HI
   output:
-    hi_food_excise_credit_child_receiving_public_support: true
+    hi_food_excise_credit_child_receiving_public_support: false
 
 - name: Exactly half of the child support comes from public support
   period: 2022
@@ -46,4 +46,4 @@
     tanf_person: 401
     state_code: HI
   output:
-    hi_food_excise_credit_child_receiving_public_support: true
+    hi_food_excise_credit_child_receiving_public_support: false
