@@ -6,7 +6,7 @@ class hi_lihr_eligible(Variable):
     entity = TaxUnit
     label = "Hawaii lihrtc eligible"
     definition_period = YEAR
-    reference = " https://files.hawaii.gov/tax/legal/har/har_235.pdf"  # page: 105 §18-235-55.7 (b)
+    reference = " https://files.hawaii.gov/tax/legal/har/har_235.pdf#page=105"  # §18-235-55.7 (b)
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
