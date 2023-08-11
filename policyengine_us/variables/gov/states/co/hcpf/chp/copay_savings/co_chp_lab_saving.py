@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_chp_lab_saving(Variable):
     value_type = float
     entity = Person
-    label = "Child Health Plan Plus lab and imaging expense reduction"
+    label = "Colorado Child Health Plan Plus lab and imaging expense reduction"
     definition_period = YEAR
 
     def formula(person, period, parameters):
