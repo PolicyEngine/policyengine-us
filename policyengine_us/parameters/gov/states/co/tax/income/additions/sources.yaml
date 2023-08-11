@@ -1,0 +1,25 @@
+description: Colorado adds these variables to US adjusted gross income when computing its taxable income.
+values:
+  2021-01-01: # state addback
+  2021-01-01: # Qualified Business Income DeductionAddback
+  2021-01-01: # Non-Colorado state and local bond interest
+  2021-01-01: # Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
+  2021-01-01: # Charitable gross conservation easement
+  2021-01-01: # Alien labor
+  2021-01-01: # Partnership/Fiduciary
+  2021-01-01: # Clubs that restrict membership
+  2021-01-01: # Distributions from a medical savings account not made for an eligible expense
+  2022-01-01: # Itemized Deduction Addback (2022 & 2023 differ)
+  2022-01-01: # Non-qualifying Distribution addback
+  2022-01-01: # Food and beverage expense deduction
+
+metadata:
+  unit: variable
+  label: Colorado additions to US adjusted gross income
+  reference:
+  - title: C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - single rate - report - legislative declaration - definitions - repeal.
+    href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=713552e7-276b-4575-a579-ea86a2ff3c84&action=pawlinkdoc&pdcomponentid=&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A683G-JJ73-CGX8-04HR-00008-00&pdtocnodeidentifier=ABPAACAACAABAACAAF&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&ecomp=k2vckkk&prid=a2f43616-b00d-4b9d-8622-92440f0cdf33
+  - title: 2022 Colorado Individual Income Tax Filing Guide - Additions
+    href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5
+  - title: 2021 Colorado Individual Income Tax Filing Guide - Additions
+    href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf#page=5
