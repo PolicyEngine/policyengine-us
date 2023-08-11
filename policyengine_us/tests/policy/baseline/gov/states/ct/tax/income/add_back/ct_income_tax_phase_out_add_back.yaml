@@ -33,3 +33,30 @@
     filing_status: JOINT
   output:
     ct_income_tax_phase_out_add_back: 120
+
+- name: No negative amounts
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 40_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_phase_out_add_back: 0
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 0
+    filing_status: SINGLE
+  output:
+    ct_income_tax_phase_out_add_back: 0
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 108_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_income_tax_phase_out_add_back: 256

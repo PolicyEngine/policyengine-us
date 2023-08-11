@@ -33,3 +33,30 @@
     filing_status: SEPARATE
   output:
     ct_income_tax_higher_tax_recapture: 50
+
+- name: No negative amounts
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 1_000
+    filing_status: SINGLE
+  output:
+    ct_income_tax_higher_tax_recapture: 0
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 0
+    filing_status: SINGLE
+  output:
+    ct_income_tax_higher_tax_recapture: 0
+
+- name: No income
+  period: 2023
+  input:
+    state_code: CT
+    ct_agi: 834_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_income_tax_higher_tax_recapture: 400
