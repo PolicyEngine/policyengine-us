@@ -3,7 +3,7 @@
   input:
     state_code: IN
     filing_status: JOINT
-    in_homeowners_property_tax: 2_000
+    real_estate_taxes: 2_000
   output:
     in_homeowners_property_tax_deduction: 2_000
 
@@ -12,6 +12,6 @@
   input:
     state_code: IN
     filing_status: SEPARATE
-    in_homeowners_property_tax: 2_000
+    real_estate_taxes: 2_000
   output:
     in_homeowners_property_tax_deduction: 1_250
