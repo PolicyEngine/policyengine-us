@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_income_qualified_senior_housing(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado senior citizen credit"
+    label = "ColoradoIncome Qualified Senior Housing Income Tax Credit"
     unit = USD
     definition_period = YEAR
     reference = (
