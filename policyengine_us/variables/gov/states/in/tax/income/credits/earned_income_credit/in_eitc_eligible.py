@@ -22,10 +22,12 @@ class in_eitc_eligible(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
         # ... check age eligibility for childless taxpayers
         is_childless = tax_unit("eitc_child_count", period) == 0
+        min_age = p.credits.earned_income.childless.min_age
+        max_age = p.credits.earned_income.childless.max_age
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        head_age_eligible = (age_head >= 25) & (age_head <= 64)
-        spouse_age_eligible = (age_spouse >= 25) & (age_spouse <= 64)
+        head_age_eligible = (age_head >= min_age) & (age_head <= max_age)
+        spouse_age_eligible = (age_spouse >= min_age) & (age_spouse <= max_age)
         married = filing_status.possible_values.JOINT
         age_eligible = where(
             married, head_age_eligible | spouse_age_eligible, head_age_eligible
@@ -33,7 +35,8 @@ class in_eitc_eligible(Variable):
         childless_age_eligible = where(is_childless, age_eligible, True)
         # ... check investment income eligibility
         invinc = tax_unit("eitc_relevant_investment_income", period)
-        invinc_eligible = invinc <= 3800
+        invinc_limit = p.credits.earned_income.investment_income_limit
+        invinc_eligible = invinc <= invinc_limit
         # ... determine Indiana EITC eligibility status
         in_eligible = ~separate & childless_age_eligible & invinc_eligible
         return gets_federal_eitc & in_eligible
