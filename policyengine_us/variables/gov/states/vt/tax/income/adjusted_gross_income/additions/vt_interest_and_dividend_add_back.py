@@ -17,7 +17,9 @@ class vt_interest_and_dividend_add_back(Variable):
     def formula(tax_unit, period, parameters):
         # First get the total interest and dividend income received from all state and local obligations exempted from federal tax
         tax_exempted_total_interest_and_dividend_income = add(
-            tax_unit, period, ["tax_exempt_interest_income"]
+            tax_unit,
+            period,
+            ["tax_exempt_interest_income", "tax_exempt_dividend_income"],
         )
         # Then get interest and dividend income from Vermont state and local obligations exempted from federal tax
         tax_exempted_vt_interest_and_dividend_income = add(

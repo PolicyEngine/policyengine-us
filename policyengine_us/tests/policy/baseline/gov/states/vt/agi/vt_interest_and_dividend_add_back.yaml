@@ -10,15 +10,17 @@
   input:
     state_code: VT
     tax_exempt_interest_income: 1_500
+    tax_exempt_dividend_income: 1_000
     tax_exempt_vt_interest_and_dividend_income: 1_000
   output:
-    vt_interest_and_dividend_add_back: 500   
+    vt_interest_and_dividend_add_back: 1_500   
 
 - name: VT Interest and dividend income add back amount unit test 3
   period: 2022
   input:
     state_code: VT
     tax_exempt_interest_income: 0
+    tax_exempt_dividend_income: 0
     tax_exempt_vt_interest_and_dividend_income: 0
   output:
     vt_interest_and_dividend_add_back: 0    
@@ -28,6 +30,7 @@
   input:
     state_code: ME
     tax_exempt_interest_income: 3_000
+    tax_exempt_dividend_income: 1_000
     tax_exempt_vt_interest_and_dividend_income: 2_000
   output:
     vt_interest_and_dividend_add_back: 0   
