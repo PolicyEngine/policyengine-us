@@ -1,17 +1,19 @@
 description: Colorado adds these variables to US adjusted gross income when computing its taxable income.
 values:
-  2021-01-01: # state addback
-  2021-01-01: # Qualified Business Income DeductionAddback
-  2021-01-01: # Non-Colorado state and local bond interest
-  2021-01-01: # Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
-  2021-01-01: # Charitable gross conservation easement
-  2021-01-01: # Alien labor
-  2021-01-01: # Partnership/Fiduciary
-  2021-01-01: # Clubs that restrict membership
-  2021-01-01: # Distributions from a medical savings account not made for an eligible expense
-  2022-01-01: # Itemized Deduction Addback (2022 & 2023 differ)
-  2022-01-01: # Non-qualifying Distribution addback
-  2022-01-01: # Food and beverage expense deduction
+  2021-01-01: 
+    - # state addback
+    - qualified_business_income_deduction # or qbid_amount?
+    - # Non-Colorado state and local bond interest
+    - # Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
+    - # Charitable gross conservation easement
+    - # Alien labor
+    - # Partnership/Fiduciary
+    - # Clubs that restrict membership
+    - # Distributions from a medical savings account not made for an eligible expense
+  2022-01-01: 
+    - itemized_taxable_income_deductions # Itemized Deduction Addback (2022 & 2023 differ)
+    - # Non-qualifying Distribution addback
+    - # Food and beverage expense deduction
 
 metadata:
   unit: variable
