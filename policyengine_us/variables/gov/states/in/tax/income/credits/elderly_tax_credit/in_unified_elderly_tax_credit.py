@@ -23,13 +23,12 @@ class in_unified_elderly_tax_credit(Variable):
         aged_count = aged_head + aged_spouse
         return select(
             [
-                aged_count == 0,
                 aged_count == 1,
                 aged_count == 2,
             ],
             [
-                0,
                 p.unified_elderly.amount.one_aged.calc(federal_agi),
                 p.unified_elderly.amount.two_aged.calc(federal_agi),
             ],
+            default=0,
         )
