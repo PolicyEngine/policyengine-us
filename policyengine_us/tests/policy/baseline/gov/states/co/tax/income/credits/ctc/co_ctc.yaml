@@ -119,7 +119,7 @@
   output:
     co_ctc: 0
 
-- name: In 2021, single filer, one child age < 6, agi = 95_000, federal ctc = 2_000, the colorado ctc = 0
+- name: In 2021, joint filer, one child age < 6, agi = 95_000, federal ctc = 2_000, the colorado ctc = 0
   period: 2022
   input:
     state_code: CO
@@ -174,33 +174,132 @@
   output:
     co_ctc: 0
 
-- name: In 2022, separate filer, one child age < 6, agi = 55_000, federal ctc = 2_000, the colorado ctc = 0
+- name: In 2022, separate filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
-    adjusted_gross_income: 55_000
+    adjusted_gross_income: 25_000
+    ctc: 1_000
+    filing_status: SEPARATE
+    age: 5
+  output:
+    co_ctc: 600
+
+- name: In 2022, separate filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 50_000
+    ctc: 2_000
+    filing_status: SEPARATE
+    age: 4
+  output:
+    co_ctc: 600
+
+- name: In 2022, separate filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 75_000
+    ctc: 2_000
+    filing_status: SEPARATE
+    age: 4
+  output:
+    co_ctc: 200
+
+- name: In 2022, separate filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 85_000
     ctc: 2_000
     filing_status: SEPARATE
     age: 4
   output:
     co_ctc: 0
 
-- name: In 2022, widow(er) filer, one child age < 6, agi = 55_000, federal ctc = 2_000, the colorado ctc = 0
+- name: In 2022,  widow(er) filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
-    adjusted_gross_income: 55_000
+    adjusted_gross_income: 25_000
+    ctc: 1_000
+    filing_status: WIDOW
+    age: 5
+  output:
+    co_ctc: 600
+
+- name: In 2022, widow(er) filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 50_000
+    ctc: 2_000
+    filing_status: WIDOW
+    age: 4
+  output:
+    co_ctc: 600
+
+- name: In 2022, widow(er) filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 75_000
+    ctc: 2_000
+    filing_status: WIDOW
+    age: 4
+  output:
+    co_ctc: 200
+
+- name: In 2022, widow(er) filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 85_000
     ctc: 2_000
     filing_status: WIDOW
     age: 4
   output:
     co_ctc: 0
 
-- name: In 2022, head of household filer, one child age < 6, agi = 55_000, federal ctc = 2_000, the colorado ctc = 0
+- name: In 2022, head of household filer, one child age < 6, agi = 25_000, federal ctc = 1_000, the colorado ctc = 600
   period: 2022
   input:
     state_code: CO
-    adjusted_gross_income: 55_000
+    adjusted_gross_income: 25_000
+    ctc: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    age: 5
+  output:
+    co_ctc: 600
+
+- name: In 2022, head of household filer, one child age < 6, agi = 50_000, federal ctc = 2_000, the colorado ctc = 600
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 50_000
+    ctc: 2_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    age: 4
+  output:
+    co_ctc: 600
+
+- name: In 2022, head of household filer, one child age < 6, agi = 75_000, federal ctc = 2_000, the colorado ctc = 200
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 75_000
+    ctc: 2_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    age: 4
+  output:
+    co_ctc: 200
+
+- name: In 2022, head of household filer, one child age < 6, agi = 85_000, federal ctc = 2_000, the colorado ctc = 0
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 85_000
     ctc: 2_000
     filing_status: HEAD_OF_HOUSEHOLD
     age: 4
