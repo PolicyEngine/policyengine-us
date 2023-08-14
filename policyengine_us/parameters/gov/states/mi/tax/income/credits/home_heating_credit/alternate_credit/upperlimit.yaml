@@ -1,11 +1,11 @@
-description: Compare total heating cost with this value and take the lower as alternate credit.
+description: Michigan caps the home heating credit this amount of total heating costs.
 values:
   2021-01-01: 3_047
   2022-01-01: 3_340
 metadata:
   period: year
   unit: currency_USD
-  label: alternate_credit_upperlimit
+  label: Michigan home heating alternate credit cap
   reference:
     - title: Michigan Section 206.527a, Income Tax Act of 1967(Exerpt)Act 281 of 1967, (1)(c)(ii)
       href: http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a
