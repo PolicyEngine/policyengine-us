@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: VA
   output:
-    agi_prorate_fraction_head: 0.2
+    indiv_share_agi: [0.2, 0.8]
 
 - name: If no fedearl agi, assign to head.
   period: 2022
@@ -38,4 +38,4 @@
         members: [person1, person2]
         state_code: VA
   output:
-    agi_prorate_fraction_head: 1
+    indiv_share_agi: [1, 0]

@@ -1,21 +1,25 @@
-- name: VA itemized deductions for head
+- name: VA itemized deductions for individual
   period: 2022
   input:
     people:
       person1:
+        adjusted_gross_income_person: 20_000
+        indiv_share_agi: 0.2
         is_tax_unit_head: true
-        agi_prorate_fraction_head: 0.2
       person2:
+        adjusted_gross_income_person: 80_000
+        indiv_share_agi: 0.8
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_itemized_deductions: 10_000
+        va_itemized_deductions_unit: 10_000
+        adjusted_gross_income: 100_000
     households:
       household:
         members: [person1, person2]
         state_code: VA
   output:
     # if file jointly on the federal return but separately on state return
-    # allocated to spouse by federal agi
-    va_itemized_deductions_head: 2_000
+    # allocated to individuals by federal agi
+    va_itemized_deductions_indiv: [2_000, 8_000]

@@ -10,7 +10,7 @@
     state_code: VA
   output:
     # add everything but salt deduction
-    va_itemized_deductions: 2_000 + 4_000 + 3_000 + 3_000
+    va_itemized_deductions_unit: 2_000 + 4_000 + 3_000 + 3_000
 
 - name: VA itemized deduction, did not file through tax_unit_itemizes
   period: 2022
@@ -23,4 +23,4 @@
     casualty_loss_deduction: 3_000
     state_code: VA
   output:
-    va_itemized_deductions: 0
+    va_itemized_deductions_unit: 0

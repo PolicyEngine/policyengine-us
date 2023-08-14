@@ -1,0 +1,23 @@
+- name: VA itemized deductions joint unit test 1
+  period: 2022
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 20_000
+        indiv_share_agi: 0.2
+        is_tax_unit_head: true
+      person2:
+        adjusted_gross_income_person: 80_000
+        indiv_share_agi: 0.8
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_itemized_deductions_unit: 10_000
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_itemized_deductions_joint: [10_000, 0]
