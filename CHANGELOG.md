@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.423.1] - 2023-08-13 16:18:26
+
+### Fixed
+
+- New Jersey 2021 income tax parameter values.
+
+## [0.423.0] - 2023-08-11 17:35:41
+
+### Added
+
+- North Carolina child credit.
+
 ## [0.422.0] - 2023-08-10 01:19:35
 
 ### Added
@@ -4849,6 +4861,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.423.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.0...0.423.1
+[0.423.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.422.0...0.423.0
 [0.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.421.0...0.422.0
 [0.421.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.420.1...0.421.0
 [0.420.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.420.0...0.420.1
