@@ -1,5 +1,5 @@
 - name: LA child care expense tax credit eligible children test 1
-  period: 2018
+  period: 2021
   input:
    la_cdcc_eligible_child: 5
    la_child_expense_tax_credit: 26_000
@@ -8,7 +8,7 @@
    la_child_expense_tax_credit: 26_000
 
 - name: LA child care expense tax credit eligible children test 2
-  period: 2018
+  period: 2021
   input:
    la_cdcc_eligible_child: 7
    state_code: LA
