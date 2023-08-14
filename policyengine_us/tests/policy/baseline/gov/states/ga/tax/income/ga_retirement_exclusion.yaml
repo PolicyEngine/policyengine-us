@@ -6,7 +6,7 @@
         is_tax_unit_head: true
         is_disabled: true
         age: 50
-        pension_and_savings_plan_income: 500
+        pension_income: 500
         earned_income: 100
     tax_units:
       tax_unit:
@@ -16,7 +16,7 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 600
+    ga_exclusion: 600
 
 - name: head is low age eligible and spouse is disable
   period: 2023
@@ -26,13 +26,13 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 62
-        pension_and_savings_plan_income: 500
+        pension_income: 500
         earned_income: 5_000
       person2:
         is_tax_unit_spouse: true
         is_disabled: true
         age: 50
-        pension_and_savings_plan_income: 500
+        pension_income: 500
         earned_income: 5_000
     tax_units:
       tax_unit:
@@ -42,7 +42,7 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 4_000 + 500 + 4_000 + 500
+    ga_exclusion: 4_000 + 500 + 4_000 + 500
 
 - name: head is high age eligible and spouse is disable, both are not eligible for military exclusions
   period: 2023
@@ -52,14 +52,14 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 66
-        pension_and_savings_plan_income: 10_000
+        pension_income: 10_000
         military_retirement_pay: 20_000
         earned_income: 17_000
       person2:
         is_tax_unit_spouse: true
         is_disabled: true
         age: 50
-        pension_and_savings_plan_income: 500
+        pension_income: 500
         military_retirement_pay: 0
         earned_income: 17_000
     tax_units:
@@ -70,7 +70,7 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 10_000 + 4_000 + 500 + 4_000 
+    ga_exclusion: 10_000 + 4_000 + 500 + 4_000 
   
 - name: spouse is disable and low age eligible
   period: 2023
@@ -80,14 +80,14 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 60
-        pension_and_savings_plan_income: 5_000
+        pension_income: 5_000
         military_retirement_pay: 0
         earned_income: 17_000
       person2:
         is_tax_unit_spouse: true
         is_disabled: true
         age: 62
-        pension_and_savings_plan_income: 100_000
+        pension_income: 100_000
         military_retirement_pay: 0
         earned_income: 0
     tax_units:
@@ -98,7 +98,7 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 35_000
+    ga_exclusion: 35_000
 
 - name: head is high age eligible and spouse is disable + spouse is military exclusions eligible
   period: 2023
@@ -108,14 +108,14 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 65
-        pension_and_savings_plan_income: 105_500
+        pension_income: 105_500
         military_retirement_pay: 20_000
         earned_income: 17_000
       person2:
         is_tax_unit_head: true
         is_disabled: true
         age: 60
-        pension_and_savings_plan_income: 500
+        pension_income: 500
         military_retirement_pay: 20_000
         earned_income: 17_000
     tax_units:
@@ -126,4 +126,4 @@
       household:
         state_code: GA
   output:
-    ga_agi_exclusion: 65_000 + 500 + 4_000 + 17_500
+    ga_exclusion: 65_000 + 500 + 4_000 + 17_500

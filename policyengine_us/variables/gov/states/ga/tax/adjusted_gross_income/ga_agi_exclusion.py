@@ -23,8 +23,7 @@ class ga_exclusion(Variable):
             p.retirement.cap.earned_income, earned_income
         )
         retirement_income = (
-            person("pension_and_savings_plan_income", period)
-            + earned_income_exclusion
+            person("pension_income", period) + earned_income_exclusion
         )
 
         # Retirement Exclusions
