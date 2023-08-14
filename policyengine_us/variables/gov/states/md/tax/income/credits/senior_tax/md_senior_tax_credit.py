@@ -35,4 +35,5 @@ class md_senior_tax_credit(Variable):
             p.two_aged[filing_status],
             p.one_aged[filing_status]),
         )
-        return money_eligible * eligible * where(single, single_amount, not_single_amount)
+        amount = where(single, single_amount, not_single_amount)
+        return money_eligible * eligible * amount
