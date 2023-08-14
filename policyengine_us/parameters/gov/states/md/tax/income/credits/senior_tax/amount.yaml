@@ -1,0 +1,21 @@
+description: Income threshold for MD Senior Tax Credit
+metadata:
+  reference:
+    - title: MD 2022 Resident Booklet
+      href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf
+  label: MD Senior Tax Credit
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+JOINT:
+  2021-01-01: 0
+  2022-01-01: 150_000
+SINGLE:
+  2021-01-01: 100_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 0
+  2022-01-01: 150_000
+WIDOW:
+  2021-01-01: 0
+  2022-01-01: 150_000

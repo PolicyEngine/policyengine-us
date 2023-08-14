@@ -28,10 +28,11 @@ class md_senior_tax_credit(Variable):
         spouse_eligible = spouse_age >= p.age_eligibility
         both_eligible = head_eligible & spouse_eligible
         eligible = head_eligible | spouse_eligible
-        single_amount = p.amount.single.calc(total_income) * head_eligible
+        money_eligible = total_agi < p.amount[filing_status]
+        single_amount = p.single[filing_status]
         not_single_amount = where(
             both_eligible,
-            p.amount.two_aged[filing_status],
-            p.amount.one_aged[filing_status]),
+            p.two_aged[filing_status],
+            p.one_aged[filing_status]),
         )
-        return eligible * where(!single, not_single_amount, single_amount)
+        return money_eligible * eligible * where(!single, not_single_amount, single_amount)
