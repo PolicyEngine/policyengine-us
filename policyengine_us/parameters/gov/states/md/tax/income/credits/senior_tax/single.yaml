@@ -1,0 +1,18 @@
+description: Senior tax credit given to filers filing single
+metadata:
+  reference:
+    - title: MD 2022 Resident Booklet
+      href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf
+  label: MD Senior Tax Credit
+  unit: currency-USD
+  period: year
+  breakdown:
+    - filing_status
+JOINT:
+  2021-01-01: 0
+SINGLE:
+  2021-01-01: 1000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 0
+WIDOW:
+  2021-01-01: 0
