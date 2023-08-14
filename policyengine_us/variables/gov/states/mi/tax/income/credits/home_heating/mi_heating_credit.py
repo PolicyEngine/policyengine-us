@@ -17,8 +17,8 @@ class mi_heating_credit(Variable):
             period
         ).gov.states.mi.tax.income.credits.home_heating_credit
 
-        mi_rent_include_heating_cost = tax_unit(
-            "mi_rent_include_heating_cost", period
+        heating_costs_included_in_rent = tax_unit(
+            "heating_costs_included_in_rent", period
         )
         mi_reduced_standard_allowance = tax_unit(
             "mi_reduced_standard_allowance", period
@@ -33,7 +33,7 @@ class mi_heating_credit(Variable):
 
         # calculate initial home heating credit
         initial_hhc = where(
-            mi_rent_include_heating_cost == True,
+            heating_costs_included_in_rent == True,
             (
                 p.standard_allowance.reduced_standard_allowance_rate
                 * mi_reduced_standard_allowance
