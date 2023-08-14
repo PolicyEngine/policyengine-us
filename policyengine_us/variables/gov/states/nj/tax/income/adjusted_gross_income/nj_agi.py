@@ -11,9 +11,7 @@ class nj_agi(Variable):
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        # Adds federal AGI and additions, subtracts subtractions.
-        # This is mainly because the NJ other retirement special exclusion can be > AGI.
-        agi = tax_unit("adjusted_gross_income", period)
-        nj_additions = tax_unit("nj_agi_additions", period)
-        nj_subtractions = tax_unit("nj_agi_subtractions", period)
-        return max_(0, agi + nj_additions - nj_subtractions)
+        total_income = tax_unit("nj_total_income", period)
+        p = parameters(period).gov.states.nj.tax.income
+        exclusions = add(tax_unit, period, p.all_exclusions)
+        return max_(0, total_income - exclusions)
