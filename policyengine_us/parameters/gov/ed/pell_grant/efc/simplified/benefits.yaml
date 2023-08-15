@@ -1,4 +1,4 @@
-description: The Education Department will used a simplified formula if a household has any of these benefits.
+description: The Department of Education will used a simplified formula if a household has any of these benefits.
 values:
   2023-01-01:
     - snap
@@ -8,7 +8,8 @@ values:
     - medicaid
     - ssi
 metadata:
-  unit: list
+    label: Qualifying benefits for EFC simplified formula
+    unit: list
   reference:
     - title: THE EFC FORMULA, 2022–2023
       href: https://fsapartners.ed.gov/sites/default/files/2021-08/2223EFCFormulaGuide.pdf#page=4

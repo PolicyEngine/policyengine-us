@@ -1,4 +1,4 @@
-description: The Education Department calculates the contribution from available income with the following percents.
+description: The Department of Education calculates the contribution from available income with the following percents.
 brackets:
   - threshold:
       2023-01-01: 0
@@ -25,6 +25,7 @@ brackets:
     rate:
       2023-01-01: 0.47
 metadata:
+  label: EFC rate
   type: marginal_rate
   threshold_period: year
   threshold_unit: currency-USD
