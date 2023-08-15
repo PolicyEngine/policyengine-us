@@ -13,7 +13,7 @@ class la_child_expense_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.la.tax.credits.child_care_expense_credit
+        ).gov.states.la.tax.credits.school_readiness
         # determine if it is nonrefundable or refundable
         us_agi = tax_unit("adjusted_gross_income", period)
         non_refundable = tax_unit("la_child_tax_credit_non_refundable", period)

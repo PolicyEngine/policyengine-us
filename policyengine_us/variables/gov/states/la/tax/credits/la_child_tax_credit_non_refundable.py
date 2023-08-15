@@ -14,7 +14,7 @@ class la_child_tax_credit_non_refundable(Variable):
         person = tax_unit.members
         p = parameters(
             period
-        ).gov.states.la.tax.credits.child_care_expense_credit.rate
+        ).gov.states.la.tax.credits.school_readiness.rate
 
         # determine LA nonrefundable amount
         child_care_credit = tax_unit("la_state_child_care_credit", period)
