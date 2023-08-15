@@ -11,7 +11,7 @@ class nj_agi(Variable):
     defined_for = StateCode.NJ
 
     def formula(tax_unit, period, parameters):
-        total_income = tax_unit("nj_total_income", period)
+        total_income = add(tax_unit, period, ["nj_total_income"])
         p = parameters(period).gov.states.nj.tax.income
         exclusions = add(tax_unit, period, p.all_exclusions)
         return max_(0, total_income - exclusions)
