@@ -14,25 +14,28 @@ class ga_standard_deduction(Variable):
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+        # person = tax_unit.members
         p = parameters(period).gov.states.ga.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         base = p.base_amount[filing_status]
         # Head gets extra standard deduction if aged and/or blind.
-        head = person("is_tax_unit_head", period)
-        blind = person("is_blind", period)
-        aged = person("age", period) >= p.aged.age_eligible
-        extra_head = tax_unit.sum(
-            head * (blind * p.blind.self + aged * p.aged.self)
+        age_head = tax_unit("age_head", period)
+        eligible_aged_head = age_head >= p.aged.age_eligible
+        blind_head = tax_unit("blind_head", period)
+        extra_head = (
+            blind_head * p.blind.self + eligible_aged_head * p.aged.self
         )
-        # Spouse gets extra standard deduction if aged and/or blind and filing jointly.
 
-        spouse = person("is_tax_unit_spouse", period)
+        # Spouse gets extra standard deduction if aged and/or blind and filing jointly.
+        age_spouse = tax_unit("age_spouse", period)
+        eligible_aged_spouse = age_spouse >= p.aged.age_eligible
+        blind_spouse = tax_unit("blind_spouse", period)
         extra_spouse = where(
             filing_status == status.JOINT,
-            tax_unit.sum(
-                spouse * (blind * p.blind.spouse + aged * p.aged.spouse)
+            (
+                blind_spouse * p.blind.spouse
+                + eligible_aged_spouse * p.aged.spouse
             ),
             0,
         )
