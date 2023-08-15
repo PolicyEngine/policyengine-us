@@ -10,6 +10,7 @@ class nm_itemized_deductions(Variable):
     reference = (
         "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=28",
         "https://casetext.com/regulation/new-mexico-administrative-code/title-3-taxation/chapter-3-personal-income-taxes/part-11-tax-credit-income-allocation-and-apportionment/section-33118-computation-for-non-resident-taxpayers-who-have-new-mexico-royalty-income",
+        "https://klvg4oyd4j.execute-api.us-west-2.amazonaws.com/prod/PublicFiles/34821a9573ca43e7b06dfad20f5183fd/1afc56af-ea90-4d48-82e5-1f9aeb43255a/PITbook2022.pdf#page=28",
     )
     defined_for = StateCode.NM
 
@@ -41,12 +42,8 @@ class nm_itemized_deductions(Variable):
         salt = min_(salt_claimed * salt_ratio, salt_claimed)
 
         standard_deduction = tax_unit("standard_deduction", period)
-        itm_deds = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        us_itemized_deductions = add(tax_unit, period, itm_deds) + salt_claimed
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        us_itemized_deductions = itm_deds_less_salt + salt_claimed
         item_deds = max_(us_itemized_deductions - standard_deduction, 0)
 
         nm_item = min_(salt, item_deds)
