@@ -13,8 +13,8 @@ class la_child_care_expense_credit_eligible_child(Variable):
         p = parameters(
             period
         ).gov.states.la.tax.credits.school_readiness
-        depenent = person("is_tax_unit_dependent", period)
+        dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
         age_eligible = age < p.age_threshold
 
-        return depenent & age_eligible
+        return dependent & age_eligible

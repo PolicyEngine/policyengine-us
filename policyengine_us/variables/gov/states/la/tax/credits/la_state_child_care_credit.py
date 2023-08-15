@@ -4,8 +4,8 @@ from policyengine_us.model_api import *
 class la_state_child_care_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana Child Care Credit"
+    label = "Louisiana Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
+    reference = "http://legis.la.gov/Legis/Law.aspx?d=101769"
     defined_for = StateCode.LA

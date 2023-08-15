@@ -1,44 +1,44 @@
 - name: LA nonrefundable child care expense tax credit unit test 1
   period: 2021
   input:
-    adjusted_gross_income: 26_000
+    adjusted_gross_income: 50
     quality_rating_of_child_care_facility: 5
     state_code: LA
   output:
-    la_child_tax_credit_non_refundable: 52_000
+    la_child_tax_credit_non_refundable: 100
 
 
 - name: LA nonrefundable child care expense tax credit unit test 2
   period: 2021
   input:
-    adjusted_gross_income: 26_000
+    adjusted_gross_income: 50
     quality_rating_of_child_care_facility: 4
     state_code: LA
   output:
-    la_child_tax_credit_non_refundable: 39_000
+    la_child_tax_credit_non_refundable: 75
 
 - name: LA nonrefundable child care expense tax credit unit test 3
   period: 2021
   input:
-    adjusted_gross_income: 26_000
+    adjusted_gross_income: 50
     quality_rating_of_child_care_facility: 3
     state_code: LA
   output:
-    la_child_tax_credit_non_refundable: 26_000
+    la_child_tax_credit_non_refundable: 50
 
 - name: LA nonrefundable child care expense tax credit unit test 4
   period: 2018
   input:
-    adjusted_gross_income: 26_000
+    adjusted_gross_income: 50
     quality_rating_of_child_care_facility: 2
     state_code: LA
   output:
-    la_child_tax_credit_non_refundable: 13_000
+    la_child_tax_credit_non_refundable: 25
 
 - name: LA nonrefundable child care expense tax credit unit test 5
   period: 2021
   input:
-    adjusted_gross_income: 26_000
+    adjusted_gross_income: 50
     quality_rating_of_child_care_facility: 1
     state_code: LA
   output:
