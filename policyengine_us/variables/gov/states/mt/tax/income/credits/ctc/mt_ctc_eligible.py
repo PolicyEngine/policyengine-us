@@ -10,12 +10,21 @@ class mt_ctc_eligible(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.credits.ctc
-        # CTC limited to filers with agi at or below $56,000
+        p = parameters(
+            period
+        ).gov.states.mt.tax.income.credits.ctc.eligibility.income_limit
+        # CTC limited to filers with AGI at or below $56,000
         agi = tax_unit("adjusted_gross_income", period)
-        income_eligible = agi <= p.income_threshold
+        income_eligible = agi <= p.agi
         # CTC limited to filers with investment income below $10,300
         investment_income_eligible = (
-            tax_unit("net_investment_income", period) < p.investment_threshold
+            tax_unit("net_investment_income", period) < p.investment
         )
-        return income_eligible & investment_income_eligible
+        # proof of earned income
+        # Add earned_income in test
+        earned_income = tax_unit("tax_unit_earned_income", period)
+        proof_earned_income = earned_income > p.earned_income_required
+
+        return (
+            income_eligible & investment_income_eligible & proof_earned_income
+        )

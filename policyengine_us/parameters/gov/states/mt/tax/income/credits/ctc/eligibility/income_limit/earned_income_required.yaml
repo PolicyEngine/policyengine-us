@@ -1,0 +1,13 @@
+description: Montana provides the child tax credit with earned income above this threshold.
+values:
+  2021-01-01: 0
+metadata:
+  units: currency-USD
+  period: year
+  label: Montana child tax credit earned income limit
+  reference:
+  #Need to have earned income to apply for child tax credit
+  # The Montana Child Tax Credit established in the 2023 House Bill No. 268
+  # not existent before
+    - title: 2023 Montana Legislature, House Bill No. 268, Section 1, 4(a)
+      href: https://leg.mt.gov/bills/2023/billhtml/HB0268.htm
