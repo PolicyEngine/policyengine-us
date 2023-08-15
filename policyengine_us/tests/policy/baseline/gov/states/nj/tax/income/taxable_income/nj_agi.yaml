@@ -1,14 +1,14 @@
-- name: Test basic formula
+- name: 1 Test basic formula
   period: 2021
   input:
-    adjusted_gross_income: 10_000
-    nj_agi_additions: 1_000
-    nj_agi_subtractions: 2_000
+    adjusted_gross_income_person: [10_000]
+    nj_agi_additions: [1_000]
+    nj_agi_subtractions: [2_000]
     state_code: NJ
   output:
     nj_agi: 9_000
 
-- name: Test that NJ AGI cannot be negative
+- name: 2 Test that NJ AGI cannot be negative
   period: 2021
   input:
     adjusted_gross_income: 10_000
@@ -18,7 +18,7 @@
   output:
     nj_agi: 0
 
-- name: NJ taxpayer with taxable pension income
+- name: 3 NJ taxpayer with taxable pension income
   absolute_error_margin: 0
   period: 2021
   input:
@@ -46,7 +46,7 @@
     # CORRECT nj_agi OUTPUT IS:
     # 0 because pension income is excluded and interest/SS income excluded through "other retirement income"
 
-- name: NJ taxpayer with no taxable pension income
+- name: 4 NJ taxpayer with no taxable pension income
   absolute_error_margin: 0
   period: 2021
   input:
@@ -71,12 +71,13 @@
   output:
     adjusted_gross_income: 7_000 # on federal form
     nj_agi: 0
-    # Interest income is excluded in other retirement income exclusion, plus qualifies for special exclusion.
-    # Note: we can infer qualify for special exclusion for those age 70+ who have no
-    #       social security benefits because beyond age 70 there are no
-    #       more delayed retirement credits under social security.
+    # Interest income is excluded in other retirement income exclusion,
+    #   plus qualifies for special exclusion.
+    # Note: we can infer qualify for special exclusion for those age 70+ who
+    #       have no social security benefits because beyond age 70 there are
+    #       no more delayed retirement credits under social security.
 
-- name: NJ taxpayer whose only retirement exclusion is the special exclusion.
+- name: 5 NJ taxpayer whose only retirement exclusion is the special exclusion.
   absolute_error_margin: 0
   period: 2021
   input:
@@ -102,4 +103,4 @@
   output:
     adjusted_gross_income: 10_001 # on federal form
     nj_agi: 7_001 # special exclusion reduces AGI by $3k
-    # Earned income > $3k makes other retirement income exclusion unavailable
+    # earned income > $3k makes other retirement income exclusion unavailable

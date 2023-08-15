@@ -1,59 +1,34 @@
-- name: Can exclude all qualifying income, minus pension exclusion.
-  absolute_error_margin: 0
-  period: 2022
+- name: NJ other retirement income exclusion test 1
+  # Example from the "Only One Spouse Qualifies for Exclusion" section
+  #      of the "Unclaimed Pension Exclusion" section of the New Jersey
+  #      "Retirement Income: Understanding Income Tax" document:
+  # https://www.nj.gov/treasury/taxation/pdf/pubs/tgi-ee/git1&2.pdf#page=24
+  absolute_error_margin: 0.01
+  period: 2021
   input:
-    nj_other_retirement_income_exclusion_qualifying_income: 50_000
-    nj_pension_retirement_exclusion: 1_000
-    nj_other_retirement_income_exclusion_eligible: true
-    filing_status: SINGLE
-    state_code: NJ
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 58
+        employment_income: 500
+        taxable_interest_income: 2_000
+        taxable_private_pension_income: 18_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 63
+        employment_income: 1_500
+        taxable_interest_income: 2_000
+        taxable_private_pension_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
   output:
-    nj_other_retirement_income_exclusion: 49_000
-
-- name: Not eligible, so no exclusion.
-  absolute_error_margin: 0
-  period: 2022
-  input:
-    nj_other_retirement_income_exclusion_qualifying_income: 50_000
-    nj_pension_retirement_exclusion: 1_000
-    nj_other_retirement_income_exclusion_eligible: false
-    filing_status: SINGLE
-    state_code: NJ
-  output:
-    nj_other_retirement_income_exclusion: 0
-
-- name: Can exclude 25% of married filing jointly with income in ($125k,150k].
-  absolute_error_margin: 0
-  period: 2022
-  input:
-    nj_other_retirement_income_exclusion_qualifying_income: 150_000
-    nj_pension_retirement_exclusion: 0
-    nj_other_retirement_income_exclusion_eligible: true
-    filing_status: JOINT
-    state_code: NJ
-  output:
-    nj_other_retirement_income_exclusion: 37_500
-
-- name: Can exclude 18.75% of singler file with income in ($125k,150k].
-  absolute_error_margin: 0
-  period: 2022
-  input:
-    nj_other_retirement_income_exclusion_qualifying_income: 150_000
-    nj_pension_retirement_exclusion: 0
-    nj_other_retirement_income_exclusion_eligible: true
-    filing_status: SINGLE
-    state_code: NJ
-  output:
-    nj_other_retirement_income_exclusion: 28_125
-
-- name: Can exclude 12.5% of married filing separate with income in ($125k,150k].
-  absolute_error_margin: 0
-  period: 2022
-  input:
-    nj_other_retirement_income_exclusion_qualifying_income: 150_000
-    nj_pension_retirement_exclusion: 0
-    nj_other_retirement_income_exclusion_eligible: true
-    filing_status: SEPARATE
-    state_code: NJ
-  output:
-    nj_other_retirement_income_exclusion: 18_750
+    nj_pension_retirement_exclusion: 6_000
+    nj_other_retirement_income_exclusion: 3_500
