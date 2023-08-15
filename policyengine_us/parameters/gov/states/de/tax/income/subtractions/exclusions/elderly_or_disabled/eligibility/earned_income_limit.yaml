@@ -1,14 +1,14 @@
-description: Delaware provides this exclusion amount to filers based on filing status.
+description: Delaware limits its elderly and disabled exclusion to filers with earned income below this amount, depending on filing status.
 JOINT:
-  2021-01-01: 4_000
+  2021-01-01: 5_000
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 2_000
+  2021-01-01: 2_500
 WIDOW:
-  2021-01-01: 2_000
+  2021-01-01: 2_500
 SINGLE:
-  2021-01-01: 2_000
+  2021-01-01: 2_500
 SEPARATE:
-  2021-01-01: 2_000
+  2021-01-01: 2_500
 metadata:
   reference:
     - title: "PIT-RES_TY21_2021-02_Instruction Page 7 Line 11"
@@ -21,4 +21,4 @@ metadata:
   unit: currency-USD
   breakdown:
   - filing_status
-  label: Delaware exclusion amount
+  label: Delaware aged or disabled exclusion income threshold

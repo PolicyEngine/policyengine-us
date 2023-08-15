@@ -10,4 +10,4 @@ class de_pre_exclusions_agi(Variable):
     defined_for = StateCode.DE
 
     adds = ["de_additions", "adjusted_gross_income"]
-    subtracts = ["de_subtarctions"]
+    subtracts = ["de_subtractions"]
