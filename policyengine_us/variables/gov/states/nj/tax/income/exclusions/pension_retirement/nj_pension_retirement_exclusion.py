@@ -16,7 +16,7 @@ class nj_pension_retirement_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         pension_income = add(tax_unit, period, ["nj_eligible_pension_income"])
-        percent = tax_unit("nj_retirement_exclusion_percent", period)
+        fraction = tax_unit("nj_retirement_exclusion_fraction", period)
         p = parameters(period).gov.states.nj.tax.income.exclusions.retirement
         filing_status = tax_unit("filing_status", period)
-        return min_(pension_income * percent, p.max_amount[filing_status])
+        return min_(pension_income * fraction, p.max_amount[filing_status])

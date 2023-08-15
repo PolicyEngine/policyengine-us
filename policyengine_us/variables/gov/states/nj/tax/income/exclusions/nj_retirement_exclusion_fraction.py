@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class nj_retirement_exclusion_percent(Variable):
+class nj_retirement_exclusion_fraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "New Jersey retirement exclusion percent based on total income"
+    label = "New Jersey retirement exclusion fraction based on total income"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -27,10 +27,10 @@ class nj_retirement_exclusion_percent(Variable):
                 filing_status == status.SEPARATE,
             ],
             [
-                p.percentage.single.calc(total_income),
-                p.percentage.joint.calc(total_income),
-                p.percentage.head_of_household.calc(total_income),
-                p.percentage.widow.calc(total_income),
-                p.percentage.separate.calc(total_income),
+                p.percentage.single.calc(total_income, right=True),
+                p.percentage.joint.calc(total_income, right=True),
+                p.percentage.head_of_household.calc(total_income, right=True),
+                p.percentage.widow.calc(total_income, right=True),
+                p.percentage.separate.calc(total_income, right=True),
             ],
         )
