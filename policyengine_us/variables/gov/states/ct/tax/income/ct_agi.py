@@ -8,4 +8,3 @@ class ct_agi(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CT
-    
