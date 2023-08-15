@@ -1,5 +1,5 @@
 - name: Both Aged Exemptions (filing separately)
-  period: 2022
+  period: 2021
   input:
     state_code: HI
     age: 66
@@ -13,7 +13,7 @@
     hi_lihr_credit: 150
 
 #- name: Both Aged Exemptions (filing jointly)
-#  period: 2022
+#  period: 2021
 #  input:
 #    state_code: HI
 #    age: 66
@@ -27,7 +27,7 @@
 #    hi_lihr_credit: 150
 
 - name: Either Aged Exemptions (filing separately)
-  period: 2022
+  period: 2021
   input:
     state_code: HI
     age: 64
@@ -41,7 +41,7 @@
     hi_lihr_credit: 100
 
 - name: Neither Aged Exemptions (filing separately)
-  period: 2022
+  period: 2021
   input:
     state_code: HI
     age: 64
@@ -55,7 +55,7 @@
     hi_lihr_credit: 50
 
 - name: Aged Exemptions (filing separately) Exceeds tax_before_credit
-  period: 2022
+  period: 2021
   input:
     state_code: HI
     age: 66
