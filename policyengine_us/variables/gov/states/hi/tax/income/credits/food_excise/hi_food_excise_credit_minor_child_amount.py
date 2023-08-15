@@ -10,13 +10,7 @@ class hi_food_excise_credit_minor_child_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
-        person = tax_unit.members
-        public_support_over_half = person(
-            "hi_food_excise_credit_child_receiving_public_support", period
-        )
-        is_child = person("is_child", period)
-        minor = person("age", period) < p.minor_child.age_threshold
-        eligible_minor_child = is_child & minor & public_support_over_half
-        minor_children = tax_unit.sum(eligible_minor_child)
 
-        return p.minor_child.amount * minor_children
+        return p.minor_child.amount * tax_unit(
+            "hi_food_excise_credit_minor_child_count", period
+        )
