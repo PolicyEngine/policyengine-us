@@ -1,43 +1,43 @@
-- name: MS itemized deduction unit test 1
+- name: MS itemized deduction miscellaneous income greater than miscellaneous deduction
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
-    adjusted_gross_income: 100_000
     itemized_deductions_less_salt: 1_100
-    misc_deduction: 0
+    miscellaneous_income: 2_000
+    misc_deduction: 500
   output:
-    ms_itemized_deductions: 1_100
+    ms_itemized_deductions: 2_600
 
-- name: MS itemized deduction unit test 2
+- name: MS itemized deduction miscellaneous income greater than miscellaneous deduction
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
-    adjusted_gross_income: 100_000
     itemized_deductions_less_salt: 5_000
+    miscellaneous_income: 3_000
     misc_deduction: 1_000
-  output:
-    ms_itemized_deductions: 6_000
-
-- name: MS itemized deduction unit test 3
-  absolute_error_margin: 0.01
-  period: 2021
-  input:
-    state_code: MS
-    adjusted_gross_income: 100_000
-    itemized_deductions_less_salt: 7_000
-    misc_deduction: 0
   output:
     ms_itemized_deductions: 7_000
 
-- name: MS itemized deduction unit test 4
+- name: MS itemized deduction miscellaneous income smaller than miscellaneous deduction
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
-    adjusted_gross_income: 100_000
-    itemized_deductions_less_salt: 7_500
-    misc_deduction: 3_000
+    itemized_deductions_less_salt: 7_000
+    miscellaneous_income: 300
+    misc_deduction: 5000
   output:
-    ms_itemized_deductions: 9_500 # 7_500 + 2_000
+    ms_itemized_deductions: 7_000
+
+- name: MS itemized deduction miscellaneous income equals to miscellaneous deduction
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    state_code: MS
+    itemized_deductions_less_salt: 7_500
+    miscellaneous_income: 1_500
+    misc_deduction: 1_500
+  output:
+    ms_itemized_deductions: 7_500 
