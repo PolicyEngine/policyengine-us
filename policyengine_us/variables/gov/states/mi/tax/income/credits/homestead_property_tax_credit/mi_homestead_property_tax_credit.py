@@ -41,16 +41,15 @@ class mi_homestead_property_tax_credit(Variable):
 
         property_value = add(tax_unit, period, ["assessed_property_value"])
         rents = add(tax_unit, period, ["rent"])
+        non_refundable_amount = (
+            total_household_resources * non_refundable_percentage
+        )
 
         # eligibility
-        rent_eligibility = (
-            rents * p.rent_percentage
-            > total_household_resources * non_refundable_percentage
+        rent_eligibility = rents * p.rent_percentage > non_refundable_amount
+        property_eligibility = (property_value > non_refundable_amount) & (
+            property_value < p.max_property_value
         )
-        property_eligibility = (
-            property_value
-            > total_household_resources * non_refundable_percentage
-        ) & (property_value < p.max_property_value)
         eligibility = where(
             rents > 0,
             rent_eligibility,
@@ -58,14 +57,8 @@ class mi_homestead_property_tax_credit(Variable):
         )
 
         # difference
-        rent_difference = (
-            rents * p.rent_percentage
-            - total_household_resources * non_refundable_percentage
-        )
-        property_difference = (
-            property_value
-            - total_household_resources * non_refundable_percentage
-        )
+        rent_difference = rents * p.rent_percentage - non_refundable_amount
+        property_difference = property_value - non_refundable_amount
         difference = where(
             rents > 0,
             rent_difference,
