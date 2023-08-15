@@ -1,0 +1,39 @@
+- name: Eligible household renters
+  period: 2022
+  input:
+    state_code: HI
+    age: 66
+    adjusted_gross_income: 31_000
+    rent_expense: 1_100
+  output:
+    hi_lihrtc_eligibility: true
+
+- name: Uneligible household renters
+  period: 2022
+  input:
+    state_code: HI
+    age: 64
+    adjusted_gross_income: 29_000
+    rent_expense: 1_100
+  output:
+    hi_lihrtc_eligibility: false
+
+- name: Uneligible household renters
+  period: 2022
+  input:
+    state_code: HI
+    age: 65
+    adjusted_gross_income: 31_000
+    rent_expense: 900
+  output:
+    hi_lihrtc_eligibility: false
+
+  - name: Uneligible household renters
+  period: 2022
+  input:
+    state_code: HI
+    age: 66
+    adjusted_gross_income: 29_000
+    rent_expense: 700
+  output:
+    hi_lihrtc_eligibility: false

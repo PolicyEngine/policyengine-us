@@ -13,7 +13,7 @@ class hi_lihrtc_eligible(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
 
-        agi = taxunit("hi_agi",period) # or agi = taxunit("adjusted_gross_income",period)
+        agi = taxunit("adjusted_gross_income",period)
         rent_pay = person("rent",period)
 
         rent_eligible = (

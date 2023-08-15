@@ -1,4 +1,60 @@
-- name: Above age eligibility (double credit)
+- name: Both Aged Exemptions (filing separately)
+  period: 2022
+  input:
+    state_code: HI
+    age: 66
+    adjusted_gross_income: 31_000
+    rent_expense: 1_100
+    number_of_entitled_exemptions: 1
+    filing_status: SEPARATE
+    age_spouse: 67
+    tax_before_credit: 300
+  output:
+    hi_lihr_credit: 150
+
+#- name: Both Aged Exemptions (filing jointly)
+#  period: 2022
+#  input:
+#    state_code: HI
+#    age: 66
+#    adjusted_gross_income: 31_000
+#    rent_expense: 1_100
+#    number_of_entitled_exemptions: 1
+#    filing_status: JOINT
+#    age_spouse: 67
+#    tax_before_credit: 300
+#  output:
+#    hi_lihr_credit: 150
+
+- name: Either Aged Exemptions (filing separately)
+  period: 2022
+  input:
+    state_code: HI
+    age: 64
+    adjusted_gross_income: 31_000
+    rent_expense: 1_100
+    number_of_entitled_exemptions: 1
+    filing_status: SEPARATE
+    tax_before_credit: 300
+    age_spouse: 67
+  output:
+    hi_lihr_credit: 100
+
+- name: Neither Aged Exemptions (filing separately)
+  period: 2022
+  input:
+    state_code: HI
+    age: 64
+    adjusted_gross_income: 31_000
+    rent_expense: 1_100
+    number_of_entitled_exemptions: 1
+    filing_status: SEPARATE
+    age_spouse: 62
+    tax_before_credit: 300
+  output:
+    hi_lihr_credit: 50
+
+- name: Aged Exemptions (filing separately) Exceeds tax_before_credit
   period: 2022
   input:
     state_code: HI
@@ -6,55 +62,10 @@
     adjusted_gross_income: 31_000
     rent_expense: 1_100
     number_of_entitled_exemptions: 2
-    dsi: false
+    filing_status: SEPARATE
+    age_spouse: 67
+    tax_before_credit: 188
   output:
-    hi_lihr_credit: 200
+    hi_lihr_credit: 188
 
-- name: Below age eligibility (no double)
-  period: 2022
-  input:
-    state_code: HI
-    age: 64
-    adjusted_gross_income: 31_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 2
-    dsi: false
-  output:
-    hi_lihr_credit: 100
-
-- name: Below AGI eligibility (no credit)
-  period: 2022
-  input:
-    state_code: HI
-    age: 65
-    adjusted_gross_income: 28_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 2
-    dsi: false
-  output:
-    hi_lihr_credit: 0
-
-- name: Below rent expense eligibility (no credit)
-  period: 2022
-  input:
-    state_code: HI
-    age: 65
-    adjusted_gross_income: 31_000
-    rent_expense: 900
-    number_of_entitled_exemptions: 2
-    dsi: false
-  output:
-    hi_lihr_credit: 0
-
-- name: disability eligibility (no extra exemptions? 50*2 due to age eligibility)
-  period: 2022
-  input:
-    state_code: HI
-    age: 65
-    adjusted_gross_income: 31_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 2
-    dsi: true
-  output:
-    hi_lihr_credit: 100
 
