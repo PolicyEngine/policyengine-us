@@ -23,9 +23,7 @@ class nj_other_retirement_income_exclusion(Variable):
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         age_eligible = person("age", period) >= p.age_threshold
-        age_eligible_unit = tax_unit.sum(
-            (age_eligible & is_head) | (age_eligible & is_spouse)
-        )
+        age_eligible_unit = tax_unit.sum(age_eligible & (is_head | is_spouse))
 
         # calculate age-eligible pension income
         pension = person("nj_eligible_pension_income", period)
