@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class hi_food_excise_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Hawaii food and excise tax credit"
+    label = "Hawaii Food/Excise Tax Credit"
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class hi_food_excise_exemption_amount(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Exemption amount for the hawaii food excise credit"
+    label = "Exemption amount for Hawaii Food/Excise Tax Credit"
     definition_period = YEAR
     defined_for = StateCode.HI
 
@@ -18,9 +18,8 @@ class hi_food_excise_exemption_amount(Variable):
         # but excludes those additional exemptions for this program.
         exemptions = tax_unit("exemptions", period)
         # Reduce number of exemptions by the number of minor children
-        minor_children = (
-            tax_unit("hi_food_excise_credit_minor_child_amount", period)
-            / p.minor_child.amount
+        minor_children = tax_unit(
+            "hi_food_excise_credit_minor_child_count", period
         )
         claimable_exemptions = exemptions - minor_children
         # Determine the amount per exemption based on income

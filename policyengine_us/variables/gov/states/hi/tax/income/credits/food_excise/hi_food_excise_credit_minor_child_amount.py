@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class hi_food_excise_credit_minor_child_amount(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Minor child amount for the hawaii food excise credit"
+    label = "Minor child amount for the Hawaii Food/Excise Tax Credit"
     definition_period = YEAR
     defined_for = StateCode.HI
 
