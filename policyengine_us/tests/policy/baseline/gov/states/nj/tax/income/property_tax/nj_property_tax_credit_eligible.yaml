@@ -1,4 +1,4 @@
-- name: Ineligible for property tax deduction and not 65+ or blind/disabled, so ineligible for credit.
+- name: 1 Ineligible for property tax deduction and not 65+ or blind/disabled, so ineligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -13,7 +13,7 @@
   output:
     nj_property_tax_credit_eligible: false
 
-- name: Eligible for property tax deduction, therefore eligible for credit.
+- name: 2 Eligible for property tax deduction, therefore eligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -28,12 +28,12 @@
   output:
     nj_property_tax_credit_eligible: true
 
-- name: Ineligible for property tax deduction but above 65 and paid property taxes, therefore eligible for credit.
+- name: 3 Ineligible for property tax deduction but above 65 and paid property taxes, therefore eligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    nj_homeowners_property_tax: 100
+    rent: 900
     age_head: 66
     age_spouse: 64
     blind_head: false
@@ -44,12 +44,12 @@
   output:
     nj_property_tax_credit_eligible: true
 
-- name: Ineligible for property tax deduction but spouse is blind and paid property taxes, therefore eligible for credit.
+- name: 4 Ineligible for property tax deduction but spouse is blind and paid property taxes, therefore eligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    nj_homeowners_property_tax: 100
+    rent: 900
     age_head: 64
     age_spouse: 64
     blind_head: false
@@ -60,12 +60,12 @@
   output:
     nj_property_tax_credit_eligible: true
 
-- name: Ineligible for property tax deduction but above 65 but did not pay property taxes, therefore ineligible for credit.
+- name: 5 Ineligible for property tax deduction but above 65 but did not pay property taxes, therefore ineligible for credit.
   period: 2022
   absolute_error_margin: 0
   input:
     nj_property_tax_deduction_eligible: false
-    nj_homeowners_property_tax: 0
+    rent: 0
     age_head: 66
     age_spouse: 64
     blind_head: false
