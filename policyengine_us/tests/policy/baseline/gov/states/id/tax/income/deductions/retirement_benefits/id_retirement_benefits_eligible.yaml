@@ -1,0 +1,62 @@
+- name: Idaho retirement benefits eligible unit test 1 
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT 
+        age_head: 66
+        disabled_head: False
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_eligible: 1
+
+- name: Idaho retirement benefits eligible unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        age_head: 63
+        disabled_head: True
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_retirement_benefits_eligible: 1
+
+- name: Idaho retirement benefits eligible unit test 3
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+      person2:
+        is_tax_unit_spouse: true
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT 
+        age_head: 50
+        disabled_head: False
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ID
+  output:
+    id_retirement_benefits_eligible: 0
