@@ -1,0 +1,9 @@
+- name: SINGLE person aged 66 with 25_000 agi are eligible for the credit
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 66
+    adjusted_gross_income: 25_000
+  output:
+    co_income_qualified_senior_housing_eligible: True

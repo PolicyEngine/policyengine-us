@@ -1,18 +1,14 @@
-description: CO Income Qualified Senior Housing Income Tax Credit
+description: Adjusted Gross Income Limit for Colorado Income Qualified Senior Housing Tax Credit 
 metadata:
-  unit: currency-USD
-  type: head of household
-  label: CO Income Qualified Senior Housing Income Tax Credit
+  label: Colorado Income Qualified Senior Housing Tax Credit agi threshold
   period: year
+  unit: currency-USD
   reference:
     - title: Income Qualified Senior Housing Income Tax Credit
       href: https://tax.colorado.gov/income-qualified-senior-housing-income-tax-credit
     - title: 2022 Colorado Individual Income Tax Filing Guide
       href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17
-   
-brackets:
-  - threshold:
-      2022-01-01: 25_500
-    amount:
-      2022-01-01: 1_000
-  
+
+values:
+  2022-01-01: 75_000
+
