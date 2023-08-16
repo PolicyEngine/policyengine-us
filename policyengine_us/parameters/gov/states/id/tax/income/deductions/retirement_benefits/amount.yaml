@@ -1,4 +1,5 @@
-description: Idaho allows this amount for maximum retirement benefits deduction.
+description: Idaho allows for this maximum retirement benefits deduction amount, based on filing status.
+
 metadata:
   label: Idaho retirement benefit deduction amount
   period: year
@@ -21,3 +22,12 @@ SINGLE:
 JOINT:
   2021-01-01: 56_664
   2022-01-01: 60_210
+SEPARATE:
+  2021-01-01: 37_776
+  2022-01-01: 40_140
+WIDOW:
+  2021-01-01: 37_776
+  2022-01-01: 40_140
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 37_776
+  2022-01-01: 40_140

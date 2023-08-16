@@ -20,7 +20,7 @@ class id_retirement_benefits(Variable):
         age_threshold = p.age_eligibility
         age_threshold_disabled = p.age_eligibility_disabled
         disabled_head = tax_unit("disabled_head", period)
-        is_eligible = where(disabled_head == False, 
+        eligible = where(disabled_head == False, 
                             tax_unit("age_head", period) >= age_threshold, 
                             tax_unit("age_head", period) >= age_threshold_disabled)
 
@@ -29,10 +29,10 @@ class id_retirement_benefits(Variable):
         # Social Security benefits received amount
         ss_amt = person("social_security_retirement", period)
         # Base amount minus social Security benefits received amount
-        ded_amt = max(base_amt - ss_amt, 0)
+        ded_amt = max_(base_amt - ss_amt, 0)
         # Qualified retirement benefits included in federal income
         fi_amt = person("taxable_pension_income", period) + person("military_retirement_pay", period)
         # The smaller one
-        retire_ded_amt = min(ded_amt, fi_amt)
+        retire_ded_amt = min_(ded_amt, fi_amt)
 
-        return where(is_eligible, retire_ded_amt, 0)
+        return eligible * tax_unit.sum(retire_ded_amt)
