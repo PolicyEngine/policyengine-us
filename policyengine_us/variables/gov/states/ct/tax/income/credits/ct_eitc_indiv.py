@@ -22,5 +22,5 @@ class ct_eitc_indiv(Variable):
         separate_status = filing_status == filing_statuses.SEPARATE
         agi_separate = tax_unit("adjusted_gross_income_person", period)
         agi_joint = tax_unit("adjusted_gross_income", period)
-        agi_frac = agi_separate / agi_joint
+        agi_frac[mask] = agi_separate[mask] / agi_joint[mask]
         return amt * agi_frac
