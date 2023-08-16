@@ -20,5 +20,5 @@ class wv_social_security_deduction(Variable):
         p = parameters(
             period
         ).gov.states.wv.tax.income.subtractions.social_security_benefit
-        agi_limit = adjusted_gross_income <= p.income_limit[filing_status]
-        return where(agi_limit, social_security_benefit, 0)
+        eligible = adjusted_gross_income <= p.income_limit[filing_status]
+        return eligible * social_security_benefit
