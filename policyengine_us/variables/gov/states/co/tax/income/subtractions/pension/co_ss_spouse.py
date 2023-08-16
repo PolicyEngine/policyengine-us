@@ -17,8 +17,9 @@ class co_ss_spouse(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
-        taxable_social_security = tax_unit("taxable_social_security", period)
-        social_security_survivors = tax_unit(
+        person = tax_unit.members
+        taxable_social_security = person("taxable_social_security", period)
+        social_security_survivors = person(
             "social_security_survivors", period
         )
         age_spouse = tax_unit("age_spouse", period)

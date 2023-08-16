@@ -25,7 +25,7 @@ class co_ss_head(Variable):
         age_head = tax_unit("age_head", period)
         output = taxable_social_security
         if age_head < p.younger.age:
-            output = social_security_survivors
+            #output = social_security_survivors*("is_taxunit_head")
         elif age_head >= p.older.age:
             output = taxable_social_security
         else:

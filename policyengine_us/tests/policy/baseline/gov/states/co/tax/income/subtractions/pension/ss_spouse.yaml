@@ -1,1 +1,43 @@
+- name: Case 1, age above older threshold.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 66
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+  output:
+    co_ss_spouse: 23_000
+    # co_ss_spouse = social_security = 23_000
 
+- name: Case 2, age between younger and older threshold, exceed cap amount.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 60
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+  output:
+    co_ss_spouse: 20_000
+    # co_ss_spouse = min_(23_000, 20_000) = 20_000
+
+- name: Case 3, age between younger and older threshold, below cap amount.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 60
+    taxable_social_security: 18_000
+    social_security_survivors: 5_000
+  output:
+    co_ss_spouse: 18_000
+    # co_ss_spouse = min_(18_000, 20_000) = 18_000
+  
+- name: Case 4, age below younger threshold.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 50
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+  output:
+    co_ss_spouse: 5_000
+    # co_ss_spouse = social_security_survivors = 5_000 
