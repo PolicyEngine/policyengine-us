@@ -1,0 +1,431 @@
+description: CO Income Qualified Senior Housing Income Tax Credit threshold for single, joint and head of household filing status.
+metadata:
+  unit: currency-USD
+  type: single_amount
+  label: CO Income Qualified Senior Housing Income Tax Credit threshold for single, joint and hoh
+  period: year
+  reference:
+    - title: Income Qualified Senior Housing Income Tax Credit
+      href: https://tax.colorado.gov/income-qualified-senior-housing-income-tax-credit
+    - title: 2022 Colorado Individual Income Tax Filing Guide
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17
+
+# def printall(left_bound, initial_credit): # threshold printer function
+#     credit = initial_credit
+#     def format_number(n):
+#         return '{:_}'.format(n)
+#     while credit>=0:
+#         print("  - threshold:")
+#         print("      2022-01-01: {}".format(format_number(left_bound)))
+#         print("    amount:")
+#         print("      2022-01-01: {}".format(format_number(credit/2)))
+#         left_bound += 500
+#         credit-=10
+# printall(25500, 990)
+   
+brackets:
+  - threshold:
+      2022-01-01: -1 # included for below amount
+    amount:
+      2022-01-01: 500
+  - threshold:
+      2022-01-01: 25_500
+    amount:
+      2022-01-01: 495
+  - threshold:
+      2022-01-01: 26_000
+    amount:
+      2022-01-01: 490
+  - threshold:
+      2022-01-01: 26_500
+    amount:
+      2022-01-01: 485
+  - threshold:
+      2022-01-01: 27_000
+    amount:
+      2022-01-01: 480
+  - threshold:
+      2022-01-01: 27_500
+    amount:
+      2022-01-01: 475
+  - threshold:
+      2022-01-01: 28_000
+    amount:
+      2022-01-01: 470
+  - threshold:
+      2022-01-01: 28_500
+    amount:
+      2022-01-01: 465
+  - threshold:
+      2022-01-01: 29_000
+    amount:
+      2022-01-01: 460
+  - threshold:
+      2022-01-01: 29_500
+    amount:
+      2022-01-01: 455
+  - threshold:
+      2022-01-01: 30_000
+    amount:
+      2022-01-01: 450
+  - threshold:
+      2022-01-01: 30_500
+    amount:
+      2022-01-01: 445
+  - threshold:
+      2022-01-01: 31_000
+    amount:
+      2022-01-01: 440
+  - threshold:
+      2022-01-01: 31_500
+    amount:
+      2022-01-01: 435
+  - threshold:
+      2022-01-01: 32_000
+    amount:
+      2022-01-01: 430
+  - threshold:
+      2022-01-01: 32_500
+    amount:
+      2022-01-01: 425
+  - threshold:
+      2022-01-01: 33_000
+    amount:
+      2022-01-01: 420
+  - threshold:
+      2022-01-01: 33_500
+    amount:
+      2022-01-01: 415
+  - threshold:
+      2022-01-01: 34_000
+    amount:
+      2022-01-01: 410
+  - threshold:
+      2022-01-01: 34_500
+    amount:
+      2022-01-01: 405
+  - threshold:
+      2022-01-01: 35_000
+    amount:
+      2022-01-01: 400
+  - threshold:
+      2022-01-01: 35_500
+    amount:
+      2022-01-01: 395
+  - threshold:
+      2022-01-01: 36_000
+    amount:
+      2022-01-01: 390
+  - threshold:
+      2022-01-01: 36_500
+    amount:
+      2022-01-01: 385
+  - threshold:
+      2022-01-01: 37_000
+    amount:
+      2022-01-01: 380
+  - threshold:
+      2022-01-01: 37_500
+    amount:
+      2022-01-01: 375
+  - threshold:
+      2022-01-01: 38_000
+    amount:
+      2022-01-01: 370
+  - threshold:
+      2022-01-01: 38_500
+    amount:
+      2022-01-01: 365
+  - threshold:
+      2022-01-01: 39_000
+    amount:
+      2022-01-01: 360
+  - threshold:
+      2022-01-01: 39_500
+    amount:
+      2022-01-01: 355
+  - threshold:
+      2022-01-01: 40_000
+    amount:
+      2022-01-01: 350
+  - threshold:
+      2022-01-01: 40_500
+    amount:
+      2022-01-01: 345
+  - threshold:
+      2022-01-01: 41_000
+    amount:
+      2022-01-01: 340
+  - threshold:
+      2022-01-01: 41_500
+    amount:
+      2022-01-01: 335
+  - threshold:
+      2022-01-01: 42_000
+    amount:
+      2022-01-01: 330
+  - threshold:
+      2022-01-01: 42_500
+    amount:
+      2022-01-01: 325
+  - threshold:
+      2022-01-01: 43_000
+    amount:
+      2022-01-01: 320
+  - threshold:
+      2022-01-01: 43_500
+    amount:
+      2022-01-01: 315
+  - threshold:
+      2022-01-01: 44_000
+    amount:
+      2022-01-01: 310
+  - threshold:
+      2022-01-01: 44_500
+    amount:
+      2022-01-01: 305
+  - threshold:
+      2022-01-01: 45_000
+    amount:
+      2022-01-01: 300
+  - threshold:
+      2022-01-01: 45_500
+    amount:
+      2022-01-01: 295
+  - threshold:
+      2022-01-01: 46_000
+    amount:
+      2022-01-01: 290
+  - threshold:
+      2022-01-01: 46_500
+    amount:
+      2022-01-01: 285
+  - threshold:
+      2022-01-01: 47_000
+    amount:
+      2022-01-01: 280
+  - threshold:
+      2022-01-01: 47_500
+    amount:
+      2022-01-01: 275
+  - threshold:
+      2022-01-01: 48_000
+    amount:
+      2022-01-01: 270
+  - threshold:
+      2022-01-01: 48_500
+    amount:
+      2022-01-01: 265
+  - threshold:
+      2022-01-01: 49_000
+    amount:
+      2022-01-01: 260
+  - threshold:
+      2022-01-01: 49_500
+    amount:
+      2022-01-01: 255
+  - threshold:
+      2022-01-01: 50_000
+    amount:
+      2022-01-01: 250
+  - threshold:
+      2022-01-01: 50_500
+    amount:
+      2022-01-01: 245
+  - threshold:
+      2022-01-01: 51_000
+    amount:
+      2022-01-01: 240
+  - threshold:
+      2022-01-01: 51_500
+    amount:
+      2022-01-01: 235
+  - threshold:
+      2022-01-01: 52_000
+    amount:
+      2022-01-01: 230
+  - threshold:
+      2022-01-01: 52_500
+    amount:
+      2022-01-01: 225
+  - threshold:
+      2022-01-01: 53_000
+    amount:
+      2022-01-01: 220
+  - threshold:
+      2022-01-01: 53_500
+    amount:
+      2022-01-01: 215
+  - threshold:
+      2022-01-01: 54_000
+    amount:
+      2022-01-01: 210
+  - threshold:
+      2022-01-01: 54_500
+    amount:
+      2022-01-01: 205
+  - threshold:
+      2022-01-01: 55_000
+    amount:
+      2022-01-01: 200
+  - threshold:
+      2022-01-01: 55_500
+    amount:
+      2022-01-01: 195
+  - threshold:
+      2022-01-01: 56_000
+    amount:
+      2022-01-01: 190
+  - threshold:
+      2022-01-01: 56_500
+    amount:
+      2022-01-01: 185
+  - threshold:
+      2022-01-01: 57_000
+    amount:
+      2022-01-01: 180
+  - threshold:
+      2022-01-01: 57_500
+    amount:
+      2022-01-01: 175
+  - threshold:
+      2022-01-01: 58_000
+    amount:
+      2022-01-01: 170
+  - threshold:
+      2022-01-01: 58_500
+    amount:
+      2022-01-01: 165
+  - threshold:
+      2022-01-01: 59_000
+    amount:
+      2022-01-01: 160
+  - threshold:
+      2022-01-01: 59_500
+    amount:
+      2022-01-01: 155
+  - threshold:
+      2022-01-01: 60_000
+    amount:
+      2022-01-01: 150
+  - threshold:
+      2022-01-01: 60_500
+    amount:
+      2022-01-01: 145
+  - threshold:
+      2022-01-01: 61_000
+    amount:
+      2022-01-01: 140
+  - threshold:
+      2022-01-01: 61_500
+    amount:
+      2022-01-01: 135
+  - threshold:
+      2022-01-01: 62_000
+    amount:
+      2022-01-01: 130
+  - threshold:
+      2022-01-01: 62_500
+    amount:
+      2022-01-01: 125
+  - threshold:
+      2022-01-01: 63_000
+    amount:
+      2022-01-01: 120
+  - threshold:
+      2022-01-01: 63_500
+    amount:
+      2022-01-01: 115
+  - threshold:
+      2022-01-01: 64_000
+    amount:
+      2022-01-01: 110
+  - threshold:
+      2022-01-01: 64_500
+    amount:
+      2022-01-01: 105
+  - threshold:
+      2022-01-01: 65_000
+    amount:
+      2022-01-01: 100
+  - threshold:
+      2022-01-01: 65_500
+    amount:
+      2022-01-01: 95
+  - threshold:
+      2022-01-01: 66_000
+    amount:
+      2022-01-01: 90
+  - threshold:
+      2022-01-01: 66_500
+    amount:
+      2022-01-01: 85
+  - threshold:
+      2022-01-01: 67_000
+    amount:
+      2022-01-01: 80
+  - threshold:
+      2022-01-01: 67_500
+    amount:
+      2022-01-01: 75
+  - threshold:
+      2022-01-01: 68_000
+    amount:
+      2022-01-01: 70
+  - threshold:
+      2022-01-01: 68_500
+    amount:
+      2022-01-01: 65
+  - threshold:
+      2022-01-01: 69_000
+    amount:
+      2022-01-01: 60
+  - threshold:
+      2022-01-01: 69_500
+    amount:
+      2022-01-01: 55
+  - threshold:
+      2022-01-01: 70_000
+    amount:
+      2022-01-01: 50
+  - threshold:
+      2022-01-01: 70_500
+    amount:
+      2022-01-01: 45
+  - threshold:
+      2022-01-01: 71_000
+    amount:
+      2022-01-01: 40
+  - threshold:
+      2022-01-01: 71_500
+    amount:
+      2022-01-01: 35
+  - threshold:
+      2022-01-01: 72_000
+    amount:
+      2022-01-01: 30
+  - threshold:
+      2022-01-01: 72_500
+    amount:
+      2022-01-01: 25
+  - threshold:
+      2022-01-01: 73_000
+    amount:
+      2022-01-01: 20
+  - threshold:
+      2022-01-01: 73_500
+    amount:
+      2022-01-01: 15
+  - threshold:
+      2022-01-01: 74_000
+    amount:
+      2022-01-01: 10
+  - threshold:
+      2022-01-01: 74_500
+    amount:
+      2022-01-01: 5
+  - threshold:
+      2022-01-01: 75_000
+    amount:
+      2022-01-01: 0
+
