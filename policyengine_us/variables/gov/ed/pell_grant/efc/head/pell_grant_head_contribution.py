@@ -14,11 +14,9 @@ class pell_grant_head_contribution(Variable):
         )
         formula = person("pell_grant_formula", period).decode_to_str()
         p = parameters(period).gov.ed.pell_grant.efc.head
-        min_contribution = p.min_contribution
-        negative_rate = p.negative_rate
         positive_head_contribution = p.marginal_rate.calc(available_income)
         negative_head_contribution = max_(
-            available_income * negative_rate, min_contribution
+            available_income * p.negative_rate, p.min_contribution
         )
         total_head_contribution = where(
             available_income >= 0,

@@ -13,7 +13,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: false
+    pell_grant_simplified_formula_applies: false
 
 - name: Has Medicaid
   period: 2023
@@ -30,7 +30,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Has SSI
   period: 2023
@@ -47,7 +47,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Has WIC
   period: 2023
@@ -64,7 +64,7 @@
       tanf: 0
       spm_unit_wic: 1
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Has SNAP
   period: 2023
@@ -81,7 +81,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Has Free School Lunch
   period: 2023
@@ -98,7 +98,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Has TANF
   period: 2023
@@ -115,7 +115,7 @@
       tanf: 1
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Someone else has a benefit
   period: 2023
@@ -135,7 +135,7 @@
       tanf: 0
       spm_unit_wic: 0
   output:
-    pell_grant_simplified: true
+    pell_grant_simplified_formula_applies: true
 
 - name: Too much income
   period: 2023
@@ -152,4 +152,4 @@
       tanf: 1
       spm_unit_wic: 1
   output:
-    pell_grant_simplified: false
+    pell_grant_simplified_formula_applies: false

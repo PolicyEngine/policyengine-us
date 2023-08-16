@@ -2,7 +2,7 @@
   period: 2023
   input:
     pell_grant_efc: 0
-    cost_of_tuition: 100_000
+    cost_of_attending_college: 100_000
     pell_grant_months_in_school: 9
   output:
     pell_grant: 7_395
@@ -11,7 +11,7 @@
   period: 2023
   input:
     pell_grant_efc: 3_000
-    cost_of_tuition: 3_700
+    cost_of_attending_college: 3_700
     pell_grant_months_in_school: 9
   output:
     pell_grant: 0
@@ -20,7 +20,7 @@
   period: 2023
   input:
     pell_grant_efc: 2_000
-    cost_of_tuition: 5_000
+    cost_of_attending_college: 5_000
     pell_grant_months_in_school: 6
   output:
     pell_grant: 2000
