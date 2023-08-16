@@ -1,59 +1,71 @@
-- name: AZ credit unit test 1
+- name: Family tax credits for joint filers with 5 dependents ($30000 income)
   period: 2023
   input:
     state_code: AZ
     filing_status: JOINT
-    adjusted_gross_income: 30_000
+    az_adjusted_gross_income: 30_000
     tax_unit_dependents: 5
     is_tax_unit_head: true
     is_tax_unit_spouse: true
   output:
     az_family_tax_credit: 240
 
-- name: AZ credit unit test 2
+- name: Family tax credits for single filers without dependents ($9000 income)
   period: 2023
   input:
     state_code: AZ
     filing_status: SINGLE
-    adjusted_gross_income: 9_000
+    az_adjusted_gross_income: 9_000
     tax_unit_dependents: 0
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
     az_family_tax_credit: 40
 
-- name: AZ credit unit test 3
+- name: Family tax credits for separate couple with 2 dependents ($11000 income)
   period: 2023
   input:
     state_code: AZ
     filing_status: SEPARATE
-    adjusted_gross_income: 11_000
+    az_adjusted_gross_income: 11_000
     tax_unit_dependents: 2
     is_tax_unit_head: true
     is_tax_unit_spouse: true
   output:
     az_family_tax_credit: 0
 
-- name: AZ credit unit test 4
+- name: Family tax credits for head of household with 5 dependents ($26000 income)
   period: 2023
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 26_000
+    az_adjusted_gross_income: 26_000
     tax_unit_dependents: 5
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
     az_family_tax_credit: 240
 
-- name: AZ credit unit test 5
+- name: Family tax credits for widow with 3 dependents ($23000 income)
   period: 2023
   input:
     state_code: AZ
     filing_status: WIDOW
-    adjusted_gross_income: 23_000
+    az_adjusted_gross_income: 23_000
     tax_unit_dependents: 3
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
     az_family_tax_credit: 160
+
+- name: Family tax credits for head of household with 5 dependents (no income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_adjusted_gross_income: 0
+    tax_unit_dependents: 5
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+  output:
+    az_family_tax_credit: 240

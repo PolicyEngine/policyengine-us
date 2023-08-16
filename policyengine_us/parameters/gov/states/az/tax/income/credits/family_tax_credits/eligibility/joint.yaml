@@ -1,9 +1,8 @@
-description: Arizona provides the family tax credit for joint filers with income below this threshold.
+description: Arizona qualifies joint filers with income below this amount for the family tax credit.
 metadata:
   type: single_amount
   threshold_unit: dependent
   rate_unit: currency-USD
-  period: year
   label: Arizona family tax credit joint maximum income
   reference:
     - title: 43-1073. Family income tax credit (a) (1-4)
@@ -12,7 +11,6 @@ metadata:
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i-2D.pdf#page22
     - title: 2021 Arizona Tax Form Instructions Line50
       href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140i-2D.pdf#page21
-    #not available in tax forms
 brackets:
   - threshold:
       2021-01-01: 0
