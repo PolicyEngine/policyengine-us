@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.424.0] - 2023-08-15 18:19:47
+
+### Added
+
+- Hawaii Food/Excise Tax Credit.
+
+## [0.423.2] - 2023-08-15 17:21:08
+
+### Added
+
+- New Jersey total income variable (allowing simplification of exclusion formulas).
+
 ## [0.423.1] - 2023-08-13 16:18:26
 
 ### Fixed
@@ -4861,6 +4873,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.424.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.2...0.424.0
+[0.423.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.1...0.423.2
 [0.423.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.0...0.423.1
 [0.423.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.422.0...0.423.0
 [0.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.421.0...0.422.0
