@@ -16,12 +16,13 @@ class or_retirement_credit(Variable):
         # Line 1,  retirement income
         retirement_income = eligible * person("taxable_pension_income", period)
         total_retirement_income = tax_unit.sum(retirement_income)
-        # Line 2, federal pension income
-        federal_pension_income = eligible * person("or_pension_subtraction", period)
-        total_federal_pension_income = tax_unit.sum(federal_pension_income)
+        # Line 2, federal pension subtraction
+        federal_pension_subtraction = tax_unit(
+            "or_federal_pension_subtraction", period
+        )
         # The retiremnt income is reduced by the amount of federal pension income
         or_taxable_pension = max_(
-            total_retirement_income - total_federal_pension_income, 0
+            total_retirement_income - federal_pension_subtraction, 0
         )
         # Line 5, total Social Security
         social_security = eligible * person("social_security", period)
@@ -49,6 +50,3 @@ class or_retirement_credit(Variable):
         base_or_pension = min_(or_taxable_pension, base_credit)
         # Line 11 * 9%
         return base_or_pension * p.percentage
-
-
-#TODO: make a new "or_federal_pension_subtraction" blank variable -> reference page 84 of instructions with comment
