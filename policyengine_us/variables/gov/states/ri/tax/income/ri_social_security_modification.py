@@ -50,14 +50,16 @@ class ri_social_security_modification(Variable):
             your_social_security,
         )
 
-        percentage_social_security = where(
-            total_social_security > 0, final_ss / total_social_security, 0
+        percentage_social_security = np.zeros_like(total_social_security)
+        mask = total_social_security != 0
+        percentage_social_security[mask] = (
+            final_ss[mask] / total_social_security[mask]
         )
 
         eligible_mod_ss = age_is_eligible & status_is_eligible
         your_mod_social_security = where(
             eligible_mod_ss,
-            taxable_social_security * (percentage_social_security),
+            taxable_social_security * percentage_social_security,
             0,
         )
         eligible_spouse_mod_ss = both_age_is_eligible & status_is_eligible

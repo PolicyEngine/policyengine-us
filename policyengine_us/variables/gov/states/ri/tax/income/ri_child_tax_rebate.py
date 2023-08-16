@@ -7,7 +7,7 @@ class ri_child_tax_rebate(Variable):
     label = "Rhode Island Child Tax Rebate"
     unit = USD
     definition_period = YEAR
-    reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf"
+    reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-08/H7123Aaa_CTR_0.pdf"
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
@@ -20,20 +20,19 @@ class ri_child_tax_rebate(Variable):
 
         max_eligible = (
             income <= p.child_tax_rebates.cap[filing_status]
-            and child_count > p.child_tax_rebates.max_child
+            and child_count >= p.child_tax_rebates.max_child
         )
-        rebates_3_child = where(
-            max_eligible,
-            p.child_tax_rebates.max_child * p.child_tax_rebates.amount,
-            0,
-        )
-        eligible = (
-            income <= p.child_tax_rebates.cap[filing_status]
-            and child_count <= p.child_tax_rebates.max_child
+
+        max_rebate = p.child_tax_rebates.max_child * p.child_tax_rebates.amount
+
+        base_eligible = income <= p.child_tax_rebates.cap[filing_status]
+
+        base_rebate = where(
+            base_eligible, child_count * p.child_tax_rebates.amount, 0
         )
 
         return where(
-            eligible,
-            child_count * p.child_tax_rebates.amount,
-            rebates_3_child,
+            max_eligible,
+            max_rebate,
+            base_rebate,
         )
