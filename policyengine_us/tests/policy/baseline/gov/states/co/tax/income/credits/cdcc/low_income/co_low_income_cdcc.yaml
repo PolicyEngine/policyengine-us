@@ -11,16 +11,12 @@
         age: 12
       child_2:
         age: 13  
-    spm_units:
-      spm_unit:      
-        members: [head, spouse, child_1, child_2]
-        childcare_expenses: 1_000
     tax_units:
       tax_unit:
         members: [head, spouse, child_1, child_2]
-        adjusted_gross_income: 24_999
+        tax_unit_children: 2
         min_head_spouse_earned: 1_100
-        tax_unit_dependents: 2
+        tax_unit_childcare_expenses: 2_000
         co_low_income_cdcc_eligible: true
     households:
       household:
@@ -29,7 +25,7 @@
   output:
     co_low_income_cdcc: 250
   
-- name: 2 children, one eligible, head and spouse ineligible --agi>25_000
+- name: 2 children, one eligible, head and spouse ineligible
   period: 2022
   absolute_error_margin: 0
   input:
@@ -42,16 +38,12 @@
         age: 12
       child_2:
         age: 13  
-    spm_units:
-      spm_unit:      
-        members: [head, spouse, child_1, child_2]
-        childcare_expenses: 1_000
     tax_units:
       tax_unit:
         members: [head, spouse, child_1, child_2]
-        adjusted_gross_income: 25_001
+        tax_unit_children: 2
         min_head_spouse_earned: 1_100
-        tax_unit_dependents: 2
+        tax_unit_childcare_expenses: 2_000
         co_low_income_cdcc_eligible: false
     households:
       household:
@@ -73,16 +65,12 @@
         age: 12
       child_2:
         age: 10  
-    spm_units:
-      spm_unit:      
-        members: [head, spouse, child_1, child_2]
-        childcare_expenses: 5_000
     tax_units:
       tax_unit:
         members: [head, spouse, child_1, child_2]
-        adjusted_gross_income: 24_999
+        tax_unit_children: 2
         min_head_spouse_earned: 5_100
-        tax_unit_dependents: 2
+        tax_unit_childcare_expenses: 5_000
         co_low_income_cdcc_eligible: true
     households:
       household:
@@ -107,16 +95,12 @@
         age: 10  
       child_3:
         age: 15
-    spm_units:
-      spm_unit:      
-        members: [head, spouse, child_1, child_2, child_3]
-        childcare_expenses: 5_000
     tax_units:
       tax_unit:
         members: [head, spouse, child_1, child_2, child_3]
-        adjusted_gross_income: 24_999
+        tax_unit_children: 3
         min_head_spouse_earned: 1_000
-        tax_unit_dependents: 3
+        tax_unit_childcare_expenses: 9_000
         co_low_income_cdcc_eligible: true
     households:
       household:
@@ -140,17 +124,13 @@
         age: 17  
       child_3:
         age: 15
-    spm_units:
-      spm_unit:      
-        members: [head, spouse, child_1, child_2, child_3]
-        childcare_expenses: 5_000
     tax_units:
       tax_unit:
         members: [head, spouse, child_1, child_2, child_3]
-        adjusted_gross_income: 24_999
+        tax_unit_children: 3
         min_head_spouse_earned: 5_100
-        tax_unit_dependents: 3
-        co_low_income_cdcc_eligible: true
+        tax_unit_childcare_expenses: 9_000
+        co_low_income_cdcc_eligible: true  
     households:
       household:
         state_code: CO
