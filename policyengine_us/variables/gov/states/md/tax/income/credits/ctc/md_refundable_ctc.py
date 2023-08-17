@@ -11,10 +11,7 @@ class md_refundable_ctc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child"
     defined_for = "md_refundable_ctc_eligible"
 
-    def formula_2021(tax_unit, period, parameters):
-        return tax_unit("md_ctc", period)
-
-    def formula_2023(tax_unit, period, parameters):
+    def formula(tax_unit, period, parameters):
         md_ctc = tax_unit("md_ctc", period)
         federal_ctc = tax_unit("ctc", period)
         return max_(md_ctc - federal_ctc, 0)

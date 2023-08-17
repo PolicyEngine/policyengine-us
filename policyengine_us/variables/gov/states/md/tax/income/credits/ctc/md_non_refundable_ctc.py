@@ -11,4 +11,11 @@ class md_non_refundable_ctc(Variable):
     reference = "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child"
     defined_for = StateCode.MD
 
-    adds = ["md_ctc"]
+    def formula(tax_unit, period, parameters):
+        md_ctc = tax_unit("md_ctc", period)
+        federal_ctc = tax_unit("ctc", period)
+        if parameters(
+            period
+        ).gov.states.md.tax.income.credits.ctc.non_refundable_eligible:
+            return min_(md_ctc, federal_ctc)
+        return 0
