@@ -5,6 +5,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.426.0] - 2023-08-17 18:53:59
+
+### Added
+
+- Contributed reforms to the DC Keep Child Care Affordable Tax Credit.
+
+## [0.425.1] - 2023-08-17 18:12:58
+
+### Fixed
+
+- Misallocation of state refundable tax credit-affecting reforms' revenues.
+
+## [0.425.0] - 2023-08-17 15:19:18
+
+### Added
+
+- Oregon retirement credit.
+
+## [0.424.1] - 2023-08-17 05:29:22
+
+### Fixed
+
+- New Jersey property tax deduction/credit logic.
+
+## [0.424.0] - 2023-08-15 18:19:47
+
+### Added
+
+- Hawaii Food/Excise Tax Credit.
+
+## [0.423.2] - 2023-08-15 17:21:08
+
+### Added
+
+- New Jersey total income variable (allowing simplification of exclusion formulas).
+
+## [0.423.1] - 2023-08-13 16:18:26
+
+### Fixed
+
+- New Jersey 2021 income tax parameter values.
+
+## [0.423.0] - 2023-08-11 17:35:41
+
+### Added
+
+- North Carolina child credit.
+
+## [0.422.0] - 2023-08-10 01:19:35
+
+### Added
+
+- Add New Jersey pension/retirement and other retirement income exclusions.
+
+## [0.421.0] - 2023-08-10 01:08:32
+
+### Added
+
+- South Carolina State Tax Addback.
+
+## [0.420.1] - 2023-08-10 01:01:50
+
+### Changed
+
+- Eliminated the use of the term subtractions in the New Mexico metadata.
+
+## [0.420.0] - 2023-08-09 23:56:01
+
+### Added
+
+- Arkansas Personal Income Tax Schedule.
+
+## [0.419.0] - 2023-08-09 23:21:44
+
+### Added
+
+- Vermont main income tax rate.
+
 ## [0.418.0] - 2023-08-09 18:49:35
 
 ### Added
@@ -4819,6 +4897,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.426.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.1...0.426.0
+[0.425.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.0...0.425.1
+[0.425.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.1...0.425.0
+[0.424.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.0...0.424.1
+[0.424.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.2...0.424.0
+[0.423.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.1...0.423.2
+[0.423.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.0...0.423.1
+[0.423.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.422.0...0.423.0
+[0.422.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.421.0...0.422.0
+[0.421.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.420.1...0.421.0
+[0.420.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.420.0...0.420.1
+[0.420.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.419.0...0.420.0
+[0.419.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.418.0...0.419.0
 [0.418.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.417.3...0.418.0
 [0.417.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.417.2...0.417.3
 [0.417.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.417.1...0.417.2
