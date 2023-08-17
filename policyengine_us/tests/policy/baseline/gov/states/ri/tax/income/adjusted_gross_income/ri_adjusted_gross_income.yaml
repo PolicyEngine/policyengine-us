@@ -1,4 +1,4 @@
-- name: No modification on AGI
+- name: Joint filer with maximum tuition program contribution modification on AGI
   period: 2022
   input:
     state_code: RI
@@ -9,10 +9,12 @@
     is_tax_unit_spouse: true
     tax_unit_social_security: 0
     tax_unit_taxable_social_security: 16_150
+    investment_in_529_plan: 1_100
+    taxable_pension_income: 5_000
   output:
-    ri_agi: 200_100
+    ri_agi: 199_100
 
-- name: One child modification on AGI
+- name: One child modification and tuition program contribution subtractions on AGI
   period: 2022
   input:
     state_code: RI
@@ -23,10 +25,12 @@
     is_tax_unit_spouse: true
     tax_unit_social_security: 0
     tax_unit_taxable_social_security: 16_150
+    investment_in_529_plan: 450
+    taxable_pension_income: 5_000
   output:
-    ri_agi: 89_750
+    ri_agi: 89_300
 
-- name: Four children modification on AGI
+- name: Four children modification  maximum tuition program contribution modification on AGI
   period: 2022
   input:
     state_code: RI
@@ -37,10 +41,12 @@
     is_tax_unit_spouse: true
     tax_unit_social_security: 0
     tax_unit_taxable_social_security: 16_150
+    investment_in_529_plan: 550
+    taxable_pension_income: 5_000
   output:
-    ri_agi: 89_250
+    ri_agi: 88_750
 
-- name: Older age with eligible social security modification on AGI
+- name: Older age with eligible social security and maximum tuition program contribution modification on AGI
   period: 2022
   input:
     state_code: RI
@@ -51,5 +57,23 @@
     is_tax_unit_spouse: true
     tax_unit_social_security: 16_200
     tax_unit_taxable_social_security: 16_150
+    investment_in_529_plan: 550
+    taxable_pension_income: 1_000
   output:
-    ri_agi: 53_600
+    ri_agi: 52_100
+
+- name: Older age with eligible social security and maximum tuition program contribution on AGI
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 70_000
+    eitc_child_count: 1
+    filing_status: SEPARATE
+    age: 70
+    is_tax_unit_spouse: true
+    tax_unit_social_security: 16_200
+    tax_unit_taxable_social_security: 16_150
+    investment_in_529_plan: 300
+    taxable_pension_income: 16_000
+  output:
+    ri_agi: 38_300

@@ -9,4 +9,9 @@ class ri_subtractions(Variable):
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf"
     defined_for = StateCode.RI
-    adds = ["ri_child_tax_rebate", "ri_social_security_modification"]
+    adds = [
+        "ri_child_tax_rebate",
+        "ri_social_security_modification",
+        "ri_tuition_saving_program_contribution",
+        "ri_taxable_retirement_income",
+    ]
