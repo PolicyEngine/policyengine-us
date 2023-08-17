@@ -35,7 +35,7 @@ class md_ctc(Variable):
         md_ctc_amount = income_eligible * eligible_children * p.amount
         federal_ctc = tax_unit("ctc", period)
         return max_(md_ctc_amount - federal_ctc, 0)
-    
+
     def formula_2023(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         income_eligible = (
