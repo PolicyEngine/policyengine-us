@@ -5,7 +5,13 @@
     filing_status: SEPARATE
     adjusted_gross_income: 110_000
     spouse_adjusted_gross_income: 130_000
-    medical_expense_deduction: 500
+    medical_expense_deduction: 50
+    real_estate_taxes: 10
+    interest_deduction: 20
+    ira_contributions: 45
+    casualty_loss_deduction: 30
+    qualified_tuition_expenses: 85
+    misc_deduction: 20
   output:
     ar_itemized_deductions: 229
 

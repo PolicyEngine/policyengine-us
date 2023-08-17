@@ -11,7 +11,7 @@ class ar_itemized_deductions(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
+        p = parameters(period).gov.irs.deductions
         agi = tax_unit("adjusted_gross_income",period)
         spouse_agi = tax_unit("spouse_separate_adjusted_gross_income",period)
 
@@ -31,12 +31,13 @@ class ar_itemized_deductions(Variable):
         cl = tax_unit("casualty_loss_deduction",period) 
 
         # Post-secondary Education Tuition Deduction
+        # 50% ?
         qte = tax_unit("qualified_tuition_expenses",period)
 
         # Miscellaneous Deductions 
         misc_deduc = tax_unit("misc_deduction",period)
 
-        total_itemized_deduction = mde + + rst + ied + contri + cl + qte + misc
+        total_itemized_deduction = mde + + rst + ied + contri + cl + qte + misc_deduc
 
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)
