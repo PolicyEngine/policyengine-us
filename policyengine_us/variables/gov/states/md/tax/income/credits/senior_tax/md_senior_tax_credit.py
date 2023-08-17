@@ -33,7 +33,7 @@ class md_senior_tax_credit(Variable):
         not_single_amount = where(
             both_eligible,
             p.two_aged[filing_status],
-            p.one_aged[filing_status]),
+            p.one_aged[filing_status],
         )
         amount = where(single, single_amount, not_single_amount)
         return income_eligible * eligible * amount
