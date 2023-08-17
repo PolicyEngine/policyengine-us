@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_adjusted_gross_income(Variable):
+class az_agi(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona adjusted gross income"

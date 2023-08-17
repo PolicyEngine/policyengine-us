@@ -3,7 +3,7 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    az_adjusted_gross_income: 30_000
+    az_agi: 30_000
     tax_unit_dependents: 5
     is_tax_unit_head: true
     is_tax_unit_spouse: true
@@ -15,7 +15,7 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_adjusted_gross_income: 9_000
+    az_agi: 9_000
     tax_unit_dependents: 0
     is_tax_unit_head: true
     is_tax_unit_spouse: false
@@ -27,7 +27,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    az_adjusted_gross_income: 11_000
+    az_agi: 11_000
     tax_unit_dependents: 2
     is_tax_unit_head: true
     is_tax_unit_spouse: true
@@ -39,7 +39,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    az_adjusted_gross_income: 26_000
+    az_agi: 26_000
     tax_unit_dependents: 5
     is_tax_unit_head: true
     is_tax_unit_spouse: false
@@ -51,7 +51,7 @@
   input:
     state_code: AZ
     filing_status: WIDOW
-    az_adjusted_gross_income: 23_000
+    az_agi: 23_000
     tax_unit_dependents: 3
     is_tax_unit_head: false
     is_tax_unit_spouse: true
@@ -63,7 +63,7 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    az_adjusted_gross_income: 0
+    az_agi: 0
     tax_unit_dependents: 5
     is_tax_unit_head: true
     is_tax_unit_spouse: false

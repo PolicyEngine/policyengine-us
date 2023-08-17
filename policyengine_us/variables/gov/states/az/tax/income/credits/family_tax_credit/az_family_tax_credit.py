@@ -14,7 +14,7 @@ class az_family_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.family_tax_credits
-        income = tax_unit("az_adjusted_gross_income", period)
+        income = tax_unit("az_agi", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         dependents = tax_unit("tax_unit_dependents", period)
