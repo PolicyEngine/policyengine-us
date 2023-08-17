@@ -1,0 +1,149 @@
+- name: Two eligible children without ctc.
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 10
+        is_tax_unit_dependent: true
+        is_disabled: true
+      child_2:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 200
+        ctc: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc_2021: 1_000
+
+- name: 2021 one ineligible child and one disbaled eligible child
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: false
+      child_2:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 6_000
+        ctc: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc_2021: 500
+
+- name: 2021 no eligible children
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 6
+        is_tax_unit_dependent: true
+        is_disabled: false
+      child_2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 200
+        ctc: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc_2021: 0
+
+- name: 2021 AGI ineligible
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: false
+      child_2:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 6_001
+        ctc: 0
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc_2021: 0
+
+- name: 2021 md ctc reduced by federal ctc
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: false
+      child_2:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 6_000
+        ctc: 501
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc_2021: 0
+
+- name: 2021 md ctc partially reduced by federal ctc
+  period: 2021
+  input:
+    people:
+      head: {}
+      child_1:
+        age: 5
+        is_tax_unit_dependent: true
+        is_disabled: false
+      child_2:
+        age: 16
+        is_tax_unit_dependent: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head, child_1, child_2]
+        adjusted_gross_income: 6_000
+        ctc: 200
+    households:
+      household:
+        members: [head, child_1, child_2]
+        state_code: MD
+  output:
+    md_ctc_2021: 300

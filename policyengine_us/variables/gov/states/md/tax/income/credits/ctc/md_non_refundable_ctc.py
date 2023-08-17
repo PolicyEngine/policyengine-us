@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_non_refundbale_ctc(Variable):
+class md_non_refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Maryland non-refundable Child Tax Credit"
