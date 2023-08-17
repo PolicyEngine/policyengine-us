@@ -12,11 +12,7 @@ class md_senior_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = (
-            parameters(period)
-            .gov.states["md"]
-            .tax.income.credits.senior_tax
-        )
+        p = parameters(period).gov.states["md"].tax.income.credits.senior_tax
 
         agi = tax_unit("adjusted_gross_income", period)
         age_head = tax_unit("age_head", period)
