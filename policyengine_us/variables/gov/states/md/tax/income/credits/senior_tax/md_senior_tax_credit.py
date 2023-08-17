@@ -17,8 +17,8 @@ class md_senior_tax_credit(Variable):
             .gov.states["md"]
             .tax.income.credits.senior_tax
         )
-        agi = person("adjusted_gross_income", period)
-        total_agi = tax_unit.sum(agi)
+
+        agi = tax_unit("adjusted_gross_income", period)
         age_head = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
         filing_status = tax_unit("filing_status", period)
@@ -28,7 +28,7 @@ class md_senior_tax_credit(Variable):
         spouse_eligible = spouse_age >= p.age_eligibility
         both_eligible = head_eligible & spouse_eligible
         eligible = head_eligible | spouse_eligible
-        income_eligible = total_agi < p.amount[filing_status]
+        income_eligible = agi < p.amount[filing_status]
         single_amount = p.single[filing_status]
         not_single_amount = where(
             both_eligible,
