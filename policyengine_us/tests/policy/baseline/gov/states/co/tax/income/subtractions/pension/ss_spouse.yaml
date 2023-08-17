@@ -5,6 +5,7 @@
     age_spouse: 66
     taxable_social_security: 23_000
     social_security_survivors: 5_000
+    is_tax_unit_spouse: TRUE
   output:
     co_ss_spouse: 23_000
     # co_ss_spouse = social_security = 23_000
@@ -16,6 +17,7 @@
     age_spouse: 60
     taxable_social_security: 23_000
     social_security_survivors: 5_000
+    is_tax_unit_spouse: TRUE
   output:
     co_ss_spouse: 20_000
     # co_ss_spouse = min_(23_000, 20_000) = 20_000
@@ -27,6 +29,7 @@
     age_spouse: 60
     taxable_social_security: 18_000
     social_security_survivors: 5_000
+    is_tax_unit_spouse: TRUE
   output:
     co_ss_spouse: 18_000
     # co_ss_spouse = min_(18_000, 20_000) = 18_000
@@ -38,6 +41,7 @@
     age_spouse: 50
     taxable_social_security: 23_000
     social_security_survivors: 5_000
+    is_tax_unit_spouse: TRUE
   output:
     co_ss_spouse: 5_000
     # co_ss_spouse = social_security_survivors = 5_000 

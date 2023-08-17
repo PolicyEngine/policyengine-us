@@ -18,18 +18,27 @@ class co_pension_head(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         person = tax_unit.members
-        taxable_social_security = person("taxable_social_security", period)
-        social_security_survivors = person(
-            "social_security_survivors", period
-        )
+        taxable_pension_income = person("taxable_pension_income", period)
+        co_pension_survivors = person("co_pension_survivors", period)
+        co_ss_head = tax_unit("co_ss_head", period)
         age_head = tax_unit("age_head", period)
-        output = taxable_social_security
-        if age_head < p.younger.age:
-            output = social_security_survivors
-        elif age_head >= p.older.age:
-            output = taxable_social_security
-        else:
-            output = min_(taxable_social_security, p.younger.amount)
+        younger_condition = age_head < p.younger.age
+        older_condition = age_head >= p.older.age
+        co_pension_survivors = tax_unit.max(
+            co_pension_survivors * person("is_tax_unit_head", period)
+        )
+        head_tpi = tax_unit.max(
+            taxable_pension_income * person("is_tax_unit_head", period)
+        )
+
+        output = where(
+            younger_condition,
+            min_(max_(p.younger.amount - co_ss_head, 0), co_pension_survivors),
+            where(
+                older_condition,
+                min_(max_(p.older.amount - co_ss_head, 0), head_tpi),
+                min_(max_(p.younger.amount - co_ss_head, 0), head_tpi),
+            ),
+        )
 
         return output
-

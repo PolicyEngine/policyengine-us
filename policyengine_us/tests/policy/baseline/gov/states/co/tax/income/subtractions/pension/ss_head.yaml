@@ -5,6 +5,7 @@
     age_head: 66
     taxable_social_security: 23_000
     social_security_survivors: 5_000
+    is_tax_unit_head: TRUE
   output:
     co_ss_head: 23_000
     # co_ss_head = social_security = 23_000
@@ -16,6 +17,7 @@
     age_head: 60
     taxable_social_security: 23_000
     social_security_survivors: 5_000
+    is_tax_unit_head: TRUE
   output:
     co_ss_head: 20_000
     # co_ss_head = min_(23_000, 20_000) = 20_000
@@ -27,6 +29,7 @@
     age_head: 60
     taxable_social_security: 18_000
     social_security_survivors: 5_000
+    is_tax_unit_head: TRUE
   output:
     co_ss_head: 18_000
     # co_ss_head = min_(18_000, 20_000) = 18_000
@@ -38,6 +41,7 @@
     age_head: 50
     taxable_social_security: 23_000
     social_security_survivors: 5_000
+    is_tax_unit_head: TRUE
   output:
     co_ss_head: 5_000
     # co_ss_head = social_security_survivors = 5_000 

@@ -1,1 +1,91 @@
+- name: Case 1, age above older threshold, ss_spouse >= $24_000.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 66
+    co_ss_spouse: 24_000
+    taxable_pension_income: 23_000
+    co_pension_survivors: 5_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 0
+    # not eligible if ss_spouse >= 24_000
 
+- name: Case 2, age above older threshold, ss_spouse < $24_000.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 66
+    co_ss_spouse: 15_000
+    taxable_pension_income: 20_000
+    co_pension_survivors: 5_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 9_000
+    # min(24_000 - co_ss_spouse, taxable_pension_income) = min(24_000 - 15_000, 20_000)
+
+- name: Case 3, age between 55 and 65, ss_spouse < $20_000.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 58
+    co_ss_spouse: 15_000
+    taxable_pension_income: 20_000
+    co_pension_survivors: 3_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 5_000
+  # min(20_000 - co_ss_spouse, taxable_pension_income) = min(20_000 - 15_000, 20_000)
+
+- name: Case 4, age between 55 and 65, ss_spouse >= $20_000.
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 58
+    co_ss_spouse: 21_000
+    taxable_pension_income: 20_000
+    co_pension_survivors: 3_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 0
+  # not eligible if ss_spouse >= 20_000 when 55 < age <= 65
+
+- name: Case 5, age < 55, ss_spouse >= $20_000. .
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 53
+    co_ss_spouse: 21_000
+    taxable_pension_income: 20_000
+    co_pension_survivors: 3_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 0
+    # not eligible if ss_spouse >= 20_000 when age < 55
+
+- name: Case 6, age < 55, ss_spouse < $20_000. 
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 53
+    co_ss_spouse: 8_000
+    taxable_pension_income: 20_000
+    co_pension_survivors: 3_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 3_000
+    # min(20_000 - ss_spouse, pension_survivors) = min(20_000 - 8_000 , 3_000) 
+  
+- name: Case 7, age < 55, ss_spouse < $20_000. 
+  period: 2022
+  input:
+    state_code: CO
+    age_spouse: 53
+    co_ss_spouse: 8_000
+    taxable_pension_income: 20_000
+    co_pension_survivors: 13_000
+    is_tax_unit_spouse: TRUE
+  output:
+    co_pension_spouse: 12_000
+    # min(20_000 - ss_spouse, pension_survivors) = min(20_000 - 8_000 , 13_000) 
+  

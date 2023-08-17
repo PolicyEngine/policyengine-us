@@ -19,16 +19,23 @@ class co_ss_spouse(Variable):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         person = tax_unit.members
         taxable_social_security = person("taxable_social_security", period)
-        social_security_survivors = person(
-            "social_security_survivors", period
-        )
+        social_security_survivors = person("social_security_survivors", period)
         age_spouse = tax_unit("age_spouse", period)
-        output = taxable_social_security
-        if age_spouse < p.younger.age:
-            output = social_security_survivors
-        elif age_spouse >= p.older.age:
-            output = taxable_social_security
-        else:
-            output = min_(taxable_social_security, p.younger.amount)
+        younger_condition = age_spouse < p.younger.age
+        older_condition = age_spouse >= p.older.age
+        spouse_sss = tax_unit.max(
+            social_security_survivors * person("is_tax_unit_spouse", period)
+        )
+        spouse_tss = tax_unit.max(
+            taxable_social_security * person("is_tax_unit_spouse", period)
+        )
+
+        output = where(
+            younger_condition,
+            spouse_sss,
+            where(
+                older_condition, spouse_tss, min_(spouse_tss, p.younger.amount)
+            ),
+        )
 
         return output
