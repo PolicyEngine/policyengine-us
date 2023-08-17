@@ -2,7 +2,7 @@ description: CO Income Qualified Senior Housing Income Tax Credit threshold for 
 metadata:
   unit: currency-USD
   type: single_amount
-  label: CO Income Qualified Senior Housing Income Tax Credit threshold for single, joint and hoh
+  label: Colorado Income Qualified Senior Housing Income Tax Credit threshold for single, joint and hoh
   period: year
   reference:
     - title: Income Qualified Senior Housing Income Tax Credit
@@ -10,32 +10,11 @@ metadata:
     - title: 2022 Colorado Individual Income Tax Filing Guide
       href: https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17
 
-# def printall(left_bound, initial_credit): # threshold printer function
-#     credit = initial_credit
-#     def format_number(n):
-#         return '{:_}'.format(n)
-#     while credit>=0:
-#         print("  - threshold:")
-#         print("      2022-01-01: {}".format(format_number(left_bound)))
-#         print("    amount:")
-#         print("      2022-01-01: {}".format(format_number(credit)))
-#         left_bound += 500
-#         credit-=10
-# printall(25500, 990)
-   
 brackets:
   - threshold:
       2022-01-01: -1 # included for below amount
     amount:
       2022-01-01: 1_000
-  # - threshold:
-  #     2022-01-01: 25_500 # not included for above amount
-  #   amount:
-  #     2022-01-01: 990
-  # - threshold:
-  #     2022-01-01: 26_000
-  #   amount:
-  #     2022-01-01: 980
   - threshold:
       2022-01-01: 25_500
     amount:

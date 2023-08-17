@@ -27,29 +27,31 @@ class co_income_qualified_senior_housing_eligible(Variable):
         separate = filing_status == filing_statuses.SEPARATE
 
         age_head = tax_unit("age_head", period)
-        age_spouse = select(
-            [
-                single,
-                hoh,
-                widow,
-                separate,
-                joint,
-            ],
-            [
-                0,
-                0,
-                0,
-                tax_unit("age_spouse", period),
-                tax_unit("age_spouse", period),
-            ],
-        )
+        age_spouse = tax_unit("age_spouse", period)
+        # WILL BE DELETED LATER
+        # select(
+        #     [
+        #         single,
+        #         hoh,
+        #         widow,
+        #         separate,
+        #         joint,
+        #     ],
+        #     [
+        #         0,
+        #         0,
+        #         0,
+        #         tax_unit("age_spouse", period),
+        #         tax_unit("age_spouse", period),
+        #     ],
+        # )
 
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
 
         head_eligible = birth_year_head <= p.birth_year_limit
         spouse_eligible = birth_year_spouse <= p.birth_year_limit
-        age_eligible = bool(head_eligible) | bool(spouse_eligible)
+        age_eligible = head_eligible | spouse_eligible
 
         # Second condition (considered TRUE automatically)
         # Were you (or was your spouse) a full-year or part-year resident of Colorado for 2022?

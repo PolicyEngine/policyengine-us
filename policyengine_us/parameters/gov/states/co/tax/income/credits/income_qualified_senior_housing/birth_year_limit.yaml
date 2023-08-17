@@ -1,8 +1,8 @@
-description: Age Limit for Colorado Income Qualified Senior Housing Tax Credit 
+description: Colorado provides the Income Qualified Senior Housing Tax Credit for filers born at or before this year. 
 values:
-  # 2021-01-01:  I didn't find anything about 2021 data for this credit. "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2021.pdf"
+  2021-01-01: 0
   2022-01-01: 1957
-  2023-01-01: 1958 # if this credit still exist for age>=65
+  2023-01-01: 1958 
 metadata:
   unit: year
   label: Birth year threshold for Colorado Age Income-Qualified Senior Housing Tax Credit.

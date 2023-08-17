@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from numpy import ceil
 
 
 class co_income_qualified_senior_housing(Variable):
@@ -18,27 +19,12 @@ class co_income_qualified_senior_housing(Variable):
             period
         ).gov.states.co.tax.income.credits.income_qualified_senior_housing
         filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
         agi = tax_unit("adjusted_gross_income", period)
-
-        # in the instruction, it didn't provide any information about widown
-        # "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17"
-        # I consider widow is the same as the single, joint and hoh
-        # NEED DOUBLE CHECK FROM PAVEL
-
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                p.credit_threshold_singe_joint_hoh_widow.calc(agi),
-                p.credit_threshold_singe_joint_hoh_widow.calc(agi),
-                p.credit_threshold_separate.calc(agi),
-                p.credit_threshold_singe_joint_hoh_widow.calc(agi),
-                p.credit_threshold_singe_joint_hoh_widow.calc(agi),
-            ],
-        )
+        max_amount = p.reduction.max_amount[filing_status]
+        reduction_start = p.reduction.start
+        increment = p.reduction.increment
+        reduction_amount = p.reduction.amount[filing_status]
+        excess = max_(agi - reduction_start, 0)
+        increments = ceil(excess / increment)
+        total_reduction_amount = increments * reduction_amount
+        return max_(max_amount - total_reduction_amount, 0)
