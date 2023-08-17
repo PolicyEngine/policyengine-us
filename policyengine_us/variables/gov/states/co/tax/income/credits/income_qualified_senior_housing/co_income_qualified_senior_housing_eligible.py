@@ -28,24 +28,6 @@ class co_income_qualified_senior_housing_eligible(Variable):
 
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        # WILL BE DELETED LATER
-        # select(
-        #     [
-        #         single,
-        #         hoh,
-        #         widow,
-        #         separate,
-        #         joint,
-        #     ],
-        #     [
-        #         0,
-        #         0,
-        #         0,
-        #         tax_unit("age_spouse", period),
-        #         tax_unit("age_spouse", period),
-        #     ],
-        # )
-
         birth_year_head = period.start.year - age_head
         birth_year_spouse = period.start.year - age_spouse
 
