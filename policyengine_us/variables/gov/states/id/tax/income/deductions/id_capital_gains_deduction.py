@@ -18,8 +18,9 @@ class id_capital_gains_deduction(Variable):
         capital_gains = max_(0, add(tax_unit, period, ["capital_gains"]))
 
         # capital_gain_net_income
+
         capital_loss = tax_unit(
-            "tax_unit_capital_loss", period
+            "capital_losses", period
         )  # Idaho capital gains deduction may not be netted against gains from property qualifying for the Idaho capital gains deduction before the amount of the deduction is determined
         capital_gain_net_income = capital_gains - capital_loss
 
@@ -27,10 +28,10 @@ class id_capital_gains_deduction(Variable):
         decuctions = p.amount * capital_gains
 
         # capital gains deduction may not exceed the capital gain net income included in taxable income
-        qualified_deductions = min_(capital_gain_net_income, decuctions)
+        # qualified_deductions = min_(capital_gain_net_income, decuctions)
 
         # Ordinary Income do not qualify for the Idaho capital gains deduction
         # Gain from dispositions of certain depreciable property treated as ordinary income
 
         # Return calculated amount.
-        return qualified_deductions
+        return min_(capital_gain_net_income, decuctions)
