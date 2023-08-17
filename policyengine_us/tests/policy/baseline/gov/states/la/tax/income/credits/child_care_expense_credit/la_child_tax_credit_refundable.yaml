@@ -3,6 +3,7 @@
   input:
     la_state_child_care_credit: 50
     quality_rating_of_child_care_facility: 5
+    la_child_care_expense_credit_eligible_child: True
     state_code: LA
   output:
     la_child_tax_credit_refundable: 100
@@ -12,6 +13,7 @@
   input:
     la_state_child_care_credit: 50
     quality_rating_of_child_care_facility: 4
+    la_child_care_expense_credit_eligible_child: True
     state_code: LA
   output:
     la_child_tax_credit_refundable: 75
@@ -21,6 +23,7 @@
   input:
     la_state_child_care_credit: 50
     quality_rating_of_child_care_facility: 3
+    la_child_care_expense_credit_eligible_child: True
     state_code: LA
   output:
     la_child_tax_credit_refundable: 50
@@ -30,6 +33,7 @@
   input:
     la_state_child_care_credit: 50
     quality_rating_of_child_care_facility: 2
+    la_child_care_expense_credit_eligible_child: True
     state_code: LA
   output:
     la_child_tax_credit_refundable: 25
@@ -39,6 +43,7 @@
   input:
     la_state_child_care_credit: 50
     quality_rating_of_child_care_facility: 1
+    la_child_care_expense_credit_eligible_child: True
     state_code: LA
   output:
     la_child_tax_credit_refundable: 0

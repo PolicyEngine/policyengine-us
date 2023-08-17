@@ -1,18 +1,27 @@
 - name: LA child care expense tax credit eligible children test 1
   period: 2021
   input:
-   la_child_care_expense_credit_eligible_child: 5
-   la_child_expense_tax_credit: 50
+   age: 5
+   is_tax_unit_dependent: True
    state_code: LA
   output:
-   la_child_expense_tax_credit: 50
+   la_child_care_expense_credit_eligible_child: True
 
 - name: LA child care expense tax credit eligible children test 2
   period: 2021
   input:
-   la_child_care_expense_credit_eligible_child: 7
-   la_child_expense_tax_credit: 50
+   age: 7
+   is_tax_unit_dependent: True
    state_code: LA
   output:
-   la_child_expense_tax_credit: 0
+   la_child_care_expense_credit_eligible_child: False
+
+- name: LA child care expense tax credit eligible children test 3
+  period: 2021
+  input:
+   age: 5
+   is_tax_unit_dependent: False
+   state_code: LA
+  output:
+   la_child_care_expense_credit_eligible_child: False
    
