@@ -13,7 +13,46 @@ class md_ctc(Variable):
     )
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
-        ctc_2021 = tax_unit("md_ctc_2021", period)
-        ctc_2023 = tax_unit("md_ctc_2023", period)
-        return where(period.start.year >= 2023, ctc_2023, ctc_2021)
+    def formula_2021(tax_unit, period, parameters):
+        p = parameters(period).gov.states.md.tax.income.credits.ctc
+        income_eligible = (
+            tax_unit("adjusted_gross_income", period) <= p.agi_cap
+        )
+        person = tax_unit.members
+        dependent = person("is_tax_unit_dependent", period)
+        disabled = person("is_disabled", period)
+        meets_disabled_age_limit = (
+            person("age", period) < p.age_threshold.disabled
+        )
+        eligible_disabled_child = (
+            dependent & disabled & meets_disabled_age_limit
+        )
+        eligible_child = dependent & (
+            person("age", period) < p.age_threshold.main
+        )
+        eligible = eligible_disabled_child | eligible_child
+        eligible_children = tax_unit.sum(eligible)
+        md_ctc_amount = income_eligible * eligible_children * p.amount
+        federal_ctc = tax_unit("ctc", period)
+        return max_(md_ctc_amount - federal_ctc, 0)
+    
+    def formula_2023(tax_unit, period, parameters):
+        p = parameters(period).gov.states.md.tax.income.credits.ctc
+        income_eligible = (
+            tax_unit("adjusted_gross_income", period) <= p.agi_cap
+        )
+        person = tax_unit.members
+        dependent = person("is_tax_unit_dependent", period)
+        disabled = person("is_disabled", period)
+        meets_disabled_age_limit = (
+            person("age", period) < p.age_threshold.disabled
+        )
+        eligible_disabled_child = (
+            dependent & disabled & meets_disabled_age_limit
+        )
+        eligible_child = dependent & (
+            person("age", period) < p.age_threshold.main
+        )
+        eligible = eligible_disabled_child | eligible_child
+        eligible_children = tax_unit.sum(eligible)
+        return income_eligible * eligible_children * p.amount
