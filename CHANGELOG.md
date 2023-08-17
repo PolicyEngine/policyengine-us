@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.426.0] - 2023-08-17 18:53:59
+
+### Added
+
+- Contributed reforms to the DC Keep Child Care Affordable Tax Credit.
+
+## [0.425.1] - 2023-08-17 18:12:58
+
+### Fixed
+
+- Misallocation of state refundable tax credit-affecting reforms' revenues.
+
+## [0.425.0] - 2023-08-17 15:19:18
+
+### Added
+
+- Oregon retirement credit.
+
 ## [0.424.1] - 2023-08-17 05:29:22
 
 ### Fixed
@@ -4879,6 +4897,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.426.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.1...0.426.0
+[0.425.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.0...0.425.1
+[0.425.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.1...0.425.0
 [0.424.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.0...0.424.1
 [0.424.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.2...0.424.0
 [0.423.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.1...0.423.2
