@@ -7,6 +7,7 @@ class de_elderly_or_disabled_income_exclusion(Variable):
     label = "Delaware aged or disabled exclusion"
     unit = USD
     definition_period = YEAR
+    reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-01_PaperInteractive.pdf#page=1"
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
@@ -51,7 +52,6 @@ class de_elderly_or_disabled_income_exclusion(Variable):
             head_eligible,
         )
 
-        # reference for the Line 10 result, https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-01_PaperInteractive.pdf#page=1
         pre_exclusions_agi = tax_unit("de_pre_exclusions_agi", period)
         agi_eligible = (
             pre_exclusions_agi <= p.eligibility.agi_limit[filing_status]
