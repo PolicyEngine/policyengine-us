@@ -47,7 +47,6 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
                 ]
                 income_over_threshold = max_(agi - threshold, 0)
                 phase_out_rate = reform_parameters.phase_out.rate
-                print("phase_out_rate", phase_out_rate)
                 phase_out_amount = income_over_threshold * phase_out_rate
 
                 return max_(0, amount_covered - phase_out_amount)
@@ -88,7 +87,10 @@ def create_dc_kccatc_reform(parameters, period, bypass=False):
         def apply(self):
             self.update_variable(dc_kccatc)
 
-    if parameters(period).gov.contrib.dc_kccatc.active or bypass:
+    if bypass or parameters(period).gov.contrib.dc_kccatc.active:
         return reform
     else:
         return None
+
+
+dc_kccatc_reform = create_dc_kccatc_reform(None, None, True)
