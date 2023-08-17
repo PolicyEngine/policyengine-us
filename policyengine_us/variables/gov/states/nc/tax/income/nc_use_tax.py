@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nc_use_tax(variable):
+class nc_use_tax(Variable):
     value_type = float
     entity = TaxUnit
     label = "NC use tax"
