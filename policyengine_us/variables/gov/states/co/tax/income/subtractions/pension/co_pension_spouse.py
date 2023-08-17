@@ -30,7 +30,7 @@ class co_pension_spouse(Variable):
         spouse_tpi = tax_unit.max(
             taxable_pension_income * person("is_tax_unit_spouse", period)
         )
-
+        # same as co_pension_head
         output = where(
             younger_condition,
             min_(

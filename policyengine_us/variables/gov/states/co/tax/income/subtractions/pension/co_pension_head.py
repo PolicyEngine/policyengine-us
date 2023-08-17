@@ -33,10 +33,16 @@ class co_pension_head(Variable):
 
         output = where(
             younger_condition,
+            # subtract $20,000 minus any amount entered on line 3(co_ss_head), or co_pension_survivors, whichever is smaller.
+            # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
             min_(max_(p.younger.amount - co_ss_head, 0), co_pension_survivors),
             where(
                 older_condition,
+                # subtract $24,000 minus any amount entered on line 3(co_ss_head), or taxable_pension_income, whichever is smaller.
+                # if the amount on line 3 of this form is greater than $24,000, you may not claim any subtraction.
                 min_(max_(p.older.amount - co_ss_head, 0), head_tpi),
+                # subtract $20,000 minus any amount entered on line 3(co_ss_head), or taxable_pension_income, whichever is smaller.
+                # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
                 min_(max_(p.younger.amount - co_ss_head, 0), head_tpi),
             ),
         )
