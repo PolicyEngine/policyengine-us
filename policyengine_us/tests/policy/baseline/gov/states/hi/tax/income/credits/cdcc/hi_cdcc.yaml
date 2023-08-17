@@ -1,0 +1,9 @@
+- name: test
+  period: 2022
+  input:
+    adjusted_gross_income: 1_000
+    filing_status: SINGLE
+    exemptions: 3
+    state_code: HI
+  output:
+    hi_cdcc: 25
