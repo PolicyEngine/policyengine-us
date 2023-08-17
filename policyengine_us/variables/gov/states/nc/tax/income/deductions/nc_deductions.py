@@ -13,5 +13,5 @@ class nc_deductions(Variable):
     def formula(tax_unit, period, parameters):
         return max_(
             tax_unit("nc_itemized_deductions", period),
-            tax_unit("nc_standard_deductions", period),
+            tax_unit("nc_standard_deduction", period),
         )

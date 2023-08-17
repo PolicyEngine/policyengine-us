@@ -1,4 +1,4 @@
-description: North Carolina Standard Deductions, depending on filling status.
+description: North Carolina provides the following standard deduction amount, depending on filling status.
 metadata:
   lable: North Caroliona Standard Deduction
   period: year
@@ -8,14 +8,20 @@ metadata:
   reference: 
     - title: North Carolina Department of Revenue
       href: https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions 
-
+    - title: 2021 D-401 Individual Income Tax Instructions
+      href: https://www.ncdor.gov/2021-d-401-instruction-bookletpdf/open
 SINGLE:
-  2023-01-01: 12_750
+  2021-01-01: 10_750
+  2022-01-01: 12_750
 JOINT:
-  2023-01-01: 25_500
+  2021-01-01: 21_500
+  2022-01-01: 25_500
 WIDOW:
-  2023-01-01: 25_500
+  2021-01-01: 21_500
+  2022-01-01: 25_500
 HEAD_OF_HOUSEHOLD:
-  2023-01-01: 19_125
+  2021-01-01: 16_125
+  2022-01-01: 19_125
 SEPARATE:
-  2023-01-01: 12_750
+  2021-01-01: 10_750
+  2022-01-01: 12_750
