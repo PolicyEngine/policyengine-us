@@ -1,7 +1,7 @@
 - name: Eligible household renters
   period: 2021
   input:
-    state_code: HI
+    #state_code: HI
     adjusted_gross_income: 29_000
     rents: 1_100
   output:
@@ -10,7 +10,7 @@
 - name: Uneligible household renters (over adjusted gross income threshold)
   period: 2021
   input:
-    state_code: HI
+    #state_code: HI
     adjusted_gross_income: 31_000
     rents: 1_100
   output:
@@ -19,7 +19,7 @@
 - name: Uneligible household renters (below rent payment threshold)
   period: 2021
   input:
-    state_code: HI
+    #state_code: HI
     adjusted_gross_income: 29_000
     rents: 900
   output:
@@ -28,7 +28,7 @@
 - name: Uneligible household renters (neither condition unsatisfied)
   period: 2021
   input:
-    state_code: HI
+    #state_code: HI
     adjusted_gross_income: 32_000
     rents: 900
   output:

@@ -7,7 +7,7 @@ class hi_low_income_household_renters_tax_credit(Variable):
     label = "Hawaii low income household renters tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.HI
+    defined_for = "hi_lihrtc_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
