@@ -9,7 +9,7 @@ class pell_grant_simplified_formula_applies(Variable):
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
-        head_income = tax_unit("pell_grant_head_income", period)
+        head_income = tax_unit("pell_grant_primary_income", period)
         p = parameters(period).gov.ed.pell_grant.efc.simplified
         income_eligible = head_income < p.income_limit
         total_benefits = add(tax_unit, period, p.benefits)

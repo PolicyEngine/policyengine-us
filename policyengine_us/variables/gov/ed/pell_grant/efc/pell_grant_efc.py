@@ -12,7 +12,7 @@ class pell_grant_efc(Variable):
         dependent_contribution = person(
             "pell_grant_dependent_contribution", period
         )
-        head_income = person.tax_unit("pell_grant_head_income", period)
+        head_income = person.tax_unit("pell_grant_primary_income", period)
         formula = person("pell_grant_formula", period).decode_to_str()
         zero_efc_max = parameters(period).gov.ed.pell_grant.efc.automatic_zero
         automatic_zero = head_income <= zero_efc_max
