@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_retirement_benefits_eligible: 1
+    id_retirement_benefits_eligible: true
 
 - name: Idaho retirement benefits eligible unit test 2
   period: 2022
@@ -36,7 +36,7 @@
         members: [person1]
         state_code: ID
   output:
-    id_retirement_benefits_eligible: 1
+    id_retirement_benefits_eligible: true
 
 - name: Idaho retirement benefits eligible unit test 3
   period: 2022
@@ -59,4 +59,4 @@
         members: [person1, person2, person3]
         state_code: ID
   output:
-    id_retirement_benefits_eligible: 0
+    id_retirement_benefits_eligible: false
