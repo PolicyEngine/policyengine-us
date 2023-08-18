@@ -1,7 +1,6 @@
 - name: Both Aged Exemptions (credit less than tax)
   period: 2021
   input:
-    state_code: HI
     hi_income_tax_before_credits: 200
     age_head: 66
     age_spouse: 66
@@ -12,7 +11,6 @@
 - name: Both Aged Exemptions (credit more than tax)
   period: 2021
   input:
-    state_code: HI
     hi_income_tax_before_credits: 100
     age_head: 66
     age_spouse: 66
@@ -23,7 +21,6 @@
 - name: Either Aged Exemptions
   period: 2021
   input:
-    state_code: HI
     hi_income_tax_before_credits: 200
     age_head: 64
     age_spouse: 66
@@ -34,7 +31,6 @@
 - name: Neither Aged Exemptions
   period: 2021
   input:
-    state_code: HI
     hi_income_tax_before_credits: 120
     age_head: 63
     age_spouse: 63
