@@ -6,9 +6,10 @@
     standard_deduction: 2_500
     nm_medical_care_expense_deduction: 500
     nm_net_capital_gains_deduction: 300
+    nm_deduction_for_certain_dependents: 1_000
     state_code: NM
   output:
-    nm_deductions: 1_800
+    nm_deductions: 2_800
 
 - name: New Mexico deductions - standard
   period: 2021

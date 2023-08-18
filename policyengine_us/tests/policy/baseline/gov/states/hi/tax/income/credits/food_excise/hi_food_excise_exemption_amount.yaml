@@ -1,0 +1,187 @@
+- name: SINGLE, under 5_000, 3 exemption, 1 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 19
+        is_child: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions: 3
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_exemption_amount: 220
+
+- name: SINGLE, under 5_000, 3 exemption, 2 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 17
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 4_000
+        filing_status: SINGLE
+        exemptions: 3
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_exemption_amount: 110
+
+- name: JOINT, over 30_000, 3 exemption, 2 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 17
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 35_000
+        filing_status: JOINT
+        exemptions: 3
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_exemption_amount: 45
+
+- name: JOINT, over 50_000, 3 exemption, 1 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 18
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 55_000
+        filing_status: JOINT
+        exemptions: 3
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_exemption_amount: 0
+
+- name: JOINT, over 30_000, 4 exemption, 2 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 17
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 35_000
+        filing_status: JOINT
+        exemptions: 4
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_exemption_amount: 90
+
+- name: SEPARATE, over 40_000, 3 exemption, 2 minor child (received more than half)
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 3
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+      person2:
+        age: 39
+        is_child: false
+      person3:
+        age: 17
+        is_child: true
+        child_support_received: 400
+        social_security_survivors: 100
+        tanf_person: 401
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 45_000
+        filing_status: SEPARATE
+    households:
+      household: 
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    hi_food_excise_exemption_amount: 35

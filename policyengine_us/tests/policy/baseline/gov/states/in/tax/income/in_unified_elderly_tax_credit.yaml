@@ -1,0 +1,123 @@
+- name: in_unified_elderly_credit unit test 1
+  period: 2022
+  input:
+    adjusted_gross_income: 900
+    age_head: 64
+    age_spouse: 64    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 0
+
+- name: in_unified_elderly_credit unit test 2
+  period: 2022
+  input:
+    adjusted_gross_income: 900
+    age_head: 65
+    age_spouse: 64    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 100
+
+- name: in_unified_elderly_credit unit test 3
+  period: 2022
+  input:
+    adjusted_gross_income: 900
+    age_head: 65
+    age_spouse: 65    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 140
+
+- name: in_unified_elderly_credit unit test 4
+  period: 2022
+  input:
+    adjusted_gross_income: 2_900
+    age_head: 65
+    age_spouse: 65    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 90
+
+- name: in_unified_elderly_credit unit test 5
+  period: 2022
+  input:
+    adjusted_gross_income: 9_900
+    age_head: 65
+    age_spouse: 65    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 80
+
+- name: in_unified_elderly_credit unit test 6
+  period: 2021
+  input:
+    adjusted_gross_income: 900
+    age_head: 65
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 100
+
+- name: in_unified_elderly_credit unit test 7
+  period: 2021
+  input:
+    adjusted_gross_income: 2_900
+    age_head: 65
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 50
+
+- name: in_unified_elderly_credit unit test 8
+  period: 2021
+  input:
+    adjusted_gross_income: 9_900
+    age_head: 65
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 40
+
+- name: in_unified_elderly_credit unit test 4
+  period: 2022
+  input:
+    adjusted_gross_income: 2_900
+    age_head: 65
+    age_spouse: 65    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 90
+
+- name: in_unified_elderly_credit unit test 5
+  period: 2022
+  input:
+    adjusted_gross_income: 9_900
+    age_head: 65
+    age_spouse: 65    
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 80
+
+- name: in_unified_elderly_credit unit test 6
+  period: 2021
+  input:
+    adjusted_gross_income: 900
+    age_head: 65
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 100
+
+- name: in_unified_elderly_credit unit test 7
+  period: 2021
+  input:
+    adjusted_gross_income: 2_900
+    age_head: 65
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 50
+
+- name: in_unified_elderly_credit unit test 8
+  period: 2021
+  input:
+    adjusted_gross_income: 9_900
+    age_head: 65
+    state_code: IN
+  output:
+    in_unified_elderly_tax_credit: 40
