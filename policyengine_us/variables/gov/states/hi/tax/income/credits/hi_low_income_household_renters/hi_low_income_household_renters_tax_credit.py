@@ -14,9 +14,9 @@ class hi_low_income_household_renters_tax_credit(Variable):
 
         tax_before_credit = tax_unit("hi_income_tax_before_credits", period)
         # Aged extra exemptions
-        aged_head = (
-            tax_unit("age_head", period) >= p.threshold.age
-        ).astype(int)
+        aged_head = (tax_unit("age_head", period) >= p.threshold.age).astype(
+            int
+        )
         aged_spouse = (
             tax_unit("age_spouse", period) >= p.threshold.age
         ).astype(int)
