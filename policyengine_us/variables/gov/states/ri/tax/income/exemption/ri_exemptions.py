@@ -17,11 +17,11 @@ class ri_exemptions(Variable):
         exemptions = tax_unit("exemptions", period)
 
         exemption_amount = exemptions * p.amount
-        
-        #Modified Federal AGI
-        agi = tax_unit("ri_agi", period)
 
-        excess_agi = max_(0, agi - p.reduction.start)
+        # Modified Federal AGI
+        mod_agi = tax_unit("ri_agi", period)
+
+        excess_agi = max_(0, mod_agi - p.reduction.start)
 
         increments = ceil(excess_agi / p.reduction.increment)
 
