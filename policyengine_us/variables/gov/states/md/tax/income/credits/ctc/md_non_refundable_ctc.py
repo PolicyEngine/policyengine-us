@@ -17,5 +17,7 @@ class md_non_refundable_ctc(Variable):
         if parameters(
             period
         ).gov.states.md.tax.income.credits.ctc.non_refundable_eligible:
+            md_ctc = tax_unit("md_ctc", period)
+            federal_ctc = tax_unit("ctc", period)
             return min_(md_ctc, federal_ctc)
         return 0
