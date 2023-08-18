@@ -18,7 +18,7 @@ class ga_standard_deduction(Variable):
         p = parameters(period).gov.states.ga.tax.income.deductions.standard
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        base = p.base_amount[filing_status]
+        base = p.amount[filing_status]
         # Head gets extra standard deduction if aged and/or blind.
         age_head = tax_unit("age_head", period)
         eligible_aged_head = age_head >= p.aged.age_eligible
