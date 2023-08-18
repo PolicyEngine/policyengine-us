@@ -15,4 +15,8 @@ class hi_lihrtc_eligible(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         rents = add(tax_unit, period, ["rent"])
         print(rents > p.threshold.rent)
-        return (rents > p.threshold.rent) & (agi < p.threshold.agi) & ~dependent_on_another_return
+        return (
+            (rents > p.threshold.rent)
+            & (agi < p.threshold.agi)
+            & ~dependent_on_another_return
+        )
