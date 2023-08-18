@@ -11,8 +11,7 @@ class hi_lihrtc_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
-
         agi = tax_unit("adjusted_gross_income", period)
-        rents = tax_unit("rents", period)
-
+        rents = add(tax_unit, period, ["rent"])
+        print(rents > p.threshold.rent)
         return (rents > p.threshold.rent) & (agi < p.threshold.agi)

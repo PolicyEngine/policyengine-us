@@ -3,7 +3,7 @@
   input:
     state_code: HI
     adjusted_gross_income: 29_000
-    rents: 1_100
+    rent: 1_100
   output:
     hi_lihrtc_eligible: true
 
@@ -12,7 +12,7 @@
   input:
     state_code: HI
     adjusted_gross_income: 31_000
-    rents: 1_100
+    rent: 1_100
   output:
     hi_lihrtc_eligible: false
 
@@ -21,7 +21,7 @@
   input:
     state_code: HI
     adjusted_gross_income: 29_000
-    rents: 900
+    rent: 900
   output:
     hi_lihrtc_eligible: false
 
@@ -30,6 +30,6 @@
   input:
     state_code: HI
     adjusted_gross_income: 32_000
-    rents: 900
+    rent: 900
   output:
     hi_lihrtc_eligible: false

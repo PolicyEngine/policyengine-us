@@ -5,6 +5,7 @@
     age_head: 66
     age_spouse: 66
     exemptions: 1
+    hi_lihrtc_eligible: true
   output:
     hi_low_income_household_renters_tax_credit: 150
 
@@ -15,6 +16,7 @@
     age_head: 66
     age_spouse: 66
     exemptions: 1
+    hi_lihrtc_eligible: true
   output:
     hi_low_income_household_renters_tax_credit: 100
 
@@ -25,6 +27,7 @@
     age_head: 64
     age_spouse: 66
     exemptions: 1
+    hi_lihrtc_eligible: true
   output:
     hi_low_income_household_renters_tax_credit: 100
 
@@ -35,5 +38,17 @@
     age_head: 63
     age_spouse: 63
     exemptions: 1
+    hi_lihrtc_eligible: true
   output:
     hi_low_income_household_renters_tax_credit: 50
+
+- name: Ineligible
+  period: 2021
+  input:
+    hi_income_tax_before_credits: 120
+    age_head: 63
+    age_spouse: 63
+    exemptions: 1
+    hi_lihrtc_eligible: false
+  output:
+    hi_low_income_household_renters_tax_credit: 0
