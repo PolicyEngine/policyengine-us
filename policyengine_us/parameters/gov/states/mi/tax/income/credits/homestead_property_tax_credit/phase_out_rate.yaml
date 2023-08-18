@@ -1,4 +1,4 @@
-description: Michigan provides the following percentage of the homestead property tax credit based on the filers household resources.
+description: Michigan allows for following homestead property tax credit percentage, based on the filers household resources.
 brackets:
   - threshold:
       2016-01-01: 0
@@ -81,9 +81,9 @@ metadata:
   threshold_unit: currency-USD
   period: year
 
-  label: Homestead Property Tax Credit household resources percentage Phase Out
+  label: Homestead Property Tax Credit phase out rate
   reference:
-    - title: MI-1040 Instructions
+    - title: 2022 MI-1040 Instructions
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=26
     - title: Michigan Income Tax Act 206.520 - (8)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-520

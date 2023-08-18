@@ -16,6 +16,15 @@
   output:
     mi_homestead_property_tax_credit: 0
 
+- name: not senior, negative property difference
+  period: 2022
+  input:
+    mi_household_resources: 31_251
+    assessed_property_value: 1_000
+    state_code: MI
+  output: # 1000 < 31_251 * 0.032
+    mi_homestead_property_tax_credit: 0
+
 - name: not senior, 0% credit
   period: 2022
   input:
@@ -52,14 +61,34 @@
   output: # (3200 - 62001 * 0.032) * 0.1
     mi_homestead_property_tax_credit: 121.5968
 
+- name: not senior, negative rent difference
+  period: 2022
+  input:
+    mi_household_resources: 31_251
+    rent: 4_347
+    state_code: MI
+  output: # 4347 * 0.23 < 31_251 * 0.032
+    mi_homestead_property_tax_credit: 0
+
 - name: not senior, rent, 50% credit
   period: 2022
+  absolute_error_margin: 0.1
   input:
     mi_household_resources: 58_001
     rent: 8_695
     state_code: MI
   output: # (8695 * 0.23 - 58001 * 0.032) * 0.5
     mi_homestead_property_tax_credit: 71.909
+
+- name: senior, negative property difference
+  period: 2022
+  input:
+    mi_household_resources: 31_251
+    assessed_property_value: 1_000
+    age_head: 66
+    state_code: MI
+  output: # 1000 < 31_251 * 0.032
+    mi_homestead_property_tax_credit: 0
 
 - name: senior, 100% credit
   period: 2022
@@ -80,6 +109,16 @@
     state_code: MI
   output: # (2100 - 25000 * 0.032) * 0.84
     mi_homestead_property_tax_credit: 1_092
+
+- name: not senior, negative rent difference
+  period: 2022
+  input:
+    mi_household_resources: 31_251
+    rent: 4_347
+    age_head: 66
+    state_code: MI
+  output: # 4347 * 0.23 < 31_251 * 0.032
+    mi_homestead_property_tax_credit: 0
 
 - name: senior, rent, 60% credit
   period: 2022

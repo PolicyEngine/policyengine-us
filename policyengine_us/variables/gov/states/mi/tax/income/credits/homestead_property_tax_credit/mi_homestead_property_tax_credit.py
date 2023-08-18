@@ -16,55 +16,27 @@ class mi_homestead_property_tax_credit(Variable):
 
         total_household_resources = tax_unit("mi_household_resources", period)
 
-        # disabled
-        disabled_people = add(tax_unit, period, ["is_disabled"])
-        non_refundable_percentage = where(
-            disabled_people > 0,
-            p.disabled.not_refundable_percentage.calc(
-                total_household_resources
-            ),
-            p.not_refundable_percentage,
-        )
-
         # seniors
         age_older = tax_unit("age_head", period)
-        non_refundable_percentage = where(
+        phase_out_rate = where(
             age_older >= p.senior.min_age,
-            p.senior.not_refundable_percentage.calc(total_household_resources),
-            p.not_refundable_percentage,
-        )
-        phase_out_percentage = where(
-            age_older >= p.senior.min_age,
-            p.senior.phase_out_percentage.calc(total_household_resources),
-            p.phase_out_percentage.calc(total_household_resources),
+            p.senior.phase_out_rate.calc(total_household_resources),
+            p.phase_out_rate.calc(total_household_resources),
         )
 
         property_value = add(tax_unit, period, ["assessed_property_value"])
         rents = add(tax_unit, period, ["rent"])
-        non_refundable_amount = (
-            total_household_resources * non_refundable_percentage
+        refundable_amount = tax_unit(
+            "mi_homestead_property_tax_credit_refundable", period
         )
 
-        # eligibility
-        rent_eligibility = rents * p.rent_percentage > non_refundable_amount
-        property_eligibility = (property_value > non_refundable_amount) & (
-            property_value < p.max_property_value
-        )
         eligibility = where(
             rents > 0,
-            rent_eligibility,
-            property_eligibility,
-        )
-
-        # difference
-        rent_difference = rents * p.rent_percentage - non_refundable_amount
-        property_difference = property_value - non_refundable_amount
-        difference = where(
-            rents > 0,
-            rent_difference,
-            property_difference,
+            refundable_amount > 0,
+            (refundable_amount > 0) & (property_value < p.max_property_value),
         )
 
         return min_(
-            eligibility * difference * phase_out_percentage, p.max_amount
+            eligibility * refundable_amount * phase_out_rate,
+            p.max_amount,
         )
