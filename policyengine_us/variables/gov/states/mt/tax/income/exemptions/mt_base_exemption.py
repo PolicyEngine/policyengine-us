@@ -12,8 +12,4 @@ class mt_base_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
-        person = tax_unit.members
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        person = tax_unit.members
-        return (tax_unit.sum(head) + tax_unit.sum(spouse)) * p.amount
+        return p.amount * tax_unit("head_spouse_count", period)
