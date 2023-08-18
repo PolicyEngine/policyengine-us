@@ -19,4 +19,6 @@ class hi_lihrtc_eligible(Variable):
 
         agi_eligible = agi < p.threshold.agi
 
-        return agi_eligible & rent_eligible
+        hi_lihrtc_eligibility = agi_eligible & rent_eligible
+
+        return hi_lihrtc_eligibility

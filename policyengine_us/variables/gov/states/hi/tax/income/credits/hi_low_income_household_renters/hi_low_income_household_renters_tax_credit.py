@@ -26,5 +26,6 @@ class hi_low_income_household_renters_tax_credit(Variable):
 
         total_exemptions = exemptions + aged_exemptions
         credit_amount = p.base * total_exemptions
+        hi_low_income_household_renters_tax_credit = min_(credit_amount, tax_before_credit)
 
-        return min_(credit_amount, tax_before_credit)
+        return hi_low_income_household_renters_tax_credit
