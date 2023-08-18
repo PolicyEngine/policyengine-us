@@ -1,9 +1,8 @@
-- name: Single household with $1,000 income and no add back, exemptions or credits
+- name: Single household with $1,000 income and no add back or credits
   period: 2022
   input:
     state_code: CT
-    ct_agi: 1_000
-    ct_personal_exemptions: 0
+    ct_taxable_income: 1_000
     filing_status: SINGLE
     ct_income_tax_phase_out_add_back: 0
     ct_income_tax_recapture: 0
@@ -11,12 +10,11 @@
   output:
     ct_income_tax_after_personal_credits: 30
 
-- name: Separate household with $20,000 income with some add back, no exemptions or credits
+- name: Separate household with $20,000 income with some add back, no credits
   period: 2022
   input:
     state_code: CT
-    ct_agi: 20_000
-    ct_personal_exemptions: 0
+    ct_taxable_income: 20_000
     filing_status: SEPARATE
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200
@@ -24,38 +22,11 @@
   output:
     ct_income_tax_after_personal_credits: 1_100
 
-- name: Exemptions over AGI with add-back and recapture
-  period: 2022
-  input:
-    state_code: CT
-    ct_agi: 20_000
-    ct_personal_exemptions: 25_000
-    filing_status: SEPARATE
-    ct_income_tax_phase_out_add_back: 100
-    ct_income_tax_recapture: 200
-    ct_personal_credits: 0
-  output:
-    ct_income_tax_after_personal_credits: 300
-
-- name: Exemptions over AGI without add-back and recapture
-  period: 2022
-  input:
-    state_code: CT
-    ct_agi: 20_000
-    ct_personal_exemptions: 20_000
-    filing_status: SEPARATE
-    ct_income_tax_phase_out_add_back: 0
-    ct_income_tax_recapture: 0
-    ct_personal_credits: 0
-  output:
-    ct_income_tax_after_personal_credits: 0
-
 - name: Same as test 2 but credit of 0.2
   period: 2022
   input:
     state_code: CT
-    ct_agi: 20_000
-    ct_personal_exemptions: 0
+    ct_taxable_income: 20_000
     filing_status: SEPARATE
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200
@@ -67,8 +38,7 @@
   period: 2022
   input:
     state_code: CT
-    ct_agi: 40_000
-    ct_personal_exemptions: 0
+    ct_taxable_income: 40_000
     filing_status: WIDOW
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200

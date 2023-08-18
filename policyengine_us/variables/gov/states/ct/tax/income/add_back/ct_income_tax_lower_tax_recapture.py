@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
 class ct_income_tax_lower_tax_recapture(Variable):
@@ -17,8 +16,8 @@ class ct_income_tax_lower_tax_recapture(Variable):
         reduction_start = p.start[filing_status]
         max_amount = p.max_amount[filing_status]
         increment = p.increment[filing_status]
-        reduction_amount = p.amount[filing_status]
+        reduction_per_increment = p.amount[filing_status]
         excess = max_(income - reduction_start, 0)
-        increments = ceil(excess / increment)
-        amount = increments * reduction_amount
+        increments = np.ceil(excess / increment)
+        amount = increments * reduction_per_increment
         return min_(max_amount, amount)

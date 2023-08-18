@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
 class ct_personal_exemptions(Variable):
@@ -17,8 +16,8 @@ class ct_personal_exemptions(Variable):
         max_amount = p.max_amount[filing_status]
         reduction_start = p.reduction.start[filing_status]
         increment = p.reduction.increment
-        reduction_amount = p.reduction.amount
+        reduction_per_increment = p.reduction.amount
         excess = max_(income - reduction_start, 0)
-        increments = ceil(excess / increment)
-        total_reduction_amount = increments * reduction_amount
+        increments = np.ceil(excess / increment)
+        total_reduction_amount = increments * reduction_per_increment
         return max_(max_amount - total_reduction_amount, 0)

@@ -10,9 +10,7 @@ class ct_income_tax_after_personal_credits(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("ct_agi", period)
-        personal_exemptions = tax_unit("ct_personal_exemptions", period)
-        taxable_income = max_(income - personal_exemptions, 0)
+        taxable_income = tax_unit("ct_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         p = parameters(period).gov.states.ct.tax.income.main
@@ -36,5 +34,5 @@ class ct_income_tax_after_personal_credits(Variable):
         tax_recapture = tax_unit("ct_income_tax_recapture", period)
         total_add_back = income_after_tax_rate + add_back + tax_recapture
         personal_credits = tax_unit("ct_personal_credits", period)
-        presonal_credit_amount = personal_credits * total_add_back
-        return max_(total_add_back - presonal_credit_amount, 0)
+        personal_credit_amount = personal_credits * total_add_back
+        return max_(total_add_back - personal_credit_amount, 0)
