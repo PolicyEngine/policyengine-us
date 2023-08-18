@@ -67,4 +67,6 @@ class household_state_income_tax(Variable):
                 0,
             )
         else:
-            return add(tax_unit, period, household_state_income_tax.adds)
+            return add(
+                tax_unit, period, household_state_income_tax.adds
+            ) - add(tax_unit, period, household_state_income_tax.subtracts)
