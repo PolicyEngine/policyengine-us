@@ -1,71 +1,43 @@
-- name: Both Aged Exemptions (filing separately)
+- name: Both Aged Exemptions (credit less than tax)
   period: 2021
   input:
     state_code: HI
-    age: 66
-    adjusted_gross_income: 31_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 1
-    filing_status: SEPARATE
-    age_spouse: 67
-    tax_before_credit: 300
+    hi_income_tax_before_credits: 200
+    age_head: 66
+    age_spouse: 66
+    exemptions: 1
   output:
-    hi_lihr_credit: 150
+    hi_low_income_household_renters_tax_credit: 150
 
-#- name: Both Aged Exemptions (filing jointly)
-#  period: 2021
-#  input:
-#    state_code: HI
-#    age: 66
-#    adjusted_gross_income: 31_000
-#    rent_expense: 1_100
-#    number_of_entitled_exemptions: 1
-#    filing_status: JOINT
-#    age_spouse: 67
-#    tax_before_credit: 300
-#  output:
-#    hi_lihr_credit: 150
-
-- name: Either Aged Exemptions (filing separately)
+- name: Both Aged Exemptions (credit more than tax)
   period: 2021
   input:
     state_code: HI
-    age: 64
-    adjusted_gross_income: 31_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 1
-    filing_status: SEPARATE
-    tax_before_credit: 300
-    age_spouse: 67
+    hi_income_tax_before_credits: 100
+    age_head: 66
+    age_spouse: 66
+    exemptions: 1
   output:
-    hi_lihr_credit: 100
+    hi_low_income_household_renters_tax_credit: 100
 
-- name: Neither Aged Exemptions (filing separately)
+- name: Either Aged Exemptions
   period: 2021
   input:
     state_code: HI
-    age: 64
-    adjusted_gross_income: 31_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 1
-    filing_status: SEPARATE
-    age_spouse: 62
-    tax_before_credit: 300
+    hi_income_tax_before_credits: 200
+    age_head: 64
+    age_spouse: 66
+    exemptions: 1
   output:
-    hi_lihr_credit: 50
+    hi_low_income_household_renters_tax_credit: 100
 
-- name: Aged Exemptions (filing separately) Exceeds tax_before_credit
+- name: Neither Aged Exemptions
   period: 2021
   input:
     state_code: HI
-    age: 66
-    adjusted_gross_income: 31_000
-    rent_expense: 1_100
-    number_of_entitled_exemptions: 2
-    filing_status: SEPARATE
-    age_spouse: 67
-    tax_before_credit: 188
+    hi_income_tax_before_credits: 120
+    age_head: 63
+    age_spouse: 63
+    exemptions: 1
   output:
-    hi_lihr_credit: 188
-
-
+    hi_low_income_household_renters_tax_credit: 50

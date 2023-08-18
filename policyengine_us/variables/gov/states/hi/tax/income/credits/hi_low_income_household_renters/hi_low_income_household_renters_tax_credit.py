@@ -7,7 +7,7 @@ class hi_low_income_household_renters_tax_credit(Variable):
     label = "Hawaii low income household renters tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.HI
+    defined_for = "hi_lihrtc_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
@@ -22,5 +22,5 @@ class hi_low_income_household_renters_tax_credit(Variable):
         total_exemptions = exemptions + aged_exemptions
         credit_amount = p.base * total_exemptions
         
-        return min(credit_amount, tax_before_credit)  
+        return min_(credit_amount, tax_before_credit)  
         # or just return credit_amount even if the credit exceeds the tax_before_credit
