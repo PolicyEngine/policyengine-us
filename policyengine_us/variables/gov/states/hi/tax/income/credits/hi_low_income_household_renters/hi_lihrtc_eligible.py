@@ -15,8 +15,8 @@ class hi_lihrtc_eligible(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         rent = tax_unit("rents", period)
 
-        rent_eligible = rent_pay > p.rent_threshold
+        rent_eligible = rent > p.threshold.rent
 
-        agi_eligible = agi < p.agi_threshold
+        agi_eligible = agi < p.threshold.agi
 
         return agi_eligible & rent_eligible
