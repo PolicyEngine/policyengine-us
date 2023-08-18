@@ -5,7 +5,7 @@
     adjusted_gross_income: 29_000
     rents: 1_100
   output:
-    hi_lihrtc_eligibility: true
+    hi_lihrtc_eligible: true
 
 - name: Uneligible household renters (over adjusted gross income threshold)
   period: 2021
@@ -14,7 +14,7 @@
     adjusted_gross_income: 31_000
     rents: 1_100
   output:
-    hi_lihrtc_eligibility: false
+    hi_lihrtc_eligible: false
 
 - name: Uneligible household renters (below rent payment threshold)
   period: 2021
@@ -23,7 +23,7 @@
     adjusted_gross_income: 29_000
     rents: 900
   output:
-    hi_lihrtc_eligibility: false
+    hi_lihrtc_eligible: false
 
 - name: Uneligible household renters (neither condition unsatisfied)
   period: 2021
@@ -32,4 +32,4 @@
     adjusted_gross_income: 32_000
     rents: 900
   output:
-    hi_lihrtc_eligibility: false
+    hi_lihrtc_eligible: false
