@@ -16,7 +16,7 @@ class la_cdcc(Variable):
         us_cdcc = tax_unit("cdcc", period)
         us_agi = tax_unit("adjusted_gross_income", period)
         la_cdcc = us_cdcc * p.rate.calc(us_agi, right=True)
-        scale = p.rate
+        # Cap credit at the maximum amount for filers in the upper income bracket.
         upper_bracket = us_agi > p.rate.thresholds[-1]
         upper_bracket_amount = min_(p.max_amount_upper_bracket, la_cdcc)
         return where(upper_bracket, upper_bracket_amount, la_cdcc)
