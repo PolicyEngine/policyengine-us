@@ -1,0 +1,26 @@
+- name: Maryland ctc below federal ctc
+  period: 2023
+  input:
+    md_ctc: 90
+    ctc: 1_000
+    state_code: MD
+  output:
+    md_non_refundable_ctc: 90
+
+- name: Maryland ctc above federal ctc
+  period: 2023
+  input:
+    md_ctc: 1_100
+    ctc: 1_000
+    state_code: MD
+  output:
+    md_non_refundable_ctc: 1_000
+
+- name: Ineligible
+  period: 2022
+  input:
+    md_ctc: 1_100
+    ctc: 1_000
+    state_code: MD
+  output:
+    md_non_refundable_ctc: 0
