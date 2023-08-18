@@ -21,9 +21,9 @@ class co_military_retirement_subtraction_head(Variable):
         ).gov.states.co.tax.income.subtractions.military_retirement
         age_head = tax_unit("age_head", period)
         head_eligible = (age_head < p.age_threshold).astype(int)
-        military_retirement_benefits_head = tax_unit(
-            "military_retirement_benefits_head", period
+        co_military_retirement_benefits_head = tax_unit(
+            "co_military_retirement_benefits_head", period
         )
         return min_(
-            military_retirement_benefits_head, head_eligible * p.amount
+            co_military_retirement_benefits_head, head_eligible * p.amount
         )
