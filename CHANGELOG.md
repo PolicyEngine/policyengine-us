@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.427.0] - 2023-08-18 03:57:15
+
+### Added
+
+- West Virginia public pension subtraction.
+
 ## [0.426.0] - 2023-08-17 18:53:59
 
 ### Added
@@ -4897,6 +4903,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.427.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.426.0...0.427.0
 [0.426.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.1...0.426.0
 [0.425.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.0...0.425.1
 [0.425.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.1...0.425.0
