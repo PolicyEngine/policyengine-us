@@ -11,13 +11,16 @@ class ri_social_security_modification(Variable):
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         income = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
-        age = tax_unit.members("age", period)
+        is_head = tax_unit.members("is_tax_unit_head", period)
+        is_spouse = tax_unit.members("is_tax_unit_spouse", period)
+        age = person("age", period)
         birth_year = -(age - period.start.year)
-        spouse = tax_unit.members("is_tax_unit_spouse", period)
-        spouse_age = tax_unit.max(age * spouse)
-        spouse_birth_year = -(spouse_age - period.start.year)
+
+        # spouse_age = tax_unit.max(age * spouse)
+        # spouse_birth_year = -(spouse_age - period.start.year)
         p = parameters(
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.social_security
@@ -25,10 +28,11 @@ class ri_social_security_modification(Variable):
         # Age-based eligibility.
 
         age_conditions = birth_year <= p.birth_date_limit
-        spouse_pass_age_threshold = spouse_birth_year <= p.birth_date_limit
-        spouse_eligible = spouse & spouse_pass_age_threshold
-        age_is_eligible = age_conditions | spouse_eligible
-        both_age_is_eligible = age_conditions & spouse_eligible
+        # spouse_pass_age_threshold = spouse_birth_year <= p.birth_date_limit
+        head_eligible = age_conditions & is_head
+        spouse_eligible = age_conditions & is_spouse
+        age_is_eligible = age_conditions & (is_head | is_spouse)
+        both_age_is_eligible = age_conditions & (is_head & is_spouse)
 
         # Status eligibility.
         status_is_eligible = income < p.income_amount[filing_status]
@@ -37,17 +41,21 @@ class ri_social_security_modification(Variable):
         taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
         )
-        spouse_total_ss = tax_unit.max(total_social_security * spouse)
 
-        eligible_ss = age_is_eligible & age_conditions
+        head_total_ss = tax_unit.max(total_social_security * is_head)
+        spouse_total_ss = tax_unit.max(total_social_security * is_spouse)
 
-        your_social_security = where(eligible_ss, total_social_security, 0)
+        # eligible_ss = age_is_eligible & age_conditions
 
-        eligible_spouse_ss = age_is_eligible & spouse_eligible
+        head_social_security = where(
+            age_is_eligible & head_eligible, head_total_ss, 0
+        )
+
+        # eligible_spouse_ss = age_is_eligible & spouse_eligible
         final_ss = where(
-            eligible_spouse_ss,
+            age_is_eligible & spouse_eligible,
             spouse_total_ss,
-            your_social_security,
+            head_social_security,
         )
 
         percentage_social_security = np.zeros_like(total_social_security)

@@ -1,0 +1,29 @@
+- name: Joint filer with federal AGI above threshold, one child
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 200_100
+    eitc_child_count: 1
+    filing_status: JOINT
+  output:
+    ri_child_tax_rebate: 0
+
+- name: Head of Household filer with eligible federal AGI , one child
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 9_000
+    eitc_child_count: 1
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ri_child_tax_rebate: 250
+
+- name: Single filer with eligible federal AGI , four children
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 9_000
+    eitc_child_count: 4
+    filing_status: SINGLE
+  output:
+    ri_child_tax_rebate: 750

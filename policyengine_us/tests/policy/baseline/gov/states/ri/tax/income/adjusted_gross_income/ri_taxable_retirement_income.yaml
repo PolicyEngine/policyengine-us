@@ -1,0 +1,32 @@
+- name: Joint filer not eligible for taxable retirement income modification
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 22_000
+    filing_status: JOINT
+    age: 40
+    taxable_pension_income: 10_000
+  output:
+    ri_taxable_retirement_income: 0
+
+- name: Single filer eligible for taxable retirement income modification
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 90_000
+    filing_status: SINGLE
+    age: 70
+    taxable_pension_income: 10_000
+  output:
+    ri_taxable_retirement_income: 10_000
+
+- name: Widow filer eligible for maximum taxable retirement income modification
+  period: 2022
+  input:
+    state_code: RI
+    adjusted_gross_income: 90_000
+    filing_status: WIDOW
+    age: 70
+    taxable_pension_income: 20_000
+  output:
+    ri_taxable_retirement_income: 15_000
