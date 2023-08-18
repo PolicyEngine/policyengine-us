@@ -10,8 +10,9 @@ class hi_lihrtc_eligible(Variable):
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
+        dependent_on_another_return = tax_unit("dsi", period)
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
         agi = tax_unit("adjusted_gross_income", period)
         rents = add(tax_unit, period, ["rent"])
         print(rents > p.threshold.rent)
-        return (rents > p.threshold.rent) & (agi < p.threshold.agi)
+        return (rents > p.threshold.rent) & (agi < p.threshold.agi) & ~dependent_on_another_return
