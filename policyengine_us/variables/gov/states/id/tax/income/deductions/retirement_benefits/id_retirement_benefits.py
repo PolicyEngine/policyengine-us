@@ -22,7 +22,6 @@ class id_retirement_benefits(Variable):
         # Base amount minus social Security benefits received amount
         ded_amt = max_(base_amt - ss_amt, 0)
         # Qualified retirement benefits included in federal income
-        # fi_amt = person("taxable_pension_income", period) + person("military_retirement_pay", period)
         fi_amt = tax_unit.sum(person("taxable_pension_income", period) + person("military_retirement_pay", period))
         # The smaller one
         return min_(ded_amt, fi_amt)
