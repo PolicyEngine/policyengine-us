@@ -12,8 +12,6 @@ class md_non_refundable_ctc(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        md_ctc = tax_unit("md_ctc", period)
-        federal_ctc = tax_unit("ctc", period)
         if parameters(
             period
         ).gov.states.md.tax.income.credits.ctc.non_refundable_eligible:
