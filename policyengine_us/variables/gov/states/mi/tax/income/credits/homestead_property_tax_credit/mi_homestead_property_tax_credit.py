@@ -24,16 +24,12 @@ class mi_homestead_property_tax_credit(Variable):
             p.phase_out_rate.calc(total_household_resources),
         )
 
-        property_value = add(tax_unit, period, ["assessed_property_value"])
-        rents = add(tax_unit, period, ["rent"])
         refundable_amount = tax_unit(
             "mi_homestead_property_tax_credit_refundable", period
         )
 
-        eligibility = where(
-            rents > 0,
-            refundable_amount > 0,
-            (refundable_amount > 0) & (property_value < p.max_property_value),
+        eligibility = tax_unit(
+            "mi_homestead_property_tax_credit_eligible", period
         )
 
         return min_(

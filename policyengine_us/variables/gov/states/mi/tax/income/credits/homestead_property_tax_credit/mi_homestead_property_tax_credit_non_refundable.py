@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_homestead_property_tax_credit_nonrefundable(Variable):
+class mi_homestead_property_tax_credit_non_refundable(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan Homestead Property Tax Credit Non-refundable Amount"
+    label = "Michigan non-refundable Homestead Property Tax Credit"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MI
@@ -32,5 +32,4 @@ class mi_homestead_property_tax_credit_nonrefundable(Variable):
             p.not_refundable_rate,
         )
 
-        non_refundable_amount = total_household_resources * non_refundable_rate
-        return non_refundable_amount
+        return total_household_resources * non_refundable_rate
