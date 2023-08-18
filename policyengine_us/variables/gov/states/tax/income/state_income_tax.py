@@ -13,6 +13,7 @@ class state_income_tax(Variable):
         # "dc_income_tax",  --- activating will cause circular logic errors
         # "ia_income_tax",  --- activating will cause circular logic errors
         "il_income_tax",
+        "in_income_tax",
         "ks_income_tax",
         "ky_income_tax",
         # "ma_income_tax",  --- activating will cause circular logic errors
