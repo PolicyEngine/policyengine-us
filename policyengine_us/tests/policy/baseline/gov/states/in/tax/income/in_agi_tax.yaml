@@ -13,3 +13,11 @@
     in_agi: 10_000
   output:
     in_agi_tax: 10_000 * 0.0323
+
+- name: negative AGI
+  period: 2022
+  input:
+    state_code: IN
+    in_agi: -900
+  output:
+    in_agi_tax: 0
