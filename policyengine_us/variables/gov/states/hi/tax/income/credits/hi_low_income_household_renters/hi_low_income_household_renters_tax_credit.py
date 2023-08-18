@@ -7,7 +7,7 @@ class hi_low_income_household_renters_tax_credit(Variable):
     label = "Hawaii low income household renters tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = "hi_lihrtc_eligible"
+    defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
@@ -20,7 +20,7 @@ class hi_low_income_household_renters_tax_credit(Variable):
         aged_spouse = (
             tax_unit("age_spouse", period) >= p.threshold.age
         ).astype(int)
-        
+
         aged_exemptions = aged_head + aged_spouse
         exemptions = tax_unit("exemptions", period)
 
