@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.429.1] - 2023-08-18 22:43:37
+
+### Fixed
+
+- Calculation of Oregon federal income tax subtraction.
+
 ## [0.429.0] - 2023-08-18 21:35:17
 
 ### Added
@@ -4930,6 +4936,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.429.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.0...0.429.1
 [0.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.1...0.429.0
 [0.428.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.0...0.428.1
 [0.428.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.427.1...0.428.0
