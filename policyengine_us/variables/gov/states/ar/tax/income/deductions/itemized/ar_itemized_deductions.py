@@ -31,8 +31,8 @@ class ar_itemized_deductions(Variable):
         cl = tax_unit("casualty_loss_deduction",period) 
 
         # Post-secondary Education Tuition Deduction
-        # 50% ?
         qte = tax_unit("qualified_tuition_expenses",period)
+        
 
         # Miscellaneous Deductions 
         misc_deduc = tax_unit("misc_deduction",period)
