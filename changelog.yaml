@@ -4140,3 +4140,25 @@
     - Indiana in_income_tax variable
     - Indiana decoupled EITC variables and parameters
   date: 2023-08-18 15:03:20
+- bump: patch
+  changes:
+    added:
+    - 2023 Maryland CTC parameters.
+    - Maryland refundable CTC.
+  date: 2023-08-18 20:08:04
+- bump: minor
+  changes:
+    added:
+    - Connecticut personal income tax schedule.
+    - Connecticut personal exemption.
+  date: 2023-08-18 21:35:17
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of Oregon federal income tax subtraction.
+  date: 2023-08-18 22:43:37
+- bump: minor
+  changes:
+    added:
+    - Pell Grant
+  date: 2023-08-18 23:46:07

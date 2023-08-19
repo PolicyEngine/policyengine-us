@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.430.0] - 2023-08-18 23:46:07
+
+### Added
+
+- Pell Grant
+
+## [0.429.1] - 2023-08-18 22:43:37
+
+### Fixed
+
+- Calculation of Oregon federal income tax subtraction.
+
+## [0.429.0] - 2023-08-18 21:35:17
+
+### Added
+
+- Connecticut personal income tax schedule.
+- Connecticut personal exemption.
+
+## [0.428.1] - 2023-08-18 20:08:04
+
+### Added
+
+- 2023 Maryland CTC parameters.
+- Maryland refundable CTC.
+
 ## [0.428.0] - 2023-08-18 15:03:20
 
 ### Added
@@ -4916,6 +4942,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.430.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.1...0.430.0
+[0.429.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.0...0.429.1
+[0.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.1...0.429.0
+[0.428.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.0...0.428.1
 [0.428.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.427.1...0.428.0
 [0.427.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.427.0...0.427.1
 [0.427.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.426.0...0.427.0

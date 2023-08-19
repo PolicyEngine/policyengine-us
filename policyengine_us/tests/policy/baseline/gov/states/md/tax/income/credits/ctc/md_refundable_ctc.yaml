@@ -1,0 +1,26 @@
+- name: 2023 capped at 0
+  period: 2023
+  input:
+    md_ctc: 90
+    ctc: 1_000
+    state_code: MD
+  output:
+    md_refundable_ctc: 0
+
+- name: 2021 year - 
+  period: 2021
+  input:
+    md_ctc: 90
+    ctc: 1_000
+    state_code: MD
+  output:
+    md_refundable_ctc: 0
+
+- name: 2023 calculation
+  period: 2023
+  input:
+    md_ctc: 1_000
+    ctc: 998
+    state_code: MD
+  output:
+    md_refundable_ctc: 2
