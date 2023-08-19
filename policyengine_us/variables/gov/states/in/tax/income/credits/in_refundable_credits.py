@@ -9,7 +9,6 @@ class in_refundable_credits(Variable):
     definition_period = YEAR
     reference = "https://iga.in.gov/laws/2021/ic/titles/6#6-3.1"
     defined_for = StateCode.IN
-
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states["in"].tax.income
-        return add(tax_unit, period, p.credits.refundable)
+    # Use this instead of the parameter because the .in breaks the adds.
+    # Use this instead of a formula so the app displays the breakdown.
+    adds = ["in_eitc", "in_unified_elderly_tax_credit"]
