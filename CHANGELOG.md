@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.431.0] - 2023-08-19 04:39:37
+
+### Added
+
+- Indiana AGI tax rate for 2023.
+
+### Changed
+
+- Labels and descriptions for Indiana tax parameters.
+- Use real_estate_taxes variable for Indiana homeowner's property tax deduction.
+
 ## [0.430.0] - 2023-08-18 23:46:07
 
 ### Added
@@ -4942,6 +4953,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.431.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.430.0...0.431.0
 [0.430.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.1...0.430.0
 [0.429.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.0...0.429.1
 [0.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.1...0.429.0

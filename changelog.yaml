@@ -4162,3 +4162,13 @@
     added:
     - Pell Grant
   date: 2023-08-18 23:46:07
+- bump: minor
+  changes:
+    added:
+    - Indiana AGI tax rate for 2023.
+    changed:
+    - Labels and descriptions for Indiana tax parameters.
+    - Use real_estate_taxes variable for Indiana homeowner's property tax deduction.
+    removed:
+    - Parameter names for Indiana tax parameters (deprecated).
+  date: 2023-08-19 04:39:37
