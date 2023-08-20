@@ -38,11 +38,11 @@ class co_ctc(Variable):
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(agi, right=True),
-                p.joint.calc(agi, right=True),
-                p.separate.calc(agi, right=True),
-                p.widow.calc(agi, right=True),
-                p.head_of_household.calc(agi, right=True),
+                p.rate.single.calc(agi, right=True),
+                p.rate.joint.calc(agi, right=True),
+                p.rate.separate.calc(agi, right=True),
+                p.rate.widow.calc(agi, right=True),
+                p.rate.head_of_household.calc(agi, right=True),
             ],
         )
         return rate * federal_ctc * eligible_children

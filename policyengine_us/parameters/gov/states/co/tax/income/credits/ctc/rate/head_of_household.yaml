@@ -1,9 +1,9 @@
-description: Colorado issues the child tax credit at these rates for joint filers, depending on their adjusted gross income.
+description: Colorado issues the child tax credit at these rates for head of household filers.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Colorado child tax credit joint filers rate
+  label: Colorado child tax credit head of household rate
   reference:
     - title: C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.
       href: https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=4f86a852-765a-489a-b554-66f6e7d5b065&nodeid=ABPAACAACAABAACABN&nodepath=%2fROOT%2fABP%2fABPAAC%2fABPAACAAC%2fABPAACAACAAB%2fABPAACAACAABAAC%2fABPAACAACAABAACABN&level=6&haschildren=&populated=false&title=39-22-129.+Child+tax+credit+-+legislative+declaration+-+definitions.&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&pddocfullpath=%2fshared%2fdocument%2fstatutes-legislation%2furn%3acontentItem%3a633G-B1C3-GXJ9-30GW-00008-00&ecomp=7gf59kk&prid=2fe6fa8e-8df8-4d74-a340-c4fa9bc603d5
@@ -18,17 +18,17 @@ brackets:
       2021-01-01: 0
       2022-01-01: 0.6
   - threshold:
-      2022-01-01: 35_000
+      2022-01-01: 25_000
     amount:
       2021-01-01: 0
       2022-01-01: 0.3
   - threshold:
-      2015-01-01: 60_000
+      2015-01-01: 50_000
     amount:
       2021-01-01: 0
       2022-01-01: 0.1
   - threshold:
-      2015-01-01: 85_000
+      2015-01-01: 75_000
     amount:
       2021-01-01: 0
       2022-01-01: 0
