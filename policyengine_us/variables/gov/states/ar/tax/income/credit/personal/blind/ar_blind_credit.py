@@ -16,5 +16,7 @@ class ar_blind(Variable):
 
     def formula(tax_unit, period, parameters):
         us_blind = tax_unit("blind", period)
-        p_ar = parameters(period).gov.states.ar.tax.income.credits.personal_credits
+        p_ar = parameters(
+            period
+        ).gov.states.ar.tax.income.credits.personal_credits
         return us_blind * p_ar
