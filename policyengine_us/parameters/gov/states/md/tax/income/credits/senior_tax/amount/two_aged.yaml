@@ -1,21 +1,24 @@
-description: Senior tax credit given to filers filing single
+description: Maryland provides this senior tax credit amount for households with two aged filers, based on filing status.
 metadata:
   reference:
     - title: MD 2022 Resident Booklet
       href: https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=15
-  label: MD Senior Tax Credit
+  label: Maryland Senior Tax Credit two aged amount
   unit: currency-USD
   period: year
   breakdown:
     - filing_status
 JOINT:
   2021-01-01: 0
+  2022-01-01: 1_750
 SINGLE:
-  2021-01-01: 1000
+  2021-01-01: 0
 HEAD_OF_HOUSEHOLD:
   2021-01-01: 0
+  2022-01-01: 1_750
 WIDOW:
   2021-01-01: 0
+  2022-01-01: 1_750
 SEPARATE:
   2021-01-01: 0
 
