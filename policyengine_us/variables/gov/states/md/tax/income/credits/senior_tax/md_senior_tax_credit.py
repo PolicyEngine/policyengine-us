@@ -14,8 +14,7 @@ class md_senior_tax_credit(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states["md"].tax.income.credits.senior_tax
 
-        agi = tax_unit("adjusted_gross_income", period)
-        income_eligible = agi < p.income_threshold[filing_status]
+        income_eligible = tax_unit("md_senior_tax_income_threshold", period)
 
         age_head = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
