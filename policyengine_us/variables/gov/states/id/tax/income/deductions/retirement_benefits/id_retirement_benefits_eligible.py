@@ -11,13 +11,16 @@ class id_retirement_benefits_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.id.tax.income.deductions.retirement_benefits
+        p = parameters(
+            period
+        ).gov.states.id.tax.income.deductions.retirement_benefits
 
         age_threshold = p.age_eligibility.main
         age_threshold_disabled = p.age_eligibility.disabled
         disabled_head = tax_unit("disabled_head", period)
         head_age = tax_unit("age_head", period)
-        return where(disabled_head, 
-                        head_age >= age_threshold_disabled, 
-                        head_age >= age_threshold)
-        
+        return where(
+            disabled_head,
+            head_age >= age_threshold_disabled,
+            head_age >= age_threshold,
+        )
