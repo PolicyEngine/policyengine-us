@@ -13,6 +13,6 @@ class pell_grant_dependent_contribution(Variable):
         income = person("pell_grant_dependent_available_income", period)
         allowances = person("pell_grant_dependent_allowances", period)
         p = parameters(period).gov.ed.pell_grant.efc.dependent
-        ajusted_income = (income - allowances) * p.income_assessment_rate
-        ajusted_assets = assets * p.asset_assessment_rate * ~simplified
-        return ajusted_income + ajusted_assets
+        adjusted_income = (income - allowances) * p.income_assessment_rate
+        adjusted_assets = assets * p.asset_assessment_rate * ~simplified
+        return adjusted_income + adjusted_assets
