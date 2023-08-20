@@ -21,7 +21,7 @@ class md_senior_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         single = filing_status == status.SINGLE
-        
+
         head_eligible = age_head >= p.age_eligibility
         spouse_eligible = spouse_age >= p.age_eligibility
         both_eligible = head_eligible & spouse_eligible
