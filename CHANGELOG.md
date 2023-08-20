@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.432.0] - 2023-08-20 17:05:13
+
+### Added
+
+- Legal code references and historical parameters for DC Keep Child Care Affordable Tax Credit.
+
 ## [0.431.3] - 2023-08-20 04:42:13
 
 ### Fixed
@@ -4971,6 +4977,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.432.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.3...0.432.0
 [0.431.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.2...0.431.3
 [0.431.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.1...0.431.2
 [0.431.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.0...0.431.1
