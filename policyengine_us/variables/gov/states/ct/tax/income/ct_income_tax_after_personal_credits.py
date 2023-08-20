@@ -33,6 +33,6 @@ class ct_income_tax_after_personal_credits(Variable):
         add_back = tax_unit("ct_income_tax_phase_out_add_back", period)
         tax_recapture = tax_unit("ct_income_tax_recapture", period)
         total_add_back = income_after_tax_rate + add_back + tax_recapture
-        personal_credits = tax_unit("ct_personal_credits", period)
+        personal_credits = tax_unit("ct_personal_credit_rate", period)
         personal_credit_amount = personal_credits * total_add_back
         return max_(total_add_back - personal_credit_amount, 0)
