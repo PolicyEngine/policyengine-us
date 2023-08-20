@@ -16,17 +16,18 @@ class pell_grant_formula(Variable):
     definition_period = YEAR
 
     def formula(person, period, parameters):
-        tax_unit = person.tax_unit
-        count_dependents = tax_unit("tax_unit_dependents", period)
-        has_dependents = count_dependents >= 1
+        has_dependents = person.tax_unit("tax_unit_dependents", period) > 0
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-        in_head = is_head | is_spouse
+        head_or_spouse = is_head | is_spouse
         return select(
             [
-                has_dependents & ~in_head,
-                ~has_dependents & in_head,
-                has_dependents & in_head,
+                has_dependents & ~head_or_spouse,
+                ~has_dependents & head_or_spouse,
             ],
-            [PellGrantFormula.A, PellGrantFormula.B, PellGrantFormula.C],
+            [PellGrantFormula.A, PellGrantFormula.B],
+            # C formula applies for `has_dependents & head_or_spouse`.
+            # Technically this also catches `~has_dependents & ~head_or_spouse`
+            # but that's not a valid combination.
+            default=PellGrantFormula.C,
         )

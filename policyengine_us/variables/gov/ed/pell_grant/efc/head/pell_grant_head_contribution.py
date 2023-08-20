@@ -26,4 +26,8 @@ class pell_grant_head_contribution(Variable):
         total = where(
             formula == "B", available_income, total_head_contribution
         )
-        return total / dependents
+        # Return amount per dependent, using a mask to avoid division by zero.
+        amount_per_dependent = np.zeros_like(total)
+        mask = dependents > 0
+        amount_per_dependent[mask] = total[mask] / dependents[mask]
+        return amount_per_dependent
