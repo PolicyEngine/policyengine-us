@@ -354,8 +354,10 @@
     people:
       child1: 
         age: 4
+        ctc_qualifying_child: true
       child2:
         age: 3
+        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members: [child1, child2]
@@ -375,8 +377,10 @@
     people:
       child1: 
         age: 4
+        ctc_qualifying_child: true
       child2:
         age: 3
+        ctc_qualifying_child: true
     tax_units:
       tax_unit:
         members: [child1, child2]
@@ -389,3 +393,26 @@
         state_code: CO
   output: 
     co_ctc: 600
+
+- name: In 2022, joint filer, one eligible child, agi = 45_000, federal ctc = 1_000, the colorado ctc = 300
+  period: 2022
+  input:
+    people:
+      child1: 
+        age: 4
+        ctc_qualifying_child: false
+      child2:
+        age: 3
+        ctc_qualifying_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2]
+        adjusted_gross_income: 45_000
+        ctc: 1_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [child1, child2]
+        state_code: CO
+  output: 
+    co_ctc: 300
