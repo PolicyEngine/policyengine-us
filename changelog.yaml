@@ -4182,3 +4182,8 @@
     fixed:
     - Removed unused no_salt_income_tax variable.
   date: 2023-08-19 17:31:51
+- bump: patch
+  changes:
+    fixed:
+    - Avoid divide by zero in Pell Grant EFC formula.
+  date: 2023-08-20 04:42:13
