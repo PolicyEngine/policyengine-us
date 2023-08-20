@@ -25,7 +25,10 @@ class pell_grant_formula(Variable):
             [
                 has_dependents & ~head_or_spouse,
                 ~has_dependents & head_or_spouse,
-                has_dependents & head_or_spouse,
             ],
-            [PellGrantFormula.A, PellGrantFormula.B, PellGrantFormula.C],
+            [PellGrantFormula.A, PellGrantFormula.B],
+            # C formula applies for `has_dependents & head_or_spouse`.
+            # Technically this also catches `~has_dependents & ~head_or_spouse`
+            # but that's not a valid combination.
+            default=PellGrantFormula.C,
         )
