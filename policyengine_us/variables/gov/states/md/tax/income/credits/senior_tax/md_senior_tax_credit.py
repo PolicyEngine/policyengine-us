@@ -24,7 +24,7 @@ class md_senior_tax_credit(Variable):
         spouse_eligible = spouse_age >= p.age_eligibility
         both_eligible = head_eligible & spouse_eligible
         eligible = head_eligible | spouse_eligible
-        income_eligible = agi < p.amount[filing_status]
+        income_eligible = agi < p.income_threshold[filing_status]
         single_amount = p.single[filing_status]
         not_single_amount = where(
             both_eligible,
