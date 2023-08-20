@@ -11,7 +11,7 @@ class md_senior_tax_income_threshold(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+        
         p = parameters(period).gov.states["md"].tax.income.credits.senior_tax
 
         filing_status = tax_unit("filing_status", period)
