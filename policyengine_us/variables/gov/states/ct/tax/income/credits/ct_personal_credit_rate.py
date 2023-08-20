@@ -1,9 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ct_personal_credits(Variable):
+class ct_personal_credit_rate(Variable):
     value_type = float
     entity = TaxUnit
+    unit = "\1"
     label = "Connecticut personal credit rate"
     definition_period = YEAR
     defined_for = StateCode.CT
