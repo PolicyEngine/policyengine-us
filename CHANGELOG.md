@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.434.0] - 2023-08-20 21:15:46
+
+### Added
+
+- Connecticut credit based on AGI
+
+## [0.433.0] - 2023-08-20 20:35:47
+
+### Added
+
+- Louisiana EITC.
+- Louisiana main rates.
+- Louisiana CDCC.
+
+## [0.432.0] - 2023-08-20 17:05:13
+
+### Added
+
+- Legal code references and historical parameters for DC Keep Child Care Affordable Tax Credit.
+
+## [0.431.3] - 2023-08-20 04:42:13
+
+### Fixed
+
+- Avoid divide by zero in Pell Grant EFC formula.
+
+## [0.431.2] - 2023-08-19 17:31:51
+
+### Fixed
+
+- Removed unused no_salt_income_tax variable.
+
+## [0.431.1] - 2023-08-19 05:01:28
+
+### Added
+
+- README and index.yaml files to Department of Education and other parameter folders.
+
 ## [0.431.0] - 2023-08-19 04:39:37
 
 ### Added
@@ -4953,6 +4991,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.433.0...0.434.0
+[0.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.432.0...0.433.0
+[0.432.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.3...0.432.0
+[0.431.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.2...0.431.3
+[0.431.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.1...0.431.2
+[0.431.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.0...0.431.1
 [0.431.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.430.0...0.431.0
 [0.430.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.1...0.430.0
 [0.429.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.0...0.429.1

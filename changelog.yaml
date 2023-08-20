@@ -4172,3 +4172,36 @@
     removed:
     - Parameter names for Indiana tax parameters (deprecated).
   date: 2023-08-19 04:39:37
+- bump: patch
+  changes:
+    added:
+    - README and index.yaml files to Department of Education and other parameter folders.
+  date: 2023-08-19 05:01:28
+- bump: patch
+  changes:
+    fixed:
+    - Removed unused no_salt_income_tax variable.
+  date: 2023-08-19 17:31:51
+- bump: patch
+  changes:
+    fixed:
+    - Avoid divide by zero in Pell Grant EFC formula.
+  date: 2023-08-20 04:42:13
+- bump: minor
+  changes:
+    added:
+    - Legal code references and historical parameters for DC Keep Child Care Affordable
+      Tax Credit.
+  date: 2023-08-20 17:05:13
+- bump: minor
+  changes:
+    added:
+    - Louisiana EITC.
+    - Louisiana main rates.
+    - Louisiana CDCC.
+  date: 2023-08-20 20:35:47
+- bump: minor
+  changes:
+    added:
+    - Connecticut credit based on AGI
+  date: 2023-08-20 21:15:46
