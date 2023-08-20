@@ -12,7 +12,6 @@ class hi_tax_credit_for_low_income_household_renters(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
 
-        tax_before_credit = tax_unit("hi_income_tax_before_credits", period)
         # Aged extra exemptions
         aged_head = (
             tax_unit("age_head", period) >= p.aged_age_threshold
@@ -26,4 +25,4 @@ class hi_tax_credit_for_low_income_household_renters(Variable):
 
         total_exemptions = exemptions + aged_exemptions
         credit_amount = p.amount * total_exemptions
-        return min_(credit_amount, tax_before_credit)
+        return credit_amount
