@@ -14,29 +14,9 @@ class az_family_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.family_tax_credits
-        income = tax_unit("az_agi", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        dependents = tax_unit("tax_unit_dependents", period)
-        head = tax_unit.any(person("is_tax_unit_head", period).astype(int))
-        spouse = tax_unit.any(person("is_tax_unit_spouse", period).astype(int))
-        max_income = select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
-            ],
-            [
-                p.eligibility.single,
-                p.eligibility.joint.calc(dependents),
-                p.eligibility.head_of_household.calc(dependents),
-                p.eligibility.separate,
-                p.eligibility.widow.calc(dependents),
-            ],
-        )
-        household_size = head + spouse + dependents
+
         amount = p.amount * tax_unit("tax_unit_size", period)
-        eligible = income <= max_income
+        eligible = tax_unit("az_family_tax_credit_eligible", period)
         return eligible * min_(amount, p.max_amount[filing_status])
