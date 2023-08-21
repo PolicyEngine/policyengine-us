@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ar_blind(Variable):
+class ar_blind_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "AR presonal credit for blind"
+    label = "Arkansas blind personal credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,8 +15,6 @@ class ar_blind(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        us_blind = tax_unit("blind", period)
-        p_ar = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.personal_credits
+        us_blind = tax_unit.sum("is_blind", period)
+        p_ar = parameters(period).gov.states.ar.tax.income.credits.personal_credits
         return us_blind * p_ar
