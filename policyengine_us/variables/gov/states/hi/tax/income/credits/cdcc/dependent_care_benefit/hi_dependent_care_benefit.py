@@ -14,17 +14,21 @@ class hi_dcb(Variable):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         # line 2
         dcb_amount = tax_unit("hi_dcb_amount", period)
-        #skip line 3,4, so line 5 = line 2
+        # skip line 3,4, so line 5 = line 2
         # line 6
-        qualified_expense_amount = tax_unit("hi_qualified_expense_amount", period)
+        qualified_expense_amount = tax_unit(
+            "hi_qualified_expense_amount", period
+        )
         # line 8
-        # line 9 
+        # line 9
         # for student/disable cases, can't find latest instruction
         min_head_spouse_earned = tax_unit("min_head_spouse_earned", period)
         # line 10
-        min_benefit = min_(dcb_amount, qualified_expense_amount, min_head_spouse_earned)
+        min_benefit = min_(
+            dcb_amount, qualified_expense_amount, min_head_spouse_earned
+        )
         # line 11
-        filing_status = tax_unit("filing_status", period)  
+        filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         line11 = select(
             [
@@ -41,18 +45,23 @@ class hi_dcb(Variable):
         # line 13
         line13 = dcb_amount - proprietorship_partnership
         # line 14
-        deductible_benefit = min_(dcb_amount, line11, proprietorship_partnership)
+        deductible_benefit = min_(
+            dcb_amount, line11, proprietorship_partnership
+        )
         # line 15
-        excluded_benefit = max_(0, select(
-            [
-                proprietorship_partnership == 0,
-                proprietorship_partnership > 0,
-            ],
-            [
-                min_(min_benefit, line11),  
-                min_(min_benefit, line11) - deductible_benefit,
-            ],
-        ))
+        excluded_benefit = max_(
+            0,
+            select(
+                [
+                    proprietorship_partnership == 0,
+                    proprietorship_partnership > 0,
+                ],
+                [
+                    min_(min_benefit, line11),
+                    min_(min_benefit, line11) - deductible_benefit,
+                ],
+            ),
+        )
         # line 16
         taxable_benefit = max_(0, line13 - excluded_benefit)
         # line 17
@@ -67,11 +76,11 @@ class hi_dcb(Variable):
                 p.amount.two_or_more_child_dependent,
             ],
         )
-        #line 18
+        # line 18
         line18 = deductible_benefit + excluded_benefit
-        #line 19
+        # line 19
         line19 = expenses_amount - line18
         if line19 <= 0:
             return
-        #line 22
+        # line 22
         return min_(line19, tax_unit("tax_unit_childcare_expenses", period))

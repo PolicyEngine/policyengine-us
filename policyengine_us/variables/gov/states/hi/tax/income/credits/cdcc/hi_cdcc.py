@@ -21,5 +21,5 @@ class hi_cdcc(Variable):
         # line 26
         agi = tax_unit("adjusted_gross_income", period)
         rate = p.rates.calc(agi)
-        
+
         return rate * min_amount

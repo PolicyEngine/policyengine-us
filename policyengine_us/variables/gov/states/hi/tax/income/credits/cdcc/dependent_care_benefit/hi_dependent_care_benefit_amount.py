@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class hi_dcb_amount(Variable):
     value_type = float
     entity = TaxUnit
