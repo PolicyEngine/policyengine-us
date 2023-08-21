@@ -18,18 +18,14 @@ class md_ctc(Variable):
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         disabled = person("is_disabled", period)
-        age = person("age", period)
-        if p.reduced_by_federal_credit:
-            age_limit = age < p.age_threshold.disabled
-            eligible = dependent & age_limit & disabled
-            eligible_children = tax_unit.sum(eligible)
-            md_ctc = eligible_children * p.amount
-            federal_ctc = tax_unit("ctc", period)
-            return max_(md_ctc - federal_ctc, 0)
         age_limit = where(
             disabled, p.age_threshold.disabled, p.age_threshold.main
         )
         meets_age_limit = person("age", period) < age_limit
         eligible = dependent & meets_age_limit
         eligible_children = tax_unit.sum(eligible)
-        return eligible_children * p.amount
+        md_ctc = eligible_children * p.amount
+        if p.reduced_by_federal_credit:
+            federal_ctc = tax_unit("ctc", period)
+            return max_(md_ctc - federal_ctc, 0)
+        return md_ctc
