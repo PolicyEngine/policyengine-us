@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.436.0] - 2023-08-21 04:31:08
+
+### Added
+
+- Hawaii low income household renters tax credit.
+
 ## [0.435.0] - 2023-08-21 01:17:10
 
 ### Added
@@ -4997,6 +5003,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.436.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.435.0...0.436.0
 [0.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.434.0...0.435.0
 [0.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.433.0...0.434.0
 [0.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.432.0...0.433.0
