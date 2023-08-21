@@ -7,7 +7,7 @@ class az_family_tax_credit(Variable):
     label = "Arizona Family Tax Credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.AZ
+    defined_for = "az_family_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
