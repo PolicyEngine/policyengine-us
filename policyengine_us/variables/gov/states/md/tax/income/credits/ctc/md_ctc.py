@@ -13,7 +13,7 @@ class md_ctc(Variable):
     )
     defined_for = "md_ctc_eligible"
 
-    def formula(tax_unit, period, parameters):
+    def formula_2020(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
@@ -24,4 +24,8 @@ class md_ctc(Variable):
         meets_age_limit = person("age", period) < age_limit
         eligible = dependent & meets_age_limit
         eligible_children = tax_unit.sum(eligible)
-        return eligible_children * p.amount
+        md_ctc = eligible_children * p.amount
+        if p.reduced_by_federal_credit:
+            federal_ctc = tax_unit("ctc", period)
+            return max_(md_ctc - federal_ctc, 0)
+        return md_ctc
