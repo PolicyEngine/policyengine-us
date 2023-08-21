@@ -8,5 +8,3 @@ class va_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.VA
-
-    adds = "gov.states.va.tax.income.credits.non_refundable"

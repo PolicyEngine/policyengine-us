@@ -1,6 +1,8 @@
 description: Virginia matches this percent of the federal Earned Income Tax Credit as a non-refundable credit.
 values:
   2022-01-01: 0.2
+  2021-01-01: 0.2
+
 
 metadata:
   period: year
@@ -8,4 +10,9 @@ metadata:
   label: Virginia non-refundable EITC match
   reference:
   - title: Virginia 2022 Form 760 Resident Individual Income Tax Booklet
-    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=26
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32
+  
+  - title: Virginia 2021 Form 760 Resident Individual Income Tax Booklet
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2021-760-instructions.pdf#page=31
+  - title: Code of Virginia § 58.1-339.8.B.2
+    href: https://law.lis.virginia.gov/vacodeupdates/title58.1/section58.1-339.8/

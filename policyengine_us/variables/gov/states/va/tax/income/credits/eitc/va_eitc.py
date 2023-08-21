@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class va_eitc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Virginia EITC"
+    label = "Virginia Earned Income Tax Credit"
     unit = USD
     documentation = "Refundable or non-refundable Virginia EITC"
     definition_period = YEAR

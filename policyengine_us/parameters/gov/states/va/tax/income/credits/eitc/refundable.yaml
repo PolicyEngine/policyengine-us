@@ -1,11 +1,13 @@
-description: Virginia set a  alternative multiplier of this amount for Federal Earned Income Tax Credit to compute VEIC.
+description: Virginia set a alternative multiplier of this amount for Federal Earned Income Tax Credit to compute VEIC.
 values:
   2022-01-01: 0.15
 
 metadata:
   period: year
   unit: currency-USD
-  label: Alternative multiplier for Federal Earned Income Tax Credit to compute Virginia Earned Income Credit
+  label: Virginia refundable EITC match
   reference:
   - title: Virginia 2022 Form 760 Resident Individual Income Tax Booklet
-    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=26
+    href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32
+  - title: Code of Virginia § 58.1-339.8.B.3
+    href: https://law.lis.virginia.gov/vacodeupdates/title58.1/section58.1-339.8/
