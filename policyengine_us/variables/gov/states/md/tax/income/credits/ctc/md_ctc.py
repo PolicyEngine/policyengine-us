@@ -13,23 +13,20 @@ class md_ctc(Variable):
     )
     defined_for = "md_ctc_eligible"
 
-    def formula_2021(tax_unit, period, parameters):
-        p = parameters(period).gov.states.md.tax.income.credits.ctc
-        person = tax_unit.members
-        dependent = person("is_tax_unit_dependent", period)
-        disabled = person("is_disabled", period)
-        meets_age_limit = person("age", period) < p.age_threshold.disabled
-        eligible = dependent & meets_age_limit & disabled
-        eligible_children = tax_unit.sum(eligible)
-        md_ctc = eligible_children * p.amount
-        federal_ctc = tax_unit("ctc", period)
-        return max_(md_ctc - federal_ctc, 0)
 
-    def formula_2023(tax_unit, period, parameters):
+    def formula_2020(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         person = tax_unit.members
         dependent = person("is_tax_unit_dependent", period)
         disabled = person("is_disabled", period)
+        age = person("age", period)
+        if p.reduced_by_federal_credit:
+            meets_age_limit = age < p.age_threshold.disabled
+            eligible = dependent & meets_age_limit & disabled
+            eligible_children = tax_unit.sum(eligible)
+            md_ctc = eligible_children * p.amount
+            federal_ctc = tax_unit("ctc", period)
+            return max_(md_ctc - federal_ctc, 0)
         age_limit = where(
             disabled, p.age_threshold.disabled, p.age_threshold.main
         )
