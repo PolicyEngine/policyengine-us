@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class az_family_tax_credit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Eligible for the Arizona Family Tax Credit"
     definition_period = YEAR
