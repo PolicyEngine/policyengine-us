@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_ss_spouse(Variable):
+class co_soacial_security_subtraction_spouse(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado social security subtraction for spouse"
@@ -29,13 +29,12 @@ class co_ss_spouse(Variable):
         spouse_tss = tax_unit.max(
             taxable_social_security * person("is_tax_unit_spouse", period)
         )
-
-        output = where(
-            younger_condition,
-            spouse_sss,
-            where(
-                older_condition, spouse_tss, min_(spouse_tss, p.younger.amount)
-            ),
+        older_output = where(
+            older_condition, spouse_tss, min_(spouse_tss, p.younger.amount)
         )
 
-        return output
+        return where(
+            younger_condition,
+            spouse_sss,
+            where(older_condition, spouse_tss, older_output),
+        )

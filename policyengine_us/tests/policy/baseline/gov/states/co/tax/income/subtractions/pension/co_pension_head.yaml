@@ -3,12 +3,12 @@
   input:
     state_code: CO
     age_head: 66
-    co_ss_head: 24_000
+    co_soacial_security_subtraction_head: 24_000
     taxable_pension_income: 23_000
     co_pension_survivors: 5_000
     is_tax_unit_head: true
   output:
-    co_pension_head: 0
+    co_pension_subtraction_head: 0
     # not eligible if ss_head >= 24_000
 
 - name: Case 2, age above older threshold, ss_head < $24_000.
@@ -16,12 +16,12 @@
   input:
     state_code: CO
     age_head: 66
-    co_ss_head: 15_000
+    co_soacial_security_subtraction_head: 15_000
     taxable_pension_income: 20_000
     co_pension_survivors: 5_000
     is_tax_unit_head: TRUE
   output:
-    co_pension_head: 9_000
+    co_pension_subtraction_head: 9_000
     # min(24_000 - co_ss_head, taxable_pension_income) = min(24_000 - 15_000, 20_000)
 
 - name: Case 3, age between 55 and 65, ss_head < $20_000.
@@ -29,12 +29,12 @@
   input:
     state_code: CO
     age_head: 58
-    co_ss_head: 15_000
+    co_soacial_security_subtraction_head: 15_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
     is_tax_unit_head: TRUE
   output:
-    co_pension_head: 5_000
+    co_pension_subtraction_head: 5_000
   # min(20_000 - co_ss_head, taxable_pension_income) = min(20_000 - 15_000, 20_000)
 
 - name: Case 4, age between 55 and 65, ss_head >= $20_000.
@@ -42,12 +42,12 @@
   input:
     state_code: CO
     age_head: 58
-    co_ss_head: 21_000
+    co_soacial_security_subtraction_head: 21_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
     is_tax_unit_head: TRUE
   output:
-    co_pension_head: 0
+    co_pension_subtraction_head: 0
   # not eligible if ss_head >= 20_000 when 55 < age <= 65
 
 - name: Case 5, age < 55, ss_head >= $20_000. .
@@ -55,12 +55,12 @@
   input:
     state_code: CO
     age_head: 53
-    co_ss_head: 21_000
+    co_soacial_security_subtraction_head: 21_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
     is_tax_unit_head: TRUE
   output:
-    co_pension_head: 0
+    co_pension_subtraction_head: 0
     # not eligible if ss_head >= 20_000 when age < 55
 
 - name: Case 6, age < 55, ss_head < $20_000. 
@@ -68,12 +68,12 @@
   input:
     state_code: CO
     age_head: 53
-    co_ss_head: 8_000
+    co_soacial_security_subtraction_head: 8_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
     is_tax_unit_head: TRUE
   output:
-    co_pension_head: 3_000
+    co_pension_subtraction_head: 3_000
     # min(20_000 - ss_head,pension_survivors) = min(20_000 - 8_000 , 3_000) 
   
 - name: Case 7, age < 55, ss_head < $20_000. 
@@ -81,11 +81,11 @@
   input:
     state_code: CO
     age_head: 53
-    co_ss_head: 8_000
+    co_soacial_security_subtraction_head: 8_000
     taxable_pension_income: 20_000
     co_pension_survivors: 13_000
     is_tax_unit_head: TRUE
   output:
-    co_pension_head: 12_000
+    co_pension_subtraction_head: 12_000
     # min(20_000 - ss_head,pension_survivors) = min(20_000 - 8_000 , 13_000) 
   

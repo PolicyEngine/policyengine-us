@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_ss_head(Variable):
+class co_soacial_security_subtraction_head(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado social security subtraction for head"
@@ -29,11 +29,12 @@ class co_ss_head(Variable):
         head_tss = tax_unit.max(
             taxable_social_security * person("is_tax_unit_head", period)
         )
-
-        output = where(
-            younger_condition,
-            head_sss,
-            where(older_condition, head_tss, min_(head_tss, p.younger.amount)),
+        older_output = where(
+            older_condition, head_tss, min_(head_tss, p.younger.amount)
         )
 
-        return output
+        return where(
+            younger_condition,
+            head_sss,
+            where(older_condition, head_tss, older_output),
+        )

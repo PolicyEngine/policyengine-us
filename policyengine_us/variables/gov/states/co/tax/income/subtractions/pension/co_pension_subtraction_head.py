@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_pension_head(Variable):
+class co_pension_subtraction_head(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado pension and annuity subtraction for head"
@@ -20,7 +20,9 @@ class co_pension_head(Variable):
         person = tax_unit.members
         taxable_pension_income = person("taxable_pension_income", period)
         co_pension_survivors = person("co_pension_survivors", period)
-        co_ss_head = tax_unit("co_ss_head", period)
+        co_soacial_security_subtraction_head = tax_unit(
+            "co_soacial_security_subtraction_head", period
+        )
         age_head = tax_unit("age_head", period)
         younger_condition = age_head < p.younger.age
         older_condition = age_head >= p.older.age
@@ -30,21 +32,30 @@ class co_pension_head(Variable):
         head_tpi = tax_unit.max(
             taxable_pension_income * person("is_tax_unit_head", period)
         )
-
-        output = where(
+        # subtract $20,000 minus any amount entered on line 3(co_soacial_security_subtraction_head), or co_pension_survivors, whichever is smaller.
+        # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
+        younger_head_output = min_(
+            max_(p.younger.amount - co_soacial_security_subtraction_head, 0),
+            co_pension_survivors,
+        )
+        # subtract $24,000 minus any amount entered on line 3(co_soacial_security_subtraction_head), or taxable_pension_income, whichever is smaller.
+        # if the amount on line 3 of this form is greater than $24,000, you may not claim any subtraction.
+        older_head_output = min_(
+            max_(p.older.amount - co_soacial_security_subtraction_head, 0),
+            head_tpi,
+        )
+        # subtract $20,000 minus any amount entered on line 3(co_soacial_security_subtraction_head), or taxable_pension_income, whichever is smaller.
+        # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
+        intermediate_head_output = min_(
+            max_(p.younger.amount - co_soacial_security_subtraction_head, 0),
+            head_tpi,
+        )
+        return where(
             younger_condition,
-            # subtract $20,000 minus any amount entered on line 3(co_ss_head), or co_pension_survivors, whichever is smaller.
-            # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
-            min_(max_(p.younger.amount - co_ss_head, 0), co_pension_survivors),
+            younger_head_output,
             where(
                 older_condition,
-                # subtract $24,000 minus any amount entered on line 3(co_ss_head), or taxable_pension_income, whichever is smaller.
-                # if the amount on line 3 of this form is greater than $24,000, you may not claim any subtraction.
-                min_(max_(p.older.amount - co_ss_head, 0), head_tpi),
-                # subtract $20,000 minus any amount entered on line 3(co_ss_head), or taxable_pension_income, whichever is smaller.
-                # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
-                min_(max_(p.younger.amount - co_ss_head, 0), head_tpi),
+                older_head_output,
+                intermediate_head_output,
             ),
         )
-
-        return output

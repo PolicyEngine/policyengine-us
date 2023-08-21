@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_pension_spouse(Variable):
+class co_pension_subtraction_spouse(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado pension and annuity subtraction for spouse"
@@ -20,7 +20,9 @@ class co_pension_spouse(Variable):
         person = tax_unit.members
         taxable_pension_income = person("taxable_pension_income", period)
         co_pension_survivors = person("co_pension_survivors", period)
-        co_ss_spouse = tax_unit("co_ss_spouse", period)
+        co_soacial_security_subtraction_spouse = tax_unit(
+            "co_soacial_security_subtraction_spouse", period
+        )
         age_spouse = tax_unit("age_spouse", period)
         younger_condition = age_spouse < p.younger.age
         older_condition = age_spouse >= p.older.age
@@ -31,16 +33,24 @@ class co_pension_spouse(Variable):
             taxable_pension_income * person("is_tax_unit_spouse", period)
         )
         # same as co_pension_head
-        output = where(
+        younger_spouse_output = min_(
+            max_(p.younger.amount - co_soacial_security_subtraction_spouse, 0),
+            co_pension_survivors,
+        )
+        older_spouse_output = min_(
+            max_(p.older.amount - co_soacial_security_subtraction_spouse, 0),
+            spouse_tpi,
+        )
+        intermediate_spouse_output = min_(
+            max_(p.younger.amount - co_soacial_security_subtraction_spouse, 0),
+            spouse_tpi,
+        )
+        return where(
             younger_condition,
-            min_(
-                max_(p.younger.amount - co_ss_spouse, 0), co_pension_survivors
-            ),
+            younger_spouse_output,
             where(
                 older_condition,
-                min_(max_(p.older.amount - co_ss_spouse, 0), spouse_tpi),
-                min_(max_(p.younger.amount - co_ss_spouse, 0), spouse_tpi),
+                older_spouse_output,
+                intermediate_spouse_output,
             ),
         )
-
-        return output
