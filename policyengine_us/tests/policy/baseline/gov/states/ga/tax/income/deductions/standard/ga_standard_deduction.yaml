@@ -22,7 +22,7 @@
   output:
     ga_standard_deduction: 8_400
 
-- name: Single filing - aged
+- name: Single filing - aged head
   period: 2023
   input:
     filing_status: SINGLE
@@ -32,7 +32,7 @@
   output:
     ga_standard_deduction: 6_700
 
-- name: Head of household  - one blind and aged self filing
+- name: Head of household  - one blind and aged head
   period: 2023
   input:
     filing_status: HEAD_OF_HOUSEHOLD
