@@ -24,7 +24,7 @@ class ga_standard_deduction(Variable):
         eligible_aged_head = age_head >= p.aged.age_threshold
         blind_head = tax_unit("blind_head", period)
         extra_head = (
-            blind_head * p.blind.head + eligible_aged_head * p.aged.head
+            blind_head * p.blind.head + eligible_aged_head * p.aged.amount.head
         )
 
         # Spouse gets extra standard deduction if aged and/or blind and filing jointly.
@@ -35,7 +35,7 @@ class ga_standard_deduction(Variable):
             filing_status == status.JOINT,
             (
                 blind_spouse * p.blind.spouse
-                + eligible_aged_spouse * p.aged.spouse
+                + eligible_aged_spouse * p.aged.amount.spouse
             ),
             0,
         )
