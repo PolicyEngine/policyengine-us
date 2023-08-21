@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ar_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "AR itemized deductions"
+    label = "Arizona itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
@@ -12,6 +12,21 @@ class ar_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions
+        
+        items = [
+            deduction
+            for deduction in p.itemized_deductions
+            if deduction not in ["salt_deduction"]
+        ]
+        us_itm_deds_less_salt = add(tax_unit, period, items)
+        filing_status = tax_unit("filing_status", period)
+        capped_property_taxes = min_(
+            add(tax_unit, period, ["real_estate_taxes"]),
+            p.itemized.salt_and_real_estate.cap[filing_status],
+        )
+        ar_itm_deds = us_itm_deds_less_salt + capped_property_taxes
+        #######################
+        
         agi = tax_unit("adjusted_gross_income",period)
         spouse_agi = tax_unit("spouse_separate_adjusted_gross_income",period)
 
