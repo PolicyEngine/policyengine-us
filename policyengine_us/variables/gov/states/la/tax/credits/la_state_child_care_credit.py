@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class la_state_child_care_credit(Variable):
+class la_cdcc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana Child and Dependent Care Credit"
