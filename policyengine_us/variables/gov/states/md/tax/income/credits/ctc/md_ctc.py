@@ -13,7 +13,6 @@ class md_ctc(Variable):
     )
     defined_for = "md_ctc_eligible"
 
-
     def formula_2020(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.ctc
         person = tax_unit.members
