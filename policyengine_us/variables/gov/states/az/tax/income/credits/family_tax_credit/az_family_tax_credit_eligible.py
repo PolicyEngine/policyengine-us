@@ -10,7 +10,6 @@ class az_family_tax_credit_eligible(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.family_tax_credits
