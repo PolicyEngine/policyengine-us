@@ -37,6 +37,7 @@ def add_target_line(fig, target):
 if comparison_type == "Absolute against target":
     fig = px.line(df[df.name == metric], x="epoch", y="value", title=metric).update_layout(
         yaxis_range=[0, df[df.name == metric].target.iloc[0] * 2],
+        showlegend=False,
     )
     target = df[df.name == metric].target.iloc[0]
     # Add dashed horizontal line at target
@@ -51,6 +52,7 @@ elif comparison_type == "Relative against target":
     ).update_layout(
         yaxis_tickformat="+.0%",
         yaxis_range=[-1, 1],
+        showlegend=False,
     )
     fig = add_target_line(fig, 0)
     st.plotly_chart(fig)
@@ -68,9 +70,10 @@ elif comparison_type == "Error relative change":
         title=metric,
     ).update_layout(
         yaxis_tickformat="+.0%",
-        yaxis_range=[-1, 1],
+        yaxis_range=[-2, 0],
+        showlegend=False,
     )
-    fig = add_target_line(fig, 0)
+    fig = add_target_line(fig, -1)
     st.plotly_chart(fig)
 
 st.dataframe(df)

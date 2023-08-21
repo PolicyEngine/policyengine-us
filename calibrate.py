@@ -77,6 +77,11 @@ for variable_name in PROGRAMS:
     targets[variable_name] = parameters.gov.cbo[variable_name]
     equivalisation[variable_name] = FINANCIAL_EQUIVALISATION
 
+# EITC tax expenditure
+values_df["eitc"] = simulation.calculate("eitc", map_to="household").values
+targets["eitc"] = parameters.gov.treasury.tax_expenditures.eitc
+equivalisation["eitc"] = FINANCIAL_EQUIVALISATION
+
 # Total population
 values_df["population"] = simulation.calculate(
     "people", map_to="household"
@@ -84,17 +89,21 @@ values_df["population"] = simulation.calculate(
 targets["population"] = parameters.populations.total
 equivalisation["population"] = POPULATION_EQUIVALISATION
 
-# Population by 5-year age group
+# Population by 5-year age group and sex
 age = simulation.calculate("age").values
+is_male = simulation.calculate("is_male")
 for lower_age_group in range(0, 90, 5):
-    in_age_range = (age >= lower_age_group) & (age < lower_age_group + 5)
-    count_people_in_range = simulation.map_result(
-        in_age_range, "person", "household"
-    )
-    name = f"population_{lower_age_group}_to_{lower_age_group + 5}"
-    values_df[name] = count_people_in_range
-    targets[name] = (household_weights.numpy() * count_people_in_range).sum()
-    equivalisation[name] = POPULATION_EQUIVALISATION
+    for possible_is_male in (True, False):
+        in_age_range = (age >= lower_age_group) & (age < lower_age_group + 5)
+        in_sex_category = is_male == possible_is_male
+        count_people_in_range = simulation.map_result(
+            in_age_range * in_sex_category, "person", "household"
+        )
+        sex_category = "male" if possible_is_male else "female"
+        name = f"population_{lower_age_group}_to_{lower_age_group + 5}_{sex_category}"
+        values_df[name] = count_people_in_range
+        targets[name] = (household_weights.numpy() * count_people_in_range).sum()
+        equivalisation[name] = POPULATION_EQUIVALISATION
 
 # Household population by number of adults and children
 
@@ -116,6 +125,22 @@ for count_adults in range(1, 3):
         values_df[name] = in_criteria
         targets[name] = (household_weights.numpy() * in_criteria).sum()
         equivalisation[name] = POPULATION_EQUIVALISATION
+
+# Tax filing unit counts by filing status
+
+filing_status = simulation.calculate("filing_status").values
+
+for filing_status_value in np.unique(filing_status):
+    is_filing_status = filing_status == filing_status_value
+    name = f"population_filing_status_{filing_status_value}"
+    household_filing_status_unit_counts = simulation.map_result(
+        is_filing_status, "tax_unit", "household"
+    )
+    values_df[name] = household_filing_status_unit_counts
+    targets[name] = (
+        household_weights.numpy() * household_filing_status_unit_counts
+    ).sum()
+    equivalisation[name] = POPULATION_EQUIVALISATION
 
 targets_array = torch.tensor(list(targets.values()), dtype=torch.float32)
 equivalisation_factors_array = torch.tensor(
