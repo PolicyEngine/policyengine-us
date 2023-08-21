@@ -14,13 +14,13 @@ class ri_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
-        agi = tax_unit("adjusted_gross_income", period)
-        threshold_agi_percent = where(
+        household_income = tax_unit("ri_total_household_income", period)
+        household_income_percent = where(
             tax_unit("tax_unit_size", period) == 1,
-            p.rate.one_person.calc(agi),
-            p.rate.multiple_people.calc(agi),
+            p.rate.one_person.calc(household_income),
+            p.rate.multiple_people.calc(household_income),
         )
-        threshold = threshold_agi_percent * agi
+        threshold = household_income_percent * household_income
         property_tax = add(tax_unit, period, ["real_estate_taxes"])
         rent = add(tax_unit, period, ["rent"])
         applicable_rent = rent * p.rate.rent
