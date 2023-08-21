@@ -20,8 +20,8 @@ class md_ctc(Variable):
         disabled = person("is_disabled", period)
         age = person("age", period)
         if p.reduced_by_federal_credit:
-            meets_age_limit = age < p.age_threshold.disabled
-            eligible = dependent & meets_age_limit & disabled
+            age_limit = age < p.age_threshold.disabled
+            eligible = dependent & age_limit & disabled
             eligible_children = tax_unit.sum(eligible)
             md_ctc = eligible_children * p.amount
             federal_ctc = tax_unit("ctc", period)
