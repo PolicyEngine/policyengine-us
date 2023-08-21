@@ -7,21 +7,16 @@ class mt_elderly_renter_credit(Variable):
     label = "Montana Elderly Homeowner/Renter Credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MT
+    defined_for = "mt_elderly_renter_credit_eligibility"
 
     def formula(tax_unit, period, parameters):
-        # Check eligibility based on state, rent, filing status, and income.
         p = parameters(
             period
         ).gov.states.mt.tax.income.credits.elderly_renter_credit
-        age_head = tax_unit("age_head", period)
-        gross_household_income = tax_unit("mt_agi", period)
-        eligibility = (age_head >= p.age_min) & (
-            gross_household_income < p.income_max
-        )
 
         # Calculate net_household_income
         standard_exclusion = p.standard_exclusion
+        gross_household_income = tax_unit("mt_agi", period)
         reduced_household_income = max_(
             gross_household_income - standard_exclusion, 0
         )
@@ -40,4 +35,6 @@ class mt_elderly_renter_credit(Variable):
         total_credit = (
             p.multiplier.calc(gross_household_income) * capped_credit
         )
+
+        eligibility = tax_unit("mt_elderly_renter_credit_eligibility", period)
         return eligibility * total_credit
