@@ -4054,3 +4054,169 @@
     fixed:
     - DeLauro contrib parameter README.
   date: 2023-08-09 14:01:59
+- bump: minor
+  changes:
+    added:
+    - Idaho income tax schedule.
+  date: 2023-08-09 18:49:35
+- bump: minor
+  changes:
+    added:
+    - Vermont main income tax rate.
+  date: 2023-08-09 23:21:44
+- bump: minor
+  changes:
+    added:
+    - Arkansas Personal Income Tax Schedule.
+  date: 2023-08-09 23:56:01
+- bump: patch
+  changes:
+    changed:
+    - Eliminated the use of the term subtractions in the New Mexico metadata.
+  date: 2023-08-10 01:01:50
+- bump: minor
+  changes:
+    added:
+    - South Carolina State Tax Addback.
+  date: 2023-08-10 01:08:32
+- bump: minor
+  changes:
+    added:
+    - Add New Jersey pension/retirement and other retirement income exclusions.
+  date: 2023-08-10 01:19:35
+- bump: minor
+  changes:
+    added:
+    - North Carolina child credit.
+  date: 2023-08-11 17:35:41
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey 2021 income tax parameter values.
+  date: 2023-08-13 16:18:26
+- bump: patch
+  changes:
+    added:
+    - New Jersey total income variable (allowing simplification of exclusion formulas).
+  date: 2023-08-15 17:21:08
+- bump: minor
+  changes:
+    added:
+    - Hawaii Food/Excise Tax Credit.
+  date: 2023-08-15 18:19:47
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey property tax deduction/credit logic.
+  date: 2023-08-17 05:29:22
+- bump: minor
+  changes:
+    added:
+    - Oregon retirement credit.
+  date: 2023-08-17 15:19:18
+- bump: patch
+  changes:
+    fixed:
+    - Misallocation of state refundable tax credit-affecting reforms' revenues.
+  date: 2023-08-17 18:12:58
+- bump: minor
+  changes:
+    added:
+    - Contributed reforms to the DC Keep Child Care Affordable Tax Credit.
+  date: 2023-08-17 18:53:59
+- bump: minor
+  changes:
+    added:
+    - West Virginia public pension subtraction.
+  date: 2023-08-18 03:57:15
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of Oregon retirement income credit.
+  date: 2023-08-18 14:46:22
+- bump: minor
+  changes:
+    added:
+    - Indiana in_income_tax variable
+    - Indiana decoupled EITC variables and parameters
+  date: 2023-08-18 15:03:20
+- bump: patch
+  changes:
+    added:
+    - 2023 Maryland CTC parameters.
+    - Maryland refundable CTC.
+  date: 2023-08-18 20:08:04
+- bump: minor
+  changes:
+    added:
+    - Connecticut personal income tax schedule.
+    - Connecticut personal exemption.
+  date: 2023-08-18 21:35:17
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of Oregon federal income tax subtraction.
+  date: 2023-08-18 22:43:37
+- bump: minor
+  changes:
+    added:
+    - Pell Grant
+  date: 2023-08-18 23:46:07
+- bump: minor
+  changes:
+    added:
+    - Indiana AGI tax rate for 2023.
+    changed:
+    - Labels and descriptions for Indiana tax parameters.
+    - Use real_estate_taxes variable for Indiana homeowner's property tax deduction.
+    removed:
+    - Parameter names for Indiana tax parameters (deprecated).
+  date: 2023-08-19 04:39:37
+- bump: patch
+  changes:
+    added:
+    - README and index.yaml files to Department of Education and other parameter folders.
+  date: 2023-08-19 05:01:28
+- bump: patch
+  changes:
+    fixed:
+    - Removed unused no_salt_income_tax variable.
+  date: 2023-08-19 17:31:51
+- bump: patch
+  changes:
+    fixed:
+    - Avoid divide by zero in Pell Grant EFC formula.
+  date: 2023-08-20 04:42:13
+- bump: minor
+  changes:
+    added:
+    - Legal code references and historical parameters for DC Keep Child Care Affordable
+      Tax Credit.
+  date: 2023-08-20 17:05:13
+- bump: minor
+  changes:
+    added:
+    - Louisiana EITC.
+    - Louisiana main rates.
+    - Louisiana CDCC.
+  date: 2023-08-20 20:35:47
+- bump: minor
+  changes:
+    added:
+    - Connecticut credit based on AGI
+  date: 2023-08-20 21:15:46
+- bump: minor
+  changes:
+    added:
+    - Colorado child tax credit.
+  date: 2023-08-21 01:17:10
+- bump: minor
+  changes:
+    added:
+    - Hawaii low income household renters tax credit.
+  date: 2023-08-21 04:31:08
+- bump: minor
+  changes:
+    added:
+    - Adjust the connecticut personal credit rate file.
+  date: 2023-08-21 11:38:54
