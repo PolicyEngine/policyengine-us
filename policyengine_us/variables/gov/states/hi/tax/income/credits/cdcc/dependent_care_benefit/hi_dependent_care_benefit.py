@@ -40,30 +40,15 @@ class hi_dcb(Variable):
                 p.dependent_care_benefit.amount.not_separate,
             ],
         )
-        # line 12? skip?
-        proprietorship_partnership = 0
-        # line 13
-        line13 = dcb_amount - proprietorship_partnership
+        # skip line 12, then line 13 = line 5
         # line 14
-        deductible_benefit = min_(
-            dcb_amount, line11, proprietorship_partnership
-        )
+        deductible_benefit = min_(dcb_amount, line11)
         # line 15
         excluded_benefit = max_(
-            0,
-            select(
-                [
-                    proprietorship_partnership == 0,
-                    proprietorship_partnership > 0,
-                ],
-                [
-                    min_(min_benefit, line11),
-                    min_(min_benefit, line11) - deductible_benefit,
-                ],
-            ),
+            0, min_(min_benefit, line11) - deductible_benefit
         )
         # line 16
-        taxable_benefit = max_(0, line13 - excluded_benefit)
+        taxable_benefit = max_(0, dcb_amount - excluded_benefit)
         # line 17
         qualified_num = tax_unit("count_cdcc_eligible", period)
         expenses_amount = select(
@@ -81,6 +66,7 @@ class hi_dcb(Variable):
         # line 19
         line19 = expenses_amount - line18
         if line19 <= 0:
+            print("You can not take this credit!")
             return
         # line 22
         return min_(line19, tax_unit("tax_unit_childcare_expenses", period))
