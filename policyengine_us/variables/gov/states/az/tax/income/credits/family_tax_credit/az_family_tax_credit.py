@@ -18,5 +18,4 @@ class az_family_tax_credit(Variable):
         status = filing_status.possible_values
 
         amount = p.per_person * tax_unit("tax_unit_size", period)
-        eligible = tax_unit("az_family_tax_credit_eligible", period)
-        return eligible * min_(amount, p.cap[filing_status])
+        return min_(amount, p.cap[filing_status])
