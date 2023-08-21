@@ -1,0 +1,34 @@
+description: West Virginia provides the low-income family tax credit for filers with modified agi at or below this threshold.
+metadata:
+  period: year
+  unit: currency-USD
+  label: West Virginia low-income family tax credit modified agi threshold
+  
+  reference:
+  - title: Code of West Virginia §11-21-22A (e)(3)
+    href: https://code.wvlegislature.gov/11-21-22A/
+  - title: 2021 West Virginia Personal Income Tax Forms And Instructions-2021 FAMILY TAX CREDIT TABLES
+    href: https://tax.wv.gov/Documents/TaxForms/2021/it140.pdf#page=28 
+  breakdown:
+    - filing_status
+
+SINGLE:
+  2009-01-01: 2_700 
+HEAD_OF_HOUSEHOLD: 
+  2009-01-01: 2_700 
+JOINT:
+  2009-01-01: 2_700 
+WIDOW:
+  2009-01-01: 2_700
+SEPARATE:
+  2009-01-01: 1_350 
+
+# need to addd AR to .fpg file from 2017 
+
+# for rate = set parameter (breakdown) to 1 for all but the one that is .5 (separate)
+
+# p = parameters(period).gov.states.ar....
+# state_group = spm_unit.household("state_group_str", period)
+# poverty_guidlines_amount = parameters(period).gov.hhs.fpg.first_person[state_group]
+# total_pga = p.fpg_rate * poverty_guidlines_amount
+# income_threshold = p.income_threshold + total_pga
