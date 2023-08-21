@@ -37,6 +37,6 @@ class az_family_tax_credit(Variable):
             ],
         )
         household_size = head + spouse + dependents
-        amount = p.amount * household_size
+        amount = p.amount * tax_unit("tax_unit_size", period)
         eligible = income <= max_income
         return eligible * min_(amount, p.max_amount[filing_status])
