@@ -5,7 +5,6 @@ class az_family_tax_credit_eligible(Variable):
     value_type = float
     entity = TaxUnit
     label = "Eligible for the Arizona Family Tax Credit"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
 
