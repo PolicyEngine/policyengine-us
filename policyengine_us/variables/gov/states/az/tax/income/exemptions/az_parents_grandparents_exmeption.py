@@ -29,12 +29,14 @@ class az_parents_grandparents_exemption(Variable):
         age_eligible = age >= p.parent_grandparent.min_age
 
         cohabitating_parent = person("cohabitating_parent", period)
-        eligible_co_age_p = cohabitating_parent & age_eligible
-        eligible_parent = eligible_co_age_p & payment_eligiblity
+        eligible_parent = (
+            cohabitating_parent & age_eligible & payment_eligiblity
+        )
 
         cohabitating_grandparent = person("cohabitating_grandparent", period)
-        eligible_co_age_g = cohabitating_grandparent & age_eligible
-        eligible_grandparent = eligible_co_age_g & payment_eligiblity
+        eligible_grandparent = (
+            cohabitating_grandparent & age_eligible & payment_eligiblity
+        )
 
         total_exemptions = eligible_parent + eligible_grandparent
         return p.parent_grandparent.amount * tax_unit.sum(total_exemptions)
