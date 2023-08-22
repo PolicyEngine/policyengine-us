@@ -5,6 +5,148 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.438.0] - 2023-08-22 18:21:25
+
+### Added
+
+- Arizona family tax credit.
+
+## [0.437.1] - 2023-08-21 20:28:33
+
+### Fixed
+
+- 2023 Maryland CTC fix.
+
+## [0.437.0] - 2023-08-21 11:38:54
+
+### Added
+
+- Adjust the connecticut personal credit rate file.
+
+## [0.436.0] - 2023-08-21 04:31:08
+
+### Added
+
+- Hawaii low income household renters tax credit.
+
+## [0.435.0] - 2023-08-21 01:17:10
+
+### Added
+
+- Colorado child tax credit.
+
+## [0.434.0] - 2023-08-20 21:15:46
+
+### Added
+
+- Connecticut credit based on AGI
+
+## [0.433.0] - 2023-08-20 20:35:47
+
+### Added
+
+- Louisiana EITC.
+- Louisiana main rates.
+- Louisiana CDCC.
+
+## [0.432.0] - 2023-08-20 17:05:13
+
+### Added
+
+- Legal code references and historical parameters for DC Keep Child Care Affordable Tax Credit.
+
+## [0.431.3] - 2023-08-20 04:42:13
+
+### Fixed
+
+- Avoid divide by zero in Pell Grant EFC formula.
+
+## [0.431.2] - 2023-08-19 17:31:51
+
+### Fixed
+
+- Removed unused no_salt_income_tax variable.
+
+## [0.431.1] - 2023-08-19 05:01:28
+
+### Added
+
+- README and index.yaml files to Department of Education and other parameter folders.
+
+## [0.431.0] - 2023-08-19 04:39:37
+
+### Added
+
+- Indiana AGI tax rate for 2023.
+
+### Changed
+
+- Labels and descriptions for Indiana tax parameters.
+- Use real_estate_taxes variable for Indiana homeowner's property tax deduction.
+
+## [0.430.0] - 2023-08-18 23:46:07
+
+### Added
+
+- Pell Grant
+
+## [0.429.1] - 2023-08-18 22:43:37
+
+### Fixed
+
+- Calculation of Oregon federal income tax subtraction.
+
+## [0.429.0] - 2023-08-18 21:35:17
+
+### Added
+
+- Connecticut personal income tax schedule.
+- Connecticut personal exemption.
+
+## [0.428.1] - 2023-08-18 20:08:04
+
+### Added
+
+- 2023 Maryland CTC parameters.
+- Maryland refundable CTC.
+
+## [0.428.0] - 2023-08-18 15:03:20
+
+### Added
+
+- Indiana in_income_tax variable
+- Indiana decoupled EITC variables and parameters
+
+## [0.427.1] - 2023-08-18 14:46:22
+
+### Fixed
+
+- Calculation of Oregon retirement income credit.
+
+## [0.427.0] - 2023-08-18 03:57:15
+
+### Added
+
+- West Virginia public pension subtraction.
+
+## [0.426.0] - 2023-08-17 18:53:59
+
+### Added
+
+- Contributed reforms to the DC Keep Child Care Affordable Tax Credit.
+
+## [0.425.1] - 2023-08-17 18:12:58
+
+### Fixed
+
+- Misallocation of state refundable tax credit-affecting reforms' revenues.
+
+## [0.425.0] - 2023-08-17 15:19:18
+
+### Added
+
+- Oregon retirement credit.
+
 ## [0.424.1] - 2023-08-17 05:29:22
 
 ### Fixed
@@ -4879,6 +5021,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.438.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.1...0.438.0
+[0.437.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.0...0.437.1
+[0.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.436.0...0.437.0
+[0.436.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.435.0...0.436.0
+[0.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.434.0...0.435.0
+[0.434.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.433.0...0.434.0
+[0.433.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.432.0...0.433.0
+[0.432.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.3...0.432.0
+[0.431.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.2...0.431.3
+[0.431.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.1...0.431.2
+[0.431.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.431.0...0.431.1
+[0.431.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.430.0...0.431.0
+[0.430.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.1...0.430.0
+[0.429.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.429.0...0.429.1
+[0.429.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.1...0.429.0
+[0.428.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.428.0...0.428.1
+[0.428.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.427.1...0.428.0
+[0.427.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.427.0...0.427.1
+[0.427.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.426.0...0.427.0
+[0.426.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.1...0.426.0
+[0.425.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.425.0...0.425.1
+[0.425.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.1...0.425.0
 [0.424.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.424.0...0.424.1
 [0.424.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.2...0.424.0
 [0.423.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.423.1...0.423.2
