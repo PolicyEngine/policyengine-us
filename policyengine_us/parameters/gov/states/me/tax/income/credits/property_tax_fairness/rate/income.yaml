@@ -1,0 +1,16 @@
+description: Maine allows for a the property tax fairness credit amount which exceedes this rate of the filers income.
+values:
+  2014-01-01: 0.06
+  2020-01-01: 0.05
+  2022-01-01: 0.04
+metadata:
+  unit: /1
+  reference:
+    - title: §5219-KK. Property tax fairness credit for tax (2)
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-KK.html
+    - title: 2021 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/21_1040me_sched_pstfc_dwnldff.pdf#page=2
+    - title: 2022 Form 1040ME Property Tax Fairness Credit / Sales Tax Fairness Credit 
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/22_1040me_sched_pstfc_ff.pdf#page=2
+  period: year
+  label: Maine property tax fairness credit income rate

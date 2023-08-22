@@ -1,0 +1,21 @@
+- name: No income
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_property_tax_fairness_credit_income: 0
+    filing_status: SEPARATE
+    ctc_qualifying_children: 2
+  output:
+    me_property_tax_fairness_credit_eligible: false
+
+- name: No income
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_property_tax_fairness_credit_income: 69_999
+    filing_status: SINGLE
+    ctc_qualifying_children: 4
+  output:
+    me_property_tax_fairness_credit_eligible: true
