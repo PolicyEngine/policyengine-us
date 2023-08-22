@@ -28,7 +28,6 @@ class az_parents_grandparents_exemption(Variable):
         eligible_parent = payment_eligibility & cohabitating_parent & age_eligible
 
         cohabitating_grandparent = person("cohabitating_grandparent", period)
-        eligible_co_age_g = cohabitating_grandparent & age_eligible
         eligible_grandparent = payment_eligibility & cohabitating_grandparent & age_eligible
 
         total_exemptions = eligible_parent + eligible_grandparent
