@@ -1,1 +1,1 @@
-# DSS
+# Department of Social Services
