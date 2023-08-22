@@ -21,9 +21,13 @@ class az_senior_exemption(Variable):
         care_and_support_costs = person("care_and_support_costs", period)
         support_payment_ratio = np.zeros_like(care_and_support_costs)
         mask = care_and_support_costs != 0
-        support_payment_ratio[mask] = care_and_support_payment[mask] / care_and_support_costs[mask]
-             
-        payment_eligiblity = (support_payment_ratio > p.cost_rate) | (care_and_support_payment > p.min_payment)
+        support_payment_ratio[mask] = (
+            care_and_support_payment[mask] / care_and_support_costs[mask]
+        )
+
+        payment_eligiblity = (support_payment_ratio > p.cost_rate) | (
+            care_and_support_payment > p.min_payment
+        )
         eligible_seniors = payment_eligiblity & age_eligible
 
         return p.amount * tax_unit.sum(eligible_seniors)
