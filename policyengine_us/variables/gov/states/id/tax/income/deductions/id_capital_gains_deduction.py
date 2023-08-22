@@ -11,21 +11,22 @@ class id_capital_gains_deduction(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(
             period
         ).gov.states.id.tax.income.deductions.capital_gains
         # taxpayer must report capital gain net income
-        capital_gains = max_(0, add(tax_unit, period, ["capital_gains"]))
+        capital_gains = add(tax_unit, period, ["capital_gains"])
 
         # capital_gain_net_income
-
-        capital_loss = tax_unit(
-            "capital_losses", period
-        )  # Idaho capital gains deduction may not be netted against gains from property qualifying for the Idaho capital gains deduction before the amount of the deduction is determined
+        capital_loss = person("capital_losses", period)
+        # Idaho capital gains deduction may not be netted against
+        # gains from property qualifying for the Idaho capital gains
+        # deduction before the amount of the deduction is determined
         capital_gain_net_income = capital_gains - capital_loss
 
         # Filers can deduct 60% of captial gains
-        decuctions = p.amount * capital_gains
+        decuctions = p.percentage * capital_gains
 
         # capital gains deduction may not exceed the capital gain net income included in taxable income
         # qualified_deductions = min_(capital_gain_net_income, decuctions)
