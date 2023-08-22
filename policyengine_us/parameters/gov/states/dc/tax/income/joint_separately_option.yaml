@@ -1,0 +1,11 @@
+description: DC offers taxpayers who file married joint on federal return the option to file separately on DC return if this parameter is true.
+metadata:
+  unit: bool
+  label: Whether DC offers filing separate option to married-joint taxpayers
+  reference:
+    - title: 2021 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=44
+    - title: 2022 Form D-40 Booklet
+      href: https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=44
+values:
+  2021-01-01: true
