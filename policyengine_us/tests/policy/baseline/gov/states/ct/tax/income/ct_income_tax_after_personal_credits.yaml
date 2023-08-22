@@ -6,7 +6,7 @@
     filing_status: SINGLE
     ct_income_tax_phase_out_add_back: 0
     ct_income_tax_recapture: 0
-    ct_personal_credits: 0
+    ct_personal_credit_rate: 0
   output:
     ct_income_tax_after_personal_credits: 30
 
@@ -18,7 +18,7 @@
     filing_status: SEPARATE
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200
-    ct_personal_credits: 0
+    ct_personal_credit_rate: 0
   output:
     ct_income_tax_after_personal_credits: 1_100
 
@@ -30,7 +30,7 @@
     filing_status: SEPARATE
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200
-    ct_personal_credits: 0.2
+    ct_personal_credit_rate: 0.2
   output:
     ct_income_tax_after_personal_credits: 880
 
@@ -42,6 +42,6 @@
     filing_status: WIDOW
     ct_income_tax_phase_out_add_back: 100
     ct_income_tax_recapture: 200
-    ct_personal_credits: 1
+    ct_personal_credit_rate: 1
   output:
     ct_income_tax_after_personal_credits: 0
