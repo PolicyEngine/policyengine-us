@@ -44,7 +44,7 @@ SEPARATE:
     2021-01-01: 0
   1:
     2021-01-01: 0
-  2+:
+  2:
     2021-01-01: 0
 metadata:
   unit: currency-USD
@@ -60,4 +60,4 @@ metadata:
   label: Maine property tax fairness credit income threshold
   breakdown:
     - filing_status
-    - "list(range(1, 2) + [2+]""
+    - range(0, 999)
