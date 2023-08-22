@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
 class co_income_qualified_senior_housing(Variable):
@@ -25,6 +24,6 @@ class co_income_qualified_senior_housing(Variable):
         increment = p.reduction.increment
         reduction_amount = p.reduction.amount[filing_status]
         excess = max_(agi - reduction_start, 0)
-        increments = ceil(excess / increment)
+        increments = np.ceil(excess / increment)
         total_reduction_amount = increments * reduction_amount
         return max_(max_amount - total_reduction_amount, 0)
