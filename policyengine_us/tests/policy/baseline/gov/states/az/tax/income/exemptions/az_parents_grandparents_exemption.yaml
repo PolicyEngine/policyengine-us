@@ -44,7 +44,7 @@
   output:
     az_parents_grandparents_exemption: 20_000
 
-- name: 4 parents and grandparents
+- name: 4 eligible parents and grandparents
   period: 2023
   input:
     people:
@@ -78,3 +78,90 @@
         state_code: AZ
   output:
     az_parents_grandparents_exemption: 40_000
+
+- name:  parents and grandparents not eligible for age 
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 60
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+        cohabitating_parent: true
+        cohabitating_grandparent: false
+      person2:
+        age: 60
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+        cohabitating_parent: true
+        cohabitating_grandparent: false
+      person3:
+        age: 60
+        care_and_support_payment: 150
+        care_and_support_costs: 200
+        cohabitating_parent: false
+        cohabitating_grandparent: true
+      person4:
+        age: 60
+        care_and_support_payment: 150
+        care_and_support_costs: 200
+        cohabitating_parent: false
+        cohabitating_grandparent: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AZ
+  output:
+    az_parents_grandparents_exemption: 0
+
+- name: parents and grandparents not eligible for cohabitating
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 65
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+        cohabitating_parent: false
+        cohabitating_grandparent: false
+      person2:
+        age: 65
+        care_and_support_payment: 100
+        care_and_support_costs: 100
+        cohabitating_parent: false
+        cohabitating_grandparent: false
+      person3:
+        age: 80
+        care_and_support_payment: 150
+        care_and_support_costs: 200
+        cohabitating_parent: false
+        cohabitating_grandparent: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_parents_grandparents_exemption: 0
+
+- name: parents and grandparents not eligible for support payment
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 65
+        care_and_support_payment: 0
+        care_and_support_costs: 100
+        cohabitating_parent: true
+        cohabitating_grandparent: false
+      person2:
+        age: 65
+        care_and_support_payment: 10
+        care_and_support_costs: 100
+        cohabitating_parent: false
+        cohabitating_grandparent: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_parents_grandparents_exemption: 0

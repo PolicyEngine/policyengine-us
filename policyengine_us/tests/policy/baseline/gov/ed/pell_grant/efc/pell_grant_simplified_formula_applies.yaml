@@ -1,0 +1,155 @@
+- name: No benefits
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: false
+
+- name: Has Medicaid
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 1
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Has SSI
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 1
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Has WIC
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+      spm_unit_wic: 1
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Has SNAP
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 1
+      school_meal_net_subsidy: 0
+      tanf: 0
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Has Free School Lunch
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 1
+      tanf: 0
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Has TANF
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 0
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 1
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Someone else has a benefit
+  period: 2023
+  input:
+    people:
+      main:
+        medicaid: 0
+        ssi: 0
+      other:
+        medicaid: 1
+        ssi: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+      spm_unit_wic: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Too much income
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid: 1
+        ssi: 1
+    tax_unit:
+      pell_grant_primary_income: 50_000
+    spm_unit:
+      snap: 1
+      school_meal_net_subsidy: 0
+      tanf: 1
+      spm_unit_wic: 1
+  output:
+    pell_grant_simplified_formula_applies: false
