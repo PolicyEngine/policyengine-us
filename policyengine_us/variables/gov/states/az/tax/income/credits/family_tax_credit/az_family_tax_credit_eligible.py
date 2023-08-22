@@ -16,7 +16,7 @@ class az_family_tax_credit_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         dependents = tax_unit("tax_unit_dependents", period)
-        max_income = select(
+        income_limit = select(
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
