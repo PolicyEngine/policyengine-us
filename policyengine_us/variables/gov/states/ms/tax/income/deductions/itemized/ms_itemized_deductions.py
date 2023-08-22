@@ -21,8 +21,6 @@ class ms_itemized_deductions(Variable):
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
 
         # calculate maximum miscellanous amount
-        misc_income = add(tax_unit, period["miscellaneous_income"])
         misc_deduction = tax_unit("misc_deduction", period)
-        misc_deduction_total = max_(misc_income - misc_deduction, 0)
 
-        return itm_deds_less_salt + misc_deduction_total
+        return itm_deds_less_salt + misc_deduction

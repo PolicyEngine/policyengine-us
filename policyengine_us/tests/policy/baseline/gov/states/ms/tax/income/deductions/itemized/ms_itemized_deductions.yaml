@@ -4,7 +4,6 @@
   input:
     state_code: MS
     itemized_deductions_less_salt: 1_100
-    miscellaneous_income: 2_000
     misc_deduction: 500
   output:
     ms_itemized_deductions: 2_600
@@ -15,7 +14,6 @@
   input:
     state_code: MS
     itemized_deductions_less_salt: 5_000
-    miscellaneous_income: 3_000
     misc_deduction: 1_000
   output:
     ms_itemized_deductions: 7_000
@@ -26,7 +24,6 @@
   input:
     state_code: MS
     itemized_deductions_less_salt: 7_000
-    miscellaneous_income: 300
     misc_deduction: 5000
   output:
     ms_itemized_deductions: 7_000
@@ -37,7 +34,6 @@
   input:
     state_code: MS
     itemized_deductions_less_salt: 7_500
-    miscellaneous_income: 1_500
     misc_deduction: 1_500
   output:
     ms_itemized_deductions: 7_500 
