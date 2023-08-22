@@ -7,7 +7,7 @@
   output:
     id_capital_gains_deduction: 0
 
-- name: 60% net capital gains 
+- name: 60% net capital gains, with loss  
   period: 2022
   input:
     capital_gains: 6_000
@@ -16,7 +16,7 @@
   output:
     id_capital_gains_deduction: 3_500
 
-- name: 60% net capital gains 
+- name: 60% net capital gains,no loss 
   period: 2021
   input:
     capital_gains: 6_000
@@ -24,3 +24,12 @@
     state_code: ID
   output:
     id_capital_gains_deduction: 3_600
+
+- name: 60% net capital gains，losses > gains 
+  period: 2021
+  input:
+    capital_gains: 6_000
+    capital_losses: 7_000
+    state_code: ID
+  output:
+    id_capital_gains_deduction: 0
