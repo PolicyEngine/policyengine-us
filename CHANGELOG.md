@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.437.1] - 2023-08-21 20:28:33
+
+### Fixed
+
+- 2023 Maryland CTC fix.
+
 ## [0.437.0] - 2023-08-21 11:38:54
 
 ### Added
@@ -5009,6 +5015,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.437.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.0...0.437.1
 [0.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.436.0...0.437.0
 [0.436.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.435.0...0.436.0
 [0.435.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.434.0...0.435.0
