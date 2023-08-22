@@ -1,7 +1,7 @@
 - name: Case 1, above threshold
   period: 2021
   input:
-    tax_unit_itemizes: FALSE
+    tax_unit_itemizes: false
     charitable_deduction: 700
     state_code: CO
   output:
@@ -11,7 +11,7 @@
 - name: Case 2, below threshold
   period: 2021
   input:
-    tax_unit_itemizes: FALSE
+    tax_unit_itemizes: false
     charitable_deduction: 400
     state_code: CO
   output:
@@ -21,7 +21,7 @@
 - name: Case 3, above threshold
   period: 2021
   input:
-    tax_unit_itemizes: TRUE
+    tax_unit_itemizes: true
     charitable_deduction: 700
     state_code: CO
   output:

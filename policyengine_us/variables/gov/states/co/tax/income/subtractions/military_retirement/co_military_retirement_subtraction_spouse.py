@@ -21,9 +21,9 @@ class co_military_retirement_subtraction_spouse(Variable):
         ).gov.states.co.tax.income.subtractions.military_retirement
         age_spouse = tax_unit("age_spouse", period)
         spouse_eligible = (age_spouse < p.age_threshold).astype(int)
-        co_military_retirement_benefits_spouse = tax_unit(
-            "co_military_retirement_benefits_spouse", period
+        person = tax_unit.members
+        military_retirement_pay = person("military_retirement_pay", period)
+        military_retirement_pay_spouse = tax_unit.max(
+            military_retirement_pay * person("is_tax_unit_spouse", period)
         )
-        return min_(
-            co_military_retirement_benefits_spouse, spouse_eligible * p.amount
-        )
+        return min_(military_retirement_pay_spouse, spouse_eligible * p.amount)

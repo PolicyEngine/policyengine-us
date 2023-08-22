@@ -3,7 +3,8 @@
   input:
     state_code: CO
     age_spouse: 60
-    co_military_retirement_benefits_spouse: 5_000
+    military_retirement_pay: 5_000
+    is_tax_unit_spouse: true
   output:
     co_military_retirement_subtraction_spouse: 0
     # not qualify if age above 55
@@ -13,7 +14,8 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_military_retirement_benefits_spouse: 5_000
+    military_retirement_pay: 5_000
+    is_tax_unit_spouse: true
   output:
     co_military_retirement_subtraction_spouse: 5_000
     # min(military_retirement_benefits, amount) 
@@ -23,7 +25,8 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_military_retirement_benefits_spouse: 12_000
+    military_retirement_pay: 12_000
+    is_tax_unit_spouse: true
   output:
     co_military_retirement_subtraction_spouse: 10_000
     # min(military_retirement_benefits, amount) 
@@ -33,7 +36,8 @@
   input:
     state_code: CO
     age_spouse: 60
-    co_military_retirement_benefits_spouse: 5_000
+    military_retirement_pay: 5_000
+    is_tax_unit_spouse: true
   output:
     co_military_retirement_subtraction_spouse: 0
     # not qualify if age above 55
@@ -43,7 +47,8 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_military_retirement_benefits_spouse: 7_000
+    military_retirement_pay: 7_000
+    is_tax_unit_spouse: true
   output:
     co_military_retirement_subtraction_spouse: 7_000
     # min(military_retirement_benefits, amount) 
@@ -53,7 +58,8 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_military_retirement_benefits_spouse: 17_000
+    military_retirement_pay: 17_000
+    is_tax_unit_spouse: true
   output:
     co_military_retirement_subtraction_spouse: 15_000
     # min(military_retirement_benefits, amount) 

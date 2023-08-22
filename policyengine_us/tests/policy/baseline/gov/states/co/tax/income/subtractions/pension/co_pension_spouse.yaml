@@ -3,10 +3,10 @@
   input:
     state_code: CO
     age_spouse: 66
-    co_soacial_security_subtraction_spouse: 24_000
+    co_social_security_subtraction_spouse: 24_000
     taxable_pension_income: 23_000
     co_pension_survivors: 5_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 0
     # not eligible if ss_spouse >= 24_000
@@ -16,10 +16,10 @@
   input:
     state_code: CO
     age_spouse: 66
-    co_soacial_security_subtraction_spouse: 15_000
+    co_social_security_subtraction_spouse: 15_000
     taxable_pension_income: 20_000
     co_pension_survivors: 5_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 9_000
     # min(24_000 - co_ss_spouse, taxable_pension_income) = min(24_000 - 15_000, 20_000)
@@ -29,10 +29,10 @@
   input:
     state_code: CO
     age_spouse: 58
-    co_soacial_security_subtraction_spouse: 15_000
+    co_social_security_subtraction_spouse: 15_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 5_000
   # min(20_000 - co_ss_spouse, taxable_pension_income) = min(20_000 - 15_000, 20_000)
@@ -42,10 +42,10 @@
   input:
     state_code: CO
     age_spouse: 58
-    co_soacial_security_subtraction_spouse: 21_000
+    co_social_security_subtraction_spouse: 21_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 0
   # not eligible if ss_spouse >= 20_000 when 55 < age <= 65
@@ -55,10 +55,10 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_soacial_security_subtraction_spouse: 21_000
+    co_social_security_subtraction_spouse: 21_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 0
     # not eligible if ss_spouse >= 20_000 when age < 55
@@ -68,10 +68,10 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_soacial_security_subtraction_spouse: 8_000
+    co_social_security_subtraction_spouse: 8_000
     taxable_pension_income: 20_000
     co_pension_survivors: 3_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 3_000
     # min(20_000 - ss_spouse, pension_survivors) = min(20_000 - 8_000 , 3_000) 
@@ -81,10 +81,10 @@
   input:
     state_code: CO
     age_spouse: 53
-    co_soacial_security_subtraction_spouse: 8_000
+    co_social_security_subtraction_spouse: 8_000
     taxable_pension_income: 20_000
     co_pension_survivors: 13_000
-    is_tax_unit_spouse: TRUE
+    is_tax_unit_spouse: true
   output:
     co_pension_subtraction_spouse: 12_000
     # min(20_000 - ss_spouse, pension_survivors) = min(20_000 - 8_000 , 13_000) 

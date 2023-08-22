@@ -20,8 +20,8 @@ class co_pension_subtraction_spouse(Variable):
         person = tax_unit.members
         taxable_pension_income = person("taxable_pension_income", period)
         co_pension_survivors = person("co_pension_survivors", period)
-        co_soacial_security_subtraction_spouse = tax_unit(
-            "co_soacial_security_subtraction_spouse", period
+        co_social_security_subtraction_spouse = tax_unit(
+            "co_social_security_subtraction_spouse", period
         )
         age_spouse = tax_unit("age_spouse", period)
         younger_condition = age_spouse < p.younger.age
@@ -33,18 +33,18 @@ class co_pension_subtraction_spouse(Variable):
             taxable_pension_income * person("is_tax_unit_spouse", period)
         )
         # same as co_pension_head
-        younger_spouse_output = min_(
-            max_(p.younger.amount - co_soacial_security_subtraction_spouse, 0),
-            co_pension_survivors,
+        younger_allowable = max_(
+            p.younger.max_amount - co_social_security_subtraction_spouse, 0
         )
-        older_spouse_output = min_(
-            max_(p.older.amount - co_soacial_security_subtraction_spouse, 0),
-            spouse_tpi,
+        younger_spouse_output = min_(younger_allowable, co_pension_survivors)
+        older_allowable = max_(
+            p.older.max_amount - co_social_security_subtraction_spouse, 0
         )
-        intermediate_spouse_output = min_(
-            max_(p.younger.amount - co_soacial_security_subtraction_spouse, 0),
-            spouse_tpi,
+        older_spouse_output = min_(older_allowable, spouse_tpi)
+        intermediate_allowable = max_(
+            p.younger.max_amount - co_social_security_subtraction_spouse, 0
         )
+        intermediate_spouse_output = min_(intermediate_allowable, spouse_tpi)
         return where(
             younger_condition,
             younger_spouse_output,
