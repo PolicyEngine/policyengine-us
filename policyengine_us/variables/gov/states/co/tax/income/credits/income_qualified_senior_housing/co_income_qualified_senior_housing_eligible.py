@@ -30,7 +30,8 @@ class co_income_qualified_senior_housing_eligible(Variable):
         max_income = p.income_threshold
         agi_eligible = agi <= max_income
 
-        # May need Pavel to check on condition FOUR using the second reference link.
-        # Gonna check back after discussion.
+        property_tax_exemption_claimed = (
+            tax_unit("co_property_tax_exemption", period) == 0
+        )
 
-        return age_eligible & agi_eligible
+        return age_eligible & agi_eligible & property_tax_exemption_claimed
