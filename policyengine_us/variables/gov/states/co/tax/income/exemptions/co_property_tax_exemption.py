@@ -11,4 +11,3 @@ class co_property_tax_exemption(Variable):
     defined_for = StateCode.CO
 
     # def formula(tax_unit, period, parameters):
-    # Need to program
