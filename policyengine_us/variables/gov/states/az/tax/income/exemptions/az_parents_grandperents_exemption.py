@@ -19,7 +19,7 @@ class az_parents_grandparents_exemption(Variable):
         support_payment_ratio = np.zeros_like(care_and_support_costs)
         mask = care_and_support_costs != 0
         support_payment_ratio[mask] = care_and_support_payment[mask] / care_and_support_costs[mask]
-        payment_eligiblity = support_payment_ratio > 0
+        payment_eligibility = support_payment_ratio > 0
         # Eligible parents of ancestors of parents have to be at or over 65 as well as cohabiting with the filer
         age = person("age", period)
         age_eligible = age >= p.parent_grandparent.min_age
