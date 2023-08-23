@@ -19,11 +19,11 @@ class co_income_qualified_senior_housing_eligible(Variable):
 
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        birth_year_head = period.start.year - age_head
-        birth_year_spouse = period.start.year - age_spouse
+        # birth_year_head = period.start.year - age_head
+        # birth_year_spouse = period.start.year - age_spouse
 
-        head_eligible = birth_year_head <= p.birth_year_limit
-        spouse_eligible = birth_year_spouse <= p.birth_year_limit
+        head_eligible = age_head >= p.age_limit
+        spouse_eligible = age_spouse >= p.age_limit
         age_eligible = head_eligible | spouse_eligible
 
         agi = tax_unit("adjusted_gross_income", period)
