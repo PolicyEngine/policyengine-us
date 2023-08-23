@@ -1,0 +1,99 @@
+- name: In 2021, no itemized or standard deduction addback.
+  period: 2021
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 0
+
+
+- name: In 2022, agi > 400_000, itemized deduction = 40_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 0
+  output:
+    co_itemized_or_standard_deductions: 10_000
+
+- name: In 2022, agi > 400_000, itemized deduction = 40_000, standard deduction = 40_000, deduction addback = 10_000.
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 10_000
+
+- name: In 2022, agi > 400_000, standard deduction = 40_000, deduction addback = 0.
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 0
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 0
+
+- name: In 2022, agi <= 400_000, no itemized or standard deduction addback.
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 400_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 0
+
+- name: In 2023, agi > 300_000, itemized deduction = 40_000, deduction addback = 28_000.
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 0
+  output:
+    co_itemized_or_standard_deductions: 28_000
+
+- name: In 2023, agi > 300_000, itemized deduction = 40_000, standard deduction = 40_000, deduction addback = 68_000.
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 68_000
+
+- name: In 2023, agi > 400_000, standard deduction = 40_000, deduction addback = 28_000.
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000
+    itemized_taxable_income_deductions: 0
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 28_000
+
+- name: In 2023, agi <= 300_000, no itemized or standard deduction addback.
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 300_000
+    itemized_taxable_income_deductions: 40_000
+    standard_deduction: 40_000
+  output:
+    co_itemized_or_standard_deductions: 0
