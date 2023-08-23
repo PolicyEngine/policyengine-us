@@ -24,17 +24,7 @@ class de_itemized_deductions(Variable):
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions
-        exempt_deds = add(
-            tax_unit,
-            period,
-            [
-                "medical_expense_deduction",
-                "casualty_loss_deduction",
-                "charitable_deduction",
-                "salt_deduction",
-            ],
-        )
-        net_deds = max_(0, itm_deds_less_salt - exempt_deds)
+        net_deds = max_(0, itm_deds_less_salt)
         net_deds_offset = p.deduction_fraction * net_deds
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
