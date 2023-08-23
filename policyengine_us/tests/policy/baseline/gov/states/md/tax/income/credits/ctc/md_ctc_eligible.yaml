@@ -1,0 +1,31 @@
+- name: 2021 ineligible 
+  period: 2021
+  input:
+    adjusted_gross_income: 6_001
+    state_code: MD
+  output:
+    md_ctc_eligible: false
+
+- name: 2021 eligible 
+  period: 2021
+  input:
+    adjusted_gross_income: 6_000
+    state_code: MD
+  output:
+    md_ctc_eligible: true
+
+- name: 2023 ineligible 
+  period: 2023
+  input:
+    adjusted_gross_income: 15_001
+    state_code: MD
+  output:
+    md_ctc_eligible: false
+
+- name: 2023 eligible 
+  period: 2023
+  input:
+    adjusted_gross_income: 15_000
+    state_code: MD
+  output:
+    md_ctc_eligible: true
