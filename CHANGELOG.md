@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.439.1] - 2023-08-23 18:48:27
+
+### Fixed
+
+- Inaccurate Vermont income tax rates.
+
+## [0.439.0] - 2023-08-23 12:28:50
+
+### Added
+
+- Colorado income qualified senior housing income tax credit.
+
 ## [0.438.0] - 2023-08-22 18:21:25
 
 ### Added
@@ -5021,6 +5033,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.439.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.439.0...0.439.1
+[0.439.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.438.0...0.439.0
 [0.438.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.1...0.438.0
 [0.437.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.0...0.437.1
 [0.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.436.0...0.437.0
