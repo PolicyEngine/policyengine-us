@@ -1,0 +1,20 @@
+description: Colorado allows for the following property tax exemption rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Colorado property tax exemption rate
+  reference:
+    - title: C.R.S. 39-3-203. Property tax exemption - qualifications
+      href: https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/property-tax/exemptions/article-3-exemptions/part-2-property-tax-exemption-for-qualifying-seniors-and-disabled-veterans/section-39-3-203-property-tax-exemption-qualifications
+    # Exemption is not menioned in the income tax tax form
+
+brackets:
+  - threshold:
+      2012-01-01: 0
+    rate:
+      2012-01-01: 0.5
+  - threshold:
+      2012-01-01: 200_000
+    rate:
+      2012-01-01: 0
