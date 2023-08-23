@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 
-
 class la_aged_exemption(Variable):
     value_type = float
     entity = TaxUnit
