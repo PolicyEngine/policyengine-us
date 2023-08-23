@@ -19,4 +19,3 @@ class co_additions(Variable):
     )
     defined_for = StateCode.CO
     adds = "gov.states.co.tax.income.additions.sources"
-    

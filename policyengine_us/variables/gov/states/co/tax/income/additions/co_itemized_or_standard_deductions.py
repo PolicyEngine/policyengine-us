@@ -18,8 +18,12 @@ class co_itemized_or_standard_deductions(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.co.tax.income.additions.co_itemized_or_standard_deductions
-        agi_eligiblity = tax_unit("adjusted_gross_income", period) > p.agi_threshold
+        p = parameters(
+            period
+        ).gov.states.co.tax.income.additions.co_itemized_or_standard_deductions
+        agi_eligiblity = (
+            tax_unit("adjusted_gross_income", period) > p.agi_threshold
+        )
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         limit = select(
@@ -38,6 +42,19 @@ class co_itemized_or_standard_deductions(Variable):
                 p.limits.widow,
             ],
         )
-        federal_itemized_deduction = tax_unit("itemized_taxable_income_deductions", period) * p.is_itemized_deductions
-        federal_standard_deduction = tax_unit("standard_deduction", period) * p.is_standard_deductions
-        return max_(0, federal_itemized_deduction + federal_standard_deduction - limit) * agi_eligiblity
+        federal_itemized_deduction = (
+            tax_unit("itemized_taxable_income_deductions", period)
+            * p.is_itemized_deductions
+        )
+        federal_standard_deduction = (
+            tax_unit("standard_deduction", period) * p.is_standard_deductions
+        )
+        return (
+            max_(
+                0,
+                federal_itemized_deduction
+                + federal_standard_deduction
+                - limit,
+            )
+            * agi_eligiblity
+        )
