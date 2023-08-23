@@ -13,7 +13,11 @@ class id_aged_or_disabled_deduction(Variable):
         person = tax_unit.members
         age = person("age", period)
         disabled = person("is_disabled", period)
-        p = parameters(period).gov.states.id.tax.income.deductions.developmental_disability
+        p = parameters(
+            period
+        ).gov.states.id.tax.income.deductions.development_disabilities
         age_eligible = age >= p.age_eligibility
         eligible = age_eligible | disabled
         total_eligible = tax_unit.sum(eligible)
+        capped_eligible = min_(total_eligible, p.max_amount)
+        return capped_eligible * p.amount
