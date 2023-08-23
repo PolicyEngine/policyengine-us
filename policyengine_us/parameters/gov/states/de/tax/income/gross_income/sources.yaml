@@ -1,0 +1,24 @@
+description: Delaware gross income sources.
+values:
+  2021-01-01:
+    - employment_income
+    - taxable_interest_income
+    - dividend_income
+    - alimony_income
+    - self_employment_income
+    - capital_gains
+    - taxable_pension_income
+    - partnership_s_corp_income
+    - rental_income
+    - farm_income
+    - taxable_unemployment_compensation
+    - miscellaneous_income
+
+metadata:
+  unit: variable
+  label: Delaware gross income sources
+  reference:
+  - title: PIT-RES_TY22_2022-02_Instructions.pdf
+    href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=2
+  - title: Delaware Code
+    href: https://casetext.com/statute/delaware-code/title-30-state-taxes/part-ii-income-inheritance-and-estate-taxes/chapter-11-personal-income-tax/subchapter-iii-nonresident-individuals/section-1123-delaware-adjusted-gross-income?searchWithin=true&listingIndexId=delaware-code.title-30-state-taxes&q=gross%20income&type=statute&sort=relevance&p=1
