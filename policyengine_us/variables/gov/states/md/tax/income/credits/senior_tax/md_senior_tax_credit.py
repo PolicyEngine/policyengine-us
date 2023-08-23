@@ -8,13 +8,11 @@ class md_senior_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=15"
-    defined_for = StateCode.MD
+    defined_for = md_senior_tax_credit_eligible
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         p = parameters(period).gov.states["md"].tax.income.credits.senior_tax
-
-        income_eligible = tax_unit("md_senior_tax_income_threshold", period)
 
         age_head = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
@@ -27,12 +25,12 @@ class md_senior_tax_credit(Variable):
         both_eligible = head_eligible & spouse_eligible
         eligible = head_eligible | spouse_eligible
 
-        single_amount = p.amount.one_aged[filing_status]
+        single_amount = where(eligible, p.amount.one_aged[filing_status], 0)
         not_single_amount = where(
             both_eligible,
             p.amount.two_aged[filing_status],
             p.amount.one_aged[filing_status],
         )
-        amount = where(single, single_amount, not_single_amount)
+        
+        return where(single, single_amount, not_single_amount)
 
-        return income_eligible * eligible * amount
