@@ -12,4 +12,4 @@ class ct_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
-        #
+        # computation to come here
