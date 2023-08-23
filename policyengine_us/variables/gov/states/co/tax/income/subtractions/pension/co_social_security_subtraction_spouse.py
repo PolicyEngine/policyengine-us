@@ -29,12 +29,11 @@ class co_social_security_subtraction_spouse(Variable):
         spouse_tss = tax_unit.max(
             taxable_social_security * person("is_tax_unit_spouse", period)
         )
-        older_output = where(
-            older_condition, spouse_tss, min_(spouse_tss, p.younger.max_amount)
-        )
-
+        cap_older_amount = min_(spouse_tss, p.younger.max_amount)
+        older_output = where(older_condition, spouse_tss, cap_older_amount)
+        older_allowable = where(older_condition, spouse_tss, older_output)
         return where(
             younger_condition,
             spouse_sss,
-            where(older_condition, spouse_tss, older_output),
+            older_allowable,
         )

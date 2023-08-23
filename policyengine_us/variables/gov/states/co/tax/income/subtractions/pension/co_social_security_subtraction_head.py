@@ -29,12 +29,7 @@ class co_social_security_subtraction_head(Variable):
         head_tss = tax_unit.max(
             taxable_social_security * person("is_tax_unit_head", period)
         )
-        older_output = where(
-            older_condition, head_tss, min_(head_tss, p.younger.max_amount)
-        )
-
-        return where(
-            younger_condition,
-            head_sss,
-            where(older_condition, head_tss, older_output),
-        )
+        cap_older_amount = min_(head_tss, p.younger.max_amount)
+        older_output = where(older_condition, head_tss, cap_older_amount)
+        older_allowable = where(older_condition, head_tss, older_output)
+        return where(younger_condition, head_sss, older_allowable)

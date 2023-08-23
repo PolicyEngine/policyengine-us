@@ -9,6 +9,7 @@ class co_pension_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
+    # pension subtraction does not include social security subtraction
     adds = [
         "co_pension_subtraction_head",
         "co_pension_subtraction_spouse",

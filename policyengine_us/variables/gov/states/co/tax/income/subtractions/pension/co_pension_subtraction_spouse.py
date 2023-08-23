@@ -19,15 +19,15 @@ class co_pension_subtraction_spouse(Variable):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         person = tax_unit.members
         taxable_pension_income = person("taxable_pension_income", period)
-        co_pension_survivors = person("co_pension_survivors", period)
+        pension_survivors = person("pension_survivors", period)
         co_social_security_subtraction_spouse = tax_unit(
             "co_social_security_subtraction_spouse", period
         )
         age_spouse = tax_unit("age_spouse", period)
         younger_condition = age_spouse < p.younger.age
         older_condition = age_spouse >= p.older.age
-        co_pension_survivors = tax_unit.max(
-            co_pension_survivors * person("is_tax_unit_spouse", period)
+        pension_survivors = tax_unit.max(
+            pension_survivors * person("is_tax_unit_spouse", period)
         )
         spouse_tpi = tax_unit.max(
             taxable_pension_income * person("is_tax_unit_spouse", period)
@@ -36,7 +36,7 @@ class co_pension_subtraction_spouse(Variable):
         younger_allowable = max_(
             p.younger.max_amount - co_social_security_subtraction_spouse, 0
         )
-        younger_spouse_output = min_(younger_allowable, co_pension_survivors)
+        younger_spouse_output = min_(younger_allowable, pension_survivors)
         older_allowable = max_(
             p.older.max_amount - co_social_security_subtraction_spouse, 0
         )

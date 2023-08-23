@@ -19,25 +19,25 @@ class co_pension_subtraction_head(Variable):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         person = tax_unit.members
         taxable_pension_income = person("taxable_pension_income", period)
-        co_pension_survivors = person("co_pension_survivors", period)
+        pension_survivors = person("pension_survivors", period)
         co_social_security_subtraction_head = tax_unit(
             "co_social_security_subtraction_head", period
         )
         age_head = tax_unit("age_head", period)
         younger_condition = age_head < p.younger.age
         older_condition = age_head >= p.older.age
-        co_pension_survivors = tax_unit.max(
-            co_pension_survivors * person("is_tax_unit_head", period)
+        pension_survivors = tax_unit.max(
+            pension_survivors * person("is_tax_unit_head", period)
         )
         head_tpi = tax_unit.max(
             taxable_pension_income * person("is_tax_unit_head", period)
         )
-        # subtract $20,000 minus any amount entered on line 3(co_social_security_subtraction_head), or co_pension_survivors, whichever is smaller.
+        # subtract $20,000 minus any amount entered on line 3(co_social_security_subtraction_head), or pension_survivors, whichever is smaller.
         # if the amount on line 3 of this form is greater than $20,000, you may not claim any subtraction.
         younger_allowable = max_(
             p.younger.max_amount - co_social_security_subtraction_head, 0
         )
-        younger_head_output = min_(younger_allowable, co_pension_survivors)
+        younger_head_output = min_(younger_allowable, pension_survivors)
         # subtract $24,000 minus any amount entered on line 3(co_social_security_subtraction_head), or taxable_pension_income, whichever is smaller.
         # if the amount on line 3 of this form is greater than $24,000, you may not claim any subtraction.
         older_allowable = max_(
