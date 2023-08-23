@@ -8,29 +8,34 @@ class md_senior_tax_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=15"
-    defined_for = md_senior_tax_credit_eligible
+    defined_for = "md_senior_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        p = parameters(period).gov.states["md"].tax.income.credits.senior_tax
+        p = parameters(period).gov.states.md.tax.income.credits.senior_tax
 
         age_head = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        single = filing_status == status.SINGLE
 
-        head_eligible = age_head >= p.age_eligibility
-        spouse_eligible = spouse_age >= p.age_eligibility
-        both_eligible = head_eligible & spouse_eligible
-        eligible = head_eligible | spouse_eligible
+        head_eligible = (age_head >= p.age_eligibility).astype(int)
+        spouse_eligible = (spouse_age >= p.age_eligibility).astype(int)
+        eligible_count = head_eligible + spouse_eligible
 
-        single_amount = where(eligible, p.amount.one_aged[filing_status], 0)
-        not_single_amount = where(
-            both_eligible,
-            p.amount.two_aged[filing_status],
-            p.amount.one_aged[filing_status],
+        credit_amount = select(
+            [
+                filing_status == status.SINGLE,
+                filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
+                filing_status == status.WIDOW,
+                filing_status == status.SEPARATE,
+            ],
+            [
+                p.amount.single,
+                p.amount.joint[eligible_count],
+                p.amount.head_of_household,
+                p.amount.widow,
+                p.amount.separate,
+            ],
         )
-        
-        return where(single, single_amount, not_single_amount)
-
+        return where(eligible_count > 0, credit_amount, 0)

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class md_senior_tax_eligible(Variable):
+class md_senior_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Maryland Senior Tax Credit"
@@ -10,7 +10,7 @@ class md_senior_tax_eligible(Variable):
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states["md"].tax.income.credits.senior_tax
+        p = parameters(period).gov.states.md.tax.income.credits.senior_tax
 
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
