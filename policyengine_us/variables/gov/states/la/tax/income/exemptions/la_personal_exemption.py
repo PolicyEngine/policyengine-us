@@ -12,5 +12,5 @@ class la_personal_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        p = parameters(period).gov.states.la.tax.income.exemptions
+        p = parameters(period).gov.states.la.tax.income.exemptions.amount
         return p.personal[filing_status]
