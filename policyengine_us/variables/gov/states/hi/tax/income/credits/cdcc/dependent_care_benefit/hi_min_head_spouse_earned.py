@@ -17,10 +17,18 @@ class hi_min_head_spouse_earned(Variable):
         spouse = person("is_tax_unit_spouse", period)
         # earned minimum income if is disabled/full-time student
         head_eligible = tax_unit.any(
-            head & (person("is_disabled", period) | person("is_full_time_student", period))
+            head
+            & (
+                person("is_disabled", period)
+                | person("is_full_time_student", period)
+            )
         )
         spouse_eligible = tax_unit.any(
-            spouse & (person("is_disabled", period) | person("is_full_time_student", period))
+            spouse
+            & (
+                person("is_disabled", period)
+                | person("is_full_time_student", period)
+            )
         )
         # 2400 --> one dependent, 4800 --> more than one dependent
         qualified_num = tax_unit("count_cdcc_eligible", period)
@@ -32,21 +40,37 @@ class hi_min_head_spouse_earned(Variable):
                 sum(head_eligible) == 0,
             ],
             [
-                max_(p.qualified_expenses.one_child_dependent, tax_unit.sum(head * income)),
-                max_(p.qualified_expenses.two_or_more_child_dependent, tax_unit.sum(head * income)),
+                max_(
+                    p.qualified_expenses.one_child_dependent,
+                    tax_unit.sum(head * income),
+                ),
+                max_(
+                    p.qualified_expenses.two_or_more_child_dependent,
+                    tax_unit.sum(head * income),
+                ),
                 tax_unit.sum(head * income),
             ],
         )
         spouse_income = select(
             [
-                (sum(spouse_eligible) != 0) & (qualified_num <= 1) & (sum(spouse) != 0),
-                (sum(spouse_eligible) != 0) & (qualified_num > 1) & (sum(spouse) != 0),
+                (sum(spouse_eligible) != 0)
+                & (qualified_num <= 1)
+                & (sum(spouse) != 0),
+                (sum(spouse_eligible) != 0)
+                & (qualified_num > 1)
+                & (sum(spouse) != 0),
                 (sum(spouse_eligible) == 0) & (sum(spouse) != 0),
                 sum(spouse) == 0,
             ],
             [
-                max_(p.qualified_expenses.one_child_dependent, tax_unit.sum(spouse * income)),
-                max_(p.qualified_expenses.two_or_more_child_dependent, tax_unit.sum(spouse * income)),
+                max_(
+                    p.qualified_expenses.one_child_dependent,
+                    tax_unit.sum(spouse * income),
+                ),
+                max_(
+                    p.qualified_expenses.two_or_more_child_dependent,
+                    tax_unit.sum(spouse * income),
+                ),
                 tax_unit.sum(spouse * income),
                 head_income,
             ],

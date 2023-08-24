@@ -30,7 +30,7 @@ class hi_dcb(Variable):
                 filing_status != status.SEPARATE,
             ],
             [
-                p.dependent_care_benefit.amount.separate,  
+                p.dependent_care_benefit.amount.separate,
                 p.dependent_care_benefit.amount.not_separate,
             ],
         )
@@ -49,4 +49,6 @@ class hi_dcb(Variable):
             ],
         )
         net_expenses = max_(0, expenses_amount - deductible_benefit)
-        return min_(net_expenses, tax_unit("tax_unit_childcare_expenses", period))
+        return min_(
+            net_expenses, tax_unit("tax_unit_childcare_expenses", period)
+        )
