@@ -16,5 +16,7 @@ class ar_aged_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         us_aged = tax_unit.sum("is_aged", period)
-        p_ar = parameters(period).gov.states.ar.tax.income.credits.personal_credits
+        p_ar = parameters(
+            period
+        ).gov.states.ar.tax.income.credits.personal_credits
         return us_aged * p_ar

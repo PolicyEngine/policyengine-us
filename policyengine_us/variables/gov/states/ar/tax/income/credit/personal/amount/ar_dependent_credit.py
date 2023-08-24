@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_blind_credit(Variable):
+class ar_dependent_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arkansas dependent personal credit"
@@ -16,5 +16,7 @@ class ar_blind_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         us_dependent = tax_unit.sum("tax_unit_dependents", period)
-        p_ar = parameters(period).gov.states.ar.tax.income.credits.personal_credits
+        p_ar = parameters(
+            period
+        ).gov.states.ar.tax.income.credits.personal_credits
         return us_dependent * p_ar

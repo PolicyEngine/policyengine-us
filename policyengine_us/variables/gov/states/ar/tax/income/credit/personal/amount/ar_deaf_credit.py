@@ -16,5 +16,7 @@ class ar_deaf_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         us_deaf = tax_unit.sum("is_deaf", period)
-        p_ar = parameters(period).gov.states.ar.tax.income.credits.personal_credits
+        p_ar = parameters(
+            period
+        ).gov.states.ar.tax.income.credits.personal_credits
         return us_deaf * p_ar
