@@ -9,7 +9,7 @@ class md_senior_tax_credit_eligible(Variable):
     reference = "https://www.marylandtaxes.gov/forms/22_forms/Resident_Booklet.pdf#page=15"
     defined_for = StateCode.MD
 
-    def formula(tax_unit, period, parameters):
+    def formula_2022(tax_unit, period, parameters):
         p = parameters(period).gov.states.md.tax.income.credits.senior_tax
 
         filing_status = tax_unit("filing_status", period)
