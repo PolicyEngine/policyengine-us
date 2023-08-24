@@ -1,10 +1,18 @@
-- name: Calculation # 4.55%
-  period: 2023
+- name: Calculation in 2021
+  period: 2021
   input:
     state_code: CO
     co_taxable_income: 1_000
   output:
-    co_income_tax_before_non_refundable_credits: 45.5
+    co_income_tax_before_non_refundable_credits: 45
+
+- name: Calculation in 2022
+  period: 2022
+  input:
+    state_code: CO
+    co_taxable_income: 1_000
+  output:
+    co_income_tax_before_non_refundable_credits: 44
 
 - name: Calculation 2019 # 4.63% 
   absolute_error_margin: 0.01
