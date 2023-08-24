@@ -9,7 +9,4 @@ class co_social_security_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    adds = [
-        "co_social_security_subtraction_head",
-        "co_social_security_subtraction_spouse",
-    ]
+    adds = ["co_social_security_subtraction_inv"]
