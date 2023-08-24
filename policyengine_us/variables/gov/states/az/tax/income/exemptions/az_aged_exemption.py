@@ -23,7 +23,7 @@ class az_aged_exemption(Variable):
         spouse_eligible = age_spouse >= p.min_age
         dependent_spouse = tax_unit("dsi_spouse", period)
 
-        return (
-            head_eligible * ~dependent_head
-            + spouse_eligible * ~dependent_spouse * joint
-        ) * p.aged
+        return p.aged * (
+            head_eligible * ~dependent_head + 
+            spouse_eligible * ~dependent_spouse * joint
+        )
