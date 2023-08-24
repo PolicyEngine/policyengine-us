@@ -15,7 +15,7 @@ class co_low_income_cdcc_eligible(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         agi_eligible = agi <= p.income_threshold
         # Filers cannot claim both the low income CDCC and the CO CDCC
-        co_cdcc = (
+        tax_before_non_refundable_credits = (
             tax_unit("co_income_tax_before_non_refundable_credits", period) > 0
         )
-        return ~co_cdcc & agi_eligible
+        return ~tax_before_non_refundable_credits & agi_eligible
