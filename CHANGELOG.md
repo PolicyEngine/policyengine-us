@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.441.0] - 2023-08-24 18:24:21
+
+### Added
+
+- Colorado low-income child care expenses credit.
+
 ## [0.440.0] - 2023-08-24 18:09:56
 
 ### Added
@@ -5039,6 +5045,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.441.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.440.0...0.441.0
 [0.440.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.439.1...0.440.0
 [0.439.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.439.0...0.439.1
 [0.439.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.438.0...0.439.0
