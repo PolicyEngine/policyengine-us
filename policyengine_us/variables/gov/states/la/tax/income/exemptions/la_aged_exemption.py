@@ -11,7 +11,7 @@ class la_aged_exemption(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.la.tax.income.exemptions.amount.aged
+        p = parameters(period).gov.states.la.tax.income.exemptions.aged
         aged_head = (tax_unit("age_head", period) >= p.thresholds[0]).astype(
             int
         )

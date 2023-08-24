@@ -14,7 +14,5 @@ class la_dependents_exemption(Variable):
         dependents = tax_unit("tax_unit_dependents", period)
         return (
             dependents
-            * parameters(
-                period
-            ).gov.states.la.tax.income.exemptions.amount.dependent
+            * parameters(period).gov.states.la.tax.income.exemptions.dependent
         )
