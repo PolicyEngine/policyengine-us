@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_charitable_deduction(Variable):
+class co_charitable_contribution_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado charitable deduction"
@@ -20,7 +20,7 @@ class co_charitable_deduction(Variable):
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.charitable_contribution
-        ferderal_charitable_deduction = tax_unit(
+        federal_charitable_deduction = tax_unit(
             "charitable_deduction", period
         )
-        return ~itemized * max_(ferderal_charitable_deduction - p.amount, 0)
+        return ~itemized * max_(federal_charitable_deduction - p.amount, 0)

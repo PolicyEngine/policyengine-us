@@ -48,13 +48,9 @@ class co_pension_subtraction_indv(Variable):
 
         return select(
             [
-                younger_condition,
-                middle_condition,
-                older_condition,
+                age_head_or_spouse >= p.age_threshold.older, 
+                age_head_or_spouse >= p.age_threshold.younger
             ],
-            [
-                capped_younger_amount,
-                capped_middle_amount,
-                capped_older_amount,
-            ],
-        )
+            [capped_older_amount, capped_middle_amount],
+            default=capped_younger_amount
+      )

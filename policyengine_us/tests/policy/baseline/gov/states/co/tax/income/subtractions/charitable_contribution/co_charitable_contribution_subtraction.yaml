@@ -5,7 +5,7 @@
     charitable_deduction: 700
     state_code: CO
   output:
-    co_charitable_deduction: 200
+    co_charitable_contribution_subtraction: 200
     # 700 - 500 = 200
 
 - name: Case 2, below threshold
@@ -15,7 +15,7 @@
     charitable_deduction: 400
     state_code: CO
   output:
-    co_charitable_deduction: 0
+    co_charitable_contribution_subtraction: 0
   # 0 if below threshold
 
 - name: Case 3, above threshold
@@ -25,5 +25,5 @@
     charitable_deduction: 700
     state_code: CO
   output:
-    co_charitable_deduction: 0
+    co_charitable_contribution_subtraction: 0
     # not qualify if tax_unit_itemizes is true
