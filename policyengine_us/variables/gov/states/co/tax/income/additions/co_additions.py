@@ -18,4 +18,4 @@ class co_additions(Variable):
         "https://tax.colorado.gov/individual-income-tax-guide",
     )
     defined_for = StateCode.CO
-    adds = "gov.states.co.tax.income.additions.sources"
+    adds = "gov.states.co.tax.income.additions.additions"
