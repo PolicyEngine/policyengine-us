@@ -15,6 +15,7 @@ class mi_alternate_household_credit(Variable):
         "http://www.legislature.mi.gov/(S(keapvg1h2vndkn25rtmpyyse))/mileg.aspx?page=getObject&objectName=mcl-206-527a"
         )
 
+    # Alternate Credit can not be claimed if claim is for less than 12 months
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
