@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_itemized_or_standard_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado itemized deductions"
+    label = "Colorado itemized or standard deductions"
     unit = USD
     definition_period = YEAR
     reference = (
