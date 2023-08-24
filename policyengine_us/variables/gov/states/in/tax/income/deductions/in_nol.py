@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class in_nol(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IN nol"
+    label = "Indiana NOL"
     unit = USD
     definition_period = YEAR
     documentation = "Net operating losses allowable for deduction in Indiana."
