@@ -14,6 +14,9 @@ class co_low_income_cdcc_eligible(Variable):
         # Filer is eligible if AGI is below $25,000
         agi = tax_unit("adjusted_gross_income", period)
         agi_eligible = agi <= p.income_threshold
-        # Filers cannot claim both the low income CDCC and the CO CDCC
-        co_cdcc = tax_unit("co_cdcc", period) > 0
-        return ~co_cdcc & agi_eligible
+        # Filers cannot claim the low income CDCC if they don't have tax liability to
+        # claim the non-refundable Colorado CDCC.
+        owes_tax_before_non_refundable_credits = (
+            tax_unit("co_income_tax_before_non_refundable_credits", period) > 0
+        )
+        return ~owes_tax_before_non_refundable_credits & agi_eligible
