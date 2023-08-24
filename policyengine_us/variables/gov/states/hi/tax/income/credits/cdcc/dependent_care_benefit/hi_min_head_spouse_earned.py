@@ -8,46 +8,48 @@ class hi_min_head_spouse_earned(Variable):
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
-    reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=27"
+    reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=28"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         person = tax_unit.members
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        disabled = tax_unit.any(
-            (head | spouse) & person("is_disabled", period)
+        # earned minimum income if is disabled/full-time student
+        head_eligible = tax_unit.any(
+            head & (person("is_disabled", period) | person("is_full_time_student", period))
         )
-        full_time_student = tax_unit.any(
-            (head | spouse) & person("is_full_time_student", period)
+        spouse_eligible = tax_unit.any(
+            spouse & (person("is_disabled", period) | person("is_full_time_student", period))
         )
-        min_income_eligible = disabled | full_time_student
+        # 2400 --> one dependent, 4800 --> more than one dependent
+        qualified_num = tax_unit("count_cdcc_eligible", period)
         income = person("earned_income", period)
-        head_income = tax_unit.sum(head * income)
+        head_income = select(
+            [
+                (sum(head_eligible) != 0) & (qualified_num <= 1),
+                (sum(head_eligible) != 0) & (qualified_num > 1),
+                sum(head_eligible) == 0,
+            ],
+            [
+                max_(p.qualified_expenses.one_child_dependent, tax_unit.sum(head * income)),
+                max_(p.qualified_expenses.two_or_more_child_dependent, tax_unit.sum(head * income)),
+                tax_unit.sum(head * income),
+            ],
+        )
         spouse_income = select(
             [
-                sum(spouse) > 0,
+                (sum(spouse_eligible) != 0) & (qualified_num <= 1) & (sum(spouse) != 0),
+                (sum(spouse_eligible) != 0) & (qualified_num > 1) & (sum(spouse) != 0),
+                (sum(spouse_eligible) == 0) & (sum(spouse) != 0),
                 sum(spouse) == 0,
             ],
             [
+                max_(p.qualified_expenses.one_child_dependent, tax_unit.sum(spouse * income)),
+                max_(p.qualified_expenses.two_or_more_child_dependent, tax_unit.sum(spouse * income)),
                 tax_unit.sum(spouse * income),
                 head_income,
             ],
         )
 
-        qualified_num = tax_unit("count_cdcc_eligible", period)
-        # Note: married persons must file a joint return to claim the credit
-        min_income = select(
-            [
-                min_income_eligible & (qualified_num <= 1),
-                min_income_eligible & (qualified_num > 1),
-                ~min_income_eligible,
-            ],
-            [
-                min_(max_(head_income, 2400), max_(spouse_income, 2400)),
-                min_(max_(head_income, 4800), max_(spouse_income, 4800)),
-                min_(head_income, spouse_income),
-            ],
-        )
-
-        return min_income
+        return min_(head_income, spouse_income)

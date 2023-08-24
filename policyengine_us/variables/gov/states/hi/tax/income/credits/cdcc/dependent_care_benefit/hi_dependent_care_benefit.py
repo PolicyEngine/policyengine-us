@@ -12,43 +12,31 @@ class hi_dcb(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
-        # line 2
         dcb_amount = tax_unit("dependent_care_benefit", period)
-        # skip line 3,4, so line 5 = line 2
-        # line 6
         qualified_expense_amount = tax_unit(
             "hi_qualified_expense_amount", period
         )
-        # line 8
-        # line 9
-        # reference: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=29
+        # married persons must fi le a joint return to claim the credit
+        # if single, the min will be his/her income
         min_head_spouse_earned = tax_unit("hi_min_head_spouse_earned", period)
-        # line 10
         min_benefit = min_(
             dcb_amount, qualified_expense_amount, min_head_spouse_earned
         )
-        # line 11
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        line11 = select(
+        dcb_baseline = select(
             [
                 filing_status == status.SEPARATE,
                 filing_status != status.SEPARATE,
             ],
             [
-                p.dependent_care_benefit.amount.separate,  # spouse income??
+                p.dependent_care_benefit.amount.separate,  
                 p.dependent_care_benefit.amount.not_separate,
             ],
         )
-        # skip line 12, then line 13 = line 5
-        # line 14
-        deductible_benefit = min_(dcb_amount, line11)
-        # line 15
-        excluded_benefit = max_(
-            0, min_(min_benefit, line11) - deductible_benefit
-        )
+        deductible_benefit = min_(min_benefit, dcb_baseline)
+        # excluded_benefit = 0 since we ignore line 12
         # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation
-        # line 17
         qualified_num = tax_unit("count_cdcc_eligible", period)
         expenses_amount = select(
             [
@@ -56,14 +44,9 @@ class hi_dcb(Variable):
                 qualified_num > 1,
             ],
             [
-                p.amount.one_child_dependent,
-                p.amount.two_or_more_child_dependent,
+                p.qualified_expenses.one_child_dependent,
+                p.qualified_expenses.two_or_more_child_dependent,
             ],
         )
-        # line 18
-        line18 = deductible_benefit + excluded_benefit
-        # line 19
-        line19 = max_(0, expenses_amount - line18)
-
-        # line 22
-        return min_(line19, tax_unit("tax_unit_childcare_expenses", period))
+        net_expenses = max_(0, expenses_amount - deductible_benefit)
+        return min_(net_expenses, tax_unit("tax_unit_childcare_expenses", period))

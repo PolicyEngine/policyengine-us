@@ -1,11 +1,39 @@
-- name: test
+- name: smaller dcb
   period: 2022
   input:
     adjusted_gross_income: 1_000
-    head_earned: 1
-    spouse_earned: 2
-    tax_unit_is_joint: true
-    state_code: HI
+    min_head_spouse_earned: 1_000
     hi_dcb: 100
+    state_code: HI
   output:
     hi_cdcc: 25
+
+- name: smaller min_head_spouse_earned
+  period: 2022
+  input:
+    adjusted_gross_income: 1_000
+    min_head_spouse_earned: 1_000
+    hi_dcb: 2_000
+    state_code: HI
+  output:
+    hi_cdcc: 250
+
+- name: different agi
+  period: 2022
+  input:
+    adjusted_gross_income: 50_000
+    min_head_spouse_earned: 1_000
+    hi_dcb: 100
+    state_code: HI
+  output:
+    hi_cdcc: 20
+
+- name: different agi 2
+  period: 2022
+  input:
+    adjusted_gross_income: 50_001
+    min_head_spouse_earned: 1_000
+    hi_dcb: 100
+    state_code: HI
+  output:
+    hi_cdcc: 15

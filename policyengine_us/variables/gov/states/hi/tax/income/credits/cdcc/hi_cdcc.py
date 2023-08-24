@@ -12,8 +12,6 @@ class hi_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
-
-        # line 26
         agi = tax_unit("adjusted_gross_income", period)
         rate = p.rates.calc(agi)
 
