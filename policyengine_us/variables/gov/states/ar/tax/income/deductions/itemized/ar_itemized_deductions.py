@@ -11,6 +11,7 @@ class ar_itemized_deductions(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         less_salt_deds = tax_unit("itemized_deductions_less_salt", period)
         agi = tax_unit("adjusted_gross_income",period)
         spouse_agi = tax_unit("spouse_separate_adjusted_gross_income",period)
@@ -21,10 +22,24 @@ class ar_itemized_deductions(Variable):
         # Post-secondary Education Tuition Deduction
         tuition_deds = tax_unit("ar_post_secondary_education_tuition_deductions",period)
         
-        # Miscellaneous Deductions 
-        misc_deds = tax_unit("misc_deduction",period)
+        # Limitation on several items
+        # Medical and Dental Deductions
+        med_deds = tax_unit("medical_expense_deduction",period)
 
-        total_itemized_deduction = less_salt_deds + + real_estate_deds + tuition_deds + misc_deds
+        adjusted_less_salt_deds = where(
+            med_deds <= p.medical_deduction_threshold*(agi + spouse_agi),
+            less_salt_deds,
+            less_salt_deds - med_deds
+        )
+
+        # Miscellaneous Deductions 
+        misc_deds = where(
+            tax_unit("misc_deduction",period) <= p.miscellaneous_deduction_threshold*(agi + spouse_agi),
+            tax_unit("misc_deduction",period),
+            0
+        )
+
+        total_itemized_deduction = adjusted_less_salt_deds + + real_estate_deds + tuition_deds + misc_deds
 
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)

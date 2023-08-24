@@ -14,4 +14,4 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized.post_secondary_education_tuition_deductions
         tuition_expense = tax_unit("qualified_tuition_expenses", period)
             
-        return min(p.ratio*tuition_expense, p.ratio*p.two_year_college, p.ratio*p.four_year_college, p.ratio*p.technical_institutes)
+        return min(p.ratio*tuition_expense, p.two_year_college, p.four_year_college, p.technical_institutes)

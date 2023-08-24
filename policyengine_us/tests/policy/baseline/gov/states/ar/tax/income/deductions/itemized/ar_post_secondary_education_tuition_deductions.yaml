@@ -1,0 +1,7 @@
+- name: Itemized deduction for married filing separately
+  period: 2022
+  input:
+    qualified_tuition_expenses: 
+    type_of_institutes:
+  output:
+    ar_post_secondary_education_tuition_deductions: 229
