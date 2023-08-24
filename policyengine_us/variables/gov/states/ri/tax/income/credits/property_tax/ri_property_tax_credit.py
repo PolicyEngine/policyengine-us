@@ -10,7 +10,7 @@ class ri_property_tax_credit(Variable):
     reference = (
         "http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-33/44-33-9.htm"
     )
-    defined_for = StateCode.RI
+    defined_for = "ri_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax

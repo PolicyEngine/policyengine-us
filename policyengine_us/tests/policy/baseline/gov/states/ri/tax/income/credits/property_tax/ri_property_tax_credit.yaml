@@ -6,6 +6,10 @@
     tax_unit_size: 1
     real_estate_taxes: 50
     rent: 0
+    age_head: 70
+    age_spouse: 60
+    head_is_disabled: TRUE
+    spouse_is_disabled: FALSE
   output:
     ri_property_tax_credit: 0
 
@@ -17,6 +21,10 @@
     tax_unit_size: 1
     real_estate_taxes: 1_000
     rent: 5_000
+    age_head: 70
+    age_spouse: 60
+    head_is_disabled: TRUE
+    spouse_is_disabled: FALSE
   output:
     ri_property_tax_credit: 600
 
@@ -28,6 +36,10 @@
     tax_unit_size: 2
     real_estate_taxes: 150
     rent: 0
+    age_head: 70
+    age_spouse: 60
+    head_is_disabled: TRUE
+    spouse_is_disabled: FALSE
   output:
     ri_property_tax_credit: 60
 
@@ -39,5 +51,9 @@
     tax_unit_size: 2
     real_estate_taxes: 0
     rent: 3_500
+    age_head: 60
+    age_spouse: 60
+    head_is_disabled: FALSE
+    spouse_is_disabled: FALSE
   output:
-    ri_property_tax_credit: 50
+    ri_property_tax_credit: 0
