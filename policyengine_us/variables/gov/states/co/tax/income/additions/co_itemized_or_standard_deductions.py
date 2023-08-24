@@ -44,10 +44,11 @@ class co_itemized_or_standard_deductions(Variable):
         )
         federal_itemized_deduction = (
             tax_unit("itemized_taxable_income_deductions", period)
-            * p.is_itemized_deductions
+            * p.is_itemized_deductions_effective
         )
         federal_standard_deduction = (
-            tax_unit("standard_deduction", period) * p.is_standard_deductions
+            tax_unit("standard_deduction", period)
+            * p.is_standard_deductions_effective
         )
         return (
             max_(
