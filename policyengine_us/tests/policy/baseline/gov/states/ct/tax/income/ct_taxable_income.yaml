@@ -1,0 +1,26 @@
+- name: No exemptions
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 1_000
+    ct_personal_exemptions: 0
+  output:
+    ct_taxable_income: 1_000
+
+- name: Equal amounts of AGI and exemptions
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 1_000
+    ct_personal_exemptions: 1_000
+  output:
+    ct_taxable_income: 0
+
+- name: Capped at 0
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 0
+    ct_personal_exemptions: 1_000
+  output:
+    ct_taxable_income: 0
