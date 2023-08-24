@@ -8,6 +8,6 @@ class la_child_tax_credit_refundable(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
-    defined_for = StateCode.LA
-    
+    defined_for = "la_child_tax_credit_refundable_eligible"
+
     adds = ["la_child_expense_tax_credit"]

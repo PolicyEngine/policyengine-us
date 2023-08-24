@@ -1,18 +1,44 @@
 - name: LA child care expense tax credit unit test 1
   period: 2021
   input:
-   adjusted_gross_income: 26_000
-   la_child_tax_credit_non_refundable: 50
-   state_code: LA
+    la_cdcc: 50
+    quality_rating_of_child_care_facility: 5
+    state_code: LA
   output:
-   la_child_expense_tax_credit: 50
+    la_child_expense_tax_credit: 100
 
 - name: LA child care expense tax credit unit test 2
   period: 2021
   input:
-   adjusted_gross_income: 24_000
-   la_child_tax_credit_refundable: 50
-   state_code: LA
+    la_cdcc: 50
+    quality_rating_of_child_care_facility: 4
+    state_code: LA
   output:
-   la_child_expense_tax_credit: 50
-   
+    la_child_expense_tax_credit: 75
+
+- name: LA child care expense tax credit unit test 3
+  period: 2021
+  input:
+    la_cdcc: 50
+    quality_rating_of_child_care_facility: 3
+    state_code: LA
+  output:
+    la_child_expense_tax_credit: 50
+
+- name: LA child care expense tax credit unit test 4
+  period: 2021
+  input:
+    la_cdcc: 50
+    quality_rating_of_child_care_facility: 2
+    state_code: LA
+  output:
+    la_child_expense_tax_credit: 25
+
+- name: LA child care expense tax credit unit test 5
+  period: 2021
+  input:
+    la_cdcc: 50
+    quality_rating_of_child_care_facility: 1
+    state_code: LA
+  output:
+    la_child_expense_tax_credit: 0

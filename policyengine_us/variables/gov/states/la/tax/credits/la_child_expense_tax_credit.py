@@ -15,18 +15,18 @@ class la_child_expense_tax_credit(Variable):
         p = parameters(
             period
         ).gov.states.la.tax.credits.school_readiness.rate
-        # determine LA refundable amount
-        child_care_credit = tax_unit("la_state_child_care_credit", period)
+        # determine school readiness credit amount
+        child_care_credit = tax_unit("la_cdcc", period)
         eligible_child = person(
             "la_child_care_expense_credit_eligible_child", period
         )
         quality_rating = person(
             "quality_rating_of_child_care_facility", period
         )
-        child_credit_percent = eligible_child * p.refundable.calc(
+        child_credit_percent = child_care_credit* p.rate.calc(
             quality_rating
         )
-        # Need to check wether the percent is of the agi or something else
-        amount = child_care_credit * child_credit_percent
+        # la_cdcc times the percentage
+        amount = eligible_child * child_credit_percent
 
         return tax_unit.sum(amount)
