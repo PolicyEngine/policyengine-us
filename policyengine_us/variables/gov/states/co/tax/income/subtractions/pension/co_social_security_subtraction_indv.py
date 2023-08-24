@@ -19,13 +19,9 @@ class co_social_security_subtraction_indv(Variable):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         if not p.social_security_subtraction_available:
             return 0
-        p = parameters(
-            period
-        ).gov.states.co.tax.income.subtractions.pension
+        p = parameters(period).gov.states.co.tax.income.subtractions.pension
         taxable_social_security = person("taxable_social_security", period)
-        social_security_survivors = person(
-            "social_security_survivors", period
-        )
+        social_security_survivors = person("social_security_survivors", period)
         age = person("age", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
@@ -43,14 +39,12 @@ class co_social_security_subtraction_indv(Variable):
         cap = p.cap.younger
         capped_middle_amount = min_(eligible_taxable_social_security, cap)
         # If the filer is under 55, they can claim a capped amount of ss survivors
-        capped_younger_amount = min_(
-            eligible_social_security_survivors, cap
-        )
+        capped_younger_amount = min_(eligible_social_security_survivors, cap)
         return select(
             [
-                age_head_or_spouse >= p.age_threshold.older, 
-                age_head_or_spouse >= p.age_threshold.younger
+                age_head_or_spouse >= p.age_threshold.older,
+                age_head_or_spouse >= p.age_threshold.younger,
             ],
             [taxable_social_security, capped_middle_amount],
-            default=capped_younger_amount
-      )
+            default=capped_younger_amount,
+        )

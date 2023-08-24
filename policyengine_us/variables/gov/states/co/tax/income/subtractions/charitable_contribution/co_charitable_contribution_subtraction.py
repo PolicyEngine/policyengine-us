@@ -20,7 +20,5 @@ class co_charitable_contribution_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.charitable_contribution
-        federal_charitable_deduction = tax_unit(
-            "charitable_deduction", period
-        )
+        federal_charitable_deduction = tax_unit("charitable_deduction", period)
         return ~itemized * max_(federal_charitable_deduction - p.amount, 0)
