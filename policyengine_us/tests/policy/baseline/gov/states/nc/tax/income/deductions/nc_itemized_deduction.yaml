@@ -1,5 +1,5 @@
 - name: Test1
-  period: 2023
+  period: 2022
   input:
     filing_status: JOINT
     tax_unit_itemizes: true
@@ -13,7 +13,7 @@
     nc_itemized_deductions: 24_500 # 20_000 + 3_500 + 1_000
 
 - name: Test2
-  period: 2023
+  period: 2022
   input:
     filing_status: WIDOW
     tax_unit_itemizes: true
@@ -27,7 +27,7 @@
     nc_itemized_deductions: 5_500 # 3_000 + 1_000 + 1_500
 
 - name: Test3
-  period: 2023
+  period: 2022
   input:
     filing_status: SINGLE
     tax_unit_itemizes: true
@@ -41,7 +41,7 @@
     nc_itemized_deductions: 10_500 # 7_000 + 1_000 + 2_500
 
 - name: Test4
-  period: 2023
+  period: 2022
   input:
     filing_status: SINGLE
     tax_unit_itemizes: true
@@ -55,7 +55,7 @@
     nc_itemized_deductions: 7000 # 7_0000 + 0 + 0
 
 - name: Test5
-  period: 2023
+  period: 2022
   input:
     filing_status: SINGLE
     tax_unit_itemizes: true
@@ -69,7 +69,7 @@
     nc_itemized_deductions: 6_000 # 2_000 + 2_000 + 2_000
 
 - name: Test6
-  period: 2023
+  period: 2022
   input:
     filing_status: SINGLE
     tax_unit_itemizes: true
