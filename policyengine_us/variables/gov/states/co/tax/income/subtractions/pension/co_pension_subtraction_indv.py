@@ -27,11 +27,6 @@ class co_pension_subtraction_indv(Variable):
         spouse = person("is_tax_unit_spouse", period)
         head_or_spouse = head | spouse
         age_head_or_spouse = age * head_or_spouse
-        younger_condition = age_head_or_spouse < p.age_threshold.younger
-        middle_condition = (p.age_threshold.older > age_head_or_spouse) & (
-            age_head_or_spouse >= p.age_threshold.younger
-        )
-        older_condition = age_head_or_spouse >= p.age_threshold.older
         # The maximum subtarction amount is reduced by the social security subtraction amount
         reduced_older_cap = head_or_spouse * max_(
             p.cap.older - co_social_security_subtraction, 0

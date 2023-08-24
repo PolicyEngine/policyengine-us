@@ -9,4 +9,4 @@ class co_pension_subtraction(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    adds = ["co_pension_subtraction_indv"]
+    adds = ["co_pension_subtraction_indv", "co_social_security_subtraction_indv"]
