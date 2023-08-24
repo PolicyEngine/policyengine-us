@@ -10,9 +10,9 @@ from ..cps import CPS_2023
 class CalibratedCPS(Dataset):
     input_dataset: Type[Dataset]
     input_dataset_year: int
-    epochs: int = 32
-    learning_rate: float = 2e1
-    log_dir: str = None
+    min_loss: float = 0.19
+    learning_rate: float = 2e2
+    log_dir: str = "."
     time_period: str = None
     log_verbose: bool = False
 
@@ -55,8 +55,8 @@ class CalibratedCPS(Dataset):
             calibration_parameters,
         )
         weights = calibrated_weights.calibrate(
-            "2022-01-01",
-            epochs=self.epochs,
+            "2023-01-01",
+            min_loss=self.min_loss,
             learning_rate=self.learning_rate,
             verbose=self.log_verbose,
             log_dir=self.log_dir,
@@ -65,6 +65,12 @@ class CalibratedCPS(Dataset):
         data = self.input_dataset().load_dataset()
 
         data["household_weight"] = weights
+        del data["tax_unit_weight"]
+        del data["person_weight"]
+        del data["family_weight"]
+        del data["spm_unit_weight"]
+
+        self.remove()
 
         self.save_dataset(data)
 
@@ -74,4 +80,5 @@ CalibratedCPS_2023 = CalibratedCPS.from_dataset(
     new_name="calibrated_cps_2023",
     new_label="Calibrated CPS 2023",
     out_year=2023,
+    log_folder=Path(__file__).parent.parent / "logs",
 )

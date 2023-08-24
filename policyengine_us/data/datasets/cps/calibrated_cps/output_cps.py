@@ -36,56 +36,60 @@ class OutputDataset(Dataset):
         )
 
         sim.default_calculation_period = self.output_year
-
-        PERSON_VARIABLES = [
-            "age",
-            "person_household_id",
-        ]
-
-        HOUSEHOLD_VARIABLES = [
-            "household_id",
-            "household_weight",
-        ]
-
-        PROGRAM_VARIABLES = [
+        VARIABLES = [
             "income_tax",
+            "employment_income",
+            "adjusted_gross_income",
+            "taxable_interest_income",
+            "tax_exempt_interest_income",
+            "non_qualified_dividend_income",
+            "qualified_dividend_income",
+            "self_employment_income",
+            "capital_gains",
+            "taxable_pension_income",
+            "pension_income",
+            "taxable_income",
+            "snap",
+            "social_security",
+            "ssi",
+            "household_count_people",
+            "household_weight",
+            "household_id",
+            "age",
+            "is_male",
         ]
 
         variables = sim.tax_benefit_system.variables
 
+        household = pd.DataFrame()
+        tax_unit = pd.DataFrame()
         person = pd.DataFrame()
 
-        for variable in PERSON_VARIABLES:
-            person[variable] = sim.calculate(variable, map_to="person").values
-
-        household = pd.DataFrame()
-
-        for variable in HOUSEHOLD_VARIABLES:
-            household[variable] = sim.calculate(variable).values
-
-        for variable in PROGRAM_VARIABLES:
-            if variables[variable].entity.key != "household":
-                person[variable] = sim.calculate(
-                    variable, map_to="person"
-                ).values
+        for variable in VARIABLES:
+            variable_entity = variables[variable].entity.key
+            if variable_entity != "household":
                 household[variable] = sim.calculate(
                     variable, map_to="household"
                 ).values
                 household[f"{variable}_participants"] = sim.map_result(
                     sim.calculate(variable).values > 0,
-                    variables[variable].entity.key,
+                    variable_entity,
                     "household",
                 )
+                if variable_entity == "tax_unit":
+                    tax_unit[variable] = sim.calculate(variable).values
+                elif variable_entity == "person":
+                    person[variable] = sim.calculate(variable).values
             else:
                 household[variable] = sim.calculate(variable).values
 
-        person["person_household_id"] = sim.calculate(
-            "household_id", map_to="person"
-        ).values
+            tax_unit["household_id"] = sim.calculate("tax_unit_household_id").values
+            person["household_id"] = sim.calculate("household_id", map_to="person").values
 
         self.save_dataset(
             dict(
-                person=person,
                 household=household,
+                tax_unit=tax_unit,
+                person=person,
             )
         )

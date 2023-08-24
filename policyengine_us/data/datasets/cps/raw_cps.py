@@ -109,6 +109,7 @@ PERSON_COLUMNS = [
     "DIS_SC2",
     "PRDTRACE",
     "PRDTHSP",
+    "A_MARITL"
 ]
 
 
