@@ -12,9 +12,6 @@ class co_low_income_cdcc(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.credits.cdcc.low_income
-        # The childcare expenses can not exceed the earned income of the filer
-        # if filing jointly - the lesser of either individual's earned income
-        earned_income = tax_unit("min_head_spouse_earned", period)
 
         # Get sum of all qualified child care expenses, class "childcare_expenses" is based on SPMunit
         # Better choice to use class "tax_unit_childcare_expenses", which based on Taxunit and then distribute to SPMunit
@@ -32,7 +29,9 @@ class co_low_income_cdcc(Variable):
         mask = children > 0
         eligible_child_ratio[mask] = eligible_children[mask] / children[mask]
         total_expenses = tax_unit_childcare_expenses * eligible_child_ratio
-
+        # The childcare expenses can not exceed the earned income of the filer
+        # if filing jointly - the lesser of either individual's earned income
+        earned_income = tax_unit("min_head_spouse_earned", period)
         capped_expenses = min_(earned_income, total_expenses)
         co_low_income_cdcc = capped_expenses * p.rate
         # Credit is capped at $500 or $1,000 for 1 or over 2 dependents, respectively.
