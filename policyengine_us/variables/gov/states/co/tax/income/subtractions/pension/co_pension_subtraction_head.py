@@ -53,6 +53,7 @@ class co_pension_subtraction_head(Variable):
             p.younger.max_amount - co_social_security_subtraction_head, 0
         )
         intermediate_head_output = min_(intermediate_allowable, head_tpi)
+        
         return where(
             younger_condition,
             younger_head_output,

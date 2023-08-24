@@ -45,3 +45,14 @@
   output:
     co_social_security_subtraction_spouse: 5_000
     # co_ss_spouse = social_security_survivors = 5_000 
+
+- name: 0 in 2021
+  period: 2021
+  input:
+    state_code: CO
+    age_spouse: 50
+    taxable_social_security: 23_000
+    social_security_survivors: 5_000
+    is_tax_unit_spouse: true
+  output:
+    co_social_security_subtraction_spouse: 0
