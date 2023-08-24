@@ -1,0 +1,74 @@
+- name: married, not disabled/student, smaller head income 
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 30000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_min_head_spouse_earned: 20000
+
+- name: married, not disabled/student, smaller spouse income 
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 10000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_min_head_spouse_earned: 10000
+
+- name: married,is disabled/student, smaller spouse income(larger than 4800)
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 20000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: false
+        is_full_time_student: false
+        earned_income: 10000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_min_head_spouse_earned: 10000

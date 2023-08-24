@@ -1,10 +1,9 @@
 from policyengine_us.model_api import *
 
 
-class hi_dcb_amount(Variable):
+class dependent_care_benefits(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Hawaii amount of dependent care benefits recieved"
+    label = "Dependent care benefits received"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.HI

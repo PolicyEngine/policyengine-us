@@ -13,7 +13,7 @@ class hi_dcb(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         # line 2
-        dcb_amount = tax_unit("hi_dcb_amount", period)
+        dcb_amount = tax_unit("dependent_care_benefit", period)
         # skip line 3,4, so line 5 = line 2
         # line 6
         qualified_expense_amount = tax_unit(
@@ -21,8 +21,8 @@ class hi_dcb(Variable):
         )
         # line 8
         # line 9
-        # for student/disable cases, can't find latest instruction
-        min_head_spouse_earned = tax_unit("min_head_spouse_earned", period)
+        # reference: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=29
+        min_head_spouse_earned = tax_unit("hi_min_head_spouse_earned", period)
         # line 10
         min_benefit = min_(
             dcb_amount, qualified_expense_amount, min_head_spouse_earned
@@ -47,13 +47,12 @@ class hi_dcb(Variable):
         excluded_benefit = max_(
             0, min_(min_benefit, line11) - deductible_benefit
         )
-        # line 16
-        taxable_benefit = max_(0, dcb_amount - excluded_benefit)
+        # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation
         # line 17
         qualified_num = tax_unit("count_cdcc_eligible", period)
         expenses_amount = select(
             [
-                qualified_num == 1,
+                qualified_num <= 1,
                 qualified_num > 1,
             ],
             [
@@ -64,9 +63,7 @@ class hi_dcb(Variable):
         # line 18
         line18 = deductible_benefit + excluded_benefit
         # line 19
-        line19 = expenses_amount - line18
-        if line19 <= 0:
-            print("You can not take this credit!")
-            return
+        line19 = max_(0, expenses_amount - line18)
+
         # line 22
         return min_(line19, tax_unit("tax_unit_childcare_expenses", period))

@@ -1,1 +1,6 @@
-
+- name: test
+  period: 2022
+  input:
+    hi_min_head_spouse_earned: 2400
+  output:
+    hi_dcb: 25
