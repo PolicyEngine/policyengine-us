@@ -11,14 +11,22 @@ class la_child_expense_tax_credit(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(
             period
-        ).gov.states.la.tax.credits.school_readiness
-        # determine if it is nonrefundable or refundable
-        us_agi = tax_unit("adjusted_gross_income", period)
-        non_refundable = tax_unit("la_child_tax_credit_non_refundable", period)
-        refundable = tax_unit("la_child_tax_credit_refundable", period)
+        ).gov.states.la.tax.credits.school_readiness.rate
+        # determine LA refundable amount
+        child_care_credit = tax_unit("la_state_child_care_credit", period)
+        eligible_child = person(
+            "la_child_care_expense_credit_eligible_child", period
+        )
+        quality_rating = person(
+            "quality_rating_of_child_care_facility", period
+        )
+        child_credit_percent = eligible_child * p.refundable.calc(
+            quality_rating
+        )
+        # Need to check wether the percent is of the agi or something else
+        amount = child_care_credit * child_credit_percent
 
-        agi_eligible = us_agi > p.income_threshold
-
-        return where(agi_eligible, non_refundable, refundable)
+        return tax_unit.sum(amount)
