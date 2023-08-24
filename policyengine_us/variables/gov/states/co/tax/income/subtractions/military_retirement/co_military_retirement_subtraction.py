@@ -23,9 +23,11 @@ class co_military_retirement_subtraction(Variable):
         age = person("age", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = (head | spouse) 
-        age_eligible = (age < p.age_threshold)
+        head_or_spouse = head | spouse
+        age_eligible = age < p.age_threshold
         eligible = head_or_spouse * age_eligible
         military_retirement_pay = person("military_retirement_pay", period)
-        capped_military_retirement_pay = min_(military_retirement_pay * eligible, p.max_amount)
+        capped_military_retirement_pay = min_(
+            military_retirement_pay * eligible, p.max_amount
+        )
         return tax_unit.sum(capped_military_retirement_pay)

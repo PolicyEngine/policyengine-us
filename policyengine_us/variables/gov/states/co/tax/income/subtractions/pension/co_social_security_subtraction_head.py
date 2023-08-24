@@ -18,10 +18,14 @@ class co_social_security_subtraction_head(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
         if p.social_security_subtraction_available:
-            p = parameters(period).gov.states.co.tax.income.subtractions.pension
+            p = parameters(
+                period
+            ).gov.states.co.tax.income.subtractions.pension
             person = tax_unit.members
             taxable_social_security = person("taxable_social_security", period)
-            social_security_survivors = person("social_security_survivors", period)
+            social_security_survivors = person(
+                "social_security_survivors", period
+            )
             age_head = tax_unit("age_head", period)
             younger_condition = age_head < p.younger.age
             older_condition = age_head >= p.older.age
@@ -35,4 +39,4 @@ class co_social_security_subtraction_head(Variable):
             older_output = where(older_condition, head_tss, cap_older_amount)
             older_allowable = where(older_condition, head_tss, older_output)
             return where(younger_condition, head_sss, older_allowable)
-        return 0 
+        return 0

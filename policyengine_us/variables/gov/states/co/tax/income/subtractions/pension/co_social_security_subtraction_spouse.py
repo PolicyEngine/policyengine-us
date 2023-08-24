@@ -20,12 +20,15 @@ class co_social_security_subtraction_spouse(Variable):
         if p.social_security_subtraction_available:
             person = tax_unit.members
             taxable_social_security = person("taxable_social_security", period)
-            social_security_survivors = person("social_security_survivors", period)
+            social_security_survivors = person(
+                "social_security_survivors", period
+            )
             age_spouse = tax_unit("age_spouse", period)
             younger_condition = age_spouse < p.younger.age
             older_condition = age_spouse >= p.older.age
             spouse_sss = tax_unit.max(
-                social_security_survivors * person("is_tax_unit_spouse", period)
+                social_security_survivors
+                * person("is_tax_unit_spouse", period)
             )
             spouse_tss = tax_unit.max(
                 taxable_social_security * person("is_tax_unit_spouse", period)
