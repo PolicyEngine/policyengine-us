@@ -10,8 +10,8 @@ class co_pension_subtraction_head(Variable):
     reference = (
         "https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2022.pdf#page=1",
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=12",
-        "https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=d0c36b4d-118b-4999-860c-acf7e2abc639&nodeid=ABPAACAACAABAACAAF&nodepath=%2FROOT%2FABP%2FABPAAC%2FABPAACAAC%2FABPAACAACAAB%2FABPAACAACAABAAC%2FABPAACAACAABAACAAF&level=6&haschildren=&populated=false&title=39-22-104.+Income+tax+imposed+on+individuals%2C+estates%2C+and+trusts+-+single+rate+-+report+-+legislative+declaration+-+definitions+-+repeal.&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&pddocfullpath=%2Fshared%2Fdocument%2Fstatutes-legislation%2Furn%3AcontentItem%3A683G-JJ73-CGX8-04HR-00008-00&ecomp=7gf59kk&prid=a3e24fb9-619e-4e55-9f4a-0513857dd3ef"
-        # C.R.S. 39-22-104(4)(f)(III)
+        "https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/"
+        # C.R.S. 39-22-104(4)(g)(III)
     )
     definition_period = YEAR
 

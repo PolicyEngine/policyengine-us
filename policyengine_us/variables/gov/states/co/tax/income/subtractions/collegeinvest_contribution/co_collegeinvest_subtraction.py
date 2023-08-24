@@ -10,7 +10,7 @@ class co_collegeinvest_subtraction(Variable):
     reference = (
         "https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2022.pdf#page=1",
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=12",
-        "https://advance.lexis.com/documentpage/?pdmfid=1000516&crid=49fe2864-b8f7-4db8-8819-3b6d1cabfe53&action=pawlinkdoc&pdcomponentid=&pddocfullpath=%2fshared%2fdocument%2fstatutes-legislation%2furn%3acontentItem%3a683G-JJ73-CGX8-04HR-00008-00&pdtocnodeidentifier=ABPAACAACAABAACAAF&config=014FJAAyNGJkY2Y4Zi1mNjgyLTRkN2YtYmE4OS03NTYzNzYzOTg0OGEKAFBvZENhdGFsb2d592qv2Kywlf8caKqYROP5&ecomp=k2vckkk&prid=b4d7981f-7c6f-4802-8aa4-8d4c7a85c292"
+        "https://law.justia.com/codes/colorado/2022/title-39/article-22/part-1/section-39-22-104/"
         # C.R.S. 39-22-104(4)(i)(II)(B)
     )
     defined_for = StateCode.CO
