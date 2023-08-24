@@ -13,7 +13,7 @@ class vt_income_tax_before_non_refundable_credits(Variable):
         income = tax_unit("vt_taxable_income", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        p = parameters(period).gov.states.vt.tax.income.main
+        p = parameters(period).gov.states.vt.tax.income.rates
         return select(
             [
                 filing_status == status.SINGLE,
