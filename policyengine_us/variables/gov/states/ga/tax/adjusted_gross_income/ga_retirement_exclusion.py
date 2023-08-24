@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ga_exclusion(Variable):
+class ga_retirement_exclusion(Variable):
     value_type = float
     entity = TaxUnit
     label = "Georgia retirement exclusion"
@@ -23,40 +23,39 @@ class ga_exclusion(Variable):
             p.retirement.cap.earned_income, earned_income
         )
         retirement_income = (
-            person("pension_income", period) + earned_income_exclusion
-        )
+            person("ga_retirement_income", period) + earned_income_exclusion
+        )  # All other retirement income except military retirement income
 
         # Retirement Exclusions
         ## check disability, age eligibility and caps
         disabled = person("is_disabled", period)
-        age_low = (person("age", period) >= p.retirement.age.low) & (
-            person("age", period) < p.retirement.age.high
+        age_younger = (person("age", period) >= p.retirement.age.younger) & (
+            person("age", period) < p.retirement.age.older
         )
-        age_high = person("age", period) >= p.retirement.age.high
-        cap_low_age = p.retirement.cap.exclusion_low_age
-        cap_high_age = p.retirement.cap.exclusion_high_age
-        exclusion_eligible_low = min_(retirement_income, cap_low_age)
-        exclusion_eligible_high = min_(retirement_income, cap_high_age)
+        age_older = person("age", period) >= p.retirement.age.older
+        cap_younger_age = p.retirement.cap.exclusion_younger_age
+        cap_older_age = p.retirement.cap.exclusion_older_age
+        exclusion_eligible_younger = min_(retirement_income, cap_younger_age)
+        exclusion_eligible_older = min_(retirement_income, cap_older_age)
 
         ## head exclusion
         head = person("is_tax_unit_head", period)
-
-        head_high_exclusion = where(
-            (head & age_high), exclusion_eligible_high, 0
+        head_older_exclusion = where(
+            (head & age_older), exclusion_eligible_older, 0
         )
         head_exclusion = tax_unit.sum(
             where(
-                head & (disabled | age_low),
-                exclusion_eligible_low,
-                head_high_exclusion,
+                head & (disabled | age_younger),
+                exclusion_eligible_younger,
+                head_older_exclusion,
             )
         )
 
         ## spouse exclusion
         spouse = person("is_tax_unit_spouse", period)
-        spouse_high_exclusion = where(
-            (filing_status == status.JOINT) & (spouse & age_high),
-            exclusion_eligible_high,
+        spouse_older_exclusion = where(
+            (filing_status == status.JOINT) & (spouse & age_older),
+            exclusion_eligible_older,
             0,
         )
 
@@ -64,13 +63,13 @@ class ga_exclusion(Variable):
             where(
                 (filing_status == status.JOINT)
                 & spouse
-                & (disabled | age_low),
-                exclusion_eligible_low,
-                spouse_high_exclusion,
+                & (disabled | age_younger),
+                exclusion_eligible_younger,
+                spouse_older_exclusion,
             )
         )
 
-        # total retirement exclusions
+        # total retirement exclusions except military income
         total_retirement_exclusion = head_exclusion + spouse_exclusion
 
         # Military Retirement Income Exclusions
@@ -82,8 +81,8 @@ class ga_exclusion(Variable):
         head_additional = where(
             head
             & military_age
-            & (earned_income > p.military.additional_threshold),
-            p.military.additional_amount,
+            & (earned_income > p.military.additional_amount.threshold),
+            p.military.additional_amount.amount,
             0,
         )
 
@@ -96,8 +95,8 @@ class ga_exclusion(Variable):
         spouse_additional = where(
             spouse
             & military_age
-            & (earned_income > p.military.additional_threshold),
-            p.military.additional_amount,
+            & (earned_income > p.military.additional_amount.threshold),
+            p.military.additional_amount.amount,
             0,
         )
 
