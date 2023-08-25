@@ -24,8 +24,8 @@ class de_pension_exclusion(Variable):
         above_60_head_eligible = (age_head >= p.min_age).astype(int)
 
         # determine military eligiblity
-        military_retirement = person("military_retired", period) > 0
-        military_eligible = tax_unit.any(military_retirement)
+        is_receiving_military_retirement_pay = person("military_retirement_pay", period) > 0
+        military_eligible = tax_unit.any(is_receiving_military_retirement_pay)
 
         # determine pension exclusion value based on military status
         exclusion_value = where(
@@ -35,7 +35,7 @@ class de_pension_exclusion(Variable):
         )
 
         # determine pension exclusion amount
-        pension_income = person("market_income", period)
+        pension_income = person("pension_income", period)
 
         # determine eligible retirement income for head above 60
         elig_retirement_income = person(
@@ -45,10 +45,10 @@ class de_pension_exclusion(Variable):
 
         # determine exclusion eligibility
         is_eligible_for_under_60_military = (
-            under_60_head_eligible & military_retirement
+            under_60_head_eligible & military_eligible
         ).astype(int)
         is_eligible_for_under_60_non_military = (
-            under_60_head_eligible & ~military_retirement
+            under_60_head_eligible & ~military_eligible
         ).astype(int)
 
         # apply the exclusion value or the pension income, whichever is lower, for eligible individuals

@@ -3,8 +3,8 @@
   input:
     state_code: DE
     age_head: 55
-    military_retired: true
-    market_income: 10_000
+    is_receiving_military_retirement_pay: true
+    pension_income: 10_000
   output:  
     de_pension_exclusion: 10_000
 
@@ -13,8 +13,8 @@
   input:
     state_code: DE
     age_head: 55
-    military_retired: true
-    market_income: 15_000
+    is_receiving_military_retirement_pay: true
+    pension_income: 15_000
   output:  
     de_pension_exclusion: 12_500
 
@@ -22,9 +22,9 @@
   period: 2022
   input:
     state_code: DE
-    military_retired: false
+    is_receiving_military_retirement_pay: false
     age_head: 55
-    market_income: 15_000
+    pension_income: 15_000
   output:  
     de_pension_exclusion: 2_000
 
@@ -33,8 +33,8 @@
   input:
     state_code: DE
     age_head: 55
-    military_retired: false
-    market_income: 1_000
+    is_receiving_military_retirement_pay: false
+    pension_income: 1_000
   output:  
     de_pension_exclusion: 1_000
 
@@ -44,7 +44,7 @@
     state_code: DE
     age_head: 75
     eligible_retirement_income_for_elderly: 3_000
-    market_income: 1_000
+    pension_income: 1_000
   output:  
     de_pension_exclusion: 4_000
 
@@ -54,7 +54,7 @@
     state_code: DE
     age_head: 75
     eligible_retirement_income_for_elderly: 3_000
-    market_income: 10_000
+    pension_income: 10_000
   output:  
     de_pension_exclusion: 12_500
 
@@ -63,7 +63,7 @@
   input:
     state_code: DE
     age_head: 55
-    market_income: 10_000
+    pension_income: 10_000
   output:  
     de_pension_exclusion: 2_000
 
@@ -72,7 +72,7 @@
   input:
     state_code: DE
     age_head: 55
-    market_income: 1_000
+    pension_income: 1_000
   output:  
     de_pension_exclusion: 1_000
 
@@ -82,7 +82,7 @@
     state_code: DE
     age_head: 75
     eligible_retirement_income_for_elderly: 1_000
-    market_income: 1_000
+    pension_income: 1_000
   output:  
     de_pension_exclusion: 2_000
 
@@ -92,6 +92,6 @@
     state_code: DE
     age_head: 75
     eligible_retirement_income_for_elderly: 10_000
-    market_income: 5_000
+    pension_income: 5_000
   output:  
     de_pension_exclusion: 12_500
