@@ -15,4 +15,4 @@ class vt_agi_subtractions(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf"
     )
     # Get parameter list
-    adds = "gov.states.vt.tax.income.subtractions_sources"
+    adds = "gov.states.vt.tax.income.agi.subtractions_sources"
