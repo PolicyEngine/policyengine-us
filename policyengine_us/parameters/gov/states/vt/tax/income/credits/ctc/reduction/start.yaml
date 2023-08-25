@@ -1,0 +1,19 @@
+description: Oregon reduces its Child Tax Credit for filers with Oregon adjusted gross income exceeding this amount.
+values:
+  0000-01-01: 10_000
+metadata:
+  unit: currency-USD
+  label: Oregon Child Tax Credit phase-out start
+  reference:
+    - title: 2023R1 House Bill 3235 Section 2 (3)(a)
+      href: https://olis.oregonlegislature.gov/liz/2023R1/Downloads/MeasureDocument/HB3235/Enrolled#page=1
+description: Vermont provides this maximum Child Tax Credit per qualifying child.
+values:
+  0000-01-01: 0
+  2023-01-01: 125_000
+metadata:
+  unit: currency-USD
+  label: Vermont Child Tax Credit amount
+  reference:
+    - title: Vt. Stat. tit. 32 § 5830f Section (b)
+      href: https://casetext.com/statute/vermont-statutes/title-32-taxation-and-finance/chapter-151-income-taxes/subchapter-002-taxation-of-individuals-trusts-and-estates/section-5830f-see-note-vermont-child-tax-credit/1#page=1
