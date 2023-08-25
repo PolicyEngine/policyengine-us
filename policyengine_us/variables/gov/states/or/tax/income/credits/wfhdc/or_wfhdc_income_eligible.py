@@ -22,7 +22,7 @@ class or_wfhdc_income_eligible(Variable):
         household_size = tax_unit("tax_unit_size", period)
 
         # Get the income threshold based on household size.
-        income_threshold = p.eligible.income_threshold[household_size]
+        income_threshold = p.eligible.income_threshold.calc(household_size)
 
         # Get the household income, considered the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
