@@ -13,6 +13,7 @@ class household_state_income_tax(Variable):
         "dc_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
+        "in_income_tax_before_refundable_credits",
         "ks_income_tax_before_refundable_credits",
         "me_income_tax_before_refundable_credits",
         "ma_income_tax_before_refundable_credits",
@@ -36,6 +37,7 @@ class household_state_income_tax(Variable):
         "dc_refundable_credits",  # District of Columbia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
+        "in_refundable_credits",  # Indiana.
         "ks_refundable_credits",  # Kansas.
         "ma_refundable_credits",  # Massachusetts.
         "me_refundable_credits",  # Maine.
@@ -53,3 +55,20 @@ class household_state_income_tax(Variable):
         "ut_refundable_credits",  # Utah.
         "wi_refundable_credits",  # Wisconsin.
     ]
+
+    def formula(tax_unit, period, parameters):
+        if parameters(period).simulation.reported_state_income_tax:
+            spm_unit = tax_unit.spm_unit
+            total_tax_unit_heads = add(spm_unit, period, ["is_tax_unit_head"])
+            spm_unit_state_tax = spm_unit(
+                "spm_unit_state_tax_reported", period
+            )
+            return where(
+                total_tax_unit_heads > 0,
+                spm_unit_state_tax / total_tax_unit_heads,
+                0,
+            )
+        else:
+            return add(
+                tax_unit, period, household_state_income_tax.adds
+            ) - add(tax_unit, period, household_state_income_tax.subtracts)
