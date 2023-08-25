@@ -19,13 +19,13 @@ class vt_interest_and_dividend_add_back(Variable):
         tax_exempted_total_interest_and_dividend_income = add(
             tax_unit,
             period,
-            ["tax_exempt_interest_income", "tax_exempt_dividend_income"],
+            ["tax_exempt_interest_income"],
         )
         # Then get interest and dividend income from Vermont state and local obligations exempted from federal tax
-        tax_exempted_vt_interest_and_dividend_income = add(
-            tax_unit, period, ["tax_exempt_vt_interest_and_dividend_income"]
+        vt_tax_exempt_interest_and_dividend_income = add(
+            tax_unit, period, ["vt_tax_exempt_interest_and_dividend_income"]
         )
         return (
             tax_exempted_total_interest_and_dividend_income
-            - tax_exempted_vt_interest_and_dividend_income
+            - vt_tax_exempt_interest_and_dividend_income
         )

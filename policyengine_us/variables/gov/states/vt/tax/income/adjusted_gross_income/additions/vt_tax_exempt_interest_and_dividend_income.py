@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class tax_exempt_vt_interest_and_dividend_income(Variable):
+class vt_tax_exempt_interest_and_dividend_income(Variable):
     value_type = float
     entity = Person
     label = "Vermont tax-exempt interest and dividened income"
