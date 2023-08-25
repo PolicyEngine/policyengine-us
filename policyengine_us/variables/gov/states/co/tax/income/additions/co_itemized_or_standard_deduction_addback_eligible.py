@@ -20,5 +20,4 @@ class co_itemized_or_standard_deduction_addback_eligible(Variable):
         p = parameters(
             period
         ).gov.states.co.tax.income.additions.itemized_or_standard_deduction_addback
-        agi = tax_unit("adjusted_gross_income", period)
         return tax_unit("adjusted_gross_income", period) > p.agi_threshold
