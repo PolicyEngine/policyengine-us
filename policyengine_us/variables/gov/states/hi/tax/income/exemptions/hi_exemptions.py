@@ -13,10 +13,10 @@ class hi_exemptions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.exemptions
         
-        num_exemp = taxunit("exemptions", period)
-        disabled_head = taxunit("disabled_head", period)
-        disabled_spouse = taxunit("disabled_spouse", period)
-        aged_spouse = taxunit("age_spouse", period)
+        num_exemp = tax_unit("exemptions", period)
+        disabled_head = tax_unit("disabled_head", period)
+        disabled_spouse = tax_unit("disabled_spouse", period)
+        aged_spouse = tax_unit("age_spouse", period)
         
         return where(
             disabled_head,
