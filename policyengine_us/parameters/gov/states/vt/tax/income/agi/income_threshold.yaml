@@ -1,4 +1,4 @@
-description: Vermont uses this amount as threshold to determine if filer eligible for Vermont retirement income exemption.
+description: Vermont qualifies filers for the retirement income exemption with income at or above this threshold, based on filing status.
 metadata:
   label: Vermont retirement income exemption eligibility threshold
   period: year
@@ -9,10 +9,10 @@ metadata:
     - title: Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
       href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3
     - title: Instruction for 2021 SCHEDULE IN-112 - SOCIAL SECURITY EXEMPTION WORKSHEET
-      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2021.pdf#page=3
-     # Legal code HOLDER
-    - title: Legal Code Titl. 32 V.S.A. § 5830e
-      href: PLACEHOLDER
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2021.pdf#page=2
+     # Legal code specify income threshold at $60,000 for non filing jointly filer and at $75,000 for filing jointly filer. Date unknown.
+    - title: Legal Code Titl. 32 V.S.A. § 5830e(a)(1)(C), (a)(2)(C) 
+      href: https://legislature.vermont.gov/statutes/section/32/151/05830e
 JOINT:
   2021-01-01: 70_000
   2022-01-01: 75_000

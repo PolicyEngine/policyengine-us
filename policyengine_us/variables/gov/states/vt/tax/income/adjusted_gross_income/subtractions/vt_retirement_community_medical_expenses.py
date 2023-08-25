@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class vt_non_allow_medical_expense_deductions(Variable):
+class vt_retirement_community_medical_expenses(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR

@@ -21,7 +21,7 @@ class vt_medical_expense_deduction(Variable):
         )
         # Get Non-allowable federal medical expense deduction (Worksheet line 1b).
         vt_non_allow_medical_expense_deductions = tax_unit(
-            "vt_non_allow_medical_expense_deductions", period
+            "vt_retirement_community_medical_expenses", period
         )
         # Subtract non-allowable deduction from federal medical expense deduction (Worksheet line 1c).
         vt_allow_medical_expense_deduction = max_(

@@ -25,17 +25,22 @@ class vt_retirement_income_exemption(Variable):
         p = parameters(period).gov.states.vt.tax.income.agi
         # List of non qualified tax unit
         non_qualified = (tax_unit_taxable_social_security == 0) | (
-            agi >= p.qualification[filing_status]
+            agi >= p.income_threshold[filing_status]
         )
         # 2022, filing jointly with federal agi less than $65,000 or other filing statuses with federal agi less than $50,000 are fully qualified for this exemption. (SECTION I Q3)
-        fully_qualified = agi < p.threshold[filing_status]
+        fully_qualified = agi < p.reduction_threshold[filing_status]
         # 2022, filing jointly with federal agi between $65,000-$75,000 or other filing statuses with federal agi between $50,000-$60,000 are partially qualified for this exemption. (SECTION II)
-        partial_qualified = (agi >= p.threshold[filing_status]) & (
-            agi < p.qualification[filing_status]
+        partial_qualified = (agi >= p.reduction_threshold[filing_status]) & (
+            agi < p.income_threshold[filing_status]
         )
         # Calculate parital exemption amount
         partial_exemption_ratio = min_(
-            round_(max_(p.qualification[filing_status] - agi, 0) / 10000, 2), 1
+            round_(
+                max_(p.income_threshold[filing_status] - agi, 0)
+                / (p.retirement_income_exemption_divisor),
+                2,
+            ),
+            1,
         )
         partial_exemption = (
             tax_unit_taxable_social_security * partial_exemption_ratio
