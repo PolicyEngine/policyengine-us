@@ -28,6 +28,6 @@ class az_senior_exemption(Variable):
         payment_eligiblity = (support_payment_ratio > p.cost_rate) | (
             care_and_support_payment > p.min_payment
         )
-        eligible_seniors = payment_eligiblity & age_eligible
+        eligible_senior = payment_eligiblity & age_eligible
 
         return p.amount * tax_unit.sum(eligible_seniors)
