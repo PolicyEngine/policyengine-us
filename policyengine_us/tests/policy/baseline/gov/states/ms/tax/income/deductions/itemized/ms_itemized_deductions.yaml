@@ -1,39 +1,35 @@
-- name: MS itemized deduction miscellaneous income greater than miscellaneous deduction
+- name: MS itemized deduction miscellaneous income
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
     itemized_deductions_less_salt: 1_100
-    misc_deduction: 500
   output:
-    ms_itemized_deductions: 1_600
+    ms_itemized_deductions: 1_100
 
-- name: MS itemized deduction miscellaneous income greater than miscellaneous deduction
+- name: MS itemized deduction miscellaneous income
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
     itemized_deductions_less_salt: 5_000
-    misc_deduction: 1_000
   output:
-    ms_itemized_deductions: 6_000
+    ms_itemized_deductions: 5_000
 
-- name: MS itemized deduction miscellaneous income smaller than miscellaneous deduction
+- name: MS itemized deduction miscellaneous income
   absolute_error_margin: 0.01
   period: 2021
   input:
     state_code: MS
     itemized_deductions_less_salt: 7_000
-    misc_deduction: 5000
   output:
-    ms_itemized_deductions: 12_000
+    ms_itemized_deductions: 7_000
 
-- name: MS itemized deduction miscellaneous income equals to miscellaneous deduction
+- name: MS itemized deduction miscellaneous income with state code NJ
   absolute_error_margin: 0.01
   period: 2021
   input:
-    state_code: MS
+    state_code: NJ
     itemized_deductions_less_salt: 7_500
-    misc_deduction: 1_500
   output:
-    ms_itemized_deductions: 9_000
+    ms_itemized_deductions: 0
