@@ -3,7 +3,7 @@
   input:
     state_code: DE
     age_head: 55
-    is_receiving_military_retirement_pay: true
+    military_retirement_pay: true
     pension_income: 10_000
   output:  
     de_pension_exclusion: 10_000
@@ -13,7 +13,7 @@
   input:
     state_code: DE
     age_head: 55
-    is_receiving_military_retirement_pay: true
+    military_retirement_pay: true
     pension_income: 15_000
   output:  
     de_pension_exclusion: 12_500
@@ -22,7 +22,7 @@
   period: 2022
   input:
     state_code: DE
-    is_receiving_military_retirement_pay: false
+    military_retirement_pay: false
     age_head: 55
     pension_income: 15_000
   output:  
@@ -33,7 +33,7 @@
   input:
     state_code: DE
     age_head: 55
-    is_receiving_military_retirement_pay: false
+    military_retirement_pay: false
     pension_income: 1_000
   output:  
     de_pension_exclusion: 1_000
@@ -43,7 +43,7 @@
   input:
     state_code: DE
     age_head: 75
-    eligible_retirement_income_for_elderly: 3_000
+    de_eligible_retirement_income_for_elderly: 3_000
     pension_income: 1_000
   output:  
     de_pension_exclusion: 4_000
@@ -53,7 +53,7 @@
   input:
     state_code: DE
     age_head: 75
-    eligible_retirement_income_for_elderly: 3_000
+    de_eligible_retirement_income_for_elderly: 3_000
     pension_income: 10_000
   output:  
     de_pension_exclusion: 12_500
@@ -81,7 +81,7 @@
   input:
     state_code: DE
     age_head: 75
-    eligible_retirement_income_for_elderly: 1_000
+    de_eligible_retirement_income_for_elderly: 1_000
     pension_income: 1_000
   output:  
     de_pension_exclusion: 2_000
@@ -91,7 +91,7 @@
   input:
     state_code: DE
     age_head: 75
-    eligible_retirement_income_for_elderly: 10_000
+    de_eligible_retirement_income_for_elderly: 10_000
     pension_income: 5_000
   output:  
     de_pension_exclusion: 12_500
