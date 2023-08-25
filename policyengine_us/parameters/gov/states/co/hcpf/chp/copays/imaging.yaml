@@ -1,4 +1,4 @@
-description: Colorado limits the ambulance co-pay under the CHP+ to this amount, based on income level.
+description: Colorado limits the imaging co-pay under the CHP+ to this amount, based on income level.
 
 brackets:
   - threshold:
@@ -6,17 +6,13 @@ brackets:
     amount:
       2023-01-01: 0
   - threshold:
-      2023-01-01: 1.01
-    amount:
-      2023-01-01: 2
-  - threshold:
       2023-01-01: 1.57
     amount:
-      2023-01-01: 15
+      2023-01-01: 5
   - threshold:
       2023-01-01: 2.01
     amount:
-      2023-01-01: 25
+      2023-01-01: 10
   - threshold:
       2023-01-01: 2.61
     amount:
@@ -26,7 +22,7 @@ metadata:
   type: single_amount
   rate_unit: currency-USD
   threshold_unit: /1
-  label: Colorado CHP+ ambulance co-pay
+  label: Colorado CHP+ Imaging co-pay
   reference:
     - title: Child Health Plan Plus (CHP+) | DEPARTMENT OF HEALTH CARE POLICY AND FINANCING
       href: https://hcpf.colorado.gov/child-health-plan-plus

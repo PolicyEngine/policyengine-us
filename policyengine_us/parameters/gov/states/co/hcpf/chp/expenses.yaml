@@ -1,0 +1,17 @@
+description: Urgent care co-pay CHP+
+values:
+  2023-01-01:
+    - ambulance
+    - er_visit
+    - imaging
+    - inpatient
+    - lab
+    - outpatient
+    - physician_services
+    - prescription
+    - urgent_care
+metadata:
+  unit: list
+  reference:
+    - title: Child Health Plan Plus (CHP+) | DEPARTMENT OF HEALTH CARE POLICY AND FINANCING
+      href: https://hcpf.colorado.gov/child-health-plan-plus

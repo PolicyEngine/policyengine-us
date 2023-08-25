@@ -1,4 +1,4 @@
-description: Lab/imaging co-pay CHP+
+description: Colorado limits the lab co-pay under the CHP+ to this amount, based on income level.
 
 brackets:
   - threshold:
@@ -22,7 +22,7 @@ metadata:
   type: single_amount
   rate_unit: currency-USD
   threshold_unit: /1
-  label: Colorado CHP+ lab/imaging co-pay
+  label: Colorado CHP+ lab co-pay
   reference:
     - title: Child Health Plan Plus (CHP+) | DEPARTMENT OF HEALTH CARE POLICY AND FINANCING
       href: https://hcpf.colorado.gov/child-health-plan-plus
