@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class in_nol_add_back(Variable):
     value_type = float
     entity = TaxUnit
-    label = "IN net operating loss add back"
+    label = "Indiana net operating loss add back"
     definition_period = YEAR
     documentation = (
         "Add back for net operating losses reported on federal Schedule 1."
