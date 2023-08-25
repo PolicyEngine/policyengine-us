@@ -41,11 +41,11 @@ class hi_min_head_spouse_earned(Variable):
             ],
             [
                 max_(
-                    p.qualified_expenses.one_child_dependent,
+                    p.expense_cap.one_child,
                     tax_unit.sum(head * income),
                 ),
                 max_(
-                    p.qualified_expenses.two_or_more_child_dependent,
+                    p.expense_cap.two_or_more_child,
                     tax_unit.sum(head * income),
                 ),
                 tax_unit.sum(head * income),
@@ -64,11 +64,11 @@ class hi_min_head_spouse_earned(Variable):
             ],
             [
                 max_(
-                    p.qualified_expenses.one_child_dependent,
+                    p.expense_cap.one_child,
                     tax_unit.sum(spouse * income),
                 ),
                 max_(
-                    p.qualified_expenses.two_or_more_child_dependent,
+                    p.expense_cap.two_or_more_child,
                     tax_unit.sum(spouse * income),
                 ),
                 tax_unit.sum(spouse * income),

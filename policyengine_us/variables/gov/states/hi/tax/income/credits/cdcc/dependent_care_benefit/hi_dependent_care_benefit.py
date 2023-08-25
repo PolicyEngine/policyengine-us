@@ -14,7 +14,7 @@ class hi_dcb(Variable):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         dcb_amount = tax_unit("dependent_care_benefit", period)
         qualified_expense_amount = tax_unit(
-            "hi_qualified_expense_amount", period
+            "tax_unit_childcare_expenses", period
         )
         # married persons must fi le a joint return to claim the credit
         # if single, the min will be his/her income
@@ -44,11 +44,9 @@ class hi_dcb(Variable):
                 qualified_num > 1,
             ],
             [
-                p.qualified_expenses.one_child_dependent,
-                p.qualified_expenses.two_or_more_child_dependent,
+                p.expense_cap.one_child,
+                p.expense_cap.two_or_more_child,
             ],
         )
         net_expenses = max_(0, expenses_amount - deductible_benefit)
-        return min_(
-            net_expenses, tax_unit("tax_unit_childcare_expenses", period)
-        )
+        return min_(net_expenses, qualified_expense_amount)

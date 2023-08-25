@@ -1,12 +1,12 @@
-description: Hawaii provides at most this amount under qualified expenses for one child/dependent.
+description: Hawaii sets the minimum earned income of disabled/full-time-student head/spouse with two or more dependents to this amount. 
 values:
-  2018-01-01: 2_400
+  2018-01-01: 4_800 # 400 * 12
 metadata:
   unit: currency-USD
-  label: Hawaii CDCC one child/dependent amount
+  label: Hawaii CDCC disabled/student with two or more dependents minimum earned income 
   reference:
-    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (a)(1)
-      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (d)(2)(B)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41
     - title: Hawaii SCHEDULE X 2022 
       href: https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2
     - title: Hawaii SCHEDULE X 2021 
