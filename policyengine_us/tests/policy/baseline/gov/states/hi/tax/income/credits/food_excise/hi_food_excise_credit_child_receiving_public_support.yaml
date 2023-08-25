@@ -1,0 +1,49 @@
+- name: No child support
+  period: 2022
+  input:
+    child_support_received: 0
+    social_security_survivors: 100
+    tanf_person: 100
+    state_code: HI
+  output:
+    hi_food_excise_credit_child_receiving_public_support: true
+
+- name: No public support
+  period: 2022
+  input:
+    child_support_received: 1_000
+    social_security_survivors: 0
+    tanf_person: 0
+    state_code: HI
+  output:
+    hi_food_excise_credit_child_receiving_public_support: false
+
+- name: All child support comes from public support
+  period: 2022
+  input:
+    child_support_received: 1_000
+    social_security_survivors: 100
+    tanf_person: 900
+    state_code: HI
+  output:
+    hi_food_excise_credit_child_receiving_public_support: false
+
+- name: Exactly half of the child support comes from public support
+  period: 2022
+  input:
+    child_support_received: 1_000
+    social_security_survivors: 100
+    tanf_person: 400
+    state_code: HI
+  output:
+    hi_food_excise_credit_child_receiving_public_support: false
+
+- name: Over half of the child support comes from public support
+  period: 2022
+  input:
+    child_support_received: 1_000
+    social_security_survivors: 100
+    tanf_person: 401
+    state_code: HI
+  output:
+    hi_food_excise_credit_child_receiving_public_support: false
