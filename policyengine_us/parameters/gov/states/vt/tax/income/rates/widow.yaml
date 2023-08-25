@@ -1,9 +1,9 @@
-description: Vermont taxes income of head of household filers at this rate. 
+description: Vermont taxes income of widow(er) filers at this rate. 
 metadata:
   type: marginal_rate
   threshold_unit: currency-USD
   rate_unit: /1
-  label: Vermont income tax rates head of household filers
+  label: Vermont income tax rates widow(er) filers
   reference:
       # Law does not specify inflation adjusted thresholds for each year
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
@@ -16,19 +16,19 @@ brackets:
   - threshold:
       2021-01-01: 0
     rate:
-      2021-01-01: 0.035
+      2021-01-01: 0.0335
   - threshold:
-      2021-01-01: 54_850
-      2022-01-01: 56_500
+      2021-01-01: 68_400
+      2022-01-01: 70_450
     rate:
-      2021-01-01: 0.066
+      2022-01-01: 0.066
   - threshold:
-      2021-01-01: 141_700
-      2022-01-01: 145_950
+      2021-01-01: 165_350
+      2022-01-01: 170_300
     rate:
       2021-01-01: 0.076
   - threshold:
-      2021-01-01: 229_450
-      2022-01-01: 236_350
+      2021-01-01: 251_950
+      2022-01-01: 259_500
     rate:
       2021-01-01: 0.0875
