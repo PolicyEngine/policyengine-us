@@ -4,7 +4,7 @@
     filing_status: SINGLE
     state_code: NC
   output:
-    nc_standard_deductions: 12_750
+    nc_standard_deduction: 12_750
 
 
 - name: NC Standard Deduction for joint
@@ -13,7 +13,7 @@
     filing_status: JOINT
     state_code: NC
   output:
-    nc_standard_deductions: 25_500
+    nc_standard_deduction: 25_500
 
 - name: NC Standard Deduction for widow
   period: 2021
@@ -21,4 +21,4 @@
     filing_status: WIDOW
     state_code: NC
   output:
-    nc_standard_deductions: 21_500
+    nc_standard_deduction: 21_500
