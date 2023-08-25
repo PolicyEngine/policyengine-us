@@ -19,5 +19,5 @@ class mt_ctc(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         excess = max_(agi - p.reduction.threshold, 0)
         increments = excess // p.reduction.increment
-        reduction_rate = p.reduction.rate * increments
+        reduction_rate = p.reduction.amount * increments
         return max_(child_credit - reduction_rate, 0)
