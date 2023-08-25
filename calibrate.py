@@ -178,16 +178,16 @@ for i in progress_bar:
         current_aggregates = (
             (result * equivalisation_factors_array).detach().numpy()[0]
         )
-        training_log_df = training_log_df.append(
+        training_log_df = pd.concat([training_log_df,
             pd.DataFrame(
                 {
-                    "name": list(targets.keys()),
-                    "epoch": [i] * len(targets),
-                    "value": list(current_aggregates),
-                    "target": list(targets.values()),
+                    "name": list(targets.keys()) + ["total"],
+                    "epoch": [i] * len(targets) + [i],
+                    "value": list(current_aggregates) + [current_loss],
+                    "target": list(targets.values()) + [0],
                 }
             )
-        )
+        ])
     weight_adjustment.data -= 1e-2 * weight_adjustment.grad
     weight_adjustment.grad.zero_()
 

@@ -76,7 +76,7 @@ OUTPUT_VARIABLES = [
 
 puf_data = puf[INPUT_VARIABLES + OUTPUT_VARIABLES]
 
-puf_data = puf_data[puf_data.MARS != 0].sample(10_000)
+puf_data = puf_data[puf_data.MARS != 0]
 
 st.subheader("Training data")
 
@@ -88,14 +88,20 @@ with st.expander("CPS data in PUF format for imputation"):
 
 from survey_enhance import Imputation
 
-IMPUTE = False
+@st.cache_resource
+def load_model():
+    IMPUTE = False
 
-if IMPUTE:
-    income = Imputation()
-    income.train(puf_data[INPUT_VARIABLES], puf_data[OUTPUT_VARIABLES], num_trees=100)
-    income.save("income.pkl")
-else:
-    income = Imputation.load("income.pkl")
+    if IMPUTE:
+        income = Imputation()
+        income.train(puf_data[INPUT_VARIABLES], puf_data[OUTPUT_VARIABLES], num_trees=100)
+        income.save("income.pkl")
+    else:
+        income = Imputation.load("income.pkl")
+    
+    return income
+
+income = load_model()
 
 # cps_imputation_predictions = income.predict(cps_data[INPUT_VARIABLES])
 
@@ -111,33 +117,29 @@ with col1:
     child_dependents = st.number_input("Child dependents", min_value=0, max_value=10, value=0)
     adult_dependents = st.number_input("Adult dependents", min_value=0, max_value=10, value=0)
 
-    submit = st.button("Impute")
+def get_predictions(input_data, num_predictions):
+    predictions = []
+    for step in range(num_predictions):
+        predictions.append(income.predict(input_data))
 
-if submit:
-    with col2:
-        mars = RENAMES["filing_status"][mars]
+    prediction_df = pd.concat(predictions)
+    return prediction_df
 
-        predicted_values = income.predict([[mars, child_dependents, adult_dependents]])
+with col2:
+    mars = RENAMES["filing_status"][mars]
 
-        progress_bar = st.progress(0)
-        predictions = []
-        NUM_SAMPLES = 300
-        for step in range(NUM_SAMPLES):
-            predictions.append(income.predict([[mars, child_dependents, adult_dependents]]))
-            progress_bar.progress(step / NUM_SAMPLES)
+    progress_bar = st.progress(0)
+    prediction_df = get_predictions([[mars, child_dependents, adult_dependents]], 100)
 
-        prediction_df = pd.concat(predictions)
+    import plotly.express as px
+    variable = st.selectbox("Variable", OUTPUT_VARIABLES)
 
-        import plotly.express as px
+    distribution = px.histogram(prediction_df[variable], nbins=300).update_layout(
+        title=f"{variable} distribution",
+        xaxis_title=variable,
+        yaxis_title="Count",
+        xaxis_tickformat="$",
+        showlegend=False,
+    )
 
-        variable = st.selectbox("Variable", OUTPUT_VARIABLES)
-
-        distribution = px.histogram(prediction_df[variable], nbins=300).update_layout(
-            title=f"{variable} distribution",
-            xaxis_title=variable,
-            yaxis_title="Count",
-            xaxis_tickformat="$",
-            showlegend=False,
-        )
-
-        st.plotly_chart(distribution)
+    st.plotly_chart(distribution)
