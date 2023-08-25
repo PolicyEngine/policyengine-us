@@ -6,7 +6,7 @@
     itemized_deductions_less_salt: 1_100
     misc_deduction: 500
   output:
-    ms_itemized_deductions: 2_600
+    ms_itemized_deductions: 1_600
 
 - name: MS itemized deduction miscellaneous income greater than miscellaneous deduction
   absolute_error_margin: 0.01
@@ -16,7 +16,7 @@
     itemized_deductions_less_salt: 5_000
     misc_deduction: 1_000
   output:
-    ms_itemized_deductions: 7_000
+    ms_itemized_deductions: 6_000
 
 - name: MS itemized deduction miscellaneous income smaller than miscellaneous deduction
   absolute_error_margin: 0.01
@@ -26,7 +26,7 @@
     itemized_deductions_less_salt: 7_000
     misc_deduction: 5000
   output:
-    ms_itemized_deductions: 7_000
+    ms_itemized_deductions: 12_000
 
 - name: MS itemized deduction miscellaneous income equals to miscellaneous deduction
   absolute_error_margin: 0.01
@@ -36,4 +36,4 @@
     itemized_deductions_less_salt: 7_500
     misc_deduction: 1_500
   output:
-    ms_itemized_deductions: 7_500 
+    ms_itemized_deductions: 9_000

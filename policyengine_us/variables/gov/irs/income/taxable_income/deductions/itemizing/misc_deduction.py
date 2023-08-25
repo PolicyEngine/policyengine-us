@@ -17,5 +17,5 @@ class misc_deduction(Variable):
         cap = max_(0, misc_floor)
 
         # individial miscellaneous income
-        misc_income = add(tax_unit, period["miscellaneous_income"])
+        misc_income = add(tax_unit, period, ["miscellaneous_income"])
         return min_(misc_income, cap)
