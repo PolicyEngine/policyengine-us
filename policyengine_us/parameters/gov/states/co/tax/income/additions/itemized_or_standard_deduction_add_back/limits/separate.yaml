@@ -1,8 +1,8 @@
-description: Whether Colorado allows itemized or standard deductions addback when filers claim standard deductions
+description: Colorado requires the itemized or standard deduction add back for separate filers with income above this limit.
 metadata:
   period: year
-  unit: bool
-  label: Standard deductions eligibility for Colorado itemized or standard deduction addback
+  unit: currency-USD
+  label: Colorado itemized or standard deduction add back separate filers limit
   reference:
   - title: C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)(p) - (p.5)
     href: https://casetext.com/statute/colorado-revised-statutes/title-39-taxation/specific-taxes/income-tax/article-22-income-tax/part-1-general/section-39-22-104-effective-upon-official-proclamation-by-governor-income-tax-imposed-on-individuals-estates-and-trusts-single-rate-report-legislative-declaration-definitions-repeal
@@ -11,6 +11,5 @@ metadata:
   - title: Individual Income Tax Guide - Part 3 Additions to Taxable Income - Federal itemized or standard deductions
     href: https://tax.colorado.gov/individual-income-tax-guide
 values:
-  2021-01-01: false
-  2022-01-01: false
-  2023-01-01: true
+  2022-01-01: 30_000
+  2023-01-01: 12_000
