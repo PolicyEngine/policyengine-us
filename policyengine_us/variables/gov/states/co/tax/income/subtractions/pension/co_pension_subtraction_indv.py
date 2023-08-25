@@ -5,7 +5,7 @@ class co_pension_subtraction_indv(Variable):
     value_type = float
     entity = Person
     label = "Colorado pension and annuity subtraction for eligible individuals"
-    defined_for = StateCode.CO
+    defined_for = "co_pension_subtraction_indv_eligible"
     unit = USD
     reference = (
         "https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2022.pdf#page=1",
@@ -23,15 +23,11 @@ class co_pension_subtraction_indv(Variable):
             "co_social_security_subtraction_indv", period
         )
         age = person("age", period)
-        head = person("is_tax_unit_head", period)
-        spouse = person("is_tax_unit_spouse", period)
-        head_or_spouse = head | spouse
-        age_head_or_spouse = age * head_or_spouse
         # The maximum subtarction amount is reduced by the social security subtraction amount
-        reduced_older_cap = head_or_spouse * max_(
+        reduced_older_cap = max_(
             p.cap.older - co_social_security_subtraction, 0
         )
-        reduced_younger_cap = head_or_spouse * max_(
+        reduced_younger_cap = max_(
             p.cap.younger - co_social_security_subtraction, 0
         )
 
@@ -43,8 +39,8 @@ class co_pension_subtraction_indv(Variable):
 
         return select(
             [
-                age_head_or_spouse >= p.age_threshold.older,
-                age_head_or_spouse >= p.age_threshold.younger,
+                age >= p.age_threshold.older,
+                age >= p.age_threshold.younger,
             ],
             [capped_older_amount, capped_middle_amount],
             default=capped_younger_amount,

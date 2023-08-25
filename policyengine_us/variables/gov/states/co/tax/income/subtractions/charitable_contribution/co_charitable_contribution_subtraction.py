@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_charitable_contribution_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado charitable deduction"
+    label = "Colorado charitable contribution subtraction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,9 +16,16 @@ class co_charitable_contribution_subtraction(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        itemized = tax_unit("tax_unit_itemizes", period)
+        # Only available to filers who do not itemize on their federal tax return.
+        # The tax form instructions also limit to filers who do not deduct charitable deductions,
+        # but this is a redundant criterion.
+        eligible = ~tax_unit("tax_unit_itemizes", period)
         p = parameters(
             period
         ).gov.states.co.tax.income.subtractions.charitable_contribution
-        federal_charitable_deduction = tax_unit("charitable_deduction", period)
-        return ~itemized * max_(federal_charitable_deduction - p.amount, 0)
+        cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
+        non_cash_donations = add(
+            tax_unit, period, ["charitable_non_cash_donations"]
+        )
+        charitable_contributions = cash_donations + non_cash_donations
+        return eligible * max_(charitable_contributions - p.adjustment, 0)

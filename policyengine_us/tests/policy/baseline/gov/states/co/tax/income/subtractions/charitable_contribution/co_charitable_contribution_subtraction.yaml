@@ -2,7 +2,8 @@
   period: 2021
   input:
     tax_unit_itemizes: false
-    charitable_deduction: 700
+    charitable_cash_donations: 600
+    charitable_non_cash_donations: 100
     state_code: CO
   output:
     co_charitable_contribution_subtraction: 200
@@ -11,8 +12,8 @@
 - name: Case 2, below threshold
   period: 2021
   input:
-    tax_unit_itemizes: false
-    charitable_deduction: 400
+    charitable_cash_donations: 200
+    charitable_non_cash_donations: 200
     state_code: CO
   output:
     co_charitable_contribution_subtraction: 0
@@ -22,7 +23,8 @@
   period: 2021
   input:
     tax_unit_itemizes: true
-    charitable_deduction: 700
+    charitable_cash_donations: 400
+    charitable_non_cash_donations: 300
     state_code: CO
   output:
     co_charitable_contribution_subtraction: 0
