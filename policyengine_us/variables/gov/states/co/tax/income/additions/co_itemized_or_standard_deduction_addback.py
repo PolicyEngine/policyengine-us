@@ -46,5 +46,5 @@ class co_itemized_or_standard_deduction_addback(Variable):
             period
         ).gov.states.co.tax.income.additions.itemized_or_standard_deduction_addback
         filing_status = tax_unit("filing_status", period)
-        limit = p.limits[filing_status]
+        limit = p.limit[filing_status]
         return max_(deduction - limit, 0)
