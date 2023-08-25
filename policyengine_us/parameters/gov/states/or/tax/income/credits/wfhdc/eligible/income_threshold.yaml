@@ -1,0 +1,43 @@
+description: Oregon WFHDC has this income threshold for households of each size.
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: year
+  type: single_amount
+  label: Oregon WFHDC income threshold
+  reference:
+    - title: 2021 Oregon Form OR-17 (Individual Income Tax Guide)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=121
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: -.inf
+  - threshold:
+      2021-01-01: 2
+    amount:
+      2021-01-01: 52_260
+  - threshold:
+      2021-01-01: 3
+    amount:
+      2021-01-01: 65_880
+  - threshold:
+      2021-01-01: 4
+    amount:
+      2021-01-01: 79_500
+  - threshold:
+      2021-01-01: 5
+    amount:
+      2021-01-01: 93_120
+  - threshold:
+      2021-01-01: 6
+    amount:
+      2021-01-01: 106_740
+  - threshold:
+      2021-01-01: 7
+    amount:
+      2021-01-01: 120_360
+  - threshold:
+      2021-01-01: 8
+    amount:
+      2021-01-01: 133_980
