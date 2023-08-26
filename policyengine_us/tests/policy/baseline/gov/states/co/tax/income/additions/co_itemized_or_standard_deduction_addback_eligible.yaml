@@ -1,11 +1,3 @@
-- name: In 2021, itemized or standard deduction addback ineligible.
-  period: 2021
-  input:
-    state_code: CO
-    adjusted_gross_income: 500_000
-  output:
-    co_itemized_or_standard_deduction_addback_eligible: false
-
 - name: In 2022, agi <= 400_000, itemized or standard deduction addback ineligible.
   period: 2022
   input:
