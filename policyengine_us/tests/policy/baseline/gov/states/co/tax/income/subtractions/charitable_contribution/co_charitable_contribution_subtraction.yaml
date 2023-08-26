@@ -1,7 +1,7 @@
 - name: Case 1, above threshold
   period: 2021
   input:
-    tax_unit_itemizes: false
+    co_charitable_contribution_subtraction_eligible: true
     charitable_cash_donations: 600
     charitable_non_cash_donations: 100
     state_code: CO
@@ -13,6 +13,7 @@
   period: 2021
   input:
     charitable_cash_donations: 200
+    co_charitable_contribution_subtraction_eligible: true
     charitable_non_cash_donations: 200
     state_code: CO
   output:
@@ -22,10 +23,10 @@
 - name: Case 3, above threshold
   period: 2021
   input:
-    tax_unit_itemizes: true
+    co_charitable_contribution_subtraction_eligible: false
     charitable_cash_donations: 400
     charitable_non_cash_donations: 300
     state_code: CO
   output:
     co_charitable_contribution_subtraction: 0
-    # not qualify if tax_unit_itemizes is true
+
