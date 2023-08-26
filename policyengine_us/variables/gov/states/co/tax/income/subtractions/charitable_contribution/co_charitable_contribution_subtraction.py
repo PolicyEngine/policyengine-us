@@ -27,5 +27,5 @@ class co_charitable_contribution_subtraction(Variable):
         non_cash_donations = add(
             tax_unit, period, ["charitable_non_cash_donations"]
         )
-        charitable_contributions = cash_donations + non_cash_donations
+        charitable_contributions =  add(tax_unit, period, ["charitable_cash_donations", "charitable_non_cash_donations"])
         return eligible * max_(charitable_contributions - p.adjustment, 0)
