@@ -1,1 +1,65 @@
-#TODO write the tests
+- name: Single household with $49,000  agi and  $100 property tax and age of 67
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 49_000
+    age: 67
+    filing_status: SINGLE
+    ct_property_tax: 100
+  output:
+    ct_property_tax_credit: 100
+    
+- name: Single household with $49,000  agi and  $100 property tax and age of 60
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 49_000
+    age: 60
+    filing_status: SINGLE
+    ct_property_tax: 100
+  output:
+    ct_property_tax_credit: 0
+
+- name: Separate household with $75,000  agi and  $250 property tax and age 71
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 75_000
+    age: 71
+    filing_status: SEPARATE
+    ct_property_tax: 250
+  output:
+    ct_property_tax_credit: 0
+
+- name: Separate household with $45,000  agi and  $250 property tax and age 71
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 45_000
+    age: 71
+    filing_status: SEPARATE
+    ct_property_tax: 250
+  output:
+    ct_property_tax_credit: 175
+
+- name: Head of household with $60,000  agi and  $400 property tax and age 71
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 60_000
+    age: 71
+    filing_status: HEAD_OF_HOUSEHOLD
+    ct_property_tax: 400
+  output:
+    ct_property_tax_credit: 255
+
+- name: Joint household with $130,500  agi and  $500 property tax and age 66
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 130_500
+    age: 66
+    filing_status: JOINT
+    ct_property_tax: 500
+  output:
+    ct_property_tax_credit: 0
