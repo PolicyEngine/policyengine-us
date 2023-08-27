@@ -17,15 +17,15 @@ class ct_property_tax_credit(Variable):
         age = person("age", period)
         status = filing_status.possible_values
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
-         #line 63(total property tax)
+        # line 63(total property tax)
         property_tax = tax_unit("ct_property_tax", period)
-        #line 64 (maximum property tax)
+        # line 64 (maximum property tax)
         max_amount = p.max_amount
-        age_threshold= p.threshold.age_minimum
+        age_threshold = p.threshold.age_minimum
         min_agi = p.threshold.agi[filing_status]
-        #line 65 (lesser of max_amount and property tax)
+        # line 65 (lesser of max_amount and property tax)
         max_credit = min_(property_tax, max_amount)
-        #line 66 
+        # line 66
         percent = select(
             [
                 filing_status == status.SINGLE,
@@ -42,17 +42,13 @@ class ct_property_tax_credit(Variable):
                 p.amount.head_of_household.calc(agi),
             ],
         )
-        
+
         if age < age_threshold:
             return 0
         else:
             if agi < min_agi:
                 return max_credit
-            #line 67 (multiply 65 and 66)
+            # line 67 (multiply 65 and 66)
             non_refudable_portion = max_credit * percent
-            #line 68
+            # line 68
             return max_credit - non_refudable_portion
-
-
-
-        
