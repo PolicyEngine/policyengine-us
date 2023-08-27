@@ -20,7 +20,9 @@ class co_itemized_or_standard_deduction_addback_required(Variable):
         p = parameters(
             period
         ).gov.states.co.tax.income.additions.federal_deductions
-        income_test = tax_unit("adjusted_gross_income", period) > p.agi_threshold
+        income_test = (
+            tax_unit("adjusted_gross_income", period) > p.agi_threshold
+        )
         if p.itemized_only:
             return income_test | tax_unit("tax_unit_itemizes", period)
         return income_test
