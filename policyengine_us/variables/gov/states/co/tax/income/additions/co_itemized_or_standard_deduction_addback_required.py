@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_itemized_or_standard_deduction_addback_eligible(Variable):
+class co_itemized_or_standard_deduction_addback_required(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Colorado itemized or standard deduction add back"
@@ -19,5 +19,8 @@ class co_itemized_or_standard_deduction_addback_eligible(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.co.tax.income.additions.itemized_or_standard_deduction_addback
-        return tax_unit("adjusted_gross_income", period) > p.agi_threshold
+        ).gov.states.co.tax.income.additions.federal_deductions
+        income_test = tax_unit("adjusted_gross_income", period) > p.agi_threshold
+        if p.itemized_only:
+            return income_test | tax_unit("tax_unit_itemizes", period)
+        return income_test

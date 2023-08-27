@@ -15,36 +15,21 @@ class co_itemized_or_standard_deduction_addback(Variable):
         # Individual Income Tax Guide - Part 3 Additions to Taxable Income - Federal itemized or standard deductions
         "https://tax.colorado.gov/individual-income-tax-guide",
     )
-    defined_for = "co_itemized_or_standard_deduction_addback_eligible"
+    defined_for = "co_itemized_or_standard_deduction_addback_required"
 
-    def formula_2022(tax_unit, period, parameters):
-        itemizes = tax_unit("tax_unit_itemizes", period)
+    def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.co.tax.income.additions.itemized_or_standard_deduction_addback
+        ).gov.states.co.tax.income.additions.federal_deductions
+        if p.itemized_only:
+            deductions = tax_unit(
+                "itemized_taxable_income_deductions", period
+            )
+        else:
+            deductions = tax_unit(
+                "taxable_income_deductions", period
+            )
         filing_status = tax_unit("filing_status", period)
-        limit = p.limit[filing_status]
-        federal_itemized_deduction = tax_unit(
-            "itemized_taxable_income_deductions", period
-        )
-        exceeded_itemized_deduction = max_(
-            federal_itemized_deduction - limit, 0
-        )
+        exemption = p.exemption[filing_status]
+        return max_(deductions - exemption, 0)
 
-        return exceeded_itemized_deduction * itemizes
-
-    def formula_2023(tax_unit, period, parameters):
-        itemizes = tax_unit("tax_unit_itemizes", period)
-        federal_itemized_deduction = tax_unit(
-            "itemized_taxable_income_deductions", period
-        )
-        federal_standard_deduction = tax_unit("standard_deduction", period)
-        deduction = where(
-            itemizes, federal_itemized_deduction, federal_standard_deduction
-        )
-        p = parameters(
-            period
-        ).gov.states.co.tax.income.additions.itemized_or_standard_deduction_addback
-        filing_status = tax_unit("filing_status", period)
-        limit = p.limit[filing_status]
-        return max_(deduction - limit, 0)
