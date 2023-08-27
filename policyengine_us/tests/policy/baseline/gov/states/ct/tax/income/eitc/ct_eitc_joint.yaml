@@ -2,34 +2,34 @@
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 2000
+    ct_eitc_unit: 2000
     is_tax_unit_head: True
   output:
-    ct_eitc: 610
+    ct_eitc_joint: 2000
 
 - name: CT EITC, some matched credit and not head of household filing
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 2000
+    ct_eitc_unit: 2000
     is_tax_unit_head: False
   output:
-    ct_eitc: 0
+    ct_eitc_joint: 0
 
 - name: CT EITC, no matched credit and head of household filing
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 0
+    ct_eitc_unit: 0
     is_tax_unit_head: True
   output:
-    ct_eitc: 0
+    ct_eitc_joint: 0
 
 - name: CT EITC, no matched credit and not head of household filing
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 0
+    ct_eitc_unit: 0
     is_tax_unit_head: False
   output:
-    ct_eitc: 0
+    ct_eitc_joint: 0

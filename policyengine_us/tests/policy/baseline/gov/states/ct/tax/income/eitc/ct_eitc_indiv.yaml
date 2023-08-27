@@ -2,18 +2,49 @@
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 0
+    ct_eitc_unit: 0
     adjusted_gross_income_person: 1000
     adjusted_gross_income: 2000
   output:
-    ct_eitc: 0
+    ct_eitc_indiv: 0
 
 - name: CT EITC, some matched credit and married but separate filing
   period: 2022
   input:
     state_code: CT
-    earned_income_tax_credit: 2_000
+    ct_eitc_unit: 2_000
     adjusted_gross_income_person: 10_000
     adjusted_gross_income: 20_000
   output:
-    ct_eitc: 305
+    ct_eitc_indiv: 1000
+
+- name: CT EITC, no individual credit with some joint credit
+  period: 2022
+  input:
+    state_code: CT
+    ct_eitc_unit: 2_000
+    adjusted_gross_income_person: 0
+    adjusted_gross_income: 20_000
+  output:
+    ct_eitc_indiv: 0
+
+- name: CT EITC, some individual credit and no joint credit
+  period: 2022
+  input:
+    state_code: CT
+    ct_eitc_unit: 2_000
+    adjusted_gross_income_person: 2000
+    adjusted_gross_income: 0
+  output:
+    ct_eitc_indiv: 0
+
+- name: CT EITC, no individual credit and no joint credit
+  period: 2022
+  input:
+    state_code: CT
+    ct_eitc_unit: 2_000
+    adjusted_gross_income_person: 0
+    adjusted_gross_income: 0
+  output:
+    ct_eitc_indiv: 0
+
