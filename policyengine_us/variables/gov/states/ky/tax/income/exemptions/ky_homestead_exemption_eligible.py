@@ -10,7 +10,7 @@ class ky_homestead_exemption_eligible(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.nh.tax.income.exemptions.homestead
+        p = parameters(period).gov.states.ky.tax.income.exemptions.homestead
 
         # Get the individual disabled and age status.
         disabled_head = tax_unit("disabled_head", period)
