@@ -11,17 +11,19 @@ class ar_post_secondary_education_tuition_deductions(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(
             period
-        ).gov.states.ar.tax.income.deductions.itemized.post_secondary_education_tuition_deductions
-        tuition_expense = tax_unit("qualified_tuition_expenses", period)
+        ).gov.states.ar.tax.income.deductions.itemized.amount
+        tuition_expense = person("qualified_tuition_expenses", period)
+        total_tuition_expense = tax_unit.sum(tuition_expense)
 
         return where(
             tax_unit("is_full_time_college_student", period),
             where(
                 tax_unit("four_year_college_institution", period),
-                min(p.ratio * tuition_expense, p.four_year_college),
-                min(p.ratio * tuition_expense, p.two_year_college),
+                min(p.ratio * total_tuition_expense, p.four_year_college),
+                min(p.ratio * total_tuition_expense, p.two_year_college),
             ),
-            min(p.ratio * tuition_expense, p.technical_institutes),
+            min(p.ratio * total_tuition_expense, p.technical_institutes),
         )
