@@ -13,35 +13,39 @@ class ar_itemized_deductions(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.itemized
         less_salt_deds = tax_unit("itemized_deductions_less_salt", period)
-        
-        agi = tax_unit("adjusted_gross_income",period)
-        spouse_agi = tax_unit("spouse_separate_adjusted_gross_income",period)
+
+        agi = tax_unit("adjusted_gross_income", period)
+        spouse_agi = tax_unit("spouse_separate_adjusted_gross_income", period)
 
         # Real estate tax + Personal property tax
-        real_estate_deds = tax_unit("real_estate_taxes",period)
+        real_estate_deds = tax_unit("real_estate_taxes", period)
 
         # Post-secondary Education Tuition Deduction
-        tuition_deds = tax_unit("ar_post_secondary_education_tuition_deductions",period)
-        
-        # Limitation on several items
-        # Miscellaneous Deductions 
-        misc_deds = where(
-            tax_unit("misc_deduction",period) <= p.misc.floor*(agi + spouse_agi),
-            tax_unit("misc_deduction",period),
-            0
+        tuition_deds = tax_unit(
+            "ar_post_secondary_education_tuition_deductions", period
         )
 
-        total_itemized_deduction = less_salt_deds + + real_estate_deds + tuition_deds + misc_deds
+        # Limitation on several items
+        # Miscellaneous Deductions
+        misc_deds = where(
+            tax_unit("misc_deduction", period)
+            <= p.misc.floor * (agi + spouse_agi),
+            tax_unit("misc_deduction", period),
+            0,
+        )
+
+        total_itemized_deduction = (
+            less_salt_deds + +real_estate_deds + tuition_deds + misc_deds
+        )
 
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
 
-        separated_itemized_deduction = total_itemized_deduction*(agi/(agi + spouse_agi))
+        separated_itemized_deduction = total_itemized_deduction * (
+            agi / (agi + spouse_agi)
+        )
 
         return where(
-            separate,
-            separated_itemized_deduction,
-            total_itemized_deduction
+            separate, separated_itemized_deduction, total_itemized_deduction
         )
-        
