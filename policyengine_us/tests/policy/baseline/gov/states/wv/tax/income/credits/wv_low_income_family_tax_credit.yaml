@@ -1,0 +1,51 @@
+- name: Single filers get 0 low-income family tax credit whose family size 4, the federal poverty guidelines based on 4 members $30,000, modified federal adjusted gross income $40,000.
+  period: 2021
+  input:
+    wv_agi: 40_000
+    tax_unit_size: 4
+    tax_unit_fpg: 30_000
+    wv_low_income_family_tax_credit_eligible: false
+    filing_status: SINGLE
+  output:
+    wv_low_income_family_tax_credit: 0
+
+- name: Head of household filers get  100% x the amount of tax owed low-income family tax credit whose family size 2, the federal poverty guidelines based on 2 members $19,720, modified federal adjusted gross income $20,000.
+  period: 2021
+  input:
+    wv_agi: 20_000
+    tax_unit_size: 2
+    tax_unit_fpg: 19_720
+    wv_low_income_family_tax_credit_eligible: true
+  output:
+    # 0 < wv_modified_agi-tax_unit_fpg = 20_000-19_720 = 280 < 300 90% x the amount of tax owed
+    wv_low_income_family_tax_credit: 100% 
+    # what is the amount of tax owed ?? income tax before credits
+
+- name: Husband and wife who file separate returns get 0  low-income family tax credit whose family size 3, the federal poverty guidelines based on 3 members $24,860, modified federal adjusted gross income $20,000.
+  period: 2021
+  input:
+    wv_agi: 20_000
+    tax_unit_size: 3
+    tax_unit_fpg: 24_860
+    wv_low_income_family_tax_credit_eligible: false
+    filing_status: SEPARATE
+  output:
+    # 50% x federal poverty guidelines amount for the family size of the taxpayer + $1,350 = 12430 + 1350 = 13780 < 20000
+    wv_low_income_family_tax_credit: 0
+
+- name: Husband and wife who file separate returns get 100% x the amount of tax owed low-income family tax credit whose family size 3, the federal poverty guidelines based on 3 members $24,860, modified federal adjusted gross income $12,000.
+  period: 2021
+  input:
+    wv_agi: 20_000
+    tax_unit_size: 3
+    tax_unit_fpg: 12_000
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SEPARATE
+  output:
+    # 50% x federal poverty guidelines amount for the family size of the taxpayer + $1,350 = 12430 + 1350 = 13780  13780-12000 = 1780 100% x the amount of tax owed
+    wv_low_income_family_tax_credit: 100%
+
+#modified federal adjusted gross income <=
+#(1)as an individual, as a head of household, as a husband and wife who file a joint return, or as an individual entitled to file as a surviving spouse: The federal poverty guidelines amount for the family size of the taxpayer+$2,700
+#(2)husband and wife and who file separate returns: 50%x federal poverty guidelines amount for the family size of the taxpayer + $1,350
+

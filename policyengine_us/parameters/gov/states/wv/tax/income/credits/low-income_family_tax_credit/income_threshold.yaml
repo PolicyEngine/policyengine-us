@@ -23,12 +23,10 @@ WIDOW:
 SEPARATE:
   2009-01-01: 1_350 
 
-# need to addd AR to .fpg file from 2017 
-
 # for rate = set parameter (breakdown) to 1 for all but the one that is .5 (separate)
 
 # p = parameters(period).gov.states.ar....
 # state_group = spm_unit.household("state_group_str", period)
-# poverty_guidlines_amount = parameters(period).gov.hhs.fpg.first_person[state_group]
+# poverty_guidlines_amount = parameters(period).gov.hhs.fpg.first_person[state_group] + (tax_unit_size-1) * parameters(period).gov.hhs.fpg.additional_person[state_group]
 # total_pga = p.fpg_rate * poverty_guidlines_amount
 # income_threshold = p.income_threshold + total_pga
