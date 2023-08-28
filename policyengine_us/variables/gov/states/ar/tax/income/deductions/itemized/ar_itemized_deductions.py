@@ -11,6 +11,7 @@ class ar_itemized_deductions(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(period).gov.irs.deductions.itemized
         less_salt_deds = tax_unit("itemized_deductions_less_salt", period)
 
@@ -18,7 +19,8 @@ class ar_itemized_deductions(Variable):
         spouse_agi = tax_unit("spouse_separate_adjusted_gross_income", period)
 
         # Real estate tax + Personal property tax
-        real_estate_deds = tax_unit("real_estate_taxes", period)
+        person_real_estate_deds = person("real_estate_taxes", period)
+        real_estate_deds = tax_unit.sum(person_real_estate_deds)
 
         # Post-secondary Education Tuition Deduction
         tuition_deds = tax_unit(
