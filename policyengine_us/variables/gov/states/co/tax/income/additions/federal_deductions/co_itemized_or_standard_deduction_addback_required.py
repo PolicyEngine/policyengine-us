@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_federal_deduction_addback_required(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Required to add back the Colorado itemized or standard deductions"
+    label = "Required to add back the Colorado federal deductions"
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-104 . Income tax imposed on individuals, estates, and trusts - section (3)(p)
