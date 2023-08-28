@@ -1,7 +1,7 @@
 - name: Arkansas personal credit for each dependent of taxpayer is $29
   period: 2022
   input:
-    dependent: 1
+    tax_unit_dependents: 1
     state_code: AR
   output:
     ar_dependent_credit: 29
@@ -9,7 +9,7 @@
 - name: Arkansas personal credit for no dependent taxpayer is $0
   period: 2022
   input:
-    dependent: 0
+    tax_unit_dependents: 0
     state_code: AR
   output:
     ar_dependent_credit: 0
@@ -17,7 +17,7 @@
 - name: Arkansas personal credit for 2 dependents of taxpayer is $29*2=$58
   period: 2022
   input:
-    dependent: 2
+    tax_unit_dependents: 2
     state_code: AR
   output:
     ar_dependent_credit: 58
