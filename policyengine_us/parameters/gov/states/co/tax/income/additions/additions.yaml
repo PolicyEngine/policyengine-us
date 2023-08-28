@@ -1,27 +1,27 @@
 description: Colorado adds these variables to the federal taxable income when computing the state taxable income.
 values:
   2021-01-01: 
-    - # state_and_local_sales_or_income_tax
+    # - state_and_local_sales_or_income_tax
     - co_qualified_business_income_deduction_addback 
-    - # Non-Colorado state and local bond interest
-    - # Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
-    - # Charitable gross conservation easement
-    - # Alien labor
-    - # Partnership/Fiduciary
-    - # Clubs that restrict membership
-    - # Distributions from a medical savings account not made for an eligible expense
+    # - Non-Colorado state and local bond interest
+    # - Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
+    # - Charitable gross conservation easement
+    # - Alien labor
+    # - Partnership/Fiduciary
+    # - Clubs that restrict membership
+    # - Distributions from a medical savings account not made for an eligible expense
   2022-01-01: 
-    - # state_and_local_sales_or_income_tax
-    - co_qualified_business_income_deduction_addback 
-    - co_itemized_or_standard_deduction_addback
-    - # Non-qualifying Distribution addback
-    - # Non-Colorado state and local bond interest
-    - # Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
-    - # Charitable gross conservation easement
-    - # Alien labor
-    - # Partnership/Fiduciary
-    - # Distributions from a medical savings account not made for an eligible expense
-    - # Food and beverage expense deduction
+      # - state_and_local_sales_or_income_tax
+      - co_qualified_business_income_deduction_addback 
+      - co_itemized_or_standard_deduction_addback
+      # - Non-qualifying Distribution addback
+      # - Non-Colorado state and local bond interest
+      # - Improper distributions from a qualified state tuition program for which tuition program contribution subtraction was previously claimed.
+      # - Charitable gross conservation easement
+      # - Alien labor
+      # - Partnership/Fiduciary
+      # - Distributions from a medical savings account not made for an eligible expense
+      # - Food and beverage expense deduction
 
 metadata:
   unit: list
