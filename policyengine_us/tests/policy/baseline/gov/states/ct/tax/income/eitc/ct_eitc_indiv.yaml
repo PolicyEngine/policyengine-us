@@ -3,8 +3,8 @@
   input:
     state_code: CT
     ct_eitc_unit: 0
-    adjusted_gross_income_person: 1000
-    adjusted_gross_income: 2000
+    adjusted_gross_income_person: 1_000
+    adjusted_gross_income: 2_000
   output:
     ct_eitc_indiv: 0
 
@@ -33,7 +33,7 @@
   input:
     state_code: CT
     ct_eitc_unit: 2_000
-    adjusted_gross_income_person: 2000
+    adjusted_gross_income_person: 2_000
     adjusted_gross_income: 0
   output:
     ct_eitc_indiv: 0
@@ -47,4 +47,3 @@
     adjusted_gross_income: 0
   output:
     ct_eitc_indiv: 0
-

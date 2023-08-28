@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ct_eitc_joint(Variable):
     value_type = float
     entity = Person
-    label = "Connecticut Earned Income Tax Credit For Head of Household Filing"
+    label = "Connecticut Earned Income Tax Credit when married couples file jointly"
     unit = USD
     definition_period = YEAR
     reference = (

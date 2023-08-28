@@ -2,16 +2,16 @@
   period: 2022
   input:
     state_code: CT
-    ct_eitc_unit: 2000
+    ct_eitc_unit: 2_000
     is_tax_unit_head: True
   output:
-    ct_eitc_joint: 2000
+    ct_eitc_joint: 2_000
 
 - name: CT EITC, some matched credit and not head of household filing
   period: 2022
   input:
     state_code: CT
-    ct_eitc_unit: 2000
+    ct_eitc_unit: 2_000
     is_tax_unit_head: False
   output:
     ct_eitc_joint: 0

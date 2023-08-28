@@ -5,7 +5,7 @@ class ct_eitc_indiv(Variable):
     value_type = float
     entity = Person
     label = (
-        "Connecticut Earned Income Tax Credit For Married But Separate Filing"
+        "Connecticut Earned Income Tax Credit when married couples file separately"
     )
     unit = USD
     definition_period = YEAR
@@ -17,9 +17,6 @@ class ct_eitc_indiv(Variable):
 
     def formula(person, period, parameters):
         amt = person.tax_unit("ct_eitc_unit", period)
-        filing_status = person.tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
-        separate_status = filing_status == filing_statuses.SEPARATE
         agi_separate = person("adjusted_gross_income_person", period)
         agi_joint = person.tax_unit("adjusted_gross_income", period)
         agi_frac = np.zeros_like(agi_joint)
