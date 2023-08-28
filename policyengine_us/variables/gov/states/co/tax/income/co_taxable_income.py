@@ -8,3 +8,9 @@ class co_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CO
+
+    def formula(tax_unit, period, parameters):
+        federal_taxable_income = tax_unit("co_federal_taxable_income", period)
+        additions = tax_unit("co_additions", period)
+        subtractions = tax_unit("co_subtractions", period)
+        return max_(federal_taxable_income + additions - subtractions, 0)

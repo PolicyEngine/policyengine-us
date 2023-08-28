@@ -4,12 +4,13 @@ from policyengine_us.model_api import *
 class state_income_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "state income tax"
+    label = "State income tax"
     unit = USD
     definition_period = YEAR
     adds = [
         # state income tax variables listed in alphabetical order:
         "ca_income_tax",
+        # "co_income_tax",  --- activating will cause circular logic errors
         # "dc_income_tax",  --- activating will cause circular logic errors
         # "ia_income_tax",  --- activating will cause circular logic errors
         "il_income_tax",
@@ -27,7 +28,7 @@ class state_income_tax(Variable):
         # "ne_income_tax",  --- activating will cause circular logic errors
         "nh_income_tax",
         "nj_income_tax",
-        # "nm_income_tax",
+        # "nm_income_tax",  --- activating will cause circular logic errors
         # "ny_income_tax",  --- activating will cause circular logic errors
         # "ok_income_tax",  --- activating will cause circular logic errors
         # "or_income_tax",  --- activating will cause circular logic errors
