@@ -1,0 +1,92 @@
+- name: Age not eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 38
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 70_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: RI
+  output:
+    ri_social_security_modification_both_eligibility: false
+
+- name: Income not eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 100_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: RI
+        
+  output:
+    ri_social_security_modification_both_eligibility: false
+
+- name: Only spouse age eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 70_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: RI     
+  output:
+    ri_social_security_modification_both_eligibility: false
+
+
+- name: Both eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 70_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: RI     
+  output:
+    ri_social_security_modification_both_eligibility: true

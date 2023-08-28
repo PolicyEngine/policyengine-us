@@ -1,0 +1,119 @@
+- name: Age not eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 38
+        social_security: 47_000
+        taxable_social_security: 48_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+        social_security: 47_000
+        taxable_social_security: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_social_security_modification_eligibility: false
+        ri_social_security_modification_both_eligibility: false
+  output:
+    ri_social_security_modification: 0
+
+- name: Income not eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 47_000
+        taxable_social_security: 48_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security: 47_000
+        taxable_social_security: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_social_security_modification_eligibility: false
+        ri_social_security_modification_both_eligibility: false
+  output:
+    ri_social_security_modification: 0
+
+- name: Spouse age eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 60
+        social_security: 47_000
+        taxable_social_security: 48_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security: 47_500
+        taxable_social_security: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_social_security_modification_eligibility: true
+        ri_social_security_modification_both_eligibility: false
+  output:
+    ri_social_security_modification: 48_510.638
+
+- name: Head age eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 47_000
+        taxable_social_security: 48_000
+      person2:
+        is_tax_unit_spouse: false
+        age: 60
+        social_security: 47_500
+        taxable_social_security: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_social_security_modification_eligibility: true
+        ri_social_security_modification_both_eligibility: false
+  output:
+    ri_social_security_modification: 48_000
+
+- name: Both age eligible for social security modification
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 70
+        social_security: 47_000
+        taxable_social_security: 48_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 70
+        social_security: 47_000
+        taxable_social_security: 48_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_social_security_modification_eligibility: true
+        ri_social_security_modification_both_eligibility: true
+  output:
+    ri_social_security_modification: 48_000

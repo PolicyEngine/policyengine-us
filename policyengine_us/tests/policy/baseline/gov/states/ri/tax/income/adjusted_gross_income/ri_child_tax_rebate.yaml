@@ -1,29 +1,77 @@
 - name: Joint filer with federal AGI above threshold, one child
   period: 2022
   input:
-    state_code: RI
-    adjusted_gross_income: 200_100
-    eitc_child_count: 1
-    filing_status: JOINT
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 19
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head,child1,child2]
+        adjusted_gross_income: 200_100
+        filing_status: JOINT
+    households:
+      households:
+        state_code: RI
   output:
     ri_child_tax_rebate: 0
 
 - name: Head of Household filer with eligible federal AGI , one child
   period: 2022
   input:
-    state_code: RI
-    adjusted_gross_income: 9_000
-    eitc_child_count: 1
-    filing_status: HEAD_OF_HOUSEHOLD
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 19
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head,child1,child2]
+        adjusted_gross_income: 9_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      households:
+        state_code: RI
   output:
     ri_child_tax_rebate: 250
 
 - name: Single filer with eligible federal AGI , four children
   period: 2022
   input:
-    state_code: RI
-    adjusted_gross_income: 9_000
-    eitc_child_count: 4
-    filing_status: SINGLE
+    people:
+      head:
+        age: 30
+        is_tax_unit_dependent: false
+      child1: 
+        age: 17
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+      child3:
+        age: 5
+        is_tax_unit_dependent: true
+      child4:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_units:
+        members: [head,child1,child2,child3,child4]
+        adjusted_gross_income: 9_000
+        filing_status: SINGLE
+    households:
+      households:
+        state_code: RI
   output:
     ri_child_tax_rebate: 750

@@ -9,12 +9,10 @@ class ri_social_security_modification(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
-    defined_for = StateCode.RI
+    defined_for = "ri_social_security_modification_eligibility"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        income = tax_unit("adjusted_gross_income", period)
-        filing_status = tax_unit("filing_status", period)
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         age = person("age", period)
@@ -28,11 +26,8 @@ class ri_social_security_modification(Variable):
         age_conditions = birth_year <= p.birth_date_limit
         head_eligible = age_conditions & is_head
         spouse_eligible = age_conditions & is_spouse
-        age_is_eligible = head_eligible | spouse_eligible
-        both_age_is_eligible = head_eligible & spouse_eligible
 
         # Status eligibility.
-        status_is_eligible = income < p.income_amount[filing_status]
 
         total_social_security = person("social_security", period)
 
@@ -57,17 +52,14 @@ class ri_social_security_modification(Variable):
         percentage_social_security[mask] = final_ss[mask] / head_total_ss[mask]
 
         head_taxable_ss = tax_unit.sum(taxable_social_security * is_head)
-        eligible_mod_ss = age_is_eligible & status_is_eligible
-        head_mod_social_security = where(
-            eligible_mod_ss,
-            head_taxable_ss * percentage_social_security,
-            0,
+
+        head_mod_social_security = head_taxable_ss * percentage_social_security
+        both_eligible = tax_unit(
+            "ri_social_security_modification_both_eligibility", period
         )
-        eligible_spouse_mod_ss = both_age_is_eligible & status_is_eligible
-        final_mod_ss = where(
-            eligible_spouse_mod_ss,
+
+        return where(
+            both_eligible,
             head_taxable_ss,
             head_mod_social_security,
         )
-
-        return tax_unit.max(final_mod_ss)
