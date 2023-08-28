@@ -12,10 +12,10 @@ class la_aged_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.la.tax.income.exemptions.aged
-        aged_head = (tax_unit("age_head", period) >= p.thresholds[0]).astype(
+        aged_head = (tax_unit("age_head", period) >= p.thresholds[-1]).astype(
             int
         )
         aged_spouse = (
-            tax_unit("age_spouse", period) >= p.thresholds[0]
+            tax_unit("age_spouse", period) >= p.thresholds[-1]
         ).astype(int)
-        return aged_head * p.amounts[0] + aged_spouse * p.amounts[0]
+        return aged_head * p.amounts[-1] + aged_spouse * p.amounts[-1]
