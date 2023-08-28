@@ -4,7 +4,7 @@
     state_code: CO
     adjusted_gross_income: 300_000
   output:
-    co_itemized_or_standard_deduction_addback_required: false
+    co_federal_deduction_addback_required: false
 
 - name: In 2022, agi > 400_000, federal deduction addback eligible.
   period: 2022
@@ -12,7 +12,7 @@
     state_code: CO
     adjusted_gross_income: 700_000
   output:
-    co_itemized_or_standard_deduction_addback_required: true
+    co_federal_deduction_addback_required: true
 
 - name: In 2023, agi <= 300_000, federal deduction addback ineligible.
   period: 2023
@@ -20,7 +20,7 @@
     state_code: CO
     adjusted_gross_income: 200_000
   output:
-    co_itemized_or_standard_deduction_addback_required: false
+    co_federal_deduction_addback_required: false
 
 - name: In 2023, agi > 300_000, federal deduction addback eligible.
   period: 2023
@@ -28,4 +28,4 @@
     state_code: CO
     adjusted_gross_income: 700_000
   output:
-    co_itemized_or_standard_deduction_addback_required: true
+    co_federal_deduction_addback_required: true

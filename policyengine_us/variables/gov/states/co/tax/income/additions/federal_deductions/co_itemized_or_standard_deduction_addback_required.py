@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_itemized_or_standard_deduction_addback_required(Variable):
+class co_federal_deduction_addback_required(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Required to add back the Colorado itemized or standard deductions"

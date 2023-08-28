@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class co_itemized_or_standard_deduction_addback(Variable):
+class co_federal_deduction_addback(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado itemized or standard deductions addback"
+    label = "Colorado federal deductions addback"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,7 +15,7 @@ class co_itemized_or_standard_deduction_addback(Variable):
         # Individual Income Tax Guide - Part 3 Additions to Taxable Income - Federal itemized or standard deductions
         "https://tax.colorado.gov/individual-income-tax-guide",
     )
-    defined_for = "co_itemized_or_standard_deduction_addback_required"
+    defined_for = "co_federal_deduction_addback_required"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
