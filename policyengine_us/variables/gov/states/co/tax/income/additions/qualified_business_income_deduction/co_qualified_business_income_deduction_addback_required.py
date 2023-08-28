@@ -27,5 +27,3 @@ class co_qualified_business_income_deduction_addback_required(Variable):
             period
         ).gov.states.co.tax.income.additions.qualified_business_income_deduction
         return agi > p.agi_threshold[filing_status]
-
-    #
