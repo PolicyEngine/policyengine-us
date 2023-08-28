@@ -8,7 +8,7 @@ class state_income_tax_before_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     adds = [
-        "al_income_tax_before_refundable_credits",
+        "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
