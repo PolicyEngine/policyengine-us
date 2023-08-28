@@ -8,9 +8,10 @@
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 1_000 # below 0.02*220_000 = 4_400
     filing_status: SEPARATE
+    state_code: AR
   output:
     # 4800*(100_000/220_000) = 2181.81
-    ar_itemized_deductions: 2_182
+    ar_itemized_deductions: 2_181.81
 
 - name: Itemized deduction for married filing separately (miscellaneous deductions above the floor)
   period: 2022
@@ -22,9 +23,10 @@
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 2_000    # above 0.02*80_000 = 1_600, so it will be zero
     filing_status: SEPARATE
+    state_code: AR
   output:
     # 3_300 * (30_000/80_000) = 1237.5
-    ar_itemized_deductions: 1_238 
+    ar_itemized_deductions: 1_237.5
 
 - name: Itemized deduction for married filing jointly (miscellaneous deductions below the floor)
   period: 2022
@@ -36,6 +38,7 @@
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 1_000 # below 0.02*100_000 = 2_000
     filing_status: JOINT
+    state_code: AR
   output:
     ar_itemized_deductions: 4_800
 
@@ -49,6 +52,7 @@
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 1_000 # below 0.02*100_000 = 2_000
     filing_status: SINGLE
+    state_code: AR
   output:
     ar_itemized_deductions: 4_800
 
@@ -62,6 +66,7 @@
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 1_000 # below 0.02*100_000 = 2_000
     filing_status: HEAD OF HOUSEHOLD
+    state_code: AR
   output:
     ar_itemized_deductions: 4_800
 
@@ -75,6 +80,7 @@
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 1_000 # below 0.02*100_000 = 2_000
     filing_status: WIDOW
+    state_code: AR
   output:
     ar_itemized_deductions: 4_800
 
