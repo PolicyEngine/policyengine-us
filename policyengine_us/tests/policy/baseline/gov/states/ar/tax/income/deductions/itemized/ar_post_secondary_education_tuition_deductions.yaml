@@ -1,7 +1,89 @@
-- name: Itemized deduction for married filing separately
+- name: Post-secondary education tuition deduction for two-year college institutes (above 2022 wat)
   period: 2022
   input:
-    qualified_tuition_expenses: 
-    type_of_institutes:
+    qualified_tuition_expenses: 4_800 # above 50% of weighted average tuition 2_272
+    is_full_time_college_student: true
+    four_year_college_institution: false
   output:
-    ar_post_secondary_education_tuition_deductions: 229
+    ar_post_secondary_education_tuition_deductions: 2_272
+
+- name: Post-secondary education tuition deduction for two-year college institutes (below 2022 wat)
+  period: 2022
+  input:
+    qualified_tuition_expenses: 4_200 # below 50% of weighted average tuition 2_272
+    is_full_time_college_student: true
+    four_year_college_institution: false
+  output:
+    ar_post_secondary_education_tuition_deductions: 2_100
+
+- name: Post-secondary education tuition deduction for four-year college institutes (above 2022 wat)
+  period: 2022
+  input:
+    qualified_tuition_expenses: 10_000 # above 50% of weighted average tuition 4_712
+    is_full_time_college_student: true
+    four_year_college_institution: true
+  output:
+    ar_post_secondary_education_tuition_deductions: 4_712
+
+- name: Post-secondary education tuition deduction for four-year college institutes (below 2022 wat)
+  period: 2022
+  input:
+    qualified_tuition_expenses: 8_000 # below 50% of weighted average tuition 4_712
+    is_full_time_college_student: true
+    four_year_college_institution: true
+  output:
+    ar_post_secondary_education_tuition_deductions: 4_000
+
+- name: Post-secondary education tuition deduction for technical institutes (above 2021 wat)
+  period: 2021
+  input:
+    qualified_tuition_expenses: 2_000 # above 50% of weighted average tuition 780
+    is_full_time_college_student: false
+    four_year_college_institution: false
+  output:
+    ar_post_secondary_education_tuition_deductions: 780
+
+- name: Post-secondary education tuition deduction for technical institutes (below 2021 wat)
+  period: 2021
+  input:
+    qualified_tuition_expenses: 1_500 # below 50% of weighted average tuition 780
+    is_full_time_college_student: false
+    four_year_college_institution: false
+  output:
+    ar_post_secondary_education_tuition_deductions: 750
+
+- name: Post-secondary education tuition deduction for two-year college institutes (above 2021 wat)
+  period: 2021
+  input:
+    qualified_tuition_expenses: 4_800 # above 50% of weighted average tuition 2_141
+    is_full_time_college_student: true
+    four_year_college_institution: false
+  output:
+    ar_post_secondary_education_tuition_deductions: 2_141
+
+- name: Post-secondary education tuition deduction for two-year college institutes (below 2021 wat)
+  period: 2021
+  input:
+    qualified_tuition_expenses: 4_200 # below 50% of weighted average tuition 2_141
+    is_full_time_college_student: true
+    four_year_college_institution: false
+  output:
+    ar_post_secondary_education_tuition_deductions: 2_100
+
+- name: Post-secondary education tuition deduction for four-year college institutes (above 2021 wat)
+  period: 2021
+  input:
+    qualified_tuition_expenses: 10_000 # above 50% of weighted average tuition 4_602
+    is_full_time_college_student: true
+    four_year_college_institution: true
+  output:
+    ar_post_secondary_education_tuition_deductions: 4_602
+
+- name: Post-secondary education tuition deduction for four-year college institutes (below 2021 wat)
+  period: 2021
+  input:
+    qualified_tuition_expenses: 8_000 # below 50% of weighted average tuition 4_602
+    is_full_time_college_student: true
+    four_year_college_institution: true
+  output:
+    ar_post_secondary_education_tuition_deductions: 4_000

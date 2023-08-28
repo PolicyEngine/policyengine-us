@@ -1,56 +1,80 @@
-- name: Itemized deduction for married filing separately (deductions all below thresholds)
+- name: Itemized deduction for married filing separately (miscellaneous deductions below the floor)
   period: 2022
   input:
     itemized_deductions_less_salt: 2_500
-    medical_expense_deduction: 1_000
     adjusted_gross_income: 100_000
     spouse_separate_adjusted_gross_income: 120_000
     real_estate_taxes: 500
     ar_post_secondary_education_tuition_deductions: 800
-    misc_deduction: 1_000
+    misc_deduction: 1_000 # below 0.02*220_000 = 4_400
     filing_status: SEPARATE
   output:
-    ar_itemized_deductions: 2_181 # 4800*(100_000/220_000) = 2181.81
+    # 4800*(100_000/220_000) = 2181.81
+    ar_itemized_deductions: 2_182
 
-- name: Itemized deduction for married filing separately (medical deduction above threshold)
+- name: Itemized deduction for married filing separately (miscellaneous deductions above the floor)
   period: 2022
   input:
-    itemized_deductions_less_salt: 11_000
-    medical_expense_deduction: 9_000  # above 0.1*80_000 = 8_000, so it will be excluded from the deductions
+    itemized_deductions_less_salt: 2_000
     adjusted_gross_income: 30_000
     spouse_separate_adjusted_gross_income: 50_000
     real_estate_taxes: 500
     ar_post_secondary_education_tuition_deductions: 800
-    misc_deduction: 1_000    # below 0.02*80_000 = 1_600
+    misc_deduction: 2_000    # above 0.02*80_000 = 1_600, so it will be zero
     filing_status: SEPARATE
   output:
-    ar_itemized_deductions: 1_613 # 4_300 * (30_000/80_000) = 1612.5
+    # 3_300 * (30_000/80_000) = 1237.5
+    ar_itemized_deductions: 1_238 
 
-- name: Itemized deduction for married filing separately (miscellaneous deduction above threshold)
+- name: Itemized deduction for married filing jointly (miscellaneous deductions below the floor)
   period: 2022
   input:
-    itemized_deductions_less_salt: 11_000
-    medical_expense_deduction: 9_000  # below 0.1*140_000 = 14_000
-    adjusted_gross_income: 80_000
-    spouse_separate_adjusted_gross_income: 60_000
-    real_estate_taxes: 500
-    ar_post_secondary_education_tuition_deductions: 800
-    misc_deduction: 3_000    # above 0.02*140_000 = 2_800, so it will be excluded from the deductions
-    filing_status: SEPARATE
-  output:
-    ar_itemized_deductions: 7_029 # 12_300 * (80_000/140_000) = 7028.57
-    
-##################################################################################
-- name: Itemized deduction for other filing status (deductions all below thresholds)
-  period: 2022
-  input:
-    itemized_deductions_less_salt: 2500
-    medical_expense_deduction: 1000
+    itemized_deductions_less_salt: 2_500
     adjusted_gross_income: 100_000
     spouse_separate_adjusted_gross_income: 120_000
     real_estate_taxes: 500
     ar_post_secondary_education_tuition_deductions: 800
-    misc_deduction: 1000
-    filing_status: SEPARATE
+    misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+    filing_status: JOINT
   output:
-    ar_itemized_deductions: 2181 #2181.81
+    ar_itemized_deductions: 4_800
+
+- name: Itemized deduction for single filing status (miscellaneous deductions below the floor)
+  period: 2022
+  input:
+    itemized_deductions_less_salt: 2_500
+    adjusted_gross_income: 100_000
+    spouse_separate_adjusted_gross_income: 0
+    real_estate_taxes: 500
+    ar_post_secondary_education_tuition_deductions: 800
+    misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+    filing_status: SINGLE
+  output:
+    ar_itemized_deductions: 4_800
+
+- name: Itemized deduction for head of household filing status (miscellaneous deductions below the floor)
+  period: 2022
+  input:
+    itemized_deductions_less_salt: 2_500
+    adjusted_gross_income: 100_000
+    spouse_separate_adjusted_gross_income: 120_000
+    real_estate_taxes: 500
+    ar_post_secondary_education_tuition_deductions: 800
+    misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+    filing_status: HEAD OF HOUSEHOLD
+  output:
+    ar_itemized_deductions: 4_800
+
+- name: Itemized deduction for widow filing status (miscellaneous deductions below the floor)
+  period: 2022
+  input:
+    itemized_deductions_less_salt: 2_500
+    adjusted_gross_income: 100_000
+    spouse_separate_adjusted_gross_income: 0
+    real_estate_taxes: 500
+    ar_post_secondary_education_tuition_deductions: 800
+    misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+    filing_status: WIDOW
+  output:
+    ar_itemized_deductions: 4_800
+
