@@ -12,6 +12,10 @@ description: West Virginia allows for this low-income family tax credit amount f
 
 brackets:
   - threshold:
+      2021-01-01: -.inf
+    rate:
+      2021-01-01: 1
+  - threshold:
       2021-01-01: 0
     rate:
       2021-01-01: 0.9
