@@ -5,7 +5,6 @@ class mi_heating_cost(Variable):
     value_type = float
     entity = TaxUnit
     label = "Total heating cost"
-    defined_for = StateCode.MI
     unit = USD
     definition_period = YEAR
     reference = (
