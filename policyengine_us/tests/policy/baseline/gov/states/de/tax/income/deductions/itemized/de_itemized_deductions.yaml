@@ -1,0 +1,27 @@
+- name: No itemized deductions
+  period: 2023
+  input:
+    itemized_deductions_less_salt: 0
+    self_employed_health_insurance_premiums: 0
+    state_code: DE
+  output:
+    de_itemized_deductions: 0
+
+- name: No self employed insurance
+  period: 2023
+  input:
+    itemized_deductions_less_salt: 1_000
+    self_employed_health_insurance_premiums: 0
+    state_code: DE
+  output:
+    de_itemized_deductions: 1_000
+
+- name: No self employed insurance
+  period: 2023
+  input:
+    itemized_deductions_less_salt: 1_000
+    self_employed_health_insurance_premiums: 500
+    state_code: DE
+  output:
+    de_itemized_deductions: 1_500
+  
