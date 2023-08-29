@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class de_eligible_retirement_income_for_elderly(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "Delaware eligible retirement income amount for elderly"
     unit = USD
     definition_period = YEAR

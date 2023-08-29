@@ -17,11 +17,13 @@ class de_pension_exclusion(Variable):
         p = parameters(
             period
         ).gov.states.de.tax.income.subtractions.pension_exclusion
+
         person = tax_unit.members
+
         # determine age eligibility
-        age_head = tax_unit("age_head", period)
-        under_60_head_eligible = age_head < p.min_age
-        above_60_head_eligible = age_head >= p.min_age
+        age = person("age", period)
+        under_60_head_eligible = age < p.min_age
+        above_60_head_eligible = age >= p.min_age
 
         # determine military eligiblity
         military_retirement_pay = person(
@@ -40,7 +42,7 @@ class de_pension_exclusion(Variable):
         pension_income = person("pension_income", period)
 
         # determine eligible retirement income for head above 60
-        elig_retirement_income = tax_unit(
+        elig_retirement_income = person(
             "de_eligible_retirement_income_for_elderly", period
         )
         total_income_above_60 = pension_income + elig_retirement_income
@@ -79,8 +81,17 @@ class de_pension_exclusion(Variable):
             0,
         )
 
-        return (
+        # Summing the individual exclusions for each case
+        total_exclusion_under_60_military = tax_unit.sum(
             pension_exclusion_under_60_military
-            + pension_exclusion_under_60_non_military
-            + pension_exclusion_above_60
+        )
+        total_exclusion_under_60_non_military = tax_unit.sum(
+            pension_exclusion_under_60_non_military
+        )
+        total_exclusion_above_60 = tax_unit.sum(pension_exclusion_above_60)
+
+        return (
+            total_exclusion_under_60_military
+            + total_exclusion_under_60_non_military
+            + total_exclusion_above_60
         )
