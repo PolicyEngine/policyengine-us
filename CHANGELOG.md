@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.444.0] - 2023-08-29 15:29:09
+
+### Added
+
+- Placeholder Colorado taxable income additions and subtractions variables.
+- Colorado taxable income formula.
+
+### Fixed
+
+- Colorado income tax rates for 2021 and 2022.
+
 ## [0.443.0] - 2023-08-26 18:43:41
 
 ### Added
@@ -5061,6 +5072,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.443.0...0.444.0
 [0.443.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.442.0...0.443.0
 [0.442.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.441.0...0.442.0
 [0.441.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.440.0...0.441.0
