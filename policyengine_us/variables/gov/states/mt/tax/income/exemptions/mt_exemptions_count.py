@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_exemptions_count(Variable):
     value_type = int
     entity = TaxUnit
-    label = "Montana exemptions count"
+    label = "Number of Montana exemptions"
     definition_period = YEAR
     defined_for = StateCode.MT
 
