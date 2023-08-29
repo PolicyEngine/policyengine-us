@@ -11,7 +11,6 @@ class mt_dependent_exemption_count(Variable):
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.mt.tax.income.exemptions
         person = tax_unit.members
         # To qualify for an exemption, the dependent must either:
         # a) have gross income below the exemption amount, or
@@ -23,5 +22,4 @@ class mt_dependent_exemption_count(Variable):
             qualifying_child, person("is_disabled", period).astype(int), 0
         )
         total_disabled = tax_unit.sum(disabled)
-        dependent_exemptions = total_eligible + total_disabled
-        return dependent_exemptions * p.amount
+        return total_eligible + total_disabled

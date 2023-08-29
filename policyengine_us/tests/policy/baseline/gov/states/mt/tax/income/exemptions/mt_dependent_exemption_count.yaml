@@ -3,14 +3,10 @@
   input:
     people:
       person3:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_581
         is_eitc_qualifying_child: false
         is_disabled: false
       person4:
-        is_tax_unit_dependent: true
-        irs_gross_income: 0
-        is_eitc_qualifying_child: false
+        is_eitc_qualifying_child: true
         is_disabled: false
     tax_units:
       tax_unit:
@@ -20,20 +16,16 @@
         members: [person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption: 2_580
+    mt_dependent_exemption_count: 1
 
 - name: Two dependents in 2022 - two eligible
   period: 2022
   input:
     people:
       person3:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_710
-        is_eitc_qualifying_child: false
+        is_eitc_qualifying_child: true
         is_disabled: false
       person4:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_711
         is_eitc_qualifying_child: true
         is_disabled: false
     tax_units:
@@ -44,20 +36,16 @@
         members: [person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption: 5_420
+    mt_dependent_exemption_count: 2
 
 - name: Two dependents in 2022 - two eligible, one disabled
   period: 2022
   input:
     people:
       person3:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_710
-        is_eitc_qualifying_child: false
+        is_eitc_qualifying_child: true
         is_disabled: false
       person4:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_711
         is_eitc_qualifying_child: true
         is_disabled: true
     tax_units:
@@ -68,20 +56,16 @@
         members: [person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption: 8_130
+    mt_dependent_exemption_count: 3
 
 - name: Two dependents in 2022 - no eligible
   period: 2022
   input:
     people:
       person3:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_711
         is_eitc_qualifying_child: false
         is_disabled: false
       person4:
-        is_tax_unit_dependent: true
-        irs_gross_income: 2_711
         is_eitc_qualifying_child: false
         is_disabled: true
     tax_units:
@@ -92,4 +76,4 @@
         members: [person3, person4]
         state_code: MT
   output:
-    mt_dependent_exemption: 0
+    mt_dependent_exemption_count: 0
