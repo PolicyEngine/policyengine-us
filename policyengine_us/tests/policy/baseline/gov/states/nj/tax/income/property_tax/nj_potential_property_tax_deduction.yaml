@@ -1,0 +1,54 @@
+- name: nj_potential_property_tax_deduction test 1
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        rent: 10_000
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_property_tax_deduction_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_potential_property_tax_deduction: 8_000 + 0.18 * 10_000
+
+- name: nj_potential_property_tax_deduction test 2
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        rent: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_property_tax_deduction_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_potential_property_tax_deduction: 15_000
+
+- name: nj_potential_property_tax_deduction test 3
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_property_tax_deduction_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_potential_property_tax_deduction: 0

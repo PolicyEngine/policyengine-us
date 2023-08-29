@@ -1,0 +1,12 @@
+description: New Jersey allows for a property tax credit or deduction on up to this amount of paid property taxes.
+metadata:
+  unit: currency-USD
+  period: year
+  label: New Jersey property tax deduction/credit threshold
+  reference:
+    - title: 2021 New Jersey NJ-1040 Resident Return
+      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=30
+    - title: Instructions for Form NJ-1040 (Worksheet H, Line 2)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=30
+values:
+  2021-01-01: 15_000
