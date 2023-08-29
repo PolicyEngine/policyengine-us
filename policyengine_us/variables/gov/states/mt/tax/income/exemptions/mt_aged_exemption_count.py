@@ -17,4 +17,4 @@ class mt_aged_exemption_count(Variable):
         aged_spouse = (
             tax_unit("age_spouse", period) >= p.age_threshold
         ).astype(int)
-        return (aged_head + aged_spouse)
+        return aged_head + aged_spouse
