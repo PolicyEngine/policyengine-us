@@ -7,7 +7,7 @@ class mt_aged_exemption(Variable):
     label = "Montana aged exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
+    reference = "https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-402/"
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
