@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class la_child_expense_tax_credit_refundable_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Louisiana non-refundable Child Expense Tax Credit"
     unit = USD
