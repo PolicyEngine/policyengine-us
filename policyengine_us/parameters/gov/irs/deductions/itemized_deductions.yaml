@@ -6,7 +6,6 @@ values:
     - salt_deduction
     - medical_expense_deduction
     - casualty_loss_deduction
-    - misc_deduction
 metadata:
-  unit: list
+  unit: variable
   label: itemized deductions
