@@ -15,12 +15,6 @@ class de_itemized_deductions(Variable):
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
-        # 2021 Form M1 instructions say:
-        #   You may claim the Delaware standard deduction or itemize
-        #   your deductions on your Delaware return. You will generally
-        #   pay less Delaware income tax if you take the larger of your
-        #   itemized or standard deduction.
-        # ... calculate pre-limitation itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions
