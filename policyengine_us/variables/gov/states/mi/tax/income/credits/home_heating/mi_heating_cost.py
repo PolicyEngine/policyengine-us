@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_heating_cost(Variable):
+class heating_cost(Variable):
     value_type = float
     entity = TaxUnit
     label = "Total heating cost"
