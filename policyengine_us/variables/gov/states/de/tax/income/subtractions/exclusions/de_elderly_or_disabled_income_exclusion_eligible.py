@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class de_elderly_or_disabled_income_exclusion_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Delaware elderly or disabled income exclusion eligibility"
+    label = "Eligible for the Delaware elderly or disabled income exclusion"
     definition_period = YEAR
     defined_for = StateCode.DE
 
@@ -21,18 +21,18 @@ class de_elderly_or_disabled_income_exclusion_eligible(Variable):
 
         # Get the individual filer's age and eligibility.
         age_head = tax_unit("age_head", period)
-        age_head_eligible = age_head >= p.eligibility.age_threshold
+        age_head_eligible = age_head > p.eligibility.age_threshold
 
         # Get spouse age and eligibility
         age_spouse = tax_unit("age_spouse", period)
-        age_spouse_eligible = age_spouse >= p.eligibility.age_threshold
+        age_spouse_eligible = age_spouse > p.eligibility.age_threshold
 
         # Get the tax unit income
         earned_income = tax_unit("tax_unit_earned_income", period)
 
         # Determine if filer income is eligible.
         income_threshold = p.eligibility.earned_income_limit[filing_status]
-        income_eligible = earned_income <= income_threshold
+        income_eligible = earned_income < income_threshold
 
         # Check the individual's eligibility.
         is_joint = tax_unit("tax_unit_is_joint", period)

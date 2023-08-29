@@ -8,7 +8,7 @@ class de_elderly_or_disabled_income_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-01_PaperInteractive.pdf#page=1"
-    defined_for = StateCode.DE
+    defined_for = "de_elderly_or_disabled_income_exclusion_eligible"
 
     def formula(tax_unit, period, parameters):
         # First get their filing status.
@@ -17,9 +17,4 @@ class de_elderly_or_disabled_income_exclusion(Variable):
             period
         ).gov.states.de.tax.income.subtractions.exclusions.elderly_or_disabled
 
-        # Use the income eligibility variable
-        eligible = tax_unit(
-            "de_elderly_or_disabled_income_exclusion_eligible", period
-        )
-
-        return eligible * p.amount[filing_status]
+        return p.amount[filing_status]
