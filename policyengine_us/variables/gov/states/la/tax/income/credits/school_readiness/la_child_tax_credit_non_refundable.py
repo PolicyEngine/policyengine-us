@@ -9,8 +9,10 @@ class la_child_tax_credit_non_refundable(Variable):
     definition_period = YEAR
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
     defined_for = StateCode.LA
-    
+
     def formula(tax_unit, period, parameters):
         child_expense_credit = tax_unit("la_child_expense_tax_credit", period)
-        eligible = ~tax_unit("la_child_expense_tax_credit_refundable_eligible", period)
+        eligible = ~tax_unit(
+            "la_child_expense_tax_credit_refundable_eligible", period
+        )
         return eligible * child_expense_credit
