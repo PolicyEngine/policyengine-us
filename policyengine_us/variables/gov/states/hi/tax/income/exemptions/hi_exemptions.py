@@ -38,7 +38,7 @@ class hi_exemptions(Variable):
                         * num_exemp,  # 8_144
                     ),
                 ),
-                p.disability_exemptions.individual*num_exemp,  # 7_000
+                p.disability_exemptions.individual * num_exemp,  # 7_000
             ),
-            p.regular_exemptions*num_exemp,  # 1_144
+            p.regular_exemptions * num_exemp,  # 1_144
         )
