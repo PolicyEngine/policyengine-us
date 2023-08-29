@@ -11,12 +11,40 @@
 - name: $1,000 maximum in 2023.
   period: 2023
   input:
-    state_code: OR
+    state_code: VT
     age: 5
-    is_tax_unit_dependent: true
-    or_income_after_subtractions: 0
+    vt_income_after_subtractions: 0
   output:
-    or_ctc: 1_000
+    vt_ctc: 1_000
+
+- name: Maximum of five qualifying children.
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 5
+      child2:
+        age: 5
+      child3:
+        age: 5
+      child4:
+        age: 5
+      child5:
+        age: 5
+      child6:
+        age: 0
+    households:
+      household:
+        members: [parent, child1, child2, child3, child4, child5, child6]
+        state_code: VT
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2, child3, child4, child5, child6]
+        vt_income_after_subtractions: 25_000
+  output:
+    vt_ctc: 5_000
 
 # - name: Only in Oregon.
 #   period: 2023
@@ -67,32 +95,3 @@
 #     or_income_after_subtractions: 27_500
 #   output:
 #     or_ctc: 500
-
-# - name: Maximum of five qualifying children.
-#   period: 2023
-#   input:
-#     people:
-#       parent:
-#         age: 30
-#       child1:
-#         age: 5
-#       child2:
-#         age: 5
-#       child3:
-#         age: 5
-#       child4:
-#         age: 5
-#       child5:
-#         age: 5
-#       child6:
-#         age: 5
-#     households:
-#       household:
-#         members: [parent, child1, child2, child3, child4, child5, child6]
-#         state_code: OR
-#     tax_units:
-#       tax_unit:
-#         members: [parent, child1, child2, child3, child4, child5, child6]
-#         or_income_after_subtractions: 25_000
-#   output:
-#     or_ctc: 5_000

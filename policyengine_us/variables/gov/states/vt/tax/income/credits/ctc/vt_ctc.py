@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class nm_ctc(Variable):
+class vt_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Vermont child income tax credit"
