@@ -7,6 +7,11 @@ class ga_taxable_income(Variable):
     label = "Georgia taxable income"
     unit = USD
     definition_period = YEAR
+    reference = (
+        "https://dor.georgia.gov/it-511-individual-income-tax-booklet"
+        # above reference provides access to booklets for all years
+        # definition of Georgia taxable income starts on page 12
+    )
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
