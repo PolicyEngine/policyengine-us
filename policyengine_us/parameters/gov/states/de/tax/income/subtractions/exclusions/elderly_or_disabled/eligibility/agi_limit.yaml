@@ -1,4 +1,4 @@
-description: Delaware limits its elderly and disabled exclusion to filers with adjusted gross income below this amount, depending on filing status.
+description: Delaware limits its elderly and disabled exclusion to filers with adjusted gross income below this amount, based on filing status.
 JOINT:
   2021-01-01: 20_000
 HEAD_OF_HOUSEHOLD:
@@ -18,6 +18,6 @@ metadata:
     - title: Delaware State Taxes, Part II, Chapter 11, Subchapter 2, § 1106. Modifications,(b), (2) 
       href: https://delcode.delaware.gov/title30/c011/sc02/index.html#1106
   unit: year
-  label: Delaware aged or disabled exclusion subtraction amount threshold
+  label: Delaware aged or disabled exclusion subtraction adjusted gross income limit
   breakdown:
   - filing_status
