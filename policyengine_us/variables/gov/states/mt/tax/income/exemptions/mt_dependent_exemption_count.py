@@ -12,9 +12,7 @@ class mt_dependent_exemption_count(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        # To qualify for an exemption, the dependent must either:
-        # a) have gross income below the exemption amount, or
-        # b) be a qualifying child under IRC 152(c), which defines for the EITC
+        # Qualifying child under IRC 152(c), which defines for the EITC
         qualifying_child = person("is_eitc_qualifying_child", period)
         total_eligible = tax_unit.sum(qualifying_child)
         # Disabled dependents get an additional exemption.
