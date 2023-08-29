@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class de_itemized_deductions_indiv(Variable):
+class de_itemized_deductions(Variable):
     value_type = float
-    entity = Person
-    label = "Delaware itemized deductions for individual couples"
+    entity = TaxUnit
+    label = "Delaware itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,6 +14,8 @@ class de_itemized_deductions_indiv(Variable):
     )
     defined_for = StateCode.DE
 
-    def formula(person, period, parameters):
-        unit_deds = person.tax_unit("de_itemized_deductions_unit", period)
-        return unit_deds * person("de_prorate_fraction", period)
+    def formula(tax_unit, period, parameters):
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        # Self employed filers can deduct 
+        self_employed_health_insurance = add(tax_unit, period, ["self_employed_health_insurance_premiums"])
+        return (itm_deds_less_salt + self_employed_health_insurance)
