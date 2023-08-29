@@ -11,7 +11,7 @@ class az_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.az.tax.income.property_tax_credits.amount
+        p = parameters(period).gov.states.az.tax.income.property_tax_credits
         income = tax_unit("adjusted_gross_income", period)
 
         age = person("age", period)
@@ -29,11 +29,11 @@ class az_property_tax_credit(Variable):
                 filing_status == status.WIDOW,
             ],
             [
-                p.single.calc(income),
-                p.household.calc(income),
-                p.joint.calc(income),
-                p.separate.calc(income),
-                p.widow.calc(income),
+                p.amount.single.calc(income),
+                p.amount.head_of_household.calc(income),
+                p.amount.joint.calc(income),
+                p.amount.separate.calc(income),
+                p.amount.widow.calc(income),
             ],
         )
 
