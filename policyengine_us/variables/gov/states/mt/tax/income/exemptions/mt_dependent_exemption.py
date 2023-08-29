@@ -7,7 +7,7 @@ class mt_dependent_exemption(Variable):
     label = "Montana dependent exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
+    reference = "https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-403/"
     defined_for = StateCode.MT
 
     def formula(tax_unit, period, parameters):
@@ -21,7 +21,11 @@ class mt_dependent_exemption(Variable):
         meets_income_test = gross_income <= p.amount
         qualifying_child = person("is_eitc_qualifying_child", period)
         eligible = dependent & (meets_income_test | qualifying_child)
+        total_eligible = tax_unit.sum(eligible)
         # Disabled dependents get an additional exemption.
-        exemptions_if_eligible = p.disabled + person("is_disabled", period)
-        dependent_exemptions = tax_unit.sum(eligible * exemptions_if_eligible)
+        disabled = where(
+            eligible, person("is_disabled", period).astype(int), 0
+        )
+        total_disabled = tax_unit.sum(disabled)
+        dependent_exemptions = total_eligible + total_disabled
         return dependent_exemptions * p.amount

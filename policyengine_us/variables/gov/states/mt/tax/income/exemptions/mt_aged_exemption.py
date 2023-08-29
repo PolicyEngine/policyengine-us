@@ -12,6 +12,10 @@ class mt_aged_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.exemptions
-        aged_head = (tax_unit("age_head", period) >= p.age).astype(int)
-        aged_spouse = (tax_unit("age_spouse", period) >= p.age).astype(int)
+        aged_head = (tax_unit("age_head", period) >= p.age_threshold).astype(
+            int
+        )
+        aged_spouse = (
+            tax_unit("age_spouse", period) >= p.age_threshold
+        ).astype(int)
         return p.amount * (aged_head + aged_spouse)

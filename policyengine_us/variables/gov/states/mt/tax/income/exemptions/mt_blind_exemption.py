@@ -14,5 +14,5 @@ class mt_blind_exemption(Variable):
         p = parameters(period).gov.states.mt.tax.income.exemptions
         # Count number of is_blind from tax_unit
         blind_head = tax_unit("blind_head", period).astype(int)
-        blind_spouse = tax_unit("blind_spouse", period)
+        blind_spouse = tax_unit("blind_spouse", period).astype(int)
         return (blind_head + blind_spouse) * p.amount

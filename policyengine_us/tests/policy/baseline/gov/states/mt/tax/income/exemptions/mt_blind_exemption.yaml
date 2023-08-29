@@ -1,0 +1,35 @@
+- name: Eligible head and spouse
+  period: 2023
+  input:
+    blind_head: true
+    blind_spouse: true
+    state_code: MT
+  output: 
+    mt_blind_exemption: 5_420
+
+- name: Eligible head
+  period: 2023
+  input:
+    blind_head: true
+    blind_spouse: false
+    state_code: MT
+  output: 
+    mt_blind_exemption: 2_710
+
+- name: Eligible spouse
+  period: 2023
+  input:
+    blind_head: false
+    blind_spouse: true
+    state_code: MT
+  output: 
+    mt_blind_exemption: 2_710
+
+- name: No eligible people
+  period: 2023
+  input:
+    blind_head: false
+    blind_spouse: false
+    state_code: MT
+  output: 
+    mt_blind_exemption: 0
