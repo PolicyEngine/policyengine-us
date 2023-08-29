@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.446.0] - 2023-08-29 19:55:49
+
+### Added
+
+- Colorado additions.
+- Colorado state income tax model.
+
 ## [0.445.0] - 2023-08-29 19:46:48
 
 ### Added
@@ -5078,6 +5085,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.446.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.445.0...0.446.0
 [0.445.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.444.0...0.445.0
 [0.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.443.0...0.444.0
 [0.443.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.442.0...0.443.0
