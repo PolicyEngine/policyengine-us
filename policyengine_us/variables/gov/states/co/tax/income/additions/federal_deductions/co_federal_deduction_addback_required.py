@@ -24,5 +24,5 @@ class co_federal_deduction_addback_required(Variable):
             tax_unit("adjusted_gross_income", period) > p.agi_threshold
         )
         if p.itemized_only:
-            return income_test | tax_unit("tax_unit_itemizes", period)
+            return income_test & tax_unit("tax_unit_itemizes", period)
         return income_test

@@ -3,6 +3,7 @@
   input:
     state_code: CO
     adjusted_gross_income: 300_000
+    tax_unit_itemizes: true
   output:
     co_federal_deduction_addback_required: false
 
@@ -11,6 +12,7 @@
   input:
     state_code: CO
     adjusted_gross_income: 700_000
+    tax_unit_itemizes: true
   output:
     co_federal_deduction_addback_required: true
 
@@ -19,6 +21,7 @@
   input:
     state_code: CO
     adjusted_gross_income: 200_000
+    tax_unit_itemizes: true
   output:
     co_federal_deduction_addback_required: false
 
@@ -27,5 +30,15 @@
   input:
     state_code: CO
     adjusted_gross_income: 700_000
+    tax_unit_itemizes: true
   output:
     co_federal_deduction_addback_required: true
+
+- name: Not itemizing in 2022
+  period: 2022
+  input:
+    state_code: CO
+    adjusted_gross_income: 700_000
+    tax_unit_itemizes: false
+  output:
+    co_federal_deduction_addback_required: false

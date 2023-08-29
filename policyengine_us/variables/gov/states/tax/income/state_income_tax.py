@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class state_income_tax(Variable):
     value_type = float
     entity = TaxUnit
-    label = "State income tax"
+    label = "state income tax"
     unit = USD
     definition_period = YEAR
     adds = [
