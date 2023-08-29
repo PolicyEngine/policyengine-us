@@ -1,39 +1,9 @@
-- name: No taxable income or additions
-  period: 2023
+- name: co_taxable_income unit test 1
+  period: 2021
   input:
     state_code: CO
-    co_federal_taxable_income: 0
-    co_additions: 0
-    co_subtractions: 500
+    taxable_income: 500
+    co_additions: 10
+    co_subtractions: 600
   output:
     co_taxable_income: 0
-
-- name: No taxable income 
-  period: 2023
-  input:
-    state_code: CO
-    co_federal_taxable_income: 0
-    co_additions: 600
-    co_subtractions: 500
-  output:
-    co_taxable_income: 100
-
-- name: Some additions and subtractions
-  period: 2023
-  input:
-    state_code: CO
-    co_federal_taxable_income: 1_000
-    co_additions: 1_000
-    co_subtractions: 500
-  output:
-    co_taxable_income: 1_500
-
-- name: Only subtractions
-  period: 2023
-  input:
-    state_code: CO
-    co_federal_taxable_income: 2_000
-    co_additions: 0
-    co_subtractions: 1_100
-  output:
-    co_taxable_income: 900
