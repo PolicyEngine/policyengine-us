@@ -8,7 +8,7 @@
     de_pre_exclusions_agi: 1_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000    
+    de_elderly_or_disabled_income_exclusion_eligible: true    
 
 - name: If filing SINGLE, individual age is 55, disabled, earned income is less than $2500, pre exclusion agi result is $1000, income exclusion should be $2000.
   period: 2023
@@ -20,7 +20,7 @@
     de_pre_exclusions_agi: 1_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000
+    de_elderly_or_disabled_income_exclusion_eligible: true
 
 - name: If filing SINGLE, individual age is 65, disabled, earned income is $5500, pre exclusion agi result is $1000, income exclusion should be $0.
   period: 2023
@@ -32,7 +32,7 @@
     de_pre_exclusions_agi: 1_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_elderly_or_disabled_income_exclusion_eligible: false
 
 - name: If filing SINGLE, individual age is 65, disabled, earned income is $1500, pre exclusion agi result is $50000, income exclusion should be $0.
   period: 2023
@@ -44,7 +44,7 @@
     de_pre_exclusions_agi: 50_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_elderly_or_disabled_income_exclusion_eligible: false
 
 - name: If filing SEPARATE, both head and spouse age are 60, both not disabled, total earned income are less than $2500, pre exclusion agi result is $1000, income exclusion should be $2000.
   period: 2023
@@ -58,7 +58,7 @@
     de_pre_exclusions_agi: 1_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 2_000
+    de_elderly_or_disabled_income_exclusion_eligible: true
 
 - name: If filing JOINT, both head and spouse age are 60, both not disabled, total earned income is less than $2500, pre exclusion agi result is $20,000, income exclusion should be $4000.
   period: 2023
@@ -72,7 +72,7 @@
     de_pre_exclusions_agi: 20_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 4_000
+    de_elderly_or_disabled_income_exclusion_eligible: true
 
 - name: If filing JOINT, head age is 60, spouse age is 55, both not disabled, total earned income is less than $2500, pre exclusion agi result is $20,000, income exclusion should be $0.
   period: 2023
@@ -86,7 +86,7 @@
     de_pre_exclusions_agi: 1_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0
+    de_elderly_or_disabled_income_exclusion_eligible: false
 
 - name: If filing JOINT, both head and spouse age are 65, both not disabled, total earned income is $6000, pre exclusion agi result is $20,000, income exclusion should be $0.
   period: 2023
@@ -100,7 +100,7 @@
     de_pre_exclusions_agi: 20_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0    
+    de_elderly_or_disabled_income_exclusion_eligible: false   
 
 
 - name: If filing JOINT, both head and spouse age are 65, both not disabled, total earned income is $2000, pre exclusion agi result is $50,000, income exclusion should be $0.
@@ -115,4 +115,4 @@
     de_pre_exclusions_agi: 50_000
     state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion: 0    
+    de_elderly_or_disabled_income_exclusion_eligible: false  
