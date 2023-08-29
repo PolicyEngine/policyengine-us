@@ -1,10 +1,10 @@
 - name: LA child care expense tax credit refundable eligibility test 1
   period: 2021
   input:
-    adjusted_gross_income: 23_000
+    adjusted_gross_income: 0
     state_code: LA
   output:
-    la_child_expense_tax_credit_refundable_eligible: True
+    la_child_expense_tax_credit_refundable_eligible: true
 
 - name: LA child care expense tax credit refundable eligibility test 2
   period: 2021
@@ -12,12 +12,12 @@
     adjusted_gross_income: 25_000
     state_code: LA
   output:
-    la_child_expense_tax_credit_refundable_eligible: True
+    la_child_expense_tax_credit_refundable_eligible: true
 
 - name: LA child care expense tax credit refundable eligibility test 3
   period: 2021
   input:
-    adjusted_gross_income: 26_000
+    adjusted_gross_income: 25_001
     state_code: LA
   output:
-    la_child_expense_tax_credit_refundable_eligible: False
+    la_child_expense_tax_credit_refundable_eligible: false
