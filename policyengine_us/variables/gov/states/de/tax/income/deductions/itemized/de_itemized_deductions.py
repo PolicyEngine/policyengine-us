@@ -16,6 +16,8 @@ class de_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-        # Self employed filers can deduct 
-        self_employed_health_insurance = add(tax_unit, period, ["self_employed_health_insurance_premiums"])
-        return (itm_deds_less_salt + self_employed_health_insurance)
+        # Self employed filers can deduct
+        self_employed_health_insurance = add(
+            tax_unit, period, ["self_employed_health_insurance_premiums"]
+        )
+        return itm_deds_less_salt + self_employed_health_insurance
