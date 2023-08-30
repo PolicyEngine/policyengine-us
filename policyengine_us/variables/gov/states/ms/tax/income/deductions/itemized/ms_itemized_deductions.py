@@ -15,10 +15,7 @@ class ms_itemized_deductions(Variable):
     )
     defined_for = StateCode.MS
 
-    def formula(tax_unit, period, parameters):
-        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
-        misc_deductions = tax_unit("misc_deduction", period)
-        return itm_deds_less_salt + misc_deductions
+    adds = ["itemized_deductions_less_salt", "misc_deduction"]
 
     # Mississippi allows itemized deductions for gaming establishments and gender transition procedures
     # which are currently not modeled
