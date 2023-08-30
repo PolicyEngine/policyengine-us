@@ -1,25 +1,26 @@
 description: Michigan homestead property tax credit provides the following percentage of the property taxes not refundable for disabled.
 brackets:
   - threshold:
-      2021-01-01: 3_000
+      2018-01-01: 3_000
     amount:
-      2021-01-01: 0
+      2018-01-01: 0
   - threshold:
-      2021-01-01: 3_001
+      2018-01-01: 3_001
     amount:
-      2021-01-01: 0.01
+      2018-01-01: 0.01
   - threshold:
-      2021-01-01: 4_001
+      2018-01-01: 4_001
     amount:
-      2021-01-01: 0.02
+      2018-01-01: 0.02
   - threshold:
-      2021-01-01: 5_001
+      2018-01-01: 5_001
     amount:
-      2021-01-01: 0.03
+      2018-01-01: 0.03
   - threshold:
-      2021-01-01: 6_001
+      2018-01-01: 6_001
     amount:
-      2021-01-01: 0.032
+      2013-01-01: 0.035
+      2018-01-01: 0.032
       
 metadata:
   type: single_amount
@@ -29,8 +30,8 @@ metadata:
 
   label: Homestead Property Tax Credit percentage of property taxes not refundable Phase Out for disabled
   reference:
-    - title: Michigan Income Tax Act 206.520 - (7) # didn't specify values
-      href: http://legislature.mi.gov/doc.aspx?mcl-206-520
+    - title: Michigan Income Tax Act 206.522 - (1)(c)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-522
     - title: 2021 Michigan Taxpayer Assistance Manual
       href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=58
     - title: 2022 MI-1040 Instructions

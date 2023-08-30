@@ -1,25 +1,27 @@
 description: Michigan homestead property tax credit provides the following percentage of the property taxes not refundable for seniors.
 brackets:
   - threshold:
-      2021-01-01: 3_000
-    amount:
-      2021-01-01: 0
   - threshold:
-      2021-01-01: 3_001
+      2018-01-01: 3_000
     amount:
-      2021-01-01: 0.01
+      2018-01-01: 0
   - threshold:
-      2021-01-01: 4_001
+      2018-01-01: 3_001
     amount:
-      2021-01-01: 0.02
+      2018-01-01: 0.01
   - threshold:
-      2021-01-01: 5_001
+      2018-01-01: 4_001
     amount:
-      2021-01-01: 0.03
+      2018-01-01: 0.02
   - threshold:
-      2021-01-01: 6_001
+      2018-01-01: 5_001
     amount:
-      2021-01-01: 0.032
+      2018-01-01: 0.03
+  - threshold:
+      2018-01-01: 6_001
+    amount:
+      2013-01-01: 0.035
+      2018-01-01: 0.032
       
 metadata:
   type: single_amount
@@ -31,7 +33,7 @@ metadata:
   reference:
     - title: 2021 Michigan Taxpayer Assistance Manual
       href: https://www.michigan.gov/-/media/Project/Websites/taxes/2022RM/UNCAT/2019_Taxpayer_Assistance_Manual.pdf#page=58
-    - title: Michigan Income Tax Act 206.520 - (9)
-      href: http://legislature.mi.gov/doc.aspx?mcl-206-520
+    - title: Michigan Income Tax Act 206.522 - (1)(c)
+      href: http://legislature.mi.gov/doc.aspx?mcl-206-522
     - title: 2022 MI-1040 Instructions
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=33

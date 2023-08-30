@@ -23,6 +23,11 @@ class mi_homestead_property_tax_credit(Variable):
             p.senior.phase_out_rate.calc(total_household_resources),
             p.phase_out_rate.calc(total_household_resources),
         )
+        credit_rate = where(
+            age_older >= p.senior.min_age,
+            p.senior.credit_rate,
+            p.credit_rate,
+        )
 
         refundable_amount = tax_unit(
             "mi_homestead_property_tax_credit_refundable", period
@@ -32,7 +37,11 @@ class mi_homestead_property_tax_credit(Variable):
             "mi_homestead_property_tax_credit_eligible", period
         )
 
-        return min_(
-            eligibility * refundable_amount * phase_out_rate,
-            p.max_amount,
+        return (
+            eligibility
+            * phase_out_rate
+            * min_(
+                refundable_amount * credit_rate,
+                p.max_amount,
+            )
         )
