@@ -7,7 +7,7 @@ class id_deductions(Variable):
     label = "Idaho deductions"
     unit = USD
     definition_period = YEAR
-    reference = "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022/(j)"
+    reference = "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022/" # (j)
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
