@@ -1,6 +1,5 @@
 - name: No income
   period: 2022
-  absolute_error_margin: 0
   input:
     state_code: ME
     me_property_tax_fairness_credit_income: 0
@@ -11,7 +10,6 @@
 
 - name: No income
   period: 2022
-  absolute_error_margin: 0
   input:
     state_code: ME
     me_property_tax_fairness_credit_income: 69_999
