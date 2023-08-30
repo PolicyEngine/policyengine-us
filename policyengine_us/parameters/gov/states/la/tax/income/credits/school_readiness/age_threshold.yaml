@@ -1,0 +1,16 @@
+description: Louisiana provides the child care expense tax credit to filers with children below this age threshold.
+values:
+  2021-01-01: 6
+
+metadata:
+ period: year
+ unit: year
+ label: Louisiana cdcc child age threshold
+ reference:
+ # Law does not specify the child age
+ - title: R.S. 47:6104 
+   href: https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit
+ - title: 2022 Form IT-540-WEB, page 15
+   href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=15
+ - title: 2021 Form IT-540-WEB, page 15
+   href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf#page=15

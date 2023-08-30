@@ -14,7 +14,7 @@ class la_child_expense_tax_credit(Variable):
         person = tax_unit.members
         p = parameters(
             period
-        ).gov.states.la.tax.credits.school_readiness.rate
+        ).gov.states.la.tax.income.credits.school_readiness
         # determine school readiness credit amount
         child_care_credit = tax_unit("la_cdcc", period)
         eligible_child = person(
@@ -23,9 +23,7 @@ class la_child_expense_tax_credit(Variable):
         quality_rating = person(
             "quality_rating_of_child_care_facility", period
         )
-        child_credit_percent = child_care_credit* p.rate.calc(
-            quality_rating
-        )
+        child_credit_percent = child_care_credit * p.rate.calc(quality_rating)
         # la_cdcc times the percentage
         amount = eligible_child * child_credit_percent
 

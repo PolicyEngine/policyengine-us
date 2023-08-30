@@ -3,21 +3,21 @@
   input:
     people:
       person1:
-        age: 5
-        is_tax_unit_dependent: True
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 5
       person2:
-        age: 3
-        is_tax_unit_dependent: True
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 5
       person3:
-        age: 4
-        is_tax_unit_dependent: True
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 5
     tax_units:
       tax_unit:
         la_cdcc: 50
         members: [person1, person2, person3]
+    households:
+      household:
+        state_code: LA
   output:
     #50*2+50*2+50*2=300
     la_child_expense_tax_credit: 300
@@ -27,17 +27,20 @@
   input:
     people:
       person1:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 5
       person2:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 5
       person3:
-        la_child_care_expense_credit_eligible_child: 0
+        la_child_care_expense_credit_eligible_child: false
     tax_units:
       tax_unit:
         la_cdcc: 50
         members: [person1, person2, person3]
+    households:
+      household: 
+        state_code: LA
   output:
     #50*2+50*2=200
     la_child_expense_tax_credit: 200
@@ -47,18 +50,21 @@
   input:
     people:
       person1:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 5
       person2:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 4
       person3:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 3
     tax_units:
       tax_unit:
         la_cdcc: 50
         members: [person1, person2, person3]
+    households:
+      household: 
+        state_code: LA
   output:
     #50*2+50*1.5+50*1=225
     la_child_expense_tax_credit: 225 
@@ -68,18 +74,21 @@
   input:
     people:
       person1:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 3
       person2:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 2
       person3:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 1
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
         la_cdcc: 50
+    households:
+      household: 
+        state_code: LA
   output:
     #50*1+50*0.5+50*0=75
     la_child_expense_tax_credit: 75 
@@ -89,16 +98,41 @@
   input:
     people:
       person1:
-        la_child_care_expense_credit_eligible_child: 1
+        la_child_care_expense_credit_eligible_child: true
         quality_rating_of_child_care_facility: 2
       person2:
-        la_child_care_expense_credit_eligible_child: 0
+        la_child_care_expense_credit_eligible_child: false
       person3:
-        la_child_care_expense_credit_eligible_child: 0
+        la_child_care_expense_credit_eligible_child: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
         la_cdcc: 50
+    households:
+      household: 
+        state_code: LA
   output:
     #50*1=50
-    la_child_expense_tax_credit: 50
+    la_child_expense_tax_credit: 25
+
+- name: 1 eligible children, 2 stars quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_child_care_expense_credit_eligible_child: false
+        quality_rating_of_child_care_facility: 2
+      person2:
+        la_child_care_expense_credit_eligible_child: false
+      person3:
+        la_child_care_expense_credit_eligible_child: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        la_cdcc: 50
+    households:
+      household: 
+        state_code: LA
+  output:
+    #50*1=50
+    la_child_expense_tax_credit: 0
