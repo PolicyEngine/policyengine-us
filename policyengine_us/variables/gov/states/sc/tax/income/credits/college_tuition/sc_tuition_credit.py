@@ -3,22 +3,20 @@ from policyengine_us.model_api import *
 
 class sc_tuition_credit(Variable):
     value_type = float
-    entity = TaxUnit
+    entity = Person
     label = "South Carolina Tuition Credit"
     defined_for = StateCode.SC
     unit = USD
     definition_period = YEAR
     reference: "https://dor.sc.gov/forms-site/Forms/I319_2021.pdf#page=2"
 
-    def formula(tax_unit, period, parameters):
+    def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.credits.college_tuition
 
         # line 1
-        total_hours = tax_unit("total_college_hours", period)
+        total_hours = person("total_college_hours", period)
         # line 2
-        qualified_tuition_expenses = add(
-            tax_unit, period, ["qualified_tuition_expenses"]
-        )
+        qualified_tuition_expenses = person("qualified_tuition_expenses", period)
         # line 3
         annual_hour_requirement = p.annual_hour_requirement
         tuition_limit = (
