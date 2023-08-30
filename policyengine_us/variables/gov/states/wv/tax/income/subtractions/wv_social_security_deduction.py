@@ -11,13 +11,8 @@ class wv_social_security_deduction(Variable):
     defined_for = StateCode.WV
 
     def formula(tax_unit, period, parameters):
-        filing_status = tax_unit("filing_status", period)
-        adjusted_gross_income = tax_unit("wv_agi", period)
         social_security_benefit = tax_unit(
             "wv_social_security_benefit", period
         )
-        p = parameters(
-            period
-        ).gov.states.wv.tax.income.subtractions.social_security_benefit
-        eligible = adjusted_gross_income <= p.income_limit[filing_status]
+        eligible = tax_unit("wv_social_security_deduction_eligible", period)
         return eligible * social_security_benefit
