@@ -1,0 +1,28 @@
+description: Indiana provides the following amounts under the unified elderly tax credit for filing units containing just one aged head or spouse.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  label: Indiana unified elderly tax credit amount for one aged 
+  reference:
+    - title: 2021 Indiana General Assembly Laws, Title 6, Article 3, Chapter 3
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3-3-9
+    - title: 2022 Indiana General Assembly Laws, Title 6, Article 3, Chapter 3
+      href: https://iga.in.gov/laws/2022/ic/titles/6#6-3-3-9
+brackets:
+  - threshold:
+      2021-01-01: -.inf
+    amount:
+      2021-01-01: 100
+  - threshold:
+      2021-01-01: 1_000
+    amount:
+      2021-01-01: 50
+  - threshold:
+      2021-01-01: 3_000
+    amount:
+      2021-01-01: 40
+  - threshold:
+      2021-01-01: 10_000
+    amount:
+      2021-01-01: 0
