@@ -17,7 +17,9 @@ class co_sales_tax_refund_eligible(Variable):
         head_eligible = age_head >= p.age_threshold
         age_spouse = tax_unit("age_spouse", period)
         spouse_eligible = age_spouse >= p.age_threshold
-        income_tax = tax_unit("co_income_tax_before_non_refundable_credits", period)
+        income_tax = tax_unit(
+            "co_income_tax_before_non_refundable_credits", period
+        )
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         age_eligible = where(
