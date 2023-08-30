@@ -1,0 +1,79 @@
+- name: Two dependents in 2021 - one eligible
+  period: 2021
+  input:
+    people:
+      person3:
+        is_eitc_qualifying_child: false
+        is_disabled: false
+      person4:
+        is_eitc_qualifying_child: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person3, person4]
+    households:
+      household:
+        members: [person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemption_count: 1
+
+- name: Two dependents in 2022 - two eligible
+  period: 2022
+  input:
+    people:
+      person3:
+        is_eitc_qualifying_child: true
+        is_disabled: false
+      person4:
+        is_eitc_qualifying_child: true
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person3, person4]
+    households:
+      household:
+        members: [person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemption_count: 2
+
+- name: Two dependents in 2022 - two eligible, one disabled
+  period: 2022
+  input:
+    people:
+      person3:
+        is_eitc_qualifying_child: true
+        is_disabled: false
+      person4:
+        is_eitc_qualifying_child: true
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person3, person4]
+    households:
+      household:
+        members: [person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemption_count: 3
+
+- name: Two dependents in 2022 - no eligible
+  period: 2022
+  input:
+    people:
+      person3:
+        is_eitc_qualifying_child: false
+        is_disabled: false
+      person4:
+        is_eitc_qualifying_child: false
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person3, person4]
+    households:
+      household:
+        members: [person3, person4]
+        state_code: MT
+  output:
+    mt_dependent_exemption_count: 0
