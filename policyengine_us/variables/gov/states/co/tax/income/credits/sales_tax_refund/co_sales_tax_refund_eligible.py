@@ -26,9 +26,5 @@ class co_sales_tax_refund_eligible(Variable):
             add(tax_unit, period, ["employment_income"]) > 0
         )
         income_eligible = employment_income_eligible | income_tax_eligible
-        filing_status = tax_unit("filing_status", period)
-        joint = filing_status == filing_status.possible_values.JOINT
-        age_eligible = where(
-            joint, head_eligible & spouse_eligible, head_eligible
-        )
+        age_eligible = head_eligible | spouse_eligible
         return age_eligible | income_eligible

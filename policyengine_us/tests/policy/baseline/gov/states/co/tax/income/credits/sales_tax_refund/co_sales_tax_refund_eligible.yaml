@@ -1,4 +1,4 @@
-- name: Single ineligible
+- name: Ineligible
   period: 2022
   input:
     state_code: CO
@@ -10,7 +10,7 @@
   output:
     co_sales_tax_refund_eligible: false
 
-- name: Single age eligible 
+- name: Age eligible 
   period: 2022
   input:
     state_code: CO
@@ -22,7 +22,7 @@
   output:
     co_sales_tax_refund_eligible: true
 
-- name: Widow income eligible 
+- name: Income eligible 
   period: 2022
   input:
     state_code: CO
@@ -30,11 +30,10 @@
     age_spouse: 0
     co_income_tax_before_non_refundable_credits: 1
     employment_income: 0
-    filing_status: WIDOW
   output:
     co_sales_tax_refund_eligible: true
 
-- name: Joint income eligible 
+- name: Income eligible 
   period: 2022
   input:
     state_code: CO
@@ -42,23 +41,10 @@
     age_spouse: 17
     co_income_tax_before_non_refundable_credits: 1
     employment_income: 0
-    filing_status: JOINT
   output:
     co_sales_tax_refund_eligible: true
 
-- name: Joint only one person age eligible
-  period: 2022
-  input:
-    state_code: CO
-    age_head: 17
-    age_spouse: 18
-    co_income_tax_before_non_refundable_credits: 0
-    employment_income: 0
-    filing_status: JOINT
-  output:
-    co_sales_tax_refund_eligible: false
-
-- name: Joint two age eligible
+- name: Two age eligible
   period: 2022
   input:
     state_code: CO
@@ -66,6 +52,5 @@
     age_spouse: 18
     co_income_tax_before_non_refundable_credits: 0
     employment_income: 0
-    filing_status: JOINT
   output:
     co_sales_tax_refund_eligible: true
