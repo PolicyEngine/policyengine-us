@@ -12,7 +12,6 @@ class wv_social_security_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
-        filing_statuses = filing_status.possible_values
         adjusted_gross_income = tax_unit("wv_agi", period)
         social_security_benefit = tax_unit(
             "wv_social_security_benefit", period
