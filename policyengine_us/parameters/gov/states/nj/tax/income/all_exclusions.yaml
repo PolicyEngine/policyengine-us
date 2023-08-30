@@ -1,0 +1,9 @@
+description: All exclusions from New Jersey total income.
+metadata:
+  unit: variable
+  label: New Jersey exclusions from New Jersey total income
+values:
+  2021-01-01:
+    - nj_pension_retirement_exclusion
+    - nj_other_retirement_income_exclusion
+    - nj_other_retirement_special_exclusion
