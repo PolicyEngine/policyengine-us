@@ -1,9 +1,9 @@
 description: Colorado accounts for these income sources for the modified adjusted gross income.
 values:
-  2021-01-01:
+  1999-01-01:
     - adjusted_gross_income
     - tax_exempt_social_security
-    - tax_exempt_interest_income
+#    - non_taxable_interest_income_from_state_and_local_bonds
 metadata:
   unit: list
   label: Colorado modified adjusted gross income sources

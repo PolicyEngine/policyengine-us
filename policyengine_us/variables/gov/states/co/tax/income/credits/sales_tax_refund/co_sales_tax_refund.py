@@ -17,19 +17,6 @@ class co_sales_tax_refund(Variable):
             period
         ).gov.states.co.tax.income.credits.sales_tax_refund.amount
         agi = tax_unit("co_modified_agi", period)
-        return select(
-            [
-                filing_status == status.SINGLE,
-                filing_status == status.JOINT,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
-            ],
-            [
-                p.single.calc(agi),
-                p.joint.calc(agi),
-                p.head_of_household.calc(agi),
-                p.separate.calc(agi),
-                p.widow.calc(agi),
-            ],
-        )
+        multiplier = p.multiplier[filing_status]
+        amount = p.base.calc(agi)
+        return multiplier * amount

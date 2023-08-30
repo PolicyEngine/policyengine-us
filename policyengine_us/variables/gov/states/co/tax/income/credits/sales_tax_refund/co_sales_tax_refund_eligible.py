@@ -17,12 +17,18 @@ class co_sales_tax_refund_eligible(Variable):
         head_eligible = age_head >= p.age_threshold
         age_spouse = tax_unit("age_spouse", period)
         spouse_eligible = age_spouse >= p.age_threshold
-        income_tax = tax_unit(
-            "co_income_tax_before_non_refundable_credits", period
+        # Legal code is ambiguous, but the form points to the line corresponding to
+        # tax before non-refundable credits.
+        income_tax_eligible = (
+            tax_unit("co_income_tax_before_non_refundable_credits", period) > 0
         )
+        employment_income_eligible = (
+            add(tax_unit, period, ["employment_income"]) > 0
+        )
+        income_eligible = employment_income_eligible | income_tax_eligible
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
         age_eligible = where(
             joint, head_eligible & spouse_eligible, head_eligible
         )
-        return age_eligible | (income_tax > 0)
+        return age_eligible | income_eligible

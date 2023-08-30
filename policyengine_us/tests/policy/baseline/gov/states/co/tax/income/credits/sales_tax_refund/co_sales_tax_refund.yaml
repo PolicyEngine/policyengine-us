@@ -23,4 +23,13 @@
     co_sales_tax_refund_eligible: true
     filing_status: JOINT
   output:
+    co_sales_tax_refund: 972
+
+- name: Separate calculation
+  period: 2022
+  input:
+    co_modified_agi: 151_000
+    co_sales_tax_refund_eligible: true
+    filing_status: SEPARATE
+  output:
     co_sales_tax_refund: 234
