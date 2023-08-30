@@ -1,0 +1,26 @@
+- name: Eligible head
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+    state_code: CO
+  output:
+    co_pension_subtraction_indv_eligible: true
+
+- name: Eligible spouse
+  period: 2022
+  input:
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+    state_code: CO
+  output:
+    co_pension_subtraction_indv_eligible: true
+
+- name: Ineligible
+  period: 2022
+  input:
+    is_tax_unit_head: false
+    is_tax_unit_spouse: false
+    state_code: CO
+  output:
+    co_pension_subtraction_indv_eligible: false

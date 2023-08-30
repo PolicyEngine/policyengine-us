@@ -4187,3 +4187,117 @@
     fixed:
     - Avoid divide by zero in Pell Grant EFC formula.
   date: 2023-08-20 04:42:13
+- bump: minor
+  changes:
+    added:
+    - Legal code references and historical parameters for DC Keep Child Care Affordable
+      Tax Credit.
+  date: 2023-08-20 17:05:13
+- bump: minor
+  changes:
+    added:
+    - Louisiana EITC.
+    - Louisiana main rates.
+    - Louisiana CDCC.
+  date: 2023-08-20 20:35:47
+- bump: minor
+  changes:
+    added:
+    - Connecticut credit based on AGI
+  date: 2023-08-20 21:15:46
+- bump: minor
+  changes:
+    added:
+    - Colorado child tax credit.
+  date: 2023-08-21 01:17:10
+- bump: minor
+  changes:
+    added:
+    - Hawaii low income household renters tax credit.
+  date: 2023-08-21 04:31:08
+- bump: minor
+  changes:
+    added:
+    - Adjust the connecticut personal credit rate file.
+  date: 2023-08-21 11:38:54
+- bump: patch
+  changes:
+    fixed:
+    - 2023 Maryland CTC fix.
+  date: 2023-08-21 20:28:33
+- bump: minor
+  changes:
+    added:
+    - Arizona family tax credit.
+  date: 2023-08-22 18:21:25
+- bump: minor
+  changes:
+    added:
+    - Colorado income qualified senior housing income tax credit.
+  date: 2023-08-23 12:28:50
+- bump: patch
+  changes:
+    fixed:
+    - Inaccurate Vermont income tax rates.
+  date: 2023-08-23 18:48:27
+- bump: minor
+  changes:
+    added:
+    - Maryland Senior Tax Credit.
+  date: 2023-08-24 18:09:56
+- bump: minor
+  changes:
+    added:
+    - Colorado low-income child care expenses credit.
+  date: 2023-08-24 18:24:21
+- bump: minor
+  changes:
+    added:
+    - Placeholder Connecticut AGI additions and subtractions variables.
+    fixed:
+    - Connecticut add_back/start parameter value for single filers.
+  date: 2023-08-25 02:22:42
+- bump: minor
+  changes:
+    added:
+    - Colorado subtractions.
+  date: 2023-08-26 18:43:41
+- bump: minor
+  changes:
+    added:
+    - Placeholder Colorado taxable income additions and subtractions variables.
+    - Colorado taxable income formula.
+    fixed:
+    - Colorado income tax rates for 2021 and 2022.
+  date: 2023-08-29 15:29:09
+- bump: minor
+  changes:
+    added:
+    - Montana exemptions.
+  date: 2023-08-29 19:46:48
+- bump: minor
+  changes:
+    added:
+    - Colorado additions.
+    - Colorado state income tax model.
+  date: 2023-08-29 19:55:49
+- bump: minor
+  changes:
+    added:
+    - Several placeholder Georgia income-related variables to allow integration testing.
+  date: 2023-08-29 20:14:03
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina income tax rate for 2022.
+  date: 2023-08-29 23:00:41
+- bump: minor
+  changes:
+    added:
+    - Delaware elderly or disabled income exclusion.
+  date: 2023-08-30 01:35:56
+- bump: minor
+  changes:
+    added:
+    - Mississippi itemized deductions.
+  date: 2023-08-30 02:00:19
