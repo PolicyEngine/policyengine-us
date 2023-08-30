@@ -10,4 +10,4 @@ class co_modified_agi(Variable):
     reference = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf#page=23"
     defined_for = StateCode.CO
 
-    adds = "gov.states.co.tax.income.credits.sales_tax_refund.agi_sources"
+    adds = "gov.states.co.tax.income.credits.sales_tax_refund.magi_sources"
