@@ -13,8 +13,8 @@ class me_property_tax_fairness_credit_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         dependents = tax_unit("ctc_qualifying_children", period)
         capped_dependents = min_(dependents, 2)
-        p = parameters(period).gov.states.me.tax.income.credits.property_tax_fairness
-        # need to convert to select statement
-        
+        p = parameters(
+            period
+        ).gov.states.me.tax.income.credits.property_tax_fairness
         income_threshold = p.income_threshold[filing_status][capped_dependents]
         return income < income_threshold
