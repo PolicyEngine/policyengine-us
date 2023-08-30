@@ -22,7 +22,7 @@ class ga_military_retirement_exclusion(Variable):
         earned_income = person("earned_income", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
-        
+
         ## head military exclusion
         head_base = where(head & military_age, p.military.amount, 0)
         head_additional = where(

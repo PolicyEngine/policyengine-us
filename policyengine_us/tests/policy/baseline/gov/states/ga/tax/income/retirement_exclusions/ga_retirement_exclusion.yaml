@@ -1,0 +1,68 @@
+- name: head is disable
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: true
+        age: 50
+        ga_earned_income_eligible: 4_000
+        ga_retirement_income: 69_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ga_military_retirement_exclusion: 0
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_retirement_exclusion: 35_000
+
+- name: head not eligible
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 50
+        ga_earned_income_eligible: 4_000
+        ga_retirement_income: 69_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        ga_military_retirement_exclusion: 0
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_retirement_exclusion: 0
+
+- name: head is eligible for higher cap and spouse is eligible for lower cap
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_disabled: false
+        age: 65
+        ga_earned_income_eligible: 4_000
+        ga_retirement_income: 63_000
+      person2:
+        is_tax_unit_head: true
+        is_disabled: true
+        age: 60
+        ga_earned_income_eligible: 4_000
+        ga_retirement_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+        filing_status: JOINT
+        ga_military_retirement_exclusion: 3000
+    households:
+      household:
+        state_code: GA
+  output:
+    ga_retirement_exclusion: 89_000 + 3_000

@@ -1,0 +1,23 @@
+- name: test1
+  period: 2022
+  input:
+    pension_income: 100
+    interest_income: 100
+    dividend_income: 100
+    rental_income: 100
+    capital_gains: 100
+    state_code: GA
+  output:
+    ga_retirement_income: 500
+
+- name: test2
+  period: 2023
+  input:
+    pension_income: 1000
+    interest_income: 1000
+    dividend_income: 1000
+    rental_income: 1000
+    capital_gains: 1000
+    state_code: GA
+  output:
+    ga_retirement_income: 5000

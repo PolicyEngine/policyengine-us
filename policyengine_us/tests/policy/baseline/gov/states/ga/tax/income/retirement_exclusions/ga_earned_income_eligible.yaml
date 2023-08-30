@@ -1,0 +1,15 @@
+- name: below cap
+  period: 2023
+  input:
+    earned_income: 1000
+    state_code: GA
+  output:
+    ga_earned_income_eligible: 1000
+
+- name: over cap
+  period: 2023
+  input:
+    earned_income: 4329
+    state_code: GA
+  output:
+    ga_earned_income_eligible: 4000

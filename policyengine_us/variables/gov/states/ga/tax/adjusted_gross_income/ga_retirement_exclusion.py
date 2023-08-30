@@ -19,8 +19,13 @@ class ga_retirement_exclusion(Variable):
         p = parameters(period).gov.states.ga.tax.income.agi.exclusions
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
-        earned_income_exclusion_eligible = person("ga_earned_income_eligible", period)
-        retirement_income_eligible = person("ga_retirement_income", period) + earned_income_exclusion_eligible
+        earned_income_exclusion_eligible = person(
+            "ga_earned_income_eligible", period
+        )
+        retirement_income_eligible = (
+            person("ga_retirement_income", period)
+            + earned_income_exclusion_eligible
+        )
         # All retirement income that eligible for retirement exclusion except military retirement income
 
         ## check disability, age eligibility and caps
@@ -70,7 +75,9 @@ class ga_retirement_exclusion(Variable):
         )
 
         ## military exclusion
-        military_exclusion = tax_unit("ga_military_retirement_exclusion", period)
+        military_exclusion = tax_unit(
+            "ga_military_retirement_exclusion", period
+        )
 
         # total retirement exclusions
         return head_exclusion + spouse_exclusion + military_exclusion
