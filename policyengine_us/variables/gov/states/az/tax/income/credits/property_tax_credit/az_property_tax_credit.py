@@ -17,7 +17,7 @@ class az_property_tax_credit(Variable):
         age = person("age", period)
         age_qualifies = age >= p.min_age
 
-        head = person('is_tax_unit_head', period)
+        head = person("is_tax_unit_head", period)
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
