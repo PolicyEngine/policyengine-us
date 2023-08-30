@@ -1,16 +1,16 @@
-description: Arizona provides this base amount for dependent based on age. 
+description: Arizona allows this base amount under the dependent credit, based on the dependent age. 
 metadata:
   type: single_amount
   period: year
   threshold_unit: age
   amount_unit: currency-USD
-  label: Arizona Dependent Credit Amount
+  label: Arizona Dependent Credit amount
   reference:
   - title: Arizona Form 140 - 2021 Resident Personal Income Tax Return
-    href: https://azdor.gov/forms/individual/form-140-resident-personal-income-tax-form-calculating
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140i-2D.pdf#page=20
   - title: Arizona Form 140 - 2022 Resident Personal Income Tax Return
-    href: https://azdor.gov/forms/individual/form-140-resident-personal-income-tax-form-calculating
-  - title: Arizona State Legislature Title 43 - Taxation of Income, Chapter 10, Article 5, 43-1073.01
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i-2D.pdf#page=21
+  - title: Arizona State Legislature Title 43 - Taxation of Income, Chapter 10, Article 5, 43-1073.01 (B), (1) & (2)
     href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01073-01.htm 
 brackets:
   - threshold:
