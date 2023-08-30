@@ -35,7 +35,7 @@ class mi_heating_credit(Variable):
         initial_hhc = where(
             heating_costs_included_in_rent == True,
             (
-                p.standard_allowance.reduced_standard_allowance_rate
+                p.standard_allowance.heating_cost_rate
                 * mi_reduced_standard_allowance
             ),
             max_(mi_reduced_standard_allowance, mi_alternate_household_credit)
@@ -43,7 +43,7 @@ class mi_heating_credit(Variable):
         # check total house resource comply with alternate credit maximum income  (table B)
         alternate_hhc = where(
             mi_household_resources
-            <= p.alternate_credit.maximum_income.calc(mi_exemption_count),
+            <= p.alternate_credit.household_resources.max_amount.calc(mi_exemption_count),
             initial_hhc,
             0,
         )
