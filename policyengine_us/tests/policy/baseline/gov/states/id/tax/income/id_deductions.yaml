@@ -1,0 +1,19 @@
+- name: Itemizes
+  period: 2023
+  input:
+    tax_unit_itemizes: true
+    itemized_deductions_less_salt: 1_000
+    standard_deduction: 500
+    state_code: ID
+  output:
+    id_itemized_deductions: 1_000
+
+- name: Does not itemize
+  period: 2023
+  input:
+    tax_unit_itemizes: false
+    itemized_deductions_less_salt: 1_000
+    standard_deduction: 500
+    state_code: ID
+  output:
+    id_itemized_deductions: 500
