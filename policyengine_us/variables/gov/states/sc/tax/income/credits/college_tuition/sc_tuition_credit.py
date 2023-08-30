@@ -16,7 +16,9 @@ class sc_tuition_credit(Variable):
         # line 1
         total_hours = person("total_college_hours", period)
         # line 2
-        qualified_tuition_expenses = person("qualified_tuition_expenses", period)
+        qualified_tuition_expenses = person(
+            "qualified_tuition_expenses", period
+        )
         # line 3
         annual_hour_requirement = p.annual_hour_requirement
         tuition_limit = (
