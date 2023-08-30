@@ -12,10 +12,12 @@ class az_property_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         p = parameters(period).gov.states.az.tax.income.property_tax_credits
-        income = tax_unit("adjusted_gross_income", period)
+        income = tax_unit("property_tax_credits_income", period)
 
         age = person("age", period)
         age_qualifies = age >= p.min_age
+
+        head = person('is_tax_unit_head', period)
 
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
@@ -37,4 +39,4 @@ class az_property_tax_credit(Variable):
             ],
         )
 
-        return age_qualifies * property_tax_credits
+        return head * age_qualifies * property_tax_credits
