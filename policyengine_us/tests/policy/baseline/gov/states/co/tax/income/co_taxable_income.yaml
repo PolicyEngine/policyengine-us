@@ -1,0 +1,9 @@
+- name: co_taxable_income unit test 1
+  period: 2021
+  input:
+    state_code: CO
+    taxable_income: 500
+    co_additions: 10
+    co_subtractions: 600
+  output:
+    co_taxable_income: 0

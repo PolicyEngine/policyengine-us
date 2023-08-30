@@ -1,0 +1,15 @@
+- name: Additional exemption
+  period: 2021
+  input:
+    state_code: IN
+    in_qualifying_child_count: 1
+  output:
+    in_additional_exemptions: 1_500
+
+- name: No additional exemption
+  period: 2021
+  input:
+    state_code: IN
+    in_qualifying_child_count: 0
+  output:
+    in_additional_exemptions: 0

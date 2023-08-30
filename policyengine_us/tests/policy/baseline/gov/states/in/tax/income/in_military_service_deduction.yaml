@@ -1,0 +1,25 @@
+- name: Military service deduction, one person
+  period: 2021
+  input:
+    people:
+      person1:
+        military_service_income: 5_000
+    tax_units:
+      tax_unit:
+        members: person1
+  output:
+    in_military_service_deduction: 5_000
+
+- name: Military service deduction, two people
+  period: 2021
+  input:
+    people:
+      person1:
+        military_service_income: 5_000
+      person2:
+        military_service_income: 5_000
+    tax_units:
+      tax_unit:
+        members: ["person1", "person2"]
+  output:
+    in_military_service_deduction: 10_000

@@ -1,0 +1,30 @@
+- name: Separate, not-low-enough AGI, one aged
+  period: 2021
+  input:
+    state_code: IN  
+    filing_status: SEPARATE
+    age_head: 66
+    adjusted_gross_income: 25_000
+  output:
+    in_aged_low_agi_exemptions: 0 
+
+- name: Separate, low-enough AGI, one aged
+  period: 2021
+  input:
+    state_code: IN
+    filing_status: SEPARATE
+    age_head: 66
+    adjusted_gross_income: 15_000
+  output:
+    in_aged_low_agi_exemptions: 500
+
+- name: Joint, low-enough AGI, two aged
+  period: 2021
+  input:
+    state_code: IN
+    filing_status: JOINT
+    age_head: 66
+    age_spouse: 66
+    adjusted_gross_income: 35_000
+  output:
+    in_aged_low_agi_exemptions: 1_000
