@@ -4,7 +4,7 @@
     state_code: CO
     age_head: 17
     age_spouse: 0
-    co_income_tax: 0
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund_eligible: false
@@ -15,7 +15,7 @@
     state_code: CO
     age_head: 18
     age_spouse: 0
-    co_income_tax: 0
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: SINGLE
   output:
     co_sales_tax_refund_eligible: true
@@ -26,7 +26,7 @@
     state_code: CO
     age_head: 17
     age_spouse: 0
-    co_income_tax: 1
+    co_income_tax_before_non_refundable_credits: 1
     filing_status: WIDOW
   output:
     co_sales_tax_refund_eligible: true
@@ -37,7 +37,7 @@
     state_code: CO
     age_head: 17
     age_spouse: 17
-    co_income_tax: 1
+    co_income_tax_before_non_refundable_credits: 1
     filing_status: JOINT
   output:
     co_sales_tax_refund_eligible: true
@@ -48,7 +48,7 @@
     state_code: CO
     age_head: 17
     age_spouse: 18
-    co_income_tax: 0
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: JOINT
   output:
     co_sales_tax_refund_eligible: false
@@ -59,7 +59,7 @@
     state_code: CO
     age_head: 18
     age_spouse: 18
-    co_income_tax: 0
+    co_income_tax_before_non_refundable_credits: 0
     filing_status: JOINT
   output:
     co_sales_tax_refund_eligible: true
