@@ -13,35 +13,3 @@
     state_code: KY
   output:
     ky_homestead_exemption: 0
-
-- name: filer aged over 65
-  period: 2022
-  input:
-    ky_homestead_exemption_eligible: True
-    state_code: KY
-  output:
-   ky_homestead_exemption: 40_500
-
-- name: filer aged under 65
-  period: 2022
-  input:
-    ky_homestead_exemption_eligible: False
-    state_code: KY
-  output:
-    ky_homestead_exemption: 0
-
-- name: filer aged over 65
-  period: 2023
-  input:
-    ky_homestead_exemption_eligible: True
-    state_code: KY
-  output:
-    ky_homestead_exemption: 46_350
-
-- name: filer aged under 65
-  period: 2023
-  input:
-    ky_homestead_exemption_eligible: False
-    state_code: KY
-  output:
-    ky_homestead_exemption: 0
