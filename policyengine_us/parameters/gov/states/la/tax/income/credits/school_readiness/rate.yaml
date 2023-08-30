@@ -1,4 +1,4 @@
-description: Louisiana provides this percentage of the cdcc as school readiness credit.
+description: Louisiana provides this percentage of the cdcc as school readiness credit, based on the quality rating of the child care facility.
 brackets:
  - threshold:
      2021-01-01: 5
@@ -21,16 +21,15 @@ brackets:
    amount:
      2021-01-01: 0.0
 
-
 metadata:
  type: single_amount
  threshold_unit: Child care facility quality rating
  amount_unit: /1
  period: year
- label: Louisiana refundable cdcc as fraction of federal cdcc amount
+ label: Louisiana school readiness tax credit rate
  reference:
- - title: R.S. 47:6104 
-   href: https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit
+ - title: R.S. 47:6104 (A)
+   href: http://legis.la.gov/Legis/Law.aspx?d=453233
  - title: 2022 Form IT-540-WEB, page 15
    href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=15
  - title: 2021 Form IT-540-WEB, page 15

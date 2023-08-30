@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class la_child_care_expense_credit_eligible_child(Variable):
+class la_school_readiness_credit_eligible_child(Variable):
     value_type = bool
     entity = Person
     label = "Eligible child for the Louisiana child care expense credit"
