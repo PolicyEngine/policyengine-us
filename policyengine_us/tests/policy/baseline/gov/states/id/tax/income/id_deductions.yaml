@@ -6,7 +6,7 @@
     standard_deduction: 500
     state_code: ID
   output:
-    id_itemized_deductions: 1_000
+    id_deductions: 1_000
 
 - name: Does not itemize
   period: 2023
@@ -16,4 +16,4 @@
     standard_deduction: 500
     state_code: ID
   output:
-    id_itemized_deductions: 500
+    id_deductions: 500
