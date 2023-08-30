@@ -2,9 +2,20 @@
   period: 2022
   input:
     state_code: RI
-    age_head: 70
-    age_spouse: 60
+    age_head: 65
+    age_spouse: 64
     head_is_disabled: true
+    spouse_is_disabled: false
+  output:
+    ri_property_tax_credit_eligible: true
+
+- name: Head above minimum age
+  period: 2022
+  input:
+    state_code: RI
+    age_head: 65
+    age_spouse: 64
+    head_is_disabled: false
     spouse_is_disabled: false
   output:
     ri_property_tax_credit_eligible: true
@@ -13,8 +24,8 @@
   period: 2022
   input:
     state_code: RI
-    age_head: 60
-    age_spouse: 60
+    age_head: 64
+    age_spouse: 64
     head_is_disabled: true
     spouse_is_disabled: false
   output:
@@ -24,8 +35,8 @@
   period: 2021
   input:
     state_code: RI
-    age_head: 60
-    age_spouse: 70
+    age_head: 64
+    age_spouse: 65
     head_is_disabled: false
     spouse_is_disabled: false
   output:
@@ -35,9 +46,20 @@
   period: 2021
   input:
     state_code: RI
-    age_head: 60
-    age_spouse: 60
+    age_head: 64
+    age_spouse: 64
     head_is_disabled: false
     spouse_is_disabled: false
   output:
     ri_property_tax_credit_eligible: false
+
+- name: Spouse disabled
+  period: 2021
+  input:
+    state_code: RI
+    age_head: 64
+    age_spouse: 64
+    head_is_disabled: false
+    spouse_is_disabled: true
+  output:
+    ri_property_tax_credit_eligible: true
