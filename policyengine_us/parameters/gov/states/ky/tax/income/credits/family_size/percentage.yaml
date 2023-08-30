@@ -1,0 +1,36 @@
+description: Kentucky multiplies the tax liability by this amount, based on adjusted gross income.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Kentucky family size tax credit percentage
+  reference:
+    - title: Kentucky 141.066, (2), (c)
+      href: https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188 
+# add tax form reference 
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 1
+  - threshold:
+      2022-01-01: 5_000
+    amount:
+      2022-01-01: 0.5
+  - threshold:
+      2022-01-01: 10_000
+    amount:
+      2022-01-01: 0.25
+  - threshold:
+      2022-01-01: 15_000
+    amount:
+      2022-01-01: 0.15
+  - threshold:
+      2022-01-01: 20_000
+    amount:
+      2022-01-01: 0.05
+  - threshold:
+      2022-01-01: 25_000
+    amount:
+      2022-01-01: 0
