@@ -5,6 +5,100 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.449.0] - 2023-08-30 02:00:19
+
+### Added
+
+- Mississippi itemized deductions.
+
+## [0.448.0] - 2023-08-30 01:35:56
+
+### Added
+
+- Delaware elderly or disabled income exclusion.
+
+## [0.447.1] - 2023-08-29 23:00:41
+
+### Fixed
+
+- North Carolina income tax rate for 2022.
+
+## [0.447.0] - 2023-08-29 20:14:03
+
+### Added
+
+- Several placeholder Georgia income-related variables to allow integration testing.
+
+## [0.446.0] - 2023-08-29 19:55:49
+
+### Added
+
+- Colorado additions.
+- Colorado state income tax model.
+
+## [0.445.0] - 2023-08-29 19:46:48
+
+### Added
+
+- Montana exemptions.
+
+## [0.444.0] - 2023-08-29 15:29:09
+
+### Added
+
+- Placeholder Colorado taxable income additions and subtractions variables.
+- Colorado taxable income formula.
+
+### Fixed
+
+- Colorado income tax rates for 2021 and 2022.
+
+## [0.443.0] - 2023-08-26 18:43:41
+
+### Added
+
+- Colorado subtractions.
+
+## [0.442.0] - 2023-08-25 02:22:42
+
+### Added
+
+- Placeholder Connecticut AGI additions and subtractions variables.
+
+### Fixed
+
+- Connecticut add_back/start parameter value for single filers.
+
+## [0.441.0] - 2023-08-24 18:24:21
+
+### Added
+
+- Colorado low-income child care expenses credit.
+
+## [0.440.0] - 2023-08-24 18:09:56
+
+### Added
+
+- Maryland Senior Tax Credit.
+
+## [0.439.1] - 2023-08-23 18:48:27
+
+### Fixed
+
+- Inaccurate Vermont income tax rates.
+
+## [0.439.0] - 2023-08-23 12:28:50
+
+### Added
+
+- Colorado income qualified senior housing income tax credit.
+
+## [0.438.0] - 2023-08-22 18:21:25
+
+### Added
+
+- Arizona family tax credit.
+
 ## [0.437.1] - 2023-08-21 20:28:33
 
 ### Fixed
@@ -5015,6 +5109,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.449.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.448.0...0.449.0
+[0.448.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.447.1...0.448.0
+[0.447.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.447.0...0.447.1
+[0.447.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.446.0...0.447.0
+[0.446.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.445.0...0.446.0
+[0.445.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.444.0...0.445.0
+[0.444.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.443.0...0.444.0
+[0.443.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.442.0...0.443.0
+[0.442.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.441.0...0.442.0
+[0.441.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.440.0...0.441.0
+[0.440.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.439.1...0.440.0
+[0.439.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.439.0...0.439.1
+[0.439.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.438.0...0.439.0
+[0.438.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.1...0.438.0
 [0.437.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.437.0...0.437.1
 [0.437.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.436.0...0.437.0
 [0.436.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.435.0...0.436.0
