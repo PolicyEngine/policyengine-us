@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class ky_homestead_exemption_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    label = "Whether this tax unit is eligible for Kentucky exemptions"
-    unit = USD
+    label = "Eligible for the Kentucky homestead exemptions"
     definition_period = YEAR
     defined_for = StateCode.KY
 
