@@ -9,7 +9,9 @@ class sc_net_capital_gains_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
     reference = (
-        "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=15"
+        "https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=15",
+        https://www.scstatehouse.gov/code/t12c006.php
+        # South Carolina Code of Laws Section 12-6-1150 (A)
     )
 
     def formula(tax_unit, period, parameters):
@@ -19,15 +21,9 @@ class sc_net_capital_gains_deduction(Variable):
         sc_net_long_term_capital_gains = max_(
             0, add(tax_unit, period, ["long_term_capital_gains"])
         )
-        # ltcl = add(tax_unit, period, ["long_term_capital_losses"])
-        # stcl = add(tax_unit, period, ["short_term_capital_losses"])
         sc_net_short_term_capital_gains = add(
             tax_unit, period, ["short_term_capital_gains"]
         )
-
-        # SC Net Captial Gain = (ltcg-ltcl)-stcl
-        # sc_net_long_term_capital_gains = max_(ltcg - ltcl, 0)
-        # sc_net_capital_gains = max_(sc_net_long_term_capital_gains - stcl, 0)
 
         sc_net_capital_gains = max_(
             0, sc_net_long_term_capital_gains + sc_net_short_term_capital_gains

@@ -3,8 +3,6 @@
   input:
     state_code: SC
     long_term_capital_gains: 7_000
-    #long_term_capital_losses: 3_000
-    #short_term_capital_losses: 5_000 
     short_term_capital_gains: -5_000
   output: 
     sc_net_capital_gains_deduction: 880
@@ -15,8 +13,6 @@
   input:
     state_code: SC
     long_term_capital_gains: -7_000
-    #long_term_capital_losses: 10_000
-    #short_term_capital_losses: 5_000 
     short_term_capital_gains: -5_000
   output: 
     sc_net_capital_gains_deduction: 0
@@ -26,8 +22,6 @@
   input:
     state_code: SC
     long_term_capital_gains: 3_000
-    #long_term_capital_losses: 3_000
-    #short_term_capital_losses: 5_000 
     short_term_capital_gains: -5_000
   output: 
     sc_net_capital_gains_deduction: 0
