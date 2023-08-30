@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_income_qualified_senior_housing(Variable):
+class co_income_qualified_senior_housing_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Colorado Income Qualified Senior Housing Income Tax Credit"
@@ -11,7 +11,7 @@ class co_income_qualified_senior_housing(Variable):
         "https://tax.colorado.gov/income-qualified-senior-housing-income-tax-credit",
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=17",
     )
-    defined_for = "co_income_qualified_senior_housing_eligible"
+    defined_for = "co_income_qualified_senior_housing_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(

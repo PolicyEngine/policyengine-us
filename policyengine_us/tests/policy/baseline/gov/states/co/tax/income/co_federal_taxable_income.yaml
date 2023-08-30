@@ -1,0 +1,32 @@
+- name: No AGI
+  period: 2023
+  input:
+    state_code: CO
+    adjusted_gross_income: 0
+    tax_unit_itemizes: true
+    itemized_deductions_less_salt: 1_000
+    taxable_income_deductions_if_not_itemizing: 500
+  output:
+    co_federal_taxable_income: 0
+
+- name: Itemizing
+  period: 2023
+  input:
+    state_code: CO
+    adjusted_gross_income: 1_000
+    tax_unit_itemizes: true
+    itemized_deductions_less_salt: 800
+    taxable_income_deductions_if_not_itemizing: 500
+  output:
+    co_federal_taxable_income: 200
+
+- name: Not itemizing
+  period: 2023
+  input:
+    state_code: CO
+    adjusted_gross_income: 1_000
+    tax_unit_itemizes: false
+    itemized_deductions_less_salt: 800
+    taxable_income_deductions_if_not_itemizing: 500
+  output:
+    co_federal_taxable_income: 500
