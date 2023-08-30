@@ -10,5 +10,5 @@ class ky_homestead_exemption(Variable):
     defined_for = "ky_homestead_exemption_eligible"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ky.tax.income.exemptions.homestead      
+        p = parameters(period).gov.states.ky.tax.income.exemptions.homestead
         return p.amount

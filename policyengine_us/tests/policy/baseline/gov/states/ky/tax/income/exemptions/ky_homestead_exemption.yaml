@@ -1,7 +1,7 @@
 - name: filer aged over 65
   period: 2021
   input:
-    ky_homestead_exemption_eligible: True
+    ky_homestead_exemption_eligible: true
     state_code: KY
   output:
    ky_homestead_exemption: 40_500
@@ -9,7 +9,7 @@
 - name: filer aged under 65
   period: 2021
   input:
-    ky_homestead_exemption_eligible: False
+    ky_homestead_exemption_eligible: false
     state_code: KY
   output:
     ky_homestead_exemption: 0
