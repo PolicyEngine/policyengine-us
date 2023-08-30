@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ct_eitc_unit(Variable):
+class ct_eitc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Connecticut Earned Income Tax Credit"
