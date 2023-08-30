@@ -22,22 +22,22 @@ class mi_alternate_household_credit(Variable):
         mi_household_resources = tax_unit("mi_household_resources", period)
 
         # determine heating cost
-        mi_heating_cost = tax_unit("mi_heating_cost", period)
+        heating_costs = tax_unit("heating_costs", period)
 
         # calculate alternate credit (tax form line 42)
-        alternate_credit = min_(
-            p.alternate_credit.upperlimit, mi_heating_cost
+        capped_heating_costs = min_(
+            p.alternate_credit.heating_costs.max_amount, heating_costs
         )
 
         # calculate alternate credit difference (tax form line 44)
         difference = max_(
             (
-                alternate_credit
+                capped_heating_costs
                 - mi_household_resources
-                * p.total_household_resources.total_household_resources_rate_alternate
+                * p.alternate_credit.household_resources_rate
             ),
             0,
         )
 
         # determine mi_alternate_household_credit
-        return p.alternate_credit.rate_amount * difference
+        return p.alternate_credit.heating_costs.rate * difference

@@ -18,7 +18,7 @@ class mi_reduced_standard_allowance(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.mi.tax.income.credits.home_heating_credit.total_household_resources
+        ).gov.states.mi.tax.income.credits.home_heating_credit.standard_allowance.household_resources
 
         mi_household_resources = tax_unit("mi_household_resources", period)
         standard_allowance = tax_unit("mi_standard_allowance", period)
@@ -27,7 +27,7 @@ class mi_reduced_standard_allowance(Variable):
         return max_(
             (
                 standard_allowance
-                - p.total_household_resources_rate * mi_household_resources
+                - p.rate * mi_household_resources
             ),
             0,
         )
