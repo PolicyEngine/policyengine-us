@@ -18,7 +18,7 @@ class mi_homestead_property_tax_credit_non_refundable(Variable):
 
         # disabled
         disabled_people = add(tax_unit, period, ["is_disabled"])
-        non_refundable_rate = where(
+        disabled_non_refundable_rate = where(
             disabled_people > 0,
             p.disabled.not_refundable_rate.calc(total_household_resources),
             p.not_refundable_rate,
@@ -26,10 +26,14 @@ class mi_homestead_property_tax_credit_non_refundable(Variable):
 
         # seniors
         age_older = tax_unit("age_head", period)
-        non_refundable_rate = where(
+        senior_non_refundable_rate = where(
             age_older >= p.senior.min_age,
             p.senior.not_refundable_rate.calc(total_household_resources),
             p.not_refundable_rate,
+        )
+
+        non_refundable_rate = min_(
+            disabled_non_refundable_rate, senior_non_refundable_rate
         )
 
         return total_household_resources * non_refundable_rate

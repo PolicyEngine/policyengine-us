@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class mi_homestead_property_tax_credit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    label = "Michigan Homestead Property Tax Credit eligibility"
-    unit = USD
+    label = "Eligible for the Michigan Homestead Property Tax Credit"
     definition_period = YEAR
     defined_for = StateCode.MI
 
