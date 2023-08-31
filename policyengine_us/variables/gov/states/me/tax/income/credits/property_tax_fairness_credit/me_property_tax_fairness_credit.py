@@ -21,7 +21,7 @@ class me_property_tax_fairness_credit(Variable):
         utility_expenses = add(tax_unit, period, ["utility_expense"])
         # A separate calcuation exists for the case where utilities are included in rent
         # if the filer does not know the portion of rent that is attributable to utilities
-        # This is not implemented 
+        # This is not implemented
         applicable_rent_amount = where(
             utilities_included_in_rent,
             rent - utility_expenses,

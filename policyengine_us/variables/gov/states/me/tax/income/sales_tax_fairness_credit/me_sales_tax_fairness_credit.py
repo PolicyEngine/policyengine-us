@@ -11,7 +11,9 @@ class me_sales_tax_fairness_credit(Variable):
     defined_for = "me_sales_tax_fairness_credit"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.me.tax.income.credits.sales_tax_fairness
+        p = parameters(
+            period
+        ).gov.states.me.tax.income.credits.sales_tax_fairness
         children = tax_unit("ctc_qualifying_children", period)
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
