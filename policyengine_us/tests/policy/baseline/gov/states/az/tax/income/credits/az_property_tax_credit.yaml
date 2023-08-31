@@ -3,9 +3,8 @@
   input:
     state_code: AZ
     filing_status: JOINT
-    is_tax_unit_head: true
     az_property_tax_credit_income: 5_000
-    age: 66
+    az_property_tax_credit_eligible: true
   output:
     az_property_tax_credit: 123
 
@@ -14,9 +13,8 @@
   input:
     state_code: AZ
     filing_status: SINGLE
-    az_property_tax_credit_income: 2_800
-    is_tax_unit_head: true
-    age: 66
+    az_property_tax_credit_income: 2_800   
+    az_property_tax_credit_eligible: true
   output:
     az_property_tax_credit: 256
 
@@ -25,9 +23,8 @@
   input:
     state_code: AZ
     filing_status: WIDOW
-    is_tax_unit_head: true
-    az_property_tax_credit_income: 3_000
-    age: 45
+    az_property_tax_credit_income: 3_000   
+    az_property_tax_credit_eligible: false
   output:
     az_property_tax_credit: 0
 
@@ -36,9 +33,8 @@
   input:
     state_code: AZ
     filing_status: HEAD_OF_HOUSEHOLD
-    is_tax_unit_head: true
     az_property_tax_credit_income: 4_000
-    age: 80
+    az_property_tax_credit_eligible: true
   output:
     az_property_tax_credit: 279
 
@@ -47,8 +43,7 @@
   input:
     state_code: AZ
     filing_status: SEPARATE
-    is_tax_unit_head: true
     az_property_tax_credit_income: 5_500
-    age: 79
+    az_property_tax_credit_eligible: true
   output:
     az_property_tax_credit: 56

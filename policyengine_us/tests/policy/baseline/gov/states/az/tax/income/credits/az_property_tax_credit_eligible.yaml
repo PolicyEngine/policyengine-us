@@ -1,0 +1,44 @@
+- name: AZ property tax credit unit test 1
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head: true
+    age: 66
+  output:
+    az_property_tax_credit_eligible: true
+
+- name: AZ property tax credit unit test 2
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head: true
+    age: 66
+  output:
+    az_property_tax_credit_eligible: true
+
+- name: AZ property tax credit unit test 3
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head: true
+    age: 45
+  output:
+    az_property_tax_credit_eligible: false
+
+- name: AZ property tax credit unit test 4
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head: true
+    age: 80
+  output:
+    az_property_tax_credit_eligible: true
+
+- name: AZ property tax credit unit test 5
+  period: 2023
+  input:
+    state_code: AZ
+    is_tax_unit_head: true
+    age: 79
+  output:
+    az_property_tax_credit_eligible: true
