@@ -24,8 +24,8 @@ class ri_social_security_modification(Variable):
 
         # Age-based eligibility.
         age_conditions = birth_year <= p.birth_date_limit
-        head_eligible = age_conditions & is_head
-        spouse_eligible = age_conditions & is_spouse
+        head_eligible = tax_unit.sum(is_head & age_conditions) > 0
+        spouse_eligible = tax_unit.sum(is_spouse & age_conditions) > 0
 
         # Status eligibility.
 
@@ -45,21 +45,13 @@ class ri_social_security_modification(Variable):
             head_social_security,
         )
 
-        final_ss = tax_unit.max(final_ss)
-
         percentage_social_security = np.zeros_like(head_total_ss)
         mask = head_total_ss != 0
         percentage_social_security[mask] = final_ss[mask] / head_total_ss[mask]
+        percentage_social_security = where(
+            head_eligible & spouse_eligible, 1, percentage_social_security
+        )
 
         head_taxable_ss = tax_unit.sum(taxable_social_security * is_head)
 
-        head_mod_social_security = head_taxable_ss * percentage_social_security
-        both_eligible = tax_unit(
-            "ri_social_security_modification_both_eligibility", period
-        )
-
-        return where(
-            both_eligible,
-            head_taxable_ss,
-            head_mod_social_security,
-        )
+        return head_taxable_ss * percentage_social_security

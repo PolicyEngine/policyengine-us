@@ -30,6 +30,6 @@ class ri_social_security_modification_eligibility(Variable):
         age_is_eligible = head_eligible | spouse_eligible
 
         # Status eligibility.
-        status_is_eligible = income < p.income_amount[filing_status]
+        status_is_eligible = income < p.income_threshold[filing_status]
 
         return tax_unit.max(age_is_eligible & status_is_eligible)

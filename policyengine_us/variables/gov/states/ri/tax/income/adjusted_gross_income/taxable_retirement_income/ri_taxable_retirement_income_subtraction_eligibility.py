@@ -1,11 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class ri_taxable_retirement_income_eligibility(Variable):
-    value_type = float
+class ri_taxable_retirement_income_subtraction_eligibility(Variable):
+    value_type = bool
     entity = TaxUnit
-    label = "Rhode Island Taxable Retirement Income Eligibility"
-    unit = USD
+    label = (
+        "Eligible for the Rhode Island taxable retirement income subtraction"
+    )
     definition_period = YEAR
     reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
     defined_for = StateCode.RI
@@ -24,7 +25,7 @@ class ri_taxable_retirement_income_eligibility(Variable):
         age_conditions = birth_year <= p.social_security.birth_date_limit
         # Status eligibility.
         status_is_eligible = (
-            income < p.social_security.income_amount[filing_status]
+            income < p.social_security.income_threshold[filing_status]
         )
 
         return age_conditions & status_is_eligible

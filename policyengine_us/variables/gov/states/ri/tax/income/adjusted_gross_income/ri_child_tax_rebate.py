@@ -23,13 +23,15 @@ class ri_child_tax_rebate(Variable):
         eligible_child = eligible_child_age & dependent
         child_count = tax_unit.sum(eligible_child)
         max_eligible = (
-            income <= p.child_tax_rebates.cap[filing_status]
+            income <= p.child_tax_rebates.income_threshold[filing_status]
             and child_count >= p.child_tax_rebates.max_child
         )
 
         max_rebate = p.child_tax_rebates.max_child * p.child_tax_rebates.amount
 
-        base_eligible = income <= p.child_tax_rebates.cap[filing_status]
+        base_eligible = (
+            income <= p.child_tax_rebates.income_threshold[filing_status]
+        )
 
         base_rebate = where(
             base_eligible, child_count * p.child_tax_rebates.amount, 0

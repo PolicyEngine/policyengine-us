@@ -1,4 +1,4 @@
-description: Rhode Island subtractions these items from federal AGI when computing Rhode Island AGI.
+description: Rhode Island subtracts these items from federal adjusted gross income when computing Rhode Island adjusted gross income.
 
 metadata:
   unit: list
@@ -10,12 +10,17 @@ metadata:
   - title: § 44-30-12.  Rhode Island income of a resident individual. 
     href: http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM
   period: YEAR
-  label: List of Rhode Island AGI subtractions
+  label: Rhode Island AGI subtractions
 
 values:
   2021-01-01:
+    - ri_social_security_modification
+    - ri_tuition_saving_program_contribution
+    - ri_taxable_retirement_income_subtraction
+    - us_govt_interest
+  2022-01-01:
     - ri_child_tax_rebate
     - ri_social_security_modification
     - ri_tuition_saving_program_contribution
-    - ri_taxable_retirement_income
+    - ri_taxable_retirement_income_subtraction
     - us_govt_interest
