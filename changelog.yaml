@@ -4018,3 +4018,291 @@
     added:
     - Georgia exemptions.
   date: 2023-08-08 01:03:41
+- bump: minor
+  changes:
+    added:
+    - Oregon Child Tax Credit.
+  date: 2023-08-08 04:31:30
+- bump: patch
+  changes:
+    fixed:
+    - Incorrect Missouri itemized deduction logic.
+  date: 2023-08-08 16:22:12
+- bump: patch
+  changes:
+    fixed:
+    - Household state income tax variable respects reported state tax switch.
+  date: 2023-08-08 17:03:08
+- bump: minor
+  changes:
+    added:
+    - District of Columbia (DC) income tax policy parameter that controls whether
+      married joint taxpayers have the option to compute DC taxes separately.
+  date: 2023-08-08 21:04:05
+- bump: patch
+  changes:
+    fixed:
+    - Make DC married filing separately on same return option a bool instead of list.
+  date: 2023-08-08 23:41:51
+- bump: patch
+  changes:
+    added:
+    - Kentucky 2021 income tax rate.
+  date: 2023-08-09 12:23:11
+- bump: patch
+  changes:
+    fixed:
+    - DeLauro contrib parameter README.
+  date: 2023-08-09 14:01:59
+- bump: minor
+  changes:
+    added:
+    - Idaho income tax schedule.
+  date: 2023-08-09 18:49:35
+- bump: minor
+  changes:
+    added:
+    - Vermont main income tax rate.
+  date: 2023-08-09 23:21:44
+- bump: minor
+  changes:
+    added:
+    - Arkansas Personal Income Tax Schedule.
+  date: 2023-08-09 23:56:01
+- bump: patch
+  changes:
+    changed:
+    - Eliminated the use of the term subtractions in the New Mexico metadata.
+  date: 2023-08-10 01:01:50
+- bump: minor
+  changes:
+    added:
+    - South Carolina State Tax Addback.
+  date: 2023-08-10 01:08:32
+- bump: minor
+  changes:
+    added:
+    - Add New Jersey pension/retirement and other retirement income exclusions.
+  date: 2023-08-10 01:19:35
+- bump: minor
+  changes:
+    added:
+    - North Carolina child credit.
+  date: 2023-08-11 17:35:41
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey 2021 income tax parameter values.
+  date: 2023-08-13 16:18:26
+- bump: patch
+  changes:
+    added:
+    - New Jersey total income variable (allowing simplification of exclusion formulas).
+  date: 2023-08-15 17:21:08
+- bump: minor
+  changes:
+    added:
+    - Hawaii Food/Excise Tax Credit.
+  date: 2023-08-15 18:19:47
+- bump: patch
+  changes:
+    fixed:
+    - New Jersey property tax deduction/credit logic.
+  date: 2023-08-17 05:29:22
+- bump: minor
+  changes:
+    added:
+    - Oregon retirement credit.
+  date: 2023-08-17 15:19:18
+- bump: patch
+  changes:
+    fixed:
+    - Misallocation of state refundable tax credit-affecting reforms' revenues.
+  date: 2023-08-17 18:12:58
+- bump: minor
+  changes:
+    added:
+    - Contributed reforms to the DC Keep Child Care Affordable Tax Credit.
+  date: 2023-08-17 18:53:59
+- bump: minor
+  changes:
+    added:
+    - West Virginia public pension subtraction.
+  date: 2023-08-18 03:57:15
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of Oregon retirement income credit.
+  date: 2023-08-18 14:46:22
+- bump: minor
+  changes:
+    added:
+    - Indiana in_income_tax variable
+    - Indiana decoupled EITC variables and parameters
+  date: 2023-08-18 15:03:20
+- bump: patch
+  changes:
+    added:
+    - 2023 Maryland CTC parameters.
+    - Maryland refundable CTC.
+  date: 2023-08-18 20:08:04
+- bump: minor
+  changes:
+    added:
+    - Connecticut personal income tax schedule.
+    - Connecticut personal exemption.
+  date: 2023-08-18 21:35:17
+- bump: patch
+  changes:
+    fixed:
+    - Calculation of Oregon federal income tax subtraction.
+  date: 2023-08-18 22:43:37
+- bump: minor
+  changes:
+    added:
+    - Pell Grant
+  date: 2023-08-18 23:46:07
+- bump: minor
+  changes:
+    added:
+    - Indiana AGI tax rate for 2023.
+    changed:
+    - Labels and descriptions for Indiana tax parameters.
+    - Use real_estate_taxes variable for Indiana homeowner's property tax deduction.
+    removed:
+    - Parameter names for Indiana tax parameters (deprecated).
+  date: 2023-08-19 04:39:37
+- bump: patch
+  changes:
+    added:
+    - README and index.yaml files to Department of Education and other parameter folders.
+  date: 2023-08-19 05:01:28
+- bump: patch
+  changes:
+    fixed:
+    - Removed unused no_salt_income_tax variable.
+  date: 2023-08-19 17:31:51
+- bump: patch
+  changes:
+    fixed:
+    - Avoid divide by zero in Pell Grant EFC formula.
+  date: 2023-08-20 04:42:13
+- bump: minor
+  changes:
+    added:
+    - Legal code references and historical parameters for DC Keep Child Care Affordable
+      Tax Credit.
+  date: 2023-08-20 17:05:13
+- bump: minor
+  changes:
+    added:
+    - Louisiana EITC.
+    - Louisiana main rates.
+    - Louisiana CDCC.
+  date: 2023-08-20 20:35:47
+- bump: minor
+  changes:
+    added:
+    - Connecticut credit based on AGI
+  date: 2023-08-20 21:15:46
+- bump: minor
+  changes:
+    added:
+    - Colorado child tax credit.
+  date: 2023-08-21 01:17:10
+- bump: minor
+  changes:
+    added:
+    - Hawaii low income household renters tax credit.
+  date: 2023-08-21 04:31:08
+- bump: minor
+  changes:
+    added:
+    - Adjust the connecticut personal credit rate file.
+  date: 2023-08-21 11:38:54
+- bump: patch
+  changes:
+    fixed:
+    - 2023 Maryland CTC fix.
+  date: 2023-08-21 20:28:33
+- bump: minor
+  changes:
+    added:
+    - Arizona family tax credit.
+  date: 2023-08-22 18:21:25
+- bump: minor
+  changes:
+    added:
+    - Colorado income qualified senior housing income tax credit.
+  date: 2023-08-23 12:28:50
+- bump: patch
+  changes:
+    fixed:
+    - Inaccurate Vermont income tax rates.
+  date: 2023-08-23 18:48:27
+- bump: minor
+  changes:
+    added:
+    - Maryland Senior Tax Credit.
+  date: 2023-08-24 18:09:56
+- bump: minor
+  changes:
+    added:
+    - Colorado low-income child care expenses credit.
+  date: 2023-08-24 18:24:21
+- bump: minor
+  changes:
+    added:
+    - Placeholder Connecticut AGI additions and subtractions variables.
+    fixed:
+    - Connecticut add_back/start parameter value for single filers.
+  date: 2023-08-25 02:22:42
+- bump: minor
+  changes:
+    added:
+    - Colorado subtractions.
+  date: 2023-08-26 18:43:41
+- bump: minor
+  changes:
+    added:
+    - Placeholder Colorado taxable income additions and subtractions variables.
+    - Colorado taxable income formula.
+    fixed:
+    - Colorado income tax rates for 2021 and 2022.
+  date: 2023-08-29 15:29:09
+- bump: minor
+  changes:
+    added:
+    - Montana exemptions.
+  date: 2023-08-29 19:46:48
+- bump: minor
+  changes:
+    added:
+    - Colorado additions.
+    - Colorado state income tax model.
+  date: 2023-08-29 19:55:49
+- bump: minor
+  changes:
+    added:
+    - Several placeholder Georgia income-related variables to allow integration testing.
+  date: 2023-08-29 20:14:03
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina income tax rate for 2022.
+  date: 2023-08-29 23:00:41
+- bump: minor
+  changes:
+    added:
+    - Delaware elderly or disabled income exclusion.
+  date: 2023-08-30 01:35:56
+- bump: minor
+  changes:
+    added:
+    - Mississippi itemized deductions.
+  date: 2023-08-30 02:00:19
+- bump: minor
+  changes:
+    added:
+    - Colorado sales tax refund.
+  date: 2023-08-31 12:12:22

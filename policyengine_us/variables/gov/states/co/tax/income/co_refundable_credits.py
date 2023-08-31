@@ -8,3 +8,5 @@ class co_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CO
+
+    adds = "gov.states.co.tax.income.credits.refundable"
