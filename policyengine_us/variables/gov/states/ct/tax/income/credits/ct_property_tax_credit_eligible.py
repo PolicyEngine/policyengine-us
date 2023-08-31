@@ -13,5 +13,4 @@ class ct_property_tax_credit_eligible(Variable):
         age_spouse = tax_unit("age_spouse", period)
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
         age_threshold = p.threshold.age
-        age_eligible = (age_head | age_spouse) >= age_threshold
-        return age_eligible
+        return (age_head | age_spouse) >= age_threshold

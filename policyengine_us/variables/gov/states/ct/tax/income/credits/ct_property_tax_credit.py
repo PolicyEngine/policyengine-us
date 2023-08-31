@@ -7,7 +7,7 @@ class ct_property_tax_credit(Variable):
     label = "Connecticut property tax credit"
     unit = USD
     definition_period = YEAR
-    reference = ()
+    reference = "https://portal.ct.gov/-/media/DRS/Forms/2021/Income/CT-1040-Online-Booklet_1221.pdf#page=30"
     defined_for = "ct_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -39,7 +39,11 @@ class ct_property_tax_credit(Variable):
                 p.amount.head_of_household.calc(agi),
             ],
         )
+        non_refundable_portion = max_credit * percent
+        # cap at 0
         earned_credit = where(
-            agi < min_agi, max_credit, max_credit - (max_credit * percent)
+            non_refundable_portion <= max_credit,
+            max_credit - non_refundable_portion,
+            0,
         )
-        return earned_credit
+        return where(agi < min_agi, max_credit, earned_credit)
