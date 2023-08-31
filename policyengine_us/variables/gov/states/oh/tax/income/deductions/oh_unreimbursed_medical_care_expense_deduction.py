@@ -24,7 +24,9 @@ class oh_unreimbursed_medical_care_expense_deduction(Variable):
         # moop
         federal_agi = tax_unit("adjusted_gross_income", period)
 
-        rate = parameters(period).gov.irs.deductions.itemized.medical.floor
+        rate = parameters(
+            period
+        ).gov.states.oh.tax.income.deductions.unreimbursed_medical_care_expenses.rate
         adjusted_moop = max_(0, medical_expenses - federal_agi * rate)
 
         return premiums_expenses + adjusted_moop
