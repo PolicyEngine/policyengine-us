@@ -14,16 +14,20 @@ class sc_tuition_credit(Variable):
         p = parameters(period).gov.states.sc.tax.income.credits.college_tuition
 
         # line 1
-        total_hours = person("total_college_hours", period)
+        total_college_hours = person("total_college_hours", period)
         # line 2
         qualified_tuition_expenses = person(
             "qualified_tuition_expenses", period
         )
         # line 3
-        annual_hour_requirement = p.annual_hour_requirement
-        tuition_limit = (
-            p.max_amount.tuition * total_hours / annual_hour_requirement
+        sc_tuition_credit_eligible = (
+            total_college_hours >= p.annual_hour_requirement
         )
+        tuition_limit = (
+            p.max_amount.tuition
+            * total_college_hours
+            / p.annual_hour_requirement
+        ) * sc_tuition_credit_eligible
         # line 7 (lesser of line 2 or 3 and multiply by rate)
         uncapped_credit = (
             min_(qualified_tuition_expenses, tuition_limit) * p.rate
