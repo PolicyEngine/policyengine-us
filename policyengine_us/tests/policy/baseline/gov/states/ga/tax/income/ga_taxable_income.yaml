@@ -1,0 +1,9 @@
+- name: ga_taxable_income unit test 1
+  period: 2021
+  input:
+    state_code: GA
+    ga_agi: 800
+    ga_deductions: 600
+    ga_exemptions: 300
+  output:
+    ga_taxable_income: 0

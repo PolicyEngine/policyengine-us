@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class co_additions(Variable):
+class ga_agi_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Colorado additions to federal taxable income"
+    label = "Georgia subtractions from federal AGI"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.CO
+    defined_for = StateCode.GA
