@@ -1,0 +1,23 @@
+- name: LA cdcc refundable eligibility test 1
+  period: 2006
+  input:
+    adjusted_gross_income: 23_000
+    state_code: LA
+  output:
+    la_cdcc_refundable_eligible: 1
+
+- name: LA cdcc refundable eligibility test 2
+  period: 2006
+  input:
+    adjusted_gross_income: 25_000
+    state_code: LA
+  output:
+    la_cdcc_refundable_eligible: 1
+
+- name: LA cdcc refundable eligibility test 3
+  period: 2006
+  input:
+    adjusted_gross_income: 26_000
+    state_code: LA
+  output:
+    la_cdcc_refundable_eligible: 0
