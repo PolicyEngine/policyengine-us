@@ -1,13 +1,13 @@
-- name: If filing is disabled at the age below 65
+- name: Disabled filer aged below 65
   period: 2021
   input:
     state_code: KY
     disabled_head: true
     age_head: 60
   output:
-    ky_homestead_exemption_eligible: false
+    ky_homestead_exemption_eligible: true
 
-- name: If filing is disabled at the age over 65
+- name: Disabled filer aged over 65
   period: 2021
   input:
     state_code: KY
@@ -16,7 +16,7 @@
   output:
     ky_homestead_exemption_eligible: true
 
-- name: If filing is not disabled at the age below 65
+- name: Non-disabled filer aged below 65
   period: 2021
   input:
     state_code: KY
@@ -25,25 +25,25 @@
   output:
     ky_homestead_exemption_eligible: false
 
-- name: If filing is not disabled at the age over 65
+- name: Non-disabled filer aged over 65
   period: 2021
   input:
     state_code: KY
     disabled_head: false
     age_head: 70
   output:
-    ky_homestead_exemption_eligible: false
+    ky_homestead_exemption_eligible: true
 
-- name: If filing is disabled at the age below 65
+- name: Disabled filer aged below 65
   period: 2022
   input:
     state_code: KY
     disabled_head: true
     age_head: 60
   output:
-    ky_homestead_exemption_eligible: false
+    ky_homestead_exemption_eligible: true
 
-- name: If filing is disabled at the age over 65
+- name: Disabled filer aged over 65
   period: 2022
   input:
     state_code: KY
@@ -52,7 +52,7 @@
   output:
     ky_homestead_exemption_eligible: true
 
-- name: If filing is not disabled at the age below 65
+- name: Non-disabled filer aged below 65
   period: 2022
   input:
     state_code: KY
@@ -61,25 +61,25 @@
   output:
     ky_homestead_exemption_eligible: false
 
-- name: If filing is not disabled at the age over 65
+- name: Non-disabled filer aged over 65
   period: 2022
   input:
     state_code: KY
     disabled_head: false
     age_head: 70
   output:
-    ky_homestead_exemption_eligible: false
+    ky_homestead_exemption_eligible: true
 
-- name: If filing is disabled at the age below 65
+- name: Disabled filer aged below 65
   period: 2023
   input:
     state_code: KY
     disabled_head: true
     age_head: 60
   output:
-    ky_homestead_exemption_eligible: false
+    ky_homestead_exemption_eligible: true
 
-- name: If filing is disabled at the age over 65
+- name: Disabled filer aged over 65
   period: 2023
   input:
     state_code: KY
@@ -88,7 +88,7 @@
   output:
     ky_homestead_exemption_eligible: true
 
-- name: If filing is not disabled at the age below 65
+- name: Non-disabled filer aged below 65
   period: 2023
   input:
     state_code: KY
@@ -97,11 +97,11 @@
   output:
     ky_homestead_exemption_eligible: false
 
-- name: If filing is not disabled at the age over 65
+- name: Non-disabled filer aged over 65
   period: 2023
   input:
     state_code: KY
     disabled_head: false
     age_head: 70
   output:
-    ky_homestead_exemption_eligible: false
+    ky_homestead_exemption_eligible: true

@@ -13,6 +13,6 @@ class ky_homestead_exemption_eligible(Variable):
 
         # Get the individual disabled and age status.
         disabled_head = tax_unit("disabled_head", period)
-        age_head = tax_unit("age_head", period) >= p.disability_age_threshold
+        age_head = tax_unit("age_head", period) >= p.age_threshold
 
-        return disabled_head & age_head
+        return disabled_head | age_head
