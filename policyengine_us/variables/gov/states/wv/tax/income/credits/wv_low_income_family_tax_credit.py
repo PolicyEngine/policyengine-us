@@ -28,7 +28,7 @@ class wv_low_income_family_tax_credit(Variable):
         fpg = p1 + pn * (family_size - 1)
 
         # modified agi limit
-        fpg_amount = p.fpg_percent * fpg
+        fpg_amount = p.fpg_percent[filing_status] * fpg
         reduced_agi = wv_agi - fpg_amount
 
         return select(

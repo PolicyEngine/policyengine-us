@@ -31,6 +31,6 @@ class wv_low_income_family_tax_credit_eligible(Variable):
         # tax_unit is a function how to calculate tax_unit_fpg for the max family size
 
         # modified agi limit
-        fpg_amount = p.fpg_percent * fpg
-        income_threshold = p.income_threshold + fpg_amount
+        fpg_amount = p.fpg_percent[filing_status] * fpg
+        income_threshold = p.income_threshold[filing_status] + fpg_amount
         return wv_agi <= income_threshold
