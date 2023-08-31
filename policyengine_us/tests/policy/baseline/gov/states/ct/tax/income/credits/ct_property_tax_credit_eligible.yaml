@@ -8,7 +8,7 @@
   output:
     ct_property_tax_credit_eligible: true
 
-- name: Eligibility for CT property tax credit of single filers age 65 and 70
+- name: Eligibility for CT property tax credit of single filer age 65 
   period: 2023
   input:
     state_code: CT
@@ -16,4 +16,4 @@
     age_head: 60
     age_spouse: 0
   output:
-    ct_property_tax_credit_eligible: true
+    ct_property_tax_credit_eligible: false

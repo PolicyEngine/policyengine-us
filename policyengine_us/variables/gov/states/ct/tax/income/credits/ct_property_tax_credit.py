@@ -39,5 +39,7 @@ class ct_property_tax_credit(Variable):
                 p.amount.head_of_household.calc(agi),
             ],
         )
-        earned_credit= where(agi < min_agi,max_credit, max_credit - (max_credit * percent))
-        return  earned_credit
+        earned_credit = where(
+            agi < min_agi, max_credit, max_credit - (max_credit * percent)
+        )
+        return earned_credit

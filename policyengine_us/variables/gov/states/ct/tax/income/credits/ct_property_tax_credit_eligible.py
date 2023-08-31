@@ -15,4 +15,3 @@ class ct_property_tax_credit_eligible(Variable):
         age_threshold = p.threshold.age
         age_eligible = (age_head | age_spouse) >= age_threshold
         return age_eligible
-
