@@ -1,27 +1,15 @@
 description: Arizona limits credit for cash Charitable Contribution of Itemized Deduction for qualifying charitable organization other than qualifying foster care charitable organization.
 metadata:
-  label: Arizona cash charitable deduction for qualifying charitable organization limit
+  label: Arizona charitable deduction for qualifying charitable organization limit
   period: year
   unit: currency-USD
-  breakdown:
-  - filing_status
   reference:
     - title: Ariz. Rev. Stat. § 43-1088 (A)
       href: https://casetext.com/statute/arizona-revised-statutes/title-43-taxation-of-income/chapter-10-individuals/article-5-credits/section-43-1088-effective-until-ninety-one-days-after-adjournment-credit-for-contribution-to-qualifying-charitable-organizations-definitions
     - title: Arizona Schedule A Year 2022 Page 1
       href: https://azdor.gov/forms/individual/itemized-deduction-adjustments-form#page=1
+    - title: Credit for Contributions to Qualifying Charitable Organizations
+      href: https://azdor.gov/forms/tax-credits-forms/credit-contributions-qualifying-charitable-organizations
 
-SINGLE:
-  2022-01-01: 400
-HEAD_OF_HOUSEHOLD:
-  2022-01-01: 400
-JOINT:
-  2022-01-01: 800
-WIDOW:
-  2022-01-01: 400
-SEPARATE:
-  2022-01-01: 400
-
-# Need Pavel to check if it is correct
-# 1. $400 in any taxable year for a single individual or a head of household.
-# 2. $800 in any taxable year for a married couple filing a joint return.
+values:
+  2021-01-01: 800

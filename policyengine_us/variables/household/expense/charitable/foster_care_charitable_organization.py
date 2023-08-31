@@ -6,7 +6,6 @@ class foster_care_charitable_organization(Variable):
     entity = TaxUnit
     label = "Whether a charitable organization is related to foster care"
     definition_period = YEAR
-    reference = "https://law.justia.com/codes/arizona/2022/title-43/section-43-1088/"
-
-
-# put in policyengine_us/variables/household/expense/charitable/
+    reference = (
+        "https://law.justia.com/codes/arizona/2022/title-43/section-43-1088/"
+    )

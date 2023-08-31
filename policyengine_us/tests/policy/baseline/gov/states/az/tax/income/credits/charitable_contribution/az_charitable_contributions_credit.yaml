@@ -1,0 +1,55 @@
+- name: az_charitable_contributions_credit for qualifying forster (Not SEPARATE, above cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    foster_care_charitable_organization: 1
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 600
+  output:
+    az_charitable_contributions_credit: 1_000
+
+- name: az_charitable_contributions_credit for qualifying forster (Not SEPARATE, below cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    foster_care_charitable_organization: 1
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 400
+  output:
+    az_charitable_contributions_credit: 900
+
+- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, below cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    foster_care_charitable_organization: 1
+    charitable_cash_donations: 500
+    charitable_non_cash_donations: 400
+  output:
+    az_charitable_contributions_credit: 450
+
+- name: az_charitable_contributions_credit for qualifying forster (SEPARATE, above cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    foster_care_charitable_organization: 1
+    charitable_cash_donations: 1_000
+    charitable_non_cash_donations: 1_000
+  output:
+    az_charitable_contributions_credit: 500
+
+
+- name: az_charitable_contributions_credit for qualifying organization (SEPARATE, above cap)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    foster_care_charitable_organization: 0
+    charitable_cash_donations: 1_000
+    charitable_non_cash_donations: 1_000
+  output:
+    az_charitable_contributions_credit: 400

@@ -40,7 +40,7 @@ class az_itemized_deduction(Variable):
             medical_expense - medical_expense_deduction,
             medical_expense_deduction - medical_expense,
         )
-        charitable_deduction = tax_unit("az_charitable_deduction", period)
+        # charitable_deduction = tax_unit("az_charitable_deduction", period)
 
         # Adjustment to Interest Deduction
         # mortgage_interest = the amount of mortgage interest you paid for 2022 that is equal to
@@ -51,7 +51,7 @@ class az_itemized_deduction(Variable):
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
         charitable_deduction = tax_unit("charitable_deduction", period)
         charitable_contributions_credit = tax_unit(
-            "az_chartiable_contributions_credit", period
+            "az_charitable_contributions_credit", period
         )
 
         charitable_deduction_allowed = where(
