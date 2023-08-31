@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class la_child_expense_tax_credit(Variable):
+class la_school_readiness_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Louisiana non-refundable Child Expense Tax Credit"
+    label = "Louisiana non-refundable school readiness tax credit"
     unit = USD
     definition_period = YEAR
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
@@ -18,7 +18,7 @@ class la_child_expense_tax_credit(Variable):
         # determine school readiness credit amount
         child_care_credit = tax_unit("la_cdcc", period)
         eligible_child = person(
-            "la_child_care_expense_credit_eligible_child", period
+            "la_school_readiness_credit_eligible_child", period
         )
         quality_rating = person(
             "quality_rating_of_child_care_facility", period

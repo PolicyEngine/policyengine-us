@@ -5,7 +5,7 @@
    is_tax_unit_dependent: True
    state_code: LA
   output:
-   la_child_care_expense_credit_eligible_child: true
+   la_school_readiness_credit_eligible_child: true
 
 - name: LA child care expense tax credit eligible children test 2
   period: 2021
@@ -14,7 +14,7 @@
    is_tax_unit_dependent: true
    state_code: LA
   output:
-   la_child_care_expense_credit_eligible_child: false
+   la_school_readiness_credit_eligible_child: false
 
 - name: LA child care expense tax credit eligible children test 3
   period: 2021
@@ -23,5 +23,5 @@
    is_tax_unit_dependent: false
    state_code: LA
   output:
-   la_child_care_expense_credit_eligible_child: false
+   la_school_readiness_credit_eligible_child: false
    
