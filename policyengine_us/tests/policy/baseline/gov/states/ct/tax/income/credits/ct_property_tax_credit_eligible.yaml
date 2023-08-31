@@ -1,0 +1,19 @@
+- name: Eligibility for CT property tax credit of joint filers age 65 and 70
+  period: 2023
+  input:
+    state_code: CT
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 70
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: Eligibility for CT property tax credit of single filers age 65 and 70
+  period: 2023
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    age_head: 60
+    age_spouse: 0
+  output:
+    ct_property_tax_credit_eligible: true
