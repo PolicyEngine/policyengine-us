@@ -18,5 +18,5 @@ class ar_dependent_credit(Variable):
         us_dependent = tax_unit.sum("tax_unit_dependents", period)
         p_ar = parameters(
             period
-        ).gov.states.ar.tax.income.credits.personal_credits
-        return us_dependent * p_ar
+        ).gov.states.ar.tax.income.credits.personal.amount
+        return us_dependent * p_ar.dependent

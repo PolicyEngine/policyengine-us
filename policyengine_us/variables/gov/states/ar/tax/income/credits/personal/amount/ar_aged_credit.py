@@ -19,13 +19,13 @@ class ar_aged_credit(Variable):
         us_aged = person("age", period)
         aged_thres = parameters(
             period
-        ).gov.states.ar.tax.income.credits.personal_credits.aged_threshold
+        ).gov.states.ar.tax.income.credits.personal.aged_threshold
 
         p_ar = parameters(
             period
-        ).gov.states.ar.tax.income.credits.personal_credits.aged
+        ).gov.states.ar.tax.income.credits.personal.amount
 
         aged_count = 0
         if us_aged >= aged_thres:
             aged_count = aged_count + 1
-        return aged_count * p_ar
+        return aged_count * p_ar.aged
