@@ -11,6 +11,7 @@ class wv_low_income_family_tax_credit_eligible(Variable):
     def formula(tax_unit, period, parameters):
         # modified agi needed to be modified
         wv_agi = tax_unit("wv_agi", period)
+        filing_status = tax_unit("filing_status", period)
 
         p = parameters(
             period
