@@ -1,4 +1,4 @@
-- name: Single household with $49,000  agi and  $100 property tax and age of 67
+- name: Single household with $49,000  agi and  $100 property tax 
   period: 2022
   input:
     state_code: CT
@@ -8,7 +8,7 @@
   output:
     ct_property_tax_credit: 100
 
-- name: Separate household with $75,000  agi and  $250 property tax and age 71
+- name: Separate household with $75,000  agi and  $250 property tax 
   period: 2022
   input:
     state_code: CT
@@ -18,7 +18,7 @@
   output:
     ct_property_tax_credit: 0
 
-- name: Separate household with $45,000  agi and  $250 property tax and age 71
+- name: Separate household with $45,000  agi and  $250 property tax
   period: 2022
   input:
     state_code: CT
@@ -28,7 +28,7 @@
   output:
     ct_property_tax_credit: 175
 
-- name: Head of household with $60,000  agi and  $400 property tax and age 71
+- name: Head of household with $60,000  agi and  $400 property tax 
   period: 2022
   input:
     state_code: CT
@@ -38,7 +38,7 @@
   output:
     ct_property_tax_credit: 255
 
-- name: Joint household with $130,500  agi and  $500 property tax and age 66
+- name: Joint household with $130,500  agi and  $500 property tax
   period: 2022
   input:
     state_code: CT
