@@ -18,5 +18,5 @@ class ar_blind_credit(Variable):
         us_blind = tax_unit.sum("is_blind", period)
         p_ar = parameters(
             period
-        ).gov.states.ar.tax.income.credits.personal_credits
+        ).gov.states.ar.tax.income.credits.personal_credits.blind
         return us_blind * p_ar

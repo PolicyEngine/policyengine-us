@@ -15,7 +15,9 @@ class ar_aged_credit(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        us_aged = tax_unit.sum("is_aged", period)
+        person=tax_unit.members
+        us_aged = person("age", period)
+        aged_thres=
         
         p_ar = parameters(
             period
