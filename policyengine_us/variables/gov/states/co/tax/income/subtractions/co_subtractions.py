@@ -9,4 +9,4 @@ class co_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.CO
 
-    adds = "gov.states.co.tax.income.subtractions"
+    adds = "gov.states.co.tax.income.subtractions.subtractions"
