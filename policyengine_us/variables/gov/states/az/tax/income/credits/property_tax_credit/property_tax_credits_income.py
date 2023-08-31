@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class property_tax_credits_income(Variable):
+class az_property_tax_credit_income(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona income to calculate property tax credits"
