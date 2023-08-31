@@ -13,6 +13,10 @@ class wv_low_income_family_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
 
+        p = parameters(
+            period
+        ).gov.states.wv.tax.income.credits.low_income_family_tax_credit
+
         wv_agi = tax_unit("wv_agi", period)
         # max family size limit
         n = tax_unit("tax_unit_size", period)
@@ -22,9 +26,6 @@ class wv_low_income_family_tax_credit(Variable):
         # modified agi limit
         fpg_amount = p.fpg_percent * fpg
         reduced_agi = wv_agi - fpg_amount
-        p = parameters(
-            period
-        ).gov.states.wv.tax.income.credits.low_income_family_tax_credit.amount
 
         return select(
             [
@@ -35,10 +36,10 @@ class wv_low_income_family_tax_credit(Variable):
                 filing_status == filing_statuses.WIDOW,
             ],
             [
-                p.single.calc(reduced_agi),
-                p.separate.calc(reduced_agi),
-                p.joint.calc(reduced_agi),
-                p.head.calc(reduced_agi),
-                p.widow.calc(reduced_agi),
+                p.amount.single.calc(reduced_agi),
+                p.amount.separate.calc(reduced_agi),
+                p.amount.joint.calc(reduced_agi),
+                p.amount.head.calc(reduced_agi),
+                p.amount.widow.calc(reduced_agi),
             ],
         )
