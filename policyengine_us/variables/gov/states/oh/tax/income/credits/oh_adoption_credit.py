@@ -10,7 +10,7 @@ class oh_adoption_credit(Variable):
     reference = (
         # Ohio 2022 Instructions for Filing Original and Amended - Line 18 – Ohio Adoption Credit
         "https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=21",
-        # Ohio Income - Individual Credits (Education, Displaced Workers & Adoption)
+        # Ohio Income - Individual Credits (Education, Displaced Workers & Adoption) 15. - 20.
         "https://tax.ohio.gov/wps/portal/gov/tax/help-center/faqs/income+-+individual+credits/income-individual-credits",
         # The ohio adoption credit has been repealed in the newest revised code, but can still be found in the previous legal code and 2022 tax form
         # 2022 Ohio Revised Code Title 57 | Taxation Chapter 5747 | Income Tax Section 5747.37 | Credit for Legally Adopted Minor Child.
@@ -22,16 +22,10 @@ class oh_adoption_credit(Variable):
         eligible_adoption_related_expenses = person(
             "qualified_adoption_assistance_expense", period
         )
-        # The minimum amount of Ohio adoption credit
-        min_credit = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.adoption.minimum_amount
 
-        # The maximum amount of Ohio adoption credit
-        max_credit = parameters(
-            period
-        ).gov.states.oh.tax.income.credits.adoption.maximum_amount
+        p = parameters(period).gov.states.oh.tax.income.credits.adoption
 
         return min_(
-            max_(eligible_adoption_related_expenses, min_credit), max_credit
+            max_(eligible_adoption_related_expenses, p.minimum_amount),
+            p.maximum_amount,
         )
