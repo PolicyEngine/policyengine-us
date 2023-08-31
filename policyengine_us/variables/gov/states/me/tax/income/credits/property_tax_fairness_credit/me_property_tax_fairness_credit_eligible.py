@@ -9,7 +9,9 @@ class me_property_tax_fairness_credit_eligible(Variable):
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
-        income = tax_unit("me_property_tax_fairness_credit_income", period)
+        income = tax_unit(
+            "me_sales_and_property_tax_fairness_credit_income", period
+        )
         filing_status = tax_unit("filing_status", period)
         dependents = tax_unit("ctc_qualifying_children", period)
         capped_dependents = min_(dependents, 2)

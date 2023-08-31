@@ -34,7 +34,9 @@ class me_property_tax_fairness_credit(Variable):
         capped_dependents = min_(dependents, 2)
         benefit_base = p.amount[filing_status][capped_dependents]
         capped_benefit_base = min_(benefit_base, rent_and_property_tax)
-        income = tax_unit("me_property_tax_fairness_credit_income", period)
+        income = tax_unit(
+            "me_sales_and_property_tax_fairness_credit_income", period
+        )
         income_rate = income * p.rate.income
         uncapped_credit = max_(capped_benefit_base - income_rate, 0)
         age_head = tax_unit("age_head", period)
