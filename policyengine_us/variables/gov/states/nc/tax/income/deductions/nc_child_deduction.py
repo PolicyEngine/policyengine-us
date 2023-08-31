@@ -11,7 +11,7 @@ class nc_child_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # calculate deduction amount per eligible child
-        fedagi = tax_unit("adjusted_gross_income", period)
+        federal_agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
         p = parameters(period).gov.states.nc.tax.income.deductions.child
@@ -24,11 +24,11 @@ class nc_child_deduction(Variable):
                 filing_status == statuses.HEAD_OF_HOUSEHOLD,
             ],
             [
-                p.single.calc(fedagi),
-                p.separate.calc(fedagi),
-                p.joint.calc(fedagi),
-                p.widow.calc(fedagi),
-                p.head_of_household.calc(fedagi),
+                p.single.calc(federal_agi, right=True),
+                p.separate.calc(federal_agi, right=True),
+                p.joint.calc(federal_agi, right=True),
+                p.widow.calc(federal_agi, right=True),
+                p.head_of_household.calc(federal_agi, right=True),
             ],
         )
         # calculate number of eligible children
