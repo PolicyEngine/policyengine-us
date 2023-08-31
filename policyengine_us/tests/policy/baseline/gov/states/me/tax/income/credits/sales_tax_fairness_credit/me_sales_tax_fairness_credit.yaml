@@ -1,0 +1,19 @@
+- name: Separate ineligible
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: true
+    ctc_qualifying_children: 1
+    filing_status: SEPARATE
+    me_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 0
+
+- name: Ineligible
+  period: 2022
+  input:
+    me_sales_tax_fairness_credit_eligible: false
+    ctc_qualifying_children: 1
+    filing_status: Single
+    me_property_tax_fairness_credit_income: 0
+  output:
+    me_sales_tax_fairness_credit: 0
