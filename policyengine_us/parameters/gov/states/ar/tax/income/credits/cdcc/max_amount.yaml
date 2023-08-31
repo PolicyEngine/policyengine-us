@@ -1,14 +1,23 @@
-description: Arkansas matches this percentage of the child care credit as standard credit, depending on federal cdcc. # federal age or cdcc? 
+description: Arkansas allows for the following child care expense credit to mentally retarded child
 metadata:
-  amount_unit: /1
-  label: Arkansas household and dependents care credit match
+  type: single_amount
+  threshold_unit: child
+  amount_unit: currency-USD
+  label: Arkansas lchild care expense credit max amount
   reference:
-    - title: 1-26 Ark. Code R. § 51-502(b)(2)
+    - title: 1-26 Ark. Code R. § 51-502(b)(2)   #???in state law not mentioned, but mentioned in federal law
       href: https://casetext.com/regulation/arkansas-administrative-code/agency-006-department-of-finance-and-administration/division-05-division-of-revenues/regulation-1997-4-comprehensive-individual-income-tax-regulations/rule-26-51-502-household-and-dependent-care-services/rule-126-51-502b2-ten-percent-10-standard-credit
     - title: Arkansas 2022 Individual Income Tax Forms and Instructions | page 15 line 35
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=15
-    - title: Arkansas 2022 Individual Income Tax CHILD AND DEPENDENT CARE EXPENSES 2022 AR2441 | line 10   # no tax form reference for this rate???
+    - title: Arkansas 2022 Individual Income Tax CHILD AND DEPENDENT CARE EXPENSES 2022 AR2441 | line 3
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR2441_Child_andDependentCareExpenses.pdf
 
-values:
-  1997-01-01: 0.01
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: 3_000
+  - threshold:
+      2018-01-01: 2
+    amount:
+      2018-01-01: 6_000
