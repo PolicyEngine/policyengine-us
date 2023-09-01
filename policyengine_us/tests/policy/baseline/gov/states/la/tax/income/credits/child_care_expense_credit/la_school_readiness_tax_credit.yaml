@@ -112,7 +112,7 @@
       household: 
         state_code: LA
   output:
-    #50*1=50
+    #50*0.5=25
     la_school_readiness_credit: 25
 
 - name: 1 eligible children, 2 stars quality rating
@@ -134,5 +134,5 @@
       household: 
         state_code: LA
   output:
-    #50*1=50
+    #0
     la_school_readiness_credit: 0

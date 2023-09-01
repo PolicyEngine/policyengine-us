@@ -5,7 +5,6 @@ class la_school_readiness_credit_refundable_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Louisiana refundable school readiness tax credit eligibility"
-    unit = USD
     definition_period = YEAR
     reference = "https://www.revenue.louisiana.gov/IndividualIncomeTax/SchoolReadinessTaxCredit"
     defined_for = StateCode.LA
