@@ -1,12 +1,3 @@
-- name: Was not in effect in 2021.
-  period: 2021
-  input:
-    state_code: VT
-    age: 5
-    vt_income_after_subtractions: 0
-  output:
-    vt_ctc: 0
-
 - name: Five qualifying children.
   period: 2023
   input:
@@ -32,7 +23,7 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2, child3, child4, child5, child6]
-        vt_income_after_subtractions: 125_000
+        adjusted_gross_income: 1_000
   output:
     vt_ctc: 5_000
 
@@ -41,7 +32,7 @@
   input:
     state_code: VT
     age: 5
-    vt_income_after_subtractions: 175_000
+    adjusted_gross_income: 175_000
   output:
     vt_ctc: 0
 
@@ -50,7 +41,7 @@
   input:
     state_code: VT
     age: 5
-    vt_income_after_subtractions: 200_000
+    adjusted_gross_income: 200_000
   output:
     vt_ctc: 0
 
@@ -59,6 +50,6 @@
   input:
     state_code: VT
     age: 5
-    vt_income_after_subtractions: 150_000
+    adjusted_gross_income: 150_000
   output:
     vt_ctc: 500

@@ -19,11 +19,11 @@ class vt_ctc(Variable):
         count_eligible = tax_unit.sum(eligible)
         # Get maximum credit amount.
         max_credit = p.amount * count_eligible
-        # Get Vermont adjusted gross income.
-        vt_agi = tax_unit("vt_income_after_subtractions", period)
+        # Get adjusted gross income.
+        agi = tax_unit("adjusted_gross_income", period)
         # Reduce credit amount over the phaseout range.
-        excess_agi = max_(vt_agi - p.reduction.start, 0)
-        increments = np.ceil(excess_agi / p.reduction.amount)
-        percent_reduction = p.reduction.increment * increments
+        excess_agi = max_(agi - p.reduction.start, 0)
+        increments = excess_agi / p.reduction.increment
+        percent_reduction = p.reduction.amount * increments
         # Return reduced amount.
         return max_(max_credit - percent_reduction, 0)
