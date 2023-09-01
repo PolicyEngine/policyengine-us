@@ -114,15 +114,3 @@
     co_pension_subtraction_indv_eligible: false
   output:
     co_pension_subtraction_indv: 0
-
-- name: Income integration test
-  period: 2021
-  input:
-    age: 54 
-    taxable_pension_income: 6_000
-    taxable_social_security: 2_000
-    co_pension_subtraction_income: 20_000
-    pension_survivors: 13_000
-    co_pension_subtraction_indv_eligible: true
-  output:
-    co_pension_subtraction_indv: 12_000

@@ -17,7 +17,9 @@ class co_pension_subtraction_indv(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.tax.income.subtractions.pension
-        taxable_pension_income = person("co_pension_subtraction_income", period)
+        taxable_pension_income = person(
+            "co_pension_subtraction_income", period
+        )
         pension_survivors = person("pension_survivors", period)
         co_social_security_subtraction = person(
             "co_social_security_subtraction_indv", period
