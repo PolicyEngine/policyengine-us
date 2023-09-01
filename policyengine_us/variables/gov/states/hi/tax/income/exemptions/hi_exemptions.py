@@ -14,63 +14,27 @@ class hi_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.exemptions
+
         person = tax_unit.members
 
-        num_exemp = tax_unit("exemptions", period)
+        exemp = tax_unit("exemptions", period)
         
-        head_exemptions = where(
-            person("head_is_disabled", period),
-            num_exemp * p.disabled,       # head is disabled
-            num_exemp * p.base  # regular exemptions
-        )
+        disabled_head = tax_unit("head_is_disabled", period).astype(int)
 
-        spouse_exemptions = where(
-            person("is_tax_unit_spouse", period),    # the tax unit is an individual
-            where(
-                person("spouse_is_disabled", period),   # the spouse is disabled
-                num_exemp * p.disabled,
-                where(
-                    person("aged_spouse", period),                 # the spouse is aged
-                    (num_exemp + 1) * p.base,
-                    num_exemp * p.base
-                )
-            ),
-            0
-        )
+        disabled_spouse = tax_unit("spouse_is_disabled", period).astype(int)
 
-        return head_exemptions + spouse_exemptions
+        aged_head = person("age_head", period) >= p.age_theshold.astype(int)
+
+        aged_spouse = person("age_spouse", period) >= p.age_theshold.astype(int)
+
+        head_total_exemptions = where(disabled_head == 1, exemp - disabled_head, exemp +  aged_head)
+
+        spouse_total_exemptions = where(disabled_spouse == 1, exemp - disabled_spouse, exemp +  aged_spouse)
+
+        exemption_base_amount = (head_total_exemptions + spouse_total_exemptions) * p.base
+
+        disabled_exemptions = (disabled_head + disabled_spouse) * p.disabled
+
+
+        return exemption_base_amount + disabled_exemptions
         
-
-
-
-
-
-
-
-        base_amount = exemptions * base parameter
-        head_disabled = where(head_is_disabled, ....)
-        spouse_disabled = where(spouse_is_disabled, ....)
-        return x + y+ z
-
-
-
-        return where(
-            head_disabled,  # If the tax unit is disabled
-            where(
-                spouse_disabled,  # If the tax unit is an individual
-                where(
-                    spouse_disabled,  # If the spouse of the tax unit is disabled
-                    p.disability_exemptions.disabled_spouse
-                    * num_exemp,  # 14_000
-                    where(
-                        spouse_aged,  # If the non-disabled spouse is aged
-                        p.disability_exemptions.aged_undisabled_spouse
-                        * num_exemp,  # 9_288
-                        p.disability_exemptions.unaged_undisabled_spouse
-                        * num_exemp,  # 8_144
-                    ),
-                ),
-                p.disabled * num_exemp,  # 7_000
-            ),
-            p.base * num_exemp,  # 1_144
-        )
