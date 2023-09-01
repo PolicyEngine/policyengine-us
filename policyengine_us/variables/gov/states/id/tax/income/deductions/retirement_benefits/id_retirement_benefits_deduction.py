@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class id_retirement_benefits(Variable):
+class id_retirement_benefits_deduction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Idaho retirement benefits"
     unit = USD
-    documentation = "https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_12-30-2022.pdf#page=1"
+    documentation = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
     definition_period = YEAR
     defined_for = "id_retirement_benefits_eligible"
 
@@ -24,9 +24,6 @@ class id_retirement_benefits(Variable):
         # Base amount minus social Security benefits received amount
         ded_amt = max_(base_amt - ss_amt, 0)
         # Qualified retirement benefits included in federal income
-        fi_amt = tax_unit.sum(
-            person("taxable_pension_income", period)
-            + person("military_retirement_pay", period)
-        )
+        relevant_income = add(tax_unit, period, ["taxable_pension_income", "military_retirement_pay"])
         # The smaller one
-        return min_(ded_amt, fi_amt)
+        return min_(ded_amt, relevant_income)

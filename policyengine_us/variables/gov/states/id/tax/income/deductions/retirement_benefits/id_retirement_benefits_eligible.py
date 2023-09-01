@@ -5,7 +5,7 @@ class id_retirement_benefits_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the Idaho retirement benefits"
-    documentation = "https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_12-30-2022.pdf#page=1"
+    documentation = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
     definition_period = YEAR
     defined_for = StateCode.ID
 
