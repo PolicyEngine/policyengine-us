@@ -16,8 +16,7 @@ class ri_property_tax_credit_eligible(Variable):
         # minimum age eligibility
         head_age = tax_unit("age_head", period)
         spouse_age = tax_unit("age_spouse", period)
-        min_age = p.age_threshold
-        age_eligible = (head_age | spouse_age) >= p.age_threshold
+        age_eligible = max_(head_age, spouse_age) >= p.age_threshold
         # disability eligibility
         head_is_disabled = tax_unit("head_is_disabled", period)
         spouse_is_disabled = tax_unit("spouse_is_disabled", period)
