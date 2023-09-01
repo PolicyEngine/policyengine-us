@@ -20,7 +20,7 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_retirement_benefits: 45_000
+    id_retirement_benefits_deduction: 45_000
 
 - name: Idaho retirement benefits unit test 2 - single
   period: 2022
@@ -42,7 +42,7 @@
         members: [person1]
         state_code: ID
   output:
-    id_retirement_benefits: 0
+    id_retirement_benefits_deduction: 0
 
 - name: Idaho retirement benefits unit test 3 - single not eligible
   period: 2022
@@ -64,7 +64,7 @@
         members: [person1]
         state_code: ID
   output:
-    id_retirement_benefits: 0
+    id_retirement_benefits_deduction: 0
 
 - name: Idaho retirement benefits unit test 4 - married filling jointly not eligible
   period: 2022
@@ -90,7 +90,7 @@
         members: [person1, person2, person3]
         state_code: ID
   output:
-    id_retirement_benefits: 0
+    id_retirement_benefits_deduction: 0
 
 - name: Idaho retirement benefits unit test 5 - widow
   period: 2022
@@ -114,4 +114,4 @@
         members: [person1, person2]
         state_code: ID
   output:
-    id_retirement_benefits: 30_000
+    id_retirement_benefits_deduction: 30_000
