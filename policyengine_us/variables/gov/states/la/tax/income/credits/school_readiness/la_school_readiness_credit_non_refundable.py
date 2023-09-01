@@ -12,5 +12,3 @@ class la_school_readiness_credit_non_refundable(Variable):
 
     adds = ["la_school_readiness_tax_credit"]
     subtracts = ["la_school_readiness_tax_credit_refundable"]
-
-    

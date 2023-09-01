@@ -21,7 +21,7 @@ class la_school_readiness_credit(Variable):
             "la_school_readiness_credit_eligible_child", period
         )
         quality_rating = person(
-            "quality_rating_of_child_care_facility", period
+            "la_quality_rating_of_child_care_facility", period
         )
         child_credit_percent = child_care_credit * p.rate.calc(quality_rating)
         # la_cdcc times the percentage
