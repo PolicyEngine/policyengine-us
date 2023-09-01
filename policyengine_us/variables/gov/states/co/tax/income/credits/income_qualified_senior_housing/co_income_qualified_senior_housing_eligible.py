@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_income_qualified_senior_housing_eligible(Variable):
+class co_income_qualified_senior_housing_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for Colorado Income Qualified Senior Housing Income Tax Credit"
