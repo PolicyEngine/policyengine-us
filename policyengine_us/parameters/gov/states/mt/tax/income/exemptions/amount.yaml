@@ -1,0 +1,15 @@
+description: Montana deducts this amount for each eligible exemption when computing taxable income.
+values:
+  2021-01-01: 2_580
+  2022-01-01: 2_710
+metadata:
+  reference:
+    - title: "Montana Tax Form 2021 | Exemptions | Line 16"
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf#page=1
+    - title: "Montana Tax Form 2022 | Exemptions | Line 16"
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf#page=1
+    - title: Rule 42.15.402 - Personal Exemptions (4) (b)
+      href: https://regulations.justia.com/states/montana/department-42/chapter-42-15/subchapter-42-15-4/rule-42-15-402/
+  unit: currency-USD
+  period: year
+  label: Montana income tax exemption amount
