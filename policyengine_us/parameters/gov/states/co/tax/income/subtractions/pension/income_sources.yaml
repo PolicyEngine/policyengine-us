@@ -1,4 +1,4 @@
-description: Colorado counts these income sources for the pension subtractions.
+description: Colorado counts these income sources for the pension subtraction.
 values:
   2021-01-01:
     - taxable_pension_income
@@ -12,6 +12,7 @@ values:
     - disability_benefits
 metadata:
   unit: list
+  label: Colorado pension subtraction income sources
   reference:
     - title: 2022 DR 0104AD 
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104AD_2022.pdf#page=1
