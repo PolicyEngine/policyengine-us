@@ -15,38 +15,47 @@ class vt_retirement_income_exemption(Variable):
     documentation = "Vermont retirement benefits exempt from Vermont taxation."
 
     def formula(tax_unit, period, parameters):
-        # Filers with no taxable social security benefit reported on federal Form 1040 aren't qualified for this exemption. (SECTION I Q1)
-        # 2022, filing jointly with federal agi more than 75,000 or other filing statuses with federal agi more than 60,000 also isn't qualified. (SECTION I Q2)
         tax_unit_taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
         )
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
-        p = parameters(period).gov.states.vt.tax.income.agi
-        # List of non qualified tax unit
-        non_qualified = (tax_unit_taxable_social_security == 0) | (
-            agi >= p.income_threshold[filing_status]
+        p = parameters(
+            period
+        ).gov.states.vt.tax.income.agi.retirement_income_exemption
+
+        # Get eligilibty status
+        vt_retirement_income_exemption_eligible = tax_unit(
+            "vt_retirement_income_exemption_eligible", period
         )
-        # 2022, filing jointly with federal agi less than $65,000 or other filing statuses with federal agi less than $50,000 are fully qualified for this exemption. (SECTION I Q3)
-        fully_qualified = agi < p.reduction_threshold[filing_status]
-        # 2022, filing jointly with federal agi between $65,000-$75,000 or other filing statuses with federal agi between $50,000-$60,000 are partially qualified for this exemption. (SECTION II)
-        partial_qualified = (agi >= p.reduction_threshold[filing_status]) & (
-            agi < p.income_threshold[filing_status]
+        eligibility_status = (
+            vt_retirement_income_exemption_eligible.possible_values
         )
+
+        # Calculate the exemption ratio
+        partial_exemption_ratio = max_(
+            p.income_threshold[filing_status] - agi, 0
+        ) / (p.retirement_income_exemption_divisor)
+
+        # Round the exemption ratio to two decimal point
+        partial_exemption_ratio = round_(partial_exemption_ratio, 2)
+
+        # The exemption ratio should be below one
+        partial_exemption_ratio = min_(partial_exemption_ratio, 1)
+
         # Calculate parital exemption amount
-        partial_exemption_ratio = min_(
-            round_(
-                max_(p.income_threshold[filing_status] - agi, 0)
-                / (p.retirement_income_exemption_divisor),
-                2,
-            ),
-            1,
-        )
         partial_exemption = (
             tax_unit_taxable_social_security * partial_exemption_ratio
         )
 
         return select(
-            [non_qualified, partial_qualified, fully_qualified],
+            [
+                vt_retirement_income_exemption_eligible
+                == eligibility_status.NOT_QUALIFIED,
+                vt_retirement_income_exemption_eligible
+                == eligibility_status.PARTIAL_QUALIFIED,
+                vt_retirement_income_exemption_eligible
+                == eligibility_status.FULLY_QUALIFIED,
+            ],
             [0, partial_exemption, tax_unit_taxable_social_security],
         )

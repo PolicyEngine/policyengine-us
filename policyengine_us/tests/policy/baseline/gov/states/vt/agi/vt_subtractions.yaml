@@ -3,7 +3,7 @@
   input:
     state_code: ME
   output:
-    vt_agi_subtractions: 0  
+    vt_subtractions: 0  
 
 - name: VT AGI subtraction amount unit test 2
   period: 2022
@@ -12,10 +12,10 @@
     us_govt_interest: 1_000
     vt_medical_expense_deduction: 1_000
     student_loan_interest: 1_000
-    capital_gains_excluded_from_taxable_income: 0
+    vt_capital_gain_exclusion: 0
     vt_retirement_income_exemption: 1_000
   output:
-    vt_agi_subtractions: 4_000  
+    vt_subtractions: 4_000  
 
 - name: VT AGI subtraction amount unit test 3
   period: 2022
@@ -24,10 +24,10 @@
     us_govt_interest: 2_000
     vt_medical_expense_deduction: 2_000
     student_loan_interest: 1_000
-    capital_gains_excluded_from_taxable_income: 1_000
+    vt_capital_gain_exclusion: 1_000
     vt_retirement_income_exemption: 1_000
   output:
-    vt_agi_subtractions: 7_000    
+    vt_subtractions: 7_000    
 
 - name: VT AGI subtraction amount unit test 4
   period: 2022
@@ -36,7 +36,7 @@
     us_govt_interest: 1_000
     vt_medical_expense_deduction: 3_000
     student_loan_interest: 1_000
-    capital_gains_excluded_from_taxable_income: 1_000
+    vt_capital_gain_exclusion: 1_000
     vt_retirement_income_exemption: 0
   output:
-    vt_agi_subtractions: 6_000   
+    vt_subtractions: 6_000   

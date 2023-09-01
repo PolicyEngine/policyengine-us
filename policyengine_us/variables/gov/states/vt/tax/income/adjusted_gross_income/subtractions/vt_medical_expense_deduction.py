@@ -19,23 +19,13 @@ class vt_medical_expense_deduction(Variable):
         federal_medical_expense_deduction = tax_unit(
             "medical_expense_deduction", period
         )
-        # Get Non-allowable federal medical expense deduction (Worksheet line 1b).
-        vt_non_allow_medical_expense_deductions = tax_unit(
-            "vt_retirement_community_medical_expenses", period
-        )
-        # Subtract non-allowable deduction from federal medical expense deduction (Worksheet line 1c).
-        vt_allow_medical_expense_deduction = max_(
-            0,
-            federal_medical_expense_deduction
-            - vt_non_allow_medical_expense_deductions,
-        )
         # Get Vermont standard deduction plus personal exemptions (Worksheet line 2).
         vt_standard_deduction = tax_unit("vt_standard_deduction", period)
         vt_personal_exemptions = tax_unit("vt_personal_exemptions", period)
         # Subtract standard deduction plus personal exemptions from vt allowed medical expense deduction and return (Worksheet line 3).
         return max_(
             0,
-            vt_standard_deduction
-            + vt_personal_exemptions
-            - vt_allow_medical_expense_deduction,
+            federal_medical_expense_deduction
+            - vt_standard_deduction
+            - vt_personal_exemptions,
         )

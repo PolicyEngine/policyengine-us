@@ -1,0 +1,30 @@
+- name: VT capital gain exclusion amount unit test 1
+  period: 2022
+  input:
+    state_code: ME
+  output:
+    vt_capital_gain_exclusion: 0  
+
+- name: VT capital gain exclusion amount unit test 2
+  period: 2022
+  input:
+    state_code: VT
+    capital_gains_excluded_from_taxable_income: 6_000
+  output:
+    vt_capital_gain_exclusion: 5_000  # min(5000,6000) = 5000
+
+- name: VT capital gain exclusion amount unit test 3
+  period: 2022
+  input:
+    state_code: VT
+    capital_gains_excluded_from_taxable_income: 4_000
+  output:
+    vt_capital_gain_exclusion: 4_000  # min(4000,5000) = 4000
+
+- name: VT capital gain exclusion amount unit test 4
+  period: 2022
+  input:
+    state_code: VT
+    capital_gains_excluded_from_taxable_income: 5_000
+  output:
+    vt_capital_gain_exclusion: 5_000 # min(5000,5000) = 5000

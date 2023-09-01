@@ -15,7 +15,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 0
     vt_agi_additions: 0
-    vt_agi_subtractions: 0
+    vt_subtractions: 0
   output:
     vt_agi: 0
 
@@ -27,6 +27,6 @@
     filing_status: JOINT
     adjusted_gross_income: 100_000  
     vt_agi_additions: 10_000
-    vt_agi_subtractions: 20_000
+    vt_subtractions: 20_000
   output:
     vt_agi: 90_000

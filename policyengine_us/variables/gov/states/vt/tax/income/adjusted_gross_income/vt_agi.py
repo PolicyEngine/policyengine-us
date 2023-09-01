@@ -11,4 +11,4 @@ class vt_agi(Variable):
     reference = "https://tax.vermont.gov/sites/tax/files/documents/IN-111-2022.pdf (Line 3)"
 
     adds = ["adjusted_gross_income", "vt_agi_additions"]
-    subtracts = ["vt_agi_subtractions"]
+    subtracts = ["vt_subtractions"]

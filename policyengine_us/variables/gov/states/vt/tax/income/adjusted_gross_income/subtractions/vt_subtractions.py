@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class vt_agi_subtractions(Variable):
+class vt_subtractions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Vermont AGI subtractions"
+    label = "Vermont subtractions"
     unit = USD
     documentation = "Subtractions from Vermont AGI over federal AGI."
     definition_period = YEAR
@@ -15,4 +15,4 @@ class vt_agi_subtractions(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf"
     )
     # Get parameter list
-    adds = "gov.states.vt.tax.income.agi.subtractions_sources"
+    adds = "gov.states.vt.tax.income.agi.subtractions"
