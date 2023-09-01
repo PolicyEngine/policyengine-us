@@ -33,8 +33,8 @@ class ar_cdcc(Variable):
         decimal_amt = p.decimal_amount_to_agi.calc(agi)
 
         # 3. get cdcc
-        cdcc = decimal_amt * cdcc_expenses 
-        # ??? rate how to use the 10% 
+        cdcc = decimal_amt * cdcc_expenses
+        # ??? rate how to use the 10%
         rate = p.rate.additional_facility
 
         # 4. add disabled cdcc credits
@@ -42,4 +42,3 @@ class ar_cdcc(Variable):
         disabled_addons = disabled_children * p.disabled_amount
 
         return cdcc * rate + disabled_addons
-
