@@ -1,52 +1,15 @@
-- name: Two-person family with two healthy children
+- name: No cdcc
   period: 2022
   input:
-    people:
-      head:
-        age: 35
-      spouse:
-        age: 43
-      child_1:
-        age: 12
-      child_2:
-        age: 13  
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child_1, child_2]
-        tax_unit_children: 2
-        min_head_spouse_earned: 5_000
-        tax_unit_childcare_expenses: 2_000
-        adjusted_gross_income: 12_000
-    households:
-      household:
-        state_code: AR
-        members: [head, spouse, child_1, child_2]
-  output:   # $4000 * 0.35 * 0.2 = 280
-    ar_cdcc: 280
+    cdcc: 0
+    state_code: AR
+  output: 
+    ar_cdcc: 0
 
-- name: Two-person family with two children, one disabled
+- name: Some cdcc, 20%
   period: 2022
   input:
-    people:
-      head:
-        age: 35
-      spouse:
-        age: 43
-      child_1:
-        age: 12
-        is_disabled: true
-      child_2:
-        age: 13  
-    tax_units:
-      tax_unit:
-        members: [head, spouse, child_1, child_2]
-        tax_unit_children: 2
-        min_head_spouse_earned: 5_000
-        tax_unit_childcare_expenses: 2_000
-        adjusted_gross_income: 40_000
-    households:
-      household:
-        state_code: AR
-        members: [head, spouse, child_1, child_2]
-  output:  # $2000 * 0.22 *0.2 + 500 = 588
-    ar_cdcc: 588
+    cdcc: 1_000
+    state_code: AR
+  output: 
+    ar_cdcc: 200
