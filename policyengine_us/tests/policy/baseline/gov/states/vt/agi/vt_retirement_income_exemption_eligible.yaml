@@ -6,7 +6,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 6_5000
   output:
-    vt_retirement_income_exemption_eligible: NOT_QUALIFIED  # Not qualified
+    vt_retirement_income_exemption_eligible: False  # Not qualified
 
 - name: 2021, filing jointly with federal agi more than 70,000
   period: 2021
@@ -17,7 +17,7 @@
     adjusted_gross_income: 80_000
 
   output:
-    vt_retirement_income_exemption_eligible: NOT_QUALIFIED  # Not qualified
+    vt_retirement_income_exemption_eligible: False  # Not qualified
 
 - name: 2022, not filing jointly with federal agi more than 60,000
   period: 2022
@@ -27,7 +27,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 70_000
   output:
-    vt_retirement_income_exemption_eligible: NOT_QUALIFIED  # Not qualified 
+    vt_retirement_income_exemption_eligible: False  # Not qualified 
 
 - name: 2021, filing jointly with federal agi less than 60,000
   period: 2021
@@ -37,7 +37,7 @@
     filing_status: JOINT
     adjusted_gross_income: 50_000
   output:
-    vt_retirement_income_exemption_eligible: FULLY_QUALIFIED # Fully qualified
+    vt_retirement_income_exemption_eligible: True # Fully qualified
 
 - name: 2022, not filing jointly with federal agi less than 50,000
   period: 2022
@@ -47,7 +47,7 @@
     filing_status: SINGLE
     adjusted_gross_income: 40_000
   output:
-    vt_retirement_income_exemption_eligible: FULLY_QUALIFIED  # Fully qualified
+    vt_retirement_income_exemption_eligible: True  # Fully qualified
 
 - name: 2021, filing jointly with federal agi between 60,000 and 70,000
   period: 2021
@@ -57,7 +57,7 @@
     filing_status: JOINT
     adjusted_gross_income: 65_000
   output:
-    vt_retirement_income_exemption_eligible: PARTIAL_QUALIFIED  # Partial qualified 1000*0.50
+    vt_retirement_income_exemption_eligible: True  # Partial qualified 1000*0.50
 
 - name: 2022, not filing jointly with federal agi between 50,000 and 60,000
   period: 2022
@@ -67,4 +67,4 @@
     filing_status: SINGLE
     adjusted_gross_income: 57_500
   output:
-    vt_retirement_income_exemption_eligible: PARTIAL_QUALIFIED  # Partial qualified 1000*0.25
+    vt_retirement_income_exemption_eligible: True  # Partial qualified 1000*0.25

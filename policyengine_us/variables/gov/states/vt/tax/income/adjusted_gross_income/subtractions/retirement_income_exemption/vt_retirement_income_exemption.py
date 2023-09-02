@@ -24,18 +24,25 @@ class vt_retirement_income_exemption(Variable):
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
 
-        # Get eligilibty status
-        vt_retirement_income_exemption_eligible = tax_unit(
-            "vt_retirement_income_exemption_eligible", period
+        # Get eligibility status
+        eligible = tax_unit("vt_retirement_income_exemption_eligible", period)
+
+        # List of fully qualified tax unit (SECTION I Q3)
+        fully_qualified = (agi < p.threshold.reduction[filing_status]) & (
+            eligible
         )
-        eligibility_status = (
-            vt_retirement_income_exemption_eligible.possible_values
+
+        # List of partial qualified tax unit(SECTION II)
+        partial_qualified = (
+            (agi >= p.threshold.reduction[filing_status])
+            & (agi < p.threshold.income[filing_status])
+            & (eligible)
         )
 
         # Calculate the exemption ratio
         partial_exemption_ratio = max_(
-            p.income_threshold[filing_status] - agi, 0
-        ) / (p.retirement_income_exemption_divisor)
+            p.threshold.income[filing_status] - agi, 0
+        ) / (p.divisor)
 
         # Round the exemption ratio to two decimal point
         partial_exemption_ratio = round_(partial_exemption_ratio, 2)
@@ -49,13 +56,6 @@ class vt_retirement_income_exemption(Variable):
         )
 
         return select(
-            [
-                vt_retirement_income_exemption_eligible
-                == eligibility_status.NOT_QUALIFIED,
-                vt_retirement_income_exemption_eligible
-                == eligibility_status.PARTIAL_QUALIFIED,
-                vt_retirement_income_exemption_eligible
-                == eligibility_status.FULLY_QUALIFIED,
-            ],
+            [~eligible, partial_qualified, fully_qualified],
             [0, partial_exemption, tax_unit_taxable_social_security],
         )

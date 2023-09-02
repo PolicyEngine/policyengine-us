@@ -5,7 +5,7 @@
     tax_unit_taxable_social_security: 0
     filing_status: SINGLE
     adjusted_gross_income: 6_5000
-    vt_retirement_income_exemption_eligible: NOT_QUALIFIED
+    vt_retirement_income_exemption_eligible: False
   output:
     vt_retirement_income_exemption: 0  # Not qualified
 
@@ -16,7 +16,7 @@
     tax_unit_taxable_social_security: 1_000
     filing_status: JOINT
     adjusted_gross_income: 80_000
-    vt_retirement_income_exemption_eligible: NOT_QUALIFIED
+    vt_retirement_income_exemption_eligible: False
   output:
     vt_retirement_income_exemption: 0  # Not qualified
 
@@ -27,7 +27,7 @@
     tax_unit_taxable_social_security: 1_000
     filing_status: SINGLE
     adjusted_gross_income: 70_000
-    vt_retirement_income_exemption_eligible: NOT_QUALIFIED
+    vt_retirement_income_exemption_eligible: False
   output:
     vt_retirement_income_exemption: 0  # Not qualified 
 
@@ -38,7 +38,7 @@
     tax_unit_taxable_social_security: 1_000
     filing_status: JOINT
     adjusted_gross_income: 50_000
-    vt_retirement_income_exemption_eligible: FULLY_QUALIFIED
+    vt_retirement_income_exemption_eligible: True
   output:
     vt_retirement_income_exemption: 1_000  # Fully qualified
 
@@ -49,7 +49,7 @@
     tax_unit_taxable_social_security: 1_000
     filing_status: SINGLE
     adjusted_gross_income: 40_000
-    vt_retirement_income_exemption_eligible: FULLY_QUALIFIED
+    vt_retirement_income_exemption_eligible: True
   output:
     vt_retirement_income_exemption: 1_000  # Fully qualified
 
@@ -60,7 +60,7 @@
     tax_unit_taxable_social_security: 1_000
     filing_status: JOINT
     adjusted_gross_income: 65_000
-    vt_retirement_income_exemption_eligible: PARTIAL_QUALIFIED
+    vt_retirement_income_exemption_eligible: True
   output:
     vt_retirement_income_exemption: 500  # Partial qualified 1000*0.50
 
@@ -71,6 +71,6 @@
     tax_unit_taxable_social_security: 1_000
     filing_status: SINGLE
     adjusted_gross_income: 57_500
-    vt_retirement_income_exemption_eligible: PARTIAL_QUALIFIED
+    vt_retirement_income_exemption_eligible: True
   output:
     vt_retirement_income_exemption: 250  # Partial qualified 1000*0.25

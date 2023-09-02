@@ -1,6 +1,6 @@
-description: Vermont use this amount as divisor to calculate partial retirement income exemption.
+description: Vermont divides the retirement income by this amount under the retirement income exemption.
 metadata:
-  label: Vermont partial retirement income exemption calculation divisor
+  label: Vermont retirement income exemption divisor
   period: year
   unit: currency-USD
   reference:
@@ -13,4 +13,3 @@ metadata:
       href: https://legislature.vermont.gov/statutes/section/32/151/05830e
 values:
   2021-01-01: 10_000
-  2022-01-01: 10_000

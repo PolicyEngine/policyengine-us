@@ -1,6 +1,6 @@
-description: Vermont use this amount as maximum captial gain exclusion.
+description: Vermont allows for this maximum maximum capital gain exclusion amount.
 metadata:
-  label: Vermont maximum capital gain exclusion
+  label: Vermont capital gain exclusion max amount
   period: year
   unit: currency-USD
   reference:
@@ -10,7 +10,6 @@ metadata:
       href: https://tax.vermont.gov/sites/tax/files/documents/IN-153-2021.pdf#page=1
      # Legal code specify maximum exlcusion as $5,000. Date unknown.
     - title: Legal code Titl. 32 V.S.A. § 5811(21)(B)(ii)
-      href: "https://legislature.vermont.gov/statutes/section/32/151/05811"  
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811 
 values:
   2021-01-01: 5_000
-  2022-01-01: 5_000

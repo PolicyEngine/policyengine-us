@@ -1,16 +1,8 @@
 from policyengine_us.model_api import *
 
 
-class VTRetireExemptionEligibilityStatus(Enum):
-    FULLY_QUALIFIED = 1
-    PARTIAL_QUALIFIED = 2
-    NOT_QUALIFIED = 3
-
-
 class vt_retirement_income_exemption_eligible(Variable):
-    value_type = Enum
-    possible_values = VTRetireExemptionEligibilityStatus
-    default_value = VTRetireExemptionEligibilityStatus.NOT_QUALIFIED
+    value_type = bool
     entity = TaxUnit
     definition_period = YEAR
     label = "Vermont retirement income exemption eligibility status"
@@ -30,27 +22,12 @@ class vt_retirement_income_exemption_eligible(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(
             period
-        ).gov.states.vt.tax.income.agi.retirement_income_exemption
+        ).gov.states.vt.tax.income.agi.retirement_income_exemption.threshold
 
         # List of non qualified tax unit (SECTION I Q1,Q2)
         non_qualified = (tax_unit_taxable_social_security == 0) | (
-            agi >= p.income_threshold[filing_status]
-        )
-
-        # List of fully qualified tax unit (SECTION I Q3)
-        fully_qualified = agi < p.reduction_threshold[filing_status]
-
-        # List of partial qualified tax unit(SECTION II)
-        partial_qualified = (agi >= p.reduction_threshold[filing_status]) & (
-            agi < p.income_threshold[filing_status]
+            agi >= p.income[filing_status]
         )
 
         # Based on the criteria, return the eligibility status.
-        return select(
-            [non_qualified, partial_qualified, fully_qualified],
-            [
-                VTRetireExemptionEligibilityStatus.NOT_QUALIFIED,
-                VTRetireExemptionEligibilityStatus.PARTIAL_QUALIFIED,
-                VTRetireExemptionEligibilityStatus.FULLY_QUALIFIED,
-            ],
-        )
+        return ~non_qualified
