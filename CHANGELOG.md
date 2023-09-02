@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.452.1] - 2023-09-02 15:57:13
+
+### Fixed
+
+- Presence of an unused Colorado income tax variable.
+- Presence of unneeded Colorado EITC calculations.
+
 ## [0.452.0] - 2023-09-02 01:22:31
 
 ### Added
@@ -5127,6 +5134,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.452.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.452.0...0.452.1
 [0.452.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.451.0...0.452.0
 [0.451.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.450.0...0.451.0
 [0.450.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.449.0...0.450.0

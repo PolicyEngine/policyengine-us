@@ -4316,3 +4316,9 @@
     added:
     - Connecticut earned income tax credit.
   date: 2023-09-02 01:22:31
+- bump: patch
+  changes:
+    fixed:
+    - Presence of an unused Colorado income tax variable.
+    - Presence of unneeded Colorado EITC calculations.
+  date: 2023-09-02 15:57:13
