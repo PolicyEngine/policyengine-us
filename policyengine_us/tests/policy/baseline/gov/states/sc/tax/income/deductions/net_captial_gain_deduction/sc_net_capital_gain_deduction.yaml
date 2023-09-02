@@ -4,7 +4,7 @@
     state_code: SC
     capital_gains: 1_000
   output: 
-    sc_net_capital_gains_deduction: 440
+    sc_net_capital_gain_deduction: 440
 
 - name: Case 2, capital_gains is negative 
   period: 2021
@@ -12,4 +12,4 @@
     state_code: SC
     capital_gains: -600
   output: 
-    sc_net_capital_gains_deduction: 0
+    sc_net_capital_gain_deduction: 0
