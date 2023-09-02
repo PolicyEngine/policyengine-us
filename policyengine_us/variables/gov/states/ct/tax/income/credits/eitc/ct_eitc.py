@@ -15,5 +15,5 @@ class ct_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         eitc = tax_unit("earned_income_tax_credit", period)
-        rate = parameters(period).gov.states.ct.tax.income.credits.eitc.rate
+        rate = parameters(period).gov.states.ct.tax.income.credits.eitc.match
         return eitc * rate
