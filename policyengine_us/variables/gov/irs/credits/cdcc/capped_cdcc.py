@@ -7,7 +7,11 @@ class capped_cdcc(Variable):
     label = "Capped Child/dependent care credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/21"
+    reference = (
+        "https://www.irs.gov/pub/irs-prior/i2441--2021.pdf#page=1"
+        "https://www.irs.gov/instructions/i2441#en_US_2022_publink1000106356"
+        "https://www.law.cornell.edu/uscode/text/26/30D#c_2"
+    )
 
     def formula(tax_unit, period, parameters):
         expenses = tax_unit("cdcc_relevant_expenses", period)
