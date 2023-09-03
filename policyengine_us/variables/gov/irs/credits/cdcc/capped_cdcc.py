@@ -17,8 +17,8 @@ class capped_cdcc(Variable):
         expenses = tax_unit("cdcc_relevant_expenses", period)
         rate = tax_unit("cdcc_rate", period)
         tax_before_credits = tax_unit("regular_tax_before_credits", period)
-        p = parameters(period).gov.irs.credits.cdcc
-        if p.cdcc_refundability:
+        p = parameters(period).gov.irs.credits
+        if "cdcc" in p.refundable:
             return expenses * rate
         # The cdcc is capped at the amount of Form 1040, line 18 if non-refundable
         tax_before_credits = tax_unit("regular_tax_before_credits", period)
