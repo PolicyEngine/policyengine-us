@@ -17,7 +17,7 @@ class az_property_tax_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
 
-        property_tax_credits = select(
+        return select(
             [
                 filing_status == status.SINGLE,
                 filing_status == status.HEAD_OF_HOUSEHOLD,
