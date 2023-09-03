@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.455.0] - 2023-09-03 04:25:25
+
+### Added
+
+- Vermont AGI Additions.
+
 ## [0.454.0] - 2023-09-03 02:06:23
 
 ### Added
@@ -5146,6 +5152,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.455.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.454.0...0.455.0
 [0.454.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.453.0...0.454.0
 [0.453.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.452.1...0.453.0
 [0.452.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.452.0...0.452.1
