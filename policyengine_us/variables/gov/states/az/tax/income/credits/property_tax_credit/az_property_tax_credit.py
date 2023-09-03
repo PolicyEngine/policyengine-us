@@ -34,4 +34,3 @@ class az_property_tax_credit(Variable):
             ],
         )
 
-        return property_tax_credits
