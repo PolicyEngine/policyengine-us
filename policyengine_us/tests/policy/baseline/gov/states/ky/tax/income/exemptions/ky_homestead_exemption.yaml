@@ -1,4 +1,4 @@
-- name: filer aged over 65
+- name: Eligible
   period: 2021
   input:
     ky_homestead_exemption_eligible: true
@@ -6,7 +6,7 @@
   output:
    ky_homestead_exemption: 40_500
 
-- name: filer aged under 65
+- name: Ineligible
   period: 2021
   input:
     ky_homestead_exemption_eligible: false
