@@ -13,6 +13,6 @@ class co_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.co.tax.income.credits.cdcc
         agi = tax_unit("adjusted_gross_income", period)
-        federal_cdcc = tax_unit("cdcc", period)
+        federal_cdcc = tax_unit("capped_cdcc", period)
         rate = p.match.calc(agi)
         return federal_cdcc * rate
