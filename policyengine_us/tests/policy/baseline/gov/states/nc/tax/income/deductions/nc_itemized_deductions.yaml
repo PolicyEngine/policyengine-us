@@ -1,0 +1,47 @@
+- name: Real estate taxes capped 
+  period: 2022
+  input:
+    filing_status: JOINT
+    mortgage_interest: 9_000
+    real_estate_taxes: 11_000
+    charitable_deduction: 0
+    medical_expense_deduction: 0
+    state_code: NC
+  output:
+    nc_itemized_deductions: 19_000
+
+- name: Real estate taxes and mortgage capped 
+  period: 2022
+  input:
+    filing_status: WIDWO
+    mortgage_interest: 11_000
+    real_estate_taxes: 11_000
+    charitable_deduction: 0
+    medical_expense_deduction: 0
+    state_code: NC
+  output:
+    nc_itemized_deductions: 20_000
+
+- name: Real estate taxes and mortgage capped with medical and charitable
+  period: 2022
+  input:
+    filing_status: WIDWO
+    mortgage_interest: 11_000
+    real_estate_taxes: 11_000
+    charitable_deduction: 1_000
+    medical_expense_deduction: 500
+    state_code: NC
+  output:
+    nc_itemized_deductions: 21_500
+
+- name: Real estate taxes capped at 5,000 for separate filers
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    mortgage_interest: 9_000
+    real_estate_taxes: 11_000
+    charitable_deduction: 0
+    medical_expense_deduction: 0
+    state_code: NC
+  output:
+    nc_itemized_deductions: 14_000

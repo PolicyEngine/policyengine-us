@@ -12,37 +12,27 @@ class nc_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         # Qualified Mortgage Interest and Real Estate Property Taxes.
-        p = parameters(period).gov.states.nc.tax.income.deductions.itemized
+        p = parameters(period).gov.states.nc.tax.income.deductions.itemized.cap
         filing_status = tax_unit("filing_status", period)
 
-        mortgage_deduction = min_(
-            p.mortgage_limit, add(tax_unit, period, ["mortgage_interest"])
-        )
+        mortgage_interest = add(tax_unit, period, ["mortgage_interest"])
 
         property_taxes = min_(
-            p.property_taxes_limit[filing_status],
-            add(tax_unit, period, ["property_tax_primary_residence"]),
+            add(tax_unit, period, ["real_estate_taxes"]),
+            p.real_estate[filing_status],
         )
 
-        salt = tax_unit("state_and_local_sales_or_income_tax", period)
-
-        mortgage_interest_and_real_estate_property_taxes = min_(
-            p.mortgage_and_property_taxes_limit,
-            (mortgage_deduction + property_taxes + salt),
+        capped_mortage_and_property_taxes = min_(
+            mortgage_interest + property_taxes, p.mortgage_and_property_tax
         )
 
-        #  If the amount of the home mortgage interest and real estate taxes paid by both spouses exceeds $20,000,
-        #  these deductions must be prorated based on the percentage paid by each spouse.
+        # North Carolina specifies a state and local tax deduction cap which is currently not modeled in PolicyEngine
+
+        charitable_deduction = tax_unit("charitable_deduction", period)
 
         # Medical and Dental Expenses.
         medical = tax_unit("medical_expense_deduction", period)
 
-        # Charitable Contributions.
-
-        charitable = tax_unit("charitable_deduction", period)
-
         return (
-            mortgage_interest_and_real_estate_property_taxes
-            + medical
-            + charitable
+            capped_mortage_and_property_taxes + medical + charitable_deduction
         )

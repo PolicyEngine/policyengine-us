@@ -1,0 +1,25 @@
+description: North Carolina limits the the real estate tax deduction to the following amount, based on filing status.
+
+metadata:
+  lable: North Caroliona real estate tax cap
+  period: year
+  unit: currency-USD
+  reference:
+    - title: North Carolina Department of Revenue
+      href: https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions 
+    # This cap is not mentioned in the legal docuemnt, as it is part of the salt limitation
+    - title: N.C. Gen. Stat. § 105-153.5
+      href: https://law.justia.com/codes/north-carolina/2022/chapter-105/article-4/section-105-153-5/
+  breakdown:
+  - filing_status
+  
+SINGLE:
+  2022-01-01: 10_000
+JOINT:
+  2022-01-01: 10_000
+WIDOW:
+  2022-01-01: 10_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 10_000
+SEPARATE:
+  2022-01-01: 5_000
