@@ -4301,3 +4301,39 @@
     added:
     - Mississippi itemized deductions.
   date: 2023-08-30 02:00:19
+- bump: minor
+  changes:
+    added:
+    - Colorado sales tax refund.
+  date: 2023-08-31 12:12:22
+- bump: minor
+  changes:
+    added:
+    - Colorado pension subtraction income sources.
+  date: 2023-09-01 16:37:16
+- bump: minor
+  changes:
+    added:
+    - Connecticut earned income tax credit.
+  date: 2023-09-02 01:22:31
+- bump: patch
+  changes:
+    fixed:
+    - Presence of an unused Colorado income tax variable.
+    - Presence of unneeded Colorado EITC calculations.
+  date: 2023-09-02 15:57:13
+- bump: minor
+  changes:
+    added:
+    - Several North Carolina deduction variables to allow integration testing.
+  date: 2023-09-02 21:41:03
+- bump: minor
+  changes:
+    added:
+    - Federal capped cdcc for Colorado low income cdcc calculation.
+  date: 2023-09-03 02:06:23
+- bump: minor
+  changes:
+    added:
+    - Vermont AGI Additions.
+  date: 2023-09-03 04:25:25
