@@ -1,0 +1,29 @@
+- name: Exepenses below cap
+  period: 2018
+  input:
+    cdcc_relevant_expenses: 1_000
+    cdcc_rate: 0.5
+    regular_tax_before_credits: 501
+    foreign_tax_credit: 0
+  output:
+    capped_cdcc: 500
+
+- name: Capped at the regular tax before credits amount
+  period: 2018
+  input:
+    cdcc_relevant_expenses: 2_000
+    cdcc_rate: 0.5
+    regular_tax_before_credits: 501
+    foreign_tax_credit: 0
+  output:
+    capped_cdcc: 501
+
+- name: Cap reduced by foreign tax credit amount
+  period: 2018
+  input:
+    cdcc_relevant_expenses: 2_000
+    cdcc_rate: 0.5
+    regular_tax_before_credits: 501
+    foreign_tax_credit: 502
+  output:
+    capped_cdcc: 0
