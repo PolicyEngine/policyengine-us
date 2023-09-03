@@ -10,8 +10,4 @@ class nc_deductions(Variable):
     reference = "https://www.ncdor.gov/taxes-forms/individual-income-tax/north-carolina-standard-deduction-or-north-carolina-itemized-deductions"
     defined_for = StateCode.NC
 
-    def formula(tax_unit, period, parameters):
-        return max_(
-            tax_unit("nc_itemized_deductions", period),
-            tax_unit("nc_standard_deduction", period),
-        )
+    adds = "gov.states.nc.tax.income.deductions.deductions"

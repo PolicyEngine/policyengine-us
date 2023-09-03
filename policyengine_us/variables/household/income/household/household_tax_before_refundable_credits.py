@@ -24,6 +24,7 @@ class household_tax_before_refundable_credits(Variable):
         "md_income_tax_before_refundable_credits",
         "mn_income_tax_before_refundable_credits",
         "mo_income_tax_before_refundable_credits",
+        "nc_income_tax",  # NC has no refundable credits.
         "nd_income_tax_before_refundable_credits",
         "ne_income_tax_before_refundable_credits",
         "nh_income_tax_before_refundable_credits",
