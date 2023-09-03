@@ -12,9 +12,12 @@ class capped_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         expenses = tax_unit("cdcc_relevant_expenses", period)
         rate = tax_unit("cdcc_rate", period)
-        # The cdcc is capped at the amount of Form 1040, line 18
         tax_before_credits = tax_unit("regular_tax_before_credits", period)
-        # reduced by the foreign tax credit
+        p = parameters(period).gov.irs.credits.cdcc
+        if p.cdcc_refundability:
+            return expenses * rate
+        # The cdcc is capped at the amount of Form 1040, line 18 if non-refundable
+        tax_before_credits = tax_unit("regular_tax_before_credits", period)
         foreign_tax_credit = tax_unit("foreign_tax_credit", period)
         # The tax before credits amount is also reduced by the Partner’s Additional Reporting Year Tax
         # which is currently not implemented
