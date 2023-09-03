@@ -35,6 +35,7 @@ class az_charitable_contributions_credit(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
         capped_credit = min_(charitable_contributions, cap)
 
-        return where(
+        divisor = where(separate, p.separate_divisor, 1)
+        return capped_credit / divisor
             separate, capped_credit / p.separate_divisor, capped_credit
         )
