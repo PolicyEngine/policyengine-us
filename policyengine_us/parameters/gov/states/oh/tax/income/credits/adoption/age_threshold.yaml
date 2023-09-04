@@ -1,17 +1,16 @@
-description: Ohio issues the adoption credit of up to this maximum amount.
+description: Ohio qualifies children for the adoption credit below this age threshold.
 values:
-  2021-01-01: 10_000
+  2021-01-01: 18
   2023-01-01: 0
 metadata:
-  unit: currency-USD
-  period: year
-  label: Ohio adoption credit maximum amount
   reference:
     - title: Ohio 2022 Instructions for Filing Original and Amended - Line 18 – Ohio Adoption Credit
       href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=21
-    - title: Ohio Income - Individual Credits (Education, Displaced Workers & Adoption) 15. - 20.
+    - title: Ohio Income - Individual Credits (Education, Displaced Workers & Adoption) 15.
       href: https://tax.ohio.gov/wps/portal/gov/tax/help-center/faqs/income+-+individual+credits/income-individual-credits
     # The ohio adoption credit has been repealed in the newest revised code, but can still be found in the previous legal code and 2022 tax form
     - title: 2022 Ohio Revised Code Title 57 | Taxation Chapter 5747 | Income Tax Section 5747.37 | Credit for Legally Adopted Minor Child. (B)-(2)
       href: https://law.justia.com/codes/ohio/2022/title-57/chapter-5747/section-5747-37/
-      
+  unit: year
+  period: year
+  label: Ohio adoption credit child age threshold
