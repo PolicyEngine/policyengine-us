@@ -3,7 +3,7 @@
   input:
     age: 65
     co_social_security_subtraction_indv: 24_000
-    taxable_pension_income: 23_000
+    co_pension_subtraction_income: 23_000
     pension_survivors: 5_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -15,7 +15,7 @@
   input:
     age: 65
     co_social_security_subtraction_indv: 15_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 5_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -27,7 +27,7 @@
   input:
     age: 65
     co_social_security_subtraction_indv: 0
-    taxable_pension_income: 25_000
+    co_pension_subtraction_income: 25_000
     pension_survivors: 5_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -38,7 +38,7 @@
   input:
     age: 64
     co_social_security_subtraction_indv: 15_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 3_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -50,7 +50,7 @@
   input:
     age: 64
     co_social_security_subtraction_indv: 0
-    taxable_pension_income: 21_000
+    co_pension_subtraction_income: 21_000
     pension_survivors: 3_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -61,7 +61,7 @@
   input:
     age: 55
     co_social_security_subtraction_indv: 21_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 3_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -73,7 +73,7 @@
   input:
     age: 54 
     co_social_security_subtraction_indv: 21_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 3_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -85,7 +85,7 @@
   input:
     age: 54  
     co_social_security_subtraction_indv: 8_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 3_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -97,7 +97,7 @@
   input:
     age: 54 
     co_social_security_subtraction_indv: 8_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 13_000
     co_pension_subtraction_indv_eligible: true
   output:
@@ -109,7 +109,7 @@
   input:
     age: 54 
     co_social_security_subtraction_indv: 8_000
-    taxable_pension_income: 20_000
+    co_pension_subtraction_income: 20_000
     pension_survivors: 13_000
     co_pension_subtraction_indv_eligible: false
   output:
