@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_property_tax_credit_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Arizona Property Tax Credit Eligibility"
+    label = "Eligible for the Arizona Property Tax Credit"
     definition_period = YEAR
     defined_for = StateCode.AZ
 
