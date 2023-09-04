@@ -13,4 +13,5 @@ class de_standard_deduction(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.de.tax.income.deductions.standard
-        return p.amount[filing_status]
+        additional_deduction = tax_unit("de_additional_standard_deduction", period)
+        return p.amount[filing_status] + additional_deduction
