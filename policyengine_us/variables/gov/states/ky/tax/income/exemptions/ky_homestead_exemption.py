@@ -13,6 +13,5 @@ class ky_homestead_exemption(Variable):
         p = parameters(period).gov.states.ky.tax.income.exemptions.homestead
         exemption_amount = p.amount
         #Add Property Value
-        property_value = tax_unit("property_value", period)
-        exemption_amount = max(exemption_amount, property_value)
-        return exemption_amount
+        property_value = tax_unit("assessed_property_value", period)
+        return max_(exemption_amount, property_value)
