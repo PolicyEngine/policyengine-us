@@ -1,4 +1,5 @@
 from .congress.delauro import create_american_family_act_with_baby_bonus_reform
+from .dc_kccatc import create_dc_kccatc_reform
 from .winship import create_eitc_winship_reform
 from policyengine_core.reforms import Reform
 import warnings
@@ -9,6 +10,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
     winship_reform = create_eitc_winship_reform(parameters, period)
+    dc_kccatc_reform = create_dc_kccatc_reform(parameters, period)
 
     if afa_reform is not None:
         if winship_reform is not None:
@@ -18,3 +20,5 @@ def create_structural_reforms_from_parameters(parameters, period):
         return afa_reform
     elif winship_reform is not None:
         return winship_reform
+    elif dc_kccatc_reform is not None:
+        return dc_kccatc_reform

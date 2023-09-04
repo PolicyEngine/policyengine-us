@@ -1,0 +1,15 @@
+- name: Eligible
+  period: 2021
+  input:
+    tax_unit_itemizes: true
+    state_code: CO
+  output:
+    co_charitable_contribution_subtraction_eligible: false
+
+- name: Ineligible
+  period: 2021
+  input:
+    tax_unit_itemizes: false
+    state_code: CO
+  output:
+    co_charitable_contribution_subtraction_eligible: true

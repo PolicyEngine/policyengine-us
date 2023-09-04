@@ -1,0 +1,28 @@
+- name: Family has insufficient tax liability to claim co_income_tax_before_non_refundable_credits with low AGI
+  period: 2022
+  input:
+    state_code: CO
+    capped_cdcc: 0
+    adjusted_gross_income: 24_999
+  output:
+    co_low_income_cdcc_eligible: true
+
+- name: Family has already claimed co_income_tax_before_non_refundable_credits 
+  period: 2022
+  input:
+    state_code: CO
+    capped_cdcc: 300
+    adjusted_gross_income: 24_999
+  output:
+    co_low_income_cdcc_eligible: false
+
+- name: Family has insufficient tax liability to claim co_income_tax_before_non_refundable_credits but with higher AGI
+  period: 2022
+  input:
+    state_code: CO
+    capped_cdcc: 0
+    adjusted_gross_income: 25_001
+  output:
+    co_low_income_cdcc_eligible: false
+
+
