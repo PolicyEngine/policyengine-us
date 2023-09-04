@@ -22,12 +22,12 @@ class oh_retirement_income_credit(Variable):
         has_not_taken_lump_sum_distribution = person(
             "oh_has_not_taken_oh_lump_sum_credits", period
         )
-        head_pension = (
-            is_head * pension_income * has_not_taken_lump_sum_distribution
+        head_or_spouse = is_head | is_spouse
+        eligible_pension = (
+            pension_income
+            * has_not_taken_lump_sum_distribution
+            * head_or_spouse
         )
-        spouse_pension = (
-            is_spouse * pension_income * has_not_taken_lump_sum_distribution
-        )
-        total_pension_income = tax_unit.sum(head_pension + spouse_pension)
+        total_pension_income = tax_unit.sum(eligible_pension)
 
         return p.amount.calc(total_pension_income, right=True)
