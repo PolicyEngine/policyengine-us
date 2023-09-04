@@ -25,12 +25,22 @@ class ar_post_secondary_education_tuition_deductions(Variable):
             "four_year_college_institution", period
         )
 
+        four_year_college_deduction = min_(
+            p.ratio * total_tuition_expense, p.four_year_college
+        )
+        two_year_college_deduction = min_(
+            p.ratio * total_tuition_expense, p.two_year_college
+        )
+        technical_institutes_deduction = min_(
+            p.ratio * total_tuition_expense, p.technical_institutes
+        )
+
         return where(
-            full_time_college_student,
+            full_time_college_student,  # whether it's a full-time college student
             where(
-                four_year_college_institution,
-                min_(p.ratio * total_tuition_expense, p.four_year_college),
-                min_(p.ratio * total_tuition_expense, p.two_year_college),
+                four_year_college_institution,  # whether it's a four-year college
+                four_year_college_deduction,
+                two_year_college_deduction,
             ),
-            min_(p.ratio * total_tuition_expense, p.technical_institutes),
+            technical_institutes_deduction,
         )
