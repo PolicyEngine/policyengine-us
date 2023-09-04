@@ -21,28 +21,5 @@ class co_cdcc(Variable):
         # calculate regular Colorado CDCC in Part III
         capped_fed_cdcc = tax_unit("capped_cdcc", period)  # Line 8
         match_rate = p.cdcc.match.calc(fed_agi, right=True)
-        regular_cdcc = capped_fed_cdcc * match_rate  # Line 9
-        # calculate low-income Colorado CDCC in Part IV
-        # ... conditions required to complete Part IV
-        no_fed_cdcc = capped_fed_cdcc <= 0
-        agi_eligible = fed_agi <= p.cdcc.low_income.federal_agi_threshold
-        # ... estimate care expenses for just children
-        care_expenses = tax_unit("tax_unit_childcare_expenses", period)
-        age = tax_unit.members("age", period)
-        eligible_kid = age < p.cdcc.low_income.child_age_threshold
-        eligible_kids = tax_unit.sum(eligible_kid)
-        total_eligibles = tax_unit("count_cdcc_eligible", period)
-        eligible_kid_ratio = np.zeros_like(total_eligibles)
-        mask = total_eligibles > 0
-        eligible_kid_ratio[mask] = eligible_kids[mask] / total_eligibles[mask]
-        kid_expenses = care_expenses * eligible_kid_ratio
-        capped_kid_expenses = min_(  # Line 3
-            kid_expenses, tax_unit("min_head_spouse_earned", period)
-        )
-        # ... calculate capped credit amount
-        lowinc_credit = p.cdcc.low_income.rate * capped_kid_expenses  # Line 11
-        lowinc_cap = p.cdcc.low_income.max_amount.calc(eligible_kids)  # TableA
-        lowinc_cdcc = where(  # Line 12
-            no_fed_cdcc & agi_eligible, min_(lowinc_credit, lowinc_cap), 0
-        )
-        return regular_cdcc + lowinc_cdcc
+        return capped_fed_cdcc * match_rate  # Line 9
+        # calculate low-income Colorado CDCC in Part IV in co_low_income_cdcc
