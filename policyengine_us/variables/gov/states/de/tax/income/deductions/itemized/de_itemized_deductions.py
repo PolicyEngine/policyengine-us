@@ -15,5 +15,5 @@ class de_itemized_deductions(Variable):
     defined_for = StateCode.DE
 
     adds = ["itemized_deductions_less_salt"]
-    # Per Law: Self employed filers can deduct the health insurance premiums 
+    # Per Law: Self employed filers can deduct the health insurance premiums
     # less the amount allowed as a deduction on the federal return
