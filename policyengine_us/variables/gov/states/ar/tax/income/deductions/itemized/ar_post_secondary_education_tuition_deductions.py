@@ -18,12 +18,8 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         tuition_expense = person("qualified_tuition_expenses", period)
         total_tuition_expense = tax_unit.sum(tuition_expense)
 
-        full_time_college = person(
-            "is_full_time_college_student", period
-        )
-        four_year_college = person(
-            "four_year_college_institution", period
-        )
+        full_time_college = person("is_full_time_college_student", period)
+        four_year_college = person("four_year_college_institution", period)
 
         four_year_college_deduction = min_(
             p.ratio * total_tuition_expense, p.four_year_college
