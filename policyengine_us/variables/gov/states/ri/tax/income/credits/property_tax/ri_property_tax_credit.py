@@ -14,7 +14,7 @@ class ri_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
-        household_income = tax_unit("ri_total_household_income", period)
+        household_income = tax_unit("ri_property_tax_household_income", period)
         household_income_percent = where(
             tax_unit("tax_unit_size", period) == 1,
             p.rate.one_person.calc(household_income),
