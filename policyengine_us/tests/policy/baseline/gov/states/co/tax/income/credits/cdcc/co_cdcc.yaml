@@ -66,7 +66,7 @@
         members: [person1, person2]
         state_code: CO
   output:
-    co_cdcc: 1_000
+    co_cdcc: 0  # co_low_income_cdcc = 1000
 
 - name: co_cdcc unit test 4
   absolute_error_margin: 0.01
@@ -92,4 +92,4 @@
         members: [person1, person2]
         state_code: CO
   output:
-    co_cdcc: 750
+    co_cdcc: 0  # co_low_income_cdcc = 750
