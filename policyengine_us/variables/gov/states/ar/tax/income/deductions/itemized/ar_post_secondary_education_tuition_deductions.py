@@ -18,10 +18,10 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         tuition_expense = person("qualified_tuition_expenses", period)
         total_tuition_expense = tax_unit.sum(tuition_expense)
 
-        full_time_college_student = person(
+        full_time_college = person(
             "is_full_time_college_student", period
         )
-        four_year_college_institution = person(
+        four_year_college = person(
             "four_year_college_institution", period
         )
 
@@ -36,9 +36,9 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         )
 
         return where(
-            full_time_college_student,  # whether it's a full-time college student
+            full_time_college,  # whether it's a full-time college student
             where(
-                four_year_college_institution,  # whether it's a four-year college
+                four_year_college,  # whether it's a four-year college
                 four_year_college_deduction,
                 two_year_college_deduction,
             ),
