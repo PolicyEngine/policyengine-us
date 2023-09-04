@@ -17,3 +17,4 @@ class de_itemized_deductions(Variable):
     adds = ["itemized_deductions_less_salt"]
     # Per Law: Self employed filers can deduct the health insurance premiums
     # less the amount allowed as a deduction on the federal return
+    # We omit this because it is not on the tax form.
