@@ -31,7 +31,7 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         two_year_college_deduction = min_(
             p.ratio * total_tuition_expense, p.two_year_college
         )
-        technical_institutes_deduction = min_(
+        technical_institute_deduction = min_(
             p.ratio * total_tuition_expense, p.technical_institutes
         )
 
@@ -42,5 +42,5 @@ class ar_post_secondary_education_tuition_deductions(Variable):
                 four_year_college_deduction,
                 two_year_college_deduction,
             ),
-            technical_institutes_deduction,
+            technical_institute_deduction,
         )
