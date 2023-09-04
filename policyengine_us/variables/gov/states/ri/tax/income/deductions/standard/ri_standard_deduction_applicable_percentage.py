@@ -1,11 +1,10 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
-class ri_standard_deduction_phase_out_rate(Variable):
+class ri_standard_deduction_applicable_percentage(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Rhode Island standard deduction phase out rate"
+    label = "Rhode Island standard deduction applicable percentage"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -23,6 +22,6 @@ class ri_standard_deduction_phase_out_rate(Variable):
 
         excess_agi = max_(agi - p.start, 0)
 
-        excess_agi_step = ceil(excess_agi / p.increment)
+        excess_agi_step = np.ceil(excess_agi / p.increment)
 
         return max_(1 - p.percentage * excess_agi_step, 0)

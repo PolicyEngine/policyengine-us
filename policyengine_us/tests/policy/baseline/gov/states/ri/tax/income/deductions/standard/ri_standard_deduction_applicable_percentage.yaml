@@ -4,7 +4,7 @@
     state_code: RI
     ri_agi: 200_000
   output:
-    ri_standard_deduction_phase_out_rate: 1
+    ri_standard_deduction_applicable_percentage: 1
 
 - name: Filer claims limited standard deductions in 2022
   period: 2022
@@ -12,7 +12,7 @@
     state_code: RI
     ri_agi: 217_100
   output:
-    ri_standard_deduction_phase_out_rate: 0.8
+    ri_standard_deduction_applicable_percentage: 0.8
 
 - name: Filer claims zero standard deductions in 2022
   period: 2022
@@ -20,7 +20,7 @@
     state_code: RI
     ri_agi: 400_000
   output:
-    ri_standard_deduction_phase_out_rate: 0
+    ri_standard_deduction_applicable_percentage: 0
 
 - name: Filer claims full amount of standard deductions in 2021
   period: 2021
@@ -28,7 +28,7 @@
     state_code: RI
     ri_agi: 200_000
   output:
-    ri_standard_deduction_phase_out_rate: 1
+    ri_standard_deduction_applicable_percentage: 1
 
 - name: Filer claims limited standard deductions in 2021
   period: 2021
@@ -36,7 +36,7 @@
     state_code: RI
     ri_agi: 211_000
   output:
-    ri_standard_deduction_phase_out_rate: 0.8
+    ri_standard_deduction_applicable_percentage: 0.8
 
 - name: Filer claims zero standard deductions in 2021
   period: 2021
@@ -44,4 +44,4 @@
     state_code: RI
     ri_agi: 400_000
   output:
-    ri_standard_deduction_phase_out_rate: 0
+    ri_standard_deduction_applicable_percentage: 0
