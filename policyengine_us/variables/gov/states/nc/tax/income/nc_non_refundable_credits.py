@@ -9,4 +9,4 @@ class nc_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.NC
 
-    adds = ["nc_ctc"]
+    adds = "gov.states.nc.tax.income.credits.non_refundable"
