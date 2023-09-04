@@ -16,10 +16,10 @@ class ct_property_tax_credit(Variable):
         status = filing_status.possible_values
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
         # line 63(total property tax)
-        property_tax = tax_unit("ct_property_tax", period)
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
         # line 64 (maximum property tax)
         max_amount = p.max_amount
-        min_agi = p.threshold.agi[filing_status]
+        min_agi = p.reduction.start[filing_status]
         # line 65 (lesser of max_amount and property tax)
         max_credit = min_(property_tax, max_amount)
         # line 66

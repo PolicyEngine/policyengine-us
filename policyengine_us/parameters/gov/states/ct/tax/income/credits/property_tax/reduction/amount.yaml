@@ -1,6 +1,6 @@
-description: Connecticut limits its Property Tax Credit to filers with federal adjusted gross income below the following amount, based on filing status.
+description: Connecticut phases its property tax credit by this amount, based on filing status.
 metadata:
-  label: Connecticut Property Tax Credit income threshold
+  label: Connecticut Property Tax Credit phase out amount
   period: year
   unit: currency-USD
   breakdown:
@@ -15,12 +15,12 @@ metadata:
 
 
 SINGLE:
-  2021-01-01: 49_500
+  2021-01-01: 
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 54_500
+  2021-01-01: 
 JOINT:
-  2021-01-01: 70_500
+  2021-01-01: 
 WIDOW:
-  2021-01-01: 70_500
+  2021-01-01: 
 SEPARATE:
-  2021-01-01: 35_250
+  2021-01-01: 
