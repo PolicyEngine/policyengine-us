@@ -2,7 +2,7 @@
   period: 2023
   input:
     state_code: AZ
-    filing_status: JOINT
+    cohabitating_spouses: true
     az_property_tax_credit_income: 5_000
     az_property_tax_credit_eligible: true
   output:
@@ -12,7 +12,7 @@
   period: 2023
   input:
     state_code: AZ
-    filing_status: SINGLE
+    cohabitating_spouses: false
     az_property_tax_credit_income: 2_800   
     az_property_tax_credit_eligible: true
   output:
@@ -22,7 +22,7 @@
   period: 2023
   input:
     state_code: AZ
-    filing_status: WIDOW
+    cohabitating_spouses: false
     az_property_tax_credit_income: 3_000   
     az_property_tax_credit_eligible: false
   output:
@@ -32,7 +32,7 @@
   period: 2023
   input:
     state_code: AZ
-    filing_status: HEAD_OF_HOUSEHOLD
+    cohabitating_spouses: true
     az_property_tax_credit_income: 4_000
     az_property_tax_credit_eligible: true
   output:
@@ -42,7 +42,7 @@
   period: 2023
   input:
     state_code: AZ
-    filing_status: SEPARATE
+    cohabitating_spouses: true
     az_property_tax_credit_income: 5_500
     az_property_tax_credit_eligible: true
   output:

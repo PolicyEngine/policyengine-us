@@ -14,24 +14,15 @@ class az_property_tax_credit(Variable):
         p = parameters(period).gov.states.az.tax.income.property_tax_credits
         income = tax_unit("az_property_tax_credit_income", period)
 
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
+        cohabitating = tax_unit("cohabitating_spouses", period)
 
-        property_tax_credits = select(
+        return select(
             [
-                filing_status == status.SINGLE,
-                filing_status == status.HEAD_OF_HOUSEHOLD,
-                filing_status == status.JOINT,
-                filing_status == status.SEPARATE,
-                filing_status == status.WIDOW,
+                ~cohabitating,
+                cohabitating,
             ],
             [
-                p.amount.single.calc(income),
-                p.amount.head_of_household.calc(income),
-                p.amount.joint.calc(income),
-                p.amount.separate.calc(income),
-                p.amount.widow.calc(income),
+                p.amount.alone.calc(income),
+                p.amount.cohabitating.calc(income),
             ],
         )
-
-        return property_tax_credits

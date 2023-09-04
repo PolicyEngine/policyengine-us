@@ -1,4 +1,4 @@
-description: Arizona provides this property tax credit amount for joint filers based on income.
+description: Arizona provides this property tax credit amount for filers living with spouses based on income.
 metadata:
   reference:
     - title: 2022 Property Tax Refund (Credit) Claim Form 140PTC
@@ -11,7 +11,7 @@ metadata:
   rate_unit: currency-USD
   type: single_amount
   period: year
-  label: Arizona property tax credit joint amount 
+  label: Arizona property tax credit cohabitating amount 
 brackets:
   - threshold:
       2021-01-01: 0
