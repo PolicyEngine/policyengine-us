@@ -1,8 +1,8 @@
-description: West Virginia provides the low-income family tax credit for filers with modified agi at or below this threshold.
-metadata:
+description: West Virginia qualifies filers for the low-income family tax credit with modified adjusted gross income at or below this threshold, based on filing status.
+
   period: year
   unit: currency-USD
-  label: West Virginia low-income family tax credit modified agi threshold
+  label: West Virginia low-income family tax credit modified adjusted gross income threshold
   
   reference:
   - title: Code of West Virginia §11-21-22A (e)(3)
@@ -23,10 +23,3 @@ WIDOW:
 SEPARATE:
   2009-01-01: 1_350 
 
-# for rate = set parameter (breakdown) to 1 for all but the one that is .5 (separate)
-
-# p = parameters(period).gov.states.ar....
-# state_group = spm_unit.household("state_group_str", period)
-# poverty_guidlines_amount = parameters(period).gov.hhs.fpg.first_person[state_group] + (tax_unit_size-1) * parameters(period).gov.hhs.fpg.additional_person[state_group]
-# total_pga = p.fpg_rate * poverty_guidlines_amount
-# income_threshold = p.income_threshold + total_pga
