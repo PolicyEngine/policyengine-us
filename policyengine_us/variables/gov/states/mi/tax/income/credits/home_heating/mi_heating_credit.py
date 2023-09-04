@@ -34,11 +34,8 @@ class mi_heating_credit(Variable):
         # calculate initial home heating credit
         initial_hhc = where(
             heating_costs_included_in_rent == True,
-            (
-                p.standard_allowance.heating_cost_rate
-                * mi_reduced_standard_allowance
-            ),
-            max_(mi_reduced_standard_allowance, mi_alternate_household_credit)
+            mi_reduced_standard_allowance,
+            max_(mi_reduced_standard_allowance, mi_alternate_heating_credit)
         )
         # check total house resource comply with alternate credit maximum income  (table B)
         # alternate_hhc = where(
@@ -50,6 +47,8 @@ class mi_heating_credit(Variable):
 
         # determine final home heating credit
         # return p.home_heating_credit_rate * alternate_hhc
-        return where(mi_standard_allowance_heating_credit_eligible == True, 
+        return where(
+            mi_standard_allowance_heating_credit_eligible == True, 
         (p.home_heating_credit_rate * initial_hhc),
-        0)
+        0
+        )
