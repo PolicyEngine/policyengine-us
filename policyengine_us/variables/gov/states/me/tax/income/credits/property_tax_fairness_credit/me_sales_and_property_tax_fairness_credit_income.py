@@ -10,6 +10,6 @@ class me_sales_and_property_tax_fairness_credit_income(Variable):
     reference = "https://legislature.maine.gov/statutes/36/title36sec5219-KK.html"  # 1. D.
     defined_for = StateCode.ME
 
-    adds = [
+    adds = (
         "gov.states.me.tax.income.credits.property_tax_fairness.income_sources"
-    ]
+    )
