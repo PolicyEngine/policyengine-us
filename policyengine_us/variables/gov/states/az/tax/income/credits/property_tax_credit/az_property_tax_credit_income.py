@@ -11,4 +11,3 @@ class az_property_tax_credit_income(Variable):
 
     adds =
         "gov.states.az.tax.income.property_tax_credits.income_sources",
-    ]
