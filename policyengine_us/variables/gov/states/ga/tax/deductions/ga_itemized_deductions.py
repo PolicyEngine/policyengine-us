@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ga_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Georgia itemized deduction"
+    label = "Georgia itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -17,10 +17,27 @@ class ga_itemized_deductions(Variable):
     # GA itemized deduction does not account for mortgage expenses
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions
-        itm_deds = [
-            deduction
-            for deduction in p.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
+        is_itemized = tax_unit("tax_unit_itemizes", period) # whether if taxunit itemized deductions on Federal return
+        federal_itemized_deductions = tax_unit("itemized_deductions_less_salt", period)
+
+
+        ##- charitable_deduction
+        ##- interest_deduction
+        ##- salt_deduction
+        ##- medical_expense_deduction
+        ##- casualty_loss_deduction
+        ##- qualified_business_income_deduction
+        
+        ## adjustment -minus
+        # income taxes other than georgia
+        # investment interest expense for the productions of income exempt
+
+        interest_deduction = tax_unit("interest_deduction",period)
+
+        income_adjustment = federal_taxable_income - ga_taxable_income ##????
+
+        ga_itemized_deductions = itemized_deductions - interest_deduction
+        
+
 
         return add(tax_unit, period, itm_deds)
