@@ -1,0 +1,71 @@
+- name: Ineligible
+  period: 2023
+  input:
+    state_code: NM
+    nm_modified_gross_income: 3_000
+    nm_property_tax_rebate_eligible: false
+    real_estate_taxes: 1_000
+    rent: 200
+    filing_status: SINGLE
+  output:
+    nm_property_tax_rebate: 0
+
+- name: No rent or taxes
+  period: 2023
+  input:
+    state_code: NM
+    nm_modified_gross_income: 16_000
+    nm_property_tax_rebate_eligible: true
+    real_estate_taxes: 0
+    rent: 0
+    filing_status: SINGLE
+  output:
+    nm_property_tax_rebate: 0
+
+- name: Rebate capped at 250 for joint filers
+  period: 2023
+  input:
+    state_code: NM
+    nm_modified_gross_income: 16_000
+    nm_property_tax_rebate_eligible: true
+    real_estate_taxes: 1_000
+    rent: 0
+    filing_status: JOINT
+  output:
+    nm_property_tax_rebate: 250
+
+- name: Max tax liability of $180 for agi of 16,000 - should be 0 rebate
+  period: 2023
+  input:
+    state_code: NM
+    nm_modified_gross_income: 16_000
+    nm_property_tax_rebate_eligible: true
+    real_estate_taxes: 180
+    rent: 0
+    filing_status: JOINT
+  output:
+    nm_property_tax_rebate: 0
+
+- name: Rebate capped at 250 for separate filers
+  period: 2023
+  input:
+    state_code: NM
+    nm_modified_gross_income: 16_000
+    nm_property_tax_rebate_eligible: true
+    real_estate_taxes: 1_000
+    rent: 0
+    filing_status: SEPARATE
+  output:
+    nm_property_tax_rebate: 125
+
+- name: Calculation of 6% of rent # 5,000 * 0.06 - 180 = 120
+  period: 2023
+  input:
+    state_code: NM
+    nm_modified_gross_income: 16_000
+    nm_property_tax_rebate_eligible: true
+    real_estate_taxes: 0
+    rent: 5_000
+    filing_status: JOINT
+  output:
+    nm_property_tax_rebate: 120
