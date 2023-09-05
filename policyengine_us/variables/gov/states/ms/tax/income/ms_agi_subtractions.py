@@ -14,4 +14,3 @@ class ms_agi_subtractions(Variable):
         # Line 61: deduct 50% of the federal self-employment taxes imposed.
         self_employment = add(tax_unit, period, ["self_employment_tax"])
         return self_employment * 0.5
-    
