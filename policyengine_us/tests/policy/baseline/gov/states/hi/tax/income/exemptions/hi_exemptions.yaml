@@ -3,70 +3,70 @@
   input:
     state_code: HI
     exemptions: 2
-    is_disabled: false
-    is_tax_unit_spouse: true
-    spouse_is_disabled: true
-    aged_spouse: true
+    head_is_disabled: false
+    spouse_is_disabled: false
+    age_head: 63
+    age_spouse: 63
   output:
     hi_exemptions: 2_288
   
-- name: Regular exemptions (no matter what other status is)
+- name: Regular exemptions (aged)
   period: 2021
   input:
     state_code: HI
     exemptions: 2
-    is_disabled: false
-    is_tax_unit_spouse: false
-    spouse_is_disabled: true
-    aged_spouse: false
-  output:
-    hi_exemptions: 2_288
-
-- name: Exemptions for disabled individual
-  period: 2021
-  input:
-    state_code: HI
-    exemptions: 2
-    is_disabled: true
-    is_tax_unit_spouse: false
+    head_is_disabled: false
     spouse_is_disabled: false
-    aged_spouse: false
+    age_head: 65
+    age_spouse: 66
   output:
-    hi_exemptions: 14_000
+    hi_exemptions: 4_576
+
+- name: Exemptions for disabled individual  ## What's the input of age_spouse for individual?
+  period: 2021
+  input:
+    state_code: HI
+    exemptions: 2
+    head_is_disabled: true
+    spouse_is_disabled: false
+    age_head: 66
+    age_spouse: 0
+  output:
+    hi_exemptions: 8_144
 
 - name: Exemptions for taxpayer and spouse(nun-disabled spouse under 65) 
   period: 2021
   input:
     state_code: HI
-    exemptions: 2
-    is_disabled: true
-    is_tax_unit_spouse: true
+    exemptions: 4
+    head_is_disabled: true
     spouse_is_disabled: false
-    aged_spouse: false
+    age_head: 66
+    age_spouse: 64
   output:
-    hi_exemptions: 16_288
+    hi_exemptions: 10_432
 
 - name: Exemptions for taxpayer and spouse(nun-disabled spouse aged 65 or over)
   period: 2021
   input:
     state_code: HI
-    exemptions: 2
-    is_disabled: true
-    is_tax_unit_spouse: true
+    exemptions: 4
+    head_is_disabled: true
     spouse_is_disabled: false
-    aged_spouse: true
+    age_head: 66
+    age_spouse: 67
   output:
-    hi_exemptions: 18_576
+    hi_exemptions: 11_576
 
 - name: Exemptions for taxpayer and spouse(both disabled)
   period: 2021
   input:
     state_code: HI
-    exemptions: 2
-    is_disabled: true
-    is_tax_unit_spouse: true
+    exemptions: 4
+    head_is_disabled: true
     spouse_is_disabled: true
-    aged_spouse: false
+    age_head: 66
+    age_spouse: 68
   output:
-    hi_exemptions: 28_000
+    hi_exemptions: 16_288
 
