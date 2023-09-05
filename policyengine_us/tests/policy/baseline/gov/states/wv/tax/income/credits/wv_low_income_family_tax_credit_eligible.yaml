@@ -3,7 +3,7 @@
   input:
     wv_agi: 40_000
     tax_unit_size: 4
-    tax_unit_fpg: 30_000
+    # tax_unit_fpg: 30_000
     filing_status: SINGLE
     state_code: WV
   output:
@@ -15,7 +15,7 @@
   input:
     wv_agi: 20_000
     tax_unit_size: 2
-    tax_unit_fpg: 19_720
+    # tax_unit_fpg: 19_720
     filing_status: HEAD
     state_code: WV
   output:
@@ -27,7 +27,7 @@
   input:
     wv_agi: 20_000
     tax_unit_size: 3
-    tax_unit_fpg: 24_860
+    # tax_unit_fpg: 24_860
     filing_status: SEPARATE
     state_code: WV
   output:
@@ -39,7 +39,7 @@
   input:
     wv_agi: 12_000
     tax_unit_size: 3
-    tax_unit_fpg: 24_860
+    # tax_unit_fpg: 24_860
     filing_status: SEPARATE
     state_code: WV
   output:
