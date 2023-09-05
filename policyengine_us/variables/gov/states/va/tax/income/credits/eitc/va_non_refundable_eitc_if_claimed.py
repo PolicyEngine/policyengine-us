@@ -14,4 +14,6 @@ class va_non_refundable_eitc_if_claimed(Variable):
     def formula(tax_unit, period, parameters):
         federal_eitc = tax_unit("earned_income_tax_credit", period)
         p = parameters(period).gov.states.va.tax.income.credits.eitc
-        return p.non_refundable * federal_eitc
+        low_income_tax_credit = tax_unit("va_low_income_tax_credit", period)
+        eitc = p.non_refundable * federal_eitc
+        return max_(eitc, low_income_tax_credit)

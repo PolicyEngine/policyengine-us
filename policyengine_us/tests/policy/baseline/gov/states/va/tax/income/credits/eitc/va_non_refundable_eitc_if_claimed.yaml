@@ -3,6 +3,7 @@
   input:
     state_code: VA
     earned_income_tax_credit: 0
+    va_low_income_tax_credit: 0
   output:
     va_non_refundable_eitc_if_claimed: 0
 
@@ -11,6 +12,7 @@
   input:
     state_code: VA
     earned_income_tax_credit: 1_000
+    va_low_income_tax_credit: 0
   output:
     va_non_refundable_eitc_if_claimed: 200
 

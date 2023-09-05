@@ -1,0 +1,7 @@
+- name: No exemptions
+  period: 2022
+  input:
+    state_code: VA
+    exemptions: 0
+  output:
+    va_low_income_tax_credit: 0
