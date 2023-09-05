@@ -31,12 +31,12 @@ class hi_min_head_spouse_earned(Variable):
             )
         )
         # 2400 --> one dependent, 4800 --> more than one dependent
-        qualified_num = tax_unit("count_cdcc_eligible", period)
+        qualified_children = tax_unit("count_cdcc_eligible", period)
         income = person("earned_income", period)
         head_income = select(
             [
-                (sum(head_eligible) != 0) & (qualified_num <= 1),
-                (sum(head_eligible) != 0) & (qualified_num > 1),
+                (sum(head_eligible) != 0) & (qualified_children <= 1),
+                (sum(head_eligible) != 0) & (qualified_children > 1),
                 sum(head_eligible) == 0,
             ],
             [
@@ -54,10 +54,10 @@ class hi_min_head_spouse_earned(Variable):
         spouse_income = select(
             [
                 (sum(spouse_eligible) != 0)
-                & (qualified_num <= 1)
+                & (qualified_children <= 1)
                 & (sum(spouse) != 0),
                 (sum(spouse_eligible) != 0)
-                & (qualified_num > 1)
+                & (qualified_children > 1)
                 & (sum(spouse) != 0),
                 (sum(spouse_eligible) == 0) & (sum(spouse) != 0),
                 sum(spouse) == 0,

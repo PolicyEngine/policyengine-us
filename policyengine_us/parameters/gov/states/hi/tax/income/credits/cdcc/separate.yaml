@@ -1,0 +1,28 @@
+description: Hawaii provides this amount under dependent care benefit for separate filler in line 11.
+SINGLE:
+  2018-01-01: 5_000
+JOINT:
+  2018-01-01: 5_000
+SEPARATE:
+  2018-01-01: 2_500
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 5_000
+WIDOW:
+  2018-01-01: 5_000
+metadata:
+  breakdown: filing_status
+  amount_unit: currency-USD
+  label: Hawaii dependent care benefit amount for separate/not separate
+  reference:
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (b)(2)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41
+    - title: Hawaii SCHEDULE X 2022 
+      href: https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2021 
+      href: https://files.hawaii.gov/tax/forms/2021/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2020 
+      href: https://files.hawaii.gov/tax/forms/2020/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2019 
+      href: https://files.hawaii.gov/tax/forms/2019/schx_i.pdf#page=2
+    - title: Hawaii SCHEDULE X 2018 
+      href: https://files.hawaii.gov/tax/forms/2018/schx_i.pdf#page=2

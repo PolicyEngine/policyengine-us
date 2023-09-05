@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class hi_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Hawaii CDCC"
+    label = "Hawaii child and dependent care credit"
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
