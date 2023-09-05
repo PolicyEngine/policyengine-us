@@ -22,7 +22,7 @@ class az_property_tax_credit(Variable):
                 cohabitating,
             ],
             [
-                p.amount.alone.calc(income),
+                p.amount.living_alone.calc(income),
                 p.amount.cohabitating.calc(income),
             ],
         )
