@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.460.0] - 2023-09-05 16:48:36
+
+### Added
+
+- Rhode Island standard deduction phaseout.
+
 ## [0.459.0] - 2023-09-04 23:28:52
 
 ### Added
@@ -5186,6 +5192,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.459.0...0.460.0
 [0.459.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.458.2...0.459.0
 [0.458.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.458.1...0.458.2
 [0.458.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.458.0...0.458.1
