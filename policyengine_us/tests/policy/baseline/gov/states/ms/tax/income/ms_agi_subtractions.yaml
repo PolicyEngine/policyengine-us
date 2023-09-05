@@ -1,0 +1,8 @@
+- name: Mississippi agi
+  period: 2020
+  input:
+    state_code: MS
+    self_employment_tax: 20_000
+  output:
+    ms_standard_deduction: 10_000
+    
