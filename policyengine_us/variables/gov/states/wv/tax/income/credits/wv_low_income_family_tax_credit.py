@@ -12,7 +12,7 @@ class wv_low_income_family_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
-
+        eligible = tax_unit("wv_low_income_family_tax_credit_eligible", period)
         p = parameters(
             period
         ).gov.states.wv.tax.income.credits.low_income_family_tax_credit
@@ -40,10 +40,10 @@ class wv_low_income_family_tax_credit(Variable):
                 filing_status == filing_statuses.WIDOW,
             ],
             [
-                p.amount.single.calc(reduced_agi),
-                p.amount.separate.calc(reduced_agi),
-                p.amount.joint.calc(reduced_agi),
-                p.amount.head.calc(reduced_agi),
-                p.amount.widow.calc(reduced_agi),
+                p.amount.single.calc(reduced_agi) * eligible,
+                p.amount.separate.calc(reduced_agi) * eligible,
+                p.amount.joint.calc(reduced_agi) * eligible,
+                p.amount.head.calc(reduced_agi) * eligible,
+                p.amount.widow.calc(reduced_agi) * eligible,
             ],
         )
