@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class vt_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Vermont child income tax credit"
+    label = "Vermont child tax credit"
     definition_period = YEAR
     unit = USD
     reference = "https://casetext.com/statute/vermont-statutes/title-32-taxation-and-finance/chapter-151-income-taxes/subchapter-002-taxation-of-individuals-trusts-and-estates/section-5830f-see-note-vermont-child-tax-credit/1"
