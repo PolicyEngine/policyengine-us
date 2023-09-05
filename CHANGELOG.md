@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.459.0] - 2023-09-04 23:28:52
+
+### Added
+
+- Delaware itemized deductions.
+
+## [0.458.2] - 2023-09-04 20:59:54
+
+## [0.458.1] - 2023-09-04 20:23:16
+
+### Fixed
+
+- Absence of federal Alternative Minimum Tax in capped_cdcc formula.
+- Code fragmentation in Colorado child care expense credit calculations.
+- Implausible allocation of total care expenses to Colorado eligible children.
+
 ## [0.458.0] - 2023-09-04 16:05:48
 
 ### Added
@@ -5170,6 +5186,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.459.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.458.2...0.459.0
+[0.458.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.458.1...0.458.2
+[0.458.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.458.0...0.458.1
 [0.458.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.457.0...0.458.0
 [0.457.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.456.0...0.457.0
 [0.456.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.455.0...0.456.0
