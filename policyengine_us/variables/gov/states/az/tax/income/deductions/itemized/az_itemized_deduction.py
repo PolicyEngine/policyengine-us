@@ -35,17 +35,9 @@ class az_itemized_deduction(Variable):
         medical_expense_deduction = tax_unit(
             "medical_expense_deduction", period
         )
-        az_medical_expense_deduction = where(
-            medical_expense >= medical_expense_deduction,
-            medical_expense - medical_expense_deduction,
-            medical_expense_deduction - medical_expense,
+        az_medical_expense_deduction = np.abs(
+            medical_expense - medical_expense_deduction
         )
-        # charitable_deduction = tax_unit("az_charitable_deduction", period)
-
-        # Adjustment to Interest Deduction
-        # mortgage_interest = the amount of mortgage interest you paid for 2022 that is equal to
-        # the amount of federal credit, if you received a federal credit for interest paid on
-        # mortgage credit certificates (from federal Form 8396).
 
         # Adjustments to Charitable Contributions
         # Amount of charitable contributions for which you are claiming a credit under Arizona law
@@ -54,9 +46,13 @@ class az_itemized_deduction(Variable):
             "az_charitable_contributions_credit", period
         )
 
-        charitable_deduction_allowed = where(
-            charitable_contributions_credit > 0, 0, charitable_deduction
+        deduction_after_credit = max_(
+            charitable_deduction - charitable_contributions_credit, 0
         )
+
+        # charitable_deduction_allowed = where(
+        #     charitable_contributions_credit > 0, 0, charitable_deduction
+        # )
 
         # Adjustment to State Income Taxes - add back real estate taxes
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
@@ -64,9 +60,6 @@ class az_itemized_deduction(Variable):
         return (
             federal_deductions
             + az_medical_expense_deduction
-            + charitable_deduction_allowed
+            + deduction_after_credit
             + real_estate_taxes
         )
-
-
-# Make a az_chartiable_contributions_credit.py file in credits

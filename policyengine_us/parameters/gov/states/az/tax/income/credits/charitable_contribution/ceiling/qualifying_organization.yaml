@@ -3,6 +3,8 @@ metadata:
   label: Arizona charitable deduction for qualifying charitable organization limit
   period: year
   unit: currency-USD
+  breakdown:
+  - filing_status
   reference:
     - title: Ariz. Rev. Stat. § 43-1088 (A)
       href: https://casetext.com/statute/arizona-revised-statutes/title-43-taxation-of-income/chapter-10-individuals/article-5-credits/section-43-1088-effective-until-ninety-one-days-after-adjournment-credit-for-contribution-to-qualifying-charitable-organizations-definitions
@@ -11,5 +13,13 @@ metadata:
     - title: Credit for Contributions to Qualifying Charitable Organizations
       href: https://azdor.gov/forms/tax-credits-forms/credit-contributions-qualifying-charitable-organizations
 
-values:
+JOINT:
   2021-01-01: 800
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 800
+WIDOW:
+  2021-01-01: 800
+SINGLE:
+  2021-01-01: 800
+SEPARATE:
+  2021-01-01: 400

@@ -16,25 +16,21 @@ class az_charitable_contributions_credit(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.credits.charitable_contribution.ceiling
-        filing_status = tax_unit("filing_status", period)
-        foster_care = add(
-            tax_unit,
+        charitable_contributions = tax_unit(
+            "az_charitable_contributions_to_qualifying_charitable_organizations",
             period,
-            ["foster_care_charitable_organization"],
         )
-        charitable_contributions = add(
-            tax_unit,
+        foster_care_contributions = tax_unit(
+            "az_charitable_contributions_to_qualifying_foster_care_organizations",
             period,
-            ["charitable_cash_donations", "charitable_non_cash_donations"],
         )
-        cap = where(
-            foster_care, p.qualifying_foster, p.qualifying_organization
-        )
-
         filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        capped_credit = min_(charitable_contributions, cap)
-
-        return where(
-            separate, capped_credit / p.separate_divisor, capped_credit
+        capped_charitable_contributions = min_(
+            charitable_contributions, p.qualifying_organization[filing_status]
+        )
+        capped_foster_care_contributions = min_(
+            foster_care_contributions, p.qualifying_foster[filing_status]
+        )
+        return (
+            capped_charitable_contributions + capped_foster_care_contributions
         )
