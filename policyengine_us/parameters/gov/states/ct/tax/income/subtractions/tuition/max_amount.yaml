@@ -1,0 +1,20 @@
+description: Connecticut provides a state tuitition subtraction under certain qualifications and for a maximum limit.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Connecticut state tuition subtractions
+  breakdown:
+    - filing_status
+  reference:
+    - title: Connecticut General Statutes, Chapter 229, Sec. 12-701a
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701a
+SINGLE:
+  2015-01-01: 5_000
+HEAD_OF_HOUSEHOLD:
+  2015-01-01: 5_000
+JOINT:
+  2015-01-01: 10_000
+WIDOW:
+  2015-01-01: 5_000
+SEPARATE:
+  2015-01-01: 5_000 
