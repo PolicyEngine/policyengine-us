@@ -16,38 +16,39 @@ class ga_military_retirement_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.ga.tax.income.agi.exclusions
-        military_age = person("age", period) < p.military.age
+        p = parameters(period).gov.states.ga.tax.income.agi.exclusions.military
+        military_age = person("age", period) < p.main.age
+        military_additional_age = (
+            person("age", period) < p.additional.threshold.age
+        )
         military_income = person("military_retirement_pay", period)
         earned_income = person("earned_income", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
 
         ## head military exclusion
-        head_base = where(head & military_age, p.military.amount, 0)
+        head_base = where(head & military_age, p.main.amount, 0)
         head_additional = where(
             head
-            & military_age
-            & (earned_income > p.military.additional_amount.threshold),
-            p.military.additional_amount.amount,
+            & military_additional_age
+            & (earned_income > p.additional.threshold.income),
+            p.additional.amount,
             0,
         )
-
         head_military_exclusion = tax_unit.sum(
             min_((head_base + head_additional), military_income)
         )
 
         ## spouse military exclusion
         spouse = person("is_tax_unit_spouse", period)
-        spouse_base = where(spouse & military_age, p.military.amount, 0)
+        spouse_base = where(spouse & military_age, p.main.amount, 0)
         spouse_additional = where(
             spouse
-            & military_age
-            & (earned_income > p.military.additional_amount.threshold),
-            p.military.additional_amount.amount,
+            & military_additional_age
+            & (earned_income > p.additional.threshold.income),
+            p.additional.amount,
             0,
         )
-
         spouse_military_exclusion = tax_unit.sum(
             min_((spouse_base + spouse_additional), military_income)
         )

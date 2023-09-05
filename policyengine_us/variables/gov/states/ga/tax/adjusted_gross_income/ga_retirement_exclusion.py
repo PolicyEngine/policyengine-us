@@ -20,7 +20,7 @@ class ga_retirement_exclusion(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         earned_income_exclusion_eligible = person(
-            "ga_earned_income_eligible", period
+            "ga_earned_income_exclusion", period
         )
         retirement_income_eligible = (
             person("ga_retirement_income", period)

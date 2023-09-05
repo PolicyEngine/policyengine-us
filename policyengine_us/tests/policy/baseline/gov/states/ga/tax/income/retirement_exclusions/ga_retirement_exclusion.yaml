@@ -6,7 +6,7 @@
         is_tax_unit_head: true
         is_disabled: true
         age: 50
-        ga_earned_income_eligible: 4_000
+        ga_earned_income_exclusion: 4_000
         ga_retirement_income: 69_000
     tax_units:
       tax_unit:
@@ -27,7 +27,7 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 50
-        ga_earned_income_eligible: 4_000
+        ga_earned_income_exclusion: 4_000
         ga_retirement_income: 69_000
     tax_units:
       tax_unit:
@@ -48,13 +48,13 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 65
-        ga_earned_income_eligible: 4_000
+        ga_earned_income_exclusion: 4_000
         ga_retirement_income: 63_000
       person2:
         is_tax_unit_head: true
         is_disabled: true
         age: 60
-        ga_earned_income_eligible: 4_000
+        ga_earned_income_exclusion: 4_000
         ga_retirement_income: 20_000
     tax_units:
       tax_unit:

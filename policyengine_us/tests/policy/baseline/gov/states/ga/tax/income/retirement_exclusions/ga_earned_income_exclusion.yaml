@@ -4,7 +4,7 @@
     earned_income: 1000
     state_code: GA
   output:
-    ga_earned_income_eligible: 1000
+    ga_earned_income_exclusion: 1000
 
 - name: over cap
   period: 2023
@@ -12,4 +12,4 @@
     earned_income: 4329
     state_code: GA
   output:
-    ga_earned_income_eligible: 4000
+    ga_earned_income_exclusion: 4000

@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ga_earned_income_eligible(Variable):
+class ga_earned_income_exclusion(Variable):
     value_type = float
     entity = Person
     label = "Georgia earned income exclusion"
