@@ -117,9 +117,6 @@ class regular_tax_before_credits(Variable):
         return where(hasqdivltcg, dwks45, dwks44)
 
 
-taxbc = variable_alias("taxbc", regular_tax_before_credits)
-
-
 class c09600(Variable):
     value_type = float
     entity = TaxUnit
