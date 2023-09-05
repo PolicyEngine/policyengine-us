@@ -29,14 +29,14 @@ class hi_exemptions(Variable):
         adjusted_exemp = where(
             disabled_head == 1, exemp - disabled_head, exemp + aged_head
         )
-        base_exemp = where(
+        exemp_base = where(
             disabled_spouse == 1,
             adjusted_exemp - disabled_spouse,
             adjusted_exemp + aged_spouse,
         )
 
         disabled_exemptions = (disabled_head + disabled_spouse) * p.disabled
-        exemption_base_amount = base_exemp * p.base
+        exemption_base_amount = exemp_base * p.base
 
         # head_total_exemptions = where(disabled_head == 1, exemp - disabled_head, exemp +  aged_head)
         # spouse_total_exemptions = where(disabled_spouse == 1, exemp - disabled_spouse, exemp +  aged_spouse)
