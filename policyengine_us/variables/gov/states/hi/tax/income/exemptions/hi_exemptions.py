@@ -14,7 +14,6 @@ class hi_exemptions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.exemptions
-        person = tax_unit.members
         exemp = tax_unit("exemptions", period)
 
         disabled_head = tax_unit("head_is_disabled", period).astype(int)
