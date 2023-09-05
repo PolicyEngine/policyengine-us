@@ -34,9 +34,9 @@
     state_code: AZ
     cohabitating_spouses: true
     az_property_tax_credit_income: 4_000
-    az_property_tax_credit_eligible: true
+    az_property_tax_credit_eligible: false
   output:
-    az_property_tax_credit: 279
+    az_property_tax_credit: 0
 
 - name: AZ property tax credit unit test 5
   period: 2023
