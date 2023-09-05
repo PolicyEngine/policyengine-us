@@ -38,10 +38,4 @@ class hi_exemptions(Variable):
         disabled_exemptions = (disabled_head + disabled_spouse) * p.disabled
         exemption_base_amount = exemp_base * p.base
 
-        # head_total_exemptions = where(disabled_head == 1, exemp - disabled_head, exemp +  aged_head)
-        # spouse_total_exemptions = where(disabled_spouse == 1, exemp - disabled_spouse, exemp +  aged_spouse)
-
-        # exemption_base_amount = (head_total_exemptions + spouse_total_exemptions) * p.base
-        # disabled_exemptions = (disabled_head + disabled_spouse) * p.disabled
-
         return exemption_base_amount + disabled_exemptions
