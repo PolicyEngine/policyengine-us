@@ -22,7 +22,7 @@ class hi_itemized_deduction(Variable):
             "medical_expense_deduction", period
         )
 
-        # 2. salt_deduction:
+        # 2. salt_deduction: dont need
         # Hawaii did not limits the deduction for state and local taxes to $10,000 ($5,000 for a married taxpayer filling a separate return)
         # new: The NET amount of taxes withheld from the sale of Hawaii real property interests
         hi_salt_deduction = ...
@@ -32,6 +32,7 @@ class hi_itemized_deduction(Variable):
         #     (1) suspend the deduction for interest paid on home equity loans
         #     (2) lower the dollar limit on mortgages qualifying for the home mortgage interest deduction
         hi_interest_deductionm = ...
+        #
 
         # 4. charitable_deduction: same
         hi_charitable_deduction = tax_unit("charitable_deduction", period)
@@ -44,7 +45,7 @@ class hi_itemized_deduction(Variable):
         #       to be deductible, and that such losses must exceed $500.
         hi_casualty_loss_deduction = ...
 
-        # 6. miscellaneous_deductions:
+        # 6. miscellaneous_deductions: dont need
         # Hawaii did not suspend all miscellaneous itemized deductions that are subject to the 2% floor
         hi_miscellaneous_deductions = ...
 
