@@ -15,7 +15,7 @@ class vt_ctc(Variable):
         person = tax_unit.members
         age = person("age", period)
         p = parameters(period).gov.states["vt"].tax.income.credits.ctc
-        eligible = age < p.ineligible_age
+        eligible = age < p.age_threshold
         count_eligible = tax_unit.sum(eligible)
         # Get maximum credit amount.
         max_credit = p.amount * count_eligible
