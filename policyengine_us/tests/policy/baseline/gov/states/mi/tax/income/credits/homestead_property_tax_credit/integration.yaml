@@ -120,7 +120,7 @@
   output: # (2100 - 25000 * 0.032) * 0.84
     mi_homestead_property_tax_credit: 1_092
 
-- name: not senior, negative rent difference
+- name: senior, negative rent difference
   period: 2022
   input:
     mi_household_resources: 31_251

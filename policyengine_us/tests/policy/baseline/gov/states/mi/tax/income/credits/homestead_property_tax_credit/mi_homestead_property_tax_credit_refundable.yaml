@@ -1,0 +1,45 @@
+- name: no not refundable amount
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_non_refundable: 0
+    assessed_property_value: 0
+    state_code: MI
+  output:
+    mi_homestead_property_tax_credit_refundable: 0
+
+- name: negative property difference
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_non_refundable: 1_001
+    assessed_property_value: 1_000
+    state_code: MI
+  output: # 1000 - 1001 < 0
+    mi_homestead_property_tax_credit_refundable: 0
+
+- name: positive property difference
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_non_refundable: 1_000
+    assessed_property_value: 1800
+    state_code: MI
+  output: # 1800 - 1000
+    mi_homestead_property_tax_credit_refundable: 800
+
+- name: negative rent difference
+  period: 2022
+  input:
+    mi_homestead_property_tax_credit_non_refundable: 1_000
+    rent: 4_347
+    state_code: MI
+  output: # 4347 * 0.23 - 1000 < 0
+    mi_homestead_property_tax_credit_refundable: 0
+
+- name: positive rent difference
+  period: 2022
+  absolute_error_margin: 0.1
+  input:
+    mi_homestead_property_tax_credit_non_refundable: 2_000
+    rent: 10_000
+    state_code: MI
+  output: # 10000 * 0.23 - 2000
+    mi_homestead_property_tax_credit_refundable: 300

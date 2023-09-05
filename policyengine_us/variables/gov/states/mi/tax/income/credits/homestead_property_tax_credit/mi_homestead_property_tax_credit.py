@@ -7,7 +7,7 @@ class mi_homestead_property_tax_credit(Variable):
     label = "Michigan Homestead Property Tax Credit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.MI
+    defined_for = "mi_homestead_property_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -33,15 +33,7 @@ class mi_homestead_property_tax_credit(Variable):
             "mi_homestead_property_tax_credit_refundable", period
         )
 
-        eligibility = tax_unit(
-            "mi_homestead_property_tax_credit_eligible", period
-        )
-
-        return (
-            eligibility
-            * phase_out_rate
-            * min_(
-                refundable_amount * credit_rate,
-                p.max_amount,
-            )
+        return phase_out_rate * min_(
+            refundable_amount * credit_rate,
+            p.max_amount,
         )
