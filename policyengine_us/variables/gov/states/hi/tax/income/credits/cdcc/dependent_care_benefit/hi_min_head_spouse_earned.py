@@ -16,30 +16,21 @@ class hi_min_head_spouse_earned(Variable):
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         # earned minimum income if is disabled/full-time student
-        head_eligible = tax_unit.any(
-            head
-            & (
-                person("is_disabled", period)
-                | person("is_full_time_student", period)
-            )
+        head_eligible = head & (
+            person("is_disabled", period)
+            | person("is_full_time_student", period)
         )
-        spouse_eligible = tax_unit.any(
-            spouse
-            & (
-                person("is_disabled", period)
-                | person("is_full_time_student", period)
-            )
+        spouse_eligible = spouse & (
+            person("is_disabled", period)
+            | person("is_full_time_student", period)
         )
         # 2400 --> one dependent, 4800 --> more than one dependent
         qualified_children = tax_unit("count_cdcc_eligible", period)
         income = person("earned_income", period)
-        head_income = select(
-            [
-                (sum(head_eligible) != 0) & (qualified_children <= 1),
-                (sum(head_eligible) != 0) & (qualified_children > 1),
-                sum(head_eligible) == 0,
-            ],
-            [
+        head_income = where(
+            sum(head_eligible) != 0,
+            where(
+                qualified_children <= 1,
                 max_(
                     p.expense_cap.one_child,
                     tax_unit.sum(head * income),
@@ -48,32 +39,27 @@ class hi_min_head_spouse_earned(Variable):
                     p.expense_cap.two_or_more_child,
                     tax_unit.sum(head * income),
                 ),
-                tax_unit.sum(head * income),
-            ],
+            ),
+            tax_unit.sum(head * income),
         )
-        spouse_income = select(
-            [
-                (sum(spouse_eligible) != 0)
-                & (qualified_children <= 1)
-                & (sum(spouse) != 0),
-                (sum(spouse_eligible) != 0)
-                & (qualified_children > 1)
-                & (sum(spouse) != 0),
-                (sum(spouse_eligible) == 0) & (sum(spouse) != 0),
-                sum(spouse) == 0,
-            ],
-            [
-                max_(
-                    p.expense_cap.one_child,
-                    tax_unit.sum(spouse * income),
-                ),
-                max_(
-                    p.expense_cap.two_or_more_child,
-                    tax_unit.sum(spouse * income),
+        spouse_income = where(
+            sum(spouse) != 0,
+            where(
+                sum(spouse_eligible) != 0,
+                where(
+                    qualified_children <= 1,
+                    max_(
+                        p.expense_cap.one_child,
+                        tax_unit.sum(spouse * income),
+                    ),
+                    max_(
+                        p.expense_cap.two_or_more_child,
+                        tax_unit.sum(spouse * income),
+                    ),
                 ),
                 tax_unit.sum(spouse * income),
-                head_income,
-            ],
+            ),
+            head_income,
         )
 
         return min_(head_income, spouse_income)
