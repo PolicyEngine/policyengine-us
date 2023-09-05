@@ -12,6 +12,7 @@ class wv_low_income_family_tax_credit(Variable):
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
+        eligible = tax_unit("wv_low_income_family_tax_credit_eligible", period)
 
         p = parameters(
             period

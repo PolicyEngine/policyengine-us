@@ -12,7 +12,6 @@ class wv_low_income_family_tax_credit_eligible(Variable):
         # modified agi needed to be modified
         wv_agi = tax_unit("wv_agi", period)
         filing_status = tax_unit("filing_status", period)
-        eligible = tax_unit("wv_low_income_family_tax_credit_eligible", period)
 
         p = parameters(
             period
