@@ -23,17 +23,7 @@ class hi_dcb(Variable):
             dcb_amount, qualified_expense_amount, min_head_spouse_earned
         )
         filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
-        dcb_baseline = select(
-            [
-                filing_status == status.SEPARATE,
-                filing_status != status.SEPARATE,
-            ],
-            [
-                p.dependent_care_benefit.amount.separate,
-                p.dependent_care_benefit.amount.not_separate,
-            ],
-        )
+        dcb_baseline = p.dependent_care_benefit[filing_status]
         deductible_benefit = min_(min_benefit, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
         # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation
