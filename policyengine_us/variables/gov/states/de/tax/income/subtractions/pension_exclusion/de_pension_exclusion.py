@@ -8,93 +8,76 @@ class de_pension_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6"
-        "https://delcode.delaware.gov/title30/c011/sc02/index.html"
+        "https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=6",
+        "https://delcode.delaware.gov/title30/c011/sc02/index.html",
     )
     defined_for = StateCode.DE
 
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.de.tax.income.subtractions.pension_exclusion
+        ).gov.states.de.tax.income.subtractions.exclusions.pension
 
         person = tax_unit.members
 
         # determine age eligibility
         age = person("age", period)
-        under_60_head_eligible = age < p.min_age
-        above_60_head_eligible = age >= p.min_age
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_head", period)
 
-        # determine military eligiblity
-        military_retirement_pay = person(
-            "military_retirement_pay", period
-        ).astype(bool)
+        head_or_spouse = head | spouse
+        age_head_or_spouse = age * head_or_spouse
+        younger_eligible = age_head_or_spouse < p.min_age
+        older_eligible = age_head_or_spouse >= p.min_age
 
-        military_eligible = where(
-            p.military_retirement_exclusion_available,
-            military_retirement_pay > 0,
-            military_retirement_pay < 0,
+        eligible_pension_income = (
+            person("pension_income", period) * head_or_spouse
         )
 
-        # determine pension exclusion value based on military status
-        exclusion_value = where(
-            military_eligible,
-            p.cap.military,
-            p.cap.younger,
+        capped_eligible_pension_income = min_(
+            p.cap.younger, eligible_pension_income
         )
 
-        # determine pension exclusion amount
-        pension_income = person("pension_income", period)
-
-        # determine eligible retirement income for head above 60
-        elig_retirement_income = person(
-            "de_eligible_retirement_income_for_elderly", period
-        )
-        total_income_above_60 = pension_income + elig_retirement_income
-
-        # determine exclusion eligibility
-        is_eligible_for_under_60_military = (
-            under_60_head_eligible & military_eligible
-        ).astype(int)
-        is_eligible_for_under_60_non_military = (
-            under_60_head_eligible & ~military_eligible
-        ).astype(int)
-
-        # apply the exclusion value or the pension income, whichever is lower, for eligible individuals
-        min_amount_under_60_military = min_(exclusion_value, pension_income)
-        pension_exclusion_under_60_military = where(
-            is_eligible_for_under_60_military,
-            min_amount_under_60_military,
-            0,
+        eligible_retirement_income = (
+            person("de_pension_exclusion_income", period) * head_or_spouse
         )
 
-        min_amount_under_60_non_military = min_(
-            exclusion_value, pension_income
-        )
-        pension_exclusion_under_60_non_military = where(
-            is_eligible_for_under_60_non_military,
-            min_amount_under_60_non_military,
-            0,
+        total_income = eligible_pension_income + eligible_retirement_income
+
+        capped_eligible_retirement_income = min_(p.cap.older, total_income)
+
+        if p.military_retirement_exclusion_available:
+            military_retirement_pay = (
+                person("military_retirement_pay", period) * head_or_spouse
+            )
+            capped_military_retirement_pay = min_(
+                p.cap.military, military_retirement_pay
+            )
+            younger_amount = max_(
+                capped_military_retirement_pay, capped_eligible_pension_income
+            )
+
+            exclusion_amount = select(
+                [
+                    younger_eligible,
+                    older_eligible,
+                ],
+                [
+                    younger_amount,
+                    capped_eligible_retirement_income,
+                ],
+            )
+            return tax_unit.sum(exclusion_amount)
+
+        previous_exclusion_amount = select(
+            [
+                younger_eligible,
+                older_eligible,
+            ],
+            [
+                capped_eligible_pension_income,
+                capped_eligible_retirement_income,
+            ],
         )
 
-        min_amount_above_60 = min_(p.cap.older, total_income_above_60)
-        pension_exclusion_above_60 = where(
-            above_60_head_eligible,
-            min_amount_above_60,
-            0,
-        )
-
-        # Summing the individual exclusions for each case
-        total_exclusion_under_60_military = tax_unit.sum(
-            pension_exclusion_under_60_military
-        )
-        total_exclusion_under_60_non_military = tax_unit.sum(
-            pension_exclusion_under_60_non_military
-        )
-        total_exclusion_above_60 = tax_unit.sum(pension_exclusion_above_60)
-
-        return (
-            total_exclusion_under_60_military
-            + total_exclusion_under_60_non_military
-            + total_exclusion_above_60
-        )
+        return tax_unit.sum(previous_exclusion_amount)
