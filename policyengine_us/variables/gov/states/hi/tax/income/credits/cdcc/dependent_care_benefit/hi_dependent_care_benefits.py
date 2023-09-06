@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class hi_dcb(Variable):
+class hi_dependent_care_benefits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Hawaii Dependent Care Benefits"
@@ -12,7 +12,7 @@ class hi_dcb(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
-        dcb_amount = tax_unit("dependent_care_benefit", period)
+        dcb_amount = tax_unit("dependent_care_benefits", period)
         qualified_expense_amount = tax_unit(
             "tax_unit_childcare_expenses", period
         )
@@ -23,7 +23,7 @@ class hi_dcb(Variable):
             dcb_amount, qualified_expense_amount, min_head_spouse_earned
         )
         filing_status = tax_unit("filing_status", period)
-        dcb_baseline = p.dependent_care_benefit[filing_status]
+        dcb_baseline = p.dependent_care_benefits[filing_status]
         deductible_benefit = min_(min_benefit, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
         # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation

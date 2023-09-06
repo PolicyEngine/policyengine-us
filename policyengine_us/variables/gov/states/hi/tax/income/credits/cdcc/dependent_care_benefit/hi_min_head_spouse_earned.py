@@ -28,38 +28,37 @@ class hi_min_head_spouse_earned(Variable):
         qualified_children = tax_unit("count_cdcc_eligible", period)
         income = person("earned_income", period)
         head_income = where(
-            sum(head_eligible) != 0,
+            head_eligible,
             where(
                 qualified_children <= 1,
                 max_(
                     p.expense_cap.one_child,
-                    tax_unit.sum(head * income),
+                    head * income,
                 ),
                 max_(
                     p.expense_cap.two_or_more_child,
-                    tax_unit.sum(head * income),
+                    head * income,
                 ),
             ),
-            tax_unit.sum(head * income),
+            head * income,
         )
         spouse_income = where(
-            sum(spouse) != 0,
+            tax_unit.any(spouse),
             where(
-                sum(spouse_eligible) != 0,
+                spouse_eligible,
                 where(
                     qualified_children <= 1,
                     max_(
                         p.expense_cap.one_child,
-                        tax_unit.sum(spouse * income),
+                        spouse * income,
                     ),
                     max_(
                         p.expense_cap.two_or_more_child,
-                        tax_unit.sum(spouse * income),
+                        spouse * income,
                     ),
                 ),
-                tax_unit.sum(spouse * income),
+                spouse * income,
             ),
             head_income,
         )
-
-        return min_(head_income, spouse_income)
+        return min_(tax_unit.sum(head_income), tax_unit.sum(spouse_income))

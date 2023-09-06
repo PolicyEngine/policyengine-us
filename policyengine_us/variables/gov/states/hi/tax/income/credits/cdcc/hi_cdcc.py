@@ -13,9 +13,9 @@ class hi_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.cdcc
         agi = tax_unit("adjusted_gross_income", period)
-        rate = p.rate.calc(agi)
+        rate = p.rate.calc(agi, right=True)
 
         return rate * min_(
-            tax_unit("hi_dcb", period),
+            tax_unit("hi_dependent_care_benefits", period),
             tax_unit("hi_min_head_spouse_earned", period),
         )
