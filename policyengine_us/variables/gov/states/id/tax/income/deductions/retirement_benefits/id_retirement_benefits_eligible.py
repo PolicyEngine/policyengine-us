@@ -1,26 +1,30 @@
 from policyengine_us.model_api import *
 
 
-class id_retirement_benefits_eligible(Variable):
+class id_retirement_benefits_eligible_person(Variable):
     value_type = bool
-    entity = TaxUnit
-    label = "Eligible for the Idaho retirement benefits"
+    entity = Person
+    label = "Eligible person for the Idaho retirement benefits"
     documentation = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/"
     definition_period = YEAR
     defined_for = StateCode.ID
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+    def formula(person, period, parameters):
         p = parameters(
             period
         ).gov.states.id.tax.income.deductions.retirement_benefits
 
         age_threshold = p.age_eligibility.main
         age_threshold_disabled = p.age_eligibility.disabled
-        disabled_head = tax_unit("disabled_head", period)
-        head_age = tax_unit("age_head", period)
-        return where(
-            disabled_head,
-            head_age >= age_threshold_disabled,
-            head_age >= age_threshold,
+
+        disabled = person("is_disabled", period)
+        age = person("age", period)
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = head | spouse
+
+        return head_or_spouse * where(
+            disabled,
+            age >= age_threshold_disabled,
+            age >= age_threshold,
         )

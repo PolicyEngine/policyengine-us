@@ -1,33 +1,31 @@
-- name: Idaho retirement benefits unit test 1 - married filling jointly
+- name: Separate ineligible
   period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        id_retirement_benefits_eligible_person: true
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
       person2:
-        is_tax_unit_spouse: true
+        id_retirement_benefits_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1, person2]
-        filing_status: JOINT 
-        age_head: 66
-        disabled_head: False
+        filing_status: SEPARATE 
     households:
       household:
         members: [person1, person2]
         state_code: ID
   output:
-    id_retirement_benefits_deduction: 45_000
+    id_retirement_benefits_deduction: 0
 
 - name: Idaho retirement benefits unit test 2 - single
   period: 2022
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        id_retirement_benefits_eligible_person: false
         social_security_retirement: 45_000
         taxable_pension_income: 38_700
         military_retirement_pay: 0
@@ -35,8 +33,6 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        age_head: 63
-        disabled_head: True
     households:
       household:
         members: [person1]
@@ -49,7 +45,7 @@
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        id_retirement_benefits_eligible_person: false
         social_security_retirement: 45_000
         taxable_pension_income: 38_700
         military_retirement_pay: 0
@@ -57,8 +53,6 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        age_head: 60
-        disabled_head: True
     households:
       household:
         members: [person1]
@@ -71,20 +65,18 @@
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        id_retirement_benefits_eligible_person: false
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
       person2:
-        is_tax_unit_spouse: true
+        is_tax_unit_spouse: false
       person3:
-        is_tax_unit_dependent: true
+        is_tax_unit_dependent: false
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
         filing_status: JOINT 
-        age_head: 50
-        disabled_head: False
     households:
       household:
         members: [person1, person2, person3]
@@ -97,21 +89,91 @@
   input:
     people:
       person1:
-        is_tax_unit_head: true
+        id_retirement_benefits_eligible_person: true
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 0
       person2:
-        is_tax_unit_dependent: true
+        id_retirement_benefits_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: WIDOW 
-        age_head: 65
-        disabled_head: False
     households:
       household:
         members: [person1, person2]
         state_code: ID
   output:
     id_retirement_benefits_deduction: 30_000
+
+- name: Joint eligible with social security retirement and pension income
+  period: 2022
+  input:
+    people:
+      person1:
+        id_retirement_benefits_eligible_person: true
+        social_security_retirement: 10_000
+        taxable_pension_income: 30_000
+        military_retirement_pay: 15_000
+      person2:
+        id_retirement_benefits_eligible_person: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT 
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 45_000
+
+- name: Joint eligible with social security retirement and pension income - both eligible 
+  period: 2022
+  input:
+    people:
+      person1:
+        id_retirement_benefits_eligible_person: true
+        social_security_retirement: 5_000
+        taxable_pension_income: 30_000
+        military_retirement_pay: 15_000
+      person2:
+        id_retirement_benefits_eligible_person: true
+        social_security_retirement: 5_000
+        taxable_pension_income: 0
+        military_retirement_pay: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT 
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 45_000
+
+- name: Joint eligible with capped benefit - both eligible 
+  period: 2022
+  input:
+    people:
+      person1:
+        id_retirement_benefits_eligible_person: true
+        social_security_retirement: 5_000
+        taxable_pension_income: 30_000
+        military_retirement_pay: 15_000
+      person2:
+        id_retirement_benefits_eligible_person: true
+        social_security_retirement: 5_000
+        taxable_pension_income: 10_000
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT 
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    id_retirement_benefits_deduction: 50_210

@@ -1,62 +1,87 @@
-- name: Idaho retirement benefits eligible unit test 1 
+- name: Idaho disabled head under eligible age
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        filing_status: JOINT 
-        age_head: 66
-        disabled_head: False
-    households:
-      household:
-        members: [person1, person2]
-        state_code: ID
+    state_code: ID
+    age: 61
+    is_disabled: true
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
   output:
-    id_retirement_benefits_eligible: true
+    id_retirement_benefits_eligible_person: false
 
-- name: Idaho retirement benefits eligible unit test 2
+- name: Idaho disabled head over eligible age
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-    tax_units:
-      tax_unit:
-        members: [person1]
-        filing_status: SINGLE
-        age_head: 63
-        disabled_head: True
-    households:
-      household:
-        members: [person1]
-        state_code: ID
+    state_code: ID
+    age: 65
+    is_disabled: true
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
   output:
-    id_retirement_benefits_eligible: true
+    id_retirement_benefits_eligible_person: true
 
-- name: Idaho retirement benefits eligible unit test 3
+- name: Idaho disabled spouse under eligible age
   period: 2022
   input:
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_spouse: true
-      person3:
-        is_tax_unit_dependent: true
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-        filing_status: JOINT 
-        age_head: 50
-        disabled_head: False
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: ID
+    state_code: ID
+    age: 60
+    is_disabled: true
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
   output:
-    id_retirement_benefits_eligible: false
+    id_retirement_benefits_eligible_person: false
+
+- name: Idaho disabled spouse over eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 63
+    is_disabled: true
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+  output:
+    id_retirement_benefits_eligible_person: true
+
+- name: Idaho head under eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 64
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+  output:
+    id_retirement_benefits_eligible_person: false
+
+- name: Idaho head over eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 66
+    is_disabled: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+  output:
+    id_retirement_benefits_eligible_person: true
+
+- name: Idaho spouse under eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 64
+    is_disabled: false
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+  output:
+    id_retirement_benefits_eligible_person: false
+
+- name: Idaho spouse over eligible age
+  period: 2022
+  input:
+    state_code: ID
+    age: 70
+    is_disabled: false
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+  output:
+    id_retirement_benefits_eligible_person: true
