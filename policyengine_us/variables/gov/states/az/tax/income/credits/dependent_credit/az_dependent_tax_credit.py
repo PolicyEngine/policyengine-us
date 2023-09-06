@@ -24,5 +24,5 @@ class az_dependent_tax_credit(Variable):
         reduction_start = p.reduction.start[filing_status]
         excess = max_(income - reduction_start, 0)
         increments = np.ceil(excess / p.reduction.increment)
-        reduction_percentage = increments * p.reduction.percentage
-        return max_(amount - amount * reduction_percentage, 0)
+        reduction_percentage = min_(increments * p.reduction.percentage, 1)
+        return amount * (1 - reduction_percentage)
