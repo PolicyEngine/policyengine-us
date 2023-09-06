@@ -12,6 +12,6 @@ class ky_homestead_exemption(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ky.tax.income.exemptions.homestead
         exemption_amount = p.amount
-        #Add Property Value
+        # Add Property Value
         property_value = add(tax_unit, period, ["assessed_property_value"])
         return min_(exemption_amount, property_value)
