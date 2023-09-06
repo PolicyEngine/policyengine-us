@@ -1,4 +1,4 @@
-from policyengine_us.model_api import *
+xfrom policyengine_us.model_api import *
 
 
 class nc_ctc(Variable):
