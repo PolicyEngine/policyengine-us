@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wv_social_security_deduction(Variable):
+class wv_social_security_benefits_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "West Virginia social security deduction"
@@ -12,5 +12,5 @@ class wv_social_security_deduction(Variable):
 
     def formula(tax_unit, period):
         return tax_unit(
-            "wv_social_security_benefit", period
+            "social_security", period # or use taxable_social_security?
         )
