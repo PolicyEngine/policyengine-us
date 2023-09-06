@@ -1,15 +1,15 @@
-description:  North Carolina Use Tax using this amount for taxpayers without out-of-state purchases records.
+description:  North Carolina Use Tax using this cap, based on adjusted gross income.
 metadata:
   type: single_amount
   threshold_unit: currency-USD
   amount_unit: currency-USD
-  label: NC Use Tax amount cap for different taxable income
+  label: North Carolina Use Tax cap
   reference:
     - title: NCDOR Use Tax
       href: https://www.ncdor.gov/taxes-forms/sales-and-use-tax/use-tax
-    - title: 2022 NC D-400
+    - title: 2022 NC D-400 page 2
       href: https://www.ncdor.gov/2022-d-400-web-fill-version/open #page=2
-    - title: 2022 D-401 Instruction Booklet
+    - title: 2022 D-401 Instruction Booklet page 23
       href: https://www.ncdor.gov/2022-d-401-individual-income-tax-instructions/open #page=23
 brackets:
   - threshold:
