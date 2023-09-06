@@ -22,8 +22,6 @@ class ky_family_size_tax_credit_rate(Variable):
         # No more than 4 people are accounted for in the credit
         capped_family_size = min_(family_size, 4)
         poverty_index = p1 + padd * (capped_family_size - 1)
-        share = np.zeros_like(poverty_index)
-        mask = poverty_index != 0
-        share[mask] = income[mask] / poverty_index[mask]
+        share = income / poverty_index
         p = parameters(period).gov.states.ky.tax.income.credits.family_size
         return p.percentage.calc(share, right=True)
