@@ -4374,3 +4374,9 @@
     added:
     - Rhode Island standard deduction phaseout.
   date: 2023-09-05 16:48:36
+- bump: patch
+  changes:
+    fixed:
+    - Moved regular_tax_before_credits formula into the alternative_income_tax.py
+      module, which is the only place it is used.
+  date: 2023-09-06 12:32:42
