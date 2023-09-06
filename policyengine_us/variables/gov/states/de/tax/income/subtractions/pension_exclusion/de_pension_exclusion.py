@@ -40,7 +40,7 @@ class de_pension_exclusion(Variable):
         exclusion_value = where(
             military_eligible,
             p.cap.military,
-            p.cap.non_military,
+            p.cap.younger,
         )
 
         # determine pension exclusion amount
