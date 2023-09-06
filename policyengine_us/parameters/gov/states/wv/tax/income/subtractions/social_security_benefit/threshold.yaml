@@ -4,15 +4,13 @@ metadata:
   period: year
   unit: currency-USD
   label: West Virginia social security benefit subtraction income threshold
-  breakdown:
-  - filing_status
   reference:
   - title: West Virginia Personal Income Tax Forms And Instructions 2022 page=25
     href: https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#Page=25
   - title: Code of West Virginia §11-21-12 (c)(8)(D)
     href: https://code.wvlegislature.gov/11-21-12/
-
-
+  breakdown:
+    - filing_status
 JOINT:
   2022-01-01: 100_000
 SINGLE:
