@@ -214,14 +214,9 @@ class alternative_minimum_tax(Variable):
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
 
         # Form 6251, Part II bottom
-        line32 = where(
-            tax_unit("amt_form_completed", period),
-            tax_unit("foreign_tax_credit", period),
-            foreign_tax_credit,
-        )
+        line32 = tax_unit("foreign_tax_credit", period)
         line33 = line31 - line32
         return max_(
             0,
@@ -230,7 +225,7 @@ class alternative_minimum_tax(Variable):
                 0,
                 (
                     tax_unit("regular_tax_before_credits", period)
-                    - foreign_tax_credit
+                    - line32
                     - tax_unit("form_4972_lumpsum_distributions", period)
                 ),
             ),
