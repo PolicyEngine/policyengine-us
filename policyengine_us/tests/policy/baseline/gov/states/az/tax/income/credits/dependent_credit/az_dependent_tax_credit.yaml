@@ -1,0 +1,170 @@
+- name: Household with no dependents
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: false
+        age: 25
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 200_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 0
+
+- name: One young dependent without reduction
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 16
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 200_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 100
+
+
+- name: One young and one old dependent without reduction
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 16
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 200_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 125
+
+- name: One young and one old dependent with maximum reduction
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 16
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 220_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 0
+
+- name: One young and one old dependent with maximum reduction, capped at 0
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 16
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 300_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 0
+
+- name: One young and one old dependent without reduction, joint
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 16
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 400_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 125
+
+- name: Two old dependents without reduction, joint
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 17
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 202_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 45
+
+- name: Two old dependents without reduction, joint
+  period: 2023
+  input:
+    people:
+      person1:
+        is_tax_unit_dependent: true
+        age: 17
+      person2:
+        is_tax_unit_dependent: true
+        age: 17
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 202_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit: 45
