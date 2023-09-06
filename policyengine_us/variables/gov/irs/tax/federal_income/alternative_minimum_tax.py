@@ -231,7 +231,7 @@ class alternative_minimum_tax(Variable):
                 (
                     tax_unit("regular_tax_before_credits", period)
                     - foreign_tax_credit
-                    - tax_unit("c05700", period)
+                    - tax_unit("form_4972_lumpsum_distributions", period)
                 ),
             ),
         )
