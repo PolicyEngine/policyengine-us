@@ -50,10 +50,6 @@ class az_itemized_deduction(Variable):
             charitable_deduction - charitable_contributions_credit, 0
         )
 
-        # charitable_deduction_allowed = where(
-        #     charitable_contributions_credit > 0, 0, charitable_deduction
-        # )
-
         # Adjustment to State Income Taxes - add back real estate taxes
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
 
