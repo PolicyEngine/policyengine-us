@@ -4,7 +4,7 @@
     state_code: WV
     filing_status: SINGLE
     adjusted_gross_income: 70_000
-    wv_social_security_benefit: 1_000
+    social_security: 1_000
   output:
     wv_social_security_benefits_subtraction: 0
 
@@ -14,7 +14,7 @@
     state_code: WV
     filing_status: SINGLE
     adjusted_gross_income: 40_000
-    wv_social_security_benefit: 1_000
+    social_security: 1_000
   output:
     wv_social_security_benefits_subtraction: 1_000
 
@@ -24,7 +24,7 @@
     state_code: WV
     filing_status: JOINT
     adjusted_gross_income: 200_000
-    wv_social_security_benefit: 2_000
+    social_security: 2_000
   output:
     wv_social_security_benefits_subtraction: 0
 
@@ -34,7 +34,7 @@
     state_code: WV
     filing_status: JOINT
     adjusted_gross_income: 90_000
-    wv_social_security_benefit: 2_000
+    social_security: 2_000
   output:
     wv_social_security_benefits_subtraction: 2_000
 
@@ -44,7 +44,7 @@
     state_code: WV
     filing_status: SEPARATE
     adjusted_gross_income: 70_000
-    wv_social_security_benefit: 1_000
+    social_security: 1_000
   output:
     wv_social_security_benefits_subtraction: 0
 
@@ -54,6 +54,6 @@
     state_code: WV
     filing_status: SEPARATE
     adjusted_gross_income: 40_000
-    wv_social_security_benefit: 1_000
+    social_security: 1_000
   output:
     wv_social_security_benefits_subtraction: 1_000

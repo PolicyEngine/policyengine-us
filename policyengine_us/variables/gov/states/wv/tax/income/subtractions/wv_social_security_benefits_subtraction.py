@@ -8,9 +8,10 @@ class wv_social_security_benefits_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://tax.wv.gov/Documents/PIT/2022/PersonalIncomeTaxFormsAndInstructions.2022.pdf#Page=25"
-    defined_for = "wv_social_security_deduction_eligible"
+    defined_for = "wv_social_security_benefits_subtraction_eligible"
 
     def formula(tax_unit, period):
+        # social_security is for person, not tax_unit, fix this
         return tax_unit(
             "social_security", period # or use taxable_social_security?
         )
