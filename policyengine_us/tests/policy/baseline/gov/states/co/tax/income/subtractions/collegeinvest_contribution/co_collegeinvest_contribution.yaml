@@ -1,0 +1,39 @@
+- name: case 1, File single, invest above capped amount
+  period: 2022
+  input:
+    investment_in_529_plan: 25_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_collegeinvest_subtraction: 20_000
+    # above capped amount
+
+- name: Case 2, File single, invest below capped amount 
+  period: 2022
+  input:
+    investment_in_529_plan: 15_000
+    filing_status: SINGLE
+    state_code: CO
+  output:
+    co_collegeinvest_subtraction: 15_000
+    #below capped amount, use co_collegeinvest_contribution
+  
+- name: Case 3, File joint, invest above capped amount
+  period: 2022
+  input:
+    investment_in_529_plan: 35_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_collegeinvest_subtraction: 30_000
+    # above capped amount
+
+- name: Case 4, File joint, invest below capped amount
+  period: 2022
+  input:
+    investment_in_529_plan: 25_000
+    filing_status: JOINT
+    state_code: CO
+  output:
+    co_collegeinvest_subtraction: 25_000
+    # below capped amount

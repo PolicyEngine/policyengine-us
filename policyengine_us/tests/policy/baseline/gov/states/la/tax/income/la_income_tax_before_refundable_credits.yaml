@@ -1,0 +1,17 @@
+- name: Simple calculation
+  period: 2022
+  input:
+    la_income_tax_before_non_refundable_credits: 1_000
+    state_code: LA
+    la_non_refundable_credits: 500
+  output:
+    la_income_tax_before_refundable_credits: 500
+
+- name: Capped at 0
+  period: 2022
+  input:
+    la_income_tax_before_non_refundable_credits: 400
+    state_code: LA
+    la_non_refundable_credits: 500
+  output:
+    la_income_tax_before_refundable_credits: 0
