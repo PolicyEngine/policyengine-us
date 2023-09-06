@@ -18,6 +18,5 @@ class sc_net_capital_gain_deduction(Variable):
         p = parameters(
             period
         ).gov.states.sc.tax.income.deductions.net_capital_gain_deduction
-        person = tax_unit.members
-        capital_gains = add(tax_unit, period, ["capital_gains"])
-        return max_(capital_gains * p.rate, 0)
+        capital_gains = tax_unit("net_capital_gain", period)
+        return capital_gains * p.rate
