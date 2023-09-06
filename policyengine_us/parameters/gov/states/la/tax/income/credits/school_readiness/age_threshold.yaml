@@ -1,0 +1,16 @@
+description: Louisiana provides the school readiness tax credit to filers with children below this age threshold.
+values:
+  2021-01-01: 6
+
+metadata:
+ period: year
+ unit: year
+ label: Louisiana school readiness tax credit child age threshold
+ reference:
+ # Legal code does not specify the child age
+ - title: R.S. 47:6104 
+   href: http://legis.la.gov/Legis/Law.aspx?d=453233
+ - title: 2022 Form IT-540-WEB
+   href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2022)%20F%20D2.pdf#page=15
+ - title: 2021 Form IT-540-WEB
+   href: https://revenue.louisiana.gov/TaxForms/IT540WEB(2021)%20F.pdf#page=15
