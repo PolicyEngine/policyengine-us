@@ -29,7 +29,12 @@ class de_pension_exclusion(Variable):
         military_retirement_pay = person(
             "military_retirement_pay", period
         ).astype(bool)
-        military_eligible = military_retirement_pay > 0
+
+        military_eligible = where(
+            p.military_retirement_exclusion_available,
+            military_retirement_pay > 0,
+            military_retirement_pay < 0,
+        )
 
         # determine pension exclusion value based on military status
         exclusion_value = where(
@@ -72,7 +77,7 @@ class de_pension_exclusion(Variable):
             0,
         )
 
-        min_amount_above_60 = min_(p.cap.military, total_income_above_60)
+        min_amount_above_60 = min_(p.cap.older, total_income_above_60)
         pension_exclusion_above_60 = where(
             above_60_head_eligible,
             min_amount_above_60,
