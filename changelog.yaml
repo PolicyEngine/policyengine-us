@@ -4337,3 +4337,40 @@
     added:
     - Vermont AGI Additions.
   date: 2023-09-03 04:25:25
+- bump: minor
+  changes:
+    added:
+    - Georgia standard deduction.
+  date: 2023-09-04 00:58:13
+- bump: minor
+  changes:
+    added:
+    - Louisiana school readiness tax credit.
+  date: 2023-09-04 03:10:10
+- bump: minor
+  changes:
+    added:
+    - Ohio Retirement Income Credit.
+  date: 2023-09-04 16:05:48
+- bump: patch
+  changes:
+    fixed:
+    - Absence of federal Alternative Minimum Tax in capped_cdcc formula.
+    - Code fragmentation in Colorado child care expense credit calculations.
+    - Implausible allocation of total care expenses to Colorado eligible children.
+  date: 2023-09-04 20:23:16
+- bump: patch
+  changes:
+    fixes:
+    - Georgia standard deduction file directory.
+  date: 2023-09-04 20:59:54
+- bump: minor
+  changes:
+    added:
+    - Delaware itemized deductions.
+  date: 2023-09-04 23:28:52
+- bump: minor
+  changes:
+    added:
+    - Rhode Island standard deduction phaseout.
+  date: 2023-09-05 16:48:36
