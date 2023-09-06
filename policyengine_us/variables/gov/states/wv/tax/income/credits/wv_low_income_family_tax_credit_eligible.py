@@ -28,5 +28,5 @@ class wv_low_income_family_tax_credit_eligible(Variable):
 
         # modified agi limit
         fpg_amount = p.fpg_percent[filing_status] * fpg
-        income_threshold = p.income_threshold[filing_status] + fpg_amount
-        return wv_agi <= income_threshold
+        income_threshold_total = p.income_threshold[filing_status] + fpg_amount
+        return wv_agi <= income_threshold_total
