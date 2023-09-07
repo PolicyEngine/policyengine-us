@@ -19,7 +19,7 @@ class wv_low_income_family_tax_credit_rate(Variable):
         wv_agi = tax_unit("wv_agi", period)
         # max family size limit
         n = tax_unit("tax_unit_size", period)
-        state_group = tax_unit.household("state_group_str", period)
+        state_group = "CONTIGUOUS_US"
         p_fpg = parameters(period).gov.hhs.fpg
         p1 = p_fpg.first_person[state_group]
         pn = p_fpg.additional_person[state_group]
@@ -29,7 +29,9 @@ class wv_low_income_family_tax_credit_rate(Variable):
         # modified agi limit
         fpg_amount = p.fpg_percent[filing_status] * fpg
         reduced_agi = wv_agi - fpg_amount
-
+        print(reduced_agi)
+        print(p.amount.head_of_household.calc(reduced_agi))
+        
         return select(
             [
                 filing_status == filing_statuses.SINGLE,
@@ -46,3 +48,4 @@ class wv_low_income_family_tax_credit_rate(Variable):
                 p.amount.widow.calc(reduced_agi),
             ],
         )
+
