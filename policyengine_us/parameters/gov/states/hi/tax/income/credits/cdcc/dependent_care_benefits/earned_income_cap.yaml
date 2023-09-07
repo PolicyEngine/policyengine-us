@@ -1,4 +1,4 @@
-description: Hawaii limits the dependent care benefit as well as earned income at this amount, based on filing status.
+description: Hawaii limits the dependent care benefit as well as earned income to this amount, based on filing status under the child and dependent care credit.
 SINGLE:
   2018-01-01: 5_000
 JOINT:
@@ -11,7 +11,7 @@ WIDOW:
   2018-01-01: 5_000
 metadata:
   breakdown: filing_status
-  amount_unit: currency-USD
+  unit: currency-USD
   label: Hawaii dependent care benefit amount and earned income cap
   reference:
     - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (b)(2)

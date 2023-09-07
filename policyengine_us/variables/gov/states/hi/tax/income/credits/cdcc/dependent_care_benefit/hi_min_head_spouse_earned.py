@@ -15,6 +15,12 @@ class hi_min_head_spouse_earned(Variable):
         person = tax_unit.members
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
+        # head_or_spouse = head | spouse
+        # eligible = head_or_spouse & (
+        #     person("is_disabled", period)
+        #     | person("is_full_time_student", period)
+        # )
+        
         # earned minimum income if is disabled/full-time student
         head_eligible = head & (
             person("is_disabled", period)
@@ -32,11 +38,11 @@ class hi_min_head_spouse_earned(Variable):
             where(
                 qualified_children <= 1,
                 max_(
-                    p.expense_cap.one_child,
+                    p.dependent_care_benefits.expense_cap.one_child,
                     head * income,
                 ),
                 max_(
-                    p.expense_cap.two_or_more_child,
+                    p.dependent_care_benefits.expense_cap.two_or_more_child,
                     head * income,
                 ),
             ),
@@ -49,11 +55,11 @@ class hi_min_head_spouse_earned(Variable):
                 where(
                     qualified_children <= 1,
                     max_(
-                        p.expense_cap.one_child,
+                        p.dependent_care_benefits.expense_cap.one_child,
                         spouse * income,
                     ),
                     max_(
-                        p.expense_cap.two_or_more_child,
+                        p.dependent_care_benefits.expense_cap.two_or_more_child,
                         spouse * income,
                     ),
                 ),

@@ -11,7 +11,7 @@ class hi_dependent_care_benefits(Variable):
     reference = "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.credits.cdcc
+        p = parameters(period).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
         dcb_amount = tax_unit("dependent_care_benefits", period)
         qualified_expense_amount = tax_unit(
             "tax_unit_childcare_expenses", period
@@ -23,7 +23,7 @@ class hi_dependent_care_benefits(Variable):
             dcb_amount, qualified_expense_amount, min_head_spouse_earned
         )
         filing_status = tax_unit("filing_status", period)
-        dcb_baseline = p.dependent_care_benefits[filing_status]
+        dcb_baseline = p.earned_income_cap[filing_status]
         deductible_benefit = min_(min_benefit, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
         # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation
