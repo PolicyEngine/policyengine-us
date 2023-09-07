@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.462.2] - 2023-09-07 16:31:01
+
+### Fixed
+
+- Removed Colorado tax index.yaml file.
+
+## [0.462.1] - 2023-09-07 14:51:52
+
+### Fixed
+
+- Rename module to be same as the name of the variable it contains.
+
+## [0.462.0] - 2023-09-07 12:43:44
+
+### Added
+
+- Colorado state income tax addback.
+
+## [0.461.1] - 2023-09-06 18:19:32
+
+### Fixed
+
+- Replace several arcane variable names with more descriptive names.
+
 ## [0.461.0] - 2023-09-06 15:59:55
 
 ### Added
@@ -5204,6 +5228,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.462.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.1...0.462.2
+[0.462.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.0...0.462.1
+[0.462.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.461.1...0.462.0
+[0.461.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.461.0...0.461.1
 [0.461.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.460.1...0.461.0
 [0.460.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.460.0...0.460.1
 [0.460.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.459.0...0.460.0
