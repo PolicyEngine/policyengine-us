@@ -16,10 +16,10 @@ class ct_property_tax_credit(Variable):
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
         rate = p.reduction.amount
         start = p.reduction.start[filing_status]
-        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         max_amount = p.max_amount
-        increment = p.reduction.increment['filing_status']
-        max_credit = min_(property_tax, max_amount)
+        increment = p.reduction.increment[filing_status]
+        max_credit = min_(real_estate_taxes, max_amount)
         excess = agi - start
         times = np.ceil(excess / increment)
         non_refundable_percent = rate * times
@@ -29,4 +29,4 @@ class ct_property_tax_credit(Variable):
             max_credit - non_refundable_portion,
             0,
         )
-        return where(agi < start, max_credit, earned_credit)
+        return earned_credit

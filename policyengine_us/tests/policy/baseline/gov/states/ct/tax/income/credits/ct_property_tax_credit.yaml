@@ -4,7 +4,7 @@
     ct_property_tax_credit_eligible: true
     ct_agi: 49_000
     filing_status: SINGLE
-    ct_property_tax: 100
+    real_estate_taxes: 100
   output:
     ct_property_tax_credit: 100
 
@@ -14,7 +14,7 @@
     ct_property_tax_credit_eligible: true
     ct_agi: 75_000
     filing_status: SEPARATE
-    ct_property_tax: 250
+    real_estate_taxes: 250
   output:
     ct_property_tax_credit: 0
 
@@ -24,7 +24,7 @@
     ct_property_tax_credit_eligible: true
     ct_agi: 45_000
     filing_status: SEPARATE
-    ct_property_tax: 250
+    real_estate_taxes: 250
   output:
     ct_property_tax_credit: 175
 
@@ -34,7 +34,7 @@
     ct_property_tax_credit_eligible: false
     ct_agi: 45_000
     filing_status: SEPARATE
-    ct_property_tax: 250
+    real_estate_taxes: 250
   output:
     ct_property_tax_credit: 0
 
@@ -44,7 +44,7 @@
     ct_property_tax_credit_eligible: true
     ct_agi: 60_000
     filing_status: HEAD_OF_HOUSEHOLD
-    ct_property_tax: 400
+    real_estate_taxes: 400
   output:
     ct_property_tax_credit: 255
 
@@ -54,9 +54,9 @@
     ct_property_tax_credit_eligible: true
     ct_agi: 130_500
     filing_status: JOINT
-    ct_property_tax: 500
+    real_estate_taxes: 500
   output:
-    ct_property_tax_credit: 0
+    ct_property_tax_credit: 30
 
 - name: widow with $90,500  agi and  $320 property tax and not eligible for property tax credit
   period: 2021
@@ -64,7 +64,7 @@
     ct_property_tax_credit_eligible: false
     ct_agi: 90_500
     filing_status: WIDOW
-    ct_property_tax: 320
+    real_estate_taxes: 320
   output:
     ct_property_tax_credit: 0
 
@@ -74,7 +74,17 @@
     ct_property_tax_credit_eligible: false
     ct_agi: 130_500
     filing_status: JOINT
-    ct_property_tax: 500
+    real_estate_taxes: 500
   output:
     ct_property_tax_credit: 0
+
+- name: Joint household with $80,500  agi and  $290 property tax and not eligible for property tax credit
+  period: 2021
+  input:
+    ct_property_tax_credit_eligible: true
+    ct_agi: 80_500
+    filing_status: JOINT
+    real_estate_taxes: 290
+  output:
+    ct_property_tax_credit: 246
 
