@@ -10,8 +10,6 @@ class ms_agi(Variable):
     reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=14"
     defined_for = StateCode.MS
 
-    # Line 61: deduct 50% of the federal self-employment taxes imposed.
-
     # AGI = Income - Total adjustments from gross income
     adds = ["adjusted_gross_income"]
     subtracts = ["ms_agi_subtractions"]
