@@ -4,9 +4,10 @@
     state_code: SC
     total_college_hours: 15
     qualified_tuition_expenses: 6_000
+    sc_semesters_attended: 1
   output:
-    sc_tuition_credit: 0
-    # not eligible
+    sc_tuition_credit: 1_500
+    #12,268*15/30 = 6134, 6,000* 0.5 = 3,000
 
 - name: $2k tuition, 12 semester hours
   period: 2022
@@ -14,6 +15,7 @@
     state_code: SC
     total_college_hours: 12
     qualified_tuition_expenses: 2_000
+    sc_semesters_attended: 1 
   output:
     sc_tuition_credit: 0
     # not eligible 
@@ -24,6 +26,17 @@
     state_code: SC
     total_college_hours: 30
     qualified_tuition_expenses: 15_000
+    sc_semesters_attended: 1
   output:
     sc_tuition_credit: 1_500
     # 12,268*30/30 = 12,268 12,268*0.5 = 6,134 
+
+- name: $2.5k tuition, 15 semester hours
+  period: 2022
+  input:
+    state_code: SC
+    total_college_hours: 15
+    qualified_tuition_expenses: 2_500
+    sc_semesters_attended: 1
+  output:
+    sc_tuition_credit: 1_250
