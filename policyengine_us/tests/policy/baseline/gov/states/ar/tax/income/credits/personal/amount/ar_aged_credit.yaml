@@ -1,7 +1,7 @@
 - name: Arkansas personal credit for aged taxpayer over 65 is $29
   period: 2022
   input:
-    aged: 1
+    age: 65
     state_code: AR
   output:
     ar_aged_credit: 29
@@ -9,7 +9,7 @@
 - name: Arkansas personal credit for non_aged taxpayer under 65 is $0
   period: 2022
   input:
-    aged: 0
+    age: 20
     state_code: AR
   output:
     ar_aged_credit: 0

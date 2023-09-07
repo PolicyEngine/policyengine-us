@@ -1,7 +1,7 @@
 - name: Arkansas personal credit for deaf taxpayer is $29
   period: 2022
   input:
-    deaf: 1
+    is_deaf: 1
     state_code: AR
   output:
     ar_deaf_credit: 29
@@ -9,7 +9,7 @@
 - name: Arkansas personal credit for non_deaf taxpayer is $0
   period: 2022
   input:
-    deaf: 0
+    is_deaf: 0
     state_code: AR
   output:
     ar_deaf_credit: 0
