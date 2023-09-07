@@ -1,0 +1,16 @@
+description: Whether the South Carolina survivors retirement deduction should subtract military retirement deduction.
+metadata:
+  unit: bool
+  label: South Carolina survivors retirement deduction subtract
+  reference: 
+  - title: Instructions for Form SC-1040 (line 3p)
+    href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=17
+  - title: Instructions for Form SC-1040 (line 3p)
+    href: https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=19
+  - title: SC-1040 2021
+    href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf
+  - title: SC-1040 2022
+    href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf
+values:
+  2021-01-01: true
+  2022-01-01: false

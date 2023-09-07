@@ -20,7 +20,7 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_retirement_deduction: 1_000
+    sc_retirement_deduction_indv: 1_000
 
 - name: Case 2, both head and spouse age less than 65. 
   period: 2022
@@ -44,7 +44,7 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_retirement_deduction: 0
+    sc_retirement_deduction_indv: 0
 
 - name: Case 3, head age higher than 65, spouse age less than 65. 
   period: 2022
@@ -68,5 +68,5 @@
         members: [person1, person2]
         state_code: SC
   output:
-    sc_retirement_deduction: 4_000
+    sc_retirement_deduction_indv: 4_000
   
