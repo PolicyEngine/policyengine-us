@@ -1,0 +1,99 @@
+description: Oregon WFHDC has this table to select coresponding row in the percentage table for each household
+metadata:
+  threshold_unit: currency-USD
+  amount_unit: /1
+  threshold_period: year
+  type: single_amount
+  label: Oregon WFHDC credit percentage threshold
+  reference:
+    - title: 2021 Oregon Form OR-17 (Individual Income Tax Guide)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=121
+    - title: 2022 Oregon Working Family Household and Dependent Care (WFHDC) Tables
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf
+
+#description: "Oregon WFHDC corresponding row in the percentage table for household size 2"
+
+household_size_2:
+  brackets: 
+    - threshold: # This is the income threshold.
+        2022-01-01: 0
+      amount:
+        not_disabled_under3:
+          2022-01-01: .10
+        not_disabled_3_to_6:
+          2022-01-01: .08
+        not_disabled_6_to_13:
+          2022-01-01: .05
+        disabled_13_to_18:
+          2022-01-01: .05
+        disabled_above_18:
+          2022-01-01: .05
+    - threshold: # This is the income threshold.
+        2022-01-01: 1_831
+      amount:
+        not_disabled_under3:
+          2022-01-01: .20
+        not_disabled_3_to_6:
+          2022-01-01: .18
+        not_disabled_6_to_13:
+          2022-01-01: .15
+        disabled_13_to_18:
+          2022-01-01: .15
+        disabled_above_18:
+          2022-01-01: .05
+    - threshold: # This is the income threshold.
+        2022-01-01: 3_662
+      amount:
+        not_disabled_under3:
+          2022-01-01: .30
+        not_disabled_3_to_6:
+          2022-01-01: .28
+        not_disabled_6_to_13:
+          2022-01-01: .25
+        disabled_13_to_18:
+          2022-01-01: .25
+        disabled_above_18:
+          2022-01-01: .10
+
+
+        # value: 1_831
+        #   A:
+        #     disabled:
+        #       rate:
+        #         13:
+        #           value: 0.05
+        #         18: 
+        #           value: 0.05
+        #     non-disabled:
+        #       rate:
+        #         3:
+        #           value: 0.1
+        #         6: 
+        #           value: 0.08
+        #         13: 
+        #           value: 0.05
+        # value: 3_662
+        #   B:
+        #     disabled:
+        #       rate:
+        #         13:
+        #           value: 0.15
+        #         18: 
+        #           value: 0.05
+        #     non-disabled:
+        #       rate:
+        #         3:
+        #           value: 0.2
+        #         6: 
+        #           value: 0.18
+        #         13: 
+        #           value: 0.05
+          
+    #   amount:
+    #     2022-01-01: A 
+    # - threshold:
+    #     2022-01-01: 3_662
+    #   amount:
+    #     2022-01-01: B
+
+
