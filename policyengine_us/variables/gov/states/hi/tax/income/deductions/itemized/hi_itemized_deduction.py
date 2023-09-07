@@ -22,11 +22,6 @@ class hi_itemized_deduction(Variable):
             "medical_expense_deduction", period
         )
 
-        # 2. salt_deduction: dont need
-        # Hawaii did not limits the deduction for state and local taxes to $10,000 ($5,000 for a married taxpayer filling a separate return)
-        # new: The NET amount of taxes withheld from the sale of Hawaii real property interests
-        hi_salt_deduction = ...
-
         # 3. interest_deduction:
         # Hawaii did not
         #     (1) suspend the deduction for interest paid on home equity loans
@@ -45,26 +40,15 @@ class hi_itemized_deduction(Variable):
         #       to be deductible, and that such losses must exceed $500.
         hi_casualty_loss_deduction = ...
 
-        # 6. miscellaneous_deductions: dont need
-        # Hawaii did not suspend all miscellaneous itemized deductions that are subject to the 2% floor
-        hi_miscellaneous_deductions = ...
 
         # Hawaii did not suspend the overall limitation on itemized deductions
         # Cap: $166,800 ($83,400 if married filing separately)
         total_deductions = (
             hi_medical_expense_deduction
-            + hi_salt_deduction
             + hi_interest_deductionm
             + hi_charitable_deduction
             + hi_casualty_loss_deduction
-            + hi_miscellaneous_deductions
         )
         filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        itemized_deductions = where(
-            separate,
-            min_(p.amount_cap.separate, total_deductions),
-            min_(p.amount_cap.not_separate, total_deductions),
-        )
-
-        return itemized_deductions
+        
+        return min_(total_deductions, p.amount_cap[filing_status])
