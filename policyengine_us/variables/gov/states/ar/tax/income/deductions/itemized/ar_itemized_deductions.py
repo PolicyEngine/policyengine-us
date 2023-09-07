@@ -12,11 +12,14 @@ class ar_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.irs.deductions.itemized
-        less_salt_deds = tax_unit("itemized_deductions_less_salt", period)
-
         agi = tax_unit("adjusted_gross_income", period)
         spouse_agi = tax_unit("spouse_separate_adjusted_gross_income", period)
+
+        # Less salt deduction
+        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
+        less_salt_deds = tax_unit("itemized_deductions_less_salt", period)
+        exempt_deds = add(tax_unit, period, ["medical_expense_deduction"])
+        adjusted_salt_deds = max(0, less_salt_deds - exempt_deds)
 
         # Real estate tax + Personal property tax
         person_real_estate_deds = person("real_estate_taxes", period)
@@ -28,16 +31,29 @@ class ar_itemized_deductions(Variable):
         )
 
         # Limitation on several items
+        # Medical and Dental Expense
+        medical_expense = add(tax_unit, period, ["medical_expense"])
+        medical_deds = max_(
+            0,
+            medical_expense
+            - p.medical_deduction_threshold * (agi + spouse_agi),
+        )
+
         # Miscellaneous Deductions
+        misc_p = parameters(period).gov.irs.deductions.itemized.misc
         misc_deds = where(
             tax_unit("misc_deduction", period)
-            <= p.misc.floor * (agi + spouse_agi),
+            <= misc_p.floor * (agi + spouse_agi),
             tax_unit("misc_deduction", period),
             0,
         )
 
         total_itemized_deduction = (
-            less_salt_deds + +real_estate_deds + tuition_deds + misc_deds
+            adjusted_salt_deds
+            + medical_deds
+            + real_estate_deds
+            + tuition_deds
+            + misc_deds
         )
 
         # Prorated itemized deductions

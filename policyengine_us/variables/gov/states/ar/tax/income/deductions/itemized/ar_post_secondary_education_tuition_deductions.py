@@ -12,9 +12,7 @@ class ar_post_secondary_education_tuition_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(
-            period
-        ).gov.states.ar.tax.income.deductions.itemized.amount
+        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         tuition_expense = person("qualified_tuition_expenses", period)
         total_tuition_expense = tax_unit.sum(tuition_expense)
 
@@ -22,13 +20,16 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         four_year_college = person("four_year_college_institution", period)
 
         four_year_college_deduction = min_(
-            p.ratio * total_tuition_expense, p.four_year_college
+            p.tuition_expense_ratio * total_tuition_expense,
+            p.amount.four_year_college,
         )
         two_year_college_deduction = min_(
-            p.ratio * total_tuition_expense, p.two_year_college
+            p.tuition_expense_ratio * total_tuition_expense,
+            p.amount.two_year_college,
         )
         technical_institute_deduction = min_(
-            p.ratio * total_tuition_expense, p.technical_institutes
+            p.tuition_expense_ratio * total_tuition_expense,
+            p.amount.technical_institutes,
         )
 
         return where(

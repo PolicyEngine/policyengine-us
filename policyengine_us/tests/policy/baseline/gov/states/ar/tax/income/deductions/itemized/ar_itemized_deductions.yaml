@@ -1,7 +1,9 @@
-- name: Itemized deduction for married filing separately (miscellaneous deductions below the floor)
+- name: Itemized deduction for married filing separately (miscellaneous deductions below the floow, medical deduction zero)
   period: 2022
   input:
-    itemized_deductions_less_salt: 2_500
+    itemized_deductions_less_salt: 3_500
+    medical_expense_deduction: 1_000
+    medical_expense: 19_000
     adjusted_gross_income: 100_000
     spouse_separate_adjusted_gross_income: 140_000
     real_estate_taxes: 500
@@ -13,10 +15,29 @@
     # 4800*(100_000/240_000) = 2_000
     ar_itemized_deductions: 2_000
 
-- name: Itemized deduction for married filing separately (miscellaneous deductions above the floor)
+- name: Itemized deduction for married filing separately (miscellaneous deductions below the floow, medical deduction not zero)
+  period: 2022
+  input:
+    itemized_deductions_less_salt: 7_000
+    medical_expense_deduction: 6_500
+    medical_expense: 24_500
+    adjusted_gross_income: 100_000
+    spouse_separate_adjusted_gross_income: 140_000
+    real_estate_taxes: 500
+    ar_post_secondary_education_tuition_deductions: 800
+    misc_deduction: 1_000 # below 0.02*240_000 = 4_800
+    filing_status: SEPARATE
+    state_code: AR
+  output:
+    # 3300*(100_000/240_000) = 1_375
+    ar_itemized_deductions: 1_375
+
+- name: Itemized deduction for married filing separately (miscellaneous deductions above the floor, medical deduction zero)
   period: 2022
   input:
     itemized_deductions_less_salt: 2_000
+    medical_expense_deduction: 1_000
+    medical_expense: 7_000
     adjusted_gross_income: 30_000
     spouse_separate_adjusted_gross_income: 50_000
     real_estate_taxes: 500
@@ -25,27 +46,31 @@
     filing_status: SEPARATE
     state_code: AR
   output:
-    # 3_300 * (30_000/80_000) = 1237.5
-    ar_itemized_deductions: 1_237.5
+    # 2_300 * (30_000/80_000) = 862.5
+    ar_itemized_deductions: 862.5
 
-- name: Itemized deduction for married filing jointly (miscellaneous deductions below the floor)
+- name: Itemized deduction for married filing jointly (miscellaneous deductions below the floor, medical deduction not zero)
   period: 2022
   input:
-    itemized_deductions_less_salt: 2_500
+    itemized_deductions_less_salt: 7_500
+    medical_expense_deduction: 6_000
+    medical_expense: 22_500
     adjusted_gross_income: 100_000
     spouse_separate_adjusted_gross_income: 120_000
     real_estate_taxes: 500
     ar_post_secondary_education_tuition_deductions: 800
-    misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+    misc_deduction: 1_000 # below 0.02*220_000 = 2_000
     filing_status: JOINT
     state_code: AR
   output:
-    ar_itemized_deductions: 4_800
+    ar_itemized_deductions: 4_300
 
-- name: Itemized deduction for single filing status (miscellaneous deductions below the floor)
+- name: Itemized deduction for single filing status (miscellaneous deductions below the floor, medical deduction not zero)
   period: 2022
   input:
-    itemized_deductions_less_salt: 2_500
+    itemized_deductions_less_salt: 3_200
+    medical_expense_deduction: 3_000
+    medical_expense: 10_500
     adjusted_gross_income: 100_000
     spouse_separate_adjusted_gross_income: 0
     real_estate_taxes: 500
@@ -54,26 +79,30 @@
     filing_status: SINGLE
     state_code: AR
   output:
-    ar_itemized_deductions: 4_800
+    ar_itemized_deductions: 3_000
 
-- name: Itemized deduction for head of household filing status (miscellaneous deductions below the floor)
+- name: Itemized deduction for head of household filing status (miscellaneous deductions below the floor, medical deduction not zero)
   period: 2022
   input:
-    itemized_deductions_less_salt: 2_500
+    itemized_deductions_less_salt: 7_300
+    medical_expense_deduction: 6_000
+    medical_expense: 23_250
     adjusted_gross_income: 100_000
-    spouse_separate_adjusted_gross_income: 120_000
+    spouse_separate_adjusted_gross_income: 130_000
     real_estate_taxes: 500
     ar_post_secondary_education_tuition_deductions: 800
-    misc_deduction: 1_000 # below 0.02*100_000 = 2_000
+    misc_deduction: 1_000 # below 0.02*230_000 = 4_600
     filing_status: HEAD OF HOUSEHOLD
     state_code: AR
   output:
-    ar_itemized_deductions: 4_800
+    ar_itemized_deductions: 3_850
 
-- name: Itemized deduction for widow filing status (miscellaneous deductions below the floor)
+- name: Itemized deduction for widow filing status (miscellaneous deductions below the floor, medical deduction zero)
   period: 2022
   input:
-    itemized_deductions_less_salt: 2_500
+    itemized_deductions_less_salt: 1_200
+    medical_expense_deduction: 400
+    medical_expense: 7_900
     adjusted_gross_income: 100_000
     spouse_separate_adjusted_gross_income: 0
     real_estate_taxes: 500
@@ -82,5 +111,5 @@
     filing_status: WIDOW
     state_code: AR
   output:
-    ar_itemized_deductions: 4_800
+    ar_itemized_deductions: 3_100
 
