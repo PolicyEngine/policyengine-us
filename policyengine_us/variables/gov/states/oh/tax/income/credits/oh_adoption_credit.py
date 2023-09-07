@@ -25,8 +25,11 @@ class oh_adoption_credit(Variable):
         )
         p = parameters(period).gov.states.oh.tax.income.credits.adoption
         child_age_eligible = person("age", period) < p.age_limit
-        credits =  min_(
+        credits = (
+            min_(
                 max_(eligible_adoption_related_expenses, p.amount.min),
                 p.amount.max,
-            ) * child_age_eligible
+            )
+            * child_age_eligible
+        )
         return tax_unit.sum(credits)
