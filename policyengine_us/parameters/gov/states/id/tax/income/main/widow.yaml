@@ -1,0 +1,35 @@
+description: Idaho taxes income of widow filers at this rate.
+metadata:
+  type: marginal_rate
+  threshold_unit: currency-USD
+  rate_unit: /1
+  label: Idaho widow filers income tax schedule
+  reference:
+    - title: Idaho State Tax Comission - Individual Income Tax Rate Schedule
+      href: https://tax.idaho.gov/taxes/income-tax/individual-income/individual-income-tax-rate-schedule/
+    - title: IDAHO STATUTES || Section 35.01.01.075 - TAX ON INDIVIDUALS, ESTATES, AND TRUSTS   
+      href: https://casetext.com/regulation/idaho-administrative-code/title-idapa-35-tax-commission-state/rule-350101-income-tax-administrative-rules/section-350101075-tax-on-individuals-estates-and-trusts
+    - title: IDAHO STATUTES, TITLE 63, CHAPTER 30, SECTION 63-3024
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3024/ 
+brackets:
+  - threshold:
+      2021-01-01: 0
+    rate:
+      2021-01-01: 0.01
+  - threshold:
+      2021-01-01: 3_176
+      2022-01-01: 3_324
+    rate:
+      2021-01-01: 0.031
+      2022-01-01: 0.03
+  - threshold:
+      2021-01-01: 9_526
+      2022-01-01: 9_974
+    rate:
+      2021-01-01: 0.045
+  - threshold:
+      2021-01-01: 15_878
+      2022-01-01: 16_622
+    rate:
+      2021-01-01: 0.065
+      2022-01-01: 0.06

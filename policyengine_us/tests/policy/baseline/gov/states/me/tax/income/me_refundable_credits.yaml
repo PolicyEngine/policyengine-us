@@ -1,0 +1,9 @@
+- name:
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    me_refundable_child_care_credit: 1
+    me_eitc: 2
+    state_code: ME
+  output:
+    me_refundable_credits: 3
