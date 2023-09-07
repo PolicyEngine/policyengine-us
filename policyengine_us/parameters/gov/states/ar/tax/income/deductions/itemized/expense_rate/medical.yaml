@@ -1,4 +1,4 @@
-description: Arkansas limits the medical and dental expenses under this ratio of adjusted gross income.
+description: Arkansas limits the medical and dental expenses to this rate of adjusted gross income.
 values:
   2021-01-01: 0.1
 
@@ -6,7 +6,8 @@ values:
 metadata:
   unit: /1
   period: year
-  label: Arkansas limit ratio of adjusted gross income for medical and dental expense 
+  label: Arkansas medical and dental expense rate
+ 
   reference:
     - title: Arkansas 2022 Individual Income Tax Froms and Instructions # page 21
       href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21

@@ -4,26 +4,29 @@ from policyengine_us.model_api import *
 class ar_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona itemized deductions"
+    label = "Arkansas itemized deductions"
     unit = USD
     definition_period = YEAR
     reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
+        p_ded = parameters(period).gov.irs.deductions
+
         agi = tax_unit("adjusted_gross_income", period)
-        spouse_agi = tax_unit("spouse_separate_adjusted_gross_income", period)
+        person_agi = tax_unit("adjusted_gross_income_person", period)
 
         # Less salt deduction
-        p = parameters(period).gov.states.ar.tax.income.deductions.itemized
-        less_salt_deds = tax_unit("itemized_deductions_less_salt", period)
-        exempt_deds = add(tax_unit, period, ["medical_expense_deduction"])
-        adjusted_salt_deds = max(0, less_salt_deds - exempt_deds)
+        deductions = [
+            deduction
+            for deduction in p_ded.itemized_deductions
+            if deduction not in ["salt_deduction", "medical_expense_deduction",]
+        ]
+        less_salt_deds =  add(tax_unit, period, deductions)
 
         # Real estate tax + Personal property tax
-        person_real_estate_deds = person("real_estate_taxes", period)
-        real_estate_deds = tax_unit.sum(person_real_estate_deds)
+        real_estate_deds = add(tax_unit, period, ["real_estate_taxes"])
 
         # Post-secondary Education Tuition Deduction
         tuition_deds = tax_unit(
@@ -32,37 +35,38 @@ class ar_itemized_deductions(Variable):
 
         # Limitation on several items
         # Medical and Dental Expense
-        medical_expense = add(tax_unit, period, ["medical_expense"])
+        medical_expenses = add(tax_unit, period, ["medical_expense"])
         medical_deds = max_(
             0,
-            medical_expense
-            - p.medical_deduction_threshold * (agi + spouse_agi),
+            medical_expenses
+            - p.expense_rate.medical * agi,
         )
 
         # Miscellaneous Deductions
-        misc_p = parameters(period).gov.irs.deductions.itemized.misc
-        misc_deds = where(
-            tax_unit("misc_deduction", period)
-            <= misc_p.floor * (agi + spouse_agi),
-            tax_unit("misc_deduction", period),
+        misc_deds = tax_unit("misc_deduction", period)
+        adjusted_misc_deds = max_(
             0,
+            misc_deds
+            - p_ded.itemized.misc.floor * agi,
         )
 
         total_itemized_deduction = (
-            adjusted_salt_deds
+            less_salt_deds
             + medical_deds
             + real_estate_deds
             + tuition_deds
-            + misc_deds
+            + adjusted_misc_deds
         )
 
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-
-        separated_itemized_deduction = total_itemized_deduction * (
-            agi / (agi + spouse_agi)
+        proration = np.zeros_like(agi)
+        mask = agi > 0
+        proration[mask] = (
+            person_agi[mask] / agi[mask]
         )
+        separated_itemized_deduction = total_itemized_deduction * proration
 
         return where(
             separate, separated_itemized_deduction, total_itemized_deduction

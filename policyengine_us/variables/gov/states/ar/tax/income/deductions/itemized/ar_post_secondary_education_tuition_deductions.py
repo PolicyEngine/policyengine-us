@@ -20,15 +20,15 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         four_year_college = person("four_year_college_institution", period)
 
         four_year_college_deduction = min_(
-            p.tuition_expense_ratio * total_tuition_expense,
+            p.expense_rate.tuition * total_tuition_expense,
             p.amount.four_year_college,
         )
         two_year_college_deduction = min_(
-            p.tuition_expense_ratio * total_tuition_expense,
+            p.expense_rate.tuition * total_tuition_expense,
             p.amount.two_year_college,
         )
         technical_institute_deduction = min_(
-            p.tuition_expense_ratio * total_tuition_expense,
+            p.expense_rate.tuition * total_tuition_expense,
             p.amount.technical_institutes,
         )
 

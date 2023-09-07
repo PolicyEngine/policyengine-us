@@ -1,11 +1,11 @@
 - name: Itemized deduction for married filing separately (miscellaneous deductions below the floow, medical deduction zero)
   period: 2022
   input:
-    itemized_deductions_less_salt: 3_500
-    medical_expense_deduction: 1_000
+    # itemized_deductions_less_salt: 3_500
+    # medical_expense_deduction: 1_000
     medical_expense: 19_000
-    adjusted_gross_income: 100_000
-    spouse_separate_adjusted_gross_income: 140_000
+    adjusted_gross_income: 240_000
+    adjusted_gross_income_person: 100_000
     real_estate_taxes: 500
     ar_post_secondary_education_tuition_deductions: 800
     misc_deduction: 1_000 # below 0.02*240_000 = 4_800
