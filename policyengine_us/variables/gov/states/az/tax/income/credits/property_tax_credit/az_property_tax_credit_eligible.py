@@ -25,7 +25,7 @@ class az_property_tax_credit_eligible(Variable):
 
         head = person("is_tax_unit_head", period)
 
-        return (
+        return tax_unit.any(
             head
             & (age_over_65_qualifies | age_under_65_qualifies)
             & payment_qualifies
