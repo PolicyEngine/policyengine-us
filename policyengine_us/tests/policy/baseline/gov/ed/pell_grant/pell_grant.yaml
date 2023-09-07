@@ -1,0 +1,26 @@
+- name: Max Pell Grant
+  period: 2023
+  input:
+    pell_grant_efc: 0
+    cost_of_attending_college: 100_000
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 7_395
+
+- name: No Pell Grant
+  period: 2023
+  input:
+    pell_grant_efc: 3_000
+    cost_of_attending_college: 3_700
+    pell_grant_months_in_school: 9
+  output:
+    pell_grant: 0
+
+- name: 5 months in school
+  period: 2023
+  input:
+    pell_grant_efc: 2_000
+    cost_of_attending_college: 5_000
+    pell_grant_months_in_school: 6
+  output:
+    pell_grant: 2000
