@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class oh_adoption_credit(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Ohio adoption credit"
     unit = USD
     definition_period = YEAR
@@ -18,17 +18,15 @@ class oh_adoption_credit(Variable):
     )
     defined_for = StateCode.OH
 
-    def formula(person, period, parameters):
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         eligible_adoption_related_expenses = person(
             "qualified_adoption_assistance_expense", period
         )
-
         p = parameters(period).gov.states.oh.tax.income.credits.adoption
-        child_age_eligible = person("age", period) < p.age_threshold
-        return (
-            min_(
-                max_(eligible_adoption_related_expenses, p.minimum_amount),
-                p.maximum_amount,
-            )
-            * child_age_eligible
-        )
+        child_age_eligible = person("age", period) < p.age_limit
+        credits =  min_(
+                max_(eligible_adoption_related_expenses, p.amount.min),
+                p.amount.max,
+            ) * child_age_eligible
+        return tax_unit.sum(credits)
