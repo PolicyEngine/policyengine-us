@@ -1,4 +1,24 @@
-- name: West Virgina social security subtraction for single individual if federal adjusted gross income is more than $50000.
+- name: In 2020, single filers, agi > 50_000, ineligible
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2021, single filers, agi > 50_000, ineligible
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2022, single filers, agi > 50_000, ineligible
   period: 2022
   input:
     state_code: WV
@@ -8,52 +28,272 @@
   output:
     wv_social_security_benefits_subtraction: 0
 
-- name: West Virgina social security subtraction for single individual if federal adjusted gross income is less than $50000.
+- name: In 2020, separate filers, agi > 50_000, ineligible
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2021, separate filers, agi > 50_000, ineligible
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2022, separate filers, agi > 50_000, ineligible
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2020, widow(er) filers, agi > 50_000, ineligible
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: WIDOW
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2021, widow(er) filers, agi > 50_000, ineligible
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: WIDOW
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2022, widow(er) filers, agi > 50_000, ineligible
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: WIDOW
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2020, head of household filers, agi > 50_000, ineligible
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2021, head of household filers, agi > 50_000, ineligible
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2022, head of household filers, agi > 50_000, ineligible
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 70_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2020, joint filers, agi > 100_000, ineligible
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 110_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2021, joint filers, agi > 100_000, ineligible
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 110_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2022, joint filers, agi > 100_000, ineligible
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 110_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2020, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
   period: 2022
   input:
     state_code: WV
     filing_status: SINGLE
-    adjusted_gross_income: 40_000
+    adjusted_gross_income: 50_000
     social_security: 1_000
   output:
     wv_social_security_benefits_subtraction: 1_000
 
-- name: West Virgina social security subtraction for married couple who decide to file jointly if federal adjusted gross income is more than $100000.
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 200_000
-    social_security: 2_000
-  output:
-    wv_social_security_benefits_subtraction: 0
-
-- name: West Virgina social security subtraction for married couple who decide to file jointly if federal adjusted gross income is less than $100000.
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 90_000
-    social_security: 2_000
-  output:
-    wv_social_security_benefits_subtraction: 2_000
-
-- name: West Virgina social security subtraction for married who decide to file separately and federal adjusted gross income is more than $50000.
-  period: 2022
+- name: In 2020, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
   input:
     state_code: WV
     filing_status: SEPARATE
-    adjusted_gross_income: 70_000
+    adjusted_gross_income: 50_000
     social_security: 1_000
   output:
-    wv_social_security_benefits_subtraction: 0
+    wv_social_security_benefits_subtraction: 350
 
-- name: West Virgina social security subtraction for married who decide to file separately and federal adjusted gross income is less than $100000.
+- name: In 2021, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: SEPARATE
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
   period: 2022
   input:
     state_code: WV
     filing_status: SEPARATE
-    adjusted_gross_income: 40_000
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: WIDOW
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: WIDOW
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: WIDOW
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 50_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, joint filers, agi <= 100_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 100_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, joint filers, agi <= 100_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 100_000
+    social_security: 1_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, joint filers, agi <= 100_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    state_code: WV
+    filing_status: JOINT
+    adjusted_gross_income: 100_000
     social_security: 1_000
   output:
     wv_social_security_benefits_subtraction: 1_000
