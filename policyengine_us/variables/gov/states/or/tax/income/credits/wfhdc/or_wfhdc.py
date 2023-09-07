@@ -31,8 +31,8 @@ class or_wfhdc(Variable):
 
         # Determine if the youngest child is disabled.
         # disabled = False
+        # min_age = min_(person("is_disabled", period))
         disabled = person("is_disabled", period)
-        min_age = min_(person("is_disabled", period))
 
         # # Get the corresponding row from WFHDC tables.
         percentage_disabled = select(
@@ -76,6 +76,7 @@ class or_wfhdc(Variable):
         percentage = where(
             disabled, percentage_disabled, percentage_not_disabled
         )
+        
         # Get the federal CDCC value.
         cdcc = tax_unit("cdcc", period)
 

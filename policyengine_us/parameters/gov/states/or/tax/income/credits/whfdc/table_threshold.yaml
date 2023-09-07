@@ -18,11 +18,11 @@ household_size_2:
     - threshold: # This is the income threshold.
         2022-01-01: 0
       amount:
-        not_disabled_under3:
+        age_under3:
           2022-01-01: .10
-        not_disabled_3_to_6:
+        age_3_to_6:
           2022-01-01: .08
-        not_disabled_6_to_13:
+        age_6_to_13:
           2022-01-01: .05
         disabled_13_to_18:
           2022-01-01: .05
@@ -31,11 +31,11 @@ household_size_2:
     - threshold: # This is the income threshold.
         2022-01-01: 1_831
       amount:
-        not_disabled_under3:
+        age_under3:
           2022-01-01: .20
-        not_disabled_3_to_6:
+        age_3_to_6:
           2022-01-01: .18
-        not_disabled_6_to_13:
+        age_6_to_13:
           2022-01-01: .15
         disabled_13_to_18:
           2022-01-01: .15
@@ -44,11 +44,11 @@ household_size_2:
     - threshold: # This is the income threshold.
         2022-01-01: 3_662
       amount:
-        not_disabled_under3:
+        age_under3:
           2022-01-01: .30
-        not_disabled_3_to_6:
+        age_3_to_6:
           2022-01-01: .28
-        not_disabled_6_to_13:
+        age_6_to_13:
           2022-01-01: .25
         disabled_13_to_18:
           2022-01-01: .25
@@ -56,44 +56,5 @@ household_size_2:
           2022-01-01: .10
 
 
-        # value: 1_831
-        #   A:
-        #     disabled:
-        #       rate:
-        #         13:
-        #           value: 0.05
-        #         18: 
-        #           value: 0.05
-        #     non-disabled:
-        #       rate:
-        #         3:
-        #           value: 0.1
-        #         6: 
-        #           value: 0.08
-        #         13: 
-        #           value: 0.05
-        # value: 3_662
-        #   B:
-        #     disabled:
-        #       rate:
-        #         13:
-        #           value: 0.15
-        #         18: 
-        #           value: 0.05
-        #     non-disabled:
-        #       rate:
-        #         3:
-        #           value: 0.2
-        #         6: 
-        #           value: 0.18
-        #         13: 
-        #           value: 0.05
-          
-    #   amount:
-    #     2022-01-01: A 
-    # - threshold:
-    #     2022-01-01: 3_662
-    #   amount:
-    #     2022-01-01: B
 
 
