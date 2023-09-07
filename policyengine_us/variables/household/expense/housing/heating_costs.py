@@ -7,4 +7,3 @@ class heating_costs(Variable):
     label = "Household heating cost"
     unit = USD
     definition_period = YEAR
-    

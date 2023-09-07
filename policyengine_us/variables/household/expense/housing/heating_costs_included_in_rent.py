@@ -6,5 +6,3 @@ class heating_costs_included_in_rent(Variable):
     entity = TaxUnit
     label = "Heating costs are included in the amount rent calculation"
     definition_period = YEAR
-   
-    
