@@ -1,11 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class wv_low_income_family_tax_credit(Variable):
+class wv_low_income_family_tax_credit_rate(Variable):
     value_type = float
     entity = TaxUnit
     label = "West Virginia low-income family tax credit"
-    unit = USD
+    unit = "/1"
     definition_period = YEAR
     defined_for = "wv_low_income_family_tax_credit_eligible"
 
