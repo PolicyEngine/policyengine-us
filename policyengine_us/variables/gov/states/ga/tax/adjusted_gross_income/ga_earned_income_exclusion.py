@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ga_earned_income_exclusion(Variable):
+class ga_exclusion_countable_earned_income(Variable):
     value_type = float
     entity = Person
-    label = "Georgia earned income exclusion"
+    label = "Countable earned income for the Georgia retirement exclusion"
     unit = USD
     definition_period = YEAR
     reference = (

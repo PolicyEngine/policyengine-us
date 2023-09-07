@@ -6,7 +6,6 @@
         is_tax_unit_head: true
         is_disabled: true
         age: 50
-        ga_earned_income_exclusion: 4_000
         ga_retirement_income: 69_000
     tax_units:
       tax_unit:
@@ -27,7 +26,6 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 50
-        ga_earned_income_exclusion: 4_000
         ga_retirement_income: 69_000
     tax_units:
       tax_unit:
@@ -40,7 +38,7 @@
   output:
     ga_retirement_exclusion: 0
 
-- name: head is eligible for higher cap and spouse is eligible for lower cap
+- name: head is eligible for older cap and spouse is eligible for younger cap
   period: 2023
   input:
     people:
@@ -48,14 +46,12 @@
         is_tax_unit_head: true
         is_disabled: false
         age: 65
-        ga_earned_income_exclusion: 4_000
-        ga_retirement_income: 63_000
+        ga_retirement_income: 67_000
       person2:
         is_tax_unit_head: true
         is_disabled: true
         age: 60
-        ga_earned_income_exclusion: 4_000
-        ga_retirement_income: 20_000
+        ga_retirement_income: 37_700
     tax_units:
       tax_unit:
         members: [person1,person2]
@@ -65,4 +61,4 @@
       household:
         state_code: GA
   output:
-    ga_retirement_exclusion: 89_000 + 3_000
+    ga_retirement_exclusion: 100_000 + 3_000
