@@ -1,7 +1,12 @@
 - name: VT AGI subtraction amount unit test 1
   period: 2022
   input:
-    state_code: ME
+    state_code: ME # Test state definition other than VT
+    us_govt_interest: 1_000
+    vt_medical_expense_deduction: 1_000
+    student_loan_interest: 1_000
+    vt_capital_gain_exclusion: 0
+    vt_retirement_income_exemption: 1_000
   output:
     vt_subtractions: 0  
 
