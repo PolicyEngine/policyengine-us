@@ -20,7 +20,7 @@ class amt_income(Variable):
             salt_deduction,
             standard_deduction,
         )
-        amt_income = taxable_income + excluded_deductions
+        amt_inc = taxable_income + excluded_deductions
         amt = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
         separate_addition = max_(
@@ -28,13 +28,10 @@ class amt_income(Variable):
             min_(
                 amt.exemption.amount[filing_status],
                 amt.exemption.phase_out.rate
-                * max_(0, amt_income - amt.exemption.separate_limit),
+                * max_(0, amt_inc - amt.exemption.separate_limit),
             ),
         ) * (filing_status == filing_status.possible_values.SEPARATE)
-        return amt_income + separate_addition
-
-
-c62100 = variable_alias("c62100", amt_income)
+        return amt_inc + separate_addition
 
 
 class regular_tax_before_credits(Variable):
@@ -117,7 +114,7 @@ class regular_tax_before_credits(Variable):
         return where(hasqdivltcg, dwks45, dwks44)
 
 
-class c09600(Variable):
+class alternative_minimum_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -126,7 +123,7 @@ class c09600(Variable):
     documentation = "Alternative Minimum Tax (AMT) liability"
 
     def formula(tax_unit, period, parameters):
-        c62100 = tax_unit("c62100", period)
+        amt_income = tax_unit("amt_income", period)
         # Form 6251, Part II top
         amt = parameters(period).gov.irs.income.amt
         phase_out = amt.exemption.phase_out
@@ -136,7 +133,7 @@ class c09600(Variable):
             (
                 amt.exemption.amount[filing_status]
                 - phase_out.rate
-                * max_(0, c62100 - phase_out.start[filing_status])
+                * max_(0, amt_income - phase_out.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)
@@ -148,7 +145,7 @@ class c09600(Variable):
             min_(line29, tax_unit("filer_earned", period) + child.amount),
             line29,
         )
-        line30 = max_(0, c62100 - line29)
+        line30 = max_(0, amt_income - line29)
         brackets = amt.brackets
         amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
             "sep", period
@@ -217,14 +214,9 @@ class c09600(Variable):
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
 
         # Form 6251, Part II bottom
-        line32 = where(
-            tax_unit("amt_form_completed", period),
-            tax_unit("foreign_tax_credit", period),
-            foreign_tax_credit,
-        )
+        line32 = tax_unit("foreign_tax_credit", period)
         line33 = line31 - line32
         return max_(
             0,
@@ -233,11 +225,8 @@ class c09600(Variable):
                 0,
                 (
                     tax_unit("regular_tax_before_credits", period)
-                    - foreign_tax_credit
-                    - tax_unit("c05700", period)
+                    - line32
+                    - tax_unit("form_4972_lumpsum_distributions", period)
                 ),
             ),
         )
-
-
-alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)
