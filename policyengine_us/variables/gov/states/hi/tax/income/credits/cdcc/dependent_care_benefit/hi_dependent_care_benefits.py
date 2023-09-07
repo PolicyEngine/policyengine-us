@@ -11,7 +11,9 @@ class hi_dependent_care_benefits(Variable):
     reference = "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=40"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
+        p = parameters(
+            period
+        ).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
         dcb_amount = tax_unit("dependent_care_benefits", period)
         qualified_expense_amount = tax_unit(
             "tax_unit_childcare_expenses", period
