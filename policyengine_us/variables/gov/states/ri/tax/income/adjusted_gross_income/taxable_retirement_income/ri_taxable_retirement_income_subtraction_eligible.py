@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ri_taxable_retirement_income_subtraction_eligibility(Variable):
+class ri_taxable_retirement_income_subtraction_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = (
@@ -9,6 +9,7 @@ class ri_taxable_retirement_income_subtraction_eligibility(Variable):
     )
     definition_period = YEAR
     reference = "http://webserver.rilin.state.ri.us/Statutes/title44/44-30/44-30-12.HTM"
+    # Eligibility is the same as Social Security's eligibility https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf STEP 1: Eligibility
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
@@ -19,13 +20,11 @@ class ri_taxable_retirement_income_subtraction_eligibility(Variable):
 
         p = parameters(
             period
-        ).gov.states.ri.tax.income.adjusted_gross_income.subtractions
+        ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.social_security.threshold
 
         # Age-based eligibility.
-        age_conditions = birth_year <= p.social_security.birth_date_limit
+        age_conditions = birth_year <= p.birth_year
         # Status eligibility.
-        status_is_eligible = (
-            income < p.social_security.income_threshold[filing_status]
-        )
+        status_is_eligible = income < p.income[filing_status]
 
         return age_conditions & status_is_eligible

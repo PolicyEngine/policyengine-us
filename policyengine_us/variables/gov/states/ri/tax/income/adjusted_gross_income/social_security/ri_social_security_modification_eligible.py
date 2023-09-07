@@ -1,13 +1,13 @@
 from policyengine_us.model_api import *
 
 
-class ri_social_security_modification_eligibility(Variable):
-    value_type = float
+class ri_social_security_modification_eligible(Variable):
+    value_type = bool
     entity = TaxUnit
-    label = "Rhode Island Social Security Modification Eligibility"
-    unit = USD
+    label = "Eligible for the Rhode Island Social Security Modification"
     definition_period = YEAR
     reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/Social%20Security%20Worksheet_w.pdf"
+    # MODIFICATION FOR TAXABLE SOCIAL SECURITY INCOME WORKSHEET STEP 1: Eligibility
     defined_for = StateCode.RI
 
     def formula(tax_unit, period, parameters):
@@ -21,15 +21,14 @@ class ri_social_security_modification_eligibility(Variable):
 
         p = parameters(
             period
-        ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.social_security
+        ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.social_security.threshold
 
         # Age-based eligibility.
-        age_conditions = birth_year <= p.birth_date_limit
-        head_eligible = age_conditions & is_head
-        spouse_eligible = age_conditions & is_spouse
-        age_is_eligible = head_eligible | spouse_eligible
+        age_conditions = birth_year <= p.birth_year
+        head_or_spouse = is_head | is_spouse
+        age_is_eligible = tax_unit.any(age_conditions & head_or_spouse)
 
         # Status eligibility.
-        status_is_eligible = income < p.income_threshold[filing_status]
+        income_is_eligible = income < p.income[filing_status]
 
-        return tax_unit.max(age_is_eligible & status_is_eligible)
+        return age_is_eligible & income_is_eligible

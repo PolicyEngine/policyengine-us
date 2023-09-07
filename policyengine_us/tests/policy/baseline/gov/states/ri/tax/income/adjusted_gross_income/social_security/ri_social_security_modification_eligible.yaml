@@ -18,7 +18,7 @@
       household:
         state_code: RI
   output:
-    ri_social_security_modification_eligibility: false
+    ri_social_security_modification_eligible: false
 
 - name: Income not eligible for social security modification
   absolute_error_margin: 0.01
@@ -42,7 +42,7 @@
         state_code: RI
         
   output:
-    ri_social_security_modification_eligibility: false
+    ri_social_security_modification_eligible: false
 
 - name: Spouse age eligible for social security modification
   absolute_error_margin: 0.01
@@ -65,7 +65,7 @@
       household:
         state_code: RI     
   output:
-    ri_social_security_modification_eligibility: true
+    ri_social_security_modification_eligible: true
 
 - name: Both age eligible for social security modification
   absolute_error_margin: 0.01
@@ -88,4 +88,4 @@
       household:
         state_code: RI     
   output:
-    ri_social_security_modification_eligibility: true
+    ri_social_security_modification_eligible: true

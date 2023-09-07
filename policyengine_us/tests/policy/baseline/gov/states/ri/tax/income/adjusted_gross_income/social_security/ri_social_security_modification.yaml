@@ -16,7 +16,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ri_social_security_modification_eligibility: false
+        ri_social_security_modification_eligible: false
   output:
     ri_social_security_modification: 0
 
@@ -38,7 +38,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ri_social_security_modification_eligibility: false
+        ri_social_security_modification_eligible: false
   output:
     ri_social_security_modification: 0
 
@@ -60,9 +60,9 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ri_social_security_modification_eligibility: true
+        ri_social_security_modification_eligible: true
   output:
-    ri_social_security_modification: 47_489.362
+    ri_social_security_modification: 47_743.316
 
 - name: Head age eligible for social security modification
   absolute_error_margin: 0.01
@@ -75,16 +75,16 @@
         taxable_social_security: 48_000
         age: 79
       person2:
-        is_tax_unit_spouse: false
+        is_tax_unit_spouse: true
         social_security: 47_500
         taxable_social_security: 48_000
         age: 60
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ri_social_security_modification_eligibility: true
+        ri_social_security_modification_eligible: true
   output:
-    ri_social_security_modification: 48_000
+    ri_social_security_modification: 47_746.032
 
 - name: Both age eligible for social security modification
   absolute_error_margin: 0.01
@@ -104,6 +104,6 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        ri_social_security_modification_eligibility: true
+        ri_social_security_modification_eligible: true
   output:
-    ri_social_security_modification: 48_000
+    ri_social_security_modification: 96_000

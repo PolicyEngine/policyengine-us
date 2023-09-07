@@ -6,7 +6,7 @@
     filing_status: JOINT
     age: 40
   output:
-    ri_taxable_retirement_income_subtraction_eligibility: false
+    ri_taxable_retirement_income_subtraction_eligible: false
 
 - name: Single filer eligible for taxable retirement income modification
   period: 2022
@@ -16,7 +16,7 @@
     filing_status: SINGLE
     age: 70
   output:
-    ri_taxable_retirement_income_subtraction_eligibility: true
+    ri_taxable_retirement_income_subtraction_eligible: true
 
 - name: Widow filer eligible 
   period: 2022
@@ -26,4 +26,4 @@
     filing_status: WIDOW
     age: 70
   output:
-    ri_taxable_retirement_income_subtraction_eligibility: true
+    ri_taxable_retirement_income_subtraction_eligible: true

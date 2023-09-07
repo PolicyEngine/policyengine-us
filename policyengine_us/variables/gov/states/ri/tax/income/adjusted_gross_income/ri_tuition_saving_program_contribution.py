@@ -19,5 +19,4 @@ class ri_tuition_saving_program_contribution(Variable):
         p = parameters(
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.tuition_saving_program_contributions
-        cap = p.max_amount[filing_status]
-        return min_(investment_amount, cap)
+        return min_(investment_amount, p.max_amount[filing_status])

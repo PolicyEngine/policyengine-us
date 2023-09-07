@@ -1,16 +1,15 @@
-description: Rhode Island limits the maximum number of children eligible under the child tax rebate.
-
+description: Rhode Island qualifies children for the tax rebate under this age threshold.
 metadata:
-  unit: person
-  label: Rhode Island child tax rebate child cap
+  unit: year
+  label: Rhode Island child tax rebate child age threshold
   period: year
   reference:
   #Rhode Island started issuing child tax rebates on 2022
   - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1v
     href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
-  - title: R.I. Gen. Laws § 44-30-103  44-30-103. Child tax rebates. (b), (1)
+  - title: R.I. Gen. Laws § 44-30-103  44-30-103. Child tax rebates. (a)
     href: http://webserver.rilin.state.ri.us/Statutes/TITLE44/44-30/44-VI/44-30-103.htm
 
 values:
   2021-01-01: 0
-  2022-01-01: 3
+  2022-01-01: 18
