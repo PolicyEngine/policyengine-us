@@ -14,8 +14,5 @@ class la_military_pay_exclusion(Variable):
             period
         ).gov.states.la.tax.military_pay_exclusion
         compensation = add(tax_unit, period, ["military_retirement_pay"])
-            "la_military_compensation", period
-        )
         max_amount=p.max_amount
-        amount=compensation > max_amount
         return min_(max_amount, compensation)
