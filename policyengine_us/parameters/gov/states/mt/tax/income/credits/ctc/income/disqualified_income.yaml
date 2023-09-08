@@ -1,0 +1,16 @@
+description: Montana counts these income sources as disqualified income.
+values:
+  2020-01-01:
+    - non_qualified_dividend_income
+    - tax_exempt_interest_income
+    # exampt_interest_income
+    # excess_rental_income
+    # excess_royalty_income
+    - capital_gains
+    # excess_passive_activity_income
+
+metadata:
+  unit: list
+  reference:
+    title: 26 U.S. Code § 32 - Earned income
+    href: https://www.law.cornell.edu/uscode/text/26/32#:~:text=In%20the%20case%20of%20an,exceed%20the%20earned%20income%20amount

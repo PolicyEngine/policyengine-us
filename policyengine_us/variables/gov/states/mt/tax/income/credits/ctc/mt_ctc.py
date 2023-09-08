@@ -18,6 +18,10 @@ class mt_ctc(Variable):
         # Credit gets reduced by 90 for each $1,000 over $50,000 of agi
         agi = tax_unit("adjusted_gross_income", period)
         excess = max_(agi - p.reduction.threshold, 0)
-        increments = excess // p.reduction.increment
+        increments = (
+            0
+            if p.reduction.increment == 0
+            else (excess // p.reduction.increment)
+        )
         reduction_rate = p.reduction.amount * increments
         return max_(child_credit - reduction_rate, 0)
