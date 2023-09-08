@@ -11,19 +11,24 @@ class ar_itemized_deductions(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         p_ded = parameters(period).gov.irs.deductions
 
         agi = tax_unit("adjusted_gross_income", period)
-        person_agi = tax_unit("adjusted_gross_income_person", period)
+        person_agi = person("adjusted_gross_income_person", period)
 
         # Less salt deduction
         deductions = [
             deduction
             for deduction in p_ded.itemized_deductions
-            if deduction not in ["salt_deduction", "medical_expense_deduction",]
+            if deduction
+            not in [
+                "salt_deduction",
+                "medical_expense_deduction",
+            ]
         ]
-        less_salt_deds =  add(tax_unit, period, deductions)
+        less_salt_deds = add(tax_unit, period, deductions)
 
         # Real estate tax + Personal property tax
         real_estate_deds = add(tax_unit, period, ["real_estate_taxes"])
@@ -38,16 +43,14 @@ class ar_itemized_deductions(Variable):
         medical_expenses = add(tax_unit, period, ["medical_expense"])
         medical_deds = max_(
             0,
-            medical_expenses
-            - p.expense_rate.medical * agi,
+            medical_expenses - p.expense_rate.medical * agi,
         )
 
         # Miscellaneous Deductions
         misc_deds = tax_unit("misc_deduction", period)
         adjusted_misc_deds = max_(
             0,
-            misc_deds
-            - p_ded.itemized.misc.floor * agi,
+            misc_deds - p_ded.itemized.misc.floor * agi,
         )
 
         total_itemized_deduction = (
@@ -63,9 +66,7 @@ class ar_itemized_deductions(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
         proration = np.zeros_like(agi)
         mask = agi > 0
-        proration[mask] = (
-            person_agi[mask] / agi[mask]
-        )
+        proration[mask] = person_agi[mask] / agi[mask]
         separated_itemized_deduction = total_itemized_deduction * proration
 
         return where(
