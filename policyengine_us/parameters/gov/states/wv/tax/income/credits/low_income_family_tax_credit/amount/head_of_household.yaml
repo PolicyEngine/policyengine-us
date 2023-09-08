@@ -2,7 +2,7 @@ description: West Virginia allows for this low-income family tax credit amount f
 metadata:
   type: single_amount
   threshold_unit: currency-USD
-  rate_unit: /1
+  amount_unit: /1
   label: West Virginia low-income family tax credit for head of household filers
   reference:
   - title: Code of West Virginia §11-21-22B (b)
@@ -16,43 +16,43 @@ metadata:
 brackets:
   - threshold:
       2007-01-01: -.inf
-    rate:
+    amount:
       2007-01-01: 1
   - threshold:
       2007-01-01: 0
-    rate:
+    amount:
       2007-01-01: 0.9
   - threshold:
       2007-01-01: 300
-    rate:
+    amount:
       2007-01-01: 0.8
   - threshold:
       2007-01-01: 600
-    rate:
+    amount:
       2007-01-01: 0.7
   - threshold:
       2007-01-01: 900
-    rate:
+    amount:
       2007-01-01: 0.6
   - threshold:
       2007-01-01: 1_200
-    rate:
+    amount:
       2007-01-01: 0.5
   - threshold:
       2007-01-01: 1_500
-    rate:
+    amount:
       2007-01-01: 0.4
   - threshold:
       2007-01-01: 1_800
-    rate:
+    amount:
       2007-01-01: 0.3
   - threshold:
       2007-01-01: 2_100
-    rate:
+    amount:
       2007-01-01: 0.2
   - threshold:
       2007-01-01: 2_400
-    rate:
+    amount:
       2007-01-01: 0.1
   - threshold:
       2007-01-01: 2_700

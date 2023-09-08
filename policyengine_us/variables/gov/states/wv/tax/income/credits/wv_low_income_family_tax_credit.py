@@ -31,7 +31,7 @@ class wv_low_income_family_tax_credit_rate(Variable):
         reduced_agi = wv_agi - fpg_amount
         print(reduced_agi)
         print(p.amount.head_of_household.calc(reduced_agi))
-        
+
         return select(
             [
                 filing_status == filing_statuses.SINGLE,
@@ -48,4 +48,3 @@ class wv_low_income_family_tax_credit_rate(Variable):
                 p.amount.widow.calc(reduced_agi),
             ],
         )
-
