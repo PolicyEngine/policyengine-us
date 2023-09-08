@@ -17,8 +17,16 @@ class ca_tanf_maximum_payment(Variable):
         p = parameters(period).gov.states.ca.cdss.tanf.payment
 
         monthly = where(
-            region1, 
-            where(exempt, p.region1.exempt[ceiling], p.region1.non_exempt[ceiling]), 
-            where(exempt, p.region2.exempt[ceiling], p.region2.non_exempt[ceiling])
-            )
+            region1,
+            where(
+                exempt,
+                p.region1.exempt[ceiling],
+                p.region1.non_exempt[ceiling],
+            ),
+            where(
+                exempt,
+                p.region2.exempt[ceiling],
+                p.region2.non_exempt[ceiling],
+            ),
+        )
         return monthly * MONTHS_IN_YEAR

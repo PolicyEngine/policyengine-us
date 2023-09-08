@@ -12,13 +12,7 @@ class ca_tanf_resouces_limit(Variable):
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ca.cdss.tanf.resources_limit
         person = spm_unit.members
-        has_elderly = spm_unit.any(
-            person("age", period) >= p.age_threshold
-        )
+        has_elderly = spm_unit.any(person("age", period) >= p.age_threshold)
         has_disabled = spm_unit.any(person("is_disabled", period))
-        resources_limit = where(
-            has_elderly | has_disabled,
-            p.higher,
-            p.lower
-        )
+        resources_limit = where(has_elderly | has_disabled, p.higher, p.lower)
         return resources_limit

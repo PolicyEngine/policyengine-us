@@ -16,14 +16,8 @@ class ca_tanf_income_limit(Variable):
         region1 = spm_unit("ca_tanf_region1", period)
         p = parameters(period).gov.states.ca.cdss.tanf.income.limit
 
-        main = where(
-            region1, 
-            p.region1.main[ceiling], 
-            p.region2.main[ceiling])
-        additional = where(
-            region1, 
-            p.region1.additional, 
-            p.region2.additional)
+        main = where(region1, p.region1.main[ceiling], p.region2.main[ceiling])
+        additional = where(region1, p.region1.additional, p.region2.additional)
 
         monthly = main + additional * extra
         return monthly * MONTHS_IN_YEAR
