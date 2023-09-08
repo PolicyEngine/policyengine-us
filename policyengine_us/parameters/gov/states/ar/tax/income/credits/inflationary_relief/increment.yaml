@@ -1,0 +1,23 @@
+description: Arkansas increases the income-tax credit for each of these increments of agi below the threshold, based on filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Arkansas income range increment
+  reference:
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions | page 26
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: INFLATIONARY RELIEF INCOME-TAX CREDIT WORKSHEET
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_Final_InflationaryReliefIncomeTaxCredit_FI.pdf
+
+  breakdown:
+    - filing_status
+JOINT:
+  2022-01-01: 2_000
+WIDOW:
+  2022-01-01: 1_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 1_000
+SINGLE:
+  2022-01-01: 1_000
+SEPARATE:
+  2022-01-01: 1_000
