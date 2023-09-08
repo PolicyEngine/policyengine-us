@@ -146,6 +146,31 @@
         members: [head, spouse]
         state_code: HI
   output:
+    hi_min_head_spouse_earned: 100
+
+- name: married, both disabled/student, one income smaller than 4_800
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_disabled: true
+        is_full_time_student: true
+        earned_income: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        is_full_time_student: false
+        earned_income: 100
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
     hi_min_head_spouse_earned: 4_800
 
 - name: married, one disabled/student, both income smaller than 4_800

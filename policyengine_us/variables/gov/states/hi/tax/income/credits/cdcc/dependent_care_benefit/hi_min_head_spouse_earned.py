@@ -49,5 +49,19 @@ class hi_min_head_spouse_earned(Variable):
         head_spouse_income = where(
             head_or_spouse, eligible_income, tax_unit.max(eligible_income)
         )
+        # Edge case: both spouses were students or disabled:
+        # compare original income with eligible income
+        both_disabled_income = where(
+            head_or_spouse,
+            min_(head_or_spouse * income, eligible_income),
+            head_spouse_income,
+        )
+        # take the minumum of original income if both incomes below the floor
+        reach_income_floor = (head_or_spouse * income) < eligible_income
+        head_spouse_income = where(
+            (sum(eligible) == 2)&(sum(reach_income_floor) ==2),
+            both_disabled_income,
+            head_spouse_income,
+        )
 
         return tax_unit.min(head_spouse_income)
