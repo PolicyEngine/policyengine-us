@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class mi_homestead_property_tax_credit_non_refundable(Variable):
+class mi_homestead_non_refundable(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan non-refundable Homestead Property Tax Credit"
@@ -21,15 +21,15 @@ class mi_homestead_property_tax_credit_non_refundable(Variable):
         disabled_non_refundable_rate = where(
             disabled_people > 0,
             p.disabled.not_refundable_rate.calc(total_household_resources),
-            p.not_refundable_rate,
+            p.rate.not_refundable,
         )
 
         # seniors
-        age_older = tax_unit("age_head", period)
+        age_older = tax_unit("greater_age_head_spouse", period)
         senior_non_refundable_rate = where(
             age_older >= p.senior.min_age,
             p.senior.not_refundable_rate.calc(total_household_resources),
-            p.not_refundable_rate,
+            p.rate.not_refundable,
         )
 
         non_refundable_rate = min_(

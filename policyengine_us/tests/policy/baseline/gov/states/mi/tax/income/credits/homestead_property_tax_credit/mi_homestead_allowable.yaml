@@ -1,0 +1,80 @@
+- name: not eligible
+  period: 2022
+  input:
+    mi_homestead_refundable: 1_000
+    mi_homestead_eligible: false
+    state_code: MI
+  output:
+    mi_homestead_allowable: 0
+
+- name: not senior, not disabled
+  period: 2022
+  input:
+    mi_homestead_refundable: 2_000
+    mi_homestead_eligible: true
+    state_code: MI
+  output: # 2000 * 0.6
+    mi_homestead_allowable: 1_200
+
+- name: senior, not eligible
+  period: 2022
+  input:
+    mi_household_resources: 31_251
+    mi_homestead_refundable: 1_000
+    greater_age_head_spouse: 66
+    mi_homestead_eligible: false
+    state_code: MI
+  output: 
+    mi_homestead_allowable: 0
+
+- name: senior, 100% credit
+  period: 2022
+  input:
+    mi_household_resources: 20_000
+    mi_homestead_refundable: 860
+    greater_age_head_spouse: 66
+    mi_homestead_eligible: true
+    state_code: MI
+  output: 
+    mi_homestead_allowable: 860
+  
+- name: senior, 84% credit
+  period: 2022
+  input:
+    mi_household_resources: 25_000
+    mi_homestead_refundable: 1_300
+    greater_age_head_spouse: 66
+    mi_homestead_eligible: true
+    state_code: MI
+  output: # 1300 * 0.84
+    mi_homestead_allowable: 1_092
+
+- name: disabled
+  period: 2022
+  input:
+    mi_homestead_refundable: 1_300
+    is_disabled: true
+    mi_homestead_eligible: true
+    state_code: MI
+  output: 
+    mi_homestead_allowable: 1_300
+
+- name: senior, disabled
+  period: 2022
+  input:
+    mi_homestead_refundable: 1_300
+    greater_age_head_spouse: 66
+    is_disabled: true
+    mi_homestead_eligible: true
+    state_code: MI
+  output: 
+    mi_homestead_allowable: 1_300
+   
+- name: larger than max
+  period: 2022
+  input:
+    mi_homestead_refundable: 2_800
+    mi_homestead_eligible: true
+    state_code: MI
+  output: # 2800 * 0.6 > 1600
+    mi_homestead_allowable: 1_600

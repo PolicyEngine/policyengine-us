@@ -2,8 +2,8 @@
   period: 2022
   input:
     mi_household_resources: 0
-    mi_homestead_property_tax_credit_refundable: 0
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_allowable: 0
+    mi_homestead_eligible: false
     state_code: MI
   output:
     mi_homestead_property_tax_credit: 0
@@ -12,92 +12,59 @@
   period: 2022
   input:
     mi_household_resources: 5_000
-    mi_homestead_property_tax_credit_refundable: 1_000
-    mi_homestead_property_tax_credit_eligible: false
+    mi_homestead_allowable: 1_000
+    mi_homestead_eligible: false
     state_code: MI
   output:
     mi_homestead_property_tax_credit: 0
 
-- name: not senior, 0% credit
+- name: 0% credit
   period: 2022
   input:
     mi_household_resources: 63_001
-    mi_homestead_property_tax_credit_refundable: 2_000
-    mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_allowable: 2_000
+    mi_homestead_eligible: true
     state_code: MI
   output:
     mi_homestead_property_tax_credit: 0
 
-- name: not senior, 70% credit
+- name: 70% credit
   period: 2022
   input:
     mi_household_resources: 56_500
-    mi_homestead_property_tax_credit_refundable: 1
-    mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_allowable: 1_000
+    mi_homestead_eligible: true
     state_code: MI
-  output: # 1 * 0.6 * 0.7
-    mi_homestead_property_tax_credit: 0.42
+  output: # 1000 * 0.7
+    mi_homestead_property_tax_credit: 700
 
-- name: not senior, 100% credit
+- name: 100% credit
   period: 2022
   input:
     mi_household_resources: 54_000
-    mi_homestead_property_tax_credit_refundable: 1_601
-    mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_allowable: 1_600
+    mi_homestead_eligible: true
     state_code: MI
-  output: # 1601 * 0.6
-    mi_homestead_property_tax_credit: 960.6
+  output: 
+    mi_homestead_property_tax_credit: 1_600
 
-- name: not senior, 20% credit
+- name: 20% credit
   period: 2021
   input:
     mi_household_resources: 58_900
-    mi_homestead_property_tax_credit_refundable: 3_115.2
-    mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_allowable: 3_115
+    mi_homestead_eligible: true
     state_code: MI
-  output: # 3115.2 * 0.6 > 1500
-    mi_homestead_property_tax_credit: 300
+  output: # 3115 * 0.2
+    mi_homestead_property_tax_credit: 623
 
-- name: not senior, 10% credit
+- name: 10% credit
   period: 2022
   absolute_error_margin: 0.1
   input:
     mi_household_resources: 62_001
-    mi_homestead_property_tax_credit_refundable: 1_215.968
-    mi_homestead_property_tax_credit_eligible: true
+    mi_homestead_allowable: 1_215
+    mi_homestead_eligible: true
     state_code: MI
-  output: # 1215.968 * 0.6 * 0.1
-    mi_homestead_property_tax_credit: 72.95808
-
-- name: senior, not eligible
-  period: 2022
-  input:
-    mi_household_resources: 31_251
-    mi_homestead_property_tax_credit_refundable: 1_000
-    age_head: 66
-    mi_homestead_property_tax_credit_eligible: false
-    state_code: MI
-  output: 
-    mi_homestead_property_tax_credit: 0
-
-- name: senior, 100% credit
-  period: 2022
-  input:
-    mi_household_resources: 20_000
-    mi_homestead_property_tax_credit_refundable: 860
-    age_head: 66
-    mi_homestead_property_tax_credit_eligible: true
-    state_code: MI
-  output: 
-    mi_homestead_property_tax_credit: 860
-  
-- name: senior, 84% credit
-  period: 2022
-  input:
-    mi_household_resources: 25_000
-    mi_homestead_property_tax_credit_refundable: 1_300
-    age_head: 66
-    mi_homestead_property_tax_credit_eligible: true
-    state_code: MI
-  output: # 1300 * 0.84
-    mi_homestead_property_tax_credit: 1_092
+  output: # 1215 * 0.1
+    mi_homestead_property_tax_credit: 121.5

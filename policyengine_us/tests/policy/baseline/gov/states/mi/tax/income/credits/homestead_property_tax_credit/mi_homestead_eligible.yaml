@@ -1,0 +1,26 @@
+- name: no refundable amount
+  period: 2022
+  input:
+    mi_homestead_refundable: 0
+    assessed_property_value: 1_000
+    state_code: MI
+  output:
+    mi_homestead_eligible: false
+
+- name: positive refundable amount
+  period: 2022
+  input:
+    mi_homestead_refundable: 1_000
+    assessed_property_value: 1_000
+    state_code: MI
+  output: 
+    mi_homestead_eligible: true
+
+- name: positive refundable amount, property value larger than max
+  period: 2022
+  input:
+    mi_homestead_refundable: 1_000
+    assessed_property_value: 143_001
+    state_code: MI
+  output: 
+    mi_homestead_eligible: false

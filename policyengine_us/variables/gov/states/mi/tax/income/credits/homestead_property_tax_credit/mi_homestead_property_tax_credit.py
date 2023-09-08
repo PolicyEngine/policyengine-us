@@ -7,7 +7,7 @@ class mi_homestead_property_tax_credit(Variable):
     label = "Michigan Homestead Property Tax Credit"
     unit = USD
     definition_period = YEAR
-    defined_for = "mi_homestead_property_tax_credit_eligible"
+    defined_for = "mi_homestead_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -15,25 +15,8 @@ class mi_homestead_property_tax_credit(Variable):
         ).gov.states.mi.tax.income.credits.homestead_property_tax_credit
 
         total_household_resources = tax_unit("mi_household_resources", period)
+        homestead_allowable = tax_unit("mi_homestead_allowable", period)
 
-        # seniors
-        age_older = tax_unit("age_head", period)
-        phase_out_rate = where(
-            age_older >= p.senior.min_age,
-            p.senior.phase_out_rate.calc(total_household_resources),
-            p.phase_out_rate.calc(total_household_resources),
-        )
-        credit_rate = where(
-            age_older >= p.senior.min_age,
-            p.senior.credit_rate,
-            p.credit_rate,
-        )
+        phase_out_rate = p.rate.phase_out.calc(total_household_resources)
 
-        refundable_amount = tax_unit(
-            "mi_homestead_property_tax_credit_refundable", period
-        )
-
-        return phase_out_rate * min_(
-            refundable_amount * credit_rate,
-            p.max_amount,
-        )
+        return phase_out_rate * homestead_allowable
