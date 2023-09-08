@@ -9,4 +9,4 @@ class az_property_tax_credit_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.AZ
 
-    adds = ("gov.states.az.tax.income.property_tax_credits.income_sources",)
+    adds = "gov.states.az.tax.income.property_tax_credits.income_sources"
