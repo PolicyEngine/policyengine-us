@@ -1,0 +1,31 @@
+- name: Alabama itemized deductions unit test 1
+  period: 2021
+  input:
+    al_charitable_deduction: 3
+    investment_interest: 7
+    mortgage: 1
+    interest_deduction: 9
+    medical_expense_deduction: 2
+    self_employment: 1
+    FICA: 2
+    al_real_estate_taxes: 2
+    work_related_expense: 3
+    state_code: AL
+  output:
+    al_itemized_deductions: 3+7+1+9+2+1+2+2+3
+
+- name: Alabama itemized deductions unit test 1
+  period: 2021
+  input:
+    al_charitable_deduction: 9
+    investment_interest: 10
+    mortgage: 11
+    interest_deduction: 29
+    medical_expense_deduction: 1
+    self_employment: 6
+    FICA: 3
+    al_real_estate_taxes: 4
+    work_related_expense: 3
+    state_code: AL
+  output:
+    al_itemized_deductions: 9+10+11+29+1+6+3+4+3
