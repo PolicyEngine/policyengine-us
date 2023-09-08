@@ -11,5 +11,5 @@ class ms_agi(Variable):
     defined_for = StateCode.MS
 
     # AGI = Income - Total adjustments from gross income
-    adds = ["adjusted_gross_income"]
+    adds = ["ms_taxable_income"]
     subtracts = ["ms_agi_subtractions"]
