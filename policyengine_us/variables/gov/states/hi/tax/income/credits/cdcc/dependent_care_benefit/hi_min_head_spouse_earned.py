@@ -59,7 +59,7 @@ class hi_min_head_spouse_earned(Variable):
         # take the minumum of original income if both incomes below the floor
         reach_income_floor = (head_or_spouse * income) < eligible_income
         head_spouse_income = where(
-            (sum(eligible) == 2)&(sum(reach_income_floor) ==2),
+            (sum(eligible) == 2) & (sum(reach_income_floor) == 2),
             both_disabled_income,
             head_spouse_income,
         )
