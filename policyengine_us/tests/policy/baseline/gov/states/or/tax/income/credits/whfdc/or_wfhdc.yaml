@@ -1,0 +1,56 @@
+# - name: Assuming household size is 2 and youngest child is age 5.
+#   period: 2022
+#   input:
+#     state_code: OR
+#     or_wfhdc_income_eligible: true
+#     tax_unit_size: 2 # This right now has no effect in formula.
+#     adjusted_gross_income: 10_000
+#     or_income_after_subtractions: 10_000
+#     cdcc: 100
+#   output:
+#     or_wfhdc: 18 
+
+- name: Assuming household size is 2 and youngest child is age 5, CDCC match is 18%.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        disabled: false
+      person2:
+        age: 5
+        disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 10_000
+        or_income_after_subtractions: 10_000
+        cdcc: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc: 18
+
+# - name: 12% match if youngest is below 3
+#   period: 2022
+#   absolute_error_margin: 1
+#   input:
+#     people: 
+#       parent: {}
+#       child1: 
+#         age: 2
+#       child2: 
+#         age: 5
+#     tax_units: 
+#       tax_unit: 
+#         members: [parent, child1, child2]
+#         earned_income_tax_credit: 100
+#     households: 
+#       household:
+#         members: [parent, child1, child2]
+#         state_code: OR
+#   output:
+#     or_eitc: 12

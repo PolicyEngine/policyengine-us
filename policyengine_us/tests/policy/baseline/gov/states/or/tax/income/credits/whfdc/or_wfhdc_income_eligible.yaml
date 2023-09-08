@@ -1,0 +1,59 @@
+- name: Household of size 1 should not be eligible.
+  period: 2021
+  input:
+    state_code: OR
+    tax_unit_size: 1
+    adjusted_gross_income: 10_000
+    or_income_after_subtractions: 10_000
+  output:
+    or_wfhdc_income_eligible: false
+
+- name: Household of size 2 has AGI and OR AGI below threshold of $52,260.
+  period: 2021
+  input:
+    state_code: OR
+    tax_unit_size: 2
+    adjusted_gross_income: 52_259
+    or_income_after_subtractions: 52_259
+  output:
+    or_wfhdc_income_eligible: true
+
+- name: Household of size 2 has AGI above threshold of $52,260.
+  period: 2021
+  input:
+    state_code: OR
+    tax_unit_size: 2
+    adjusted_gross_income: 52_261
+    or_income_after_subtractions: 52_259
+  output:
+    or_wfhdc_income_eligible: false
+
+- name: Household of size 2 has OR AGI above threshold of $52,260.
+  period: 2021
+  input:
+    state_code: OR
+    tax_unit_size: 2
+    adjusted_gross_income: 52_259
+    or_income_after_subtractions: 52_261
+  output:
+    or_wfhdc_income_eligible: false
+
+- name: Household of size 9 has AGI and OR AGI below threshold of $133,980.
+  period: 2021
+  input:
+    state_code: OR
+    tax_unit_size: 9
+    adjusted_gross_income: 133_979
+    or_income_after_subtractions: 133_979
+  output:
+    or_wfhdc_income_eligible: true
+
+- name: Household of size 9 has AGI and OR AGI above threshold of $133,980.
+  period: 2021
+  input:
+    state_code: OR
+    tax_unit_size: 9
+    adjusted_gross_income: 133_981
+    or_income_after_subtractions: 133_981
+  output:
+    or_wfhdc_income_eligible: false
