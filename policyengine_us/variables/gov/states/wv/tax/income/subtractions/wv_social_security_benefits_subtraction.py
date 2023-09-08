@@ -24,10 +24,5 @@ class wv_social_security_benefits_subtraction(Variable):
             period
         ).gov.states.wv.tax.income.subtractions.social_security_benefits
         person = tax_unit.members
-        amount = (
-            person(
-                "social_security", period  # or use taxable_social_security?
-            )
-            * p.rate
-        )
+        amount = person("social_security", period) * p.rate
         return tax_unit.sum(amount)
