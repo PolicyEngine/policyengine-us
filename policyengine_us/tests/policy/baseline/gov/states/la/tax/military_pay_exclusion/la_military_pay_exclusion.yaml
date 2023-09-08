@@ -1,7 +1,7 @@
 - name: Compensation less than 30,000 dollars before 2022
   period: 2021
   input:
-    la_military_compensation: 10_000
+    military_retirement_pay: 10_000
     state_code: LA
   output:
     la_military_pay_exclusion: 10_000
@@ -9,7 +9,7 @@
 - name: Compensation more than 30,000 dollars before 2022
   period: 2021
   input:
-    la_military_compensation: 31_000
+    military_retirement_pay: 31_000
     state_code: LA
   output:
     la_military_pay_exclusion: 30_000
@@ -17,7 +17,7 @@
 - name: Compensation less than 50,000 dollars after 2022
   period: 2022
   input:
-    la_military_compensation: 10_000
+    military_retirement_pay: 10_000
     state_code: LA
   output:
     la_military_pay_exclusion: 10_000
@@ -25,7 +25,7 @@
 - name: Compensation more than 50,000 dollars after 2022
   period: 2022
   input:
-    la_military_compensation: 51_000
+    military_retirement_pay: 51_000
     state_code: LA
   output:
     la_military_pay_exclusion: 50_000
