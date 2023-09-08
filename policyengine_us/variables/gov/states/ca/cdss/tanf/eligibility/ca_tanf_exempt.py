@@ -8,3 +8,5 @@ class ca_tanf_exempt(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
+
+    adds = "gov.states.ca.cdss.tanf.exempt"
