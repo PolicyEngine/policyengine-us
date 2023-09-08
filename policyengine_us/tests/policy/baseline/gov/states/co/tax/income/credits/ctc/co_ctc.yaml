@@ -354,10 +354,10 @@
     people:
       child1: 
         age: 4
-        ctc_qualifying_child: true
+        co_ctc_eligible_child: true
       child2:
         age: 3
-        ctc_qualifying_child: true
+        co_ctc_eligible_child: true
     tax_units:
       tax_unit:
         members: [child1, child2]
@@ -377,10 +377,10 @@
     people:
       child1: 
         age: 4
-        ctc_qualifying_child: true
+        co_ctc_eligible_child: true
       child2:
         age: 3
-        ctc_qualifying_child: true
+        co_ctc_eligible_child: true
     tax_units:
       tax_unit:
         members: [child1, child2]
@@ -400,10 +400,10 @@
     people:
       child1: 
         age: 4
-        ctc_qualifying_child: false
+        co_ctc_eligible_child: false
       child2:
         age: 3
-        ctc_qualifying_child: true
+        co_ctc_eligible_child: true
     tax_units:
       tax_unit:
         members: [child1, child2]
@@ -416,3 +416,95 @@
         state_code: CO
   output: 
     co_ctc: 300
+
+- name: In 2024, the ctc switched from a match to a flat amount.
+  period: 2024
+  input:
+    people:
+      child1: 
+        age: 4
+        co_ctc_eligible_child: false
+      child2:
+        age: 3
+        co_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2]
+        adjusted_gross_income: 85_000
+        ctc: 1_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [child1, child2]
+        state_code: CO
+  output: 
+    co_ctc: 200
+
+- name: In 2024, the ctc switched from a match to a flat amount, middle brakcet.
+  period: 2024
+  input:
+    people:
+      child1: 
+        age: 4
+        co_ctc_eligible_child: false
+      child2:
+        age: 3
+        co_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2]
+        adjusted_gross_income: 60_000
+        ctc: 1_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [child1, child2]
+        state_code: CO
+  output: 
+    co_ctc: 600
+
+- name: In 2024, single filer, one child bottom bracekt.
+  period: 2024
+  input:
+    people:
+      child1: 
+        age: 4
+        co_ctc_eligible_child: false
+      child2:
+        age: 3
+        co_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2]
+        adjusted_gross_income: 25_000
+        ctc: 1_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [child1, child2]
+        state_code: CO
+  output: 
+    co_ctc: 1_200
+
+- name: In 2024, single filer, two children no income.
+  period: 2024
+  input:
+    people:
+      child1: 
+        age: 4
+        co_ctc_eligible_child: true
+      child2:
+        age: 3
+        co_ctc_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child1, child2]
+        adjusted_gross_income: 0
+        ctc: 1_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [child1, child2]
+        state_code: CO
+  output: 
+    co_ctc: 2_400
