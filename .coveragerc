@@ -2,11 +2,11 @@
 disable_warnings = couldnt-parse
 
 [report]
-# Focus coverage report on just tax and benefit capabilities by
-# excluding test results for datasets, tools, TAXSIM variables,
-# and the Premium Tax Credit slspc variable:
-omit =
-   */data/datasets/*
-   */tools/*
-   */variables/contrib/taxsim/*
-   */variables/household/**/slspc.py
+# Include only variables that can be tested with YAML tests:
+include = */variables/*
+# Exclude variables used only in original development or
+#                             in obsolete testing or
+#                             in unimplemented Premium Tax Credit logic:
+omit = */variables/contrib/taxcalc/*
+       */variables/contrib/taxsim/*
+       */variables/household/**/slspc.py
