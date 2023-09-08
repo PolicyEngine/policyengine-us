@@ -36,8 +36,8 @@ class hi_dependent_care_benefits(Variable):
                 qualified_num > 1,
             ],
             [
-                p.expense_cap.one_child,
-                p.expense_cap.two_or_more_child,
+                p.expense_floor.one_child,
+                p.expense_floor.two_or_more_child,
             ],
         )
         net_expenses = max_(0, expenses_amount - deductible_benefit)

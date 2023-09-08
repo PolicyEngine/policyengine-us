@@ -27,27 +27,27 @@ class hi_min_head_spouse_earned(Variable):
         )
         qualified_children = tax_unit("count_cdcc_eligible", period)
         income = person("earned_income", period)
-        one_child_eligible = max_(
-            p.dependent_care_benefits.expense_cap.one_child,
+        one_child_floor = max_(
+            p.dependent_care_benefits.expense_floor.one_child,
             head_or_spouse * income,
         )
-        two_or_more_child_eligible = max_(
-            p.dependent_care_benefits.expense_cap.two_or_more_child,
+        two_or_more_children_floor = max_(
+            p.dependent_care_benefits.expense_floor.two_or_more_child,
             head_or_spouse * income,
         )
-        child_eligible_income = where(
+        total_floor_amount = where(
             qualified_children <= 1,
-            one_child_eligible,
-            two_or_more_child_eligible,
+            one_child_floor,
+            two_or_more_children_floor,
         )
         eligible_income = where(
             eligible,
-            child_eligible_income,
+            total_floor_amount,
             head_or_spouse * income,
         )
-        # remove impact of income not belong to head/spouse
+        # remove impact of smaller income not belong to head/spouse
         head_spouse_income = where(
-            head_or_spouse, eligible_income, max(eligible_income)
+            head_or_spouse, eligible_income, tax_unit.max(eligible_income)
         )
 
-        return min(head_spouse_income)
+        return tax_unit.min(head_spouse_income)
