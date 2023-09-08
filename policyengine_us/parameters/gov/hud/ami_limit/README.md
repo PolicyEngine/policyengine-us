@@ -1,1 +1,1 @@
-# AMI limit
+# Area Median Income (AMI) Limit

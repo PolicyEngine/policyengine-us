@@ -1,0 +1,23 @@
+- name: Colorado CDCC test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 41
+        employment_income: 12_000
+      person2:
+        age: 11
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 9_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:  # expected results from hand calculations using 2021 DR-0347 form
+    adjusted_gross_income: 12_000
+    cdcc: 4_000
+    co_cdcc: 2_000

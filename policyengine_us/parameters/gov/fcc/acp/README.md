@@ -1,1 +1,1 @@
-# Affordable Connectivity Program
+# Affordable Connectivity Program (ACP)

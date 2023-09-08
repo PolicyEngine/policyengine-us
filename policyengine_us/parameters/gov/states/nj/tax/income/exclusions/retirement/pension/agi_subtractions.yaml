@@ -1,0 +1,9 @@
+description: Deductions from AGI to calculate qualifying income for pension retirement exclusion.
+values:
+  2021-01-01:
+    - tax_exempt_interest_income
+    - tax_exempt_pension_income
+    - taxable_social_security
+metadata:
+  unit: variable
+  label: AGI subtractions for qualifying income for pension retirement exclusion
