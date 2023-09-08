@@ -25,7 +25,7 @@ class co_ctc(Variable):
         # The co ctc amount is based on agi, federal ctc amount and number of eligible children.
         agi = tax_unit("adjusted_gross_income", period)
         child_age_eligible = person("age", period) < p.age_threshold
-        
+
         eligible_child = (
             person("co_ctc_eligible_child", period) & child_age_eligible
         )
@@ -51,19 +51,19 @@ class co_ctc(Variable):
             return rate * federal_ctc * eligible_children
 
         amount = select(
-                [
-                    filing_status == statuses.SINGLE,
-                    filing_status == statuses.JOINT,
-                    filing_status == statuses.SEPARATE,
-                    filing_status == statuses.WIDOW,
-                    filing_status == statuses.HEAD_OF_HOUSEHOLD,
-                ],
-                [
-                    p.amount.single.calc(agi, right=True),
-                    p.amount.joint.calc(agi, right=True),
-                    p.amount.separate.calc(agi, right=True),
-                    p.amount.widow.calc(agi, right=True),
-                    p.amount.head_of_household.calc(agi, right=True),
-                    ],
-                    )
+            [
+                filing_status == statuses.SINGLE,
+                filing_status == statuses.JOINT,
+                filing_status == statuses.SEPARATE,
+                filing_status == statuses.WIDOW,
+                filing_status == statuses.HEAD_OF_HOUSEHOLD,
+            ],
+            [
+                p.amount.single.calc(agi, right=True),
+                p.amount.joint.calc(agi, right=True),
+                p.amount.separate.calc(agi, right=True),
+                p.amount.widow.calc(agi, right=True),
+                p.amount.head_of_household.calc(agi, right=True),
+            ],
+        )
         return amount * eligible_children
