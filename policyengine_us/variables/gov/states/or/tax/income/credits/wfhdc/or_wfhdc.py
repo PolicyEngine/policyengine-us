@@ -24,7 +24,8 @@ class or_wfhdc(Variable):
 
         # Get the age of the youngest qualifying child.
         person = tax_unit.members
-        min_age = min_(person("age", period))
+        age = person("age", period)
+        min_age = min_(age)
         # min_age = 5
 
         # how should we located the youngest child?
@@ -34,9 +35,20 @@ class or_wfhdc(Variable):
         # min_age = min_(person("is_disabled", period))
         disabled = person("is_disabled", period)
 
+        # Determine if youngest child is disabled.
+        # Assume that the household has a child because they are WFHDC eligible.
+        youngest_and_disabled = (age == min_age) & disabled
+        youngest_is_disabled = sum_(youngest_and_disabled) > 0
+
         # # Get the corresponding row from WFHDC tables.
-        percentage_disabled = select(
-            [min_age < 3, min_age < 6, min_age < 13],
+        percentage = select(
+            [
+                min_age < 3,
+                min_age < 6,
+                min_age < 13,
+                (min_age < 18) & youngest_is_disabled,
+                youngest_is_disabled,
+            ],
             [
                 p.table_threshold["household_size_2"].calc(household_income)[
                     "not_disabled_under3"
@@ -57,33 +69,8 @@ class or_wfhdc(Variable):
             default_value=0,
         )
 
-        percentage_not_disabled = select(
-            [min_age < 3, min_age < 6, min_age < 13],
-            [
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "not_disabled_under3"
-                ],
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "not_disabled_3_to_6"
-                ],
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "not_disabled_6_to_13"
-                ],
-            ],
-            default_value=0,
-        )
-
-        percentage = where(
-            disabled, percentage_disabled, percentage_not_disabled
-        )
-        
         # Get the federal CDCC value.
         cdcc = tax_unit("cdcc", period)
 
         # Return the share of federal CDCC matched by Oregon.
-        return cdcc * percentage_not_disabled
-
-        # cor_household_size = p.corresponding_row[household_size]
-        # cor_row = cor_household_size.calc(household_income)
-
-        # Get the corresponding credit percentage from WFHDC tables
+        return cdcc * percentage
