@@ -2,11 +2,7 @@
 disable_warnings = couldnt-parse
 
 [report]
-# Include only variables that can be tested with YAML tests:
+# Include only variables related to taxes and benefits:
 include = */variables/*
-# Exclude variables used only in original development or
-#                             in obsolete testing or
-#                             in unimplemented Premium Tax Credit logic:
-omit = */variables/contrib/taxcalc/*
-       */variables/contrib/taxsim/*
-       */variables/household/**/slspc.py
+# Exclude variables not fully implemented:
+# omit = */variables/household/demographic/geographic/slspc.py
