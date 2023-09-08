@@ -1,17 +1,32 @@
-- name: Households that have countable income less than or equal to income limit are eligible.
+- name: Households that have countable income less than or equal to income limit and maximum payment are eligible.
   period: 2023
   input:
     state_code: CA
     ca_tanf_countable_income_applicant: 1_000
+    ca_tanf_countable_income_recipient: 1_000
     ca_tanf_income_limit: 2_000
+    ca_tanf_maximum_payment: 2_000
   output:
     ca_tanf_income_eligibility: true
 
-- name: Households that have countable income greater than income limit are ineligible.
+- name: Households that have countable income greater than income limit or maximum payment are ineligible.
   period: 2023
   input:
     state_code: CA
     ca_tanf_countable_income_applicant: 3_000
+    ca_tanf_countable_income_recipient: 1_000
     ca_tanf_income_limit: 2_000
+    ca_tanf_maximum_payment: 2_000
+  output:
+    ca_tanf_income_eligibility: false
+
+- name: Households that have countable income greater than income limit or maximum payment are ineligible.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_countable_income_applicant: 1_000
+    ca_tanf_countable_income_recipient: 3_000
+    ca_tanf_income_limit: 2_000
+    ca_tanf_maximum_payment: 2_000
   output:
     ca_tanf_income_eligibility: false

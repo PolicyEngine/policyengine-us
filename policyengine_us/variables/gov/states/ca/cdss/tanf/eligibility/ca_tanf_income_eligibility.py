@@ -10,8 +10,15 @@ class ca_tanf_income_eligibility(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
-        countable_income = spm_unit(
+        countable_income_applicant = spm_unit(
             "ca_tanf_countable_income_applicant", period
         )
-        limit = spm_unit("ca_tanf_income_limit", period)
-        return countable_income <= limit
+        countable_income_recipient = spm_unit(
+            "ca_tanf_countable_income_recipient", period
+        )
+        income_limit = spm_unit("ca_tanf_income_limit", period)
+        maximum_payment = spm_unit("ca_tanf_maximum_payment", period)
+
+        return (countable_income_applicant <= income_limit) & (
+            countable_income_recipient <= maximum_payment
+        )

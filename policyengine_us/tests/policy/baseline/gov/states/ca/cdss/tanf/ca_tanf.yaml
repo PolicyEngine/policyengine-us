@@ -15,12 +15,3 @@
     ca_tanf_countable_income_recipient: 0
   output:
     ca_tanf: 1_000
-
-- name: If eligible, but countable income exceeds maximum payment, they get 0.
-  period: 2023
-  input:
-    ca_tanf_eligibility: true
-    ca_tanf_maximum_payment: 1_000
-    ca_tanf_countable_income_recipient: 1_001
-  output:
-    ca_tanf: 0
