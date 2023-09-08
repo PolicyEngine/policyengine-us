@@ -1,0 +1,23 @@
+description: Hawaii defines the following amounts during calculation of alternative tax on capital gains, based on filing status.
+metadata:
+  label: Hawaii alternative tax on capital gains
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2022 
+    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=33
+  - title: Hawaii 2022 Individual Income Tax Return N-11 From Rev.2022
+    href: https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3
+
+JOINT:
+  2022-01-01: 48_000
+SINGLE:
+  2022-01-01: 24_000
+SEPARATE:
+  2022-01-01: 24_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 36_000
+WIDOW: 
+  2022-01-01: 48_000
