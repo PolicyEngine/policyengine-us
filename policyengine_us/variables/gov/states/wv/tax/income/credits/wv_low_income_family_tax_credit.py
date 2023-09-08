@@ -29,7 +29,6 @@ class wv_low_income_family_tax_credit_rate(Variable):
         # modified agi limit
         fpg_amount = p.fpg_percent[filing_status] * fpg
         reduced_agi = wv_agi - fpg_amount
-        print(p.amount.head_of_household.calc(reduced_agi))
 
         return select(
             [
