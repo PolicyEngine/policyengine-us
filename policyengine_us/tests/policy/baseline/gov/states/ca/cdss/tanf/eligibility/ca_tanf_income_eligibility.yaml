@@ -5,7 +5,7 @@
     ca_tanf_countable_income_applicant: 1_000
     ca_tanf_income_limit: 2_000
   output:
-    ca_tanf_resources_eligibility: true
+    ca_tanf_income_eligibility: true
 
 - name: Households that have countable income greater than income limit are ineligible.
   period: 2023
@@ -14,4 +14,4 @@
     ca_tanf_countable_income_applicant: 3_000
     ca_tanf_income_limit: 2_000
   output:
-    ca_tanf_resources_eligibility: false
+    ca_tanf_income_eligibility: false

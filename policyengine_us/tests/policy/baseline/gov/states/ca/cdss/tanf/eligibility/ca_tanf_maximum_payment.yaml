@@ -12,7 +12,7 @@
   period: 2023
   input:
     state_code: CA
-    spm_unit_size: 1
+    spm_unit_size: 10
     ca_tanf_region1: true
     ca_tanf_exempt: true
   output:
@@ -32,7 +32,7 @@
   period: 2023
   input:
     state_code: CA
-    spm_unit_size: 1
+    spm_unit_size: 10
     ca_tanf_region1: true
     ca_tanf_exempt: false
   output:
@@ -52,7 +52,7 @@
   period: 2023
   input:
     state_code: CA
-    spm_unit_size: 1
+    spm_unit_size: 10
     ca_tanf_region1: false
     ca_tanf_exempt: true
   output:
@@ -72,7 +72,7 @@
   period: 2023
   input:
     state_code: CA
-    spm_unit_size: 1
+    spm_unit_size: 10
     ca_tanf_region1: false
     ca_tanf_exempt: false
   output:

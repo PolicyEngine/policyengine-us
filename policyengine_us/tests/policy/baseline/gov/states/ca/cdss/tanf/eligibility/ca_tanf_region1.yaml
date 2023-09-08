@@ -1,8 +1,12 @@
 - name: San Diego county belongs to region 1.
   period: 2023
   input:
+    people:
+      person:
+        is_adult: true
     households:
       household:
+        members: [person]
         county_str: SAN_DIEGO_COUNTY_CA
         state_code: CA
   output:
@@ -11,8 +15,12 @@
 - name: Fresno county belongs to region 2.
   period: 2023
   input:
+    people:
+      person:
+        is_adult: true
     households:
       household:
+        members: [person]
         county_str: FRESNO_COUNTY_CA
         state_code: CA
   output:
