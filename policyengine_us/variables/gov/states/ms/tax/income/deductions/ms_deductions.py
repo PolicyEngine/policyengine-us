@@ -7,9 +7,7 @@ class ms_deductions(Variable):
     label = "Mississippi deductions"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf#page=1"
-    )
+    reference = "https://www.dor.ms.gov/sites/default/files/Forms/Individual/80108228.pdf#page=1"
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
