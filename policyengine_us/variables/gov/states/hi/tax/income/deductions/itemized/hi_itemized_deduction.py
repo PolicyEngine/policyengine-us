@@ -14,23 +14,33 @@ class hi_itemized_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
+        p_deductions = parameters(period).gov.irs.deductions
 
         # Note: All the adjustments are for tax years 2018 through 2025.
-
-        # 1. medical_expense_deduction: same
-        hi_medical_expense_deduction = tax_unit(
-            "medical_expense_deduction", period
-        )
+        # we need adjustments for interest_deduction and casualty_loss_deduction
+        same_deductions = [
+            deduction
+            for deduction in p_deductions.itemized_deductions
+            if deduction
+            not in [
+                "salt_deduction",
+                "interest_deduction",
+                "charitable_deduction",
+            ]
+        ]
+        federal_deductions = add(tax_unit, period, same_deductions)
 
         # 3. interest_deduction:
         # Hawaii did not
         #     (1) suspend the deduction for interest paid on home equity loans
         #     (2) lower the dollar limit on mortgages qualifying for the home mortgage interest deduction
-        hi_interest_deductionm = ...
-        #
+        filing_status = tax_unit("filing_status", period)
+        # Section 163(h)(3)(F)
+        home_mortgage_interest = min_(tax_unit("home_mortage_interest", period), p.home_mortgage_interest_cap[filing_status])
+        investment_interest = tax_unit("investment_interest", period)
+        hi_interest_deductionm = home_mortgage_interest + investment_interest
 
-        # 4. charitable_deduction: same
-        hi_charitable_deduction = tax_unit("charitable_deduction", period)
+    
 
         # 5. casualty_loss_deduction
         # Hawaii did not
@@ -44,11 +54,10 @@ class hi_itemized_deduction(Variable):
         # Hawaii did not suspend the overall limitation on itemized deductions
         # Cap: $166,800 ($83,400 if married filing separately)
         total_deductions = (
-            hi_medical_expense_deduction
+            federal_deductions
             + hi_interest_deductionm
-            + hi_charitable_deduction
             + hi_casualty_loss_deduction
         )
-        filing_status = tax_unit("filing_status", period)
+        
         
         return min_(total_deductions, p.amount_cap[filing_status])

@@ -1,0 +1,7 @@
+- name: Single filer 
+  period: 2022
+  input:
+    state_code: HI
+    filing_status: SINGLE
+  output:
+    hi_itemized_deduction: 2_200
