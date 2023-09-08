@@ -13,17 +13,15 @@ class ca_tanf_income_limit(Variable):
         unit_size = spm_unit("spm_unit_size", period)
         ceiling = min_(unit_size, 10)
         extra = unit_size - ceiling
-
-        county = spm_unit.household("county_str", period)
+        region1 = spm_unit("ca_tanf_region1", period)
         p = parameters(period).gov.states.ca.cdss.tanf.income.limit
-        region1 = parameters(period).gov.states.ca.cdss.tanf.region1
 
         main = where(
-            county in region1, 
+            region1, 
             p.region1.main[ceiling], 
             p.region2.main[ceiling])
         additional = where(
-            county in region1, 
+            region1, 
             p.region1.additional, 
             p.region2.additional)
 

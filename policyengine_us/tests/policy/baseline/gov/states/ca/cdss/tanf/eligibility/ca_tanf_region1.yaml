@@ -1,0 +1,19 @@
+- name: San Diego county belongs to region 1.
+  period: 2023
+  input:
+    households:
+      household:
+        county_str: SAN_DIEGO_COUNTY_CA
+        state_code: CA
+  output:
+    ca_tanf_region1: true
+
+- name: Fresno county belongs to region 2.
+  period: 2023
+  input:
+    households:
+      household:
+        county_str: FRESNO_COUNTY_CA
+        state_code: CA
+  output:
+    ca_tanf_region1: false

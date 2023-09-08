@@ -7,7 +7,7 @@ class ca_tanf(Variable):
     label = "California CalWORKs Cash Benefit"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.CA
+    defined_for = "ca_tanf_eligibility"
 
     def formula(spm_unit, period, parameters):
         maximum_payment = spm_unit("ca_tanf_maximum_payment", period)

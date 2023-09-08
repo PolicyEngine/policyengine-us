@@ -1,0 +1,52 @@
+- name: Households including a person who is age 60 have up to $16,333 resources limit.
+  period: 2023
+  input:
+    people:
+      person:
+        age: 60
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_tanf_resouces_limit: 16_333
+
+- name: Households including a person who is disabled have up to $16,333 resources limit.
+  period: 2023
+  input:
+    people:
+      person:
+        age: 59
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_tanf_resouces_limit: 16_333
+
+- name: Households including no person who is either over 60 or disabled have up to $10,888 resources limit.
+  period: 2023
+  input:
+    people:
+      person:
+        age: 59
+        is_disabled: false
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    ca_tanf_resouces_limit: 10_888
+
+

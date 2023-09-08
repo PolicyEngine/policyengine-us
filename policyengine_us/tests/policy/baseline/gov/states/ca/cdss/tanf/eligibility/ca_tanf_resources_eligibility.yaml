@@ -1,0 +1,17 @@
+- name: Households have resources less than or equal to resources limit are eligible.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_resources: 1_000
+    ca_tanf_resouces_limit: 2_000
+  output:
+    ca_tanf_resources_eligibility: true
+
+- name:  Households have resources more than resources limit are ineligible.
+  period: 2023
+  input:
+    state_code: CA
+    ca_tanf_resources: 3_000
+    ca_tanf_resouces_limit: 2_000
+  output:
+    ca_tanf_resources_eligibility: false
