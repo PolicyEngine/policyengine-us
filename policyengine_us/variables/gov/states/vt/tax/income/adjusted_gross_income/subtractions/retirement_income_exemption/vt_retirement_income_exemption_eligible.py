@@ -18,7 +18,7 @@ class vt_retirement_income_exemption_eligible(Variable):
     def formula(tax_unit, period, parameters):
         # Filer can choose from one of Social Security, Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems to determine eligibility
-
+        person = tax_unit.members
         # Get social security amount
         tax_unit_taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
