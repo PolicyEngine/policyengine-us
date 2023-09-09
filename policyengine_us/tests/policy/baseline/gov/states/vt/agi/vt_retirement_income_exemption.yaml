@@ -210,14 +210,14 @@
         members: [person1,person2]
         state_code: VT
   output:
-    vt_retirement_income_exemption: 500  # Partial qualified 1000*0.50
+    vt_retirement_income_exemption: 0  # Partial qualified; But can't use CSRS in 2021
 
 - name: 2022, use other retirement systems, not filing jointly with federal agi less than 50,000
   period: 2022
   input:
     people:
       person1:
-        military_retirement_pay: 
+        military_retirement_pay: 0
         csrs_retirement_pay: 0
         vt_other_retirement_pay: 1_000
     tax_units:
