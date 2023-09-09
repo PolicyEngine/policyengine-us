@@ -44,11 +44,10 @@ class vt_retirement_income_exemption_eligible(Variable):
 
         # List of non qualified tax unit (SECTION I Q1,Q2)
         non_qualified = (
-            tax_unit_taxable_social_security
-            == 0 & tax_unit_military_retirement_pay
-            == 0 & tax_unit_csrs_retirement_pay
-            == 0 & tax_unit_other_retirement_pay
-            == 0
+            (tax_unit_taxable_social_security == 0)
+            & (tax_unit_military_retirement_pay == 0)
+            & (tax_unit_csrs_retirement_pay == 0)
+            & (tax_unit_other_retirement_pay == 0)
         ) | (agi >= p.income[filing_status])
 
         # Based on the criteria, return the eligibility status.
