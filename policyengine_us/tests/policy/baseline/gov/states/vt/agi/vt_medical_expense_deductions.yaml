@@ -1,7 +1,10 @@
 - name: VT medical expense deduction amount unit test 1
   period: 2022
   input:
-    state_code: ME
+    state_code: ME # Test state definition
+    medical_expense_deduction: 5_000
+    vt_standard_deduction: 1_000
+    vt_personal_exemptions: 1_000
   output:
     vt_medical_expense_deduction: 0  
 

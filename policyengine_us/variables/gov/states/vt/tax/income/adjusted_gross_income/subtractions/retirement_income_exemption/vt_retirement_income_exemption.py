@@ -11,32 +11,54 @@ class vt_retirement_income_exemption(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
     )
     unit = USD
-    defined_for = StateCode.VT
+    defined_for = "vt_retirement_income_exemption_eligible"
     documentation = "Vermont retirement benefits exempt from Vermont taxation."
 
     def formula(tax_unit, period, parameters):
-        tax_unit_taxable_social_security = tax_unit(
-            "tax_unit_taxable_social_security", period
-        )
-        filing_status = tax_unit("filing_status", period)
-        agi = tax_unit("adjusted_gross_income", period)
+        # Filer can choose from one of Social Security, Civil Service Retirement System (CSRS), Military Retirement Income
+        # or other eligible retirement systems to calculate retirement income exemption
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
-
-        # Get eligibility status
-        eligible = tax_unit("vt_retirement_income_exemption_eligible", period)
-
-        # List of fully qualified tax unit (SECTION I Q3)
-        fully_qualified = (agi < p.threshold.reduction[filing_status]) & (
-            eligible
+        # Get social security amount
+        tax_unit_taxable_social_security = tax_unit(
+            "tax_unit_taxable_social_security", period
+        )
+        # Get retirement amount from military retirement system
+        tax_unit_military_retirement_pay = add(
+            tax_unit, period, ["military_retirement_pay"]
+        )
+        # Get retirement amount from CSRS
+        tax_unit_csrs_retirement_pay = add(
+            tax_unit, period, ["csrs_retirement_pay"]
+        )
+        # Get retirement amount for other certain retirement systems
+        tax_unit_other_retirement_pay = add(
+            tax_unit, period, ["vt_other_retirement_pay"]
+        )
+        # Retirement income from systems other than social security have maximum amount and assume that filers will always choose the largest one
+        other_than_ss_retirement = min_(
+            max_(
+                tax_unit_military_retirement_pay,
+                tax_unit_csrs_retirement_pay,
+                tax_unit_other_retirement_pay,
+            ),
+            p.cap,
+        )
+        # Assume that filers will always choose the larger one of ss and other retirement system
+        chosen_retirement_income = max_(
+            tax_unit_taxable_social_security, other_than_ss_retirement
         )
 
+        filing_status = tax_unit("filing_status", period)
+        agi = tax_unit("adjusted_gross_income", period)
+
+        # List of fully qualified tax unit (SECTION I Q3)
+        fully_qualified = agi < p.threshold.reduction[filing_status]
+
         # List of partial qualified tax unit(SECTION II)
-        partial_qualified = (
-            (agi >= p.threshold.reduction[filing_status])
-            & (agi < p.threshold.income[filing_status])
-            & (eligible)
+        partial_qualified = (agi >= p.threshold.reduction[filing_status]) & (
+            agi < p.threshold.income[filing_status]
         )
 
         # Calculate the exemption ratio
@@ -51,11 +73,9 @@ class vt_retirement_income_exemption(Variable):
         partial_exemption_ratio = min_(partial_exemption_ratio, 1)
 
         # Calculate parital exemption amount
-        partial_exemption = (
-            tax_unit_taxable_social_security * partial_exemption_ratio
-        )
+        partial_exemption = chosen_retirement_income * partial_exemption_ratio
 
         return select(
-            [~eligible, partial_qualified, fully_qualified],
-            [0, partial_exemption, tax_unit_taxable_social_security],
+            [partial_qualified, fully_qualified],
+            [partial_exemption, chosen_retirement_income],
         )
