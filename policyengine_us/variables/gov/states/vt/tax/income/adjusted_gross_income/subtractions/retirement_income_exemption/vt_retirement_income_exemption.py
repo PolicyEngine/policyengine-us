@@ -25,16 +25,16 @@ class vt_retirement_income_exemption(Variable):
             "tax_unit_taxable_social_security", period
         )
         # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = add(
-            tax_unit, period, ["military_retirement_pay"]
+        tax_unit_military_retirement_pay = tax_unit.sum(
+            person("military_retirement_pay", period)
         )
         # Get retirement amount from CSRS
-        tax_unit_csrs_retirement_pay = add(
-            tax_unit, period, ["csrs_retirement_pay"]
+        tax_unit_csrs_retirement_pay = tax_unit.sum(
+            person("csrs_retirement_pay", period)
         )
         # Get retirement amount for other certain retirement systems
-        tax_unit_other_retirement_pay = add(
-            tax_unit, period, ["vt_other_retirement_pay"]
+        tax_unit_other_retirement_pay = tax_unit.sum(
+            person("vt_other_retirement_pay", period)
         )
         # Retirement income from systems other than social security have maximum amount and assume that filers will always choose the largest one
         other_than_ss_retirement = min_(

@@ -24,16 +24,16 @@ class vt_retirement_income_exemption_eligible(Variable):
             "tax_unit_taxable_social_security", period
         )
         # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = add(
-            tax_unit, period, ["military_retirement_pay"]
+        tax_unit_military_retirement_pay = tax_unit.sum(
+            person("military_retirement_pay", period)
         )
         # Get retirement amount from CSRS
-        tax_unit_csrs_retirement_pay = add(
-            tax_unit, period, ["csrs_retirement_pay"]
+        tax_unit_csrs_retirement_pay = tax_unit.sum(
+            person("csrs_retirement_pay", period)
         )
         # Get retirement amount for other certain retirement systems
-        tax_unit_other_retirement_pay = add(
-            tax_unit, period, ["vt_other_retirement_pay"]
+        tax_unit_other_retirement_pay = tax_unit.sum(
+            person("vt_other_retirement_pay", period)
         )
 
         filing_status = tax_unit("filing_status", period)
@@ -50,5 +50,12 @@ class vt_retirement_income_exemption_eligible(Variable):
             & (tax_unit_other_retirement_pay == 0)
         ) | (agi >= p.income[filing_status])
 
-        # Based on the criteria, return the eligibility status.
-        return ~non_qualified
+        # # Based on the criteria, return the eligibility status.
+        # return ~non_qualified
+        return "social security is:{}, military is:{},csrs is:{},other is:{},qualified:{}".format(
+            tax_unit_taxable_social_security,
+            tax_unit_military_retirement_pay,
+            tax_unit_csrs_retirement_pay,
+            tax_unit_other_retirement_pay,
+            ~non_qualified,
+        )
