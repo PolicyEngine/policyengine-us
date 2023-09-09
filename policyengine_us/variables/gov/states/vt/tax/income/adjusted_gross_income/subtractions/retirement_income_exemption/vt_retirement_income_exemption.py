@@ -75,7 +75,14 @@ class vt_retirement_income_exemption(Variable):
         # Calculate parital exemption amount
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
 
-        return select(
-            [partial_qualified, fully_qualified],
-            [partial_exemption, chosen_retirement_income],
-        )
+        # return select(
+        #     [partial_qualified, fully_qualified],
+        #     [partial_exemption, chosen_retirement_income],
+        # )
+        return [
+            tax_unit_military_retirement_pay,
+            tax_unit_csrs_retirement_pay,
+            tax_unit_other_retirement_pay,
+            fully_qualified,
+            partial_qualified,
+        ]
