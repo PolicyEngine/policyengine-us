@@ -7,6 +7,5 @@ class vt_other_retirement_pay(Variable):
     label = "Vermont allowed other system's retirement income"
     unit = USD
     definition_period = YEAR
-    defined_for = StateCode.VT
     documentation = "Retirement income from Vermont allowed certain other retirement systems."
     reference = "https://tax.vermont.gov/individuals/seniors-and-retirees"  # Exemption for Other Eligible Retirement Systems
