@@ -1,0 +1,14 @@
+description: Montana gross income sources for the elderly renter credit.
+values:
+  2021-01-01:
+    - adjusted_gross_income
+    - tax_exempt_interest
+    - tax_exempt_pension_income
+# This will create a circular reference to the renter / homeowner credit
+#   - mt_refudable_credits
+metadata:
+  unit: list
+  label: Monatna elderly renter credit gross income sources
+
+
+#TODO : create a mt_refundable_credits_before_renter_credit.py 
