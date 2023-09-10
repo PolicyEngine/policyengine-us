@@ -9,7 +9,7 @@ class id_deductions(Variable):
     definition_period = YEAR
     reference = (
         "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022/",  # (j)
-        "file:///Users/pavelmakarchuk/Desktop/PolicyEngine/Tax%20Forms/Idaho/EFO00089_12-30-2022.pdf#page=4",
+        "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=8",
     )
     defined_for = StateCode.ID
 
