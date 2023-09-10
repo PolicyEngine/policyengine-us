@@ -28,7 +28,6 @@ class hi_dependent_care_benefits(Variable):
         dcb_baseline = p.earned_income_cap[filing_status]
         deductible_benefit = min_(min_benefit, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
-        # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation
         qualified_num = tax_unit("count_cdcc_eligible", period)
         expenses_amount = select(
             [
