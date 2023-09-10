@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from numpy import ceil
 
 
 class ri_exemptions(Variable):
