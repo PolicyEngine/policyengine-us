@@ -23,7 +23,7 @@ class ri_exemptions(Variable):
 
         excess_agi = max_(0, mod_agi - p.reduction.start)
 
-        increments = ceil(excess_agi / p.reduction.increment)
+        increments = np.ceil(excess_agi / p.reduction.increment)
 
         percent_reduction = min_(p.reduction.percentage * increments, 1)
 
