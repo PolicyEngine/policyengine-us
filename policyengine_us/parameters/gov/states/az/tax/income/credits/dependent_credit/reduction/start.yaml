@@ -1,0 +1,24 @@
+description: Arizona phases the dependent tax credit out for filers with adjusted gross income above this threshold.
+SINGLE:
+  2021-01-01: 200_000
+JOINT:
+  2021-01-01: 400_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 200_000
+SEPARATE:
+  2021-01-01: 200_000
+WIDOW:
+  2021-01-01: 200_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arizona dependent tax credit phase out start
+  reference:
+  - title: Arizona Form 140 - 2021 Resident Personal Income Tax Return
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140i-2D.pdf#page=20
+  - title: Arizona Form 140 - 2022 Resident Personal Income Tax Return
+    href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i-2D.pdf#page=21
+  - title: Arizona State Legislature Title 43 - Taxation of Income, Chapter 10, Article 5, 43-1073.01 (C), (1) & (2)
+    href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01073-01.htm
+  breakdown:
+    - filing_status
