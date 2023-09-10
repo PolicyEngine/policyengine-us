@@ -1,0 +1,127 @@
+- name: Retirement income credit pension eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_spouse: true
+        pension_income: 800
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_head: true
+        pension_income: 300
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person3:
+        pension_income: 500
+        oh_has_not_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        oh_agi: 10_000
+  output:
+    oh_retirement_income_credit: 25
+
+- name: Retirement income credit pension, not eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_spouse: True
+        pension_income: 800
+        oh_has_not_taken_oh_lump_sum_credits: false
+      person2:
+        is_tax_unit_head: true
+        pension_income: 300
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person3:
+        pension_income: 500
+        oh_has_not_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        oh_agi: 99_999
+  output:
+    oh_retirement_income_credit: 0
+
+- name: Retirement income credit pension eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_spouse: True
+        pension_income: 100
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_head: true
+        pension_income: 300
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person3:
+        pension_income: 100
+        oh_has_not_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        oh_agi: 10_000
+  output:
+    oh_retirement_income_credit: 0
+
+- name: Retirement income credit pension AGI not eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_spouse: true
+        pension_income: 800
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_head: true
+        pension_income: 300
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person3:
+        pension_income: 500
+        oh_has_not_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        oh_agi: 100_000
+  output:
+    oh_retirement_income_credit: 0
+
+- name: Retirement income credit pension eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        pension_income: 2_800
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        oh_has_not_taken_oh_lump_sum_credits: true
+      person2:
+        is_tax_unit_head: true
+        pension_income: 501
+        oh_has_not_taken_oh_lump_sum_credits: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        oh_agi: 10_000
+  output:
+    oh_retirement_income_credit: 25
