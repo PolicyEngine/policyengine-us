@@ -16,7 +16,7 @@ class az_property_tax_credit(Variable):
 
         cohabitating = tax_unit("cohabitating_spouses", period)
 
-        return select(
+        household_income_credit = select(
             [
                 ~cohabitating,
                 cohabitating,
@@ -26,3 +26,9 @@ class az_property_tax_credit(Variable):
                 p.amount.cohabitating.calc(income),
             ],
         )
+
+        property_tax = person("real_estate_taxes", period)
+        rent = person("rent", period)
+        payment_credit = property_tax + rent
+
+        return min_(household_income_credit, payment_credit)
