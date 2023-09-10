@@ -10,7 +10,7 @@ class az_property_tax_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.az.tax.income.property_tax_credits
+        p = parameters(period).gov.states.az.tax.income.credits.property_tax
 
         age = person("age", period)
         age_over_65_qualifies = age >= p.min_age

@@ -11,7 +11,7 @@ class az_property_tax_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        p = parameters(period).gov.states.az.tax.income.property_tax_credits
+        p = parameters(period).gov.states.az.tax.income.credits.property_tax
         income = tax_unit("az_property_tax_credit_income", period)
 
         cohabitating = tax_unit("cohabitating_spouses", period)
