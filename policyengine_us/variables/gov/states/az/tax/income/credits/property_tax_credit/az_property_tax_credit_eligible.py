@@ -25,5 +25,9 @@ class az_property_tax_credit_eligible(Variable):
         head = person("is_tax_unit_head", period)
 
         return tax_unit.any(
+<<<<<<< HEAD
             head & (age_eligible | ssi_qualifies) & payment_qualifies
+=======
+            head & (ssi_qualifies | age_eligible) & payment_qualifies
+>>>>>>> 4f3608d48a878928f344cb45999f18a678376647
         )
