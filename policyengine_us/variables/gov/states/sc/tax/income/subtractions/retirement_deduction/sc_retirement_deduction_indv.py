@@ -27,7 +27,7 @@ class sc_retirement_deduction_indv(Variable):
             p_cap.younger,
         )
         # line 2
-        military_retirement_pay = tax_unit("sc_military_deduction", period)
+        military_retirement_pay = person("sc_military_deduction_indv", period)
         # line 3
         retirement_deduction_available = max_(
             max_deduction_allowed - military_retirement_pay, 0
