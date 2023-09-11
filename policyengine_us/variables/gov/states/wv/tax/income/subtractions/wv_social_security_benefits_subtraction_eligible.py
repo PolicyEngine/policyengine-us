@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class wv_social_security_benefits_subtraction_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    label = "West Virginia social security deduction eligible"
-    unit = USD
+    label = "Eligible for the West Virginia social security deduction"
     definition_period = YEAR
     reference = (
         # West Virginia Personal Income Tax Forms And Instructions 2020 LINE 33
