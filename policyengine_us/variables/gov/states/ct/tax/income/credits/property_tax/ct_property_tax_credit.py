@@ -24,9 +24,10 @@ class ct_property_tax_credit(Variable):
         total_increments = np.ceil(excess / increment)
         reduction_percent = rate * total_increments
         reduction = max_credit * reduction_percent
-        earned_credit = where(
+        print(total_increments)
+        print(max_credit)
+        return where(
             reduction <= max_credit,
             max_credit - reduction,
             0,
         )
-        return earned_credit
