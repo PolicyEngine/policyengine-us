@@ -33,9 +33,9 @@ class mi_reduced_standard_allowance(Variable):
             ),
             0,
         )
-
+        
         return where(
             heating_costs_included_in_rent == True,
             reduced_sa * p.heating_cost_rate,
-            reduced_sa,
+            reduced_sa
         )
