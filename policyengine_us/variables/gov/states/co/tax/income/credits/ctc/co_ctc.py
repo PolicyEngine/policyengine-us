@@ -24,14 +24,8 @@ class co_ctc(Variable):
         person = tax_unit.members
         # Depending on the year, Colorado has based its CTC on AGI, the federal CTC, and eligible children.
         agi = tax_unit("adjusted_gross_income", period)
-        child_age_eligible = person("age", period) < p.age_threshold
-
-        eligible_child = (
-            person("co_ctc_eligible_child", period) & child_age_eligible
-        )
-        eligible_children = tax_unit.sum(eligible_child)
         if p.ctc_matched_federal_credit:
-            federal_ctc = tax_unit("ctc", period)
+            federal_ctc = tax_unit("co_federal_ctc", period)
             rate = select(
                 [
                     filing_status == statuses.SINGLE,
@@ -48,9 +42,15 @@ class co_ctc(Variable):
                     p.rate.head_of_household.calc(agi, right=True),
                 ],
             )
-            amount_per_child = rate * federal_ctc
-            return amount_per_child * eligible_children
+            return rate * federal_ctc
         else:
+            person = tax_unit.members
+            child_age_eligible = person("age", period) < p.age_threshold
+
+            eligible_child = (
+                person("co_ctc_eligible_child", period) & child_age_eligible
+            )
+            eligible_children = tax_unit.sum(eligible_child)
             amount_per_child = select(
                 [
                     filing_status == statuses.SINGLE,

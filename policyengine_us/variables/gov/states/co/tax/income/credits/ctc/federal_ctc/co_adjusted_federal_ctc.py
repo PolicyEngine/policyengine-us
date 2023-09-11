@@ -4,9 +4,11 @@ from policyengine_us.model_api import *
 class co_adjusted_federal_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Child Tax Credit replicated to include the Colorado limitations"
+    label = "Non-refundbale Child Tax Credit replicated to include the Colorado limitations"
     unit = USD
-    documentation = "Total value of the non-refundable and refundable portions of the Child Tax Credit."
+    documentation = (
+        "Total value of the non-refundable portion of the Child Tax Credit."
+    )
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.
@@ -19,6 +21,8 @@ class co_adjusted_federal_ctc(Variable):
 
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
-        maximum = tax_unit("co_federal_ctc_maximum", period) # Line 3
-        limiting_tax_liability = tax_unit("ctc_limiting_tax_liability", period) # Line 4 - 6
-        return min_(maximum, limiting_tax_liability) # Line 7
+        maximum = tax_unit("co_federal_ctc_maximum", period)  # Line 3
+        limiting_tax_liability = tax_unit(
+            "ctc_limiting_tax_liability", period
+        )  # Line 4 - 6
+        return min_(maximum, limiting_tax_liability)  # Line 7

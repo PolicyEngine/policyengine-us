@@ -16,11 +16,11 @@ class co_federal_ctc_child_individual_maximum(Variable):
         # Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16",
     )
-    
+
     def formula(person, period, parameters):
         age = person("age", period)
         base_amount = parameters(period).gov.irs.credits.ctc.amount.base
         is_dependent = person("is_tax_unit_dependent", period)
         p = parameters(period).gov.states.co.tax.income.credits.ctc
-        eligible = is_dependent & (age < p.age_threshold )
+        eligible = is_dependent & (age < p.age_threshold)
         return base_amount.calc(age) * eligible

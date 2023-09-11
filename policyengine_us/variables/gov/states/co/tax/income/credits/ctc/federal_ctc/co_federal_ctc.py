@@ -19,21 +19,30 @@ class co_federal_ctc(Variable):
 
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
-        adjusted_fed_ctc = tax_unit("co_adjusted_federal_ctc", period) # Line 7
+        adjusted_fed_ctc = tax_unit(
+            "co_adjusted_federal_ctc", period
+        )  # Line 7
         max_child_amount = tax_unit("co_federal_ctc_maximum", period)
-        credit_excess_over_tax = max_(0, adjusted_fed_ctc - max_child_amount) # Line 8
+        credit_excess_over_tax = max_(
+            0, adjusted_fed_ctc - max_child_amount
+        )  # Line 8
         p = parameters(period).gov.irs.credits.ctc
-        statustory_cap = p.refundable.individual_max # Line 9
+        statustory_cap = p.refundable.individual_max  # Line 9
         children = tax_unit("co_ctc_eligible_children_count", period)
-        total_statustory_cap = min_(statustory_cap * children, credit_excess_over_tax) # Line 10
-        earnings = tax_unit("tax_unit_earned_income", period) # Line 11
+        total_statustory_cap = min_(
+            statustory_cap * children, credit_excess_over_tax
+        )  # Line 10
+        earnings = tax_unit("tax_unit_earned_income", period)  # Line 11
         earnings_over_threshold = max_(
             0, earnings - ctc.refundable.phase_in.threshold
-        ) # Line 12
+        )  # Line 12
         relevant_earnings = (
             earnings_over_threshold * ctc.refundable.phase_in.rate
-        ) # Line 13
-        additional_children = children >= p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc
+        )  # Line 13
+        additional_children = (
+            children
+            >= p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc
+        )
         SS_ADD_VARIABLES = [
             # Person:
             "employee_social_security_tax",
@@ -46,13 +55,13 @@ class co_federal_ctc(Variable):
         SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
         social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
             tax_unit, period, SS_SUBTRACT_VARIABLES
-        ) # Line 14 - 16
-        eitc = tax_unit("eitc", period) # Line 17a
-        social_security_excess = max_(0, social_security_tax - eitc) # Line 18
+        )  # Line 14 - 16
+        eitc = tax_unit("eitc", period)  # Line 17a
+        social_security_excess = max_(0, social_security_tax - eitc)  # Line 18
         tax_increase = where(
             children
             < p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
             relevant_earnings,
             max_(relevant_earnings, social_security_excess),
-        ) # Line 19
-        return min_(total_statustory_cap, tax_increase) # Line 20
+        )  # Line 19
+        return min_(total_statustory_cap, tax_increase)  # Line 20
