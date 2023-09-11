@@ -1,8 +1,35 @@
 - name: No income
-  period: 2022
+  period: 2021
   input:
     state_code: VA
-    tax_unit_fpg: 2_000
+    household_size: 1
     va_agi: 0
   output:
     va_low_income_tax_credit_eligible: true
+
+- name: Low income (low exemptions)
+  period: 2021
+  input:
+    state_code: VA
+    exemptions: 1
+    va_agi: 1_980
+  output:
+    va_low_income_tax_credit_eligible: true
+
+- name: Low income (a few exemptions)
+  period: 2021
+  input:
+    state_code: VA
+    exemptions: 3
+    va_agi: 10_000
+  output:
+    va_low_income_tax_credit_eligible: true
+
+- name: High income (low exemptions)
+  period: 2021
+  input:
+    state_code: VA
+    exemptions: 2
+    va_agi: 40_000
+  output:
+    va_low_income_tax_credit_eligible: false
