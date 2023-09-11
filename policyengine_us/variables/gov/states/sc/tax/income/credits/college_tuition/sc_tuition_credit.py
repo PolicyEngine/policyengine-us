@@ -24,7 +24,9 @@ class sc_tuition_credit(Variable):
             "qualified_tuition_expenses", period
         )
         # line 3
-        sc_tuition_credit_eligible = person("sc_tuition_credit_eligible",period)
+        sc_tuition_credit_eligible = person(
+            "sc_tuition_credit_eligible", period
+        )
         tuition_limit = (
             p.max_amount.tuition
             * total_college_hours
