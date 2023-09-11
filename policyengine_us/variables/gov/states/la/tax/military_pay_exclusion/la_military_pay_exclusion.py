@@ -12,4 +12,4 @@ class la_military_pay_exclusion(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.la.tax.military_pay_exclusion
         compensation = add(tax_unit, period, ["military_retirement_pay"])
-        return min_(max_amount, compensation)
+        return min_(p.max_amount, compensation)
