@@ -64,10 +64,10 @@ class ar_itemized_deductions(Variable):
         # Prorated itemized deductions
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        proration = np.zeros_like(agi)
+        prorate = np.zeros_like(agi)
         mask = agi > 0
-        proration[mask] = person_agi[mask] / agi[mask]
-        separated_itemized_deduction = total_itemized_deduction * proration
+        prorate[mask] = person_agi[mask] / agi[mask]
+        separated_itemized_deduction = total_itemized_deduction * prorate
 
         return where(
             separate, separated_itemized_deduction, total_itemized_deduction
