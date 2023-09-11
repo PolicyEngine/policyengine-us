@@ -20,13 +20,12 @@ class hi_dependent_care_benefits(Variable):
         )
         # married persons must fi le a joint return to claim the credit
         # if single, the min will be his/her income
+        capped_expenses = min_(dcb_amount, qualified_expense_amount)
         min_head_spouse_earned = tax_unit("hi_min_head_spouse_earned", period)
-        min_benefit = min_(
-            dcb_amount, qualified_expense_amount, min_head_spouse_earned
-        )
+        earned_income_cap = min_(capped_expenses, min_head_spouse_earned)
         filing_status = tax_unit("filing_status", period)
         dcb_baseline = p.earned_income_cap[filing_status]
-        deductible_benefit = min_(min_benefit, dcb_baseline)
+        deductible_benefit = min_(earned_income_cap, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
         # taxable_benefit = max_(0, dcb_amount - excluded_benefit) #never use in further calculation
         qualified_num = tax_unit("count_cdcc_eligible", period)

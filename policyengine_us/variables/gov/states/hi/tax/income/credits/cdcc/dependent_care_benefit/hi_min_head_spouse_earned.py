@@ -27,41 +27,38 @@ class hi_min_head_spouse_earned(Variable):
         )
         qualified_children = tax_unit("count_cdcc_eligible", period)
         income = person("earned_income", period)
-        one_child_floor = max_(
-            p.dependent_care_benefits.expense_floor.one_child,
-            head_or_spouse * income,
-        )
-        two_or_more_children_floor = max_(
-            p.dependent_care_benefits.expense_floor.two_or_more_child,
-            head_or_spouse * income,
-        )
-        total_floor_amount = where(
-            qualified_children <= 1,
-            one_child_floor,
-            two_or_more_children_floor,
-        )
-        eligible_income = where(
+        income_floor = select([
+        qualified_children <= 1,
+        qualified_children > 1,
+        ],
+        [ p.dependent_care_benefits.expense_floor.one_child,
+        p.dependent_care_benefits.expense_floor.two_or_more_child,])
+        head_or_spouse_income = head_or_spouse * income
+        increased_income = max_(head_or_spouse_income, income_floor)
+        uncapped_income = where(
             eligible,
-            total_floor_amount,
-            head_or_spouse * income,
+            increased_income,
+            head_or_spouse_income,
         )
         # remove impact of smaller income not belong to head/spouse
         head_spouse_income = where(
-            head_or_spouse, eligible_income, tax_unit.max(eligible_income)
+            head_or_spouse, uncapped_income, tax_unit.max(uncapped_income)
         )
         # Edge case: both spouses were students or disabled:
         # compare original income with eligible income
+
         both_disabled_income = where(
             head_or_spouse,
-            min_(head_or_spouse * income, eligible_income),
+            min_(head_or_spouse_income, uncapped_income),
             head_spouse_income,
         )
         # take the minumum of original income if both incomes below the floor
-        reach_income_floor = (head_or_spouse * income) < eligible_income
+        reach_income_floor = head_or_spouse_income < uncapped_income
         head_spouse_income = where(
             (sum(eligible) == 2) & (sum(reach_income_floor) == 2),
             both_disabled_income,
             head_spouse_income,
         )
-
+        # print(uncapped_income)
+        # print(eligible_income)
         return tax_unit.min(head_spouse_income)
