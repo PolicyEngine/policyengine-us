@@ -4347,3 +4347,66 @@
     added:
     - Louisiana school readiness tax credit.
   date: 2023-09-04 03:10:10
+- bump: minor
+  changes:
+    added:
+    - Ohio Retirement Income Credit.
+  date: 2023-09-04 16:05:48
+- bump: patch
+  changes:
+    fixed:
+    - Absence of federal Alternative Minimum Tax in capped_cdcc formula.
+    - Code fragmentation in Colorado child care expense credit calculations.
+    - Implausible allocation of total care expenses to Colorado eligible children.
+  date: 2023-09-04 20:23:16
+- bump: patch
+  changes:
+    fixes:
+    - Georgia standard deduction file directory.
+  date: 2023-09-04 20:59:54
+- bump: minor
+  changes:
+    added:
+    - Delaware itemized deductions.
+  date: 2023-09-04 23:28:52
+- bump: minor
+  changes:
+    added:
+    - Rhode Island standard deduction phaseout.
+  date: 2023-09-05 16:48:36
+- bump: patch
+  changes:
+    fixed:
+    - Moved regular_tax_before_credits formula into the alternative_income_tax.py
+      module, which is the only place it is used.
+  date: 2023-09-06 12:32:42
+- bump: minor
+  changes:
+    added:
+    - Arizona dependent tax credit.
+  date: 2023-09-06 15:59:55
+- bump: patch
+  changes:
+    fixed:
+    - Replace several arcane variable names with more descriptive names.
+  date: 2023-09-06 18:19:32
+- bump: minor
+  changes:
+    added:
+    - Colorado state income tax addback.
+  date: 2023-09-07 12:43:44
+- bump: patch
+  changes:
+    fixed:
+    - Rename module to be same as the name of the variable it contains.
+  date: 2023-09-07 14:51:52
+- bump: patch
+  changes:
+    fixed:
+    - Removed Colorado tax index.yaml file.
+  date: 2023-09-07 16:31:01
+- bump: patch
+  changes:
+    added:
+    - Add Colorado to the household_state_income_tax variable.
+  date: 2023-09-08 00:44:17
