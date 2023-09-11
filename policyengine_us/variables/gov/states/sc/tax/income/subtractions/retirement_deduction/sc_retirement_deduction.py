@@ -10,6 +10,6 @@ class sc_retirement_deduction(Variable):
     defined_for = StateCode.SC
 
     adds = [
-        "sc_retirement_deduction_indv",
-        "sc_retirement_deduction_survivors",
+        "sc_retirement_deduction_indv",  # p1,p2
+        "sc_retirement_deduction_survivors",  # p3
     ]

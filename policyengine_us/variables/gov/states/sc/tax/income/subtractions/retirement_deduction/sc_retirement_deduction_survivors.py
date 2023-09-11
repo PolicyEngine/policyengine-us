@@ -27,7 +27,7 @@ class sc_retirement_deduction_survivors(Variable):
         )
         # line 2
         military_retirement_pay_survivors = person(
-            "military_retirement_pay_survivors", period
+            "sc_military_deduction_survivors", period
         )
         # line 3
         retirement_deduction_available = max_(
