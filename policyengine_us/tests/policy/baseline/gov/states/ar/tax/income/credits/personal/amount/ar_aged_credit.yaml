@@ -6,10 +6,10 @@
   output:
     ar_aged_credit: 29
 
-- name: Arkansas personal credit for non_aged taxpayer under 65 is $0
+- name: Arkansas personal credit for non_aged taxpayer under 64 is $0
   period: 2022
   input:
-    age: 20
+    age: 64
     state_code: AR
   output:
     ar_aged_credit: 0

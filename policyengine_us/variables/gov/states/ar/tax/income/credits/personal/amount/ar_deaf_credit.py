@@ -15,7 +15,7 @@ class ar_deaf_credit(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
-        person=tax_unit.members
+        person = tax_unit.members
         us_deaf = person("is_deaf", period)
         total_deaf = tax_unit.sum(us_deaf)
         p_ar = parameters(
