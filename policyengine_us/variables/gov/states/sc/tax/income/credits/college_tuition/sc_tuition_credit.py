@@ -5,7 +5,7 @@ class sc_tuition_credit(Variable):
     value_type = float
     entity = Person
     label = "South Carolina Tuition Credit"
-    defined_for = StateCode.SC
+    defined_for = "sc_tuition_credit_eligible"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -24,11 +24,7 @@ class sc_tuition_credit(Variable):
             "qualified_tuition_expenses", period
         )
         # line 3
-        num_of_semester_attended = person("sc_semesters_attended", period)
-        sc_tuition_credit_eligible = (
-            total_college_hours
-            >= p.semester_hour_requirement * num_of_semester_attended
-        )
+        sc_tuition_credit_eligible = person("sc_tuition_credit_eligible",period)
         tuition_limit = (
             p.max_amount.tuition
             * total_college_hours
@@ -38,7 +34,6 @@ class sc_tuition_credit(Variable):
         uncapped_credit = (
             min_(qualified_tuition_expenses, tuition_limit) * p.rate
         )
-
         # compare line 7 with credit max amount, take lesser amount
         return where(
             sc_tuition_credit_eligible,
