@@ -7,7 +7,7 @@ class or_wfhdc(Variable):
     label = "Oregon WFHDC"
     unit = USD
     definition_period = YEAR
-    defined_for = "or_wfhdc_income_eligible"
+    defined_for = "or_wfhdc_eligible"
     reference = "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf"
 
     def formula(tax_unit, period, parameters):
@@ -15,7 +15,7 @@ class or_wfhdc(Variable):
         p = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
         # Get the household size.
-        household_size = tax_unit("tax_unit_size", period)
+        household_size = tax_unit("tax_unit_size", period)[0]
 
         # Get the household income, considered the larger of federal and Oregon AGI.
         federal_agi = tax_unit("adjusted_gross_income", period)
@@ -25,52 +25,49 @@ class or_wfhdc(Variable):
         # Get the age of the youngest qualifying child.
         person = tax_unit.members
         age = person("age", period)
-        min_age = min_(age)
-        # min_age = 5
-
-        # how should we located the youngest child?
+        min_age = age.min()
 
         # Determine if the youngest child is disabled.
-        # disabled = False
-        # min_age = min_(person("is_disabled", period))
-        disabled = person("is_disabled", period)
-
-        # Determine if youngest child is disabled.
         # Assume that the household has a child because they are WFHDC eligible.
+        disabled = person("is_disabled", period)
         youngest_and_disabled = (age == min_age) & disabled
-        youngest_is_disabled = sum_(youngest_and_disabled) > 0
 
-        # # Get the corresponding row from WFHDC tables.
-        percentage = select(
-            [
-                min_age < 3,
-                min_age < 6,
-                min_age < 13,
-                (min_age < 18) & youngest_is_disabled,
-                youngest_is_disabled,
-            ],
-            [
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "not_disabled_under3"
-                ],
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "not_disabled_3_to_6"
-                ],
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "not_disabled_6_to_13"
-                ],
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "disabled_13_to_18"
-                ],
-                p.table_threshold["household_size_2"].calc(household_income)[
-                    "disabled_above_18"
-                ],
-            ],
-            default_value=0,
-        )
+        # This will be true if any child with the lowest age is disabled.
+        youngest_is_disabled = youngest_and_disabled.sum() > 0
 
-        # Get the federal CDCC value.
-        cdcc = tax_unit("cdcc", period)
+        hh_size_param_name = "household_size_" + str(household_size)
+
+        conditions = [
+            min_age < 3,
+            min_age < 6,
+            min_age < 13,
+            (min_age < 18) & youngest_is_disabled,
+            youngest_is_disabled,
+        ]
+
+        values = [
+            p.table_threshold[hh_size_param_name]["age_under_3"].calc(
+                household_income
+            ),
+            p.table_threshold[hh_size_param_name]["age_3_to_6"].calc(
+                household_income
+            ),
+            p.table_threshold[hh_size_param_name]["age_6_to_13"].calc(
+                household_income
+            ),
+            p.table_threshold[hh_size_param_name]["disabled_13_to_18"].calc(
+                household_income
+            ),
+            p.table_threshold[hh_size_param_name]["disabled_above_18"].calc(
+                household_income
+            ),
+        ]
+
+        # Get the corresponding row from WFHDC tables.
+        percentage = select(conditions, values)
+
+        # Get the relevant expenses.
+        expenses = tax_unit("cdcc_relevant_expenses", period)
 
         # Return the share of federal CDCC matched by Oregon.
-        return cdcc * percentage
+        return expenses * percentage
