@@ -39,6 +39,6 @@ class mi_alternate_heating_credit(Variable):
             (capped_heating_costs - difference),
             0,
         )
-
+        
         # determine mi_alternate_household_credit
         return p.alternate_credit.heating_costs.rate * alternate_credit
