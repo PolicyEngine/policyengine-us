@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_adjusted_federal_ctc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Non-refundbale Child Tax Credit replicated to include the Colorado limitations"
+    label = "Non-refundable Child Tax Credit replicated to include the Colorado limitations"
     unit = USD
     documentation = (
         "Total value of the non-refundable portion of the Child Tax Credit."
@@ -18,6 +18,7 @@ class co_adjusted_federal_ctc(Variable):
         # Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16",
     )
+    defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):

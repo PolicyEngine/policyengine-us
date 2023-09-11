@@ -6,7 +6,7 @@ class co_federal_ctc(Variable):
     entity = TaxUnit
     label = "Child Tax Credit replicated to include the Colorado limitations"
     unit = USD
-    documentation = "Total value of the non-refundable and refundable portions of the Child Tax Credit."
+    documentation = "Total value of the non-refundable and refundable portion of the Child Tax Credit."
     definition_period = YEAR
     reference = (
         # C.R.S. 39-22-129. Child tax credit - legislative declaration - definitions.
@@ -16,48 +16,6 @@ class co_federal_ctc(Variable):
         # Colorado Individual Income Tax Filing Guide - Instructions for Select Credits from the DR 0104CR - Line 1 Child Tax Credit
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16",
     )
+    defined_for = StateCode.CO
 
-    def formula(tax_unit, period, parameters):
-        # follow 2022 DR 0104CN form and its instructions (in Book cited above):
-        adjusted_fed_ctc = tax_unit(
-            "co_adjusted_federal_ctc", period
-        )  # Line 7
-        max_child_amount = tax_unit("co_federal_ctc_maximum", period)
-        credit_excess_over_tax = max_(
-            0, adjusted_fed_ctc - max_child_amount
-        )  # Line 8
-        p = parameters(period).gov.irs.credits.ctc
-        statustory_cap = p.refundable.individual_max  # Line 9
-        children = tax_unit("co_ctc_eligible_children_count", period)
-        total_statustory_cap = min_(
-            statustory_cap * children, credit_excess_over_tax
-        )  # Line 10
-        earnings = tax_unit("tax_unit_earned_income", period)  # Line 11
-        earnings_over_threshold = max_(
-            0, earnings - p.refundable.phase_in.threshold
-        )  # Line 12
-        relevant_earnings = (
-            earnings_over_threshold * p.refundable.phase_in.rate
-        )  # Line 13
-        SS_ADD_VARIABLES = [
-            # Person:
-            "employee_social_security_tax",
-            "employee_medicare_tax",
-            "unreported_payroll_tax",
-            # Tax unit:
-            "self_employment_tax_ald",
-            "additional_medicare_tax",
-        ]
-        SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
-        social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
-            tax_unit, period, SS_SUBTRACT_VARIABLES
-        )  # Line 14 - 16
-        eitc = tax_unit("eitc", period)  # Line 17a
-        social_security_excess = max_(0, social_security_tax - eitc)  # Line 18
-        tax_increase = where(
-            children
-            < p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc,
-            relevant_earnings,
-            max_(relevant_earnings, social_security_excess),
-        )  # Line 19
-        return min_(total_statustory_cap, tax_increase)  # Line 20
+    adds = ["co_additional_federal_ctc", "co_adjusted_federal_ctc"]
