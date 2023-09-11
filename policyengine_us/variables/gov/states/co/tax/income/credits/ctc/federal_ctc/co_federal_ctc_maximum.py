@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class co_federal_ctc_maximum(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Maximum CTC replicated to account for the Colorado state CTC child eligibility""
+    label = "Maximum CTC replicated to account for the Colorado state CTC child eligibility"
     unit = USD
     documentation = "Maximum value of the Child Tax Credit, before phase-out."
     definition_period = YEAR
@@ -17,4 +17,4 @@ class co_federal_ctc_maximum(Variable):
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=16",
     )
 
-    adds = ["co_federal_ctc_individual_maximum"]
+    adds = ["co_federal_ctc_child_individual_maximum"]

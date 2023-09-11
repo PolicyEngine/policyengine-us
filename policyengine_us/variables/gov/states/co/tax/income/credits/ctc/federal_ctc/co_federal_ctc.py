@@ -34,15 +34,11 @@ class co_federal_ctc(Variable):
         )  # Line 10
         earnings = tax_unit("tax_unit_earned_income", period)  # Line 11
         earnings_over_threshold = max_(
-            0, earnings - ctc.refundable.phase_in.threshold
+            0, earnings - p.refundable.phase_in.threshold
         )  # Line 12
         relevant_earnings = (
-            earnings_over_threshold * ctc.refundable.phase_in.rate
+            earnings_over_threshold * p.refundable.phase_in.rate
         )  # Line 13
-        additional_children = (
-            children
-            >= p.refundable.phase_in.min_children_for_ss_taxes_minus_eitc
-        )
         SS_ADD_VARIABLES = [
             # Person:
             "employee_social_security_tax",

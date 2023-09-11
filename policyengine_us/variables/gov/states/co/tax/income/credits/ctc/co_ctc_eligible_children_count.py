@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class co_ctc_eligible_children_count(Variable):
     value_type = int
-    entity = Person
+    entity = TaxUnit
     label = "Colorado child tax credit eligible children count"
     definition_period = YEAR
     reference = (
