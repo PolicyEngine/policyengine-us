@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ga_agi(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Georgia AGI"
+    label = "Georgia adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = (
