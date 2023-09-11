@@ -1,0 +1,114 @@
+- name: Age ineligible
+  period: 2023
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        age: 55
+        is_tax_unit_head: true
+      person2:
+        military_retirement_pay: 1_000
+        age: 55
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_military_retirement_subtraction: 0
+
+- name: Spouse eligible, uncapped
+  period: 2023
+  input:
+    people:
+      person1:
+        military_retirement_pay: 1_000
+        age: 55
+        is_tax_unit_head: true
+      person2:
+        military_retirement_pay: 1_000
+        age: 54
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_military_retirement_subtraction: 1_000
+
+- name: Both eligible, capped at 15,000 each
+  period: 2023
+  input:
+    people:
+      person1:
+        military_retirement_pay: 15_001
+        age: 54
+        is_tax_unit_head: true
+      person2:
+        military_retirement_pay: 1_000
+        age: 54
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_military_retirement_subtraction: 16_000
+
+- name: Have to be spouse or head
+  period: 2023
+  input:
+    people:
+      person1:
+        military_retirement_pay: 15_001
+        age: 54
+        is_tax_unit_head: true
+      person2:
+        military_retirement_pay: 15_001
+        age: 54
+        is_tax_unit_spouse: true
+      person3:
+        military_retirement_pay: 13_000
+        age: 54
+        is_tax_unit_spouse: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CO
+  output:
+    co_military_retirement_subtraction: 30_000
+
+- name: No military retirement pay
+  period: 2023
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        age: 54
+        is_tax_unit_head: true
+      person2:
+        military_retirement_pay: 0
+        age: 54
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    co_military_retirement_subtraction: 0
