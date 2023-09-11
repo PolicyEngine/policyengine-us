@@ -4390,3 +4390,23 @@
     fixed:
     - Replace several arcane variable names with more descriptive names.
   date: 2023-09-06 18:19:32
+- bump: minor
+  changes:
+    added:
+    - Colorado state income tax addback.
+  date: 2023-09-07 12:43:44
+- bump: patch
+  changes:
+    fixed:
+    - Rename module to be same as the name of the variable it contains.
+  date: 2023-09-07 14:51:52
+- bump: patch
+  changes:
+    fixed:
+    - Removed Colorado tax index.yaml file.
+  date: 2023-09-07 16:31:01
+- bump: patch
+  changes:
+    added:
+    - Add Colorado to the household_state_income_tax variable.
+  date: 2023-09-08 00:44:17
