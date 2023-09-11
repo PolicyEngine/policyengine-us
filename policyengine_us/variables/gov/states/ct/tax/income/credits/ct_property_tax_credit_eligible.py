@@ -15,4 +15,5 @@ class ct_property_tax_credit_eligible(Variable):
         age_threshold = p.threshold.age
         dependent_eligible = tax_unit("tax_unit_dependents", period) > 0
         age_eligible = (age_head | age_spouse) >= age_threshold
+
         return dependent_eligible | age_eligible

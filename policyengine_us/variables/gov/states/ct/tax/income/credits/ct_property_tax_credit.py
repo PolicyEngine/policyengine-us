@@ -20,13 +20,13 @@ class ct_property_tax_credit(Variable):
         max_amount = p.max_amount
         increment = p.reduction.increment[filing_status]
         max_credit = min_(real_estate_taxes, max_amount)
-        excess = agi - start
-        times = np.ceil(excess / increment)
-        non_refundable_percent = rate * times
-        non_refundable_portion = max_credit * non_refundable_percent
+        excess = max_(agi - start, 0)
+        total_increments = np.ceil(excess / increment)
+        reduction_percent = rate * total_increments
+        reduction = max_credit * reduction_percent
         earned_credit = where(
-            non_refundable_portion <= max_credit,
-            max_credit - non_refundable_portion,
+            reduction <= max_credit,
+            max_credit - reduction,
             0,
         )
         return earned_credit
