@@ -14,6 +14,13 @@ filtered:
       modelled:
       - California state income tax
       - California TANF
+      - California's Clean Vehicle Rebate Project
+    CO:
+      modelled:
+      - Colorado state income tax
+      - Colorado Old Age Pension
+      - Colorado State Supplement
+      - Colorado TANF
     DC:
       modelled:
       - District of Columbia income tax
@@ -27,6 +34,11 @@ filtered:
       modelled:
       - Illinois state income tax
       - Illinois TANF
+    IN: 
+      modelled:
+      - Indiana state income tax
+      not_modelled:
+      - Indiana TANF
     KS:
       modelled:
       - Kansas state income tax
@@ -67,6 +79,11 @@ filtered:
       - New Hampshire state income tax
       not_modelled:
       - New Hampshire TANF
+    NJ:
+      modelled:
+      - New Jersey state income tax
+      not_modelled:
+      - New Jersey TANF
     NM:
       modelled:
       - New Mexico state income tax
