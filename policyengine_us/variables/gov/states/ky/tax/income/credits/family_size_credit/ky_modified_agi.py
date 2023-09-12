@@ -10,12 +10,13 @@ class ky_modified_agi(Variable):
     reference = "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=22"
     defined_for = StateCode.KY
 
-
     def formula(tax_unit, period, parameters):
         fed_agi = tax_unit("adjusted_gross_income", period)
         # Lump sum distributions which are not included in federal AGI are added to the federal AGI
         # Tax exempt interest from municipal bonds (non-Kentucky) is also added but excluded in this calculation
-        tax_exempt_lump_sum = tax_unit("tax_exempt_form_4972_lumpsum_distributions", period)
+        tax_exempt_lump_sum = tax_unit(
+            "tax_exempt_form_4972_lumpsum_distributions", period
+        )
         total_fed_ai = fed_agi + tax_exempt_lump_sum
 
         ky_agi = tax_unit("ky_agi", period)
