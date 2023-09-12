@@ -25,24 +25,24 @@ class vt_retirement_income_exemption(Variable):
             "tax_unit_taxable_social_security", period
         )
         # Get vt retirement income exclusion from military retirement system
-        vt_military_retirement_pay = tax_unit(
+        vt_military_retirement_pay_exclusion = tax_unit(
             "vt_military_retirement_pay_exclusion", period
         )
         # Get vt retirement income exclusion from CSRS
-        vt_csrs_retirement_pay = tax_unit(
+        vt_csrs_retirement_pay_exclusion = tax_unit(
             "vt_csrs_retirement_pay_exclusion", period
         )
         # Get vt retirement income exclusion from other certain retirement systems
-        vt_other_retirement_pay = tax_unit(
+        vt_other_retirement_pay_exclusion = tax_unit(
             "vt_other_retirement_pay_exclusion", period
         )
 
         # Assume that filers will always choose the largest reitrement income exclusion from various retirement system
         chosen_retirement_income = max_(
             tax_unit_taxable_social_security,
-            vt_military_retirement_pay,
-            vt_csrs_retirement_pay,
-            vt_other_retirement_pay,
+            vt_military_retirement_pay_exclusion,
+            vt_csrs_retirement_pay_exclusion,
+            vt_other_retirement_pay_exclusion,
         )
 
         filing_status = tax_unit("filing_status", period)

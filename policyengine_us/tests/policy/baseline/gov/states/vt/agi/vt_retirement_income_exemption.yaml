@@ -3,9 +3,9 @@
   input:
     filing_status: SINGLE
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 1_000
-    vt_csrs_retirement_pay: 1_000
-    vt_other_retirement_pay: 1_000
+    vt_military_retirement_pay_exclusion: 1_000
+    vt_csrs_retirement_pay_exclusion: 1_000
+    vt_other_retirement_pay_exclusion: 1_000
     adjusted_gross_income: 40_000
     vt_retirement_income_exemption_eligible: False
     state_code: VT
@@ -18,9 +18,9 @@
     filing_status: JOINT
     adjusted_gross_income: 80_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 0
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 0
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 0
     vt_retirement_income_exemption_eligible: False
     state_code: VT
   output:
@@ -32,9 +32,9 @@
     filing_status: SINGLE
     adjusted_gross_income: 70_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 0
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 0
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 0
     vt_retirement_income_exemption_eligible: False
     state_code: VT
   output:
@@ -46,9 +46,9 @@
     filing_status: JOINT
     adjusted_gross_income: 50_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 300
-    vt_csrs_retirement_pay: 400
-    vt_other_retirement_pay: 0
+    vt_military_retirement_pay_exclusion: 300
+    vt_csrs_retirement_pay_exclusion: 400
+    vt_other_retirement_pay_exclusion: 0
     vt_retirement_income_exemption_eligible: True
     state_code: VT
   output:
@@ -60,9 +60,9 @@
     filing_status: SINGLE
     adjusted_gross_income: 40_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 0
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 500
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 500
     vt_retirement_income_exemption_eligible: True
     state_code: VT
   output:
@@ -74,9 +74,9 @@
     filing_status: JOINT
     adjusted_gross_income: 65_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 200
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 300
+    vt_military_retirement_pay_exclusion: 200
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 300
     vt_retirement_income_exemption_eligible: True
     state_code: VT
   output:
@@ -88,9 +88,9 @@
     filing_status: SINGLE
     adjusted_gross_income: 57_500
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay: 0
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 0
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 0
     vt_retirement_income_exemption_eligible: True
     state_code: VT
   output:
@@ -103,9 +103,9 @@
     adjusted_gross_income: 40_000
     vt_retirement_income_exemption_eligible: True
     tax_unit_taxable_social_security: 0
-    vt_military_retirement_pay: 1_000
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 0
+    vt_military_retirement_pay_exclusion: 1_000
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 0
     state_code: VT
   output:
     vt_retirement_income_exemption: 1_000 # Fully qualified
@@ -117,9 +117,9 @@
     adjusted_gross_income: 65_000
     vt_retirement_income_exemption_eligible: True
     tax_unit_taxable_social_security: 0
-    vt_military_retirement_pay: 0
-    vt_csrs_retirement_pay: 1_000
-    vt_other_retirement_pay: 0
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 1_000
+    vt_other_retirement_pay_exclusion: 0
     state_code: VT
   output:
     vt_retirement_income_exemption: 0  # Partial qualified; But can't use CSRS in 2021
@@ -131,9 +131,9 @@
     adjusted_gross_income: 40_000
     vt_retirement_income_exemption_eligible: True
     tax_unit_taxable_social_security: 0
-    vt_military_retirement_pay: 0
-    vt_csrs_retirement_pay: 0
-    vt_other_retirement_pay: 1_000
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
+    vt_other_retirement_pay_exclusion: 1_000
     state_code: VT
   output:
     vt_retirement_income_exemption: 1_000  # Fully qualified
@@ -144,9 +144,9 @@
     filing_status: SINGLE
     adjusted_gross_income: 57_500
     tax_unit_taxable_social_security: 9_000
-    vt_military_retirement_pay: 9_000
-    vt_csrs_retirement_pay: 11_000
-    vt_other_retirement_pay: 9_000
+    vt_military_retirement_pay_exclusion: 9_000
+    vt_csrs_retirement_pay_exclusion: 11_000
+    vt_other_retirement_pay_exclusion: 9_000
     vt_retirement_income_exemption_eligible: True
     state_code: VT
   output:
