@@ -93,8 +93,8 @@ class PovertyTracker(Dataset):
         pt = pd.read_csv(url)
 
         columns_to_rename = {
-            # "imp_qearnhd_tc": "hh_head_earnings", # not currently used in notebook
-            # "imp_qearnsp_tc": "spouse_earnings", # not currently used in notebook
+            # "imp_qearnhd_tc": "hh_head_earnings", # not currently used
+            # "imp_qearnsp_tc": "spouse_earnings", # not currently used
             "imp_qage_tc": "age",
             "qopmres": "income",
         }
