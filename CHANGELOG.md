@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.464.0] - 2023-09-12 21:49:59
+
+### Added
+
+- Added PovertyTracker microdata.
+
 ## [0.463.0] - 2023-09-12 16:15:02
 
 ### Changed
@@ -5240,6 +5246,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.464.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.463.0...0.464.0
 [0.463.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.3...0.463.0
 [0.462.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.2...0.462.3
 [0.462.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.1...0.462.2
