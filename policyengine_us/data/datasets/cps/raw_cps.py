@@ -219,6 +219,7 @@ class RawCPS_2021(RawCPS):
     label = "Raw CPS 2021"
     file_path = STORAGE_FOLDER / "raw_cps_2021.h5"
 
+
 class RawCPS_2022(RawCPS):
     time_period = 2022
     name = "raw_cps_2022"

@@ -355,6 +355,7 @@ class CPS_2021(CPS):
     file_path = STORAGE_FOLDER / "cps_2021.h5"
     time_period = 2021
 
+
 class CPS_2022(CPS):
     name = "cps_2022"
     label = "CPS 2022"
