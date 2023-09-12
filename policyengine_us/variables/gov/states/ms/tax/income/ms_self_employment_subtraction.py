@@ -11,9 +11,8 @@ class ms_self_employment_subtraction(Variable):
     defined_for = StateCode.MS
 
     def formula(tax_unit, period, parameters):
-        # Line 61: deduct 50% of the federal self-employment taxes imposed.
         self_employment = add(tax_unit, period, ["self_employment_tax"])
-        return self_employment * 0.5
-
-
-# Make teh 0.5 a parameter 
+        p = parameters(
+            period
+        ).gov.states.ms.tax.income.subtractions.self_employment
+        return self_employment * p.rate
