@@ -17,7 +17,6 @@ class vt_retirement_income_exemption(Variable):
     def formula(tax_unit, period, parameters):
         # Filer can choose from one of Social Security, Civil Service Retirement System (CSRS), Military Retirement Income
         # or other eligible retirement systems to calculate retirement income exemption
-        person = tax_unit.members
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
@@ -25,30 +24,25 @@ class vt_retirement_income_exemption(Variable):
         tax_unit_taxable_social_security = tax_unit(
             "tax_unit_taxable_social_security", period
         )
-        # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = tax_unit.sum(
-            person("military_retirement_pay", period)
+        # Get vt retirement income exclusion from military retirement system
+        vt_military_retirement_pay = tax_unit(
+            "vt_military_retirement_pay_exclusion", period
         )
-        # Get retirement amount from CSRS
-        tax_unit_csrs_retirement_pay = tax_unit.sum(
-            person("csrs_retirement_pay", period)
+        # Get vt retirement income exclusion from CSRS
+        vt_csrs_retirement_pay = tax_unit(
+            "vt_csrs_retirement_pay_exclusion", period
         )
-        # Get retirement amount for other certain retirement systems
-        tax_unit_other_retirement_pay = tax_unit.sum(
-            person("vt_other_retirement_pay", period)
+        # Get vt retirement income exclusion from other certain retirement systems
+        vt_other_retirement_pay = tax_unit(
+            "vt_other_retirement_pay_exclusion", period
         )
-        # Retirement income from systems other than social security have maximum amount and assume that filers will always choose the largest one
-        other_than_ss_retirement = min_(
-            max_(
-                tax_unit_military_retirement_pay,
-                tax_unit_csrs_retirement_pay,
-                tax_unit_other_retirement_pay,
-            ),
-            p.cap,
-        )
-        # Assume that filers will always choose the larger one of ss and other retirement system
+
+        # Assume that filers will always choose the largest reitrement income exclusion from various retirement system
         chosen_retirement_income = max_(
-            tax_unit_taxable_social_security, other_than_ss_retirement
+            tax_unit_taxable_social_security,
+            vt_military_retirement_pay,
+            vt_csrs_retirement_pay,
+            vt_other_retirement_pay,
         )
 
         filing_status = tax_unit("filing_status", period)
@@ -76,15 +70,8 @@ class vt_retirement_income_exemption(Variable):
         # Calculate parital exemption amount
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
 
-        # return select(
-        #     [partial_qualified, fully_qualified],
-        #     [partial_exemption, chosen_retirement_income],
-        # )
-        return "social security is:{}, military is:{},csrs is:{},other is:{},fully qualified is {},partial_qualified is {}.".format(
-            tax_unit_taxable_social_security,
-            tax_unit_military_retirement_pay,
-            tax_unit_csrs_retirement_pay,
-            tax_unit_other_retirement_pay,
-            fully_qualified,
-            partial_qualified,
+        # Return final exemption amount based on eligibility status
+        return select(
+            [partial_qualified, fully_qualified],
+            [partial_exemption, chosen_retirement_income],
         )

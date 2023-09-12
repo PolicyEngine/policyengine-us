@@ -11,7 +11,6 @@ class vt_retirement_income_exemption_eligible(Variable):
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption for different retirement system
     )
-    unit = USD
     defined_for = StateCode.VT
     documentation = "Vermont filers use below criteria to check whether the tax unit is eligible for vermont retirement income exemption."
 
@@ -42,20 +41,18 @@ class vt_retirement_income_exemption_eligible(Variable):
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.threshold
 
-        # List of non qualified tax unit (SECTION I Q1,Q2)
-        non_qualified = (
-            (tax_unit_taxable_social_security == 0)
-            & (tax_unit_military_retirement_pay == 0)
-            & (tax_unit_csrs_retirement_pay == 0)
-            & (tax_unit_other_retirement_pay == 0)
-        ) | (agi >= p.income[filing_status])
-
-        # # Based on the criteria, return the eligibility status.
-        # return ~non_qualified
-        return "social security is:{}, military is:{},csrs is:{},other is:{},qualified:{}".format(
-            tax_unit_taxable_social_security,
-            tax_unit_military_retirement_pay,
-            tax_unit_csrs_retirement_pay,
-            tax_unit_other_retirement_pay,
-            ~non_qualified,
+        # List of qualified tax unit (SECTION I Q1,Q2)
+        qualified_ss = (tax_unit_taxable_social_security != 0) & (
+            agi < p.income[filing_status]
         )
+        qualified_mil = (tax_unit_military_retirement_pay != 0) & (
+            agi < p.income[filing_status]
+        )
+        qualified_csrs = (tax_unit_csrs_retirement_pay != 0) & (
+            agi < p.income[filing_status]
+        )
+        qualified_other = (tax_unit_other_retirement_pay != 0) & (
+            agi < p.income[filing_status]
+        )
+        # Qualified filers from any systems mark as qualified
+        return qualified_ss | qualified_mil | qualified_csrs | qualified_other

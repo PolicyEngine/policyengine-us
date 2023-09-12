@@ -208,8 +208,29 @@
   input:
     people:
       person1:
-        military_retirement_pay: 
+        military_retirement_pay: 0
         csrs_retirement_pay: 0
+        vt_other_retirement_pay: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+        tax_unit_taxable_social_security: 0
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_retirement_income_exemption_eligible: True  # Fully qualified
+
+- name: 2022, use other retirement systems, have csrs retirement pay, not filing jointly with federal agi less than 50,000
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay: 0
+        csrs_retirement_pay: 500
         vt_other_retirement_pay: 1_000
     tax_units:
       tax_unit:

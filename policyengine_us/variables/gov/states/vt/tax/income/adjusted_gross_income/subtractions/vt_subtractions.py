@@ -6,7 +6,7 @@ class vt_subtractions(Variable):
     entity = TaxUnit
     label = "Vermont subtractions"
     unit = USD
-    documentation = "Subtractions from Vermont AGI over federal AGI."
+    documentation = "Subtractions from Vermont adjusted gross income"
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
