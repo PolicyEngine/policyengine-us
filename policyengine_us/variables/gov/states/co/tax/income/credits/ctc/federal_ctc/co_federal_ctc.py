@@ -18,4 +18,4 @@ class co_federal_ctc(Variable):
     )
     defined_for = StateCode.CO
 
-    adds = ["co_additional_federal_ctc", "co_adjusted_federal_ctc"]
+    adds = ["co_refundable_ctc", "co_non_refundable_ctc"]

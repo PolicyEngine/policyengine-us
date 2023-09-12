@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_adjusted_federal_ctc(Variable):
+class co_non_refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Non-refundable Child Tax Credit replicated to include the Colorado limitations"

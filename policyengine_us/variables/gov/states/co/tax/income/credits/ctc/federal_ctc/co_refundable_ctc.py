@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_additional_federal_ctc(Variable):
+class co_refundable_ctc(Variable):
     value_type = float
     entity = TaxUnit
     label = "Refundable Child Tax Credit replicated to include the Colorado limitations"
@@ -23,17 +23,17 @@ class co_additional_federal_ctc(Variable):
     def formula(tax_unit, period, parameters):
         # follow 2022 DR 0104CN form and its instructions (in Book cited above):
         adjusted_fed_ctc = tax_unit(
-            "co_adjusted_federal_ctc", period
+            "co_non_refundable_ctc", period
         )  # Line 7
         max_child_amount = tax_unit("co_federal_ctc_maximum", period)
         credit_excess_over_tax = max_(
             0, adjusted_fed_ctc - max_child_amount
         )  # Line 8
         p = parameters(period).gov.irs.credits.ctc
-        statustory_cap = p.refundable.individual_max  # Line 9
+        statutory_cap = p.refundable.individual_max  # Line 9
         children = tax_unit("co_ctc_eligible_children_count", period)
-        total_statustory_cap = min_(
-            statustory_cap * children, credit_excess_over_tax
+        total_statutory_cap = min_(
+            statutory_cap * children, credit_excess_over_tax
         )  # Line 10
         earnings = tax_unit("tax_unit_earned_income", period)  # Line 11
         earnings_over_threshold = max_(
@@ -63,4 +63,4 @@ class co_additional_federal_ctc(Variable):
             relevant_earnings,
             max_(relevant_earnings, social_security_excess),
         )  # Line 19
-        return min_(total_statustory_cap, tax_increase)  # Line 20
+        return min_(total_statutory_cap, tax_increase)  # Line 20
