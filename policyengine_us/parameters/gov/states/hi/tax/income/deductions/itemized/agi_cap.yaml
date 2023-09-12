@@ -1,0 +1,24 @@
+description: Hawaii limits filler's agi qualified for total itemized deductions to this amount.
+SINGLE:
+  2018-01-01: 166_800
+JOINT:
+  2018-01-01: 166_800
+SEPARATE:
+  2018-01-01: 83_400
+HEAD_OF_HOUSEHOLD:
+  2018-01-01: 166_800
+WIDOW:
+  2018-01-01: 166_800
+metadata:
+  breakdown: filing_status
+  unit: currency-USD
+  label: Hawaii itemized deductions agi cap
+  reference:
+    - title: 2022 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
+      href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32
+    - title: 2022 Schedule A (Form 1040)
+      href: https://www.irs.gov/pub/irs-pdf/f1040sa.pdf
+    - title: 2022 Schedule A Instruction
+      href: https://www.irs.gov/pub/irs-pdf/i1040sca.pdf
+    - title: Hawaii Income Tax Law, Chapter 235
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf

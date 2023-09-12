@@ -1,18 +1,9 @@
-description: Hawaii limits the total itemized deductions to this amount.
-SINGLE:
-  2018-01-01: 166_800
-JOINT:
-  2018-01-01: 166_800
-SEPARATE:
-  2018-01-01: 83_400
-HEAD_OF_HOUSEHOLD:
-  2018-01-01: 166_800
-WIDOW:
-  2018-01-01: 166_800
+description: Hawaii multiplies agi by this rate to obtain the medical expense deduction.
+values:
+  2018-01-01: 0.075
 metadata:
-  breakdown: filing_status
-  unit: currency-USD
-  label: Hawaii itemized deductions amount cap
+  unit: /1
+  label: Hawaii medical expense deduction agi rate
   reference:
     - title: 2022 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
       href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32
