@@ -13,4 +13,3 @@ class ga_agi_subtractions(Variable):
     )
     defined_for = StateCode.GA
     adds = "gov.states.ga.tax.income.agi.subtractions"
-   
