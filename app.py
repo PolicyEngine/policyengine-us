@@ -82,5 +82,5 @@ with col1:
         st.plotly_chart(fig)
 
 with col2:
-    st.subheader("Full training log")
-    st.dataframe(df)
+    st.subheader("Full final epoch metrics")
+    st.dataframe(df[df.epoch == df.epoch.max()])
