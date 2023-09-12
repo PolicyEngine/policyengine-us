@@ -38,12 +38,17 @@ class vt_retirement_income_exemption(Variable):
         )
 
         # Assume that filers will always choose the largest reitrement income exclusion from various retirement system
-        chosen_retirement_income = max_(
+        # Pair-wise comparsion
+        income_array = [
             tax_unit_taxable_social_security,
             vt_military_retirement_pay_exclusion,
             vt_csrs_retirement_pay_exclusion,
             vt_other_retirement_pay_exclusion,
-        )
+        ]
+        # Initialize chosen retirement income exclusion array
+        chosen_retirement_income = income_array[0]
+        for arr in income_array[1:]:
+            chosen_retirement_income = max_(chosen_retirement_income, arr)
 
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
