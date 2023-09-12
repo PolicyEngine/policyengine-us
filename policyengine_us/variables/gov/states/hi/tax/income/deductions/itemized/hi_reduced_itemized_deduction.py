@@ -8,7 +8,8 @@ class hi_reduced_itemized_deduction(Variable):
     unit = USD
     documentation = (
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19"
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19",
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32" # total itemized deduction worksheet
     )
     definition_period = YEAR
     defined_for = StateCode.HI
