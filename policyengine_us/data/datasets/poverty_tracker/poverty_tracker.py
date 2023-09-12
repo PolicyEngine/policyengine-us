@@ -37,12 +37,11 @@ class PovertyTracker(Dataset):
 
         current_person_id = 0
         current_group_id = 0
+        group_ids = household_df["public_id"].values
         for situation in situations:
-            group_ids.append(current_group_id)
-
             for person in situation["people"]:
                 person_ids.append(current_person_id)
-                person_group_ids.append(current_group_id)
+                person_group_ids.append(group_ids[current_group_id])
 
                 age = situation["people"][person]["age"]
                 employment_income = situation["people"][person][
@@ -64,7 +63,7 @@ class PovertyTracker(Dataset):
             current_group_id += 1
 
         data["in_nyc"] = [True] * len(group_ids)
-        data["state_code"] = ["NY"] * len(group_ids)
+        data["state_name"] = ["NY"] * len(group_ids)
 
         group_id_names = [
             "tax_unit",
