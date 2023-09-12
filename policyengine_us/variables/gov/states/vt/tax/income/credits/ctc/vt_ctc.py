@@ -26,9 +26,9 @@ class vt_ctc(Variable):
         # using a mask to avoid division by zero.
         increment = p.reduction.increment
         increments = np.zeros_like(increment)
-        mask = increment > 0
+        mask = increment != 0
         # increments = excess_agi / p.reduction.increment
         increments[mask] = excess_agi[mask] / increment[mask]
         percent_reduction = p.reduction.amount * increments
         # Return reduced amount.
-        return max_(max_credit - percent_reduction, 0)
+        return max(max_credit - percent_reduction, 0)
