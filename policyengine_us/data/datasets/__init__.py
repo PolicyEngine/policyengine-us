@@ -5,6 +5,7 @@ from .cps import (
     CPS_2023,
     RawCPS_2020,
     RawCPS_2021,
+    RawCPS_2022,
     CalibratedCPS_2023,
 )
 
