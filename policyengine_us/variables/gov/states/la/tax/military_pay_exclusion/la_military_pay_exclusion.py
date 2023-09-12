@@ -8,6 +8,7 @@ class la_military_pay_exclusion(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.LA
+    reference = "http://www.legis.la.gov/legis/Law.aspx?d=101760"
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.la.tax.military_pay_exclusion
