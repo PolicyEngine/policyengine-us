@@ -5,7 +5,7 @@
     net_capital_gain: 1_000
     long_term_capital_gains: 20_000
   output:
-    az_net_capital_gains_subtractions: 6000
+    az_net_capital_gains_subtraction: 6000
 
 - name: both net capital gains and long term capital gains are zero
   period: 2023
@@ -14,4 +14,4 @@
     net_capital_gain: 0
     long_term_capital_gains: 0
   output:
-    az_net_capital_gains_subtractions: 0
+    az_net_capital_gains_subtraction: 0
