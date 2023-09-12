@@ -1,0 +1,14 @@
+- name: Alabama medical itemized deductions unit test 1
+  period: 2021
+  input:
+    medical_expense: 2000
+  output:
+    al_medical_deduction: 80
+
+
+- name: Alabama medical itemized deductions unit test 1
+  period: 2021
+  input:
+    medical_expense: 7000
+  output:
+    al_medical_deduction: 280

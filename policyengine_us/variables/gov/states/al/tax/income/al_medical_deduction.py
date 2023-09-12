@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class al_itemized_deductions(Variable):
+class al_medical_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Alabama itemized deductions"
+    label = "Alabama Medical Deduction"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,5 +15,6 @@ class al_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.al.tax.income.deductions.itemized
-        deduction_value = add(tax_unit, period, p.itemized)
+        medical_deduction = tax_unit("al_medical_dedcution", period)
+        deduction_value = p.medical_expense * medical_deduction
         return deduction_value

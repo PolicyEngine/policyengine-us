@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class al_itemized_deductions(Variable):
+class al_work_related_expense(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Alabama itemized deductions"
+    label = "Alabama Work Related Expense"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -15,5 +15,6 @@ class al_itemized_deductions(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.al.tax.income.deductions.itemized
-        deduction_value = add(tax_unit, period, p.itemized)
+        work_related = tax_unit("work_related_expense", period)
+        deduction_value = p.work_related_expense * work_related
         return deduction_value
