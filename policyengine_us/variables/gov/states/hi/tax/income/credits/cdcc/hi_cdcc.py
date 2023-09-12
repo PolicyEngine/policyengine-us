@@ -15,7 +15,10 @@ class hi_cdcc(Variable):
         agi = tax_unit("hi_agi", period)
         rate = p.rate.calc(agi, right=True)
 
-        return rate * min_(
+        # explain cap
+        min_earned = min_(
             tax_unit("hi_dependent_care_benefits", period),
             tax_unit("hi_min_head_spouse_earned", period),
         )
+
+        return rate * min_earned

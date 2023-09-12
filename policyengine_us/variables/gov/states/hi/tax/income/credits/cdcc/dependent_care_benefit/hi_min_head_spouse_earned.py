@@ -22,7 +22,7 @@ class hi_min_head_spouse_earned(Variable):
         spouse = person("is_tax_unit_spouse", period)
         head_or_spouse = head | spouse
         # Head or spouse are eligible for an income floor if disabled or a student
-        eligible = head_or_spouse & (
+        income_floor_eligible = head_or_spouse & (
             person("is_disabled", period)
             | person("is_full_time_student", period)
         )
@@ -43,7 +43,7 @@ class hi_min_head_spouse_earned(Variable):
         head_or_spouse_income = head_or_spouse * income
         increased_income = max_(head_or_spouse_income, income_floor)
         uncapped_income = where(
-            eligible,
+            income_floor_eligible,
             increased_income,
             head_or_spouse_income,
         )
@@ -64,7 +64,7 @@ class hi_min_head_spouse_earned(Variable):
         # then the person with the lower earnings will be elevated to the floor
         reach_income_floor = head_or_spouse_income < uncapped_income
         head_spouse_income = where(
-            (sum(eligible) == 2) & (sum(reach_income_floor) == 2),
+            (sum(income_floor_eligible) == 2) & (sum(reach_income_floor) == 2),
             both_disabled_income,
             head_spouse_income,
         )
