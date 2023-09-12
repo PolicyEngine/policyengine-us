@@ -17,14 +17,14 @@ class PovertyTracker(Dataset):
     # Replace with a valid URL if running locally.
     POVERTY_TRACKER_URL = os.environ.get("POVERTYTRACKER_RAW_URL")
 
-    if not POVERTY_TRACKER_URL:
-        raise ValueError(
-            "The POVERTY_TRACKER_URL environment variable is not set!"
-        )
-
     def generate(self):
         household_df = self.load_pt_data()
         situations = household_df.apply(get_hh_situtation, axis=1)
+
+        if not self.POVERTY_TRACKER_URL:
+            raise ValueError(
+                "The POVERTY_TRACKER_URL environment variable is not set!"
+            )
 
         person_ids = []
         person_group_ids = []
