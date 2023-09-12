@@ -1,11 +1,12 @@
 description: Vermont counts these sources as subtractions.
 values:
   2021-01-01:
-    - us_govt_interest
+    # Comment out waiting for other pull requests
+    # - us_govt_interest
     - vt_medical_expense_deduction
-    - student_loan_interest
-    - vt_capital_gain_exclusion
-    - vt_retirement_income_exemption
+    # - student_loan_interest
+    # - vt_capital_gain_exclusion
+    # - vt_retirement_income_exemption
 
 metadata:
   unit: list
