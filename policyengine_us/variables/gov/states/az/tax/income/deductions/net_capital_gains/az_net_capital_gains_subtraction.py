@@ -19,6 +19,6 @@ class az_net_capital_gains_subtraction(Variable):
         net_cg_subtraction = tax_unit("net_capital_gain", period)
 
         long_term_capital_gains = person("long_term_capital_gains", period)
-        long_term_cg_subtraction = long_term_capital_gains * p.subtraction_rate
+        long_term_cg_subtraction = long_term_capital_gains * p.rate
 
         return net_cg_subtraction + long_term_cg_subtraction
