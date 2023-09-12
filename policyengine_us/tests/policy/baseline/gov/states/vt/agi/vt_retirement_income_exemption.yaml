@@ -46,8 +46,8 @@
     filing_status: JOINT
     adjusted_gross_income: 50_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay_exclusion: 300
-    vt_csrs_retirement_pay_exclusion: 400
+    vt_military_retirement_pay_exclusion: 0
+    vt_csrs_retirement_pay_exclusion: 0
     vt_other_retirement_pay_exclusion: 0
     vt_retirement_income_exemption_eligible: True
     state_code: VT
@@ -74,9 +74,9 @@
     filing_status: JOINT
     adjusted_gross_income: 65_000
     tax_unit_taxable_social_security: 1_000
-    vt_military_retirement_pay_exclusion: 200
+    vt_military_retirement_pay_exclusion: 0
     vt_csrs_retirement_pay_exclusion: 0
-    vt_other_retirement_pay_exclusion: 300
+    vt_other_retirement_pay_exclusion: 0
     vt_retirement_income_exemption_eligible: True
     state_code: VT
   output:
@@ -118,7 +118,7 @@
     vt_retirement_income_exemption_eligible: True
     tax_unit_taxable_social_security: 0
     vt_military_retirement_pay_exclusion: 0
-    vt_csrs_retirement_pay_exclusion: 1_000
+    vt_csrs_retirement_pay_exclusion: 0 # Can't use CSRS in 2021
     vt_other_retirement_pay_exclusion: 0
     state_code: VT
   output:
@@ -145,7 +145,7 @@
     adjusted_gross_income: 57_500
     tax_unit_taxable_social_security: 9_000
     vt_military_retirement_pay_exclusion: 9_000
-    vt_csrs_retirement_pay_exclusion: 11_000
+    vt_csrs_retirement_pay_exclusion: 10_000 # Can't above 10_000
     vt_other_retirement_pay_exclusion: 9_000
     vt_retirement_income_exemption_eligible: True
     state_code: VT
