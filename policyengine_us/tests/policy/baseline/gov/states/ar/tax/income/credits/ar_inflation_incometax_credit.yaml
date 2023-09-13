@@ -34,11 +34,11 @@
   output:
     ar_income_tax_credits: 280
 
-- name: Widow household with $90,200 agi
+- name: Widow household with $80,000 agi
   period: 2022
   input:
     state_code: AR
-    adjusted_gross_income: 90_200
+    adjusted_gross_income: 80_000
     filing_status: WIDOW
   output:
-    ar_income_tax_credits: 110
+    ar_income_tax_credits: 150

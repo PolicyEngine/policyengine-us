@@ -15,10 +15,12 @@ class ar_income_tax_credits(Variable):
             period
         ).gov.states.cr.tax.income.credits.inflationary_relief
         filing_status = tax_unit("filing_status", period)
-        reduction_start = p.start[filing_status]
-        increment = p.increment[filing_status]
-        reduction_per_increment = p.amount[filing_status]
-        excess = max_(reduction_start - agi, 0)
+        max_amount = p.max_amount[filing_status]
+        reduction_start = p.reduction.start[filing_status]
+        increment = p.reduction.increment[filing_status]
+        reduction_per_increment = p.reduction.amount[filing_status]
+        excess = max_(agi - reduction_start, 0)
         increments = np.ceil(excess / increment)
         total_reduction_amount = increments * reduction_per_increment
-        return max_(total_reduction_amount, 0)
+        return max_(max_amount - total_reduction_amount, 0)
+

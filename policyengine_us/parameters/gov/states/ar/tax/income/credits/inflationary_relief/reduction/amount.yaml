@@ -1,0 +1,24 @@
+description: Arkansas reduces the income-tax credit by this amount for each increment of adjusted gross income above the threshold, based on the filing status.
+metadata:
+  period: year
+  unit: currency-USD
+  label: Arkansas income-tax credit reduce amount
+  reference:
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions | page 26
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=26
+    - title: INFLATIONARY RELIEF INCOME-TAX CREDIT WORKSHEET
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_Final_InflationaryReliefIncomeTaxCredit_FI.pdf
+  
+  breakdown:
+    - filing_status
+JOINT:
+  2022-01-01: 20
+WIDOW:
+  2022-01-01: 10
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 10
+SINGLE:
+  2022-01-01: 10
+SEPARATE:
+  2022-01-01: 10
+
