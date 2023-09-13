@@ -15,5 +15,4 @@ class ri_taxable_retirement_income_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.ri.tax.income.adjusted_gross_income.subtractions.taxable_retirement_income
-        pension_limit = p.cap
-        return min_(taxable_pension, pension_limit)
+        return min_(taxable_pension, p.cap)

@@ -7,5 +7,6 @@ class ri_additions(Variable):
     label = "Rhode Island AGI Additions"
     unit = USD
     definition_period = YEAR
-    reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf"
+    reference = "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf#page=2"
     defined_for = StateCode.RI
+    adds = "gov.states.ri.tax.income.adjusted_gross_income.additions.additions"
