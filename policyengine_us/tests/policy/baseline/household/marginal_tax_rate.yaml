@@ -1,0 +1,33 @@
+- name: household_net_income test TX-netinc1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # Texas
+  output:
+    household_net_income: 151_539.00
+
+- name: household_net_income test TX-netinc2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 101_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # Texas
+  output:
+    household_net_income: 152_104.50
+
+- name: marginal_tax_rate test TX-mtr
+  absolute_error_margin: 0.0001
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # Texas
+  output:  # as expected from above two test results; also same as TAXSIM35
+    marginal_tax_rate: 0.4345  # that is, 43.45%
+    # using PEUS 0.465.1, marginal_tax_rate is 80.33411, which is ~8033%
