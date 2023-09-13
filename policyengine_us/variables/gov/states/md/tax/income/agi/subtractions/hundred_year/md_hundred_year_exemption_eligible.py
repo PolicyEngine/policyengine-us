@@ -11,5 +11,7 @@ class md_hundred_year_exemption_eligible(Variable):
 
     def formula(person, period, parameters):
         age = person("age", period)
-        p = parameters(period).gov.states.md.tax.income.agi.subtractions.hundred_year
+        p = parameters(
+            period
+        ).gov.states.md.tax.income.agi.subtractions.hundred_year
         return age >= p.age_threshold

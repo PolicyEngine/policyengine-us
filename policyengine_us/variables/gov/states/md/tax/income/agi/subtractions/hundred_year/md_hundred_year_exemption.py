@@ -11,4 +11,6 @@ class md_hundred_year_exemption(Variable):
     defined_for = "md_hundred_year_exemption_eligible"
 
     def formula(person, period, parameters):
-        return parameters(period).gov.states.md.tax.income.agi.subtractions.hundred_year.amount
+        return parameters(
+            period
+        ).gov.states.md.tax.income.agi.subtractions.hundred_year.amount
