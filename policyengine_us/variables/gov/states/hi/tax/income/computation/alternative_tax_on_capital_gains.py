@@ -20,7 +20,7 @@ class alternative_tax_on_capital_gains(Variable):
         ineligible_income = max_(
             taxable_income - min_(net_capital_gain, net_lt_capital_gain),
             claimed
-        )  #line_13 how to calculate the tax according to Tax Table or Tax Rate Schedules
+        )  #line_15 how to calculate the tax according to Tax Table or Tax Rate Schedules
         eligible_income = taxable_income - ineligible_income
 
         #ineligible_tax =  line 15 (tax for line 13)
