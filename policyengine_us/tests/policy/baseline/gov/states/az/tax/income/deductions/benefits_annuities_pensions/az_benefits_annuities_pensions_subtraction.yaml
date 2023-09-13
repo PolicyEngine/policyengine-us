@@ -1,0 +1,49 @@
+- name: joint filers with both spouses received benefits, annuities and pensions
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        military_retirement_pay: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        military_retirement_pay: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_benefits_annuities_pensions_subtraction: 3_500
+
+- name: separate filers with both spouses received benefits, annuities and pensions
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        military_retirement_pay: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        military_retirement_pay: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_benefits_annuities_pensions_subtraction: 2_000
+
+- name: filers without benefits, annuities and pensions
+  period: 2023
+  input:
+    state_code: AZ
+    military_retirement_pay: 0
+  output:
+    az_benefits_annuities_pensions_subtraction: 0
