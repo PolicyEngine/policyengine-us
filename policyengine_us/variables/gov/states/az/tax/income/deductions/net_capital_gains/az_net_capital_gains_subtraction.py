@@ -15,6 +15,8 @@ class az_net_capital_gains_subtraction(Variable):
             period
         ).gov.states.az.tax.income.deductions.net_capital_gains
 
-        long_term_capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
+        long_term_capital_gains = add(
+            tax_unit, period, ["long_term_capital_gains"]
+        )
 
         return long_term_capital_gains * p.rate
