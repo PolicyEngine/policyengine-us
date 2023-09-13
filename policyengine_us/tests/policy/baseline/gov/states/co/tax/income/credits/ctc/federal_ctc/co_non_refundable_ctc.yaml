@@ -1,0 +1,17 @@
+- name: Limiting smaller
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_ctc_maximum: 1_000
+    ctc_limiting_tax_liability: 999
+  output:
+    co_non_refundable_ctc: 999
+
+- name: Maximum smaller
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_ctc_maximum: 998
+    ctc_limiting_tax_liability: 1_000
+  output:
+    co_non_refundable_ctc: 998
