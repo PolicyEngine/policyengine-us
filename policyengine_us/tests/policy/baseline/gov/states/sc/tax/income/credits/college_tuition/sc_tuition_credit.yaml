@@ -40,3 +40,24 @@
     college_semesters_attended: 1
   output:
     sc_tuition_credit: 1_250
+
+- name: $0, 0 semester.
+  period: 2022
+  input:
+    state_code: SC
+    total_college_hours: 0
+    qualified_tuition_expenses: 0
+    college_semesters_attended: 0
+  output:
+    sc_tuition_credit: 0
+
+- name: $15k tuition, 29 semester hours
+  period: 2022
+  input:
+    state_code: SC
+    total_college_hours: 29
+    qualified_tuition_expenses: 15_000
+    college_semesters_attended: 2
+  output:
+    sc_tuition_credit: 0
+    # not eligible

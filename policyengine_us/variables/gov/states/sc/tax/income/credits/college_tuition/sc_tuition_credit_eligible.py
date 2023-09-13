@@ -16,7 +16,9 @@ class sc_tuition_credit_eligible(Variable):
         p = parameters(period).gov.states.sc.tax.income.credits.college_tuition
         total_college_hours = person("total_college_hours", period)
         num_of_semester_attended = person("college_semesters_attended", period)
-        return (
+        return where(
+            total_college_hours == 0,
+            0,
             total_college_hours
-            >= p.semester_hour_requirement * num_of_semester_attended
+            >= p.semester_hour_requirement * num_of_semester_attended,
         )
