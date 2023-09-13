@@ -3,12 +3,12 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
       person2:
-        id_retirement_benefits_eligible_person: false
+        id_retirement_benefits_deduction_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -25,7 +25,7 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: false
+        id_retirement_benefits_deduction_eligible_person: false
         social_security_retirement: 45_000
         taxable_pension_income: 38_700
         military_retirement_pay: 0
@@ -45,7 +45,7 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: false
+        id_retirement_benefits_deduction_eligible_person: false
         social_security_retirement: 45_000
         taxable_pension_income: 38_700
         military_retirement_pay: 0
@@ -65,7 +65,7 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: false
+        id_retirement_benefits_deduction_eligible_person: false
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
@@ -89,12 +89,12 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 0
       person2:
-        id_retirement_benefits_eligible_person: false
+        id_retirement_benefits_deduction_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -111,12 +111,12 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 10_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
       person2:
-        id_retirement_benefits_eligible_person: false
+        id_retirement_benefits_deduction_eligible_person: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -133,12 +133,12 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 5_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
       person2:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 5_000
         taxable_pension_income: 0
         military_retirement_pay: 0
@@ -158,12 +158,12 @@
   input:
     people:
       person1:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 5_000
         taxable_pension_income: 30_000
         military_retirement_pay: 15_000
       person2:
-        id_retirement_benefits_eligible_person: true
+        id_retirement_benefits_deduction_eligible_person: true
         social_security_retirement: 5_000
         taxable_pension_income: 10_000
         military_retirement_pay: 10_000

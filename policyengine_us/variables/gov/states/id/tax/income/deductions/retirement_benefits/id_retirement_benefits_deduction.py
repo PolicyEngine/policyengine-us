@@ -18,7 +18,7 @@ class id_retirement_benefits_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
 
         eligible_person = person(
-            "id_retirement_benefits_eligible_person", period
+            "id_retirement_benefits_deduction_eligible_person", period
         )
         # Base retirement benefits deduction amount
         base_amt = p.amount[filing_status]

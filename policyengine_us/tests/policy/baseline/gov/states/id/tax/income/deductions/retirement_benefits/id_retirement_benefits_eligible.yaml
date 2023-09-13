@@ -7,7 +7,7 @@
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
-    id_retirement_benefits_eligible_person: false
+    id_retirement_benefits_deduction_eligible_person: false
 
 - name: Idaho disabled head over eligible age
   period: 2022
@@ -18,7 +18,7 @@
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
-    id_retirement_benefits_eligible_person: true
+    id_retirement_benefits_deduction_eligible_person: true
 
 - name: Idaho disabled spouse under eligible age
   period: 2022
@@ -29,7 +29,7 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
-    id_retirement_benefits_eligible_person: false
+    id_retirement_benefits_deduction_eligible_person: false
 
 - name: Idaho disabled spouse over eligible age
   period: 2022
@@ -40,7 +40,7 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
-    id_retirement_benefits_eligible_person: true
+    id_retirement_benefits_deduction_eligible_person: true
 
 - name: Idaho head under eligible age
   period: 2022
@@ -51,7 +51,7 @@
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
-    id_retirement_benefits_eligible_person: false
+    id_retirement_benefits_deduction_eligible_person: false
 
 - name: Idaho head over eligible age
   period: 2022
@@ -62,7 +62,7 @@
     is_tax_unit_head: true
     is_tax_unit_spouse: false
   output:
-    id_retirement_benefits_eligible_person: true
+    id_retirement_benefits_deduction_eligible_person: true
 
 - name: Idaho spouse under eligible age
   period: 2022
@@ -73,7 +73,7 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
-    id_retirement_benefits_eligible_person: false
+    id_retirement_benefits_deduction_eligible_person: false
 
 - name: Idaho spouse over eligible age
   period: 2022
@@ -84,4 +84,4 @@
     is_tax_unit_head: false
     is_tax_unit_spouse: true
   output:
-    id_retirement_benefits_eligible_person: true
+    id_retirement_benefits_deduction_eligible_person: true
