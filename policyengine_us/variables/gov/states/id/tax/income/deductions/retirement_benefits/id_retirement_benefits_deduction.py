@@ -23,15 +23,14 @@ class id_retirement_benefits_deduction(Variable):
         # Base retirement benefits deduction amount
         base_amt = p.amount[filing_status]
         # Social Security benefits received amount
-        ss_amt = person("social_security_retirement", period) * eligible_person
-        total_ss_amt = tax_unit.sum(ss_amt)
+        ss_amt = person("social_security_retirement", period)
+        eligible_ss_amt = ss_amt * eligible_person
+        total_ss_amt = tax_unit.sum(eligible_ss_amt)
         # Base amount minus social Security benefits received amount
         ded_amt = max_(base_amt - total_ss_amt, 0)
         # Qualified retirement benefits included in federal income
-        relevant_income = (
-            person("taxable_pension_income", period)
-            + person("military_retirement_pay", period)
-        ) * eligible_person
-        total_relevant_income = tax_unit.sum(relevant_income)
+        relevant_income = add(person, period, p.income_sources)
+        eligible_relevant_income = relevant_income * eligible_person
+        total_relevant_income = tax_unit.sum(eligible_relevant_income)
         # The smaller one
         return min_(ded_amt, total_relevant_income)

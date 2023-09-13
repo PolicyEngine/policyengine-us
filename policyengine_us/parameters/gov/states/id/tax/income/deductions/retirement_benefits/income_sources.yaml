@@ -1,0 +1,15 @@
+description: Idaho provide retirement benefits deduction no more than this amount of qualified benefits included in federal income.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - military_retirement_pay
+metadata:
+  unit: variable
+  label: Idaho qualified benefits included in federal income
+  reference:
+    - title: Individual Income Tax General Information 2022
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-01-2023.pdf#page=32
+    - title: TITLE 63 REVENUE AND TAXATION CHAPTER 30 INCOME TAX 63-3022A (a)
+      href: https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022a/
+    - title: Individual Income Tax Forms and Instructions 2021
+      href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=33

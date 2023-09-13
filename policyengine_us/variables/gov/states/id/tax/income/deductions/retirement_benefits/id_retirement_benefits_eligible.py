@@ -14,17 +14,17 @@ class id_retirement_benefits_eligible_person(Variable):
             period
         ).gov.states.id.tax.income.deductions.retirement_benefits
 
-        age_threshold = p.age_eligibility.main
-        age_threshold_disabled = p.age_eligibility.disabled
+        age_threshold = where(
+            person("is_disabled", period),
+            p.age_eligibility.disabled,
+            p.age_eligibility.main
+        )
+        meets_age_requirement = person("age", period) >= age_threshold
 
-        disabled = person("is_disabled", period)
-        age = person("age", period)
+        #disabled = person("is_disabled", period)
+        #age = person("age", period)
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_or_spouse = head | spouse
 
-        return head_or_spouse * where(
-            disabled,
-            age >= age_threshold_disabled,
-            age >= age_threshold,
-        )
+        return head_or_spouse * meets_age_requirement
