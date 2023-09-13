@@ -1,0 +1,56 @@
+- name: 3 dependents, one smaller income
+  period: 2022
+  input:
+    people:
+      head:
+        earned_income: 100
+      spouse:
+        earned_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_eligible_income_floor: [4_800, 5_000]
+
+- name: 1 dependents, both smaller income
+  period: 2022
+  input:
+    people:
+      head:
+        earned_income: 100
+      spouse:
+        earned_income: 200
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_eligible_income_floor: [2_400, 2_400]
+
+- name: both larger income
+  period: 2022
+  input:
+    people:
+      head:
+        earned_income: 5_000
+      spouse:
+        earned_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 3
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_eligible_income_floor: [5_000, 6_000]
