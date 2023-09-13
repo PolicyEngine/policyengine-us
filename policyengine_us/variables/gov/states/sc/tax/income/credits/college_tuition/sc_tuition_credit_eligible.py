@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class sc_tuition_credit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = Person
     label = "Eligible for the South Carolina Tuition Credit"
     unit = USD
