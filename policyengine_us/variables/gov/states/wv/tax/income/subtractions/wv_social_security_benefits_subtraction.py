@@ -26,15 +26,11 @@ class wv_social_security_benefits_subtraction(Variable):
         person = tax_unit.members
 
         is_head = person("is_tax_unit_head", period)
-        social_security_head_only = tax_unit.sum(
-            person("social_security", period) * is_head
-        )
 
         is_spouse = person("is_tax_unit_spouse", period)
-        social_security_spouse_only = tax_unit.sum(
-            person("social_security", period) * is_spouse
+        head_or_spouse = is_head | is_spouse
+        social_security = tax_unit.sum(
+            person("social_security", period) * head_or_spouse
         )
 
-        return (
-            social_security_head_only + social_security_spouse_only
-        ) * p.rate
+        return social_security * p.rate
