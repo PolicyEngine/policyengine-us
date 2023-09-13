@@ -1,294 +1,292 @@
 - name: In 2020, single filers, agi > 50_000, ineligible
   period: 2020
   input:
-    state_code: WV
-    filing_status: SINGLE
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2021, single filers, agi > 50_000, ineligible
   period: 2021
   input:
-    state_code: WV
-    filing_status: SINGLE
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2022, single filers, agi > 50_000, ineligible
   period: 2022
   input:
-    state_code: WV
-    filing_status: SINGLE
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2020, separate filers, agi > 50_000, ineligible
   period: 2020
   input:
-    state_code: WV
-    filing_status: SEPARATE
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2021, separate filers, agi > 50_000, ineligible
   period: 2021
   input:
-    state_code: WV
-    filing_status: SEPARATE
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2022, separate filers, agi > 50_000, ineligible
   period: 2022
   input:
-    state_code: WV
-    filing_status: SEPARATE
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2020, widow(er) filers, agi > 50_000, ineligible
   period: 2020
   input:
-    state_code: WV
-    filing_status: WIDOW
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2021, widow(er) filers, agi > 50_000, ineligible
   period: 2021
   input:
-    state_code: WV
-    filing_status: WIDOW
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2022, widow(er) filers, agi > 50_000, ineligible
   period: 2022
   input:
-    state_code: WV
-    filing_status: WIDOW
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2020, head of household filers, agi > 50_000, ineligible
   period: 2020
   input:
-    state_code: WV
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2021, head of household filers, agi > 50_000, ineligible
   period: 2021
   input:
-    state_code: WV
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2022, head of household filers, agi > 50_000, ineligible
   period: 2022
   input:
-    state_code: WV
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 70_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 70_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2020, joint filers, agi > 100_000, ineligible
   period: 2020
   input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 110_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 500
+      person2: 
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        social_security: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 110_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2021, joint filers, agi > 100_000, ineligible
   period: 2021
   input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 110_000
-    social_security: 1_000
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 0
+      person2: 
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        social_security: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 110_000
   output:
     wv_social_security_benefits_subtraction: 0
 
 - name: In 2022, joint filers, agi > 100_000, ineligible
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 110_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 0
-
-- name: In 2020, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
-  period: 2020
-  input:
-    state_code: WV
-    filing_status: SINGLE
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 350
-
-- name: In 2021, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
-  period: 2021
-  input:
-    state_code: WV
-    filing_status: SINGLE
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 650
-
-- name: In 2022, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: SINGLE
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 1_000
-
-- name: In 2020, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
-  period: 2020
-  input:
-    state_code: WV
-    filing_status: SEPARATE
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 350
-
-- name: In 2021, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
-  period: 2021
-  input:
-    state_code: WV
-    filing_status: SEPARATE
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 650
-
-- name: In 2022, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: SEPARATE
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 1_000
-
-- name: In 2020, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
-  period: 2020
-  input:
-    state_code: WV
-    filing_status: WIDOW
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 350
-
-- name: In 2021, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
-  period: 2021
-  input:
-    state_code: WV
-    filing_status: WIDOW
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 650
-
-- name: In 2022, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: WIDOW
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 1_000
-
-- name: In 2020, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
-  period: 2020
-  input:
-    state_code: WV
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 350
-
-- name: In 2021, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
-  period: 2021
-  input:
-    state_code: WV
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 650
-
-- name: In 2022, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
-  period: 2022
-  input:
-    state_code: WV
-    filing_status: HEAD_OF_HOUSEHOLD
-    adjusted_gross_income: 50_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 1_000
-
-- name: In 2020, joint filers, agi <= 100_000, social security benefits = 1_000, subtraction amount = 350
-  period: 2020
-  input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 100_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 350
-
-- name: In 2021, joint filers, agi <= 100_000, social security benefits = 1_000, subtraction amount = 650
-  period: 2021
-  input:
-    state_code: WV
-    filing_status: JOINT
-    adjusted_gross_income: 100_000
-    social_security: 1_000
-  output:
-    wv_social_security_benefits_subtraction: 650
-
-- name: In 2022, joint filers, agi <= 100_000, social security benefits = 1_000, subtraction amount = 1_000
   period: 2022
   input:
     people:
@@ -299,6 +297,319 @@
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
+        social_security: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 110_000
+  output:
+    wv_social_security_benefits_subtraction: 0
+
+- name: In 2020, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: WIDOW
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, joint filers, agi <= 100_000, head social security benefits = 500, spouse social security benefits = 500, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 5_00
+      person2: 
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        social_security: 5_00
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, joint filers, agi <= 100_000, head social security benefits = 0, spouse social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 0
+      person2: 
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        social_security: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, joint filers, agi <= 100_000, head social security benefits = 1_000, spouse social security benefits = 0, subtraction amount = 1_000
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+      person2: 
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        social_security: 0
     households:
       household:
         members: [person1, person2]
@@ -310,3 +621,127 @@
         adjusted_gross_income: 100_000
   output:
     wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, single filers, agi <= 50_000, head social security benefits = 1_000, child social security = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+      child:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+      child:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: SEPARATE
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 650
+
+- name: In 2022, widow(er) filers, agi <= 50_000, head social security benefits = 1_000, child social security = 1_000, subtraction amount = 1_000
+  period: 2022
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+      child:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: WIDOW
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 1_000
+
+- name: In 2020, head of household filers, agi <= 50_000, head social security benefits = 1_000, child social security = 1_000, subtraction amount = 350
+  period: 2020
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 1_000
+      child:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [parent, child]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        adjusted_gross_income: 50_000
+  output:
+    wv_social_security_benefits_subtraction: 350
+
+- name: In 2021, joint filers, agi <= 100_000, head social security benefits = 0, spouse social security benefits = 1_000, child social security = 1_000, subtraction amount = 650
+  period: 2021
+  input:
+    people:
+      parent1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        social_security: 0
+      parent2: 
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        social_security: 1_000
+      child:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        social_security: 1_000
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WV
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+  output:
+    wv_social_security_benefits_subtraction: 650
