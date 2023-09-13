@@ -9,7 +9,7 @@ class ga_agi_subtractions(Variable):
     definition_period = YEAR
     reference = (
         "https://houpl.org/wp-content/uploads/2023/01/2022-IT-511_Individual_Income_Tax_-Booklet-compressed.pdf#page=14"
-        "https://houpl.org/wp-content/uploads/2022/01/2021_IT-511_Individual_Income_Tax_Booklet-12.29.21-Web-Version.pdf#page=14"
+        "https://www.zillionforms.com/2021/I2122607361.PDF"
     )
     defined_for = StateCode.GA
     adds = "gov.states.ga.tax.income.agi.subtractions"
