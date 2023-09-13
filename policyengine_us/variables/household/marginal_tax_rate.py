@@ -22,9 +22,10 @@ class marginal_tax_rate(Variable):
                 f"adult_{adult_index}_pay_rise"
             )
             mask = adult_index_values == adult_index
-            for variable in simulation.tax_benefit_system.variables:
-                if variable not in simulation.input_variables:
-                    alt_simulation.delete_arrays(variable)
+            # for variable_name, variable in self.variables.items()
+            for vname, var in simulation.tax_benefit_system.variables.items():
+                if not var.is_input_variable():
+                    alt_simulation.delete_arrays(vname)
             alt_simulation.set_input(
                 "employment_income",
                 period,
