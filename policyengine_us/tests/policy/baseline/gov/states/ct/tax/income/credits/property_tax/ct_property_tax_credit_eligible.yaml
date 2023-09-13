@@ -2,7 +2,6 @@
   period: 2017
   input:
     state_code: CT
-    filing_status: JOINT
     tax_unit_dependents: 0
     age_head: 65
     age_spouse: 70
@@ -13,19 +12,18 @@
   period: 2023
   input:
     state_code: CT
-    filing_status: SINGLE
     tax_unit_dependents: 0
     age_head: 60
     age_spouse: 0
   output:
     ct_property_tax_credit_eligible: true
+
 - name: Eligibility for CT property tax credit of head of household  filer age 75 and spouse age 60 and 3 dependants
   period: 2018
   input:
     state_code: CT
-    filing_status: HEAD_OF_HOUSEHOLD
     tax_unit_dependents: 3
-    age_head: 75
+    age_head: 65
     age_spouse: 60
   output:
     ct_property_tax_credit_eligible: true
@@ -34,9 +32,28 @@
   period: 2017
   input:
     state_code: CT
-    filing_status: SINGLE
     tax_unit_dependents: 3
     age_head: 60
     age_spouse: 50
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: Ineligible in 2021
+  period: 2021
+  input:
+    state_code: CT
+    tax_unit_dependents: 0
+    age_head: 64
+    age_spouse: 64
+  output:
+    ct_property_tax_credit_eligible: false
+
+- name: All eligible in 2022
+  period: 2022
+  input:
+    state_code: CT
+    tax_unit_dependents: 0
+    age_head: 64
+    age_spouse: 64
   output:
     ct_property_tax_credit_eligible: true
