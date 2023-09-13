@@ -5,7 +5,7 @@
     adjusted_gross_income: 101_002
     filing_status: SINGLE
   output:
-    ar_income_tax_credits: 0
+    ar_inflation_relief_credit: 0
 
 - name: Separate household with $100,000 agi
   period: 2022
@@ -14,7 +14,7 @@
     adjusted_gross_income: 100_000
     filing_status: SEPARATE
   output:
-    ar_income_tax_credits: 20
+    ar_inflation_relief_credit: 20
 
 - name: Head of household with $98,200 agi
   period: 2022
@@ -23,7 +23,7 @@
     adjusted_gross_income: 98_200
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ar_income_tax_credits: 30
+    ar_inflation_relief_credit: 30
 
 - name: Joint household with $175,000 agi
   period: 2022
@@ -32,7 +32,7 @@
     adjusted_gross_income: 175_000
     filing_status: JOINT
   output:
-    ar_income_tax_credits: 280
+    ar_inflation_relief_credit: 280
 
 - name: Widow household with $80,000 agi
   period: 2022
@@ -41,4 +41,4 @@
     adjusted_gross_income: 80_000
     filing_status: WIDOW
   output:
-    ar_income_tax_credits: 150
+    ar_inflation_relief_credit: 150

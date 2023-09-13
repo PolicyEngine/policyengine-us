@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_income_tax_credits(Variable):
+class ar_inflation_relief_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arkansas inflation relief income-tax credit"
@@ -13,7 +13,7 @@ class ar_income_tax_credits(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(
             period
-        ).gov.states.cr.tax.income.credits.inflationary_relief
+        ).gov.states.ar.tax.income.credits.inflationary_relief
         filing_status = tax_unit("filing_status", period)
         max_amount = p.max_amount[filing_status]
         reduction_start = p.reduction.start[filing_status]
@@ -23,4 +23,3 @@ class ar_income_tax_credits(Variable):
         increments = np.ceil(excess / increment)
         total_reduction_amount = increments * reduction_per_increment
         return max_(max_amount - total_reduction_amount, 0)
-
