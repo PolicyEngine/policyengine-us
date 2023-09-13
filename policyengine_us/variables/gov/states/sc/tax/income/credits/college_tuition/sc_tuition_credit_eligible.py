@@ -5,7 +5,6 @@ class sc_tuition_credit_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Eligible for the South Carolina Tuition Credit"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://dor.sc.gov/forms-site/Forms/I319_2021.pdf#page=2",
