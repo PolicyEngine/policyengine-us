@@ -28,5 +28,5 @@ class ga_military_retirement_exclusion(Variable):
         additional = where(
             age_eligible & earned_income_eligible, p.additional.amount, 0
         )
-        total = min_((base + additional), military_income)
+        total = min_(base + additional, military_income)
         return tax_unit.sum(total)

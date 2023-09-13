@@ -6,20 +6,20 @@
     dividend_income: 100
     rental_income: 100
     capital_gains: 100
-    ga_exclusion_countable_earned_income: 4000
+    ga_exclusion_countable_earned_income: 4_000
     state_code: GA
   output:
-    ga_retirement_income: 4500
+    ga_retirement_income: 4_500
 
 - name: test2
   period: 2023
   input:
-    pension_income: 1000
-    interest_income: 1000
-    dividend_income: 1000
-    rental_income: 1000
-    capital_gains: 1000
-    ga_exclusion_countable_earned_income: 4000
+    pension_income: 1_000
+    interest_income: 1_000
+    dividend_income: 1_000
+    rental_income: 1_000
+    capital_gains: 1_000
+    ga_exclusion_countable_earned_income: 4_000
     state_code: GA
   output:
-    ga_retirement_income: 9000
+    ga_retirement_income: 9_000
