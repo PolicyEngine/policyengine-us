@@ -1,0 +1,17 @@
+- name: Case 1, has two deceased spouse
+  period: 2022
+  input:
+    people:
+      person1:
+        military_retirement_pay_survivors: 11_000
+      person2:
+        military_retirement_pay_survivors: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_military_deduction_survivors: 15_000

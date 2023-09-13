@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class sc_military_deduction_survivors(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "South Carolina military retirement deduction for survivors"
     defined_for = StateCode.SC
     unit = USD
@@ -13,4 +13,9 @@ class sc_military_deduction_survivors(Variable):
     )
     definition_period = YEAR
 
-    adds = ["military_retirement_pay_survivors"]
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        military_retirement_pay_survivors = person(
+            "military_retirement_pay_survivors", period
+        )
+        return tax_unit.sum(military_retirement_pay_survivors)

@@ -1,39 +1,162 @@
-- name: Case 1, year 2021, age above 65
-  period: 2021
+- name: Case 1, has two deceased spouse, both age higher than 65.
+  period: 2022
   input:
-    age: 66
-    pension_survivors: 5_000
-    military_retirement_pay_survivors: 8_000
-    state_code: SC
-  output: 
-    sc_retirement_deduction_survivors: 2_000
+    people:
+      person1:
+        pension_survivors: 2_000
+        military_retirement_pay_survivors: 0
+        age: 70
+      person2:
+        pension_survivors: 1_000
+        military_retirement_pay_survivors: 0
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 3_000
 
-- name: Case 2, year 2021, age under 65
+- name: Case 2, has two deceased spouse, both age higher than 65.
   period: 2021
   input:
-    age: 56
-    pension_survivors: 2_000
-    military_retirement_pay_survivors: 3_500
-    state_code: SC
-  output: 
+    people:
+      person1:
+        pension_survivors: 2_000
+        military_retirement_pay_survivors: 11_000
+        age: 70
+      person2:
+        pension_survivors: 1_000
+        military_retirement_pay_survivors: 4_000
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 1_000
+
+- name: Case 3, has two deceased spouse, one age older than 65, the other younger than 65
+  period: 2021
+  input:
+    people:
+      person1:
+        pension_survivors: 5_000
+        military_retirement_pay_survivors: 6_000
+        age: 70
+      person2:
+        pension_survivors: 1_000
+        military_retirement_pay_survivors: 4_000
+        age: 55
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 4_000
+
+- name: Case 4, has two deceased spouse, one age older than 65, the other younger than 65
+  period: 2022
+  input:
+    people:
+      person1:
+        pension_survivors: 5_000
+        military_retirement_pay_survivors: 6_000
+        age: 70
+      person2:
+        pension_survivors: 1_000
+        military_retirement_pay_survivors: 4_000
+        age: 55
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 6_000
+
+- name: Case 5, has one deceased spouse, age older than 65
+  period: 2021
+  input:
+    people:
+      person:
+        pension_survivors: 5_000
+        military_retirement_pay_survivors: 6_000
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
+    sc_retirement_deduction_survivors: 4_000
+
+
+- name: Case 6, has one deceased spouse, age younger than 65
+  period: 2021
+  input:
+    people:
+      person:
+        pension_survivors: 5_000
+        military_retirement_pay_survivors: 6_000
+        age: 55
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
     sc_retirement_deduction_survivors: 0
 
-- name: Case 3, year 2022, age above 65
+- name: Case 7, has one deceased spouse, age older than 65
   period: 2022
   input:
-    age: 66
-    pension_survivors: 5_000
-    military_retirement_pay_survivors: 8_000
-    state_code: SC
-  output: 
+    people:
+      person:
+        pension_survivors: 5_000
+        military_retirement_pay_survivors: 6_000
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
     sc_retirement_deduction_survivors: 5_000
 
-- name: Case 4, year 2022, age under 65
+- name: Case 7, has one deceased spouse, age younger than 65
   period: 2022
   input:
-    age: 56
-    pension_survivors: 5_000
-    military_retirement_pay_survivors: 8_000
-    state_code: SC
-  output: 
+    people:
+      person:
+        pension_survivors: 5_000
+        military_retirement_pay_survivors: 6_000
+        age: 55
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: SC
+  output:
     sc_retirement_deduction_survivors: 3_000
+
+

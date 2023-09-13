@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class sc_retirement_deduction_survivors(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "South Carolina retirement deduction for survivors"
     defined_for = StateCode.SC
     unit = USD
@@ -13,11 +13,12 @@ class sc_retirement_deduction_survivors(Variable):
     )
     definition_period = YEAR
 
-    def formula(person, period, parameters):
+    def formula(tax_unit, period, parameters):
         p = parameters(
             period
         ).gov.states.sc.tax.income.subtractions.retirement_deduction
         p_cap = p.max_amount
+        person = tax_unit.members
         age = person("age", period)
         # line 1
         max_deduction_allowed = where(
@@ -27,7 +28,7 @@ class sc_retirement_deduction_survivors(Variable):
         )
         # line 2
         military_retirement_pay_survivors = person(
-            "sc_military_deduction_survivors", period
+            "military_retirement_pay_survivors", period
         )
         # line 3
         retirement_deduction_available = max_(
@@ -35,9 +36,12 @@ class sc_retirement_deduction_survivors(Variable):
         )
         # line 4
         retirement_income_survivors = person("pension_survivors", period)
-
         if p.subtract_military:
-            return min_(
-                retirement_deduction_available, retirement_income_survivors
+            return tax_unit.sum(
+                min_(
+                    retirement_deduction_available, retirement_income_survivors
+                )
             )
-        return min_(max_deduction_allowed, retirement_income_survivors)
+        return tax_unit.sum(
+            min_(max_deduction_allowed, retirement_income_survivors)
+        )

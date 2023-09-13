@@ -1,0 +1,94 @@
+- name: Case 1, both head and spouse age higher than 65.
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 2_000
+        military_retirement_pay: 11_000
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        taxable_pension_income: 1_000
+        military_retirement_pay: 4_000
+        age: 66
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_indv: 1_000
+    #1,000 + 0 = 1000
+- name: Case 2, both head and spouse age less than 65.
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 2_000
+        military_retirement_pay: 11_000
+        age: 54
+        is_tax_unit_head: true
+      person2:
+        taxable_pension_income: 1_000
+        military_retirement_pay: 4_000
+        age: 50
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_indv: 0
+- name: Case 3, head age higher than 65, spouse age less than 65.
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 5_000
+        military_retirement_pay: 6_000
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        taxable_pension_income: 1_000
+        military_retirement_pay: 4_000
+        age: 50
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_indv: 4_000
+- name: Case 4, head age higher than 65, spouse age less than 65.
+  period: 2022
+  input:
+    people:
+      person1:
+        taxable_pension_income: 5_000
+        military_retirement_pay: 6_000
+        age: 70
+        is_tax_unit_head: true
+      person2:
+        taxable_pension_income: 1_000
+        military_retirement_pay: 2_000
+        age: 50
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_retirement_deduction_indv: 5_000
+  

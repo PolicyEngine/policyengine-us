@@ -3,9 +3,8 @@ from policyengine_us.model_api import *
 
 class sc_military_deduction_indv(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "South Carolina military deduction for eligible individuals"
-    defined_for = "sc_military_deduction_indv_eligible"
     unit = USD
     reference = (
         "https://www.scstatehouse.gov/code/t12c006.php",  # SECTION 12-6-1171(A)
@@ -13,4 +12,12 @@ class sc_military_deduction_indv(Variable):
     )
     definition_period = YEAR
 
-    adds = ["military_retirement_pay"]
+    def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = head | spouse
+        military_retirement_pay = (
+            person("military_retirement_pay", period) * head_or_spouse
+        )
+        return tax_unit.sum(military_retirement_pay)
