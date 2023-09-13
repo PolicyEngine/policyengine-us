@@ -6,7 +6,7 @@ class az_net_capital_gains_subtraction(Variable):
     entity = TaxUnit
     label = "Arizona net capital gains subtraction"
     unit = USD
-    documentation = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01022.htm"
+    documentation = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i.pdf#page=31"
     definition_period = YEAR
     defined_for = StateCode.AZ
 
@@ -14,11 +14,7 @@ class az_net_capital_gains_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.deductions.net_capital_gains
-        person = tax_unit.members
 
-        net_cg_subtraction = tax_unit("net_capital_gain", period)
+        long_term_capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
 
-        long_term_capital_gains = person("long_term_capital_gains", period)
-        long_term_cg_subtraction = long_term_capital_gains * p.rate
-
-        return net_cg_subtraction + long_term_cg_subtraction
+        return long_term_capital_gains * p.rate
