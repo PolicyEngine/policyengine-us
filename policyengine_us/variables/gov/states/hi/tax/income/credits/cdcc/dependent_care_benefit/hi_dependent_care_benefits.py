@@ -28,15 +28,6 @@ class hi_dependent_care_benefits(Variable):
         deductible_benefit = min_(earned_income_cap, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
         qualified_num = tax_unit("count_cdcc_eligible", period)
-        expenses_amount = select(
-            [
-                qualified_num <= 1,
-                qualified_num > 1,
-            ],
-            [
-                p.expense_floor.one_child,
-                p.expense_floor.two_or_more_child,
-            ],
-        )
+        expenses_amount = p.expense_floor.calc(qualified_num)
         net_expenses = max_(0, expenses_amount - deductible_benefit)
         return min_(net_expenses, qualified_expense_amount)

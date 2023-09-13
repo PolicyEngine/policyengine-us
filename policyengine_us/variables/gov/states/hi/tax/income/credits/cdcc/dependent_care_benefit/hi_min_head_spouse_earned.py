@@ -29,16 +29,7 @@ class hi_min_head_spouse_earned(Variable):
         qualified_children = tax_unit("count_cdcc_eligible", period)
 
         # Floor depends on number of eligible dependents
-        income_floor = select(
-            [
-                qualified_children <= 1,
-                qualified_children > 1,
-            ],
-            [
-                p.dependent_care_benefits.expense_floor.one_child,
-                p.dependent_care_benefits.expense_floor.two_or_more_child,
-            ],
-        )
+        income_floor = p.disabled_student_income_floor.calc(qualified_children)
         income = person("earned_income", period)
         head_or_spouse_income = head_or_spouse * income
         increased_income = max_(head_or_spouse_income, income_floor)
