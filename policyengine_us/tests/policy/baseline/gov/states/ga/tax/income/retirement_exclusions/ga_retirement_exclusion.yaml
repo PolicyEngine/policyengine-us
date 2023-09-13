@@ -11,7 +11,6 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        ga_military_retirement_exclusion: 0
     households:
       household:
         state_code: GA
@@ -31,7 +30,6 @@
       tax_unit:
         members: [person1]
         filing_status: SINGLE
-        ga_military_retirement_exclusion: 0
     households:
       household:
         state_code: GA
@@ -56,9 +54,8 @@
       tax_unit:
         members: [person1,person2]
         filing_status: JOINT
-        ga_military_retirement_exclusion: 3000
     households:
       household:
         state_code: GA
   output:
-    ga_retirement_exclusion: 100_000 + 3_000
+    ga_retirement_exclusion: 100_000
