@@ -4,7 +4,7 @@
     net_capital_gain: 2_000
     state_code: MT
   output:
-    mt_capital_gains_credit: 40
+    mt_capital_gain_credit: 40
 
 - name: filer has 3,000 net capital gain
   period: 2021 
@@ -12,4 +12,4 @@
     net_capital_gain: 3_000
     state_code: MT
   output:
-    mt_capital_gains_credit: 60
+    mt_capital_gain_credit: 60
