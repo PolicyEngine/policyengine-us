@@ -8,4 +8,4 @@ class mt_disqualified_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.MT
-    adds = gov.states.mt.tax.income.credits.ctc.income.disqualified_income
+    adds = "gov.states.mt.tax.income.credits.ctc.income.disqualified_income"
