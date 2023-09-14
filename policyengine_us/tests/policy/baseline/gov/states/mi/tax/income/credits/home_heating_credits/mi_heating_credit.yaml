@@ -9,7 +9,7 @@
   output:
     mi_heating_credit: 0
 
-- name: heating cost included in rent
+- name: heating credit, heating cost included in rent
   period: 2022
   input:
     heating_costs_included_in_rent: true
@@ -20,7 +20,7 @@
   output:
     mi_heating_credit: 90
 
-- name: heating cost not included in rent, reduced standard allowance higher than alternate heating credit
+- name: heating credit, heating cost not included in rent, reduced standard allowance higher than alternate heating credit
   period: 2022
   input:
     heating_costs_included_in_rent: false
@@ -31,7 +31,7 @@
   output:
     mi_heating_credit: 180
 
-- name: heating cost not included in rent, reduced standard allowance lower than alternate heating credit
+- name: heating credit, heating cost not included in rent, reduced standard allowance lower than alternate heating credit
   period: 2022
   input:
     heating_costs_included_in_rent: false

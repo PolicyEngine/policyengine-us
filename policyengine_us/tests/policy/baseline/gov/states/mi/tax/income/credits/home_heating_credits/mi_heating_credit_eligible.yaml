@@ -1,0 +1,35 @@
+- name: heating credit eligibility, is not dsi, is not full time student
+  period: 2022
+  input:
+    dsi: false
+    is_full_time_student: false
+    state_code: MI
+  output:
+    mi_heating_credit_eligible: true
+
+- name: heating credit eligibility, is dsi, is full time student
+  period: 2022
+  input:
+    dsi: true
+    is_full_time_student: true 
+    state_code: MI
+  output:
+    mi_heating_credit_eligible: false
+
+- name: heating credit eligibility, is not dsi, is full time student
+  period: 2022
+  input:
+    dsi: false
+    is_full_time_student: true
+    state_code: MI
+  output:
+    mi_heating_credit_eligible: false
+
+- name: heating credit eligibility, is dsi, is not full time student
+  period: 2022
+  input:
+    dsi: true
+    is_full_time_student: false
+    state_code: MI
+  output:
+    mi_heating_credit_eligible: false

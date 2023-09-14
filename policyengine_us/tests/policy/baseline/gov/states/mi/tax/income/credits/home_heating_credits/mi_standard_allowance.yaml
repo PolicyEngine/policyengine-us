@@ -1,4 +1,4 @@
-- name: exemption of 3 at 25_000 household income
+- name: standard allowance, exemption of 3 at 25_000 household income
   period: 2022
   input:
     exemptions: 3
@@ -7,7 +7,7 @@
   output:
     mi_standard_allowance: 888
 
-- name: exemption of 4 at 35_000 household income
+- name: standard allowance, exemption of 4 at 35_000 household income
   period: 2022
   input:
     exemptions: 4
@@ -16,7 +16,7 @@
   output:
     mi_standard_allowance: 0
 
-- name: exemption of 7 at 35_000 household income
+- name: standard allowance, exemption of 7 at 35_000 household income
   period: 2022
   input:
     exemptions: 7
@@ -26,7 +26,7 @@
     # 1433 + (7-6) * 182 = 1_615
     mi_standard_allowance: 1_615
 
-- name: exemption of 7 at 50_000 household income
+- name: standard allowance, exemption of 7 at 50_000 household income
   period: 2022
   input:
     exemptions: 7
