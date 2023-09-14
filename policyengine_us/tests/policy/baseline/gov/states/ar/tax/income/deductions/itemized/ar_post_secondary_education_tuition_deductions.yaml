@@ -1,99 +1,111 @@
-- name: Post-secondary education tuition deduction for two-year college institutes (above 2022 wat)
+- name: Post-secondary education tuition deduction for two-year college institutes (2022)
   period: 2022
   input:
-    qualified_tuition_expenses: 4_800 # above 50% of weighted average tuition 2_272
-    is_full_time_college_student: true
-    four_year_college_institution: false
-    state_code: AR
+    people:
+      person1:
+        qualified_tuition_expenses: 4_800 # 4800*0.5=2400>2272
+        is_full_time_college_student: true
+        four_year_college_institution: false
+      person2:
+        qualified_tuition_expenses: 4_200 # 4750*0.5=2100<2272
+        is_full_time_college_student: true
+        four_year_college_institution: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
   output:
-    ar_post_secondary_education_tuition_deductions: 2_272
+    ar_post_secondary_education_tuition_deductions: 4_372
 
-- name: Post-secondary education tuition deduction for two-year college institutes (below 2022 wat)
+- name: Post-secondary education tuition deduction for four-year college institutes (2022)
   period: 2022
   input:
-    qualified_tuition_expenses: 4_200 # below 50% of weighted average tuition 2_272
-    is_full_time_college_student: true
-    four_year_college_institution: false
-    state_code: AR
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000 # 10000*0.5=5000>4712
+        is_full_time_college_student: true
+        four_year_college_institution: true
+      person2:
+        qualified_tuition_expenses: 8_000 # 8000*0.5<4712
+        is_full_time_college_student: true
+        four_year_college_institution: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
   output:
-    ar_post_secondary_education_tuition_deductions: 2_100
+    ar_post_secondary_education_tuition_deductions: 8_712
 
-- name: Post-secondary education tuition deduction for four-year college institutes (above 2022 wat)
-  period: 2022
-  input:
-    qualified_tuition_expenses: 10_000 # above 50% of weighted average tuition 4_712
-    is_full_time_college_student: true
-    four_year_college_institution: true
-    state_code: AR
-  output:
-    ar_post_secondary_education_tuition_deductions: 4_712
 
-- name: Post-secondary education tuition deduction for four-year college institutes (below 2022 wat)
-  period: 2022
-  input:
-    qualified_tuition_expenses: 8_000 # below 50% of weighted average tuition 4_712
-    is_full_time_college_student: true
-    four_year_college_institution: true
-    state_code: AR
-  output:
-    ar_post_secondary_education_tuition_deductions: 4_000
-
-- name: Post-secondary education tuition deduction for technical institutes (above 2021 wat)
+- name: Post-secondary education tuition deduction for technical institutes (2022 & 2021)
   period: 2021
   input:
-    qualified_tuition_expenses: 2_000 # above 50% of weighted average tuition 780
-    is_full_time_college_student: false
-    four_year_college_institution: false
-    state_code: AR
+    people:
+      person1:
+        qualified_tuition_expenses: 2_000 # 2000*0.5=1000>780
+        is_full_time_college_student: false
+        four_year_college_institution: false
+      person2:
+        qualified_tuition_expenses: 1_400 #1400*0.5<780 
+        is_full_time_college_student: false
+        four_year_college_institution: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
   output:
-    ar_post_secondary_education_tuition_deductions: 780
+    ar_post_secondary_education_tuition_deductions: 1_480
 
-- name: Post-secondary education tuition deduction for technical institutes (below 2021 wat)
+- name: Post-secondary education tuition deduction for two-year college institutes (2021)
   period: 2021
   input:
-    qualified_tuition_expenses: 1_500 # below 50% of weighted average tuition 780
-    is_full_time_college_student: false
-    four_year_college_institution: false
-    state_code: AR
+    people:
+      person1:
+        qualified_tuition_expenses: 4_800 # 4800*0.5=2400>2141
+        is_full_time_college_student: true
+        four_year_college_institution: false
+      person2:
+        qualified_tuition_expenses: 4_000 # 4000*0.5<2141
+        is_full_time_college_student: true
+        four_year_college_institution: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
   output:
-    ar_post_secondary_education_tuition_deductions: 750
+    ar_post_secondary_education_tuition_deductions: 4_141
 
-- name: Post-secondary education tuition deduction for two-year college institutes (above 2021 wat)
+- name: Post-secondary education tuition deduction for four-year college institutes (2021)
   period: 2021
   input:
-    qualified_tuition_expenses: 4_800 # above 50% of weighted average tuition 2_141
-    is_full_time_college_student: true
-    four_year_college_institution: false
-    state_code: AR
+    people:
+      person1:
+        qualified_tuition_expenses: 10_000 # 10000*0.5=5000>4602
+        is_full_time_college_student: true
+        four_year_college_institution: true
+      person2:
+        qualified_tuition_expenses: 7_500 # 7500*0.5=3750<4712
+        is_full_time_college_student: true
+        four_year_college_institution: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR 
   output:
-    ar_post_secondary_education_tuition_deductions: 2_141
+    ar_post_secondary_education_tuition_deductions: 8_352
 
-- name: Post-secondary education tuition deduction for two-year college institutes (below 2021 wat)
-  period: 2021
-  input:
-    qualified_tuition_expenses: 4_200 # below 50% of weighted average tuition 2_141
-    is_full_time_college_student: true
-    four_year_college_institution: false
-    state_code: AR
-  output:
-    ar_post_secondary_education_tuition_deductions: 2_100
-
-- name: Post-secondary education tuition deduction for four-year college institutes (above 2021 wat)
-  period: 2021
-  input:
-    qualified_tuition_expenses: 10_000 # above 50% of weighted average tuition 4_602
-    is_full_time_college_student: true
-    four_year_college_institution: true
-    state_code: AR
-  output:
-    ar_post_secondary_education_tuition_deductions: 4_602
-
-- name: Post-secondary education tuition deduction for four-year college institutes (below 2021 wat)
-  period: 2021
-  input:
-    qualified_tuition_expenses: 8_000 # below 50% of weighted average tuition 4_602
-    is_full_time_college_student: true
-    four_year_college_institution: true
-    state_code: AR
-  output:
-    ar_post_secondary_education_tuition_deductions: 4_000

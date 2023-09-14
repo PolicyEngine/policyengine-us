@@ -16,7 +16,9 @@ class ar_itemized_deductions(Variable):
         p_ded = parameters(period).gov.irs.deductions
 
         agi = tax_unit("adjusted_gross_income", period)
+        head = person("is_tax_unit_head", period)
         person_agi = person("adjusted_gross_income_person", period)
+        total_person_agi = tax_unit.sum(person_agi * head)
 
         # Less salt deduction
         deductions = [
@@ -66,7 +68,7 @@ class ar_itemized_deductions(Variable):
         separate = filing_status == filing_status.possible_values.SEPARATE
         prorate = np.zeros_like(agi)
         mask = agi > 0
-        prorate[mask] = person_agi[mask] / agi[mask]
+        prorate[mask] = total_person_agi[mask] / agi[mask]
         separated_itemized_deduction = total_itemized_deduction * prorate
 
         return where(

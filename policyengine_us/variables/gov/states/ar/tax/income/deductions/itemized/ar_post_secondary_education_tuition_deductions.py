@@ -14,30 +14,29 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         person = tax_unit.members
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         tuition_expense = person("qualified_tuition_expenses", period)
-        total_tuition_expense = tax_unit.sum(tuition_expense)
-
         full_time_college = person("is_full_time_college_student", period)
         four_year_college = person("four_year_college_institution", period)
 
-        four_year_college_deduction = min_(
-            p.expense_rate.tuition * total_tuition_expense,
+        four_year_deduction = min_(
+            p.expense_rate.tuition * tuition_expense,
             p.amount.four_year_college,
         )
-        two_year_college_deduction = min_(
-            p.expense_rate.tuition * total_tuition_expense,
-            p.amount.two_year_college,
+        two_year_deduction = min_(
+            p.expense_rate.tuition * tuition_expense, p.amount.two_year_college
         )
         technical_institute_deduction = min_(
-            p.expense_rate.tuition * total_tuition_expense,
+            p.expense_rate.tuition * tuition_expense,
             p.amount.technical_institutes,
         )
 
-        return where(
-            full_time_college,  # whether it's a full-time college student
-            where(
-                four_year_college,  # whether it's a four-year college
-                four_year_college_deduction,
-                two_year_college_deduction,
-            ),
+        person_college_deduction = where(
+            four_year_college, four_year_deduction, two_year_deduction
+        )
+
+        person_tuition_deduction = where(
+            full_time_college,
+            person_college_deduction,
             technical_institute_deduction,
         )
+
+        return tax_unit.sum(person_tuition_deduction)
