@@ -5,11 +5,11 @@
       person1:
         qualified_tuition_expenses: 4_800 # 4800*0.5=2400>2272
         is_full_time_college_student: true
-        four_year_college_institution: false
+        four_year_college_student: false
       person2:
         qualified_tuition_expenses: 4_200 # 4750*0.5=2100<2272
         is_full_time_college_student: true
-        four_year_college_institution: false
+        four_year_college_student: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -27,11 +27,11 @@
       person1:
         qualified_tuition_expenses: 10_000 # 10000*0.5=5000>4712
         is_full_time_college_student: true
-        four_year_college_institution: true
+        four_year_college_student: true
       person2:
         qualified_tuition_expenses: 8_000 # 8000*0.5<4712
         is_full_time_college_student: true
-        four_year_college_institution: true
+        four_year_college_student: true
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -50,11 +50,11 @@
       person1:
         qualified_tuition_expenses: 2_000 # 2000*0.5=1000>780
         is_full_time_college_student: false
-        four_year_college_institution: false
+        four_year_college_student: false
       person2:
         qualified_tuition_expenses: 1_400 #1400*0.5<780 
         is_full_time_college_student: false
-        four_year_college_institution: false
+        four_year_college_student: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -72,11 +72,11 @@
       person1:
         qualified_tuition_expenses: 4_800 # 4800*0.5=2400>2141
         is_full_time_college_student: true
-        four_year_college_institution: false
+        four_year_college_student: false
       person2:
         qualified_tuition_expenses: 4_000 # 4000*0.5<2141
         is_full_time_college_student: true
-        four_year_college_institution: false
+        four_year_college_student: false
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -94,11 +94,11 @@
       person1:
         qualified_tuition_expenses: 10_000 # 10000*0.5=5000>4602
         is_full_time_college_student: true
-        four_year_college_institution: true
+        four_year_college_student: true
       person2:
         qualified_tuition_expenses: 7_500 # 7500*0.5=3750<4712
         is_full_time_college_student: true
-        four_year_college_institution: true
+        four_year_college_student: true
     tax_units:
       tax_unit:
         members: [person1, person2]

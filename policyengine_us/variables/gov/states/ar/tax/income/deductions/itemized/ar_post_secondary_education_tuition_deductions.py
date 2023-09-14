@@ -15,7 +15,7 @@ class ar_post_secondary_education_tuition_deductions(Variable):
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized
         tuition_expense = person("qualified_tuition_expenses", period)
         full_time_college = person("is_full_time_college_student", period)
-        four_year_college = person("four_year_college_institution", period)
+        four_year_college = person("four_year_college_student", period)
 
         four_year_deduction = min_(
             p.expense_rate.tuition * tuition_expense,
