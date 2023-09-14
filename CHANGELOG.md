@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.466.1] - 2023-09-14 19:23:32
+
+### Fixed
+
+- Unfocused scope of the test coverage report.
+
 ## [0.466.0] - 2023-09-14 19:17:47
 
 ### Added
@@ -5283,6 +5289,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.466.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.0...0.466.1
 [0.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.3...0.466.0
 [0.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.2...0.465.3
 [0.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.1...0.465.2
