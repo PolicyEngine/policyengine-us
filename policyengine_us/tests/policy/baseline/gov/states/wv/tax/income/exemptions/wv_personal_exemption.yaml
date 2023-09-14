@@ -1,7 +1,7 @@
 - name: If not in West Virginia, no exemption.
   period: 2022
   input:
-    state_code: VA
+    state_code: WV
   output:
     wv_personal_exemption: 0
 
