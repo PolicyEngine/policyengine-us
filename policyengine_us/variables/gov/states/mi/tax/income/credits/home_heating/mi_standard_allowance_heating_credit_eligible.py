@@ -1,4 +1,3 @@
-### add FPG file path
 from policyengine_us.model_api import *
 
 

@@ -9,4 +9,4 @@ class mi_alternate_heating_credit_eligible(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
-        return bool(~tax_unit("heating_costs_included_in_rent", period))
+        return ~tax_unit("heating_costs_included_in_rent", period)

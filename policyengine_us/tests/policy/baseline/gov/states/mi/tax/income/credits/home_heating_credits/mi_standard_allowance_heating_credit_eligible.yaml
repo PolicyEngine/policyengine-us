@@ -1,0 +1,17 @@
+- name: standard allowance heating credit eligibility, household resources over 25_333
+  period: 2022
+  input:
+    exemptions: 3
+    mi_household_resources: 25_334
+    state_code: MI
+  output:
+    mi_standard_allowance_heating_credit_eligible: false
+
+- name: standard allowance heating credit eligibility, household resources below 25_333
+  period: 2022
+  input:
+    exemptions: 3
+    mi_household_resources: 25_332
+    state_code: MI
+  output:
+    mi_standard_allowance_heating_credit_eligible: true
