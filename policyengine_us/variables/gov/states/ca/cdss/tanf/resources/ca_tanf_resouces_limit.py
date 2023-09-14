@@ -10,7 +10,7 @@ class ca_tanf_resouces_limit(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ca.cdss.tanf.resources_limit
+        p = parameters(period).gov.states.ca.cdss.tanf.resources.limit
         person = spm_unit.members
         has_elderly = spm_unit.any(person("age", period) >= p.age_threshold)
         has_disabled = spm_unit.any(person("is_disabled", period))
