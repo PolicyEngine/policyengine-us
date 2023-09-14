@@ -5,7 +5,6 @@ class ca_tanf_eligibility(Variable):
     value_type = bool
     entity = SPMUnit
     label = "California CalWORKs Eligibility"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
 

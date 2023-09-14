@@ -5,7 +5,6 @@ class ca_tanf_region1(Variable):
     value_type = bool
     entity = SPMUnit
     label = "California CalWORKs Region 1"
-    unit = USD
     definition_period = YEAR
     defined_for = StateCode.CA
 

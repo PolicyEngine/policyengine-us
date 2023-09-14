@@ -14,4 +14,4 @@ class ca_tanf(Variable):
         countable_income = spm_unit(
             "ca_tanf_countable_income_recipient", period
         )
-        return maximum_payment - countable_income
+        return max_(maximum_payment - countable_income, 0)

@@ -18,8 +18,7 @@ class ca_tanf_countable_income_recipient(Variable):
         unearned = spm_unit("ca_tanf_unearned_income", period)
 
         countable_db_unearned = max_(db_unearned - p.flat, 0)
-        countable_earned = max_(earned - max_(p.flat - db_unearned, 0), 0) * (
-            1 - p.percentage
-        )
+        flat = max_(p.flat - db_unearned, 0)
+        countable_earned = max_(earned - flat, 0) * (1 - p.percentage)
 
         return countable_earned + countable_db_unearned + unearned
