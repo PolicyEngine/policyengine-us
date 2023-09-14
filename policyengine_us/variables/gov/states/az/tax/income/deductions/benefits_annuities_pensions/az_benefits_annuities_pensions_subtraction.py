@@ -6,7 +6,7 @@ class az_benefits_annuities_pensions_subtraction(Variable):
     entity = TaxUnit
     label = "Arizona benefits, annuitites and pensions subtraction"
     unit = USD
-    documentation = ""
+    documentation = "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i.pdf#page=15"
     definition_period = YEAR
     defined_for = StateCode.AZ
 
@@ -18,13 +18,16 @@ class az_benefits_annuities_pensions_subtraction(Variable):
 
         filing_status = tax_unit("filing_status", period)
         married = filing_status == filing_status.possible_values.JOINT
-        subtraction_amount = min_(
-            p.amount, person("military_retirement_pay", period)
+        military_retirement_pay = min_(
+            p.max_amount, person("military_retirement_pay", period)
+        )
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+
+        subtraction_joint = tax_unit.sum(
+            military_retirement_pay * (head + spouse)
         )
 
-        subtraction_joint = tax_unit.sum(subtraction_amount)
+        subtraction_other = tax_unit.sum(military_retirement_pay * head)
 
-        head = person("is_tax_unit_head", period)
-        subtraction_head = tax_unit.sum(subtraction_amount * head)
-
-        return where(married, subtraction_joint, subtraction_head)
+        return where(married, subtraction_joint, subtraction_other)

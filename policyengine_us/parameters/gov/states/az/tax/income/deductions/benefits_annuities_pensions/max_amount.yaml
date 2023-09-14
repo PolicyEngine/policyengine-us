@@ -1,6 +1,6 @@
-description: Arizona excludes benefits, annuities and pensions if the amount is under the following threshold.
+description: Arizona excludes benefits, annuities and pensions from uniformed services of the United States of up to this amount.
 metadata:
-  label: Arizona benefits, annuities and pensions subtraction threshold
+  label: Arizona benefits, annuities and pensions subtraction max amount
   period: year
   unit: currency-USD
   reference:
@@ -11,6 +11,6 @@ metadata:
   - title: 2022 Arizona Resident Personal Income Tax Form140 Instructions
     href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i.pdf#page=15
 values:
-  0000-01-01: 2_500
+  2018-01-01: 2_500
   2019-01-01: 3_500
   2021-01-01: .inf
