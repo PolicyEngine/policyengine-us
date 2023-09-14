@@ -15,6 +15,8 @@ class ga_exclusion_countable_earned_income(Variable):
     defined_for = StateCode.GA
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.ga.tax.income.agi.exclusions
+        p = parameters(
+            period
+        ).gov.states.ga.tax.income.agi.exclusions.retirement.cap
         earned_income = person("earned_income", period)
-        return min_(p.retirement.cap.earned_income, earned_income)
+        return min_(p.earned_income, earned_income)

@@ -1,0 +1,26 @@
+- name: test1
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    age: 50
+    state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: true
+
+- name: test2
+  period: 2022
+  input:
+    is_tax_unit_spouse: false
+    age: 50
+    state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: false
+
+- name: test3
+  period: 2022
+  input:
+    is_tax_unit_head: true
+    age: 62
+    state_code: GA
+  output:
+    ga_military_retirement_exclusion_eligible_person: false

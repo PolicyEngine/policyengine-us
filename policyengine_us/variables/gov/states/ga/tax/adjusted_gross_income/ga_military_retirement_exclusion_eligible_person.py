@@ -1,11 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ga_military_retirement_exclusion(Variable):
-    value_type = float
-    entity = TaxUnit
+class ga_military_retirement_exclusion_eligible_person(Variable):
+    value_type = bool
+    entity = Person
     label = "Georgia military retirement exclusion"
-    unit = USD
     definition_period = YEAR
     reference = (
         "https://dor.georgia.gov/document/booklet/2021-it-511-individual-income-tax-booklet/download#page=15"
@@ -14,22 +13,11 @@ class ga_military_retirement_exclusion(Variable):
     )
     defined_for = StateCode.GA
 
-    def formula(tax_unit, period, parameters):
-        person = tax_unit.members
+    def formula(Person, period, parameters):
+        person = person.members
         p = parameters(period).gov.states.ga.tax.income.agi.exclusions.military
-        eligible_person = person(
-            "ga_military_retirement_exclusion_eligible_person", period
-        )
-        earned_income = person("earned_income", period)
-        additional_income_eligible = (
-            earned_income > p.additional.threshold.income
-        )
-        military_income = person("military_retirement_pay", period)
-        base = where(eligible_person, p.main.amount, 0)
-        additional = where(
-            eligible_person & additional_income_eligible,
-            p.additional.amount,
-            0,
-        )
-        total = min_(base + additional, military_income)
-        return tax_unit.sum(total)
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        military_age = person("age", period) < p.age
+
+        return (head | spouse) & military_age
