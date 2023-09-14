@@ -23,4 +23,4 @@ class mi_standard_allowance_heating_credit_eligible(Variable):
         pn = p_fpg.additional_person[state_group]
         fpg = p1 + pn * (n - 1)
 
-        return mi_household_resources <= fpg * p.household_resources.fpg_rate
+        return mi_household_resources <= (fpg * p.household_resources.fpg_rate)
