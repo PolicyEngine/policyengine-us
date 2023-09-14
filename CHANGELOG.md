@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.466.1] - 2023-09-14 19:23:32
+
+### Fixed
+
+- Unfocused scope of the test coverage report.
+
+## [0.466.0] - 2023-09-14 19:17:47
+
+### Added
+
+- Mississippi income tax schedule.
+
+## [0.465.3] - 2023-09-14 19:11:54
+
+### Fixed
+
+- Moved NJ tax index.yaml file from NJ to NJDHS.
+
+## [0.465.2] - 2023-09-14 17:41:30
+
+### Added
+
+- Documentation page with example on income distributions.
+
 ## [0.465.1] - 2023-09-13 13:17:04
 
 ### Fixed
@@ -5265,6 +5289,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.466.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.0...0.466.1
+[0.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.3...0.466.0
+[0.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.2...0.465.3
+[0.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.1...0.465.2
 [0.465.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.0...0.465.1
 [0.465.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.464.1...0.465.0
 [0.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.464.0...0.464.1
