@@ -5,7 +5,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -25,7 +26,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -45,7 +47,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -65,7 +68,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -85,7 +89,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -105,7 +110,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -125,7 +131,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -145,7 +152,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -165,7 +173,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -185,7 +194,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -205,7 +215,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -225,7 +236,8 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -245,11 +257,13 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 500
+        taxable_social_security: 500
+        ssi: 1_000
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 500
+        taxable_social_security: 500
+        ssi: 1_000
     households:
       household:
         members: [person1, person2]
@@ -269,11 +283,13 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 0
+        taxable_social_security: 0
+        ssi: 0
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1, person2]
@@ -293,11 +309,13 @@
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 0
+        taxable_social_security: 0
+        ssi: 0
     households:
       household:
         members: [person1, person2]
@@ -310,14 +328,15 @@
   output:
     wv_social_security_benefits_subtraction: 0
 
-- name: In 2020, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+- name: In 2020, single filers, agi <= 50_000, social security benefits = 500, ssi = 500, subtraction amount = 350
   period: 2020
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
     households:
       household:
         members: [person1]
@@ -330,14 +349,15 @@
   output:
     wv_social_security_benefits_subtraction: 350
 
-- name: In 2021, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+- name: In 2021, single filers, agi <= 50_000, social security benefits = 0, ssi = 1_000, subtraction amount = 650
   period: 2021
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 0
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -350,14 +370,15 @@
   output:
     wv_social_security_benefits_subtraction: 650
 
-- name: In 2022, single filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+- name: In 2022, single filers, agi <= 50_000, social security benefits = 1_000, ssi = 0, subtraction amount = 1_000
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 0
     households:
       household:
         members: [person1]
@@ -370,14 +391,15 @@
   output:
     wv_social_security_benefits_subtraction: 1_000
 
-- name: In 2020, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+- name: In 2020, separate filers, agi <= 50_000, social security benefits = 500, ssi = 500, subtraction amount = 350
   period: 2020
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
     households:
       household:
         members: [person1]
@@ -390,14 +412,15 @@
   output:
     wv_social_security_benefits_subtraction: 350
 
-- name: In 2021, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+- name: In 2021, separate filers, agi <= 50_000, social social security benefits = 0, ssi = 1_000, subtraction amount = 650
   period: 2021
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 0
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -410,14 +433,15 @@
   output:
     wv_social_security_benefits_subtraction: 650
 
-- name: In 2022, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+- name: In 2022, separate filers, agi <= 50_000, social security benefits = 1_000, ssi = 0, subtraction amount = 1_000
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 0
     households:
       household:
         members: [person1]
@@ -430,14 +454,15 @@
   output:
     wv_social_security_benefits_subtraction: 1_000
 
-- name: In 2020, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+- name: In 2020, widow(er) filers, agi <= 50_000, social security benefits = 500, ssi = 500, subtraction amount = 350
   period: 2020
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
     households:
       household:
         members: [person1]
@@ -450,14 +475,15 @@
   output:
     wv_social_security_benefits_subtraction: 350
 
-- name: In 2021, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+- name: In 2021, widow(er) filers, agi <= 50_000, social security benefits = 0, ssi = 1_000, subtraction amount = 650
   period: 2021
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 0
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -470,14 +496,15 @@
   output:
     wv_social_security_benefits_subtraction: 650
 
-- name: In 2022, widow(er) filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+- name: In 2022, widow(er) filers, agi <= 50_000, social security benefits = 1_000, ssi = 0, subtraction amount = 1_000
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 0
     households:
       household:
         members: [person1]
@@ -490,14 +517,15 @@
   output:
     wv_social_security_benefits_subtraction: 1_000
 
-- name: In 2020, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 350
+- name: In 2020, head of household filers, agi <= 50_000, social security benefits = 500, ssi = 500, subtraction amount = 350
   period: 2020
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
     households:
       household:
         members: [person1]
@@ -510,14 +538,15 @@
   output:
     wv_social_security_benefits_subtraction: 350
 
-- name: In 2021, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+- name: In 2021, head of household filers, agi <= 50_000, social security benefits = 0, ssi = 1_000, subtraction amount = 650
   period: 2021
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 0
+        ssi: 1_000
     households:
       household:
         members: [person1]
@@ -530,14 +559,15 @@
   output:
     wv_social_security_benefits_subtraction: 650
 
-- name: In 2022, head of household filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 1_000
+- name: In 2022, head of household filers, agi <= 50_000, social security benefits = 1_000, ssi = 0, subtraction amount = 1_000
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 0
     households:
       household:
         members: [person1]
@@ -550,18 +580,20 @@
   output:
     wv_social_security_benefits_subtraction: 1_000
 
-- name: In 2020, joint filers, agi <= 100_000, head social security benefits = 500, spouse social security benefits = 500, subtraction amount = 350
+- name: In 2020, joint filers, agi <= 100_000, head social security benefits = 500, ssi = 500, spouse social security benefits = 500, ssi = 500, subtraction amount = 700
   period: 2020
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 5_00
+        taxable_social_security: 500
+        ssi: 500
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 5_00
+        taxable_social_security: 500
+        ssi: 500
     households:
       household:
         members: [person1, person2]
@@ -572,20 +604,22 @@
         filing_status: JOINT
         adjusted_gross_income: 100_000
   output:
-    wv_social_security_benefits_subtraction: 350
+    wv_social_security_benefits_subtraction: 700
 
-- name: In 2021, joint filers, agi <= 100_000, head social security benefits = 0, spouse social security benefits = 1_000, subtraction amount = 650
+- name: In 2021, joint filers, agi <= 100_000, head social security benefits = 0, ssi = 0, spouse social security benefits = 1_000, ssi = 1_000, subtraction amount = 1_300
   period: 2021
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 0
+        taxable_social_security: 0
+        ssi: 0
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [person1, person2]
@@ -596,20 +630,22 @@
         filing_status: JOINT
         adjusted_gross_income: 100_000
   output:
-    wv_social_security_benefits_subtraction: 650
+    wv_social_security_benefits_subtraction: 1_300
 
-- name: In 2022, joint filers, agi <= 100_000, head social security benefits = 1_000, spouse social security benefits = 0, subtraction amount = 1_000
+- name: In 2022, joint filers, agi <= 100_000, head social security benefits = 1_000, ssi = 0, spouse social security benefits = 0, ssi = 1_000, subtraction amount = 2_000
   period: 2022
   input:
     people:
       person1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 0
       person2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 0
+        taxable_social_security: 0
+        ssi: 1_000
     households:
       household:
         members: [person1, person2]
@@ -620,20 +656,22 @@
         filing_status: JOINT
         adjusted_gross_income: 100_000
   output:
-    wv_social_security_benefits_subtraction: 1_000
+    wv_social_security_benefits_subtraction: 2_000
 
-- name: In 2020, single filers, agi <= 50_000, head social security benefits = 1_000, child social security = 1_000, subtraction amount = 350
+- name: In 2020, single filers, agi <= 50_000, head social security benefits = 500, ssi = 500, child social security = 500, ssi = 500, subtraction amount = 350
   period: 2020
   input:
     people:
       parent:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
       child:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
     households:
       household:
         members: [parent, child]
@@ -646,18 +684,20 @@
   output:
     wv_social_security_benefits_subtraction: 350
 
-- name: In 2021, separate filers, agi <= 50_000, social security benefits = 1_000, subtraction amount = 650
+- name: In 2021, separate filers, agi <= 50_000, head social security benefits = 1_000, ssi = 0, child social security = 1_000, ssi = 1_000, subtraction amount = 650
   period: 2021
   input:
     people:
       parent:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 0
       child:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [parent, child]
@@ -670,18 +710,20 @@
   output:
     wv_social_security_benefits_subtraction: 650
 
-- name: In 2022, widow(er) filers, agi <= 50_000, head social security benefits = 1_000, child social security = 1_000, subtraction amount = 1_000
+- name: In 2022, widow(er) filers, agi <= 50_000, head social security benefits = 1_000, ssi = 1_000, child social security = 1_000, ssi = 1_000, subtraction amount = 2_000
   period: 2022
   input:
     people:
       parent:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
       child:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [parent, child]
@@ -692,20 +734,22 @@
         filing_status: WIDOW
         adjusted_gross_income: 50_000
   output:
-    wv_social_security_benefits_subtraction: 1_000
+    wv_social_security_benefits_subtraction: 2_000
 
-- name: In 2020, head of household filers, agi <= 50_000, head social security benefits = 1_000, child social security = 1_000, subtraction amount = 350
+- name: In 2020, head of household filers, agi <= 50_000, head social security benefits = 500, ssi = 500, child social security = 1_000, ssi = 1_000, subtraction amount = 350
   period: 2020
   input:
     people:
       parent:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
       child:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [parent, child]
@@ -718,22 +762,25 @@
   output:
     wv_social_security_benefits_subtraction: 350
 
-- name: In 2021, joint filers, agi <= 100_000, head social security benefits = 0, spouse social security benefits = 1_000, child social security = 1_000, subtraction amount = 650
+- name: In 2021, joint filers, agi <= 100_000, head social security benefits = 0, ssi = 0, spouse social security benefits = 500, ssi = 500, child social security = 1_000, ssi = 1_000, subtraction amount = 650
   period: 2021
   input:
     people:
       parent1:
         is_tax_unit_head: true
         is_tax_unit_spouse: false
-        social_security: 0
+        taxable_social_security: 0
+        ssi: 0
       parent2: 
         is_tax_unit_head: false
         is_tax_unit_spouse: true
-        social_security: 1_000
+        taxable_social_security: 500
+        ssi: 500
       child:
         is_tax_unit_head: false
         is_tax_unit_spouse: false
-        social_security: 1_000
+        taxable_social_security: 1_000
+        ssi: 1_000
     households:
       household:
         members: [parent1, parent2, child]
