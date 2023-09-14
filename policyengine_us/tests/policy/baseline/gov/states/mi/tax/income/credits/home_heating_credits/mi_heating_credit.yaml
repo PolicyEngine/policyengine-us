@@ -1,0 +1,43 @@
+- name: heating credit not eligible
+  period: 2022
+  input:
+    heating_costs_included_in_rent: true
+    mi_reduced_standard_allowance: 100
+    mi_alternate_heating_credit: 200
+    mi_heating_credit_eligible: false
+    state_code: MI
+  output:
+    mi_heating_credit: 0
+
+- name: heating cost included in rent
+  period: 2022
+  input:
+    heating_costs_included_in_rent: true
+    mi_reduced_standard_allowance: 100
+    mi_alternate_heating_credit: 200
+    mi_heating_credit_eligible: true
+    state_code: MI
+  output:
+    mi_heating_credit: 90
+
+- name: heating cost not included in rent, reduced standard allowance higher than alternate heating credit
+  period: 2022
+  input:
+    heating_costs_included_in_rent: false
+    mi_reduced_standard_allowance: 200
+    mi_alternate_heating_credit: 100
+    mi_heating_credit_eligible: true
+    state_code: MI
+  output:
+    mi_heating_credit: 180
+
+- name: heating cost not included in rent, reduced standard allowance lower than alternate heating credit
+  period: 2022
+  input:
+    heating_costs_included_in_rent: false
+    mi_reduced_standard_allowance: 100
+    mi_alternate_heating_credit: 200
+    mi_heating_credit_eligible: true
+    state_code: MI
+  output:
+    mi_heating_credit: 180

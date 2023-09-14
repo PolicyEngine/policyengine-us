@@ -5,7 +5,7 @@ class mi_heating_credit(Variable):
     value_type = float
     entity = TaxUnit
     label = "Michigan household heating cost credit"
-    defined_for = StateCode.MI
+    defined_for = "mi_heating_credit_eligible"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -27,13 +27,10 @@ class mi_heating_credit(Variable):
         mi_alternate_heating_credit = tax_unit(
             "mi_alternate_heating_credit", period
         )
-        standard_allowance = tax_unit("mi_standard_allowance", period)
-        mi_household_resources = tax_unit("mi_household_resources", period)
-        mi_exemption_count = tax_unit("exemptions", period)
-
+        
         # calculate initial home heating credit
         initial_hhc = where(
-            heating_costs_included_in_rent == True,
+            heating_costs_included_in_rent,
             mi_reduced_standard_allowance,
             max_(mi_reduced_standard_allowance, mi_alternate_heating_credit),
         )
