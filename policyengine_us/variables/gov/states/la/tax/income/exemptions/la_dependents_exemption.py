@@ -5,7 +5,7 @@ class la_dependents_exemption(Variable):
     value_type = float
     entity = TaxUnit
     label = "Louisiana qualified dependents exemption"
-    reference = "https://www.legis.la.gov/legis/Law.aspx?d=101761"
+    reference = "https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.LA

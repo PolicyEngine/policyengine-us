@@ -7,7 +7,7 @@ class la_blind_or_disabled_exemption(Variable):
     label = "Louisiana blind or disabled exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.legis.la.gov/legis/Law.aspx?d=102518"
+    reference = "https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf"
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):

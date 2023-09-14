@@ -12,4 +12,6 @@ class la_exemptions(Variable):
         "la_aged_exemption",
         "la_blind_or_disabled_exemption",
         "la_dependents_exemption",
+        "la_disability_income_exemption",
+        "la_personal_exemption",
     ]

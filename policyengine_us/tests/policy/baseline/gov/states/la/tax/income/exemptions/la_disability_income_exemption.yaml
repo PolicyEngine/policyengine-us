@@ -1,0 +1,40 @@
+- name: disbility benefits less than disability income exemption.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        disability_benefits: 3_000
+      person2:
+        is_tax_unit_spouse: 1
+        disability_benefits: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_disability_income_exemption: 3_000
+
+- name: disbility benefits greater than disability income exemption.
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: 1
+        disability_benefits: 0
+      person2:
+        is_tax_unit_spouse: 1
+        disability_benefits: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_disability_income_exemption: 6_000
+
