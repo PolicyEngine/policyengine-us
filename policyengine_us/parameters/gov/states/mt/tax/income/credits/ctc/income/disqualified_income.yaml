@@ -3,9 +3,8 @@ values:
   2020-01-01:
     - non_qualified_dividend_income
     - tax_exempt_interest_income
-    # exampt_interest_income
-    # excess_rental_income
-    # excess_royalty_income
+    - interest_income
+    - rental_income
     - capital_gains
     # excess_passive_activity_income
 
