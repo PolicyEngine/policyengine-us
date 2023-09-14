@@ -47,6 +47,8 @@ jobs:
         run: make install
       - name: Run tests
         run: make test
+        env:
+          POVERTYTRACKER_RAW_URL: ${{ secrets.POVERTYTRACKER_RAW_URL }}
       - uses: codecov/codecov-action@v3
       - name: Build package
         run: make
