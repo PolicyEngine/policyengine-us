@@ -14,7 +14,7 @@ class dc_tanf_countable_income(Variable):
         gross_unearned_income = spm_unit(
             "dc_tanf_countable_gross_unearned_income", period
         )
-        p = parameters(period).gov.states.dc.dhs.tanf.income.earned_deduction
+        p = parameters(period).gov.states.dc.dhs.tanf.income.deductions.earned
         annual_flat_exclusion = p.flat * MONTHS_IN_YEAR
         earnings_after_deduction = max_(
             gross_earnings - annual_flat_exclusion, 0

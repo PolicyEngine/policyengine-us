@@ -7,31 +7,28 @@ class in_unified_elderly_tax_credit(Variable):
     label = "Indiana unified elderly tax credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://forms.in.gov/Download.aspx?id=15394"
+    reference = (
+        "https://iga.in.gov/laws/2021/ic/titles/6#6-3-3-9"
+        "https://iga.in.gov/laws/2022/ic/titles/6#6-3-3-9"
+    )
     defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        p = (
-            parameters(period)
-            .gov.states["in"]
-            .tax.income.credits.unified_elderly
-        )
-        income = person("in_unified_elderly_tax_income", period)
-        total_income = tax_unit.sum(income)
-        age_head = tax_unit("age_head", period)
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        p = parameters(period).gov.states["in"].tax.income.credits
+        head_age = tax_unit("age_head", period)
+        aged_head = (head_age >= p.unified_elderly.min_age).astype(int)
         spouse_age = tax_unit("age_spouse", period)
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
-        married = status.JOINT
-        head_eligible = age_head >= p.age_eligibility
-        spouse_eligible = spouse_age >= p.age_eligibility
-        both_eligible = head_eligible & spouse_eligible
-        eligible = head_eligible | spouse_eligible
-        married_amount = where(
-            both_eligible,
-            p.amount.married.two_aged.calc(total_income),
-            p.amount.married.one_aged.calc(total_income),
+        aged_spouse = (spouse_age >= p.unified_elderly.min_age).astype(int)
+        aged_count = aged_head + aged_spouse
+        return select(
+            [
+                aged_count == 1,
+                aged_count == 2,
+            ],
+            [
+                p.unified_elderly.amount.one_aged.calc(federal_agi),
+                p.unified_elderly.amount.two_aged.calc(federal_agi),
+            ],
+            default=0,
         )
-        single_amount = p.amount.single.calc(total_income) * head_eligible
-        return eligible * where(married, married_amount, single_amount)
