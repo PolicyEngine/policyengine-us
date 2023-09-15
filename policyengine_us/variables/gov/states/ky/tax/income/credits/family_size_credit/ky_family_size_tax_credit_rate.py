@@ -20,8 +20,8 @@ class ky_family_size_tax_credit_rate(Variable):
         padd = fpg.additional_person[state_group]
         family_size = tax_unit("tax_unit_size", period)
         # No more than 4 people are accounted for in the credit
-        capped_family_size = min_(family_size, 4)
+        p = parameters(period).gov.states.ky.tax.income.credits.family_size
+        capped_family_size = min_(family_size, p.family_size_cap)
         poverty_index = p1 + padd * (capped_family_size - 1)
         share = income / poverty_index
-        p = parameters(period).gov.states.ky.tax.income.credits.family_size
         return p.percentage.calc(share, right=True)
