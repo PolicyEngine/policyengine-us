@@ -24,12 +24,9 @@ class vt_ctc(Variable):
         # Reduce credit amount over the phaseout range.
         excess_agi = max_(agi - p.reduction.start, 0)
         increment = p.reduction.increment
-        ### using a mask to avoid division by zero. ###
-        # original code that works: increments = excess_agi / increment
-        increments = np.zeros_like(increment)
-        mask = increment != 0
-        increments[mask] = excess_agi[mask] / increment[mask]
-        ###
+        # using a mask to avoid division by zero. ###
+        increments = where(increment > 0, excess_agi / increment, 0)
+        # increments = excess_agi / increment 
         total_reduction = increment * increments
         # Return reduced credit amount.
-        return max(max_credit - total_reduction, 0)
+        return max_(max_credit - total_reduction, 0)
