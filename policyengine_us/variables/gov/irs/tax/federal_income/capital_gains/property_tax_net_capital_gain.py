@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 
+
 class property_tax_net_capital_gain(Variable):
     value_type = float
     entity = TaxUnit
