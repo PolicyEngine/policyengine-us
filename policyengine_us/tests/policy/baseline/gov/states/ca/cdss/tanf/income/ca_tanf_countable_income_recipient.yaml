@@ -6,7 +6,7 @@
     ca_tanf_db_unearned_income: 500
     ca_tanf_unearned_income: 1_000
   output:
-    ca_tanf_countable_income_recipient: 2_450
+    ca_tanf_countable_income_recipient: (500 - 500) + (3_000 - 100) * .5 + 1_000
 
 - name: $1,000 earned, $500 disabli disability-based unearned, and $100 other unearned.
   period: 2023
@@ -16,7 +16,7 @@
     ca_tanf_db_unearned_income: 500
     ca_tanf_unearned_income: 1_000
   output:
-    ca_tanf_countable_income_recipient: 1_000
+    ca_tanf_countable_income_recipient: (500 - 500) + (100 - 100) * .5 + 1_000
 
 - name: $1,000 earned, $700 disabli disability-based unearned, and $1,000 other unearned.
   period: 2023
@@ -26,4 +26,4 @@
     ca_tanf_db_unearned_income: 700
     ca_tanf_unearned_income: 1_000
   output:
-    ca_tanf_countable_income_recipient: 2_600
+    ca_tanf_countable_income_recipient: (700 - 600) + 3_000 * .5 + 1_000
