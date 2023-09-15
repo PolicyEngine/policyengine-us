@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class ky_family_size_tax_credit_rate(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Kentucky family size tax credit"
+    label = "Kentucky family size tax credit rate"
     unit = "/1"
     definition_period = YEAR
     reference = (
