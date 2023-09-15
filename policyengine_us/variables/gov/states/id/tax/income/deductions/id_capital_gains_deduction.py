@@ -15,7 +15,7 @@ class id_capital_gains_deduction(Variable):
             period
         ).gov.states.id.tax.income.deductions.capital_gains
         # taxpayer must report capital gain net income
-        net_capital_gain = tax_unit("property_tax_net_capital_gain", period)
+        net_capital_gain = tax_unit("property_sales_net_capital_gain", period)
 
         # Filers can deduct 60% of captial gains
 
