@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class marginal_tax_rate(Variable):
     label = "marginal tax rate"
-    documentation = "Percent of marginal income gains that do not increase household net income."
+    documentation = "Fraction of marginal income gains that do not increase household net income."
     entity = Person
     definition_period = YEAR
     value_type = float
