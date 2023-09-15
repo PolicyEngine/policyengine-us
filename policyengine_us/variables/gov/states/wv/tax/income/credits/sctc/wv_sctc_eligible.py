@@ -16,6 +16,6 @@ class wv_senior_citizens_tax_credit_eligible(Variable):
         p = parameters(period).gov.states.wv.tax.income.credits.sctc
 
         fpg = tax_unit("tax_unit_fpg", period)
-        income_threshold = p.fpg_percent * fpg
+        income_threshold = p.fpg_percentage * fpg
 
         return (wv_agi <= income_threshold) & (p.home_value > property_value)
