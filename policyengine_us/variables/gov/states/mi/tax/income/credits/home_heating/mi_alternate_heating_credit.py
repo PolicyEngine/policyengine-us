@@ -20,7 +20,7 @@ class mi_alternate_heating_credit(Variable):
         p = parameters(
             period
         ).gov.states.mi.tax.income.credits.home_heating_credit
-        
+
         mi_household_resources = tax_unit("mi_household_resources", period)
         heating_costs = tax_unit("heating_costs", period)
 
@@ -38,6 +38,6 @@ class mi_alternate_heating_credit(Variable):
             (capped_heating_costs - difference),
             0,
         )
-        
+
         # determine mi_alternate_household_credit
         return p.alternate_credit.heating_costs.rate * alternate_credit

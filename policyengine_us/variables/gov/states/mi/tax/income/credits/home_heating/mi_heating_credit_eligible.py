@@ -10,7 +10,7 @@ class mi_heating_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_not_dsi = ~tax_unit("dsi",period)
-        is_not_ft_student = ~person("is_full_time_student",period)
-        
-        return  is_not_dsi & is_not_ft_student
+        is_not_dsi = ~tax_unit("dsi", period)
+        is_not_ft_student = ~person("is_full_time_student", period)
+
+        return is_not_dsi & is_not_ft_student
