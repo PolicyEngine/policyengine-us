@@ -4,17 +4,15 @@ values:
     - e00200 # Wages, salaries, tips, etc.
     - qualified_business_income
     - capital_gains
+    - rent
     - farm_income
     - interest_income
     - qualified_dividend_income
     - alimony_income
     - taxable_pension_income
     - unemployment_compensation
-
-
 metadata:
   unit: list
   reference:
    - title: Mississippi Resident INCOME TAX Instruction
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12
-

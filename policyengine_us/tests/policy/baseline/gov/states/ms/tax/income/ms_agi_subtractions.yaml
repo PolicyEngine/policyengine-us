@@ -1,7 +1,15 @@
-- name: Mississippi agi
-  period: 2022
+- name: Calculation of self-employment
+  period: 2021
   input:
     state_code: MS
     self_employment_tax: 20_000
   output:
-    ms_agi_subtractions: 10_000
+    ms_self_employment_subtraction: 10_000
+
+- name: Calculation of no self-employment
+  period: 2021
+  input:
+    state_code: MS
+    self_employment_tax: 0
+  output:
+    ms_self_employment_subtraction: 0
