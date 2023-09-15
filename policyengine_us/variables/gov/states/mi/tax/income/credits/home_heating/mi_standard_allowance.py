@@ -34,5 +34,3 @@ class mi_standard_allowance(Variable):
             p.exemption_base.calc(mi_exemption_count) + additional_allowance,
             0,
         )
-
-        

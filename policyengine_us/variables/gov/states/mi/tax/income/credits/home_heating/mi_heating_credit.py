@@ -27,7 +27,7 @@ class mi_heating_credit(Variable):
         mi_alternate_heating_credit = tax_unit(
             "mi_alternate_heating_credit", period
         )
-        
+
         # calculate initial home heating credit
         initial_hhc = where(
             heating_costs_included_in_rent,
