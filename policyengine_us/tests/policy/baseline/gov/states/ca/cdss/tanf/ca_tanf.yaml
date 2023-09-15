@@ -1,7 +1,7 @@
 - name: If ineligible, they get zero.
   period: 2023
   input:
-    ca_tanf_eligibility: false
+    ca_tanf_eligible: false
     ca_tanf_maximum_payment: 1_000
     ca_tanf_countable_income_recipient: 0
   output:
@@ -10,7 +10,7 @@
 - name: If eligible, If eligible, they get difference between maximum payment and countable income.
   period: 2023
   input:
-    ca_tanf_eligibility: true
+    ca_tanf_eligible: true
     ca_tanf_maximum_payment: 1_000
     ca_tanf_countable_income_recipient: 0
   output:

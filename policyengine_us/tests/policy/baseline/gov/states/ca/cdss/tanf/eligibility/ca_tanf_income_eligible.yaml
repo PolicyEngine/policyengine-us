@@ -7,7 +7,7 @@
     ca_tanf_income_limit: 2_000
     ca_tanf_maximum_payment: 2_000
   output:
-    ca_tanf_income_eligibility: true
+    ca_tanf_income_eligible: true
 
 - name: Households that have countable income greater than income limit or maximum payment are ineligible.
   period: 2023
@@ -18,7 +18,7 @@
     ca_tanf_income_limit: 2_000
     ca_tanf_maximum_payment: 2_000
   output:
-    ca_tanf_income_eligibility: false
+    ca_tanf_income_eligible: false
 
 - name: Households that have countable income greater than income limit or maximum payment are ineligible.
   period: 2023
@@ -29,4 +29,4 @@
     ca_tanf_income_limit: 2_000
     ca_tanf_maximum_payment: 2_000
   output:
-    ca_tanf_income_eligibility: false
+    ca_tanf_income_eligible: false

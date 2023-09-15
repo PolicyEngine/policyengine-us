@@ -10,23 +10,23 @@ class ca_tanf_maximum_payment(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ca.cdss.tanf.payment
         unit_size = spm_unit("spm_unit_size", period)
-        ceiling = min_(unit_size, 10)
+        au_size = min_(unit_size, p.max_au_size)
         region1 = spm_unit("ca_tanf_region1", period)
         exempt = spm_unit("ca_tanf_exempt", period)
-        p = parameters(period).gov.states.ca.cdss.tanf.payment
 
-        monthly = where(
+        max_monthly_payment = where(
             region1,
             where(
                 exempt,
-                p.region1.exempt[ceiling],
-                p.region1.non_exempt[ceiling],
+                p.region1.exempt[au_size],
+                p.region1.non_exempt[au_size],
             ),
             where(
                 exempt,
-                p.region2.exempt[ceiling],
-                p.region2.non_exempt[ceiling],
+                p.region2.exempt[au_size],
+                p.region2.non_exempt[au_size],
             ),
         )
-        return monthly * MONTHS_IN_YEAR
+        return max_monthly_payment * MONTHS_IN_YEAR

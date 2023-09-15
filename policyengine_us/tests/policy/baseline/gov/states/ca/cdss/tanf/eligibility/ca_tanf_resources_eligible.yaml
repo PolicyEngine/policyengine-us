@@ -5,7 +5,7 @@
     ca_tanf_resources: 1_000
     ca_tanf_resouces_limit: 2_000
   output:
-    ca_tanf_resources_eligibility: true
+    ca_tanf_resources_eligible: true
 
 - name:  Households that have resources more than resources limit are ineligible.
   period: 2023
@@ -14,4 +14,4 @@
     ca_tanf_resources: 3_000
     ca_tanf_resouces_limit: 2_000
   output:
-    ca_tanf_resources_eligibility: false
+    ca_tanf_resources_eligible: false

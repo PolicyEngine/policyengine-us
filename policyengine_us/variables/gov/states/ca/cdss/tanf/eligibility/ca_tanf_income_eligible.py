@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ca_tanf_income_eligibility(Variable):
+class ca_tanf_income_eligible(Variable):
     value_type = bool
     entity = SPMUnit
     label = "California CalWORKs Applicant Financial Eligibility"
