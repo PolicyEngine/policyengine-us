@@ -2,7 +2,7 @@
   period: 2022
   absolute_error_margin: 0.001
   input:
-    net_capital_gain: 0
+    property_tax_net_capital_gain: 0
     state_code: ID
   output:
     id_capital_gains_deduction: 0
@@ -11,7 +11,7 @@
   period: 2022 
   absolute_error_margin: 0.001
   input:
-    net_capital_gain: 6_000
+    property_tax_net_capital_gain: 6_000
     state_code: ID
   output:
     id_capital_gains_deduction: 3_600
