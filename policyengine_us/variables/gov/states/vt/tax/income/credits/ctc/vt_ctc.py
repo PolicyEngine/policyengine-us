@@ -23,10 +23,8 @@ class vt_ctc(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         # Reduce credit amount over the phaseout range.
         excess_agi = max_(agi - p.reduction.start, 0)
-        increment = p.reduction.increment
-        # using a mask to avoid division by zero. ###
-        increments = where(increment > 0, excess_agi / increment, 0)
-        # increments = excess_agi / increment 
-        total_reduction = increment * increments
+        # using a mask to avoid division by zero.
+        increments = where(p.reduction.increment > 0, excess_agi / p.reduction.increment, 0)
+        total_reduction = p.reduction.amount * increments
         # Return reduced credit amount.
         return max_(max_credit - total_reduction, 0)
