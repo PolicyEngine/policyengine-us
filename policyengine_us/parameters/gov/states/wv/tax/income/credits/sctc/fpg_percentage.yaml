@@ -1,4 +1,4 @@
-description: West Virginia provides the senior citizens tax credit for filers with modified adjusted gross income at or below this threshold.
+description: West Virginia provides the senior citizens tax credit for filers with modified adjusted gross income at or below this percentage times federal poverty guidelines.
 
 values:
   2012-01-01: 1.5
@@ -6,7 +6,7 @@ values:
 metadata:
   period: year
   unit: /1
-  label: West Virginia senior citizens tax credit modified adjusted gross income threshold
+  label: West Virginia senior citizens tax credit federal poverty guidelines percentage
 
  reference:
   - title: West Virginia Personal Income Tax Forms And Instructions 2022
