@@ -7,7 +7,7 @@ class id_capital_gains_deduction(Variable):
     label = "Idaho capital gain deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://casetext.com/regulation/idaho-administrative-code/title-idapa-35-tax-commission-state/rule-350101-income-tax-administrative-rules/section-350101170-idaho-capital-gains-deduction-in-general"
+    reference = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022h/"
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
