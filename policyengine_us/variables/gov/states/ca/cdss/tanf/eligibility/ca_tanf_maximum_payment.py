@@ -10,7 +10,7 @@ class ca_tanf_maximum_payment(Variable):
     defined_for = StateCode.CA
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.ca.cdss.tanf.payment
+        p = parameters(period).gov.states.ca.cdss.tanf.monthly_payment
         unit_size = spm_unit("spm_unit_size", period)
         au_size = min_(unit_size, p.max_au_size)
         region1 = spm_unit("ca_tanf_region1", period)
