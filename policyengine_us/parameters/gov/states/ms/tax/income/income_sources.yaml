@@ -1,0 +1,20 @@
+descriptionhttps://github.com/PolicyEngine/policyengine-us/assets/110687043/3b9af142-20a6-42ce-9980-c8929b1a27e3: Mississippi counts these sources as income sources.
+values:
+  2021-01-01:
+    - e00200 # Wages, salaries, tips, etc.
+    - qualified_business_income
+    - capital_gains
+    - farm_income
+    - interest_income
+    - qualified_dividend_income
+    - alimony_income
+    - taxable_pension_income
+    - unemployment_compensation
+
+
+metadata:
+  unit: list
+  reference:
+   - title: Mississippi Resident INCOME TAX Instruction
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12
+
