@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class id_capital_gains_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Idaho capital gain deduction"
+    label = "Idaho capital gains deduction"
     unit = USD
     definition_period = YEAR
     reference = "https://legislature.idaho.gov/statutesrules/idstat/title63/t63ch30/sect63-3022h/"
