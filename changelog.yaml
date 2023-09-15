@@ -4390,3 +4390,69 @@
     fixed:
     - Replace several arcane variable names with more descriptive names.
   date: 2023-09-06 18:19:32
+- bump: minor
+  changes:
+    added:
+    - Colorado state income tax addback.
+  date: 2023-09-07 12:43:44
+- bump: patch
+  changes:
+    fixed:
+    - Rename module to be same as the name of the variable it contains.
+  date: 2023-09-07 14:51:52
+- bump: patch
+  changes:
+    fixed:
+    - Removed Colorado tax index.yaml file.
+  date: 2023-09-07 16:31:01
+- bump: patch
+  changes:
+    added:
+    - Add Colorado to the household_state_income_tax variable.
+  date: 2023-09-08 00:44:17
+- bump: minor
+  changes:
+    changed:
+    - CPS updated to 2022 from 2021.
+  date: 2023-09-12 16:15:02
+- bump: minor
+  changes:
+    added:
+    - Added PovertyTracker microdata.
+  date: 2023-09-12 21:49:59
+- bump: patch
+  changes:
+    fixed:
+    - Colorado CTC and EITC changes for 2024 enacted in House Bill 23-1112.
+    - Colorado CTC logic.
+  date: 2023-09-12 22:51:02
+- bump: minor
+  changes:
+    added:
+    - Rhode Island property tax credit.
+  date: 2023-09-12 23:29:59
+- bump: patch
+  changes:
+    fixed:
+    - Documentation dependency errors.
+  date: 2023-09-13 13:17:04
+- bump: patch
+  changes:
+    added:
+    - Documentation page with example on income distributions.
+  date: 2023-09-14 17:41:30
+- bump: patch
+  changes:
+    fixed:
+    - Moved NJ tax index.yaml file from NJ to NJDHS.
+  date: 2023-09-14 19:11:54
+- bump: minor
+  changes:
+    added:
+    - Mississippi income tax schedule.
+  date: 2023-09-14 19:17:47
+- bump: patch
+  changes:
+    fixed:
+    - Unfocused scope of the test coverage report.
+  date: 2023-09-14 19:23:32
