@@ -1,0 +1,138 @@
+- name: 3 eligible children, all 5 stars quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 5
+      person2:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 5
+      person3:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 5
+    tax_units:
+      tax_unit:
+        la_cdcc: 50
+        members: [person1, person2, person3]
+    households:
+      household:
+        state_code: LA
+  output:
+    #50*2+50*2+50*2=300
+    la_school_readiness_credit: 300
+    
+- name: 2 eligible children, all 5 stars quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 5
+      person2:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 5
+      person3:
+        la_school_readiness_credit_eligible_child: false
+    tax_units:
+      tax_unit:
+        la_cdcc: 50
+        members: [person1, person2, person3]
+    households:
+      household: 
+        state_code: LA
+  output:
+    #50*2+50*2=200
+    la_school_readiness_credit: 200
+
+- name: 3 eligible children, one 5 stars quality rating, one 4 stars quality rating, one 3 stars quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 5
+      person2:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 4
+      person3:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 3
+    tax_units:
+      tax_unit:
+        la_cdcc: 50
+        members: [person1, person2, person3]
+    households:
+      household: 
+        state_code: LA
+  output:
+    #50*2+50*1.5+50*1=225
+    la_school_readiness_credit: 225 
+
+- name: 3 eligible children, one 3 stars quality rating, one 2 stars quality rating, one 1 star quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 3
+      person2:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 2
+      person3:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        la_cdcc: 50
+    households:
+      household: 
+        state_code: LA
+  output:
+    #50*1+50*0.5+50*0=75
+    la_school_readiness_credit: 75 
+
+- name: 1 eligible children, 2 stars quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_school_readiness_credit_eligible_child: true
+        la_quality_rating_of_child_care_facility: 2
+      person2:
+        la_school_readiness_credit_eligible_child: false
+      person3:
+        la_school_readiness_credit_eligible_child: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        la_cdcc: 50
+    households:
+      household: 
+        state_code: LA
+  output:
+    #50*0.5=25
+    la_school_readiness_credit: 25
+
+- name: 1 eligible children, 2 stars quality rating
+  period: 2021
+  input:
+    people:
+      person1:
+        la_school_readiness_credit_eligible_child: false
+        la_quality_rating_of_child_care_facility: 2
+      person2:
+        la_school_readiness_credit_eligible_child: false
+      person3:
+        la_school_readiness_credit_eligible_child: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        la_cdcc: 50
+    households:
+      household: 
+        state_code: LA
+  output:
+    #0
+    la_school_readiness_credit: 0
