@@ -10,7 +10,7 @@ class ca_tanf_eligibility(Variable):
 
     def formula(spm_unit, period, parameters):
         demographic_eligible = spm_unit("is_demographic_tanf_eligible", period)
-        income_eligible = spm_unit("ca_tanf_income_eligibility", period)
-        resources_eligible = spm_unit("ca_tanf_resources_eligibility", period)
+        income_eligible = spm_unit("ca_tanf_income_eligible", period)
+        resources_eligible = spm_unit("ca_tanf_resources_eligible", period)
 
         return demographic_eligible & income_eligible & resources_eligible
