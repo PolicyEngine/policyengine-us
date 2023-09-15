@@ -15,8 +15,8 @@ class id_grocery_credit(Variable):
 
         p = parameters(period).gov.states.id.tax.income.credits.gc
 
-        head_qualifies = (age_head >= p.eligibility)
-        spouse_qualifies = (age_spouse >= p.eligibility)
+        head_qualifies = age_head >= p.eligibility
+        spouse_qualifies = age_spouse >= p.eligibility
 
         # 100$ for each dependent
         person1 = tax_unit.members = p.snap_threshold.Household_Size
@@ -34,12 +34,10 @@ class id_grocery_credit(Variable):
 
         # determine age head and spouse
         filing_status = tax_unit("filing_status", period)
-        joint_amount = where(head_aged & spouse_aged, parameter two_aged, parameter one_aged)
+        joint_amount = where(head_aged & spouse_aged, two_aged, one_aged)
         joint = filing_status == filing_status.possible_values.JOINT
-        where(joint, joint_amount, other_amount)
+        final_joint_amount = where(joint, joint_amount, other_amount)
         income = tax_unit("id_agi", period)
 
         # 100$ for self
-        return p.amount + dependet_amount + aged_amount
-
-    
+        return final_joint_amount + dependet_amount + aged_amount
