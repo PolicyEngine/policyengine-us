@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class id_grocery_credit(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Idaho grocery credit"
     unit = USD
