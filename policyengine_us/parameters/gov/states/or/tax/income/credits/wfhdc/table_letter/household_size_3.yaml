@@ -1,0 +1,23 @@
+description: "Oregon WFHDC corresponding row in the percentage table for household size 3"
+metadata:
+  threshold_unit: currency-USD
+  threshold_period: year
+  type: single_amount
+  label: Oregon WFHDC table letter for household size 3
+  reference:
+    - title: Publication OR-WFHDC-TB Working Family Household and Dependent Care (WFHDC) Tables (2022)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf
+
+brackets:
+  - threshold:
+      2022-01-01: -.inf
+    amount:
+      2022-01-01: 1 # A
+  - threshold:
+      2022-01-01: 2_303
+    amount:
+      2022-01-01: 2 # B
+  - threshold:
+      2022-01-01: 4_606
+    amount:
+      2022-01-01: 3 # C
