@@ -10,38 +10,27 @@ class marginal_tax_rate(Variable):
     unit = "/1"
 
     def formula(person, period, parameters):
+        netinc_base = person.household("household_net_income", period)
+        delta = parameters(period).simulation.marginal_tax_rate_delta
+        adult_count = parameters(period).simulation.marginal_tax_rate_adults
+        sim = person.simulation
         mtr_values = np.zeros(person.count, dtype=np.float32)
-        simulation = person.simulation
-        adult_index_values = person("adult_index", period)
-        DELTA = 1_000
-        mtr_adult_count = parameters(
-            period
-        ).simulation.marginal_tax_rate_adults
-        for adult_index in range(1, 1 + mtr_adult_count):
-            alt_simulation = simulation.get_branch(
-                f"adult_{adult_index}_pay_rise"
-            )
-            mask = adult_index_values == adult_index
-            # for variable_name, variable in self.variables.items()
-            for vname, var in simulation.tax_benefit_system.variables.items():
-                if not var.is_input_variable():
-                    alt_simulation.delete_arrays(vname)
-            alt_simulation.set_input(
+        adult_indexes = person("adult_index", period)
+        for adult_index in range(1, 1 + adult_count):
+            alt_sim = sim.get_branch(f"mtr_for_adult_{adult_index}")
+            for vname, variable in sim.tax_benefit_system.variables.items():
+                if not variable.is_input_variable():
+                    alt_sim.delete_arrays(vname)
+            mask = adult_index == adult_indexes
+            alt_sim.set_input(
                 "employment_income",
                 period,
-                person("employment_income", period) + mask * DELTA,
+                person("employment_income", period) + mask * delta,
             )
-            alt_person = alt_simulation.person
-            household_net_income = person.household(
-                "household_net_income", period
-            )
-            household_net_income_higher_earnings = alt_person.household(
-                "household_net_income", period
-            )
-            increase = (
-                household_net_income_higher_earnings - household_net_income
-            )
-            mtr_values += where(mask, 1 - increase / DELTA, 0)
+            alt_person = alt_sim.person
+            netinc_alt = alt_person.household("household_net_income", period)
+            increase = netinc_alt - netinc_base
+            mtr_values += where(mask, 1 - increase / delta, 0)
         return mtr_values
 
 
