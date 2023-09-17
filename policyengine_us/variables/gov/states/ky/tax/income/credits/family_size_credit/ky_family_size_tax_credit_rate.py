@@ -24,4 +24,4 @@ class ky_family_size_tax_credit_rate(Variable):
         capped_family_size = min_(family_size, p.family_size_cap)
         poverty_index = p1 + padd * (capped_family_size - 1)
         share = income / poverty_index
-        return p.percentage.calc(share, right=True)
+        return p.rate.calc(share, right=True)
