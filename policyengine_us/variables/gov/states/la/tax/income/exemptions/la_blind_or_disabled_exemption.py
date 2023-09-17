@@ -15,6 +15,9 @@ class la_blind_or_disabled_exemption(Variable):
             period
         ).gov.states.la.tax.income.exemptions.blind_or_disabled
         blind_head = tax_unit("blind_head", period)
+        blind_spouse = tax_unit("blind_spouse", period)
         disabled_head = tax_unit("disabled_head", period)
+        disabled_spouse = tax_unit("disabled_spouse", period)
         head_eligible = (blind_head | disabled_head).astype(int)
-        return head_eligible * amount
+        spouse_eligible = (blind_spouse | disabled_spouse).astype(int)
+        return (head_eligible + spouse_eligible) * amount
