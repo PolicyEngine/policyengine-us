@@ -14,7 +14,7 @@ class ct_property_tax_credit(Variable):
         agi = tax_unit("ct_agi", period)
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.states.ct.tax.income.credits.property_tax
-        rate = p.reduction.amount
+        rate = p.reduction.percentage
         start = p.reduction.start[filing_status]
         real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
         max_amount = p.max_amount
