@@ -1,4 +1,4 @@
-- name: Household 1 person, adjusted gross income  $20,000 is eligible for the senior citizens tax credit.
+- name: 1 person Household, adjusted gross income of $20,000 is eligible for the senior citizens tax credit.
   period: 2022
   input:
     wv_agi: 20_000
@@ -9,7 +9,7 @@
   output:
     wv_senior_citizens_tax_credit_eligible: true
 
-- name: Household 2 person, adjusted gross income  $30,000 is ineligible for the senior citizens tax credit.
+- name: 2 person Household, adjusted gross income of $30,000 is ineligible for the senior citizens tax credit.
   period: 2022
   input:
     wv_agi: 30_000
@@ -20,7 +20,7 @@
   output:
     wv_senior_citizens_tax_credit_eligible: false
 
-- name: Household 3 person, adjusted gross income  $30,000 is eligible for the senior citizens tax credit.
+- name: 3 person Household, adjusted gross income of $30,000 is eligible for the senior citizens tax credit.
   period: 2022
   input:
     wv_agi: 30_000
@@ -31,7 +31,7 @@
   output:
     wv_senior_citizens_tax_credit_eligible: false
 
-- name: Household 4 person, adjusted gross income  $50,000 is ineligible for the senior citizens tax credit.
+- name: 4 person Household, adjusted gross income of $50,000 is ineligible for the senior citizens tax credit.
   period: 2022
   input:
     wv_agi: 50_000
