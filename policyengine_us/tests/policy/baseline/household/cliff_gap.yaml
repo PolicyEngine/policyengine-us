@@ -1,0 +1,39 @@
+- name: household_net_income test TX-netinc-base
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:
+    spm_unit_net_income: 151_539.00
+    household_net_income: 151_539.00
+
+- name: household_net_income test TX-netinc-alt
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 102_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:
+    spm_unit_net_income: 152_670.00
+    household_net_income: 152_670.00
+
+- name: cliff_gap test TX-cliff_gap
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    age: 40
+    employment_income: 100_000
+    taxable_interest_income: 100_000
+    state_fips: 48  # TX
+  output:  # as expected from above two test results
+    cliff_gap: 0
+    # using PEUS 0.469.0, cliff_gap test results are:
+    #
+    # Test 'cliff_gap test TX-cliff_gap':
+    #   cliff_gap@2021: [78752.61] differs from 0.0
+    #                   with an absolute margin [78752.61] > 0.01
