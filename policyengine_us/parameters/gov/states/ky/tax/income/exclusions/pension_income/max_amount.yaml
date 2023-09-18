@@ -1,0 +1,23 @@
+description: Kentucky allows an exclusion of taxable pension income to get its income that is capped at this amount.
+metadata:
+  label: Kentucky maximum pension exclusion amount
+  period: year
+  unit: currency-USD
+  breakdown:
+  - filing_status
+  reference:
+  - title: 2021 Kentucky Individual Income Tax Forms
+    href: https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=28
+  - title: 2021 KENTUCKY PENSION INCOME EXCLUSION Schedule P
+    href: https://revenue.ky.gov/Forms/Schedule%20P-2021.pdf
+
+JOINT:
+  2021-01-01: 62_220
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 31_110 
+WIDOW:
+  2021-01-01: 31_110
+SINGLE:
+  2021-01-01: 31_110
+SEPARATE:
+  2021-01-01: 31_110
