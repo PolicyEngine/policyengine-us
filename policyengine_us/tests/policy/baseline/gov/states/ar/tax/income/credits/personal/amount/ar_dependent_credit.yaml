@@ -21,3 +21,19 @@
     state_code: AR
   output:
     ar_dependent_credit: 58
+
+- name: Arkansas personal credit for 2 dependents of taxpayer including 1 disabled dependent $29*2 + $500*1 = $558
+  period: 2022
+  input:
+    people:
+      dependent1:
+        is_disabled: false
+        is_tax_unit_dependent: true
+      dependent2:
+        is_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [dependent1, dependent2]
+  output:
+    ar_dependent_credit: 558
