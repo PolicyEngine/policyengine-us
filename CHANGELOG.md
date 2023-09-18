@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.469.0] - 2023-09-15 19:38:29
+
+### Added
+
+- Child Health Plan Plus
+
 ## [0.468.0] - 2023-09-15 04:34:13
 
 ### Added
@@ -5297,6 +5303,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.468.0...0.469.0
 [0.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.467.0...0.468.0
 [0.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.1...0.467.0
 [0.466.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.0...0.466.1
