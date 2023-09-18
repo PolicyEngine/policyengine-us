@@ -8,7 +8,7 @@ class mt_social_security_benefit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf" ""
+        "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf"
     )
     defined_for = StateCode.MT
 
@@ -38,13 +38,13 @@ class mt_social_security_benefit(Variable):
         extra_income = max_(
             exceeding_income - exceeding_income_cap, 0
         )  # Line 13
-        temp1 = min_(exceeding_income, exceeding_income_cap)  # Line 14
-        temp2 = min_(
-            temp1 * exceeding_income_fraction,
+        capped_exceeding_income = min_(exceeding_income, exceeding_income_cap)  # Line 14
+        capped_benefit_amount = min_(
+            capped_exceeding_income * exceeding_income_fraction,
             net_benefits * total_benefit_fraction1,
         )  # Line 16
-        temp3 = extra_income * extra_income_fraction + temp2  # Line 18
+        additional_benefit_amount = extra_income * extra_income_fraction + capped_benefit_amount  # Line 18
 
         return eligibility * min_(
-            temp3, net_benefits * total_benefit_fraction2
+            additional_benefit_amount, net_benefits * total_benefit_fraction2
         )

@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class mt_modified_income(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Montana modified income"
+    label = "Montana modified income for the taxable social security benefits"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -12,7 +12,6 @@ class mt_modified_income(Variable):
     )
     defined_for = StateCode.MT
     adds = [
-        "mt_total_income",
         "mt_agi_additions",
         "tax_exempt_interest_income",
         "mt_modified_income_benefit_fraction",
