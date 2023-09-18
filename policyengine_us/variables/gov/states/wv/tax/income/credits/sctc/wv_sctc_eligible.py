@@ -10,7 +10,7 @@ class wv_senior_citizens_tax_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         wv_agi = tax_unit("wv_agi", period)
-        property_value = tax_unit("assessed_property_value", period)
+        assessed_value = add(tax_unit, period, ["assessed_property_value"])
         # amt_income
 
         p = parameters(period).gov.states.wv.tax.income.credits.sctc
