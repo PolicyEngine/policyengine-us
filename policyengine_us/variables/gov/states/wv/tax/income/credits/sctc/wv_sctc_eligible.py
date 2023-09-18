@@ -19,5 +19,5 @@ class wv_senior_citizens_tax_credit_eligible(Variable):
         income_threshold = p.fpg_percentage * fpg
 
         return (wv_agi <= income_threshold) & (
-            p.home_value_threshold > property_value
+            p.home_value_threshold > assessed_value
         )
