@@ -7,7 +7,6 @@ class mi_standard_deduction_tier_three(Variable):
     label = "Michigan standard deduction"
     unit = USD
     definition_period = YEAR
-    documentation = "Michigan standard deduction of qualifying age."
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
@@ -16,18 +15,17 @@ class mi_standard_deduction_tier_three(Variable):
     defined_for = StateCode.MI
 
     def formula(tax_unit, period, parameters):
+        # Part 9 (c) - a person born in 1946 through 1952 and 
+        # beginning January 1, 2018 for a person born after 1945 who has retired as of January 1, 2013,
+        # the sum of the deductions under subsection (1)(f)(i), (ii), and (iv) is limited to $35,000.00 for a single return 
+        # and, except as otherwise provided under this subdivision, $55,000.00 for a joint return
         p = parameters(
             period
         ).gov.states.mi.tax.income.deductions.standard.tier_three
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
 
-        age_older = tax_unit("greater_age_head_spouse", period)
-        # Michigan Standard Deduction
-        sd3_birth_year = -(age_older - period.start.year)
-        sd3_age_eligibility = (age_older >= p.min_age) & (
-            sd3_birth_year >= p.birth_year
-        )
+        sd3_age_eligibility = tax_unit("mi_standard_deduction_tier_three_eligible", period)
         sd3_amount = p.amount[filing_status]
 
         return sd3_age_eligibility * sd3_amount
