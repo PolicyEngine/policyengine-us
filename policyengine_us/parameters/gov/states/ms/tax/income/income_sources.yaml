@@ -11,11 +11,11 @@ values:
     - alimony_income
     - taxable_pension_income
     - unemployment_compensation
+
 metadata:
   unit: list
-  reference:
-   - title: Mississippi Resident INCOME TAX Instruction
-      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12
-  - title: Mississippi Income Tax and Withholding Article 1
+  reference: 
+    - title: Mississippi Resident INCOME TAX Instruction
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12 # Line 39 - 49
+    - title: Mississippi Income Tax and Withholding Article 1
       href: https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-18/
-
