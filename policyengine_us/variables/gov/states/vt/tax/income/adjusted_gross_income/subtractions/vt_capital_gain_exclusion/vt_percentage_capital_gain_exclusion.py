@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class vt_percentage_capital_gain_exlcusion(Variable):
+class vt_percentage_capital_gain_exclusion(Variable):
     value_type = float
     entity = TaxUnit
     label = "Vermont percentage capital gain exclusion"
