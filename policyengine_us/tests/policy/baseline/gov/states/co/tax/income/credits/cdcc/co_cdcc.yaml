@@ -58,6 +58,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        income_tax_before_credits: 0
         capped_cdcc: 0
         tax_unit_childcare_expenses: 8_000
     households:
@@ -83,6 +84,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        income_tax_before_credits: 0
         capped_cdcc: 0
         tax_unit_childcare_expenses: 3_000
     households:
