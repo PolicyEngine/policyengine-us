@@ -7,7 +7,7 @@ class la_disability_income_exemption(Variable):
     label = "Louisiana disability income exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.legis.la.gov/legis/Law.aspx?d=102133"
+    reference = "https://www.legis.la.gov/legis/Law.aspx?d=102133"  # (B)
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):

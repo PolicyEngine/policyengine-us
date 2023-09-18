@@ -1,4 +1,4 @@
-description: Louisiana provides an exemption of this amount for dependents. 
+description: Louisiana provides an exemption of this amount for each dependent. 
 values:
   # Tax Foundation confirms it's been $1,000 since at least 1983.
   1983-01-01: 1_000
@@ -7,10 +7,10 @@ metadata:
   reference:
     - title: Louisiana Laws Revised Statutes, Title 47 — Revenue and taxation, RS 47:294 —  Personal exemptions and credit for dependents, B
       href: https://www.legis.la.gov/legis/Law.aspx?d=101761
-    - title: "Louisiana Individual Income Tax"
+    - title: Louisiana Individual Income Tax
       href: https://revenue.louisiana.gov/individualincometax
-    - title: "Tax Computation Worksheet"
-      href: https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf
+    - title: Tax Computation Worksheet R-6935 
+      href: https://www.revenue.louisiana.gov/taxforms/6935(11_02)F.pdf#page=1
   unit: currency-USD
   period: year
   label: Louisiana dependent exemption amount

@@ -11,11 +11,13 @@ class la_aged_exemption(Variable):
     defined_for = StateCode.LA
 
     def formula(tax_unit, period, parameters):
+        person = tax_unit.members
+        pension_income = person("pension_income", period)
+        age = person("age", period)
         p = parameters(period).gov.states.la.tax.income.exemptions.aged
-        aged_head = (tax_unit("age_head", period) >= p.thresholds[-1]).astype(
-            int
+        meets_age_test = age >= p.thresholds[-1]
+        deductible_pensions = meets_age_test * min_(
+            pension_income, p.amounts[-1]
         )
-        aged_spouse = (
-            tax_unit("age_spouse", period) >= p.thresholds[-1]
-        ).astype(int)
-        return aged_head * p.amounts[-1] + aged_spouse * p.amounts[-1]
+
+        return tax_unit.sum(deductible_pensions)
