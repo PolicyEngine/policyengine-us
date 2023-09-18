@@ -1,4 +1,4 @@
-- name: Calculation of self-employment
+- name:Calculation with self-employment taxes
   period: 2021
   input:
     state_code: MS
@@ -6,7 +6,7 @@
   output:
     ms_self_employment_subtraction: 10_000
 
-- name: Calculation of no self-employment
+- name: Calculation without self-employment taxes
   period: 2021
   input:
     state_code: MS
