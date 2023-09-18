@@ -22,17 +22,16 @@ class vt_capital_gain_exclusion(Variable):
         )
         p = parameters(
             period
-        ).gov.states.vt.tax.income.agi.capital_gain_exclusion
+        ).gov.states.vt.tax.income.agi.exclusions.capital_gain
         # The flat exclusion is the less of $5,000 or the actual amount of net adjusted capital gains
-        flat_exclusion = min_(adjusted_net_capital_gain, p.flat.max)
-        # The percentage exclusion equals to 40% of the adjusted net capital gain and has a maximum value
-        percentage_exclusion = (
-            adjusted_net_capital_gain * p.percentage.percentage
+        flat_exclusion = min_(adjusted_net_capital_gain, p.flat.max_amount)
+        # Get percentage exclusion
+        percentage_exclusion = tax_unit(
+            "vt_percentage_capital_gain_exlcusion", period
         )
-        percentage_exclusion = min_(percentage_exclusion, p.percentage.max)
         # Filer can choose from flat or percentage exclusion. Assume the filer will always choose the larger one
         chosen_exclusion = max_(flat_exclusion, percentage_exclusion)
         # The chosen exclusion should not exceed 40% of federal taxable income
         federal_taxable_income = tax_unit("taxable_income", period)
-        cap = federal_taxable_income * p.cap
+        cap = federal_taxable_income * p.rate
         return min_(chosen_exclusion, cap)
