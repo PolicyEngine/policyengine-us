@@ -27,7 +27,7 @@ class cliff_gap(Variable):
     def formula(person, period, parameters):
         simulation = person.simulation
         alt_simulation = simulation.get_branch(f"all_adults_2k_pay_rise")
-        delta = parameters(period).simulation.cliff_threshold
+        delta = parameters(period).simulation.cliff_delta
         for variable in simulation.tax_benefit_system.variables:
             if variable not in simulation.input_variables:
                 alt_simulation.delete_arrays(variable)
