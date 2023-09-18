@@ -18,4 +18,6 @@ class wv_senior_citizens_tax_credit_eligible(Variable):
         fpg = tax_unit("tax_unit_fpg", period)
         income_threshold = p.fpg_percentage * fpg
 
-        return (wv_agi <= income_threshold) & (p.home_value—-threshold > property_value)
+        return (wv_agi <= income_threshold) & (
+            p.home_value_threshold > property_value
+        )
