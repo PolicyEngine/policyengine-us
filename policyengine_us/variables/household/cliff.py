@@ -6,13 +6,14 @@ class cliff_evaluated(Variable):
     entity = Person
     label = "cliff evaluated"
     unit = USD
-    documentation = "Whether this person's cliff has been simulated. If not, then the cliff gap is assumed to be zero."
+    documentation = "Whether this person's cliff has been simulated. If not, the cliff gap is assumed to be zero."
     definition_period = YEAR
 
     def formula(person, period, parameters):
         adult_index_values = person("adult_index", period)
         cliff_adult_count = parameters(period).simulation.cliff_adults
-        return adult_index_values <= cliff_adult_count
+        is_adult = person("is_adult", period)
+        return is_adult & (adult_index_values <= cliff_adult_count)
 
 
 class cliff_gap(Variable):
@@ -49,7 +50,7 @@ class is_on_cliff(Variable):
     value_type = bool
     entity = Person
     label = "is on a tax-benefit cliff"
-    documentation = "Whether this person would be worse off if their employment income were $2,000 higher."
+    documentation = "Whether this person would be worse off if their employment income were higher."
     definition_period = YEAR
 
     def formula(person, period, parameters):
