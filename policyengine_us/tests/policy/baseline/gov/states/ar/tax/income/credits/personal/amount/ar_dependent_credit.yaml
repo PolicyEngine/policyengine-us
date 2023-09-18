@@ -32,6 +32,10 @@
       dependent2:
         is_disabled: true
         is_tax_unit_dependent: true
+    households:
+      household:
+        members: [dependent1, dependent2]
+        state_code: AR
     tax_units:
       tax_unit:
         members: [dependent1, dependent2]
