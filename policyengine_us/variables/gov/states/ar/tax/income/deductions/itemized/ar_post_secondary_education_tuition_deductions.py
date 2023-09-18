@@ -7,7 +7,7 @@ class ar_post_secondary_education_tuition_deductions(Variable):
     label = "Arkansas post-secondary education tuition deduction"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=21"
+    reference = "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/AR1075_2022.pdf#page=1"
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
@@ -19,14 +19,15 @@ class ar_post_secondary_education_tuition_deductions(Variable):
 
         four_year_deduction = min_(
             p.expense_rate.tuition * tuition_expense,
-            p.amount.four_year_college,
+            p.weighted_average_tuition.four_year_college,
         )
         two_year_deduction = min_(
-            p.expense_rate.tuition * tuition_expense, p.amount.two_year_college
+            p.expense_rate.tuition * tuition_expense,
+            p.weighted_average_tuition.two_year_college,
         )
         technical_institute_deduction = min_(
             p.expense_rate.tuition * tuition_expense,
-            p.amount.technical_institutes,
+            p.weighted_average_tuition.technical_institutes,
         )
 
         person_college_deduction = where(
