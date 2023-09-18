@@ -1,0 +1,24 @@
+- name: Calculation of total taxable income with following variables
+  period: 2021
+  input:
+    state_code: MS
+    employment_income: 10_000
+    qualified_business_income: 100_000
+    capital_gains: 50_000
+    rent: 40_000
+    farm_income: 1_000
+    interest_income: 2_000
+  output:
+    ms_taxable_income: 203_000
+
+- name: Calculation of total taxable income with following variables
+  period: 2021
+  input:
+    state_code: MS
+    employment_income: 10_000
+    qualified_dividend_income: 4_500
+    alimony_income: 3_500
+    taxable_pension_income: 10_000
+    unemployment_compensation: 1_000
+  output:
+    ms_taxable_income: 29_000
