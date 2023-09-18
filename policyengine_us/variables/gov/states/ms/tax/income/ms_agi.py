@@ -15,4 +15,4 @@ class ms_agi(Variable):
 
     # AGI = Income - Total adjustments from gross income
     adds = ["ms_taxable_income"]
-    subtracts = ["ms_agi_subtractions"]
+    subtracts = ["ms_agi_adjustments"]

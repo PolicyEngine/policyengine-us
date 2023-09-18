@@ -1,0 +1,28 @@
+description: Mississippi counts these adjustments from the federal adjusted gross income.
+values:
+  2021-01-01:
+    # ira_contributions
+    - ms_self_employment_adjustment
+    # Payment to Self-Employed SEP and Qualified Plans
+    # Interest Penalty on Early Withdrawal of Savings
+    # Allmony and Separate Maintenance Paid
+    # Moving Expense
+    # National Guard and Reserve Pay
+    # MPACT - - Mississippi Prepaid Affordable College Tuition Program AND/OR MACS - Mississippi Affordable College Savings
+    # Self-Employed Health Insurance Deduction
+    # Health Savings Account Deductions 
+    # Catastrophe Savings Account Deductions
+    # Self-Employment Tax Deduction
+    # First-Time Home Buyer Savings Account
+    # Agricultural Disaster Program Compensation
+    # Mississippi Achieving a Better Life Experience (ABLE) Act Deduction
+
+metadata:
+  unit: list
+  reference: 
+    - title: Mississippi Resident INCOME TAX Instruction
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=12
+    - title: 2020 Mississippi Code Title 27 - Income Tax and Withholding Article 1
+      href: https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-18/ # 1 - 7
+    - title: Mississippi Resident Individual Income Tax Return 2022
+      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf#page=2  # Line 50 - 64

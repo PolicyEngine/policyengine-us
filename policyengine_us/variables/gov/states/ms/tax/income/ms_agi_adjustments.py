@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ms_agi_subtractions(Variable):
+class ms_agi_adjustments(Variable):
     value_type = float
     entity = TaxUnit
     label = "Mississippi adjustments to federal adjusted gross income"
@@ -13,4 +13,4 @@ class ms_agi_subtractions(Variable):
     )
     defined_for = StateCode.MS
 
-    adds = "gov.states.ms.tax.income.subtractions.subtractions"
+    adds = "gov.states.ms.tax.income.adjustments.adjustments"
