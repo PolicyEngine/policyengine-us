@@ -21,7 +21,4 @@ class mi_retirement_benefits_deduction_tier_three_eligible(Variable):
 
         age_older = tax_unit("greater_age_head_spouse", period)
         # Retirement Benefits Deduction Tier 3
-        return (age_older >= p.min_age) & (
-            age_older <= p.max_age
-        )
-        
+        return (age_older >= p.min_age) & (age_older <= p.max_age)

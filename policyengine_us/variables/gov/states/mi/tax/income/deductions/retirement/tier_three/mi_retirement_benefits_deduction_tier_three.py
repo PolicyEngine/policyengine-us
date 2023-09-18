@@ -19,7 +19,9 @@ class mi_retirement_benefits_deduction_tier_three(Variable):
             period
         ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_three
 
-        rb3_age_eligibility = tax_unit("mi_retirement_benefits_deduction_tier_three_eligible", period)
+        rb3_age_eligibility = tax_unit(
+            "mi_retirement_benefits_deduction_tier_three_eligible", period
+        )
         rb3_amount = p.amount
 
         person = tax_unit.members
