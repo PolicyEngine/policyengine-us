@@ -13,6 +13,7 @@ class az_military_retirement_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income
+        #
         military_retirement_pay = tax_unit(
             "military_retirement_pay", period
         )
