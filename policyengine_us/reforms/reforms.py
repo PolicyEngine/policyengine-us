@@ -16,15 +16,7 @@ def create_structural_reforms_from_parameters(parameters, period):
         parameters, period
     )
 
-    if afa_reform is not None:
-        if winship_reform is not None:
-            warnings.warn(
-                "Both the American Family Act and the Winship EITC reform are enabled. Multiple structural reforms are not yet supported, so only the American Family Act will be applied."
-            )
-        return afa_reform
-    elif winship_reform is not None:
-        return winship_reform
-    elif dc_kccatc_reform is not None:
-        return dc_kccatc_reform
-    elif dc_tax_threshold_joint_ratio_reform is not None:
-        return dc_tax_threshold_joint_ratio_reform
+    reforms = [afa_reform, winship_reform, dc_kccatc_reform]
+    reforms = tuple(filter(lambda x: x is not None, reforms))
+
+    return reforms
