@@ -1,4 +1,4 @@
-- name: test1
+- name: 2022 total retirement income
   period: 2022
   input:
     pension_income: 100
@@ -6,12 +6,12 @@
     dividend_income: 100
     rental_income: 100
     capital_gains: 100
-    ga_exclusion_countable_earned_income: 4_000
+    ga_exclusion_countable_earned_income: 3_000
     state_code: GA
   output:
-    ga_retirement_income: 4_500
+    ga_retirement_income: 3_500
 
-- name: test2
+- name: 2023 total retiremnet income
   period: 2023
   input:
     pension_income: 1_000
