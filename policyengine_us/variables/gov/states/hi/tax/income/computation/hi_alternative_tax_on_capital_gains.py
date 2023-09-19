@@ -26,7 +26,7 @@ class hi_alternative_tax_on_capital_gains(Variable):
             claimed,
         )
 
-        # What if line 1 < line 13 ??????????
+        # What if line 1 < line 13
         eligible_income = max_(
             0, taxable_income - ineligible_income
         )  # net capital gains eligble for alternative tax
@@ -52,23 +52,8 @@ class hi_alternative_tax_on_capital_gains(Variable):
         )
 
         # income_tax
-        income_tax = select(
-            [
-                filing_status == statuses.SINGLE,
-                filing_status == statuses.SEPARATE,
-                filing_status == statuses.JOINT,
-                filing_status == statuses.WIDOW,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-            ],
-            [
-                rate_p.single.calc(taxable_income),
-                rate_p.separate.calc(taxable_income),
-                rate_p.joint.calc(taxable_income),
-                rate_p.widow.calc(taxable_income),
-                rate_p.head_of_household.calc(taxable_income),
-            ],
-        )
-
+        income_tax = tax_unit("hi_income_tax_before_credits", period)
+        
         alternative_tax = ineligible_tax + eligible_income * p.rate  # line 17
 
         return min_(income_tax, alternative_tax)
