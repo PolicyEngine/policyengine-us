@@ -36,9 +36,6 @@ class sc_tuition_credit(Variable):
         uncapped_credit = (
             min_(qualified_tuition_expenses, tuition_limit) * p.rate
         )
+        tuition_credit = min_(uncapped_credit, p.max_amount.credit)
         # compare line 7 with credit max amount, take lesser amount
-        return where(
-            sc_tuition_credit_eligible,
-            min_(uncapped_credit, p.max_amount.credit),
-            0,
-        )
+        return where(sc_tuition_credit_eligible, tuition_credit, 0)
