@@ -53,7 +53,7 @@ class hi_alternative_tax_on_capital_gains(Variable):
 
         # income_tax
         income_tax = tax_unit("hi_income_tax_before_credits", period)
-        
+
         alternative_tax = ineligible_tax + eligible_income * p.rate  # line 17
 
         return min_(income_tax, alternative_tax)
