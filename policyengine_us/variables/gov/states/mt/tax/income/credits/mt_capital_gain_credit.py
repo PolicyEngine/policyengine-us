@@ -14,5 +14,5 @@ class mt_capital_gain_credit(Variable):
         p = parameters(period).gov.states.mt.tax.income.credits.capital_gain
 
         net_capital_gain = tax_unit("net_capital_gain", period)
-        # The net capital gain variable is capped at 0 
+        # The net capital gain variable is capped at 0
         return p.percentage * net_capital_gain
