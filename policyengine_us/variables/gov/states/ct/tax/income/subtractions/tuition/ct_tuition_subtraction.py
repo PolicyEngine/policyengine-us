@@ -13,7 +13,7 @@ class ct_tuition_subtraction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ct.tax.income.subtractions.tuition
         filing_status = tax_unit("filing_status", period)
-        max_amount = p.max_amount[filing_status]
+        cap = p.cap[filing_status]
         # Qualified tuition expenses as defined under Section 529(b) of the Internal Revenue Code
         tuition = add(tax_unit, period, ["qualified_tuition_expenses"])
-        return min_(tuition, max_amount)
+        return min_(tuition, cap)

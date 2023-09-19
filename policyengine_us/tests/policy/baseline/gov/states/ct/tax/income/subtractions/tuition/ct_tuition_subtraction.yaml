@@ -16,6 +16,24 @@
   output:
     ct_tuition_subtraction: 5_000
 
+- name: Head of household filing with qualified tuition expenses less than tuition subtraction max amount
+  period: 2022
+  input:
+    state_code: CT 
+    qualified_tuition_expenses: 1_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_tuition_subtraction: 1_000
+
+- name: Head of household filing with qualified tuition expenses more than tuition subtraction max amount
+  period: 2022
+  input:
+    state_code: CT
+    qualified_tuition_expenses: 7_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ct_tuition_subtraction: 5_000
+
 - name: Widow filing with qualified tuition expenses less than tuition subtraction max amount
   period: 2022
   input:
