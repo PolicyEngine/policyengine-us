@@ -13,7 +13,10 @@ class az_military_retirement_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income
-        military_retirement_pay = tax_unit(
+        head = person("is_tax_unit_spouse",
+        spouse - same 
+        head_or_spouse = head | spouse
+        military_retirement_pay = person(
             "military_retirement_pay", period
         )
         return min_(military_retirement_pay, p.military_retirement_subtraction)
