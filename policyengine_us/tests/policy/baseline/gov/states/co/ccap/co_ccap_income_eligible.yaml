@@ -1,0 +1,109 @@
+- name: In Adams, HHS = 2, agi < 43_028.52 and < 75_334.48, eligible. # fpg_rate: 235%
+  period: 2023
+  input:
+    adjusted_gross_income: 40_000
+    county: ADAMS_COUNTY_CO
+    tax_unit_size: 2
+    hhs_smi: 75_334.48
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Baca, HHS = 3, agi < 46_059.96 and < 75334.48, eligibl. # fpg_rate: 200%
+  period: 2023
+  input:
+    adjusted_gross_income: 46_000
+    county: BACA_COUNTY_CO
+    tax_unit_size: 3
+    hhs_smi: 93_060.24
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Boulder, HHS = 4, agi < 74_925 and < 110_786, eligible. # fpg_rate: 270%
+  period: 2023
+  input:
+    adjusted_gross_income: 74_000
+    county: BOULDER_COUNTY_CO
+    tax_unit_size: 4
+    hhs_smi: 110_786
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Custer, HHS = 5, agi < 64_940.04 and < 128_511.76, eligible. # fpg_rate: 200%
+  period: 2023
+  input:
+    adjusted_gross_income: 64_000
+    county: CUSTER_COUNTY_CO
+    tax_unit_size: 5
+    hhs_smi: 128_511.76
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Elbert, HHS = 6, agi < 87_396.48 and < 146_237.52, eligible. # fpg_rate: 235%
+  period: 2023
+  input:
+    adjusted_gross_income: 87_000
+    county: ELBERT_COUNTY_CO
+    tax_unit_size: 6
+    hhs_smi: 146_237.52
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Grand, HHS = 7, agi < 98_488.56 and < 149_561.1, eligible. # fpg_rate: 235%
+  period: 2023
+  input:
+    adjusted_gross_income: 98_000
+    county: GRAND_COUNTY_CO
+    tax_unit_size: 7
+    hhs_smi: 149_561.1
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Jackson, HHS = 8, agi < 109_580.52 and < 152_884.68, eligible. # fpg_rate: 235%
+  period: 2023
+  input:
+    adjusted_gross_income: 109_000
+    county: JACKSON_COUNTY_CO
+    tax_unit_size: 8
+    hhs_smi: 152_884.48
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Larimer, HHS = 9, agi < 120_672.48 and < 156_208.26, eligible. # fpg_rate: 235%
+  period: 2023
+  input:
+    adjusted_gross_income: 120_000
+    county: LARIMER_COUNTY_CO
+    tax_unit_size: 9
+    hhs_smi: 156_208.26
+    state_code: CO
+  output:
+    co_ccap_income_eligible: true
+
+- name: In Pitkin, HHS = 9, agi >= 138_645 and < 156_208.26, ineligible. # fpg_rate: 270%
+  period: 2023
+  input:
+    adjusted_gross_income: 140_000
+    county: PITKIN_COUNTY_CO
+    tax_unit_size: 9
+    hhs_smi: 156_208.26
+    state_code: CO
+  output:
+    co_ccap_income_eligible: false
+
+- name: In Weld, HHS = 9, agi >= 102_699.96 and >= 156_208.26, ineligible. # fpg_rate: 200%
+  period: 2023
+  input:
+    adjusted_gross_income: 160_000
+    county: WELD_COUNTY_CO
+    tax_unit_size: 9
+    hhs_smi: 156_208.26
+    state_code: CO
+  output:
+    co_ccap_income_eligible: false

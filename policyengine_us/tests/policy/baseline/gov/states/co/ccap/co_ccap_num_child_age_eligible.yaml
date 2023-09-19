@@ -1,0 +1,78 @@
+- name: Two child, both age eligible for cccap.
+  period: 2023
+  input:
+    people:
+      child1:
+        co_ccap_child_age_eligible: true
+      child2:
+        co_ccap_child_age_eligible: true
+    households:
+      household: 
+        members: [child1, child2]
+        state_code: CO
+  output:
+    co_ccap_num_child_age_eligible: 2
+
+- name: Two child, one age eligible for cccap, the other not.
+  period: 2023
+  input:
+    people:
+      child1:
+        co_ccap_child_age_eligible: true
+      child2:
+        co_ccap_child_age_eligible: false
+    households:
+      household: 
+        members: [child1, child2]
+        state_code: CO
+  output:
+    co_ccap_num_child_age_eligible: 1
+
+- name: Two child, both age ineligible for cccap.
+  period: 2023
+  input:
+    people:
+      child1:
+        co_ccap_child_age_eligible: false
+      child2:
+        co_ccap_child_age_eligible: false
+    households:
+      household: 
+        members: [child1, child2]
+        state_code: CO
+  output:
+    co_ccap_num_child_age_eligible: 0
+
+- name: Three child, two age eligible for cccap, the other not.
+  period: 2023
+  input:
+    people:
+      child1:
+        co_ccap_child_age_eligible: true
+      child2:
+        co_ccap_child_age_eligible: false
+      child3:
+        co_ccap_child_age_eligible: true
+    households:
+      household: 
+        members: [child1, child2, child3]
+        state_code: CO
+  output:
+    co_ccap_num_child_age_eligible: 2
+
+- name: Three child, one age eligible for cccap, the other two not.
+  period: 2023
+  input:
+    people:
+      child1:
+        co_ccap_child_age_eligible: true
+      child2:
+        co_ccap_child_age_eligible: false
+      child3:
+        co_ccap_child_age_eligible: false
+    households:
+      household: 
+        members: [child1, child2, child3]
+        state_code: CO
+  output:
+    co_ccap_num_child_age_eligible: 1

@@ -1,9 +1,0 @@
-- name: something to be tested
-  period: 2023
-  input:
-    # co_taxable_income: 10_000
-    county: ADAMS_COUNTY_CO
-    tax_unit_size: 2
-    state_code: CO
-  output:
-    co_ccap_entry_eligible:  5_336.19
