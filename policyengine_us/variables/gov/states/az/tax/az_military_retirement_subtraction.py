@@ -19,4 +19,4 @@ class az_military_retirement_subtraction(Variable):
         military_retirement_pay = person(
             "military_retirement_pay", period
         )
-        return min_(military_retirement_pay, p.military_retirement_subtraction)
+        return min_(tax_unit.sum(eligible_military_pay), p.military_retirement_subtraction)
