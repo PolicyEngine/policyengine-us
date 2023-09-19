@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_income_tax_before_refundable_credits(Variable):
+class az_military_retirement_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona Military Retirement Subtraction"
