@@ -1,7 +1,7 @@
 - name: Single filing with qualified tuition expenses less than tuition subtraction max amount
   period: 2022
   input:
-    state_code: CT 
+    state_code: CT
     qualified_tuition_expenses: 1_000
     filing_status: SINGLE
   output:
