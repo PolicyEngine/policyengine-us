@@ -31,3 +31,60 @@
         members: [person1, person2]
   output:
     ar_aged_credit: 29
+
+- name: Arkansas personal credit for two non_aged taxpayers under 64 is $0
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 64
+      person2:
+        age: 50
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ar_aged_credit: 0
+
+- name: Arkansas personal credit for two aged taxpayers over 65 is $29*2=$58
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 70
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ar_aged_credit: 58
+
+- name: Arkansas personal credit for one non_aged taxpayer under 64 and two aged taxpayers over 65 is $29*2=$58
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 64
+      person2:
+        age: 65
+      person3:
+        age: 70
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    ar_aged_credit: 58
+
