@@ -14,4 +14,9 @@ class ar_personal_credits(Variable):
     )
     defined_for = StateCode.AR
 
-    adds = ["ar_aged_credit", "ar_blind_credit", "ar_deaf_credit", "ar_dependent_credit"]
+    adds = [
+        "ar_aged_credit",
+        "ar_blind_credit",
+        "ar_deaf_credit",
+        "ar_dependent_credit",
+    ]
