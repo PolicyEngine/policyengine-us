@@ -1,0 +1,15 @@
+- name: filer has 1,000 charitable contribution
+  period: 2021
+  input:
+    charitable_deduction: 1_000
+    state_code: VT
+  output:
+    vt_charitable_contribution_credit: 50
+
+- name: filer has 30,000 charitable contribution
+  period: 2022
+  input:
+    charitable_deduction: 30_000
+    state_code: VT
+  output:
+    vt_charitable_contribution_credit: 1_000
