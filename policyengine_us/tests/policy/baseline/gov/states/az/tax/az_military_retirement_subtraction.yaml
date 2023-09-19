@@ -1,0 +1,39 @@
+- name: Year 2018 subtraction amount (retirement amount more than 2500 dollars)
+  period: 2018
+  input:
+    state_code: AZ
+    military_retirement_pay: 3_000
+  output:
+    az_military_retirement_subtraction: 2_500
+
+- name: Year 2018 subtraction amount (retirement amount less than 2500 dollars)
+  period: 2018
+  input:
+    state_code: AZ
+    military_retirement_pay: 2_000
+  output:
+    az_military_retirement_subtraction: 2_000
+
+- name: Year 2019 subtraction amount (retirement amount more than 3500 dollars)
+  period: 2019
+  input:
+    state_code: AZ
+    military_retirement_pay: 4_000
+  output:
+    az_military_retirement_subtraction: 3_500
+
+- name: Year 2019 subtraction amount (retirement amount less than 3500 dollars)
+  period: 2019
+  input:
+    state_code: AZ
+    military_retirement_pay: 3_000
+  output:
+    az_military_retirement_subtraction: 3_000
+
+- name: Years after 2019 subtraction amount 
+  period: 2021
+  input:
+    state_code: AZ
+    military_retirement_pay: 5_000
+  output:
+    az_military_retirement_subtraction: 5_000
