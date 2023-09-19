@@ -18,7 +18,7 @@ class hi_dependent_care_benefits(Variable):
         qualified_expense_amount = tax_unit(
             "tax_unit_childcare_expenses", period
         )
-        # married persons must fi le a joint return to claim the credit
+        # married persons must file a joint return to claim the credit
         # if single, the min will be his/her income
         capped_expenses = min_(dcb_amount, qualified_expense_amount)
         min_head_spouse_earned = tax_unit("hi_min_head_spouse_earned", period)
