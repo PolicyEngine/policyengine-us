@@ -9,7 +9,7 @@ from policyengine_core.simulations import (
     Microsimulation as CoreMicrosimulation,
     IndividualSim as CoreIndividualSim,
 )
-from policyengine_us.data import DATASETS, CPS_2023
+from policyengine_us.data import DATASETS, CPS_2023, EnhancedCPS
 from policyengine_us.tools.taxcalc.generate_taxcalc_variable import (
     add_taxcalc_variable_aliases,
 )
@@ -77,7 +77,7 @@ class Simulation(CoreSimulation):
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
-    default_dataset = CPS_2023
+    default_dataset = EnhancedCPS
     default_dataset_year = 2023
     default_role = "member"
     default_calculation_period = 2023
