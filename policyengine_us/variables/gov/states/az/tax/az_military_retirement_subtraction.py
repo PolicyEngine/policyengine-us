@@ -22,6 +22,7 @@ class az_military_retirement_subtraction(Variable):
         head_or_spouse = head | spouse
         military_retirement_pay = person("military_retirement_pay", period)
         eligible_military_pay = military_retirement_pay * head_or_spouse
-        capped_military_pay = min_(eligible_military_pay, p.military_retirement_subtraction)
+        capped_military_pay = min_(
+            eligible_military_pay, p.military_retirement_subtraction
+        )
         return tax_unit.sum(capped_military_pay)
-           
