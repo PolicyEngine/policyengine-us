@@ -1,0 +1,39 @@
+- name: Eligible for exemption because retired from federal government.
+  period: 2022
+  input:
+    retired_from_federal_government: true
+    retired_from_ky_government: false
+    receives_railroad_benefits: false
+    state_code: KY
+  output:
+    ky_pension_income_exclusion_exemption_eligible: true
+
+- name: Eligible for exemption because retired from KY government.
+  period: 2022
+  input:
+    retired_from_federal_government: false
+    retired_from_ky_government: true
+    receives_railroad_benefits: false
+    state_code: KY
+  output:
+    ky_pension_income_exclusion_exemption_eligible: true
+
+- name: Eligible for exemption because receives railroad benefits.
+  period: 2022
+  input:
+    retired_from_federal_government: false
+    retired_from_ky_government: false
+    receives_railroad_benefits: true
+    state_code: KY
+  output:
+    ky_pension_income_exclusion_exemption_eligible: true
+
+- name: Not eligible for exemption.
+  period: 2022
+  input:
+    retired_from_federal_government: false
+    retired_from_ky_government: false
+    receives_railroad_benefits: false
+    state_code: KY
+  output:
+    ky_pension_income_exclusion_exemption_eligible: false
