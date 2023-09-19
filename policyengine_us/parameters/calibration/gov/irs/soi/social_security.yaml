@@ -1,0 +1,11 @@
+description: Total social security.
+values:
+  2015-01-01: 605_152_093_000
+  2021-01-01: 774_017_713_000
+metadata:
+  unit: currency-USD
+  label: SOI social security
+  uprating: calibration.gov.cbo.income_by_source.taxable_social_security
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

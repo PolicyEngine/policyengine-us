@@ -7,4 +7,4 @@ from .cps import (
 
 from .raw_cps import RawCPS_2020, RawCPS_2021, RawCPS_2022
 
-from .calibrated_cps import CalibratedCPS_2023
+from .enhanced_cps import EnhancedCPS

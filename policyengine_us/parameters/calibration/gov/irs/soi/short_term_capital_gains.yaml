@@ -1,0 +1,11 @@
+description: Total short-term capital gains.
+values:
+  2015-01-01: 11_563_203_000
+  2020-01-01: 10_636_286_000
+metadata:
+  unit: currency-USD
+  label: SOI short-term capital gains
+  uprating: calibration.gov.cbo.income_by_source.net_capital_gain
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

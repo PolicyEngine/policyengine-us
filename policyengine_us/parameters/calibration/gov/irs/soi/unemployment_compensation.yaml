@@ -1,0 +1,12 @@
+description: Total unemployment compensation.
+values:
+  2015-01-01: 27_225_383_000
+  # 2020-01-01: 405_283_667_000 Remove for now to avoid spiking before we can uprate
+  2021-01-01: 27_225_383_000
+metadata:
+  unit: currency-USD
+  label: SOI unemployment compensation
+  uprating: calibration.gov.cbo.income_by_source.taxable_social_security
+  reference:
+    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income

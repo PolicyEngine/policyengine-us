@@ -12,24 +12,22 @@ import pandas as pd
 
 person_df = pd.read_csv("puf_imputed_cps_person.csv.gz", compression="gzip")
 
-POLICYENGINE_VARIABLE_DECODES = dict(
-    salaries_and_wages="employment_income",
-    business_profession_net_profit_loss="self_employment_income",
-    combined_partnership_s_corp_net_income_loss="partnership_s_corp_income",
-    elected_farm_income_schedule_j="farm_income",
-    farm_rent_net_income_loss="farm_rent_income",
-    short_term_gains_losses_net_carryover="short_term_capital_gains",
-    long_term_gains_losses_net_carryover="long_term_capital_gains",
-    tax_exempt_interest_income="tax_exempt_interest_income", # PE taxable_interest_income = SOI interest_received - PE tax_exempt_interest_income.
-    total_rents_royalties_received="rental_income",
-    qualified_dividends="qualified_dividend_income", # PE non_qualified_dividend_income = SOI dividends_included_in_agi - PE qualified_dividend_income.
-    pensions_annuities_included_in_agi="taxable_pension_income",
-    # No debt relief
-    # unemployment_compensation_in_agi="taxable_unemployment_compensation" Remove for now until we figure out how to ensure consistency with unemployment_compensation.
-    gross_social_security_benefits="social_security",
-    # No illicit income in SOI :(
-    # No miscellaneous income
-)
+FINANCIAL_VARIABLES = [
+    "employment_income",
+    "self_employment_income",
+    "partnership_s_corp_income",
+    "farm_income",
+    "farm_rent_income",
+    "short_term_capital_gains",
+    "long_term_capital_gains",
+    "taxable_interest_income",
+    "tax_exempt_interest_income",
+    "rental_income",
+    "qualified_dividend_income",
+    "non_qualified_dividend_income",
+    "taxable_pension_income",
+    "social_security",
+]
 
 class PUFExtendedCPS(Dataset):
     name = "puf_extended_cps"
@@ -42,8 +40,7 @@ class PUFExtendedCPS(Dataset):
         new_data = {}
         cps = CPS_2023()
         cps_data = cps.load()
-        policyengine_name_to_puf_name = {v: k for k, v in POLICYENGINE_VARIABLE_DECODES.items()}
-        for variable in cps.variables:
+        for variable in list(set(cps.variables) | set(FINANCIAL_VARIABLES)):
             if "_id" in variable:
                 # Append on a copy multiplied by 10
                 new_data[variable] = np.concatenate([cps_data[variable][...], cps_data[variable][...] + 1e8])
@@ -52,8 +49,16 @@ class PUFExtendedCPS(Dataset):
                 new_data[variable] = np.concatenate([cps_data[variable][...], np.zeros_like(cps_data[variable][...])])
             else:
                 # Append on a copy
-                if variable in policyengine_name_to_puf_name:
-                    new_data[variable] = np.concatenate([cps_data[variable][...], person_df[variable].values])
+                if variable in FINANCIAL_VARIABLES:
+                    if variable not in cps.variables:
+                        if variable == "social_security":
+                            ## SS is an edge case
+                            original_values = cps_data["social_security_retirement"][...] + cps_data["social_security_disability"][...]
+                        else:
+                            original_values = np.zeros_like(cps_data["employment_income"][...])
+                    else:
+                        original_values = cps_data[variable][...]
+                    new_data[variable] = np.concatenate([original_values, person_df[variable].values])
                 else:
                     new_data[variable] = np.concatenate([cps_data[variable][...], cps_data[variable][...]])
         
@@ -86,10 +91,10 @@ equivalisation = {}
 # We need to normalise the targets. Common regression targets are often 1e1 to 1e3 (this informs the scale of the learning rate).
 COUNT_HOUSEHOLDS = household_weights.sum().item()
 FINANCIAL_EQUIVALISATION = COUNT_HOUSEHOLDS
-POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e4
+POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e5
 
 # Financial totals
-
+"""
 AGI_VARIABLES = [
     "adjusted_gross_income",
     "employment_income",
@@ -111,7 +116,17 @@ for variable_name in AGI_VARIABLES:
     ).values
     targets[label] = parameters.gov.cbo.income_by_source[variable_name]
     equivalisation[label] = FINANCIAL_EQUIVALISATION
+"""
 
+# Above is commented because we'll use IRS SOI aggregates uprated by CBO forecasts, rather than just CBO forecasts (SOI aggregates have more detail)
+
+for variable_name in FINANCIAL_VARIABLES:
+    label = simulation.tax_benefit_system.variables[variable_name].label + " aggregate"
+    values_df[label] = simulation.calculate(
+        variable_name, map_to="household"
+    ).values
+    targets[label] = parameters.gov.irs.soi[variable_name]
+    equivalisation[label] = FINANCIAL_EQUIVALISATION
 
 
 # Program spending from CBO baseline projections
@@ -147,19 +162,21 @@ for program, participation in zip(
     targets[f"{label} participants"] = participation
     equivalisation[f"{label} participants"] = POPULATION_EQUIVALISATION
 
+
 # Number of tax returns by AGI size
 
-agi_returns_thresholds = parameters.gov.irs.agi.number_of_returns.thresholds
-agi_returns_values = parameters.gov.irs.agi.number_of_returns.amounts
+agi_returns_thresholds = parameters.gov.irs.soi.agi.number_of_returns.thresholds
+agi_returns_values = parameters.gov.irs.soi.agi.number_of_returns.amounts
 agi = simulation.calculate("adjusted_gross_income").values
-for i in range(3, len(agi_returns_thresholds)): # Do not train on the first three low-income AGI bands because IRS data might not be accurate.
+is_filer = simulation.calculate("income_tax").values != 0
+for i in range(len(agi_returns_thresholds)):
     lower = agi_returns_thresholds[i]
     if i == len(agi_returns_thresholds) - 1:
         upper = np.inf
     else:
         upper = agi_returns_thresholds[i + 1]
     
-    in_range = (agi >= lower) & (agi < upper)
+    in_range = (agi >= lower) * (agi < upper) * is_filer
     household_returns_in_range = simulation.map_result(
         in_range, "tax_unit", "household"
     )
@@ -168,6 +185,27 @@ for i in range(3, len(agi_returns_thresholds)): # Do not train on the first thre
     values_df[name] = household_returns_in_range
     targets[name] = agi_returns_values[i]
     equivalisation[name] = POPULATION_EQUIVALISATION
+# Total AGI aggregate by AGI band
+
+agi_returns_thresholds = parameters.gov.irs.soi.agi.total_agi.thresholds
+agi_returns_values = parameters.gov.irs.soi.agi.total_agi.amounts
+for i in range(len(agi_returns_thresholds)):
+    lower = agi_returns_thresholds[i]
+    if i == len(agi_returns_thresholds) - 1:
+        upper = np.inf
+    else:
+        upper = agi_returns_thresholds[i + 1]
+    
+    in_range = (agi >= lower) * (agi < upper) * is_filer
+    agi_in_range = agi * in_range
+    household_agi_in_range = simulation.map_result(
+        agi_in_range, "tax_unit", "household"
+    )
+
+    name = f"Total AGI from tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
+    values_df[name] = household_agi_in_range
+    targets[name] = agi_returns_values[i]
+    equivalisation[name] = FINANCIAL_EQUIVALISATION
 
 # Total population
 values_df["U.S. population"] = simulation.calculate(
@@ -247,7 +285,7 @@ def aggregate(
 
 training_log_df = pd.DataFrame()
 
-progress_bar = tqdm(range(15_000), desc="Calibrating weights")
+progress_bar = tqdm(range(50_000), desc="Calibrating weights")
 for i in progress_bar:
     adjusted_weights = torch.relu(household_weights + weight_adjustment)
     result = (
@@ -275,15 +313,17 @@ for i in progress_bar:
                 }
             )
         ])
-    weight_adjustment.data -= 1e-0 * weight_adjustment.grad
+    weight_adjustment.data -= 4e-1 * weight_adjustment.grad
     weight_adjustment.grad.zero_()
 
 training_log_df.to_csv("training_log.csv.gz", compression="gzip")
 
+from policyengine_us.data.storage import STORAGE_FOLDER
+
 class EnhancedCPS(Dataset):
     name = "enhanced_cps"
     label = "Enhanced CPS"
-    file_path = "enhanced_cps.h5"
+    file_path = STORAGE_FOLDER / "enhanced_cps.h5"
     data_format = Dataset.ARRAYS
     time_period = "2023"
 
@@ -300,6 +340,4 @@ class EnhancedCPS(Dataset):
         self.save_dataset(new_data)
 
 enhanced_cps = EnhancedCPS()
-
-cps_sim = Microsimulation(dataset="cps_2023")
-enhanced_cps_sim = Microsimulation(dataset=enhanced_cps)
+enhanced_cps.generate()

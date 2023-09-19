@@ -1,0 +1,84 @@
+description: Adjusted gross number of returns by lower AGI value.
+metadata:
+  label: Tax return counts by AGI band
+  amount_unit: currency-USD
+  threshold_unit: currency-USD
+  reference:
+    - title: IRS SOI 2021 (20in11.xls)
+brackets:
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: 10_356_651
+  - threshold:
+      2015-01-01: 5_000
+    amount:
+      2015-01-01: 10_107_828
+  - threshold:
+      2015-01-01: 10_000
+    amount:
+      2015-01-01: 10_580_466
+  - threshold:
+      2015-01-01: 15_000
+    amount:
+      2015-01-01: 10_023_674
+  - threshold:
+      2015-01-01: 20_000
+    amount:
+      2015-01-01: 9_725_840
+  - threshold:
+      2015-01-01: 25_000
+    amount:
+      2015-01-01: 9_515_795
+  - threshold:
+      2015-01-01: 30_000
+    amount:
+      2015-01-01: 16_776_306
+  - threshold:
+      2015-01-01: 40_000
+    amount:
+      2015-01-01: 13_154_096
+  - threshold:
+      2015-01-01: 50_000
+    amount:
+      2015-01-01: 22_602_996
+  - threshold:
+      2015-01-01: 75_000
+    amount:
+      2015-01-01: 14_379_692
+  - threshold:
+      2015-01-01: 100_000
+    amount:
+      2015-01-01: 22_415_415
+  - threshold:
+      2015-01-01: 200_000
+    amount:
+      2015-01-01: 7_615_358
+  - threshold:
+      2015-01-01: 500_000
+    amount:
+      2015-01-01: 1_237_975
+  - threshold:
+      2015-01-01: 1_000_000
+    amount:
+      2015-01-01: 272_680
+  - threshold:
+      2015-01-01: 1_500_000
+    amount:
+      2015-01-01: 108_913
+  - threshold:
+      2015-01-01: 2_000_000
+    amount:
+      2015-01-01: 157_974
+  - threshold:
+      2015-01-01: 5_000_000
+    amount:
+      2015-01-01: 40_567
+  - threshold:
+      2015-01-01: 10_000_000
+    amount:
+      2015-01-01: 26_576
+  - threshold:
+      2015-01-01: 10_000_000
+    amount:
+      2015-01-01: 26_576
