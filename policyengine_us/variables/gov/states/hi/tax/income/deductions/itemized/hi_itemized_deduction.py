@@ -7,8 +7,8 @@ class hi_itemized_deduction(Variable):
     label = "Hawaii itemized deduction"
     unit = USD
     documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19",
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15"
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19"
     )
     definition_period = YEAR
     defined_for = StateCode.HI
@@ -25,7 +25,8 @@ class hi_itemized_deduction(Variable):
             for deduction in p_deductions.itemized_deductions
             if deduction
             not in [
-                "medical_expense_deduction" "salt_deduction",
+                "medical_expense_deduction",
+                "salt_deduction",
                 "interest_deduction",
                 "casualty_loss_deduction",
             ]
@@ -47,11 +48,11 @@ class hi_itemized_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         # Section 163(h)(3)(F)
         home_mortgage_interest = min_(
-            add(person, period, ["home_mortgage_interest"]),
+            add(tax_unit, period, ["home_mortgage_interest"]),
             p.home_mortgage_interest_cap[filing_status],
         )
-        investment_interest = tax_unit("investment_interest", period)
-        hi_interest_deductionm = home_mortgage_interest + investment_interest
+        investment_interest = add(tax_unit, period, ["investment_interest"])
+        hi_interest_deduction = home_mortgage_interest + investment_interest
 
         # 5. casualty_loss_deduction
         # Hawaii did not
@@ -68,9 +69,13 @@ class hi_itemized_deduction(Variable):
         total_deductions = (
             federal_deductions
             + hi_medical_expense_deduction
-            + hi_interest_deductionm
+            + hi_interest_deduction
             + hi_casualty_loss_deduction
         )
+        print(federal_deductions)
+        print(hi_medical_expense_deduction)
+        print(hi_interest_deduction)
+        print(hi_casualty_loss_deduction)
 
         # Hawaii did not suspend the overall limitation on itemized deductions
         # Cap: $166,800 ($83,400 if married filing separately)
