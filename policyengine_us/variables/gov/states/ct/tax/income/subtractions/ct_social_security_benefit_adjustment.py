@@ -10,8 +10,18 @@ class ct_social_security_benefit_adjustment(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ct.tax.income.subtractions.social_security
+        p = parameters(
+            period
+        ).gov.states.ct.tax.income.subtractions.social_security
         filing_status = tax_unit("filing_status", period)
-        ss_benefit = add(tax_unit, period, ["social_security_benefits"])
-        max_amount = p.amount[filing_status]
-        return ss_benefit if ss_benefit > max_amount else 0      
+        ss_benefit = add(tax_unit, period, ["social_security"])
+        agi = add(tax_unit, period, ["adjusted_gross_income"])
+        max_amount = p.max_amount[filing_status]
+        base_amount = p.base_amount[filing_status]
+
+        includable_ss = ss_benefit * 0.25
+        excess = agi + 0.5 * ss_benefit - base_amount
+        max_inclusion = min(includable_ss, 0.25 * excess)
+        adjusted_ss_benefit = abs(max_inclusion - includable_ss)
+        final_ss = where(agi < max_amount, 0, adjusted_ss_benefit)
+        return final_ss

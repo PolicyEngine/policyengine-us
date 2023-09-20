@@ -1,89 +1,99 @@
-- name: Single filing with social security benefit less than max amount
+- name: Single filing with adjusted gross income less than max amount
   period: 2022
   input:
     state_code: CT
-    social_security_benefits: 1_000
+    social_security: 20_000
+    adjusted_gross_income: 70_000
     filing_status: SINGLE
   output:
     ct_social_security_benefit_adjustment: 0
 
-- name: Single filing with social security benefit at least as much as the max amount
+- name: Single filing with adjusted gross income at least as much as the max amount
   period: 2022
   input:
     state_code: CT
-    social_security_benefits: 76_000
+    social_security: 20_000
+    adjusted_gross_income: 80_000
     filing_status: SINGLE
   output:
-    ct_social_security_benefit_adjustment: 76_000
-
-- name: Separate filing with social security benefit less than max amount
-  period: 2022
-  input:
-    state_code: CT
-    social_security_benefits: 1_000
-    filing_status: SEPARATE
-  output:
     ct_social_security_benefit_adjustment: 0
-    
-- name: Separate filing with social security benefit at least as much as max amount
-  period: 2022
-  input:
-    state_code: CT
-    social_security_benefits: 76_000
-    filing_status: SEPARATE
-  output:
-    ct_social_security_benefit_adjustment: 76_000
 
-- name: Joint filing with social security benefit less than max amount
+- name: Joint filing with adjusted gross income less than max amount
   period: 2022
   input:
     state_code: CT
-    social_security_benefits: 1_000
+    social_security: 20_000
+    adjusted_gross_income: 70_000
     filing_status: JOINT
   output:
     ct_social_security_benefit_adjustment: 0
 
-- name: Joint filing with social security benefit at least as much as max amount
+- name: Joint filing with adjusted gross income at least as much as the max amount
   period: 2022
   input:
     state_code: CT
-    social_security_benefits: 101_000
+    social_security: 20_000
+    adjusted_gross_income: 120_000
     filing_status: JOINT
   output:
-    ct_tuition_subtraction: 101_000
-
-- name: Widow filing with social security benefit less than max amount
-  period: 2022
-  input:
-    state_code: CT
-    social_security_benefits: 1_000
-    filing_status: WIDOW
-  output:
     ct_social_security_benefit_adjustment: 0
 
-- name: Widow filing with social security benefit at least as much as max amount
+- name: Head of household filing with adjusted gross income less than max amount
   period: 2022
   input:
     state_code: CT
-    social_security_benefits: 101_000
-    filing_status: WIDOW
-  output:
-    ct_tuition_subtraction: 101_000
-
-- name: Head of household filing with social security benefit less than max amount
-  period: 2022
-  input:
-    state_code: CT
-    social_security_benefits: 1_000
+    social_security: 20_000
+    adjusted_gross_income: 70_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
     ct_social_security_benefit_adjustment: 0
 
-- name: Head of household filing with social security benefit at least as much as max amount
+- name: Head of household filing with adjusted gross income at least as much as the max amount
   period: 2022
   input:
     state_code: CT
-    social_security_benefits: 101_000
+    social_security: 20_000
+    adjusted_gross_income: 120_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_tuition_subtraction: 101_000
+    ct_social_security_benefit_adjustment: 0
+
+- name: Separate filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    social_security: 20_000
+    adjusted_gross_income: 70_000
+    filing_status: SEPARATE
+  output:
+    ct_social_security_benefit_adjustment: 0
+
+- name: Separate filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    social_security: 20_000
+    adjusted_gross_income: 120_000
+    filing_status: SEPARATE
+  output:
+    ct_social_security_benefit_adjustment: 0
+
+- name: Widow filing with adjusted gross income less than max amount
+  period: 2022
+  input:
+    state_code: CT
+    social_security: 20_000
+    adjusted_gross_income: 70_000
+    filing_status: WIDOW
+  output:
+    ct_social_security_benefit_adjustment: 0
+
+- name: Widow filing with adjusted gross income at least as much as the max amount
+  period: 2022
+  input:
+    state_code: CT
+    social_security: 20_000
+    adjusted_gross_income: 80_000
+    filing_status: WIDOW
+  output:
+    ct_social_security_benefit_adjustment: 0
