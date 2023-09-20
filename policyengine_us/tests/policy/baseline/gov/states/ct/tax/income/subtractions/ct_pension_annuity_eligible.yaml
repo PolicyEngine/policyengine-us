@@ -1,0 +1,35 @@
+- name: Eligible
+  period: 2022
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    ct_agi: 65_000
+  output:
+    ct_pension_annuity_subtraction_eligible: True
+
+- name: Eligible
+  period: 2021
+  input:
+    state_code: CT
+    filing_status: JOINT
+    ct_agi: 99_000
+  output:
+    ct_pension_annuity_subtraction_eligible: True
+
+- name: Not eligible 2022
+  period: 2022
+  input:
+    state_code: CT
+    filing_status: SINGLE
+    ct_agi: 85_000
+  output:
+    ct_pension_annuity_subtraction_eligible: False
+
+- name: Not Eligible
+  period: 2022
+  input:
+    state_code: CT
+    filing_status: JOINT
+    ct_agi: 105_000
+  output:
+    ct_pension_annuity_subtraction_eligible: False
