@@ -17,26 +17,8 @@ class az_pension_exclusion(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.pension_exclusion
         person = tax_unit.members
-        # filing_status = tax_unit("filing_status", period)
-        # is_joint = filing_status == filing_status.possible_values.JOINT
-
-        # # calculate the total allowed pension
-        # # need to double check if this meets the requirements
-        # total_allowed_pension_exclusion = min_(
-        #     p.maximum_amount, person("taxable_public_pension_income", period)
-        # )
-
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-
-        # return where(
-        #     is_joint,
-        #     tax_unit.sum(
-        #         where(is_head | is_spouse, total_allowed_pension_exclusion, 0)
-        #     ),
-        #     tax_unit.sum(where(is_head, total_allowed_pension_exclusion, 0)),
-        # )
-
         pension_income = person("taxable_public_pension_income", period)
         eligible_pension_income = pension_income * (is_head | is_spouse)
         total_allowed_pension_exclusion = min_(
