@@ -27,7 +27,7 @@ class vt_capital_gain_exclusion(Variable):
         flat_exclusion = min_(adjusted_net_capital_gain, p.flat.max_amount)
         # Get percentage exclusion
         percentage_exclusion = tax_unit(
-            "vt_percentage_capital_gain_exlcusion", period
+            "vt_percentage_capital_gain_exclusion", period
         )
         # Filer can choose from flat or percentage exclusion. Assume the filer will always choose the larger one
         chosen_exclusion = max_(flat_exclusion, percentage_exclusion)
