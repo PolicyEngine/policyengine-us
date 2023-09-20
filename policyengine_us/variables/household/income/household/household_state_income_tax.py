@@ -10,6 +10,7 @@ class household_state_income_tax(Variable):
     definition_period = YEAR
     adds = [
         "ca_income_tax_before_refundable_credits",
+        "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
@@ -34,6 +35,7 @@ class household_state_income_tax(Variable):
     ]
     subtracts = [
         "ca_refundable_credits",  # California.
+        "co_refundable_credits",  # Colorado
         "dc_refundable_credits",  # District of Columbia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.

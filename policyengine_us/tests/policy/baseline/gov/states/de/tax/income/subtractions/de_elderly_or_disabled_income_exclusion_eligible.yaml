@@ -1,0 +1,118 @@
+- name: If filing SINGLE, age or disability ineligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 2_499
+    filing_status: SINGLE
+    disabled_head: false
+    age_head: 61
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: true    
+
+- name: If filing SINGLE, eligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 2_499
+    filing_status: SINGLE
+    disabled_head: true
+    age_head: 60
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: true
+
+- name: If filing SINGLE, earned income ineligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 2_500
+    filing_status: SINGLE
+    disabled_head: true
+    age_head: 61
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: false
+
+- name: If filing SINGLE, agi ineligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 2_499
+    filing_status: SINGLE
+    disabled_head: true
+    age_head: 60
+    de_pre_exclusions_agi: 10_001
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: false
+
+- name: If filing SEPARATE, eligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 2_499
+    filing_status: SEPARATE
+    disabled_head: false
+    disabled_spouse: false
+    age_head: 61
+    age_spouse: 61
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: true
+
+- name: If filing JOINT, .
+  period: 2023
+  input:
+    tax_unit_earned_income: 1_999
+    filing_status: JOINT
+    disabled_head: false
+    disabled_spouse: false
+    age_head: 61
+    age_spouse: 61
+    de_pre_exclusions_agi: 20_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: true
+
+- name: If filing JOINT, age or disability ineligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 1_999
+    filing_status: JOINT
+    disabled_head: false
+    disabled_spouse: false
+    age_head: 61
+    age_spouse: 60
+    de_pre_exclusions_agi: 10_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: false
+
+- name: If filing JOINT, earned income ineligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 5_000
+    filing_status: JOINT
+    disabled_head: false
+    disabled_spouse: false
+    age_head: 61
+    age_spouse: 61
+    de_pre_exclusions_agi: 20_000
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: false   
+
+
+- name: If filing JOINT, agi ineligible.
+  period: 2023
+  input:
+    tax_unit_earned_income: 4_999
+    filing_status: JOINT
+    disabled_head: false
+    disabled_spouse: false
+    age_head: 61
+    age_spouse: 61
+    de_pre_exclusions_agi: 20_001
+    state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible: false  
