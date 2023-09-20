@@ -16,7 +16,9 @@ class ky_pension_exclusion(Variable):
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.ky.tax.income.exclusions.pension_income
+        p = parameters(
+            period
+        ).gov.states.ky.tax.income.exclusions.pension_income
         person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
