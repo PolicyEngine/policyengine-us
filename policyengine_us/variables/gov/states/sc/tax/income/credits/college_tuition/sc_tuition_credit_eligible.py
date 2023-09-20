@@ -17,7 +17,6 @@ class sc_tuition_credit_eligible(Variable):
         total_college_hours = person("total_college_hours", period)
         num_of_semester_attended = person("college_semesters_attended", period)
         required_hours = p.semester_hour_requirement * num_of_semester_attended
-        eligible = (num_of_semester_attended > 0) & (
+        return (num_of_semester_attended > 0) & (
             total_college_hours >= required_hours
         )
-        return where(eligible, 1, 0)
