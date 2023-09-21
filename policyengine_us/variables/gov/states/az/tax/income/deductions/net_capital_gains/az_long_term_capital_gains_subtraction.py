@@ -18,6 +18,5 @@ class az_long_term_capital_gains_subtraction(Variable):
         long_term_capital_gains = add(
             tax_unit, period, ["long_term_capital_gains"]
         )
-        # net capital gain derived from investment in a qualified small business should also be subtracted
 
         return long_term_capital_gains * p.rate
