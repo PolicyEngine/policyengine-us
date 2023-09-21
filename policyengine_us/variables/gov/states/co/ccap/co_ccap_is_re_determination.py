@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class co_is_quality_rating_of_child_care_facility(Variable):
+class co_ccap_is_re_determination(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Quality rating of child care facility for Colorado Child Care Assistance Program"

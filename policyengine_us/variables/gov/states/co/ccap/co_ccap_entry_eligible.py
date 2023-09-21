@@ -12,4 +12,4 @@ class co_ccap_entry_eligible(Variable):
     def formula(tax_unit, period, parameters):
         income_eligible = tax_unit("co_ccap_income_eligible", period)
         child_age_eligible = tax_unit("co_ccap_num_child_age_eligible", period) > 0
-        return tax_unit.sum(income_eligible & child_age_eligible)
+        return income_eligible & child_age_eligible

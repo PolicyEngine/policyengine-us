@@ -1,0 +1,22 @@
+- name: Two child, both age eligible for cccap.
+  period: 2023
+  input:
+    people:
+      child1:
+        co_ccap_child_age_eligible: true
+        childcare_days_per_week:
+      child2:
+        co_ccap_child_age_eligible: true
+        childcare_days_per_week:
+    tax_units:
+      tax_unit:
+        members: []
+        adjusted_gross_income:
+        tax_unit_size: 
+        co_ccap_num_child_age_eligible: 
+    households:
+      household: 
+        members: [child1, child2]
+        state_code: CO
+  output:
+    co_ccap_num_child_age_eligible: 2
