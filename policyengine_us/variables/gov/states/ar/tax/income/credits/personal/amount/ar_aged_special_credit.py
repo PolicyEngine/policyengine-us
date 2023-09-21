@@ -16,9 +16,13 @@ class ar_aged_special_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        us_aged_special = person("is_aged_special", period)
-        total_aged_special = tax_unit.sum(us_aged_special)
-        p_ar = parameters(
-            period
-        ).gov.states.ar.tax.income.credits.personal.amount
-        return total_aged_special * p_ar.aged_special
+        us_aged = person("age", period)
+        p = parameters(period).gov.states.ar.tax.income.credits.personal
+        aged_thres = p.age_threshold
+
+        p_ar = p.amount
+
+        aged_count = tax_unit.sum(us_aged >= aged_thres)
+        aged_credit=aged_count * p_ar.aged
+
+        return 
