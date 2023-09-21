@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_military_retirement_subtraction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona Military Retirement Subtraction"
+    label = "Arizona military retirement subtraction"
     unit = USD
     reference = (
         "https://www.azleg.gov/ars/43/01022.html",
