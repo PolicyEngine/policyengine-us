@@ -19,10 +19,12 @@ class ar_aged_special_credit(Variable):
         us_aged = person("age", period)
         p = parameters(period).gov.states.ar.tax.income.credits.personal
         aged_thres = p.age_threshold
-
         p_ar = p.amount
-
         aged_count = tax_unit.sum(us_aged >= aged_thres)
         aged_credit=aged_count * p_ar.aged
 
-        return 
+        is_income_exemption = person("is_retirement_income_exemption", period)
+        aged_special = us_aged & is_income_exemption
+        count_aged_special = tax_unit.sum(aged_special)
+        
+        return aged_credit+ count_aged_special*p_ar.aged_special
