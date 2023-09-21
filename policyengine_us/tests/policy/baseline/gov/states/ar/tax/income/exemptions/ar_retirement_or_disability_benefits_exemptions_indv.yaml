@@ -1,0 +1,19 @@
+- name: Arkansas exemption for retirement or disability benefits (eligible)
+  period: 2021
+  input:
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+    age: 61
+    taxable_pension_income: 5_000
+  output:
+    ar_retirement_or_disability_benefits_exemptions_indv: 5_000
+
+- name: Arkansas exemption for retirement or disability benefits (ineligible)
+  period: 2021
+  input:
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
+    age: 58
+    taxable_pension_income: 7_000
+  output:
+    ar_retirement_or_disability_benefits_exemptions_indv: 0
