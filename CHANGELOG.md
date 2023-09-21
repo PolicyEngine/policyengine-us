@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.470.1] - 2023-09-20 17:44:51
+
+### Fixed
+
+- Colorado income tax model formatting.
+
+## [0.470.0] - 2023-09-19 14:45:39
+
+### Added
+
+- Kentucky family size tax credit.
+
 ## [0.469.0] - 2023-09-15 19:38:29
 
 ### Added
@@ -5303,6 +5315,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.0...0.470.1
+[0.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.469.0...0.470.0
 [0.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.468.0...0.469.0
 [0.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.467.0...0.468.0
 [0.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.1...0.467.0
