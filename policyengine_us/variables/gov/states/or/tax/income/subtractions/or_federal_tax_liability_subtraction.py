@@ -8,45 +8,40 @@ class or_federal_tax_liability_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=13",
+        "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=71",
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",  # Subsection 316.800
     )
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
+        # calculate Oregon concept of federal income tax
+        federal_income_tax = tax_unit("income_tax", period)
+        eitc = tax_unit("earned_income_tax_credit", period)
+        seca = add(tax_unit, period, ["self_employment_tax"])
+        or_federal_income_tax = max_(0, federal_income_tax - seca + eitc)
+        # limit subtraction based on caps scaled to federal AGI
         filing_status = tax_unit("filing_status", period)
-        statuses = filing_status.possible_values
-        income = tax_unit("adjusted_gross_income", period)
-        # Use no-SALT income tax to avoid circular logic, until we add
-        # withholding rules.
-        federal_tax_liability = tax_unit("no_salt_income_tax", period)
-        # Instructions for line 14:
-        # "This is your federal income tax liability after refundable credits
-        #  (other than the EITC)."
-        eitc = tax_unit("eitc", period)
-        federal_tax_liability_less_eitc = federal_tax_liability + eitc
-        non_negative_federal_tax_liability = max_(
-            0, federal_tax_liability_less_eitc
-        )
+        status = filing_status.possible_values
         caps = (
             parameters(period)
             .gov.states["or"]
             .tax.income.subtractions.federal_tax_liability.cap
         )
+        federal_agi = tax_unit("adjusted_gross_income", period)
         cap = select(
             [
-                filing_status == statuses.SINGLE,
-                filing_status == statuses.JOINT,
-                filing_status == statuses.HEAD_OF_HOUSEHOLD,
-                filing_status == statuses.SEPARATE,
-                filing_status == statuses.WIDOW,
+                filing_status == status.SINGLE,
+                filing_status == status.JOINT,
+                filing_status == status.HEAD_OF_HOUSEHOLD,
+                filing_status == status.SEPARATE,
+                filing_status == status.WIDOW,
             ],
             [
-                caps.single.calc(income),
-                caps.joint.calc(income),
-                caps.head_of_household.calc(income),
-                caps.separate.calc(income),
-                caps.widow.calc(income),
+                caps.single.calc(federal_agi),
+                caps.joint.calc(federal_agi),
+                caps.head_of_household.calc(federal_agi),
+                caps.separate.calc(federal_agi),
+                caps.widow.calc(federal_agi),
             ],
         )
-        return min_(non_negative_federal_tax_liability, cap)
+        return min_(or_federal_income_tax, cap)

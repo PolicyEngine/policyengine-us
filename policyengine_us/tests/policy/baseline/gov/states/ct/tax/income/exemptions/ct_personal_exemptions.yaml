@@ -1,0 +1,26 @@
+- name: Single household below reduction threshold
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 30_000
+    filing_status: SINGLE
+  output:
+    ct_personal_exemptions: 15_000
+
+- name: Joint household above maximum amount
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 71_001
+    filing_status: JOINT
+  output:
+    ct_personal_exemptions: 0
+
+- name: Widow household reduced amount
+  period: 2022
+  input:
+    state_code: CT
+    ct_agi: 54_000
+    filing_status: WIDOW
+  output:
+    ct_personal_exemptions: 18_000

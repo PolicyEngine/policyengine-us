@@ -1,0 +1,35 @@
+- name: Eligible head and spouse
+  period: 2023
+  input:
+    age_head: 65
+    age_spouse: 65
+    state_code: MT
+  output: 
+    mt_aged_exemption_count: 2
+
+- name: Eligible head 
+  period: 2023
+  input:
+    age_head: 65
+    age_spouse: 64
+    state_code: MT
+  output: 
+    mt_aged_exemption_count: 1
+
+- name: Eligible spouse 
+  period: 2023
+  input:
+    age_head: 64
+    age_spouse: 65
+    state_code: MT
+  output: 
+    mt_aged_exemption_count: 1
+
+- name: Head and spouse not eligible
+  period: 2023
+  input:
+    age_head: 64
+    age_spouse: 64
+    state_code: MT
+  output: 
+    mt_aged_exemption_count: 0

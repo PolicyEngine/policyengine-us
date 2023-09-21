@@ -4,6 +4,7 @@ import h5py
 from policyengine_us.data.datasets.cps.raw_cps import (
     RawCPS_2020,
     RawCPS_2021,
+    RawCPS_2022,
     RawCPS,
 )
 from policyengine_us.data.datasets.cps.uprated_cps import UpratedCPS
@@ -355,17 +356,17 @@ class CPS_2021(CPS):
     time_period = 2021
 
 
-CPS_2022 = UpratedCPS.from_dataset(
-    CPS_2021,
-    2022,
-    "cps_2022",
-    "CPS 2022",
-    STORAGE_FOLDER / "cps_2022.h5",
-    new_url="release://policyengine/policyengine-us/cps-2022/cps_2022.h5",
-)
+class CPS_2022(CPS):
+    name = "cps_2022"
+    label = "CPS 2022"
+    raw_cps = RawCPS_2022
+    file_path = STORAGE_FOLDER / "cps_2022.h5"
+    time_period = 2022
+    # url = None
+
 
 CPS_2023 = UpratedCPS.from_dataset(
-    CPS_2021,
+    CPS_2022,
     2023,
     "cps_2023",
     "CPS 2023",

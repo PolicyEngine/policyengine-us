@@ -1,0 +1,34 @@
+- name: in_eitc unit test 1
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: false
+    state_code: IN
+    earned_income_tax_credit: 100
+    in_eitc_eligible: true
+  output:
+    in_eitc: 10
+
+- name: in_eitc unit test 2
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    in_eitc_eligible: true
+    eitc_child_count: 0
+    employment_income: 8_000
+  output:
+    in_eitc: 0.09 * 545
+
+- name: in_eitc unit test 3
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    in_eitc_eligible: true
+    eitc_child_count: 3
+    employment_income: 19_500
+  output:
+    in_eitc: 0.09 * 5_980
