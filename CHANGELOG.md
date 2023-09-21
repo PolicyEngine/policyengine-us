@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.471.0] - 2023-09-21 12:28:34
+
+### Added
+
+- Arkansas child and dependent care credit.
+
 ## [0.470.1] - 2023-09-20 17:44:51
 
 ### Fixed
@@ -5315,6 +5321,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.1...0.471.0
 [0.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.0...0.470.1
 [0.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.469.0...0.470.0
 [0.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.468.0...0.469.0
