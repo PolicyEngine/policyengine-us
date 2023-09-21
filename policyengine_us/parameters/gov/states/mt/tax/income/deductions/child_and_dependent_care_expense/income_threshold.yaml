@@ -1,0 +1,24 @@
+description: Montana provides a child deduction of this amount per eligible child.
+
+metadata:
+  rate_unit: currency-USD
+  rate_period: year
+  threshold_unit: child
+  type: single_amount
+  reference:
+    - title: 2022 Montana Form 2 Individual income tax instruction line 14 (page 35)
+      href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf
+
+brackets:
+  - threshold:
+      2022-01-01: 0
+    amount:
+      2022-01-01: 22_800
+  - threshold:
+      2022-01-01: 1
+    amount:
+      2022-01-01: 25_200
+  - threshold:
+      2022-01-01: 2
+    amount:
+      2022-01-01: 27_600
