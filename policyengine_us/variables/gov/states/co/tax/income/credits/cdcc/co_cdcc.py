@@ -17,7 +17,6 @@ class co_cdcc(Variable):
         # follow 2022 DR 0347 form and its instructions (in Book cited above):
         p = parameters(period).gov.states.co.tax.income.credits
         fed_agi = tax_unit("adjusted_gross_income", period)  # Line 4
-        itaxbc = tax_unit("income_tax_before_credits", period)  # Line 6
         # calculate regular Colorado CDCC in Part III
         capped_fed_cdcc = tax_unit("capped_cdcc", period)  # Line 8
         match_rate = p.cdcc.match.calc(fed_agi, right=True)
