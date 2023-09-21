@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_net_capital_gains_subtraction(Variable):
+class az_long_term_capital_gains_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona net capital gains subtraction"
