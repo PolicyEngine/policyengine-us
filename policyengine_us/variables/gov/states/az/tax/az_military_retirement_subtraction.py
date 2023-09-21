@@ -7,7 +7,7 @@ class az_military_retirement_subtraction(Variable):
     label = "Arizona military retirement subtraction"
     unit = USD
     reference = (
-        "https://www.azleg.gov/ars/43/01022.html",
+        "https://www.azleg.gov/ars/43/01022.htm",
         "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140BOOKLET.pdf#page=25",
         "https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2021_140BOOKLET.pdf#page=27",
     )
