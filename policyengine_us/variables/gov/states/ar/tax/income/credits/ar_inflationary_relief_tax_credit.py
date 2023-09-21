@@ -10,6 +10,8 @@ class ar_inflation_relief_credit(Variable):
     defined_for = StateCode.AR
 
     def formula(tax_unit, period, parameters):
+        # the Arkansas inflationary relief tax credit is calculated based on net taxable income
+        # mentioned in individual income tax return form AR1000F line 28
         income = tax_unit("ar_taxable_income", period)
         p = parameters(
             period
