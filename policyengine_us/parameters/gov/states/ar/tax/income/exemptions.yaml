@@ -2,18 +2,14 @@ description: Arkansas accounts for these exemptions when calculating the state a
 values:
   2021-01-01:
     - military_retirement_pay # Item 1
-    # Item 2&3 Life insurance policy
     - child_support_received # Item 4
-    # Item 5 Gifts, inheritances, bequests, or devises
-    # Item 6 Scholarships, fellowships, and grants 
     - us_govt_interest # Item 7
     - workers_compensation # Item 8
     - social_security # Item 8
-    # Item 9 housing allowance paid to church
+    - veterans_benefits # Item 8
     - disability_benefits # Item 10
+    # disability benefits pursuant to IRS §104
     - military_basic_pay # Item 11
-    # Item 14 Community Match Rural Physician Recruitment Program
-    # Item 15 "PSLF"
 
 metadata:
   unit: list
