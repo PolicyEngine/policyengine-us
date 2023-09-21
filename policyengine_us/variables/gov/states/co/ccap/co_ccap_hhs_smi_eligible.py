@@ -4,7 +4,11 @@ from policyengine_us.model_api import *
 class co_ccap_hhs_smi_eligible(Variable):
     value_type = bool
     entity = TaxUnit
-    label = "Colorado child care assistance program eligible"
+    label = "Colorado Child Care Assistance Program hhs smi eligible"
+    reference = (
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=19",
+        "https://docs.google.com/spreadsheets/d/1WzobLnLoxGbN_JfTuw3jUCZV5N7IA_0uvwEkIoMt3Wk/edit#gid=1350122430",
+    )
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CO

@@ -1,12 +1,13 @@
-description: 
+description: Colorado Child Care Assistance Program issues these rates when calculating parent fee, depending on child care hours per day.
 metadata:
   type: single_amount
-  threshold_unit: 1
+  threshold_unit: hours
   amount_unit: /1
   threshold_period: year
+  label: Colorado Child Care Assistance Program parent fee rate by hours
   reference:
-    - title: 
-      href:
+    - title: COLORADO CHILD CARE ASSISTANCE PROGRAM RULES AND REGULATIONS - 3.115 PURCHASE OF SERVICES - 3.115.1 CHILD CARE PROVIDER REIMBURSEMENT RATES - C
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=62
 brackets:
   - threshold:
       2022-10-01: 0

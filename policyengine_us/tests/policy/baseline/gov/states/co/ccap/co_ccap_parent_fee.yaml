@@ -1,4 +1,4 @@
-- name: 
+- name: One parent with two children in entry process, agi > hhs_fpg, both children eligible for cccap but not eligible for quality rating facility discount.
   period: 2022
   input:
     people:
@@ -44,7 +44,7 @@
     # not qualified for quality rating discount;
     # final parent fee: 770.56
 
-- name: Two child, both age eligible for cccap.
+- name: Two parents with two children in re-determination process, agi > hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
   period: 2022
   input:
     people:
@@ -94,7 +94,7 @@
     # quality rating discount: 1_949.17 * .8 = 1_559.34
     # final parent fee: 1_559.34
 
-- name: Two child, both age eligible for cccap.
+- name: Two parents with two children in re-determination process, agi <= hhs_fpg, both children eligible for cccap and one eligible for quality rating facility discount.
   period: 2022
   input:
     people:
@@ -144,7 +144,7 @@
     # quality rating discount: 42.51 * .8 = 34.01
     # final parent fee: 34.01
 
-- name: Two child, both age eligible for cccap.
+- name: Two parents with one child in re-determination process, agi <= hhs_fpg, child eligible for cccap and quality rating facility discount.
   period: 2022
   input:
     people:
@@ -188,7 +188,7 @@
     # quality rating discount: 25.84 * .8 = 20.67
     # final parent fee: 20.67
 
-- name: Two child, both age eligible for cccap.
+- name: Two parents with two children in re-determination process, agi <= hhs_fpg, one eligible for cccap and quality rating facility discount, the other not.
   period: 2022
   input:
     people:
@@ -238,7 +238,7 @@
     # quality rating discount: 33.34 * .8 = 26.67
     # final parent fee: 26.67
 
-- name: 
+- name: One parent with two children in entry process, agi > hhs_fpg, one eligible for cccap but not eligible for quality rating facility discount, the other not eligible for cccap.
   period: 2022
   input:
     people:
@@ -281,5 +281,5 @@
     co_ccap_parent_fee: 574.36
     # base + add_on: [23_030*0.01+(46_000-23_030)*0.14]/12 + (1-1)*15 = 287.18; 
     # child1: 287.18 * 2 = 574.36;
-    # quality rating discount
+    # not qualified for quality rating discount
     # final parent fee: 574.36

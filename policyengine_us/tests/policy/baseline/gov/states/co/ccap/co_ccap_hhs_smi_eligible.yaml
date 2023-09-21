@@ -7,7 +7,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Baca, HHS = 3, agi < 93_060.24 * .85, eligibl.
+- name: In Baca, HHS = 3, agi < 93_060.24 * .85, eligible.
   period: 2023
   input:
     adjusted_gross_income: 46_000
