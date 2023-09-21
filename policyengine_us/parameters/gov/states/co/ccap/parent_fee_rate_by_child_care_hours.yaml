@@ -2,7 +2,7 @@ description:
 metadata:
   type: single_amount
   threshold_unit: 1
-  rate_unit: /1
+  amount_unit: /1
   threshold_period: year
   reference:
     - title: 
@@ -10,17 +10,17 @@ metadata:
 brackets:
   - threshold:
       2022-10-01: 0
-    rate:
-      2015-01-01: .55
+    amount:
+      2022-10-01: .55
   - threshold:
       2022-10-01: 5
-    rate:
-      2015-01-01: 1
+    amount:
+      2022-10-01: 1
   - threshold:
       2022-10-01: 12
-    rate:
-      2015-01-01: 1.55
+    amount:
+      2022-10-01: 1.55
   - threshold:
       2022-10-01: 17
-    rate:
-      2015-01-01: 2
+    amount:
+      2022-10-01: 2

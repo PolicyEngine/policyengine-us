@@ -1,0 +1,16 @@
+- name: The hhs smi is eligible, then re-determination eligible.
+  period: 2023
+  input:
+    co_ccap_hhs_smi_eligible: true
+    state_code: CO
+  output:
+    co_ccap_re_determination_eligible: true
+
+- name: The hhs smi is ineligible, then re-determination ineligible.
+  period: 2023
+  input:
+    co_ccap_hhs_smi_eligible: false
+    state_code: CO
+  output:
+    co_ccap_re_determination_eligible: false
+

@@ -1,22 +1,41 @@
 - name: Two child, both age eligible for cccap.
-  period: 2023
+  period: 2022
   input:
     people:
+      parent:
+        is_disabled: false
+        is_tax_unit_dependent: false
+        age: 45
       child1:
-        co_ccap_child_age_eligible: true
-        childcare_days_per_week:
+        is_disabled: false
+        is_tax_unit_dependent: true
+        age: 6
+        childcare_hours_per_day: 20
+        co_quality_rating_of_child_care_facility: 1
       child2:
-        co_ccap_child_age_eligible: true
-        childcare_days_per_week:
+        is_disabled: true
+        is_tax_unit_dependent: true
+        age: 17
+        childcare_hours_per_day: 4
+        co_quality_rating_of_child_care_facility: 1
     tax_units:
       tax_unit:
-        members: []
-        adjusted_gross_income:
-        tax_unit_size: 
-        co_ccap_num_child_age_eligible: 
+        members: [parent, child1, child2]
+        co_ccap_is_entry: true
+        co_ccap_is_re_determination: fasle
+        adjusted_gross_income: 46_000
+        tax_unit_size: 3
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        spm_unit_size: 3
     households:
       household: 
-        members: [child1, child2]
+        members: [parent, child1, child2]
+        county_str: BACA_COUNTY_CO
         state_code: CO
   output:
+    co_ccap_entry_eligible: true
+    co_ccap_re_determination_eligible: true
     co_ccap_num_child_age_eligible: 2
+    co_ccap_parent_fee: 770.55

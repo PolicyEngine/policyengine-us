@@ -18,3 +18,4 @@ class co_ccap_hhs_smi_eligible(Variable):
         hhs_smi_rate = p.entry_hhs_smi_rate
         hhs_smi = spm_unit("hhs_smi", period)
         monthly_hhs_smi = np.round(hhs_smi * hhs_smi_rate / 12, 2)
+        return monthly_agi < monthly_hhs_smi
