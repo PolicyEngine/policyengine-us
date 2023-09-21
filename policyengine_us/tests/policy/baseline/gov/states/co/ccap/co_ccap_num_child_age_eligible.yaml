@@ -1,5 +1,5 @@
 - name: Two child, both age eligible for cccap.
-  period: 2023
+  period: 2022
   input:
     people:
       child1:
@@ -14,7 +14,7 @@
     co_ccap_num_child_age_eligible: 2
 
 - name: Two child, one age eligible for cccap, the other not.
-  period: 2023
+  period: 2022
   input:
     people:
       child1:
@@ -29,7 +29,7 @@
     co_ccap_num_child_age_eligible: 1
 
 - name: Two child, both age ineligible for cccap.
-  period: 2023
+  period: 2022
   input:
     people:
       child1:
@@ -44,7 +44,7 @@
     co_ccap_num_child_age_eligible: 0
 
 - name: Three child, two age eligible for cccap, the other not.
-  period: 2023
+  period: 2022
   input:
     people:
       child1:
@@ -61,7 +61,7 @@
     co_ccap_num_child_age_eligible: 2
 
 - name: Three child, one age eligible for cccap, the other two not.
-  period: 2023
+  period: 2022
   input:
     people:
       child1:

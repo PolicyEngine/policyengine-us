@@ -1,5 +1,5 @@
 - name: In Adams, HHS = 2, agi < 75_334.48 * .85, eligible. # hhs_smi_rate: 85%
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 40_000
     county_str: ADAMS_COUNTY_CO
@@ -10,7 +10,7 @@
 
 
 - name: In Baca, HHS = 3, agi < 93_060.24 * .85, eligible.
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 46_000
     county_str: BACA_COUNTY_CO
@@ -20,7 +20,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Boulder, HHS = 4, agi < 110_786 * .85, eligible. 
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 74_000
     county_str: BOULDER_COUNTY_CO
@@ -30,7 +30,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Custer, HHS = 5, agi < 128_511.76 * .85, eligible. 
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 64_000
     county_str: CUSTER_COUNTY_CO
@@ -40,7 +40,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Elbert, HHS = 6, agi < 146_237.52 * .85, eligible.
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 87_000
     county_str: ELBERT_COUNTY_CO
@@ -50,7 +50,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Grand, HHS = 7, agi < 149_561.1 * .85, eligible.
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 98_000
     county_str: GRAND_COUNTY_CO
@@ -60,7 +60,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Jackson, HHS = 8, agi < 152_884.68 * .85, eligible. 
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 109_000
     county_str: JACKSON_COUNTY_CO
@@ -70,7 +70,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Larimer, HHS = 9, agi < 156_208.26 * .85, eligible.
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 120_000
     county_str: LARIMER_COUNTY_CO
@@ -80,7 +80,7 @@
     co_ccap_hhs_smi_eligible: true
 
 - name: In Pitkin, HHS = 9, agi >= 156_208.26 * .85, ineligible. 
-  period: 2023
+  period: 2022
   input:
     adjusted_gross_income: 160_000
     county_str: PITKIN_COUNTY_CO
