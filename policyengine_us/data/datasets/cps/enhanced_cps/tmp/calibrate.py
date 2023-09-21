@@ -29,6 +29,7 @@ FINANCIAL_VARIABLES = [
     "social_security",
 ]
 
+
 class PUFExtendedCPS(Dataset):
     name = "puf_extended_cps"
     label = "PUF-extended CPS"
@@ -43,26 +44,43 @@ class PUFExtendedCPS(Dataset):
         for variable in list(set(cps.variables) | set(FINANCIAL_VARIABLES)):
             if "_id" in variable:
                 # Append on a copy multiplied by 10
-                new_data[variable] = np.concatenate([cps_data[variable][...], cps_data[variable][...] + 1e8])
+                new_data[variable] = np.concatenate(
+                    [cps_data[variable][...], cps_data[variable][...] + 1e8]
+                )
             elif "_weight" in variable:
                 # Append on a zero-weighted copy
-                new_data[variable] = np.concatenate([cps_data[variable][...], np.zeros_like(cps_data[variable][...])])
+                new_data[variable] = np.concatenate(
+                    [
+                        cps_data[variable][...],
+                        np.zeros_like(cps_data[variable][...]),
+                    ]
+                )
             else:
                 # Append on a copy
                 if variable in FINANCIAL_VARIABLES:
                     if variable not in cps.variables:
                         if variable == "social_security":
                             ## SS is an edge case
-                            original_values = cps_data["social_security_retirement"][...] + cps_data["social_security_disability"][...]
+                            original_values = (
+                                cps_data["social_security_retirement"][...]
+                                + cps_data["social_security_disability"][...]
+                            )
                         else:
-                            original_values = np.zeros_like(cps_data["employment_income"][...])
+                            original_values = np.zeros_like(
+                                cps_data["employment_income"][...]
+                            )
                     else:
                         original_values = cps_data[variable][...]
-                    new_data[variable] = np.concatenate([original_values, person_df[variable].values])
+                    new_data[variable] = np.concatenate(
+                        [original_values, person_df[variable].values]
+                    )
                 else:
-                    new_data[variable] = np.concatenate([cps_data[variable][...], cps_data[variable][...]])
-        
+                    new_data[variable] = np.concatenate(
+                        [cps_data[variable][...], cps_data[variable][...]]
+                    )
+
         self.save_dataset(new_data)
+
 
 puf_extended_cps = PUFExtendedCPS()
 puf_extended_cps.generate()
@@ -121,7 +139,10 @@ for variable_name in AGI_VARIABLES:
 # Above is commented because we'll use IRS SOI aggregates uprated by CBO forecasts, rather than just CBO forecasts (SOI aggregates have more detail)
 
 for variable_name in FINANCIAL_VARIABLES:
-    label = simulation.tax_benefit_system.variables[variable_name].label + " aggregate"
+    label = (
+        simulation.tax_benefit_system.variables[variable_name].label
+        + " aggregate"
+    )
     values_df[label] = simulation.calculate(
         variable_name, map_to="household"
     ).values
@@ -158,14 +179,18 @@ for program, participation in zip(
     label = simulation.tax_benefit_system.variables[program].label
     entity_level = simulation.tax_benefit_system.variables[program].entity.key
     entity_level_value = simulation.calculate(program)
-    values_df[f"{label} participants"] = simulation.map_result(entity_level_value > 0, entity_level, "household")
+    values_df[f"{label} participants"] = simulation.map_result(
+        entity_level_value > 0, entity_level, "household"
+    )
     targets[f"{label} participants"] = participation
     equivalisation[f"{label} participants"] = POPULATION_EQUIVALISATION
 
 
 # Number of tax returns by AGI size
 
-agi_returns_thresholds = parameters.gov.irs.soi.agi.number_of_returns.thresholds
+agi_returns_thresholds = (
+    parameters.gov.irs.soi.agi.number_of_returns.thresholds
+)
 agi_returns_values = parameters.gov.irs.soi.agi.number_of_returns.amounts
 agi = simulation.calculate("adjusted_gross_income").values
 is_filer = simulation.calculate("income_tax").values != 0
@@ -175,7 +200,7 @@ for i in range(len(agi_returns_thresholds)):
         upper = np.inf
     else:
         upper = agi_returns_thresholds[i + 1]
-    
+
     in_range = (agi >= lower) * (agi < upper) * is_filer
     household_returns_in_range = simulation.map_result(
         in_range, "tax_unit", "household"
@@ -195,14 +220,16 @@ for i in range(len(agi_returns_thresholds)):
         upper = np.inf
     else:
         upper = agi_returns_thresholds[i + 1]
-    
+
     in_range = (agi >= lower) * (agi < upper) * is_filer
     agi_in_range = agi * in_range
     household_agi_in_range = simulation.map_result(
         agi_in_range, "tax_unit", "household"
     )
 
-    name = f"Total AGI from tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
+    name = (
+        f"Total AGI from tax returns with ${lower:,.0f} <= AGI < ${upper:,.0f}"
+    )
     values_df[name] = household_agi_in_range
     targets[name] = agi_returns_values[i]
     equivalisation[name] = FINANCIAL_EQUIVALISATION
@@ -227,7 +254,9 @@ for lower_age_group in range(0, 90, 10):
         sex_category = "male" if possible_is_male else "female"
         name = f"{lower_age_group} to {lower_age_group + 5} and {sex_category} population"
         values_df[name] = count_people_in_range
-        targets[name] = (household_weights.numpy() * count_people_in_range).sum()
+        targets[name] = (
+            household_weights.numpy() * count_people_in_range
+        ).sum()
         equivalisation[name] = POPULATION_EQUIVALISATION
 
 # Household population by number of adults and children
@@ -285,7 +314,7 @@ def aggregate(
 
 training_log_df = pd.DataFrame()
 
-progress_bar = tqdm(range(50_000), desc="Calibrating weights")
+progress_bar = tqdm(range(250_000), desc="Calibrating weights")
 for i in progress_bar:
     adjusted_weights = torch.relu(household_weights + weight_adjustment)
     result = (
@@ -303,22 +332,26 @@ for i in progress_bar:
         current_aggregates = (
             (result * equivalisation_factors_array).detach().numpy()[0]
         )
-        training_log_df = pd.concat([training_log_df,
-            pd.DataFrame(
-                {
-                    "name": list(targets.keys()) + ["total"],
-                    "epoch": [i] * len(targets) + [i],
-                    "value": list(current_aggregates) + [current_loss],
-                    "target": list(targets.values()) + [0],
-                }
-            )
-        ])
-    weight_adjustment.data -= 4e-1 * weight_adjustment.grad
+        training_log_df = pd.concat(
+            [
+                training_log_df,
+                pd.DataFrame(
+                    {
+                        "name": list(targets.keys()) + ["total"],
+                        "epoch": [i] * len(targets) + [i],
+                        "value": list(current_aggregates) + [current_loss],
+                        "target": list(targets.values()) + [0],
+                    }
+                ),
+            ]
+        )
+    weight_adjustment.data -= 1e-1 * weight_adjustment.grad
     weight_adjustment.grad.zero_()
 
 training_log_df.to_csv("training_log.csv.gz", compression="gzip")
 
 from policyengine_us.data.storage import STORAGE_FOLDER
+
 
 class EnhancedCPS(Dataset):
     name = "enhanced_cps"
@@ -336,8 +369,9 @@ class EnhancedCPS(Dataset):
                 new_data[variable] = adjusted_weights.detach().numpy()
             elif "_weight" not in variable:
                 new_data[variable] = cps_data[variable][...]
-        
+
         self.save_dataset(new_data)
+
 
 enhanced_cps = EnhancedCPS()
 enhanced_cps.generate()

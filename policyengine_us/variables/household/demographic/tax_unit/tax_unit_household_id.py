@@ -9,4 +9,6 @@ class tax_unit_household_id(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        return tax_unit.value_from_first_person(person.household("household_id", period))
+        return tax_unit.value_from_first_person(
+            person.household("household_id", period)
+        )

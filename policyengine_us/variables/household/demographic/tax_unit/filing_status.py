@@ -29,14 +29,14 @@ class filing_status(Variable):
                 has_spouse,
                 is_separated,
                 is_widowed,
-                True
+                True,
             ],
             [
                 FilingStatus.HEAD_OF_HOUSEHOLD,
                 FilingStatus.JOINT,
                 FilingStatus.SEPARATE,
                 FilingStatus.WIDOW,
-                FilingStatus.SINGLE
+                FilingStatus.SINGLE,
             ],
         )
 
