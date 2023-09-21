@@ -4481,3 +4481,14 @@
     fixed:
     - Colorado income tax model formatting.
   date: 2023-09-20 17:44:51
+- bump: minor
+  changes:
+    added:
+    - Arkansas child and dependent care credit.
+  date: 2023-09-21 12:28:34
+- bump: patch
+  changes:
+    fixed:
+    - Remove two unused variables in variables/gov/irs/taxcalc/deductions/standard
+      directory.
+  date: 2023-09-21 12:36:13
