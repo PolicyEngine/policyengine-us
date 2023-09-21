@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class co_ccap_child_age_eligible(Variable):
     value_type = bool
-    entity = Person 
+    entity = Person
     label = "Colorado child care assistance program eligible"
     unit = USD
     definition_period = YEAR
@@ -15,7 +15,8 @@ class co_ccap_child_age_eligible(Variable):
         disabled = person("is_disabled", period)
         dependent = person("is_tax_unit_dependent", period)
         age = person("age", period)
-        return where(disabled, (age < p.disabled_child_age_limit) & dependent, (age < p.age_limit) & dependent)
-    
-
-    # dont need this file
+        return where(
+            disabled,
+            (age < p.disabled_child_age_limit) & dependent,
+            (age < p.age_limit) & dependent,
+        )

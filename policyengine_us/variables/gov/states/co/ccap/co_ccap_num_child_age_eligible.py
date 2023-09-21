@@ -3,7 +3,7 @@ from policyengine_us.model_api import *
 
 class co_ccap_num_child_age_eligible(Variable):
     value_type = float
-    entity = TaxUnit 
+    entity = TaxUnit
     label = "Colorado child care assistance program eligible"
     unit = USD
     definition_period = YEAR

@@ -3,16 +3,18 @@ from policyengine_us.model_api import *
 
 class co_ccap_hhs_smi_eligible(Variable):
     value_type = bool
-    entity = TaxUnit 
+    entity = TaxUnit
     label = "Colorado child care assistance program eligible"
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.CO
-    
+
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.co.ccap  
-        monthly_agi = np.round(tax_unit("adjusted_gross_income", period) / 12, 2)    
-        
+        p = parameters(period).gov.states.co.ccap
+        monthly_agi = np.round(
+            tax_unit("adjusted_gross_income", period) / 12, 2
+        )
+
         # Calculate monthly smi limit
         spm_unit = tax_unit.spm_unit
         hhs_smi_rate = p.entry_hhs_smi_rate
