@@ -1,4 +1,4 @@
-- name: In Adams, HHS = 2, agi < 75_334.48, eligible. # hhs_smi_rate: 85%
+- name: In Adams, HHS = 2, agi < 75_334.48 * .85, eligible. # hhs_smi_rate: 85%
   period: 2023
   input:
     adjusted_gross_income: 40_000
@@ -7,7 +7,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Baca, HHS = 3, agi < 93_060.24, eligibl.
+- name: In Baca, HHS = 3, agi < 93_060.24 * .85, eligibl.
   period: 2023
   input:
     adjusted_gross_income: 46_000
@@ -16,7 +16,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Boulder, HHS = 4, agi < 110_786, eligible. 
+- name: In Boulder, HHS = 4, agi < 110_786 * .85, eligible. 
   period: 2023
   input:
     adjusted_gross_income: 74_000
@@ -25,7 +25,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Custer, HHS = 5, agi < 128_511.76, eligible. 
+- name: In Custer, HHS = 5, agi < 128_511.76 * .85, eligible. 
   period: 2023
   input:
     adjusted_gross_income: 64_000
@@ -34,7 +34,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Elbert, HHS = 6, agi < 146_237.52, eligible.
+- name: In Elbert, HHS = 6, agi < 146_237.52 * .85, eligible.
   period: 2023
   input:
     adjusted_gross_income: 87_000
@@ -43,7 +43,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Grand, HHS = 7, agi < 149_561.1, eligible.
+- name: In Grand, HHS = 7, agi < 149_561.1 * .85, eligible.
   period: 2023
   input:
     adjusted_gross_income: 98_000
@@ -52,7 +52,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Jackson, HHS = 8, agi < 152_884.68, eligible. 
+- name: In Jackson, HHS = 8, agi < 152_884.68 * .85, eligible. 
   period: 2023
   input:
     adjusted_gross_income: 109_000
@@ -61,7 +61,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Larimer, HHS = 9, agi < 156_208.26, eligible.
+- name: In Larimer, HHS = 9, agi < 156_208.26 * .85, eligible.
   period: 2023
   input:
     adjusted_gross_income: 120_000
@@ -70,7 +70,7 @@
   output:
     co_ccap_hhs_smi_eligible: true
 
-- name: In Pitkin, HHS = 9, agi >= 156_208.26, ineligible. 
+- name: In Pitkin, HHS = 9, agi >= 156_208.26 * .85, ineligible. 
   period: 2023
   input:
     adjusted_gross_income: 160_000
