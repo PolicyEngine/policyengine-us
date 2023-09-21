@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_pension_exclusion(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Exclusion Arizona State or Local Government Pensions"
+    label = "Arizona Pension Exclusion"
     unit = USD
     definition_period = YEAR
     reference = (
