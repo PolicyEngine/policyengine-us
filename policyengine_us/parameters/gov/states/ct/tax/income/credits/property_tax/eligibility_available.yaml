@@ -1,10 +1,10 @@
-description: Whether the age determines the eligibility for the property tax credit.
+description: Connecticut utilizes the age of the filer as the eligibility for the property tax credit if this is true.
 values:
   2017-01-01: true
   2022-01-01: false
 metadata:
   unit: bool
-  label: Connecticut property tax credit age eligibility available
+  label: Connecticut property tax credit age eligibility
   reference:
     - title: Connecticut General Statutes, Chapter 229, Sec. 12-704c, (b),(2)
       href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-704c
