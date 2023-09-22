@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_pension_exclusion(Variable):
+class az_public_pension_exclusion(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona Pension Exclusion"
@@ -15,13 +15,13 @@ class az_pension_exclusion(Variable):
     defined_for = StateCode.AZ
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.az.tax.income.pension_exclusion
+        p = parameters(period).gov.states.az.tax.income.subtractions.pension
         person = tax_unit.members
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
         pension_income = person("taxable_public_pension_income", period)
         eligible_pension_income = pension_income * (is_head | is_spouse)
         total_allowed_pension_exclusion = min_(
-            p.maximum_amount, eligible_pension_income
+            p.public_pension_cap, eligible_pension_income
         )
         return tax_unit.sum(total_allowed_pension_exclusion)

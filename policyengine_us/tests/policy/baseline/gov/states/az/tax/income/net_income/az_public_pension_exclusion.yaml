@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_pension_exclusion: 3_500
+    az_public_pension_exclusion: 3_500
 
 - name: AZ pension exclusion amount unit test2 (Joint, one below maximum, one above maximum)
   period: 2023
@@ -38,7 +38,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_pension_exclusion: 3_500
+    az_public_pension_exclusion: 3_500
 
 - name: AZ pension exclusion amount unit test3 (Single, below maximum)
   period: 2022
@@ -56,7 +56,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_pension_exclusion: 2_000   
+    az_public_pension_exclusion: 2_000   
 
 - name: AZ pension exclusion amount unit test4 (SEPARATE, above maximum)
   period: 2022
@@ -74,7 +74,7 @@
         members: [person1]
         state_code: AZ
   output:
-    az_pension_exclusion: 2_500   
+    az_public_pension_exclusion: 2_500   
 
 - name: AZ pension exclusion amount unit test2 (Joint, above maximum)
   period: 2023
@@ -95,4 +95,4 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_pension_exclusion: 5_000
+    az_public_pension_exclusion: 5_000
