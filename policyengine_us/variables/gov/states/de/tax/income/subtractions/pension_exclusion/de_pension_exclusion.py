@@ -26,13 +26,10 @@ class de_pension_exclusion(Variable):
         spouse = person("is_tax_unit_head", period)
 
         head_or_spouse = head | spouse
-        age_head_or_spouse = age * head_or_spouse
-        younger_eligible = age_head_or_spouse < p.min_age
-        older_eligible = age_head_or_spouse >= p.min_age
-
+        younger_eligible = age < p.min_age
 
         eligible_pension_income = (
-            person("pension_income", period) * head_or_spouse
+            person("taxable_pension_income", period) * head_or_spouse
         )
 
         # Filers under 60, are only eligible to receive a pension exclusion of max $2,000 pre 2022 
@@ -40,16 +37,18 @@ class de_pension_exclusion(Variable):
             p.cap.younger, eligible_pension_income
         )
 
+        # get filer's eligible retirement income
         eligible_retirement_income = (
             person("de_pension_exclusion_income", period) * head_or_spouse
         )
 
 
-        # Filer over 60 are eligible to receive an exclsuion for pension income a well eligible retirement  income
+        # Filer over 60 are eligible to receive an exclsuion for the total of pension income and eligible retirement income pre and after 2022
         total_income = eligible_pension_income + eligible_retirement_income
 
         capped_eligible_retirement_income = min_(p.cap.older, total_income)
 
+        # Filers under 60 and retired from military, are eligible to receive a pension exclusion of max $12,500 after 2022
         if p.military_retirement_exclusion_available:
             military_retirement_pay = (
                 person("military_retirement_pay", period) * head_or_spouse
@@ -64,7 +63,7 @@ class de_pension_exclusion(Variable):
             exclusion_amount = select(
                 [
                     younger_eligible,
-                    older_eligible,
+                    ~younger_eligible,
                 ],
                 [
                     younger_amount,
@@ -76,7 +75,7 @@ class de_pension_exclusion(Variable):
         previous_exclusion_amount = select(
             [
                 younger_eligible,
-                older_eligible,
+                ~younger_eligible,
             ],
             [
                 capped_eligible_pension_income,

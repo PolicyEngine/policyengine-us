@@ -5,13 +5,13 @@
       person1:
         age: 59
         military_retirement_pay: 1_000
-        pension_income: 10_000
+        taxable_pension_income: 10_000
         is_tax_unit_head: true
         de_pension_exclusion_income: 10_000
       person2:
         age: 59
         military_retirement_pay: 3_000
-        pension_income: 10_000
+        taxable_pension_income: 10_000
         is_tax_unit_head: true
         de_pension_exclusion_income: 0
     tax_units:
@@ -22,7 +22,7 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_pension_exclusion: 5_000
+    de_pension_exclusion: 5_000 # 2000 + 3000
 
 - name: Two younger filers with head capped pension income and spouse capped military retirement pay
   period: 2022
@@ -31,13 +31,13 @@
       person1:
         age: 59
         military_retirement_pay: 1_000
-        pension_income: 10_000
+        taxable_pension_income: 10_000
         de_pension_exclusion_income: 0
         is_tax_unit_head: true
       person2:
         age: 59
         military_retirement_pay: 15_000
-        pension_income: 10_000
+        taxable_pension_income: 10_000
         is_tax_unit_head: true
         de_pension_exclusion_income: 20_000
     tax_units:
@@ -57,13 +57,13 @@
       person1:
         age: 59
         military_retirement_pay: 1_000
-        pension_income: 0
+        taxable_pension_income: 0
         is_tax_unit_head: true
         de_pension_exclusion_income: 10_000
       person2:
         age: 60
         military_retirement_pay: 3_000
-        pension_income: 10_000
+        taxable_pension_income: 10_000
         is_tax_unit_head: true
         de_pension_exclusion_income: 1_000
     tax_units:
@@ -84,13 +84,13 @@
       person1:
         age: 60
         military_retirement_pay: 1_000
-        pension_income: 0
+        taxable_pension_income: 0
         is_tax_unit_head: true
         de_pension_exclusion_income: 10_000
       person2:
         age: 60
         military_retirement_pay: 3_000
-        pension_income: 10_000
+        taxable_pension_income: 10_000
         is_tax_unit_head: true
         de_pension_exclusion_income: 10_000
     tax_units:
