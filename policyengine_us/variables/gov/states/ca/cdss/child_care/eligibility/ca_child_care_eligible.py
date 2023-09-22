@@ -10,8 +10,7 @@ class ca_child_care_eligible(Variable):
 
     def formula(spm_unit, period, parameters):
         tanf_eligible = spm_unit("ca_tanf_eligible", period)
+        age_eligible = spm_unit("ca_child_care_age_eligible", period)
+        work_requirement = spm_unit("ca_child_care_work_requirement", period)
 
-        person = spm_unit.members
-        resources_eligible = spm_unit("ca_tanf_resources_eligible", period)
-
-        return demographic_eligible & income_eligible & resources_eligible
+        return tanf_eligible & age_eligible & work_requirement
