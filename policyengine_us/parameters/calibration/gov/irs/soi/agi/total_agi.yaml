@@ -1,0 +1,84 @@
+description: Total AGI size in each bucket by lower AGI value.
+metadata:
+  label: AGI aggregate by band
+  amount_unit: currency-USD
+  threshold_unit: currency-USD
+  reference:
+    - title: IRS SOI PUF 2015 (20in11.xls)
+brackets:
+  - threshold:
+      2015-01-01: 1
+    amount:
+      2015-01-01: 24_087_842_000
+  - threshold:
+      2015-01-01: 5_000
+    amount:
+      2015-01-01: 76_144_251_000
+  - threshold:
+      2015-01-01: 10_000
+    amount:
+      2015-01-01: 131_879_612_000
+  - threshold:
+      2015-01-01: 15_000
+    amount:
+      2015-01-01: 175_213_815_000
+  - threshold:
+      2015-01-01: 20_000
+    amount:
+      2015-01-01: 218_827_831_000
+  - threshold:
+      2015-01-01: 25_000
+    amount:
+      2015-01-01: 261_305_433_000
+  - threshold:
+      2015-01-01: 30_000
+    amount:
+      2015-01-01: 583_890_556_000
+  - threshold:
+      2015-01-01: 40_000
+    amount:
+      2015-01-01: 589_155_857_000
+  - threshold:
+      2015-01-01: 50_000
+    amount:
+      2015-01-01: 1_388_153_537_000
+  - threshold:
+      2015-01-01: 75_000
+    amount:
+      2015-01-01: 1_247_263_301_000
+  - threshold:
+      2015-01-01: 100_000
+    amount:
+      2015-01-01: 3_060_065_884_000
+  - threshold:
+      2015-01-01: 200_000
+    amount:
+      2015-01-01: 2_187_228_752_000
+  - threshold:
+      2015-01-01: 500_000
+    amount:
+      2015-01-01: 833_075_077_000
+  - threshold:
+      2015-01-01: 1_000_000
+    amount:
+      2015-01-01: 328_832_716_000
+  - threshold:
+      2015-01-01: 1_500_000
+    amount:
+      2015-01-01: 187_713_632_000
+  - threshold:
+      2015-01-01: 2_000_000
+    amount:
+      2015-01-01: 471_209_618_000
+  - threshold:
+      2015-01-01: 5_000_000
+    amount:
+      2015-01-01: 278_473_308_000
+  - threshold:
+      2015-01-01: 10_000_000
+    amount:
+      2015-01-01: 824_093_126_000
+  - threshold:
+      2015-01-01: 10_000_000
+    amount:
+      2015-01-01: 824_093_126_000
