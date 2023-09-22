@@ -13,4 +13,6 @@ class me_sales_tax_fairness_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         dependent_on_another_return = tax_unit("dsi", period)
-        return ~dependent_on_another_return
+        filing_status = tax_unit("filing_status", period)
+        separate = filing_status == filing_status.possible_values.SEPARATE
+        return ~dependent_on_another_return & ~separate

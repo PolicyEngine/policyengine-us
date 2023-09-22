@@ -17,6 +17,6 @@ class me_property_tax_fairness_credit_eligible(Variable):
         capped_dependents = min_(dependents, 2)
         p = parameters(
             period
-        ).gov.states.me.tax.income.credits.property_tax_fairness
-        income_threshold = p.income_threshold[filing_status][capped_dependents]
+        ).gov.states.me.tax.income.credits.fairness.property_tax
+        income_threshold = p.income_limit[filing_status][capped_dependents]
         return income < income_threshold

@@ -14,7 +14,7 @@ class me_property_tax_fairness_credit(Variable):
         ptax = add(tax_unit, period, ["real_estate_taxes"])
         p = parameters(
             period
-        ).gov.states.me.tax.income.credits.property_tax_fairness
+        ).gov.states.me.tax.income.credits.fairness.property_tax
         utilities_included_in_rent = tax_unit(
             "utilities_included_in_rent", period
         )
@@ -42,9 +42,9 @@ class me_property_tax_fairness_credit(Variable):
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
 
-        cap = where(
-            (age_head | age_spouse) >= p.cap.age_threshold,
-            p.cap.aged,
-            p.cap.main,
-        )
+        head_cap = p.cap.calc(age_head)
+        spouse_cap = p.cap.calc(age_spouse)
+
+        cap = max_(head_cap, spouse_cap)
+
         return min_(uncapped_credit, cap)
