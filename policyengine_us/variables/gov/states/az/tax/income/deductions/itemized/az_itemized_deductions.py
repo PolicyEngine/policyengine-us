@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_itemized_deduction(Variable):
+class az_itemized_deductions(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona Itemized Deductions"
