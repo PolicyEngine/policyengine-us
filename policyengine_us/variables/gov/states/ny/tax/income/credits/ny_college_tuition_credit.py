@@ -1,7 +1,6 @@
 from policyengine_us.model_api import *
 
 
-
 class ny_college_tuition_credit(Variable):
     value_type = float
     entity = TaxUnit
