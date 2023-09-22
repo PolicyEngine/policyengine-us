@@ -56,12 +56,6 @@ class hi_reduced_itemized_deduction(Variable):
         smaller_reduced = min_(reduced_difference, reduced_agi_difference)
         reduced_deductions = total_deductions - smaller_reduced
 
-        print(total_deductions)
-        print(partial_total_deductions)
-        print(reduced_difference)
-        print(reduced_agi_difference)
-        print(reduced_deductions)
-
         return where(
             (difference_eligible & agi_eligible),
             reduced_deductions,
