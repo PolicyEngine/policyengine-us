@@ -8,7 +8,7 @@ class EnhancedCPS_2023(Dataset):
     file_path = STORAGE_FOLDER / "enhanced_cps.h5"
     data_format = Dataset.ARRAYS
     time_period = "2023"
-    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps_2023.h5",
+    url = "release://policyengine/policyengine-us/enhanced-cps-2023/enhanced_cps.h5"
 
     def generate(self):
         from .puf_extended_cps import PUFExtendedCPS_2023
