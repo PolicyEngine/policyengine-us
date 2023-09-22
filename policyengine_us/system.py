@@ -77,7 +77,7 @@ class Simulation(CoreSimulation):
 class Microsimulation(CoreMicrosimulation):
     default_tax_benefit_system = CountryTaxBenefitSystem
     default_tax_benefit_system_instance = system
-    default_dataset = EnhancedCPS_2023
+    default_dataset = CPS_2023
     default_dataset_year = 2023
     default_role = "member"
     default_calculation_period = 2023
