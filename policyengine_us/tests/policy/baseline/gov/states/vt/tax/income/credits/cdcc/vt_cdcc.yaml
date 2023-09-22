@@ -1,0 +1,15 @@
+- name: Vermont CDCC 
+  period: 2022
+  input:
+    cdcc: 1_000
+    state_code: VT
+  output:
+    vt_cdcc: 720  # = 1000 * 0.72
+
+- name: Vermont CDCC 
+  period: 2022
+  input:
+    cdcc: 2_000
+    state_code: VT
+  output:
+    vt_cdcc: 1440  # = 2000 * 0.72
