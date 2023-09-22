@@ -11,7 +11,7 @@ class ct_income_tax_higher_tax_recapture(Variable):
 
     def formula(tax_unit, period, parameters):
         income = tax_unit("ct_agi", period)
-        p = parameters(period).gov.states.ct.tax.income.main.recapture.higher
+        p = parameters(period).gov.states.ct.tax.income.recapture.higher
         filing_status = tax_unit("filing_status", period)
         reduction_start = p.start[filing_status]
         max_amount = p.max_amount[filing_status]

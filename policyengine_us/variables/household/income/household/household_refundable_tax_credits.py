@@ -10,6 +10,7 @@ class household_refundable_tax_credits(Variable):
     adds = [
         "income_tax_refundable_credits",  # Federal.
         "ca_refundable_credits",  # California.
+        "co_refundable_credits",  # Colorado.
         "dc_refundable_credits",  # District of Columbia.
         "ia_refundable_credits",  # Iowa.
         "il_refundable_credits",  # Illinois.
