@@ -56,6 +56,8 @@ def generate_model_variables(dataset: str, time_period: str = "2023") -> Tuple:
     POPULATION_EQUIVALISATION = COUNT_HOUSEHOLDS / 1e5
 
     for variable_name in FINANCIAL_VARIABLES:
+        if variable_name not in parameters.gov.irs.soi:
+            continue
         label = (
             simulation.tax_benefit_system.variables[variable_name].label
             + " aggregate"
