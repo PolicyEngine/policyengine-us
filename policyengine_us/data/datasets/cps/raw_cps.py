@@ -129,6 +129,7 @@ class RawCPS(Dataset):
         CPS_URL_BY_YEAR = {
             2020: "https://www2.census.gov/programs-surveys/cps/datasets/2021/march/asecpub21csv.zip",
             2021: "https://www2.census.gov/programs-surveys/cps/datasets/2022/march/asecpub22csv.zip",
+            2022: "https://www2.census.gov/programs-surveys/cps/datasets/2023/march/asecpub23csv.zip",
         }
 
         if self.time_period not in CPS_URL_BY_YEAR:
@@ -217,3 +218,10 @@ class RawCPS_2021(RawCPS):
     name = "raw_cps_2021"
     label = "Raw CPS 2021"
     file_path = STORAGE_FOLDER / "raw_cps_2021.h5"
+
+
+class RawCPS_2022(RawCPS):
+    time_period = 2022
+    name = "raw_cps_2022"
+    label = "Raw CPS 2022"
+    file_path = STORAGE_FOLDER / "raw_cps_2022.h5"

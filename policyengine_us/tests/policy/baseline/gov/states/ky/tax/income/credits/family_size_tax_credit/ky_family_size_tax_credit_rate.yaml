@@ -1,0 +1,39 @@
+- name: No income
+  period: 2023
+  input: 
+    state_code: KY
+    ky_modified_agi: 0
+    state_group: CONTIGUOUS_US
+    tax_unit_size: 1
+  output:
+    ky_family_size_tax_credit_rate: 1
+
+- name: One person with income at fpg
+  period: 2022
+  input: 
+    state_code: KY
+    ky_modified_agi: 13_590
+    state_group: CONTIGUOUS_US
+    tax_unit_size: 1
+  output:
+    ky_family_size_tax_credit_rate: 1
+
+- name: Seven person, capped at 4 # fpg = 13_590 + 3 * 4_720 = 27_750, 119%
+  period: 2022
+  input: 
+    state_code: KY
+    ky_modified_agi: 33_000
+    state_group: CONTIGUOUS_US
+    tax_unit_size: 7
+  output:
+    ky_family_size_tax_credit_rate: 0.5
+
+- name: Three people with income over fpg
+  period: 2022
+  input: 
+    state_code: KY
+    ky_modified_agi: 50_000
+    state_group: CONTIGUOUS_US
+    tax_unit_size: 3
+  output:
+    ky_family_size_tax_credit_rate: 0
