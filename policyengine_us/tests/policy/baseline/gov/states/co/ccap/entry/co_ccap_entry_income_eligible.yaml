@@ -5,7 +5,7 @@
     co_ccap_hhs_smi_eligible: true
     state_code: CO
   output:
-    co_ccap_income_eligible: true
+    co_ccap_entry_income_eligible: true
 
 - name: The hhs fpg is eligible while the hhs smi not, income ineligible.
   period: 2022
@@ -14,7 +14,7 @@
     co_ccap_hhs_smi_eligible: false
     state_code: CO
   output:
-    co_ccap_income_eligible: false
+    co_ccap_entry_income_eligible: false
 
 - name: The hhs smi is eligible while the hhs fpg not, income ineligible.
   period: 2022
@@ -23,7 +23,7 @@
     co_ccap_hhs_smi_eligible: true
     state_code: CO
   output:
-    co_ccap_income_eligible: false
+    co_ccap_entry_income_eligible: false
 
 - name: Neither hhs smi nor hhs fpg is eligible, income ineligible.
   period: 2022
@@ -32,4 +32,4 @@
     co_ccap_hhs_smi_eligible: false
     state_code: CO
   output:
-    co_ccap_income_eligible: false
+    co_ccap_entry_income_eligible: false

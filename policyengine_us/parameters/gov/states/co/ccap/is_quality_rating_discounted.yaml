@@ -1,4 +1,4 @@
-description: Whether Colorado Child Care Assistance Program povides discount when filers utilize quality rating child care facilities.
+description: Whether Colorado Child Care Assistance Program povides discount when participants utilize quality rating child care facilities.
 metadata:
   type: single_amount
   threshold_unit: Child care facility quality rating
@@ -9,22 +9,10 @@ metadata:
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?ruleVersionId=11042&fileName=8%20CCR%201403-1#page=41
 brackets:
   - threshold:
-      2022-10-01: 5
+      2022-10-01: 0
     amount:
-      2022-10-01: true
-  - threshold:
-      2022-10-01: 4
-    amount:
-      2022-10-01: true
+      2022-10-01: false
   - threshold:
       2022-10-01: 3
     amount:
       2022-10-01: true
-  - threshold:
-      2022-10-01: 2
-    amount:
-      2022-10-01: false
-  - threshold:
-      2022-10-01: 1
-    amount:
-      2022-10-01: false
