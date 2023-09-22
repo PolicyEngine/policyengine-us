@@ -1,4 +1,4 @@
-- name: If the assessed property value is $10,000, then homestead exemption is $10,000.
+- name: If the assessed property value is $10,000, then the homestead exemption is $10,000.
   period: 2022
   input:
     assessed_property_value: 10_000
@@ -6,7 +6,7 @@
   output:
     wv_homestead_exemption: 10_000
 
-- name: If the assessed property value is $30,000, then homestead exemption is $20,000.
+- name: If the assessed property value is $30,000, then the homestead exemption is $20,000.
   period: 2022
   input:
     assessed_property_value: 30_000
