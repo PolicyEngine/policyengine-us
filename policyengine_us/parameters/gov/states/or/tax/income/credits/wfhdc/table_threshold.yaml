@@ -14,44 +14,424 @@ metadata:
 A:
   age_under_3:
     values:
-      2022-01-01:
-        value: .10
+      2022-01-01: .10
   age_3_to_6:
     values:
-      2022-01-01:
-        value: .08
+      2022-01-01: .08
   age_6_to_13:
     values:
-      2022-01-01:
-        value: .05
+      2022-01-01: .05
   disabled_13_to_18:
     values:
-      2022-01-01:
-        value: .05
+      2022-01-01: .05
   disabled_above_18:
     values:
-      2022-01-01:
-        value: .05
+      2022-01-01: .05
 
 B:
   age_under_3:
     values:
-      2022-01-01:
-        value: .20
+      2022-01-01: .20
   age_3_to_6:
     values:
-      2022-01-01:
-        value: .18
+      2022-01-01: .18
   age_6_to_13:
     values:
-      2022-01-01:
-        value: .15
+      2022-01-01: .15
   disabled_13_to_18:
     values:
-      2022-01-01:
-        value: .15
+      2022-01-01: .15
   disabled_above_18:
-    description: "asdf"
     values:
-      2022-01-01:
-        value: .05
+      2022-01-01: .05
+  
+C:
+  age_under_3:
+    values:
+      2022-01-01: .30
+  age_3_to_6:
+    values:
+      2022-01-01: .28
+  age_6_to_13:
+    values:
+      2022-01-01: .25
+  disabled_13_to_18:
+    values:
+      2022-01-01: .25
+  disabled_above_18:
+    values:
+      2022-01-01: .10
+  
+D:
+  age_under_3:
+    values:
+      2022-01-01: .40
+  age_3_to_6:
+    values:
+      2022-01-01: .38
+  age_6_to_13:
+    values:
+      2022-01-01: .35
+  disabled_13_to_18:
+    values:
+      2022-01-01: .35
+  disabled_above_18:
+    values:
+      2022-01-01: .20
+
+E:
+  age_under_3:
+    values:
+      2022-01-01: .50
+  age_3_to_6:
+    values:
+      2022-01-01: .48
+  age_6_to_13:
+    values:
+      2022-01-01: .45
+  disabled_13_to_18:
+    values:
+      2022-01-01: .45
+  disabled_above_18:
+    values:
+      2022-01-01: .30
+
+F:
+  age_under_3:
+    values:
+      2022-01-01: .55
+  age_3_to_6:
+    values:
+      2022-01-01: .53
+  age_6_to_13:
+    values:
+      2022-01-01: .50
+  disabled_13_to_18:
+    values:
+      2022-01-01: .50
+  disabled_above_18:
+    values:
+      2022-01-01: .35
+
+G:
+  age_under_3:
+    values:
+      2022-01-01: .60
+  age_3_to_6:
+    values:
+      2022-01-01: .58
+  age_6_to_13:
+    values:
+      2022-01-01: .55
+  disabled_13_to_18:
+    values:
+      2022-01-01: .55
+  disabled_above_18:
+    values:
+      2022-01-01: .40
+
+H:
+  age_under_3:
+    values:
+      2022-01-01: .65
+  age_3_to_6:
+    values:
+      2022-01-01: .63
+  age_6_to_13:
+    values:
+      2022-01-01: .60
+  disabled_13_to_18:
+    values:
+      2022-01-01: .60
+  disabled_above_18:
+    values:
+      2022-01-01: .45
+
+I:
+  age_under_3:
+    values:
+      2022-01-01: .70
+  age_3_to_6:
+    values:
+      2022-01-01: .68
+  age_6_to_13:
+    values:
+      2022-01-01: .65
+  disabled_13_to_18:
+    values:
+      2022-01-01: .65
+  disabled_above_18:
+    values:
+      2022-01-01: .50
+
+J:
+  age_under_3:
+    values:
+      2022-01-01: .75
+  age_3_to_6:
+    values:
+      2022-01-01: .73
+  age_6_to_13:
+    values:
+      2022-01-01: .70
+  disabled_13_to_18:
+    values:
+      2022-01-01: .70
+  disabled_above_18:
+    values:
+      2022-01-01: .55
+
+K:
+  age_under_3:
+    values:
+      2022-01-01: .71
+  age_3_to_6:
+    values:
+      2022-01-01: .69
+  age_6_to_13:
+    values:
+      2022-01-01: .66
+  disabled_13_to_18:
+    values:
+      2022-01-01: .66
+  disabled_above_18:
+    values:
+      2022-01-01: .50
+
+L:
+  age_under_3:
+    values:
+      2022-01-01: .66
+  age_3_to_6:
+    values:
+      2022-01-01: .64
+  age_6_to_13:
+    values:
+      2022-01-01: .61
+  disabled_13_to_18:
+    values:
+      2022-01-01: .61
+  disabled_above_18:
+    values:
+      2022-01-01: .45
+
+M:
+  age_under_3:
+    values:
+      2022-01-01: .61
+  age_3_to_6:
+    values:
+      2022-01-01: .59
+  age_6_to_13:
+    values:
+      2022-01-01: .56
+  disabled_13_to_18:
+    values:
+      2022-01-01: .56
+  disabled_above_18:
+    values:
+      2022-01-01: .39
+
+N:
+  age_under_3:
+    values:
+      2022-01-01: .55
+  age_3_to_6:
+    values:
+      2022-01-01: .53
+  age_6_to_13:
+    values:
+      2022-01-01: .50
+  disabled_13_to_18:
+    values:
+      2022-01-01: .50
+  disabled_above_18:
+    values:
+      2022-01-01: .33
+
+O:
+  age_under_3:
+    values:
+      2022-01-01: .50
+  age_3_to_6:
+    values:
+      2022-01-01: .48
+  age_6_to_13:
+    values:
+      2022-01-01: .45
+  disabled_13_to_18:
+    values:
+      2022-01-01: .45
+  disabled_above_18:
+    values:
+      2022-01-01: .28
+
+P:
+  age_under_3:
+    values:
+      2022-01-01: .47
+  age_3_to_6:
+    values:
+      2022-01-01: .45
+  age_6_to_13:
+    values:
+      2022-01-01: .42
+  disabled_13_to_18:
+    values:
+      2022-01-01: .42
+  disabled_above_18:
+    values:
+      2022-01-01: .25
+    
+Q:
+  age_under_3:
+    values:
+      2022-01-01: .45
+  age_3_to_6:
+    values:
+      2022-01-01: .43
+  age_6_to_13:
+    values:
+      2022-01-01: .40
+  disabled_13_to_18:
+    values:
+      2022-01-01: .40
+  disabled_above_18:
+    values:
+      2022-01-01: .22
+
+R:
+  age_under_3:
+    values:
+      2022-01-01: .30
+  age_3_to_6:
+    values:
+      2022-01-01: .38
+  age_6_to_13:
+    values:
+      2022-01-01: .35
+  disabled_13_to_18:
+    values:
+      2022-01-01: .35
+  disabled_above_18:
+    values:
+      2022-01-01: .20
+
+S:
+  age_under_3:
+    values:
+      2022-01-01: .35
+  age_3_to_6:
+    values:
+      2022-01-01: .33
+  age_6_to_13:
+    values:
+      2022-01-01: .30
+  disabled_13_to_18:
+    values:
+      2022-01-01: .30
+  disabled_above_18:
+    values:
+      2022-01-01: .15
+
+T:
+  age_under_3:
+    values:
+      2022-01-01: .30
+  age_3_to_6:
+    values:
+      2022-01-01: .28
+  age_6_to_13:
+    values:
+      2022-01-01: .25
+  disabled_13_to_18:
+    values:
+      2022-01-01: .25
+  disabled_above_18:
+    values:
+      2022-01-01: .10
+
+U:
+  age_under_3:
+    values:
+      2022-01-01: .20
+  age_3_to_6:
+    values:
+      2022-01-01: .18
+  age_6_to_13:
+    values:
+      2022-01-01: .15
+  disabled_13_to_18:
+    values:
+      2022-01-01: .15
+  disabled_above_18:
+    values:
+      2022-01-01: .05
+
+V:
+  age_under_3:
+    values:
+      2022-01-01: .10
+  age_3_to_6:
+    values:
+      2022-01-01: .08
+  age_6_to_13:
+    values:
+      2022-01-01: .05
+  disabled_13_to_18:
+    values:
+      2022-01-01: .05
+  disabled_above_18:
+    values:
+      2022-01-01: .05
+
+W:
+  age_under_3:
+    values:
+      2022-01-01: .06
+  age_3_to_6:
+    values:
+      2022-01-01: .06
+  age_6_to_13:
+    values:
+      2022-01-01: .04
+  disabled_13_to_18:
+    values:
+      2022-01-01: .04
+  disabled_above_18:
+    values:
+      2022-01-01: .04
+
+X:
+  age_under_3:
+    values:
+      2022-01-01: .04
+  age_3_to_6:
+    values:
+      2022-01-01: .04
+  age_6_to_13:
+    values:
+      2022-01-01: .04
+  disabled_13_to_18:
+    values:
+      2022-01-01: .04
+  disabled_above_18:
+    values:
+      2022-01-01: .04
+
+Y:
+  age_under_3:
+    values:
+      2022-01-01: 0
+  age_3_to_6:
+    values:
+      2022-01-01: 0
+  age_6_to_13:
+    values:
+      2022-01-01: 0
+  disabled_13_to_18:
+    values:
+      2022-01-01: 0
+  disabled_above_18:
+    values:
+      2022-01-01: 0

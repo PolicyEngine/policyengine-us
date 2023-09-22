@@ -1,4 +1,28 @@
-- name: Assuming household size is 2 and youngest child is age 5, CDCC match is 18%.
+- name: Assuming household size is 2 and youngest child is age 5, CDCC match is 18% in 2021.
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 5
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 1_800
+        or_income_after_subtractions: 1_800
+        cdcc_relevant_expenses: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_wfhdc: 18
+
+- name: Assuming household size is 2 and youngest child is age 5, CDCC match is 8% in 2022.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -12,17 +36,17 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
-        adjusted_gross_income: 2_000
-        or_income_after_subtractions: 2_000
+        adjusted_gross_income: 1_800
+        or_income_after_subtractions: 1_800
         cdcc_relevant_expenses: 100
     households:
       household:
         members: [person1, person2]
         state_code: OR
   output:
-    or_wfhdc: 18
+    or_wfhdc: 8
 
-- name: Household size is 2, youngest child is age 15 and not disabled, no CDCC match.
+- name: Household size is 2, youngest child is age 15 and not disabled, no CDCC match in 2022.
   period: 2022
   absolute_error_margin: 0
   input:
@@ -70,3 +94,30 @@
         state_code: OR
   output:
     or_wfhdc: 15
+
+- name: Assuming household size is 3 and youngest child is age 5, CDCC match is 8% in 2022.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: false
+      person2:
+        age: 5
+        is_disabled: false
+      person3:
+        age: 6
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        adjusted_gross_income: 1_800
+        or_income_after_subtractions: 1_800
+        cdcc_relevant_expenses: 100
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OR
+  output:
+    or_wfhdc: 8
