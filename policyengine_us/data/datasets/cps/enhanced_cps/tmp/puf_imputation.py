@@ -124,7 +124,6 @@ st.subheader("Household estimator")
 col1, col2 = st.columns(2)
 
 with col1:
-
     mars = st.selectbox(
         "MARS", ["SINGLE", "JOINT", "WIDOW", "SEPARATE", "HEAD_OF_HOUSEHOLD"]
     )
