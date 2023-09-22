@@ -19,6 +19,7 @@ class hi_reduced_itemized_deduction(Variable):
         p_deductions = parameters(period).gov.irs.deductions
 
         total_deductions = tax_unit("hi_total_itemized_deduction", period)
+        # get individual variable for each part?
         # 2.a
         medical_expense = add(tax_unit, period, ["medical_expense"])
         hi_agi = tax_unit("hi_agi", period)

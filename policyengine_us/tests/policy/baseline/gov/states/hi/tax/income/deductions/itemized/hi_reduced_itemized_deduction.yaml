@@ -1,0 +1,24 @@
+- name: base test
+  period: 2022
+  input:
+    people:
+      person1:
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+      person2:
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        hi_agi: 1_000
+        members: [person1, person2]
+        hi_total_itemized_deduction: 725
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deduction: 5699
