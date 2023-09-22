@@ -16,4 +16,4 @@ class ca_tanf_resouces_limit(Variable):
         has_elderly = spm_unit.any(age >= p.age_threshold)
         is_disabled = person("is_disabled", period)
         has_disabled_member = spm_unit.any(is_disabled)
-        return where(has_elderly | has_disabled_member, p.with_elderly_or_disabled_member.yaml, p.without_elderly_or_disabled_member.yaml)
+        return where(has_elderly | has_disabled_member, p.with_elderly_or_disabled_member, p.without_elderly_or_disabled_member)
