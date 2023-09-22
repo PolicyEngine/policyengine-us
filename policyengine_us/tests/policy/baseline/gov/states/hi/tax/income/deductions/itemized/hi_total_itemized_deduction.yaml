@@ -24,3 +24,192 @@
         state_code: HI
   output:
     hi_total_itemized_deduction: 725
+
+- name: larger medical expense
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 200
+        casualty_loss: 100
+      person2:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 100
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 825
+
+- name: mortage exceed cap
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 750_100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+      person2:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 100
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 750_525
+
+- name: SEPARATE
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 750_100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+      person2:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: SEPARATE
+        charitable_deduction: 100
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 375_525
+
+- name: larger charitable_deduction
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+      person2:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 200
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 825
+
+- name: larger casualty loss
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 200
+      person2:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 100
+        hi_agi: 1_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 825
+
+- name: different agi
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+      person2:
+        home_mortgage_interest: 100
+        investment_interest: 100
+        medical_expense: 100
+        casualty_loss: 100
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 100
+        hi_agi: 3_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 500
+
+- name: base test for reduced
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+      person2:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 1_000
+        hi_agi: 200_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_total_itemized_deduction: 5000

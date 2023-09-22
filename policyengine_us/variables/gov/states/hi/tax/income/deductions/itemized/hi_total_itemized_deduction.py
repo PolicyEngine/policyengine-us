@@ -8,7 +8,6 @@ class hi_total_itemized_deduction(Variable):
     unit = USD
     documentation = (
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15"
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=19"
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32"  # total itemized deduction worksheet
     )
     definition_period = YEAR
@@ -49,7 +48,6 @@ class hi_total_itemized_deduction(Variable):
         #     (1) suspend the deduction for interest paid on home equity loans
         #     (2) lower the dollar limit on mortgages qualifying for the home mortgage interest deduction
         filing_status = tax_unit("filing_status", period)
-        # Section 163(h)(3)(F)
         home_mortgage_interest = min_(
             add(tax_unit, period, ["home_mortgage_interest"]),
             p.home_mortgage_interest_cap[filing_status],
@@ -77,9 +75,5 @@ class hi_total_itemized_deduction(Variable):
             + hi_interest_deduction
             + hi_casualty_loss_deduction
         )
-        print(federal_deductions)
-        print(hi_medical_expense_deduction)
-        print(hi_interest_deduction)
-        print(hi_casualty_loss_deduction)
 
         return total_deductions

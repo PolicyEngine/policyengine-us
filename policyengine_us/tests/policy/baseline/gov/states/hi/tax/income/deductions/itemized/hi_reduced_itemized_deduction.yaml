@@ -3,22 +3,160 @@
   input:
     people:
       person1:
-        investment_interest: 100
-        medical_expense: 100
-        casualty_loss: 100
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
       person2:
-        investment_interest: 100
-        medical_expense: 100
-        casualty_loss: 100
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
-        hi_agi: 1_000
+        charitable_deduction: 1_000
+        hi_agi: 200_000
         members: [person1, person2]
-        hi_total_itemized_deduction: 725
     households:
       household:
         members: [person1, person2]
         state_code: HI
   output:
-    hi_reduced_itemized_deduction: 5699
+    hi_reduced_itemized_deduction: 4004
+
+- name: not eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+      person2:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 1_000
+        hi_agi: 20_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deduction: 5500
+
+- name: different investment interest
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 1_000
+        investment_interest: 2_000
+        medical_expense: 2_000
+        casualty_loss: 1_000
+      person2:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 1_000
+        hi_agi: 200_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deduction: 5004
+
+- name: larger medical expense
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 20_000
+        casualty_loss: 1_000
+      person2:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 1_000
+        hi_agi: 200_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deduction: 10003.999
+
+- name: smaller agi
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+      person2:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+    tax_units:
+      tax_unit:
+        filing_status: JOINT
+        charitable_deduction: 1_000
+        hi_agi: 166_900
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deduction: 4997
+
+- name: separate, smaller agi difference
+  period: 2022
+  input:
+    people:
+      person1:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+      person2:
+        home_mortgage_interest: 1_000
+        investment_interest: 1_000
+        medical_expense: 1_000
+        casualty_loss: 1_000
+    tax_units:
+      tax_unit:
+        filing_status: SEPARATE
+        charitable_deduction: 1_000
+        hi_agi: 84_000
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_reduced_itemized_deduction: 4982
+    
