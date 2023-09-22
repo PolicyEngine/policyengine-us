@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class vt_percentage_capital_gain_exclusion(Variable):
+class vt_percentage_capital_gains_exclusion(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Vermont percentage capital gain exclusion"
+    label = "Vermont percentage capital gains exclusion"
     unit = USD
-    documentation = "This can be selected to be subtracted from federal adjusted gross income in Vermont as percentage captial gain exclusion."
+    documentation = "This can be selected to be subtracted from federal adjusted gross income in Vermont as percentage captial gains exclusion."
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (

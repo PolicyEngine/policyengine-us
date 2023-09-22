@@ -1,12 +1,12 @@
 from policyengine_us.model_api import *
 
 
-class vt_capital_gain_exclusion(Variable):
+class vt_capital_gains_exclusion(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Vermont capital gain exclusion"
+    label = "Vermont capital gains exclusion"
     unit = USD
-    documentation = "This is subtracted from federal adjusted gross income in Vermont as captial gain exclusion."
+    documentation = "Vermont as capital gains exclusion which is calculated either as a flat amount or as a percentage of adjusted net capital gains."
     definition_period = YEAR
     defined_for = StateCode.VT
     reference = (
@@ -16,7 +16,7 @@ class vt_capital_gain_exclusion(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # Get adjusted net capital gain
+        # Get adjusted net capital gains
         adjusted_net_capital_gain = tax_unit(
             "adjusted_net_capital_gain", period
         )
@@ -27,7 +27,7 @@ class vt_capital_gain_exclusion(Variable):
         flat_exclusion = min_(adjusted_net_capital_gain, p.flat.max_amount)
         # Get percentage exclusion
         percentage_exclusion = tax_unit(
-            "vt_percentage_capital_gain_exclusion", period
+            "vt_percentage_capital_gains_exclusion", period
         )
         # Filer can choose from flat or percentage exclusion. Assume the filer will always choose the larger one
         chosen_exclusion = max_(flat_exclusion, percentage_exclusion)
