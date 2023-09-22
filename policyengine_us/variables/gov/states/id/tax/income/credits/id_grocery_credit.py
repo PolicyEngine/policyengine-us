@@ -10,20 +10,67 @@ class id_grocery_credit(Variable):
     defined_for = "StateCode.ID"
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.id.tax.income.credits.gc
+        #### Defining paths to gc and income_threshold directories to access params ####
+        path_gc = parameters(period).gov.states.id.tax.income.credits.gc
+        path_inc_thre = parameters(
+            period
+        ).gov.states.id.tax.income.credits.income_threshold
 
-        # 100$ for each dependent
-        person1 = tax_unit.members = p.snap_threshold.Household_Size
-        person = person1("income", period) > p.snap_threshold
-        dependent = person(
-            "is_tax_unit_dependent", period
-        )  # example: [0, 0, 1, 1, 1]
-        total_dependents = tax_unit.sum(dependent)  # example sum [3]
-        dependet_amount = total_dependents * p.amount_dependent
-        # 20$ extra for each aged person
-        person_aged = person("age", period) > p.age_older_eligibility
-        total_aged = tax_unit.sum(person_aged)
-        aged_amount = total_aged * p.amount_65_older
+        #### Get ages for both the head and spouse ####
+        age_head = tax_unit("age_head", period)
+        age_spouse = tax_unit("age_spouse ", period)
+        filing_status = tax_unit("filing_status", period)
+        income = tax_unit("id_agi", period)
+        total_dependents = tax_unit.sum(dependent)  # need to check!
 
-        # 100$ for self
-        return p.amount + dependet_amount + aged_amount
+        #### Define constants ####
+        all_credits = 0
+
+        age_threshold = path_gc.age_older_eligibility  # 65
+        age_amount = path_gc.aged_amount  # 20
+        base_credit = path_gc.amount  # 100
+
+        joint_income_bar = path_inc_thre.two_aged  # 27_800, 28_700
+        one_joint_income_bar = path_inc_thre.one_aged.JOINT  # 26_450, 27_300
+        one_single_and_others_income_bar = (
+            path_inc_thre.one_aged.SINGLE
+        )  # 14_250, 14_700
+
+        #### Logic for calcualting grocery credit ####
+        # Create boolean variables head_aged and spouse_aged to identify if they're over 65
+        head_aged = age_head >= age_threshold  # 65
+        spouse_aged = age_spouse >= age_threshold  # 65
+
+        joint = filing_status == filing_status.possible_values.JOINT
+        if joint:  # filling jointly
+            if (head_aged == True) & (spouse_aged == True):
+                if income < joint_income_bar:
+                    all_credits = (age_amount + base_credit) * 2
+                else:
+                    all_credits = (
+                        age_amount + base_credit
+                    ) * 2 + base_credit * (total_dependents + 2)
+
+            elif (head_aged == True) | (spouse_aged == True):
+                if income < one_joint_income_bar:
+                    all_credits = age_amount + base_credit * 2
+                else:
+                    all_credits = age_amount + base_credit * (
+                        total_dependents + 2
+                    )
+
+            elif (head_aged == False) & (spouse_aged == False):
+                all_credits = base_credit * (total_dependents + 2)
+
+        else:  # filling single, means here's only the head
+            if head_aged == True:
+                if income < one_single_and_others_income_bar:
+                    all_credits = base_credit + age_amount
+                else:
+                    all_credits = age_amount + base_credit * (
+                        total_dependents + 1
+                    )
+            else:
+                all_credits = base_credit * (total_dependents + 1)
+
+        return all_credits
