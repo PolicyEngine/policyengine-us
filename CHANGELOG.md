@@ -5,6 +5,118 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.474.0] - 2023-09-22 19:30:12
+
+### Added
+
+- Arkansas inflation relief income-tax credit.
+
+## [0.473.0] - 2023-09-22 19:22:49
+
+### Added
+
+- North Carolina itemized deductions.
+- North Carolina income tree.
+
+## [0.472.0] - 2023-09-22 10:21:41
+
+### Added
+
+- Population by state to calibration routines.
+
+## [0.471.1] - 2023-09-21 12:36:13
+
+### Fixed
+
+- Remove two unused variables in variables/gov/irs/taxcalc/deductions/standard directory.
+
+## [0.471.0] - 2023-09-21 12:28:34
+
+### Added
+
+- Arkansas child and dependent care credit.
+
+## [0.470.1] - 2023-09-20 17:44:51
+
+### Fixed
+
+- Colorado income tax model formatting.
+
+## [0.470.0] - 2023-09-19 14:45:39
+
+### Added
+
+- Kentucky family size tax credit.
+
+## [0.469.0] - 2023-09-15 19:38:29
+
+### Added
+
+- Child Health Plan Plus
+
+## [0.468.0] - 2023-09-15 04:34:13
+
+### Added
+
+- Louisiana military pay exclusion.
+
+## [0.467.0] - 2023-09-15 04:21:57
+
+## [0.466.1] - 2023-09-14 19:23:32
+
+### Fixed
+
+- Unfocused scope of the test coverage report.
+
+## [0.466.0] - 2023-09-14 19:17:47
+
+### Added
+
+- Mississippi income tax schedule.
+
+## [0.465.3] - 2023-09-14 19:11:54
+
+### Fixed
+
+- Moved NJ tax index.yaml file from NJ to NJDHS.
+
+## [0.465.2] - 2023-09-14 17:41:30
+
+### Added
+
+- Documentation page with example on income distributions.
+
+## [0.465.1] - 2023-09-13 13:17:04
+
+### Fixed
+
+- Documentation dependency errors.
+
+## [0.465.0] - 2023-09-12 23:29:59
+
+### Added
+
+- Rhode Island property tax credit.
+
+## [0.464.1] - 2023-09-12 22:51:02
+
+### Fixed
+
+- Colorado CTC and EITC changes for 2024 enacted in House Bill 23-1112.
+- Colorado CTC logic.
+
+## [0.464.0] - 2023-09-12 21:49:59
+
+### Added
+
+- Added PovertyTracker microdata.
+
+## [0.463.0] - 2023-09-12 16:15:02
+
+### Changed
+
+- CPS updated to 2022 from 2021.
+
 ## [0.462.3] - 2023-09-08 00:44:17
 
 ### Added
@@ -5234,6 +5346,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.473.0...0.474.0
+[0.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.472.0...0.473.0
+[0.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.471.1...0.472.0
+[0.471.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.471.0...0.471.1
+[0.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.1...0.471.0
+[0.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.0...0.470.1
+[0.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.469.0...0.470.0
+[0.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.468.0...0.469.0
+[0.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.467.0...0.468.0
+[0.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.1...0.467.0
+[0.466.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.0...0.466.1
+[0.466.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.3...0.466.0
+[0.465.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.2...0.465.3
+[0.465.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.1...0.465.2
+[0.465.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.465.0...0.465.1
+[0.465.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.464.1...0.465.0
+[0.464.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.464.0...0.464.1
+[0.464.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.463.0...0.464.0
+[0.463.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.3...0.463.0
 [0.462.3]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.2...0.462.3
 [0.462.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.1...0.462.2
 [0.462.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.462.0...0.462.1
