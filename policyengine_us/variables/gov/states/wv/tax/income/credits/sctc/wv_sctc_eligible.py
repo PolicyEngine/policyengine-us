@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class wv_senior_citizens_tax_credit_eligible(Variable):
+class wv_sctc_eligible(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Eligible for the West Virginia senior citizens tax credit"
