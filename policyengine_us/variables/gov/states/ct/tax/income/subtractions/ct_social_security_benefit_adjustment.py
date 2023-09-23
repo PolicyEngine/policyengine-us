@@ -18,10 +18,10 @@ class ct_social_security_benefit_adjustment(Variable):
         agi = add(tax_unit, period, ["adjusted_gross_income"])
         max_amount = p.max_amount[filing_status]
         base_amount = p.base_amount[filing_status]
-
-        includable_ss = ss_benefit * 0.25
-        excess = agi + 0.5 * ss_benefit - base_amount
-        max_inclusion = min(includable_ss, 0.25 * excess)
-        adjusted_ss_benefit = abs(max_inclusion - includable_ss)
-        final_ss = where(agi < max_amount, 0, adjusted_ss_benefit)
-        return final_ss
+        ss_benefit_frac = 0.25
+        ss_agi_frac = 0.5
+        includable_ss = ss_benefit * ss_benefit_frac
+        excess = agi + ss_agi_frac * ss_benefit - base_amount
+        max_inclusion = min_(includable_ss, ss_benefit_frac * excess)
+        adjusted_ss_benefit = max_(max_inclusion - includable_ss, 0)
+        return where(agi < max_amount, 0, adjusted_ss_benefit)
