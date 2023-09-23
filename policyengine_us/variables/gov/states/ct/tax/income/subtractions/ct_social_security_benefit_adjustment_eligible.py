@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class ct_social_security_benefit_adjustment_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    unit = USD
-    label = "Connecticut social security benefit adjustment eligible"
+    label = "Eligible for the Connecticut social security benefit adjustment"
     definition_period = YEAR
     defined_for = StateCode.CT
 

@@ -7,7 +7,7 @@ class ct_social_security_benefit_adjustment(Variable):
     unit = USD
     label = "Connecticut social security benefit adjustment"
     definition_period = YEAR
-    defined_for = StateCode.CT
+    defined_for = "ct_social_security_benefit_adjustment_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
