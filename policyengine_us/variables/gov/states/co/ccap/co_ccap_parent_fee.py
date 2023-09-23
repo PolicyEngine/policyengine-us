@@ -29,13 +29,13 @@ class co_ccap_parent_fee(Variable):
         base_parent_fee = np.round(
             where(
                 agi <= hhs_fpg,
-                agi * 0.01 / 12,
-                (hhs_fpg * 0.01 + (agi - hhs_fpg) * 0.14) / 12,
+                agi * p.base_parent_fee.first_multiplication_factor / MONTHS_IN_YEAR,
+                (hhs_fpg * p.base_parent_fee.first_multiplication_factor + (agi - hhs_fpg) * p.base_parent_fee.second_multiplication_factor) /  MONTHS_IN_YEAR,
             ),
             2,
         )
         add_on_parent_fee = where(
-            agi > hhs_fpg, (num_child_age_eligible - 1) * 15, 0
+            agi > hhs_fpg, (num_child_age_eligible - 1) * p.add_on_parent_fee.third_multiplication_factor, 0
         )
 
         # Sum up all the parent fee for eligible children.
@@ -63,7 +63,7 @@ class co_ccap_parent_fee(Variable):
             > 0
         )
 
-        discounted_rate = p.quality_discounted_rate
+        discounted_rate = p.quality_rating_discounted_rate
 
         return np.round(
             where(

@@ -20,7 +20,7 @@ class co_ccap_re_determination_income_eligible(Variable):
 
         # Calculate monthly smi limit
         spm_unit = tax_unit.spm_unit
-        hhs_smi_rate = p.re_determination_hhs_smi_rate
+        hhs_smi_rate = p.re_determination.re_determination_hhs_smi_rate
         hhs_smi = spm_unit("hhs_smi", period)
         monthly_hhs_smi = np.round(hhs_smi * hhs_smi_rate / MONTHS_IN_YEAR, 2)
         return monthly_agi < monthly_hhs_smi
