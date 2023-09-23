@@ -21,21 +21,29 @@ class co_ccap_parent_fee(Variable):
         # Calculate base parent fee and add on parent fee.
         agi = tax_unit("adjusted_gross_income", period)
         hhs_fpg = tax_unit("tax_unit_fpg", period)
-        num_child_age_eligible = tax_unit(
-            "co_ccap_num_child_eligible", period
-        )
+        num_child_age_eligible = tax_unit("co_ccap_num_child_eligible", period)
 
         # The numebrs below are weights copied from government spreadsheet (url: )
         base_parent_fee = np.round(
             where(
                 agi <= hhs_fpg,
-                agi * p.base_parent_fee.first_multiplication_factor / MONTHS_IN_YEAR,
-                (hhs_fpg * p.base_parent_fee.first_multiplication_factor + (agi - hhs_fpg) * p.base_parent_fee.second_multiplication_factor) /  MONTHS_IN_YEAR,
+                agi
+                * p.base_parent_fee.first_multiplication_factor
+                / MONTHS_IN_YEAR,
+                (
+                    hhs_fpg * p.base_parent_fee.first_multiplication_factor
+                    + (agi - hhs_fpg)
+                    * p.base_parent_fee.second_multiplication_factor
+                )
+                / MONTHS_IN_YEAR,
             ),
             2,
         )
         add_on_parent_fee = where(
-            agi > hhs_fpg, (num_child_age_eligible - 1) * p.add_on_parent_fee.third_multiplication_factor, 0
+            agi > hhs_fpg,
+            (num_child_age_eligible - 1)
+            * p.add_on_parent_fee.third_multiplication_factor,
+            0,
         )
 
         # Sum up all the parent fee for eligible children.
