@@ -13,8 +13,8 @@ class co_ccap_re_determination_eligible(Variable):
     defined_for = StateCode.CO
 
     def formula(tax_unit, period, parameters):
-        income_eligible = tax_unit("co_ccap_re_determination_income_eligible", period)
-        child_age_eligible = (
-            tax_unit("co_ccap_num_child_eligible", period) > 0
+        income_eligible = tax_unit(
+            "co_ccap_re_determination_income_eligible", period
         )
+        child_age_eligible = tax_unit("co_ccap_num_child_eligible", period) > 0
         return income_eligible & child_age_eligible

@@ -14,12 +14,16 @@ class co_ccap_eligible(Variable):
     )
     definition_period = YEAR
     defined_for = StateCode.CO
-    
+
     def formula(tax_unit, period, parameters):
         is_entry = tax_unit("co_ccap_is_in_the_entry_process", period)
         entry_eligible = tax_unit("co_ccap_entry_eligible", period)
-        is_re_determination = tax_unit("co_ccap_is_in_the_re_determination_process", period)
+        is_re_determination = tax_unit(
+            "co_ccap_is_in_the_re_determination_process", period
+        )
         re_determination_eligible = tax_unit(
             "co_ccap_re_determination_eligible", period
         )
-        return (is_entry * entry_eligible) | (is_re_determination * re_determination_eligible)
+        return (is_entry * entry_eligible) | (
+            is_re_determination * re_determination_eligible
+        )
