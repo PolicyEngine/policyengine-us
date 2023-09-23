@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.475.0] - 2023-09-23 21:48:12
+
+### Added
+
+- A non_mortgage_interest variable.
+- A formula for interest_expense variable that adds mortgage_interest and non_mortgage_interest variables.
+
 ## [0.474.0] - 2023-09-22 19:30:12
 
 ### Added
@@ -5346,6 +5353,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.474.0...0.475.0
 [0.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.473.0...0.474.0
 [0.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.472.0...0.473.0
 [0.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.471.1...0.472.0

@@ -4508,3 +4508,10 @@
     added:
     - Arkansas inflation relief income-tax credit.
   date: 2023-09-22 19:30:12
+- bump: minor
+  changes:
+    added:
+    - A non_mortgage_interest variable.
+    - A formula for interest_expense variable that adds mortgage_interest and non_mortgage_interest
+      variables.
+  date: 2023-09-23 21:48:12
