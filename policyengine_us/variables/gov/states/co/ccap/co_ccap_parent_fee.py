@@ -23,7 +23,9 @@ class co_ccap_parent_fee(Variable):
         hhs_fpg = tax_unit("tax_unit_fpg", period)
         num_child_age_eligible = tax_unit("co_ccap_num_child_eligible", period)
 
-        # The numebrs below are weights copied from government spreadsheet (url: )
+        # The numebrs below are weights copied from government spreadsheet
+        # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
+        #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
         base_parent_fee = np.round(
             where(
                 agi <= hhs_fpg,
