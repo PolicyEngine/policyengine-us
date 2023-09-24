@@ -4436,3 +4436,93 @@
     fixed:
     - Documentation dependency errors.
   date: 2023-09-13 13:17:04
+- bump: patch
+  changes:
+    added:
+    - Documentation page with example on income distributions.
+  date: 2023-09-14 17:41:30
+- bump: patch
+  changes:
+    fixed:
+    - Moved NJ tax index.yaml file from NJ to NJDHS.
+  date: 2023-09-14 19:11:54
+- bump: minor
+  changes:
+    added:
+    - Mississippi income tax schedule.
+  date: 2023-09-14 19:17:47
+- bump: patch
+  changes:
+    fixed:
+    - Unfocused scope of the test coverage report.
+  date: 2023-09-14 19:23:32
+- bump: minor
+  changes:
+    add:
+    - Pell Grant automatic 0 EFC and marginal tax rate brackets from 2009 to 2023
+  date: 2023-09-15 04:21:57
+- bump: minor
+  changes:
+    added:
+    - Louisiana military pay exclusion.
+  date: 2023-09-15 04:34:13
+- bump: minor
+  changes:
+    added:
+    - Child Health Plan Plus
+  date: 2023-09-15 19:38:29
+- bump: minor
+  changes:
+    added:
+    - Kentucky family size tax credit.
+  date: 2023-09-19 14:45:39
+- bump: patch
+  changes:
+    fixed:
+    - Colorado income tax model formatting.
+  date: 2023-09-20 17:44:51
+- bump: minor
+  changes:
+    added:
+    - Arkansas child and dependent care credit.
+  date: 2023-09-21 12:28:34
+- bump: patch
+  changes:
+    fixed:
+    - Remove two unused variables in variables/gov/irs/taxcalc/deductions/standard
+      directory.
+  date: 2023-09-21 12:36:13
+- bump: minor
+  changes:
+    added:
+    - Population by state to calibration routines.
+  date: 2023-09-22 10:21:41
+- bump: minor
+  changes:
+    added:
+    - North Carolina itemized deductions.
+    - North Carolina income tree.
+  date: 2023-09-22 19:22:49
+- bump: minor
+  changes:
+    added:
+    - Arkansas inflation relief income-tax credit.
+  date: 2023-09-22 19:30:12
+- bump: minor
+  changes:
+    added:
+    - A non_mortgage_interest variable.
+    - A formula for interest_expense variable that adds mortgage_interest and non_mortgage_interest
+      variables.
+  date: 2023-09-23 21:48:12
+- bump: minor
+  changes:
+    added:
+    - Vermont earned income tax credit.
+  date: 2023-09-24 03:22:24
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina index files.
+    - North Carolina missing legislative references.
+  date: 2023-09-24 05:33:57
