@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.476.0] - 2023-09-24 03:22:24
+
+### Added
+
+- Vermont earned income tax credit.
+
 ## [0.475.0] - 2023-09-23 21:48:12
 
 ### Added
@@ -5353,6 +5359,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.476.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.475.0...0.476.0
 [0.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.474.0...0.475.0
 [0.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.473.0...0.474.0
 [0.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.472.0...0.473.0
