@@ -13,11 +13,10 @@ class az_long_term_capital_gains_subtraction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.az.tax.income.deductions.net_capital_gains
+        ).gov.states.az.tax.income.deductions.capital_gains
 
         long_term_capital_gains = add(
             tax_unit, period, ["long_term_capital_gains"]
         )
-        # net capital gain derived from investment in a qualified small business should also be subtracted
 
         return long_term_capital_gains * p.rate
