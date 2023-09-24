@@ -41,7 +41,8 @@ class az_itemized_deductions(Variable):
         )
 
         # Adjustments to Charitable Contributions
-        # Amount of charitable contributions for which you are claiming a credit under Arizona law
+        # Amount of charitable contributions for which you are claiming 
+        # a credit under Arizona law.
         charitable_deduction = tax_unit("charitable_deduction", period)
         charitable_contributions_credit = tax_unit(
             "az_charitable_contributions_credit", period
