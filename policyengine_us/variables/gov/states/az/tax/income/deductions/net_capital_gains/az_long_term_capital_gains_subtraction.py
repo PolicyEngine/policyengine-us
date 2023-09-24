@@ -14,7 +14,7 @@ class az_long_term_capital_gains_subtraction(Variable):
         p = parameters(
             period
         ).gov.states.az.tax.income.deductions.net_capital_gains
-
+    # Arizona adds back capital losses, so this is uncapped.
         long_term_capital_gains = add(
             tax_unit, period, ["long_term_capital_gains"]
         )
