@@ -30,7 +30,8 @@ class az_itemized_deductions(Variable):
             ]
         ]
         federal_deductions = add(tax_unit, period, deductions)
-        # Adjustment to Medical and Dental Expresses
+        # Arizona allows a deduction for medical and dental expenses
+        # that cannot be deducted from federal income taxes.
         medical_expense = add(tax_unit, period, ["medical_expense"])
         medical_expense_deduction = tax_unit(
             "medical_expense_deduction", period
