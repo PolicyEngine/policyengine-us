@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.476.1] - 2023-09-24 05:33:57
+
+### Fixed
+
+- North Carolina index files.
+- North Carolina missing legislative references.
+
 ## [0.476.0] - 2023-09-24 03:22:24
 
 ### Added
@@ -5359,6 +5366,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.476.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.476.0...0.476.1
 [0.476.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.475.0...0.476.0
 [0.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.474.0...0.475.0
 [0.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.473.0...0.474.0
