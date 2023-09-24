@@ -35,8 +35,9 @@ class az_itemized_deductions(Variable):
         medical_expense_deduction = tax_unit(
             "medical_expense_deduction", period
         )
-        az_medical_expense_deduction = np.abs(
-            medical_expense - medical_expense_deduction
+
+        az_medical_expense_deduction = max_(
+            0, medical_expense - medical_expense_deduction
         )
 
         # Adjustments to Charitable Contributions
@@ -46,7 +47,7 @@ class az_itemized_deductions(Variable):
             "az_charitable_contributions_credit", period
         )
 
-        deduction_after_credit = max_(
+        charitable_deduction_after_credit = max_(
             charitable_deduction - charitable_contributions_credit, 0
         )
 
@@ -56,6 +57,6 @@ class az_itemized_deductions(Variable):
         return (
             federal_deductions
             + az_medical_expense_deduction
-            + deduction_after_credit
+            + charitable_deduction_after_credit
             + real_estate_taxes
         )
