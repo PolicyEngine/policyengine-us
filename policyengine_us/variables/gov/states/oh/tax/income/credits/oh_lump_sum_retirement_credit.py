@@ -27,8 +27,8 @@ class oh_lump_sum_retirement_credit(Variable):
             age_spouse >= p.lump_sum_retirement.age_threshold, 1, 0
         )
 
-        head_divisor = p.lump_sum_retirement.multiple.calc(age_head)
-        spouse_divisor = p.lump_sum_retirement.multiple.calc(age_spouse)
+        head_divisor = p.lump_sum_retirement.divisor.calc(age_head)
+        spouse_divisor = p.lump_sum_retirement.divisor.calc(age_spouse)
 
         head_pension = tax_unit.sum(is_head * pension_income)
         spouse_pension = tax_unit.sum(is_spouse * pension_income)
@@ -55,8 +55,9 @@ class oh_lump_sum_retirement_credit(Variable):
             tax_unit("form_4972_lumpsum_distributions", period) > 0
         )
 
-        return np.where(
+        credits = head_credit * head_eligible + spouse_credit * spouse_eligible
+        return where(
             distribution_received,
-            head_credit * head_eligible + spouse_credit * spouse_eligible,
+            credits,
             0,
         )
