@@ -33,25 +33,31 @@ class mi_standard_deduction_tier_two(Variable):
         # (9), (b)
         # If the person has not reached the age of 67 (which is mathematically impossible) and is born betwee 1946 and 1952
         # then the person is eligible to a pension benefit deduction of 20,000 or 40,000, based on filing status
-        uncapped_pension_income = tax_unit("taxable_pension_income", period)
+        uncapped_pension_income = tax_unit.members(
+            "taxable_pension_income", period
+        )
         # CHECK PARAMETER NAME
 
         # If the person has surpassed the age of 67 and was born between 1946 and 1952 (which in 2022 is the only possible outcome)
         # the person is allows a general standard deduction of 20,000 or 40,000, based on income, no matter what income
         # CHECK PARAMETER METADATA
-        military_retirement_benefit = tax_unit(
+        military_retirement_pay = tax_unit.members(
             "military_retirement_pay", period
         )
-        military_service_income = tax_unit("military_service_income", period)
+        military_service_income = tax_unit.members(
+            "military_service_income", period
+        )
 
         sd2_amount = max_(
-            p.amount.capped_deduction * sd2_age_eligible
+            p.amount.capped_deduction[filing_status] * sd2_age_eligible
             + p.amount.increase * ssa_eligible
-            - military_retirement_benefit
-            - military_service_income,
+            - tax_unit.sum(military_retirement_pay)
+            - tax_unit.sum(military_service_income),
             0,
         )
-        capped_pension_income = max_(uncapped_pension_income, sd2_amount)
+        capped_pension_income = min_(
+            tax_unit.sum(uncapped_pension_income), sd2_amount
+        )
 
         # sd2_amount = where(
         #     total_eligible == 0,

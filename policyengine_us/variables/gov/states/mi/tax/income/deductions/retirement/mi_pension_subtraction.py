@@ -21,10 +21,10 @@ class mi_retirement_benefits_deduction(Variable):
         # Retirement or pension benefits received from a federal public retirement system
         # Not federal public retirement system or military:
         # capped at $42,240.00 for a single return and $84,480.00 for a joint return.
-        # The maximum amounts allowed under this subparagraph shall be reduced by the amount of the deduction for retirement or pension benefits claimed under subparagraph (i) 
+        # The maximum amounts allowed under this subparagraph shall be reduced by the amount of the deduction for retirement or pension benefits claimed under subparagraph (i)
         # or subdivision (e) and by the amount of a deduction claimed under subdivision (p)
         # THIS IS A CIRCULAR REFRENCE AS SUBDIVISION (P) IS REDUCED BY THIS AMOUNT
+        pass
 
 
-
-#TODO: limitations of part (9)
+# TODO: limitations of part (9)

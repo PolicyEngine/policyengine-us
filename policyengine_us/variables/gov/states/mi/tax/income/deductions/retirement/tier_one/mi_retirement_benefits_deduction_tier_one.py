@@ -28,17 +28,24 @@ class mi_retirement_benefits_deduction_tier_one(Variable):
 
         # add all qualifying retirement and pension benefits received from federal or Michigan public sources
         # are uncapped
-        public_pension_income = tax_unit(
-            "taxable_public_pension_income", period
-        )
+        # public_pension_income = tax_unit.members(
+        #     "taxable_public_pension_income", period
+        # )
         # All private penion income is capped at a certain amount
-        uncapped_private_pension_income = tax_unit(
-            "taxable_private_pension_income", period
+        # uncapped_private_pension_income = tax_unit.members(
+        #     "taxable_private_pension_income", period
+        # )
+        # capped_private_pension_income = max_(
+        #     max_amount, uncapped_private_pension_income
+        # )
+        # total_pension_income = (
+        #     public_pension_income + capped_private_pension_income
+        # )
+        uncapped_pension_income = tax_unit.members(
+            "taxable_pension_income", period
         )
-        capped_private_pension_income = max_(
-            max_amount, uncapped_private_pension_income
+        total_pension_income = min_(
+            tax_unit.sum(uncapped_pension_income), max_amount
         )
-        total_pension_income = (
-            public_pension_income + capped_private_pension_income
-        )
+
         return age_eligibility * total_pension_income

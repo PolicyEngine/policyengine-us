@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class mi_standard_deduction_tier_two_increase_eligible(Variable):
-    value_type = float
+    value_type = int
     entity = TaxUnit
     label = "Michigan tier two standard deduction increase eligibility"
     unit = USD
@@ -22,14 +22,22 @@ class mi_standard_deduction_tier_two_increase_eligible(Variable):
         person = tax_unit.members
         # Michigan standard deduction increase
         # Tax Form also specifies the age threshold of 62, which is already met by the standard deduction conditions
-        # retirement_eligible = (
-        #     person("year_of_retirement", period) <= p.retirement_age
-        # )
+        retirement_eligible = (
+            person("year_of_retirement", period) <= p.retirement_age
+        )
 
         # Line 23C & 23G from the 2022 tax form
-        social_security = (
+        ssa_eligible = (
             person("social_security_exempt_retirement_benefits", period) > 0
         )
-        ssa_eligible = tax_unit.sum(social_security)
 
-        return ssa_eligible
+        filer_eligible = person("is_tax_unit_head", period)
+        spouse_eligible = person("is_tax_unit_spouse", period)
+        is_head_or_spouse = filer_eligible | spouse_eligible
+
+        eligible_person = (
+            retirement_eligible * ssa_eligible * is_head_or_spouse
+        )
+        total_eligible = tax_unit.sum(eligible_person)
+
+        return total_eligible
