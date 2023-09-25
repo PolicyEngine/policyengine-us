@@ -41,11 +41,11 @@ class or_wfhdc_table_letter(Variable):
             [
                 p.household_size_2.calc(household_income, right=True),
                 p.household_size_3.calc(household_income, right=True),
-                p.household_size_2.calc(household_income, right=True),
-                p.household_size_2.calc(household_income, right=True),
-                p.household_size_2.calc(household_income, right=True),
-                p.household_size_2.calc(household_income, right=True),
-                p.household_size_2.calc(household_income, right=True),
+                p.household_size_4.calc(household_income, right=True),
+                p.household_size_5.calc(household_income, right=True),
+                p.household_size_6.calc(household_income, right=True),
+                p.household_size_7.calc(household_income, right=True),
+                p.household_size_8.calc(household_income, right=True),
             ],
             default="",
         )

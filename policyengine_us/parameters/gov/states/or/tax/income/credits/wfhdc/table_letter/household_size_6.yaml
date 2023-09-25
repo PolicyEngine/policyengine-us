@@ -1,0 +1,138 @@
+description: "Oregon WFHDC corresponding row in the percentage table for household size 6"
+metadata:
+  threshold_unit: currency-USD
+  threshold_period: year
+  type: single_amount
+  label: Oregon WFHDC table letter for household size 6
+  reference:
+    - title: Publication OR-WFHDC-TB Working Family Household and Dependent Care (WFHDC) Tables (2021)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2021.pdf
+    - title: Publication OR-WFHDC-TB Working Family Household and Dependent Care (WFHDC) Tables (2022)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-wfhdc-tb_101-458_2022.pdf
+
+brackets:
+  - threshold:
+      2022-01-01: -.inf
+    amount:
+      2022-01-01: 1 # A
+  - threshold:
+      2022-01-01: 3_719
+      2021-01-01: 3_558
+    amount:
+      2022-01-01: 2 # B
+  - threshold:
+      2022-01-01: 7_438
+      2021-01-01: 7_116
+    amount:
+      2022-01-01: 3 # C
+  - threshold:
+      2022-01-01: 11_157
+      2021-01-01: 10_674
+    amount:
+      2022-01-01: 4 # D
+  - threshold:
+      2022-01-01: 14_876
+      2021-01-01: 14_232
+    amount:
+      2022-01-01: 5 # E
+  - threshold:
+      2022-01-01: 18_595
+      2021-01-01: 17_790
+    amount:
+      2022-01-01: 6 # F
+  - threshold:
+      2022-01-01: 22_314
+      2021-01-01: 21_348
+    amount:
+      2022-01-01: 7 # G
+  - threshold:
+      2022-01-01: 26_033
+      2021-01-01: 24_906
+    amount:
+      2022-01-01: 8 # H
+  - threshold:
+      2022-01-01: 29_752
+      2021-01-01: 28_464
+    amount:
+      2022-01-01: 9 # I
+  - threshold:
+      2022-01-01: 33_471
+      2021-01-01: 32_022
+    amount:
+      2022-01-01: 10 # J
+  - threshold:
+      2022-01-01: 40_909
+      2021-01-01: 39_138
+    amount:
+      2022-01-01: 11 # K
+  - threshold:
+      2022-01-01: 44_628
+      2021-01-01: 42_696
+    amount:
+      2022-01-01: 12 # L
+  - threshold:
+      2022-01-01: 48_347
+      2021-01-01: 46_254
+    amount:
+      2022-01-01: 13 # M
+  - threshold:
+      2022-01-01: 52_066
+      2021-01-01: 49_812
+    amount:
+      2022-01-01: 14 # N
+  - threshold:
+      2022-01-01: 55_785
+      2021-01-01: 53_370 
+    amount:
+      2022-01-01: 15 # O
+  - threshold:
+      2022-01-01: 59_504
+      2021-01-01: 56_928
+    amount:
+      2022-01-01: 16 # P
+  - threshold:
+      2022-01-01: 74_380
+      2021-01-01: 71_160
+    amount:
+      2022-01-01: 17 # Q
+  - threshold:
+      2022-01-01: 78_099
+      2021-01-01: 74_718
+    amount:
+      2022-01-01: 18 # R
+  - threshold:
+      2022-01-01: 81_818
+      2021-01-01: 78_276
+    amount:
+      2022-01-01: 19 # S
+  - threshold:
+      2022-01-01: 85_537
+      2021-01-01: 81_834
+    amount:
+      2022-01-01: 20 # T
+  - threshold:
+      2022-01-01: 89_256
+      2021-01-01: 85_392
+    amount:
+      2022-01-01: 21 # U
+  - threshold:
+      2022-01-01: 92_975
+      2021-01-01: 88_950
+    amount:
+      2022-01-01: 22 # V
+  - threshold:
+      2022-01-01: 96_694
+      2021-01-01: 92_508
+    amount:
+      2022-01-01: 23 # W
+  - threshold:
+      2022-01-01: 104_132
+      2021-01-01: 99_624
+    amount:
+      2022-01-01: 24 # X
+  - threshold:
+      2022-01-01: 111_570
+      2021-01-01: 106_740
+    amount:
+      2022-01-01: 25 # Y
+
