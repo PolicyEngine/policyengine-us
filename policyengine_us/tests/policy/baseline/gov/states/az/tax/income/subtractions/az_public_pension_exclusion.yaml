@@ -1,0 +1,98 @@
+- name: AZ pension exclusion amount unit test1 (Joint, below maximum)
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        taxable_public_pension_income: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        taxable_public_pension_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_public_pension_exclusion: 3_500
+
+- name: AZ pension exclusion amount unit test2 (Joint, one below maximum, one above maximum)
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        taxable_public_pension_income: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        taxable_public_pension_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_public_pension_exclusion: 3_500
+
+- name: AZ pension exclusion amount unit test3 (Single, below maximum)
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_public_pension_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_public_pension_exclusion: 2_000   
+
+- name: AZ pension exclusion amount unit test4 (SEPARATE, above maximum)
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        taxable_public_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_public_pension_exclusion: 2_500   
+
+- name: AZ pension exclusion amount unit test2 (Joint, above maximum)
+  period: 2023
+  input:
+    people:
+      person1: 
+        is_tax_unit_head: true
+        taxable_public_pension_income: 3_000
+      person2:
+        is_tax_unit_spouse: true
+        taxable_public_pension_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_public_pension_exclusion: 5_000
