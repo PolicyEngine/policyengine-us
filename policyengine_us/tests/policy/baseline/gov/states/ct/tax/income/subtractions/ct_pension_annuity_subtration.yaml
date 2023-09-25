@@ -2,10 +2,10 @@
   period: 2022
   input:
     state_code: CT
-    #head: true
-    #spouse: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
     filing_status: SINGLE
-    pension_income: 25_000
+    taxable_pension_income: 25_000
   output:
     ct_pension_annuity_subtraction: 25_000
 
@@ -13,20 +13,20 @@
   period: 2021
   input:
     state_code: CT
-    #head: true
-    #spouse: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
     filing_status: SINGLE
-    pension_income: 25_000
+    taxable_pension_income: 25_000
   output:
     ct_pension_annuity_subtraction: 10_500
 - name: JOINT household with $25,000 pension income in 2019
   period: 2019
   input:
     state_code: CT
-    head: true
-    spouse: true
+    is_tax_unit_head: true
+    is_tax_unit_spouse: true
     filing_status: JOINT
-    pension_income: 25_000
+    taxable_pension_income: 25_000
   output:
     ct_pension_annuity_subtraction: 3_500
 
