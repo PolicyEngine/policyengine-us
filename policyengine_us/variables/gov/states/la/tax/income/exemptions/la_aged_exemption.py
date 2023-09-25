@@ -12,12 +12,14 @@ class la_aged_exemption(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        pension_income = person("pension_income", period)
+        pension_income = person("taxable_pension_income", period)
         age = person("age", period)
         p = parameters(period).gov.states.la.tax.income.exemptions.aged
         meets_age_test = age >= p.thresholds[-1]
         deductible_pensions = meets_age_test * min_(
             pension_income, p.amounts[-1]
         )
-
-        return tax_unit.sum(deductible_pensions)
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        is_head_or_spouse = head | spouse
+        return tax_unit.sum(deductible_pensions * is_head_or_spouse)
