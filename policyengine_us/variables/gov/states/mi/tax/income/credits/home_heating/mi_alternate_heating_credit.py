@@ -30,14 +30,14 @@ class mi_alternate_heating_credit(Variable):
         )
 
         # calculate alternate credit difference (tax form line 44)
-        difference = (
+        reduced_household_resources = (
             mi_household_resources
             * p.alternate_credit.household_resources_rate
         )
-        alternate_credit = max_(
+        unreduced_alternate_credit = max_(
             (capped_heating_costs - difference),
             0,
         )
 
-        # determine mi_alternate_household_credit
+        # determine total credit amount
         return p.alternate_credit.heating_costs.rate * alternate_credit
