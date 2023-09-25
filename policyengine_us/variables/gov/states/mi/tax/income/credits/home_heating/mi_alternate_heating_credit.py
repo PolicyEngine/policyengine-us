@@ -39,5 +39,5 @@ class mi_alternate_heating_credit(Variable):
             0,
         )
 
-        # determine mi_alternate_household_credit
+        # determine total credit amount
         return p.alternate_credit.heating_costs.rate * alternate_credit
