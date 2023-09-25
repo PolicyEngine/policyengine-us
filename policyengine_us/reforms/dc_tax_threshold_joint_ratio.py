@@ -1,13 +1,20 @@
 from policyengine_us.model_api import *
 
 
-def create_dc_tax_threshold_joint_ratio_reform(parameters, period, bypass=False):
-    joint_ratio = parameters(period).gov.contrib.dc_tax_threshold_joint_ratio
+def create_dc_tax_threshold_joint_ratio_reform(
+    parameters, period, bypass=False
+):
+    if not bypass:
+        joint_ratio = parameters(
+            period
+        ).gov.contrib.dc_tax_threshold_joint_ratio
 
     class dc_income_tax_before_credits_joint(Variable):
         value_type = float
         entity = TaxUnit
-        label = "DC income tax before credits when married couples file jointly"
+        label = (
+            "DC income tax before credits when married couples file jointly"
+        )
         unit = USD
         definition_period = YEAR
         reference = (
@@ -31,4 +38,6 @@ def create_dc_tax_threshold_joint_ratio_reform(parameters, period, bypass=False)
         return None
 
 
-dc_tax_threshold_joint_ratio_reform = create_dc_tax_threshold_joint_ratio_reform(None, None, True)
+dc_tax_threshold_joint_ratio_reform = (
+    create_dc_tax_threshold_joint_ratio_reform(None, None, True)
+)
