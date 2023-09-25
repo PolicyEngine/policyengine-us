@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.479.0] - 2023-09-25 17:18:37
+
+### Added
+
+- DC single-joint tax threshold ratio reform switch.
+
 ## [0.478.0] - 2023-09-24 17:57:29
 
 ### Added
@@ -5378,6 +5384,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.478.0...0.479.0
 [0.478.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.477.0...0.478.0
 [0.477.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.476.1...0.477.0
 [0.476.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.476.0...0.476.1
