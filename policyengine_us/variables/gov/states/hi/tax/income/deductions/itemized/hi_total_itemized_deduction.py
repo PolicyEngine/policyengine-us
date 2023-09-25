@@ -47,6 +47,7 @@ class hi_total_itemized_deduction(Variable):
         # Hawaii did not
         #     (1) suspend the deduction for interest paid on home equity loans
         #     (2) lower the dollar limit on mortgages qualifying for the home mortgage interest deduction
+        #         (Hawaii: 1,000,000, Schedule A: 750,000)
         filing_status = tax_unit("filing_status", period)
         home_mortgage_interest = min_(
             add(tax_unit, period, ["home_mortgage_interest"]),
@@ -55,7 +56,7 @@ class hi_total_itemized_deduction(Variable):
         investment_interest = add(tax_unit, period, ["investment_interest"])
         hi_interest_deduction = home_mortgage_interest + investment_interest
 
-        # 5. casualty_loss_deduction
+        # 5. casualty_loss_deduction: worksheet A-5
         # Hawaii did not
         #     (1) limit the personal casualty loss deduction for property losses (not used in connection with a trade or business
         #       or transaction entered into for profit)

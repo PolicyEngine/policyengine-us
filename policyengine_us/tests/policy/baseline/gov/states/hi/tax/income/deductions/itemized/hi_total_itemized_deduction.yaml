@@ -57,7 +57,7 @@
   input:
     people:
       person1:
-        home_mortgage_interest: 750_100
+        home_mortgage_interest: 1_000_100
         investment_interest: 100
         medical_expense: 100
         casualty_loss: 100
@@ -77,14 +77,14 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_total_itemized_deduction: 750_525
+    hi_total_itemized_deduction: 1_000_525
 
 - name: SEPARATE
   period: 2022
   input:
     people:
       person1:
-        home_mortgage_interest: 750_100
+        home_mortgage_interest: 1_000_100
         investment_interest: 100
         medical_expense: 100
         casualty_loss: 100
@@ -104,7 +104,7 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_total_itemized_deduction: 375_525
+    hi_total_itemized_deduction: 500_525
 
 - name: larger charitable_deduction
   period: 2022
