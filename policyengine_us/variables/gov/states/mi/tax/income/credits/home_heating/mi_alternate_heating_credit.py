@@ -30,7 +30,7 @@ class mi_alternate_heating_credit(Variable):
         )
 
         # calculate alternate credit difference (tax form line 44)
-        difference = (
+        reduced_household_resources = (
             mi_household_resources
             * p.alternate_credit.household_resources_rate
         )
