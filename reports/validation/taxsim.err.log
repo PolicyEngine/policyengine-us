@@ -83,6 +83,9 @@ results_df["Percent close"] = results_df["Percent close"].apply(
 results_df.set_index("Region")
 ------------------
 
+----- stdout -----
+creating dc_tax_threshold_joint_ratio_reform <class 'policyengine_us.reforms.dc_tax_threshold_joint_ratio.create_dc_tax_threshold_joint_ratio_reform.<locals>.reform'>
+------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mImportError[0m                               Traceback (most recent call last)
