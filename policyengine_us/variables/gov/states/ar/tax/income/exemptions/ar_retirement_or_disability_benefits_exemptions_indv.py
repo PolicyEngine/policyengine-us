@@ -16,11 +16,11 @@ class ar_retirement_or_disability_benefits_exemptions_indv(Variable):
         p = parameters(
             period
         ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
-        head_or_spouse_eligible = person(
+        eligible_person = person(
             "ar_retirement_or_disability_benefits_exemptions_eligible_person",
             period,
         )
-        head_taxable_pension_income = (
-            person("taxable_pension_income", period) * head_or_spouse_eligible
+        eligible_pension_income = (
+            person("taxable_pension_income", period) * eligible_person
         )
-        return min_(head_taxable_pension_income, p.amount)
+        return min_(eligible_pension_income, p.amount)
