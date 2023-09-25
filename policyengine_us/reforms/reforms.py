@@ -29,6 +29,7 @@ def create_structural_reforms_from_parameters(parameters, period):
     class combined_reform(Reform):
         def apply(self):
             for reform in reforms:
+                print("updating", reform)
                 reform.apply(self)
 
     return combined_reform

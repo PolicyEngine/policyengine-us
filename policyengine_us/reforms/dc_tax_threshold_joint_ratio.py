@@ -8,6 +8,8 @@ def create_dc_tax_threshold_joint_ratio_reform(
         joint_ratio = parameters(
             period
         ).gov.contrib.dc_tax_threshold_joint_ratio
+    else:
+        joint_ratio = None
 
     class dc_income_tax_before_credits_joint(Variable):
         value_type = float
@@ -25,14 +27,21 @@ def create_dc_tax_threshold_joint_ratio_reform(
 
         def formula(tax_unit, period, parameters):
             taxinc = max_(0, tax_unit("dc_taxable_income_joint", period))
+            joint_ratio = parameters(
+                period
+            ).gov.contrib.dc_tax_threshold_joint_ratio
             p = parameters(period).gov.states
-            return p.dc.tax.income.rates.calc(taxinc / joint_ratio)
+            return (
+                p.dc.tax.income.rates.calc(taxinc / joint_ratio) * joint_ratio
+            )
 
     class reform(Reform):
         def apply(self):
+            print("updating dc_income_tax_before_credits_joint")
             self.update_variable(dc_income_tax_before_credits_joint)
 
     if bypass or joint_ratio != 1:
+        print("creating dc_tax_threshold_joint_ratio_reform", reform)
         return reform
     else:
         return None
