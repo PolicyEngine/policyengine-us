@@ -1,0 +1,31 @@
+description: Ohio provides a joint filing credit for this fraction  corresponds with the taxpayer's modified adjusted gross income, less exemptions for the taxable year, of the Tax less credits.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  label: Ohio joint filing credit income threshold
+  reference:
+  - title: 2021 Ohio IT 1040 Individual Income Tax Return Form Instructions - Line 12
+    href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=20
+  - title: 2022 Ohio IT 1040 Individual Income Tax Return Form Instructions - Line 12
+    href: https://tax.ohio.gov/static/forms/ohio_individual/individual/2022/it1040-sd100-instruction-booklet.pdf#page=20
+  - title: Ohio Revised Code - Section 5747.05 Tax credits. (E)(1)
+    href: https://codes.ohio.gov/ohio-revised-code/section-5747.05
+  
+brackets:
+ - threshild:
+     2021-01-01: 0
+   amount:
+     2021-01-01: 0.2
+ - threshild:
+     2021-01-01: 25_000
+   amount:
+     2021-01-01: 0.15
+ - threshild:
+     2021-01-01: 50_000
+   amount:
+     2021-01-01: 0.1
+ - threshild:
+     2021-01-01: 75_000
+   amount:
+     2021-01-01: 0.05
