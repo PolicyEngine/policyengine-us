@@ -4,7 +4,7 @@
     earned_income: 1_000
     state_code: GA
   output:
-    ga_exclusion_countable_earned_income: 1_000
+    ga_retirement_exclusion_countable_earned_income: 1_000
 
 - name: over earned income cap
   period: 2023
@@ -12,4 +12,4 @@
     earned_income: 4_329
     state_code: GA
   output:
-    ga_exclusion_countable_earned_income: 4_000
+    ga_retirement_exclusion_countable_earned_income: 4_000
