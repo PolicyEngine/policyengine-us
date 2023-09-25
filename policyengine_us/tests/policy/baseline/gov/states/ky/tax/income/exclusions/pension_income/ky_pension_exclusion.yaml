@@ -13,7 +13,7 @@
         members: [person1, person2]
         state_code: KY
   output:
-    ky_pension_exclusion: [1_000, 7_000]
+    ky_pension_exclusion: 8_000
 
 - name: KY pension exclusion unit test 2
   period: 2021
@@ -30,7 +30,7 @@
         members: [person1, person2]
         state_code: KY
   output:
-    ky_pension_exclusion: [31_110, 31_110]
+    ky_pension_exclusion: 62_220
 
 - name: KY pension exclusion unit test 3
   period: 2021
@@ -47,7 +47,7 @@
         members: [person1, person2]
         state_code: KY
   output:
-    ky_pension_exclusion: [31_110, 31_110]
+    ky_pension_exclusion: 62_220
 
 - name: KY pension exclusion unit test 4
   period: 2022
@@ -64,7 +64,7 @@
         members: [person1, person2]
         state_code: KY
   output:
-    ky_pension_exclusion: [31_110, 31_110]
+    ky_pension_exclusion: 62_220
 
 - name: KY pension exclusion unit test 5
   period: 2022
@@ -81,4 +81,21 @@
         members: [person1, person2]
         state_code: KY
   output:
-    ky_pension_exclusion: [31_110, 31_110]
+    ky_pension_exclusion: 62_220
+
+- name: KY pension exclusion unit test 6
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true        
+        taxable_pension_income: 1_000
+      person2:
+        is_tax_unit_spouse: true
+        taxable_pension_income: 7_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_pension_exclusion: 8_000

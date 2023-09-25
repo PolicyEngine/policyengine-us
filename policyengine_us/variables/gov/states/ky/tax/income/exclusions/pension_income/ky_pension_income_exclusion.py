@@ -9,9 +9,9 @@ class ky_pension_exclusion(Variable):
     definition_period = YEAR
     reference = (
         "https://taxsim.nber.org/historical_state_tax_forms/KY/2021/Form%20740%20Packet%20Instructions-2021.pdf#page=28"
-        "https://revenue.ky.gov/Forms/Schedule%20P-2021.pdf"
+        "https://revenue.ky.gov/Forms/Schedule%20P-2021.pdf#page=1"
         "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=24"
-        "https://revenue.ky.gov/Forms/Schedule%20P%202022.pdf"
+        "https://revenue.ky.gov/Forms/Schedule%20P%202022.pdf#page=1"
     )
     defined_for = StateCode.KY
 
@@ -28,5 +28,5 @@ class ky_pension_exclusion(Variable):
         eligible_pension = pension * head_or_spouse
         total_pension = tax_unit.sum(eligible_pension)
         filing_status = tax_unit("filing_status", period)
-        exclusion_cap = p.maximum_amount[filing_status]
+        exclusion_cap = p.max_amount[filing_status]
         return min_(total_pension, exclusion_cap)
