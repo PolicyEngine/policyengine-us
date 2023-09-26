@@ -11,12 +11,12 @@ class oh_joint_filing_credit(Variable):
     defined_for = "oh_joint_filing_credit_eligible"
 
     def formula(tax_unit, period, parameters):
-        credit = tax_unit("oh_income_tax_before_refundable_credits", period)
+        tax = tax_unit("oh_income_tax_before_refundable_credits", period)
         p = parameters(
             period
         ).gov.states.oh.tax.income.credits.joint_filing_credit
-        magi_less_exepmtion = tax_unit("oh_agi", period) - tax_unit(
-            "oh_income_tax_exempt", period
-        )
+        oh_agi = tax_unit("oh_agi", period)
+        exemption = tax_unit("oh_exemption", period)
+        magi_less_exepmtion = oh_agi - exemption
         percentage = p.rate.calc(magi_less_exepmtion)
-        return min_(credit * percentage, p.max_amount)
+        return min_(tax * percentage, p.max_amount)

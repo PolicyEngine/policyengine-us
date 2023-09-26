@@ -3,21 +3,21 @@
   period: 2021
   input:
     state_code: OH
-    oh_joint_filing_credit: true
-    oh_agi: 47_000
-    oh_income_tax_exempt: 10_000
+    oh_joint_filing_credit_eligible: true
+    oh_agi: 67_000
+    oh_exemption: 10_000
     oh_income_tax_before_refundable_credits: 4_000
   output:
-    oh_joint_filing_credit: 600
+    oh_joint_filing_credit: 400
 
 - name: Eligible for maximum joint filing credit
   absolute_error_margin: 0.01
-  period: 2021
+  period: 2022
   input:
     state_code: OH
-    oh_joint_filing_credit: true
+    oh_joint_filing_credit_eligible: true
     oh_agi: 47_000
-    oh_income_tax_exempt: 10_000
+    oh_exemption: 10_000
     oh_income_tax_before_refundable_credits: 6_000
   output:
     oh_joint_filing_credit: 650
@@ -27,9 +27,9 @@
   period: 2021
   input:
     state_code: OH
-    oh_joint_filing_credit: false
+    oh_joint_filing_credit_eligible: false
     oh_agi: 47_000
-    oh_income_tax_exempt: 10_000
+    oh_exemption: 10_000
     oh_income_tax_before_refundable_credits: 4_000
   output:
     oh_joint_filing_credit: 0
