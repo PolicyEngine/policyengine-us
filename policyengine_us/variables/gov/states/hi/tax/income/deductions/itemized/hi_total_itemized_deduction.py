@@ -15,21 +15,14 @@ class hi_total_itemized_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
-        p_deductions = parameters(period).gov.irs.deductions
 
         # Note: All the adjustments are for tax years 2018 through 2025.
-        # we need adjustments for interest_deduction and casualty_loss_deduction
+        # we need adjustments for medical_expense_deduction, interest_deduction and casualty_loss_deduction
         hi_charitable_deduction = tax_unit("charitable_deduction", period)
 
         # 1. medical_expense_deduction: worksheet A-1
-        # use hi_agi instead of agi
-        medical_expense = add(tax_unit, period, ["medical_expense"])
-        hi_agi = tax_unit("hi_agi", period)
-        medical_agi_amount = max_(
-            0, p_deductions.itemized.medical.floor * hi_agi
-        )
-        hi_medical_expense_deduction = max_(
-            0, medical_expense - medical_agi_amount
+        hi_medical_expense_deduction = tax_unit(
+            "hi_medical_expense_deduction", period
         )
 
         # 3. interest_deduction: worksheet A-3
@@ -46,17 +39,8 @@ class hi_total_itemized_deduction(Variable):
         hi_interest_deduction = home_mortgage_interest + investment_interest
 
         # 5. casualty_loss_deduction: worksheet A-5
-        # Hawaii did not
-        #     (1) limit the personal casualty loss deduction for property losses (not used in connection with a trade or business
-        #       or transaction entered into for profit)
-        #     (2) waive the requirement that casualty losses from qualified disasters exceed 10% of adjusted gross income
-        #       to be deductible, and that such losses must exceed $500.
-        casualty_loss = add(tax_unit, period, ["casualty_loss"])
-        casualty_agi_amount = max_(
-            0, p_deductions.itemized.casualty.floor * hi_agi
-        )
-        hi_casualty_loss_deduction = max_(
-            0, casualty_loss - casualty_agi_amount
+        hi_casualty_loss_deduction = tax_unit(
+            "hi_casualty_loss_deduction", period
         )
 
         return (

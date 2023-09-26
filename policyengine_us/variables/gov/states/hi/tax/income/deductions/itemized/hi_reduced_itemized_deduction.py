@@ -15,25 +15,15 @@ class hi_reduced_itemized_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.deductions.itemized
-        p_deductions = parameters(period).gov.irs.deductions
 
         total_deductions = tax_unit("hi_total_itemized_deduction", period)
 
-        medical_expense = add(tax_unit, period, ["medical_expense"])
-        hi_agi = tax_unit("hi_agi", period)
-        medical_agi_amount = max_(
-            0, p_deductions.itemized.medical.floor * hi_agi
-        )
-        hi_medical_expense_deduction = max_(
-            0, medical_expense - medical_agi_amount
+        hi_medical_expense_deduction = tax_unit(
+            "hi_medical_expense_deduction", period
         )
         investment_interest = tax_unit("investment_income_form_4952", period)
-        casualty_loss = add(tax_unit, period, ["casualty_loss"])
-        casualty_agi_amount = max_(
-            0, p_deductions.itemized.casualty.floor * hi_agi
-        )
-        hi_casualty_loss_deduction = max(
-            0, casualty_loss - casualty_agi_amount
+        hi_casualty_loss_deduction = tax_unit(
+            "hi_casualty_loss_deduction", period
         )
         partial_total_deductions = (
             hi_medical_expense_deduction
