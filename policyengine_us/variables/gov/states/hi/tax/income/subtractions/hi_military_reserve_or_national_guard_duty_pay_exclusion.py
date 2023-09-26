@@ -6,12 +6,21 @@ class hi_military_reserve_or_national_guard_duty_pay_exclusion(Variable):
     entity = TaxUnit
     label = "Hawaii military reserve or national guard duty pay exclusion"
     unit = USD
-    documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf"
+    documentation = (
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=13"
+    )
     definition_period = YEAR
     defined_for = StateCode.HI
 
     def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.hi.tax.income.subtractions
+        p = parameters(
+            period
+        ).gov.states.hi.tax.income.subtractions.military_reserve_or_national_guard_duty_pay_exclusion
+        person = tax_unit.members
         military_service_income = person("military_service_income", period)
-        # hi_national_guard = 
-        return min_(military_service_income, p.military_reserve_or_national_guard_duty_pay_exclusion.amount)
+        capped_military_income = min_(military_service_income, p.max_amount)
+        head = person("is_tax_unit_head", period)
+        spouse = person("is_tax_unit_spouse", period)
+        head_or_spouse = head | spouse
+
+        return tax_unit.sum(capped_military_income * head_or_spouse)
