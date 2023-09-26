@@ -16,19 +16,15 @@ class az_property_tax_credit(Variable):
 
         cohabitating = tax_unit("cohabitating_spouses", period)
 
-        household_income_credit = select(
-            [
-                ~cohabitating,
-                cohabitating,
-            ],
-            [
-                p.amount.living_alone.calc(income),
-                p.amount.cohabitating.calc(income),
-            ],
+        cap = where(
+            cohabitating,
+            p.amount.cohabitating.calc(income),
+            p.amount.living_alone.calc(income),
         )
 
-        property_tax = person("real_estate_taxes", period)
-        rent = person("rent", period)
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        rent = add(tax_unit, period, ["rent"])
         payment_credit = property_tax + rent
+        # property_tax and rent are equally weighted (tax form says just sum them up)
 
-        return min_(household_income_credit, payment_credit)
+        return min_(cap, payment_credit)
