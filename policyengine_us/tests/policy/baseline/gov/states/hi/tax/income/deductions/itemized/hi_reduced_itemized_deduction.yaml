@@ -4,18 +4,17 @@
     people:
       person1:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
       person2:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
+        investment_income_form_4952: 2_000
         hi_agi: 200_000
         members: [person1, person2]
     households:
@@ -31,18 +30,17 @@
     people:
       person1:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
       person2:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
+        investment_income_form_4952: 2_000
         hi_agi: 20_000
         members: [person1, person2]
     households:
@@ -58,18 +56,17 @@
     people:
       person1:
         home_mortgage_interest: 1_000
-        investment_interest: 2_000
         medical_expense: 2_000
         casualty_loss: 1_000
       person2:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
+        investment_income_form_4952: 3_000
         hi_agi: 200_000
         members: [person1, person2]
     households:
@@ -85,18 +82,17 @@
     people:
       person1:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 20_000
         casualty_loss: 1_000
       person2:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
+        investment_income_form_4952: 2_000
         hi_agi: 200_000
         members: [person1, person2]
     households:
@@ -112,18 +108,17 @@
     people:
       person1:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
       person2:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: JOINT
         charitable_deduction: 1_000
+        investment_income_form_4952: 2_000
         hi_agi: 166_900
         members: [person1, person2]
     households:
@@ -139,18 +134,17 @@
     people:
       person1:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
       person2:
         home_mortgage_interest: 1_000
-        investment_interest: 1_000
         medical_expense: 1_000
         casualty_loss: 1_000
     tax_units:
       tax_unit:
         filing_status: SEPARATE
         charitable_deduction: 1_000
+        investment_income_form_4952: 2_000
         hi_agi: 84_000
         members: [person1, person2]
     households:

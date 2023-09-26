@@ -19,18 +19,7 @@ class hi_total_itemized_deduction(Variable):
 
         # Note: All the adjustments are for tax years 2018 through 2025.
         # we need adjustments for interest_deduction and casualty_loss_deduction
-        same_deductions = [
-            deduction
-            for deduction in p_deductions.itemized_deductions
-            if deduction
-            not in [
-                "medical_expense_deduction",
-                "salt_deduction",
-                "interest_deduction",
-                "casualty_loss_deduction",
-            ]
-        ]
-        federal_deductions = add(tax_unit, period, same_deductions)
+        hi_charitable_deduction = tax_unit("charitable_deduction", period)
 
         # 1. medical_expense_deduction: worksheet A-1
         # use hi_agi instead of agi
@@ -51,9 +40,9 @@ class hi_total_itemized_deduction(Variable):
         filing_status = tax_unit("filing_status", period)
         home_mortgage_interest = min_(
             add(tax_unit, period, ["home_mortgage_interest"]),
-            p.home_mortgage_interest_cap[filing_status],
+            p.cap.home_mortgage_interest_cap[filing_status],
         )
-        investment_interest = add(tax_unit, period, ["investment_interest"])
+        investment_interest = tax_unit("investment_income_form_4952", period)
         hi_interest_deduction = home_mortgage_interest + investment_interest
 
         # 5. casualty_loss_deduction: worksheet A-5
@@ -66,15 +55,13 @@ class hi_total_itemized_deduction(Variable):
         casualty_agi_amount = max_(
             0, p_deductions.itemized.casualty.floor * hi_agi
         )
-        hi_casualty_loss_deduction = max(
+        hi_casualty_loss_deduction = max_(
             0, casualty_loss - casualty_agi_amount
         )
 
-        total_deductions = (
-            federal_deductions
+        return (
+            hi_charitable_deduction
             + hi_medical_expense_deduction
             + hi_interest_deduction
             + hi_casualty_loss_deduction
         )
-
-        return total_deductions

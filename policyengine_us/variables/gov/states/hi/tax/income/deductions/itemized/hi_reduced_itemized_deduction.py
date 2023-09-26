@@ -27,7 +27,7 @@ class hi_reduced_itemized_deduction(Variable):
         hi_medical_expense_deduction = max_(
             0, medical_expense - medical_agi_amount
         )
-        investment_interest = add(tax_unit, period, ["investment_interest"])
+        investment_interest = tax_unit("investment_income_form_4952", period)
         casualty_loss = add(tax_unit, period, ["casualty_loss"])
         casualty_agi_amount = max_(
             0, p_deductions.itemized.casualty.floor * hi_agi
@@ -44,14 +44,14 @@ class hi_reduced_itemized_deduction(Variable):
         # eligible check 1: deduction_difference need to be greater than 0 to have reduced deduction
         difference_eligible = partial_total_deductions < total_deductions
         deduction_difference = total_deductions - partial_total_deductions
-        reduced_difference = deduction_difference * p.reduced_rate
+        reduced_difference = deduction_difference * p.rate.reduction
         # eligible check 2: actual agi need to be smaller than agi cap
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
-        agi_cap = p.agi_cap[filing_status]
+        agi_cap = p.cap.agi_cap[filing_status]
         agi_eligible = agi_cap < hi_agi
         agi_cap_difference = hi_agi - agi_cap
-        reduced_agi_difference = agi_cap_difference * p.reduced_agi_rate
+        reduced_agi_difference = agi_cap_difference * p.rate.reduced_agi_rate
 
         smaller_reduced = min_(reduced_difference, reduced_agi_difference)
         reduced_deductions = total_deductions - smaller_reduced

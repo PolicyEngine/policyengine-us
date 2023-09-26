@@ -1,18 +1,9 @@
-description: Hawaii limits filler's agi qualified for total itemized deductions to this amount.
-SINGLE:
-  2018-01-01: 166_800
-JOINT:
-  2018-01-01: 166_800
-SEPARATE:
-  2018-01-01: 83_400
-HEAD_OF_HOUSEHOLD:
-  2018-01-01: 166_800
-WIDOW:
-  2018-01-01: 166_800
+description: Hawaii multiplies the excess of the total and reduced itemized deductions by this rate.
+values:
+  2018-01-01: 0.8
 metadata:
-  breakdown: filing_status
-  unit: currency-USD
-  label: Hawaii itemized deductions adjusted gross income cap
+  unit: /1
+  label: Hawaii reduced itemized deductions rate
   reference:
     - title: 2022 Hawaii Resident Income Tax Instructions Itemized Deductions Worksheet
       href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32

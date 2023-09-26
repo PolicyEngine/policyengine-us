@@ -22,10 +22,10 @@ class hi_itemized_deduction(Variable):
         # need to calculate the reduced itemized deductions
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
-        itemized_eligible = hi_agi < p.agi_cap[filing_status]
+        total_itemized_deductions = hi_agi < p.cap.agi_cap[filing_status]
 
         return where(
-            itemized_eligible,
+            total_itemized_deductions,
             tax_unit("hi_total_itemized_deduction", period),
             tax_unit("hi_reduced_itemized_deduction", period),
         )
