@@ -43,7 +43,7 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             self.parameters, "2023-01-01"
         )
         if reform is not None:
-            self.apply_reform(reform)
+            reform.apply(self)
 
         self.add_variables(*create_50_state_variables())
 
