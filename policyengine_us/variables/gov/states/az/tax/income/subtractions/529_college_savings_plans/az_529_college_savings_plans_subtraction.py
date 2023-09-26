@@ -34,9 +34,5 @@ class az_529_college_savings_plans_subtraction(Variable):
                 p.amount.widow,
             ],
         )
-
-        subtraction_529 = min_(
-            p.max_amount, person("military_retirement_pay", period)
-        )
-
+        
         return 
