@@ -1,0 +1,11 @@
+description: Filers (and/or spouses) must be at or above this age to subtract retirement income from taxable income
+metadata:
+  type: single_amount
+  label: NJ pension/retirement exclusion qualifying age
+  reference:
+    - title: 2021 New Jersey NJ-1040 Resident Return
+      href: https://www.state.nj.us/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=21
+    - title: Instructions for Form NJ-1040 (line 28a)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21
+values:
+  2021-01-01: 62

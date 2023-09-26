@@ -1,0 +1,17 @@
+- name: dc_income_tax_before_credits unit test 1
+  period: 2021
+  input:
+    dc_files_separately: true
+    dc_income_tax_before_credits_indiv: 900
+    state_code: DC
+  output:
+    dc_income_tax_before_credits: 900
+
+- name: dc_income_tax_before_credits unit test 2
+  period: 2022
+  input:
+    dc_files_separately: false
+    dc_income_tax_before_credits_joint: 900
+    state_code: DC
+  output:
+    dc_income_tax_before_credits: 900

@@ -1,0 +1,91 @@
+- name: when az_charitable_contributions_credit==0
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    interest_deduction: 100 
+    casualty_loss_deduction: 200
+    medical_expense: 500 
+    medical_expense_deduction: 400
+    charitable_deduction: 500 
+    az_charitable_contributions_credit: 0
+    real_estate_taxes: 600
+  output:
+    az_itemized_deductions: 1_500
+
+- name: when az_charitable_contributions_credit!=0
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    interest_deduction: 100
+    casualty_loss_deduction: 200
+    medical_expense: 700
+    medical_expense_deduction: 600
+    charitable_deduction: 500
+    az_charitable_contributions_credit: 500
+    real_estate_taxes: 600
+  output:
+    az_itemized_deductions: 1_000
+
+- name: medical_expense > medical_expense_deduction, charitable_deduction < az_charitable_contributions_credit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    interest_deduction: 200 
+    casualty_loss_deduction: 300 
+    medical_expense: 600
+    medical_expense_deduction: 0
+    charitable_deduction: 500 
+    az_charitable_contributions_credit: 600
+    real_estate_taxes: 600
+  output:
+    az_itemized_deductions: 1_700
+
+
+- name: medical_expense > medical_expense_deduction, charitable_deduction > az_charitable_contributions_credit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    interest_deduction: 200 
+    casualty_loss_deduction: 300 
+    medical_expense: 700 
+    medical_expense_deduction: 600
+    charitable_deduction: 700 
+    az_charitable_contributions_credit: 600
+    real_estate_taxes: 0
+  output:
+    az_itemized_deductions: 700
+  
+
+- name: medical_expense >= medical_expense_deduction, charitable_deduction > az_charitable_contributions_credit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    interest_deduction: 200 
+    casualty_loss_deduction: 300 
+    medical_expense: 600
+    medical_expense_deduction: 600
+    charitable_deduction: 700 
+    az_charitable_contributions_credit: 600
+    real_estate_taxes: 0
+  output:
+    az_itemized_deductions: 600
+
+- name: medical_expense > medical_expense_deduction, charitable_deduction < az_charitable_contributions_credit
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    state_code: AZ
+    interest_deduction: 200 
+    casualty_loss_deduction: 300 
+    medical_expense: 600
+    medical_expense_deduction: 600
+    charitable_deduction: 700 
+    az_charitable_contributions_credit: 800
+    real_estate_taxes: 0
+  output:
+    az_itemized_deductions: 500

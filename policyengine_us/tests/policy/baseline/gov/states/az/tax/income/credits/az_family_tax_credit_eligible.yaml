@@ -1,0 +1,59 @@
+- name: Family tax credits for joint filers with 5 dependents ($30000 income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: JOINT
+    az_agi: 30_000
+    tax_unit_dependents: 5
+  output:
+    az_family_tax_credit_eligible: true
+
+- name: Family tax credits for single filers without dependents ($9000 income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SINGLE
+    az_agi: 9_000
+    tax_unit_dependents: 0
+  output:
+    az_family_tax_credit_eligible: true
+
+- name: Family tax credits for separate couple with 2 dependents ($11000 income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: SEPARATE
+    az_agi: 11_000
+    tax_unit_dependents: 2
+  output:
+    az_family_tax_credit_eligible: false
+
+- name: Family tax credits for head of household with 5 dependents ($26000 income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_agi: 26_000
+    tax_unit_dependents: 5
+  output:
+    az_family_tax_credit_eligible: true
+
+- name: Family tax credits for widow with 3 dependents ($23000 income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: WIDOW
+    az_agi: 23_000
+    tax_unit_dependents: 3
+  output:
+    az_family_tax_credit_eligible: true
+
+- name: Family tax credits for head of household with 5 dependents (no income)
+  period: 2023
+  input:
+    state_code: AZ
+    filing_status: HEAD_OF_HOUSEHOLD
+    az_agi: 0
+    tax_unit_dependents: 5
+  output:
+    az_family_tax_credit_eligible: true

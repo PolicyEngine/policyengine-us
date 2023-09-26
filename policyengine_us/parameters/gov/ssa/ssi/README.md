@@ -1,1 +1,1 @@
-# Supplemental Security Income
+# Supplemental Security Income (SSI)

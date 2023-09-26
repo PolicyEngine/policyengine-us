@@ -1,0 +1,19 @@
+- name: DC EITC without qualifying children
+  period: 2023
+  input:
+    eitc_child_count: 0
+    dc_eitc_with_qualifying_child: 1
+    dc_eitc_without_qualifying_child: 2
+    state_code: DC
+  output:
+    dc_eitc: 2
+
+- name: DC EITC with qualifying children
+  period: 2023
+  input:
+    eitc_child_count: 2
+    dc_eitc_with_qualifying_child: 1
+    dc_eitc_without_qualifying_child: 2
+    state_code: DC
+  output:
+    dc_eitc: 1

@@ -1,0 +1,77 @@
+- name: in_eitc_eligible unit test 1
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    earned_income_tax_credit: 999
+    filing_status: SINGLE
+    eitc_child_count: 0
+    age_head: 64
+    dividend_income: 3_600
+  output:
+    in_eitc_eligible: true
+
+- name: in_eitc_eligible unit test 2
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    earned_income_tax_credit: 999
+    filing_status: SEPARATE
+    eitc_child_count: 0
+    age_head: 64
+    dividend_income: 3_800
+  output:
+    in_eitc_eligible: false
+
+- name: in_eitc_eligible unit test 3
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    earned_income_tax_credit: 999
+    filing_status: SINGLE
+    eitc_child_count: 0
+    age_head: 65
+    dividend_income: 3_800
+  output:
+    in_eitc_eligible: false
+
+- name: in_eitc_eligible unit test 4
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    earned_income_tax_credit: 999
+    filing_status: SINGLE
+    eitc_child_count: 0
+    age_head: 64
+    dividend_income: 3_801
+  output:
+    in_eitc_eligible: false
+
+- name: in_eitc_eligible unit test 5
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: true
+    state_code: IN
+    earned_income_tax_credit: 0
+    filing_status: SINGLE
+    eitc_child_count: 0
+    age_head: 64
+    dividend_income: 3_800
+  output:
+    in_eitc_eligible: false
+
+- name: in_eitc_eligible unit test 6
+  period: 2021
+  input:
+    gov.states.in.tax.income.credits.earned_income.decoupled: false
+    state_code: IN
+    earned_income_tax_credit: 999
+    filing_status: SEPARATE
+    eitc_child_count: 0
+    age_head: 65
+    dividend_income: 3_801
+  output:
+    in_eitc_eligible: true
