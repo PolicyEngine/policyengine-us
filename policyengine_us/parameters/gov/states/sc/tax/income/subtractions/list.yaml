@@ -1,1 +1,34 @@
-description: list of subtractions for South Carolina 
+description: South Carolina counts these sources as subtractions. 
+values:
+  2021-01-01:
+    # - state_tax_refund
+    - disability_benefits #not sure 
+    # - out_of_state_income
+    - sc_net_capital_gain_deduction
+    # - volunteer_deduction
+    # - college_investment_contribution_subtraction  
+    # - business_income_deduction (form I-335)
+    - us_govt_interest
+    # - nontaxable_national_guard
+    - taxable_earnings_for_social_security
+    - sc_military_deduction
+    - sc_retirement_deduction
+    - sc_senior_exemption
+    - income_tax #not sure
+    # - subsistence_allowance
+    - sc_young_child_exemption
+    # - consumer_protection_services 
+    # - other_subtractions
+    # - dependent_exemption (same as sc_young_child_exemption)
+
+metadata:
+  unit: list
+  reference:
+    - title: SC 1040 tax form (2021)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf#page=2
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=14
+    - title: SC Legal Code | Title 12 Chapter 6 
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC 1040 tax form (2022)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2
