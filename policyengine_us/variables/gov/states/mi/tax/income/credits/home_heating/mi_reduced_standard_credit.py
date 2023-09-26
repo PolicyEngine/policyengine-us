@@ -2,10 +2,10 @@
 from policyengine_us.model_api import *
 
 
-class mi_reduced_standard_allowance(Variable):
+class mi_reduced_standard_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Michigan home heating credit reduced standard allowance"
+    label = "Michigan home heating credit reduced standard credit"
     defined_for = "mi_standard_allowance_heating_credit_eligible"
     unit = USD
     definition_period = YEAR

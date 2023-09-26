@@ -30,7 +30,7 @@ class mi_standard_allowance(Variable):
         # determine standard allowance
         return where(
             mi_taxable_income
-            <= p.income_base.calc(mi_exemption_count) + additional_ceiling,
+            <= p.income_threshold.calc(mi_exemption_count) + additional_ceiling,
             p.exemption_base.calc(mi_exemption_count) + additional_allowance,
             0,
         )
