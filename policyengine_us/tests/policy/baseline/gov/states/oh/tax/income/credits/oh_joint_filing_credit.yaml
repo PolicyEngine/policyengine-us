@@ -1,0 +1,83 @@
+- name: Income not eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 400
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        oh_agi: 47_000
+        oh_income_tax_exempt: 10_000
+        oh_income_tax_before_refundable_credits: 6_000
+  output:
+    oh_joint_filing_credit: 0
+
+- name: Status not eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 600
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: HEAD_OF_HOUSEHOLD
+        oh_agi: 47_000
+        oh_income_tax_exempt: 10_000
+        oh_income_tax_before_refundable_credits: 6_000
+  output:
+    oh_joint_filing_credit: 0
+
+- name: Eligible for joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 600
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        oh_agi: 47_000
+        oh_income_tax_exempt: 10_000
+        oh_income_tax_before_refundable_credits: 4_000
+  output:
+    oh_joint_filing_credit: 600
+
+- name: Eligible for maximum joint filing credit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 600
+      person2:
+        is_tax_unit_spouse: true
+        employment_income: 700
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        oh_agi: 47_000
+        oh_income_tax_exempt: 10_000
+        oh_income_tax_before_refundable_credits: 6_000
+  output:
+    oh_joint_filing_credit: 650

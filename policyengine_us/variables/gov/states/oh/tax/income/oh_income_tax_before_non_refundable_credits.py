@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class oh_income_tax_before_credits(Variable):
+class oh_income_tax_before_non_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "OH income tax before credits"
