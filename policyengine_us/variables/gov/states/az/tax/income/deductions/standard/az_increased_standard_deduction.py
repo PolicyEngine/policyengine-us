@@ -12,8 +12,7 @@ class az_increased_standard_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.az.tax.income.deductions.standard
-        increased_percent = p.rate
-        az_charitable_contributions_credit = tax_unit(
+        charitable_contributions = tax_unit(
             "az_charitable_contributions_credit", period
         )
-        return increased_percent * az_charitable_contributions_credit
+        return p.rate * charitable_contributions
