@@ -7,6 +7,8 @@ metadata:
   reference:
     - title: 2022 Montana Form 2 Individual income tax instruction line 14
       href: https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf#page=35
+    - title: 2021 Montana Form 2 Individual income tax instruction line 14
+      href: https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf#page=34
     - title: Montana legal code Code § 15-30-2131 2a
       href: https://casetext.com/statute/montana-code/title-15-taxation/chapter-30-individual-income-tax/part-21-rate-and-general-provisions/section-15-30-2131-effective-until-1012023-deductions-allowed-in-computing-net-income
     - title: Montana 2021 child and dependent care expense deductions form
@@ -16,14 +18,14 @@ metadata:
 
 brackets:
   - threshold:
-      2022-01-01: 0
+      2021-01-01: 1
     amount:
-      2022-01-01: 22_800
+      2021-01-01: 22_800
   - threshold:
-      2022-01-01: 1
+      2021-01-01: 2
     amount:
-      2022-01-01: 25_200
+      2021-01-01: 25_200
   - threshold:
-      2022-01-01: 2
+      2021-01-01: 3
     amount:
-      2022-01-01: 27_600
+      2021-01-01: 27_600
