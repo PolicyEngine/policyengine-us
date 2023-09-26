@@ -6,7 +6,9 @@ class va_non_refundable_eitc(Variable):
     entity = TaxUnit
     label = "Virginia non-refundable EITC"
     unit = USD
-    documentation = "Non-refundable EITC credit reducing VA State income tax."
+    documentation = (
+        "Non-refundable EITC credit reducing Virginia State income tax."
+    )
     definition_period = YEAR
     reference = "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=26"
     defined_for = StateCode.VA

@@ -5,7 +5,6 @@ class va_claims_refundable_eitc(Variable):
     value_type = bool
     entity = TaxUnit
     label = "Filer claims refundable Virginia EITC"
-    unit = USD
     documentation = "Whether the filer claims the refundable over the non-refundable Virginia Earned Income Tax Credit."
     definition_period = YEAR
     defined_for = StateCode.VA
