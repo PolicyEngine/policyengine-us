@@ -1,4 +1,4 @@
-- name: reduced standard allowance, reduced_sa over 0, heating cost included in rent
+- name: reduced standard credit, reduced_sa over 0, heating cost included in rent
   period: 2022
   input:
     mi_household_resources: 25_000
@@ -6,9 +6,9 @@
     heating_costs_included_in_rent: true
     state_code: MI
   output:
-    mi_reduced_standard_allowance: 9_562.5
+    mi_reduced_standard_credit: 9_562.5
 
-- name: reduced standard allowance, reduced_sa over 0, heating cost not included in rent
+- name: reduced standard credit, reduced_sa over 0, heating cost not included in rent
   period: 2022
   input:
     mi_household_resources: 25_000
@@ -16,9 +16,9 @@
     heating_costs_included_in_rent: false
     state_code: MI
   output:
-    mi_reduced_standard_allowance: 19_125
+    mi_reduced_standard_credit: 19_125
 
-- name: reduced standard allowance, reduced_sa equal 0, heating cost not included in rent
+- name: reduced standard credit, reduced_sa equal 0, heating cost not included in rent
   period: 2022
   input:
     mi_household_resources: 25_000
@@ -26,4 +26,4 @@
     heating_costs_included_in_rent: false
     state_code: MI
   output:
-    mi_reduced_standard_allowance: 0
+    mi_reduced_standard_credit: 0

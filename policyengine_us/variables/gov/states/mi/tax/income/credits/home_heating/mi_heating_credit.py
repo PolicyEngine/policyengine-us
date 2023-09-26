@@ -21,8 +21,8 @@ class mi_heating_credit(Variable):
         heating_costs_included_in_rent = tax_unit(
             "heating_costs_included_in_rent", period
         )
-        mi_reduced_standard_allowance = tax_unit(
-            "mi_reduced_standard_allowance", period
+        mi_reduced_standard_credit = tax_unit(
+            "mi_reduced_standard_credit", period
         )
         mi_alternate_heating_credit = tax_unit(
             "mi_alternate_heating_credit", period
@@ -31,8 +31,8 @@ class mi_heating_credit(Variable):
         # calculate initial home heating credit
         initial_hhc = where(
             heating_costs_included_in_rent,
-            mi_reduced_standard_allowance,
-            max_(mi_reduced_standard_allowance, mi_alternate_heating_credit),
+            mi_reduced_standard_credit,
+            max_(mi_reduced_standard_credit, mi_alternate_heating_credit),
         )
 
         return p.home_heating_credit_rate * initial_hhc
