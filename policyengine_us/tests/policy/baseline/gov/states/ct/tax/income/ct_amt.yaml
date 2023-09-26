@@ -1,0 +1,39 @@
+- name: taxable income greater than adjusted federal tentative minimum tax
+  period: 2021
+  input:
+    state_code: CT
+    ct_taxable_income: 10_000
+    amt_income: 200_000 # 200000 * 0.055 = 11000
+    alternative_minimum_tax: 100_000 # 100000 * 0.19 = 19000
+  output:
+    ct_amt: 1_000 # 11000 - 10000
+
+- name: taxable income equal adjusted federal tentative minimum tax
+  period: 2021
+  input:
+    state_code: CT
+    ct_taxable_income: 10_000
+    amt_income: 200_000
+    alternative_minimum_tax: 200_000
+  output:
+    ct_amt: 1_000
+
+- name: taxable income greater than adjusted federal tentative minimum tax
+  period: 2021
+  input:
+    state_code: CT
+    ct_taxable_income: 10_000
+    amt_income: 200_000
+    alternative_minimum_tax: 100_000
+  output:
+    ct_amt: 1_000
+
+- name: taxable income less than adjusted federal tentative minimum tax and taxable income less than ct income tax, return 0
+  period: 2021
+  input:
+    state_code: CT
+    ct_taxable_income: 10_000
+    amt_income: 100_000
+    alternative_minimum_tax: 200_000
+  output:
+    ct_amt: 0
