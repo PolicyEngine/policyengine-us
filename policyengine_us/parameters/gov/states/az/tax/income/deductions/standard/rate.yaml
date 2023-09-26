@@ -1,6 +1,6 @@
-description: Arizona increases the allowable standard deduction amount depends on allowed charitable contributions
+description: Arizona increases the allowable standard deduction amount by this rate of charitable contributions.
 metadata:
-  label: Arizona increased standard deduction
+  label: Arizona increased standard deduction rate
   period: year
   unit: currency-USD
   reference:
@@ -12,5 +12,6 @@ metadata:
     href: https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm
 
 values:
-  2022-01-01: .27
   2021-01-01: .25
+  2022-01-01: .27
+
