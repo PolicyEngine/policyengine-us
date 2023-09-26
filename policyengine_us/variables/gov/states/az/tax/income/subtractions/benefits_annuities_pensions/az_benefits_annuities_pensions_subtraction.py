@@ -13,7 +13,7 @@ class az_benefits_annuities_pensions_subtraction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.az.tax.income.deductions.benefits_annuities_pensions
+        ).gov.states.az.tax.income.subtractions.benefits_annuities_pensions
         person = tax_unit.members
 
         filing_status = tax_unit("filing_status", period)
