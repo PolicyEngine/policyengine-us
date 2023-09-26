@@ -16,7 +16,7 @@ class ct_amt(Variable):
 
     def formula(tax_unit, period, parameters):
         # assign amt parameters
-        p = parameters(period).gov.states.ia.tax.income
+        p = parameters(period).gov.states.ct.tax.income
         amt = p.alternative_minimum_tax
 
         ct_taxable_income = tax_unit("ct_taxable_income", period)
