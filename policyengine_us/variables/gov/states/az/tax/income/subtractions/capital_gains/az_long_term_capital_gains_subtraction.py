@@ -13,7 +13,7 @@ class az_long_term_capital_gains_subtraction(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(
             period
-        ).gov.states.az.tax.income.deductions.capital_gains
+        ).gov.states.az.tax.income.subtractions.capital_gains
 
         long_term_capital_gains = add(
             tax_unit, period, ["long_term_capital_gains"]
