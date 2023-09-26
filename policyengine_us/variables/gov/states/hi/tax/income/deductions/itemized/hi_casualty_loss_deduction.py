@@ -26,6 +26,4 @@ class hi_casualty_loss_deduction(Variable):
         casualty_agi_amount = max_(
             0, p_deductions.itemized.casualty.floor * hi_agi
         )
-        return max_(
-            0, casualty_loss - casualty_agi_amount
-        )
+        return max_(0, casualty_loss - casualty_agi_amount)
