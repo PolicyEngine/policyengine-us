@@ -1,0 +1,31 @@
+- name: Joint filing
+  period: 2023
+  input:
+    taxsim_dividends: 1_900
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 65
+    state_code: MT
+  output:
+    mt_exemptions: 1_600
+
+- name: Joint filing
+  period: 2023
+  input:
+    taxsim_dividends: 1_900
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 62
+    state_code: MT
+  output:
+    mt_exemptions: 1_600
+
+- name: Single filing
+  period: 2023
+  input:
+    taxsim_dividends: 1_900
+    filing_status: JOINT
+    age_head: 62
+    state_code: MT
+  output:
+    mt_exemptions: 0
