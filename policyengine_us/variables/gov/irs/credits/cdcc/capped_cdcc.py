@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class capped_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Capped Child/dependent care credit"
+    label = "Capped child/dependent care credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -18,10 +18,10 @@ class capped_cdcc(Variable):
         p = parameters(period).gov.irs.credits
         if "cdcc" in p.refundable:
             return cdcc
-        # The cdcc is capped at the amount of Form 1040, line 18 if non-refundable
-        tax_before_credits = tax_unit("regular_tax_before_credits", period)
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
-        # The tax before credits amount is also reduced by the Partner’s Additional Reporting Year Tax
-        # which is currently not implemented
-        cap = max_(tax_before_credits - foreign_tax_credit, 0)
-        return min_(cdcc, cap)
+        # follow Credit Limit Worksheet in 2022 Form 2441 instructions:
+        itaxbc = tax_unit("income_tax_before_credits", period)  # WS Line1
+        # Excess Advance PTC Repayment (Form 8962) assumed zero in above line
+        offset = tax_unit("foreign_tax_credit", period)
+        # Partner Additional Reporting Year Tax (Form 8978) assumed zero above
+        cap = max_(itaxbc - offset, 0)  # WS Line 2
+        return min_(cdcc, cap)  # WS Line 3
