@@ -26,5 +26,5 @@ class mi_standard_deduction_tier_three_eligible(Variable):
         # Michigan Standard Deduction
         sd3_birth_year = -(age_older - period.start.year)
         # return (age_older >= p.min_age) & (sd3_birth_year >= p.birth_year)
-        
+
         return p.birth_year.calc(sd3_birth_year)
