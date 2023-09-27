@@ -7,13 +7,15 @@ class sc_dependent_exemption(Variable):
     label = "South Carolina dependent exemption"
     unit = USD
     definition_period = YEAR
-    reference = ("https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
-                 # SECTION 12-6-1160
-                 "https://www.scstatehouse.gov/code/t12c006.php")
+    reference = (
+        "https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf#page=2",
+        # SECTION 12-6-1160
+        "https://www.scstatehouse.gov/code/t12c006.php",
+    )
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
-        # Get relevant parameter subtree. The amount for dependent exemption is the same amount as the the young_child's. 
+        # Get relevant parameter subtree. The amount for dependent exemption is the same amount as the the young_child's.
         p = parameters(period).gov.states.sc.tax.income.exemptions.young_child
         person = tax_unit.members
         eligible = person("is_tax_unit_dependent", period)

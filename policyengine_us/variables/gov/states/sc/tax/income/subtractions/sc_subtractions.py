@@ -9,4 +9,3 @@ class sc_subtractions(Variable):
     definition_period = YEAR
     defined_for = StateCode.SC
     adds = "gov.states.sc.tax.income.subtractions.subtractions"
-    
