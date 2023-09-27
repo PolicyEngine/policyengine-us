@@ -26,17 +26,22 @@ class co_ccap_parent_fee(Variable):
         # The numebrs below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
         #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
-        at_
-        above_
-        
+        first_multiplication_factor = (
+            p.base_parent_fee.first_multiplication_factor
+        )
+        second_multiplication_factor = (
+            p.base_parent_fee.second_multiplication_factor
+        )
+        third_multiplication_factor = (
+            p.add_on_parent_fee.third_multiplication_factor
+        )
         base_parent_fee = np.round(
             where(
                 agi <= hhs_fpg,
-                agi* p.base_parent_fee.first_multiplication_factor/ MONTHS_IN_YEAR,
+                agi * first_multiplication_factor / MONTHS_IN_YEAR,
                 (
-                    hhs_fpg * p.base_parent_fee.first_multiplication_factor
-                    + (agi - hhs_fpg)
-                    * p.base_parent_fee.second_multiplication_factor
+                    hhs_fpg * first_multiplication_factor
+                    + (agi - hhs_fpg) * second_multiplication_factor
                 )
                 / MONTHS_IN_YEAR,
             ),
@@ -44,8 +49,7 @@ class co_ccap_parent_fee(Variable):
         )
         add_on_parent_fee = where(
             agi > hhs_fpg,
-            (num_child_age_eligible - 1)
-            * p.add_on_parent_fee.third_multiplication_factor,
+            (num_child_age_eligible - 1) * third_multiplication_factor,
             0,
         )
 
