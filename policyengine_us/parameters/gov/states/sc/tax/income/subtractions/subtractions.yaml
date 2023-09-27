@@ -1,25 +1,25 @@
 description: South Carolina counts these sources as subtractions. 
 values:
   2021-01-01:
-    # - state_tax_refund
-    - disability_benefits #not sure 
-    # - out_of_state_income
+    - salt_refund_last_year
+    - disability_benefits #include tax disability benefits
     - sc_net_capital_gain_deduction
-    # - volunteer_deduction
-    # - college_investment_contribution_subtraction  
-    # - business_income_deduction (form I-335)
+    - investment_in_529_plan  
     - us_govt_interest
-    # - nontaxable_national_guard
     - taxable_earnings_for_social_security
     - sc_military_deduction
     - sc_retirement_deduction
     - sc_senior_exemption
-    - income_tax #not sure
-    # - subsistence_allowance
     - sc_young_child_exemption
-    # - consumer_protection_services 
-    # - other_subtractions
-    # - dependent_exemption (same as sc_young_child_exemption)
+    - sc_dependent_exemption 
+    # - Out of state income/gain
+    # - Volunteer deductions 
+    # - Active Trade or Business Income deduction
+    # - Certain nontaxable National Guard or Reserve pay
+    # - Negative amount of federal taxable income
+    # - Subsistence allowance 
+    # - Consumer Protection Services
+    # - Other subtractions 
 
 metadata:
   unit: list

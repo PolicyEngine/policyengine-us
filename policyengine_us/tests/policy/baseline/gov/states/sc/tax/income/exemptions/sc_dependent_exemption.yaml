@@ -1,0 +1,37 @@
+- name: Case 1, 1 dependent, get 1 dependent exemptions.
+  period: 2022
+  input:
+    people:
+      parent: {}
+      dependt:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, dependt]
+    households:
+      household:
+        members: [parent, dependt]
+        state_code: SC
+  output:
+    sc_dependent_exemption: 4_430
+
+- name: Case 2, family with 3 dependents, get 3 dependent exemptions. 
+  period: 2022
+  input:
+    people:
+      parent: {}
+      dependt1:
+        age: 4
+      dependt2:
+        age: 4
+      dependt3:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, dependt1, dependt2, dependt3]
+    households:
+      household:
+        members: [parent, dependt1, dependt2, dependt3]
+        state_code: SC
+  output:
+    sc_dependent_exemption: 13_290
