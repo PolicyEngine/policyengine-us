@@ -1,0 +1,32 @@
+- name: Not eligible
+  period: 2023
+  input:
+    nm_eitc_eligible: false
+    eitc_maximum: 1_000
+    eitc_phased_in: 1_000
+    eitc_reduction: 200
+    state_code: NM
+  output:
+    nm_eitc: 0
+
+- name: $1,000 EITC with no reduction in 2023
+  period: 2023
+  input:
+    eitc_maximum: 1_000
+    nm_eitc_eligible: true
+    eitc_phased_in: 1_000
+    eitc_reduction: 0
+    state_code: NM
+  output:
+    nm_eitc: 250
+
+- name: $700 EITC in 2022
+  period: 2022
+  input:
+    eitc_maximum: 1_000
+    nm_eitc_eligible: true
+    eitc_phased_in: 1_000
+    eitc_reduction: 300
+    state_code: NM
+  output:
+    nm_eitc: 140

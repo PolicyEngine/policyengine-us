@@ -1,0 +1,15 @@
+- name: CT EITC, no matched credit and regular filing
+  period: 2022
+  input:
+    state_code: CT
+    earned_income_tax_credit: 0
+  output:
+    ct_eitc: 0
+
+- name: CT EITC, some matched credit and regular filing
+  period: 2022
+  input:
+    state_code: CT
+    earned_income_tax_credit: 2_000
+  output:
+    ct_eitc: 610

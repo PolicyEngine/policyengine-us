@@ -50,14 +50,8 @@ class mn_elderly_disabled_subtraction(Variable):
         # ... subtract benefits from base amount
         amount = max_(0, base_amount - benefits)
         # ... determine net agi
-        agi = add(
-            tax_unit,
-            period,
-            [
-                "adjusted_gross_income",
-                "c05700",  # lump-sum Form 4972 distributions
-            ],
-        )
+        fed_agi = tax_unit("adjusted_gross_income", period)
+        agi = fed_agi + tax_unit("form_4972_lumpsum_distributions", period)
         agi_offset_base = p.agi_offset_base[filing_status]
         joint = filing_status == filing_status.possible_values.JOINT
         head_eligible = tax_unit.any(elderly_head | disabled_head)

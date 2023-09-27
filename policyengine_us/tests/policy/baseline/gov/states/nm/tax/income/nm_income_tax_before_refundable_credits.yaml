@@ -1,0 +1,17 @@
+- name: Calculation 
+  period: 2023
+  input:
+    state_code: NM
+    nm_income_tax_before_non_refundable_credits: 2_000
+    nm_non_refundable_credits: 500
+  output:
+    nm_income_tax_before_refundable_credits: 1_500
+
+- name: Capped at 0 
+  period: 2023
+  input:
+    state_code: NM
+    nm_income_tax_before_non_refundable_credits: 200
+    nm_non_refundable_credits: 500
+  output:
+    nm_income_tax_before_refundable_credits: 0

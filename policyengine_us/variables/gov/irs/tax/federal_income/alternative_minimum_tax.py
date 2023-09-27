@@ -20,7 +20,7 @@ class amt_income(Variable):
             salt_deduction,
             standard_deduction,
         )
-        amt_income = taxable_income + excluded_deductions
+        amt_inc = taxable_income + excluded_deductions
         amt = parameters(period).gov.irs.income.amt
         filing_status = tax_unit("filing_status", period)
         separate_addition = max_(
@@ -28,16 +28,93 @@ class amt_income(Variable):
             min_(
                 amt.exemption.amount[filing_status],
                 amt.exemption.phase_out.rate
-                * max_(0, amt_income - amt.exemption.separate_limit),
+                * max_(0, amt_inc - amt.exemption.separate_limit),
             ),
         ) * (filing_status == filing_status.possible_values.SEPARATE)
-        return amt_income + separate_addition
+        return amt_inc + separate_addition
 
 
-c62100 = variable_alias("c62100", amt_income)
+class regular_tax_before_credits(Variable):
+    value_type = float
+    entity = TaxUnit
+    definition_period = YEAR
+    label = "Regular tax before credits"
+    documentation = "Regular tax on regular taxable income before credits"
+    unit = USD
+
+    def formula(tax_unit, period, parameters):
+        filing_status = tax_unit("filing_status", period)
+        dwks1 = tax_unit("taxable_income", period)
+
+        capital_gains = parameters(period).gov.irs.capital_gains.brackets
+
+        dwks16 = min_(capital_gains.thresholds["1"][filing_status], dwks1)
+        dwks17 = min_(tax_unit("dwks14", period), dwks16)
+        dwks20 = dwks16 - dwks17
+        lowest_rate_tax = capital_gains.rates["1"] * dwks20
+        # Break in worksheet lines
+        dwks13 = tax_unit("dwks13", period)
+        dwks21 = min_(dwks1, dwks13)
+        dwks22 = dwks20
+        dwks23 = max_(0, dwks21 - dwks22)
+        dwks25 = min_(capital_gains.thresholds["2"][filing_status], dwks1)
+        dwks19 = tax_unit("dwks19", period)
+        dwks26 = min_(dwks19, dwks20)
+        dwks27 = max_(0, dwks25 - dwks26)
+        dwks28 = min_(dwks23, dwks27)
+        dwks29 = capital_gains.rates["2"] * dwks28
+        dwks30 = dwks22 + dwks28
+        dwks31 = dwks21 - dwks30
+        dwks32 = capital_gains.rates["3"] * dwks31
+        # Break in worksheet lines
+        dwks33 = min_(
+            tax_unit("dwks9", period),
+            add(tax_unit, period, ["unrecaptured_section_1250_gain"]),
+        )
+        dwks10 = tax_unit("dwks10", period)
+        dwks34 = dwks10 + dwks19
+        dwks36 = max_(0, dwks34 - dwks1)
+        dwks37 = max_(0, dwks33 - dwks36)
+        dwks38 = 0.25 * dwks37
+        # Break in worksheet lines
+        dwks39 = dwks19 + dwks20 + dwks28 + dwks31 + dwks37
+        dwks40 = dwks1 - dwks39
+        dwks41 = 0.28 * dwks40
+
+        # Compute regular tax using bracket rates and thresholds
+        reg_taxinc = max_(0, dwks19)
+        p = parameters(period).gov.irs.income
+        bracket_tops = p.bracket.thresholds
+        bracket_rates = p.bracket.rates
+        reg_tax = 0
+        bracket_bottom = 0
+        for i in range(1, len(list(bracket_rates.__iter__())) + 1):
+            b = str(i)
+            bracket_top = bracket_tops[b][filing_status]
+            reg_tax += bracket_rates[b] * amount_between(
+                reg_taxinc, bracket_bottom, bracket_top
+            )
+            bracket_bottom = bracket_top
+
+        # Return to worksheet lines
+        dwks42 = reg_tax
+        dwks43 = sum(
+            [
+                dwks29,
+                dwks32,
+                dwks38,
+                dwks41,
+                dwks42,
+                lowest_rate_tax,
+            ]
+        )
+        dwks44 = tax_unit("income_tax_main_rates", period)
+        dwks45 = min_(dwks43, dwks44)
+        hasqdivltcg = tax_unit("hasqdivltcg", period)
+        return where(hasqdivltcg, dwks45, dwks44)
 
 
-class c09600(Variable):
+class alternative_minimum_tax(Variable):
     value_type = float
     entity = TaxUnit
     definition_period = YEAR
@@ -46,7 +123,7 @@ class c09600(Variable):
     documentation = "Alternative Minimum Tax (AMT) liability"
 
     def formula(tax_unit, period, parameters):
-        c62100 = tax_unit("c62100", period)
+        amt_income = tax_unit("amt_income", period)
         # Form 6251, Part II top
         amt = parameters(period).gov.irs.income.amt
         phase_out = amt.exemption.phase_out
@@ -56,7 +133,7 @@ class c09600(Variable):
             (
                 amt.exemption.amount[filing_status]
                 - phase_out.rate
-                * max_(0, c62100 - phase_out.start[filing_status])
+                * max_(0, amt_income - phase_out.start[filing_status])
             ),
         )
         age_head = tax_unit("age_head", period)
@@ -68,7 +145,7 @@ class c09600(Variable):
             min_(line29, tax_unit("filer_earned", period) + child.amount),
             line29,
         )
-        line30 = max_(0, c62100 - line29)
+        line30 = max_(0, amt_income - line29)
         brackets = amt.brackets
         amount_over_threshold = line30 - brackets.thresholds["1"] / tax_unit(
             "sep", period
@@ -137,14 +214,9 @@ class c09600(Variable):
         line62 = line42 + cgtax1 + cgtax2 + cgtax3 + line61
         line64 = min_(line3163, line62)
         line31 = where(form_6251_part_iii_required, line64, line3163)
-        foreign_tax_credit = tax_unit("foreign_tax_credit", period)
 
         # Form 6251, Part II bottom
-        line32 = where(
-            tax_unit("amt_form_completed", period),
-            tax_unit("foreign_tax_credit", period),
-            foreign_tax_credit,
-        )
+        line32 = tax_unit("foreign_tax_credit", period)
         line33 = line31 - line32
         return max_(
             0,
@@ -152,12 +224,9 @@ class c09600(Variable):
             - max_(
                 0,
                 (
-                    tax_unit("taxbc", period)
-                    - foreign_tax_credit
-                    - tax_unit("c05700", period)
+                    tax_unit("regular_tax_before_credits", period)
+                    - line32
+                    - tax_unit("form_4972_lumpsum_distributions", period)
                 ),
             ),
         )
-
-
-alternative_minimum_tax = variable_alias("alternative_minimum_tax", c09600)
