@@ -26,12 +26,13 @@ class co_ccap_parent_fee(Variable):
         # The numebrs below are weights copied from government spreadsheet
         # (url: https://docs.google.com/spreadsheets/d/1EEc3z8Iwu_KRTlBtd2NssDDEx_FITqVq/edit#gid=468321263,
         #       https://docs.google.com/spreadsheets/d/1HtPiC2qxclzWfBa7LRo2Uohrg-RCBkyZ/edit#gid=582762342)
+        at_
+        above_
+        
         base_parent_fee = np.round(
             where(
                 agi <= hhs_fpg,
-                agi
-                * p.base_parent_fee.first_multiplication_factor
-                / MONTHS_IN_YEAR,
+                agi* p.base_parent_fee.first_multiplication_factor/ MONTHS_IN_YEAR,
                 (
                     hhs_fpg * p.base_parent_fee.first_multiplication_factor
                     + (agi - hhs_fpg)
