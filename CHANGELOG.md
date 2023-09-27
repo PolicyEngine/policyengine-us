@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.481.0] - 2023-09-27 18:22:39
+
+### Added
+
+- Arkansas income tax exemptions.
+
 ## [0.480.0] - 2023-09-27 17:44:45
 
 ### Added
@@ -5396,6 +5402,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.480.0...0.481.0
 [0.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.479.1...0.480.0
 [0.479.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.479.0...0.479.1
 [0.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.478.0...0.479.0
