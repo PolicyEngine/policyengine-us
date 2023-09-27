@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class vt_cdcc(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Vermont Child Care and Dependent Care Credit"
+    label = "Vermont child care and dependent care credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -16,6 +16,4 @@ class vt_cdcc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.vt.tax.income.credits.cdcc
         federal_cdcc = tax_unit("cdcc", period)
-        vt_cdcc = federal_cdcc * p.rate
-
-        return vt_cdcc
+        return federal_cdcc * p.rate
