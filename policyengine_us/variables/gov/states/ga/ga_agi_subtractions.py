@@ -12,4 +12,4 @@ class ga_agi_subtractions(Variable):
         "https://www.zillionforms.com/2021/I2122607361.PDF#page14"
     )
     defined_for = StateCode.GA
-    adds = "gov.states.ga.income.agi.subtractions"
+    adds = "gov.states.ga.tax.income.agi.subtractions"
