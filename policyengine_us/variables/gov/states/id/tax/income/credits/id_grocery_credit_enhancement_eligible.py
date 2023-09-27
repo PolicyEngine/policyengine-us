@@ -17,14 +17,15 @@ class id_grocery_credit_enhancement_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         joint = filing_status == filing_status.possible_values.JOINT
 
-
-        joint_threshold = where(head_aged & spouse_aged, p.income_threshold.two_aged, p.income_threshold.one_aged[filing_status])
+        joint_threshold = where(
+            head_aged & spouse_aged,
+            p.income_threshold.two_aged,
+            p.income_threshold.one_aged[filing_status],
+        )
         joint = filing_status == filing_status.possible_values.JOINT
-        final_joint_amount = where(joint, joint_threshold, p.income_threshold.one_aged[filing_status])
+        final_joint_amount = where(
+            joint, joint_threshold, p.income_threshold.one_aged[filing_status]
+        )
         income = tax_unit("id_agi", period)
 
-
         return income < final_joint_amount
-
-
-

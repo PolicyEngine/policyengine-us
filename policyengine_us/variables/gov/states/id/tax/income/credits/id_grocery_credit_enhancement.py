@@ -13,6 +13,6 @@ class id_grocery_credit_enhancement_eligible(Variable):
 
         #  use id_grocery_credit_enhancement_eligible in defined for and get number of dependents * the amount ($100) as a parameter
         dependents = tax_unit("tax_unit_dependents", period)
-        base_credit = p.amount #100
+        base_credit = p.amount  # 100
 
         return dependents * base_credit
