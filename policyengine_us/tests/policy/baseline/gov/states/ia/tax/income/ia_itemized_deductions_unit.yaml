@@ -1,0 +1,23 @@
+- name: IA unit itemized deductions unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_net_income: 200_000
+        real_estate_taxes: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        ia_net_income: 50_000
+        real_estate_taxes: 11_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        interest_deduction: 17_000
+        state_and_local_sales_or_income_tax: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_itemized_deductions_unit: 30_000

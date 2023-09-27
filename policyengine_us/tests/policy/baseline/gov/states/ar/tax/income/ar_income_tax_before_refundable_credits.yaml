@@ -1,0 +1,17 @@
+- name: Calculation 
+  period: 2022
+  input:
+    state_code: AR
+    ar_income_tax_before_non_refundable_credits: 2_000
+    ar_non_refundable_credits: 500
+  output:
+    ar_income_tax_before_refundable_credits: 1500
+
+- name: Capped at 0 
+  period: 2022
+  input:
+    state_code: AR
+    ar_income_tax_before_non_refundable_credits: 200
+    ar_non_refundable_credits: 500
+  output:
+    ar_income_tax_before_refundable_credits: 0

@@ -1,1 +1,1 @@
-# CPUC
+# California Public Utilities Commission (CPUC)

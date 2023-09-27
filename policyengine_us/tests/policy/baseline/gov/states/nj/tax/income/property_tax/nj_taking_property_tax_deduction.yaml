@@ -1,8 +1,8 @@
-- name: Default should be false if not eligible for property tax deduction or credit.
+- name: Default should be false if not eligible for property tax deduction.
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_property_tax_deduction_or_credit_eligible: false
+    nj_property_tax_deduction_eligible: false
     nj_potential_property_tax_deduction: 15_000
     nj_taxable_income_before_property_tax_deduction: 100_000
     filing_status: JOINT
@@ -14,7 +14,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_property_tax_deduction_or_credit_eligible: true
+    nj_property_tax_deduction_eligible: true
     nj_potential_property_tax_deduction: 2_858
     nj_taxable_income_before_property_tax_deduction: 25_000
     filing_status: SINGLE
@@ -26,7 +26,7 @@
   period: 2022
   absolute_error_margin: 0
   input:
-    nj_property_tax_deduction_or_credit_eligible: true
+    nj_property_tax_deduction_eligible: true
     nj_potential_property_tax_deduction: 2_856
     nj_taxable_income_before_property_tax_deduction: 25_000
     filing_status: SINGLE

@@ -1,0 +1,51 @@
+- name: IA basic tax unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_base_tax_indiv: 700
+        ia_amt_indiv: 100
+        ia_base_tax_joint: 1_500
+        ia_amt_joint: 50
+      person2:
+        is_tax_unit_spouse: true
+        ia_base_tax_indiv: 600
+        ia_amt_indiv: 200
+        ia_base_tax_joint: 0
+        ia_amt_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_income_tax_before_credits: 1_550
+
+- name: IA basic tax unit test 2
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_base_tax_indiv: 700
+        ia_amt_indiv: 100
+        ia_base_tax_joint: 1_500
+        ia_amt_joint: 50
+      person2:
+        is_tax_unit_spouse: true
+        ia_base_tax_indiv: 600
+        ia_amt_indiv: 100
+        ia_base_tax_joint: 0
+        ia_amt_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_income_tax_before_credits: 1_500

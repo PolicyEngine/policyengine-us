@@ -1,0 +1,145 @@
+- name: "Joint household, both claimable elsewhere, with no dependents"
+  period: 2022
+  input:
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: true
+    tax_unit_count_dependents: 0
+    state_code: VT
+  output:
+    vt_personal_exemptions: 0 # 0*4500
+
+- name: "Joint household, both claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: true
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 9_000 # 2*4500
+
+- name: "Joint household, one claimable elsewhere, with no dependents"
+  period: 2022
+  input:
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
+    state_code: VT
+  output:
+    vt_personal_exemptions: 4_500 # 1*4500
+
+- name: "Joint household, one claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: true
+    tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_500 # 3*4500
+
+- name: "Joint household, neither claimable elsewhere, with no dependents"
+  period: 2022
+  input:
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: false
+    tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
+    state_code: VT
+  output:
+    vt_personal_exemptions: 9_000 # 2*4500
+
+- name: "Joint household, neither claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: JOINT
+    tax_unit_dependent_elsewhere: false
+    tax_unit_spouse_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 18_000 # 4*4500
+
+- name: "Single household, claimable elsewhere, with no dependents"
+  period: 2022
+  input:
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: true
+    tax_unit_count_dependents: 0
+    state_code: VT
+  output:
+    vt_personal_exemptions: 0 # 0*4500
+
+- name: "Single household, claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: true
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 9_000 # 2*4500
+
+- name: "Single household, not claimable elsewhere, with no dependents"
+  period: 2022
+  input:
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
+    state_code: VT
+  output:
+    vt_personal_exemptions: 4_500 # 1*4500
+
+- name: "Single household, not claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_500 # 3*4500
+
+- name: "Non vermont tax filer"
+  period: 2022
+  input:
+    filing_status: SINGLE
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 0
+    state_code: NY
+  output:
+    vt_personal_exemptions: 0 
+
+- name: "Head of household, not claimable elsewhere, with two dependents"
+  period: 2022
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_500 # 3*4500
+
+- name: "Head of household, not claimable elsewhere, with two dependents"
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_050 # 3*4350
+
+- name: "Widow, not claimable elsewhere, with two dependents"
+  period: 2021
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependent_elsewhere: false
+    tax_unit_count_dependents: 2
+    state_code: VT
+  output:
+    vt_personal_exemptions: 13_050 # 3*4350

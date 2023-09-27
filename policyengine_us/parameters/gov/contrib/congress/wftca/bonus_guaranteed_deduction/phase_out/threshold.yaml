@@ -1,0 +1,33 @@
+description: Threshold at which the bonus guaranteed deduction begins to phase out.
+SINGLE:
+  values:
+    2000-01-01: 0
+  metadata:
+    label: WFTCA single filer phase-out threshold
+SEPARATE:
+  values:
+    2000-01-01: 0
+  metadata:
+    label: WFTCA separate filer phase-out threshold
+HEAD_OF_HOUSEHOLD:
+  values:
+    2000-01-01: 0
+  metadata:
+    label: WFTCA head-of-household filer phase-out threshold
+JOINT:
+  values:
+    2000-01-01: 0
+  metadata:
+    label: WFTCA joint filer phase-out threshold
+WIDOW:
+  values:
+    2000-01-01: 0
+  metadata:
+    label: WFTCA widow filer phase-out threshold
+metadata:
+  unit: currency-USD
+  period: year
+  label: Bonus guaranteed deduction phase-out threshold
+  reference:
+    - title: Ways and Means Committee press release
+      href: https://waysandmeans.house.gov/malliotakis-steel-lead-legislation-to-provide-tax-relief-to-working-families/

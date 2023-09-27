@@ -1,0 +1,150 @@
+- name: eligible SINGLE person whose agi=25_499 get 1_000 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 25_499
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 1_000
+
+- name: eligible SINGLE person whose agi=25_500 get 990 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 25_500
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 990
+
+- name: eligible SINGLE person whose agi=25_999 get 990 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 25_999
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 990
+
+- name: eligible SINGLE person whose agi=26_000 get 980 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 26_000
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 980
+
+- name: eligible SINGLE person whose agi=69_500 get 110 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    adjusted_gross_income: 69_500
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 110
+
+- name: eligible JOINT person whose agi=69_500 get 110 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: JOINT
+    adjusted_gross_income: 69_500
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 110
+
+- name: eligible JOINT person whose agi=69_999 get 110 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: JOINT
+    adjusted_gross_income: 69_999
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 110
+
+- name: eligible JOINT person whose agi=70_000 get 100 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: JOINT
+    adjusted_gross_income: 70_000
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 100
+
+- name: eligible JOINT person whose agi=75_001 get 100 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: JOINT
+    adjusted_gross_income: 75_001
+    # co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 0
+
+- name: ineligible JOINT person whose agi=70_000 get 100 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: JOINT
+    adjusted_gross_income: 70_000
+    co_income_qualified_senior_housing_credit_eligible: False
+  output:
+    co_income_qualified_senior_housing_credit: 0
+
+- name: eligible WIDOW person whose agi=69_500 get 110 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: WIDOW
+    adjusted_gross_income: 69_500
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 110
+
+- name: eligible HEAD_OF_HOUSEHOLD whose agi=69_500 get 110 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 69_500
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 110
+
+- name: eligible SEPARATE whose agi=70_000 get 50 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_000
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 50
+
+- name: eligible SEPARATE whose agi=70_499 get 50 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_499
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 50
+
+- name: eligible SEPARATE whose agi=70_500 get 45 credit
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SEPARATE
+    adjusted_gross_income: 70_500
+    co_income_qualified_senior_housing_credit_eligible: True
+  output:
+    co_income_qualified_senior_housing_credit: 45
+

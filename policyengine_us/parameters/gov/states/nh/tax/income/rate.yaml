@@ -1,0 +1,19 @@
+description: New Hampshire taxes interest and dividends at this rate.
+values:
+  2021-01-01: 0.05
+  2023-01-01: 0.04
+  2024-01-01: 0.03
+  2025-01-01: 0.02
+  2026-01-01: 0.01
+  2027-01-01: 0
+metadata:
+  unit: /1
+  period: year
+  label: New Hampshire tax rate
+  reference:
+    - title: New Hampshire Statutes - TITLE V - CHAPTER 77 - Section 77:1
+      href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-1.htm
+    - title: New Hampshire Statutes - TITLE V - CHAPTER 77 - Section 77:4
+      href: https://www.gencourt.state.nh.us/rsa/html/V/77/77-4.htm
+    - title: 2021 New Hampshire DP-10 Form
+      href: https://www.revenue.nh.gov/forms/2022/documents/dp-10-2021-print.pdf#page=4

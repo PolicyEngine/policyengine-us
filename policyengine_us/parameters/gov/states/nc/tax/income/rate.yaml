@@ -1,0 +1,20 @@
+description: North Carolina taxes individual taxable income at this rate.
+metadata:
+  unit: /1
+  period: year
+  label: North Carolina individual income tax rate
+  reference:
+    - title: North Carolina Department of Revenue - Tax Rate Schedules
+      href: https://www.ncdor.gov/taxes-forms/tax-rate-schedules
+    - title: 2022 North Carolina Form D-400, Line 15
+      href: https://www.ncdor.gov/2022-d-400-handwritten-version/open#page=2
+values:
+  2015-01-01: 0.0575
+  2017-01-01: 0.05499
+  2019-01-01: 0.0525
+  2022-01-01: 0.0499
+  2023-01-01: 0.0475
+  2024-01-01: 0.046
+  2025-01-01: 0.045
+  2026-01-01: 0.0425
+  2027-01-01: 0.0399

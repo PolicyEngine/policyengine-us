@@ -1,0 +1,7 @@
+- name: IA eitc unit test 1
+  period: 2021
+  input:
+    earned_income_tax_credit: 1_000
+    state_code: IA
+  output:
+    ia_eitc: 150

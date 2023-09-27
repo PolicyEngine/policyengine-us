@@ -8,24 +8,20 @@ class nj_taking_property_tax_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = "https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-3a-17/"
-    defined_for = "nj_property_tax_deduction_or_credit_eligible"
+    defined_for = "nj_property_tax_deduction_eligible"
 
     def formula(tax_unit, period, parameters):
-        # This follows the logic of the 1040 instructions Worksheet H.
-        # Don't forget to divide the threshold if filing separately? They have to also live together.
+        p = parameters(period).gov.states.nj.tax.income.main
 
-        # Get the would-be property tax deduction.
+        # follows NJ-1040 form Worksheet H
         deduction = tax_unit("nj_potential_property_tax_deduction", period)
 
-        # Get NJ taxable income before property tax deduction.
+        # calculate taxes without deduction
+        filing_status = tax_unit("filing_status", period)
+        status = filing_status.possible_values
         taxable_income_before_deduction = tax_unit(
             "nj_taxable_income_before_property_tax_deduction", period
         )
-
-        # Calculate the amount of taxes owed without the deduction.
-        p = parameters(period).gov.states.nj.tax.income.main
-        filing_status = tax_unit("filing_status", period)
-        status = filing_status.possible_values
         taxes_without_deduction = select(
             [
                 filing_status == status.SINGLE,
@@ -43,12 +39,10 @@ class nj_taking_property_tax_deduction(Variable):
             ],
         )
 
-        # Calculate NJ taxable income after property tax deduction.
-        taxable_income_after_deduction = (
-            taxable_income_before_deduction - deduction
+        # calculate taxes with deduction
+        taxable_income_after_deduction = max_(
+            0, taxable_income_before_deduction - deduction
         )
-
-        # Calculate the amount of taxes owed after the deduction.
         taxes_with_deduction = select(
             [
                 filing_status == status.SINGLE,
@@ -66,8 +60,13 @@ class nj_taking_property_tax_deduction(Variable):
             ],
         )
 
-        # Determine whether the difference in tax incidence is greater than the credit amount.
+        # calculate credit amount
         credit_amount = parameters(
             period
         ).gov.states.nj.tax.income.credits.property_tax.amount
+        separate = filing_status == status.SEPARATE
+        cohabitating = tax_unit("cohabitating_spouses", period)
+        credit_amount = credit_amount / (1 + separate * cohabitating)
+
+        # choose between taxable income deduction and refundable credit
         return (taxes_without_deduction - taxes_with_deduction) > credit_amount

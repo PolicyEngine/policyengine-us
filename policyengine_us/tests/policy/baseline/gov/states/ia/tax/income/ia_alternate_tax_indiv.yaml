@@ -1,0 +1,20 @@
+- name: IA alternate tax indiv unit test 1
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        ia_net_income: 6_000
+      person2:
+        is_tax_unit_spouse: true
+        ia_net_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ia_alternate_tax_unit: 300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_alternate_tax_indiv: [200, 100]

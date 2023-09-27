@@ -1,0 +1,15 @@
+- name: cdcc 100
+  period: 2023
+  input:
+    cdcc: 100
+    state_code: DE
+  output:
+    de_cdcc: 50
+
+- name: cdcc 0
+  period: 2023
+  input:
+    cdcc: 0
+    state_code: DE
+  output:
+    de_cdcc: 0

@@ -1,0 +1,47 @@
+- name: 1 Ineligible for property tax deduction or credit if income is below filing status-specific threshold.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    filing_status: JOINT
+    nj_agi: 19_999
+    real_estate_taxes: 123
+    rents: true
+    state_code: NJ
+  output:
+    nj_property_tax_deduction_eligible: false
+
+- name: 2 Ineligible for property tax deduction or credit if income is below filing status-specific threshold.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE
+    nj_agi: 9_999
+    real_estate_taxes: 123
+    rents: true
+    state_code: NJ
+  output:
+    nj_property_tax_deduction_eligible: false
+
+- name: 3 Income is above filing status-specific threshold and paid homeowner's property tax.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    filing_status: JOINT
+    nj_agi: 100_000
+    real_estate_taxes: 100
+    rents: false
+    state_code: NJ
+  output:
+    nj_property_tax_deduction_eligible: true
+
+- name: 4 Income is above filing status-specific threshold and paid nonzero rent.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE
+    nj_agi: 100_000
+    real_estate_taxes: 0
+    rents: true
+    state_code: NJ
+  output:
+    nj_property_tax_deduction_eligible: true

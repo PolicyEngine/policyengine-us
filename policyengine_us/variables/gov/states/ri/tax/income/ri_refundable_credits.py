@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ri_refunable_credits(Variable):
+class ri_refundable_credits(Variable):
     value_type = float
     entity = TaxUnit
     label = "Rhode Island refundable credits"
