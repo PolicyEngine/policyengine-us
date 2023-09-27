@@ -1,0 +1,19 @@
+description: Hawaii accounts for these subtractions from Federal AGI when calculating income tax.
+values:
+  2021-01-01:
+    - pension_income # Line 13
+    - social_security # Line 14
+    - hi_military_reserve_or_national_guard_duty_pay_exclusion # Line 15
+    # Line 16 housing account down payment
+    # Line 17 exceptional trees deduction
+    - us_govt_interest # Line 18
+    - student_loan_interest # Line 18
+
+metadata:
+  unit: list
+  label: Hawaii subtractions from Federal AGI
+  reference:
+    - title: 2022 N-11 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=13
+    - title: 2021 N-11 Hawaii Resident Income Tax Instructions
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=13
