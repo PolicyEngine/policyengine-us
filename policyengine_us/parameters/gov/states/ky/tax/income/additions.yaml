@@ -1,13 +1,10 @@
-description: Kentucky counts these sources as subtractions.
+description: Kentucky counts these sources as additions.
 values:
   2021-01-01:
-  # - Kentucky income tax refund
     - us_govt_interest
-    - ky_pension_income_exclusion  #TODO: merge pension exlsuion PR before merging AGI
-    - taxable_social_security
   # - Resident adjustment for partnerships
-  # - Kentucky depreciation 
-
+  # - Federal depreciation
+  # - Federal Net Operating Loss
 
 
 metadata:
