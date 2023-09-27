@@ -1,9 +1,22 @@
 description: Michigan provides a standard deduction addition for recipients born after this year. 
-values:
-  2017-01-01: 1952
+brackets:
+  - threshold:
+      2017-01-01: 0
+    amount:
+      2017-01-01: false
+  - threshold:
+      2017-01-01: 1952
+    amount:
+      2017-01-01: true
+  - threshold:
+      2017-01-01: 1956
+    amount:
+      2017-01-01: false
 metadata:
-  unit: year
-  label: Michigan standard deduction addition age max threshold
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: Michigan tier three standard deduction birth year range
   reference:
     - title: Michigan Legal Code Section 206.30 - (9)(e)
       href: http://legislature.mi.gov/doc.aspx?mcl-206-30

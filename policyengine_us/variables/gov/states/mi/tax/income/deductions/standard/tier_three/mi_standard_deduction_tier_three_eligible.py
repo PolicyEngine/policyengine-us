@@ -2,10 +2,9 @@ from policyengine_us.model_api import *
 
 
 class mi_standard_deduction_tier_three_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
-    label = "Michigan standard deduction age eligibility"
-    unit = USD
+    label = "Eligible for the Michigan standard deduction"
     definition_period = YEAR
     reference = (
         "http://legislature.mi.gov/doc.aspx?mcl-206-30",
@@ -26,4 +25,6 @@ class mi_standard_deduction_tier_three_eligible(Variable):
         age_older = tax_unit("greater_age_head_spouse", period)
         # Michigan Standard Deduction
         sd3_birth_year = -(age_older - period.start.year)
-        return (age_older >= p.min_age) & (sd3_birth_year >= p.birth_year)
+        # return (age_older >= p.min_age) & (sd3_birth_year >= p.birth_year)
+        
+        return p.birth_year.calc(sd3_birth_year)
