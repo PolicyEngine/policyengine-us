@@ -1,0 +1,15 @@
+- name: capped_property_taxes unit test 1
+  period: 2020
+  input:
+    filing_status: JOINT
+    real_estate_taxes: 4_000
+  output:
+    capped_property_taxes: 4_000
+
+- name: capped_property_taxes unit test 2
+  period: 2022
+  input:
+    filing_status: JOINT
+    real_estate_taxes: 14_000
+  output:
+    capped_property_taxes: 10_000

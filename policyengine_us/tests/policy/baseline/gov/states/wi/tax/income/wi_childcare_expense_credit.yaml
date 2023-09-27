@@ -1,0 +1,17 @@
+- name: WI childcare_expense_credit unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    cdcc: 800
+    state_code: WI
+  output:
+    wi_childcare_expense_credit: 0
+
+- name: WI childcare_expense_credit unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    cdcc: 800
+    state_code: WI
+  output:
+    wi_childcare_expense_credit: 400

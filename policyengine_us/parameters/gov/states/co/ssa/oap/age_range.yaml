@@ -1,0 +1,18 @@
+description: Colorado limits its Old Age Pension to individuals in this age range.
+brackets:
+  - threshold:
+      2023-01-01: 0
+    amount:
+      2023-01-01: false
+  - threshold:
+      2023-01-01: 60
+    amount:
+      2023-01-01: true
+metadata:
+  type: single_amount
+  rate_unit: bool
+  threshold_unit: year
+  label: Colorado OAP age range
+  reference:
+    - title: ADULT FINANCIAL PROGRAMS | Income Maintenance (Volume 3)
+      href: https://www.coloradosos.gov/CCR/GenerateRulePdf.do?ruleVersionId=10694#page=25

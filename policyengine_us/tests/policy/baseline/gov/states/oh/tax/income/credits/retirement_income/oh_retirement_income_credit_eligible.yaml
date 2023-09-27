@@ -1,0 +1,15 @@
+- name: Retirement income credit AGI eligible
+  period: 2021
+  input:
+    oh_agi: 99_999
+    state_code: OH
+  output:
+    oh_retirement_income_credit_eligible: true
+
+- name: Retirement income credit AGI not eligible
+  period: 2021
+  input:
+    oh_agi: 100_000
+    state_code: OH
+  output:
+    oh_retirement_income_credit_eligible: false

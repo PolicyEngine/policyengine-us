@@ -1,0 +1,27 @@
+- name: dc_deduction_indiv unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        dc_agi: 300_000
+      person2:
+        is_tax_unit_spouse: true
+        dc_agi: 100_000
+      person3:
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_itemizes: false
+        dc_deduction_joint: 20_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DC
+  output:
+    dc_deduction_indiv: [15_000, 5_000, 0]

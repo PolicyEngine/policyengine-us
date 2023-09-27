@@ -1,0 +1,47 @@
+- name: WI married couple credit unit test 1
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 90_000
+      person2:
+        is_tax_unit_spouse: true
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_married_couple_credit: 300  # = 0.03 * 10_000
+
+- name: WI married couple credit unit test 2
+  absolute_error_margin: 0.01
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 90_000
+      person2:
+        is_tax_unit_spouse: true
+        self_employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_married_couple_credit: 480

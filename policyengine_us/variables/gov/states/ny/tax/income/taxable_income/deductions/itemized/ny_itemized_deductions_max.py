@@ -11,19 +11,11 @@ class ny_itemized_deductions_max(Variable):
     defined_for = StateCode.NY
 
     def formula(tax_unit, period, parameters):
-        gov = parameters(period).gov
-        itm_deds = [
-            deduction
-            for deduction in gov.irs.deductions.itemized_deductions
-            if deduction not in ["salt_deduction"]
-        ]
-        itm_deds_less_salt = add(tax_unit, period, itm_deds)
-        property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        salt = gov.irs.deductions.itemized.salt_and_real_estate
-        cap = salt.cap[tax_unit("filing_status", period)]
-        capped_property_taxes = min_(property_taxes, cap)
+        itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
+        capped_property_taxes = tax_unit("capped_property_taxes", period)
+        p = parameters(period).gov.states.ny.tax.income
         capped_tuition = min_(
-            gov.states.ny.tax.income.deductions.itemized.college_tuition_max,
+            p.deductions.itemized.college_tuition_max,
             add(tax_unit, period, ["qualified_tuition_expenses"]),
         )
         return itm_deds_less_salt + capped_property_taxes + capped_tuition

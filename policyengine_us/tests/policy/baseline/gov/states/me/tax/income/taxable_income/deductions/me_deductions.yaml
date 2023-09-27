@@ -1,0 +1,32 @@
+- name: Maine deduction is $0 outside of Maine.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: NY
+    me_deduction_phaseout_percentage: 0.40
+    standard_deduction: 20_000
+    me_itemized_deductions_pre_phaseout: 25_000
+  output:
+    me_deductions: 0
+
+- name: Maine deduction is itemized deductions minus phaseout.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_deduction_phaseout_percentage: 0.40
+    standard_deduction: 20_000
+    me_itemized_deductions_pre_phaseout: 25_000
+  output:
+    me_deductions: 15_000
+
+- name: Maine deduction is standard deduction minus phaseout.
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    state_code: ME
+    me_deduction_phaseout_percentage: 0.90
+    standard_deduction: 25_000
+    me_itemized_deductions_pre_phaseout: 20_000
+  output:
+    me_deductions: 2_500
