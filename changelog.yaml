@@ -4546,3 +4546,29 @@
     fixed:
     - Remove tax exempt form 4972 lump sum distribution variable.
   date: 2023-09-25 21:27:04
+- bump: minor
+  changes:
+    added:
+    - Idaho deductions.
+  date: 2023-09-27 17:44:45
+- bump: minor
+  changes:
+    added:
+    - Arkansas income tax exemptions.
+  date: 2023-09-27 18:22:39
+- bump: minor
+  changes:
+    added:
+    - Connecticut state tuition subtraction.
+  date: 2023-09-27 21:57:34
+- bump: patch
+  changes:
+    fixes:
+    - Add Louisiana index file.
+    - Remove Missouri index file.
+  date: 2023-09-28 17:28:07
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina income tree patch.
+  date: 2023-09-28 19:35:20
