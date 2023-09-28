@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class oh_joint_filing_credit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Eligible for Ohio Joint Filing Credit"
     definition_period = YEAR
@@ -23,9 +23,9 @@ class oh_joint_filing_credit_eligible(Variable):
 
         spouse_income = tax_unit.sum(is_spouse * income)
 
-        qualify_income = (head_income >= p.income_base) & (
-            spouse_income >= p.income_base
+        income_eligible = (head_income >= p.income_threshold) & (
+            spouse_income >= p.income_threshold
         )
-        qualify_status = filing_status == filing_status.possible_values.JOINT
+        status_eligible = filing_status == filing_status.possible_values.JOINT
 
-        return qualify_income & qualify_status
+        return income_eligible & status_eligible

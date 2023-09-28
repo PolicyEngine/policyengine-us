@@ -2,7 +2,7 @@ from policyengine_us.model_api import *
 
 
 class oh_exemption(Variable):
-    #for reference
+    # for reference
     value_type = float
     entity = TaxUnit
     label = "Ohio exemption"

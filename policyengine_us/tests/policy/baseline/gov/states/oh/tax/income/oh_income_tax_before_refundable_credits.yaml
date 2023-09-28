@@ -1,0 +1,19 @@
+- name: Non refundable credit less than tax before non refundable credit
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code: OH
+    oh_income_tax_before_non_refundable_credits: 512.06
+    oh_non_refundable_credits: 300
+  output:
+    oh_income_tax_before_refundable_credits: 212.06
+
+- name: Non refundable credit greater than tax before non refundable credit
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    state_code: OH
+    oh_income_tax_before_non_refundable_credits: 512.06
+    oh_non_refundable_credits: 600
+  output:
+    oh_income_tax_before_refundable_credits: 0
