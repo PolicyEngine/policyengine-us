@@ -1,0 +1,11 @@
+description: Indiana income tax has these refundable credits.
+metadata:
+  unit: variable
+  label: Indiana refundable credits
+  reference:
+    - title: Indiana General Assembly Laws
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1
+values:
+  2021-01-01:
+    - in_eitc  # Indiana earned income tax credit
+    - in_unified_elderly_tax_credit
