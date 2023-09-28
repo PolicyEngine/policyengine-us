@@ -9,7 +9,7 @@ class vt_cdcc(Variable):
     definition_period = YEAR
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112-2022.pdf#page=2"
-        "https://tax.vermont.gov/individuals/personal-income-tax/tax-credits"
+        "https://law.justia.com/codes/vermont/2022/title-32/chapter-151/section-5828c/"
     )
     defined_for = StateCode.VT
 
