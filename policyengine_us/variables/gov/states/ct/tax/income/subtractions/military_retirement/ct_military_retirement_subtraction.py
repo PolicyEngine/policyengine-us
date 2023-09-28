@@ -11,7 +11,11 @@ class ct_military_retirement_subtraction(Variable):
     defined_for = StateCode.CT
 
     def formula(tax_unit, period, parameters):
-        adjusted_gross_income = add(tax_unit, period, ["adjusted_gross_income"])
-        military_retirement_pay = add(tax_unit, period, ["military_retirement_pay"])
+        adjusted_gross_income = add(
+            tax_unit, period, ["adjusted_gross_income"]
+        )
+        military_retirement_pay = add(
+            tax_unit, period, ["military_retirement_pay"]
+        )
         exclusion_amount = min_(military_retirement_pay, adjusted_gross_income)
         return military_retirement_pay - exclusion_amount
