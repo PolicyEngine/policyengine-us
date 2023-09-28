@@ -19,8 +19,8 @@ class wv_sctc_eligible(Variable):
         federal_agi = tax_unit("adjusted_gross_income", period)
         wv_homestead_exemption = tax_unit("wv_homestead_exemption", period)
 
-        p = parameters(period).gov.states.wv.tax.income.credits.sctc
-        q = parameters(
+        p_sctc = parameters(period).gov.states.wv.tax.income.credits.sctc
+        p_homestead = parameters(
             period
         ).gov.states.wv.tax.income.exemptions.homestead_exemption
 
