@@ -30,16 +30,19 @@ class hi_itemized_deduction(Variable):
         )
         standard_deduction = tax_unit("hi_standard_deduction", period)
 
-        # check itemization eligibility
-        filing_status_eligible = itemized_deduction > p.eligible_floor[filing_status]
-        # person = tax_unit.members
-        # is_dependent = person("is_tax_unit_dependent", period)
-        # income = tax_unit("adjusted_gross_income", period)
-        # dependent_eligible = is_dependent 
-
+        # check itemized deduction eligibility
+        filing_status_eligible = (
+            itemized_deduction > p.eligible.filing_status_floor[filing_status]
+        )
+        is_dependent = tax_unit("dsi", period)
+        standard_cap = min_(hi_agi, standard_deduction)
+        dependent_floor = max_(p.eligible.dependent_floor, standard_cap)
+        dependent_eligible = is_dependent & (
+            itemized_deduction > dependent_floor
+        )
 
         return where(
-            filing_status_eligible,
+            filing_status_eligible | dependent_eligible,
             itemized_deduction,
-            standard_deduction
+            standard_deduction,
         )
