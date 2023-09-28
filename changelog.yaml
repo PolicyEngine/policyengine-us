@@ -4508,3 +4508,56 @@
     added:
     - Arkansas inflation relief income-tax credit.
   date: 2023-09-22 19:30:12
+- bump: minor
+  changes:
+    added:
+    - A non_mortgage_interest variable.
+    - A formula for interest_expense variable that adds mortgage_interest and non_mortgage_interest
+      variables.
+  date: 2023-09-23 21:48:12
+- bump: minor
+  changes:
+    added:
+    - Vermont earned income tax credit.
+  date: 2023-09-24 03:22:24
+- bump: patch
+  changes:
+    fixed:
+    - North Carolina index files.
+    - North Carolina missing legislative references.
+  date: 2023-09-24 05:33:57
+- bump: minor
+  changes:
+    added:
+    - Arizona pension exclusion.
+  date: 2023-09-24 17:33:25
+- bump: minor
+  changes:
+    added:
+    - Arizona itemized deduction.
+  date: 2023-09-24 17:57:29
+- bump: minor
+  changes:
+    added:
+    - DC single-joint tax threshold ratio reform switch.
+  date: 2023-09-25 17:18:37
+- bump: patch
+  changes:
+    fixed:
+    - Remove tax exempt form 4972 lump sum distribution variable.
+  date: 2023-09-25 21:27:04
+- bump: minor
+  changes:
+    added:
+    - Idaho deductions.
+  date: 2023-09-27 17:44:45
+- bump: minor
+  changes:
+    added:
+    - Arkansas income tax exemptions.
+  date: 2023-09-27 18:22:39
+- bump: minor
+  changes:
+    added:
+    - Connecticut state tuition subtraction.
+  date: 2023-09-27 21:57:34
