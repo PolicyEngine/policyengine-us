@@ -15,7 +15,7 @@ class ar_retirement_or_disability_benefits_exemption_indv(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
+        ).gov.states.ar.tax.income.exemptions_para.retirement_or_disability_benefits
         eligible_person = person(
             "ar_retirement_or_disability_benefits_exemption_eligible_person",
             period,

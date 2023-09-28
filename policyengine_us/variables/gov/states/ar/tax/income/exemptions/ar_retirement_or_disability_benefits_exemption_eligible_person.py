@@ -12,7 +12,7 @@ class ar_retirement_or_disability_benefits_exemption_eligible_person(Variable):
     def formula(person, period, parameters):
         p = parameters(
             period
-        ).gov.states.ar.tax.income.exemptions.retirement_or_disability_benefits
+        ).gov.states.ar.tax.income.exemptions_para.retirement_or_disability_benefits
         age = (person("age", period) >= p.age_threshold).astype(int)
         head = person("is_tax_unit_head", period).astype(int)
         spouse = person("is_tax_unit_spouse", period).astype(int)
