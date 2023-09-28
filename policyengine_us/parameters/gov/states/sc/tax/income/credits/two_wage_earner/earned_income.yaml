@@ -1,0 +1,23 @@
+description: South Carolina counts these income sources as earned income for the two wage earner credit.
+values:
+  2021-01-01:
+    - employment_income  
+    # - commisions
+    # - sub_pay 
+    - self_employment_income  
+    - qualified_business_income  
+    - partnership_s_corp_income 
+    - farm_income 
+    
+metadata:
+  unit: list
+  reference:
+    - title: SC 1040 tax form (2021)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2021.pdf
+    - title: SC 1040 tax form instructions (2021)
+      href: https://dor.sc.gov/forms-site/Forms/IITPacket_2021.pdf#page=22
+    - title: SC Legal Code |  Section 12-6-3330 (C)
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: SC 1040 tax form (2022)
+      href: https://dor.sc.gov/forms-site/Forms/SC1040_2022.pdf
+  

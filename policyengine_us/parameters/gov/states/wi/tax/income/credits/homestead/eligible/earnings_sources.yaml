@@ -1,0 +1,13 @@
+description: Wisconsin homestead credits recognizes these earnings sources.
+metadata:
+  unit: variable
+  label: Wisconsin homestead credit earnings sources
+  reference:
+    - title: Homestead Tax Credit, Wisconsin Legislative Fiscal Bureau
+      href: https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7
+values:
+  2021-01-01:
+    - employment_income
+    - self_employment_income
+    - partnership_s_corp_income
+    - farm_income

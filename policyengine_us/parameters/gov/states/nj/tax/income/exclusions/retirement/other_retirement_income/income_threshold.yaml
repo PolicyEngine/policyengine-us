@@ -1,0 +1,10 @@
+description: New Jersey filers above this income are not eligible for other income exclusion.
+metadata:
+  type: currency-USD
+  label: NJ other retirement income exclusion threshold.
+  reference:
+    - title: Instructions for Form NJ-1040 (line 28a)
+      href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=21
+values:
+  2005-01-01: 100_000
+  2021-01-01: 150_000

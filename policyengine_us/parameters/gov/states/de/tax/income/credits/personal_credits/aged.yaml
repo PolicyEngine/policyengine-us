@@ -1,0 +1,24 @@
+description: Delaware provides this aged additional personal credit amount to the head and spouse of a filing unit based on their age.
+metadata:
+  type: single_amount
+  unit: year
+  threshold_unit: currency-USD
+  amount_unit: year  
+  period: year
+  label: Delaware additional aged personal credits age eligibility 
+  reference:
+    - title: PIT-RES_TY22_2022-02_Instruction Page 8 Line 26b.
+      href: https://revenuefiles.delaware.gov/2022/PIT-RES_TY22_2022-02_Instructions.pdf#page=8
+    - title: PIT-RES_TY22_2021-02_Instruction Page 8 Line 26b.
+      href: https://revenuefiles.delaware.gov/2021/PIT-RES_TY21_2021-01_Instructions.pdf#page=8
+    - title: Delaware Code Online Chapter 11 § 1110(b)(2)
+      href: https://delcode.delaware.gov/title30/c011/sc02/index.html#1110
+brackets:
+  - threshold:
+      2021-01-01: 0
+    amount:
+      2021-01-01: 0
+  - threshold:
+      2021-01-01: 60
+    amount:
+      2021-01-01: 110

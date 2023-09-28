@@ -1,0 +1,19 @@
+- name: WI taxable income unit test 1
+  period: 2021
+  input:
+    wi_agi: 40_000
+    wi_standard_deduction: 10_000
+    wi_exemption: 4 * 750
+    state_code: WI
+  output:
+    wi_taxable_income: 40_000 - 10_000 - 4 * 750
+
+- name: WI taxable income unit test 2
+  period: 2022
+  input:
+    wi_agi: 900
+    wi_standard_deduction: 200
+    wi_exemption: 750
+    state_code: WI
+  output:
+    wi_taxable_income: 0
