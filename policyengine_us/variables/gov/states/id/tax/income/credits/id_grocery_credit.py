@@ -35,5 +35,3 @@ class id_grocery_credit(Variable):
         aged_addition = age_amount * total_aged
         dependent_amount = tax_unit("id_grocery_credit_enhancement", period)
         return base_amout + aged_addition + dependent_amount
-
-        return all_credits

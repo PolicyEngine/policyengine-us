@@ -1,0 +1,52 @@
+- name: Eligible for the enhancement of the Idaho grocery credit unit test 1
+  period: 2021
+  input:
+    state_code: ID
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 20_000
+  output:
+    id_grocery_credit_enhancement_eligible: False
+
+- name: Eligible for the enhancement of the Idaho grocery credit unit test 2
+  period: 2022
+  input:
+    state_code: ID
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 14_000
+  output:
+    id_grocery_credit_enhancement_eligible: True
+
+- name: Eligible for the enhancement of the Idaho grocery credit unit test 3
+  period: 2021
+  input:
+    state_code: ID
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 65
+    adjusted_gross_income: 30_000
+  output:
+    id_grocery_credit_enhancement_eligible: False
+
+- name: Eligible for the enhancement of the Idaho grocery credit unit test 4
+  period: 2022
+  input:
+    state_code: ID
+    filing_status: JOINT
+    age_head: 65
+    age_spouse: 60
+    adjusted_gross_income: 27_000
+  output:
+    id_grocery_credit_enhancement_eligible: True
+
+- name: Eligible for the enhancement of the Idaho grocery credit unit test 5
+  period: 2021
+  input:
+    state_code: ID
+    filing_status: JOINT
+    age_head: 68
+    age_spouse: 59
+    adjusted_gross_income: 50_000
+  output:
+    id_grocery_credit_enhancement_eligible: False

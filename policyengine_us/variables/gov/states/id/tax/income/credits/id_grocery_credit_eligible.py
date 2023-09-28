@@ -10,7 +10,7 @@ class id_grocery_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.id.tax.income.credits.gc
-        head_aged = tax_unit("head_aged", period) >= p.age_eligibility
+        head_aged = tax_unit("age_head", period) >= p.age_eligibility
         spouse_aged = tax_unit("age_spouse ", period) >= p.age_eligibility
 
         p = parameters(period).gov.states.id.tax.income.credits.gc

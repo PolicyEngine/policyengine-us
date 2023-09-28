@@ -1,10 +1,11 @@
 from policyengine_us.model_api import *
 
 
-class id_grocery_credit_enhancement_eligible(Variable):
-    value_type = bool
+class id_grocery_credit_enhancement(Variable):
+    value_type = float
+    unit = USD
     entity = TaxUnit
-    label = "Eligible for the enhancement of the Idaho grocery credit"
+    label = "Idaho grocery credit enhancement"
     definition_period = YEAR
     defined_for = "id_grocery_credit_enhancement_eligible"
 
