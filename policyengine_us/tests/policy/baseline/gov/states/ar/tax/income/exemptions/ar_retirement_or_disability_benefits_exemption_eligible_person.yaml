@@ -6,7 +6,7 @@
     age: 61
     state_code: AR
   output:
-    ar_retirement_or_disability_benefits_exemptions_eligible_person: 1
+    ar_retirement_or_disability_benefits_exemption_eligible_person: 1
 
 - name: Arkansas eligible exemption for retirement or disability benefits (case 2)
   period: 2021
@@ -16,7 +16,7 @@
     age: 61
     state_code: AR
   output:
-    ar_retirement_or_disability_benefits_exemptions_eligible_person: 1
+    ar_retirement_or_disability_benefits_exemption_eligible_person: 1
 
 - name: Arkansas ineligible exemption for retirement or disability benefits (case 1)
   period: 2021
@@ -26,7 +26,7 @@
     age: 58
     state_code: AR
   output:
-    ar_retirement_or_disability_benefits_exemptions_indv: 0
+    ar_retirement_or_disability_benefits_exemption_eligible_person: 0
 
 - name: Arkansas ineligible exemption for retirement or disability benefits (case 2)
   period: 2021
@@ -36,4 +36,4 @@
     age: 61
     state_code: AR
   output:
-    ar_retirement_or_disability_benefits_exemptions_indv: 0
+    ar_retirement_or_disability_benefits_exemption_eligible_person: 0

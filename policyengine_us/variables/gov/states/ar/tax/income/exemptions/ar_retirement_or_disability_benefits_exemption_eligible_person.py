@@ -1,9 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ar_retirement_or_disability_benefits_exemptions_eligible_person(
-    Variable
-):
+class ar_retirement_or_disability_benefits_exemption_eligible_person(Variable):
     value_type = bool
     entity = Person
     label = "Eligible person for the Arkansas individual retirement or disability benefit exemption"

@@ -1,15 +1,15 @@
 - name: Arkansas exemption for retirement or disability benefits (eligible)
   period: 2021
   input:
-    ar_retirement_or_disability_benefits_exemptions_eligible_person: 1
+    ar_retirement_or_disability_benefits_exemption_eligible_person: 1
     taxable_pension_income: 5_000
   output:
-    ar_retirement_or_disability_benefits_exemptions_indv: 5_000
+    ar_retirement_or_disability_benefits_exemption_indv: 5_000
 
 - name: Arkansas exemption for retirement or disability benefits (ineligible)
   period: 2021
   input:
-    ar_retirement_or_disability_benefits_exemptions_eligible_person: 0
+    ar_retirement_or_disability_benefits_exemption_eligible_person: 0
     taxable_pension_income: 7_000
   output:
-    ar_retirement_or_disability_benefits_exemptions_indv: 0
+    ar_retirement_or_disability_benefits_exemption_indv: 0
