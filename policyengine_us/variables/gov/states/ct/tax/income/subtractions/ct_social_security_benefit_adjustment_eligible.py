@@ -14,5 +14,5 @@ class ct_social_security_benefit_adjustment_eligible(Variable):
         ).gov.states.ct.tax.income.subtractions.social_security
         filing_status = tax_unit("filing_status", period)
         agi = add(tax_unit, period, ["adjusted_gross_income"])
-        max_amount = p.max_amount[filing_status]
-        return agi < max_amount
+        income_threshold = p.income_threshold[filing_status]
+        return agi < income_threshold
