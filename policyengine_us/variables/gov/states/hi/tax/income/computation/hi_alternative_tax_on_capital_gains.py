@@ -17,13 +17,13 @@ class hi_alternative_tax_on_capital_gains(Variable):
         net_lt_capital_gain = add(person, period, ["long_term_capital_gains"])
         net_capital_gain = tax_unit("net_capital_gain", period)
         # line_9 how to calculate Net gain from the disposition of property held for investment
-        claimed = p.max_amount[filing_status]
+        cap = p.max_amount[filing_status]
 
         # line 13
         ineligible_income = max_(
             taxable_income
             - min_(net_capital_gain, net_lt_capital_gain),  # line 11
-            claimed,
+            cap,
         )
 
         # What if line 1 < line 13
