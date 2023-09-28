@@ -1,0 +1,22 @@
+- name: Single filing, income in 2nd tax bracket
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    oh_taxable_income: 31_000
+    state_code: OH
+  output:
+    # base amount = $346.16
+    # + 2.765% of (31_000 - 25_000) = 165.90
+    oh_income_tax_before_credits: 512.06
+
+- name: Single filing, income in 3rd tax bracket
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    oh_taxable_income: 64_500
+    state_code: OH
+  output:
+    # base amount = 346.16
+    # + 2.765 of (44_250 - 25_000) = 532.26
+    # + 3.226% of (64_500 - 44_250) = 653.27
+    oh_income_tax_before_credits: 1_531.69
