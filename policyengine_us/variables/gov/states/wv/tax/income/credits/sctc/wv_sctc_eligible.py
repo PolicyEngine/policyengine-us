@@ -25,11 +25,11 @@ class wv_sctc_eligible(Variable):
         ).gov.states.wv.tax.income.exemptions.homestead_exemption
 
         fpg = tax_unit("tax_unit_fpg", period)
-        income_threshold = p.fpg_percentage * fpg
+        income_threshold = p_sctc.fpg_percentage * fpg
 
         meets_agi_condition = federal_agi <= income_threshold
         meets_homestead_exemption_condition = (
-            wv_homestead_exemption == q.max_amount
+            wv_homestead_exemption == p_homestead.max_amount
         )
 
         return meets_agi_condition & meets_homestead_exemption_condition
