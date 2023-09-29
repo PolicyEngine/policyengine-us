@@ -1,0 +1,362 @@
+description: California CalWORKs Child Care provides up to this child care reimbursement based on specific conditions.
+
+metadata:
+  label: California CalWORKs Child Care Evening/Weekend Regional Market Rate Ceilings
+  type: single_amount
+  threshold_unit: year
+  amount_unit: currency-USD
+  reference:
+    - title: Los Angeles Department of Public Social Services E-Policy | RMR Ceilings Exhibit II
+      href: http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_8_Regional_Market_Rate_Ceilings%2F1210_8_Regional_Market_Rate_Ceilings.htm%23Contactbc-13&rhtocid=_3_3_8_12
+
+child_care_centers:
+  hourly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  daily:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: 120.66
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 84.21
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 69.65
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  weekly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: 497.69
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 376.94
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 293.16
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: 342.89
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 284.48
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 174.93
+          threshold:
+            2018-01-01: 6
+  monthly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: 1_993.10
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 1_405.35
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 1_130.85
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: 1_310.79
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 909.53
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 627.31
+          threshold:
+            2018-01-01: 6
+family_child_care_homes:
+  hourly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  daily:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: 70.50
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 64.95
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 51.69
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  weekly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: 290.33
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 268.19
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 210.98
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: 223.23
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 214.66
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 171.50
+          threshold:
+            2018-01-01: 6
+  monthly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: 1_159.06
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 1_083.21
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 821.59
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: 863.66
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: 798.29
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: 655.88
+          threshold:
+            2018-01-01: 6
+license_exempt:
+  hourly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  daily:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  weekly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+  monthly:
+    full_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
+    part_time:
+      brackets:
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 0
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 2
+        - amount:
+            2018-01-01: None
+          threshold:
+            2018-01-01: 6
