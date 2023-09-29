@@ -1,0 +1,39 @@
+- name: Kentucky blind head 
+  period: 2022
+  input:
+    state_code: KY
+    is_blind: true
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+  output:
+    ky_personal_tax_credits_blind_eligible: true
+
+- name: Kentucky head
+  period: 2022
+  input:
+    state_code: KY
+    is_blind: false
+    is_tax_unit_head: true
+    is_tax_unit_spouse: false
+  output:
+    ky_personal_tax_credits_blind_eligible: false
+
+- name: Kentucky blind spouse
+  period: 2022
+  input:
+    state_code: KY
+    is_blind: true
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+  output:
+    ky_personal_tax_credits_blind_eligible: true
+
+- name: Kentucky spouse
+  period: 2022
+  input:
+    state_code: KY
+    is_blind: false
+    is_tax_unit_head: false
+    is_tax_unit_spouse: true
+  output:
+    ky_personal_tax_credits_blind_eligible: false
