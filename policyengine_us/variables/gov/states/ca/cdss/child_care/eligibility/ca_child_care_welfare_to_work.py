@@ -2,9 +2,10 @@ from policyengine_us.model_api import *
 
 
 class ca_child_care_welfare_to_work(Variable):
-    value_type = bool
+    value_type = float
     entity = SPMUnit
     label = "California CalWORKs Welfare to Work"
+    unit = HOUR
     definition_period = YEAR
     defined_for = StateCode.CA
 
