@@ -8,8 +8,9 @@ class vt_retirement_income_exemption_eligible(Variable):
     label = "Vermont retirement income exemption eligibility status"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
-        "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption for different retirement system
+        "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
     defined_for = StateCode.VT
     documentation = "Vermont filers use below criteria to check whether the tax unit is eligible for vermont retirement income exemption."
@@ -30,29 +31,19 @@ class vt_retirement_income_exemption_eligible(Variable):
         tax_unit_csrs_retirement_pay = tax_unit.sum(
             person("csrs_retirement_pay", period)
         )
-        # Get retirement amount for other certain retirement systems
-        tax_unit_other_retirement_pay = tax_unit.sum(
-            person("vt_other_retirement_pay", period)
-        )
 
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption.threshold
-
-        # List of qualified tax unit (SECTION I Q1,Q2)
-        qualified_ss = (tax_unit_taxable_social_security != 0) & (
-            agi < p.income[filing_status]
-        )
-        qualified_mil = (tax_unit_military_retirement_pay != 0) & (
-            agi < p.income[filing_status]
-        )
-        qualified_csrs = (tax_unit_csrs_retirement_pay != 0) & (
-            agi < p.income[filing_status]
-        )
-        qualified_other = (tax_unit_other_retirement_pay != 0) & (
-            agi < p.income[filing_status]
-        )
-        # Qualified filers from any systems mark as qualified
-        return qualified_ss | qualified_mil | qualified_csrs | qualified_other
+        # One of the retirement income should be greater than 0
+        retirement_income_qualified = (
+            tax_unit_taxable_social_security
+            + tax_unit_military_retirement_pay
+            + tax_unit_csrs_retirement_pay
+        ) != 0
+        # The agi should below threshold
+        agi_qualified = agi < p.income[filing_status]
+        # Both qualified then the filer is qualified for vermont retirement income exemption
+        return retirement_income_qualified & agi_qualified

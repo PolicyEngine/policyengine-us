@@ -8,7 +8,9 @@ class vt_retirement_income_exemption(Variable):
     label = "Vermont retirement income exemption"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
+        "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
     unit = USD
     defined_for = "vt_retirement_income_exemption_eligible"
@@ -32,24 +34,14 @@ class vt_retirement_income_exemption(Variable):
         vt_csrs_retirement_pay_exclusion = tax_unit(
             "vt_csrs_retirement_pay_exclusion", period
         )
-        # Get vt retirement income exclusion from other certain retirement systems
-        vt_other_retirement_pay_exclusion = tax_unit(
-            "vt_other_retirement_pay_exclusion", period
-        )
-
         # Assume that filers will always choose the largest reitrement income exclusion from various retirement system
-        # Pair-wise comparsion
-        income_array = [
+        larger_retirement_income = max_(
             tax_unit_taxable_social_security,
             vt_military_retirement_pay_exclusion,
-            vt_csrs_retirement_pay_exclusion,
-            vt_other_retirement_pay_exclusion,
-        ]
-        # Initialize chosen retirement income exclusion array
-        chosen_retirement_income = income_array[0]
-        for arr in income_array[1:]:
-            chosen_retirement_income = max_(chosen_retirement_income, arr)
-
+        )
+        chosen_retirement_income = max_(
+            larger_retirement_income, vt_csrs_retirement_pay_exclusion
+        )
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
 

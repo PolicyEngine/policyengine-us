@@ -22,8 +22,8 @@ class vt_military_retirement_pay_exclusion(Variable):
             period
         ).gov.states.vt.tax.income.agi.retirement_income_exemption
         # Get retirement amount from military retirement system
-        tax_unit_military_retirement_pay = tax_unit.sum(
-            person("military_retirement_pay", period)
+        tax_unit_military_retirement_pay = add(
+            tax_unit, period, ["military_retirement_pay"]
         )
         # Retirement income from systems other than social security have maximum amount and assume that filers will always choose the largest one
         return min_(tax_unit_military_retirement_pay, p.cap)
