@@ -16,6 +16,12 @@ class vt_medical_expense_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # Get federal medical expense deduction (Worksheet line 1a).
+        # This points to federal Form 1040, Schedule A, Line 4, which is the deduction itself
+        # (not the expenses).
+        # The law says "an amount equal to the itemized deduction for medical expenses
+        # taken at the federal level by the taxpayer" but does not state whether the filer
+        # must have itemized on the federal return to claim it.
+        # We assume they do not have to, based on the form.
         federal_medical_expense_deduction = tax_unit(
             "medical_expense_deduction", period
         )
