@@ -23,7 +23,7 @@ class id_retirement_benefits_deduction(Variable):
         # Max retirement benefits deduction amount
         max_amt = p.amount[filing_status]
         # Social Security benefits received amount
-        ss_amt = person("social_security_retirement", period)
+        ss_amt = person("taxable_social_security", period)
         eligible_ss_amt = ss_amt * eligible_person
         total_ss_amt = tax_unit.sum(eligible_ss_amt)
         # Base amount minus social Security benefits received amount
