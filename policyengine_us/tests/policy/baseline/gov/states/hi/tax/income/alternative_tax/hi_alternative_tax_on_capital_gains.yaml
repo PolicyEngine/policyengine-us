@@ -1,12 +1,13 @@
 - name: Hawaii alternative tax on capital gains for filing Jointly
   period: 2021
   input:
-    state_code: HI
     filing_status: JOINT
-    taxable_income: 10_000
+    hi_alternative_tax_on_capital_gains_eligible: false
+    hi_taxable_income: 10_000
     long_term_capital_gains: 5_000
     net_capital_gain: 4_000
     hi_income_tax_before_credits: 242.8  # 67.2+153.6+22=242.8
+    state_code: HI
   output:
     # 67.2+153.6+400*0.055=242.8
     hi_alternative_tax_on_capital_gains: 242.8
@@ -14,12 +15,13 @@
 - name: Hawaii alternative tax on capital gains for filing as Single
   period: 2021
   input:
-    state_code: HI
     filing_status: SINGLE
-    taxable_income: 50_000
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income: 50_000
     long_term_capital_gains: 5_000
     net_capital_gain: 4_000
     hi_income_tax_before_credits: 3_287.6
+    state_code: HI
   output:
     # income_tax = 33.6+76.8+264+307.2+326.4+1209.6+912+158=3287.6
     # ineligible_tax = 33.6+76.8+264+307.2+326.4+1209.6+760=2977.6 (46000)
@@ -30,12 +32,13 @@
 - name: Hawaii alternative tax on capital gains for filing Separately
   period: 2021
   input:
-    state_code: HI
     filing_status: SEPARATE
-    taxable_income: 30_000
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income: 30_000
     long_term_capital_gains: 3_000
     net_capital_gain: 4_000
     hi_income_tax_before_credits: 1_785.6
+    state_code: HI
   output:
     # income_tax = 33.6+76.8+264+307.2+326.4+777.6=1785.6
     # ineligible_tax = 33.6+76.8+264+307.2+326.4+561.6=1569.6 (27000)
@@ -46,28 +49,30 @@
 - name: Hawaii alternative tax on capital gains for filing as head of household
   period: 2021
   input:
-    state_code: HI
     filing_status: HEAD_OF_HOUSEHOLD
-    taxable_income: 40_000
+    hi_alternative_tax_on_capital_gains_eligible: false
+    hi_taxable_income: 40_000
     long_term_capital_gains: 5_000
     net_capital_gain: 6_000
     hi_income_tax_before_credits: 2_334.4
+    state_code: HI
   output:
     # income_tax = 50.4+115.2+396+460.8+489.6+518.4+304=2334.4
     # ineligible_tax = 50.4+115.2+396+460.8+489.6+518.4=2030.4 (36000)
     # eligible_tax = 4000*0.0725=290
     # alternative_tax = 2320.4
-    hi_alternative_tax_on_capital_gains: 2_320.4
+    hi_alternative_tax_on_capital_gains: 2334.4
 
 - name: Hawaii alternative tax on capital gains for filing as a widow
   period: 2021
   input:
-    state_code: HI
     filing_status: JOINT
-    taxable_income: 80_000
+    hi_alternative_tax_on_capital_gains_eligible: true
+    hi_taxable_income: 80_000
     long_term_capital_gains: 5_000
     net_capital_gain: 7_000
     hi_income_tax_before_credits: 5_163.2
+    state_code: HI
   output:
     # income_tax = 67.2+153.6+528+614.4+652.8+691.2+1824+632=5163.2
     # ineligible_tax = 67.2+153.6+528+614.4+652.8+691.2+1824+237=4768.2 (75000)
