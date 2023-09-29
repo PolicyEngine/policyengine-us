@@ -35,9 +35,9 @@ class mi_alternate_heating_credit(Variable):
             * p.alternate_credit.household_resources.rate
         )
         unreduced_alternate_credit = max_(
-            (capped_heating_costs - difference),
+            (capped_heating_costs - reduced_household_resources),
             0,
         )
 
-        # determine total credit amount
-        return p.alternate_credit.heating_costs.rate * alternate_credit
+        # determine reduced credit amount
+        return p.alternate_credit.heating_costs.rate * unreduced_alternate_credit
