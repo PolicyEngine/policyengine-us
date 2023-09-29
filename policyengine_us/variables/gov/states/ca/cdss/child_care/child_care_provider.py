@@ -5,7 +5,5 @@ class child_care_provider(Variable):
     value_type = int
     entity = SPMUnit
     label = "California CalWORKs Child Care Provider"
+    definition_period = YEAR
     defined_for = StateCode.CA
-
-    def formula(spm_unit, period, parameters):
-        
