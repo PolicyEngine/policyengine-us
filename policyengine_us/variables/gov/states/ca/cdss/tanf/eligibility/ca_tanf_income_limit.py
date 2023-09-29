@@ -16,9 +16,14 @@ class ca_tanf_income_limit(Variable):
         additional_people = unit_size - au_size
         region1 = spm_unit("ca_tanf_region1", period)
 
+        main_limit = where(
+            region1, p.region1.main[au_size], p.region2.main[au_size]
+        )
+        increase_per_additional_person = where(
+            region1, p.region1.additional, p.region2.additional
+        )
 
-        main_limit = where(region1, p.region1.main[au_size], p.region2.main[au_size])
-        increase_per_additional_person = where(region1, p.region1.additional, p.region2.additional)
-
-        monthly_limit = main_limit + increase_per_additional_person  * additional_people
+        monthly_limit = (
+            main_limit + increase_per_additional_person * additional_people
+        )
         return monthly_limit * MONTHS_IN_YEAR

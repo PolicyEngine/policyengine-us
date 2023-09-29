@@ -9,4 +9,3 @@ class ca_tanf_unearned_income(Variable):
     definition_period = YEAR
     defined_for = StateCode.CA
     reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FCalWORKs%2FCalWORKs%2F44-101_Income_Definitions%2F44-101_Income_Definitions.htm%23Policybc-2&rhtocid=_3_1_6_0_1"
-    
