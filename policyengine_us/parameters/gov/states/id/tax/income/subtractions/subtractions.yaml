@@ -1,9 +1,12 @@
 description: Idaho subtracts these items when calculating state adjusted gross income.
 values:
   2021-01-01:
-    - cdcc_relevant_expenses
-    - us_govt_interest
-    - taxable_social_security
+    - salt_refund_income # (2)
+    - us_govt_interest # (3)(a)
+    - taxable_social_security # (5)
+    - military_service_income # (4)
+    - workers_compensation # (13)
+
 metadata:
   unit: list
   references: 
