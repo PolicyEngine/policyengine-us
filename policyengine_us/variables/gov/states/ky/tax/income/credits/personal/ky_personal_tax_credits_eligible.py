@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class ky_personal_tax_credits_age_eligible(Variable):
+class ky_personal_tax_credits_eligible(Variable):
     value_type = bool
     entity = Person
     label = "Age eligible for Kentucky personal tax credits"
@@ -16,9 +16,11 @@ class ky_personal_tax_credits_age_eligible(Variable):
 
         age_threshold = p.age_eligibility
         is_aged = person("age", period) >= age_threshold
+        is_blind = person("is_blind", period)
 
         head = person("is_tax_unit_head", period)
         spouse = person("is_tax_unit_spouse", period)
         head_or_spouse = head | spouse
+        eligible = is_blind | is_aged
 
-        return head_or_spouse * is_aged
+        return head_or_spouse * eligible
