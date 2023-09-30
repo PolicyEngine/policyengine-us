@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ar_personal_credits(Variable):
+class ar_status_credit(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arkansas personal credits"
+    label = "Arkansas filing status credit"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -14,10 +14,7 @@ class ar_personal_credits(Variable):
     )
     defined_for = StateCode.AR
 
-    adds = [
-        "ar_aged_credit",
-        "ar_blind_credit",
-        "ar_deaf_credit",
-        "ar_dependent_credit",
-        "ar_status_credit",
-    ]
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states.ar.tax.income.credits.personal
+        filing_status = tax_unit("filing_status", period)
+        return p.personal[filing_status]
