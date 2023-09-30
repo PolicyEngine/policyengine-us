@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.485.0] - 2023-09-29 22:17:41
+
+### Added
+
+- Vermont medical expense deduction.
+
+## [0.484.0] - 2023-09-29 21:46:02
+
+### Added
+
+- Idaho partial subtractions.
+
+## [0.483.0] - 2023-09-29 05:35:10
+
+### Added
+
+- Ohio adoption credit.
+
+## [0.482.2] - 2023-09-28 19:35:20
+
+### Fixed
+
+- North Carolina income tree patch.
+
+## [0.482.1] - 2023-09-28 17:28:07
+
+## [0.482.0] - 2023-09-27 21:57:34
+
+### Added
+
+- Connecticut state tuition subtraction.
+
+## [0.481.0] - 2023-09-27 18:22:39
+
+### Added
+
+- Arkansas income tax exemptions.
+
+## [0.480.0] - 2023-09-27 17:44:45
+
+### Added
+
+- Idaho deductions.
+
+## [0.479.1] - 2023-09-25 21:27:04
+
+### Fixed
+
+- Remove tax exempt form 4972 lump sum distribution variable.
+
 ## [0.479.0] - 2023-09-25 17:18:37
 
 ### Added
@@ -5384,6 +5434,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.484.0...0.485.0
+[0.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.483.0...0.484.0
+[0.483.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.482.2...0.483.0
+[0.482.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.482.1...0.482.2
+[0.482.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.482.0...0.482.1
+[0.482.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.481.0...0.482.0
+[0.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.480.0...0.481.0
+[0.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.479.1...0.480.0
+[0.479.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.479.0...0.479.1
 [0.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.478.0...0.479.0
 [0.478.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.477.0...0.478.0
 [0.477.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.476.1...0.477.0
