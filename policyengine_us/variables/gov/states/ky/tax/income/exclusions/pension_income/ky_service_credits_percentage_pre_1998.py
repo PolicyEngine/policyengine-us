@@ -14,8 +14,11 @@ class ky_service_credits_percentage_pre_1998(Variable):
             "ky_service_credit_months_post_1997", period
         )
 
-        return where(
-            pre_cutoff_months + post_cutoff_months > 0,
-            pre_cutoff_months / (pre_cutoff_months + post_cutoff_months),
-            0,
+        # Mask to avoid division by zero warning.
+        percentage_pre_1998 = np.zeros_like(pre_cutoff_months)
+        mask = pre_cutoff_months + post_cutoff_months > 0
+        percentage_pre_1998[mask] = pre_cutoff_months[mask] / (
+            pre_cutoff_months[mask] + post_cutoff_months[mask]
         )
+
+        return percentage_pre_1998
