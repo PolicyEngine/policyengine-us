@@ -3,7 +3,7 @@
   input:
     retired_from_federal_government: true
     retired_from_ky_government: false
-    receives_railroad_benefits: false
+    railroad_benefits: 0
     state_code: KY
   output:
     ky_pension_income_exclusion_exemption_eligible: true
@@ -13,7 +13,7 @@
   input:
     retired_from_federal_government: false
     retired_from_ky_government: true
-    receives_railroad_benefits: false
+    railroad_benefits: 0
     state_code: KY
   output:
     ky_pension_income_exclusion_exemption_eligible: true
@@ -23,7 +23,7 @@
   input:
     retired_from_federal_government: false
     retired_from_ky_government: false
-    receives_railroad_benefits: true
+    railroad_benefits: 10
     state_code: KY
   output:
     ky_pension_income_exclusion_exemption_eligible: true
@@ -33,7 +33,7 @@
   input:
     retired_from_federal_government: false
     retired_from_ky_government: false
-    receives_railroad_benefits: false
+    railroad_benefits: 0
     state_code: KY
   output:
     ky_pension_income_exclusion_exemption_eligible: false

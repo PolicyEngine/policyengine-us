@@ -16,9 +16,7 @@ class ky_pension_income_exclusion_exemption_eligible(Variable):
             "retired_from_federal_government", period
         )
         retired_from_ky_gov = person("retired_from_ky_government", period)
-        receives_railroad_benefits = person(
-            "receives_railroad_benefits", period
-        )
+        receives_railroad_benefits = person("railroad_benefits", period) > 0
 
         return (
             retired_from_fed_gov
