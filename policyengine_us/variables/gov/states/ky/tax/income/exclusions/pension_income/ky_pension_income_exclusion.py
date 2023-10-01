@@ -34,8 +34,10 @@ class ky_pension_income_exclusion(Variable):
         non_exempt_amount = pension_income - exempt_amount
 
         # Get retirement income not already exempt.
-        sources = [source for source in p.other_retirement_income_sources]
-        other_income = add(person, period, sources) + non_exempt_amount
+        other_income = (
+            add(person, period, p.other_retirement_income_sources)
+            + non_exempt_amount
+        )
 
         # Apply cap (towards just other income if exemption eligible).
         return where(
