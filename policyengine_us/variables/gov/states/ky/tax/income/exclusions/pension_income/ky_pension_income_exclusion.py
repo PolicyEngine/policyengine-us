@@ -24,7 +24,7 @@ class ky_pension_income_exclusion(Variable):
 
         # Get the share of service credit months worked before 1998.
         exemption_percentage = person(
-            "ky_service_credits_percentage_pre_cutoff", period
+            "ky_service_credits_percentage_pre_1998", period
         )
 
         # Get the exempt amount, based on eligibility and share of months worked pre-1998.

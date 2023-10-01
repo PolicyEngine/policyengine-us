@@ -3,7 +3,7 @@
   input:
     taxable_pension_income: 31_111
     ky_pension_income_exclusion_exemption_eligible: false
-    ky_service_credits_percentage_pre_cutoff: 0
+    ky_service_credits_percentage_pre_1998: 0
     ira_distributions: 0
     state_code: KY
   output:
@@ -14,7 +14,7 @@
   input:
     taxable_pension_income: 31_111
     ky_pension_income_exclusion_exemption_eligible: false
-    ky_service_credits_percentage_pre_cutoff: 0
+    ky_service_credits_percentage_pre_1998: 0
     ira_distributions: 1
     state_code: KY
   output:
@@ -25,7 +25,7 @@
   input:
     taxable_pension_income: 31_111
     ky_pension_income_exclusion_exemption_eligible: false
-    ky_service_credits_percentage_pre_cutoff: 1
+    ky_service_credits_percentage_pre_1998: 1
     ira_distributions: 0
     state_code: KY
   output:
@@ -36,7 +36,7 @@
   input:
     taxable_pension_income: 31_111
     ky_pension_income_exclusion_exemption_eligible: true
-    ky_service_credits_percentage_pre_cutoff: 1
+    ky_service_credits_percentage_pre_1998: 1
     ira_distributions: 31_111
     state_code: KY
   output:
@@ -47,7 +47,7 @@
   input:
     taxable_pension_income: 70_000
     ky_pension_income_exclusion_exemption_eligible: true
-    ky_service_credits_percentage_pre_cutoff: .50 # 35k exempt and 35k capped
+    ky_service_credits_percentage_pre_1998: .50 # 35k exempt and 35k capped
     ira_distributions: 0
     state_code: KY
   output:
