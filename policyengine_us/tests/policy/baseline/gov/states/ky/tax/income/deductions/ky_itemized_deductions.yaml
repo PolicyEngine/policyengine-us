@@ -7,10 +7,12 @@
         charitable_cash_donations: 1
         charitable_non_cash_donations: 2
         gambling_losses: 3
+        home_mortgage_interest: 10_000
       person2:
         charitable_cash_donations: 10
         charitable_non_cash_donations: 20
         gambling_losses: 30
+        home_mortgage_interest: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -18,7 +20,6 @@
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        home_mortgage_interest: 10_000
         investment_income_form_4952: 5_000
     households:
       household:
