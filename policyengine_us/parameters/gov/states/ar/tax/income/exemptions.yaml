@@ -1,0 +1,24 @@
+description: Arkansas accounts for these exemptions when calculating the state adjusted gross income.
+values:
+  2021-01-01:
+    - military_retirement_pay # Item 1
+    - child_support_received # Item 4
+    - us_govt_interest # Item 7
+    - workers_compensation # Item 8
+    - social_security # Item 8
+    - veterans_benefits # Item 8
+    - disability_benefits # Item 10
+    # disability benefits pursuant to IRS §104
+    - military_basic_pay # Item 11
+
+metadata:
+  unit: list
+  label: Arkansas exemptions
+  reference:
+    - title: Arkansas 2022 Individual Income Tax Forms and Instructions
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=10
+    - title: Arkansas 2021 Individual Income Tax Forms and Instructions
+      href: https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2021_AR1000F_and_AR1000NR_Instructions.pdf#page=9
+    - title: 2020 Arkansas Code § 26-51-301 ~ 316
+      href: https://law.justia.com/codes/arkansas/2020/title-26/subtitle-5/chapter-51/subchapter-3/
+    # The legal code does not give detailed description on each exemption.
