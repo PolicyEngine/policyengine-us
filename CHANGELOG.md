@@ -5,6 +5,143 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.486.0] - 2023-10-02 00:05:46
+
+### Added
+
+- SNAP 2023 parameters.
+
+## [0.485.0] - 2023-09-29 22:17:41
+
+### Added
+
+- Vermont medical expense deduction.
+
+## [0.484.0] - 2023-09-29 21:46:02
+
+### Added
+
+- Idaho partial subtractions.
+
+## [0.483.0] - 2023-09-29 05:35:10
+
+### Added
+
+- Ohio adoption credit.
+
+## [0.482.2] - 2023-09-28 19:35:20
+
+### Fixed
+
+- North Carolina income tree patch.
+
+## [0.482.1] - 2023-09-28 17:28:07
+
+## [0.482.0] - 2023-09-27 21:57:34
+
+### Added
+
+- Connecticut state tuition subtraction.
+
+## [0.481.0] - 2023-09-27 18:22:39
+
+### Added
+
+- Arkansas income tax exemptions.
+
+## [0.480.0] - 2023-09-27 17:44:45
+
+### Added
+
+- Idaho deductions.
+
+## [0.479.1] - 2023-09-25 21:27:04
+
+### Fixed
+
+- Remove tax exempt form 4972 lump sum distribution variable.
+
+## [0.479.0] - 2023-09-25 17:18:37
+
+### Added
+
+- DC single-joint tax threshold ratio reform switch.
+
+## [0.478.0] - 2023-09-24 17:57:29
+
+### Added
+
+- Arizona itemized deduction.
+
+## [0.477.0] - 2023-09-24 17:33:25
+
+### Added
+
+- Arizona pension exclusion.
+
+## [0.476.1] - 2023-09-24 05:33:57
+
+### Fixed
+
+- North Carolina index files.
+- North Carolina missing legislative references.
+
+## [0.476.0] - 2023-09-24 03:22:24
+
+### Added
+
+- Vermont earned income tax credit.
+
+## [0.475.0] - 2023-09-23 21:48:12
+
+### Added
+
+- A non_mortgage_interest variable.
+- A formula for interest_expense variable that adds mortgage_interest and non_mortgage_interest variables.
+
+## [0.474.0] - 2023-09-22 19:30:12
+
+### Added
+
+- Arkansas inflation relief income-tax credit.
+
+## [0.473.0] - 2023-09-22 19:22:49
+
+### Added
+
+- North Carolina itemized deductions.
+- North Carolina income tree.
+
+## [0.472.0] - 2023-09-22 10:21:41
+
+### Added
+
+- Population by state to calibration routines.
+
+## [0.471.1] - 2023-09-21 12:36:13
+
+### Fixed
+
+- Remove two unused variables in variables/gov/irs/taxcalc/deductions/standard directory.
+
+## [0.471.0] - 2023-09-21 12:28:34
+
+### Added
+
+- Arkansas child and dependent care credit.
+
+## [0.470.1] - 2023-09-20 17:44:51
+
+### Fixed
+
+- Colorado income tax model formatting.
+
+## [0.470.0] - 2023-09-19 14:45:39
+
+### Added
+
+- Kentucky family size tax credit.
+
 ## [0.469.0] - 2023-09-15 19:38:29
 
 ### Added
@@ -5303,6 +5440,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.485.0...0.486.0
+[0.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.484.0...0.485.0
+[0.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.483.0...0.484.0
+[0.483.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.482.2...0.483.0
+[0.482.2]: https://github.com/PolicyEngine/policyengine-us/compare/0.482.1...0.482.2
+[0.482.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.482.0...0.482.1
+[0.482.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.481.0...0.482.0
+[0.481.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.480.0...0.481.0
+[0.480.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.479.1...0.480.0
+[0.479.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.479.0...0.479.1
+[0.479.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.478.0...0.479.0
+[0.478.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.477.0...0.478.0
+[0.477.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.476.1...0.477.0
+[0.476.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.476.0...0.476.1
+[0.476.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.475.0...0.476.0
+[0.475.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.474.0...0.475.0
+[0.474.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.473.0...0.474.0
+[0.473.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.472.0...0.473.0
+[0.472.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.471.1...0.472.0
+[0.471.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.471.0...0.471.1
+[0.471.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.1...0.471.0
+[0.470.1]: https://github.com/PolicyEngine/policyengine-us/compare/0.470.0...0.470.1
+[0.470.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.469.0...0.470.0
 [0.469.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.468.0...0.469.0
 [0.468.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.467.0...0.468.0
 [0.467.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.466.1...0.467.0
