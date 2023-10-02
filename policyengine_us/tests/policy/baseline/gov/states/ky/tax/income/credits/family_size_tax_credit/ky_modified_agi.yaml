@@ -1,0 +1,19 @@
+- name: State AGI over federal AGI
+  period: 2023
+  input: 
+    state_code: KY
+    adjusted_gross_income: 900
+    form_4972_lumpsum_distributions: 10
+    ky_agi: 1_000
+  output:
+    ky_modified_agi: 1_010
+
+- name: State AGI under federal AGI
+  period: 2023
+  input: 
+    state_code: KY
+    adjusted_gross_income: 2_000
+    form_4972_lumpsum_distributions: 10
+    ky_agi: 1_000
+  output:
+    ky_modified_agi: 2_010

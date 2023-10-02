@@ -1,0 +1,18 @@
+description: Idaho subtracts these items when calculating state adjusted gross income.
+values:
+  2021-01-01:
+    - salt_refund_income # (2)
+    - us_govt_interest # (3)(a)
+    - taxable_social_security # (5)
+    - military_service_income # (4)
+    - workers_compensation # (13)
+
+metadata:
+  unit: list
+  references: 
+  - title: 2022 Idaho CodeSection 63-3022D - deduction of expenses for household and dependent care services
+    href: https://law.justia.com/codes/idaho/2022/title-63/chapter-30/section-63-3022d/
+  - title: Individual Income Tax Forms and Instructions 2021 
+    href: https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_11-15-2021.pdf#page=30
+  - title: Section 35.01.01.254 - (5) / (3) (a)
+    href: https://regulations.justia.com/states/idaho/35/35-01-01/section-35-01-01-254/
