@@ -24,6 +24,6 @@ class ri_exemptions(Variable):
 
         increments = np.ceil(excess_agi / p.reduction.increment)
 
-        percent_reduction = min_(p.reduction.percentage * increments, 1)
+        reduction_rate = min_(p.reduction.rate * increments, 1)
 
-        return exemption_amount * (1 - percent_reduction)
+        return exemption_amount * (1 - reduction_rate)
