@@ -1,7 +1,13 @@
-description: Vermont counts these sources as subtractions.
+description: Vermont subtracts these sources from adjusted gross income.
 values:
   2021-01-01:
     - vt_retirement_income_exemption
+    # Comment out waiting for other pull requests
+    # - us_govt_interest
+    - vt_medical_expense_deduction
+    # - student_loan_interest
+    # - vt_capital_gain_exclusion
+    # - vt_retirement_income_exemption
 
 metadata:
   unit: list
