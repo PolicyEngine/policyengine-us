@@ -17,14 +17,7 @@ class wv_low_income_family_tax_credit_eligible(Variable):
             period
         ).gov.states.wv.tax.income.credits.low_income_family_tax_credit
 
-        # max family size limit
-        n = tax_unit("tax_unit_size", period)
-        state_group = "CONTIGUOUS_US"
-        p_fpg = parameters(period).gov.hhs.fpg
-        p1 = p_fpg.first_person[state_group]
-        pn = p_fpg.additional_person[state_group]
-        family_size = min_(n, p.max_family_size)
-        fpg = p1 + pn * (family_size - 1)
+        fpg = tax_unit("wv_low_income_family_tax_credit_fpg", period)
 
         # modified agi limit
         fpg_amount = p.fpg_percent[filing_status] * fpg

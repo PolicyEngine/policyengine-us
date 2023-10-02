@@ -8,3 +8,6 @@ class wv_agi(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.WV
+
+    adds = ["adjusted_gross_income", "wv_additions"]
+    subtracts = ["wv_subtractions"]
