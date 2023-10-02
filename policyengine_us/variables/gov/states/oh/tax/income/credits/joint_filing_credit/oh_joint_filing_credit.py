@@ -17,6 +17,6 @@ class oh_joint_filing_credit(Variable):
         ).gov.states.oh.tax.income.credits.joint_filing_credit
         oh_agi = tax_unit("oh_agi", period)
         exemption = tax_unit("oh_exemption", period)
-        magi_less_exepmtion = oh_agi - exemption
+        magi_less_exepmtion = max_(oh_agi - exemption, 0)
         percentage = p.rate.calc(magi_less_exepmtion)
         return min_(tax * percentage, p.max_amount)
