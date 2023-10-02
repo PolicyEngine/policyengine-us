@@ -12,7 +12,7 @@ class mi_standard_deduction_tier_three(Variable):
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
     )
-    defined_for = StateCode.MI
+    defined_for = "mi_standard_deduction_tier_three_eligible"
 
     def formula(tax_unit, period, parameters):
         # Part 9 (c) - a person born in 1946 through 1952 and
@@ -32,23 +32,24 @@ class mi_standard_deduction_tier_three(Variable):
         taxable_social_security = person("taxable_social_security", period)
         mi_exemptions = tax_unit("mi_exemptions", period)
 
-        sd3_age_eligible = tax_unit(
-            "mi_standard_deduction_tier_three_eligible", period
-        )
-        sd3_amount = p.amount[filing_status]
+        filer_eligible = person("is_tax_unit_head", period)
+        spouse_eligible = person("is_tax_unit_spouse", period)
+        is_head_or_spouse = filer_eligible | spouse_eligible
 
-        sd3_amount = max_(
-            p.amount[filing_status] * sd3_age_eligible
-            - tax_unit.sum(
-                military_retirement_pay
-                + military_service_income
-                + taxable_social_security
+        reductions = (
+            tax_unit.sum(
+                (
+                    military_retirement_pay
+                    + military_service_income
+                    + taxable_social_security
+                )
+                * is_head_or_spouse
             )
-            - mi_exemptions,
+            + mi_exemptions
+        )
+        sd3_amount = max_(
+            p.amount[filing_status] - reductions,
             0,
         )
-        capped_pension_income = min_(
-            tax_unit.sum(uncapped_pension_income), sd3_amount
-        )
 
-        return where(sd3_age_eligible == 0, 0, capped_pension_income)
+        return min_(tax_unit.sum(uncapped_pension_income), sd3_amount)

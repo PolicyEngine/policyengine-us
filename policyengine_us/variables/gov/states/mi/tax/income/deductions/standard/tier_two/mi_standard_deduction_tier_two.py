@@ -12,7 +12,7 @@ class mi_standard_deduction_tier_two(Variable):
         "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=15",
     )
-    defined_for = StateCode.MI
+    defined_for = "mi_standard_deduction_tier_two_eligible"
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -20,10 +20,7 @@ class mi_standard_deduction_tier_two(Variable):
         ).gov.states.mi.tax.income.deductions.standard.tier_two
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
-        # HAVE TO CHECK THIS
-        sd2_age_eligible = tax_unit(
-            "mi_standard_deduction_tier_two_eligible", period
-        )
+
         # age_older = tax_unit("greater_age_head_spouse", period)
         # age_threshold = age_older >= p.min_age
         ssa_eligible = tax_unit(
@@ -47,17 +44,15 @@ class mi_standard_deduction_tier_two(Variable):
         spouse_eligible = person("is_tax_unit_spouse", period)
         is_head_or_spouse = filer_eligible | spouse_eligible
 
-        sd2_amount = max_(
-            p.amount.capped_deduction[filing_status] * sd2_age_eligible
-            + p.amount.increase * ssa_eligible
-            - tax_unit.sum(
-                (military_retirement_pay + military_service_income)
-                * is_head_or_spouse
-            ),
-            0,
+        reductions = tax_unit.sum(
+            (military_retirement_pay + military_service_income)
+            * is_head_or_spouse
         )
-        capped_pension_income = min_(
-            tax_unit.sum(uncapped_pension_income), sd2_amount
+        sd2_amount = max_(
+            p.amount.capped_deduction[filing_status]
+            + p.amount.increase * ssa_eligible
+            - reductions,
+            0,
         )
 
         # sd2_amount = where(
@@ -70,4 +65,4 @@ class mi_standard_deduction_tier_two(Variable):
         #     ),
         # )
 
-        return where(sd2_age_eligible == 0, 0, capped_pension_income)
+        return min_(tax_unit.sum(uncapped_pension_income), sd2_amount)
