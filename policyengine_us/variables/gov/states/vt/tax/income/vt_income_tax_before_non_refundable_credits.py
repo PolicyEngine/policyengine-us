@@ -14,7 +14,7 @@ class vt_income_tax_before_non_refundable_credits(Variable):
         filing_status = tax_unit("filing_status", period)
         status = filing_status.possible_values
         p = parameters(period).gov.states.vt.tax.income.rates
-        return select(
+        income_tax = select(
             [
                 filing_status == status.SINGLE,
                 filing_status == status.JOINT,
@@ -29,4 +29,13 @@ class vt_income_tax_before_non_refundable_credits(Variable):
                 p.widow.calc(income),
                 p.head_of_household.calc(income),
             ],
+        )
+        # If agi is bigger than threshold, than we need to further compare 3% of Adjusted Gross Income less interest from U.S. obligations and Tax Rate Schedule calculation
+        federal_agi = tax_unit("adjusted_gross_income", period)
+        above_threshold = federal_agi > p.threshold
+        us_govt_interest = tax_unit("us_govt_interest", period)
+        return where(
+            above_threshold,
+            max_((p.rate * federal_agi) - us_govt_interest, income_tax),
+            income_tax,
         )

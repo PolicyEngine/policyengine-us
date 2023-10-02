@@ -3,6 +3,8 @@
   input:
     vt_taxable_income: 250_000
     filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*40950 + .066*(99200-40950) + .076*(206950-99200) + .0875*(250000-206950) = 17172.20
@@ -13,6 +15,8 @@
   input:
     vt_taxable_income: 300_000
     filing_status: JOINT
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19476.074
@@ -23,6 +27,8 @@
   input:
     vt_taxable_income: 250_000
     filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*54850 + .066*(141700-54850) + .076*(229450-141700) + .0875*(250000-229450) = 16036.7
@@ -33,6 +39,8 @@
   input:
     vt_taxable_income: 300_000
     filing_status: WIDOW
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*68400 + .066*(165350-68400) + .076*(251950-165350) + .0875*(300000-251950) = 19476.074
@@ -44,6 +52,8 @@
   input:
     vt_taxable_income: 150_000
     filing_status: SEPARATE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*34200 + .066*(82675-34200) + .076*(125975-82675) + .0875*(150000-125975) = 9738.037
@@ -54,6 +64,8 @@
   input:
     vt_taxable_income: 20_000
     filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*20000 = 670
@@ -64,6 +76,8 @@
   input:
     vt_taxable_income: 50_000
     filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*42150 + .066*(50000-42150) = 1930.125
@@ -74,6 +88,8 @@
   input:
     vt_taxable_income: 150_000
     filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*42150 + .066*(102200-42150) + .076*(150000-102200) = 9008.125
@@ -84,6 +100,8 @@
   input:
     vt_taxable_income: 250_000
     filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*42150 + .066*(102200-42150) + .076*(213150-102200) + .0875*(250000-213150) = 17031.9
@@ -94,6 +112,8 @@
   input:
     vt_taxable_income: 300_000
     filing_status: JOINT
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19273.125
@@ -104,6 +124,8 @@
   input:
     vt_taxable_income: 250_000
     filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*56500 + .066*(145950-56500) + .076*(236350-145950) + .0875*(250000-236350) = 15861.225
@@ -114,6 +136,8 @@
   input:
     vt_taxable_income: 300_000
     filing_status: WIDOW
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*70450 + .066*(170300-70450) + .076*(259500-170300) + .0875*(300000-259500) = 19273.125
@@ -125,7 +149,22 @@
   input:
     vt_taxable_income: 150_000
     filing_status: SEPARATE
+    adjusted_gross_income: 100_000
+    us_govt_interest: 0
     state_code: VT
   output:
     # .0335*35255 + .066*(85150-35255) + .076*(129750-85150) + .0875*(150000-129750) = 9636.5625
     vt_income_tax_before_non_refundable_credits: 9_636.5625
+
+- name: 13 Separate filer, agi is $200k, taxable income is $150K in 2022.
+  period: 2022
+  absolute_error_margin: 1
+  input:
+
+    vt_taxable_income: 150_000
+    filing_status: SEPARATE
+    adjusted_gross_income: 200_000
+    us_govt_interest: 1_000
+    state_code: VT
+  output:
+    vt_income_tax_before_non_refundable_credits: 59_000
