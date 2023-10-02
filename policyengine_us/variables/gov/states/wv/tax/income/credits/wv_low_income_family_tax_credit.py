@@ -7,7 +7,7 @@ class wv_low_income_family_tax_credit(Variable):
     label = "West Virginia low-income family tax credit"
     unit = USD
     definition_period = YEAR
-    defined_for = "wv_low_income_family_tax_credit_eligible"
+    defined_for = StateCode.WV
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("filing_status", period)
