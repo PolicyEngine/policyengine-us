@@ -8,3 +8,6 @@ class id_taxable_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
+
+    adds = ["id_additions", "adjusted_gross_income"]
+    subtracts = ["id_subtractions"]
