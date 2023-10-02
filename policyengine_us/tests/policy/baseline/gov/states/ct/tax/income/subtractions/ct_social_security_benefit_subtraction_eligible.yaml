@@ -5,7 +5,7 @@
     adjusted_gross_income: 70_000
     filing_status: SINGLE
   output:
-    ct_social_security_benefit_adjustment_eligible: True
+    ct_social_security_benefit_subtraction_eligible: True
 
 - name: Single filing with adjusted gross income at least as much as the max amount
   period: 2022
@@ -14,7 +14,7 @@
     adjusted_gross_income: 80_000
     filing_status: SINGLE
   output:
-    ct_social_security_benefit_adjustment_eligible: False
+    ct_social_security_benefit_subtraction_eligible: False
 
 - name: Joint filing with adjusted gross income less than max amount
   period: 2022
@@ -23,7 +23,7 @@
     adjusted_gross_income: 70_000
     filing_status: JOINT
   output:
-    ct_social_security_benefit_adjustment_eligible: True
+    ct_social_security_benefit_subtraction_eligible: True
 
 - name: Joint filing with adjusted gross income at least as much as the max amount
   period: 2022
@@ -32,7 +32,7 @@
     adjusted_gross_income: 120_000
     filing_status: JOINT
   output:
-    ct_social_security_benefit_adjustment_eligible: False
+    ct_social_security_benefit_subtraction_eligible: False
 
 - name: Head of household filing with adjusted gross income less than max amount
   period: 2022
@@ -41,7 +41,7 @@
     adjusted_gross_income: 70_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_social_security_benefit_adjustment_eligible: True
+    ct_social_security_benefit_subtraction_eligible: True
 
 - name: Head of household filing with adjusted gross income at least as much as the max amount
   period: 2022
@@ -50,7 +50,7 @@
     adjusted_gross_income: 120_000
     filing_status: HEAD_OF_HOUSEHOLD
   output:
-    ct_social_security_benefit_adjustment_eligible: False
+    ct_social_security_benefit_subtraction_eligible: False
 
 - name: Separate filing with adjusted gross income less than max amount
   period: 2022
@@ -59,7 +59,7 @@
     adjusted_gross_income: 70_000
     filing_status: SEPARATE
   output:
-    ct_social_security_benefit_adjustment_eligible: True
+    ct_social_security_benefit_subtraction_eligible: True
 
 - name: Separate filing with adjusted gross income at least as much as the max amount
   period: 2022
@@ -68,7 +68,7 @@
     adjusted_gross_income: 120_000
     filing_status: SEPARATE
   output:
-    ct_social_security_benefit_adjustment_eligible: False
+    ct_social_security_benefit_subtraction_eligible: False
 
 - name: Widow filing with adjusted gross income less than max amount
   period: 2022
@@ -77,7 +77,7 @@
     adjusted_gross_income: 70_000
     filing_status: WIDOW
   output:
-    ct_social_security_benefit_adjustment_eligible: True
+    ct_social_security_benefit_subtraction_eligible: True
 
 - name: Widow filing with adjusted gross income at least as much as the max amount
   period: 2022
@@ -86,4 +86,4 @@
     adjusted_gross_income: 120_000
     filing_status: WIDOW
   output:
-    ct_social_security_benefit_adjustment_eligible: False
+    ct_social_security_benefit_subtraction_eligible: False
