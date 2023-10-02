@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.487.0] - 2023-10-02 12:59:39
+
+### Added
+
+- Vermont interest from u.s. obligation & student loan interest agi subtraction.
+
 ## [0.486.0] - 2023-10-02 00:05:46
 
 ### Added
@@ -5440,6 +5446,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+[0.487.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.486.0...0.487.0
 [0.486.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.485.0...0.486.0
 [0.485.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.484.0...0.485.0
 [0.484.0]: https://github.com/PolicyEngine/policyengine-us/compare/0.483.0...0.484.0
