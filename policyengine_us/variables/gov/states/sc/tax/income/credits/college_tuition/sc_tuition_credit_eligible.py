@@ -15,8 +15,7 @@ class sc_tuition_credit_eligible(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.sc.tax.income.credits.college_tuition
         total_college_hours = person("total_college_hours", period)
-        num_of_semester_attended = person("college_semesters_attended", period)
-        required_hours = p.semester_hour_requirement * num_of_semester_attended
-        return (num_of_semester_attended > 0) & (
-            total_college_hours >= required_hours
-        )
+        semesters_attended = person("college_semesters_attended", period)
+        required_hours = p.semester_hour_requirement * semesters_attended
+        meets_hours_requirement = total_college_hours >= required_hours
+        return (semesters_attended > 0) & meets_hours_requirement
