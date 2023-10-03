@@ -26,6 +26,7 @@ class spm_unit_benefits(Variable):
             "tanf",
             "high_efficiency_electric_home_rebate",
             "residential_efficiency_electrification_rebate",
+            "unemployment_compensation",
             # Contributed.
             "basic_income",
         ]
