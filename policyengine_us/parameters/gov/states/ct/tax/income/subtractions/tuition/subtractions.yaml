@@ -1,0 +1,21 @@
+description: Connecticut counts these as subtractions.
+values:
+  2022-01-01:
+    - us_govt_interest
+    - ct_federal_bonus_depreciation
+    - ct_federal_deduction
+    - ct_pension_annuity_income
+    # ct_exempt_interest_mutual_funds
+    - ct_social_security_adjustment
+    # ct_refunds_of_federal_state_tax
+    # ct_railroad_retirement
+    - ct_military_retirement_subtraction
+    # ct_teachers_retirement
+    # ct_share_fiduciary_income
+    # ct_gain_on_sale_bonds
+    # ct_higher_education_trust
+metadata:
+  unit: list
+  reference:
+    - title: 2022 Form CT-1040 Connecticut Resident Income Tax Return Instructions
+      href: https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=8
