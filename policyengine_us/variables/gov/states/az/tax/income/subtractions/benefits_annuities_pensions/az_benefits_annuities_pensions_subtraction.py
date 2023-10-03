@@ -29,4 +29,3 @@ class az_military_pension_subtraction(Variable):
         )
 
 
-        return where(married, subtraction_joint, subtraction_other)
