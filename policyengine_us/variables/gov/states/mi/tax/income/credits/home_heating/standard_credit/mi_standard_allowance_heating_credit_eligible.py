@@ -14,10 +14,8 @@ class mi_standard_allowance_heating_credit_eligible(Variable):
         ).gov.states.mi.tax.income.credits.home_heating_credit.alternate_credit
 
         mi_household_resources = tax_unit("mi_household_resources", period)
-        #the poverty guidelines are determined by the number of exemptions
+        # the poverty guidelines are determined by the number of exemptions
         # which is a function of the tax_unit_size which is used in tax_unit_fpg
-        fpg = tax_unit("tax_unit_fpg",period)
-
-       
+        fpg = tax_unit("tax_unit_fpg", period)
 
         return mi_household_resources <= (fpg * p.household_resources.fpg_rate)
