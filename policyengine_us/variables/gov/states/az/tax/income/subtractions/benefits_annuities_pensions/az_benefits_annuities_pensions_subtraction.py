@@ -24,7 +24,7 @@ class az_military_pension_subtraction(Variable):
         spouse = person("is_tax_unit_spouse", period)
 
         return tax_unit.sum(
-            military_retirement_pay * (head + spouse)
+            military_retirement_pay * (head | spouse)
         )
 
 
