@@ -28,6 +28,5 @@ class az_military_pension_subtraction(Variable):
             military_retirement_pay * (head + spouse)
         )
 
-        subtraction_other = tax_unit.sum(military_retirement_pay * head)
 
         return where(married, subtraction_joint, subtraction_other)
