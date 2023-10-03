@@ -40,4 +40,6 @@ class mi_alternate_heating_credit(Variable):
         )
 
         # determine reduced credit amount
-        return p.alternate_credit.heating_costs.rate * unreduced_alternate_credit
+        return (
+            p.alternate_credit.heating_costs.rate * unreduced_alternate_credit
+        )
