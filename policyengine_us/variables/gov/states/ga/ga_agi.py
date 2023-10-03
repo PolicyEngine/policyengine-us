@@ -12,5 +12,5 @@ class ga_agi(Variable):
         "https://www.zillionforms.com/2021/I2122607361.PDF#page14",
     )
     defined_for = StateCode.GA
-    adds = ["adjusted_gross_income", "ga_agi_additions"]
-    subtracts = ["ga_agi_subtractions"]
+    adds = ["adjusted_gross_income", "ga_additions"]
+    subtracts = ["ga_subtractions"]

@@ -1,10 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class ga_agi_subtractions(Variable):
+class ga_additions(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Georgia subtractions from federal adjusted gross income"
+    label = "Georgia additions to federal adjusted gross income"
     unit = USD
     definition_period = YEAR
     reference = (
@@ -12,4 +12,5 @@ class ga_agi_subtractions(Variable):
         "https://www.zillionforms.com/2021/I2122607361.PDF#page14"
     )
     defined_for = StateCode.GA
-    adds = "gov.states.ga.tax.income.agi.subtractions"
+
+    adds = "gov.states.ga.tax.income.additions.additions"

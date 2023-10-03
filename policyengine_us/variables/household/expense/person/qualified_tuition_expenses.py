@@ -1,4 +1,4 @@
-from policyengine_us.model_api import *
+edfrom policyengine_us.model_api import *
 
 
 class qualified_tuition_expenses(Variable):
