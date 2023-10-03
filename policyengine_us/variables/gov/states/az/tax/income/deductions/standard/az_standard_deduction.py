@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class az_standard_deduction(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Arizona standard deduction (include increased part from charitable contributions)"
+    label = "Arizona standard deduction"
     unit = USD
     documentation = "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01041.htm"
     definition_period = YEAR
