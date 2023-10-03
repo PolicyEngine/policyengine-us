@@ -17,7 +17,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_benefits_annuities_pensions_subtraction: 3_500
+    az_military_pension_subtraction: 3_500
 
 - name: separate filers with both spouses received benefits, annuities and pensions
   period: 2023
@@ -38,7 +38,7 @@
         members: [person1, person2]
         state_code: AZ
   output:
-    az_benefits_annuities_pensions_subtraction: 2_000
+    az_military_pension_subtraction: 3_500
 
 - name: joint filers (and 1 dependent) with both spouses received benefits, annuities and pensions
   period: 2023
@@ -62,7 +62,7 @@
         members: [person1, person2, person3]
         state_code: AZ
   output:
-    az_benefits_annuities_pensions_subtraction: 5_000
+    az_military_pension_subtraction: 5_000
 
 - name: filers without benefits, annuities and pensions
   period: 2023
@@ -70,4 +70,4 @@
     state_code: AZ
     military_retirement_pay: 0
   output:
-    az_benefits_annuities_pensions_subtraction: 0
+    az_military_pension_subtraction: 0
