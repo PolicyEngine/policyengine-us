@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class az_benefits_annuities_pensions_subtraction(Variable):
+class az_military_pension_subtraction(Variable):
     value_type = float
     entity = TaxUnit
     label = "Arizona benefits, annuitites and pensions subtraction"
