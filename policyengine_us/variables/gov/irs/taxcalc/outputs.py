@@ -123,16 +123,6 @@ tax_unit_net_capital_gains = variable_alias(
 )
 
 
-class c05700(Variable):
-    value_type = float
-    entity = TaxUnit
-    definition_period = YEAR
-    documentation = (
-        "search taxcalc/calcfunctions.py for how calculated and used"
-    )
-    unit = USD
-
-
 class c07240(Variable):
     value_type = float
     entity = TaxUnit

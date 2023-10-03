@@ -1,0 +1,35 @@
+- name: Uncapped CDCC below cap
+  period: 2018
+  input:
+    cdcc: 500
+    income_tax_before_credits: 501
+    foreign_tax_credit: 0
+  output:
+    capped_cdcc: 500
+
+- name: Capped at the income tax before credits amount
+  period: 2018
+  input:
+    cdcc: 2_000
+    income_tax_before_credits: 501
+    foreign_tax_credit: 0
+  output:
+    capped_cdcc: 501
+
+- name: Cap reduced by foreign tax credit amount
+  period: 2018
+  input:
+    cdcc: 1_000
+    income_tax_before_credits: 501
+    foreign_tax_credit: 502
+  output:
+    capped_cdcc: 0
+
+- name: CDCC not capped in 2021
+  period: 2021
+  input:
+    cdcc: 1_000
+    income_tax_before_credits: 501
+    foreign_tax_credit: 0
+  output:
+    capped_cdcc: 1_000

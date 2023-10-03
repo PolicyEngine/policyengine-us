@@ -1,0 +1,56 @@
+- name: Ineligible
+  period: 2022
+  input:
+    state_code: CO
+    age_head: 17
+    age_spouse: 0
+    co_income_tax_before_non_refundable_credits: 0
+    employment_income: 0
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund_eligible: false
+
+- name: Age eligible 
+  period: 2022
+  input:
+    state_code: CO
+    age_head: 18
+    age_spouse: 0
+    co_income_tax_before_non_refundable_credits: 0
+    employment_income: 0
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund_eligible: true
+
+- name: Income eligible 
+  period: 2022
+  input:
+    state_code: CO
+    age_head: 17
+    age_spouse: 0
+    co_income_tax_before_non_refundable_credits: 1
+    employment_income: 0
+  output:
+    co_sales_tax_refund_eligible: true
+
+- name: Income eligible 
+  period: 2022
+  input:
+    state_code: CO
+    age_head: 17
+    age_spouse: 17
+    co_income_tax_before_non_refundable_credits: 1
+    employment_income: 0
+  output:
+    co_sales_tax_refund_eligible: true
+
+- name: Two age eligible
+  period: 2022
+  input:
+    state_code: CO
+    age_head: 18
+    age_spouse: 18
+    co_income_tax_before_non_refundable_credits: 0
+    employment_income: 0
+  output:
+    co_sales_tax_refund_eligible: true
