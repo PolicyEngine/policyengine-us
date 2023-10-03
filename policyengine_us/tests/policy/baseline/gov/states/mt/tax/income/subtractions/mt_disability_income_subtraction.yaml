@@ -1,0 +1,84 @@
+- name: MT disability income for retired of age 65 
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        is_tax_unit_head: 1
+        is_retired: 1
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_disability_income_subtraction: 0
+
+- name: MT disability income for retired under age 65, but not permenently and totally disabled 
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        is_tax_unit_head: 1
+        is_retired: 1
+        is_permanently_and_totally_disabled: 0
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_disability_income_subtraction: 0
+
+- name: MT disability income for retired under age 65, and permenently and totally disabled 
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        is_tax_unit_head: 1
+        is_retired: 1
+        is_permanently_and_totally_disabled: 1
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_disability_income_subtraction: 15_000
+
+- name: MT disability income for retired under age 65, and permenently and totally disabled, both head and spouse qualified
+  period: 2022
+  input:
+    people:
+      person1:
+        disability_benefits: 15_000
+        is_tax_unit_head: 1
+        is_retired: 1
+        is_permanently_and_totally_disabled: 1
+        age: 64
+      person2:
+        disability_benefits: 12_000
+        is_tax_unit_spouse: 1
+        is_retired: 1
+        is_permanently_and_totally_disabled: 1
+        age: 63
+    tax_units:
+      tax_unit:
+        members: [person1,person2]
+    households:
+      household:
+        members: [person1,person2]
+        state_code: MT
+  output:
+    mt_disability_income_subtraction: 27_000
