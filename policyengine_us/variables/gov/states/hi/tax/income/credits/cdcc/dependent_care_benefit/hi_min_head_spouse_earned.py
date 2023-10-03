@@ -26,7 +26,6 @@ class hi_min_head_spouse_earned(Variable):
             | person("is_full_time_student", period)
         )
         income = person("earned_income", period)
-        # increased_income = max_(head_or_spouse_income, income_floor)
         increased_income = person("hi_eligible_income_floor", period)
         uncapped_income = where(
             income_floor_eligible,

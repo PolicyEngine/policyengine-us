@@ -1,4 +1,4 @@
-description: Hawaii limits the dependent care benefit as well as earned income to this amount, based on filing status under the child and dependent care credit.
+description: Hawaii reduces the dependent care benefit limit by this amount (the aggregate amount excludable from gross income), based on filing status under the child and dependent care credit.
 SINGLE:
   2018-01-01: 5_000
 JOINT:
@@ -14,7 +14,10 @@ metadata:
   unit: currency-USD
   label: Hawaii dependent care benefit amount and earned income cap
   reference:
-    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (b)(2)
+    # 26 U.S. Code § 129 specifies the parameter value
+    # title: 26 U.S. Code § 129 - Dependent care assistance programs, (a)(2)(A)
+    # href: https://www.law.cornell.edu/uscode/text/26/129#:~:text=(2)%20read%20as%20follows%3A,Pub.
+    - title: Hawaii Income Tax Law, Chapter 235, Section 235-55.6, (c)
       href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=41
     - title: Hawaii SCHEDULE X 2022 
       href: https://files.hawaii.gov/tax/forms/2022/schx_i.pdf#page=2

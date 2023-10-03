@@ -14,7 +14,8 @@ class hi_dependent_care_benefits(Variable):
         p = parameters(
             period
         ).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
-        dcb_amount = tax_unit("dependent_care_benefits", period)
+        person = tax_unit.members
+        dcb_amount = add(person, period, ["dependent_care_employer_benefits"])
         qualified_expense_amount = tax_unit(
             "tax_unit_childcare_expenses", period
         )
