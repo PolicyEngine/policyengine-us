@@ -17,7 +17,6 @@ class az_military_pension_subtraction(Variable):
         person = tax_unit.members
 
         filing_status = tax_unit("filing_status", period)
-        married = filing_status == filing_status.possible_values.JOINT
         military_retirement_pay = min_(
             p.max_amount, person("military_retirement_pay", period)
         )
