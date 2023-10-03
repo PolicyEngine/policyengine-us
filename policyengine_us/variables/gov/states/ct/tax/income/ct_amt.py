@@ -9,7 +9,7 @@ class ct_amt(Variable):
     definition_period = YEAR
     defined_for = StateCode.CT
     reference = (
-        "https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=22"  # line 9
+        "https://portal.ct.gov/-/media/DRS/Forms/2022/Income/2022-CT-1040-Instructions_1222.pdf#page=2"  # line 9
         "https://portal.ct.gov/-/media/DRS/Forms/2022/Income/CT-1040_1222.pdf#page=1"  # line 9
         "https://portal.ct.gov/-/media/DRS/Forms/2022/Income/CT-6251_1222.pdf#page=1"  # line 23
     )
@@ -24,7 +24,8 @@ class ct_amt(Variable):
         federal_minimum_tax = tax_unit("alternative_minimum_tax", period)
 
         ct_minimum_tax = min_(
-            taxable_income * amt.taxable_income, federal_minimum_tax * amt.tentative_minimum_tax
+            taxable_income * amt.taxable_income,
+            federal_minimum_tax * amt.tentative_minimum_tax,
         )
 
         return max_(ct_minimum_tax - ct_income_tax, 0)
