@@ -19,7 +19,7 @@ class ct_amt(Variable):
         p = parameters(period).gov.states.ct.tax.income
         amt = p.alternative_minimum_tax.rate
 
-        ct_income_tax = tax_unit("ct_income_tax", period)
+        ct_income_tax_after_personal_credits = tax_unit("ct_income_tax_after_personal_credits", period)
         taxable_income = tax_unit("amt_income", period)
         federal_minimum_tax = tax_unit("alternative_minimum_tax", period)
 
@@ -28,4 +28,4 @@ class ct_amt(Variable):
             federal_minimum_tax * amt.tentative_minimum_tax,
         )
 
-        return max_(ct_minimum_tax - ct_income_tax, 0)
+        return max_(ct_minimum_tax - ct_income_tax_after_personal_credits, 0)
