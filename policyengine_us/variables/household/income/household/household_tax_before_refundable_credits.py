@@ -13,6 +13,7 @@ class household_tax_before_refundable_credits(Variable):
         "self_employment_tax",
         "income_tax_before_refundable_credits",  # Federal.
         "ca_income_tax_before_refundable_credits",
+        "co_income_tax_before_refundable_credits",
         "dc_income_tax_before_refundable_credits",
         "ia_income_tax_before_refundable_credits",
         "il_total_tax",
@@ -23,6 +24,7 @@ class household_tax_before_refundable_credits(Variable):
         "md_income_tax_before_refundable_credits",
         "mn_income_tax_before_refundable_credits",
         "mo_income_tax_before_refundable_credits",
+        "nc_income_tax",  # NC has no refundable credits.
         "nd_income_tax_before_refundable_credits",
         "ne_income_tax_before_refundable_credits",
         "nh_income_tax_before_refundable_credits",
