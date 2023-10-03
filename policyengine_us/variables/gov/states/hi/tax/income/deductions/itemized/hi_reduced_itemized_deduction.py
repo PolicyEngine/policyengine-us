@@ -38,7 +38,7 @@ class hi_reduced_itemized_deduction(Variable):
         # eligible check 2: actual agi need to be smaller than agi cap
         hi_agi = tax_unit("hi_agi", period)
         filing_status = tax_unit("filing_status", period)
-        agi_cap = p.cap.agi_cap[filing_status]
+        agi_cap = p.cap.agi[filing_status]
         agi_eligible = agi_cap < hi_agi
         agi_cap_difference = hi_agi - agi_cap
         reduced_agi_difference = agi_cap_difference * p.rate.reduced_agi_rate
