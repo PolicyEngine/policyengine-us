@@ -14,6 +14,9 @@ class hi_dependent_care_benefits(Variable):
         p = parameters(
             period
         ).gov.states.hi.tax.income.credits.cdcc.dependent_care_benefits
+        p_irs = parameters(
+            period
+        ).gov.irs.gross_income.dependent_care_assistance_programs
         person = tax_unit.members
         dcb_amount = add(person, period, ["dependent_care_employer_benefits"])
         qualified_expense_amount = tax_unit(
@@ -25,7 +28,7 @@ class hi_dependent_care_benefits(Variable):
         min_head_spouse_earned = tax_unit("hi_min_head_spouse_earned", period)
         earned_income_cap = min_(capped_expenses, min_head_spouse_earned)
         filing_status = tax_unit("filing_status", period)
-        dcb_baseline = p.earned_income_cap[filing_status]
+        dcb_baseline = p_irs.reduction_amount[filing_status]
         deductible_benefit = min_(earned_income_cap, dcb_baseline)
         # excluded_benefit = 0 since we ignore line 12
         qualified_num = tax_unit("count_cdcc_eligible", period)
